@@ -23,7 +23,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.wst.sse.core.preferences.CommonModelPreferenceNames;
+import org.eclipse.wst.sse.core.internal.encoding.CommonEncodingPreferenceNames;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
@@ -139,7 +139,7 @@ public class BindingWizard extends Wizard
   		
   		// Create the Definitions element with proper namespace
   	    Preferences preference = XMLCorePlugin.getDefault().getPluginPreferences();
-  		String charSet = preference.getString(CommonModelPreferenceNames.OUTPUT_CODESET);
+  		String charSet = preference.getString(CommonEncodingPreferenceNames.OUTPUT_CODESET);
   	    if (charSet == null || charSet.trim().equals(""))
   	    {
   	    	charSet = "UTF-8";
