@@ -212,7 +212,7 @@
          point="org.eclipse.wst.sse.ui.extendedconfiguration">
       <!-- add preference pages to the context menu action (ID must correspond to the declared "path" above) -->
       <preferencepages
-            preferenceids="org.eclipse.wst.sse.ui.preferences/org.eclipse.wst.webservice.ui.preferences.name"
+            preferenceids="org.eclipse.wst.sse.ui.preferences/org.eclipse.wst.wsdl.ui.internal.util.WSDLPreferencePage"
             target="org.eclipse.wst.wsdl.ui.internal.WSDLEditor.source" />
 <!--
       <propertysheetconfiguration
