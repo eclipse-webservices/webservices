@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.eclipse.wst.ws.ui"
+   name="%PLUGIN_NAME"
+   version="1.0.0"
+   provider-name="%PLUGIN_PROVIDER"
+   class="org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin">
+
+   <runtime>
+      <library name="wsui.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.wst.command.env.core"/>
+      <import plugin="org.eclipse.wst.command.env"/>
+   </requires>
+
+	<extension
+         point="org.eclipse.ui.preferencePages">
+
+      <page
+            name="%PLUGIN_NEW_CATEGORY_NAME_WS"
+            class="org.eclipse.wst.ws.internal.ui.preferences.WebServicesPreferencePage"
+            id="org.eclipse.wst.ws.internal.ui.preferences.name">
+      </page>
+      
+      <page
+            name="%PREFERENCE_CATEGORY_WSI"
+            category="org.eclipse.wst.ws.internal.ui.preferences.name"
+            class="org.eclipse.wst.ws.internal.ui.wsi.preferences.WSICompliancePreferencePage"
+            id="org.eclipse.wst.ws.internal.ui.wsi.preferences.WSICompliancePreferencePage">
+      </page>
+
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.propertyPages">
+
+      <page
+            objectClass="org.eclipse.core.resources.IProject"
+            adaptable="true"
+            name="%PREFERENCE_CATEGORY_WSI"
+            class="org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage"
+            id="org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage">
+         <filter
+               name="nature"
+               value="org.eclipse.jdt.core.javanature">
+         </filter>
+      </page>
+      
+      <page
+            objectClass="org.eclipse.jdt.core.IJavaProject"
+            adaptable="true"
+            name="%PREFERENCE_CATEGORY_WSI"
+            class="org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage"
+            id="org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage">
+         <filter
+               name="nature"
+               value="org.eclipse.jdt.core.javanature">
+         </filter>
+      </page>
+
+   </extension>
+</plugin>
