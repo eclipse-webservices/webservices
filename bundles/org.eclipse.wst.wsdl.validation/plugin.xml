@@ -14,8 +14,15 @@
       <library name="wsdlvalidate.jar">
          <export name="*"/>
       </library>
+      <library name="lib/wsdl4j.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/qname.jar">
+         <export name="*"/>
+      </library>
    </runtime>
    <requires>
+      <import plugin="org.eclipse.wst.common.dependencychecker"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.apache.ant"/>
@@ -23,8 +30,16 @@
       <import plugin="org.eclipse.wst.common.uriresolver"/>
       <import plugin="org.eclipse.wst.validation"/>
       <import plugin="org.eclipse.wst.xml.validation"/>
-      <import plugin="org.eclipse.wst.wsdl"/>
    </requires>
+   
+   <extension point="org.eclipse.wst.common.dependencychecker.requiredFiles">
+      <requiredFile
+            pluginRelativePath="lib/qname.jar"
+            locationURL="http://prdownloads.sourceforge.net/wsdl4j/wsdl4j-bin-1.4.zip?download"/>
+      <requiredFile
+            pluginRelativePath="lib/wsdl4j.jar"
+            locationURL="http://prdownloads.sourceforge.net/wsdl4j/wsdl4j-bin-1.4.zip?download"/>
+   </extension>
 
    <!-- WSDL extension validator. This is an extension that will run
         after WSDL validation if WSDL validation is successful.  -->
