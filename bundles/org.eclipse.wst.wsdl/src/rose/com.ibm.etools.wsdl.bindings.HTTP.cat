@@ -1,0 +1,378 @@
+
+(object Petal
+    version    	42
+    _written   	"Rose 4.5.8054a"
+    charSet    	0)
+
+(object Class_Category "http"
+    is_unit    	TRUE
+    is_loaded  	TRUE
+    quid       	"3ABFD9AD01F8"
+    exportControl 	"Public"
+    logical_models 	(list unit_reference_list
+	(object Class "HTTPBinding"
+	    quid       	"3ABFE57C0136"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AE5FF1D0019"
+		    supplier   	"Logical View::wsdl::ExtensibilityElement"
+		    quidu      	"3AD5DBB602A9"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "verb"
+		    quid       	"3ABFE60D00DB"
+		    type       	"String"))
+	    language   	"Java")
+	(object Class "HTTPOperation"
+	    quid       	"3ABFE6AE0050"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AE5FF4B037C"
+		    supplier   	"Logical View::wsdl::ExtensibilityElement"
+		    quidu      	"3AD5DBB602A9"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "locationURI"
+		    quid       	"3ABFE70D0147"
+		    type       	"String"))
+	    language   	"Java")
+	(object Class "HTTPUrlReplacement"
+	    quid       	"3ABFEA1A017C"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AE728B802C3"
+		    supplier   	"Logical View::wsdl::ExtensibilityElement"
+		    quidu      	"3AD5DBB602A9"))
+	    language   	"Java")
+	(object Class "HTTPUrlEncoded"
+	    quid       	"3ABFEA6D0294"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AE728D50094"
+		    supplier   	"Logical View::wsdl::ExtensibilityElement"
+		    quidu      	"3AD5DBB602A9"))
+	    language   	"Java")
+	(object Class "HTTPAddress"
+	    quid       	"3AC3BF2500F5"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AE5FEA901B7"
+		    supplier   	"Logical View::wsdl::ExtensibilityElement"
+		    quidu      	"3AD5DBB602A9"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "locationURI"
+		    quid       	"3AC3BFA7012E"
+		    type       	"String"))
+	    language   	"Java"))
+    logical_presentations 	(list unit_reference_list
+	(object ClassDiagram "Port"
+	    quid       	"3AC11E5201FB"
+	    title      	"Port"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::http::HTTPAddress" @1
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(336, 432)
+		    label      	(object ItemLabel
+			Parent_View 	@1
+			location   	(135, 351)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	402
+			justify    	0
+			label      	"HTTPAddress")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AC3BF2500F5"
+		    width      	420
+		    height     	186
+		    annotation 	8
+		    autoResize 	TRUE)))
+	(object ClassDiagram "Extensibility"
+	    quid       	"3AE5FE3B037B"
+	    title      	"Extensibility"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::wsdl::ExtensibilityElement" @2
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(272, 128)
+		    font       	(object Font
+			italics    	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@2
+			location   	(70, 53)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	404
+			justify    	0
+			label      	"ExtensibilityElement")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD5DBB602A9"
+		    width      	422
+		    height     	174
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::http::HTTPAddress" @3
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(272, 480)
+		    label      	(object ItemLabel
+			Parent_View 	@3
+			location   	(128, 428)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	288
+			justify    	0
+			label      	"HTTPAddress")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AC3BF2500F5"
+		    width      	306
+		    height     	128
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::http::HTTPBinding" @4
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(480, 640)
+		    label      	(object ItemLabel
+			Parent_View 	@4
+			location   	(344, 588)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	272
+			justify    	0
+			label      	"HTTPBinding")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3ABFE57C0136"
+		    width      	290
+		    height     	128
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritTreeView "" @5
+		    location   	(272, 305)
+		    line_color 	3342489
+		    fill_color 	13434879
+		    supplier   	@2
+		    vertices   	(list Points
+			(272, 305)
+			(272, 215)))
+		(object InheritView "" @6
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE5FEA901B7"
+		    client     	@3
+		    supplier   	@2
+		    line_style 	3
+		    origin_attachment 	(272, 416)
+		    terminal_attachment 	(272, 305)
+		    drawSupplier 	@5)
+		(object InheritView "" @7
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE5FF1D0019"
+		    client     	@4
+		    supplier   	@2
+		    line_style 	3
+		    origin_attachment 	(475, 576)
+		    terminal_attachment 	(475, 305)
+		    drawSupplier 	@5)
+		(object ClassView "Class" "Logical View::http::HTTPOperation" @8
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(672, 816)
+		    label      	(object ItemLabel
+			Parent_View 	@8
+			location   	(518, 764)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	308
+			justify    	0
+			label      	"HTTPOperation")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3ABFE6AE0050"
+		    width      	326
+		    height     	128
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @9
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE5FF4B037C"
+		    client     	@8
+		    supplier   	@2
+		    line_style 	3
+		    origin_attachment 	(656, 752)
+		    terminal_attachment 	(656, 305)
+		    drawSupplier 	@5)
+		(object ClassView "Class" "Logical View::http::HTTPUrlReplacement" @10
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(816, 992)
+		    label      	(object ItemLabel
+			Parent_View 	@10
+			location   	(605, 941)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	422
+			justify    	0
+			label      	"HTTPUrlReplacement")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3ABFEA1A017C"
+		    width      	440
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @11
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE728B802C3"
+		    client     	@10
+		    supplier   	@2
+		    line_style 	3
+		    origin_attachment 	(869, 929)
+		    terminal_attachment 	(869, 305)
+		    drawSupplier 	@5)
+		(object ClassView "Class" "Logical View::http::HTTPUrlEncoded" @12
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1072, 1168)
+		    label      	(object ItemLabel
+			Parent_View 	@12
+			location   	(900, 1117)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	344
+			justify    	0
+			label      	"HTTPUrlEncoded")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3ABFEA6D0294"
+		    width      	362
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @13
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE728D50094"
+		    client     	@12
+		    supplier   	@2
+		    line_style 	3
+		    origin_attachment 	(1103, 1105)
+		    terminal_attachment 	(1103, 305)
+		    drawSupplier 	@5)))
+	(object ClassDiagram "Binding"
+	    quid       	"3AE72A7000A9"
+	    title      	"Binding"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::http::HTTPBinding" @14
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(336, 272)
+		    label      	(object ItemLabel
+			Parent_View 	@14
+			location   	(200, 220)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	272
+			justify    	0
+			label      	"HTTPBinding")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3ABFE57C0136"
+		    width      	290
+		    height     	128
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::http::HTTPOperation" @15
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(720, 272)
+		    label      	(object ItemLabel
+			Parent_View 	@15
+			location   	(519, 191)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	402
+			justify    	0
+			label      	"HTTPOperation")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3ABFE6AE0050"
+		    width      	420
+		    height     	186
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::http::HTTPUrlReplacement" @16
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(848, 592)
+		    label      	(object ItemLabel
+			Parent_View 	@16
+			location   	(637, 541)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	422
+			justify    	0
+			label      	"HTTPUrlReplacement")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3ABFEA1A017C"
+		    width      	440
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::http::HTTPUrlEncoded" @17
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(384, 592)
+		    label      	(object ItemLabel
+			Parent_View 	@17
+			location   	(212, 541)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	344
+			justify    	0
+			label      	"HTTPUrlEncoded")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3ABFEA6D0294"
+		    width      	362
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)))))

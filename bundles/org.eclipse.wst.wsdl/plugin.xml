@@ -2,9 +2,9 @@
 <?eclipse version="3.0"?>
 <plugin
    id="org.eclipse.wst.wsdl"
-   name="WSDL Model"
-   version="6.0.0"
-   provider-name="IBM"
+   name="%pluginName"
+   version="1.0.0"
+   provider-name="Eclipse.org"
    class="org.eclipse.wst.wsdl.WSDLPlugin$Implementation">
 
    <runtime>
@@ -42,5 +42,47 @@
             class="org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl">
       </parser>
    </extension>
+
+   <extension
+         point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eclipse.org/wsdl/2003/HTTP"
+            class="org.eclipse.wst.wsdl.binding.http.HTTPPackage">
+      </package>
+   </extension>
+   
+  <extension point="org.eclipse.wst.wsdl.extensibilityElementFactories">
+     <extensibilityElementFactory
+     	namespace="http://schemas.xmlsoap.org/wsdl/http/"
+     	class="org.eclipse.wst.wsdl.binding.http.internal.util.HTTPExtensibilityElementFactory"/>  
+  </extension>
+
+   <extension
+         point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eclipse.org/wsdl/2003/MIME"
+            class="org.eclipse.wst.wsdl.binding.mime.MIMEPackage">
+      </package>
+   </extension>
+   
+  <extension point="org.eclipse.wst.wsdl.extensibilityElementFactories">
+     <extensibilityElementFactory
+     	namespace="http://schemas.xmlsoap.org/wsdl/mime/"
+     	class="org.eclipse.wst.wsdl.binding.mime.internal.util.MIMEExtensibilityElementFactory"/>  
+  </extension>
+
+   <extension
+         point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eclipse.org/wsdl/2003/SOAP"
+            class="org.eclipse.wst.wsdl.binding.soap.SOAPPackage">
+      </package>
+   </extension>
+   
+  <extension point="org.eclipse.wst.wsdl.extensibilityElementFactories">
+     <extensibilityElementFactory
+     	namespace="http://schemas.xmlsoap.org/wsdl/soap/"
+     	class="org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPExtensibilityElementFactory"/>  
+  </extension>
 
 </plugin>
