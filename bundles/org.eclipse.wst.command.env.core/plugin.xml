@@ -8,7 +8,7 @@
    provider-name = "%PLUGIN_PROVIDER">
 
    <runtime>
-      <library name="runtime/envcore.jar">
+      <library name="envcore.jar">
          <export name="*"/>
       </library>
    </runtime>

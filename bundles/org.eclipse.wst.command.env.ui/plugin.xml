@@ -8,7 +8,7 @@
    provider-name = "%PLUGIN_PROVIDER">
 
    <runtime>
-      <library name="runtime/envui.jar">
+      <library name="envui.jar">
          <export name="*"/>
       </library>
    </runtime>
