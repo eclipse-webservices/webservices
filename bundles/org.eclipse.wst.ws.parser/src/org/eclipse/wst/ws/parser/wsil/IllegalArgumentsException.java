@@ -13,6 +13,8 @@ package org.eclipse.wst.ws.parser.wsil;
 
 public class IllegalArgumentsException extends Exception
 {
+  private static final long serialVersionUID = -2533981176285561234L;
+
   public IllegalArgumentsException(String arg)
   {
     super(arg);

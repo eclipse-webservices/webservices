@@ -15,6 +15,8 @@ import java.io.IOException;
 
 public class WWWAuthenticationException extends Exception
 {
+  private static final long serialVersionUID = -4918211021620316049L;
+
   private IOException ioe_;
   private String wwwAuthMsg_;
   private String url_;
