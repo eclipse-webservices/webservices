@@ -31,7 +31,7 @@ import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
+import org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDModelGroup;
 import org.eclipse.xsd.XSDPackage;
