@@ -12,7 +12,9 @@ package org.eclipse.wst.wsdl.internal.impl;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import javax.xml.namespace.QName;
+
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
@@ -23,12 +25,10 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.UnknownExtensibilityElement;
-import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * <!-- begin-user-doc -->

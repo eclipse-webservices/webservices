@@ -10,11 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime;
 
-import org.eclipse.wst.wsdl.ExtensibilityElement;
-
 import java.util.List;
 
-import org.eclipse.wst.wsdl.ExtensibleElement;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 
 /**
  * <!-- begin-user-doc -->

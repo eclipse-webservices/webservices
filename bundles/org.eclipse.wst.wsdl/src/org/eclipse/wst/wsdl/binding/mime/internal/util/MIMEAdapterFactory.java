@@ -10,19 +10,18 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime.internal.util;
 
-import org.eclipse.wst.wsdl.ExtensibleElement;
-import org.eclipse.wst.wsdl.WSDLElement;
-
-
 import javax.wsdl.extensions.ExtensibilityElement;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.wst.wsdl.binding.mime.*;
+import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.binding.mime.MIMEContent;
+import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
+import org.eclipse.wst.wsdl.binding.mime.MIMEMultipartRelated;
+import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
+import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
 
 /**
  * <!-- begin-user-doc -->
