@@ -462,10 +462,10 @@ public class MessageDialog extends Dialog
    */
   private void populateList(List list)
   {
-    Iterator enum = statusList.iterator();
-    while (enum.hasNext())
+    Iterator enumeration = statusList.iterator();
+    while (enumeration.hasNext())
     {
-      Status childStatus = (Status) enum.next();
+      Status childStatus = (Status) enumeration.next();
       populateList(list, childStatus, 0);
     }
   }
