@@ -97,13 +97,42 @@ public class AxisDeployCommand extends SimpleCommand
     adminClient.setUrl(url);
     adminClient.setXmlFile(new File(javaWSDLParam.getDeploymentFiles()[0]));
 
+    // Since the admin server may not be available right away we will try
+    // several times to execute it.
     try
     {
-      adminClient.execute();
+      BuildException lastException = null;
+      
+      for( int index = 0; index < 20; index++ )
+      {
+        try
+        {
+          lastException = null;
+          adminClient.execute();
+        }
+        catch( BuildException exc )
+        {
+          lastException = exc;
+          
+          try
+          {
+            Thread.sleep( 200 );
+          }
+          catch( InterruptedException threadException  )
+          {
+          }
+        }
+        
+        // If no exception occured then we should break out of the loop.
+        if( lastException == null ) break;
+      }
+      
+      // If after many tries we still get an exception, then we will re throw it.
+      if( lastException != null ) throw lastException;
     }
     catch (BuildException e)
     {
-        e.printStackTrace();
+      e.printStackTrace();
       String message = e.getMessage();
       if (e.getCause() != null)
       {
