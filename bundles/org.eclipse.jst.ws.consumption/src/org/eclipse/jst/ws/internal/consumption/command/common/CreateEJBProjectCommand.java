@@ -202,7 +202,7 @@ public class CreateEJBProjectCommand extends SimpleCommand
              if (serviceExistingServer != null)
              {
                if (serviceExistingServer.getServerState() != IServer.STATE_STOPPED)
-                 serviceExistingServer.synchronousStop();     
+                 serviceExistingServer.synchronousStop(false);     
                Status mmStatus = ServerUtils.getInstance().modifyModules(env, serviceExistingServer, ResourceUtils.getModule(earProject), false, new NullProgressMonitor());
                if (mmStatus.getSeverity()==Status.ERROR)
                	return mmStatus;
@@ -222,7 +222,7 @@ public class CreateEJBProjectCommand extends SimpleCommand
               if (defaultServer!=null)
               {
               	if (defaultServer.getServerState() != IServer.STATE_STOPPED) {
-                	 defaultServer.synchronousStop();                    
+                	 defaultServer.synchronousStop(false);                    
                 	 }
               	Status mmStatus = ServerUtils.getInstance().modifyModules(env, defaultServer, ResourceUtils.getModule(earProject), false, new NullProgressMonitor());
                 if (mmStatus.getSeverity()==Status.ERROR)

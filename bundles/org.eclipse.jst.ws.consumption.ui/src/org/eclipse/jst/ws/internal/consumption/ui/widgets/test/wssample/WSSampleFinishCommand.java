@@ -199,7 +199,7 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
     try{
       URL url;
       url = new URL(urlString.toString());
-      int style = WebBrowser.SHOW_TOOLBAR | WebBrowser.SHOW_STATUSBAR | WebBrowser.FORCE_NEW_PAGE;  
+      int style = WebBrowser.LOCATION_BAR | WebBrowser.BUTTON_BAR;  
 
       for( int retries = 0; retries < 10; retries++ )
       {

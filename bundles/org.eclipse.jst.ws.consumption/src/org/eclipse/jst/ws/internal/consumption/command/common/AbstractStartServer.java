@@ -60,7 +60,7 @@ public void StartServer (IProject project, IServer server, IProgressMonitor moni
       if (server.getServerRestartState())
       {    
       	
-        server.synchronousStop();
+        server.synchronousStop(false);
         log_.log(Log.INFO, 5050, this, "StartServer", "project="+project+", Stop command completed, restart needed");
         publishProject(server);
     	startProject(server);
@@ -159,7 +159,7 @@ public void stopServer(IServer server) throws CoreException {
 	if (server != null) {
 
 		if (server.getServerState() != IServer.STATE_STOPPED) {
-			server.synchronousStop();
+			server.synchronousStop(false);
 		}
 	}	
 	

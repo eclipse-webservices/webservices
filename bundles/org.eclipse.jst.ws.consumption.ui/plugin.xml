@@ -19,6 +19,13 @@
       <import plugin="org.eclipse.wst.command.env"/>
       <import plugin="org.eclipse.wst.command.env.ui"/>
       <import plugin="org.eclipse.wst.command.env.core"/>
+      <!--
+      Should not need the following import, but absence causes
+      ClientHandlersWidgetOutputCommand to fail to compile due to
+      missing indirect dependency on
+      org.eclipse.jst.common.jdt.internal.integration.WorkingCopyProvider
+      -->
+      <import plugin="org.eclipse.jst.common.frameworks"/>
       <import plugin="org.eclipse.jst.ws" version="6.0.0" match="equivalent"/>
       <import plugin="org.eclipse.jst.ws.ui" version="6.0.0" match="equivalent"/>
       <import plugin="org.eclipse.jst.ws.consumption" version="6.0.0" match="equivalent"/>

@@ -118,15 +118,30 @@ public class GetMonitorCommand extends SimpleCommand
                     monitorWorkingCopy.setLocalPort(monitoredPort);
                     monitorWorkingCopy.setRemoteHost(host);
                     monitorWorkingCopy.setRemotePort(port);
-                    monitorWorkingCopy.setProtocolAdapter(MonitorCore.findProtocolAdapter(MonitorCore.HTTP_PROTOCOL_ID));
-                    m = monitorWorkingCopy.save();
+                    monitorWorkingCopy.setProtocol("HTTP");
+                    try
+                    {
+                      m = monitorWorkingCopy.save();
+                    }
+                    catch (Throwable t)
+                    {
+                      Status warning = new SimpleStatus(WebServiceConsumptionPlugin.ID, WebServiceConsumptionPlugin.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[]{String.valueOf(port), endpoint}), Status.WARNING, t);
+                      try
+                      {
+                        if (env != null)
+                          env.getStatusHandler().report(warning);
+                      }
+                      catch (StatusException se)
+                      {
+                      }
+                    }
                   }
                   if (m != null)
                   {
                     try
                     {
                       if (!m.isRunning())
-                        MonitorCore.startMonitor(m);
+                        m.start();
                       StringBuffer sb = new StringBuffer(endpointURL.getProtocol());
                       sb.append("://localhost:");
                       sb.append(String.valueOf(m.getLocalPort()));

@@ -221,7 +221,7 @@ public class CreateWebProjectCommand extends SimpleCommand {
         // Stopping server and removing EAR from Server
         if (existingServer_.getServerState() != IServer.STATE_STOPPED)
         {
-          existingServer_.synchronousStop();
+          existingServer_.synchronousStop(false);
         }        
         Status mmStatus = ServerUtils.getInstance().modifyModules(env, existingServer_, ResourceUtils.getModule(earProject), false, new NullProgressMonitor());
         if (mmStatus.getSeverity()==Status.ERROR)
@@ -251,7 +251,7 @@ public class CreateWebProjectCommand extends SimpleCommand {
         // Stopping server and removing EAR from Server
         if (existingServer_.getServerState() != IServer.STATE_STOPPED)
         {
-          existingServer_.synchronousStop();
+          existingServer_.synchronousStop(false);
         }        
         Status mmStatus = ServerUtils.getInstance().modifyModules(env, existingServer_, ResourceUtils.getModule(earProject), false, new NullProgressMonitor());
         if (mmStatus.getSeverity()==Status.ERROR)
