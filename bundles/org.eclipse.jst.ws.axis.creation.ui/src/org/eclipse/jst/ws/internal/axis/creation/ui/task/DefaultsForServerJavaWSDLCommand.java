@@ -26,9 +26,9 @@ import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamete
 import org.eclipse.jst.ws.internal.axis.consumption.util.ClasspathUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.consumption.util.PlatformUtils;
+import org.eclipse.jst.ws.internal.axis.consumption.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.Utils;
-import org.eclipse.jst.ws.internal.consumption.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.datamodel.Model;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;

@@ -32,7 +32,7 @@ import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.JavaVisibilityKind;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jem.java.impl.JavaClassImpl;
-import org.eclipse.jst.ws.internal.consumption.util.WSDLUtils;
+import org.eclipse.jst.ws.internal.axis.consumption.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.common.ProgressMonitor;

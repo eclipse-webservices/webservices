@@ -29,7 +29,7 @@ import javax.xml.namespace.QName;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.jst.ws.internal.consumption.util.WSDLUtils;
+import org.eclipse.jst.ws.internal.axis.consumption.util.WSDLUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;

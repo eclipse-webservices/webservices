@@ -9,10 +9,8 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.consumption.util;
+package org.eclipse.jst.ws.internal.axis.consumption.util;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.Collator;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -30,6 +28,7 @@ import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
 import javax.xml.namespace.QName;
 
+import org.apache.axis.wsdl.toJava.Utils;
 import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
 
 public class WSDLUtils {
@@ -435,55 +434,63 @@ public static String getPackageNameForPortType(Definition definition)
    */
   public static String namespaceURI2PackageName(String namespaceURI)
   {
-    StringBuffer sb = new StringBuffer(80);
-    if (namespaceURI != null && namespaceURI.length() > 0)
-    {
-      String hostname = null;
-      try
-      {
-        hostname = new URL(namespaceURI).getHost();
-      }
-      catch (MalformedURLException e)
-      {
-        int index = namespaceURI.indexOf(":");
-        if (index > -1)
-        {
-          hostname = namespaceURI.substring(index+1);
-          index = hostname.indexOf("/");
-          if (index > -1)
-            hostname = hostname.substring(0, index);
-        }
-        else
-          hostname = namespaceURI;
-      }
-      
-	  // if we didn't file a hostname, bail
-	  if (hostname == null) {
-		  return null;
-	  }
-
-      //convert illegal java identifier
-      hostname = hostname.replace('-', '_');
-      // tokenize the hostname and reverse it
-      StringTokenizer st = new StringTokenizer(hostname, ".");
-      String[] words = new String[st.countTokens()];
-      for (int i = 0; i < words.length; ++i)
-        words[i] = st.nextToken();
-      for(int i = words.length-1; i >= 0; --i)
-      {
-        String word = words[i];
-        if (isJavaKeyword(word))
-          word = makeNonJavaKeyword(word);
-        // seperate with dot
-        if (i != words.length-1)
-          sb.append('.');
-        // convert digits to underscores
-        if (Character.isDigit(word.charAt(0)))
-          sb.append('_');
-          sb.append(word);
-      }
-    }
-    return normalizePackageName(sb.toString(), DOT.charAt(0));
+  	/**
+  	 * TODO:  The makePackageName method from 
+  	 * org.apache.axis.wsdl.toJava.Utils in axis-1_1 is called to map namespace to package name.  
+  	 * This will be replaced with an extension point to plug in runtime emitter specific namespace to 
+  	 * package mapping algorithm 
+  	 */
+  	return Utils.makePackageName(namespaceURI);
+  	
+//    StringBuffer sb = new StringBuffer(80);
+//    if (namespaceURI != null && namespaceURI.length() > 0)
+//    {
+//      String hostname = null;
+//      try
+//      {
+//        hostname = new URL(namespaceURI).getHost();
+//      }
+//      catch (MalformedURLException e)
+//      {
+//        int index = namespaceURI.indexOf(":");
+//        if (index > -1)
+//        {
+//          hostname = namespaceURI.substring(index+1);
+//          index = hostname.indexOf("/");
+//          if (index > -1)
+//            hostname = hostname.substring(0, index);
+//        }
+//        else
+//          hostname = namespaceURI;
+//      }
+//      
+//	  // if we didn't file a hostname, bail
+//	  if (hostname == null) {
+//		  return null;
+//	  }
+//
+//      //convert illegal java identifier
+//      hostname = hostname.replace('-', '_');
+//      // tokenize the hostname and reverse it
+//      StringTokenizer st = new StringTokenizer(hostname, ".");
+//      String[] words = new String[st.countTokens()];
+//      for (int i = 0; i < words.length; ++i)
+//        words[i] = st.nextToken();
+//      for(int i = words.length-1; i >= 0; --i)
+//      {
+//        String word = words[i];
+//        if (isJavaKeyword(word))
+//          word = makeNonJavaKeyword(word);
+//        // seperate with dot
+//        if (i != words.length-1)
+//          sb.append('.');
+//        // convert digits to underscores
+//        if (Character.isDigit(word.charAt(0)))
+//          sb.append('_');
+//          sb.append(word);
+//      }
+//    }
+//    return normalizePackageName(sb.toString(), DOT.charAt(0));
   }
 
   /**

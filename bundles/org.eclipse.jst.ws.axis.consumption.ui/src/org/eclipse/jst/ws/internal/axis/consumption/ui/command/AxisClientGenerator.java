@@ -34,11 +34,11 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasic
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
+import org.eclipse.jst.ws.internal.axis.consumption.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
-import org.eclipse.jst.ws.internal.consumption.util.WSDLUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.ws.parser.discovery.WebServicesParserExt;
