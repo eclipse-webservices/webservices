@@ -17,8 +17,8 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.validation.core.IFileDelta;
-import org.eclipse.wst.validation.core.IHelper;
 import org.eclipse.wst.validation.core.IReporter;
+import org.eclipse.wst.validation.core.IValidationContext;
 import org.eclipse.wst.validation.core.IValidator;
 import org.eclipse.wst.validation.core.MessageLimitException;
 import org.eclipse.wst.validation.core.ValidationException;
@@ -49,7 +49,7 @@ public class Validator implements IValidator
   /* (non-Javadoc)
    * @see org.eclipse.wst.validation.core.IValidator#validate(org.eclipse.wst.validation.core.IHelper, org.eclipse.wst.validation.core.IReporter, org.eclipse.wst.validation.core.IFileDelta[])
    */
-  public void validate(IHelper helper, IReporter reporter, IFileDelta[] changedFiles) throws ValidationException
+  public void validate(IValidationContext helper, IReporter reporter, IFileDelta[] changedFiles) throws ValidationException
   {
     if (changedFiles != null && changedFiles.length > 0)
     {
@@ -106,7 +106,7 @@ public class Validator implements IValidator
    * @param helper
    * @param reporter
    */
-  protected void validateIfNeeded(IFile file, Object model, IHelper helper, IReporter reporter)
+  protected void validateIfNeeded(IFile file, Object model, IValidationContext helper, IReporter reporter)
   {
     if (model == null)
     {
@@ -145,7 +145,7 @@ public class Validator implements IValidator
    * @param reporter
    *          The reporter to report the validation messages.
    */
-  protected void validateIfNeeded(IFile file, IHelper helper, IReporter reporter)
+  protected void validateIfNeeded(IFile file, IValidationContext helper, IReporter reporter)
   {
     ValidatorManager mgr = ValidatorManager.getManager();
     if (mgr.isMessageLimitExceeded(file))
