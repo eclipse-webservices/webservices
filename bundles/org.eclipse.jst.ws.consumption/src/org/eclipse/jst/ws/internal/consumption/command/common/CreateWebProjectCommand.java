@@ -142,6 +142,11 @@ public class CreateWebProjectCommand extends SimpleCommand {
       return new SimpleStatus("");
     }
     
+    // existing project, ear and server configuration
+    if (needEAR_ && projectExists && earExists && earAddedToServer && areAssociated && !weAddedProjectToServer_){
+    	return new SimpleStatus("");
+    }
+    
     //Always stop the server
     Status stoppingStatus = stopServer(env);
     if(stoppingStatus.getSeverity() == Status.ERROR)

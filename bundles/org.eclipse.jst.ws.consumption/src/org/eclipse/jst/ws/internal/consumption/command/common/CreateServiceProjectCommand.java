@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.common.WebServiceStartServerRegistry;
 import org.eclipse.wst.command.env.core.SimpleCommand;
@@ -24,6 +25,7 @@ import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.model.IRunningActionServer;
 
 /**
  * 
@@ -156,6 +158,29 @@ public class CreateServiceProjectCommand extends SimpleCommand {
     	env.getStatusHandler().reportError(status);
   		return status;
   	}
+    
+    // Start server if req'd
+    IServerWorkingCopy wc = fExistingServer.createWorkingCopy();     
+    if (wc!=null){
+      try {
+        Object x = fExistingServer.getAdapter(IRunningActionServer.class);
+        if (x!=null && x instanceof IRunningActionServer) {
+          int state = fExistingServer.getServerState();
+          if (state == IServer.STATE_STOPPED || state == IServer.STATE_UNKNOWN) {
+            String mode = ILaunchManager.RUN_MODE;
+            fExistingServer.synchronousStart(mode, EnvironmentUtils.getIProgressMonitor(env));
+          }
+        }
+      }
+      catch (CoreException cex) {
+    	IStatus embeddedStatus = cex.getStatus();
+    	status = EnvironmentUtils.convertIStatusToStatus(embeddedStatus);
+    	env.getStatusHandler().reportError(status);
+  		return status;         
+      }
+    }
+    
+   
   	
   	return status;    
     

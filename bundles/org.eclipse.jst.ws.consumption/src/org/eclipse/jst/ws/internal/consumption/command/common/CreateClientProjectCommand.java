@@ -15,9 +15,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.common.WebServiceStartServerRegistry;
+import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
+import org.eclipse.wst.command.env.core.common.Log;
+import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
@@ -42,14 +45,16 @@ public class CreateClientProjectCommand extends SimpleCommand
   private boolean addedProjectToServer_ = false;
 
   private IServer fExistingServer = null;
-
+  private MessageUtils msgUtils_;
+  
   /**
    * Default CTOR
    */
   public CreateClientProjectCommand()
   {
     super("org.eclipse.jst.ws.internal.consumption.command.common.CreateClientProjectCommand", "org.eclipse.jst.ws.internal.consumption.command.common.CreateClientProjectCommand");
-    //setRunInWorkspaceModifyOperation(false);
+    String       pluginId = "com.ibm.etools.webservice.consumption";
+    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );    
   }
 
   public boolean isUndoable(){
@@ -100,6 +105,7 @@ public class CreateClientProjectCommand extends SimpleCommand
       }
       if (thisServerId.equals(existingServerId_)){
         existingServer = thisServer;
+        fExistingServer = existingServer;
       }
     } 
     
@@ -125,6 +131,14 @@ public class CreateClientProjectCommand extends SimpleCommand
         c.setAddedProjectToServer(addedProjectToServer_);
         
         status = c.execute(env);
+        if (status.getSeverity()==Status.ERROR){
+      	return status;
+      }
+      
+      Status startServerStatus = startServer(env, proxyProject);
+      if (startServerStatus.getSeverity()==Status.ERROR)
+      	return startServerStatus;
+        
       }
       else if (ID_EJB.equals(clientProjectTypeId))
       {
@@ -173,6 +187,27 @@ public class CreateClientProjectCommand extends SimpleCommand
   	return status;   
     
   }
+  
+  private Status startServer(Environment env, IProject webProject){
+  	try{
+  	    // start server(Bug 4377)
+  	    if (needEAR_ &&  fExistingServer != null){
+  	    	StartProjectCommand spc = new StartProjectCommand();
+  	    	spc.setSampleProject(webProject);
+  	    	spc.setSampleExistingServer(fExistingServer);
+  	    	spc.setCreationScenario(new Boolean("false"));
+  	    	return spc.execute(env);	    	
+  	    	
+  	    }  		
+  	}
+  	catch(Exception ce){
+        env.getLog().log(Log.ERROR, 5046, this, "execute", ce);
+        Status status = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils_.getMessage("MSG_ERROR_WEB_PROJECT_CREATE"), Status.ERROR, ce);
+        env.getStatusHandler().reportError(status);
+        return status;		
+  	}
+  	return new SimpleStatus("");
+  }   
   
   public void setProxyCodegenEnabled(boolean proxyCodegenEnabled)
   {
