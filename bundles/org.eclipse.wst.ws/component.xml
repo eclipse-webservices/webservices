@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component xmlns="http://eclipse.org/wtp/releng/tools/component-model" name="wst.ws">
+<component xmlns="http://eclipse.org/wtp/releng/tools/component-model" name="org.eclipse.wst.ws">
    <component-depends unrestricted="true">
    </component-depends>
    <plugin id="org.eclipse.wst.ws.apache.axis" fragment="false"/>

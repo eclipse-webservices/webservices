@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component xmlns="http://eclipse.org/wtp/releng/tools/component-model" name="jst.ws">
+<component xmlns="http://eclipse.org/wtp/releng/tools/component-model" name="org.eclipse.jst.ws">
    <component-depends unrestricted="true">
    </component-depends>
    <plugin id="org.eclipse.jst.ws" fragment="false"/>
