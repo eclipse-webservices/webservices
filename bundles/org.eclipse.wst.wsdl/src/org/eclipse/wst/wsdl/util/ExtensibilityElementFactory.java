@@ -8,16 +8,12 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.wsdl.internal.util;
+package org.eclipse.wst.wsdl.util;
 
-import org.w3c.dom.Element;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 
-// TODO... why do we need this?
-// 
-public interface Reconcilable 
+
+public interface ExtensibilityElementFactory
 {
-  public void setElement(Element element);
-  public Element getElement();
-  public void reconcileAttributes(Element changedElement);
-  public void reconcileReferences(boolean deep);
+  ExtensibilityElement createExtensibilityElement(String namespace, String localName);
 }

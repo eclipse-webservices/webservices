@@ -14,7 +14,7 @@ import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
 
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
-import org.eclipse.wst.wsdl.internal.util.ExtensibilityElementFactory;
+import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
 
 public class MIMEExtensibilityElementFactory implements ExtensibilityElementFactory
 {

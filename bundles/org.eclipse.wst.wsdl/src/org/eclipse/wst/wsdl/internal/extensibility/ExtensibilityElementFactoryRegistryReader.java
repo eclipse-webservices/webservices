@@ -25,9 +25,9 @@ public class ExtensibilityElementFactoryRegistryReader
   protected static final String ELEMENT_NAME = "extensibilityElementFactory";
   protected static final String ATT_NAMESPACE = "namespace";
   protected static final String ATT_CLASS = "class";
-  protected ExtensibilityElementFactoryRegistry extensibilityElementFactoryRegistry;
+  protected ExtensibilityElementFactoryRegistryImpl extensibilityElementFactoryRegistry;
 
-  public ExtensibilityElementFactoryRegistryReader(ExtensibilityElementFactoryRegistry extensibilityElementFactoryRegistry)
+  public ExtensibilityElementFactoryRegistryReader(ExtensibilityElementFactoryRegistryImpl extensibilityElementFactoryRegistry)
   {
     this.extensibilityElementFactoryRegistry = extensibilityElementFactoryRegistry;
   }

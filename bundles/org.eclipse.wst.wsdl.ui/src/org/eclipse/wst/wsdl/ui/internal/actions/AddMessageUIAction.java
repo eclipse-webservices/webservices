@@ -19,7 +19,7 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.widgets.NewComponentDialog;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 
 
 

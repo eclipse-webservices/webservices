@@ -292,7 +292,7 @@ public class UnknownExtensibilityElementImpl extends ExtensibilityElementImpl im
 
     private java.util.Map properties = new java.util.HashMap();
 
-    public void setProperty(String key, String value)
+    public void setAttribute(String key, String value)
     {
         properties.put(key, value);
     }

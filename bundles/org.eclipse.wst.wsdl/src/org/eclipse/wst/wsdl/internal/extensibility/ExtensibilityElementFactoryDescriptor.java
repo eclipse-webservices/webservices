@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.extensibility;
 
-import org.eclipse.wst.wsdl.internal.util.ExtensibilityElementFactory;
+import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
 
 public class ExtensibilityElementFactoryDescriptor
 {
@@ -44,5 +44,10 @@ public class ExtensibilityElementFactoryDescriptor
       }
     }
     return factory != CLASS_LOADING_ERROR ? (ExtensibilityElementFactory)factory : null;
+  }
+  
+  public void setExtensiblityElementFactory(ExtensibilityElementFactory factory)
+  {
+    this.factory = factory;
   }
 }

@@ -27,7 +27,7 @@ import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.xsd.XSDSchema;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;

@@ -8,12 +8,9 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.wsdl.internal.util;
+package org.eclipse.wst.wsdl.util;
 
-import org.eclipse.wst.wsdl.ExtensibilityElement;
-
-
-public interface ExtensibilityElementFactory
+public interface ExtensibilityElementFactoryRegistry
 {
-  ExtensibilityElement createExtensibilityElement(String namespace, String localName);
+  public void registerFactory(String namespace, ExtensibilityElementFactory factory);
 }

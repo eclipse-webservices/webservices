@@ -28,7 +28,7 @@ import org.eclipse.wst.wsdl.ui.internal.actions.SmartRenameAction;
 import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapterListener;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLModelAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 

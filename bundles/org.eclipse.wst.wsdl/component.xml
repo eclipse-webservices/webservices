@@ -34,6 +34,14 @@
 		<type name="Binding" />
 		<type name="BindingOperation" />
 	</package>
+	<package name="org.eclipse.wst.wsdl.util">
+		<type name="WSDLConstants" />
+		<type name="ExtensibilityElementFactoryRegistry" />
+		<type name="WSDLResourceFactoryImpl" />
+		<type name="ExtensibilityElementFactory" />
+		<type name="WSDLSwitch" />
+		<type name="WSDLResourceImpl" />
+	</package>
 	<package name="org.eclipse.wst.wsdl.binding.soap">
 		<type name="SOAPBody" />
 		<type name="SOAPHeaderFault" />

@@ -15,10 +15,11 @@ import javax.wsdl.factory.WSDLFactory;
 import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.eclipse.wst.wsdl.internal.extensibility.ExtensibilityElementFactoryRegistry;
+import org.eclipse.wst.wsdl.util.ExtensibilityElementFactoryRegistry;
+import org.eclipse.wst.wsdl.internal.extensibility.ExtensibilityElementFactoryRegistryImpl;
 import org.eclipse.wst.wsdl.internal.extensibility.ExtensibilityElementFactoryRegistryReader;
 import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
-import org.eclipse.wst.wsdl.internal.util.ExtensibilityElementFactory;
+import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
 
 
 /**
@@ -44,7 +45,7 @@ public final class WSDLPlugin extends EMFPlugin
    */
   static private Implementation plugin;
   
-  private ExtensibilityElementFactoryRegistry extensibilityElementFactoryRegistry;
+  private ExtensibilityElementFactoryRegistryImpl extensibilityElementFactoryRegistry;
 
   /**
    * Creates the singleton instance.
@@ -90,14 +91,27 @@ public final class WSDLPlugin extends EMFPlugin
     }
   }
   
-  public ExtensibilityElementFactory getExtensibilityElementFactory(String namespace)
+  private ExtensibilityElementFactoryRegistryImpl internalGetExtensibilityElementFactoryRegistry()
   {
     if (extensibilityElementFactoryRegistry == null)
     {
-      extensibilityElementFactoryRegistry = new ExtensibilityElementFactoryRegistry();
-      new ExtensibilityElementFactoryRegistryReader(extensibilityElementFactoryRegistry).readRegistry();
+      extensibilityElementFactoryRegistry = new ExtensibilityElementFactoryRegistryImpl();
+      if (plugin != null)
+      {  
+        new ExtensibilityElementFactoryRegistryReader(extensibilityElementFactoryRegistry).readRegistry();
+      }  
     }
-    return extensibilityElementFactoryRegistry.getExtensibilityElementFactory(namespace);
+    return extensibilityElementFactoryRegistry;
+  }
+  
+  public ExtensibilityElementFactory getExtensibilityElementFactory(String namespace)
+  {
+    return internalGetExtensibilityElementFactoryRegistry().getExtensibilityElementFactory(namespace);
+  }
+  
+  public ExtensibilityElementFactoryRegistry getExtensibilityElementFactoryRegistry()
+  {   
+    return internalGetExtensibilityElementFactoryRegistry();
   }
   
   public WSDLFactory createWSDL4JFactory()

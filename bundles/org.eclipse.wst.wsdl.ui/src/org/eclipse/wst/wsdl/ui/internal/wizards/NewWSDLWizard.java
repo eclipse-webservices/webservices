@@ -42,7 +42,7 @@ import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceImpl;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddUnknownExtensibilityElementCommand;

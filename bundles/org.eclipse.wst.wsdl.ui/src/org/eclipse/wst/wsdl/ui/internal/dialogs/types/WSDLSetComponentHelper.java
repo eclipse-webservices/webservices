@@ -24,7 +24,7 @@ import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.wsdl.ui.internal.actions.AddElementDeclarationAction;
 import org.eclipse.wst.wsdl.ui.internal.actions.AddImportAction;
 import org.eclipse.wst.wsdl.ui.internal.actions.AddWSISchemaImportAction;

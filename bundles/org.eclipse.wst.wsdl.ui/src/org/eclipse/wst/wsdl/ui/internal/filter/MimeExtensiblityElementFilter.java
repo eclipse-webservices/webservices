@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.filter;
 
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 
 

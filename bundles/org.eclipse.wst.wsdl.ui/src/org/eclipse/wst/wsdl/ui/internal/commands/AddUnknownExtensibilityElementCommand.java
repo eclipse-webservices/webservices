@@ -71,7 +71,7 @@ public final class AddUnknownExtensibilityElementCommand extends WSDLElementComm
       	entry = (Map.Entry)iterator.next();
       	String attribute = (String)entry.getKey();
       	String value = (String)entry.getValue();      	
-      	((UnknownExtensibilityElementImpl)extensibilityElement).setProperty(attribute,value);
+      	((UnknownExtensibilityElementImpl)extensibilityElement).setAttribute(attribute,value);
       }
     }
     

@@ -42,7 +42,7 @@ import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.WSDLPlugin;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
-import org.eclipse.wst.wsdl.internal.util.ExtensibilityElementFactory;
+import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

@@ -20,6 +20,7 @@ import javax.xml.namespace.QName;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.ExtensibleElement;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 

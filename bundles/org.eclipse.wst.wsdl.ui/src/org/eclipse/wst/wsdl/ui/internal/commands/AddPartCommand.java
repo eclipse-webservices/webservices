@@ -23,7 +23,7 @@ import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.impl.PartImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.document.XMLNode;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;

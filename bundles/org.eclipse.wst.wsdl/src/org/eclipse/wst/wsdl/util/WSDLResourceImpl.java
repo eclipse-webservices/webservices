@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.wsdl.internal.util;
+package org.eclipse.wst.wsdl.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +37,7 @@ import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPlugin;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
+import org.eclipse.wst.wsdl.internal.util.XSDSchemaLocatorAdapterFactory;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.w3c.dom.Document;
@@ -56,9 +57,9 @@ import org.xml.sax.SAXParseException;
  * @see org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl
  * @generated
  */
-public class WSDLResourceImpl extends ResourceImpl implements ErrorHandler
+public class WSDLResourceImpl extends ResourceImpl 
 {
-  protected WSDLModelLocator wsdlModelLocator;
+
   private boolean useExtensionFactories = true;
   private boolean continueOnLoadError = true;
 
@@ -77,7 +78,6 @@ public class WSDLResourceImpl extends ResourceImpl implements ErrorHandler
   public WSDLResourceImpl(URI uri)
   {
     super(uri);
-    wsdlModelLocator = new DefaultURIResolver();
   }
 
   protected void doSave(OutputStream os, Map options) throws IOException
@@ -179,7 +179,7 @@ public class WSDLResourceImpl extends ResourceImpl implements ErrorHandler
     try
     {
       // Create a DOM document
-      doc = getDocument(inputStream, this);
+      doc = getDocument(inputStream, new InternalErrorHandler());
 
       if (doc != null && doc.getDocumentElement() != null)
       {
@@ -368,63 +368,25 @@ public class WSDLResourceImpl extends ResourceImpl implements ErrorHandler
       WSDLPlugin.INSTANCE.log(exception);
     }
   }
-
-  public WSDLModelLocator getURIResolver()
+ 
+  private class InternalErrorHandler implements ErrorHandler
   {
-    return wsdlModelLocator;
-  }
-
-  public void setURIResolver(WSDLModelLocator resolver)
-  {
-    wsdlModelLocator = resolver;
-  }
-
-  protected class DefaultURIResolver implements WSDLModelLocator
-  {
-    public String resolveURI(String baseLocation, String namespace, String location)
+    public void error(SAXParseException e)
     {
-      URI baseLocationURI = createURI(baseLocation);
-      URI locationURI = URI.createURI(location);
-      return locationURI.resolve(baseLocationURI).toString();
+      System.out.println("WSDL PARSE ERROR: " + e);
     }
-  }
+    
+    public void fatalError(SAXParseException e)
+    {
+      System.out.println("WSDL PARSE FATAL ERROR: " + e);
+    }
+    
+    public void warning(SAXParseException e)
+    {
+      System.out.println("WSDL PARSE WARNING: " + e);
+    }
+  } 
   
-  private static URI createURI(String uriString)
-  {
-    if (hasProtocol(uriString))
-       return URI.createURI(uriString);
-    else
-       return URI.createFileURI(uriString);
-  }
-  
-  private static boolean hasProtocol(String uri)
-  {
-		boolean result = false;     
-		if (uri != null)
-		{
-		  int index = uri.indexOf(":");
-		  if (index != -1 && index > 2) // assume protocol with be length 3 so that the'C' in 'C:/' is not interpreted as a protocol
-		  {
-		    result = true;
-		  }
-		}
-		return result;
-  }  
-
-  public void error(SAXParseException e)
-  {
-    System.out.println("WSDL PARSE ERROR: " + e);
-  }
-
-  public void fatalError(SAXParseException e)
-  {
-    System.out.println("WSDL PARSE FATAL ERROR: " + e);
-  }
-
-  public void warning(SAXParseException e)
-  {
-    System.out.println("WSDL PARSE WARNING: " + e);
-  }
   
   public void attached(EObject eObject)
   {
@@ -438,13 +400,13 @@ public class WSDLResourceImpl extends ResourceImpl implements ErrorHandler
       getResourceSet().getAdapterFactories().add(new XSDSchemaLocatorAdapterFactory());  
     } 
     
-    if (eObject instanceof Definition)
+    if (eObject instanceof DefinitionImpl)
     {
-      Definition definition = (Definition) eObject;
-      setInlineSchemaLocations(definition);    
+      DefinitionImpl definition = (DefinitionImpl) eObject;
+      definition.setInlineSchemaLocations(this);    
     }
   }
-  
+  /*
   public void setInlineSchemaLocations(Definition definition)
   {
     // Initialize the inline schemas location 
@@ -461,5 +423,5 @@ public class WSDLResourceImpl extends ResourceImpl implements ErrorHandler
         }  
       }        
     }      
-  }
+  }*/
 } //WSDLResourceFactoryImpl

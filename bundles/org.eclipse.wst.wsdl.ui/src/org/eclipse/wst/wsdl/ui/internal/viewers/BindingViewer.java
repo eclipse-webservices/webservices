@@ -23,7 +23,7 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.viewers.widgets.ComponentNameComboHelper;
 import org.eclipse.wst.wsdl.ui.internal.viewers.widgets.InvokeDialogButton;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 
 public class BindingViewer extends NamedComponentViewer 

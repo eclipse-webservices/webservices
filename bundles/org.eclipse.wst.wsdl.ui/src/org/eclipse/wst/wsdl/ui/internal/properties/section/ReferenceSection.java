@@ -28,7 +28,7 @@ import org.eclipse.wst.common.ui.properties.internal.provisional.TabbedPropertyS
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Port;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.InvokeSetDialog;

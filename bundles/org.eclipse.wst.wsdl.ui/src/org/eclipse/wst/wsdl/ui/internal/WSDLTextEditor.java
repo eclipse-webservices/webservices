@@ -29,7 +29,7 @@ import org.eclipse.wst.common.ui.properties.internal.provisional.ITabbedProperty
 import org.eclipse.wst.sse.ui.internal.StructuredTextEditor;
 import org.eclipse.wst.sse.ui.view.events.INodeSelectionListener;
 import org.eclipse.wst.sse.ui.view.events.NodeSelectionChangedEvent;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.wsdl.ui.internal.extension.IModelQueryContributor;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtension;
 import org.eclipse.wst.wsdl.ui.internal.filter.ExtensiblityElementFilter;

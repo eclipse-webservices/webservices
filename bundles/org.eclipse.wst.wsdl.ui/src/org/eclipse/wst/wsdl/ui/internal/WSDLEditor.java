@@ -43,7 +43,7 @@ import org.eclipse.wst.sse.ui.internal.StructuredTextEditor;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceImpl;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.wst.wsdl.ui.internal.actions.WSDLMenuActionContributor;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtension;
 import org.eclipse.wst.wsdl.ui.internal.graph.WSDLGraphViewer;

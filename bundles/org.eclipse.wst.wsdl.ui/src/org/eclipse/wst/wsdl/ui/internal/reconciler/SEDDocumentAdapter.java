@@ -18,7 +18,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.document.XMLModel;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.impl.XSDSchemaImpl;

@@ -13,7 +13,7 @@ package org.eclipse.wst.wsdl.binding.soap.internal.util;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
-import org.eclipse.wst.wsdl.internal.util.ExtensibilityElementFactory;
+import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
 
 public class SOAPExtensibilityElementFactory implements ExtensibilityElementFactory
 {

@@ -52,7 +52,7 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.ITreeChildProvider;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.internal.impl.OperationImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
+import org.eclipse.wst.wsdl.util.WSDLSwitch;
 import org.eclipse.wst.xml.core.document.XMLNode;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

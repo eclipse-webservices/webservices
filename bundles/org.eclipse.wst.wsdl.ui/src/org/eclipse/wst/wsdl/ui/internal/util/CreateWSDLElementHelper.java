@@ -44,7 +44,7 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDElementDeclarationCommand
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.document.XMLNode;
 import org.eclipse.wst.xml.core.format.FormatProcessorXML;
 

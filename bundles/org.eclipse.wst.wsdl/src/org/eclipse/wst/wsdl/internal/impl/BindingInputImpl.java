@@ -29,7 +29,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 
 

@@ -23,8 +23,8 @@ import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
-import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLSwitch;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 

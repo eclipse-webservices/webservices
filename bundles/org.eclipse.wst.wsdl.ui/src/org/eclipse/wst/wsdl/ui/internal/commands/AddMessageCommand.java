@@ -20,7 +20,7 @@ import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.ui.internal.actions.SmartRenameAction;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 
 
 public final class AddMessageCommand extends WSDLElementCommand

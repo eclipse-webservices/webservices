@@ -30,8 +30,8 @@ import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLModelLocator;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceImpl;
+import org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.wst.xml.uriresolver.util.URIHelper;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSchemaDirective;
@@ -249,11 +249,7 @@ public class WSDLResourceUtil
       }
     }
   }
-  
-  public static WSDLModelLocator getURIResolver(Definition definition)
-  {
-    return ((WSDLResourceImpl)definition.eResource()).getURIResolver();
-  }
+
 
   public static class InternalURIResolver implements WSDLModelLocator
   {

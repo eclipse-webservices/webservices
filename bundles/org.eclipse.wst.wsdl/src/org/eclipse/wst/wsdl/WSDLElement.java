@@ -65,8 +65,8 @@ public interface WSDLElement extends EObject{
    * Returns the value of the '<em><b>Element</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Element</em>' attribute isn't clear,
-   * there really should be more of a description here...
+   * This is the underlying DOM element associated with this component, 
+   * i.e., the {@link #updateElement() serialization} of this component.
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Element</em>' attribute.
@@ -102,5 +102,41 @@ public interface WSDLElement extends EObject{
    * @generated
    */
 	void setEnclosingDefinition(Definition definition);
+
+  /**
+   * Ensures that the underlying DOM {@link #getElement element} both exists and is up-to-date with respect to the model,
+   * i.e., it serializes the component and maintains an association with that serialization.
+   * @see #updateElement(boolean)
+   * @see #getElement
+   */
+  void updateElement();
+
+  /**
+   * Ensures that the underlying DOM {@link #getElement element} both exists and is up-to-date with respect to the model,
+   * i.e., it serializes the component and maintains an association with that serialization.
+   * For <code>deep == true</code>, 
+   * or when <code>{@link #getElement getElement()} == null</code>, 
+   * this does the same thing as {@link #updateElement()};
+   * otherwise, it updates just the DOM element associated with this component to reflect the current state.
+   * @see #updateElement()
+   * @see #getElement
+   */
+  void updateElement(boolean deep);
+  
+  /**
+   * Returns the value of the '<em><b>Container</b></em>' reference.
+   * This represents the concrete container of this component, 
+   * i.e., the inverse of the black diamond relations in the UML model.
+   * @return the value of the '<em>Container</em>' reference.
+   */
+  WSDLElement getContainer();
+  
+  /**
+   * Called to indicate that the given element has changed;
+   * the element should typically be the same as the one returned {@link #getElement}.
+   * It is expected that clients will not call this themselves 
+   * since the DOM event listeners attached to the underlying DOM will invoke these automatically.
+   */
+  void elementChanged(Element changedElement);
 
 } // WSDLElement

@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -60,10 +61,11 @@ import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.WSDLPlugin;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceImpl;
+import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.util.WSDLUtil;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDImport;
 import org.eclipse.xsd.XSDSchema;
@@ -505,7 +507,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     {
       if (eResource() instanceof WSDLResourceImpl && getEnclosingDefinition() != null)
       {
-        ((WSDLResourceImpl)eResource()).setInlineSchemaLocations(getEnclosingDefinition());
+        setInlineSchemaLocations(eResource());
       }    
     }        
   }
@@ -2247,5 +2249,23 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
      isReconciling = false;
     } 
   }
+  
+  public void setInlineSchemaLocations(Resource resource)
+  {
+    // Initialize the inline schemas location 
+    Types types = this.getETypes();
+    if (types != null)
+    {
+      for (Iterator j = types.getEExtensibilityElements().iterator(); j.hasNext();)
+      {
+        XSDSchemaExtensibilityElement el = (XSDSchemaExtensibilityElement) j.next();
+        XSDSchema schema = el.getSchema();
+        if (schema != null)
+        {  
+          schema.setSchemaLocation(resource.getURI().toString());
+        }  
+      }        
+    }      
+  }  
   
 } //DefinitionImpl

@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.wsdl.internal.util;
+package org.eclipse.wst.wsdl.util;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

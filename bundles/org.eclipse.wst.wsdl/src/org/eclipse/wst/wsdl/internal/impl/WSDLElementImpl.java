@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.util.EContentsEList;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -929,6 +929,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
 
   /**
    * @deprecated
+   * TODO... remove this method!
    */
   public Collection getModelObjects(Object component)
   {

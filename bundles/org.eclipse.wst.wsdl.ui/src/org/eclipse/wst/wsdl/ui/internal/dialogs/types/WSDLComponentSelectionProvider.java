@@ -22,7 +22,7 @@ import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.impl.ImportImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.ITypeSystemProvider;
 import org.eclipse.wst.wsdl.ui.internal.typesystem.ExtensibleTypeSystemProvider;

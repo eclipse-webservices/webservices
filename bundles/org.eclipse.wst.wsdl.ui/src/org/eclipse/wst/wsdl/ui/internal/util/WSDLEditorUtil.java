@@ -24,7 +24,7 @@ import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.ui.internal.extension.ITypeSystemProvider;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 

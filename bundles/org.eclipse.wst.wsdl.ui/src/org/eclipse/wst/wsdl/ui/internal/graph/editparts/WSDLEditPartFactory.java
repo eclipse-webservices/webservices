@@ -16,7 +16,7 @@ import org.eclipse.gef.EditPartFactory;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
-import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
+import org.eclipse.wst.wsdl.util.WSDLSwitch;
 
 
 public class WSDLEditPartFactory implements EditPartFactory

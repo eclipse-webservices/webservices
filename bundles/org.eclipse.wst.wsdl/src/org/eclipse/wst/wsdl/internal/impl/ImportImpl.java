@@ -27,9 +27,9 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
 import org.eclipse.wst.wsdl.internal.util.WSDLModelLocator;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceImpl;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceImpl;
 import org.w3c.dom.Element;
@@ -542,12 +542,44 @@ public class ImportImpl extends WSDLElementImpl implements Import
 
   protected String resolveLocation(Definition definition, String namespace, String schemaLocation)
   {
+    String result = null;
     WSDLModelLocator locator = (WSDLModelLocator)EcoreUtil.getRegisteredAdapter(definition.eResource(), WSDLModelLocator.class);
-    if (locator == null)
+    if (locator != null)
     {
-      WSDLResourceImpl resourceImpl = (WSDLResourceImpl)definition.eResource();
-      locator = resourceImpl.getURIResolver();
+      result = locator.resolveURI(definition.getDocumentBaseURI(), namespace, schemaLocation);
     }
-    return locator.resolveURI(definition.getDocumentBaseURI(), namespace, schemaLocation);
+    else
+    {
+      // TODO... there's some default resolving we'll need to do here
+      // see XSDSchemaDirective
+      URI baseLocationURI = createURI(definition.getDocumentBaseURI());
+      URI locationURI = URI.createURI(schemaLocation);
+      return locationURI.resolve(baseLocationURI).toString();
+    }  
+    return result;
   }
+  
+  //TODO... push down to EMF
+  private static URI createURI(String uriString)
+  {
+    if (hasProtocol(uriString))
+       return URI.createURI(uriString);
+    else
+       return URI.createFileURI(uriString);
+  }
+
+  //TODO... push down to EMF  
+  private static boolean hasProtocol(String uri)
+  {
+    boolean result = false;     
+    if (uri != null)
+    {
+      int index = uri.indexOf(":");
+      if (index != -1 && index > 2) // assume protocol with be length 3 so that the'C' in 'C:/' is not interpreted as a protocol
+      {
+        result = true;
+      }
+    }
+    return result;
+  }    
 } //ImportImpl
