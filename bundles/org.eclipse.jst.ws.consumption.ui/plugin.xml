@@ -364,21 +364,13 @@
       
    </extension>
 
-   <!-- Perspective Extensions -->
-   
-   <extension point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension targetID="org.eclipse.jst.j2ee.internal.J2EEPerspective">
-         <actionSet id="org.eclipse.jst.ws.consumption"/>
-      </perspectiveExtension>
-   </extension>
-
    <!-- Main Menu Actions -->
 
    <extension point="org.eclipse.ui.actionSets">
 
       <actionSet
             label="%COMMAND_LAUNCH_WS_EXPLORER"
-            visible="false"
+            visible="true"
             id="org.eclipse.jst.ws.consumption">
          <menu
                label="%MENU_RUN"
