@@ -43,7 +43,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WizardPageFactory;
  * This class is used to popup dynamic wizards.  The popupMenus extension is used
  * the contribute a popup to Eclipse.  The class in the action element should reference
  * this DynamicPopupWizard class.  This id attribute in the action element should contain
- * an id that references a DynamicWizard extension point.  This is how the DynamicPopupWizard
+ * an id that references a dynamicWizard extension point.  This is how the DynamicPopupWizard
  * class knows which wizard to display.
  *   
  * Note: the id attribute in the objectContribution element refers to an
@@ -70,13 +70,13 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WizardPageFactory;
  *  &lt;/extension&gt;
  *
  *   &lt;extension
- *        point="org.eclipse.wst.command.env.ui.DynamicWizard"&gt;
- *     &lt;DynamicWizard
+ *        point="org.eclipse.wst.command.env.dynamicWizard"&gt;
+ *     &lt;dynamicWizard
  *           iconbanner="icons/full/wizban/webservicesclient_wiz.gif"
  *           class="org.eclipse.jst.ws.consumption.ui.widgets.binding.ClientWidgetBinding"
  *           title="%WIZARD_TITLE_WSC"
  *           id="org.eclipse.jst.ws.consumption.ui.wizard.client.clientwizard"&gt;
- *     &lt;/DynamicWizard&gt;
+ *     &lt;/dynamicWizard&gt;
  *  &lt;/extension&gt;
  *</pre>
  *

@@ -10,14 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.command.env.eclipse;
 
-import java.util.logging.Level;
-
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.core.common.Status;
-/*
-import com.ibm.wtp.common.logger.proxy.Logger;
-*/
 
 public class EclipseLog implements Log 
 {

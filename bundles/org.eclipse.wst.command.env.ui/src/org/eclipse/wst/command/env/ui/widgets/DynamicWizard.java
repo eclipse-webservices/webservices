@@ -74,7 +74,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WizardPageManager;
  *   &lt;/extension&gt;
  *
  * </pre>
- * Here is the DynamicWizard entry for this particular wizard.  This id attributes
+ * Here is the dynamicWizard entry for this particular wizard.  This id attributes
  * link these two entries together.  The class attribute must specify a class that
  * implements the org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding interface.  This
  * interface specifies what the UI should look like and the commands the should
@@ -82,13 +82,13 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WizardPageManager;
  * 
  * <pre>
  *   &lt;extension
- *        point="org.eclipse.wst.command.env.ui.DynamicWizard"&gt;
- *     &lt;DynamicWizard
+ *        point="org.eclipse.wst.command.env.dynamicWizard"&gt;
+ *     &lt;dynamicWizard
  *           iconbanner="icons/full/wizban/webservicesclient_wiz.gif"
  *           class="org.eclipse.jst.ws.consumption.ui.widgets.binding.ClientWidgetBinding"
  *           title="%WIZARD_TITLE_WSC"
  *           id="org.eclipse.jst.ws.consumption.ui.wizard.client.clientwizard"&gt;
- *     &lt;/DynamicWizard&gt;
+ *     &lt;/dynamicWizard&gt;
  *   &lt;/extension&gt;
  * </pre>
  *
@@ -113,7 +113,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   
   /**
    * This method is called when the Dynamic wizard is created by eclipse.
-   * We need to find a DynamicWizard extension point that matches the id
+   * We need to find a dynamicWizard extension point that matches the id
    * for this wizard.  Once the extension point is found it will contain
    * a reference to a CommandWidgetBinding class which defines the widgets 
    * and commands for this wizard.
@@ -171,7 +171,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
     {
       IConfigurationElement[] elements = extensions[index].getConfigurationElements();
       
-      if( elements.length == 1 && elements[0].getName().equals( "DynamicWizard") ) 
+      if( elements.length == 1 && elements[0].getName().equals( "dynamicWizard") ) 
       {
         String id = elements[0].getAttribute( "id" );
         
