@@ -34,7 +34,7 @@ public class PersistentResourceContext extends PersistentContext implements Reso
   
   private PersistentResourceContext()
   {
-    super(Platform.getPlugin( "org.eclipse.wst.env"));
+    super(Platform.getPlugin( "org.eclipse.wst.command.env"));
   }
 
   public void load()

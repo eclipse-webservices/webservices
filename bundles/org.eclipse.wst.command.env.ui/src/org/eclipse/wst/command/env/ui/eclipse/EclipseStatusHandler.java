@@ -32,7 +32,7 @@ public class EclipseStatusHandler implements StatusHandler
 
   public EclipseStatusHandler(Shell shell)
   {
-    msg_   = new MessageUtils( "org.eclipse.wst.command.env.core.common.environment", this );
+    msg_   = new MessageUtils( "org.eclipse.wst.command.env.common.environment", this );
     shell_ = shell;
   }
   

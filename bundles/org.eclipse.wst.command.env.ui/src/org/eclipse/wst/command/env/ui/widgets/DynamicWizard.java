@@ -163,7 +163,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   public void setInitialData( String wizardId ) throws CoreException
   {
     IPluginRegistry       registry      = Platform.getPluginRegistry();
-    IExtensionPoint       point         = registry.getExtensionPoint("org.eclipse.wst.command.env.ui.DynamicWizard");
+    IExtensionPoint       point         = registry.getExtensionPoint("org.eclipse.wst.command.env.dynamicWizard");
     IExtension[]          extensions    = point.getExtensions();
     int                   wizardIndex   = -1;
     

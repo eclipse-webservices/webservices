@@ -54,7 +54,7 @@ public final class FileResourceUtils
   //
   private static IWorkspaceRoot root_ = null;
   
-  private static MessageUtils msg_ = new MessageUtils( "org.eclipse.wst.command.env.core.common.environment", new FileResourceUtils() );
+  private static MessageUtils msg_ = new MessageUtils( "org.eclipse.wst.command.env.common.environment", new FileResourceUtils() );
 
 
  /**

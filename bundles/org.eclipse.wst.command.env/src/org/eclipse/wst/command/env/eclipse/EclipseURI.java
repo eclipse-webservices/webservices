@@ -47,7 +47,7 @@ public class EclipseURI extends RelativeURI
     
     environment_  = environment;
     scheme_       = new EclipseScheme( environment );
-    msg_          = new MessageUtils( "org.eclipse.wst.command.env.core.common.environment", this );
+    msg_          = new MessageUtils( "org.eclipse.wst.command.env.common.environment", this );
     file_         = getFile();
   }
     

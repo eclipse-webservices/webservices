@@ -31,7 +31,7 @@ public class EclipseScheme implements URIScheme
   public EclipseScheme( BaseEclipseEnvironment environment )
   {
     environment_ = environment;
-    msg_         = new MessageUtils( "org.eclipse.wst.command.env.core.common.environment", this );
+    msg_         = new MessageUtils( "org.eclipse.wst.command.env.common.environment", this );
   }
   
   /**
