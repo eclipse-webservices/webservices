@@ -30,6 +30,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.xsd.ui.internal.XSDEditorPlugin;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.common.IComponentList;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentFinder;
+import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSelectionDialog;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSelectionProvider;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSpecification;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
@@ -44,10 +45,6 @@ import org.eclipse.xsd.util.XSDConstants;
 
 public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvider {
     public static final String BUILT_IN_TYPE = "BUILT_IN_TYPE";
-    
-    public static final String explicitlyReferencedString = "Explicitly Referenced Files";
-    public static final String enclosingProjectString = "Enclosing Project";
-    public static final String entireWorkspaceString = "Entire Workspace";
     
     private WSDLComponentFinder wsdlComponentFinder;
     private WSDLComponentSelectionDialog dialog;
@@ -167,10 +164,10 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
             }
             
             List comps = new ArrayList();
-            if (scope.equals(enclosingProjectString)) {
+            if (scope.equals(XMLComponentSelectionDialog.SCOPE_ENCLOSING_PROJECT)) {
                 comps = wsdlComponentFinder.getWorkbenchResourceComponents(XMLComponentFinder.ENCLOSING_PROJECT_SCOPE);
             }
-            else if (scope.equals(entireWorkspaceString)) {
+            else if (scope.equals(XMLComponentSelectionDialog.SCOPE_WORKSPACE)) {
                 comps = wsdlComponentFinder.getWorkbenchResourceComponents(XMLComponentFinder.ENTIRE_WORKSPACE_SCOPE);            
             }
 
