@@ -11,11 +11,11 @@
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.wst.server.core.IModuleType;
 import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
@@ -323,6 +324,58 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     }
     j2eeVersionCombo.setItems(j2eeLabels);
   }
+
+  private void setJ2EEVersionBasedOnServer()
+  {
+    //Get the list of J2EE versions
+    String[] versions = null;
+    if (selectedRuntime_ == null || selectedServerFactoryID_== null)
+      return;
+   
+    versions = selectedRuntime_.getJ2EEVersions();
+    if (versions==null)
+      return;
+    
+    //Pick the first version that the selected server supports
+    for (int i=0; i<versions.length; i++)
+    {
+      if (isServerValid(selectedServerFactoryID_, versions[i]))
+      {
+        //Set the j2ee level to this version
+        String label = J2EEUtils.getLabelFromJ2EEVersion(versions[i]);
+        j2eeVersionCombo.setText(label);
+        setJ2EEVersionFromJ2EEVersionCombo();
+      }
+    }      
+  }
+
+  
+  private boolean isServerValid(String serverFactoryId, String j2eeVersion)
+  {
+    String stJ2EEVersion = ServerUtils.getServerTargetJ2EEVersion(j2eeVersion);
+    if (stJ2EEVersion == null)
+      return false;
+    
+    IServerType serverType = ServerCore.findServerType(serverFactoryId);
+    if (serverType!=null)
+    {
+      IRuntimeType serverRuntime = serverType.getRuntimeType();
+      IModuleType[] mTypes = serverRuntime.getModuleTypes();
+      for (int i=0; i<mTypes.length; i++)      
+      {
+        IModuleType mType = mTypes[i];
+        String type = mType.getId();
+        String moduleVersion = mType.getVersion();
+        if (type.equals(IServerTargetConstants.WEB_TYPE) && moduleVersion.equals(stJ2EEVersion))
+        {
+          //Found a match, return true!
+          return true;
+        }
+      }
+    }
+    //no match found or the server type was null. Return false.
+    return false;
+  }
   
   private void validateServerRuntimeSelection() {
     // Check if the extension exists
@@ -460,10 +513,12 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
       processRuntimeListSelection(runtimeSel[0].getText());
       validateServerRuntimeSelection();
       setJ2EEVersions();
+      setJ2EEVersionBasedOnServer();
     }
     else if (serverList_ == event.widget) {
       processServerListSelection();
       validateServerRuntimeSelection();
+      setJ2EEVersionBasedOnServer();
     }
   }
 
