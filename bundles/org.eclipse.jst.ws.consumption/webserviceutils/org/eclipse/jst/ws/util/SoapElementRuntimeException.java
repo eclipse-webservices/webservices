@@ -19,7 +19,12 @@ package org.eclipse.jst.ws.util;
  */
 public class SoapElementRuntimeException extends Exception  {
 
-  public SoapElementRuntimeException(String message){
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 3761693372674748471L;
+
+public SoapElementRuntimeException(String message){
     super(message);
   }
   

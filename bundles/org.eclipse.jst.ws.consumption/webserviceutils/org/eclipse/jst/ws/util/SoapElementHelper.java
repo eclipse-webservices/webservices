@@ -18,6 +18,15 @@ package org.eclipse.jst.ws.util;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class SoapElementHelper {
+/*
+ * This class is being gutted for the moment,
+ * until a means for including saaj.jar or an
+ * equivalent keeper of the javax.xml.soap package
+ * can be determined. The disabling of this class
+ * will only cause problems if Sample JSPs are
+ * generated for Web Service proxies that have
+ * SOAPElements on their interfaces.
+ * 
   public static javax.xml.soap.SOAPElement createSOAPElementFromXMLString(String xmlString) throws SoapElementRuntimeException
   {
     throw new SoapElementRuntimeException("SoapElement is not supported by the sample on the current runtime. Please use WebSphere v5.1 or higher.");    
@@ -51,4 +60,5 @@ public class SoapElementHelper {
 	  }
       return buffer.toString();
 	}
+*/
 }
