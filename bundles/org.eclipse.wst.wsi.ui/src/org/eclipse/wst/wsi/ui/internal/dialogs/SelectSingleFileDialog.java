@@ -26,7 +26,7 @@ import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
 
 import org.eclipse.wst.common.ui.viewers.SelectSingleFileView;
-import  org.eclipse.wst.wsi.ui.internal.SoapMonitorPlugin;
+import  org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
 
 
 public class SelectSingleFileDialog extends TitleAreaDialog
@@ -84,9 +84,9 @@ public class SelectSingleFileDialog extends TitleAreaDialog
   {
     super.create();
     selectSingleFileView.setVisibleHelper(true);
-    getShell().setText(SoapMonitorPlugin.getResourceString("_UI_DIALOG_SS_FILE_SHELL_TEXT"));
-    setTitle(SoapMonitorPlugin.getResourceString("_UI_DIALOG_SS_FILE_TITLE"));
-    setMessage(SoapMonitorPlugin.getResourceString("_UI_DIALOG_SS_FILE_DESCRIPTION"));
+    getShell().setText(WSIUIPlugin.getResourceString("_UI_DIALOG_SS_FILE_SHELL_TEXT"));
+    setTitle(WSIUIPlugin.getResourceString("_UI_DIALOG_SS_FILE_TITLE"));
+    setMessage(WSIUIPlugin.getResourceString("_UI_DIALOG_SS_FILE_DESCRIPTION"));
     setTitleImage(WorkbenchImages.getImageDescriptor(IWorkbenchGraphicConstants.IMG_DLGBAN_SAVEAS_DLG).createImage());
   }
 

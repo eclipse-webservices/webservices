@@ -30,7 +30,7 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.wst.wsi.ui.internal.SoapMonitorPlugin;
+import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -92,8 +92,8 @@ public class ValidationWizardWSDLContentPage extends WizardPage implements Selec
   {
     super("ValidationWizardWSDLContentPage");
     this.selection = selection;
-    this.setTitle(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_SELECT_WSDL_ELEMENT_HEADING"));
-    this.setDescription(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_SELECT_WSDL_ELEMENT_EXPL"));
+    this.setTitle(WSIUIPlugin.getResourceString("_UI_WIZARD_V_SELECT_WSDL_ELEMENT_HEADING"));
+    this.setDescription(WSIUIPlugin.getResourceString("_UI_WIZARD_V_SELECT_WSDL_ELEMENT_EXPL"));
   }
 
   /**
@@ -128,7 +128,7 @@ public class ValidationWizardWSDLContentPage extends WizardPage implements Selec
 
     // create a group
     Group wsdlElementGroup = new Group(base, SWT.SHADOW_ETCHED_IN);
-    wsdlElementGroup.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_GROUP_TEXT_ELEMENT"));
+    wsdlElementGroup.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_GROUP_TEXT_ELEMENT"));
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     data.grabExcessHorizontalSpace = true;
@@ -167,7 +167,7 @@ public class ValidationWizardWSDLContentPage extends WizardPage implements Selec
   {
     // create a group
     Group wsdlTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-    wsdlTypeGroup.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_GROUP_TEXT_TYPE"));
+    wsdlTypeGroup.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_GROUP_TEXT_TYPE"));
     GridData data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     data.grabExcessHorizontalSpace = false;
@@ -177,32 +177,32 @@ public class ValidationWizardWSDLContentPage extends WizardPage implements Selec
     wsdlTypeGroup.setLayout(layout);
 
     wsdlPortButton = new Button(wsdlTypeGroup, SWT.RADIO);
-    wsdlPortButton.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_RADIO_PORT"));
+    wsdlPortButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_RADIO_PORT"));
     wsdlPortButton.setData("wsdlPortButton");
     wsdlPortButton.setSelection(true);
     wsdlPortButton.addSelectionListener(new PortButtonSelectionListener());
 
     wsdlBindingButton = new Button(wsdlTypeGroup, SWT.RADIO);
     wsdlBindingButton.setData("wsdlBindingButton");
-    wsdlBindingButton.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_RADIO_BINDING"));
+    wsdlBindingButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_RADIO_BINDING"));
     wsdlBindingButton.setSelection(false);
     wsdlBindingButton.addSelectionListener(new BindingButtonSelectionListener());
 
     wsdlPortTypeButton = new Button(wsdlTypeGroup, SWT.RADIO);
     wsdlPortTypeButton.setData("wsdlPortTypeButton");
-    wsdlPortTypeButton.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_RADIO_PORT_TYPE"));
+    wsdlPortTypeButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_RADIO_PORT_TYPE"));
     wsdlPortTypeButton.setSelection(false);
     wsdlPortTypeButton.addSelectionListener(new PortTypeButtonSelectionListener());
 
     wsdlOperationButton = new Button(wsdlTypeGroup, SWT.RADIO);
     wsdlOperationButton.setData("wsdlOperationButton");
-    wsdlOperationButton.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_RADIO_OPERATION"));
+    wsdlOperationButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_RADIO_OPERATION"));
     wsdlOperationButton.setSelection(false);
     wsdlOperationButton.addSelectionListener(new OperationButtonSelectionListener());
 
     wsdlMessageButton = new Button(wsdlTypeGroup, SWT.RADIO);
     wsdlMessageButton.setData("wsdlMessageButton");
-    wsdlMessageButton.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_RADIO_MESSAGE"));
+    wsdlMessageButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_RADIO_MESSAGE"));
     wsdlMessageButton.setSelection(false);
     wsdlMessageButton.addSelectionListener(new MessageButtonSelectionListener());
   }
@@ -228,7 +228,7 @@ public class ValidationWizardWSDLContentPage extends WizardPage implements Selec
 
     // The WSDL element name label
     Label label = new Label(fieldColumn, SWT.LEFT);
-    label.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_LABEL_NAME"));
+    label.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_LABEL_NAME"));
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     label.setLayoutData(data);
@@ -250,7 +250,7 @@ public class ValidationWizardWSDLContentPage extends WizardPage implements Selec
 
     // The WSDL element namespace label
     label = new Label(fieldColumn, SWT.LEFT);
-    label.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_LABEL_NAMESPACE"));
+    label.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_LABEL_NAMESPACE"));
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     label.setLayoutData(data);
@@ -267,7 +267,7 @@ public class ValidationWizardWSDLContentPage extends WizardPage implements Selec
 
     // The WSDL element parent label
     label = new Label(fieldColumn, SWT.LEFT);
-    label.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_LABEL_PARENT"));
+    label.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_LABEL_PARENT"));
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     label.setLayoutData(data);

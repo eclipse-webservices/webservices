@@ -19,23 +19,23 @@ import java.util.TimeZone;
 
 import org.eclipse.core.internal.preferences.Base64;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.wst.monitor.core.IRequest;
-import org.eclipse.wst.wsi.core.internal.WSIConstants;
-import org.eclipse.wst.wsi.core.internal.test.ToolInfo;
-import org.eclipse.wst.wsi.core.internal.test.common.AddStyleSheet;
-import org.eclipse.wst.wsi.core.internal.test.common.impl.AddStyleSheetImpl;
-import org.eclipse.wst.wsi.core.internal.test.document.DocumentFactory;
-import org.eclipse.wst.wsi.core.internal.test.log.Log;
-import org.eclipse.wst.wsi.core.internal.test.log.LogWriter;
-import org.eclipse.wst.wsi.core.internal.test.log.MessageEntry;
-import org.eclipse.wst.wsi.core.internal.test.log.impl.LogImpl;
-import org.eclipse.wst.wsi.core.internal.test.log.impl.LogWriterImpl;
-import org.eclipse.wst.wsi.core.internal.test.log.impl.MessageEntryImpl;
-import org.eclipse.wst.wsi.core.internal.test.monitor.config.Comment;
-import org.eclipse.wst.wsi.core.internal.test.monitor.config.ManInTheMiddle;
-import org.eclipse.wst.wsi.core.internal.test.monitor.config.MonitorConfig;
-import org.eclipse.wst.wsi.core.internal.test.monitor.config.impl.CommentImpl;
-import org.eclipse.wst.wsi.core.internal.test.monitor.config.impl.ManInTheMiddleImpl;
+import org.eclipse.wst.internet.monitor.core.Request;
+import org.eclipse.wst.wsi.internal.core.WSIConstants;
+import org.eclipse.wst.wsi.internal.core.ToolInfo;
+import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
+import org.eclipse.wst.wsi.internal.core.common.impl.AddStyleSheetImpl;
+import org.eclipse.wst.wsi.internal.core.document.DocumentFactory;
+import org.eclipse.wst.wsi.internal.core.log.Log;
+import org.eclipse.wst.wsi.internal.core.log.LogWriter;
+import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
+import org.eclipse.wst.wsi.internal.core.log.impl.LogImpl;
+import org.eclipse.wst.wsi.internal.core.log.impl.LogWriterImpl;
+import org.eclipse.wst.wsi.internal.core.log.impl.MessageEntryImpl;
+import org.eclipse.wst.wsi.internal.core.monitor.config.Comment;
+import org.eclipse.wst.wsi.internal.core.monitor.config.ManInTheMiddle;
+import org.eclipse.wst.wsi.internal.core.monitor.config.MonitorConfig;
+import org.eclipse.wst.wsi.internal.core.monitor.config.impl.CommentImpl;
+import org.eclipse.wst.wsi.internal.core.monitor.config.impl.ManInTheMiddleImpl;
 
 /**
  * Given a list of RequestResponses from a TCPIP Monitor, 
@@ -60,7 +60,7 @@ public class LogBuilder
   /**
    * The list of RequestResponces from a TCPIP Monitor used to generate the log file.
    */
-  protected IRequest[] requestResponses;
+  protected Request[] requestResponses;
 
   /**
    * The actual log object.
@@ -108,7 +108,7 @@ public class LogBuilder
    * @param requestResponses: a list of messages in the form of request-response pairs.
    * @return a log based on a list of request-response pairs.
    */
-  public Log buildLog(IRequest[] requestResponses)
+  public Log buildLog(Request[] requestResponses)
   {
     this.requestResponses = requestResponses;
 
@@ -118,7 +118,7 @@ public class LogBuilder
     // log the messages
     for (int i=0; i<requestResponses.length; i++)
     {
-      IRequest rr = requestResponses[i];
+      Request rr = requestResponses[i];
       if ((rr != null) && (!omitRequestResponse(rr)))
       {
         logRequestResponse(rr);
@@ -138,17 +138,17 @@ public class LogBuilder
    * Log the request-response pair.
    *@param rr: a request-response pair.
    */
-  protected void logRequestResponse(IRequest rr)
+  protected void logRequestResponse(Request rr)
   {
     if (rr != null)
     {
-      byte[] request = rr.getRequest(IRequest.ALL);
-      byte[] response = rr.getResponse(IRequest.ALL);
+      byte[] request = rr.getRequest(Request.ALL);
+      byte[] response = rr.getResponse(Request.ALL);
         
-      String requestHeader = new String(rr.getRequest(IRequest.TRANSPORT));
-      String responseHeader = new String(rr.getResponse(IRequest.TRANSPORT));
-      byte[] unchunkedRequestBody = rr.getRequest(IRequest.CONTENT);
-      byte[] unchunkedResponseBody = rr.getResponse(IRequest.CONTENT);
+      String requestHeader = new String(rr.getRequest(Request.TRANSPORT));
+      String responseHeader = new String(rr.getResponse(Request.TRANSPORT));
+      byte[] unchunkedRequestBody = rr.getRequest(Request.CONTENT);
+      byte[] unchunkedResponseBody = rr.getResponse(Request.CONTENT);
       String requestBody = null;
       String responseBody = null;
 
@@ -225,7 +225,9 @@ public class LogBuilder
         String senderHostAndPort, String receiverHostAndPort, String messageContent, String header) 
   {
  	// Create log entry
-    MessageEntry messageEntry = new MessageEntryImpl(header, messageContent);
+    MessageEntry messageEntry = new MessageEntryImpl();
+	messageEntry.setHTTPHeaders(header);
+	messageEntry.setMessage(messageContent);
     messageEntry.setId(String.valueOf(id));
     messageEntry.setConversationId(String.valueOf(conversationId));
     messageEntry.setType(type);
@@ -260,12 +262,12 @@ public class LogBuilder
    * @param rr: a request-response pair.
    * @return true if the request-response pair should be omitted from the log.
    */
-  private boolean omitRequestResponse(IRequest rr) 
+  private boolean omitRequestResponse(Request rr) 
   {
     boolean omit = false;
     if (rr != null)
     {
-      String request = rr.getRequest(IRequest.TRANSPORT).toString();
+      String request = rr.getRequest(Request.TRANSPORT).toString();
       if ((request != null) &&
           ((request.startsWith("CONNECT")) ||
            (request.startsWith("TRACE")) || 

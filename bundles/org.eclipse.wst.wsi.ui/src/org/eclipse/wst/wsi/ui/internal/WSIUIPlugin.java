@@ -23,13 +23,13 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author Lawrence Mandel, IBM
  */
 
-public class SoapMonitorPlugin extends AbstractUIPlugin
+public class WSIUIPlugin extends AbstractUIPlugin
 {
 	private ResourceBundle pluginRB = null;
   /**
    * The singleton.
    */
-  protected static SoapMonitorPlugin instance;                
+  protected static WSIUIPlugin instance;                
 
 //  /**
 //   * Message Logger associated with this plugin.
@@ -39,7 +39,7 @@ public class SoapMonitorPlugin extends AbstractUIPlugin
   /**
    * Constructor.
    */
-  public SoapMonitorPlugin(IPluginDescriptor descriptor)
+  public WSIUIPlugin(IPluginDescriptor descriptor)
   {
     super(descriptor);
     instance = this;
@@ -49,7 +49,7 @@ public class SoapMonitorPlugin extends AbstractUIPlugin
   /**
    * Returns the singleton. (Based on the Singleton Pattern).
    */
-  public static SoapMonitorPlugin getInstance()
+  public static WSIUIPlugin getInstance()
   {
     return instance;
   }

@@ -23,7 +23,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.wst.wsi.ui.internal.Resource;
-import org.eclipse.wst.wsi.ui.internal.SoapMonitorPlugin;
+import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.navigator.ResourceNavigator;
@@ -119,9 +119,9 @@ public class ValidationWizard extends Wizard
   public ValidationWizard(String filename)
   {
     this.filename = filename;
-    this.setWindowTitle(SoapMonitorPlugin.getResourceString("_UI_WIZARD_VALIDATE_LOG_TITLE"));
+    this.setWindowTitle(WSIUIPlugin.getResourceString("_UI_WIZARD_VALIDATE_LOG_TITLE"));
     setDefaultPageImageDescriptor(
-      ImageDescriptor.createFromFile(SoapMonitorPlugin.class, Resource.VALIDATE_WSI_LOGFILE_WIZ));
+      ImageDescriptor.createFromFile(WSIUIPlugin.class, Resource.VALIDATE_WSI_LOGFILE_WIZ));
     setNeedsProgressMonitor(true);
   }
 

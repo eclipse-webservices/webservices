@@ -22,8 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.wst.monitor.core.IRequest;
-import org.eclipse.wst.monitor.core.MonitorCore;
+import org.eclipse.wst.internet.monitor.core.Request;
 import org.eclipse.wst.wsi.ui.internal.LogBuilder;
 import org.eclipse.wst.wsi.ui.internal.wizards.ValidationWizard;
 import org.eclipse.wst.wsi.ui.internal.WSIValidator;
@@ -33,7 +32,7 @@ import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.ContainerGenerator;
-import org.eclipse.wst.wsi.core.internal.test.log.Log;
+import org.eclipse.wst.wsi.internal.core.log.Log;
 
 /**
  * Action delegate for the WS-I validator.
@@ -67,7 +66,7 @@ public class ValidateWSIProfileActionDelegate implements IViewActionDelegate
   /**
    * The list of messages in the form of request-response pairs.
    */
-  IRequest[] requestResponses;
+  Request[] requestResponses;
 
   /**
    * The view that provides the context for this delegate.
@@ -124,16 +123,16 @@ public class ValidateWSIProfileActionDelegate implements IViewActionDelegate
     {
       ValidationWizard validateWizard = new ValidationWizard(DEFAULT_LOG_FILENAME);
 
-      requestResponses = MonitorCore.getRequests();
+      //TODO requestResponses = MonitorCore.getRequests();
       List wsdllocs = new Vector();
       if(requestResponses != null)
       {
        	for (int i=0; i<requestResponses.length; i++)
       	{
-      	  IRequest reqresp = requestResponses[i];
+      	  Request reqresp = requestResponses[i];
       	  String remotehost = reqresp.getRemoteHost();
       	  int remoteport = reqresp.getRemotePort();
-      	  String remotelabel = reqresp.getLabel();
+      	  String remotelabel = reqresp.getName();
       	  String location = HTTP + remotehost + ":" + remoteport + remotelabel + WSDL;
       	  if(!wsdllocs.contains(location))
       	  {

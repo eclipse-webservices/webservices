@@ -12,9 +12,12 @@ package org.eclipse.wst.wsi.ui.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.wsi.ui.internal.actions.WSIValidateAction;
-import org.eclipse.validate.IReporter;
-import org.eclipse.validate.IValidator;
-import org.eclipse.validate.DefaultReporter;
+import org.eclipse.wst.validation.core.IFileDelta;
+import org.eclipse.wst.validation.core.IReporter;
+import org.eclipse.wst.validation.core.IValidationContext;
+import org.eclipse.wst.validation.core.IValidator;
+import org.eclipse.wst.validation.core.ValidationException;
+//import org.eclipse.wst.wsi.internal.core.report.impl.DefaultReporter;
 
 /**
  * A Validator that performs validation on a WS-I Message Log file. 
@@ -32,7 +35,7 @@ public class WSIMessageValidator implements IValidator
   public void validate(IFile file)
   {  
     WSIValidateAction validateAction = new WSIValidateAction(file, false);
-    validateAction.setValidator(this);
+    //validateAction.setValidator(this);
     validateAction.setReporter(getReporter());
     validateAction.run();
   }
@@ -44,7 +47,7 @@ public class WSIMessageValidator implements IValidator
   {
     if (reporter == null)
     {
-      reporter = new DefaultReporter(WSI_MESSAGE_VALIDATOR_ID);	
+      //reporter = new DefaultReporter(WSI_MESSAGE_VALIDATOR_ID);	
     }	
     return reporter;
   }
@@ -56,4 +59,14 @@ public class WSIMessageValidator implements IValidator
   {
   	this.reporter = reporter;
   }
+
+public void cleanup(IReporter reporter) {
+	// TODO Auto-generated method stub
+	
+}
+
+public void validate(IValidationContext helper, IReporter reporter, IFileDelta[] changedFiles) throws ValidationException {
+	// TODO Auto-generated method stub
+	
+}
 }

@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.ui.internal.actions;
 
-import java.util.Iterator;
-import java.util.List;
+//import java.util.Iterator;
+//import java.util.List;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
+//import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -21,15 +21,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.wst.wsi.core.internal.tmp.analyzer.MessageAnalyzer;
-import org.eclipse.wst.wsi.core.internal.tmp.exception.WSIAnalyzerException;
-import org.eclipse.wst.wsi.core.internal.tmp.report.AssertionError;
-import org.eclipse.wst.wsi.ui.internal.SoapMonitorPlugin;
-import org.eclipse.wst.wsi.ui.internal.WSIMessageValidator;
-import org.eclipse.validate.IReporter;
-import org.eclipse.validate.IValidator;
-import org.eclipse.validate.ValidateAction;
-import org.eclipse.validate.ReporterRegister;
+import org.eclipse.wst.wsi.internal.analyzer.MessageAnalyzer;
+import org.eclipse.wst.wsi.internal.analyzer.WSIAnalyzerException;
+//import org.eclipse.wst.wsi.internal.report.AssertionError;
+import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
+//import org.eclipse.wst.wsi.ui.internal.WSIMessageValidator;
+//import org.eclipse.wst.validation.core.IReporter;
+import org.eclipse.wst.validation.core.IValidator;
+import org.eclipse.wst.xml.validation.internal.core.ValidateAction;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -87,7 +86,7 @@ public class WSIValidateAction extends ValidateAction
   /* (non-Javadoc)
    * @see org.eclipse.validate.ValidateAction#validate(org.eclipse.core.resources.IFile)
    */
-  protected void validate(final IFile file) throws Exception
+  protected void validate(final IFile file)
   {
   	final MessageAnalyzer messageanalyzer;
   	
@@ -114,16 +113,18 @@ public class WSIValidateAction extends ValidateAction
         	if (ae.getTargetException() instanceof SAXParseException)
         	{
         	  exceptionCaught = true;
-        	  createMarker(file, ae, ERROR_MARKER);
+//        	  createMarker(file, ae, ERROR_MARKER);
         	}
         }
         catch (Exception e)
         {
         }
-        createMarkers(file, messageanalyzer.getAssertionWarnings(), WARNING_MARKER);
-        createMarkers(file, messageanalyzer.getAssertionErrors(), ERROR_MARKER);
-      }
-    }; 
+//        createMarkers(file, messageanalyzer.getAssertionWarnings(), WARNING_MARKER);
+//        createMarkers(file, messageanalyzer.getAssertionErrors(), ERROR_MARKER);
+//
+		}
+    };
+   
     
      try
     {
@@ -133,25 +134,25 @@ public class WSIValidateAction extends ValidateAction
         if (exceptionCaught)
         {
           MessageDialog.openError(Display.getDefault().getActiveShell(), 
-          		SoapMonitorPlugin.getResourceString("_UI_UNABLE_TO_VALIDATE"), 
-          		SoapMonitorPlugin.getResourceString("_UI_PROBLEMS_READING_WSIMSG_FILE"));
+          		WSIUIPlugin.getResourceString("_UI_UNABLE_TO_VALIDATE"), 
+          		WSIUIPlugin.getResourceString("_UI_PROBLEMS_READING_WSIMSG_FILE"));
         }
         else if (messageanalyzer.getAssertionErrors().size() != 0)
         {
           MessageDialog.openError(Display.getDefault().getActiveShell(), 
-          		SoapMonitorPlugin.getResourceString("_UI_VALIDATION_FAILED"), 
-          		SoapMonitorPlugin.getResourceString("_UI_THE_WSIMSG_FILE_IS_NOT_VALID"));
+          		WSIUIPlugin.getResourceString("_UI_VALIDATION_FAILED"), 
+          		WSIUIPlugin.getResourceString("_UI_THE_WSIMSG_FILE_IS_NOT_VALID"));
         }
         else if (messageanalyzer.getAssertionWarnings().size() != 0)
         {                                                           
-          String title = SoapMonitorPlugin.getResourceString("_UI_VALIDATION_SUCEEDED");
-          String message = SoapMonitorPlugin.getResourceString("_UI_VALIDATION_WARNINGS_DETECTED");
+          String title = WSIUIPlugin.getResourceString("_UI_VALIDATION_SUCEEDED");
+          String message = WSIUIPlugin.getResourceString("_UI_VALIDATION_WARNINGS_DETECTED");
           MessageDialog.openInformation(Display.getDefault().getActiveShell(), title, message);
         }
         else
         {
-          String title = SoapMonitorPlugin.getResourceString("_UI_VALIDATION_SUCEEDED");
-          String message = SoapMonitorPlugin.getResourceString("_UI_THE_WSIMSG_FILE_IS_VALID");
+          String title = WSIUIPlugin.getResourceString("_UI_VALIDATION_SUCEEDED");
+          String message = WSIUIPlugin.getResourceString("_UI_THE_WSIMSG_FILE_IS_VALID");
           MessageDialog.openInformation(Display.getDefault().getActiveShell(), title, message);
         }
       }
@@ -165,69 +166,69 @@ public class WSIValidateAction extends ValidateAction
    * @param ae the WS-I Analyzer exception
    * @param error_marker flag indicating severity of problem
    */
-  protected void createMarker(IResource resource, WSIAnalyzerException ae, int error_marker) 
-  {
- 	Throwable throwable = ae.getTargetException();
-
-	if (throwable instanceof SAXParseException)
-	{
-		int n = ((SAXParseException)throwable).getLineNumber();
-		int c = ((SAXParseException)throwable).getColumnNumber();
-		
-		getOrCreateReporter().addErrorMessage(resource, ((SAXParseException)throwable).getMessage(), n, c);
-	}
-	else
-	{
-		getOrCreateReporter().addErrorMessage(resource, ae.getMessage(), 0, 0);
-	}
-  }
+//  protected void createMarker(IResource resource, WSIAnalyzerException ae, int error_marker) 
+//  {
+// 	Throwable throwable = ae.getTargetException();
+//
+//	if (throwable instanceof SAXParseException)
+//	{
+//		int n = ((SAXParseException)throwable).getLineNumber();
+//		int c = ((SAXParseException)throwable).getColumnNumber();
+//		
+//		getOrCreateReporter().addErrorMessage(resource, ((SAXParseException)throwable).getMessage(), n, c);
+//	}
+//	else
+//	{
+//		getOrCreateReporter().addErrorMessage(resource, ae.getMessage(), 0, 0);
+//	}
+//  }
 
   /* (non-Javadoc)
    * @see org.eclipse.validate.ValidateAction#createMarkers(org.eclipse.core.resources.IResource, java.util.List, int)
    */
-  public void createMarkers(IResource resource, List list, int marker)
-  { 
-    for (Iterator i = list.iterator(); i.hasNext(); )
-    {
-      AssertionError assertionError = (AssertionError) i.next();
-
-      int n = assertionError.getLine();
-      int c = assertionError.getColumn();
-      
-      if(marker == WARNING_MARKER)
-      {
-        getOrCreateReporter().addWarningMessage(resource, assertionError.getErrorMessage(), n, c);
-      }
-      else if (marker == ERROR_MARKER)
-      {
-        getOrCreateReporter().addErrorMessage(resource, assertionError.getErrorMessage(), n, c);
-      }
-    }
-  }
+//  public void createMarkers(IResource resource, List list, int marker)
+//  { 
+//    for (Iterator i = list.iterator(); i.hasNext(); )
+//    {
+//      AssertionError assertionError = (AssertionError) i.next();
+//
+//      int n = assertionError.getLine();
+//      int c = assertionError.getColumn();
+//      
+//      if(marker == WARNING_MARKER)
+//      {
+//        getOrCreateReporter().addWarningMessage(resource, assertionError.getErrorMessage(), n, c);
+//      }
+//      else if (marker == ERROR_MARKER)
+//      {
+//        getOrCreateReporter().addErrorMessage(resource, assertionError.getErrorMessage(), n, c);
+//      }
+//    }
+//  }
   
   /**
    * Clear all the markers on the given resource generated by this validator.
    * 
    * @param resource The resource with the markers to clear.
    */
-  public void clearMarkers(IResource resource)
-  {
-    getOrCreateReporter().removeAllMessages(resource);
-  }
+//  public void clearMarkers(IResource resource)
+//  {
+//    getOrCreateReporter().removeAllMessages(resource);
+//  }
 
  /**
   * If a reporter doesn't exist creates it or uses the reporter already created.
   * 
   * @return The reporter.
   */
-  protected IReporter getOrCreateReporter()
-  {
-    if (reporter == null)
-    {
-      reporter = ReporterRegister.getInstance().getReporter(WSIMessageValidator.WSI_MESSAGE_VALIDATOR_ID);
-    }
-    return reporter;
-  }
+//  protected IReporter getOrCreateReporter()
+//  {
+//    if (reporter == null)
+//    {
+//      reporter = ReporterRegister.getInstance().getReporter(WSIMessageValidator.WSI_MESSAGE_VALIDATOR_ID);
+//    }
+//    return reporter;
+//  }
 
  /**
   * Gets the validator.

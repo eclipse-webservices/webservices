@@ -15,17 +15,14 @@
 <plugin
    id="org.eclipse.wst.wsi.ui"
    name="%_PLUGIN_NAME"
-   version="1.1"
+   version="1.0.0"
    provider-name="%_PROVIDER_NAME"
-   class="org.eclipse.wst.wsi.ui.internal.SoapMonitorPlugin">
+   class="org.eclipse.wst.wsi.ui.internal.WSIUIPlugin">
 
    <runtime>
       <library name="wsiui.jar">
          <export name="*"/>
       </library>
-      <library name="jars/wsdl4j.jar"/>
-      <library name="jars/qname.jar"/>
-      <library name="jars/validateutility.jar"/>
    </runtime>
    <requires>
       <import plugin="org.eclipse.jface.text"/>
@@ -39,6 +36,9 @@
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.debug.core"/>
       <import plugin="org.eclipse.wst.common.ui"/>
+      <import plugin="org.eclipse.wst.validation"/>
+      <import plugin="org.eclipse.wst.xml.validation"/>
+      <import plugin="org.eclipse.wst.wsdl.validation"/>
       <import plugin="org.eclipse.wst.wsi"/>
       <import plugin="org.eclipse.wst.internet.monitor.core"/>
       <import plugin="org.eclipse.wst.internet.monitor.ui"/>
@@ -49,7 +49,7 @@
 <!-- Purpose: Add validator action to TCPIP monitor.         -->
 <!-- Extension point: org.eclipse.ui.viewActions             -->
 <!-- ======================================================= -->
-   <extension
+<!--   <extension
          point="org.eclipse.ui.viewActions">
       <viewContribution
             targetID="org.eclipse.wst.monitor.view"
@@ -64,7 +64,7 @@
                id="org.eclipse.wst.wsi.ui.internal.actions.actionDelegates.ValidateWSIProfileActionDelegate">
          </action>
       </viewContribution>
-   </extension>
+   </extension-->
 
 <!-- ======================================================= -->
 <!-- Purpose: To register WS-I message validator.            -->

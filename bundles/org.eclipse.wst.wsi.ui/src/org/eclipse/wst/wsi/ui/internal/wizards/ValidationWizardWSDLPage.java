@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.wst.wsi.ui.internal.SoapMonitorPlugin;
+import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
 import org.eclipse.wst.wsi.ui.internal.dialogs.SelectSingleFileDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -66,8 +66,8 @@ public class ValidationWizardWSDLPage extends WizardPage implements SelectionLis
   {
     super("ValidationWizardWSDLPage");
     this.selection = selection;
-    this.setTitle(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_SELECT_WSDL_FILENAME_HEADING"));
-    this.setDescription(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_SELECT_WSDL_FILENAME_EXPL"));
+    this.setTitle(WSIUIPlugin.getResourceString("_UI_WIZARD_V_SELECT_WSDL_FILENAME_HEADING"));
+    this.setDescription(WSIUIPlugin.getResourceString("_UI_WIZARD_V_SELECT_WSDL_FILENAME_EXPL"));
   }
 
   /**
@@ -101,7 +101,7 @@ public class ValidationWizardWSDLPage extends WizardPage implements SelectionLis
 
     // add includeWSDL flag
     includeWSDLButton = new Button(base, SWT.CHECK);
-    includeWSDLButton.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_INCLUDE_WSDL_BUTTON"));
+    includeWSDLButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_INCLUDE_WSDL_BUTTON"));
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     includeWSDLButton.setLayoutData(data);
@@ -149,7 +149,7 @@ public class ValidationWizardWSDLPage extends WizardPage implements SelectionLis
     group1.setLayoutData(data);
 
     Label documentLabel = new Label(group1, SWT.LEFT);
-    documentLabel.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_INCLUDE_WSDL_LABEL"));
+    documentLabel.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_INCLUDE_WSDL_LABEL"));
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     documentLabel.setLayoutData(data);
@@ -178,7 +178,7 @@ public class ValidationWizardWSDLPage extends WizardPage implements SelectionLis
     fileField.addModifyListener(new FileFieldListener());
 
     Label wsdlLabel = new Label(group1, SWT.LEFT);
-    wsdlLabel.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_VALID_WSDL_LABEL"));
+    wsdlLabel.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_VALID_WSDL_LABEL"));
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     documentLabel.setLayoutData(data);
@@ -201,21 +201,21 @@ public class ValidationWizardWSDLPage extends WizardPage implements SelectionLis
     group.setLayoutData(data);
 
     Button workspaceButton = new Button(group, SWT.PUSH);
-    workspaceButton.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_WORKBENCH_BUTTON"));
+    workspaceButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_WORKBENCH_BUTTON"));
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     workspaceButton.setLayoutData(data);
     workspaceButton.addSelectionListener(new WorkspaceButtonListener());
 
     Button browseButton = new Button(group, SWT.PUSH);
-    browseButton.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_BROWSE_BUTTON"));
+    browseButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_BROWSE_BUTTON"));
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     browseButton.setLayoutData(data);
     browseButton.addSelectionListener(new BrowseButtonListener());
 
     // Button searchUDDIButton = new Button(group, SWT.PUSH);
-    // searchUDDIButton.setText(SoapMonitorPlugin.getResourceString("_UI_WIZARD_V_SEARCH_UDDI_BUTTON"));
+    // searchUDDIButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_SEARCH_UDDI_BUTTON"));
     // data = new GridData();
     // data.horizontalAlignment = GridData.FILL;
     // searchUDDIButton.setLayoutData(data);
