@@ -14,13 +14,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
 
 
 /**
@@ -52,14 +49,10 @@ public class WebServiceCreationUIPlugin extends Plugin
   * class = "org.eclipse.jst.ws.internal.creation.ui.plugin.WebServiceCreationUIPlugin".
   * @param descriptor The descriptor of this plugin.
   */
-  public WebServiceCreationUIPlugin ( IPluginDescriptor descriptor )
+  public WebServiceCreationUIPlugin ()
   {
-    super(descriptor);
-    if (instance_ == null)
-    {
-      instance_ = this;
-    }
-    log_ = new EclipseLog();
+    super();
+    instance_ = this;
   }
 
   /**
@@ -70,26 +63,6 @@ public class WebServiceCreationUIPlugin extends Plugin
   public static WebServiceCreationUIPlugin getInstance ()
   {
     return instance_;
-  }
-
-  /**
-  * Called once by the platform when this plugin is first loaded.
-  * @throws CoreException If this plugin fails to start.
-  */
-  public void startup () throws CoreException
-  {
-    log_.log(Log.INFO, 5064, this, "startup", "Starting plugin org.eclipse.jst.ws.creation.ui");
-    super.startup();
-  }
-
-  /**
-  * Called once by the platform when this plugin is unloaded.
-  * @throws CoreException If this plugin fails to shutdown.
-  */
-  public void shutdown () throws CoreException
-  {
-    log_.log(Log.INFO, 5065, this, "shutdown", "Shutting plugin org.eclipse.jst.ws.creation.ui");
-    super.shutdown();
   }
 
   /**
@@ -132,7 +105,7 @@ public class WebServiceCreationUIPlugin extends Plugin
   {
     try
     {
-      URL installURL = instance_.getDescriptor().getInstallURL();
+      URL installURL = instance_.getBundle().getEntry("/");
       URL imageURL = new URL(installURL,name);
       return ImageDescriptor.createFromURL(imageURL);
     }
