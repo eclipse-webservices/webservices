@@ -21,6 +21,7 @@ import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -119,9 +120,17 @@ public class ServerDeployableConfigurationCommand extends SimpleCommand {
           env.getStatusHandler().reportError(status);
           return status;
         }
-        Status mmStatus = ServerUtils.getInstance().modifyModules(env, server, ResourceUtils.getModule(project), true, EnvironmentUtils.getIProgressMonitor(env));
-        if (mmStatus.getSeverity()==Status.ERROR)
-        	return mmStatus;          
+        
+        // check if module is already associated
+        IModule[] parentModules = server.getParentModules(ResourceUtils.getModule(project), null);
+        if (parentModules!=null && parentModules.length!=0) {
+          if (!ServerUtil.containsModule(server, ResourceUtils.getModule(project), null)) {        
+            Status mmStatus = ServerUtils.getInstance().modifyModules(env, server, ResourceUtils.getModule(project), true, EnvironmentUtils.getIProgressMonitor(env));
+            if (mmStatus.getSeverity()==Status.ERROR)
+              return mmStatus;     
+          }
+        }        
+    
       }
       
       //
