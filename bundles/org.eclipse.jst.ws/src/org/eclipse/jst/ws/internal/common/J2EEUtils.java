@@ -905,8 +905,6 @@ public final class J2EEUtils {
 			finally{
 				if (webEdit!=null)
 					webEdit.dispose();
-				if (mc!=null)
-					mc.dispose();
 			}
 		  }
 		}
@@ -939,8 +937,6 @@ public final class J2EEUtils {
 			finally{
 				if (webEdit!=null)
 					webEdit.dispose();
-				if (mc!=null)
-					mc.dispose();
 			}
 		  }
 		}

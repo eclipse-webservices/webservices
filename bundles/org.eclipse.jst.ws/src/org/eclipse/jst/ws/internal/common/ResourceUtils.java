@@ -386,8 +386,6 @@ public final class ResourceUtils {
 			finally{
 				if (ejbEdit!=null)
 					ejbEdit.dispose();
-				if (mc!=null)
-					mc.dispose();
 			}
 		  }
 		}
@@ -425,8 +423,6 @@ public final class ResourceUtils {
 			finally{
 				if (appClientEdit!=null)
 					appClientEdit.dispose();
-				if (mc!=null)
-					mc.dispose();
 			}
 		  }
 		}
