@@ -15,6 +15,11 @@ package org.eclipse.wst.command.env.core.common;
  */
 public class EnvironmentException extends Exception
 {
+  /**
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long serialVersionUID = 3978983275899402036L;
+  
   protected Status status = null;
   
   /**

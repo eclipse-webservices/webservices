@@ -21,6 +21,11 @@ import org.eclipse.wst.command.env.core.common.Status;
 public class URIException extends Exception
 {
   /**
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long serialVersionUID = 3258130271424756018L;
+
+  /**
    * A Status object containing details about the exception,
    * if applicable.
    */

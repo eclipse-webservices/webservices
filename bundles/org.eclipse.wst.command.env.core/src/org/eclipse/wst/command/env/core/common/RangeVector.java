@@ -18,6 +18,11 @@ import java.util.Vector;
  */
 public class RangeVector extends Vector
 {
+  /**
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long serialVersionUID = 4048793476659230773L;
+
   public void removeRange( int start, int end )
   {
     super.removeRange( start, end );

@@ -17,6 +17,11 @@ package org.eclipse.wst.command.env.core.common;
 public class StatusException extends EnvironmentException
 {
   /**
+   * Comment for <code>serialVersionUID</code>
+   * */
+  private static final long serialVersionUID = 3618141160322119992L;
+
+  /**
    * The Choice that lead to the exception being thrown,
    * if any (ie. may be null).
    */
