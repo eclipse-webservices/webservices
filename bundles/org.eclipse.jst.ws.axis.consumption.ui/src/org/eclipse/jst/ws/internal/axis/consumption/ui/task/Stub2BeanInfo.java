@@ -32,13 +32,12 @@ import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.JavaVisibilityKind;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jem.java.impl.JavaClassImpl;
+import org.eclipse.jem.util.emf.workbench.JavaProjectUtilities;
 import org.eclipse.jst.ws.internal.axis.consumption.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.common.ProgressMonitor;
 import org.eclipse.wst.command.env.core.common.StatusHandler;
-
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 
 public class Stub2BeanInfo
 {
@@ -213,8 +212,7 @@ public class Stub2BeanInfo
 //    IProject clientProject = wse.getProxyProject();
     JavaEMFNature javaMOF = (JavaEMFNature)JavaEMFNature.createRuntime(clientProject_);
     ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-    // FIXME: ProjectUtilities.getSourceFolderOrFirst(...) no longer exists and must be replaced by something.
-    // FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), ProjectUtilities.getSourceFolderOrFirst(javaMOF.getProject(), null).getFile(new Path(sb.toString())).getFullPath(), bais, progressMonitor, statusMonitor);
+    FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), JavaProjectUtilities.getSourceFolderOrFirst(javaMOF.getProject(), null).getFile(new Path(sb.toString())).getFullPath(), bais, progressMonitor, statusMonitor);
   }
 
   private void writePackage(Writer w) throws IOException
