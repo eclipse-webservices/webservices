@@ -25,7 +25,7 @@ import org.eclipse.jst.j2ee.internal.project.J2EENature;
 import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.j2ee.internal.webservices.WebServiceEditModel;
 import org.eclipse.jst.j2ee.internal.webservices.WebServicesManager;
-import org.eclipse.jst.j2ee.webservice.WebServiceConstants;
+import org.eclipse.jst.j2ee.webservice.internal.WebServiceConstants;
 import org.eclipse.jst.j2ee.webservice.wsdd.PortComponent;
 import org.eclipse.jst.j2ee.webservice.wsdd.WSDLPort;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;

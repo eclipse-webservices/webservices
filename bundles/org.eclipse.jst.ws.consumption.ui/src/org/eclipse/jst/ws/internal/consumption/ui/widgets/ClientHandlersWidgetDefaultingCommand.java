@@ -18,8 +18,9 @@ import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.j2ee.applicationclient.creation.ApplicationClientNatureRuntime;
+import org.eclipse.jst.j2ee.applicationclient.internal.creation.ApplicationClientNatureRuntime;
 import org.eclipse.jst.j2ee.client.ApplicationClient;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
 import org.eclipse.jst.j2ee.internal.ejb.project.EJBNatureRuntime;
@@ -37,8 +38,6 @@ import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
-
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 
 /**
  * ClientHandlersWidgetDefaultingCommand
