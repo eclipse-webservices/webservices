@@ -143,7 +143,7 @@ public class ExtensibleOutlineProvider implements ITreeContentProvider, ILabelPr
       ILabelProvider provider = getApplicableLabelProvider(element);
       result = provider != null ? provider.getText(element) : (element.toString() + "noProviderForClass=" + element.getClass().getName());
     }
-    return result != null ? result : "null";
+    return result != null ? result : "";
   }   
 
   public void addListener(ILabelProviderListener listener) 

@@ -50,7 +50,7 @@ public final class AddXSDTypeDefinitionCommand extends WSDLElementCommand
     XSDSchema xsdSchema = getXSDSchema(targetNamespace);
     XSDComplexTypeDefinition typeDef = XSDFactory.eINSTANCE.createXSDComplexTypeDefinition();
     typeDef.setName(typeName);
-    xsdSchema.getTypeDefinitions().add(typeDef);
+//    xsdSchema.getTypeDefinitions().add(typeDef);
     xsdSchema.getContents().add(typeDef);
   }
 
