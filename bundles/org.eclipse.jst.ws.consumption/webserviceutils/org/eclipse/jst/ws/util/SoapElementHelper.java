@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package webserviceutils.org.eclipse.jst.ws.util;
+package org.eclipse.jst.ws.util;
 
 /**
  * @author gilberta

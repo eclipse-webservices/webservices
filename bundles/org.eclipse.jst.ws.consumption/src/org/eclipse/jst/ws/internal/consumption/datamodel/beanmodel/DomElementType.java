@@ -79,7 +79,7 @@ public class DomElementType implements DataType
   public String stringConversion(String typeName, String nodeName, String attributeName)
   {
      String conversion =  Generator.DOUBLE_TAB 
-                       + "org.w3c.dom.Element " + nodeName + "= webserviceutils.org.eclipse.jst.ws.util.DomElementHelper.createDomElementFromXMLString(" + attributeName + ");" 
+                       + "org.w3c.dom.Element " + nodeName + "= org.eclipse.jst.ws.util.DomElementHelper.createDomElementFromXMLString(" + attributeName + ");" 
 	                   + StringUtils.NEWLINE;
      return conversion; 
   }
@@ -92,7 +92,7 @@ public class DomElementType implements DataType
   */
   public String TypeConversion(String name)
   {
-    String typeToString = Generator.DOUBLE_TAB + "String tempResult" + getUniqueName()+ " = webserviceutils.org.eclipse.jst.ws.util.DomElementHelper.domWriter(" + name + ", new java.lang.StringBuffer()" + ");" + StringUtils.NEWLINE 
+    String typeToString = Generator.DOUBLE_TAB + "String tempResult" + getUniqueName()+ " = org.eclipse.jst.ws.util.DomElementHelper.domWriter(" + name + ", new java.lang.StringBuffer()" + ");" + StringUtils.NEWLINE 
                        + Generator.DOUBLE_TAB + "%>" + StringUtils.NEWLINE
                        + Generator.DOUBLE_TAB + "<%= tempResult" + getUniqueName()+ " %>" + StringUtils.NEWLINE
                        + Generator.DOUBLE_TAB + "<%" + StringUtils.NEWLINE;

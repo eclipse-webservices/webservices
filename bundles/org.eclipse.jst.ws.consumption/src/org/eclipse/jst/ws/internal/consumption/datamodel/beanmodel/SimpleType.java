@@ -101,7 +101,7 @@ public abstract class SimpleType implements DataType
   public String TypeConversion(String name)
   {
 
-    String conversion = Generator.DOUBLE_TAB + "String tempResult" + getUniqueName()+ " = webserviceutils.org.eclipse.jst.ws.util.JspUtils.markup(" + TypeToString(name) + ");" + StringUtils.NEWLINE 
+    String conversion = Generator.DOUBLE_TAB + "String tempResult" + getUniqueName()+ " = org.eclipse.jst.ws.util.JspUtils.markup(" + TypeToString(name) + ");" + StringUtils.NEWLINE 
                        + Generator.DOUBLE_TAB + "%>" + StringUtils.NEWLINE
                        + Generator.DOUBLE_TAB + "<%= tempResult" + getUniqueName()+ " %>" + StringUtils.NEWLINE
                        + Generator.DOUBLE_TAB + "<%" + StringUtils.NEWLINE;

@@ -79,7 +79,7 @@ public class SOAPElementType implements DataType
   public String stringConversion(String typeName, String nodeName, String attributeName)
   {
      String conversion =  Generator.DOUBLE_TAB 
-                       + "javax.xml.soap.SOAPElement " + nodeName + "= webserviceutils.org.eclipse.jst.ws.util.SoapElementHelper.createSOAPElementFromXMLString(" + attributeName + ");" 
+                       + "javax.xml.soap.SOAPElement " + nodeName + "= org.eclipse.jst.ws.util.SoapElementHelper.createSOAPElementFromXMLString(" + attributeName + ");" 
 	                   + StringUtils.NEWLINE;
      return conversion;
   }
@@ -92,7 +92,7 @@ public class SOAPElementType implements DataType
   */
   public String TypeConversion(String name)
   {
-    String typeToString = Generator.DOUBLE_TAB + "String tempResult" + getUniqueName()+ " = webserviceutils.org.eclipse.jst.ws.util.SoapElementHelper.soapElementWriter(" + name + ", new java.lang.StringBuffer()" + ");" + StringUtils.NEWLINE 
+    String typeToString = Generator.DOUBLE_TAB + "String tempResult" + getUniqueName()+ " = org.eclipse.jst.ws.util.SoapElementHelper.soapElementWriter(" + name + ", new java.lang.StringBuffer()" + ");" + StringUtils.NEWLINE 
                        + Generator.DOUBLE_TAB + "%>" + StringUtils.NEWLINE
                        + Generator.DOUBLE_TAB + "<%= tempResult" + getUniqueName()+ " %>" + StringUtils.NEWLINE
                        + Generator.DOUBLE_TAB + "<%" + StringUtils.NEWLINE;

@@ -8,15 +8,9 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-/*
- * Created on Dec 2, 2003
- *
- * To change the template for this generated file go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
-package webserviceutils.org.eclipse.jst.ws.util;
 
-import java.lang.Exception;
+package org.eclipse.jst.ws.util;
+
 /**
  * @author gilberta
  *

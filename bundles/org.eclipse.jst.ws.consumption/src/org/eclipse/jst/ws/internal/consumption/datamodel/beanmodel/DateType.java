@@ -100,7 +100,7 @@ public class DateType extends SimpleType
   {
 
     String conversion = Generator.DOUBLE_TAB + "java.text.DateFormat dateFormat" + getUniqueName()+ " = java.text.DateFormat.getDateInstance();" + StringUtils.NEWLINE 
-    	               + Generator.DOUBLE_TAB + "String tempResult" + getUniqueName()+ " = webserviceutils.org.eclipse.jst.ws.util.JspUtils.markup(dateFormat" + getUniqueName()+ ".format(" + name +"));" + StringUtils.NEWLINE 
+    	               + Generator.DOUBLE_TAB + "String tempResult" + getUniqueName()+ " = org.eclipse.jst.ws.util.JspUtils.markup(dateFormat" + getUniqueName()+ ".format(" + name +"));" + StringUtils.NEWLINE 
                        + Generator.DOUBLE_TAB + "%>" + StringUtils.NEWLINE
                        + Generator.DOUBLE_TAB + "<%= tempResult" + getUniqueName()+ " %>" + StringUtils.NEWLINE
                        + Generator.DOUBLE_TAB + "<%" + StringUtils.NEWLINE;
