@@ -15,7 +15,7 @@ import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.common.dependencychecker.CheckMissingFiles;
+import org.eclipse.wst.common.internal.dependencychecker.CheckMissingFiles;
 
 public class CheckForMissingFiles extends SimpleCommand
 {
