@@ -49,7 +49,7 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddUnknownExtensibilityElementC
 import org.eclipse.wst.wsdl.ui.internal.contentgenerator.BindingGenerator;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.CreateWSDLElementHelper;
-import org.eclipse.wst.xml.core.XMLModelPlugin;
+import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
@@ -85,7 +85,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard
   {
     IFile file = newFilePage.createNewFile();
     
-    Preferences preference = XMLModelPlugin.getDefault().getPluginPreferences();
+    Preferences preference = XMLCorePlugin.getDefault().getPluginPreferences();
 	String charSet = preference.getString(CommonModelPreferenceNames.OUTPUT_CODESET);
      if (charSet == null || charSet.trim().equals(""))
     {

@@ -14,7 +14,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Preferences;
@@ -37,8 +36,8 @@ import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.widgets.ProtocolComponentControl;
-import org.eclipse.wst.xml.core.XMLModelPlugin;
 import org.eclipse.wst.xml.core.document.XMLNode;
+import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -139,7 +138,7 @@ public class BindingWizard extends Wizard
   		beginRecording();
   		
   		// Create the Definitions element with proper namespace
-  	    Preferences preference = XMLModelPlugin.getDefault().getPluginPreferences();
+  	    Preferences preference = XMLCorePlugin.getDefault().getPluginPreferences();
   		String charSet = preference.getString(CommonModelPreferenceNames.OUTPUT_CODESET);
   	    if (charSet == null || charSet.trim().equals(""))
   	    {
