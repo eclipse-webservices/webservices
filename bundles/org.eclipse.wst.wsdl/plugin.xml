@@ -18,13 +18,23 @@
          <export name="*"/>
       </library>
    </runtime>
+
    <requires>
+      <import plugin="org.eclipse.wst.common.dependencychecker"/>
       <import plugin="org.eclipse.core.runtime.compatibility"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.xsd"/>
       <import plugin="org.eclipse.core.resources"/>
    </requires>
 
+   <extension point="org.eclipse.wst.common.dependencychecker.requiredFiles">
+      <requiredFile
+            pluginRelativePath="lib/qname.jar"
+            locationURL="ftp://www-126.ibm.com/pub/wsdl4j/WSDL4J/1.4/wsdl4j-bin-1.4.zip"/>
+      <requiredFile
+            pluginRelativePath="lib/wsdl4j.jar"
+            locationURL="ftp://www-126.ibm.com/pub/wsdl4j/WSDL4J/1.4/wsdl4j-bin-1.4.zip"/>
+   </extension>
 
    <extension-point id="extensibilityElementFactories" name="WSDL Extensibility Element Factories"/>
 
