@@ -1,10 +1,11 @@
 package org.eclipse.wst.ws;
 
+import java.text.MessageFormat;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
-
-import java.text.MessageFormat;
-import java.util.*;
 
 /**
  * The main plugin class to be used in the desktop.
