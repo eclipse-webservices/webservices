@@ -103,12 +103,12 @@ public class WebServiceUIPlugin extends AbstractUIPlugin
 	 * 
 	 */ 
   public PersistentWSIContext getWSIContext() 
-  	{ // defaulting to get WSI Simple SOAP Basic Profile context
+  	{ // defaulting to get WSI Simple SOAP Binding Profile context
   	  return getWSISSBPContext();
   	}
   
   /**
-	 * Get WSI Simple SOAP Basic Profile Context
+	 * Get WSI Simple SOAP Binding Profile Context
 	 * 
 	 */ 
   public PersistentWSISSBPContext getWSISSBPContext() 
