@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+/*******************************************************************************
+ * Copyright (c) 2002-2005 IBM Corporation and others.
+ * All rights reserved.   This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *   IBM - Initial API and implementation
+ *******************************************************************************/
+--> 
+
+<plugin
+   id="org.eclipse.wst.wsi"
+   name="%_PLUGIN_NAME"
+   version="1.0"
+   provider-name = "%_PROVIDER_NAME"
+   class="org.eclipse.wst.wsi.internal.WSITestToolsPlugin">
+
+   <runtime>
+      <library name="wsi-test-tools.jar">
+         <export name="*"/>
+      </library>
+     </runtime>
+   
+   <requires>
+      <import plugin="org.eclipse.core.runtime.compatibility"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="com.ibm.etools.validation.xmltools"/>
+      <import plugin="org.uddi4j"/>
+      <import plugin="com.ibm.etools.webservice.ui"/>
+      <import plugin="com.ibm.env"/>
+      <import plugin="com.ibm.env.core"/>
+      <import plugin ="org.eclipse.ui"/>
+   </requires>
+  
+</plugin>
