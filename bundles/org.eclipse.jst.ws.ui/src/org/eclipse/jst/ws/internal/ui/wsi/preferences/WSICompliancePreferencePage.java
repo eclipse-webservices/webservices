@@ -13,6 +13,8 @@ package org.eclipse.jst.ws.internal.ui.wsi.preferences;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -27,7 +29,9 @@ import org.eclipse.ui.help.WorkbenchHelp;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 
 
-public class WSICompliancePreferencePage extends PreferencePage implements IWorkbenchPreferencePage
+
+public class WSICompliancePreferencePage extends PreferencePage implements IWorkbenchPreferencePage, SelectionListener
+
 {
   private MessageUtils msgUtils_;
 	  
@@ -58,6 +62,9 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
   private String INFOPOP_PWSI_AP_COMBO_IGNORE_NON_WSI = WebServiceUIPlugin.ID + ".PWSI0007";
   /*CONTEXT_ID PWSI0008 for the WS-I AP type combo box on the WS-I AP Non compliance Preference Page*/
   private String INFOPOP_PWSI_AP_COMBO_TYPE = WebServiceUIPlugin.ID + ".PWSI0008";
+    
+  private int savedSSBPSetting_ = -1;
+
 
  /**
    * Creates preference page controls on demand.
@@ -84,17 +91,6 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     Composite wsi_Composite = new Composite (parent, SWT.NONE);
     wsi_Composite.setLayout(gl);
     wsi_Composite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-    wsi_ssbp_Label_ = new Label(wsi_Composite, SWT.NONE);
-    wsi_ssbp_Label_.setText(msgUtils_.getMessage("LABEL_WSI_SSBP"));
-    wsi_ssbp_Label_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_SSBP_LABEL"));
-    wsi_ssbp_Types_ = new Combo(wsi_Composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-    wsi_ssbp_Types_.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-    wsi_ssbp_Types_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_SSBP_COMBO"));
-    WorkbenchHelp.setHelp(wsi_ssbp_Types_, new DialogPageContextComputer(this, INFOPOP_PWSI_SSBP_COMBO_TYPE));
-    
-    wsi_ssbp_Types_.add(msgUtils_.getMessage("STOP_NON_WSI"));
-    wsi_ssbp_Types_.add(msgUtils_.getMessage("WARN_NON_WSI"));
-    wsi_ssbp_Types_.add(msgUtils_.getMessage("IGNORE_NON_WSI"));
     
     wsi_ap_Label_ = new Label(wsi_Composite, SWT.NONE);
     wsi_ap_Label_.setText(msgUtils_.getMessage("LABEL_WSI_AP"));
@@ -107,6 +103,20 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     wsi_ap_Types_.add(msgUtils_.getMessage("STOP_NON_WSI"));
     wsi_ap_Types_.add(msgUtils_.getMessage("WARN_NON_WSI"));
     wsi_ap_Types_.add(msgUtils_.getMessage("IGNORE_NON_WSI"));
+    
+    wsi_ap_Types_.addSelectionListener(this);
+    
+    wsi_ssbp_Label_ = new Label(wsi_Composite, SWT.NONE);
+    wsi_ssbp_Label_.setText(msgUtils_.getMessage("LABEL_WSI_SSBP"));
+    wsi_ssbp_Label_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_SSBP_LABEL"));
+    wsi_ssbp_Types_ = new Combo(wsi_Composite, SWT.DROP_DOWN | SWT.READ_ONLY);
+    wsi_ssbp_Types_.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+    wsi_ssbp_Types_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_SSBP_COMBO"));
+    WorkbenchHelp.setHelp(wsi_ssbp_Types_, new DialogPageContextComputer(this, INFOPOP_PWSI_SSBP_COMBO_TYPE));
+    
+    wsi_ssbp_Types_.add(msgUtils_.getMessage("STOP_NON_WSI"));
+    wsi_ssbp_Types_.add(msgUtils_.getMessage("WARN_NON_WSI"));
+    wsi_ssbp_Types_.add(msgUtils_.getMessage("IGNORE_NON_WSI"));
   
     initializeValues();
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);    
@@ -157,8 +167,12 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
   {
     // force WSI compliance by default
     
-    wsi_ssbp_Types_.select(wsi_ssbp_Types_.indexOf(msgUtils_.getMessage("WARN_NON_WSI")));   
-    wsi_ap_Types_.select(wsi_ap_Types_.indexOf(msgUtils_.getMessage("IGNORE_NON_WSI")));
+    wsi_ssbp_Types_.select(wsi_ssbp_Types_.indexOf(msgUtils_.getMessage("IGNORE_NON_WSI")));
+    int apSelection = wsi_ap_Types_.indexOf(msgUtils_.getMessage("IGNORE_NON_WSI"));
+    wsi_ap_Types_.select(apSelection);
+    savedSSBPSetting_ = -1;  // do not restore saved SSBP setting
+    processAPSelection(apSelection);
+
   }
 
   /**
@@ -170,8 +184,10 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
 	String WSIText = getWSISelection(WebServiceUIPlugin.getInstance().getWSISSBPContext());
     wsi_ssbp_Types_.select(wsi_ssbp_Types_.indexOf(WSIText));
     
-    String WSIAPText = getWSISelection(WebServiceUIPlugin.getInstance().getWSIAPContext());
-    wsi_ap_Types_.select(wsi_ap_Types_.indexOf(WSIAPText));
+    int apSelection = wsi_ap_Types_.indexOf(getWSISelection(WebServiceUIPlugin.getInstance().getWSIAPContext()));
+    wsi_ap_Types_.select(apSelection);
+    savedSSBPSetting_ = -1;  // do not restore saved SSBP setting
+    processAPSelection(apSelection);
    }
 
   private String getWSISelection(PersistentWSIContext context)
@@ -213,4 +229,34 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     }
     context.updateWSICompliances(value);
   }
+  
+  public void widgetSelected(SelectionEvent e)
+  {
+  	
+  	processAPSelection( wsi_ap_Types_.getSelectionIndex() );
+  	
+  }
+  
+  public void processAPSelection(int selection) {
+  	if (selection == 2) { // reset SSBP to default if AP is ignore
+  		wsi_ssbp_Types_.setEnabled(true);
+  		if (savedSSBPSetting_ != -1)  {
+  			// restore saved SSBP setting, if any
+  			wsi_ssbp_Types_.select(savedSSBPSetting_);
+  			savedSSBPSetting_ = -1;
+  		}
+  	} else { // set SSBP to follow AP setting if STOP or WARN chosen
+  		if (savedSSBPSetting_ == -1)  {  // SSBP setting not saved
+  			savedSSBPSetting_ = wsi_ssbp_Types_.getSelectionIndex();
+  		}
+  		wsi_ssbp_Types_.select(selection);
+  		wsi_ssbp_Types_.setEnabled(false);
+  		
+  	}
+  }
+
+  public void widgetDefaultSelected(SelectionEvent e) {
+	
+  }
+  
 }

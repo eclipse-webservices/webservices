@@ -60,10 +60,10 @@ public void updateWSICompliances ( String value)
 public String getPersistentWSICompliance ()
 {
 	String property = getValueAsString(non_wsi_compliance);
-	// default to Warning if no init has been done from ini file
+//	 default to Ignore if no init has been done from ini file
 	if (property == null || property.equals("")) {
-		setValue( non_wsi_compliance, WARN_NON_WSI);
-		return WARN_NON_WSI;
+		setValue( non_wsi_compliance, IGNORE_NON_WSI);
+		return IGNORE_NON_WSI;
 	}
 	else
 		return property;
