@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
@@ -68,7 +68,7 @@ public class BeanClassWidget extends SimpleWidgetDataContributor
     Composite group = uiUtils.createComposite( parent, 4 );
     
     group.setToolTipText( msgUtils.getMessage("TOOLTIP_PBCL_PAGE") );
-    WorkbenchHelp.setHelp( group, pluginId_ + "." + INFOPOP_PBCL_PAGE );
+    PlatformUI.getWorkbench().getHelpSystem().setHelp( group, pluginId_ + "." + INFOPOP_PBCL_PAGE );
     
     beanClassText_ = uiUtils.createText( group, "LABEL_BEAN_CLASS_NAME",
                                          "TOOLTIP_PBCL_TEXT_BEAN_CLASS",

@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
@@ -82,7 +82,7 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
     UIUtils      conUiUtils      = new UIUtils( conMsgUtils, pluginId );
     UIUtils      baseConUiUtils  = new UIUtils( baseConMsgUtils, pluginId );
 
-  	WorkbenchHelp.setHelp( parent, pluginId + "." +  INFOPOP_PBSC_PAGE );
+  	PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId + "." +  INFOPOP_PBSC_PAGE );
   	parent.setToolTipText( msgUtils.getMessage( TOOLTIP_PBSC_PAGE ) );
     
     Composite textGroup = uiUtils.createComposite( parent, 2, 0, 0 );

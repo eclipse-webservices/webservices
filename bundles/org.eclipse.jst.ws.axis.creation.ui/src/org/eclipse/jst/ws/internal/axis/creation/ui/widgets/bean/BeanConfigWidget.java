@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
@@ -100,7 +100,7 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
     
     statusListener_ = statusListener;    
 	parent.setToolTipText( msgUtils.getMessage( TOOLTIP_PBCF_PAGE ) );
-    WorkbenchHelp.setHelp( parent, pluginId_ + "." + INFOPOP_PBCF_PAGE );
+	PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId_ + "." + INFOPOP_PBCF_PAGE );
     
     Composite configGroup = uiUtils.createComposite( parent, 2 );
     
