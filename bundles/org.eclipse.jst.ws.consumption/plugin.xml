@@ -26,7 +26,6 @@
       <import plugin="org.eclipse.xsd"/>
       <import plugin="org.eclipse.debug.core"/>
       <import plugin="org.eclipse.jst.ws"/>
-      <import plugin="org.eclipse.core.runtime.compatibility"/>
       <import plugin="org.eclipse.jdt.launching"/>
       <import plugin="org.eclipse.wst.command.env.core"/>
       <import plugin="org.eclipse.wst.command.env"/>
