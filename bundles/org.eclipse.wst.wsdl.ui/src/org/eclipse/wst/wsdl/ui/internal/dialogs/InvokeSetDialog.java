@@ -61,8 +61,8 @@ public class InvokeSetDialog
     }
     else if (input instanceof Part)
     {
-    	boolean kkk = false;
-    	if (kkk == true) {
+    	boolean booleanSwitch = true;
+    	if (booleanSwitch == true) {
       SetComponentWizard wiz = new SetComponentWizard((Part)input, editorPart);
       SetXWizardDialog dialog = new SetXWizardDialog(WSDLEditorPlugin.getShell(), wiz);
       wiz.setReferenceKind(kind);
@@ -70,10 +70,10 @@ public class InvokeSetDialog
       dialog.open();
     	}
     	else {
-  	WSDLSetTypeDialog typeDialog = new WSDLSetTypeDialog(WSDLEditorPlugin.getShell(), (Part) input, editorPart, WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_TYPE"), kind);
-  	typeDialog.setBlockOnOpen(true);
-  	typeDialog.create();
-  	int result = typeDialog.open();
+//  	WSDLSetTypeDialog typeDialog = new WSDLSetTypeDialog(WSDLEditorPlugin.getShell(), (Part) input, editorPart, WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_TYPE"), kind);
+//  	typeDialog.setBlockOnOpen(true);
+//  	typeDialog.create();
+//  	int result = typeDialog.open();
     }
     }
     else if (input instanceof Input || input instanceof Output || input instanceof Fault)

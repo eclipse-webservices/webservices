@@ -36,15 +36,14 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.TextSelectionNavigationLocation;
-import org.w3c.dom.Document;
-
-import org.eclipse.wst.sse.ui.StructuredTextEditor;
-import org.eclipse.wst.sse.ui.nls.ResourceHandler;
 import org.eclipse.wst.sse.core.IStructuredModel;
 import org.eclipse.wst.sse.core.exceptions.SourceEditingRuntimeException;
+import org.eclipse.wst.sse.core.internal.SSECorePlugin;
+import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.wst.wsdl.internal.util.WSDLResourceImpl;
 import org.eclipse.wst.wsdl.ui.internal.actions.WSDLMenuActionContributor;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtension;
 import org.eclipse.wst.wsdl.ui.internal.graph.WSDLGraphViewer;
@@ -57,16 +56,15 @@ import org.eclipse.wst.wsdl.ui.internal.outline.ModelAdapterLabelProvider;
 import org.eclipse.wst.wsdl.ui.internal.reconciler.SEDDocumentAdapter;
 import org.eclipse.wst.wsdl.ui.internal.typesystem.ExtensibleTypeSystemProvider;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
-import org.eclipse.wst.wsdl.ui.internal.util.WSDLModelLocatorAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLModelLocatorAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLNodeAssociationProvider;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLResourceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.XSDSchemaLocationResolverAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.viewers.WSDLDetailsViewer;
 import org.eclipse.wst.wsdl.ui.internal.viewers.WSDLDetailsViewerProvider;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceImpl;
 import org.eclipse.wst.xml.core.document.XMLModel;
-import org.eclipse.wst.wsdl.ui.internal.WSDLMultiPageEditorPart;
+import org.w3c.dom.Document;
 
 //public class WSDLEditor extends StructuredTextMultiPageEditorPart implements INavigationLocationProvider
 public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLocationProvider
@@ -225,7 +223,7 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
     }
     catch (PartInitException exception)
     {
-      throw new SourceEditingRuntimeException(ResourceHandler.getString("An_error_has_occurred_when1_ERROR_")); //$NON-NLS-1$ = "An error has occurred when initializing the input for the the editor's source page."
+      throw new SourceEditingRuntimeException(SSECorePlugin.getResourceString("An_error_has_occurred_when1_ERROR_")); //$NON-NLS-1$ = "An error has occurred when initializing the input for the the editor's source page."
     }
     // TODO: add a catch block here for any exception the design page throws and convert it into a more informative message.
   }

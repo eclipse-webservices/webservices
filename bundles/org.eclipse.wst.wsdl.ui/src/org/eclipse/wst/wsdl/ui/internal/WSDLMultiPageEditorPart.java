@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.ui.IPropertyListener;
-import org.eclipse.ui.part.MultiPageEditorPart;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -22,6 +18,7 @@ import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
@@ -39,6 +36,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPart;
@@ -46,16 +44,16 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IGotoMarker;
+import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.part.MultiPageEditorSite;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-
-import org.eclipse.wst.sse.ui.StructuredTextEditor;
-import org.eclipse.wst.sse.ui.nls.ResourceHandler;
-import org.eclipse.wst.xml.ui.StructuredTextEditorXML;
 import org.eclipse.wst.sse.core.IStructuredModel;
 import org.eclipse.wst.sse.core.exceptions.SourceEditingRuntimeException;
+import org.eclipse.wst.sse.core.internal.SSECorePlugin;
+import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.xml.core.XMLPreferenceNames;
+import org.eclipse.wst.xml.ui.StructuredTextEditorXML;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPropertyListener
 {
@@ -177,7 +175,7 @@ public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPro
 	      // dispose editor
 	      dispose();
 
-	      throw new SourceEditingRuntimeException(ResourceHandler.getString("An_error_has_occurred_when1_ERROR_")); //$NON-NLS-1$
+	      throw new SourceEditingRuntimeException(SSECorePlugin.getResourceString("An_error_has_occurred_when1_ERROR_")); //$NON-NLS-1$
 	    }
 	  }
 
@@ -324,11 +322,11 @@ public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPro
 	            // very unlikely
 //	            Logger.logException(ce);
 	          }
-	          throw new PartInitException(ResourceHandler.getString("23concat_EXC_", (new Object[]{input.getName()}))); //$NON-NLS-1$
+	          throw new PartInitException(SSECorePlugin.getResourceString("23concat_EXC_", (new Object[]{input.getName()}))); //$NON-NLS-1$
 	          //$NON-NLS-1$ = "Resource {0} does not exist."
 	        }
 	        else {
-	          throw new PartInitException(ResourceHandler.getString("32concat_EXC_", (new Object[]{input.getName()}))); //$NON-NLS-1$
+	          throw new PartInitException(SSECorePlugin.getResourceString("32concat_EXC_", (new Object[]{input.getName()}))); //$NON-NLS-1$
 	          //$NON-NLS-1$ = "Editor could not be open on {0}"
 	        }
 	      }
@@ -341,7 +339,7 @@ public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPro
 	      catch (CoreException noStorageExc) {
 	      }
 	      if (contents == null) {
-	        throw new PartInitException(ResourceHandler.getString("32concat_EXC_", (new Object[]{input.getName()}))); //$NON-NLS-1$
+	        throw new PartInitException(SSECorePlugin.getResourceString("32concat_EXC_", (new Object[]{input.getName()}))); //$NON-NLS-1$
 	      }
 	      else {
 	        try {
