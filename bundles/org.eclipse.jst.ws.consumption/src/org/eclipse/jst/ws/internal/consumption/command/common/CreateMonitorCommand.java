@@ -19,7 +19,7 @@ import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.IServerPort;
+import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.internal.IMonitoredServerPort;
 import org.eclipse.wst.server.core.internal.ServerMonitorManager;
@@ -47,10 +47,10 @@ public class CreateMonitorCommand extends SimpleCommand {
 
         // IMonitorableServer monitorableServer = (IMonitorableServer)
         // serverDelegate;
-        IServerPort[] ports = server.getServerPorts();
-        IServerPort port = null;
+        ServerPort[] ports = server.getServerPorts();
+        ServerPort port = null;
         for (int it = 0; it < ports.length; it++) {
-          IServerPort p = ports[it];
+          ServerPort p = ports[it];
           String protocol = p.getProtocol();
           if (protocol != null && protocol.trim().toLowerCase().equals("http")) {
             port = p;

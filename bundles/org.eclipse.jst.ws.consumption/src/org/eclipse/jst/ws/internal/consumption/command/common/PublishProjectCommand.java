@@ -72,18 +72,13 @@ public Status execute(Environment env)
       return status;
     }
 
-    if (instance.shouldPublish())
-    {
-      IStatus returnedStatus = instance.publish(EnvironmentUtils.getIProgressMonitor(env));
+      IStatus returnedStatus = instance.publish(IServer.PUBLISH_INCREMENTAL, EnvironmentUtils.getIProgressMonitor(env));
       status = EnvironmentUtils.convertIStatusToStatus(returnedStatus);
       
       //getStatusMonitor().reportStatus (instance.publish(getProgressMonitor()));
       env.getLog().log(Log.OK, 5026, this, "execute", new String("project="+project+" successfully published"));
       //Log.write(PublishProjectCommand.class,"execute",Log.OK,"project="+project+" successfully published");
       return status;
-    }
-    
-    return status;
   }
   catch (Exception e) {
     status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_PUBLISH"), Status.ERROR, e);

@@ -55,7 +55,7 @@ import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.eclipse.EclipseLog;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.IServerPort;
+import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.core.model.IURLProvider;
 
@@ -697,11 +697,11 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
   			// get ServerPort
   			int portNumber = 0;
 
-  	          IServerPort[] ports = server.getServerPorts();
-  	          IServerPort port = null;
+  	          ServerPort[] ports = server.getServerPorts();
+  	          ServerPort port = null;
   	          for (int it = 0; it<ports.length; it++)
   	          {
-  	            IServerPort p = ports[it];
+  	            ServerPort p = ports[it];
   	            String protocol = p.getProtocol();
   	            if (protocol != null && protocol.trim().toLowerCase().equals("http"))
   	            {

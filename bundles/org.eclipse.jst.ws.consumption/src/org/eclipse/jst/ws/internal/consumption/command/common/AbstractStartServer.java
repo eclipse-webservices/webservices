@@ -92,14 +92,11 @@ public void StartServer (IProject project, IServer server, IProgressMonitor moni
 
 protected void publishProject(IServer server) throws CoreException
 {
-   if (server.shouldPublish())
-    {
       monitor.subTask( msgUtils_.getMessage( "PROGRESS_INFO_PUBLISHING_SERVER" ) );
-      IStatus status = server.publish(monitor);
+      IStatus status = server.publish(IServer.PUBLISH_INCREMENTAL, monitor);
       if (status.getSeverity() != IStatus.OK)
       	throw new CoreException(status);
       log_.log(Log.INFO, 5051, this, "publishProject", "IServer="+server+", Publish command completed");
-    }
  }
 
 protected void startProject(IServer server) throws CoreException
