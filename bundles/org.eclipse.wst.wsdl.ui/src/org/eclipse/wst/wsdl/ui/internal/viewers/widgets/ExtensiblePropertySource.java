@@ -18,10 +18,10 @@ import org.w3c.dom.Element;
 
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.properties.section.IPropertyDescriptorProvider;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.ui.views.properties.XMLPropertySourceAdapter;
 import org.eclipse.wst.sse.core.INodeNotifier;
-import org.eclipse.wst.sse.core.internal.contentmodel.CMAttributeDeclaration;
-import org.eclipse.wst.sse.core.internal.contentmodel.CMDocument;
 
 public class ExtensiblePropertySource extends XMLPropertySourceAdapter
 {

@@ -14,10 +14,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.wst.sse.core.internal.contentmodel.modelquery.ModelQuery;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
 import org.eclipse.wst.wsdl.ui.internal.extension.IModelQueryContributor;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
+import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.ModelQuery;
 import org.eclipse.wst.xsd.ui.internal.AbstractXSDDataTypeValueExtension;
 import org.eclipse.wst.xsd.ui.internal.AbstractXSDModelQueryContributor;
 import org.eclipse.wst.xsd.ui.internal.util.TypesHelper;

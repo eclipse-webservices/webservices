@@ -19,12 +19,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.wst.sse.core.internal.contentmodel.util.DOMNamespaceInfoManager;
-import org.eclipse.wst.sse.core.internal.contentmodel.util.NamespaceInfo;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.nsedit.EditNamespacesDialog;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
+import org.eclipse.wst.xml.core.internal.contentmodel.util.DOMNamespaceInfoManager;
+import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceInfo;
 import org.w3c.dom.Element;
 
 
