@@ -45,11 +45,9 @@ public class XMLQuickScan
     ClassLoader prevClassLoader = Thread.currentThread().getContextClassLoader();
     try
     {
-      Thread.currentThread().setContextClassLoader(XMLQuickScan.class.getClassLoader());
-      Class theClass = Class.forName("org.apache.xerces.parsers.SAXParser");
-      XMLReader reader = (XMLReader)theClass.newInstance();
-      reader.setContentHandler(handler);
-      reader.parse(new InputSource(input));
+    	XMLReader reader = org.xml.sax.helpers.XMLReaderFactory.createXMLReader();
+    	reader.setContentHandler(handler);
+    	reader.parse(new InputSource(input));
     }
     catch (Exception e)
     {      
