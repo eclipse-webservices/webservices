@@ -36,6 +36,7 @@ public class AllTestCases extends TestCase
     suite.addTest(InlineSchemaTest.suite());  
     suite.addTest(LoadAndSerializationTest.suite());
     suite.addTest(SemanticTest.suite());
+    suite.addTest(WSDLGenerationTest.suite());
     
     return suite;
   }

@@ -16,6 +16,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IActionDelegate;
+import org.eclipse.wst.wsdl.tests.WSDLGenerationTest;
 
 public class GenerateWSDLActionDelegate implements IActionDelegate
 {
@@ -38,7 +39,7 @@ public class GenerateWSDLActionDelegate implements IActionDelegate
         
         try
 		{
-          (new SampleWSDLGenerator()).generateTemperatureService(output);
+          (new WSDLGenerationTest()).generateTemperatureService(output);
 		}
         catch (Exception e)
 		{

@@ -8,9 +8,14 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.wsdl.tests.ui;
+package org.eclipse.wst.wsdl.tests;
 
 import javax.xml.namespace.QName;
+
+import junit.framework.Assert;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -18,20 +23,73 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import org.eclipse.wst.wsdl.*;
-import org.eclipse.wst.wsdl.internal.util.*;
+import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl;
 
 import org.eclipse.wst.wsdl.binding.soap.*;
 import org.eclipse.wst.wsdl.binding.soap.internal.util.*;
+import org.eclipse.xsd.XSDPackage;
+import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 
-public class SampleWSDLGenerator 
+public class WSDLGenerationTest extends TestCase
 {
-  public SampleWSDLGenerator()
+  public WSDLGenerationTest()
   {
     init();
   }
+  
+  public WSDLGenerationTest(String name) 
+  {
+    super(name);
+  }  
+  
+  public static Test suite() 
+  {
+    TestSuite suite = new TestSuite();
+    
+    suite.addTest
+      (new WSDLGenerationTest("SampleWSDLGeneration") 
+         {
+           protected void runTest() 
+           {
+             testSampleWSDLGeneration();
+         }
+       }
+     );
+    
+    return suite;
+  }
+  
+  public void testSampleWSDLGeneration() 
+  {
+    try
+    {
+      generateTemperatureService("./TemperatureService.wsdl");
+    }
+    catch (Exception e)
+    {
+      Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
+    }
+  }
+  
+  protected void setUp() throws Exception 
+  {
+    super.setUp();
+    
+    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
+    WSDLPackage pkg = WSDLPackage.eINSTANCE;
+    
+    // We need this for XSD <import>.
+    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
+    XSDPackage xsdpkg = XSDPackage.eINSTANCE;
+  }
 
+  protected void tearDown() throws Exception 
+  {
+    super.tearDown();
+  }
+  
   public void generateTemperatureService(String outputFile) throws Exception
   {
     ResourceSet resourceSet = new ResourceSetImpl();
@@ -45,11 +103,11 @@ public class SampleWSDLGenerator
     
     // Target namespace - http://www.temperature.com
     definition.setTargetNamespace("http://www.temperature.com");
-    definition.getNamespaces().put("tns", "http://www.temperature.com");
+    definition.addNamespace("tns", "http://www.temperature.com");
     
     // Other namespaces - wsdl, soap, xsd
-    definition.getNamespaces().put("wsdl", WSDLConstants.WSDL_NAMESPACE_URI);
-    definition.getNamespaces().put("xsd", WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001);
+    definition.addNamespace("wsdl", WSDLConstants.WSDL_NAMESPACE_URI);
+    definition.addNamespace("xsd", WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001);
     definition.getNamespaces().put("soap", SOAPConstants.SOAP_NAMESPACE_URI);
 
     //
