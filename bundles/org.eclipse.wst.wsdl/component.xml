@@ -5,7 +5,7 @@
 	<plugin id="org.eclipse.wst.wsdl" fragment="false" />
 	<plugin id="org.eclipse.wst.wsdl.ui" fragment="false" />
 	<plugin id="org.eclipse.wst.wsdl.validation" fragment="false" />
-	<package name="org.eclipse.wst.wsdl">
+	<package name="org.eclipse.wst.wsdl" api="false">
 		<type name="BindingFault" />
 		<type name="BindingOutput" />
 		<type name="Types" />
@@ -33,14 +33,14 @@
 		<type name="Binding" />
 		<type name="BindingOperation" />
 	</package>
-	<package name="org.eclipse.wst.wsdl.util">
+	<package name="org.eclipse.wst.wsdl.util" api="false">
 		<type name="WSDLConstants" />
 		<type name="ExtensibilityElementFactoryRegistry" />
 		<type name="WSDLResourceFactoryImpl" />
 		<type name="ExtensibilityElementFactory" />
 		<type name="WSDLResourceImpl" />
 	</package>
-	<package name="org.eclipse.wst.wsdl.binding.soap">
+	<package name="org.eclipse.wst.wsdl.binding.soap" api="false">
 		<type name="SOAPBody" />
 		<type name="SOAPHeaderFault" />
 		<type name="SOAPAddress" />
