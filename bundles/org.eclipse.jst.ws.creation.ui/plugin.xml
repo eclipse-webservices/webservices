@@ -34,6 +34,7 @@
       <import plugin="org.eclipse.jst.j2ee"/>
       <import plugin="org.eclipse.jst.j2ee.core"/>
       <import plugin="org.eclipse.jst.j2ee.ejb"/>
+      <import plugin="org.eclipse.wst.wsdl"/>
    </requires>
 
    <!-- Wizards -->
@@ -196,7 +197,7 @@
       </objectContribution>
 
       <objectContribution
-            objectClass="org.eclipse.jst.ws.wsclient.ServiceRef"
+            objectClass="org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef"
             nameFilter="*"
             id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton">
          <action
@@ -208,7 +209,7 @@
       </objectContribution>
 
       <objectContribution
-            objectClass="org.eclipse.jst.ws.wsdd.ServiceImplBean"
+            objectClass="org.eclipse.jst.j2ee.webservice.wsdd.ServiceImplBean"
             nameFilter="*"
             id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java">
          <action
@@ -220,7 +221,7 @@
       </objectContribution>
       
       <objectContribution
-            objectClass="org.eclipse.jst.ws.wsdd.BeanLink"
+            objectClass="org.eclipse.jst.j2ee.webservice.wsdd.BeanLink"
             nameFilter="*"
             id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java">
          <action

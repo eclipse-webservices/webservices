@@ -35,7 +35,7 @@
    </requires>
 
 
-   <extension-point id="privateUDDIRegistryType" name="Private UDDI Registry Types"/>
+   <extension-point id="privateUDDIRegistryType" name="%XP_PRIVATE_UDDI_REGISTRY_TYPES"/>
 
    <extension
          point="org.eclipse.jst.ws.consumption.ui.privateUDDIRegistryType">

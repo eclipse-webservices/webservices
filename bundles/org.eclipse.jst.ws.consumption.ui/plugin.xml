@@ -63,35 +63,35 @@
 
    <extension-point
       id="publicUDDIRegistryType"
-      name="Public UDDI Registry Types"/>
+      name="%XP_PUBLIC_UDDI_REGISTRY_TYPES"/>
 
    <extension-point
       id="privateUDDIRegistryType"
-      name="Private UDDI Registry Types"/>
+      name="%XP_PRIVATE_UDDI_REGISTRY_TYPES"/>
 
    <extension-point
       id="webServiceClientType"
-      name="Web Service Client Types"
+      name="%XP_WEB_SERVICE_CLIENT_TYPES"
       schema="schema/webServiceClientType.exsd"/>
 
    <extension-point
       id="webServiceTest"
-      name="Web Service Test"
+      name="%XP_WEB_SERVICE_TEST"
       schema="schema/webServiceTest.exsd"/>
 
    <extension-point
       id="webServiceServerRuntimeType"
-      name="Web Service Server Runtime Types"
+      name="%XP_WEB_SERVICE_SERVER_RUNTIME_TYPES"
       schema="schema/webServiceServerRuntimeType.exsd"/>
 
    <extension-point
       id="clientProjectType"
-      name="clientProjectType"
+      name="%XP_WEB_SERVICE_CLIENT_PROJECT_TYPE"
       schema="schema/clientProjectType.exsd"/>   
 
    <extension-point
       id="objectSelectionWidget"
-      name="objectSelectionWidget"
+      name="%XP_OBJECT_SELECTION_WIDGET"
       schema="schema/objectSelectionWidget.exsd"/>
 
 
@@ -550,7 +550,7 @@
       </objectContribution>   
 
       <objectContribution
-            objectClass="org.eclipse.jst.internal.webservice.WebServiceNavigatorGroupType"
+            objectClass="org.eclipse.jst.j2ee.internal.webservice.WebServiceNavigatorGroupType"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.editor">
          <action
                label="%POPUP_ADD_HANDLERS"

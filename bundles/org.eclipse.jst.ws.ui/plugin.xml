@@ -82,7 +82,7 @@
       </page>
 
       <page
-            objectClass="org.eclipse.core.resources.IJavaProject"
+            objectClass="org.eclipse.jdt.core.IJavaProject"
             adaptable="true"
             name="%PREFERENCE_CATEGORY_WSI"
             class="org.eclipse.jst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage"
@@ -112,6 +112,7 @@
          </menu>
       </objectContribution>
 
+<!--
       <objectContribution
             objectClass="org.eclipse.jst.j2ee.ejb.EnterpriseBean"
             adaptable="true"
@@ -125,6 +126,7 @@
             </separator>
          </menu>
       </objectContribution>
+-->      
 
    </extension>
    

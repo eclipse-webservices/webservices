@@ -52,16 +52,16 @@
 
    <extension-point
       id="wsfinder"
-      name="org.eclipse.jst.ws.internal.consumption.wsfinder"/>
+      name="%XP_WSFINDER"/>
 
    <!-- The following extension point will be removed. -->
    <extension-point
       id="webServiceStartServerType"
-      name="WebServiceStartServerType"/>
+      name="%XP_WEB_SERVICE_START_SERVER_TYPE"/>
 
    <extension-point
       id="serverDefaulter"
-      name="Server Defaulter"/>
+      name="%XP_SERVER_DEFAULTER"/>
 
    <extension
          point="org.eclipse.jst.ws.consumption.webServiceStartServerType">
