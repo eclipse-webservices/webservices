@@ -8,10 +8,10 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.wsrt;
+package org.eclipse.wst.ws.internal.wsrt;
 
-public class WebServiceClientImpl {
-
+public class WebServiceImpl {
+	
 	private String id;
 	private String label;
 	private String[] resourceTypeMetadata;
@@ -47,13 +47,6 @@ public class WebServiceClientImpl {
 	
 	public void setResourceTypeMetadata(String[] resourceTypeMetadata) {
 		this.resourceTypeMetadata = resourceTypeMetadata;
-	}
-	
-	
+	}	
 
-	
-	
-	
-	
-	
 }

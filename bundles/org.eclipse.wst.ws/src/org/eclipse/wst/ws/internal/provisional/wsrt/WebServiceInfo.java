@@ -9,21 +9,17 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.provisional.wsrt;
+package org.eclipse.wst.ws.internal.provisional.wsrt;
 
-import org.eclipse.wst.command.internal.provisional.ICommandFactory;
+public class WebServiceInfo {
 
-public abstract class AbstractWebServiceRuntime implements IWebServiceRuntime {
-
-	public abstract IWebService getWebService();
-	/**
-	 */
-	public abstract IWebServiceClient getWebServiceClient();
-	/**
-	 */
-	public ICommandFactory announce(IWebService webService)
-	{
-		//TODO provide a boiler-plate announce implementation.
-		return null;
-	}
+	private WebServiceState state;
+	private java.lang.String servletLevel;
+	private java.lang.String j2eeLevel;
+	private java.lang.String serverFactoryId;
+	private java.lang.String serverInstanceId;
+	private java.lang.String webServiceRuntimeId;
+	private java.lang.String wsdlURL;
+	private java.lang.String endPointURL;
+	private java.lang.String implURL;
 }

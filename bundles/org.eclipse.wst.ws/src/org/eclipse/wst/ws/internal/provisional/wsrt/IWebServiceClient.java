@@ -8,22 +8,21 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.provisional.wsrt;
-
+package org.eclipse.wst.ws.internal.provisional.wsrt;
 
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.ICommandFactory;
 
-
-public interface IWebService {
-
+public interface IWebServiceClient {
+	
 	/**
 	 */
-	public WebServiceInfo getWebServiceInfo();
+	public WebServiceClientInfo getWebServiceClientInfo();
 	
 	public ICommandFactory develop(Environment env, IContext ctx, ISelection sel, String module, String ear);
 	public ICommandFactory deploy(Environment env, IContext ctx, ISelection sel, String module, String ear);
 	public ICommandFactory assemble(Environment env, IContext ctx, ISelection sel, String module, String ear);
 	public ICommandFactory install(Environment env, IContext ctx, ISelection sel, String module, String ear);
-	public ICommandFactory run(Environment env, IContext ctx, ISelection sel, String module, String ear);
+	public ICommandFactory run(Environment env, IContext ctx, ISelection sel, String module, String ear);	
+
 }

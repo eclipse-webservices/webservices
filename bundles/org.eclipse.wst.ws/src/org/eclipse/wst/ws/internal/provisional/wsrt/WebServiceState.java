@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.provisional.wsrt;
+package org.eclipse.wst.ws.internal.provisional.wsrt;
 
 import java.util.List;
 import java.util.Arrays;

@@ -9,7 +9,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.wsrt;
+package org.eclipse.wst.ws.internal.wsrt;
 
 
 public class WebServiceRuntimeInfo {

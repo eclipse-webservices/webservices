@@ -9,21 +9,10 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.wsrt;
+package org.eclipse.wst.ws.internal.provisional.wsrt;
 
-import org.eclipse.jst.ws.internal.provisional.wsrt.ISelection;
-
-public class Selection implements ISelection {
-
-	private String[] selection;
+public interface ISelection {
 	
-	public String[] getSelection() {
-		return selection;
-	}
-	
-	public void setSelection(String[] selection)
-	{
-		this.selection = selection;
-	}
+	String[] getSelection();
 
 }

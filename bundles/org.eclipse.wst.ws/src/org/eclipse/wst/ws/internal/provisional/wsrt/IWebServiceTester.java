@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.provisional.wsrt;
+package org.eclipse.wst.ws.internal.provisional.wsrt;
 
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.ICommandFactory;

@@ -9,20 +9,21 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.provisional.wsrt;
+package org.eclipse.wst.ws.internal.wsrt;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
 
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
+public class Selection implements ISelection {
 
-public interface IObjectSelector {
+	private String[] selection;
 	
-	public void setInitialSelection(ISelection sel);
-	public ISelection getSelection();
-	public String getProject();
-	public Status validateSelection(ISelection sel);
-	public WidgetDataEvents addControls(Composite parent, Listener statusListener);
+	public String[] getSelection() {
+		return selection;
+	}
+	
+	public void setSelection(String[] selection)
+	{
+		this.selection = selection;
+	}
 
 }
