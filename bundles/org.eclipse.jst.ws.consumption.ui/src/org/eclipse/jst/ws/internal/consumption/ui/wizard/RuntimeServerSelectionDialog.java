@@ -37,7 +37,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.server.core.IModuleType;
 import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IServer;
@@ -189,7 +190,9 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     else
       thisShell.setText(getMessage("%PAGE_TITLE_WS_CLIENT_RUNTIME_SELECTION"));
     
-    WorkbenchHelp.setHelp(thisShell, new Object[] { INFOPOP_PWRS_DIALOG});
+    IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+    
+    helpSystem.setHelp(thisShell, INFOPOP_PWRS_DIALOG);
     // Dialog description banner
     messageBanner_ = new Text(composite, SWT.READ_ONLY | SWT.WRAP);
     messageBanner_.setText(getMessage("%PAGE_DESC_WS_RUNTIME_SELECTION") + "\n" + "      "); // reserves a second line for message display
@@ -217,17 +220,17 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     viewSelectionByServerButton_.addListener(SWT.Selection, this);
     viewSelectionByServerButton_.setToolTipText(getMessage("%TOOLTIP_PWRS_RADIO_SERVER"));
     viewSelectionByServerButton_.setSelection(true);
-    WorkbenchHelp.setHelp(viewSelectionByServerButton_, new Object[] { INFOPOP_PWRS_RADIO_SERVER});
+    helpSystem.setHelp(viewSelectionByServerButton_, INFOPOP_PWRS_RADIO_SERVER);
     viewSelectionByRuntimeButton_ = new Button(viewSelectionGroup_, SWT.RADIO);
     viewSelectionByRuntimeButton_.setText(getMessage("%LABEL_SELECTION_VIEW_RUNTIME"));
     viewSelectionByRuntimeButton_.addListener(SWT.Selection, this);
     viewSelectionByRuntimeButton_.setToolTipText(getMessage("%TOOLTIP_PWRS_RADIO_RUNTIME"));
-    WorkbenchHelp.setHelp(viewSelectionByRuntimeButton_, new Object[] { INFOPOP_PWRS_RADIO_RUNTIME});
+    helpSystem.setHelp(viewSelectionByRuntimeButton_, INFOPOP_PWRS_RADIO_RUNTIME);
     viewSelectionByExploreButton_ = new Button(viewSelectionGroup_, SWT.RADIO);
     viewSelectionByExploreButton_.setText(getMessage("%LABEL_SELECTION_VIEW_EXPLORE"));
     viewSelectionByExploreButton_.addListener(SWT.Selection, this);
     viewSelectionByExploreButton_.setToolTipText(getMessage("%TOOLTIP_PWRS_RADIO_EXPLORE"));
-    WorkbenchHelp.setHelp(viewSelectionByExploreButton_, new Object[] { INFOPOP_PWRS_RADIO_EXPLORE});
+    helpSystem.setHelp(viewSelectionByExploreButton_, INFOPOP_PWRS_RADIO_EXPLORE);
     primaryGroup_ = new Composite(composite, SWT.NONE);
     gl = new GridLayout();
     gl.numColumns = 1;
@@ -246,7 +249,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     runtimesList_.setLayoutData(gd);
     runtimesList_.addListener(SWT.Selection, this);
     runtimesList_.setToolTipText(getMessage("%TOOLTIP_PWRS_LIST_RUNTIMES"));
-    WorkbenchHelp.setHelp(runtimesList_, new Object[] { INFOPOP_PWRS_LIST_RUNTIMES});
+    helpSystem.setHelp(runtimesList_, INFOPOP_PWRS_LIST_RUNTIMES);
     //  Server labels control
     serversGroup_ = new Group(primaryGroup_, SWT.NONE);
     gl = new GridLayout();
@@ -260,7 +263,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     serverList_.setToolTipText(getMessage("%TOOLTIP_PWRS_LIST_SERVERS"));
     ServersList serverList = new ServersList();
     serverList.setServerTreeItems(serverList_);
-    WorkbenchHelp.setHelp(serverList_, new Object[] { INFOPOP_PWRS_LIST_SERVERS});
+    helpSystem.setHelp(serverList_, INFOPOP_PWRS_LIST_SERVERS);
     setRuntimesGroup();
     // J2EE version
     Composite j2eeVersionComposite = new Composite(composite, SWT.NONE);
@@ -282,7 +285,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     j2eeVersionCombo.setLayoutData(gd);
     j2eeVersionCombo.addListener(SWT.Selection, this);
     j2eeVersionCombo.setToolTipText(getMessage("%TOOLTIP_PWRS_J2EE_VERSION"));
-    WorkbenchHelp.setHelp(j2eeVersionCombo, new Object[] { INFOPOP_PWRS_J2EE_VERSION});
+    helpSystem.setHelp(j2eeVersionCombo, INFOPOP_PWRS_J2EE_VERSION);
     //  -----------------------------------------------------------------------//
     new Label(composite, SWT.HORIZONTAL);
     validateOn_ = true;

@@ -21,7 +21,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
@@ -86,7 +86,7 @@ public class WebServiceServerRuntimeTypeRegistry implements CommandRegistry
   //
   private void loadTypes ()
   {
-    IPluginRegistry reg = Platform.getPluginRegistry();
+    IExtensionRegistry reg = Platform.getExtensionRegistry();
     IConfigurationElement[] config = reg.getConfigurationElementsFor(
                                      "org.eclipse.jst.ws.consumption.ui",
                                      "webServiceServerRuntimeType");

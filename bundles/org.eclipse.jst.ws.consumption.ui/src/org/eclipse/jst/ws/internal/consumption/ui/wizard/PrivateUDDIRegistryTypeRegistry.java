@@ -13,7 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jst.ws.internal.ui.uddi.PrivateUDDIRegistryType;
 
@@ -40,7 +40,7 @@ public class PrivateUDDIRegistryTypeRegistry
   }
 
   public PrivateUDDIRegistryType getPrivateUDDIRegistryType() {
-    IPluginRegistry reg = Platform.getPluginRegistry();
+    IExtensionRegistry reg = Platform.getExtensionRegistry();
     IConfigurationElement[] config = reg.getConfigurationElementsFor(
                                      "org.eclipse.jst.ws.consumption.ui",
                                      "privateUDDIRegistryType");

@@ -14,12 +14,11 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.env.common.FileResourceUtils;
@@ -65,7 +64,7 @@ public Status execute(Environment env)
     if (webModulePath == null)
       return new SimpleStatus(WebServiceConsumptionUIPlugin.ID,msgUtils.getMessage("MSG_ERROR_PROJECT_NOT_FOUND"), Status.ERROR);
       
-    Status status = copyIFile("webserviceutils.jar",webModulePath,"WEB-INF/lib/webserviceutils.jar", getPlugin("org.eclipse.jst.ws.consumption"),env);
+    Status status = copyIFile("webserviceutils.jar",webModulePath,"WEB-INF/lib/webserviceutils.jar", WebServiceConsumptionPlugin.getInstance(),env);
     if(status.getSeverity() == Status.ERROR){
       StatusHandler sHandler = env.getStatusHandler();
       Status errorStatus = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS"), Status.ERROR);
@@ -122,21 +121,6 @@ private Status copyIFile(String source, IPath targetPath, String targetFile, Plu
     }
   }
   return new SimpleStatus("");
-}
-
-/**
- *
- */
-private Plugin getPlugin(String pluginId)
-{
-  try
-  {
-    return Platform.getPluginRegistry().getPluginDescriptor(pluginId).getPlugin();
-  }
-  catch (CoreException ce)
-  {
-    return null;
-  }
 }
 
 public void setSampleProject(String sampleProject)

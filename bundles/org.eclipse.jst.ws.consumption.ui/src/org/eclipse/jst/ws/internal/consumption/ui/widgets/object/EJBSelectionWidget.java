@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
@@ -124,7 +124,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
     });
     addEARNamesToList();
     earList.setToolTipText(msgUtils.getMessage("TOOLTIP_EAR_PROJECTS"));
-    WorkbenchHelp.setHelp(earList, new Object[]{INFOPOP_PEBD_EAR_PROJECTS});
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(earList, INFOPOP_PEBD_EAR_PROJECTS);
     Group beanComposite = new Group(composite, SWT.NONE);
     layout = new GridLayout();
     beanComposite.setLayout(layout);
@@ -145,7 +145,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
       }
     });
     beanTable.setToolTipText(msgUtils.getMessage("TOOLTIP_TABLE_BEAN_NAMES"));
-    WorkbenchHelp.setHelp(beanTable, new Object[]{INFOPOP_PEBD_TABLE_BEAN_NAMES});
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(beanTable, INFOPOP_PEBD_TABLE_BEAN_NAMES);
     if (earProjects != null && earProjects.length > 0)
     {
       setBeanList(earProjects[0]);

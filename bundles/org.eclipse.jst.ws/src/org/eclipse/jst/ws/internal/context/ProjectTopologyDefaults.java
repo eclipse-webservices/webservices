@@ -12,14 +12,14 @@
 package org.eclipse.jst.ws.internal.context;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 public class ProjectTopologyDefaults
 {
   public static final String[] getClientTypes()
   {
-    IPluginRegistry reg = Platform.getPluginRegistry();
+    IExtensionRegistry reg = Platform.getExtensionRegistry();
     IConfigurationElement[] elements = reg.getConfigurationElementsFor("org.eclipse.jst.ws.consumption.ui", "clientProjectType");
     String[] types = new String[elements.length];
     for (int i = 0; i < types.length; i++)

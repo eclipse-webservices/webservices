@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
 import org.eclipse.jst.j2ee.internal.servertarget.ServerTargetHelper;
@@ -378,7 +378,7 @@ public class ServerSelectionUtils
   {
     try
     {
-    IPluginRegistry reg = Platform.getPluginRegistry();
+    IExtensionRegistry reg = Platform.getExtensionRegistry();
     IConfigurationElement[] elements = reg.getConfigurationElementsFor("org.eclipse.jst.ws.consumption", "serverDefaulter");
     for (int i=0; i<elements.length; i++)
     {

@@ -15,15 +15,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
 
 
 /**
@@ -52,19 +49,11 @@ public class WebServiceConsumptionUIPlugin extends AbstractUIPlugin
   
   /**
   * Constructs a runtime plugin object for this plugin.
-  * The "plugin" element in plugin.xml should include the attribute
-  * class = "org.eclipse.jst.ws.internal.ui.plugin.WebServicePlugin".
-  * @param descriptor The descriptor of this plugin.
   */
-  public WebServiceConsumptionUIPlugin ( IPluginDescriptor descriptor )
+  public WebServiceConsumptionUIPlugin ()
   {
-    super(descriptor);
-    if (instance_ == null)
-    {
-      instance_ = this;
-    }
-    log_ = new EclipseLog();
-
+    super();
+    instance_ = this;
   }
 
   /**
@@ -75,26 +64,6 @@ public class WebServiceConsumptionUIPlugin extends AbstractUIPlugin
   static public WebServiceConsumptionUIPlugin getInstance ()
   {
     return instance_;
-  }
-
-  /**
-  * Called once by the platform when this plugin is first loaded.
-  * @throws CoreException If this plugin fails to start.
-  */
-  public void startup () throws CoreException
-  {
-  	log_.log(Log.INFO, 5056, this, "startup", "Starting plugin org.eclipse.jst.ws.consumption.ui");
-    super.startup();
-  }
-
-  /**
-  * Called once by the platform when this plugin is unloaded.
-  * @throws CoreException If this plugin fails to shutdown.
-  */
-  public void shutdown () throws CoreException
-  {
-    log_.log(Log.INFO, 5057, this, "shutdown", "Shutting plugin org.eclipse.jst.ws.consumption.ui");
-    super.shutdown();
   }
 
  /**
@@ -148,7 +117,7 @@ public class WebServiceConsumptionUIPlugin extends AbstractUIPlugin
   {
     try
     {
-      URL installURL = instance_.getDescriptor().getInstallURL();
+      URL installURL = instance_.getBundle().getEntry("/");;
       URL imageURL = new URL(installURL,name);
       return ImageDescriptor.createFromURL(imageURL);
     }
@@ -164,7 +133,7 @@ public class WebServiceConsumptionUIPlugin extends AbstractUIPlugin
 
   public String getPluginInstallLocation() {
     try {
-      return Platform.resolve(getDescriptor().getInstallURL()).getFile();
+      return Platform.resolve(getBundle().getEntry("/")).getFile();
     }
     catch (Exception e) {
       return null;

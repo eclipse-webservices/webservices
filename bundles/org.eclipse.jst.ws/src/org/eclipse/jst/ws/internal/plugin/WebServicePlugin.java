@@ -13,8 +13,7 @@ package org.eclipse.jst.ws.internal.plugin;
 
 import java.text.MessageFormat;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPluginDescriptor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jst.ws.internal.context.PersistentProjectTopologyContext;
 import org.eclipse.jst.ws.internal.context.PersistentScenarioContext;
@@ -22,9 +21,7 @@ import org.eclipse.jst.ws.internal.context.PersistentUDDIPreferenceContext;
 import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.context.UDDIPreferenceContext;
-import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.core.context.ResourceContext;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 
 
@@ -51,59 +48,23 @@ public class WebServicePlugin extends Plugin
   private PersistentScenarioContext scenarioContext_;
   private PersistentProjectTopologyContext projectTopologyContext_;
   private PersistentUDDIPreferenceContext uddiPreferenceContext;
-  private Log log_;
   
   /**
-  * Constructs a runtime plugin object for this plugin.
-  * The "plugin" element in plugin.xml should include the attribute
-  * class = "org.eclipse.jst.ws.internal.plugin.WebServicePlugin".
-  * @param descriptor The descriptor of this plugin.
-  */
-  public WebServicePlugin ( IPluginDescriptor descriptor )
-  {
-    super(descriptor);
-    if (instance_ == null)
-    {
-      instance_ = this;
-    }
-    log_ = new EclipseLog();
-  }
-
-  // New M7 code will create plugins with the default constructor.
+   * Constructs a runtime plugin object for this plugin.
+   */
   public WebServicePlugin()
   {
+    super();
     instance_ = this; 
   }
   
   /**
-  * Returns the singleton instance of this plugin. Equivalent to calling
-  * (WebServicePlugin)Platform.getPlugin("org.eclipse.jst.ws");
+  * Returns the singleton instance of this plugin.
   * @return The WebServicePlugin singleton.
   */
   public static WebServicePlugin getInstance ()
   {
     return instance_;
-  }
-
-  /**
-  * Called once by the platform when this plugin is first loaded.
-  * @throws CoreException If this plugin fails to start.
-  */
-  public void startup () throws CoreException
-  {
-    log_.log(Log.INFO, 5027, this, "startup", "Starting plugin org.eclipse.jst.ws");
-    super.startup();
-  }
-
-  /**
-  * Called once by the platform when this plugin is unloaded.
-  * @throws CoreException If this plugin fails to shutdown.
-  */
-  public void shutdown () throws CoreException
-  {
-    log_.log(Log.INFO, 5028, this, "shutdown", "Shutting plugin org.eclipse.jst.ws");
-    
-    super.shutdown();
   }
 
   protected void initializeDefaultPluginPreferences() 
@@ -152,7 +113,7 @@ public class WebServicePlugin extends Plugin
   */
   public static String getMessage ( String key )
   {
-    return instance_.getDescriptor().getResourceString(key);
+    return Platform.getResourceString(instance_.getBundle(),key);
   }
 
   /**

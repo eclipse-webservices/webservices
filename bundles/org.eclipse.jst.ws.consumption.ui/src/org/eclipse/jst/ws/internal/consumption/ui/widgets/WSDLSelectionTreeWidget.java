@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
@@ -82,7 +82,7 @@ public class WSDLSelectionTreeWidget extends SimpleWidgetDataContributor
     this.parent = parent;
   	this.statusListener = statusListener;
     parent.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWWS_PAGE"));
-    WorkbenchHelp.setHelp(parent, pluginId_ + INFOPOP_PWWS_PAGE);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, pluginId_ + INFOPOP_PWWS_PAGE);
 
     Label wsdlLabel = new Label(parent, SWT.WRAP);
     wsdlLabel.setText(msgUtils_.getMessage("LABEL_SELECT_WSDL"));

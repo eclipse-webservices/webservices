@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
@@ -82,7 +82,7 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
     Composite group = uiUtils.createComposite( parent, 4 );
     
     group.setToolTipText( msgUtils.getMessage("TOOLTIP_PBCL_PAGE") );
-    WorkbenchHelp.setHelp( group, pluginId_ + "." + INFOPOP_PBCL_PAGE );
+    PlatformUI.getWorkbench().getHelpSystem().setHelp( group, pluginId_ + "." + INFOPOP_PBCL_PAGE );
     
     beanClassText_ = uiUtils.createText( group, "LABEL_BEAN_CLASS_NAME",
                                          "TOOLTIP_PBCL_TEXT_BEAN_CLASS",

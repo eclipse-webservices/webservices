@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.selection.BooleanSelection;
 import org.eclipse.wst.command.env.core.selection.SelectionList;
@@ -113,7 +113,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     UIUtils      uiUtils  = new UIUtils(msgUtils, pluginId_ );
         
 	parent.setToolTipText( msgUtils.getMessage( "TOOLTIP_PWSM_PAGE" ) );
-    WorkbenchHelp.setHelp( parent, pluginId_ + "." + INFOPOP_PWSM_PAGE );
+	PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId_ + "." + INFOPOP_PWSM_PAGE );
     
     testCheckbox_ = uiUtils.createCheckbox( parent, "BUTTON_TEST",
                                             "TOOLTIP_PWSM_CHECKBOX_TEST",

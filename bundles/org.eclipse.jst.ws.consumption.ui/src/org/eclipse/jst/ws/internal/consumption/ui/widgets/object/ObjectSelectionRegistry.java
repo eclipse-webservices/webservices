@@ -20,7 +20,7 @@ public class ObjectSelectionRegistry
   
   private ObjectSelectionRegistry()
   {
-    elements = Platform.getPluginRegistry().getConfigurationElementsFor("org.eclipse.jst.ws.consumption.ui", "objectSelectionWidget");
+    elements = Platform.getExtensionRegistry().getConfigurationElementsFor("org.eclipse.jst.ws.consumption.ui", "objectSelectionWidget");
   }
   
   public static ObjectSelectionRegistry getInstance()

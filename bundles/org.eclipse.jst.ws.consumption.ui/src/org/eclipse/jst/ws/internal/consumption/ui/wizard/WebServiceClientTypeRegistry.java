@@ -18,7 +18,7 @@ import java.util.Vector;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jst.ws.internal.consumption.fragments.ClientPreAssemblyFragment;
 import org.eclipse.jst.ws.internal.consumption.fragments.ClientPreDeployFragment;
@@ -68,7 +68,7 @@ public class WebServiceClientTypeRegistry implements CommandRegistry
   //
   private void loadTypes ()
   {    
-    IPluginRegistry reg = Platform.getPluginRegistry();
+    IExtensionRegistry reg = Platform.getExtensionRegistry();
     IConfigurationElement[] config = reg.getConfigurationElementsFor(
                                      "org.eclipse.jst.ws.consumption.ui",
                                      "webServiceClientType");

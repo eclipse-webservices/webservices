@@ -47,7 +47,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 
 
 public class TableViewerEditor extends Composite
@@ -257,7 +257,7 @@ public class TableViewerEditor extends Composite
 
   public void setInfopop(String string)
   {
-    WorkbenchHelp.setHelp(table_, new Object[] {string});
+  	PlatformUI.getWorkbench().getHelpSystem().setHelp(table_, string);
   }
   
   public void setInput(List list)

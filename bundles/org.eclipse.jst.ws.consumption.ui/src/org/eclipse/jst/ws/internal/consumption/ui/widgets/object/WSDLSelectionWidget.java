@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
@@ -89,7 +89,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     statusListener_  = statusListener;
 
 	  parent.setToolTipText( msgUtils_.getMessage( "TOOLTIP_PCON_PAGE" ) );
-    WorkbenchHelp.setHelp( parent, pluginId_ + "." + INFOPOP_PCON_PAGE );
+	  PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId_ + "." + INFOPOP_PCON_PAGE );
     
     Composite wsdlGroup = uiUtils.createComposite( parent, 2, 5, 0 );
     

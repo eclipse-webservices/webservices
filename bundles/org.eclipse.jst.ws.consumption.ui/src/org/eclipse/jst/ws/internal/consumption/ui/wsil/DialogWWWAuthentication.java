@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.ws.parser.wsil.WWWAuthenticationException;
 import org.eclipse.wst.ws.parser.wsil.WWWAuthenticationHandler;
 
@@ -117,7 +117,7 @@ public class DialogWWWAuthentication extends Dialog implements WWWAuthentication
     username_ = new Text(composite, SWT.BORDER);
     username_.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     username_.setToolTipText(getMessage("%TOOLTIP_HTTP_BASIC_AUTH_USERNAME"));
-    WorkbenchHelp.setHelp(username_, new Object[]{INFOPOP_DBAS_USERNAME});
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(username_, INFOPOP_DBAS_USERNAME);
 
     label = new Label(composite, SWT.WRAP);
     label.setText(getMessage("%LABEL_HTTP_BASIC_AUTH_PASSWORD"));
@@ -127,7 +127,7 @@ public class DialogWWWAuthentication extends Dialog implements WWWAuthentication
     password_.setEchoChar('*');
     password_.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     password_.setToolTipText(getMessage("%TOOLTIP_HTTP_BASIC_AUTH_PASSWORD"));
-    WorkbenchHelp.setHelp(username_, new Object[]{INFOPOP_DBAS_PASSWORD});
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(username_, INFOPOP_DBAS_PASSWORD);
 
     return composite;
   }

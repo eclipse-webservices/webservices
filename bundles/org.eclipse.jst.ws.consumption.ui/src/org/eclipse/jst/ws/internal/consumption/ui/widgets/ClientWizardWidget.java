@@ -15,7 +15,7 @@ import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.context.ResourceContext;
 import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
@@ -44,7 +44,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
     MessageUtils msgUtils = new MessageUtils( pluginId + ".plugin", this );
     UIUtils      utils    = new UIUtils( msgUtils, pluginId );
     
-  	WorkbenchHelp.setHelp( parent, pluginId + "." +  INFOPOP_PWPR_PAGE );
+    PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId + "." +  INFOPOP_PWPR_PAGE );
   	
   	Composite clientComposite = utils.createComposite( parent, 1 );
   	

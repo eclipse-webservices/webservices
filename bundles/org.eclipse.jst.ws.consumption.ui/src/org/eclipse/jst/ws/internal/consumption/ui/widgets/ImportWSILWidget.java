@@ -37,7 +37,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
@@ -83,8 +84,10 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
 
   public WidgetDataEvents addControls(Composite parent, Listener statusListener)
   {
+  	IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+  	
     parent.setToolTipText(msgUtils.getMessage("TOOLTIP_WSIL_IMPORT_PAGE"));
-    WorkbenchHelp.setHelp(parent, INFOPOP_WSIL_IMPORT_PAGE);
+    helpSystem.setHelp(parent, INFOPOP_WSIL_IMPORT_PAGE);
 
     Composite composite = new Composite(parent, SWT.NONE);
     GridLayout gl = new GridLayout();
@@ -105,7 +108,7 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
     wsil_.setLayoutData(gd);
     wsil_.addListener(SWT.Modify, statusListener);
     wsil_.setToolTipText(msgUtils.getMessage("TOOLTIP_WSIL_TEXT_WSIL"));
-    WorkbenchHelp.setHelp(wsil_, INFOPOP_WSIL_TEXT_WSIL);
+    helpSystem.setHelp(wsil_, INFOPOP_WSIL_TEXT_WSIL);
 
     browse_ = new Button(composite, SWT.PUSH);
     browse_.setText(msgUtils.getMessage("LABEL_BROWSE"));
@@ -120,7 +123,7 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
       }
     );
     browse_.setToolTipText(msgUtils.getMessage("TOOLTIP_WSIL_BUTTON_BROWSE_WSIL"));
-    WorkbenchHelp.setHelp(browse_, INFOPOP_WSIL_BUTTON_BROWSE_WSIL);
+    helpSystem.setHelp(browse_, INFOPOP_WSIL_BUTTON_BROWSE_WSIL);
 
     Composite wsdlComposite = new Composite(composite, SWT.NONE);
     wsdlComposite.setLayout(new GridLayout());

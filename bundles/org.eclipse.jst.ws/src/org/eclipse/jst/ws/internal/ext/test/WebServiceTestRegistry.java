@@ -12,7 +12,7 @@
 package org.eclipse.jst.ws.internal.ext.test;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jst.ws.internal.ext.WebServiceExtension;
 import org.eclipse.jst.ws.internal.ext.WebServiceExtensionRegistryImpl;
@@ -58,7 +58,7 @@ public class WebServiceTestRegistry extends WebServiceExtensionRegistryImpl
   */
   public IConfigurationElement[] getConfigElements()
   {
-    IPluginRegistry reg = Platform.getPluginRegistry();
+    IExtensionRegistry reg = Platform.getExtensionRegistry();
     IConfigurationElement[] config = reg.getConfigurationElementsFor(
                                      "org.eclipse.jst.ws.consumption.ui",
                                      "webServiceTest");

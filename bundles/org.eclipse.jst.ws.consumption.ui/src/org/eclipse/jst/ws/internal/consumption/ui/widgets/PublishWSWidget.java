@@ -28,7 +28,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
@@ -65,7 +66,8 @@ public class PublishWSWidget extends SimpleWidgetDataContributor
       }
     };
     parent.setToolTipText(msgUtils.getMessage("TOOLTIP_PWPB_PAGE"));
-    WorkbenchHelp.setHelp(parent, INFOPOP_PWPB_PAGE);
+    IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+    helpSystem.setHelp(parent, INFOPOP_PWPB_PAGE);
     launchPrivateUDDICheckbox_ = new Button(parent, SWT.CHECK);
     if (publish.booleanValue())
       launchPrivateUDDICheckbox_.setText(msgUtils.getMessage("BUTTON_WS_PUBLISH_PRIVATE_UDDI"));
@@ -73,7 +75,7 @@ public class PublishWSWidget extends SimpleWidgetDataContributor
       launchPrivateUDDICheckbox_.setText(msgUtils.getMessage("BUTTON_WS_FIND_PRIVATE_UDDI"));
     launchPrivateUDDICheckbox_.setToolTipText(msgUtils.getMessage("TOOLTIP_PWPB_CHECKBOX_WS_LAUNCH"));
     launchPrivateUDDICheckbox_.addListener(SWT.Selection, selListener);
-    WorkbenchHelp.setHelp(launchPrivateUDDICheckbox_, INFOPOP_PWPB_CHECKBOX_WS_LAUNCH);
+    helpSystem.setHelp(launchPrivateUDDICheckbox_, INFOPOP_PWPB_CHECKBOX_WS_LAUNCH);
     launchUDDICheckbox_ = new Button(parent, SWT.CHECK);
     if (publish.booleanValue())
       launchUDDICheckbox_.setText(msgUtils.getMessage("BUTTON_WS_PUBLISH"));
@@ -81,7 +83,7 @@ public class PublishWSWidget extends SimpleWidgetDataContributor
       launchUDDICheckbox_.setText(msgUtils.getMessage("BUTTON_WS_FIND"));
     launchUDDICheckbox_.setToolTipText(msgUtils.getMessage("TOOLTIP_PWPB_CHECKBOX_WS_LAUNCH"));
     launchUDDICheckbox_.addListener(SWT.Selection, selListener);
-    WorkbenchHelp.setHelp(launchUDDICheckbox_, INFOPOP_PWPB_CHECKBOX_WS_LAUNCH);
+    helpSystem.setHelp(launchUDDICheckbox_, INFOPOP_PWPB_CHECKBOX_WS_LAUNCH);
     Composite c = new Composite(parent, SWT.NONE);
     GridLayout gl = new GridLayout();
     gl.numColumns = 3;
