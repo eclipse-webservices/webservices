@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 
-import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
