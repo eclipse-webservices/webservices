@@ -41,7 +41,7 @@ import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.common.emf.utilities.EtoolsCopyUtility;
+import org.eclipse.wst.common.internal.emf.utilities.EtoolsCopyUtility;
 
 /*
  * Provide a way to externalize the edited fields and create new handlers

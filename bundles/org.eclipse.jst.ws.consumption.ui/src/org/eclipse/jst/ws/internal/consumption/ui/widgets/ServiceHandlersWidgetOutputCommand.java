@@ -16,18 +16,18 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.eclipse.jst.j2ee.webservice.internal.wsdd.impl.WsddFactoryImpl;
 import org.eclipse.jst.j2ee.webservice.wsdd.Handler;
 import org.eclipse.jst.j2ee.webservice.wsdd.PortComponent;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
 import org.eclipse.jst.j2ee.webservice.wsdd.WsddFactory;
 import org.eclipse.jst.j2ee.webservice.wsdd.WsddResource;
-import org.eclipse.jst.j2ee.webservice.internal.wsdd.impl.WsddFactoryImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.common.emf.utilities.EtoolsCopyUtility;
+import org.eclipse.wst.common.internal.emf.utilities.EtoolsCopyUtility;
 
 /*
  * Provide a way to externalize the edited fields and create new handlers
