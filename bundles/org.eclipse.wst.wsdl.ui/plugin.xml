@@ -41,7 +41,6 @@
       <import plugin="org.eclipse.emf.edit.ui"/>
    </requires>
 
-
    <extension
          point="org.eclipse.ui.editors">
       <editor

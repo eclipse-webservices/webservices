@@ -11,7 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.actions;
 
 import org.eclipse.ui.IActionBars;
-import org.eclipse.wst.sse.ui.ISourceViewerActionBarContributor;
+import org.eclipse.wst.sse.ui.internal.ISourceViewerActionBarContributor;
 
 public interface IDesignViewerActionBarContributor extends ISourceViewerActionBarContributor {
 	public void initViewerSpecificContributions(IActionBars bars);
