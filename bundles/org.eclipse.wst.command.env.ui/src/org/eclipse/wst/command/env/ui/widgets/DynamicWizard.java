@@ -18,8 +18,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -44,6 +43,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.SimplePageFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.WizardPageFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WizardPageManager;
+import org.osgi.framework.Bundle;
 
 
 /**
@@ -96,7 +96,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WizardPageManager;
 public class DynamicWizard extends Wizard implements INewWizard, IExecutableExtension
 {
   private   String                  iconBannerName_;
-  private   IPluginDescriptor       pluginDescriptor_;
+  private   Bundle                  bundle_;
   private   SimpleCanFinishRegistry canFinishRegistry_; 
   private   WizardPageManager       pageManager_;
   private   String                  wizardTitle_;
@@ -145,12 +145,12 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
    * @param wizardTitle    the wizard title
    */
   public void setInitialData( CommandWidgetBinding binding,
-                              IPluginDescriptor    descriptor,
+                              Bundle               bundle,
                               String               iconBannerPath,
                               String               wizardTitle )
   {
     commandWidgetBinding_ = binding;
-    pluginDescriptor_     = descriptor;
+    bundle_               = bundle;
     iconBannerName_       = iconBannerPath;
     wizardTitle_          = wizardTitle;
   }
@@ -162,7 +162,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
    */
   public void setInitialData( String wizardId ) throws CoreException
   {
-    IPluginRegistry       registry      = Platform.getPluginRegistry();
+    IExtensionRegistry    registry      = Platform.getExtensionRegistry();
     IExtensionPoint       point         = registry.getExtensionPoint("org.eclipse.wst.command.env.dynamicWizard");
     IExtension[]          extensions    = point.getExtensions();
     int                   wizardIndex   = -1;
@@ -187,7 +187,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
     if( wizardElement_ != null )
     {
       commandWidgetBinding_ = (CommandWidgetBinding)wizardElement_.createExecutableExtension( "class" );
-      pluginDescriptor_     = extensions[wizardIndex].getDeclaringPluginDescriptor();
+      bundle_               = Platform.getBundle(extensions[wizardIndex].getNamespace());
       iconBannerName_       = wizardElement_.getAttribute( "iconbanner" );
       wizardTitle_          = wizardElement_.getAttribute( "title" );
     }
@@ -258,7 +258,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
     {
       try
       {
-        URL installURL        = pluginDescriptor_.getInstallURL();
+        URL installURL        = bundle_.getEntry("/");
         URL imageURL          = new URL(installURL, iconBannerName_ );
         ImageDescriptor image = ImageDescriptor.createFromURL(imageURL);
         
