@@ -201,6 +201,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   		  clientIds.setServerInstanceId( serviceIds.getServerInstanceId() );
 
   		  clientWidget_.setClientTypeRuntimeServer( clientIds );
+  		  clientWidget_.setJ2EEVersion(runtimeWidget_.getJ2EEVersion());  	
   		}
 		
 		//Set the current server selection and J2EE level on the ProjectSelectionWidget
