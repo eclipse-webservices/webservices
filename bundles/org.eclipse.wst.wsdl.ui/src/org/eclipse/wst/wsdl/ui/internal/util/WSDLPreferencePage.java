@@ -38,23 +38,38 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
   {
     Composite parent = getFieldEditorParent();
 	GridLayout parentLayout = new GridLayout();
-	parentLayout.verticalSpacing = 15;
+	parentLayout.marginWidth = 0;
 	parent.setLayout(parentLayout);
+	
 //    WorkbenchHelp.setHelp(getControl(), some context id here); 
 
-	Group editorGroup1 = new Group(parent, SWT.NONE);
-	editorGroup1.setText(WSDLEditorPlugin.getWSDLString("_UI_EDITOR_NAME"));
+	Group group = new Group(parent, SWT.NULL);
+    GridLayout layout = new GridLayout();
+    layout.marginWidth = 0;
+    layout.numColumns = 2;
+    group.setLayout(layout);
+    group.setText(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_CREATING_FILES"));
 
-	GridData grid = new GridData();
-	grid.widthHint = 400;
-	editorGroup1.setLayoutData(grid);
+    GridData data = new GridData();
+    data.verticalAlignment = GridData.FILL;
+    data.horizontalAlignment = GridData.FILL;
+    data.grabExcessHorizontalSpace = true;
+    group.setLayoutData(data);
+    
+    Composite composite = new Composite(group, SWT.NULL);
+    GridData data1 = new GridData();
+    data1.verticalAlignment = GridData.FILL;
+    data1.horizontalAlignment = GridData.FILL;
+    data1.grabExcessHorizontalSpace = true;
+    composite.setLayoutData(data1);
 	
-	GridLayout layout = new GridLayout();
-	layout.numColumns = 2;
-	editorGroup1.setLayout(layout);	
-
-    StringFieldEditor targetNamespace = new StringFieldEditor(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"), WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"), editorGroup1); // Externalize
+    StringFieldEditor targetNamespace = new StringFieldEditor(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"), WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"), composite); // Externalize
+    GridLayout compositeLayout = (GridLayout)composite.getLayout();
+    compositeLayout.marginWidth = 5;   // Default value
+    compositeLayout.numColumns = 2;
     addField(targetNamespace);
+    targetNamespace.setFocus();
+
 
     /* Do we need this preference below?  If so, change WSDLEditorPlugin.java and use this preference in:
        HttpContentGenerator.java
@@ -64,10 +79,5 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
 //    HttpPortOptionsPage.java    StringFieldEditor location = new StringFieldEditor("Defualt Location:", "Default Location:", editorGroup1); // Externalize
 //    addField(location);    
     
-	GridLayout tempLayout = (GridLayout) editorGroup1.getLayout();
-	tempLayout.marginHeight = 7;
-	tempLayout.marginWidth = 7;
-    
-    targetNamespace.setFocus();
   }
 }
