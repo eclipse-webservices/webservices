@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
@@ -61,7 +61,7 @@ public class AxisMappingsWidget extends SimpleWidgetDataContributor
         
     // TODO The TOOLTIP_PWJM_PAGE key doesn't seem to exist anywhere???
 	//parent.setToolTipText( msgUtils.getMessage( "TOOLTIP_PWJM_PAGE" ) );
-    WorkbenchHelp.setHelp( parent, pluginId_ + "." + INFOPOP_PWJM_PAGE );
+    PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId_ + "." + INFOPOP_PWJM_PAGE );
     
     // TODO No tooltip or infopop for this group.
     Group mappingGroup = uiUtils.createGroup( parent, "LABEL_MAPPING_PAIRS", null, null );

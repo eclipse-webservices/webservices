@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
@@ -52,7 +52,7 @@ public class AxisProxyWidget extends SimpleWidgetDataContributor
     UIUtils      uiUtils  = new UIUtils(msgUtils, pluginId_ );
     
 	parent.setToolTipText( msgUtils.getMessage( TOOLTIP_PWJB_PAGE ) );
-    WorkbenchHelp.setHelp( parent, pluginId_ + "." +  INFOPOP_PWJB_PAGE);
+	PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId_ + "." +  INFOPOP_PWJB_PAGE);
     
     genProxyCheckbox_ = uiUtils.createCheckbox( parent, "CHECKBOX_GENPROXY",
                                                 TOOLTIP_PWJB_CHECKBOX_GENPROXY,
