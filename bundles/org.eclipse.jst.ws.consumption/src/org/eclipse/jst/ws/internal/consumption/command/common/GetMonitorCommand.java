@@ -102,13 +102,12 @@ public class GetMonitorCommand extends SimpleCommand
                 if (protocol != null && protocol.startsWith("http") && host != null && host.length() > 0 && port != -1)
                 {
                   IMonitor m = null;
-                  List monitors = MonitorCore.getMonitors();
-                  for (Iterator it = monitors.iterator(); it.hasNext();)
+                  IMonitor[] monitors = MonitorCore.getMonitors();
+                  for (int i=0; i<monitors.length; i++)
                   {
-                    IMonitor monitor = (IMonitor)it.next();
-                    if (host.equalsIgnoreCase(monitor.getRemoteHost()) && port == monitor.getRemotePort())
+                    if (host.equalsIgnoreCase(monitors[i].getRemoteHost()) && port == monitors[i].getRemotePort())
                     {
-                      m = monitor;
+                      m = monitors[i];
                       break;
                     }
                   }

@@ -45,7 +45,6 @@ import org.eclipse.wst.command.env.core.common.StatusException;
 import org.eclipse.wst.command.env.core.selection.BooleanSelection;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.webbrowser.WebBrowser;
-import org.eclipse.wst.webbrowser.WebBrowserEditorInput;
 
 public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTestCommand
 {
@@ -200,7 +199,7 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
     try{
       URL url;
       url = new URL(urlString.toString());
-      int style = WebBrowserEditorInput.SHOW_TOOLBAR | WebBrowserEditorInput.SHOW_STATUSBAR | WebBrowserEditorInput.FORCE_NEW_PAGE;  
+      int style = WebBrowser.SHOW_TOOLBAR | WebBrowser.SHOW_STATUSBAR | WebBrowser.FORCE_NEW_PAGE;  
 
       for( int retries = 0; retries < 10; retries++ )
       {
@@ -224,8 +223,7 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
         }
       }
 
-      WebBrowserEditorInput wbei = new WebBrowserEditorInput(url,style);
-      WebBrowser.openURL(wbei);
+      WebBrowser.openURL(url,style,null);
       return status;  
     }catch(MalformedURLException exc){
     	env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
