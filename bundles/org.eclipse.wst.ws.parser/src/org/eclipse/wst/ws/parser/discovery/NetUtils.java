@@ -23,17 +23,8 @@ import org.apache.soap.transport.http.SOAPHTTPConnection;
 
 import sun.misc.BASE64Encoder;
 
-import com.ibm.jsse.JSSEProvider;
-import com.ibm.net.ssl.internal.www.protocol.https.Handler;
-
 public final class NetUtils
 {
-  // Initialize the SSL provider subsystem.
-  static
-  {
-    Security.addProvider(new JSSEProvider());
-    System.setProperty("java.protocol.handler.pkgs","com.ibm.net.ssl.internal.www.protocol");
-  }
 
   /**
    * Get the java.net.URLConnection given a string representing the URL. This class ensures
@@ -70,19 +61,6 @@ public final class NetUtils
     return null;
   }
   
-  public static final void adjustSecurityProviderList()
-  {
-    // Ensure that the JSSE provider is first. This worksaround a WAS V502 issue where the IBMJSSEFIPS is added first.
-    Provider jsseProvider = Security.getProvider("JSSE");
-    Security.removeProvider("JSSE");
-    if (jsseProvider == null)
-    {
-      jsseProvider = new JSSEProvider();
-      System.setProperty("java.protocol.handler.pkgs","com.ibm.net.ssl.internal.www.protocol");
-    }
-    Security.insertProviderAt(jsseProvider,1);
-  }
-
   /**
    * Get the java.io.InputStream for a URL given a string representing the URL. This class
    * ensures that proxy settings in WSAD are respected.
@@ -131,21 +109,13 @@ public final class NetUtils
   }
 
   /**
-   * Create a URL from a string and provide an SSL handler if applicable.
+   * Create a URL from a string.
    * @param urlString String representing the URL.
    * @return URL java.lang.URL representation of the URL.
    * @throws MalformedURLException
    */
   public static final URL createURL(String urlString) throws MalformedURLException
   {
-    URL url;
-    if (urlString.startsWith("https"))
-    {
-      adjustSecurityProviderList();
-      url = new URL(null,urlString,new Handler());
-    }
-    else
-      url = new URL(urlString);
-    return url;
+  	return new URL(urlString);
   }
 }

@@ -17,14 +17,7 @@ import java.security.Security;
 
 import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 
-import com.ibm.jsse.JSSEProvider;
-
 public class WebServicesParserExt extends WebServicesParser {
-    // Initialize the SSL provider subsystem.
-    static {
-        Security.addProvider(new JSSEProvider());
-        System.setProperty("java.protocol.handler.pkgs", "com.ibm.net.ssl.internal.www.protocol");
-    }
 
     public WebServicesParserExt() {
         super();
