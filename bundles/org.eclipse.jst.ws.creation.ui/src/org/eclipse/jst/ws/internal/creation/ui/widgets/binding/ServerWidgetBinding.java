@@ -72,7 +72,6 @@ import org.eclipse.wst.command.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.env.ui.widgets.WidgetRegistry;
 
-
 public class ServerWidgetBinding implements CommandWidgetBinding
 {
   private CanFinishRegistry   canFinishRegistry_;
@@ -422,6 +421,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "ObjectSelection", ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientInitialSelection", null);
       dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "Project", ServerRuntimeSelectionWidgetDefaultingCommand.class, "InitialProject", null);
       dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "Project", ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientInitialProject", null);
+      dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "WebServicesParser", ServerExtensionDefaultingCommand.class );
       
       // Map ServerWizardWidgetDefaultingCommand
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ServerWizardWidgetOutputCommand.class);

@@ -29,11 +29,11 @@ import org.eclipse.jst.ws.internal.consumption.ui.command.data.ProjectName2IProj
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerName2IServerTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionOutputCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand;
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.env.ui.widgets.SelectionCommand;
-
 
 public class AxisSkeletonFragment extends SequenceFragment
 {
@@ -71,6 +71,8 @@ public class AxisSkeletonFragment extends SequenceFragment
     ProjectName2IProjectTransformer projectTransformer = new ProjectName2IProjectTransformer();
 
     dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", AxisSkeletonDefaultingCommand.class);
+    dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "ObjectSelection", AxisSkeletonDefaultingCommand.class);
+    dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "WebServicesParser", AxisSkeletonDefaultingCommand.class);
     
     // ValidateWSDLCommand
     dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", ValidateWSDLCommand.class);

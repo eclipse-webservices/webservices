@@ -22,7 +22,6 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonCon
 import org.eclipse.jst.ws.internal.consumption.common.WSDLResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ProjectName2IProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeType;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
@@ -30,11 +29,9 @@ import org.eclipse.wst.command.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.env.core.fragment.CommandFragmentFactory;
 import org.eclipse.wst.command.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding;
-import org.eclipse.wst.command.env.ui.widgets.SelectionCommand;
 import org.eclipse.wst.command.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.env.ui.widgets.WidgetRegistry;
-
 
 /**
 * This is the class for the Axis Web service type.
@@ -155,10 +152,6 @@ public class WSWSDLAxisType implements WebServiceServerRuntimeType, CommandWidge
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry) 
   {
-    // AxisSkeletonDefaultingCommand (initial selection)
-  	dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", AxisSkeletonDefaultingCommand.class, "ObjectSelection", null);
-    dataRegistry.addMapping(ObjectSelectionWidget.class, "ObjectSelection", AxisSkeletonDefaultingCommand.class);
-
     // SkeletonConfigWidget
     dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "JavaWSDLParam", SkeletonConfigWidgetDefaultingCommand.class);
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProject", SkeletonConfigWidget.class, "ServerProject", new ProjectName2IProjectTransformer());

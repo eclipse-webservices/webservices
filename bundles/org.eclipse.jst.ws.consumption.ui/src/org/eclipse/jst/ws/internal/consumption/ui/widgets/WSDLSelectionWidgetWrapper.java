@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.WSDLSelectionWidget;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.WSDLSelectionWrapper;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
@@ -21,7 +22,6 @@ import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
-
 
 public class WSDLSelectionWidgetWrapper extends SimpleWidgetDataContributor
 {
@@ -67,12 +67,28 @@ public class WSDLSelectionWidgetWrapper extends SimpleWidgetDataContributor
   
   public String getWebServiceURI()
   {
-    IStructuredSelection sel = wsdlSelectionWidget.getObjectSelection();
-    Object object = sel.getFirstElement();
-    if (object != null)
-      return object.toString();
-    else
-      return null;
+    IStructuredSelection sel    = wsdlSelectionWidget.getObjectSelection();
+    Object               object = sel.getFirstElement();
+    String               result = null;
+    
+    if (object != null )
+    {
+      if( object instanceof WSDLSelectionWrapper )
+      {    
+        // Get at the inner structured selection object.
+        WSDLSelectionWrapper wrapper        = (WSDLSelectionWrapper)object;
+        IStructuredSelection innerSelection = wrapper.wsdlSelection;
+        Object               innerObject    = innerSelection.getFirstElement();
+        
+        result = innerObject == null ? null : innerObject.toString();
+      }
+      else
+      {
+        result = object.toString();
+      }
+    }
+    
+    return result;
   }
   
   public String getWsdlURI()

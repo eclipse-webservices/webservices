@@ -299,7 +299,9 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 
   public IStructuredSelection getObjectSelection()
   {
-    return new StructuredSelection(tree.getWsdlURI());
+    return new StructuredSelection( 
+               new WSDLSelectionWrapper( webServicesParser,
+                                         new StructuredSelection(tree.getWsdlURI()) ) );
   }
   
   public WebServicesParser getWebServicesParser()

@@ -25,24 +25,26 @@ import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.common.StatusException;
 import org.eclipse.wst.command.env.core.data.Transformer;
+import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 
 
 public class ObjectSelectionOutputCommand extends SimpleCommand
 {
-  private String objectSelectionWidgetId;
-  private IStructuredSelection objectSelection;
-  private IObjectSelectionWidget objectSelectionWidget;
-  private IProject project;
+  private String                 objectSelectionWidgetId_;
+  private IStructuredSelection   objectSelection_;
+  private IObjectSelectionWidget objectSelectionWidget_;
+  private IProject               project_;
+  private WebServicesParser      parser_;
 
   public Status execute(Environment env)
   {
     // Transformation
-    if (objectSelectionWidgetId != null && objectSelectionWidgetId.length() > 0)
+    if (objectSelectionWidgetId_ != null && objectSelectionWidgetId_.length() > 0)
     {
       IConfigurationElement[] elements = ObjectSelectionRegistry.getInstance().getConfigurationElements();
       for (int i = 0; i < elements.length; i++)
       {
-        if (objectSelectionWidgetId.equals(elements[i].getAttribute("id")))
+        if (objectSelectionWidgetId_.equals(elements[i].getAttribute("id")))
         {
           String transformerId = elements[i].getAttribute("transformer");
           if (transformerId != null && transformerId.length() > 0)
@@ -52,9 +54,9 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
               Object transformer = elements[i].createExecutableExtension("transformer");
               if (transformer instanceof Transformer)
               {
-                Object transformedSelection = ((Transformer)transformer).transform(objectSelection);
+                Object transformedSelection = ((Transformer)transformer).transform(objectSelection_);
                 if (transformedSelection instanceof IStructuredSelection)
-                  objectSelection = (IStructuredSelection)transformedSelection;
+                  objectSelection_ = (IStructuredSelection)transformedSelection;
               }
             }
             catch (CoreException ce)
@@ -65,7 +67,7 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
       }
     }
     // Validation
-    Status status = (objectSelectionWidget != null) ? objectSelectionWidget.validateSelection(getObjectSelection()) : new SimpleStatus("");
+    Status status = (objectSelectionWidget_ != null) ? objectSelectionWidget_.validateSelection(getObjectSelection()) : new SimpleStatus("");
     if (status.getSeverity() != Status.OK)
     {
       try
@@ -89,20 +91,21 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
       IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeRuntimeServer.getTypeId());
       if (wst != null)
       {
-        objectSelectionWidgetId = wst.getObjectSelectionWidget();
-        if (objectSelectionWidgetId != null && objectSelectionWidgetId.length() > 0)
+        objectSelectionWidgetId_ = wst.getObjectSelectionWidget();
+        
+        if (objectSelectionWidgetId_ != null && objectSelectionWidgetId_.length() > 0)
         {
           IConfigurationElement[] elements = ObjectSelectionRegistry.getInstance().getConfigurationElements();
           for (int i = 0; i < elements.length; i++)
           {
-            if (objectSelectionWidgetId.equals(elements[i].getAttribute("id")))
+            if (objectSelectionWidgetId_.equals(elements[i].getAttribute("id")))
             {
               try
               {
                 Object object = elements[i].createExecutableExtension("class");
                 if (object instanceof IObjectSelectionWidget)
                 {
-                  objectSelectionWidget = (IObjectSelectionWidget)object;
+                  objectSelectionWidget_ = (IObjectSelectionWidget)object;
                   return;
                 }
               }
@@ -121,29 +124,53 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
    */
   public IStructuredSelection getObjectSelection()
   {
-    return objectSelection;
+    return objectSelection_;
   }
   /**
    * @param selection The selection to set.
    */
   public void setObjectSelection(IStructuredSelection objectSelection)
   {
-    this.objectSelection = objectSelection;
+    objectSelection_ = objectSelection;
+    
     //Set the project if you can
-    if (project==null)
+    if (project_==null)
     {
-      project = getProjectFromObjectSelection(objectSelection);
+      project_ = getProjectFromObjectSelection(objectSelection);
+    }
+    
+    // Check if this is a WSDL selection object.  If it is we need
+    // to unwrap it.
+    if( objectSelection != null && !objectSelection.isEmpty() )
+    {
+      Object object = objectSelection.getFirstElement();
+      
+      if( object instanceof WSDLSelectionWrapper )
+      {
+        WSDLSelectionWrapper wsdlWrapper = (WSDLSelectionWrapper)object;
+        
+        objectSelection_ = wsdlWrapper.wsdlSelection;
+        parser_          = wsdlWrapper.parser;
+      }
     }
   }
   
   public IProject getProject()
   {
-    return project;
+    return project_;
   }
   
   public void setProject(IProject project)
   {
-    this.project = project;
+    this.project_ = project;
+  }
+  
+  /**
+   * @return Returns the parser_.
+   */
+  public WebServicesParser getWebServicesParser()
+  {
+    return parser_;
   }
   
   private IProject getProjectFromObjectSelection(IStructuredSelection selection)

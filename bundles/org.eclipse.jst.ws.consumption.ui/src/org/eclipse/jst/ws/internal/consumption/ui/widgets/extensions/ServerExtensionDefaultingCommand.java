@@ -14,6 +14,9 @@ import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntime
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.ws.parser.discovery.WebServicesParserExt;
+import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
+
 
 public class ServerExtensionDefaultingCommand extends SimpleCommand
 {
@@ -24,6 +27,7 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
   private SelectionListChoices serviceChoices_;
   private String j2eeVersion;
   private boolean serviceNeedEAR_;
+  private WebServicesParser wsdlParser_;
 
   
   public void setServiceTypeRuntimeServer(TypeRuntimeServer ids)
@@ -37,6 +41,11 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
       serviceIds_.setServerInstanceId(serverInstId);
   }
   
+  /**
+   * 
+   * @return returns the TypeRuntimeService object that the user has selected on
+   * page 3 of the wizard.
+   */
   public TypeRuntimeServer getServiceTypeRuntimeServer()
   {
     return serviceIds_;
@@ -177,6 +186,10 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
   	j2eeVersion = version;
   }
   
+  /**
+   * 
+   * @return returns true if the web service project needs to be in an EAR project.
+   */
   public boolean getServiceNeedEAR()
   {
     return serviceNeedEAR_;
@@ -187,6 +200,10 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
     serviceNeedEAR_ = serviceNeedEAR;
   }  
   
+  /**
+   * 
+   * @return returns true if the web service project is an EJB project.
+   */
   public boolean getIsServiceProjectEJB()
   {
     //If the type/server/runtime suggests that an EJB project
@@ -202,5 +219,25 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
     }
  
     return (ejbRequired || ejbRequired2);    
+  }
+  
+  /**
+   * @return Returns the wsdlParser_.
+   */
+  public WebServicesParser getWebServicesParser()
+  {
+    if( wsdlParser_ == null )
+    {
+      wsdlParser_ = new WebServicesParserExt();  
+    }
+    
+    return wsdlParser_;
+  }
+  /**
+   * @param wsdlParser_ The wsdlParser_ to set.
+   */
+  public void setWebServicesParser(WebServicesParser wsdlParser )
+  {
+    wsdlParser_ = wsdlParser;
   }
 }
