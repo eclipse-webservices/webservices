@@ -17,7 +17,7 @@ package org.eclipse.wst.wsdl.binding.soap;
  * <!-- end-user-doc -->
  *
  *
- * @see com.ibm.etools.wsdl.bindings.soap.SOAPPackage#getSOAPHeaderFault()
+ * @see org.eclipse.wst.wsdl.bindings.soap.SOAPPackage#getSOAPHeaderFault()
  * @model 
  * @generated
  */

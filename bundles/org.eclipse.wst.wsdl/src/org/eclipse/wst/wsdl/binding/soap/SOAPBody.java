@@ -104,7 +104,7 @@ public interface SOAPBody extends ExtensibilityElement, javax.wsdl.extensions.so
 
   /**
    * Returns the value of the '<em><b>Parts</b></em>' reference list.
-   * The list contents are of type {@link com.ibm.etools.wsdl.Part}.
+   * The list contents are of type {@link org.eclipse.wst.wsdl.Part}.
    * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Parts</em>' reference list isn't clear,
@@ -113,7 +113,7 @@ public interface SOAPBody extends ExtensibilityElement, javax.wsdl.extensions.so
 	 * <!-- end-user-doc -->
    * @return the value of the '<em>Parts</em>' reference list.
    * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPBody_Parts()
-   * @model type="com.ibm.etools.wsdl.Part"
+   * @model type="org.eclipse.wst.wsdl.Part"
    * @generated
    */
 	List getParts();

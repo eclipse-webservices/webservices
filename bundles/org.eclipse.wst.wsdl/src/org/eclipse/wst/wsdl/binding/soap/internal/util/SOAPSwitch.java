@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.EObject;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see com.ibm.etools.wsdl.binding.soap.SOAPPackage
+ * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage
  * @generated
  */
 public class SOAPSwitch {

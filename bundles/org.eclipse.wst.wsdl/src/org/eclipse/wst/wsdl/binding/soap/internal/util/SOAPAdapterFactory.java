@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.EObject;
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
  * <!-- end-user-doc -->
- * @see com.ibm.etools.wsdl.binding.soap.SOAPPackage
+ * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage
  * @generated
  */
 public class SOAPAdapterFactory extends AdapterFactoryImpl {
@@ -149,13 +149,13 @@ public class SOAPAdapterFactory extends AdapterFactoryImpl {
 
 
   /**
-   * Creates a new adapter for an object of class '{@link com.ibm.etools.wsdl.binding.soap.SOAPBinding <em>Binding</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.binding.soap.SOAPBinding <em>Binding</em>}'.
    * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.ibm.etools.wsdl.binding.soap.SOAPBinding
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPBinding
    * @generated
    */
 	public Adapter createSOAPBindingAdapter()
@@ -164,13 +164,13 @@ public class SOAPAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.ibm.etools.wsdl.binding.soap.SOAPBody <em>Body</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody <em>Body</em>}'.
    * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.ibm.etools.wsdl.binding.soap.SOAPBody
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPBody
    * @generated
    */
 	public Adapter createSOAPBodyAdapter()
@@ -179,13 +179,13 @@ public class SOAPAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.ibm.etools.wsdl.binding.soap.SOAPHeaderBase <em>Header Base</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase <em>Header Base</em>}'.
    * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.ibm.etools.wsdl.binding.soap.SOAPHeaderBase
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase
    * @generated
    */
 	public Adapter createSOAPHeaderBaseAdapter()
@@ -194,13 +194,13 @@ public class SOAPAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.ibm.etools.wsdl.binding.soap.SOAPFault <em>Fault</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.binding.soap.SOAPFault <em>Fault</em>}'.
    * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.ibm.etools.wsdl.binding.soap.SOAPFault
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPFault
    * @generated
    */
 	public Adapter createSOAPFaultAdapter()
@@ -209,13 +209,13 @@ public class SOAPAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.ibm.etools.wsdl.binding.soap.SOAPOperation <em>Operation</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.binding.soap.SOAPOperation <em>Operation</em>}'.
    * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.ibm.etools.wsdl.binding.soap.SOAPOperation
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPOperation
    * @generated
    */
 	public Adapter createSOAPOperationAdapter()
@@ -224,13 +224,13 @@ public class SOAPAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.ibm.etools.wsdl.binding.soap.SOAPAddress <em>Address</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.binding.soap.SOAPAddress <em>Address</em>}'.
    * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.ibm.etools.wsdl.binding.soap.SOAPAddress
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPAddress
    * @generated
    */
 	public Adapter createSOAPAddressAdapter()
@@ -239,13 +239,13 @@ public class SOAPAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.ibm.etools.wsdl.binding.soap.SOAPHeaderFault <em>Header Fault</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault <em>Header Fault</em>}'.
    * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.ibm.etools.wsdl.binding.soap.SOAPHeaderFault
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault
    * @generated
    */
 	public Adapter createSOAPHeaderFaultAdapter()
@@ -254,13 +254,13 @@ public class SOAPAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.ibm.etools.wsdl.binding.soap.SOAPHeader <em>Header</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeader <em>Header</em>}'.
    * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.ibm.etools.wsdl.binding.soap.SOAPHeader
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPHeader
    * @generated
    */
 	public Adapter createSOAPHeaderAdapter()
@@ -269,13 +269,13 @@ public class SOAPAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.ibm.etools.wsdl.WSDLElement <em>Element</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.WSDLElement <em>Element</em>}'.
    * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.ibm.etools.wsdl.WSDLElement
+   * @see org.eclipse.wst.wsdl.WSDLElement
    * @generated
    */
 	public Adapter createWSDLElementAdapter()
@@ -299,13 +299,13 @@ public class SOAPAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.ibm.etools.wsdl.ExtensibilityElement <em>Extensibility Element</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.ExtensibilityElement <em>Extensibility Element</em>}'.
    * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.ibm.etools.wsdl.ExtensibilityElement
+   * @see org.eclipse.wst.wsdl.ExtensibilityElement
    * @generated
    */
 	public Adapter createExtensibilityElementAdapter()

@@ -243,13 +243,13 @@ public class MIMEAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.ibm.etools.wsdl.WSDLElement <em>Element</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.WSDLElement <em>Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see com.ibm.etools.wsdl.WSDLElement
+	 * @see org.eclipse.wst.wsdl.WSDLElement
 	 * @generated
 	 */
 	public Adapter createWSDLElementAdapter() {
@@ -271,13 +271,13 @@ public class MIMEAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.ibm.etools.wsdl.ExtensibilityElement <em>Extensibility Element</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.ExtensibilityElement <em>Extensibility Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see com.ibm.etools.wsdl.ExtensibilityElement
+	 * @see org.eclipse.wst.wsdl.ExtensibilityElement
 	 * @generated
 	 */
 	public Adapter createExtensibilityElementAdapter() {
