@@ -37,6 +37,7 @@ public class AllTestCases extends TestCase
     suite.addTest(LoadAndSerializationTest.suite());
     suite.addTest(SemanticTest.suite());
     suite.addTest(WSDLGenerationTest.suite());
+    suite.addTest(WSDL4JAPITest.suite());
     
     return suite;
   }
