@@ -137,6 +137,9 @@
    </extension>      
    
    <extension point="org.eclipse.ui.newWizards">
+     <category
+     	id="org.eclipse.wst.webservice.ui.new"
+     	name="%_UI_LABEL_NEW_CATEGORY_NAME_WS"/>
      <wizard
        id="org.eclipse.wst.wsdl.ui"
        name="WSDL"
@@ -146,9 +149,7 @@
        <description>%_UI_LABEL_CREATE_NEW_WSDL_FILE</description>
        <selection class="org.eclipse.core.resources.IResource" /> 
      </wizard>
-   </extension>
 
-   <extension point="org.eclipse.ui.newWizards">
      <wizard
        id="org.eclipse.wst.wsdl.ui"
        name="WSDL"
