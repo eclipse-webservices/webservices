@@ -42,7 +42,7 @@ public class HandlersDefaultingCommand extends AbstractHandlersWidgetDefaultingC
 
         if (obj instanceof WebServiceNavigatorGroupType) {
           WebServiceNavigatorGroupType wsngt = (WebServiceNavigatorGroupType) obj;
-          Service service = wsngt.getWsdlService();
+          Service service = (Service)wsngt.getWsdlService();
           if (wsngt.getWsdlService()!=null){
           	isServiceHandler_ = true;
           }

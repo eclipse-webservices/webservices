@@ -57,6 +57,7 @@
       <import plugin="org.eclipse.wst.common.frameworks"/>
       <import plugin="org.eclipse.wst.internet.webbrowser"/>
       <import plugin="org.eclipse.jst.j2ee.webservice"/>
+      <import plugin="org.eclipse.jst.j2ee.webservices.ui"/>
    </requires>
 
 

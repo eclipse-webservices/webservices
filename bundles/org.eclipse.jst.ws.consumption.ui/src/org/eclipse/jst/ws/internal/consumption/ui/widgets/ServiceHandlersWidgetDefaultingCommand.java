@@ -192,7 +192,7 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
       }
       else if (obj instanceof WebServiceNavigatorGroupType) {
         WebServiceNavigatorGroupType wsngt = (WebServiceNavigatorGroupType) obj;
-        Service service = wsngt.getWsdlService();
+        Service service = (Service)wsngt.getWsdlService();
         descriptionName_ = service.getQName().getLocalPart();        
         project_ = ProjectUtilities.getProject(service);
         return webServicesManager_.getWsddResource(service);
