@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://tempuri.org/StockQuote/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="StockQuote" targetNamespace="http://tempuri.org/StockQuote/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/StockQuote/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:element name="getQuoteResponse">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="tickerSymbol" type="xsd:string"/>
+          </xsd:all>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getQuoteRequest">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="price" type="xsd:float"/>
+          </xsd:all>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Headers">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="header" minOccurs="0" maxOccurs="unbounded">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element name="name" type="xsd:string"/>
+                  <xsd:element name="value" type="xsd:string"/>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getQuoteResponse">
+    <wsdl:part element="tns:getQuoteResponse" name="getQuoteResponse"/>
+    <wsdl:part element="tns:Headers" name="headers"/>
+  </wsdl:message>
+  <wsdl:message name="getQuoteRequest">
+    <wsdl:part element="tns:getQuoteRequest" name="getQuoteRequest"/>
+    <wsdl:part element="tns:Headers" name="headers"/>
+  </wsdl:message>
+  <wsdl:portType name="StockQuote">
+    <wsdl:operation name="getQuote">
+      <wsdl:input message="tns:getQuoteRequest"/>
+      <wsdl:output message="tns:getQuoteResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="StockQuoteSOAP" type="tns:StockQuote">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getQuote">
+      <soap:operation soapAction="http://tempuri.org/StockQuote/getQuote"/>
+      <wsdl:input>
+        <soap:body parts="getQuoteRequest" use="literal"/>
+        <soap:header message="tns:getQuoteRequest" part="headers" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="getQuoteResponse" use="literal"/>
+        <soap:header message="tns:getQuoteResponse" part="headers" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="StockQuote">
+    <wsdl:port binding="tns:StockQuoteSOAP" name="StockQuoteSOAP">
+      <soap:address location="http://tempuri.org"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
