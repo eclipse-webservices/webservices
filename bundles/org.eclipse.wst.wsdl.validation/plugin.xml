@@ -3,7 +3,7 @@
 <plugin
    id="org.eclipse.wst.wsdl.validation"
    name="%_PLUGIN_NAME"
-   version="1.1"
+   version="1.0.0"
    provider-name="%_PROVIDER_NAME"
    class="org.eclipse.wst.wsdl.validation.internal.ui.eclipse.ValidateWSDLPlugin">
 
