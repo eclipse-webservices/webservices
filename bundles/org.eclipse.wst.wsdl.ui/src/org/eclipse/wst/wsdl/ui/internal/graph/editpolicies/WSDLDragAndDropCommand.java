@@ -34,7 +34,7 @@ import org.eclipse.wst.wsdl.ui.internal.actions.WSDLDragAction;
 import org.eclipse.wst.wsdl.ui.internal.actions.WSDLDragReorderAction;
 import org.eclipse.wst.wsdl.ui.internal.actions.WSDLDragSetMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.graph.editparts.WSDLTreeNodeEditPart;
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 
 
 public class WSDLDragAndDropCommand extends Command //AbstractCommand
@@ -57,7 +57,7 @@ public class WSDLDragAndDropCommand extends Command //AbstractCommand
     // Only support drag and drop for WSDLTreeNodeEditPart
   	if (targetEditPart instanceof WSDLTreeNodeEditPart) {
   		WSDLElement wsdlElement = (WSDLElement) targetEditPart.getModel();
-  		if (wsdlElement.getElement() instanceof DOMNode) {
+  		if (wsdlElement.getElement() instanceof IDOMNode) {
   			((GraphicalEditPart)viewer.getRootEditPart()).getFigure().translateToRelative(location);
   			Rectangle targetRectangle; 
   			WSDLTreeNodeEditPart targetParentEditPart;

@@ -39,7 +39,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.OpenOnSelectionHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.SelectionAdapter;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
-import org.eclipse.wst.xml.core.document.DOMModel;
+import org.eclipse.wst.xml.core.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
@@ -125,12 +125,12 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
     for (Iterator i = modelQueryContributorList.iterator(); i.hasNext();)
     {
       IModelQueryContributor modelQueryContributor = (IModelQueryContributor)i.next();
-      modelQueryContributor.setModel((DOMModel)getModel());
+      modelQueryContributor.setModel((IDOMModel)getModel());
     }
 
     // contribute the ModelQueryExtensionHelper as an extension too
     //
-    modelQueryExtensionHelper = new ModelQueryExtensionHelper((DOMModel)getModel());
+    modelQueryExtensionHelper = new ModelQueryExtensionHelper((IDOMModel)getModel());
   }
 
   
@@ -231,7 +231,7 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
 
       // the text editor can only accept sed nodes!
       //
-      if (!(node instanceof org.eclipse.wst.xml.core.document.DOMNode))
+      if (!(node instanceof org.eclipse.wst.xml.core.document.IDOMNode))
       {
         node = null;
       }
@@ -306,7 +306,7 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
     protected DataTypeValueExtension dataTypeValueExtension;
     protected ElementContentFilterExtension elementContentFilterExtension;
 
-    public ModelQueryExtensionHelper(DOMModel xmlModel)
+    public ModelQueryExtensionHelper(IDOMModel xmlModel)
     {
       dataTypeValueExtension = new WSDLDataTypeValueExtension();
       elementContentFilterExtension = new WSDLElementContentFilterExtension();

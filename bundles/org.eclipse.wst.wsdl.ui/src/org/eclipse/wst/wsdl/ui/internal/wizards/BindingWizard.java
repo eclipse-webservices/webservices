@@ -36,7 +36,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.widgets.ProtocolComponentControl;
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -205,17 +205,17 @@ public class BindingWizard extends Wizard
   
   private void beginRecording() {
     Node node = document;
-    if (node instanceof DOMNode)
+    if (node instanceof IDOMNode)
     {
-      ((DOMNode)node).getModel().beginRecording(this, WSDLEditorPlugin.getWSDLString("_UI_ACTION_ADD_BINDING"));  
+      ((IDOMNode)node).getModel().beginRecording(this, WSDLEditorPlugin.getWSDLString("_UI_ACTION_ADD_BINDING"));  
     }
   }
   
   private void endRecording() {
     Node node = document; 
-    if (node instanceof DOMNode)
+    if (node instanceof IDOMNode)
     {
-      ((DOMNode)node).getModel().endRecording(this);  
+      ((IDOMNode)node).getModel().endRecording(this);  
     }
   }
 

@@ -41,7 +41,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.w3c.dom.Element;
 
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.xml.core.document.DOMElement;
+import org.eclipse.wst.xml.core.document.IDOMElement;
 
 public class AttributesTable extends TableViewer implements ICellModifier
 {                           
@@ -200,9 +200,9 @@ public class AttributesTable extends TableViewer implements ICellModifier
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput)  
     {
 	  resetCellEditors();		    	
-      if (newInput instanceof DOMElement)
+      if (newInput instanceof IDOMElement)
       {      
-	      propertySource = new ExtensiblePropertySource(editorPart, (DOMElement)newInput);
+	      propertySource = new ExtensiblePropertySource(editorPart, (IDOMElement)newInput);
       } 
       else if (newInput instanceof Element)
       {

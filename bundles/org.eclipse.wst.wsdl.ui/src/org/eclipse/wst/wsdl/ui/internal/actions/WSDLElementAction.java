@@ -23,7 +23,7 @@ import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.commands.WSDLElementCommand;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.widgets.NewComponentDialog;
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 import org.eclipse.wst.xml.core.format.FormatProcessorXML;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -86,9 +86,9 @@ public abstract class WSDLElementAction extends Action
     if (getOwner() != null)
       node = getOwner().getElement(); 
     
-    if (node instanceof DOMNode)
+    if (node instanceof IDOMNode)
     {
-      ((DOMNode)node).getModel().beginRecording(this, getUndoDescription());  
+      ((IDOMNode)node).getModel().beginRecording(this, getUndoDescription());  
     }
   }
 
@@ -98,9 +98,9 @@ public abstract class WSDLElementAction extends Action
     if (getOwner() != null)
       node = getOwner().getElement(); 
     
-    if (node instanceof DOMNode)
+    if (node instanceof IDOMNode)
     {
-      ((DOMNode)node).getModel().endRecording(this);  
+      ((IDOMNode)node).getModel().endRecording(this);  
     }
   }
   
@@ -115,11 +115,11 @@ public abstract class WSDLElementAction extends Action
     if (getOwner() != null)
       parentNode = getOwner().getElement(); 
     
-    if (parentNode instanceof DOMNode) 
+    if (parentNode instanceof IDOMNode) 
     {
 		  // format selected node                                                    
       FormatProcessorXML formatProcessorXML = new FormatProcessorXML();
-      formatProcessorXML.formatNode((DOMNode)parentNode);      
+      formatProcessorXML.formatNode((IDOMNode)parentNode);      
     }
   }
   

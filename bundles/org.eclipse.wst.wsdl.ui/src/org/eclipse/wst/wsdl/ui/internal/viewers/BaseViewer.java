@@ -29,7 +29,7 @@ import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapterListener;
 import org.eclipse.wst.wsdl.ui.internal.util.ui.BaseDesignWindow;
 import org.eclipse.wst.wsdl.ui.internal.util.ui.BorderPainter;
 import org.eclipse.wst.wsdl.ui.internal.util.ui.FlatViewUtility;
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 import org.eclipse.wst.xml.core.format.FormatProcessorXML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -334,11 +334,11 @@ public abstract class BaseViewer extends BaseDesignWindow implements Listener, S
 
   protected void format(Node parentNode)
   {
-    if (parentNode instanceof DOMNode) 
+    if (parentNode instanceof IDOMNode) 
     {
       // format selected node                                                    
       FormatProcessorXML formatProcessorXML = new FormatProcessorXML();
-      formatProcessorXML.formatNode((DOMNode)parentNode);
+      formatProcessorXML.formatNode((IDOMNode)parentNode);
     }
   }
   

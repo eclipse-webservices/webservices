@@ -32,7 +32,7 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.IMenuActionContributor;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 import org.eclipse.wst.xml.core.format.FormatProcessorXML;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
@@ -147,7 +147,7 @@ public class AddEEMenuActionContributor implements IMenuActionContributor
 //      	menu.add(submenu);
 //      }	 
     	menu.add(submenu);
-      if (element != null && element instanceof DOMNode)
+      if (element != null && element instanceof IDOMNode)
       {
         addExtensibilityElementActions(submenu, element);
       }
@@ -325,7 +325,7 @@ public class AddEEMenuActionContributor implements IMenuActionContributor
         if (format)
         {                                                             
 		      FormatProcessorXML formatProcessorXML = new FormatProcessorXML();
-		      formatProcessorXML.formatNode((DOMNode)newNode);
+		      formatProcessorXML.formatNode((IDOMNode)newNode);
         }  
       }                      
 	    //setViewerSelection(list);

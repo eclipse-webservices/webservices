@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.extension;
 
-import org.eclipse.wst.xml.core.document.DOMModel;
+import org.eclipse.wst.xml.core.document.IDOMModel;
                    
 // Note this class will likely be removed in the future when the ModelQuery's extension mechanism is updated
 //
 public interface IModelQueryContributor
 {                                      
-  public void setModel(DOMModel xmlModel);
+  public void setModel(IDOMModel xmlModel);
 }

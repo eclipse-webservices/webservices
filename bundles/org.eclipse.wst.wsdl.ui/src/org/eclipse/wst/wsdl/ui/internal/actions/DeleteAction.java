@@ -42,7 +42,7 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 
 public class DeleteAction extends BaseNodeAction {
 	 protected List list;
@@ -262,9 +262,9 @@ public class DeleteAction extends BaseNodeAction {
 	 */
 	  private void beginRecording(Node node, String undoDescription)
 	  {    
-	    if (node instanceof DOMNode)
+	    if (node instanceof IDOMNode)
 	    {
-	      ((DOMNode)node).getModel().beginRecording(this, undoDescription);  
+	      ((IDOMNode)node).getModel().beginRecording(this, undoDescription);  
 	    }
 	  }
 
@@ -275,9 +275,9 @@ public class DeleteAction extends BaseNodeAction {
 	 */
 	  public void endRecording(Node node)
 	  {
-	    if (node instanceof DOMNode)
+	    if (node instanceof IDOMNode)
 	    {
-	      ((DOMNode)node).getModel().endRecording(this);  
+	      ((IDOMNode)node).getModel().endRecording(this);  
 	    }
 	  }
 	

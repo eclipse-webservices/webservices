@@ -24,7 +24,7 @@ import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.impl.PartImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
 
@@ -124,7 +124,7 @@ public final class AddPartCommand extends WSDLElementCommand
     		
     		boolean createNewElement = true;
     		if (originalPart.getElementDeclaration() != null && originalPart.getElementDeclaration().getElement() != null) {
-        		if (!(originalPart.getElementDeclaration().getElement() instanceof DOMNode)) {
+        		if (!(originalPart.getElementDeclaration().getElement() instanceof IDOMNode)) {
         			createNewElement = false;
         		}        		
     		}

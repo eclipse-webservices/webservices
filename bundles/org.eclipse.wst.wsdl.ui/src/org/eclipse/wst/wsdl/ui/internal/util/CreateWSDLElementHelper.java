@@ -45,7 +45,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 import org.eclipse.wst.xml.core.format.FormatProcessorXML;
 
 import org.eclipse.xsd.XSDSchema;
@@ -206,11 +206,11 @@ public class CreateWSDLElementHelper {
   		Message message = (Message) action.getWSDLElement();
   		Part part = CreateWSDLElementHelper.createPart(message);
   		Element parentNode = message.getElement();
-      if (parentNode instanceof DOMNode) 
+      if (parentNode instanceof IDOMNode) 
       {
 		    // format selected node                                                    
         FormatProcessorXML formatProcessorXML = new FormatProcessorXML();
-        formatProcessorXML.formatNode((DOMNode)parentNode);
+        formatProcessorXML.formatNode((IDOMNode)parentNode);
       }
   		
   		messageName = null;

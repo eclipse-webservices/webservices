@@ -27,7 +27,7 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.widgets.NewComponentDialog;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 import org.eclipse.wst.xml.core.format.FormatProcessorXML;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.w3c.dom.Document;
@@ -169,10 +169,10 @@ public class AddElementAction extends BaseNodeAction {
 
 
 	protected void format(Node parentNode) {
-		if (parentNode instanceof DOMNode) {
+		if (parentNode instanceof IDOMNode) {
 			// format selected node
 			FormatProcessorXML formatProcessorXML = new FormatProcessorXML();
-			formatProcessorXML.formatNode((DOMNode) parentNode);
+			formatProcessorXML.formatNode((IDOMNode) parentNode);
 
 		}
 	}

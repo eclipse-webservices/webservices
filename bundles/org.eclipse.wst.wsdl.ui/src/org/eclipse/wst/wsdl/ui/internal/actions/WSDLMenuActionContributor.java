@@ -62,7 +62,7 @@ import org.eclipse.wst.wsdl.ui.internal.widgets.NewComponentDialog;
 import org.eclipse.wst.wsdl.ui.internal.widgets.NewComponentWithChildDialog;
 import org.eclipse.wst.wsdl.ui.internal.wizards.BindingWizard;
 import org.eclipse.wst.wsdl.ui.internal.wizards.PortWizard;
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 import org.eclipse.wst.xsd.ui.internal.XSDEditorPlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -114,7 +114,7 @@ public class WSDLMenuActionContributor implements IMenuActionContributor
   {
     final IMenuManager addMenu;
     boolean addEditAction = false;
-    final boolean isEditable = (node instanceof DOMNode);
+    final boolean isEditable = (node instanceof IDOMNode);
     if (object instanceof WSDLElement && node != null && isEditable)
     {
       addEditAction = true;

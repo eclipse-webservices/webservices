@@ -13,7 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.actions;
 import org.eclipse.jface.action.Action;
 import org.w3c.dom.Node;
 
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 
 public abstract class BaseNodeAction extends Action
 { 
@@ -23,18 +23,18 @@ public abstract class BaseNodeAction extends Action
   public void beginRecording()
   {    
     Node node = getNode();  
-    if (node instanceof DOMNode)
+    if (node instanceof IDOMNode)
     {
-      ((DOMNode)node).getModel().beginRecording(this, getUndoDescription());  
+      ((IDOMNode)node).getModel().beginRecording(this, getUndoDescription());  
     }
   }
 
   public void endRecording()
   {                 
     Node node = getNode(); 
-    if (node instanceof DOMNode)
+    if (node instanceof IDOMNode)
     {
-      ((DOMNode)node).getModel().endRecording(this);  
+      ((IDOMNode)node).getModel().endRecording(this);  
     }
   }
 }

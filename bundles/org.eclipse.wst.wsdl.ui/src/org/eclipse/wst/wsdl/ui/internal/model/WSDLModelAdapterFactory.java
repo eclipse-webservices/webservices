@@ -53,7 +53,7 @@ import org.eclipse.wst.wsdl.ui.internal.extension.ITreeChildProvider;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.internal.impl.OperationImpl;
 import org.eclipse.wst.wsdl.util.WSDLSwitch;
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -417,7 +417,7 @@ public class WSDLModelAdapterFactory implements ModelAdapterFactory
       else if (propertyName.equals("isReadOnly"))
       {
       	Element element = WSDLEditorUtil.getInstance().getElementForObject(target); 
-     	  result = (element instanceof DOMNode) ? Boolean.FALSE : Boolean.TRUE;    
+     	  result = (element instanceof IDOMNode) ? Boolean.FALSE : Boolean.TRUE;    
       }
       return result;
     } 

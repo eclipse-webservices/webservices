@@ -25,7 +25,7 @@ import org.eclipse.wst.wsdl.ui.internal.graph.model.WSDLGraphModelAdapterFactory
 import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapter;
 import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLModelAdapterFactory;
-import org.eclipse.wst.xml.core.document.DOMNode;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.w3c.dom.Element;
 
@@ -130,7 +130,7 @@ public class WSDLLabelProvider extends LabelProvider
         Element element = ((XSDConcreteComponent)selected).getElement();
         if (element != null)
         {
-          if (element instanceof DOMNode)
+          if (element instanceof IDOMNode)
           {
             return ((XSDConcreteComponent)selected).getElement().getLocalName();
           }
