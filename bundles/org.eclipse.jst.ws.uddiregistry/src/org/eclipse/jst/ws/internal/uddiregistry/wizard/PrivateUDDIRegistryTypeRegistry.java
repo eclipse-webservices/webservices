@@ -15,7 +15,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 public class PrivateUDDIRegistryTypeRegistry {
@@ -39,7 +39,7 @@ public class PrivateUDDIRegistryTypeRegistry {
     }
   
     public IConfigurationElement[] getConfigElements() {
-        IPluginRegistry reg = Platform.getPluginRegistry();
+        IExtensionRegistry reg = Platform.getExtensionRegistry();
         configElements_ = reg.getConfigurationElementsFor(
                                      "org.eclipse.jst.ws.uddiregistry",
                                      "privateUDDIRegistryType");

@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
@@ -87,7 +87,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
     
     statusListener_ = statusListener;
     
-  	WorkbenchHelp.setHelp( parent, pluginId + "." +  INFOPOP_PWPR_PAGE );
+  	PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId + "." +  INFOPOP_PWPR_PAGE );
   	
   	Composite serverComposite = utils.createComposite( parent, 1 );
   	
