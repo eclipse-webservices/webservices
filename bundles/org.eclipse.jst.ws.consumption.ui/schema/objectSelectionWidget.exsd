@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.jst.ws.consumption.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.jst.ws.consumption.ui" id="objectSelectionWidget" name="objectSelectionWidget"/>
+      </appInfo>
+      <documentation>
+         [Enter description of this extension point.]
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="objectSelectionWidget" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The point attribute string must be org.eclipse.jst.ws.consumption.ui.objectSelectionWidget.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="objectSelectionWidget">
+      <annotation>
+         <documentation>
+            This extension point entry allows an extender to add new ways of browsing/finding artifacts that can be used to create Web services.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  This class defines Selection Widget to be displayed on the Object Selection page of the Web services wizards.  This class must implement the org.eclipse.jst.ws.consumption.ui.widgets.object.IObjectSelectionWidget interface.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  This id uniquely identifies this objectSelectionWidget element.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="transformer" type="string">
+            <annotation>
+               <documentation>
+                  This attribute specifies a class that must implement the org.eclipse.wst.command.env.core.data.Transformer interface.  This interface contains a transform method.  Even though the type of the input parameter and the return value are of type Object it is expected that they will be used with the type org.eclipse.jface.viewers.IStructuredSelection.  This transformation method allows the extender to modify the initial selection to an IStructuredSelection object that is more readily usable by the runtime server type.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>

@@ -9,6 +9,8 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 /**
+ * This class combines a string with a boolean value.  This is
+ * useful for storing the state data for a boolean selection list.
  */
 package org.eclipse.wst.command.env.core.selection;
 
@@ -23,11 +25,19 @@ public class BooleanSelection
     selected_ = selected;
   }
   
+  /**
+   * 
+   * @return Get the string value.
+   */
   public String getValue()
   {
     return value_;
   }
   
+  /**
+   * 
+   * @return Get the boolean value for this string.
+   */
   public boolean isSelected()
   {
     return selected_;

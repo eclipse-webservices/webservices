@@ -20,6 +20,9 @@ import org.eclipse.wst.command.internal.env.ui.dialog.MessageDialog;
 import org.eclipse.wst.command.internal.env.ui.dialog.StatusDialogConstants;
 
 
+/**
+ * This is the Eclipse UI version of the StatusHandler
+ */
 public class EclipseStatusHandler implements StatusHandler
 {
   private Shell        shell_;

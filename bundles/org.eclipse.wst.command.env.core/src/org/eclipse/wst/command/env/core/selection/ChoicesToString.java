@@ -12,6 +12,10 @@ package org.eclipse.wst.command.env.core.selection;
 
 import org.eclipse.wst.command.env.core.data.Transformer;
 
+/**
+ * This transformer class selects a string at a particular level
+ * in a SelectionListChoices class.
+ */
 public class ChoicesToString implements Transformer
 {
   private int level_;

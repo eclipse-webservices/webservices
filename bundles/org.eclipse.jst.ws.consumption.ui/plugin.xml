@@ -70,23 +70,29 @@
 
    <extension-point
       id="webServiceClientType"
-      name="Web Service Client Types"/>
+      name="Web Service Client Types"
+      schema="schema/webServiceClientType.exsd"/>
 
    <extension-point
       id="webServiceTest"
-      name="Web Service Test"/>
+      name="Web Service Test"
+      schema="schema/webServiceTest.exsd"/>
 
    <extension-point
       id="webServiceServerRuntimeType"
-      name="Web Service Server Runtime Types"/>
+      name="Web Service Server Runtime Types"
+      schema="schema/webServiceServerRuntimeType.exsd"/>
 
    <extension-point
       id="clientProjectType"
-      name="clientProjectType"/>   
+      name="clientProjectType"
+      schema="schema/clientProjectType.exsd"/>   
 
    <extension-point
       id="objectSelectionWidget"
-      name="objectSelectionWidget"/>
+      name="objectSelectionWidget"
+      schema="schema/objectSelectionWidget.exsd"/>
+
 
    <!-- UDDI Registry Types -->
    

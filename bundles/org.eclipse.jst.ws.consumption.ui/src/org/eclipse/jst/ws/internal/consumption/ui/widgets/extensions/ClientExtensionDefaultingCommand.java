@@ -52,6 +52,11 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
     isClientScenario_ = isClientScenario;
   }
 
+  /**
+   * 
+   * @return returns true if this command is running in the client wizard and
+   * false if this command is running in the create web service wizard.
+   */
   public boolean getIsClientScenario()
   {
     return isClientScenario_; 
@@ -265,6 +270,10 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
 	  j2eeVersion = version;
   }
   
+  /**
+   * 
+   * @return returns true if a proxy should be generated and false otherwise.
+   */
   public boolean getGenerateProxy()
   {
     return genProxy_;
@@ -280,11 +289,19 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
   	this.launchedServiceTestName = launchedServiceTestName;
   }
 
+  /**
+   * 
+   * @return returns the name of the test facility to launch.
+   */
   public String getLaunchedServiceTestName()
   {
   	return launchedServiceTestName;
   }
   
+  /**
+   * 
+   * @return returns true if the client project needs an EAR project.
+   */
   public boolean getClientNeedEAR()
   {
     return clientNeedEAR_;

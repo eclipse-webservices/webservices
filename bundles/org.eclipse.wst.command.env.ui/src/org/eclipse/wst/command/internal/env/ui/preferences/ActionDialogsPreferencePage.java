@@ -37,15 +37,16 @@ import org.eclipse.wst.command.internal.env.preferences.ActionDialogPreferenceTy
  * This class can be used to create a popup actions preference page for a 
  * particular category.  For example:
  *
- *  <extension
- *        point="org.eclipse.ui.preferencePages">
- *     <page
+ * <pre>
+ *  &lt;extension
+ *        point="org.eclipse.ui.preferencePages"&gt;
+ *     &lt;page
  *           name="%PREFERENCE_CATEGORY_DIALOGS"
  *           category="org.eclipse.jst.ws.ui.preferences.name"
  *           class="org.eclipse.wst.command.internal.env.preferences.ActionDialogsPreferencePage"
- *           id="org.eclipse.jst.wss.popup.category">
- *     </page>
- *
+ *           id="org.eclipse.jst.wss.popup.category"&gt;
+ *     &lt;/page&gt;
+ * * </pre>
  * This entry specifies that all popup actions that are associated with the
  * org.eclipse.jst.wss.popup.category will be displayed on this
  * preference page.

@@ -18,17 +18,19 @@ package org.eclipse.wst.command.internal.env.preferences;
  *   
  * Here is an example of this extension point.
  * 
- *   <extension
- *       point="org.eclipse.wst.command.env.actionDialogPreferenceType">
- *     <actionDialogPreferenceType
+ * <pre>
+  *   &lt;extension
+ *       point="org.eclipse.wst.command.env.actionDialogPreferenceType"&gt;
+ *     &lt;actionDialogPreferenceType
  *           showcheckbox="true"
  *           name="%CHECKBOX_SHOW_GENERATE_JAVA_PROXY_DIALOG"
  *           category="org.eclipse.jst.wss.popup.category"
  *           tooltip="%TOOLTIP_PPAD_CHECKBOX_WSDL2PROXY"
  *           infopop="org.eclipse.jst.ws.consumption.ui.PPAD0004"
  *           alwayshide="false"
- *           id="org.eclipse.jst.ws.consumption.ui.wizard.client.clientwizard">
- *     </actionDialogPreferenceType>
+ *           id="org.eclipse.jst.ws.consumption.ui.wizard.client.clientwizard"&gt;
+ *     &lt;/actionDialogPreferenceType&gt;
+ * </pre>
  *
  * This actionDialogPreferenceType extension point is associated with an ObjectContribution
  * extension point.  For example: 

@@ -12,11 +12,20 @@ package org.eclipse.wst.command.env.core.selection;
 
 import java.util.Vector;
 
+/**
+ * This is a Dynamic version of the SelectionListChoices class.
+ */
 public class DynamicList 
 {
   private Vector stringList_ = new Vector();
   private Vector dynamicListVectorList_ = new Vector();
   
+  /**
+   * Adds an entry into the dynamic list.
+   * 
+   * @param values the string values that lead to the target.
+   * @param target the target.
+   */
   public void add( String[] values, Object target )
   {
     DynamicList currentList = this;
@@ -53,6 +62,11 @@ public class DynamicList
     currentList.dynamicListVectorList_.add( target );
   }
   
+  /**
+   * 
+   * @return returns a SelectionListChoices object from this DynamicList
+   * object.
+   */
   public SelectionListChoices toListChoices()
   {
     SelectionList list   = new SelectionList( (String[])stringList_.toArray( new String[0] ), 0);

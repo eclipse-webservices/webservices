@@ -10,6 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.command.env.core.selection;
 
+/**
+ * This class stores a list strings along with a selectionIndex which
+ * stores the current string that selected.  There is also a selection
+ * value.  If this value is one of the strings in the the string list
+ * then selectionIndex will contain the index of this string.  If it
+ * is not in the list then the selectionValue string will contain this
+ * value and selectionIndex will be set to -1.  This class can be
+ * used to store the state data for a Combo box.
+ */
 public class SelectionList
 {
   private int      selectionIndex_;
@@ -22,6 +31,11 @@ public class SelectionList
     selectionIndex_ = selectionIndex;
   }
   
+  /**
+   * Sets the selection value for this object.
+   * 
+   * @param value the value.
+   */
   public void setSelectionValue( String value )
   {
     selectionValue_ = value;  
@@ -37,22 +51,35 @@ public class SelectionList
     }
   } 
   
+  /*
+   * @return returns the string list.
+   */
   public String[] getList()
   {
     return list_;
   }
   
+  /*
+   * Sets the currently selected string in the list.
+   */
   public void setIndex( int index )
   {
     selectionIndex_ = index;
     selectionValue_ = null;
   }
  
+  /*
+   * @return returns the index of the current string.  The value
+   * will be -1 if the selection value is not in the string list.
+   */
   public int getIndex()
   {
     return selectionIndex_;  
   }
   
+  /*
+   * @return returns the current string selection for this object.
+   */
   public String getSelection()
   {
     if( selectionValue_ != null ) return selectionValue_;

@@ -70,10 +70,11 @@ public class SimpleFragment extends AbstractCommandFragment
 
   /**
     * Gets the next child fragment for this fragment.
+    * Since this is a simple fragment, there is no next fragment
+    * so we will always return null. 
     *
     * @return returns the next child fragment for this fragment.  Returns null
     * when there is no next child.
-  **/
-  
+  **/  
   public CommandFragment getNextSubFragment( CommandFragment fragment ){ return null; }
 }  

@@ -12,6 +12,10 @@ package org.eclipse.wst.command.env.core.selection;
 
 import java.util.Vector;
 
+/*
+ * This class can be used to store a hierarchy of SelectionList
+ * objects.
+ */
 public class SelectionListChoices
 {
   private SelectionList selectionList_;
@@ -40,16 +44,28 @@ public class SelectionListChoices
     newValueSelectionList_ = newList;
   }
   
+  /**
+   * @return returns the current Selection list.
+   */
   public SelectionList getList()
   {
     return selectionList_;
   }
   
+  /**
+   * 
+   * @return returns the choices for this object.
+   */
   public Vector getChoices()
   {
     return choices_;
   }
   
+  /**
+   * 
+   * @param level the level in the hierarchy where we want to get the choices.
+   * @return returns a vector of SelectionListChoices.
+   */
   public Vector getChoicesAtLevel( int level )
   {
     SelectionListChoices choices = this;
@@ -62,6 +78,10 @@ public class SelectionListChoices
     return choices.getChoices();
   }
   
+  /**
+   * 
+   * @return returns the current SelectionListChoice
+   */
   public SelectionListChoices getChoice()
   {
     int                  selectionIndex = selectionList_.getIndex();
@@ -79,6 +99,11 @@ public class SelectionListChoices
     return result;
   }
   
+  /**
+   * 
+   * @param index the index of the choice we want.
+   * @return returns the SelectionListChoice at the index specified.
+   */
   public SelectionListChoices getChoice(int index)
   {
     SelectionListChoices result = null;

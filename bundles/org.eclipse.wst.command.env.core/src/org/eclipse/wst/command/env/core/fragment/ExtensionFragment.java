@@ -43,12 +43,20 @@ public class ExtensionFragment extends AbstractCommandFragment
     extensionRegistry_ = fragment.extensionRegistry_;
     fragments_         = fragment.fragments_;
   }
-     
+  
+  /**
+   * 
+   * @param ids Sets the IDs for this extension fragment.
+   */
   public void setExtensionIds( String[] ids )
   {
     ids_ = ids;
   }
   
+  /**
+   * 
+   * @param registry Sets the registry for this extension fragment.
+   */
   public void setExtensionRegistry( CommandRegistry registry )
   {
     extensionRegistry_ = registry; 
