@@ -32,7 +32,7 @@ import org.eclipse.jst.j2ee.webservice.wsclient.Handler;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
 import org.eclipse.jst.j2ee.webservice.wsclient.Webservice_clientFactory;
-import org.eclipse.jst.j2ee.webservice.wsclient.impl.Webservice_clientFactoryImpl;
+import org.eclipse.jst.j2ee.webservice.internal.wsclient.impl.Webservice_clientFactoryImpl;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
