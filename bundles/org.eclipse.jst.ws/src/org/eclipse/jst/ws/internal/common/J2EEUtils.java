@@ -83,7 +83,8 @@ public final class J2EEUtils {
 			//handle exception
 		}
 		finally{
-			mc.dispose();
+			if (mc!=null)
+				mc.dispose();
 		}
 		return j2eeVer;
 	}
@@ -904,6 +905,8 @@ public final class J2EEUtils {
 			finally{
 				if (webEdit!=null)
 					webEdit.dispose();
+				if (mc!=null)
+					mc.dispose();
 			}
 		  }
 		}
@@ -936,6 +939,8 @@ public final class J2EEUtils {
 			finally{
 				if (webEdit!=null)
 					webEdit.dispose();
+				if (mc!=null)
+					mc.dispose();
 			}
 		  }
 		}

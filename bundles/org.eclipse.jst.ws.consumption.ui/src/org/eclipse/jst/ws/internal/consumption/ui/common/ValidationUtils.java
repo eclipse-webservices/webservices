@@ -125,25 +125,31 @@ public class ValidationUtils
 
   private Status doesProjectMatchJ2EELevel(IProject p, String j2eeLevel)
   {
-    if (p!=null && p.exists())
-    {
-	  StructureEdit mc = StructureEdit.getStructureEditForRead(p);
-	  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-	  
-		
-      int projectJ2EELevel = J2EEUtils.getJ2EEVersion(p);
-      if (projectJ2EELevel!=-1)
-      {
-        String projectJ2EELevelString = String.valueOf(projectJ2EELevel);
-        if (j2eeLevel!=null && j2eeLevel.length()>0)
-        {
-          if (!projectJ2EELevelString.equals(j2eeLevel))
-          {
-            return new SimpleStatus("",msgUtils.getMessage("MSG_J2EE_MISMATCH",new String[]{p.getName()}), Status.ERROR);
-          }
-        }
-      }
-    }
+	StructureEdit mc = null;
+    try {
+		if (p!=null && p.exists())
+		{
+		  mc = StructureEdit.getStructureEditForRead(p);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  
+			
+		  int projectJ2EELevel = J2EEUtils.getJ2EEVersion(p);
+		  if (projectJ2EELevel!=-1)
+		  {
+		    String projectJ2EELevelString = String.valueOf(projectJ2EELevel);
+		    if (j2eeLevel!=null && j2eeLevel.length()>0)
+		    {
+		      if (!projectJ2EELevelString.equals(j2eeLevel))
+		      {
+		        return new SimpleStatus("",msgUtils.getMessage("MSG_J2EE_MISMATCH",new String[]{p.getName()}), Status.ERROR);
+		      }
+		    }
+		  }
+		}
+	} finally {
+		if (mc != null)
+			mc.dispose();
+	}
     return new SimpleStatus("");        
   }
   
