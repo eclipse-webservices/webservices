@@ -264,7 +264,7 @@
    <extension point="org.eclipse.ui.preferencePages">
       <page
             name="%PREFERENCE_CATEGORY_SCENARIO_DEFAULTS"
-            category="org.eclipse.jst.ws.internal.ui.preferences.name"
+            category="org.eclipse.wst.ws.internal.ui.preferences.name"
             class="org.eclipse.jst.ws.internal.creation.ui.preferences.ScenarioDefaultsPreferencePage"
             id="org.eclipse.jst.ws.internal.creation.ui.preferences.ScenarioDefaultsPreferencePage">
       </page>

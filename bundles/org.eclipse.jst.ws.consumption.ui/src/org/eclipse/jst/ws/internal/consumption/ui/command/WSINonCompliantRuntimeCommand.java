@@ -14,10 +14,10 @@ package org.eclipse.jst.ws.internal.consumption.ui.command;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
-import org.eclipse.jst.ws.internal.ui.wsi.preferences.PersistentWSIAPContext;
-import org.eclipse.jst.ws.internal.ui.wsi.preferences.PersistentWSISSBPContext;
-import org.eclipse.jst.ws.internal.ui.wsi.preferences.WSIComplianceUtils;
+import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
+import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIAPContext;
+import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSISSBPContext;
+import org.eclipse.wst.ws.internal.ui.wsi.preferences.WSIComplianceUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
@@ -37,7 +37,7 @@ public class WSINonCompliantRuntimeCommand extends SimpleCommand
 	
   public WSINonCompliantRuntimeCommand()
   {
-    String       pluginId = "org.eclipse.jst.ws.ui";
+    String       pluginId = "org.eclipse.wst.ws.ui";
   	msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
   	setName (msgUtils_.getMessage(LABEL));
   	setDescription( msgUtils_.getMessage(DESCRIPTION));    
@@ -47,8 +47,8 @@ public class WSINonCompliantRuntimeCommand extends SimpleCommand
   public Status execute (Environment environment)
   {
     
-  	PersistentWSISSBPContext wsiSSBPContext = WebServiceUIPlugin.getInstance().getWSISSBPContext(); 
-  	PersistentWSIAPContext wsiAPContext = WebServiceUIPlugin.getInstance().getWSIAPContext(); 
+  	PersistentWSISSBPContext wsiSSBPContext = WSUIPlugin.getInstance().getWSISSBPContext(); 
+  	PersistentWSIAPContext wsiAPContext = WSUIPlugin.getInstance().getWSIAPContext(); 
     Vector statusSSBP = new Vector();
     statusSSBP.add(new SimpleStatus("WSINonCompliantRuntimeCommand", 
     		msgUtils_.getMessage("WSI_SSBP_INCOMPLIANT_RUNTIME"), WSIComplianceUtils.getWSISeverity(serviceProject_, wsiSSBPContext)));

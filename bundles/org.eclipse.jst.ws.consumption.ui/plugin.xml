@@ -60,6 +60,7 @@
       <import plugin="org.eclipse.jst.j2ee.webservice"/>
       <import plugin="org.eclipse.jst.j2ee.webservices.ui"/>
       <import plugin="org.eclipse.wst.common.dependencychecker"/>
+      <import plugin="org.eclipse.wst.ws.ui"/>
    </requires>
 
    <!-- Third party file dependencies -->
@@ -364,28 +365,28 @@
 
       <page
             name="%PREFERENCE_CATEGORY_SERVER_RUNTIME"
-            category="org.eclipse.jst.ws.internal.ui.preferences.name"
+            category="org.eclipse.wst.ws.internal.ui.preferences.name"
             class="org.eclipse.jst.ws.internal.consumption.ui.preferences.ServerRuntimePreferencePage"
             id="org.eclipse.jst.ws.internal.consumption.ui.preferences.ServerRuntimePreferencePage">            
       </page>
       
       <page
             name="%PREFERENCE_CATEGORY_DIALOGS"
-            category="org.eclipse.jst.ws.internal.ui.preferences.name"
+            category="org.eclipse.wst.ws.internal.ui.preferences.name"
             class="org.eclipse.wst.command.internal.env.ui.preferences.ActionDialogsPreferencePage"
             id="org.eclipse.jst.wss.popup.category">
       </page>
 
       <page
             name="%PREFERENCE_CATEGORY_TEST_FACILITY"
-            category="org.eclipse.jst.ws.internal.ui.preferences.name"
+            category="org.eclipse.wst.ws.internal.ui.preferences.name"
             class="org.eclipse.jst.ws.internal.ui.preferences.ScenarioDefaultsPreferencePage"
             id="org.eclipse.jst.ws.internal.ui.preferences.ScenarioDefaultsPreferencePage">
       </page>
 
       <page
             name="%PREFERENCE_CATEGORY_PROJECT_TOPOLOGY"
-            category="org.eclipse.jst.ws.internal.ui.preferences.name"
+            category="org.eclipse.wst.ws.internal.ui.preferences.name"
             class="org.eclipse.jst.ws.internal.ui.preferences.ProjectTopologyPreferencePage"
             id="org.eclipse.jst.ws.internal.ui.preferences.ProjectTopologyPreferencePage">
       </page>

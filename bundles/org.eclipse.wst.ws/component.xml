@@ -8,4 +8,5 @@
    <plugin id="org.eclipse.wst.ws" fragment="false"/>
    <plugin id="org.eclipse.wst.ws.parser" fragment="false"/>
    <plugin id="org.eclipse.wst.ws.uddi4j" fragment="false"/>
+   <plugin id="org.eclipse.wst.ws.ui" fragment="false"/>
 </component>

@@ -17,9 +17,6 @@ import java.text.MessageFormat;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jst.ws.internal.ui.preferences.PersistentActionDialogsContext;
-import org.eclipse.jst.ws.internal.ui.wsi.preferences.PersistentWSIAPContext;
-import org.eclipse.jst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
-import org.eclipse.jst.ws.internal.ui.wsi.preferences.PersistentWSISSBPContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
@@ -47,8 +44,6 @@ public class WebServiceUIPlugin extends AbstractUIPlugin
   */
   private static WebServiceUIPlugin instance_;
 
-  private PersistentWSISSBPContext wsiSSBPContext_;
-  private PersistentWSIAPContext wsiAPContext_;
   private PersistentActionDialogsContext actionDialogsContext_;
   private Log log_;
   
@@ -69,43 +64,6 @@ public class WebServiceUIPlugin extends AbstractUIPlugin
     return instance_;
   }
 
-	/**
-	 * Get WSI Context
-	 * @deprecated use getWSISSBPContext or getWSIAPContext instead
-	 * 
-	 */ 
-  public PersistentWSIContext getWSIContext() 
-  	{ // defaulting to get WSI Simple SOAP Binding Profile context
-  	  return getWSISSBPContext();
-  	}
-  
-  /**
-	 * Get WSI Simple SOAP Binding Profile Context
-	 * 
-	 */ 
-  public PersistentWSISSBPContext getWSISSBPContext() 
-	{
-	  if (wsiSSBPContext_ == null)
-	  	{
-	  		wsiSSBPContext_ = new PersistentWSISSBPContext();
-	  		wsiSSBPContext_.load();
-	  	}
-	  return wsiSSBPContext_;
-	}
-  
-  /**
-	 * Get WSI Attachment Profile Context
-	 * 
-	 */ 
-  public PersistentWSIAPContext getWSIAPContext() 
-	{
-	  if (wsiAPContext_ == null)
-	  	{
-	  		wsiAPContext_ = new PersistentWSIAPContext();
-	  		wsiAPContext_.load();
-	  	}
-	  return wsiAPContext_;
-	}
 
   public PersistentActionDialogsContext getActionDialogsContext() 
   	{
