@@ -18,7 +18,7 @@
       <import plugin="org.eclipse.wst.ws.apache.wsil"/>
       <import plugin="org.eclipse.wst.ws.uddi4j"/>
       <import plugin="org.eclipse.wst.wsdl"/>
-      <import plugin="org.eclipse.wst.ws.apache.soap"/>
+      <import plugin="org.eclipse.wst.ws.apache.axis"/>
       <import plugin="org.eclipse.core.runtime"/>
    </requires>
 

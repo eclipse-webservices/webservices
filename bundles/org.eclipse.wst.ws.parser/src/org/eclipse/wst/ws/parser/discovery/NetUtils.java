@@ -17,9 +17,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-
-import org.apache.soap.transport.http.SOAPHTTPConnection;
-
 import sun.misc.BASE64Encoder;
 
 public final class NetUtils
@@ -81,30 +78,6 @@ public final class NetUtils
     {
     }
     return null;
-  }
-
-  /**
-   * Create a org.apache.soap.transport.http.SOAPHTTPConnection that accounts for WSAD proxy
-   * information.
-   * @return SOAPHTTPConnection org.apache.soap.transport.http.SOAPHTTPConnection
-   */
-  public static final SOAPHTTPConnection createSOAPHTTPConnection()
-  {
-    SOAPHTTPConnection soapHttpConnection = new SOAPHTTPConnection();
-    String proxyHost = System.getProperty("http.proxyHost");
-    String proxyPort = System.getProperty("http.proxyPort");
-    String proxyUserName = System.getProperty("http.proxyUserName");
-    String proxyPassword = System.getProperty("http.proxyPassword");
-    if (proxyHost != null && proxyPort != null)
-    {
-      soapHttpConnection.setProxyHost(proxyHost);
-      soapHttpConnection.setProxyPort(Integer.parseInt(proxyPort));
-    }
-    if (proxyUserName != null)
-      soapHttpConnection.setProxyUserName(proxyUserName);
-    if (proxyPassword != null)
-      soapHttpConnection.setProxyPassword(proxyPassword);
-    return soapHttpConnection;
   }
 
   /**
