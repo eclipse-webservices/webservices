@@ -3,7 +3,6 @@
 	<name>org.eclipse.wst.command.env</name>
 	<comment></comment>
 	<projects>
-		<project>org.eclipse.wst.command.env.core</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
