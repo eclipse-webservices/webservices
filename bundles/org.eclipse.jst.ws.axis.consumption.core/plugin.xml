@@ -19,7 +19,7 @@
    </requires>
 
    <runtime>
-      <library name="runtime/wsc-axis.jar">
+      <library name="wsc-axis.jar">
       	<export name="*"/>
       </library>
    </runtime>

@@ -9,7 +9,7 @@
    class="org.eclipse.jst.ws.internal.plugin.WebServicePlugin">
 
    <runtime>
-      <library name="runtime/ws.jar">
+      <library name="ws.jar">
          <export name="*"/>
       </library>
    </runtime>

@@ -9,7 +9,7 @@
    class="org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin">
 
    <runtime>
-      <library name="runtime/wsc.jar">
+      <library name="wsc.jar">
          <export name="*"/>
       </library>
    </runtime>

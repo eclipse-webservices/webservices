@@ -9,7 +9,7 @@
    class="org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin">
 
    <runtime>
-      <library name="runtime/wss-axis-ui.jar">
+      <library name="wss-axis-ui.jar">
          <export name="*"/>
       </library>
    </runtime>

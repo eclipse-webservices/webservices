@@ -9,7 +9,7 @@
    class="org.eclipse.jst.ws.internal.creation.ui.plugin.WebServiceCreationUIPlugin">
 
    <runtime>
-      <library name="runtime/wss-ui.jar">
+      <library name="wss-ui.jar">
          <export name="*"/>
       </library>
    </runtime>

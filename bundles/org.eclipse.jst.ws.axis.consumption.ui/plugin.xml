@@ -9,7 +9,7 @@
    class="org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin">
 
    <runtime>
-      <library name="runtime/wsc-axis-ui.jar">
+      <library name="wsc-axis-ui.jar">
          <export name="*"/>
       </library>
    </runtime>

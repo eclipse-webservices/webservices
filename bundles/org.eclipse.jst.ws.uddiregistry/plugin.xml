@@ -9,7 +9,7 @@
    class="org.eclipse.jst.ws.internal.uddiregistry.plugin.WebServiceUDDIRegistryPlugin">
 
    <runtime>
-      <library name="runtime/uddiregistry.jar">
+      <library name="uddiregistry.jar">
          <export name="*"/>
       </library>
    </runtime>
