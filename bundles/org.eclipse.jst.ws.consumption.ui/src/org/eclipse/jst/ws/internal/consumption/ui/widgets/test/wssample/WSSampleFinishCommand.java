@@ -33,7 +33,6 @@ import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.TestClientFileG
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.GeneratePageCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.JavaToModelCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.CopyWebServiceUtilsJarCommand;
-import org.eclipse.jst.ws.internal.datamodel.Model;
 import org.eclipse.jst.ws.internal.ext.test.JavaProxyTestCommand;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
@@ -44,6 +43,7 @@ import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.common.StatusException;
 import org.eclipse.wst.command.env.core.selection.BooleanSelection;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.internet.webbrowser.WebBrowser;
 
 public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTestCommand

@@ -12,7 +12,8 @@ package org.eclipse.jst.ws.internal.consumption.ui.action;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jst.ws.internal.ui.wse.LaunchWebServicesExplorerCommand;
+
+import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.wst.command.env.core.context.TransientResourceContext;
@@ -29,7 +30,7 @@ public class LaunchWSEAction implements IWorkbenchWindowActionDelegate
     EclipseProgressMonitor           monitor     = new EclipseProgressMonitor();
     TransientResourceContext         context     = new TransientResourceContext();
     EclipseEnvironment               environment = new EclipseEnvironment( null, context, monitor, handler ); 
-    LaunchWebServicesExplorerCommand cmd         = new LaunchWebServicesExplorerCommand();
+    WSExplorerLauncherCommand        cmd         = new WSExplorerLauncherCommand();
     
     cmd.execute( environment );
   }

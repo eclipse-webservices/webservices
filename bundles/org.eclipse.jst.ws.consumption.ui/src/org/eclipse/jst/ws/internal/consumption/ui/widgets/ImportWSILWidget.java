@@ -24,7 +24,7 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.Arguments;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.TableViewerEditor;
-import org.eclipse.jst.ws.internal.consumption.wsil.AddWSDLToWSILCommand;
+import org.eclipse.wst.ws.internal.wsil.AddWSDLToWSILCommand;
 import org.eclipse.jst.ws.internal.ui.common.DialogResourceBrowser;
 import org.eclipse.jst.ws.internal.ui.common.FileExtensionFilter;
 import org.eclipse.swt.SWT;

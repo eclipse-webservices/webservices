@@ -37,6 +37,7 @@
       <import plugin="org.eclipse.wst.command.env"/>
       <import plugin="org.eclipse.wst.command.env.ui"/>
       <import plugin="org.eclipse.wst.server.core"/>
+      <import plugin="org.eclipse.wst.ws"/>
       <import plugin="org.eclipse.wst.wsdl"/>
       <import plugin="org.eclipse.jst.j2ee"/>
       <import plugin="org.eclipse.jst.j2ee.core"/>

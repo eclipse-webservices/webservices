@@ -11,7 +11,7 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi;
 
-import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.wst.ws.WSPlugin;
 
 public class PublicUDDIRegistryIBMTest implements PublicUDDIRegistryType
 {
@@ -23,7 +23,7 @@ public class PublicUDDIRegistryIBMTest implements PublicUDDIRegistryType
     }
 
     public String getName() {
-        return WebServiceConsumptionUIPlugin.getMessage("%PUBLICUDDIREGISTRYTYPE_NAME_IBM_TEST");
+        return WSPlugin.getResourceString("%PUBLICUDDIREGISTRYTYPE_NAME_IBM_TEST");
     }
 
     public String getInquiryURL() {

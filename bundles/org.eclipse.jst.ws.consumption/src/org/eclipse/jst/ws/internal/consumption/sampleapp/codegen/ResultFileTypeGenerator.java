@@ -20,9 +20,9 @@ import org.eclipse.jst.ws.internal.consumption.codegen.bean.FieldVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.DataType;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
-import org.eclipse.jst.ws.internal.datamodel.Element;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.ws.internal.datamodel.Element;
 
 /**
 * Objects of this class represent a ResultFileHelp2generator.

@@ -17,8 +17,8 @@ import org.eclipse.jst.ws.internal.consumption.ui.wizard.PrivateUDDIRegistryType
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.PublicUDDIRegistryTypeRegistry;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistryType;
 import org.eclipse.jst.ws.internal.ui.uddi.PrivateUDDIRegistryType;
-import org.eclipse.jst.ws.internal.ui.wse.LaunchOption;
-import org.eclipse.jst.ws.internal.ui.wse.WSExplorerType;
+import org.eclipse.jst.ws.internal.explorer.LaunchOption;
+import org.eclipse.jst.ws.internal.explorer.LaunchOptions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -182,8 +182,8 @@ public class PublishWSWidget extends SimpleWidgetDataContributor
         String name = publicUDDIRegCombo_.getItem(UDDIRegSelectionIndex);
         String id = reg.getPublicUDDIRegistryTypeIDByName(name);
         PublicUDDIRegistryType type = reg.getPublicUDDIRegistryTypeByID(id);
-        launchOptionVector.add(new LaunchOption(WSExplorerType.INQUIRY_URL, type.getInquiryURL()));
-        launchOptionVector.add(new LaunchOption(WSExplorerType.PUBLISH_URL, type.getPublishURL()));
+        launchOptionVector.add(new LaunchOption(LaunchOptions.INQUIRY_URL, type.getInquiryURL()));
+        launchOptionVector.add(new LaunchOption(LaunchOptions.PUBLISH_URL, type.getPublishURL()));
       }
     }
     if (launchPrivateUDDICheckbox_.getSelection())
@@ -194,8 +194,8 @@ public class PublishWSWidget extends SimpleWidgetDataContributor
       String[] privatePublishURL = privateType.getPrivateUDDIRegistryPublishAPI();
       for (int i = 0; i < privateInquiryURL.length; i++)
       {
-        launchOptionVector.add(new LaunchOption(WSExplorerType.INQUIRY_URL, privateInquiryURL[i]));
-        launchOptionVector.add(new LaunchOption(WSExplorerType.PUBLISH_URL, privatePublishURL[i]));
+        launchOptionVector.add(new LaunchOption(LaunchOptions.INQUIRY_URL, privateInquiryURL[i]));
+        launchOptionVector.add(new LaunchOption(LaunchOptions.PUBLISH_URL, privatePublishURL[i]));
       }
     }
     return (LaunchOption[]) launchOptionVector.toArray(new LaunchOption[0]);

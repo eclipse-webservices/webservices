@@ -29,12 +29,12 @@ import org.eclipse.jst.ws.internal.axis.consumption.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.Utils;
-import org.eclipse.jst.ws.internal.datamodel.Model;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 

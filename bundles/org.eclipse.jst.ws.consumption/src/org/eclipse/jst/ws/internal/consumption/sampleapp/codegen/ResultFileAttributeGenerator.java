@@ -17,9 +17,9 @@ import org.eclipse.jst.ws.internal.consumption.codegen.bean.TypeVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.AttributeElementType;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.DataType;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
-import org.eclipse.jst.ws.internal.datamodel.BasicElement;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.ws.internal.datamodel.BasicElement;
 
 /**
 * Objects of this class represent a ResultFileAttributeGenerator.

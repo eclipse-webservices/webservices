@@ -16,6 +16,8 @@
 
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.wst.internet.monitor.core"/>
+      <import plugin="org.eclipse.wst.server.core"/>
       <import plugin="org.eclipse.wst.command.env.core"/>
       <import plugin="org.eclipse.wst.wsdl"/>
       <import plugin="org.eclipse.wst.ws.parser"/>

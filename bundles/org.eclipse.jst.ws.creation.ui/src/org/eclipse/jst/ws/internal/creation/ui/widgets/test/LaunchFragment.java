@@ -12,7 +12,7 @@
  */
 package org.eclipse.jst.ws.internal.creation.ui.widgets.test;
 
-import org.eclipse.jst.ws.internal.ui.wse.LaunchWebServicesExplorerCommand;
+import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.command.env.core.common.Condition;
 import org.eclipse.wst.command.env.core.fragment.BooleanFragment;
 import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
@@ -33,7 +33,7 @@ public class LaunchFragment extends BooleanFragment
       }
     };
     setCondition( condition );
-    setTrueFragment( new SimpleFragment( new LaunchWebServicesExplorerCommand(), "" ) );
+    setTrueFragment( new SimpleFragment( new WSExplorerLauncherCommand(), "" ) );
   }
   
   public void setPublishToPublicUDDI(boolean publishToPublicUDDI)

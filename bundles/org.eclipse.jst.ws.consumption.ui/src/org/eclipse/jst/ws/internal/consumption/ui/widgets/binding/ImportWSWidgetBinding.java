@@ -12,7 +12,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishToPrivateUDDICommandFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishWSWidget;
-import org.eclipse.jst.ws.internal.ui.wse.LaunchWebServicesExplorerCommand;
+import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.env.core.fragment.CommandFragment;
@@ -49,7 +49,7 @@ public class ImportWSWidgetBinding implements CommandWidgetBinding
                SequenceFragment root = new SequenceFragment();
                root.add(new SimpleFragment("WSImport"));
                root.add(publishToPrivateUDDICmdFrag);
-               root.add(new SimpleFragment(new LaunchWebServicesExplorerCommand(), ""));
+               root.add(new SimpleFragment(new WSExplorerLauncherCommand(), ""));
                return root;  
              }
            };
@@ -76,8 +76,8 @@ public class ImportWSWidgetBinding implements CommandWidgetBinding
     dataMappingRegistry.addMapping(PublishWSWidget.class, "PublishToPrivateUDDI", PublishToPrivateUDDICommandFragment.class);
     
     // LaunchWebServicesExplorerCommand
-    dataMappingRegistry.addMapping(PublishWSWidget.class, "ForceLaunchOutsideIDE", LaunchWebServicesExplorerCommand.class);
-    dataMappingRegistry.addMapping(PublishWSWidget.class, "LaunchOptions", LaunchWebServicesExplorerCommand.class);
+    dataMappingRegistry.addMapping(PublishWSWidget.class, "ForceLaunchOutsideIDE", WSExplorerLauncherCommand.class);
+    dataMappingRegistry.addMapping(PublishWSWidget.class, "LaunchOptions", WSExplorerLauncherCommand.class);
   }
 
   /* (non-Javadoc)

@@ -13,10 +13,10 @@ package org.eclipse.jst.ws.internal.consumption.codegen;
       
 import java.util.Enumeration;
 
-import org.eclipse.jst.ws.internal.datamodel.BasicElement;
-import org.eclipse.jst.ws.internal.datamodel.Rel;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.ws.internal.datamodel.BasicElement;
+import org.eclipse.wst.ws.internal.datamodel.Rel;
 
 
 /**

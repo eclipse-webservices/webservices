@@ -30,6 +30,7 @@
       <import plugin="org.eclipse.wst.command.env"/>
       <import plugin="org.eclipse.jem.workbench"/>
       <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.wst.ws"/>
       <import plugin="org.eclipse.wst.ws.parser"/>
       <import plugin="org.eclipse.wst.ws.apache.wsil"/>
       <import plugin="org.eclipse.wst.server.core"/>

@@ -17,8 +17,8 @@ import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.common.SamplePropertyDescriptor;
-import org.eclipse.jst.ws.internal.datamodel.Element;
-import org.eclipse.jst.ws.internal.datamodel.Model;
+import org.eclipse.wst.ws.internal.datamodel.Element;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 
 /**
  * TypeFactory

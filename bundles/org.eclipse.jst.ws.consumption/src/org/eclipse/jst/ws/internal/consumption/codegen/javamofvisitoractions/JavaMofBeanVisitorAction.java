@@ -27,14 +27,14 @@ import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofFi
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofMethodVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanModelElementsFactory;
-import org.eclipse.jst.ws.internal.datamodel.Element;
-import org.eclipse.jst.ws.internal.datamodel.Model;
 import org.eclipse.wst.command.env.core.common.Choice;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.selection.BooleanSelection;
+import org.eclipse.wst.ws.internal.datamodel.Element;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 
 /**
 * Objects of this class represent a JavaMofBeanVisitorAction.

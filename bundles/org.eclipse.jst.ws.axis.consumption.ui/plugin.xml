@@ -40,6 +40,7 @@
       <import plugin="org.eclipse.wst.common.emfworkbench.integration"/>
       <import plugin="org.eclipse.jem.workbench"/>
       <import plugin="org.eclipse.wst.web"/>
+      <import plugin="org.eclipse.wst.ws"/>
       <import plugin="org.eclipse.wst.ws.apache.axis"/>
    </requires>
 

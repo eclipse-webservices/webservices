@@ -19,9 +19,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
 import org.eclipse.jst.ws.internal.ext.test.WSDLTestFinishCommand;
-import org.eclipse.jst.ws.internal.ui.wse.LaunchOption;
-import org.eclipse.jst.ws.internal.ui.wse.LaunchWebServicesExplorerCommand;
-import org.eclipse.jst.ws.internal.ui.wse.WSExplorerType;
+import org.eclipse.jst.ws.internal.explorer.LaunchOption;
+import org.eclipse.jst.ws.internal.explorer.LaunchOptions;
+import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
@@ -64,13 +64,13 @@ public class ExplorerServiceTestCommand extends SimpleCommand implements WSDLTes
     if (status.getSeverity() == Status.ERROR)
     	return status;
 
-    LaunchWebServicesExplorerCommand launchCommand = new LaunchWebServicesExplorerCommand();
+    WSExplorerLauncherCommand launchCommand = new WSExplorerLauncherCommand();
     launchCommand.setForceLaunchOutsideIDE(externalBrowser);
     Vector launchOptionVector = new Vector();
-    launchOptionVector.add(new LaunchOption(WSExplorerType.WSDL_URL,wsdlServiceURL));
+    launchOptionVector.add(new LaunchOption(LaunchOptions.WSDL_URL,wsdlServiceURL));
     if (endpoints != null)
       for (Iterator it = endpoints.iterator(); it.hasNext();)
-        launchOptionVector.add(new LaunchOption(WSExplorerType.WEB_SERVICE_ENDPOINT, it.next().toString()));
+        launchOptionVector.add(new LaunchOption(LaunchOptions.WEB_SERVICE_ENDPOINT, it.next().toString()));
     launchCommand.setLaunchOptions((LaunchOption[])launchOptionVector.toArray(new LaunchOption[0]));
     status = launchCommand.execute(env);
     return status;

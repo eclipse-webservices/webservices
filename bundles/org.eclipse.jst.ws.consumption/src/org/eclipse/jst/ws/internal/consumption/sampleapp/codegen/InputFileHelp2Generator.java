@@ -14,9 +14,9 @@ import org.eclipse.jst.ws.internal.common.StringUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.RelVisitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.bean.TypeVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.ParameterElement;
-import org.eclipse.jst.ws.internal.datamodel.Element;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.ws.internal.datamodel.Element;
 
 
 /**

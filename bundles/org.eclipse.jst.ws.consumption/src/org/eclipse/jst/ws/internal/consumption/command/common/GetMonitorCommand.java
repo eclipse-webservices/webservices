@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
+// TODO: Get rid of this. A replacement is in org.eclipse.wst.ws.
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;

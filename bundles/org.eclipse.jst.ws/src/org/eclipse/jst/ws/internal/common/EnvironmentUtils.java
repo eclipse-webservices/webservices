@@ -71,7 +71,10 @@ public final class EnvironmentUtils
    * @param istatus
    * @return Status
    */
-  
+
+  /**
+   * TODO: Delete. There's a replacement in the env plugin. 
+   */
   public static Status convertIStatusToStatus(IStatus istatus)
   {
     Status status;
@@ -115,6 +118,9 @@ public final class EnvironmentUtils
     return status;
   }
 
+  /**
+   * TODO: Delete. There's a replacement in the env plugin. 
+   */
   public static IStatus convertStatusToIStatus(Status status, String pluginId)
   {
     IStatus istatus;

@@ -12,12 +12,12 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.DialogWWWAuthentication;
-import org.eclipse.jst.ws.internal.datamodel.Model;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.parser.wsil.WWWAuthenticationException;
 import org.eclipse.wst.ws.parser.wsil.WebServiceEntity;

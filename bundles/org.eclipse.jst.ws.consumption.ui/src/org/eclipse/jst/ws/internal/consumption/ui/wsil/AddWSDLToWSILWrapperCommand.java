@@ -11,7 +11,7 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsil;
 
-import org.eclipse.jst.ws.internal.consumption.wsil.AddWSDLToWSILCommand;
+import org.eclipse.wst.ws.internal.wsil.AddWSDLToWSILCommand;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;

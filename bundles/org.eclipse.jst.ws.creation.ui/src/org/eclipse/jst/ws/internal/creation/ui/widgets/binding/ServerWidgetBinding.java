@@ -53,7 +53,7 @@ import org.eclipse.jst.ws.internal.creation.ui.widgets.test.LaunchFragment;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.test.ServiceTestFragment;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.test.ServiceTestWidget;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.test.WebServiceTestDefaultingCommand;
-import org.eclipse.jst.ws.internal.ui.wse.LaunchWebServicesExplorerCommand;
+import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Condition;
 import org.eclipse.wst.command.env.core.common.Environment;
@@ -233,8 +233,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(PublishWSWidget.class, "PublishToPrivateUDDI", LaunchFragment.class);
     dataRegistry.addMapping(PublishWSWidget.class, "PublishToPublicUDDI", LaunchFragment.class);
     // TODO Need defaults for these properties.
-    dataRegistry.addMapping(PublishWSWidget.class, "ForceLaunchOutsideIDE", LaunchWebServicesExplorerCommand.class);
-    dataRegistry.addMapping(PublishWSWidget.class, "LaunchOptions", LaunchWebServicesExplorerCommand.class);
+    dataRegistry.addMapping(PublishWSWidget.class, "ForceLaunchOutsideIDE", WSExplorerLauncherCommand.class);
+    dataRegistry.addMapping(PublishWSWidget.class, "LaunchOptions", WSExplorerLauncherCommand.class);
   
   }
 

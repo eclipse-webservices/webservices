@@ -21,8 +21,6 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions.JavaMofBeanVisitorAction;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofBeanVisitor;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
-import org.eclipse.jst.ws.internal.datamodel.Element;
-import org.eclipse.jst.ws.internal.datamodel.Model;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Choice;
 import org.eclipse.wst.command.env.core.common.Environment;
@@ -30,6 +28,8 @@ import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.selection.BooleanSelection;
+import org.eclipse.wst.ws.internal.datamodel.Element;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 
 /**
 * This is the base class for commands that need to report progress

@@ -2,6 +2,8 @@ package org.eclipse.wst.ws;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
+
+import java.text.MessageFormat;
 import java.util.*;
 
 /**
@@ -9,12 +11,12 @@ import java.util.*;
  */
 public class WSPlugin extends Plugin {
 
-	//The shared instance.
+	// The shared instance.
 	private static WSPlugin plugin;
 
-	//Resource bundle.
+	// Resource bundle.
 	private ResourceBundle resourceBundle;
-	
+
 	/**
 	 * The constructor.
 	 */
@@ -47,8 +49,8 @@ public class WSPlugin extends Plugin {
 	}
 
 	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
+	 * Returns the string from the plugin's resource bundle, or 'key' if not
+	 * found.
 	 */
 	public static String getResourceString(String key) {
 		ResourceBundle bundle = WSPlugin.getDefault().getResourceBundle();
@@ -60,12 +62,21 @@ public class WSPlugin extends Plugin {
 	}
 
 	/**
+	 * Returns the string from the plugin's resource bundle, or 'key' if not
+	 * found. Replaces substitution variables in the message by objects in 'args'.
+	 */
+	public static String getResourceString(String key, Object[] args) {
+		return MessageFormat.format(getResourceString(key), args);
+	}
+
+	/**
 	 * Returns the plugin's resource bundle,
 	 */
 	public ResourceBundle getResourceBundle() {
 		try {
 			if (resourceBundle == null)
-				resourceBundle = ResourceBundle.getBundle("org.eclipse.wst.ws.WSPluginResources");
+				resourceBundle = ResourceBundle
+						.getBundle("org.eclipse.wst.ws.WSPluginResources");
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
