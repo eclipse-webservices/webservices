@@ -19,7 +19,7 @@ public class EclipseLog implements Log
 //	private Logger logger;
 	public EclipseLog() {
 		/*
-		logger = Logger.getLogger("org.eclipse.wst.env");
+		logger = Logger.getLogger("org.eclipse.wst.command.env");
 		// logger.setLogFileName("env.log");
 		logger.setLevel(Level.INFO); // log all levels for now
 		*/
@@ -29,14 +29,14 @@ public class EclipseLog implements Log
 	 * @see org.eclipse.wst.command.env.core.common.Log#isEnabled()
 	 */
 	public boolean isEnabled() {
-		return Platform.getPlugin("org.eclipse.wst.env").isDebugging();
+		return Platform.getPlugin("org.eclipse.wst.command.env").isDebugging();
 	}
 	
 	/**
 	 * @see org.eclipse.wst.command.env.core.common.Log#isEnabled(java.lang.String)
 	 */
 	public boolean isEnabled(String option) {
-		return "true".equals(Platform.getDebugOption("org.eclipse.wst.env/trace/"
+		return "true".equals(Platform.getDebugOption("org.eclipse.wst.command.env/trace/"
 				+ option));
 	}
 	
@@ -45,33 +45,42 @@ public class EclipseLog implements Log
 	 */
 	public void log(int severity, int messageNum, Object caller,
 			String method, Object object) {
-		/*
+		
 		if (isEnabled()) {
 			switch (severity) {
 				case Log.ERROR :
 					if (isEnabled("error"))
-						logger
-								.logError(getMessageNumString(messageNum) + "E "
-										+ caller + "::" + method + ": object="
-										+ object);
+//						logger
+//								.logError(getMessageNumString(messageNum) + "E "
+//										+ caller + "::" + method + ": object="
+//										+ object);
+						System.out.println(getMessageNumString(messageNum) + "E "
+							+ caller + "::" + method + ": object="
+							+ object);
 					break;
 				case Log.WARNING :
 					if (isEnabled("warning"))
-						logger
-								.logWarning(getMessageNumString(messageNum)
-										+ "W " + caller + "::" + method
-										+ ": object=" + object);
+//						logger
+//								.logWarning(getMessageNumString(messageNum)
+//										+ "W " + caller + "::" + method
+//										+ ": object=" + object);
+						System.out.println(getMessageNumString(messageNum)
+								+ "W " + caller + "::" + method
+								+ ": object=" + object);
 					break;
 				case Log.INFO :
 					if (isEnabled("info"))
-						logger
-								.logInfo(getMessageNumString(messageNum) + "I "
-										+ caller + "::" + method + ": object="
-										+ object);
+//						logger
+//								.logInfo(getMessageNumString(messageNum) + "I "
+//										+ caller + "::" + method + ": object="
+//										+ object);
+						System.out.println(getMessageNumString(messageNum) + "I "
+								+ caller + "::" + method + ": object="
+								+ object);
 					break;
 			}
 		}
-		*/
+		
 	}
 	
 	/**
@@ -87,8 +96,8 @@ public class EclipseLog implements Log
 	 */
 	public void log(int severity, int messageNum, Object caller,
 			String method, Throwable throwable) {
-		// log( severity, caller, method, (Object)null );
-		// throwable.printStackTrace();
+		log( severity, messageNum, caller, method, (Object)null );
+		throwable.printStackTrace();
 		/*
 		if (isEnabled()) {
 			switch (severity) {
@@ -125,6 +134,9 @@ public class EclipseLog implements Log
 			logger.logInfo(getMessageNumString(messageNum) + "I " + caller
 					+ "::" + method + ": object=" + object);
 		*/
+		if (isEnabled(option))
+			System.out.println(getMessageNumString(messageNum) + "I " + caller
+					+ "::" + method + ": object=" + object);
 	}
 	
 	/**
@@ -139,6 +151,11 @@ public class EclipseLog implements Log
 			logger.logInfo(throwable);
 		}
 		*/
+		if (isEnabled(option)) {
+			System.out.println(getMessageNumString(messageNum) + "I " + caller
+					+ "::" + method);
+			throwable.printStackTrace();
+		}
 	}
 	
 	/**

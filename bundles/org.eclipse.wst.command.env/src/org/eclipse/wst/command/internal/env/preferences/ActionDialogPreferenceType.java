@@ -19,7 +19,7 @@ package org.eclipse.wst.command.internal.env.preferences;
  * Here is an example of this extension point.
  * 
  *   <extension
- *       point="org.eclipse.wst.env.actionDialogPreferenceType">
+ *       point="org.eclipse.wst.command.env.actionDialogPreferenceType">
  *     <actionDialogPreferenceType
  *           showcheckbox="true"
  *           name="%CHECKBOX_SHOW_GENERATE_JAVA_PROXY_DIALOG"
@@ -40,7 +40,7 @@ package org.eclipse.wst.command.internal.env.preferences;
  * <!-- WSDL To Java Bean Proxy -->
  *        <action
  *              label="%ACTION_GENERATE_JAVA_PROXY"
- *              class="org.eclipse.wst.env.ui.widgets.popup.DynamicPopupWizard"
+ *              class="org.eclipse.wst.command.env.ui.widgets.popup.DynamicPopupWizard"
  *              menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
  *              id="org.eclipse.jst.ws.consumption.ui.wizard.client.clientwizard">
  *        </action>

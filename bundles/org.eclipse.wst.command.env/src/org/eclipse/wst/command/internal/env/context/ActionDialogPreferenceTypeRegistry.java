@@ -46,7 +46,7 @@ public class ActionDialogPreferenceTypeRegistry
   private void loadDialogsPreferences ()
   {
     IPluginRegistry reg = Platform.getPluginRegistry();
-    IConfigurationElement[] config = reg.getConfigurationElementsFor( "org.eclipse.wst.env",
+    IConfigurationElement[] config = reg.getConfigurationElementsFor( "org.eclipse.wst.command.env",
                                                                       "actionDialogPreferenceType");
     
     for(int idx=0; idx<config.length; idx++) 

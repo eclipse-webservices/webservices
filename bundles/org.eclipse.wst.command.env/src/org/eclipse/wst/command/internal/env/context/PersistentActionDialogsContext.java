@@ -23,7 +23,7 @@ public class PersistentActionDialogsContext extends PersistentContext
 
   private PersistentActionDialogsContext()
   {
-    super(Platform.getPlugin("org.eclipse.wst.env"));
+    super(Platform.getPlugin("org.eclipse.wst.command.env"));
   }
   
   static public PersistentActionDialogsContext getInstance()
