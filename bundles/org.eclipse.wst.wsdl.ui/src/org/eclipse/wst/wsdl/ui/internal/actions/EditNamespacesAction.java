@@ -15,13 +15,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.wst.common.contentmodel.util.DOMNamespaceInfoManager;
-import org.eclipse.wst.common.contentmodel.util.NamespaceInfo;
+import org.eclipse.wst.sse.core.internal.contentmodel.util.DOMNamespaceInfoManager;
+import org.eclipse.wst.sse.core.internal.contentmodel.util.NamespaceInfo;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.nsedit.EditNamespacesDialog;
