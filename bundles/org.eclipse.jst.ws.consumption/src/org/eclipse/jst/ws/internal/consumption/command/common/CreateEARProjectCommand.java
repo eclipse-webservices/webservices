@@ -14,9 +14,9 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jst.j2ee.application.internal.operations.EARComponentCreationOperation;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.j2ee.application.operations.EnterpriseApplicationCreationDataModel;
-import org.eclipse.jst.j2ee.application.operations.EnterpriseApplicationCreationOperation;
+import org.eclipse.jst.j2ee.internal.earcreation.EARComponentCreationDataModel;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
@@ -51,32 +51,33 @@ public class CreateEARProjectCommand extends SimpleCommand
       IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(earProjectName_);
       if (project != null && !project.exists())
       {
-        EnterpriseApplicationCreationDataModel info = new EnterpriseApplicationCreationDataModel();
-        info.setProperty(EnterpriseApplicationCreationDataModel.PROJECT_NAME, project.getName());
+        EARComponentCreationDataModel info = new EARComponentCreationDataModel();
+        info.setProperty(EARComponentCreationDataModel.PROJECT_NAME, project.getName());
         
         //Set the J2EE version
         String finalJ2EEVersion = null;
         if (j2eeVersion_ != null && j2eeVersion_.length()>0)
         {
-          info.setProperty(EnterpriseApplicationCreationDataModel.APPLICATION_VERSION, new Integer(j2eeVersion_));
+          info.setProperty(EARComponentCreationDataModel.COMPONENT_VERSION, new Integer(j2eeVersion_));
           finalJ2EEVersion = j2eeVersion_;
         }
         else
         {
-          info.setProperty(EnterpriseApplicationCreationDataModel.APPLICATION_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+          info.setProperty(EARComponentCreationDataModel.COMPONENT_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
           finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
         }
         
         //Set the server target
         if (serverFactoryId_!=null && serverFactoryId_.length()>0)
         {
-          String runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId_, IServerTargetConstants.EAR_TYPE, finalJ2EEVersion); 
-          info.setProperty(EnterpriseApplicationCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
-          info.setProperty(EnterpriseApplicationCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
+//			TODO - Add this logic to FlexibleProjectCreationDataModel, and op....
+//          String runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId_, IServerTargetConstants.EAR_TYPE, finalJ2EEVersion); 
+//          info.setProperty(EARComponentCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
+//          info.setProperty(EARComponentCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
         }
 
         //Create the EAR
-        EnterpriseApplicationCreationOperation operation = new EnterpriseApplicationCreationOperation(info);
+        EARComponentCreationOperation operation = new EARComponentCreationOperation(info);
         operation.run(new NullProgressMonitor());
       }
     }

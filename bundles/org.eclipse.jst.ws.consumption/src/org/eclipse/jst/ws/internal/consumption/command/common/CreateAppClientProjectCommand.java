@@ -15,9 +15,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jst.j2ee.application.internal.operations.J2EEComponentCreationDataModel;
+import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientComponentCreationDataModel;
+import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientComponentCreationOperation;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.j2ee.applicationclient.creation.AppClientModuleCreationDataModel;
-import org.eclipse.jst.j2ee.applicationclient.creation.AppClientModuleCreationOperation;
 import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -65,16 +66,16 @@ public class CreateAppClientProjectCommand extends SimpleCommand
       IProject appClientProject = root.getProject(appClientProjectName_);
       if (appClientProject != null && !appClientProject.exists())
       {
-        AppClientModuleCreationDataModel info = new AppClientModuleCreationDataModel();
-        info.setProperty(AppClientModuleCreationDataModel.PROJECT_NAME, appClientProjectName_);
-        info.setProperty(AppClientModuleCreationDataModel.EAR_PROJECT_NAME, earProjectName_);
-        info.setProperty(AppClientModuleCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
+        AppClientComponentCreationDataModel info = new AppClientComponentCreationDataModel();
+        info.setProperty(AppClientComponentCreationDataModel.COMPONENT_NAME, appClientProjectName_);
+        info.setProperty(AppClientComponentCreationDataModel.EAR_MODULE_NAME, earProjectName_);
+        info.setProperty(AppClientComponentCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
         
         //Set the J2EE version
         String finalJ2EEVersion = null;
         if (j2eeVersion_ != null && j2eeVersion_.length()>0)
         {
-          info.setProperty(AppClientModuleCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
+          info.setProperty(AppClientComponentCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
           finalJ2EEVersion = j2eeVersion_;
         }                        
         else
@@ -83,12 +84,12 @@ public class CreateAppClientProjectCommand extends SimpleCommand
           {
             EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
             int earVersion = ear.getJ2EEVersion();
-            info.setProperty(AppClientModuleCreationDataModel.J2EE_VERSION, new Integer(earVersion));
+            info.setProperty(AppClientComponentCreationDataModel.J2EE_VERSION, new Integer(earVersion));
             finalJ2EEVersion = String.valueOf(earVersion);
           }
           else
           {
-            info.setProperty(AppClientModuleCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+            info.setProperty(AppClientComponentCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
             finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
           }            
         }        
@@ -96,13 +97,15 @@ public class CreateAppClientProjectCommand extends SimpleCommand
         //Set the server target
         if (serverFactoryId_!=null && serverFactoryId_.length()>0)
         {
-          String runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId_, IServerTargetConstants.APP_CLIENT_TYPE, finalJ2EEVersion); 
-          info.setProperty(AppClientModuleCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
-          info.setProperty(AppClientModuleCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
+		//TODO - Add this logic to FlexibleProjectCreationDataModel, and op....
+		
+//          String runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId_, IServerTargetConstants.APP_CLIENT_TYPE, finalJ2EEVersion); 
+//		  info.setProperty(AppClientComponentCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
+//          info.setProperty(AppClientComponentCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
         }
 
         //Create the AppClient project
-        AppClientModuleCreationOperation operation = new AppClientModuleCreationOperation(info);
+        AppClientComponentCreationOperation operation = new AppClientComponentCreationOperation(info);
         operation.run(new NullProgressMonitor());
       }
     }
