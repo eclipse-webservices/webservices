@@ -12,7 +12,7 @@
       <import plugin="org.apache.ant"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.wst.command.env.core" version="1.0.0" match="equivalent"/>
+      <import plugin="org.eclipse.wst.command.env.core"/>
       <import plugin="org.eclipse.jst.ws"/>
       <import plugin="org.eclipse.jst.ws.consumption"/>
       <import plugin="org.eclipse.jst.j2ee.web"/>
