@@ -113,11 +113,11 @@ public class ClientServerDeployableConfigCommand extends SimpleCommand {
         if (ResourceUtils.isTrueJavaProject(project))
         {
           //Don't attempt to add a Java project to a server, therefore passing in null for the module.
-          server = ServerUtils.getInstance().createServer(env, null, serverFactoryId, true, EnvironmentUtils.getIProgressMonitor(env));
+          server = ServerUtils.getInstance().createServer(env, null, serverFactoryId, EnvironmentUtils.getIProgressMonitor(env));
         }
         else
         {
-          server = ServerUtils.getInstance().createServer(env, ResourceUtils.getModule(project), serverFactoryId, true, EnvironmentUtils.getIProgressMonitor(env));
+          server = ServerUtils.getInstance().createServer(env, ResourceUtils.getModule(project), serverFactoryId, EnvironmentUtils.getIProgressMonitor(env));
         }
         if (server == null) {
           status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_CREATE_SERVER"), Status.ERROR);

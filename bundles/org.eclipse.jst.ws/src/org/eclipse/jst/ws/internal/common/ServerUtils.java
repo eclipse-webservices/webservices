@@ -160,51 +160,6 @@ public final class ServerUtils {
     return status;
   }  
 
-  
-  public static void modifyModules(IServer server, IModule module, boolean add, IProgressMonitor monitor) {
-
-  	IServerWorkingCopy wc = null;  	
-    try {
-      wc = server.createWorkingCopy();
-      if (wc!=null){
-      	Object x = server.getAdapter(IRunningActionServer.class);      	
-        if (x!=null && x instanceof IRunningActionServer) {
-            int state = server.getServerState();
-            if (state == IServer.STATE_STOPPED || state == IServer.STATE_UNKNOWN) {
-              String mode = ILaunchManager.RUN_MODE;
-              server.synchronousStart(mode, monitor);
-            }
-        }
-        
-      	List list = Arrays.asList(server.getModules());
-      	if (add) {
-      		if (!list.contains(module)) {
-      			ServerUtil.modifyModules(wc, new IModule[] { module}, new IModule[0], monitor);
-      		}
-      	}
-      	else { // removes module
-      		if (list.contains(module)) {
-      			ServerUtil.modifyModules(wc, new IModule[0], new IModule[] { module}, monitor);
-      		}
-      	}
-      }
-    }
-    catch (CoreException ce) {
-      // handle error
-    }
-    finally{
-    	try{
-    		if (wc!=null){
-    			wc.saveAll(true, monitor);
-    		}
-    	}
-        catch(CoreException ce){
-        	//handle error
-        }
-    }
-
-  }
-
   public static IServer getServerForModule(IModule module, String serverTypeId, IServer server, boolean create, IProgressMonitor monitor) {
     if (server != null)
       return server;
@@ -227,7 +182,7 @@ public final class ServerUtils {
         }
       }
 
-      return createServer(module, serverTypeId, create, monitor);
+      return createServer(module, serverTypeId, monitor);
 
     }
     catch (Exception e) {
@@ -245,14 +200,25 @@ public final class ServerUtils {
     }
   }
 
-  public IServer createServer(Environment env, IModule module, String serverTypeId, boolean create, IProgressMonitor monitor){
+  public IServer createServer(Environment env, IModule module, String serverTypeId, IProgressMonitor monitor){
   	IServerWorkingCopy serverWC = null;
   	IServer server = null;
   	try {
       IServerType serverType = ServerCore.findServerType(serverTypeId);
       serverWC = serverType.createServer(serverTypeId, null, monitor);
-      server = serverWC.getOriginal();
+      try{
+        if (serverWC!=null){
+          server = serverWC.saveAll(true, monitor);
+        }
+      }
+      catch(CoreException ce){
+            Status status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_SERVER"), Status.ERROR, ce);
+            env.getStatusHandler().reportError(status);       
+        return null;
+      }
+
       if (server != null) {
+        
       	Object x = server.getAdapter(IRunningActionServer.class);
         if (x!=null && x instanceof IRunningActionServer) {
          int state = server.getServerState();
@@ -261,7 +227,7 @@ public final class ServerUtils {
            server.synchronousStart(mode, monitor);
          }
         }  
-        
+      
         if (module != null && module.getProject().exists()) {
           IModule[] parentModules = server.getRootModules(module, monitor);
           if (parentModules!=null && parentModules.length!=0) {
@@ -269,6 +235,7 @@ public final class ServerUtils {
           }
           serverWC.modifyModules(new IModule[] { module}, new IModule[0], monitor);
         }
+        
       }
 
       return server;
@@ -288,19 +255,36 @@ public final class ServerUtils {
             Status status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_SERVER"), Status.ERROR, ce);
             env.getStatusHandler().reportError(status);    		
     		return null;
-    		//handler core exception
     	}
     }
   }  
   
-  public static IServer createServer(IModule module, String serverTypeId, boolean create, IProgressMonitor monitor) {
+  /*
+   * createServer This creates a server but does not report errors. 
+   * @param module 
+   * @param serverTypeId
+   * @param monitor progress monitor
+   * @return IServer returns null if unsuccessful
+   * 
+   */
+  public static IServer createServer(IModule module, String serverTypeId, IProgressMonitor monitor) {
   	IServerWorkingCopy serverWC = null;
   	IServer server= null;
   	try {
       IServerType serverType = ServerCore.findServerType(serverTypeId);
       serverWC = serverType.createServer(serverTypeId, null, monitor);
-      server = serverWC.getOriginal();
+      
+      try{
+        if (serverWC!=null){
+          server = serverWC.saveAll(true, monitor);
+        }
+      }
+      catch(CoreException ce){
+        return null;
+      }
+      
       if (server != null) {
+        
       	Object x = server.getAdapter(IRunningActionServer.class);
         if (x!=null && x instanceof IRunningActionServer) {
          int state = server.getServerState();
@@ -309,7 +293,6 @@ public final class ServerUtils {
            server.synchronousStart(mode, monitor);
          }
         }  
-        
         if (module != null) {
           IModule[] parentModules = server.getRootModules(module, monitor);
           if (parentModules!=null && parentModules.length!=0) {
@@ -317,6 +300,7 @@ public final class ServerUtils {
           }
           serverWC.modifyModules(new IModule[] { module}, new IModule[0], monitor);
         }
+        
       }
 
       return server;
@@ -465,7 +449,7 @@ public final class ServerUtils {
   	if (projectType==null || projectType.length()==0)
   	  return false;
   	
-	String stJ2EEVersion = ServerUtils.getServerTargetJ2EEVersion(j2eeVersion);
+  	String stJ2EEVersion = ServerUtils.getServerTargetJ2EEVersion(j2eeVersion);
   	List runtimes = ServerTargetHelper.getServerTargets(projectType, stJ2EEVersion);
     for (int i=0; i<runtimes.size(); i++ )
     {
