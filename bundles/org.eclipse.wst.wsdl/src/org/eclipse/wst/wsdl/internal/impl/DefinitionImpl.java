@@ -2262,7 +2262,16 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
         XSDSchema schema = el.getSchema();
         if (schema != null)
         {  
-          schema.setSchemaLocation(resource.getURI().toString());
+        	// We need this try-catch block in case we encounter an exception while attempting
+        	// to resolve the schema.  In the case of the WSDL Editor, we get a
+        	// 'cannot create part exception'......See eclipse bugzilla bug 89855
+        	try
+        	{
+        		schema.setSchemaLocation(resource.getURI().toString());
+        	}
+        	catch (Exception e) {
+
+        	}
         }  
       }        
     }      
