@@ -43,7 +43,7 @@ import org.eclipse.wst.wsdl.ui.internal.graph.editparts.TreeNodeEditPart;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
 import org.eclipse.wst.wsdl.ui.internal.util.SelectionAdapter;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
-import org.eclipse.wst.xml.core.document.XMLNode;
+import org.eclipse.wst.xml.core.document.DOMNode;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -181,7 +181,7 @@ public class WSDLGraphViewer implements ISelectionChangedListener
      Object modelObject = selectionObject.getFirstElement();
      if (modelObject instanceof WSDLElement) {
      	Element node = ((WSDLElement) modelObject).getElement();
-         boolean isEditable = (node instanceof XMLNode);
+         boolean isEditable = (node instanceof DOMNode);
          
      	Action copyAction = new CopyGlobalAction((WSDLElement) modelObject, editor);
      	Action pasteAction = new PasteGlobalAction((WSDLElement) modelObject, editor);

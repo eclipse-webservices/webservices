@@ -63,7 +63,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.WSDLResourceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.XSDSchemaLocationResolverAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.viewers.WSDLDetailsViewer;
 import org.eclipse.wst.wsdl.ui.internal.viewers.WSDLDetailsViewerProvider;
-import org.eclipse.wst.xml.core.document.XMLModel;
+import org.eclipse.wst.xml.core.document.DOMModel;
 import org.w3c.dom.Document;
 
 //public class WSDLEditor extends StructuredTextMultiPageEditorPart implements INavigationLocationProvider
@@ -172,7 +172,7 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 
   public Document getXMLDocument()
   {
-    return ((XMLModel)textEditor.getModel()).getDocument();
+    return ((DOMModel)textEditor.getModel()).getDocument();
   }
 
   public Definition getDefinition()

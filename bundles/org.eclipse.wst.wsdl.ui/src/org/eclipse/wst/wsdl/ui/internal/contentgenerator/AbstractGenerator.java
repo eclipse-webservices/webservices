@@ -22,7 +22,7 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.actions.AddNamespaceDeclarationsAction;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xml.core.document.XMLNode;
+import org.eclipse.wst.xml.core.document.DOMNode;
 import org.eclipse.wst.xml.core.format.FormatProcessorXML;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -179,32 +179,32 @@ public abstract class AbstractGenerator
   public void beginRecording()
   {
     Node node = getParentNode();
-    if (node instanceof XMLNode)
+    if (node instanceof DOMNode)
     {
-      ((XMLNode) node).getModel().beginRecording(this, getUndoDescription());
+      ((DOMNode) node).getModel().beginRecording(this, getUndoDescription());
     }
   }
 
   public void endRecording()
   {
     Node node = getParentNode();
-    if (node instanceof XMLNode)
+    if (node instanceof DOMNode)
     {
-      ((XMLNode) node).getModel().endRecording(this);
+      ((DOMNode) node).getModel().endRecording(this);
     }
   }
 
   protected void format()
   {
     Node node = getParentNode();
-    if (node instanceof XMLNode)
+    if (node instanceof DOMNode)
     {
       // tell the model that we are about to make a big model change
       //model.aboutToChangeModel();
 
       // format selected node                                                    
       FormatProcessorXML formatProcessorXML = new FormatProcessorXML();
-      formatProcessorXML.formatNode((XMLNode)node);
+      formatProcessorXML.formatNode((DOMNode)node);
       
       // tell the model that we are done with the big model change
       //model.changedModel();

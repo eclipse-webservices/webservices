@@ -21,7 +21,7 @@ import org.eclipse.ui.IEditorPart;
 import org.w3c.dom.Node;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.commands.WSDLElementCommand;
-import org.eclipse.wst.xml.core.document.XMLNode;
+import org.eclipse.wst.xml.core.document.DOMNode;
 import org.eclipse.wst.xml.core.format.FormatProcessorXML;
 
 public abstract class WSDLElementUIAction extends Action
@@ -87,18 +87,18 @@ public abstract class WSDLElementUIAction extends Action
   private void beginRecording()
   {    
     Node node = getOwnerNode();  
-    if (node instanceof XMLNode)
+    if (node instanceof DOMNode)
     {
-      ((XMLNode)node).getModel().beginRecording(this, getUndoDescription());  
+      ((DOMNode)node).getModel().beginRecording(this, getUndoDescription());  
     }
   }
 
   private void endRecording()
   {                 
     Node node = getOwnerNode(); 
-    if (node instanceof XMLNode)
+    if (node instanceof DOMNode)
     {
-      ((XMLNode)node).getModel().endRecording(this);  
+      ((DOMNode)node).getModel().endRecording(this);  
     }
   }
   
@@ -110,11 +110,11 @@ public abstract class WSDLElementUIAction extends Action
   private void format()
   {
     Node parentNode = getOwnerNode();
-    if (parentNode instanceof XMLNode) 
+    if (parentNode instanceof DOMNode) 
     {
 		  // format selected node                                                    
       FormatProcessorXML formatProcessorXML = new FormatProcessorXML();
-      formatProcessorXML.formatNode((XMLNode)parentNode);      
+      formatProcessorXML.formatNode((DOMNode)parentNode);      
     }
   }
   

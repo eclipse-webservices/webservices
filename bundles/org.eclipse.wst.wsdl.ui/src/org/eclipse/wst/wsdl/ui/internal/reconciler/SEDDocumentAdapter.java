@@ -19,7 +19,7 @@ import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xml.core.document.XMLModel;
+import org.eclipse.wst.xml.core.document.DOMModel;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.w3c.dom.Document;
@@ -35,7 +35,7 @@ public class SEDDocumentAdapter
   
   public SEDDocumentAdapter(IStructuredModel model, Definition definition)
   {           
-    this.document = (model instanceof XMLModel) ? ((XMLModel)model).getDocument() : null;     
+    this.document = (model instanceof DOMModel) ? ((DOMModel)model).getDocument() : null;     
     this.definition = definition;
     this.extensibleNodeReconciler = new ExtensibleNodeReconciler();
     new MyDocumentAdapter(document);

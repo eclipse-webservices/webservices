@@ -28,7 +28,7 @@ import org.eclipse.wst.wsdl.ui.internal.graph.WSDLComponentViewer;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
 import org.eclipse.wst.wsdl.ui.internal.xsd.actions.AddSchemaAction;
 import org.eclipse.wst.wsdl.ui.internal.xsd.actions.BackAction;
-import org.eclipse.wst.xml.core.document.XMLModel;
+import org.eclipse.wst.xml.core.document.DOMModel;
 import org.eclipse.wst.xml.core.internal.document.DocumentImpl;
 import org.eclipse.wst.xsd.ui.internal.XSDEditorPlugin;
 import org.eclipse.wst.xsd.ui.internal.XSDMenuListener;
@@ -334,7 +334,7 @@ public class XSDMenuActionContributor implements IMenuActionContributor
       return xsdSchema;
     }
   
-    protected XMLModel getXMLModel()
+    protected DOMModel getXMLModel()
     {
       if (currElement != null)
       {

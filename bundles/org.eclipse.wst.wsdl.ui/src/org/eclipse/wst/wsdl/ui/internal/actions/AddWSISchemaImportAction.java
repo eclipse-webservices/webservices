@@ -15,7 +15,7 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xml.core.document.XMLNode;
+import org.eclipse.wst.xml.core.document.DOMNode;
 import org.eclipse.wst.xml.core.format.FormatProcessorXML;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -192,11 +192,11 @@ public class AddWSISchemaImportAction extends BaseNodeAction
 
     protected static void format(Node parentNode)
     {
-        if (parentNode instanceof XMLNode)
+        if (parentNode instanceof DOMNode)
         {
             // format selected node                                                    
             FormatProcessorXML formatProcessorXML = new FormatProcessorXML();
-            formatProcessorXML.formatNode((XMLNode)parentNode);
+            formatProcessorXML.formatNode((DOMNode)parentNode);
         }
     }
 }
