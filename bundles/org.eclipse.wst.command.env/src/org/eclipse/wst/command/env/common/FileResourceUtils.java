@@ -205,7 +205,7 @@ public final class FileResourceUtils
      catch (IOException e)
      {
        throw new CoreException(new Status(IStatus.ERROR,
-                               plugin.getDescriptor().getUniqueIdentifier(),
+                               plugin.getBundle().getSymbolicName(),
                                0,
                                msg_.getMessage("MSG_ERROR_IO"),e));
      }
@@ -602,7 +602,7 @@ public final class FileResourceUtils
         }	
         
         //We have permission to overwrite so check if file is read-only
-        if( child.isReadOnly() )
+        if( child.getResourceAttributes().isReadOnly() )
         {
           if( !resourceContext.isCheckoutFilesEnabled() ) 
           {            

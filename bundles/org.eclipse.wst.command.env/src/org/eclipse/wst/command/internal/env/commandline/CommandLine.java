@@ -380,7 +380,12 @@ public class CommandLine
   **/
   static public class ErrorExc extends Exception
   {
-  	public ErrorExc( String message, String[] args )
+  	/**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 3257567317259793720L;
+
+	public ErrorExc( String message, String[] args )
   	{
   	  super( MessageFormat.format( message, args ) );
   	}
@@ -393,7 +398,12 @@ public class CommandLine
   **/
   static public class InternalErrorExc extends IllegalArgumentException
   {  	
-  	public InternalErrorExc( String message, String[] args )
+  	/**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 3258410621136614450L;
+
+	public InternalErrorExc( String message, String[] args )
   	{
   	  super( MessageFormat.format( message, args ) );
   	}
@@ -414,7 +424,12 @@ public class CommandLine
   **/
   static public class Flag_error extends ErrorExc
   {
-    public Flag_error( String message, String[] args )
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 3832621776877663537L;
+
+	public Flag_error( String message, String[] args )
     {
       super( message, args );
     }

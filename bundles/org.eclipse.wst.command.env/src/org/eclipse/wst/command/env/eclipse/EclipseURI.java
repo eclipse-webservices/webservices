@@ -242,7 +242,7 @@ public class EclipseURI extends RelativeURI
       
       if( resource != null && 
           resource.isAccessible() && 
-          !resource.isReadOnly() )
+          !resource.getResourceAttributes().isReadOnly() )
        {  
         result = true;
       }
