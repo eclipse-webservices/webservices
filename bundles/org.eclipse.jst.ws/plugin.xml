@@ -39,6 +39,7 @@
       <import plugin="org.eclipse.jst.j2ee.web"/>
       <import plugin="org.eclipse.wst.common.emfworkbench.integration"/>
       <import plugin="org.eclipse.wst.web"/>
+      <import plugin="org.eclipse.wst.common.modulecore"/>
    </requires>
 
 </plugin>

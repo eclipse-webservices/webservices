@@ -21,8 +21,6 @@ import javax.wsdl.Service;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jst.j2ee.internal.project.J2EENature;
-import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.j2ee.internal.webservices.WebServiceEditModel;
 import org.eclipse.jst.j2ee.internal.webservices.WebServicesManager;
 import org.eclipse.jst.j2ee.webservice.internal.WebServiceConstants;
@@ -31,18 +29,23 @@ import org.eclipse.jst.j2ee.webservice.wsdd.WSDLPort;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServices;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.ClientProjectTypeRegistry;
+import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.componentcore.StructureEdit;
+import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 
 /**
-
+ *
  */
 public class ValidationUtils
 {
@@ -53,16 +56,19 @@ public class ValidationUtils
    */
   public ValidationUtils()
   {
-    String pluginId = "org.eclipse.jst.ws.consumption.ui";
+    String pluginId = WebServiceConsumptionUIPlugin.ID; //"org.eclipse.jst.ws.consumption.ui";
     msgUtils = new MessageUtils( pluginId + ".plugin", this );
   }
   
   public Status validateProjectTargetAndJ2EE(String projectName, String earName, String serverFactoryId, String j2eeLevel)
   {
-    IProject p = (IProject)((new StringToIProjectTransformer()).transform(projectName));
-    IProject earP = (IProject)((new StringToIProjectTransformer()).transform(earName));
+    IProject p = FileResourceUtils.getWorkspaceRoot().getProject(projectName);
+	IProject earP = null;
+	if (earName!=null && !earName.equalsIgnoreCase("")) {
+    	earP = FileResourceUtils.getWorkspaceRoot().getProject(earName);
+	}
     Status targetStatus = doesProjectTargetMatchServerType(p, serverFactoryId);
-    if (targetStatus.getSeverity()==Status.OK)
+    if (earP!=null && targetStatus.getSeverity()==Status.OK)
     {
       //check the EAR      
       Status earTargetStatus = doesProjectTargetMatchServerType(earP, serverFactoryId);
@@ -79,7 +85,7 @@ public class ValidationUtils
 
     //Validate service side J2EE level    
     Status j2eeStatus = doesProjectMatchJ2EELevel(p, j2eeLevel);
-    if(j2eeStatus.getSeverity()==Status.OK)
+    if(earP!=null && j2eeStatus.getSeverity()==Status.OK)
     {
       Status earJ2EEStatus = doesProjectMatchJ2EELevel(earP, j2eeLevel);
       if(earJ2EEStatus.getSeverity()==Status.ERROR)
@@ -99,6 +105,7 @@ public class ValidationUtils
   {
     if (p!=null && p.exists())
     {
+		System.out.println("P.getName = "+p.getName());
       IRuntime projectTarget = ServerSelectionUtils.getRuntimeTarget(p.getName());
       if (projectTarget!=null)
       {
@@ -120,6 +127,10 @@ public class ValidationUtils
   {
     if (p!=null && p.exists())
     {
+	  StructureEdit mc = StructureEdit.getStructureEditForRead(p);
+	  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+	  
+		
       int projectJ2EELevel = J2EEUtils.getJ2EEVersion(p);
       if (projectJ2EELevel!=-1)
       {
@@ -228,18 +239,26 @@ public class ValidationUtils
     return false;
   }
   
+  /*
+   * @deprecated
+   * 
+   */
   private IResource getWebServcesXML(IProject p)
   {
-    J2EENature nature = (J2EENature) J2EENature.getRegisteredRuntime(p);
-    if (nature == null)
-      return null;
+	  // 
+//    J2EENature nature = (J2EENature) J2EENature.getRegisteredRuntime(p);
+//    if (nature == null)
+//      return null;
 
-    IResource moduleRoot = nature.getModuleServerRoot();
+//    IResource moduleRoot = nature.getModuleServerRoot();
+//	IResource moduleRoot = ResourceUtils.getWebModuleServerRoot(p);
+	IResource moduleRoot = J2EEUtils.getFirstWebContentContainer(p);  
     if (!(moduleRoot instanceof IContainer))
       return null;
 
     IResource webServicesXML=null;
-    if (nature instanceof J2EEWebNatureRuntime)
+//    if (nature instanceof J2EEWebNatureRuntime)
+	if (ResourceUtils.isWebProject(p))
     {
       StringBuffer wsPath = new StringBuffer();
       wsPath.append("WEB-INF/");

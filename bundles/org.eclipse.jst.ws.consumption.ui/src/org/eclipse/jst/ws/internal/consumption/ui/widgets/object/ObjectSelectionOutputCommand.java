@@ -66,6 +66,7 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
         }
       }
     }
+	
     // Validation
     Status status = (objectSelectionWidget_ != null) ? objectSelectionWidget_.validateSelection(getObjectSelection()) : new SimpleStatus("");
     if (status.getSeverity() != Status.OK)
@@ -78,6 +79,7 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
       {
       }
     }
+	
     return status;
   }
 
@@ -165,6 +167,7 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
     this.project_ = project;
   }
   
+  
   /**
    * @return Returns the parser_.
    */
@@ -183,12 +186,15 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
         try
         { 
           IResource resource = ResourceUtils.getResourceFromSelection(obj);
+		  System.out.println("getProjectFromObjectSelection - resource = "+resource);
           if (resource==null) 
             return null;
           IProject p = ResourceUtils.getProjectOf(resource.getFullPath());
+		  System.out.println("ObjectSelection project = "+p);
           return p;
         } catch(CoreException e)
         {
+			e.printStackTrace();
           return null;
         }        
       }

@@ -175,6 +175,7 @@ public class CreateEJBProjectCommand extends SimpleCommand
     try
     {
       ejbProjectCreationOperation.run(new NullProgressMonitor());
+	  
     }
     catch (java.lang.reflect.InvocationTargetException e)
     {

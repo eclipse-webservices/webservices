@@ -100,7 +100,6 @@ public class WebServiceServerRuntimeTypeRegistry implements CommandRegistry
         { 
           WebServiceServer wss = new WebServiceServer(elem);
           webServiceServers.put(elem.getAttribute("id"), wss);
-          //System.out.println("WSSRT - Server ID = "+ elem.getAttribute("id"));
           String serverLabel = wss.getLabel();
           if (serverLabel != null && serverLabel.length()>0)
           {
@@ -133,7 +132,6 @@ public class WebServiceServerRuntimeTypeRegistry implements CommandRegistry
           String typeId = elem.getAttribute("type");
           String serverId = elem.getAttribute("server");
           String runtimeId = elem.getAttribute("runtime");
-// System.out.println("Adding serverid = "+serverId);
           WebServiceServerRuntimeType_ wssrt = new WebServiceServerRuntimeType_(serverId, runtimeId, typeId, elem);
           webServiceServerRuntimeTypes.put(elem.getAttribute("id"), wssrt);
 
@@ -458,11 +456,14 @@ public class WebServiceServerRuntimeTypeRegistry implements CommandRegistry
     return null;
   }
 
-  /*
+  /**
    * Returns true if an EJB project is needed to host a Web service
    * of the type identified by typeId. If multiple natureIds are specified in the 
    * "includeNatures" attribute, only the first one is checked. If no natureIds are specified, 
    * false is returned.
+   * 
+   * @deprecated  
+   * 	Should be refactored in future 
    */
   public boolean requiresEJBProject(String typeId)
   {
@@ -501,22 +502,26 @@ public class WebServiceServerRuntimeTypeRegistry implements CommandRegistry
   {
     IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
     ArrayList validProjects = new ArrayList();
-    IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeId);
-    if (wst != null)
-    {
-      IConfigurationElement elem = wst.getConfigurationElement();
-      String includedNatures = elem.getAttribute("includeNatures");
-      String excludedNatures = elem.getAttribute("excludeNatures");
-      if (includedNatures!=null && includedNatures.length()>0)
-      {
-        for (int i = 0; i < projects.length; i++)
-        {
-          if (include(projects[i], includedNatures) && exclude(projects[i], excludedNatures))
-            validProjects.add(projects[i]);
-        }
-        return (IProject[])validProjects.toArray(new IProject[0]);
-      }
-    }
+//    IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeId);
+//    if (wst != null)
+//    {
+
+		//TODO: This section needs to be refactored to filter ArtifactEdits
+		// and uphold project topology described in the extension
+		
+//      IConfigurationElement elem = wst.getConfigurationElement();
+//      String includedNatures = elem.getAttribute("includeNatures");
+//      String excludedNatures = elem.getAttribute("excludeNatures");
+//      if (includedNatures!=null && includedNatures.length()>0)
+//      {
+//        for (int i = 0; i < projects.length; i++)
+//        {
+//          if (include(projects[i], includedNatures) && exclude(projects[i], excludedNatures))
+//            validProjects.add(projects[i]);
+//        }
+//        return (IProject[])validProjects.toArray(new IProject[0]);
+//      }
+//    }
     
     //If wst was null or the extension didn't specify which project natures are
     // to be included, revert to the old behaviour
@@ -738,10 +743,8 @@ public class WebServiceServerRuntimeTypeRegistry implements CommandRegistry
 
     WebServiceServerRuntimeType wssrt = null;
     String serverId = getWebServiceServerByFactoryId(server).getId();
-    // System.out.println("SERVER ID HERE = "+serverId);
     IConfigurationElement elem = getConfigurationElementFor(server, runtime, type);
-    
-    
+   
     if( elem == null )
     {
       // We couldn't find the server and runtime specified so we will
@@ -754,31 +757,6 @@ public class WebServiceServerRuntimeTypeRegistry implements CommandRegistry
       
     }
    
-/*    
-    try {
-      //Object webServiceType = elem.createExecutableExtension("class");
-      if (webServiceType instanceof WebServiceServerRuntimeType) 
-      {
-        wssrt = (WebServiceServerRuntimeType)webServiceType;
-        wssrt.setServerLabel(server);
-        wssrt.setRuntimeLabel(runtime);
-        wssrt.setWebModuleRequired( Boolean.valueOf(elem.getAttribute("requireWebModule")).booleanValue() );
-        wssrt.setEJBModuleRequired( Boolean.valueOf(elem.getAttribute("requireEJBModule")).booleanValue() );
-      }
-      else
-      {
-        String implementedInterface = "org.eclipse.jst.ws.ui.wizard.WebServiceServerRuntimeType ";
-        String errMsg = "Extensions of the WebServiceServerRuntimeTypes extension point must implement the ";
-        errMsg = errMsg + implementedInterface + "interface.";
-        Log.write(this,"getWebServiceServerRuntimeType",Log.ERROR,errMsg);
-      }
-      
-    }
-    catch (CoreException ce)
-    {
-        Log.write(this,"loadTypes",Log.ERROR,ce);      
-    }
-*/    
     return wssrt;
 
   }

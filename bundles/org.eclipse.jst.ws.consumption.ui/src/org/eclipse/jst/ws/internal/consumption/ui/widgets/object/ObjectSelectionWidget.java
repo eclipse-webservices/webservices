@@ -43,10 +43,12 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
   
   public WidgetDataEvents addControls(Composite parent, Listener statusListener)
   {
+	  System.out.println("ObjectSelectionWidget - - 1");	  
     elements = ObjectSelectionRegistry.getInstance().getConfigurationElements();
     this.parent = parent;
     this.statusListener = statusListener;
     composite = null;
+	System.out.println("ObjectSelectionWidget - - 2");		
     return this;
   }
   

@@ -92,7 +92,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     
     clientWidget_ = new ClientRuntimeSelectionWidget();
     clientWidget_.addControls( root, statusListener );
-    
+
     return this;
   }
   
@@ -217,9 +217,8 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   public Status getStatus() 
   {
     Status serviceStatus = runtimeWidget_.getStatus();
-    Status clientStatus  = clientWidget_.getStatus();
     Status projectStatus = projectWidget_.getStatus();
-    
+    Status clientStatus  = clientWidget_.getStatus();    
     Status finalStatus   = new SimpleStatus( "" );
     
     // call child widgets' getStatus()

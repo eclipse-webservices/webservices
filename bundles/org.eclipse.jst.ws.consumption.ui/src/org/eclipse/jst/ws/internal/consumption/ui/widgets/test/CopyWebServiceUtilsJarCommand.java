@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
@@ -60,7 +61,8 @@ public Status execute(Environment env)
   {
     env.getProgressMonitor().report( msgUtils.getMessage( "PROGRESS_INFO_COPY_WEBSERVICE_UTILS" ) );
     IProject sampleIProject = (IProject)ResourceUtils.findResource(sampleProject);    
-    IPath webModulePath = ResourceUtils.getWebModuleServerRoot(sampleIProject).getFullPath();
+//    IPath webModulePath = ResourceUtils.getWebModuleServerRoot(sampleIProject).getFullPath();
+    IPath webModulePath = J2EEUtils.getFirstWebContentPath(sampleIProject);	
     if (webModulePath == null)
       return new SimpleStatus(WebServiceConsumptionUIPlugin.ID,msgUtils.getMessage("MSG_ERROR_PROJECT_NOT_FOUND"), Status.ERROR);
       

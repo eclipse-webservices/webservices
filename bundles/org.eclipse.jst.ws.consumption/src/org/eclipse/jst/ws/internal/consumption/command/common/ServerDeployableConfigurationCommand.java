@@ -74,6 +74,7 @@ public class ServerDeployableConfigurationCommand extends SimpleCommand {
    */
   public Status execute(Environment env) {
 
+	  System.out.println("ServerDeployableConfigurationCommand");
     Status status = new SimpleStatus("");
     try {
 

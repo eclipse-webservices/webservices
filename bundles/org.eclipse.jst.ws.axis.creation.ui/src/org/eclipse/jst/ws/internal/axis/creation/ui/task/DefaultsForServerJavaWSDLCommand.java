@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
 import javax.wsdl.Definition;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -20,13 +21,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
-import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.util.ClasspathUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.consumption.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.util.WSDLUtils;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.Utils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
@@ -136,17 +136,19 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 		IPath modulePath = serviceProject_.getFullPath();
 		IPath webinfPath = serviceProject_.getFullPath();
 		try {
-			if (serviceProject_.hasNature(IWebNatureConstants.J2EE_NATURE_ID)) {
+			if ( ResourceUtils.isWebProject(serviceProject_)) {
 				moduleServerRoot = ResourceUtils.getJavaSourceLocation(serviceProject_);
-
-				J2EEWebNatureRuntime webProject =
-					(J2EEWebNatureRuntime) serviceProject_.getNature(
-						IWebNatureConstants.J2EE_NATURE_ID);
-				modulePath = webProject.getWebModulePath();
-				webinfPath = webinfPath.append(webProject.getWEBINFPath());
+				// should use ModuleCore.getSourceContainers();
+//				IContainer container = ResourceUtils.getWebModuleServerRoot(serviceProject_);
+//				if (container!=null) {
+//					moduleServerRoot = container.getFullPath();
+//				}
+				
+				modulePath = modulePath.append(J2EEUtils.getFirstWebModuleName(serviceProject_));
+				webinfPath = J2EEUtils.getFirstWebInfPath(serviceProject_);
 			}
 
-		} catch (CoreException e) {
+		} catch (Exception e) {
 			status =  new SimpleStatus( "DefaultsForServerJavaWSDLTask", conMsgUtils_.getMessage("MSG_ERROR_DEFAULT_BEAN"), Status.ERROR, e );
 			env.getStatusHandler().reportError(status);
 			return status;
@@ -156,9 +158,7 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 			modulePath.append(WSDL_FOLDER).append(simpleBeanName).addFileExtension(WSDL_EXT);
 
 		try{
-			IFolder folder = ResourceUtils
-									.getWorkspaceRoot()
-									.getFolder(modulePath.append(WSDL_FOLDER));
+			IFolder folder = ResourceUtils.getWorkspaceRoot().getFolder(modulePath.append(WSDL_FOLDER));
 			FileUtil.createFolder(folder, true, true);
 		
 		}
@@ -168,12 +168,7 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 			return status;
 		}
 		
-		String wsdlLocation =
-			ResourceUtils
-				.getWorkspaceRoot()
-				.getFile(wsdlPath)
-				.getLocation()
-				.toString();
+		String wsdlLocation = ResourceUtils.getWorkspaceRoot().getFile(wsdlPath).getLocation().toString();
 
 		javaWSDLParam_.setOutputWsdlLocation(wsdlLocation);
 		javaWSDLParam_.setInputWsdlLocation(wsdlLocation);
@@ -201,8 +196,7 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 		javaWSDLParam_.setStyle(JavaWSDLParameter.STYLE_RPC);
 		javaWSDLParam_.setUse(JavaWSDLParameter.USE_ENCODED);
 
-		String projectURL =
-			ResourceUtils.getEncodedWebProjectURL(serviceProject_);
+		String projectURL =	ResourceUtils.getEncodedWebProjectURL(serviceProject_);
 		String serviceURL = null;
 		if (projectURL == null) {
 			status = new SimpleStatus( "DefaultsForServerJavaWSDLTask", msgUtils_.getMessage("MSG_ERROR_PROJECT_URL"), Status.ERROR);
@@ -218,15 +212,13 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 		//		String javaOutput = PlatformUtils.getPlatformURL(moduleServerRoot);
 		//		String output = PlatformUtils.getPlatformURL(modulePath);
 
-		String javaOutput =
-			ResourceUtils
-				.findResource(moduleServerRoot)
-				.getLocation()
-				.toString();
+		String javaOutput =	ResourceUtils.findResource(moduleServerRoot).getLocation().toString();
 	
 		String serviceName = javaWSDLParam_.getServiceName();
-		String output =
-			ResourceUtils.findResource(webinfPath).getLocation().append(serviceName).toString();
+		IPath outputPath =	ResourceUtils.findResource(webinfPath).getLocation();
+		String output = serviceProject_.getFullPath().toString();
+		if (outputPath!=null)
+		 output = outputPath.append(serviceName).toString();
 
 		javaWSDLParam_.setJavaOutput(javaOutput);
 		javaWSDLParam_.setOutput(output);

@@ -13,7 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.common;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 
 
 /**
@@ -40,7 +40,8 @@ public final class MappingUtils
   public static IPath getWSDLFolderPath (IProject project)
   {
     IPath wsdlFolder=null;
-  	IPath webModuleServerRoot = ResourceUtils.getWebModuleServerRoot( project ).getFullPath();
+//  	IPath webModuleServerRoot = ResourceUtils.getWebModuleServerRoot( project ).getFullPath();
+  	IPath webModuleServerRoot = J2EEUtils.getFirstWebContentPath(project);
   	if (webModuleServerRoot != null )
   		wsdlFolder = webModuleServerRoot.append(WSDL_FOLDER);
     return wsdlFolder;

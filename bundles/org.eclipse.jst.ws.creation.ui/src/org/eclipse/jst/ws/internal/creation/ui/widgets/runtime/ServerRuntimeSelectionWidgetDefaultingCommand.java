@@ -28,6 +28,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntime
 import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
@@ -68,7 +69,6 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      {
        return clientSideStatus;
      }
-     
      Status status = new SimpleStatus("");
 
      setDefaultServiceRuntimeFromPreference();
@@ -111,6 +111,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     }
   }
   
+  /**
+   * Returns an object with target Runtime and J2EE value
+   * @param project
+   * @return
+   */
   private WSRuntimeJ2EEType getWSRuntimeAndJ2EEFromProject(IProject project)
   {
     WSRuntimeJ2EEType wsrJ2EE = null;
@@ -237,7 +242,6 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     if (initialProject_== null || (initialProject_!=null && webServiceRuntimeJ2EEType==null))
     {
       //Select the first existing project that is valid.
-
       setServiceProjectToFirstValid();
       String serviceProjectName = getServiceProject2EARProject().getList().getSelection();
      
@@ -300,7 +304,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 
   	//Service-side
     String initialProjectName = getServiceProject2EARProject().getList().getSelection(); 
-    IProject initialProject = (IProject)((new StringToIProjectTransformer()).transform(initialProjectName));  	
+    IProject initialProject =   FileResourceUtils.getWorkspaceRoot().getProject(initialProjectName);  	
   	IProject defaultServiceEAR = getDefaultEARFromServiceProject(initialProject);
   	getServiceProject2EARProject().getChoice().getList().setSelectionValue(defaultServiceEAR.getName());
   	
@@ -419,7 +423,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   {
   	//Set EAR selection to null if the project/server defaults imply an EAR should not be created
   	String serviceProjectName = getServiceProject2EARProject().getList().getSelection();
-  	IProject serviceProject = (IProject)((new StringToIProjectTransformer()).transform(serviceProjectName));
+  	IProject serviceProject = FileResourceUtils.getWorkspaceRoot().getProject(serviceProjectName);
   	if (serviceProject != null && serviceProject.exists())
   	{
   	  //Get the runtime target on the serviceProject
@@ -485,10 +489,10 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 	  }
 	  SelectionList list = new SelectionList(projectNames, 0);
 	  Vector choices = new Vector();
-	  for (int i = 0; i < projects.length; i++)
+	  for (int i = 0; i < projects.length; i++) {
 	    choices.add(getProjectEARChoice(projects[i]));
-	    
-	    serviceProject2EARProject_ = new SelectionListChoices(list, choices, getEARProjects());
+	  }
+	  serviceProject2EARProject_ = new SelectionListChoices(list, choices, getEARProjects());
     }
     return serviceProject2EARProject_; 
   }
@@ -518,6 +522,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     return serviceNeedEAR_;
   }
   
+  /**
+   * Returns the first EAR for a given project
+   * @param project
+   * @return
+   */
   private IProject getDefaultEARFromServiceProject(IProject project)
   {
     if (project!=null && project.exists()) 

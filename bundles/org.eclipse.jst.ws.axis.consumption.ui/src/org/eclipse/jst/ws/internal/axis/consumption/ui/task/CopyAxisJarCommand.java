@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IPluginRegistry;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
@@ -65,7 +66,8 @@ public class CopyAxisJarCommand extends SimpleCommand {
   }
 
   private void copyAxisJarsToProject(IProject project, Status status, Environment env) {
-    IPath webModulePath = ResourceUtils.getWebModuleServerRoot(project).getFullPath();
+//    IPath webModulePath = ResourceUtils.getWebModuleServerRoot(project).getFullPath();
+	IPath webModulePath = J2EEUtils.getFirstWebContentPath(project);
     if (webModulePath == null) {
       status = new SimpleStatus("", baseConMsgUtils_.getMessage("MSG_ERROR_PROJECT_NOT_FOUND"), Status.ERROR);
       env.getStatusHandler().reportError(status);

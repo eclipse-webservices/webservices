@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 
 public class ClientProjectTypeRegistry
 {
@@ -86,9 +87,14 @@ public class ClientProjectTypeRegistry
     if (element != null)
     {
       IProject[] workspaceProjs = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-      for (int i = 0; i < workspaceProjs.length; i++)
-        if (include(workspaceProjs[i], element.getAttribute("include")) && exclude(workspaceProjs[i], element.getAttribute("exclude")))
+      for (int i = 0; i < workspaceProjs.length; i++) {
+		// TODO: Needs to be refactored to work with project/module topology described in XP
+        //if (include(workspaceProjs[i], element.getAttribute("include")) && exclude(workspaceProjs[i], element.getAttribute("exclude")))
+		if (ResourceUtils.isWebProject(workspaceProjs[i]) || ResourceUtils.isEJBProject(workspaceProjs[i]))
+		{
           v.add(workspaceProjs[i]);
+        }
+      }
     }
     IProject[] projects = new IProject[v.size()];
     v.copyInto(projects);

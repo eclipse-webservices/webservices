@@ -21,8 +21,8 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -44,16 +44,17 @@ import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.applicationclient.internal.creation.IApplicationClientNatureConstants;
+import org.eclipse.jst.j2ee.applicationclient.modulecore.util.AppClientArtifactEdit;
 import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
-import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
-import org.eclipse.jst.j2ee.internal.ejb.project.EJBNatureRuntime;
-import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
-import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
-import org.eclipse.jst.j2ee.internal.web.operations.IDynamicWebNature;
+import org.eclipse.jst.j2ee.ejb.modulecore.util.EJBArtifactEdit;
+import org.eclipse.jst.j2ee.modulecore.util.EARArtifactEdit;
+import org.eclipse.jst.j2ee.web.modulecore.util.WebArtifactEdit;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.eclipse.EclipseLog;
+import org.eclipse.wst.common.componentcore.StructureEdit;
+import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerPort;
@@ -103,7 +104,7 @@ public final class ResourceUtils {
 	 * Status Code explaining the CoreException thrown
 	 */
 
-	private static final String ejbProjectNature = IEJBNatureConstants.NATURE_ID;
+	private static final String ejbProjectNature = IModuleConstants.JST_EJB_MODULE;
 	// ksc private static final String ejb2ProjectNature =
 	// IEJBNatureConstants.EJB_20_NATURE_ID;
 
@@ -312,20 +313,53 @@ public final class ResourceUtils {
 	 * @return True if the project is a Web Project.
 	 */
 	public static boolean isWebProject(IProject project) {
+		boolean isWeb = false;
+		StructureEdit mc = null;
 		try {
-			IProjectNature nature = project
-					.getNature(IWebNatureConstants.J2EE_NATURE_ID);
-			return (nature != null && (nature instanceof IDynamicWebNature));
-		} catch (CoreException e) {
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  if (wbcs.length!=0) {
+			  isWeb = WebArtifactEdit.isValidWebModule(wbcs[0]);
+		  }
 		}
-		return false;
+		catch(Exception ex){
+			// handle exception
+		}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
+
+		return isWeb;
 	}
 
 	public static boolean isEARProject(IProject project){
-		if (EARNatureRuntime.getRuntime(project) != null) {
-			return true;
+		boolean isEAR = false;
+		StructureEdit mc = null;
+		try {
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  if (wbcs.length!=0) {
+			EARArtifactEdit earEdit = null;
+			try {
+			  earEdit = EARArtifactEdit.getEARArtifactEditForRead(wbcs[0]);
+			  if (earEdit!=null){
+				isEAR = true;
+			  }
+			}
+			finally{
+				if (earEdit!=null)
+					earEdit.dispose();
+			}
+		  }
 		}
-		return false;
+		catch(Exception ex){}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
+		
+		return isEAR;
 	}
 	/**
 	 * Returns true if the given <code>project</code> is an EJB 1.1 or EJB 2.0
@@ -336,24 +370,32 @@ public final class ResourceUtils {
 	 * @return True if the project is an EJB 1.1 or an EJB 2.0 Project.
 	 */
 	public static boolean isEJBProject(IProject project) {
-		// ksc
-		//    try
-		//    {
-		//      IProjectNature nature = project.getNature(ejbProjectNature);
-		//      if (nature==null)
-		//        nature = project.getNature(ejb2ProjectNature);
-		//
-		//      return (nature != null && (nature instanceof EJBNatureRuntime));
-		//    }
-		//    catch (CoreException e)
-		//    {
-		//    }
-		//    return false;
-		if (EJBNatureRuntime.getRuntime(project) != null)
-			return true;
-		else
-			return false;
-		// ksc
+		boolean isEJB = false;
+		StructureEdit mc = null;
+		try {
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  if (wbcs.length!=0) {
+			EJBArtifactEdit ejbEdit = null;
+			try {
+			  ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(wbcs[0]);
+			  if (ejbEdit!=null){
+				isEJB = true;
+			  }
+			}
+			finally{
+				if (ejbEdit!=null)
+					ejbEdit.dispose();
+			}
+		  }
+		}
+		catch(Exception ex){}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
+		
+		return isEJB;	
 	}
 
 	/**
@@ -365,15 +407,32 @@ public final class ResourceUtils {
 	 * @return True if the project is an Application Client Project
 	 */
 	public static boolean isAppClientProject(IProject project) {
-		for (int i = 0; i < IApplicationClientNatureConstants.APPCLIENT_NATURE_IDS.length; i++) {
+		boolean isAppClient = false;
+		StructureEdit mc = null;
+		try {
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  if (wbcs.length!=0) {
+			AppClientArtifactEdit appClientEdit = null;
 			try {
-				if (project
-						.hasNature(IApplicationClientNatureConstants.APPCLIENT_NATURE_IDS[i]))
-					return true;
-			} catch (CoreException e) {
+				appClientEdit = AppClientArtifactEdit.getAppClientArtifactEditForRead(wbcs[0]);
+			  if (appClientEdit!=null){
+				  isAppClient = true;
+			  }
 			}
+			finally{
+				if (appClientEdit!=null)
+					appClientEdit.dispose();
+			}
+		  }
 		}
-		return false;
+		catch(Exception ex){}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
+		
+		return isAppClient;	
 	}
 
 	/**
@@ -500,6 +559,8 @@ public final class ResourceUtils {
 		Log log = new EclipseLog();
 		log.log(Log.INFO, 5030, ResourceUtils.class, "getJavaSourceLocation",
 				"project=" + project + ",sourceLocation=" + sourceLocation);
+		
+		System.out.println("Java sourceLocation = "+sourceLocation);
 		return sourceLocation;
 	}
 
@@ -619,22 +680,37 @@ public final class ResourceUtils {
 	 */
 	public static IContainer getWebModuleServerRoot(IProject project) {
 		IContainer webModuleServerRoot = null;
+		StructureEdit mc = null;
 		try {
-			IProjectNature nature = project
-					.getNature(IWebNatureConstants.J2EE_NATURE_ID);
-			if (nature != null && (nature instanceof IDynamicWebNature)) {
-			  IDynamicWebNature webNature = (IDynamicWebNature) nature;
-				webModuleServerRoot = webNature.getRootPublishableFolder();
+			mc = StructureEdit.getStructureEditForRead(project);
+			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			if (wbcs.length!=0) {
+				webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
+				IFolder[] folder = StructureEdit.getOutputContainersForProject(project);
+				
+				if (folder.length!=0)
+				System.out.println("WebModuleServerRoot = "+folder[0]);
+				
 			}
-		} catch (CoreException e) {
+//			IProjectNature nature = project.getNature(IWebNatureConstants.J2EE_NATURE_ID);
+//			if (nature != null && (nature instanceof IDynamicWebNature)) {
+//			  IDynamicWebNature webNature = (IDynamicWebNature) nature;
+//				webModuleServerRoot = webNature.getRootPublishableFolder();
+//			}
+		} catch (Exception e) {
+			Log log = new EclipseLog();
+			log.log(Log.ERROR, 5035, ResourceUtils.class, "getWebModuleServerRoot",
+					"project=" + project + ",webModuleServerRoot="
+							+ webModuleServerRoot);			
 		}
-		Log log = new EclipseLog();
-		log.log(Log.INFO, 5035, ResourceUtils.class, "getWebModuleServerRoot",
-				"project=" + project + ",webModuleServerRoot="
-						+ webModuleServerRoot);
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
 
 		return webModuleServerRoot;
 	}
+
 
 	/**
 	 * Returns the URL string corresponding to the web server module root of the
@@ -773,19 +849,22 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 			if (index != -1) {
 				StringBuffer encodedURL = new StringBuffer();
 				encodedURL.append(url.substring(0, index + 1));
-				String ctxtRoot = URLEncoder.encode(url.substring(index + 1, url.length()));
-				
-				int plusIndex = ctxtRoot.indexOf('+');
-				while (plusIndex != -1) {
-					StringBuffer sb = new StringBuffer();
-					sb.append(ctxtRoot.substring(0, plusIndex));
-					sb.append("%20");
-					sb.append(ctxtRoot.substring(plusIndex + 1, ctxtRoot
+				try {
+					String ctxtRoot = URLEncoder.encode(url.substring(index + 1, url.length()), "UTF-8");
+					int plusIndex = ctxtRoot.indexOf('+');
+					while (plusIndex != -1) {
+						StringBuffer sb = new StringBuffer();
+						sb.append(ctxtRoot.substring(0, plusIndex));
+						sb.append("%20");
+						sb.append(ctxtRoot.substring(plusIndex + 1, ctxtRoot
 							.length()));
-					ctxtRoot = sb.toString();
-					plusIndex = ctxtRoot.indexOf('+');
-				}
-				encodedURL.append(ctxtRoot);
+						ctxtRoot = sb.toString();
+						plusIndex = ctxtRoot.indexOf('+');
+					}
+					encodedURL.append(ctxtRoot);
+				}catch (IOException io){
+					//handler exception
+				}				
 				url = encodedURL.toString();
 			}
 		}
@@ -918,13 +997,10 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 					String nextSegment = absolutePath.segment(numSegment);
 					// check if the segment after the WebModuleServerRoot is
 					// WEB-INF (ignoring case)
-					if (nextSegment != null
-							&& !nextSegment.equalsIgnoreCase("WEB-INF")) {
-						IPath relativePath = absolutePath
-								.removeFirstSegments(numSegment);
+					if (nextSegment != null	&& !nextSegment.equalsIgnoreCase("WEB-INF")) {
+						IPath relativePath = absolutePath.removeFirstSegments(numSegment);
 						if (webProjectURL != null)
-							url.append(webProjectURL).append(IPath.SEPARATOR)
-									.append(relativePath.toString());
+							url.append(webProjectURL).append(IPath.SEPARATOR).append(relativePath.toString());
 					}
 				} else if (numSegmentFromPath == numSegment)
 					url.append(webProjectURL);
@@ -1492,6 +1568,7 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 			throws CoreException {
 		IResource res = null;
 		if (obj != null) {
+			System.out.println("Object = "+ obj.getClass().getName());
 			if (obj instanceof IResource) {
 				res = (IResource) obj;
 			} else if (obj instanceof ICompilationUnit) {

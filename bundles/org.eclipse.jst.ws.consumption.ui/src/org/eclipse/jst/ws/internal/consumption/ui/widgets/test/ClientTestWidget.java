@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FolderResourceFilter;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -247,8 +248,8 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     IResource  initialResource    = null;
     IPath      projectPath        = new Path( projectCombo_.getText() ).makeAbsolute();
     IResource  project            = ResourceUtils.findResource( projectPath );
-    IContainer webModuleContainer = ResourceUtils.getWebModuleServerRoot( (IProject)project);
-    
+//    IContainer webModuleContainer = ResourceUtils.getWebModuleServerRoot( (IProject)project);
+    IContainer webModuleContainer = J2EEUtils.getFirstWebContentContainer((IProject)project);  
     try
     {
       initialResource = ResourceUtils.getResourceFromSelection( initialSelection_ );

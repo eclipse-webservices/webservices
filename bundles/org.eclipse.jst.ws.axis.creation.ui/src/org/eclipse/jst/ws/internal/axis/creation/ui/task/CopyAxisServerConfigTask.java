@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.wst.command.env.common.FileResourceUtils;
@@ -135,9 +136,8 @@ public class CopyAxisServerConfigTask extends SimpleCommand {
 						"webapps").append(  //$NON-NLS-1$
 						project.getName());
 
-				IPath webModulePath =
-					ResourceUtils.getWebModuleServerRoot(project).getFullPath();
-				
+//				IPath webModulePath = ResourceUtils.getWebModuleServerRoot(project).getFullPath();
+				IPath webModulePath = J2EEUtils.getFirstWebContentPath(project);
 				ResourceContext context = new TransientResourceContext();
 				context.setOverwriteFilesEnabled(true);
 				context.setCreateFoldersEnabled(true);

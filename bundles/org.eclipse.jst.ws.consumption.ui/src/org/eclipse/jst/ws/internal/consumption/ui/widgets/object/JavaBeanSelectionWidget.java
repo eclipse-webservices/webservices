@@ -175,7 +175,7 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
         }
         
         beanClassText_.setText(beanClass);
-        serverProject_ = resource.getProject();
+        serverProject_ =  ResourceUtils.getProjectOf(path);
       }
     }
   }

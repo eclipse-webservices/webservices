@@ -33,6 +33,7 @@ import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
@@ -124,12 +125,8 @@ public class UpdateAxisWSDDFileTask extends SimpleCommand {
 		String javaoutput = javaWSDLParam_.getJavaOutput();
 		String output = javaWSDLParam_.getOutput();
 
-		String webContentPath =
-			ResourceUtils
-				.getWebModuleServerRoot(project)
-				.getLocation()
-				.toString();
-
+//		String webContentPath =	ResourceUtils.getWebModuleServerRoot(project).getLocation().toString();
+		String webContentPath =	J2EEUtils.getFirstWebContentContainer(project).getLocation().toString();
 		try {
 
 			if (javaWSDLParam_.getDeploymentFiles() != null

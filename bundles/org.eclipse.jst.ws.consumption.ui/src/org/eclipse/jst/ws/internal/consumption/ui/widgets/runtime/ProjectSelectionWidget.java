@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
@@ -221,7 +222,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     if (projectName == null || projectName.length()==0)
       return true;
     
-    IProject project = (IProject)((new StringToIProjectTransformer()).transform(projectName));
+    //IProject project = (IProject)((new StringToIProjectTransformer()).transform(projectName));
+	IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectName);
   	if (project != null && project.exists())
   	{
   	  //Get the runtime target on the project
