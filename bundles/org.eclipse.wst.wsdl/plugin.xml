@@ -11,10 +11,10 @@
       <library name="wsdl.jar">
          <export name="*"/>
       </library>
-      <library name="jars/qname.jar">
+      <library name="lib/qname.jar">
          <export name="*"/>
       </library>
-      <library name="jars/wsdl4j.jar">
+      <library name="lib/wsdl4j.jar">
          <export name="*"/>
       </library>
    </runtime>
