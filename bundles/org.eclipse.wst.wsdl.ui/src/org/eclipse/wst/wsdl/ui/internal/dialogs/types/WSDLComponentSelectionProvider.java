@@ -365,6 +365,10 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
     
     private void createXSDInlineTypesObjects(IComponentList list, String tagPath) {
         // Handle inline schemas
+    	if (definition.getETypes() == null) {
+    		return;
+    	}
+    	
         Iterator inlineSchemasIt = definition.getETypes().getSchemas().iterator();
         while (inlineSchemasIt.hasNext()) {
             XSDSchema schema = (XSDSchema) inlineSchemasIt.next();
@@ -398,6 +402,10 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
     }
 
     private void createXSDElementObjects(IComponentList list, String tagPath) {
+    	if (definition.getETypes() == null) {
+    		return;
+    	}
+    	
         Iterator inlineSchemasIt = definition.getETypes().getSchemas().iterator();
         while (inlineSchemasIt.hasNext()) {
             XSDSchema schema = (XSDSchema) inlineSchemasIt.next();
@@ -420,6 +428,10 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
     
     private void createXSDInlineWrapperTypeObjects(IComponentList list, String tagPath) {
         // Handle inline schemas
+    	if (definition.getETypes() == null) {
+    		return;
+    	}
+    	
         Iterator inlineSchemasIt = definition.getETypes().getSchemas().iterator();
         while (inlineSchemasIt.hasNext()) {
             XSDSchema schema = (XSDSchema) inlineSchemasIt.next();
@@ -461,6 +473,10 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
     }
     
     private void createXSDInlineWrapperElementObjects(IComponentList list, String tagPath) {
+    	if (definition.getETypes() == null) {
+    		return;
+    	}
+    	
         Iterator inlineSchemasIt = definition.getETypes().getSchemas().iterator();
         while (inlineSchemasIt.hasNext()) {
             XSDSchema schema = (XSDSchema) inlineSchemasIt.next();
