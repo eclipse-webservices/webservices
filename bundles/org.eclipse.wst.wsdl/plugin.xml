@@ -106,4 +106,18 @@
      </catalogContributor>
   </extension>
   -->
+
+  <!-- define a wsdl content type -->
+  <extension
+         point="org.eclipse.core.runtime.contentTypes">
+         <content-type
+               priority="high"
+               name="WSDL Content Type"
+               id="wsdlsource"
+               base-type="org.eclipse.core.runtime.xml"
+			   default-charset="UTF-8"
+			   file-extensions="wsdl"/>
+   </extension>
+  
+  
 </plugin>
