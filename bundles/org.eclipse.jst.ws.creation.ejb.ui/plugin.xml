@@ -29,7 +29,7 @@
    
    <extension
          point="org.eclipse.jst.ws.consumption.ui.webServiceServerRuntimeType">
-
+<!--
       <webServiceType
             label="%WEBSERVICETYPE_NAME_WSDL_EJB_TP"
             resourceTypeMetadata="File IResource"
@@ -39,7 +39,7 @@
             excludeNatures=""
             id="org.eclipse.jst.ws.type.wsdl.ejb">
       </webServiceType>
-
+-->
       <webServiceType
 		    label="%WEBSERVICETYPE_NAME_EJB_TP"
 		    resourceTypeMetadata="EJBObject org.eclipse.jst.j2ee.ejb.EnterpriseBean SessionImpl"
