@@ -25,6 +25,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.Binding;
@@ -62,6 +63,7 @@ import org.eclipse.wst.wsdl.ui.internal.widgets.NewComponentWithChildDialog;
 import org.eclipse.wst.wsdl.ui.internal.wizards.BindingWizard;
 import org.eclipse.wst.wsdl.ui.internal.wizards.PortWizard;
 import org.eclipse.wst.xml.core.document.XMLNode;
+import org.eclipse.wst.xsd.ui.internal.XSDEditorPlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -429,13 +431,13 @@ public class WSDLMenuActionContributor implements IMenuActionContributor
     Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
 
     // TODO: Externalize String below
-    SetNewComponentAction setNewAction = new SetNewComponentAction("Create Binding...", definitionElement, prefix, "binding", port);
+    SetNewComponentAction setNewAction = new SetNewComponentAction("New Binding...", definitionElement, prefix, "binding", port);
     setNewAction.setEditor(editorPart);
     setNewAction.setEnabled(true);
     submenu.add(setNewAction);     
     
     // WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_BINDIG")
-    SetExistingComponentAction action = new SetExistingComponentAction("Set Existing Binding...", definitionElement, prefix, "binding", port);
+    SetExistingComponentAction action = new SetExistingComponentAction("Existing Binding...", definitionElement, prefix, "binding", port);
     action.setEditor(editorPart);
     action.setEnabled(isEditable);
     submenu.add(action);
@@ -454,13 +456,13 @@ public class WSDLMenuActionContributor implements IMenuActionContributor
       String prefix = definition.getPrefix(WSDLConstants.WSDL_NAMESPACE_URI);
       
       // TODO: Externalize String below
-      SetNewComponentAction setNewAction = new SetNewComponentAction("Create New Port Type...", definitionElement, prefix, "portType", binding);
+      SetNewComponentAction setNewAction = new SetNewComponentAction("New Port Type...", definitionElement, prefix, "portType", binding);
       setNewAction.setEditor(editorPart);
       setNewAction.setEnabled(true);
       submenu.add(setNewAction);      
 
       // WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_PORTTYPE")
-      SetExistingComponentAction action = new SetExistingComponentAction("Set Existing Port Type...", definitionElement, prefix, "portType", binding);
+      SetExistingComponentAction action = new SetExistingComponentAction("Existing Port Type...", definitionElement, prefix, "portType", binding);
       action.setEditor(editorPart);
       action.setEnabled(isEditable);      
       submenu.add(action);
@@ -480,13 +482,13 @@ public class WSDLMenuActionContributor implements IMenuActionContributor
       String prefix = definition.getPrefix(WSDLConstants.WSDL_NAMESPACE_URI);
       
       // TODO: Externalize String below
-      SetNewComponentAction setNewAction = new SetNewComponentAction("Create Message...", definitionElement, prefix, "message", wsdlElement);
+      SetNewComponentAction setNewAction = new SetNewComponentAction("New Message...", definitionElement, prefix, "message", wsdlElement);
       setNewAction.setEditor(editorPart);
       setNewAction.setEnabled(true);
       submenu.add(setNewAction);  
       
       // WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_MESSAGE")
-      SetExistingComponentAction action = new SetExistingComponentAction("Set Existing Messgae...", definitionElement, prefix, "message", wsdlElement);
+      SetExistingComponentAction action = new SetExistingComponentAction("Existing Messgae...", definitionElement, prefix, "message", wsdlElement);
       action.setEditor(editorPart);
       action.setEnabled(isEditable);
       submenu.add(action);
@@ -506,12 +508,12 @@ public class WSDLMenuActionContributor implements IMenuActionContributor
     if (referenceKind.equalsIgnoreCase("element")) // NON NLS
     {
 //      actionName = WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_ELEMENT");
-      actionName = "Set Existing Element...";
+      actionName = "Existing Element...";
   
       submenu = new MenuManager("Set Element");       // TODO: Externalize Strings
       
       // TODO: Externalize String below
-      SetNewComponentAction setNewElementAction = new SetNewComponentAction("Create Element...", definitionElement, prefix, "element", part);
+      SetNewComponentAction setNewElementAction = new SetNewComponentAction("New Element...", definitionElement, prefix, "element", part);
       setNewElementAction.setEditor(editorPart);
       setNewElementAction.setEnabled(true);
       setNewElementAction.setReferenceKind(referenceKind);
@@ -520,24 +522,29 @@ public class WSDLMenuActionContributor implements IMenuActionContributor
     else
     {
 //      actionName = WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_TYPE");
-      actionName = "Set Existing Type...";
+      actionName = "Existing Type...";
           
       submenu = new MenuManager("Set Type");       // TODO: Externalize Strings
       
       // TODO: Externalize String below
-      SetNewComponentAction setNewComplexAction = new SetNewComponentAction("Create Complex Type...", definitionElement, prefix, "complex type", part);
+      SetNewComponentAction setNewComplexAction = new SetNewComponentAction("New Complex Type...", definitionElement, prefix, "complex type", part);
       setNewComplexAction.setEditor(editorPart);
       setNewComplexAction.setEnabled(true);
       setNewComplexAction.setReferenceKind(referenceKind);
       setNewComplexAction.setTypeKind("complex");
+      Image image = XSDEditorPlugin.getXSDImage("icons/XSDComplexType.gif");
+      setNewComplexAction.setImageDescriptor(ImageDescriptor.createFromImage(image));
       submenu.add(setNewComplexAction);
       
       // TODO: Externalize String below
-      SetNewComponentAction setNewSimpleAction = new SetNewComponentAction("Create Simple Type...", definitionElement, prefix, "simple type", part);
+      SetNewComponentAction setNewSimpleAction = new SetNewComponentAction("New Simple Type...", definitionElement, prefix, "simple type", part);
       setNewSimpleAction.setEditor(editorPart);
       setNewSimpleAction.setEnabled(true);
       setNewSimpleAction.setReferenceKind(referenceKind);
       setNewSimpleAction.setTypeKind("simple");
+      image = XSDEditorPlugin.getXSDImage("icons/XSDSimpleType.gif");
+      setNewSimpleAction.setImageDescriptor(ImageDescriptor.createFromImage(image));
+
       submenu.add(setNewSimpleAction); 
     }
 

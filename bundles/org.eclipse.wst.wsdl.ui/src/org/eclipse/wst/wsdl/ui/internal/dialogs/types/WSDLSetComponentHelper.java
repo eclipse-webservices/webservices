@@ -136,19 +136,22 @@ public class WSDLSetComponentHelper {
         // Check inline Schemas
         if (!foundMatch) {
             List imports = new ArrayList();
-            Iterator it = definition.getETypes().getEExtensibilityElements().iterator();
-            while (it.hasNext()) {
-                XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) it.next();
-                XSDSchema schema = eeElement.getSchema();
-                if (schema.getTargetNamespace() == null || schema.getTargetNamespace().equals("")) {                    
-                    Iterator contents = schema.getContents().iterator();
-                    while (contents.hasNext()) {
-                        XSDSchemaContent content = (XSDSchemaContent) contents.next();
-                        if (content instanceof XSDImport) {
-                            imports.add(content);             
-                        }
-                    }
-                }
+            
+            if (definition.getETypes() != null) {
+	            Iterator it = definition.getETypes().getEExtensibilityElements().iterator();
+	            while (it.hasNext()) {
+	                XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) it.next();
+	                XSDSchema schema = eeElement.getSchema();
+	                if (schema.getTargetNamespace() == null || schema.getTargetNamespace().equals("")) {                    
+	                    Iterator contents = schema.getContents().iterator();
+	                    while (contents.hasNext()) {
+	                        XSDSchemaContent content = (XSDSchemaContent) contents.next();
+	                        if (content instanceof XSDImport) {
+	                            imports.add(content);             
+	                        }
+	                    }
+	                }
+	            }
             }
             
             Iterator importIt = imports.iterator();

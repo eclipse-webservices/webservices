@@ -296,12 +296,14 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
             else if (importItem.getEDefinition() != null) {
                 // Import is a wsdl file
                 Definition definition = importItem.getEDefinition();
-                Iterator schemaIt = definition.getETypes().getEExtensibilityElements().iterator();
-                while (schemaIt.hasNext()) {
-                    XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) schemaIt.next();
-                    schemas.add(eeElement.getSchema());
-                    complexPath = "/definitions/types/schema/complexType";
-                    simplePath = "/definitions/types/schema/simpleType";
+                if (definition.getETypes() != null) {
+	                Iterator schemaIt = definition.getETypes().getEExtensibilityElements().iterator();
+	                while (schemaIt.hasNext()) {
+	                    XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) schemaIt.next();
+	                    schemas.add(eeElement.getSchema());
+	                    complexPath = "/definitions/types/schema/complexType";
+	                    simplePath = "/definitions/types/schema/simpleType";
+	                }
                 }
             }
             
@@ -345,11 +347,13 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
             else if (importItem.getEDefinition() != null) {
                 // Import is a wsdl file
                 Definition definition = importItem.getEDefinition();
-                Iterator schemaIt = definition.getETypes().getEExtensibilityElements().iterator();
-                while (schemaIt.hasNext()) {
-                    XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) schemaIt.next();
-                    schemas.add(eeElement.getSchema());
-                    path = "/definitions/types/schema/element";
+                if (definition.getETypes() != null) {
+	                Iterator schemaIt = definition.getETypes().getEExtensibilityElements().iterator();
+	                while (schemaIt.hasNext()) {
+	                    XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) schemaIt.next();
+	                    schemas.add(eeElement.getSchema());
+	                    path = "/definitions/types/schema/element";
+	                }
                 }
             }
             

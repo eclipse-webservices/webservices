@@ -237,17 +237,17 @@ public class SetNewComponentAction extends AddElementAction
   
   private String getDefaultName() {
       if (input instanceof Port) {
-          newDialogTitle = "Create New Binding";       // TODO: Ugly Hack... remove
+          newDialogTitle = "New Binding";       // TODO: Ugly Hack... remove
           Definition def = ((Port) input).getEnclosingDefinition();
           return NameUtil.getUniqueNameHelper("NewBinding", NameUtil.getUsedBindingNames(def));
       }
       else if (input instanceof Binding) {
-          newDialogTitle = "Create New Port Type";       // TODO: Ugly Hack... remove
+          newDialogTitle = "New Port Type";       // TODO: Ugly Hack... remove
           Definition def = ((Binding) input).getEnclosingDefinition();
           return NameUtil.getUniqueNameHelper("NewPortType", NameUtil.getUsedPortTypeNames(def));
       }
       else if (input instanceof Input || input instanceof Output || input instanceof Fault) {
-          newDialogTitle = "Create New Message";       // TODO: Ugly Hack... remove
+          newDialogTitle = "New Message";       // TODO: Ugly Hack... remove
           Definition def = ((MessageReference) input).getEnclosingDefinition();
           return NameUtil.getUniqueNameHelper("NewMessage", NameUtil.getUsedMessageNames(def));
       }
@@ -255,7 +255,7 @@ public class SetNewComponentAction extends AddElementAction
           Definition def = ((Part) input).getEnclosingDefinition();
           
           if (kind.equalsIgnoreCase("element")) {
-              newDialogTitle = "Create New Element";       // TODO: Ugly Hack... remove
+              newDialogTitle = "New Element";       // TODO: Ugly Hack... remove
               if (command == null) {
                   command = new AddXSDElementDeclarationCommand(def, "NewElement");
               }
@@ -273,11 +273,11 @@ public class SetNewComponentAction extends AddElementAction
               String newItemName = "NewComplexType";
               List usedNames = null;
               if (typeKind.equalsIgnoreCase("complex")) {
-                  newDialogTitle = "Create New Complex Type";       // TODO: Ugly Hack... remove
+                  newDialogTitle = "New Complex Type";       // TODO: Ugly Hack... remove
                   usedNames = getUsedComplexTypeNames(parentSchema);    
               }
               else {
-                  newDialogTitle = "Create New Simple Type";       // TODO: Ugly Hack... remove
+                  newDialogTitle = "New Simple Type";       // TODO: Ugly Hack... remove
                   usedNames = getUsedSimpleTypeNames(parentSchema);
                   newItemName = "NewSimpleType";
               }
