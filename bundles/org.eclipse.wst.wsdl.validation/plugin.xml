@@ -14,12 +14,6 @@
       <library name="wsdlvalidate.jar">
          <export name="*"/>
       </library>
-      <library name="jars/wsdl4j.jar">
-         <export name="*"/>
-      </library>
-      <library name="jars/qname.jar">
-         <export name="*"/>
-      </library>
    </runtime>
    <requires>
       <import plugin="org.eclipse.core.resources"/>
@@ -29,10 +23,11 @@
       <import plugin="org.eclipse.wst.common.uriresolver"/>
       <import plugin="org.eclipse.wst.validation"/>
       <import plugin="org.eclipse.wst.xml.validation"/>
+      <import plugin="org.eclipse.wst.wsdl"/>
    </requires>
 
-   <!-- Top level WSDL validator extension. This is an extension for a 
-        WSDL 1.1 or WSDL 2.0 (or future version) validator.  -->
+   <!-- WSDL extension validator. This is an extension that will run
+        after WSDL validation if WSDL validation is successful.  -->
    <extension-point id="extvalidator" name="WSDL Extension Validator" schema="exsd/extvalidator.exsd"/>
    
    <!-- WSDL 1.1 validator extension. To provide a namespace specific WSDL 1.1
