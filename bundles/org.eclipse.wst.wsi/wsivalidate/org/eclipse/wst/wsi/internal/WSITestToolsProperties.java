@@ -19,8 +19,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.wsi.internal.core.util.WSIProperties;
 
-import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
-import org.eclipse.jst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
+import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
+import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
 
 /**
  * WS-I test tools property.
@@ -115,7 +115,7 @@ public class WSITestToolsProperties
   	// Eclipse's resolution mechanism needs to start with the drive.
     String uriStr = trimURI(fileuri);
 
-    WebServiceUIPlugin wsui = WebServiceUIPlugin.getInstance();
+    WSUIPlugin wsui = WSUIPlugin.getInstance();
     PersistentWSIContext APcontext = wsui.getWSIAPContext();
     PersistentWSIContext SSBPcontext = wsui.getWSISSBPContext();
     
