@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.context.PersistentActionDialogsContext;
 import org.eclipse.wst.command.internal.env.preferences.ActionDialogPreferenceType;
@@ -92,19 +92,19 @@ public class ActionDialogsPreferencePage extends PreferencePage implements IWork
     layout.numColumns = 2;
     parent.setLayout( layout );
     parent.setToolTipText(msgUtils.getMessage("TOOLTIP_PPAD_PAGE"));
-    WorkbenchHelp.setHelp(parent, INFOPOP_PPAD_PAGE );
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, INFOPOP_PPAD_PAGE );
 	
     showAll = new Button(parent, SWT.NONE);
     showAll.setText(msgUtils.getMessage("BUTTON_SHOW_ALL_DIALOGS"));
     showAll.addListener(SWT.Selection, this);
     showAll.setToolTipText(msgUtils.getMessage("TOOLTIP_PPAD_BUTTON_SHOW_ALL"));
-    WorkbenchHelp.setHelp(showAll, INFOPOP_PPAD_BUTTON_SHOW_ALL );
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(showAll, INFOPOP_PPAD_BUTTON_SHOW_ALL );
    
     hideAll = new Button(parent, SWT.NONE);
     hideAll.setText(msgUtils.getMessage("BUTTON_HIDE_ALL_DIALOGS"));
     hideAll.addListener ( SWT.Selection, this);
     hideAll.setToolTipText(msgUtils.getMessage("TOOLTIP_PPAD_BUTTON_HIDE_ALL"));
-    WorkbenchHelp.setHelp(hideAll, INFOPOP_PPAD_BUTTON_HIDE_ALL );
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(hideAll, INFOPOP_PPAD_BUTTON_HIDE_ALL );
 
     initializeValues();
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);
@@ -154,7 +154,7 @@ public class ActionDialogsPreferencePage extends PreferencePage implements IWork
       {
     	Button checkBox = createCheckBox(parent, dialog.getName());
     	checkBox.setToolTipText( dialog.getTooltip() );
-    	WorkbenchHelp.setHelp(checkBox, dialog.getInfopop() );
+    	PlatformUI.getWorkbench().getHelpSystem().setHelp(checkBox, dialog.getInfopop() );
     	checkBoxes_.put(dialog.getId(), checkBox);
       }
     }

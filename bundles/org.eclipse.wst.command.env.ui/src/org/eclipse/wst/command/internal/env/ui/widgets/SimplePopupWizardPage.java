@@ -17,7 +17,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.context.PersistentActionDialogsContext;
 
@@ -71,7 +71,7 @@ public class SimplePopupWizardPage extends SimpleWizardPage
                                    });
       button.setSelection( false );
       
-      WorkbenchHelp.setHelp( button, infopop );  	
+      PlatformUI.getWorkbench().getHelpSystem().setHelp( button, infopop );  	
   	}
   	
   	setControl( composite );

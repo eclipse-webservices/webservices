@@ -20,6 +20,11 @@ import org.eclipse.wst.command.env.ui.widgets.CanFinishRegistry;
 public class SimpleCanFinishRegistry extends Vector implements CanFinishRegistry
 {
 
+  /**
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long serialVersionUID = 3257285837870741305L;
+
   /* (non-Javadoc)
    * @see org.eclipse.env.widgets.CanFinishRegistry#addCondition(org.eclipse.env.command.fragment.Condition)
    */

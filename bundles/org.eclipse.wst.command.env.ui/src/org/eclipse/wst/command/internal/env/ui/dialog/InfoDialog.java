@@ -11,10 +11,11 @@
 package org.eclipse.wst.command.internal.env.ui.dialog;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.Status;
 
 
@@ -91,7 +92,7 @@ public class InfoDialog extends MessageDialog
   protected Image getDialogImage()
   {
     // create image
-    return JFaceResources.getImageRegistry().get(DLG_IMG_INFO);
+    return PlatformUI.getWorkbench().getDisplay().getSystemImage(SWT.ICON_INFORMATION);
   }
 
 }

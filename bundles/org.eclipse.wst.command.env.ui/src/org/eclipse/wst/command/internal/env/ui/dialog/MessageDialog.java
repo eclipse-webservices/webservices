@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.common.StringUtils;
 import org.eclipse.wst.command.env.core.common.Choice;
 import org.eclipse.wst.command.env.core.common.Status;
@@ -191,7 +192,7 @@ public class MessageDialog extends Dialog
   protected Image getDialogImage()
   {
     // create image
-    return JFaceResources.getImageRegistry().get(DLG_IMG_INFO);
+    return PlatformUI.getWorkbench().getDisplay().getSystemImage(SWT.ICON_INFORMATION);
   }
 
   /*
