@@ -10,48 +10,54 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests;
 
-import java.io.FileInputStream;
-import java.net.URL;
 import java.util.Iterator;
 
-import javax.wsdl.Message;
-import javax.wsdl.OperationType;
-import javax.wsdl.Part;
-import javax.wsdl.xml.WSDLReader;
 import javax.xml.namespace.QName;
-import javax.wsdl.factory.WSDLFactory;
 
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.resource.Resource;
-
-import org.eclipse.wst.wsdl.tests.util.WSDL4JDefinitionVisitor;
-
-import org.eclipse.wst.wsdl.WSDLPlugin;
+import org.eclipse.wst.wsdl.Binding;
+import org.eclipse.wst.wsdl.BindingFault;
+import org.eclipse.wst.wsdl.BindingInput;
+import org.eclipse.wst.wsdl.BindingOperation;
+import org.eclipse.wst.wsdl.BindingOutput;
+import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
+import org.eclipse.wst.wsdl.ExtensibleElement;
+import org.eclipse.wst.wsdl.Fault;
+import org.eclipse.wst.wsdl.Import;
+import org.eclipse.wst.wsdl.Input;
+import org.eclipse.wst.wsdl.Message;
+import org.eclipse.wst.wsdl.Operation;
+import org.eclipse.wst.wsdl.Output;
+import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.Port;
+import org.eclipse.wst.wsdl.PortType;
+import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.Types;
+import org.eclipse.wst.wsdl.Namespace;
+import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
+
+import org.eclipse.wst.wsdl.binding.soap.*;
+
+import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
+import org.eclipse.wst.wsdl.tests.util.DefinitionVisitor;
 import org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl;
-
-import javax.wsdl.*;
-import javax.wsdl.extensions.soap.*;
-import javax.wsdl.extensions.*;
-
 import org.eclipse.xsd.XSDPackage;
-import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
-
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 
 /**
  * @author Kihup Boo
  */
-public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
+public class WSDLEMFAPITest extends DefinitionVisitor
 {
-  private WSDLFactory factory = WSDLPlugin.INSTANCE.createWSDL4JFactory(); 
+  private WSDLFactory factory = WSDLFactory.eINSTANCE;
+  
   private Definition newDefinition;
   private Message currentMessage;
   private Service currentService;
@@ -76,7 +82,7 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
   }
   
   // Added for JUnit
-  public WSDL4JAPITest(String name) 
+  public WSDLEMFAPITest(String name) 
   {
     super(name);
   }
@@ -84,7 +90,7 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
   /**
    * @param definition
    */
-  public WSDL4JAPITest(Definition definition)
+  public WSDLEMFAPITest(Definition definition)
   {
     super(definition);
   }
@@ -127,21 +133,17 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
   
   protected void visitDefinition(Definition def)
   {
-    newDefinition = factory.newDefinition();
+    newDefinition = factory.createDefinition();
     newDefinition.setDocumentationElement(def.getDocumentationElement());    
     newDefinition.setQName(def.getQName());    
     newDefinition.setTargetNamespace(def.getTargetNamespace());
     newDefinition.setDocumentBaseURI(def.getDocumentBaseURI());
     
-    Iterator iterator = def.getNamespaces().keySet().iterator();
-    String prefix = null;
-    String namespace = null;
+    Iterator iterator = def.getENamespaces().iterator();
 
     while (iterator.hasNext())
     {
-      prefix = (String)iterator.next();
-      namespace = def.getNamespace(prefix);
-      newDefinition.addNamespace(prefix,namespace);
+      newDefinition.getENamespaces().add((Namespace)iterator.next());
     }
     
     super.visitDefinition(def);
@@ -149,40 +151,45 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
   
   protected void visitImport(Import wsdlImport)
   {
-    Import myImport = newDefinition.createImport();
-    newDefinition.addImport(myImport);
+    Import myImport = factory.createImport();
+    newDefinition.getEImports().add(myImport);
     
     // e.g. <xs:import namespace="http://foo.com" schemaLocation= "bar.xsd"/>
     myImport.setNamespaceURI(wsdlImport.getNamespaceURI());
     myImport.setLocationURI(wsdlImport.getLocationURI());
     myImport.setDocumentationElement(wsdlImport.getDocumentationElement());
-    
-    myImport.setDefinition(newDefinition);
+    myImport.setEDefinition(newDefinition);
+    myImport.setESchema(wsdlImport.getESchema());
+    myImport.setSchema(wsdlImport.getSchema()); // TBD - review
+    myImport.setEnclosingDefinition(newDefinition);
   }
   
   protected void visitTypes(Types types)
   {
-    Types myTypes = newDefinition.createTypes();
+    Types myTypes = factory.createTypes();
     myTypes.setDocumentationElement(types.getDocumentationElement());
     
-    Iterator iterator = types.getExtensibilityElements().iterator();
-    /*
+    Iterator iterator = types.getEExtensibilityElements().iterator();
     ExtensibilityElement ee = null;
     while (iterator.hasNext())
     {
       ee = (ExtensibilityElement)iterator.next();
       myTypes.addExtensibilityElement(ee);
-    }*/
-    newDefinition.setTypes(myTypes);
+    }
+    myTypes.setEnclosingDefinition(newDefinition);
+    newDefinition.getETypes();
+    newDefinition.setETypes(myTypes);
   }
 
   protected void visitPart(Part part)
   {
-    Part myPart = newDefinition.createPart();
+    Part myPart = factory.createPart();
     myPart.setDocumentationElement(part.getDocumentationElement());
     myPart.setName(part.getName());
     myPart.setElementName(part.getElementName());
     myPart.setTypeName(part.getTypeName());
+    myPart.setEMessage(part.getEMessage());
+    myPart.setElementDeclaration(part.getElementDeclaration());
     
     Iterator iterator = part.getExtensionAttributes().keySet().iterator();
     QName key = null;
@@ -193,142 +200,153 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
       value = (QName)part.getExtensionAttribute(key);
       myPart.setExtensionAttribute(key,value);
     }
-    currentMessage.addPart(myPart);
+    currentMessage.setEnclosingDefinition(newDefinition);
+    currentMessage.getEParts().add(myPart);
   }
-  
-  protected void visitMessage(Message message)
-  {
-    currentMessage = newDefinition.createMessage();
-    super.visitMessage(message);
-  }
-  
+
   protected void visitPortType(PortType portType)
   {
-    currentPortType = newDefinition.createPortType();
+    currentPortType = factory.createPortType();
     currentPortType.setDocumentationElement(portType.getDocumentationElement());
     currentPortType.setQName(portType.getQName());
     currentPortType.setUndefined(portType.isUndefined());
-    newDefinition.addPortType(currentPortType);
+    currentPortType.setProxy(portType.isProxy());
+    currentPortType.setResourceURI(portType.getResourceURI());
+    
+    currentPortType.setEnclosingDefinition(newDefinition);
+    newDefinition.getEPortTypes().add(currentPortType);
     
     super.visitPortType(portType);
   }
   
   protected void visitOperation(Operation operation)
   {
-    currentOperation = newDefinition.createOperation();
+    currentOperation = factory.createOperation();
     currentOperation.setDocumentationElement(operation.getDocumentationElement());
     currentOperation.setName(operation.getName());
     currentOperation.setStyle(operation.getStyle());
     currentOperation.setUndefined(operation.isUndefined());
-    currentOperation.setParameterOrdering(operation.getParameterOrdering());
-    currentPortType.addOperation(currentOperation);
+    currentService.setProxy(operation.isProxy());
+    currentService.setResourceURI(operation.getResourceURI());
+    operation.getEParameterOrdering(); // TBD
+    currentOperation.setEnclosingDefinition(newDefinition);
+    currentPortType.getEOperations().add(currentOperation);
    
     super.visitOperation(operation);
   }
   
   protected void visitInput(Input input)
   {
-    Input myInput = newDefinition.createInput();
+    Input myInput = factory.createInput();
     myInput.setDocumentationElement(input.getDocumentationElement());    
     myInput.setName(input.getName());
-    myInput.setMessage(input.getMessage());
-    currentOperation.setInput(myInput);
+    myInput.setEMessage(input.getEMessage());
+    myInput.setEnclosingDefinition(newDefinition);
+    currentOperation.setEInput(myInput);
   }
 
   protected void visitOutput(Output output)
   {
-    Output myOutput = newDefinition.createOutput();
+    Output myOutput = factory.createOutput();
     myOutput.setDocumentationElement(output.getDocumentationElement());   
     myOutput.setName(output.getName());
-    myOutput.setMessage(output.getMessage());
-    currentOperation.setOutput(myOutput);
+    myOutput.setEMessage(output.getEMessage());
+    myOutput.setEnclosingDefinition(newDefinition);
+    currentOperation.setEOutput(myOutput);
   }
 
   protected void visitFault(Fault fault)
   {
-    Fault myFault = newDefinition.createFault();
+    Fault myFault = factory.createFault();
     myFault.setDocumentationElement(fault.getDocumentationElement());   
     myFault.setName(fault.getName());
-    myFault.setMessage(fault.getMessage());
-    currentOperation.addFault(myFault);
+    myFault.setEMessage(fault.getEMessage());
+    myFault.setEnclosingDefinition(newDefinition);
+    currentOperation.getEFaults().add(myFault);
   }
 
   protected void visitBinding(Binding binding)
   {
-    currentBinding = newDefinition.createBinding();
-    newDefinition.addBinding(currentBinding);
+    currentBinding = factory.createBinding();
+    newDefinition.getEBindings().add(currentBinding);
     
     currentBinding.setDocumentationElement(binding.getDocumentationElement());    
     currentBinding.setQName(binding.getQName());
-    currentBinding.setPortType(binding.getPortType());
+    currentBinding.setEPortType(binding.getEPortType());
     currentBinding.setUndefined(binding.isUndefined());
+    currentBinding.setProxy(binding.isProxy());
+    currentBinding.setResourceURI(binding.getResourceURI());
 
     super.visitBinding(binding);
   }
   
   protected void visitBindingOperation(BindingOperation bindingOperation)
   {
-    currentBindingOperation = newDefinition.createBindingOperation();
+    currentBindingOperation = factory.createBindingOperation();
     currentBindingOperation.setDocumentationElement(bindingOperation.getDocumentationElement());   
-    currentBindingOperation.setOperation(bindingOperation.getOperation());
+    currentBindingOperation.setEOperation(bindingOperation.getEOperation());
     currentBindingOperation.setName(bindingOperation.getName());
-    currentBinding.addBindingOperation(currentBindingOperation);
+    currentBinding.getBindingOperations().add(currentBindingOperation);
     
     super.visitBindingOperation(bindingOperation);
   }
  
   protected void visitBindingInput(BindingInput input)
   {
-    BindingInput myInput = newDefinition.createBindingInput();
+    BindingInput myInput = factory.createBindingInput();
     myInput.setDocumentationElement(input.getDocumentationElement());    
     myInput.setName(input.getName());
-    currentBindingOperation.setBindingInput(myInput);
+    currentBindingOperation.setEBindingInput(myInput);
     
     super.visitBindingInput(input);
   }
   
   protected void visitBindingOutput(BindingOutput output)
   {
-    BindingOutput myOutput = newDefinition.createBindingOutput();
+    BindingOutput myOutput = factory.createBindingOutput();
     myOutput.setDocumentationElement(output.getDocumentationElement());   
     myOutput.setName(output.getName());
-    currentBindingOperation.setBindingOutput(myOutput);
+    currentBindingOperation.setEBindingOutput(myOutput);
     
     super.visitBindingOutput(output);
   }
   
   protected void visitBindingFault(BindingFault fault)
   {
-    BindingFault myFault = newDefinition.createBindingFault();
+    BindingFault myFault = factory.createBindingFault();
     myFault.setDocumentationElement(fault.getDocumentationElement());   
     myFault.setName(fault.getName());
-    currentBindingOperation.addBindingFault(myFault);
+    currentBindingOperation.getEBindingFaults().add(myFault);
     
     super.visitBindingFault(fault); 
   }
  
   protected void visitService(Service service)
   {
-    currentService = newDefinition.createService();
+    currentService = factory.createService();
     currentService.setDocumentationElement(service.getDocumentationElement());   
     currentService.setQName(service.getQName());
-    newDefinition.addService(currentService);
+    currentService.setProxy(service.isProxy());
+    currentService.setResourceURI(service.getResourceURI());
+    
+    newDefinition.getEServices().add(currentService);
     
     super.visitService(service);
   }
   
   protected void visitPort(Port port)
   {
-    Port myPort = newDefinition.createPort();
+    Port myPort = factory.createPort();
     myPort.setDocumentationElement(port.getDocumentationElement());
     myPort.setName(port.getName());
-    myPort.setBinding(port.getBinding());
-    currentService.addPort(myPort);
+    myPort.setEBinding(port.getEBinding());
+    
+    currentService.getEPorts().add(myPort);
     
     super.visitPort(port);
   }
 
-  protected void visitExtensibilityElement(ExtensibilityElement extensibilityElement)
+  protected void visitExtensibilityElement(ExtensibleElement owner, ExtensibilityElement extensibilityElement)
   {
     if (extensibilityElement instanceof SOAPBody)
       visitSOAPBody((SOAPBody)extensibilityElement);
@@ -338,16 +356,48 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
       visitSOAPAddress((SOAPAddress)extensibilityElement);
     else if (extensibilityElement instanceof SOAPOperation)
       visitSOAPOperation((SOAPOperation)extensibilityElement);
+    else if (extensibilityElement instanceof SOAPFault)
+      visitSOAPFault((SOAPFault)extensibilityElement);  
+    else if (extensibilityElement instanceof SOAPHeader)
+      visitSOAPHeader((SOAPHeader)extensibilityElement);
+    else if (extensibilityElement instanceof SOAPHeaderFault)
+      visitSOAPHeaderFault((SOAPHeaderFault)extensibilityElement);
   }
  
-  //Needs to improve this part
+  private void visitSOAPFault(SOAPFault soapFault)
+  {
+    SOAPFault mySoapFault = SOAPFactory.eINSTANCE.createSOAPFault();
+    mySoapFault.setEncodingStyles(soapFault.getEncodingStyles());
+    mySoapFault.setName(soapFault.getName());
+    mySoapFault.setNamespaceURI(soapFault.getNamespaceURI());
+    mySoapFault.setUse(soapFault.getUse());
+  } 
+  
+  private void visitSOAPHeader(SOAPHeader soapHeader)
+  {
+    SOAPHeader mySoapHeader = SOAPFactory.eINSTANCE.createSOAPHeader();
+    mySoapHeader.setMessage(soapHeader.getMessage());
+    mySoapHeader.setPart(soapHeader.getPart());
+    mySoapHeader.setNamespaceURI(soapHeader.getNamespaceURI());
+    mySoapHeader.setUse(soapHeader.getUse());
+  }
+  
+  private void visitSOAPHeaderFault(SOAPHeaderFault soapHeaderFault)
+  {
+    SOAPHeaderFault mySoapHeaderFault = SOAPFactory.eINSTANCE.createSOAPHeaderFault();
+    mySoapHeaderFault.setMessage(soapHeaderFault.getMessage());
+    mySoapHeaderFault.setPart(soapHeaderFault.getPart());
+    mySoapHeaderFault.setNamespaceURI(soapHeaderFault.getNamespaceURI());
+    mySoapHeaderFault.setUse(soapHeaderFault.getUse());
+  }
+  
   private boolean soapOperationVisited = false;
   private void visitSOAPOperation(SOAPOperation soapOperation)
   {
     soapOperationVisited = true;
-    println("Visiting SOAPOperation...");
-    println("soapAction: " + soapOperation.getSoapActionURI());
-    println("Leaving SOAPOperation...");
+    SOAPOperation mySoapOperation = SOAPFactory.eINSTANCE.createSOAPOperation();
+    mySoapOperation.setSoapActionURI(soapOperation.getSoapActionURI());
+    mySoapOperation.setStyle(soapOperation.getStyle());
   }
   
   //Needs to improve this part
@@ -355,9 +405,11 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
   private void visitSOAPBody(SOAPBody soapBody)
   {
     soapBodyVisited = true;
-    println("Visiting SOAPBody...");
-    println("use: " + soapBody.getUse());
-    println("Leaving SOAPBody...");
+    SOAPBody mySoapBody = SOAPFactory.eINSTANCE.createSOAPBody();
+    mySoapBody.setEncodingStyles(soapBody.getEncodingStyles());
+    mySoapBody.setNamespaceURI(soapBody.getNamespaceURI());
+    mySoapBody.setParts(soapBody.getParts());
+    mySoapBody.setUse(soapBody.getUse());
   }
   
   //Needs to improve this part
@@ -365,10 +417,9 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
   private void visitSOAPBinding(SOAPBinding soapBinding)
   {
     soapBindingVisited = true;
-    println("Visiting SOAPBinding...");
-    println("style: " + soapBinding.getStyle());
-    println("transport: " + soapBinding.getTransportURI());
-    println("Leaving SOAPBinding...");  
+    SOAPBinding mySoapBinding = SOAPFactory.eINSTANCE.createSOAPBinding();
+    mySoapBinding.setStyle(soapBinding.getStyle());
+    mySoapBinding.setTransportURI(soapBinding.getTransportURI()); 
   }
  
   // Needs to improve this part
@@ -376,9 +427,8 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
   private void visitSOAPAddress(SOAPAddress soapAddress)
   {
     soapAddressVisited = true;
-    println("Visiting SOAPAddress...");
-    println("location: " + soapAddress.getLocationURI());
-    println("Leaving SOAPAddress..."); 
+    SOAPAddress mySoapAddress = SOAPFactory.eINSTANCE.createSOAPAddress();
+    mySoapAddress.setLocationURI(soapAddress.getLocationURI()); 
   }
   
   public static Test suite() 
@@ -386,7 +436,7 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
     TestSuite suite = new TestSuite();
     
     suite.addTest
-      (new WSDL4JAPITest("ModelSemanticTest") 
+      (new WSDLEMFAPITest("ModelSemanticTest") 
          {
            protected void runTest() 
            {
@@ -401,27 +451,15 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
   {
     try
     {
-      Definition def = loadDefinitionForWSDL4J("./samples/LoadAndPrintTest.wsdl");
-      WSDL4JAPITest test = new WSDL4JAPITest(def);
+      Definition def = DefinitionLoader.load("./samples/LoadAndPrintTest.wsdl",true);
+      SemanticTest test = new SemanticTest(def);
       test.visit();
     }
     catch (Exception e)
     {
-      e.printStackTrace();
       Assert.fail(e.toString());
-    }    
-  }
-  
-  private Definition loadDefinitionForWSDL4J(String wsdlFile) throws Exception
-  {    
-    WSDLReader reader = factory.newWSDLReader();
-    IPluginDescriptor pd = Platform.getPluginRegistry().getPluginDescriptor("org.eclipse.wst.wsdl.tests");
-    URL url = pd.getInstallURL();
-    url = new URL(url,wsdlFile);
-    String s = Platform.resolve(url).getFile();
-    Definition definition = (org.eclipse.wst.wsdl.Definition)reader.readWSDL(s,new InputSource(new FileInputStream(s)));
-    return definition;
-  }  
+    }     
+  } 
   
   public static void main(String[] args)
   {

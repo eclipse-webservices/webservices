@@ -38,6 +38,7 @@ public class AllTestCases extends TestCase
     suite.addTest(SemanticTest.suite());
     suite.addTest(WSDLGenerationTest.suite());
     suite.addTest(WSDL4JAPITest.suite());
+    suite.addTest(WSDLEMFAPITest.suite());
     
     return suite;
   }

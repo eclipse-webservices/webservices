@@ -58,19 +58,19 @@ public abstract class WSDL4JDefinitionVisitor extends TestCase
     if (types != null)
       visitTypes(types);
 
-    iterator = def.getMessages().entrySet().iterator();
+    iterator = def.getMessages().values().iterator();
     while (iterator.hasNext())
       visitMessage((Message)iterator.next());
     
-    iterator = def.getPortTypes().entrySet().iterator();
+    iterator = def.getPortTypes().values().iterator();
     while (iterator.hasNext())
       visitPortType((PortType)iterator.next());
 
-    iterator = def.getBindings().entrySet().iterator();
+    iterator = def.getBindings().values().iterator();
     while (iterator.hasNext())
       visitBinding((Binding)iterator.next());
     
-    iterator = def.getServices().entrySet().iterator();
+    iterator = def.getServices().values().iterator();
     while (iterator.hasNext())
       visitService((Service)iterator.next());
 
@@ -86,7 +86,7 @@ public abstract class WSDL4JDefinitionVisitor extends TestCase
 
   protected void visitMessage(Message message)
   {
-    Iterator iterator = message.getParts().entrySet().iterator();
+    Iterator iterator = message.getParts().values().iterator();
     while (iterator.hasNext())
       visitPart((Part)iterator.next()); 
   }
@@ -171,7 +171,7 @@ public abstract class WSDL4JDefinitionVisitor extends TestCase
 
   protected void visitService(Service service)
   {
-    Iterator iterator = service.getPorts().entrySet().iterator();
+    Iterator iterator = service.getPorts().values().iterator();
     while (iterator.hasNext())
       visitPort((Port)iterator.next());
 
