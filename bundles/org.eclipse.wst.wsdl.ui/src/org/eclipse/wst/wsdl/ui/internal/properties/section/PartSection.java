@@ -34,6 +34,7 @@ import org.eclipse.wst.common.ui.properties.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.InvokeSetDialog;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.types.WSDLComponentSelectionDialog;
@@ -41,6 +42,7 @@ import org.eclipse.wst.wsdl.ui.internal.dialogs.types.WSDLComponentSelectionProv
 import org.eclipse.wst.wsdl.ui.internal.dialogs.types.WSDLSetComponentHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSpecification;
+import org.eclipse.xsd.util.XSDConstants;
 
 
 public class PartSection extends AbstractSection
@@ -217,24 +219,18 @@ public class PartSection extends AbstractSection
           validExtensions.add("xsd");
           List lookupPaths = new ArrayList(4);
           if (isType) {
-              lookupPaths.add("/definitions/types/schema/simpleType");
-              lookupPaths.add("/definitions/types/schema/complexType");
-              lookupPaths.add("/schema/complexType");
-              lookupPaths.add("/schema/simpleType");
               property = ""; 
               dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_TYPE");
               
-              provider = new WSDLComponentSelectionProvider(iFile, definition, lookupPaths, validExtensions);
-              dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, "type", provider);
+              provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLConstants.TYPE, validExtensions);
+              dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, provider);
           }
           else {
-              lookupPaths.add("/definitions/types/schema/element");
-              lookupPaths.add("/schema/element");
               property = ""; 
               dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_ELEMENT");
               
-              provider = new WSDLComponentSelectionProvider(iFile, definition, lookupPaths, validExtensions);
-              dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, "element", provider);
+              provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLConstants.ELEMENT, validExtensions);
+              dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, provider);
           }
           provider.setDialog(dialog);
 

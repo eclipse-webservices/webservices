@@ -22,6 +22,7 @@ import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.impl.ImportImpl;
+import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.ITypeSystemProvider;
 import org.eclipse.wst.wsdl.ui.internal.typesystem.ExtensibleTypeSystemProvider;
@@ -53,24 +54,63 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
     private WSDLComponentLabelProvider labelProvider;
     private Definition definition;
     private List lookupTagPaths;
+    private int kind;
     
     /*
      * Takes in the IFile we are currently editing.
      */
-    public WSDLComponentSelectionProvider(IFile file, Definition definition, List lookupTagPaths) {
+    public WSDLComponentSelectionProvider(IFile file, Definition definition, int kind) {
+    	this.kind = kind;
         List validExt = new ArrayList(1);
         validExt.add("wsdl");
-
+        this.lookupTagPaths = getLookupTagPath();
         wsdlComponentFinder = new WSDLComponentFinder(lookupTagPaths);
         wsdlComponentFinder.setFile(file);
         wsdlComponentFinder.setValidExtensions(validExt);
         this.definition = definition;
-        this.lookupTagPaths = lookupTagPaths;
         labelProvider = new WSDLComponentLabelProvider();
     }
     
-    public WSDLComponentSelectionProvider(IFile file, Definition definition, List lookupTagPaths, List validExt) {
-        this(file, definition, lookupTagPaths);
+    protected List getLookupTagPath()
+    {    	
+    	List list = new ArrayList();
+    	switch (kind)
+		{
+		case WSDLConstants.BINDING :
+		{
+			list.add("/definitions/binding");
+			break;
+		}
+		case WSDLConstants.PORT_TYPE :
+		{
+			list.add("/definitions/portType");
+			break;
+		}	
+		case WSDLConstants.MESSAGE :
+		{
+			list.add("/definitions/message");
+			break;
+		}   
+		case WSDLConstants.TYPE :
+		{
+			list.add("/definitions/types/schema/simpleType");
+			list.add("/definitions/types/schema/complexType");
+			list.add("/schema/complexType");
+			list.add("/schema/simpleType");
+			break;
+		}
+		case WSDLConstants.ELEMENT :
+		{
+			list.add("/definitions/types/schema/element");
+			list.add("/schema/element");
+			break;
+		}
+		}    	
+    	return list;
+    }
+
+    public WSDLComponentSelectionProvider(IFile file, Definition definition, int kind, List validExt) {
+        this(file, definition, kind);
         wsdlComponentFinder.setValidExtensions(validExt);
     }
     
@@ -472,6 +512,61 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         return labelProvider;
     }    
     
+	public String getListTitle() {
+
+		switch (kind)
+		{
+		case WSDLConstants.BINDING :
+		{
+			return "Matching Bindings:";
+		}
+		case WSDLConstants.PORT_TYPE :
+		{
+			return "Matching Port Types:";
+		}	
+		case WSDLConstants.MESSAGE :
+		{
+			return "Matching Messages:";
+		}   
+		case WSDLConstants.TYPE :
+		{
+			return "Matching Types:";
+		}
+		case WSDLConstants.ELEMENT :
+		{
+			return "Matching Elements:";
+		}
+		}    	
+		return null;	   
+	}
+
+	public String getNameFieldTitle() {
+		
+		switch (kind)
+		{
+		case WSDLConstants.BINDING :
+		{
+			return "Binding Name:";
+		}
+		case WSDLConstants.PORT_TYPE :
+		{
+			return "Port Type Name:";
+		}	
+		case WSDLConstants.MESSAGE :
+		{
+			return "Message Name:";
+		}   
+		case WSDLConstants.TYPE :
+		{
+			return "Type Name:";
+		}
+		case WSDLConstants.ELEMENT :
+		{
+			return "Element Name:";
+		}
+		}    	
+		return null;	   
+	}
     public class WSDLComponentLabelProvider extends XMLComponentSelectionLabelProvider {
         public Image getImage(Object element) {
             XMLComponentTreeObject specification = (XMLComponentTreeObject) element;

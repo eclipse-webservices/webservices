@@ -29,8 +29,10 @@ public class WSDLConstants
   public static final int PORT_TYPE = 11;
   public static final int SERVICE = 12;
   public static final int TYPES = 13;
+  public static final int ELEMENT = 14;
+  public static final int TYPE = 15;
 
-  public static final int EXTENSIBILITY_ELEMENT = 14;
+  public static final int EXTENSIBILITY_ELEMENT = 24;
 
   public static final String BINDING_ELEMENT_TAG = "binding";
   public static final String DEFINITION_ELEMENT_TAG = "definitions";

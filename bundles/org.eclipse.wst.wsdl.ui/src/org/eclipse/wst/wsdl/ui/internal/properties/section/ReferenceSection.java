@@ -167,45 +167,39 @@ public class ReferenceSection extends AbstractSection
         
         // TODO: Exteranlize All Strings below
         List lookupPaths = new ArrayList(2);
+        WSDLComponentSelectionProvider provider = null;
+        String dialogTitle = null;
         if (getElement() instanceof Binding)
         {
-            lookupPaths.add("/definitions/portType");
-            String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_PORTTYPE");
-            
-            WSDLComponentSelectionProvider provider = new WSDLComponentSelectionProvider(iFile, definition, lookupPaths);
-            dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, "port type", provider);
-            provider.setDialog(dialog);
+            dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_PORTTYPE");            
+            provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLConstants.PORT_TYPE);
             property = "type";
         }
         else if (getElement() instanceof Port)
         {
-            lookupPaths.add("/definitions/binding");
-            String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_BINDING");
-            
-            WSDLComponentSelectionProvider provider = new WSDLComponentSelectionProvider(iFile, definition, lookupPaths);
-            dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, "binding", provider);
+            dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_BINDING");            
+            provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLConstants.BINDING);
+            dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, provider);
             provider.setDialog(dialog);
             property = "binding";
         }
         else if (getElement() instanceof Input || getElement() instanceof Output || getElement() instanceof Fault)
         {
-            lookupPaths.add("/definitions/message");
-            String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_MESSAGE");
-
-            WSDLComponentSelectionProvider provider = new WSDLComponentSelectionProvider(iFile, definition, lookupPaths);
-            dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, "message", provider);   
-            provider.setDialog(dialog);
+            dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_MESSAGE");
+            provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLConstants.MESSAGE);
             property = "message";
         }
-
-        dialog.setBlockOnOpen(true);
-        dialog.create();
-
-        if (dialog.open() == Window.OK) {
-            WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, definition);
-            helper.setWSDLComponent(getElement(), property, dialog.getSelection());
+        if (provider != null)
+        {	
+        	dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, provider);   
+        	dialog.setBlockOnOpen(true);
+        	dialog.create();
+        	
+        	if (dialog.open() == Window.OK) {
+        		WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, definition);
+        		helper.setWSDLComponent(getElement(), property, dialog.getSelection());
+        	}
         }
-        
         // tricky way to redraw connecting lines
  //       definition.getElement().setAttribute("name", definition.getElement().getAttribute("name"));
         
