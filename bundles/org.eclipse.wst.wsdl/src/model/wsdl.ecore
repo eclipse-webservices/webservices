@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="ASCII"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0"
-  xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="wsdl"
-    nsURI="http://www.ibm.com/wsdl/2003/WSDL" nsPrefix="wsdl">
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="wsdl"
+    nsURI="http://www.eclipse.org/wsdl/2003/WSDL" nsPrefix="wsdl">
   <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
     <details key="documentation" value="The WSDL model contains classes for the Web Services Description Language (WSDL).&#xD;&#xA;&#xD;&#xA;WSDL describes network services as sets of endpoints operating on messages. The operations and messages are described abstractly, and then bound to a concrete network protocol and message format to define an endpoint.&#xD;&#xA;&#xD;&#xA;WSDL describes the formats of the messages exchanged by the services, and supports the XML Schemas specification as its canonical type system. This package uses an XML Schema Infoset model package (see the XSD package) to describe the abstract message formats.&#xD;&#xA;&#xD;&#xA;The model contains the following diagrams, named after the corresponding chapters in the WSDL 1.1 specification (http://www.w3.org/TR/2001/NOTE-wsdl-20010315)&#xD;&#xA;- 2.1 Definition, shows the WSDL definition element and the WSDL document structure&#xD;&#xA;- 2.1.1 Naming and Linking, shows the namespace and import mechanism&#xD;&#xA;- 2.1.3 Extensibility, shows the WSDL extensibility mechanism&#xD;&#xA;- 2.2 Types, shows the use of XML Schema types in WSDL&#xD;&#xA;- 2.3 Messages, 2.4 PortTypes, 2.5 Bindings and 2.7 Services, show the major WSDL elements and their relations.&#xD;&#xA;&#xD;&#xA;The WSDL classes extend the javax.wsdl interfaces defined by JSR 110. Classes with interface and datatype stereotypes are used to represent these non-MOF interfaces."/>
   </eAnnotations>
@@ -64,8 +64,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementName" eType="#//QName"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" eType="#//QName"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeDefinition" eType="ecore:EClass ../../../org.eclipse.xsd/src/model/XSD.ecore#//XSDTypeDefinition"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elementDeclaration" eType="ecore:EClass ../../../org.eclipse.xsd/src/model/XSD.ecore#//XSDElementDeclaration"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeDefinition" eType="ecore:EClass ../../../org.eclipse.xsd/src-xsd/model/XSD.ecore#//XSDTypeDefinition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elementDeclaration" eType="ecore:EClass ../../../org.eclipse.xsd/src-xsd/model/XSD.ecore#//XSDElementDeclaration"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eMessage" eType="#//Message"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Binding" eSuperTypes="#//ExtensibleElement #//IBinding">
@@ -153,14 +153,14 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents WSDL import element. WSDL allows associating a namespace with a document location using an import element."/>
     </eAnnotations>
-    <eOperations name="getSchema" eType="ecore:EClass ../../../org.eclipse.xsd/src/model/XSD.ecore#//XSDSchema"/>
+    <eOperations name="getSchema" eType="ecore:EClass ../../../org.eclipse.xsd/src-xsd/model/XSD.ecore#//XSDSchema"/>
     <eOperations name="setSchema">
-      <eParameters name="schema" eType="ecore:EClass ../../../org.eclipse.xsd/src/model/XSD.ecore#//XSDSchema"/>
+      <eParameters name="schema" eType="ecore:EClass ../../../org.eclipse.xsd/src-xsd/model/XSD.ecore#//XSDSchema"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespaceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="locationURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eDefinition" eType="#//Definition"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="eSchema" eType="ecore:EClass ../../../org.eclipse.xsd/src/model/XSD.ecore#//XSDSchema"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eSchema" eType="ecore:EClass ../../../org.eclipse.xsd/src-xsd/model/XSD.ecore#//XSDSchema"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExtensibleElement" abstract="true" eSuperTypes="#//WSDLElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -586,13 +586,11 @@
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UnknownExtensibilityElement" eSuperTypes="#//ExtensibilityElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//UnknownExtensibilityElement"
-        eOpposite="#//UnknownExtensibilityElement/children"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
-        eType="#//UnknownExtensibilityElement" eOpposite="#//UnknownExtensibilityElement/parent"/>
+        eType="#//UnknownExtensibilityElement" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XSDSchemaExtensibilityElement" eSuperTypes="#//ExtensibilityElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="schema" eType="ecore:EClass ../../../org.eclipse.xsd/src/model/XSD.ecore#//XSDSchema"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="schema" eType="ecore:EClass ../../../org.eclipse.xsd/src-xsd/model/XSD.ecore#//XSDSchema"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="DOMDocument" instanceClassName="org.w3c.dom.Document">
