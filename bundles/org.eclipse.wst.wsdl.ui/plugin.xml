@@ -138,13 +138,13 @@
    
    <extension point="org.eclipse.ui.newWizards">
      <category
-     	id="org.eclipse.wst.webservice.ui.new"
+     	id="org.eclipse.jst.ws.ui.new"
      	name="%_UI_LABEL_NEW_CATEGORY_NAME_WS"/>
      <wizard
        id="org.eclipse.wst.wsdl.ui"
        name="WSDL"
        class="org.eclipse.wst.wsdl.ui.internal.wizards.NewWSDLWizard"
-       category="org.eclipse.wst.webservice.ui.new"
+       category="org.eclipse.jst.ws.ui.new"
        icon="icons/wsdl_file_obj.gif">
        <description>%_UI_LABEL_CREATE_NEW_WSDL_FILE</description>
        <selection class="org.eclipse.core.resources.IResource" /> 
