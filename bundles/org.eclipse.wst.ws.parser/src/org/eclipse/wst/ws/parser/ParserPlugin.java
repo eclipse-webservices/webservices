@@ -11,9 +11,10 @@
 
 package org.eclipse.wst.ws.parser;
 
-import org.eclipse.core.runtime.*;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
-import java.util.*;
+import org.eclipse.core.runtime.Plugin;
 
 /**
  * The main plugin class to be used in the desktop.
