@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.ui.internal.util.InvokeSetDialog;
+import org.eclipse.wst.wsdl.ui.internal.dialogs.InvokeSetDialog;
 
 // instead of using a Button directly (which causes sizing/layout problems)
 // we use this class

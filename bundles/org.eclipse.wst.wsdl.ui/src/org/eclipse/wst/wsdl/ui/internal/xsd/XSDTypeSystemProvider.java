@@ -21,9 +21,11 @@ import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.ui.internal.extension.ITypeSystemProvider;
 import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
 import org.eclipse.wst.xsd.ui.internal.util.XSDDOMHelper;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSchemaContent;
+import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.impl.XSDImportImpl;
 
 //
@@ -90,35 +92,70 @@ public class XSDTypeSystemProvider implements ITypeSystemProvider
     public List getAvailableTypeNames(Definition definition, int typeNameCategory)
     {
         List list = new ArrayList();
-        Types types = definition.getETypes();
-        if (types != null)
-        {
-            for (Iterator i = types.getEExtensibilityElements().iterator(); i.hasNext();)
-            {
-                Object o = i.next();
-                if (o instanceof XSDSchemaExtensibilityElement)
-                {
-                    XSDSchema schema = ((XSDSchemaExtensibilityElement) o).getSchema();
-                    if (schema != null)
-                    {
-						initWSIStyleImports(schema);
-                        addNamedComponents(definition, list, schema.getTypeDefinitions());
-                    }
-                }
-            }
+        
+        if (typeNameCategory == ITypeSystemProvider.BUILT_IN_TYPE) {
+        	list = getBuiltInTypeNamesList(definition);        	
+        }
+        else {
+        	Types types = definition.getETypes();
+        	if (types != null)
+        	{
+        		for (Iterator i = types.getEExtensibilityElements().iterator(); i.hasNext();)
+        		{
+        			Object o = i.next();
+        			if (o instanceof XSDSchemaExtensibilityElement)
+        			{
+        				XSDSchema schema = ((XSDSchemaExtensibilityElement) o).getSchema();
+        				if (schema != null)
+        				{
+        					initWSIStyleImports(schema);
+        					addNamedComponents(definition, list, schema.getTypeDefinitions());
+        				}
+        			}
+        		}
+        	}
+        
+        	for (Iterator i = definition.getEImports().iterator(); i.hasNext();)
+        	{
+        		Import theImport = (Import) i.next();
+        		XSDSchema schema = theImport.getESchema();
+        		if (schema != null)
+        		{
+        			addNamedComponents(definition, list, schema.getTypeDefinitions());
+        		}
+        	}
+        	list.addAll(getBuiltInTypeNamesList(definition));
         }
         
-		for (Iterator i = definition.getEImports().iterator(); i.hasNext();)
-		{
-			Import theImport = (Import) i.next();
-			XSDSchema schema = theImport.getESchema();
-			if (schema != null)
-			{
-				addNamedComponents(definition, list, schema.getTypeDefinitions());
-			}
-		}
-		list.addAll(getBuiltInTypeNamesList(definition));
 		return list;        
+    }
+    
+    public List getAvailableTypes(Definition definition, XSDSchema schema, int typeNameCategory)
+    {
+        List list = new ArrayList();
+        List keepTypes = new ArrayList();
+        Iterator typeIterator = schema.getTypeDefinitions().iterator();
+        // Filter out unwanted Types
+        if (typeNameCategory == ITypeSystemProvider.USER_DEFINED_COMPLEX_TYPE) {
+        	while (typeIterator.hasNext()) {
+        		Object type = typeIterator.next();
+        		if (type instanceof XSDComplexTypeDefinition) {
+        			keepTypes.add(type);
+        		}
+        	}
+        }
+        else if (typeNameCategory == ITypeSystemProvider.USER_DEFINED_SIMPLE_TYPE) {
+        	while (typeIterator.hasNext()) {
+        		Object type = typeIterator.next();
+        		if (type instanceof XSDSimpleTypeDefinition) {
+        			keepTypes.add(type);
+        		}
+        	}
+        }
+        
+        //addNamedComponents(definition, list, keepTypes);        
+        //return list;
+        return keepTypes;
     }
 
     public java.util.List getBuiltInTypeNamesList(Definition definition)

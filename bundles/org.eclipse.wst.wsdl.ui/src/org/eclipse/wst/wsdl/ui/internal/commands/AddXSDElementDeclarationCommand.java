@@ -28,7 +28,12 @@ public final class AddXSDElementDeclarationCommand extends WSDLElementCommand
   private Definition definition;
   private String targetNamespace;
   private String elementName;
+  private XSDSchema schema;
   
+  /**
+   * TODO:
+   * We have a potential problem here....  What if the definition targetnamespace is null....
+   */
   public AddXSDElementDeclarationCommand(Definition definition, String elementName)
   {
     this.definition = definition;
@@ -36,6 +41,10 @@ public final class AddXSDElementDeclarationCommand extends WSDLElementCommand
     this.elementName = elementName;
   }
   
+  /**
+   * @deprecated
+   * Use AddXSDElementDeclarationCommand(Definition definition, String typeName)
+   */
   public AddXSDElementDeclarationCommand
     (Definition definition, 
      String targetNamespace, 
@@ -48,7 +57,7 @@ public final class AddXSDElementDeclarationCommand extends WSDLElementCommand
 
   public void run()
   {
-    XSDSchema xsdSchema = getXSDSchema(targetNamespace);
+    XSDSchema xsdSchema = getSchema();
     XSDElementDeclaration elementDecl = 
       XSDFactory.eINSTANCE.createXSDElementDeclaration();
     elementDecl.setName(elementName);
@@ -56,6 +65,32 @@ public final class AddXSDElementDeclarationCommand extends WSDLElementCommand
     XSDSimpleTypeDefinition simpleTypeDefinition = getXSDStringType(xsdSchema);
     elementDecl.setTypeDefinition(simpleTypeDefinition);    
     xsdSchema.getContents().add(elementDecl);
+  }
+  
+  public void run(String newElementName) {
+  	elementName = newElementName;
+  	run();
+  }
+  
+  /*
+   * Specify which Schema to use when creating the Type.
+   * Call this method before calling run().  Otherwise it will use the first
+   * Schema it finds.
+   */
+  public void setSchema(XSDSchema schema) {
+  	this.schema = schema;
+  }
+  
+  /*
+   * Return the Schema used to create the Type
+   */
+  public XSDSchema getSchema() {
+  	if (schema == null) {
+  		return getXSDSchema(targetNamespace);
+  	}
+  	else {
+  		return schema;
+  	}
   }
   
   private XSDSimpleTypeDefinition getXSDStringType(XSDSchema schema)

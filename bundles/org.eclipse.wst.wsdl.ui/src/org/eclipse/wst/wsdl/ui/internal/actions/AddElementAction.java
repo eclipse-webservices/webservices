@@ -47,6 +47,8 @@ public class AddElementAction extends BaseNodeAction
   protected Definition definition;
   protected Document document;
   protected boolean computeTopLevelRefChild;
+  
+  protected boolean selectNewlyCreatedObject = true; // We should not be selecting the object in the action..... TODO
 
   public AddElementAction(String text, String imageDescriptorKey, Node parentNode, String nodeName)
   {
@@ -129,10 +131,22 @@ public class AddElementAction extends BaseNodeAction
       }    
       //format(parentNode);
       format(newElement); 
-      selectObjectForNewElement();
+      // Ugly.....  We should not be selecting the object in the graph view in the Action.
+      // This should be refactored out.  We add this boolean check because WSDLSetTypeDialog.java
+      // uses AddImportAction.java but we should not be selecting the newly created import....
+      if (selectNewlyCreatedObject) {
+      	selectObjectForNewElement();
+      }
     }  
   }
 
+  // Ugly.....  We should not be selecting the object in the graph view in the Action.
+  // This should be refactored out.  We add this boolean check because WSDLSetTypeDialog.java
+  // uses AddImportAction.java but we should not be selecting the newly created import....
+  // We should call this method before calling run()
+  public void selectObjectForNewElement(boolean select) {
+  	selectNewlyCreatedObject = select;
+  }
 
   public Node getNode()
   {

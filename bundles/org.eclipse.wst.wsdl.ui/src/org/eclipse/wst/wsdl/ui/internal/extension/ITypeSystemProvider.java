@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.extension;
 import java.util.List;
 
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.xsd.XSDSchema;
 
 public interface ITypeSystemProvider
 {                                                      
@@ -23,5 +24,7 @@ public interface ITypeSystemProvider
 
   public List getAvailableTypeNames(Definition definition, int typeNameCategory);
   public List getAvailableElementNames(Definition definition);  
+  public List getAvailableTypes(Definition definition, XSDSchema schema, int typeNameCategory);
   public int getCategoryForTypeName(Definition definition, String typeName);
+  public List getPrefixedNames(Definition definition, String namespace, String localName);
 }

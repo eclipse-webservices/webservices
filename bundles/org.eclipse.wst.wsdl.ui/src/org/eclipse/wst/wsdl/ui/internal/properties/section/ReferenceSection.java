@@ -28,8 +28,8 @@ import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.dialogs.InvokeSetDialog;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
-import org.eclipse.wst.wsdl.ui.internal.util.InvokeSetDialog;
 import org.eclipse.wst.wsdl.ui.internal.viewers.widgets.ComponentNameComboHelper;
 import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
 

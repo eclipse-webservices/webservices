@@ -205,7 +205,7 @@ public class NameUtil
     return getUniqueNameHelper(baseName, names);
   }
 
-  protected static String getUniqueNameHelper(String baseName, List names)
+  public static String getUniqueNameHelper(String baseName, List names)
   {
     int i = 0;
 

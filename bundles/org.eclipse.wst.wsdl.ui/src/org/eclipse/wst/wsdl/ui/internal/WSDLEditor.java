@@ -271,7 +271,7 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 
   	setPageText(sourcePageIndex, WSDLEditorPlugin.getWSDLString("_UI_TAB_SOURCE"));
     // defect 223043 ... do textEditor.setModel() here instead of in createSourcePage()
-//    textEditor.setModel((IFileEditorInput)getEditorInput());
+    textEditor.setModel((IFileEditorInput)getEditorInput());
     // the updates critical, to get viewer selection manager and highlighting to work
     textEditor.update();
   }

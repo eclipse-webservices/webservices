@@ -27,8 +27,8 @@ import org.eclipse.wst.common.ui.properties.ITabbedPropertyConstants;
 import org.eclipse.wst.common.ui.properties.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.dialogs.InvokeSetDialog;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
-import org.eclipse.wst.wsdl.ui.internal.util.InvokeSetDialog;
 
 
 public class PartSection extends AbstractSection

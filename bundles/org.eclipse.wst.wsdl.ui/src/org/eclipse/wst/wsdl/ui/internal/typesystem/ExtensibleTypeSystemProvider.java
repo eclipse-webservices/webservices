@@ -19,6 +19,7 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.ITypeSystemProvider;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtension;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtensionRegistry;
+import org.eclipse.xsd.XSDSchema;
 
 public class ExtensibleTypeSystemProvider implements ITypeSystemProvider
 {
@@ -48,6 +49,16 @@ public class ExtensibleTypeSystemProvider implements ITypeSystemProvider
     }   
     return list;
   }
+  
+  public List getAvailableTypes(Definition definition, XSDSchema schema, int typeNameCategory)
+  {
+    List list = new ArrayList();
+    for (int i = 0; i < typeSystemProviders.length; i++)
+    {
+      list.addAll(typeSystemProviders[i].getAvailableTypes(definition, schema, typeNameCategory));
+    }   
+    return list;
+  }
 
   public List getAvailableElementNames(Definition definition)
   {
@@ -71,5 +82,14 @@ public class ExtensibleTypeSystemProvider implements ITypeSystemProvider
       }
     }                                                                                 
     return result;
+  }
+  
+  public List getPrefixedNames(Definition definition, String namespace, String localName) {
+  	 List list = new ArrayList();
+     for (int i = 0; i < typeSystemProviders.length; i++)
+     {
+       list.addAll(typeSystemProviders[i].getPrefixedNames(definition, namespace, localName));
+     }     
+     return list;
   }
 }

@@ -12,7 +12,7 @@ package org.eclipse.wst.wsdl.ui.internal.actions;
 
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.ui.internal.util.InvokeSetDialog;
+import org.eclipse.wst.wsdl.ui.internal.dialogs.InvokeSetDialog;
 import org.w3c.dom.Node;
 
 

@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.wsdl.ui.internal.util;
+package org.eclipse.wst.wsdl.ui.internal.dialogs;
 
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -61,11 +61,20 @@ public class InvokeSetDialog
     }
     else if (input instanceof Part)
     {
+    	boolean kkk = false;
+    	if (kkk == true) {
       SetComponentWizard wiz = new SetComponentWizard((Part)input, editorPart);
       SetXWizardDialog dialog = new SetXWizardDialog(WSDLEditorPlugin.getShell(), wiz);
       wiz.setReferenceKind(kind);
       dialog.create();
       dialog.open();
+    	}
+    	else {
+  	WSDLSetTypeDialog typeDialog = new WSDLSetTypeDialog(WSDLEditorPlugin.getShell(), (Part) input, editorPart, WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_TYPE"), kind);
+  	typeDialog.setBlockOnOpen(true);
+  	typeDialog.create();
+  	int result = typeDialog.open();
+    }
     }
     else if (input instanceof Input || input instanceof Output || input instanceof Fault)
     {
