@@ -64,7 +64,6 @@
    <extension point="org.eclipse.wst.common.dependencychecker.dependencies">
       <dependency description="%FEATURE_DESCRIPTION">
          <requiredPlugin id="org.eclipse.wst.ws.apache.axis"/>
-         <requiredPlugin id="org.eclipse.wst.ws.apache.soap"/>
          <requiredPlugin id="org.eclipse.wst.ws.apache.wsil"/>
          <requiredPlugin id="org.eclipse.wst.ws.uddi4j"/>
          <requiredPlugin id="org.eclipse.wst.wsdl"/>
@@ -109,7 +108,6 @@
    <extension point="org.eclipse.wst.common.dependencychecker.dependencies">
      <dependency description="%FEATURE_DESCRIPTION">
        <requiredPlugin id="org.eclipse.wst.ws.apache.axis"/>
-       <requiredPlugin id="org.eclipse.wst.ws.apache.soap"/>
        <requiredPlugin id="org.eclipse.wst.ws.apache.wsil"/>
        <requiredPlugin id="org.eclipse.wst.ws.uddi4j"/>
        <requiredPlugin id="org.eclipse.wst.wsdl"/>
