@@ -21,7 +21,15 @@ public class XSDSchemaLocationResolverImpl extends AdapterImpl implements XSDSch
     public String resolveSchemaLocation(XSDSchema xsdSchema, String namespaceURI, String schemaLocationURI)
     {
       String baseLocation = xsdSchema.getSchemaLocation();      
-      return URIResolverPlugin.createResolver().resolve(baseLocation, namespaceURI, schemaLocationURI);
+      String result = URIResolverPlugin.createResolver().resolve(baseLocation, namespaceURI, schemaLocationURI);
+      if (result == null) {
+      	result = namespaceURI;
+      }
+      if (result == null) {
+      	result = "";
+      }
+
+      return result;
     }
 
     public boolean isAdatperForType(Object type)
