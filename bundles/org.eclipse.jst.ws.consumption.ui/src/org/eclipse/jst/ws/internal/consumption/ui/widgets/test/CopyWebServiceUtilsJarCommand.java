@@ -65,7 +65,7 @@ public Status execute(Environment env)
     if (webModulePath == null)
       return new SimpleStatus(WebServiceConsumptionUIPlugin.ID,msgUtils.getMessage("MSG_ERROR_PROJECT_NOT_FOUND"), Status.ERROR);
       
-    Status status = copyIFile("runtime/webserviceutils.jar",webModulePath,"WEB-INF/lib/webserviceutils.jar", getPlugin("org.eclipse.jst.ws.consumption"),env);
+    Status status = copyIFile("webserviceutils.jar",webModulePath,"WEB-INF/lib/webserviceutils.jar", getPlugin("org.eclipse.jst.ws.consumption"),env);
     if(status.getSeverity() == Status.ERROR){
       StatusHandler sHandler = env.getStatusHandler();
       Status errorStatus = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS"), Status.ERROR);
