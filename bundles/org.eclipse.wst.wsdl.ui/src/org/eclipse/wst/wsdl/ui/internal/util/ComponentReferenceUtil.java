@@ -947,4 +947,11 @@ public class ComponentReferenceUtil
     // TODO... consider using URI class in EMF 
     return URIHelper.getRelativeURI(referencedLocation.getLocation(), baseLocation.getLocation());
   }
+  
+  public static String computeRelativeURI(String referencedLocation, String baseLocation, boolean enableIEStyleReferences)
+  {
+    // TODO... we need some extension to allow IE folks to plugin logic to create an 'IE' style path
+    // TODO... consider using URI class in EMF 
+    return URIHelper.getRelativeURI(referencedLocation, baseLocation);
+  }
 }

@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.properties.section;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
@@ -20,18 +23,28 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.wst.common.ui.properties.ITabbedPropertyConstants;
 import org.eclipse.wst.common.ui.properties.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.Binding;
+import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.Fault;
+import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.MessageReference;
+import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Port;
+import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.dialogs.InvokeSetDialog;
+import org.eclipse.wst.wsdl.ui.internal.dialogs.types.WSDLComponentSelectionDialog;
+import org.eclipse.wst.wsdl.ui.internal.dialogs.types.WSDLComponentSelectionProvider;
+import org.eclipse.wst.wsdl.ui.internal.dialogs.types.WSDLSetComponentHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.viewers.widgets.ComponentNameComboHelper;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
 
 public class ReferenceSection extends AbstractSection
 {
@@ -142,18 +155,63 @@ public class ReferenceSection extends AbstractSection
     componentNameCombo.addListener(SWT.Modify, this);
 	}
 
-	
   public void widgetSelected(SelectionEvent e)
   {
     if (e.widget == button)
     {
-      if (e.widget == button)
-      {
-        InvokeSetDialog dialog = new InvokeSetDialog();
-        dialog.run(getElement(), editorPart);
-        refresh();
-      }
+        WSDLComponentSelectionDialog dialog = null;
+        Shell shell = Display.getCurrent().getActiveShell();
+        IFile iFile = ((IFileEditorInput) editorPart.getEditorInput()).getFile();
+        Definition definition = ((WSDLElement) getElement()).getEnclosingDefinition();
+        String property = "";
+        
+        // TODO: Exteranlize All Strings below
+        List lookupPaths = new ArrayList(2);
+        if (getElement() instanceof Binding)
+        {
+            lookupPaths.add("/definitions/portType");
+            String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_PORTTYPE");
+            
+            WSDLComponentSelectionProvider provider = new WSDLComponentSelectionProvider(iFile, definition, lookupPaths);
+            dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, "port type", provider);
+            provider.setDialog(dialog);
+            property = "type";
+        }
+        else if (getElement() instanceof Port)
+        {
+            lookupPaths.add("/definitions/binding");
+            String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_BINDING");
+            
+            WSDLComponentSelectionProvider provider = new WSDLComponentSelectionProvider(iFile, definition, lookupPaths);
+            dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, "binding", provider);
+            provider.setDialog(dialog);
+            property = "binding";
+        }
+        else if (getElement() instanceof Input || getElement() instanceof Output || getElement() instanceof Fault)
+        {
+            lookupPaths.add("/definitions/message");
+            String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_MESSAGE");
 
+            WSDLComponentSelectionProvider provider = new WSDLComponentSelectionProvider(iFile, definition, lookupPaths);
+            dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, "message", provider);   
+            provider.setDialog(dialog);
+            property = "message";
+        }
+
+        dialog.setBlockOnOpen(true);
+        dialog.create();
+
+        if (dialog.open() == Window.OK) {
+            WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, definition);
+            helper.setComponent(getElement(), property, dialog.getSelection());
+        }
+        
+        // tricky way to redraw connecting lines
+ //       definition.getElement().setAttribute("name", definition.getElement().getAttribute("name"));
+        
+        // We need to select the proper component
+        
+//        refresh();
     }
   }
 	
