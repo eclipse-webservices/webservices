@@ -38,7 +38,7 @@ import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 
-import com.ibm.wtp.emf.workbench.ProjectUtilities;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 
 /**
  * ClientHandlersWidgetDefaultingCommand

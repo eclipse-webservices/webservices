@@ -19,7 +19,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-import com.ibm.wtp.emf.workbench.ProjectUtilities;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 
 
 public abstract class WindowActionDelegate implements IWorkbenchWindowActionDelegate {

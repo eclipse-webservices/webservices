@@ -59,7 +59,7 @@ import org.eclipse.wst.server.core.IServerPort;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.core.model.IURLProvider;
 
-import com.ibm.wtp.emf.workbench.ProjectUtilities;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 
 /**
  * This class contains useful methods for working with Eclipse resources.

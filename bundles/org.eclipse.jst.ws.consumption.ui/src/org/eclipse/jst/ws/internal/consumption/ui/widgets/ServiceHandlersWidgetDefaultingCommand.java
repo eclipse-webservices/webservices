@@ -35,7 +35,7 @@ import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceImpl;
 
-import com.ibm.wtp.emf.workbench.ProjectUtilities;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 
 /**
  * ServiceHandlersWidgetDefaultingCommand

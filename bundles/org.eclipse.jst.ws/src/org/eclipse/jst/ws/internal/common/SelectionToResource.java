@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
 import org.eclipse.wst.command.env.core.data.Transformer;
 
-import com.ibm.wtp.emf.workbench.ProjectUtilities;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 
 public class SelectionToResource implements Transformer
 {

@@ -38,7 +38,7 @@ import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.common.ProgressMonitor;
 import org.eclipse.wst.command.env.core.common.StatusHandler;
 
-import com.ibm.wtp.emf.workbench.ProjectUtilities;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 
 public class Stub2BeanInfo
 {
@@ -212,8 +212,9 @@ public class Stub2BeanInfo
 //    WebServiceElement wse = WebServiceElement.getWebServiceElement(model_);
 //    IProject clientProject = wse.getProxyProject();
     JavaEMFNature javaMOF = (JavaEMFNature)JavaEMFNature.createRuntime(clientProject_);
-    ByteArrayInputStream bais = new ByteArrayInputStream(bytes);    
-    FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), ProjectUtilities.getSourceFolderOrFirst(javaMOF.getProject(), null).getFile(new Path(sb.toString())).getFullPath(), bais, progressMonitor, statusMonitor);
+    ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+    // FIXME: ProjectUtilities.getSourceFolderOrFirst(...) no longer exists and must be replaced by something.
+    // FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), ProjectUtilities.getSourceFolderOrFirst(javaMOF.getProject(), null).getFile(new Path(sb.toString())).getFullPath(), bais, progressMonitor, statusMonitor);
   }
 
   private void writePackage(Writer w) throws IOException

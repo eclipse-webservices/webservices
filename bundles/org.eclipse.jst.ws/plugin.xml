@@ -18,6 +18,7 @@
       <import plugin="org.eclipse.wst.command.env"/>
       <import plugin="org.eclipse.wst.command.env.ui"/>
       <import plugin="org.eclipse.wst.command.env.core"/>
+      <import plugin="org.eclipse.jem.util"/>
       <import plugin="org.eclipse.jem.workbench"/>
       <import plugin="org.eclipse.jem"/>
       <import plugin="org.eclipse.jdt.core"/>
@@ -28,7 +29,7 @@
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.debug.core"/>
-      <import plugin="com.ibm.wtp.emf.workbench"/>
+      <import plugin="org.eclipse.jem.workbench"/>
       <import plugin="org.eclipse.wst.server.core"/>
       <import plugin="org.eclipse.wst.server.ui"/>
       <import plugin="org.eclipse.wst.wsdl"/>
