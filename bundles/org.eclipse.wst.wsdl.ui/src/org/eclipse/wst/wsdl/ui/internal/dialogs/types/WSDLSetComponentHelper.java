@@ -20,12 +20,17 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Import;
+import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
 import org.eclipse.wst.wsdl.ui.internal.actions.AddImportAction;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSpecification;
+import org.eclipse.xsd.XSDImport;
+import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDSchemaContent;
 
 
 public class WSDLSetComponentHelper {
@@ -37,8 +42,8 @@ public class WSDLSetComponentHelper {
         this.definition = definition;
     }
     
-    public void setComponent(WSDLElement inputElement, String property, XMLComponentSpecification spec) {
-        addImportIfNecessary(inputElement, spec);        
+    public void setWSDLComponent(WSDLElement inputElement, String property, XMLComponentSpecification spec) {
+        addImportIfNecessary(spec);
         String componentObject = getPrefixedComponentName(spec);
 
         org.w3c.dom.Element wsdlElement = inputElement.getElement();
@@ -46,6 +51,22 @@ public class WSDLSetComponentHelper {
         
         wsdlElement.setAttribute(property, componentObject); //$NON-NLS-1$
         
+    }
+    
+    public void setXSDTypeComponent(Part part, XMLComponentSpecification spec) {
+        if (!spec.getTagPath().equals(WSDLComponentSelectionProvider.BUILT_IN_TYPE)) {
+            addImportIfNecessary(spec);
+        }
+        String componentObject = getPrefixedComponentName(spec);
+        
+        ComponentReferenceUtil.setComponentReference((Part) part, true, componentObject);
+    }
+    
+    public void setXSDElementComponent(Part part, XMLComponentSpecification spec) {
+        addImportIfNecessary(spec);
+        String componentObject = getPrefixedComponentName(spec);
+        
+        ComponentReferenceUtil.setComponentReference((Part) part, false, componentObject);
     }
     
     /*
@@ -76,19 +97,68 @@ public class WSDLSetComponentHelper {
     }
 
     
-    private void addImportIfNecessary(WSDLElement inputElement, XMLComponentSpecification spec) {
-        Iterator importsIt = definition.getEImports().iterator();
+    private void addImportIfNecessary(XMLComponentSpecification spec) {
         boolean foundMatch = false;
         
-        while (importsIt.hasNext()) {
-            Import importItem = (Import) importsIt.next();
-            Definition importDefinition = importItem.getEDefinition();
-            String importLocation = getNormalizedLocation(importDefinition.getLocation());
+        // Check itself
+        String currentFileLocation = currentIFile.getLocation().toString();
+        if (currentFileLocation.equals(spec.getFileLocation())) {
+            foundMatch = true;
+        }
+        
+        // Check regular Imports
+        if (!foundMatch) {
+            Iterator importsIt = definition.getEImports().iterator();
             
-            if (importLocation.equals(spec.getFileLocation())) {
-                foundMatch = true;
-                break;
+            while (importsIt.hasNext()) {
+                String importLocation = "";
+                Import importItem = (Import) importsIt.next();
+                if (importItem.getESchema() != null) {
+                    XSDSchema schema = importItem.getESchema();
+                    importLocation = getNormalizedLocation(schema.getSchemaLocation());
+                }
+                else {            
+                    Definition importDefinition = importItem.getEDefinition();
+                    importLocation = getNormalizedLocation(importDefinition.getLocation()); 
+                }            
+    
+                if (importLocation.equals(spec.getFileLocation())) {
+                    foundMatch = true;
+                    break;
+                }
             }
+        }
+        
+        // Check inline Schemas
+        if (!foundMatch) {
+            List imports = new ArrayList();
+            Iterator it = definition.getETypes().getEExtensibilityElements().iterator();
+            while (it.hasNext()) {
+                XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) it.next();
+                XSDSchema schema = eeElement.getSchema();
+                if (schema.getTargetNamespace() == null || schema.getTargetNamespace().equals("")) {                    
+                    Iterator contents = schema.getContents().iterator();
+                    while (contents.hasNext()) {
+                        XSDSchemaContent content = (XSDSchemaContent) contents.next();
+                        if (content instanceof XSDImport) {
+                            imports.add(content);             
+                        }
+                    }
+                }
+            }
+            
+            Iterator importIt = imports.iterator();
+            while (importIt.hasNext()) {
+                XSDImport importItem = (XSDImport) importIt.next();
+                XSDSchema resolvedSchema = importItem.getResolvedSchema();
+                String resolvedString = resolvedSchema.getSchemaLocation();
+                String importLocation = getNormalizedLocation(resolvedString);
+                
+                if (importLocation.equals(spec.getFileLocation())) {
+                    foundMatch = true;
+                    break;
+                }
+            }            
         }
         
         if (!foundMatch) {

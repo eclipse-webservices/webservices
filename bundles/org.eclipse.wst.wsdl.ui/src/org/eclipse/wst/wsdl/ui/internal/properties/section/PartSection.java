@@ -246,10 +246,16 @@ public class PartSection extends AbstractSection
               XMLComponentSpecification spec = dialog.getSelection();
               
               WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, definition);
-//              helper.setComponent(getElement(), property, dialog.getSelection());
+              if (isType) {
+                  helper.setXSDTypeComponent(part, dialog.getSelection());
+              }
+              else {
+                  helper.setXSDElementComponent(part, dialog.getSelection());
+              }
           }
 
-          
+          // TODO: Need to select the Part
+          // We need to select the Part
           
           
 //        InvokeSetDialog dialog = new InvokeSetDialog();
@@ -259,7 +265,7 @@ public class PartSection extends AbstractSection
 //          dialog.setReferenceKind(referenceKindCombo.getText());
 //        }
 //        dialog.run(getElement(), editorPart);
-        refresh();
+//        refresh();
       }
 
     }

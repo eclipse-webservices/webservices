@@ -203,7 +203,7 @@ public class ReferenceSection extends AbstractSection
 
         if (dialog.open() == Window.OK) {
             WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, definition);
-            helper.setComponent(getElement(), property, dialog.getSelection());
+            helper.setWSDLComponent(getElement(), property, dialog.getSelection());
         }
         
         // tricky way to redraw connecting lines

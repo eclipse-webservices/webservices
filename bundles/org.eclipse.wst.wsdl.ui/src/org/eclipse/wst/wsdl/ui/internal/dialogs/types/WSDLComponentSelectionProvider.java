@@ -21,6 +21,7 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.wst.wsdl.internal.impl.ImportImpl;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.ITypeSystemProvider;
 import org.eclipse.wst.wsdl.ui.internal.typesystem.ExtensibleTypeSystemProvider;
@@ -32,9 +33,13 @@ import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSelectionPr
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSpecification;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xsd.XSDComponentSelectionDialog;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDImport;
 import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDSchemaContent;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
+import org.eclipse.xsd.impl.XSDImportImpl;
 import org.eclipse.xsd.util.XSDConstants;
 
 public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvider {
@@ -141,7 +146,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
             createWSDLComponentObjects(list, definition.getEBindings(), tagPath);
             
             // Grab directly imported components
-            Iterator importsIt = definition.getEImports().iterator();
+            Iterator importsIt = getWSDLFileImports(definition.getEImports()).iterator();
             while (importsIt.hasNext()) {
                 Import importItem = (Import) importsIt.next();
                 Definition importDefinition = importItem.getEDefinition();
@@ -155,7 +160,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
             createWSDLComponentObjects(list, definition.getEPortTypes(), tagPath);
             
             // Grab directly imported components
-            Iterator importsIt = definition.getEImports().iterator();
+            Iterator importsIt = getWSDLFileImports(definition.getEImports()).iterator();
             while (importsIt.hasNext()) {
                 Import importItem = (Import) importsIt.next();
                 Definition importDefinition = importItem.getEDefinition();
@@ -169,7 +174,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
             createWSDLComponentObjects(list, definition.getEMessages(), tagPath);
             
             // Grab directly imported components
-            Iterator importsIt = definition.getEImports().iterator();
+            Iterator importsIt = getWSDLFileImports(definition.getEImports()).iterator();
             while (importsIt.hasNext()) {
                 Import importItem = (Import) importsIt.next();
                 Definition importDefinition = importItem.getEDefinition();
@@ -177,21 +182,43 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
                 
                 createWSDLComponentObjects(list, importedComponents, tagPath);
             }
-
         }
         else if (tagPath.equals("/definitions/types/schema/complexType")) {
-            createXSDComponentObjects(list, tagPath);
+            createXSDInlineTypesObjects(list, tagPath);
         }
         else if (tagPath.equals("/definitions/types/schema/simpleType")) {
-            createXSDComponentObjects(list, tagPath);
-            createXSDBuiltInTypeObjects(list);
-            createRegularImportXSDTypeObjects(list);
+            createXSDInlineTypesObjects(list, tagPath);
         }
-
         else if (tagPath.equals("/definitions/types/schema/element")) {
             createXSDElementObjects(list, tagPath);
             createRegularImportXSDElementObjects(list);
         }
+        else if (tagPath.equals("/schema/complexType")) {
+            createXSDInlineWrapperTypeObjects(list, tagPath);
+            
+            createXSDBuiltInTypeObjects(list);
+            createRegularImportXSDTypeObjects(list);
+        }
+        else if (tagPath.equals("/schema/simpleType")) {
+            createXSDInlineWrapperTypeObjects(list, tagPath);
+        }
+        else if (tagPath.equals("/schema/element")) {
+            createXSDInlineWrapperElementObjects(list, tagPath);
+        }
+    }
+    
+    private List getWSDLFileImports(List wsdlImports) {
+        List list = new ArrayList();
+        Iterator it = wsdlImports.iterator();
+        while (it.hasNext()) {
+            ImportImpl importItem = (ImportImpl) it.next();
+            importItem.importDefinitionOrSchema();          // Load if necessary
+            if (importItem.getESchema() == null) {
+                list.add(importItem);
+            }
+        }
+        
+        return list;
     }
     
     private void createXSDBuiltInTypeObjects(IComponentList list) {
@@ -222,6 +249,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         Iterator imports = definition.getEImports().iterator();
         while (imports.hasNext()) {
             Import importItem = (Import) imports.next();
+            ((ImportImpl) importItem).importDefinitionOrSchema();
             List schemas = new ArrayList();
             String complexPath = "";
             String simplePath = "";
@@ -272,13 +300,14 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         Iterator imports = definition.getEImports().iterator();
         while (imports.hasNext()) {
             Import importItem = (Import) imports.next();
+            ((ImportImpl) importItem).importDefinitionOrSchema();
             List schemas = new ArrayList();
             String path = "";
             
             if (importItem.getESchema() != null) {
                 // Import is a xsd file
                 schemas.add(importItem.getESchema());
-                path = "/schema/elements";
+                path = "/schema/element";
             }
             else if (importItem.getEDefinition() != null) {
                 // Import is a wsdl file
@@ -287,7 +316,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
                 while (schemaIt.hasNext()) {
                     XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) schemaIt.next();
                     schemas.add(eeElement.getSchema());
-                    path = "/definitions/types/schema/elements";
+                    path = "/definitions/types/schema/element";
                 }
             }
             
@@ -301,36 +330,124 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         }
     }
     
-    private void createXSDComponentObjects(IComponentList list, String tagPath) {
+    private void createXSDInlineTypesObjects(IComponentList list, String tagPath) {
         // Handle inline schemas
         Iterator inlineSchemasIt = definition.getETypes().getSchemas().iterator();
         while (inlineSchemasIt.hasNext()) {
             XSDSchema schema = (XSDSchema) inlineSchemasIt.next();
-            List types = new ArrayList();
-
-            ITypeSystemProvider systemProvider = getTypeSystemProvider();
-            if (systemProvider != null) {
-                int kind = ITypeSystemProvider.USER_DEFINED_COMPLEX_TYPE;
-                if (tagPath.equals("/definitions/types/schema/complexType")) {
-                    kind = ITypeSystemProvider.USER_DEFINED_COMPLEX_TYPE;
-                }
-                else if (tagPath.equals("/definitions/types/schema/simpleType")) {
-                    kind = ITypeSystemProvider.USER_DEFINED_SIMPLE_TYPE;
-                }
-
-                types.addAll(systemProvider.getAvailableTypes(definition, schema, kind));
-                createXSDComponentObjects(list, types, tagPath);
+            
+            if (schema.getTargetNamespace() != null && !schema.getTargetNamespace().equals("")) {
+                    List keepTypes = new ArrayList();
+                    Iterator typeIterator = schema.getTypeDefinitions().iterator();
+                    // Filter out unwanted Types
+                    if (tagPath.equals("/definitions/types/schema/complexType")) {
+                        while (typeIterator.hasNext()) {
+                            Object type = typeIterator.next();
+                            if (type instanceof XSDComplexTypeDefinition) {
+                                keepTypes.add(type);
+                            }
+                        }
+                    }
+                    else if (tagPath.equals("/definitions/types/schema/simpleType")) {
+                        while (typeIterator.hasNext()) {
+                            Object type = typeIterator.next();
+                            if (type instanceof XSDSimpleTypeDefinition) {
+                                keepTypes.add(type);
+                            }
+                        }
+                    }
+                    
+                    createXSDComponentObjects(list, keepTypes, tagPath);
             }
         }
-        
-
     }
 
     private void createXSDElementObjects(IComponentList list, String tagPath) {
         Iterator inlineSchemasIt = definition.getETypes().getSchemas().iterator();
         while (inlineSchemasIt.hasNext()) {
             XSDSchema schema = (XSDSchema) inlineSchemasIt.next();
-            createXSDComponentObjects(list, schema.getElementDeclarations(), tagPath);
+            
+            List keepElements = new ArrayList();
+            if (schema.getTargetNamespace() != null && !schema.getTargetNamespace().equals("")) {
+                Iterator elementIt = schema.getElementDeclarations().iterator();
+                while (elementIt.hasNext()) {
+                    // Only look for elements explicitly defined in the Schema (not through imports).
+                    XSDElementDeclaration xsdElement = (XSDElementDeclaration) elementIt.next();
+                    if (xsdElement.getSchema().equals(schema)) {
+                        keepElements.add(xsdElement);
+                    }
+                }
+                
+                createXSDComponentObjects(list, keepElements, tagPath);
+            }
+        }
+    }
+    
+    private void createXSDInlineWrapperTypeObjects(IComponentList list, String tagPath) {
+        // Handle inline schemas
+        Iterator inlineSchemasIt = definition.getETypes().getSchemas().iterator();
+        while (inlineSchemasIt.hasNext()) {
+            XSDSchema schema = (XSDSchema) inlineSchemasIt.next();
+            
+            if (schema.getTargetNamespace() == null || schema.getTargetNamespace().equals("")) {
+                List keepTypes = new ArrayList();
+                
+                List imports = new ArrayList();
+                Iterator contents = schema.getContents().iterator();
+                while (contents.hasNext()) {
+                    XSDSchemaContent content = (XSDSchemaContent) contents.next();
+                    if (content instanceof XSDImport) {
+                        imports.add(content);             
+                    }
+                }
+                
+                Iterator importIterator = imports.iterator();
+                while (importIterator.hasNext()) {
+                    XSDImport importObject = (XSDImport) importIterator.next();
+                    XSDSchema importSchema = ((XSDImportImpl) importObject).importSchema();
+                    Iterator typesIt = importSchema.getTypeDefinitions().iterator();
+                    while (typesIt.hasNext()) {
+                        Object typeObject = typesIt.next();
+                        if (tagPath.equals("/schema/complexType") &&
+                            typeObject instanceof XSDComplexTypeDefinition) {
+                            keepTypes.add(typeObject);
+                        }
+                        else if (tagPath.equals("/schema/simpleType") &&
+                                 typeObject instanceof XSDSimpleTypeDefinition) {
+                            keepTypes.add(typeObject);
+                        }
+                    }
+                    
+                }
+
+                createXSDComponentObjects(list, keepTypes, tagPath);
+            }
+        }
+    }
+    
+    private void createXSDInlineWrapperElementObjects(IComponentList list, String tagPath) {
+        Iterator inlineSchemasIt = definition.getETypes().getSchemas().iterator();
+        while (inlineSchemasIt.hasNext()) {
+            XSDSchema schema = (XSDSchema) inlineSchemasIt.next();
+            
+            if (schema.getTargetNamespace() == null || schema.getTargetNamespace().equals("")) {
+                Iterator contents = schema.getContents().iterator();
+                List imports = new ArrayList();
+                while (contents.hasNext()) {
+                    XSDSchemaContent content = (XSDSchemaContent) contents.next();
+                    if (content instanceof XSDImport) {
+                        imports.add(content);             
+                    }
+                }
+                
+                Iterator importIterator = imports.iterator();
+                while (importIterator.hasNext()) {
+                    XSDImport importObject = (XSDImport) importIterator.next();
+                    XSDSchema importSchema = ((XSDImportImpl) importObject).importSchema();
+
+                    createXSDComponentObjects(list, importSchema.getElementDeclarations(), tagPath);    
+                }                
+            }
         }
     }
 
@@ -373,7 +490,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
             }
             else if (spec.getTagPath().equals("/definitions/types/schema/element") ||
                      spec.getTagPath().equals("/schema/element")) {
-                return WSDLEditorPlugin.getInstance().getImage("icons/message_obj.gif");
+                return XSDEditorPlugin.getXSDImage("icons/XSDElement.gif");
             }
     
             return null;
