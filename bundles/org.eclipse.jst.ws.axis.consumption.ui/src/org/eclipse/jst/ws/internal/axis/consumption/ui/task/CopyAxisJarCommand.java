@@ -76,8 +76,8 @@ public class CopyAxisJarCommand extends SimpleCommand {
         webModulePath, "WEB-INF/lib/axis.jar", status, env); //$NON-NLS-1$
     if (status.getSeverity() == Status.ERROR)
       return;
-    copyIFile("lib/log4j-1.2.4.jar", //$NON-NLS-1$
-        webModulePath, "WEB-INF/lib/log4j-1.2.4.jar", status, env); //$NON-NLS-1$
+    copyIFile("lib/log4j-1.2.8.jar", //$NON-NLS-1$
+        webModulePath, "WEB-INF/lib/log4j-1.2.8.jar", status, env); //$NON-NLS-1$
     if (status.getSeverity() == Status.ERROR)
       return;
     copyIFile("lib/commons-discovery.jar", //$NON-NLS-1$
