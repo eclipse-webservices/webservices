@@ -17,7 +17,7 @@ import java.util.Vector;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.internal.webservice.WebServiceNavigatorGroupType;
+import org.eclipse.jst.j2ee.internal.webservice.WebServiceNavigatorGroupType;
 import org.eclipse.jst.j2ee.internal.webservices.WebServiceEditModel;
 import org.eclipse.jst.j2ee.internal.webservices.WebServicesManager;
 import org.eclipse.jst.j2ee.webservice.wsdd.Handler;

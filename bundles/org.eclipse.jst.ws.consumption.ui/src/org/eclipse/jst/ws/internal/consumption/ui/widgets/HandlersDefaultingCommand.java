@@ -11,7 +11,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.internal.webservice.WebServiceNavigatorGroupType;
+import org.eclipse.jst.j2ee.internal.webservice.WebServiceNavigatorGroupType;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;

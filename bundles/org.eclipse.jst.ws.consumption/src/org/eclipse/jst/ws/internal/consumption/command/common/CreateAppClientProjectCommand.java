@@ -15,7 +15,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jst.j2ee.J2EEVersionConstants;
+import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.applicationclient.creation.AppClientModuleCreationDataModel;
 import org.eclipse.jst.j2ee.applicationclient.creation.AppClientModuleCreationOperation;
 import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;

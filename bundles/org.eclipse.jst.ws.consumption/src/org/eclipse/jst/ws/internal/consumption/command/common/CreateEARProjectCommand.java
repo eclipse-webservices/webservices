@@ -14,7 +14,7 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jst.j2ee.J2EEVersionConstants;
+import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.application.operations.EnterpriseApplicationCreationDataModel;
 import org.eclipse.jst.j2ee.application.operations.EnterpriseApplicationCreationOperation;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
