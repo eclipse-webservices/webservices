@@ -22,9 +22,9 @@ import junit.framework.TestSuite;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.*;
 
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.tests.util.DefinitionVisitor;
+import org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl;
 
 import org.eclipse.wst.wsdl.binding.soap.*;
 
