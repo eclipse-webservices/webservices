@@ -1,6 +1,7 @@
 <project default="copyJars" basedir=".">
 
 	<property name="pluginName" value="org.eclipse.wst.wsdl"/>
+	<property name="version" value=""/>
 
 	<target name="copyJars" if="downloadPath">
 		<antcall target="copyJars2"/>
@@ -11,8 +12,8 @@
 	</target>
 
 	<target name="copyJars3" if="pluginName">
-		<copy todir="${pluginsPath}/${pluginName}/lib" overwrite="true">
-			<fileset dir="${downloadPath}/${pluginName}">
+		<copy todir="${pluginsPath}/${pluginName}${version}/lib" overwrite="true">
+			<fileset dir="${downloadPath}/${pluginName}${version}">
 				<filename name="*.jar"/>
 			</fileset>
 		</copy>
@@ -24,7 +25,7 @@
 
 	<target name="cleanupJars2" if="pluginName">
 		<delete>
-			<fileset dir="${pluginsPath}/${pluginName}/lib">
+			<fileset dir="${pluginsPath}/${pluginName}${version}/lib">
 				<filename name="*.jar"/>
 			</fileset>
 		</delete>
