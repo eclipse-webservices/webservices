@@ -156,7 +156,7 @@ public class WebServiceUIPlugin extends AbstractUIPlugin
   */
 	public static String getMessage(String key) 
 	{
-	    MessageUtils msgUtils = new MessageUtils( "org.eclipse.jst.ws.internal.ui.plugin", instance_ );
+	    MessageUtils msgUtils = new MessageUtils( "org.eclipse.jst.ws.ui.plugin", instance_ );
 	    
 	    if( key.startsWith("%"))
 	    {

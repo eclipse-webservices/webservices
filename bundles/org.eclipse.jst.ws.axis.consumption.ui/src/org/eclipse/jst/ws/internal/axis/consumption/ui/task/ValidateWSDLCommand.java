@@ -35,7 +35,7 @@ public class ValidateWSDLCommand extends SimpleCommand
 
   public Status execute(Environment env)
   {
-	MessageUtils msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.internal.axis.consumption.ui.plugin", this );
+	MessageUtils msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.ui.plugin", this );
 	
     if (wsdlURI != null && wsdlURI.length() > 0)
     {

@@ -35,7 +35,7 @@ public class CheckAxisDeploymentDescriptorsTask extends SimpleCommand {
   {
     String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.consumption", this );
+    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
     setDescription(msgUtils_.getMessage("CHECK_WS_DD_TASK_DESCRIPTION"));
     setName(msgUtils_.getMessage("CHECK_WS_DD_TASK_LABEL"));        
   }

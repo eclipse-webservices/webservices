@@ -69,7 +69,7 @@ public class Skeleton2WSDLCommand extends SimpleCommand
 
   public Skeleton2WSDLCommand() {
     super(WebServiceAxisCreationUIPlugin.getMessage(LABEL), WebServiceAxisCreationUIPlugin.getMessage(DESCRIPTION));
-	msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.internal.axis.creation.ui.plugin", this );
+	msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.creation.ui.plugin", this );
     setName( LABEL );
     setDescription( DESCRIPTION );
   }

@@ -78,7 +78,7 @@ public class WSDLSelectionOutputCommand extends SimpleCommand
       return new SimpleStatus("");
     else
     {
-      MessageUtils msgUtils = new MessageUtils("org.eclipse.jst.ws.internal.consumption.ui.plugin", this);
+      MessageUtils msgUtils = new MessageUtils("org.eclipse.jst.ws.consumption.ui.plugin", this);
       Status status = new SimpleStatus("", msgUtils.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL"), Status.ERROR);
       env.getStatusHandler().reportError(status);
       return status;

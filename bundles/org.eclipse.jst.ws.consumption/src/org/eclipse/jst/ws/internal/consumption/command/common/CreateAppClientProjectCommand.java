@@ -47,7 +47,7 @@ public class CreateAppClientProjectCommand extends SimpleCommand
 
   public Status execute(Environment env)
   {
-	MessageUtils msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.internal.consumption.plugin", this );
+	MessageUtils msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
 	
     try
     {

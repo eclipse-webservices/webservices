@@ -259,7 +259,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
 				          }
 				        } );
 
-    MessageUtils creationUIMessageUtils = new MessageUtils("org.eclipse.jst.ws.internal.creation.ui.plugin", this);
+    MessageUtils creationUIMessageUtils = new MessageUtils("org.eclipse.jst.ws.creation.ui.plugin", this);
     widgetRegistry.add( "ObjectSelectionWidget", 
                         creationUIMessageUtils.getMessage("PAGE_TITLE_OBJECT_SELECTION"),
                         creationUIMessageUtils.getMessage("PAGE_DESC_OBJECT_SELECTION"),

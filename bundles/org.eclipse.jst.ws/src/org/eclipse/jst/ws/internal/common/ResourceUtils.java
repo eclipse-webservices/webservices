@@ -1956,7 +1956,7 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 
 	public static boolean isSkeletonEJBType( String typeID )
 	{
-	  return typeID.equals( "com.ibm.etools.webservice.type.wsdl.ejb" );    
+	  return typeID.equals( "org.eclipse.jst.ws.type.wsdl.ejb" );    
 	}
 	
 	public static String getDefaultEJBProjectName() {

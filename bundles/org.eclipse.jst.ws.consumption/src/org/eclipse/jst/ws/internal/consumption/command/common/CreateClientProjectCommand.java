@@ -53,7 +53,7 @@ public class CreateClientProjectCommand extends SimpleCommand
   public CreateClientProjectCommand()
   {
     super("org.eclipse.jst.ws.internal.consumption.command.common.CreateClientProjectCommand", "org.eclipse.jst.ws.internal.consumption.command.common.CreateClientProjectCommand");
-    String       pluginId = "com.ibm.etools.webservice.consumption";
+    String       pluginId = "org.eclipse.jst.ws.consumption";
     msgUtils_ = new MessageUtils( pluginId + ".plugin", this );    
   }
 

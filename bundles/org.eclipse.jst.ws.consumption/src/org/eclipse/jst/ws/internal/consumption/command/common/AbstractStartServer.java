@@ -37,7 +37,7 @@ private MessageUtils msgUtils_;
 public AbstractStartServer()
 {
 	log_ = new EclipseLog();
-    msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.internal.consumption.plugin", this );
+    msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
 }
 
 /**

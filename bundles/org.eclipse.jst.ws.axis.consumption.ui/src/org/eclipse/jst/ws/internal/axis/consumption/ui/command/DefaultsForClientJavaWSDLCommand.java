@@ -40,7 +40,7 @@ public class DefaultsForClientJavaWSDLCommand extends SimpleCommand {
 	public DefaultsForClientJavaWSDLCommand() {
 		String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.consumption", this );
+	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
 	    setName (msgUtils_.getMessage(LABEL));
 		setDescription( msgUtils_.getMessage(DESCRIPTION));		
 	}
@@ -54,7 +54,7 @@ public class DefaultsForClientJavaWSDLCommand extends SimpleCommand {
 		//super();
 		String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.consumption", this );
+	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
 	    setName (msgUtils_.getMessage(LABEL));
 		setDescription( msgUtils_.getMessage(DESCRIPTION));
 		this.javaWSDLParam_ = javaWSDLParam;

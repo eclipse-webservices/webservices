@@ -38,7 +38,7 @@ public abstract class VisitorActionImpl implements VisitorAction
   	{
   	 this.messages = messages;
   	 this.beansVisited = beansVisited;
-     msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.internal.consumption.plugin", this );
+     msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
   	}
   
   public void initialize(String resident)

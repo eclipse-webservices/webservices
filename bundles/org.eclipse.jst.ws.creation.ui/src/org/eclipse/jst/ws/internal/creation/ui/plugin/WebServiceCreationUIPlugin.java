@@ -99,7 +99,7 @@ public class WebServiceCreationUIPlugin extends Plugin
   */
   public static String getMessage ( String key )
   {
-    MessageUtils msgUtils = new MessageUtils( "org.eclipse.jst.ws.internal.creation.ui.plugin", instance_ );
+    MessageUtils msgUtils = new MessageUtils( "org.eclipse.jst.ws.creation.ui.plugin", instance_ );
     
     if( key.startsWith("%"))
     {

@@ -33,7 +33,7 @@ public class RefreshProjectCommand extends SimpleCommand
 
 	public RefreshProjectCommand()
 	{
-		msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.internal.axis.consumption.ui.plugin", this );
+		msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.ui.plugin", this );
 		setName( msgUtils_.getMessage( LABEL ) );
 		setDescription( msgUtils_.getMessage( DESCRIPTION ));
 	}

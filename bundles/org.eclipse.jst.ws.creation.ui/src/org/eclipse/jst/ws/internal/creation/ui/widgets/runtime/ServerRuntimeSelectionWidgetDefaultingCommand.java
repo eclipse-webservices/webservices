@@ -103,7 +103,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   private void setWebClientType()
   {
     SelectionListChoices choices = getRuntime2ClientTypes();
-    String               webId   = "com.ibm.etools.webservice.consumption.ui.clientProjectType.Web";
+    String               webId   = "org.eclipse.jst.ws.consumption.ui.clientProjectType.Web";
     
     if( choices != null )
     {

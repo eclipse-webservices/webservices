@@ -98,7 +98,7 @@ public class WebServiceConsumptionPlugin extends Plugin
   */
   public static String getMessage ( String key )
   {
-    MessageUtils msgUtils = new MessageUtils( "org.eclipse.jst.ws.internal.consumption.plugin", instance_ );
+    MessageUtils msgUtils = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", instance_ );
     
     if( key.startsWith("%"))
     {

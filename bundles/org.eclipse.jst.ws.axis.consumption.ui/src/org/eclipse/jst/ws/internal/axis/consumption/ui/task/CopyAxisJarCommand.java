@@ -48,7 +48,7 @@ public class CopyAxisJarCommand extends SimpleCommand {
   public CopyAxisJarCommand() {
     String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-    baseConMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.internal.consumption.plugin", this );
+    baseConMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
     setDescription(msgUtils_.getMessage(DESCRIPTION));
     setName(msgUtils_.getMessage(LABEL));
   }
