@@ -30,7 +30,7 @@
 		<type name="MessageReference" />
 		<type name="UnknownExtensibilityElement" />
 		<type name="Output" />
-		<type name="WSDLPackage" />
+		<!-- <type name="WSDLPackage" /> -->
 		<type name="Binding" />
 		<type name="BindingOperation" />
 	</package>
@@ -39,7 +39,7 @@
 		<type name="ExtensibilityElementFactoryRegistry" />
 		<type name="WSDLResourceFactoryImpl" />
 		<type name="ExtensibilityElementFactory" />
-		<type name="WSDLSwitch" />
+		<!-- <type name="WSDLSwitch" />  -->
 		<type name="WSDLResourceImpl" />
 	</package>
 	<package name="org.eclipse.wst.wsdl.binding.soap">
@@ -51,7 +51,7 @@
 		<type name="SOAPBinding" />
 		<type name="SOAPHeaderBase" />
 		<type name="SOAPFault" />
-		<type name="SOAPPackage" />
+		<!-- <type name="SOAPPackage" /> -->
 		<type name="SOAPOperation" />
 	</package>
 <!-- provisional APIs -->
