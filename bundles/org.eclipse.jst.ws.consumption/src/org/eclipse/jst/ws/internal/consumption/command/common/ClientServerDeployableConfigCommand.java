@@ -125,7 +125,7 @@ public class ClientServerDeployableConfigCommand extends SimpleCommand {
           return status;
         }
         
-        IModule[] parentModules = server.getParentModules(ResourceUtils.getModule(project),null);
+        IModule[] parentModules = server.getRootModules(ResourceUtils.getModule(project),null);
         if (parentModules!=null && parentModules.length!=0) {
           if (!ServerUtil.containsModule(server, ResourceUtils.getModule(project), null)) {
             Status mmStatus = ServerUtils.getInstance().modifyModules(env, server, ResourceUtils.getModule(project), true, EnvironmentUtils.getIProgressMonitor(env));

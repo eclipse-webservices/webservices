@@ -123,7 +123,7 @@ public final class ServerUtils {
          }
         }
      
-      List list = Arrays.asList(server.getModules(monitor));
+      List list = Arrays.asList(server.getModules());
       if (add) {
         if (!list.contains(module)) {
           ServerUtil.modifyModules(wc, new IModule[] { module}, new IModule[0], monitor);
@@ -176,7 +176,7 @@ public final class ServerUtils {
             }
         }
         
-      	List list = Arrays.asList(server.getModules(monitor));
+      	List list = Arrays.asList(server.getModules());
       	if (add) {
       		if (!list.contains(module)) {
       			ServerUtil.modifyModules(wc, new IModule[] { module}, new IModule[0], monitor);
@@ -263,7 +263,7 @@ public final class ServerUtils {
         }  
         
         if (module != null && module.getProject().exists()) {
-          IModule[] parentModules = server.getParentModules(module, monitor);
+          IModule[] parentModules = server.getRootModules(module, monitor);
           if (parentModules!=null && parentModules.length!=0) {
           	module = (IModule)parentModules[0];
           }
@@ -311,7 +311,7 @@ public final class ServerUtils {
         }  
         
         if (module != null) {
-          IModule[] parentModules = server.getParentModules(module, monitor);
+          IModule[] parentModules = server.getRootModules(module, monitor);
           if (parentModules!=null && parentModules.length!=0) {
           	module = (IModule)parentModules[0];
           }
