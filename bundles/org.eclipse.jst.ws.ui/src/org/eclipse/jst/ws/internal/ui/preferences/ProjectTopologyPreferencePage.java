@@ -14,7 +14,7 @@ package org.eclipse.jst.ws.internal.ui.preferences;
 import java.util.Vector;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -41,8 +41,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.help.DialogPageContextComputer;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 
 
 
@@ -78,7 +77,7 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     parent.setLayout( layout );
     parent.setToolTipText(getMessage("%TOOLTIP_PTPP_PAGE"));
     parent.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-    WorkbenchHelp.setHelp(parent,new DialogPageContextComputer(this,INFOPOP_PTPP_PAGE));    
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(parent,INFOPOP_PTPP_PAGE);    
 
     Text clientTypeLabel = new Text(parent, SWT.READ_ONLY | SWT.WRAP);
     clientTypeLabel.setText(getMessage("%LABEL_CLIENT_TYPE_NAME"));
@@ -283,7 +282,7 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
 
     public ClientTypeLabelProvider()
     {
-      IPluginRegistry reg = Platform.getPluginRegistry();
+      IExtensionRegistry reg = Platform.getExtensionRegistry();
       configElements_ = reg.getConfigurationElementsFor("org.eclipse.jst.ws.consumption.ui", "clientProjectType");
     }
 

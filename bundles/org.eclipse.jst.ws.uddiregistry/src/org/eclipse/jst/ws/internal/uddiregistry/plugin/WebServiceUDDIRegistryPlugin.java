@@ -14,12 +14,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPluginDescriptor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
 
 /**
 * This is the plugin class for the Web Services UDDI Registry plugin.
@@ -44,18 +42,11 @@ public class WebServiceUDDIRegistryPlugin extends Plugin
   
   /**
   * Constructs a runtime plugin object for this plugin.
-  * The "plugin" element in plugin.xml should include the attribute
-  * class = "org.eclipse.jst.ws.internal.uddiregistry.plugin.WebServiceUDDIRegistryPlugin".
-  * @param descriptor The descriptor of this plugin.
   */
-  public WebServiceUDDIRegistryPlugin ( IPluginDescriptor descriptor )
+  public WebServiceUDDIRegistryPlugin ()
   {
-    super(descriptor);
-    if (instance_ == null)
-    {
-      instance_ = this;
-    }
-    log_ = new EclipseLog();
+    super();
+    instance_ = this;
   }
 
   /**
@@ -69,26 +60,6 @@ public class WebServiceUDDIRegistryPlugin extends Plugin
   }
 
   /**
-  * Called once by the platform when this plugin is first loaded.
-  * @throws CoreException If this plugin fails to start.
-  */
-  public void startup () throws CoreException
-  {
-  	log_.log(Log.INFO, 5072, this, "startup", "Starting plugin org.eclipse.jst.ws.uddiregistry");
-    super.startup();
-  }
-
-  /**
-  * Called once by the platform when this plugin is unloaded.
-  * @throws CoreException If this plugin fails to shutdown.
-  */
-  public void shutdown () throws CoreException
-  {
-  	log_.log(Log.INFO, 5073, this, "shutdown", "Shutting plugin org.eclipse.jst.ws.uddiregistry");
-    super.shutdown();
-  }
-
-  /**
   * Returns an image descriptor for the named resource
   * as relative to the plugin install location.
   * @return An image descriptor, possibly null.
@@ -97,7 +68,7 @@ public class WebServiceUDDIRegistryPlugin extends Plugin
   {
     try
     {
-      URL installURL = instance_.getDescriptor().getInstallURL();
+      URL installURL = instance_.getBundle().getEntry("/");
       URL imageURL = new URL(installURL,name);
       return ImageDescriptor.createFromURL(imageURL);
     }
@@ -114,7 +85,7 @@ public class WebServiceUDDIRegistryPlugin extends Plugin
   */
   public static String getMessage ( String key )
   {
-    return instance_.getDescriptor().getResourceString(key);
+    return Platform.getResourceString(instance_.getBundle(),key);
   }
 
   /**

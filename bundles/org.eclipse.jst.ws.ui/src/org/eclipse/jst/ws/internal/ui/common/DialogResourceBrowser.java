@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
@@ -193,7 +193,7 @@ public class DialogResourceBrowser extends Dialog
     gd.grabExcessHorizontalSpace = true;
     resourceTree_.setLayoutData(gd);
     resourceTree_.setToolTipText(getMessage("%TOOLTIP_RESOURCE_TREE"));
-    WorkbenchHelp.setHelp(resourceTree_, new Object[]{INFOPOP_RESOURCE_TREE});
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(resourceTree_, INFOPOP_RESOURCE_TREE);
 
     fileViewer_ = new TreeViewer(resourceTree_);
     fileViewer_.setContentProvider(new WorkbenchContentProvider());

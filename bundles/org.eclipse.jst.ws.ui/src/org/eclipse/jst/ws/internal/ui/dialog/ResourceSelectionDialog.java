@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
@@ -257,7 +257,7 @@ public class ResourceSelectionDialog extends Dialog implements Listener
       filterCombo_.setLayoutData(gd);
       filterCombo_.addListener(SWT.Selection,this);
       filterCombo_.setToolTipText(WebServiceUIPlugin.getMessage(TOOLTIP_DRES_COMBO_RESOURCE_TYPE));
-      WorkbenchHelp.setHelp(filterCombo_,new Object[] {INFOPOP_DRES_COMBO_RESOURCE_TYPE});
+      PlatformUI.getWorkbench().getHelpSystem().setHelp(filterCombo_,INFOPOP_DRES_COMBO_RESOURCE_TYPE);
     }
 
     if (multipleSelectionEnabled_)
@@ -274,7 +274,7 @@ public class ResourceSelectionDialog extends Dialog implements Listener
     resourceTree_.setLayoutData(gd);
 //  resourceTree_.addListener(SWT.Selection,this);
     resourceTree_.setToolTipText(WebServiceUIPlugin.getMessage(TOOLTIP_DRES_TREE_RESOURCE));
-    WorkbenchHelp.setHelp(resourceTree_,new Object[] {INFOPOP_DRES_TREE_RESOURCE});
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(resourceTree_,INFOPOP_DRES_TREE_RESOURCE);
 
     fileViewer_ = new TreeViewer(resourceTree_);
     fileViewer_.setContentProvider(new WorkbenchContentProvider());

@@ -24,9 +24,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PropertyPage;
-import org.eclipse.ui.help.DialogPageContextComputer;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 
 
@@ -78,13 +78,15 @@ public class WSICompliancePropertyPage extends PropertyPage implements Selection
   	String       pluginId = "org.eclipse.jst.ws.ui";
     msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	
+    IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+    
     Composite   parent = new Composite( superparent, SWT.NONE );	
     GridLayout layout = new GridLayout();
     layout.numColumns = 1;
     parent.setLayout( layout );
     parent.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
     parent.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_PAGE"));
-    WorkbenchHelp.setHelp(parent, new DialogPageContextComputer(this, INFOPOP_PWSI_PAGE));
+    helpSystem.setHelp(parent, INFOPOP_PWSI_PAGE);
 
     GridLayout gl = new GridLayout();
     gl.numColumns = 2;
@@ -101,7 +103,7 @@ public class WSICompliancePropertyPage extends PropertyPage implements Selection
     wsi_ap_Types_ = new Combo(wsi_Composite, SWT.DROP_DOWN | SWT.READ_ONLY);
     wsi_ap_Types_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_AP_COMBO"));
     wsi_ap_Types_.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-    WorkbenchHelp.setHelp(wsi_ap_Types_, new DialogPageContextComputer(this, INFOPOP_PWSI_AP_COMBO_TYPE));
+    helpSystem.setHelp(wsi_ap_Types_,INFOPOP_PWSI_AP_COMBO_TYPE);
     
     wsi_ap_Types_.add(msgUtils_.getMessage("STOP_NON_WSI"));
     wsi_ap_Types_.add(msgUtils_.getMessage("WARN_NON_WSI"));
@@ -116,7 +118,7 @@ public class WSICompliancePropertyPage extends PropertyPage implements Selection
     wsi_ssbp_Types_ = new Combo(wsi_Composite, SWT.DROP_DOWN | SWT.READ_ONLY);
     wsi_ssbp_Types_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_SSBP_COMBO"));
     wsi_ssbp_Types_.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-    WorkbenchHelp.setHelp(wsi_ssbp_Types_, new DialogPageContextComputer(this, INFOPOP_PWSI_SSBP_COMBO_TYPE));
+    helpSystem.setHelp(wsi_ssbp_Types_,INFOPOP_PWSI_SSBP_COMBO_TYPE);
     
     wsi_ssbp_Types_.add(msgUtils_.getMessage("STOP_NON_WSI"));
     wsi_ssbp_Types_.add(msgUtils_.getMessage("WARN_NON_WSI"));

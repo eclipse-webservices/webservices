@@ -15,7 +15,7 @@ import java.util.Vector;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 public class WSExplorerTypesRegistry {
@@ -45,7 +45,7 @@ public class WSExplorerTypesRegistry {
   }
 
   public void init() {
-    IPluginRegistry reg = Platform.getPluginRegistry();
+    IExtensionRegistry reg = Platform.getExtensionRegistry();
     IConfigurationElement[] config = reg.getConfigurationElementsFor("org.eclipse.jst.ws.explorer", "wsexplorerType");
     for (int i = 0; i < config.length; i++) {
       try {

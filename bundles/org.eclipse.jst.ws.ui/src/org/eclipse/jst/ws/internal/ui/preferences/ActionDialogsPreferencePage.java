@@ -26,8 +26,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.help.DialogPageContextComputer;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 ;
 
@@ -56,24 +56,26 @@ public class ActionDialogsPreferencePage extends PreferencePage implements IWork
     addOptionalDialogsCheckBoxes (superparent);
 	new Label(superparent, SWT.HORIZONTAL);
 	
+	IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+	
     Composite   parent = new Composite( superparent, SWT.NONE );	
     GridLayout layout = new GridLayout();
     layout.numColumns = 2;
     parent.setLayout( layout );
     parent.setToolTipText(getMessage("%TOOLTIP_PPAD_PAGE"));
-    WorkbenchHelp.setHelp(parent,new DialogPageContextComputer(this,INFOPOP_PPAD_PAGE));
+    helpSystem.setHelp(parent,INFOPOP_PPAD_PAGE);
 	
     showAll = new Button(parent, SWT.NONE);
     showAll.setText(getMessage("%BUTTON_SHOW_ALL_DIALOGS"));
     showAll.addListener(SWT.Selection, this);
     showAll.setToolTipText(getMessage("%TOOLTIP_PPAD_BUTTON_SHOW_ALL"));
-    WorkbenchHelp.setHelp(showAll,new DialogPageContextComputer(this,INFOPOP_PPAD_BUTTON_SHOW_ALL));
+    helpSystem.setHelp(showAll,INFOPOP_PPAD_BUTTON_SHOW_ALL);
    
     hideAll = new Button(parent, SWT.NONE);
     hideAll.setText(getMessage("%BUTTON_HIDE_ALL_DIALOGS"));
     hideAll.addListener ( SWT.Selection, this);
     hideAll.setToolTipText(getMessage("%TOOLTIP_PPAD_BUTTON_HIDE_ALL"));
-    WorkbenchHelp.setHelp(hideAll,new DialogPageContextComputer(this,INFOPOP_PPAD_BUTTON_HIDE_ALL));
+    helpSystem.setHelp(hideAll,INFOPOP_PPAD_BUTTON_HIDE_ALL);
 
     initializeValues();
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);
@@ -121,7 +123,7 @@ public class ActionDialogsPreferencePage extends PreferencePage implements IWork
     for (int i = 0; i < dialogs.length; i++) {
     	Button checkBox = createCheckBox(parent , dialogs[i].getName());
     	checkBox.setToolTipText(getMessage(dialogs[i].getTooltip()));
-    	WorkbenchHelp.setHelp(checkBox,new DialogPageContextComputer(this,dialogs[i].getInfopop()));
+    	PlatformUI.getWorkbench().getHelpSystem().setHelp(checkBox,dialogs[i].getInfopop());
     	checkBoxes_.put(dialogs[i].getId(), checkBox);
     }
   }

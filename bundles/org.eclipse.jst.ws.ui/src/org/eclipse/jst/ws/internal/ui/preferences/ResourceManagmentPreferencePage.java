@@ -20,8 +20,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.help.DialogPageContextComputer;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.command.env.core.context.ResourceContext;
 import org.eclipse.wst.command.env.core.context.ResourceDefaults;
 
@@ -50,24 +50,26 @@ public class ResourceManagmentPreferencePage extends PreferencePage implements I
    */
   protected Control createContents(Composite superparent)
   {
+  	IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+  	
     Composite   parent = new Composite( superparent, SWT.NONE );	
     GridLayout layout = new GridLayout();
     layout.numColumns = 1;
     parent.setLayout( layout );
     parent.setToolTipText(getMessage("%TOOLTIP_PPRM_PAGE"));
-    WorkbenchHelp.setHelp(parent, new DialogPageContextComputer(this, INFOPOP_PPRM_PAGE));
+    helpSystem.setHelp(parent, INFOPOP_PPRM_PAGE);
 
     overWriteFiles = createCheckBox(parent, WebServiceUIPlugin.getMessage("%BUTTON_OVERWRITE_FILES" ));
     overWriteFiles.setToolTipText(getMessage("%TOOLTIP_PPRM_CHECKBOX_OVERWRITE_FILES"));
-    WorkbenchHelp.setHelp(overWriteFiles, new DialogPageContextComputer(this, INFOPOP_PPRM_CHECKBOX_OVERWRITE_FILES));
+    helpSystem.setHelp(overWriteFiles, INFOPOP_PPRM_CHECKBOX_OVERWRITE_FILES);
 
     createFolders  = createCheckBox(parent, WebServiceUIPlugin.getMessage("%BUTTON_CREATE_FOLDERS" ));
     createFolders.setToolTipText(getMessage("%TOOLTIP_PPRM_CHECKBOX_CREATE_FOLDERS"));
-    WorkbenchHelp.setHelp(createFolders, new DialogPageContextComputer(this, INFOPOP_PPRM_CHECKBOX_CREATE_FOLDERS));
+    helpSystem.setHelp(createFolders, INFOPOP_PPRM_CHECKBOX_CREATE_FOLDERS);
 
     checkoutFiles = createCheckBox(parent, WebServiceUIPlugin.getMessage("%BUTTON_CHECKOUT_FILES" ));    
     checkoutFiles.setToolTipText(getMessage("%TOOLTIP_PPRM_CHECKBOX_CHECK_OUT"));
-    WorkbenchHelp.setHelp(checkoutFiles, new DialogPageContextComputer(this, INFOPOP_PPRM_CHECKBOX_CHECK_OUT));
+    helpSystem.setHelp(checkoutFiles, INFOPOP_PPRM_CHECKBOX_CHECK_OUT);
 
     initializeValues();
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);    

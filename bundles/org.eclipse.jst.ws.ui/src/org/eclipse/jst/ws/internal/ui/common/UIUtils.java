@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 
 
@@ -59,7 +59,7 @@ public class UIUtils
     button.setText( msgUtils_.getMessage( labelName ) );
     button.setToolTipText( msgUtils_.getMessage( tooltip ) );
     
-    if( infopop != null ) WorkbenchHelp.setHelp( button, infoPopid_ + "." + infopop );
+    if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( button, infoPopid_ + "." + infopop );
     
     return button;
   }
@@ -81,7 +81,7 @@ public class UIUtils
     combo.setLayoutData( griddata );
     combo.setToolTipText( msgUtils_.getMessage(tooltip));
     
-    if( infopop != null ) WorkbenchHelp.setHelp( combo, infoPopid_ + "." + infopop );
+    if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( combo, infoPopid_ + "." + infopop );
     
     return combo;      
   }
@@ -103,7 +103,7 @@ public class UIUtils
     text.setLayoutData( griddata );
     text.setToolTipText( msgUtils_.getMessage(tooltip));
     
-    if( infopop != null ) WorkbenchHelp.setHelp( text, infoPopid_ + "." + infopop );
+    if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( text, infoPopid_ + "." + infopop );
     
     return text;      
   }
@@ -152,7 +152,7 @@ public class UIUtils
     newGroup.setLayoutData( griddata );
     newGroup.setToolTipText( msgUtils_.getMessage( tooltip ));
     
-    if( infopop != null ) WorkbenchHelp.setHelp(newGroup, infoPopid_ + "." + infopop);
+    if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp(newGroup, infoPopid_ + "." + infopop);
     
     return newGroup;
   }
@@ -167,7 +167,7 @@ public class UIUtils
     tree.setLayoutData( createFillAll() );
     tree.setToolTipText( msgUtils_.getMessage(tooltip));
     
-    if( infopop != null ) WorkbenchHelp.setHelp( tree, infoPopid_ + "." + infopop );
+    if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( tree, infoPopid_ + "." + infopop );
     
     return tree;      
     
@@ -183,7 +183,7 @@ public class UIUtils
     //table.setLayoutData( createFillAll() );
     table.setToolTipText( msgUtils_.getMessage(tooltip));
     
-    if( infopop != null ) WorkbenchHelp.setHelp( table, infoPopid_ + "." + infopop );
+    if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( table, infoPopid_ + "." + infopop );
     
     return table;      
     

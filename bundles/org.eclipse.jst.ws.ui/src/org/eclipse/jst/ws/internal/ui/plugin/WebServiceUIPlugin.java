@@ -14,8 +14,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jst.ws.internal.ui.preferences.PersistentActionDialogsContext;
@@ -25,8 +23,6 @@ import org.eclipse.jst.ws.internal.ui.wsi.preferences.PersistentWSISSBPContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
-
 
 
 /**
@@ -57,17 +53,11 @@ public class WebServiceUIPlugin extends AbstractUIPlugin
   private Log log_;
   
   /**
-  * Constructs a runtime plugin object for this plugin.
-  * The "plugin" element in plugin.xml should include the attribute
-  * class = "org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin".
-  * @param descriptor The descriptor of this plugin.
-  */
-	public WebServiceUIPlugin(IPluginDescriptor descriptor) {
-		super(descriptor);
-		if (instance_ == null) {
-			instance_ = this;
-		}
-		log_ = new EclipseLog();
+   * Constructs a runtime plugin object for this plugin.
+   */
+  public WebServiceUIPlugin() {
+	super();
+	instance_ = this;
   }
 
   /**
@@ -75,26 +65,8 @@ public class WebServiceUIPlugin extends AbstractUIPlugin
   * (WebServiceUIPlugin)Platform.getPlugin("org.eclipse.jst.ws.ui");
   * @return The WebServiceUIPlugin singleton.
   */
-	static public WebServiceUIPlugin getInstance() {
+  static public WebServiceUIPlugin getInstance() {
     return instance_;
-  }
-
-  /**
-  * Called once by the platform when this plugin is first loaded.
-  * @throws CoreException If this plugin fails to start.
-  */
-	public void startup() throws CoreException {
-		log_.log(Log.INFO, 5040, this, "startup", "Starting plugin org.eclipse.jst.ws.ui");
-    super.startup();
-  }
-
-  /**
-  * Called once by the platform when this plugin is unloaded.
-  * @throws CoreException If this plugin fails to shutdown.
-  */
-	public void shutdown() throws CoreException {
-		log_.log(Log.INFO, 5041, this, "shutdown", "Shutting plugin org.eclipse.jst.ws.ui");
-    super.shutdown();
   }
 
 	/**
@@ -193,7 +165,7 @@ public class WebServiceUIPlugin extends AbstractUIPlugin
   */
 	public static ImageDescriptor getImageDescriptor(String name) {
 		try {
-			URL installURL = instance_.getDescriptor().getInstallURL();
+			URL installURL = instance_.getBundle().getEntry("/");
 			URL imageURL = new URL(installURL, name);
 			return ImageDescriptor.createFromURL(imageURL);
 		} catch (MalformedURLException e) {
@@ -207,7 +179,7 @@ public class WebServiceUIPlugin extends AbstractUIPlugin
 
   public String getPluginInstallLocation() {
     try {
-      return Platform.resolve(getDescriptor().getInstallURL()).getFile();
+      return Platform.resolve(getBundle().getEntry("/")).getFile();
 		} catch (Exception e) {
 			return null;
 		}

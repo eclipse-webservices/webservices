@@ -60,7 +60,7 @@ public class LaunchWebServicesExplorerCommand extends SimpleCommand
         metadataDirectoryFile.mkdirs();
       propertiesFileName.append(URLEncoder.encode(inquiryURL)).append(".properties");
       FileOutputStream fout = new FileOutputStream(propertiesFileName.toString());
-      p.save(fout, null);
+      p.store(fout, null);
       fout.close();
     }
     catch (IOException e)

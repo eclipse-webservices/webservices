@@ -41,8 +41,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.help.DialogPageContextComputer;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 
 
 
@@ -84,11 +83,11 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
     parent.setLayout( layout );
     parent.setToolTipText(getMessage("%TOOLTIP_PPSD_PAGE"));
     parent.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-    WorkbenchHelp.setHelp(parent,new DialogPageContextComputer(this,INFOPOP_PPSD_PAGE));    
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(parent,INFOPOP_PPSD_PAGE);    
 
     launchSample = createCheckBox(parent, getMessage("%BUTTON_LAUNCH_SAMPLE"));
     launchSample.setToolTipText(getMessage("%TOOLTIP_PPSD_CHECKBOX_LAUNCH_SAMPLE"));
-    WorkbenchHelp.setHelp(launchSample, new DialogPageContextComputer(this, INFOPOP_PPSD_CHECKBOX_LAUNCH_SAMPLE));
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(launchSample, INFOPOP_PPSD_CHECKBOX_LAUNCH_SAMPLE);
 
     
     Text testServiceTypeLabel = new Text(parent, SWT.READ_ONLY | SWT.WRAP);

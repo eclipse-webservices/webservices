@@ -13,7 +13,7 @@ package org.eclipse.jst.ws.internal.ui.action;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -27,7 +27,7 @@ public void run(org.eclipse.jface.action.IAction action) {
    String [] typeIds = ServerUtils.getServerTypeIdsByModule(project);
    Object theAction = null;
 
-   IPluginRegistry reg = Platform.getPluginRegistry();
+   IExtensionRegistry reg = Platform.getExtensionRegistry();
    IConfigurationElement[] elements = reg.getConfigurationElementsFor("org.eclipse.jst.ws.ui", "webservicedeploy");
    try {
    	
