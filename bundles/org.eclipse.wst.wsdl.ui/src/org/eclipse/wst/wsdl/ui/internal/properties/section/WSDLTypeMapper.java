@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.properties.section;
 
-import org.eclipse.wst.common.ui.properties.ITypeMapper;
+import org.eclipse.wst.common.ui.properties.internal.provisional.ITypeMapper;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
 
 public class WSDLTypeMapper implements ITypeMapper
 {
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ITypeMapper#remapType(java.lang.Object, java.lang.Class)
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ITypeMapper#remapType(java.lang.Object, java.lang.Class)
    */
   public Class remapType(Object object, Class effectiveType)
   {

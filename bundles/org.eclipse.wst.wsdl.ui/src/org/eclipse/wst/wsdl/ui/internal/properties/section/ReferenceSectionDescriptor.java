@@ -16,8 +16,8 @@ import java.util.List;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.wst.common.ui.properties.ISection;
-import org.eclipse.wst.common.ui.properties.ISectionDescriptor;
+import org.eclipse.wst.common.ui.properties.internal.provisional.ISection;
+import org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Port;
@@ -42,7 +42,7 @@ public class ReferenceSectionDescriptor extends AbstractSectionDescriptor implem
    */
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptor#getId()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor#getId()
    */
   public String getId()
   {
@@ -50,7 +50,7 @@ public class ReferenceSectionDescriptor extends AbstractSectionDescriptor implem
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptor#getInputTypes()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor#getInputTypes()
    */
   public List getInputTypes()
   {
@@ -62,7 +62,7 @@ public class ReferenceSectionDescriptor extends AbstractSectionDescriptor implem
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptor#getSectionClass()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor#getSectionClass()
    */
   public ISection getSectionClass()
   {
@@ -70,7 +70,7 @@ public class ReferenceSectionDescriptor extends AbstractSectionDescriptor implem
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptor#getTargetTab()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor#getTargetTab()
    */
   public String getTargetTab()
   {
@@ -78,7 +78,7 @@ public class ReferenceSectionDescriptor extends AbstractSectionDescriptor implem
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptor#appliesTo(org.eclipse.ui.IWorkbenchPart, org.eclipse.jface.viewers.ISelection)
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor#appliesTo(org.eclipse.ui.IWorkbenchPart, org.eclipse.jface.viewers.ISelection)
    */
   public boolean appliesTo(IWorkbenchPart part, ISelection selection)
   {

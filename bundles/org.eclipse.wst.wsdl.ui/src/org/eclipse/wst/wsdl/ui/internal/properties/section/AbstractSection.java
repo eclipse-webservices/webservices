@@ -30,9 +30,9 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.part.EditorActionBarContributor;
-import org.eclipse.wst.common.ui.properties.ISection;
-import org.eclipse.wst.common.ui.properties.TabbedPropertySheetPage;
-import org.eclipse.wst.common.ui.properties.TabbedPropertySheetWidgetFactory;
+import org.eclipse.wst.common.ui.properties.internal.provisional.ISection;
+import org.eclipse.wst.common.ui.properties.internal.provisional.TabbedPropertySheetPage;
+import org.eclipse.wst.common.ui.properties.internal.provisional.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.graph.model.WSDLGraphModelAdapterFactory;
@@ -56,7 +56,7 @@ public class AbstractSection implements ISection, IPropertyChangeListener, Liste
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISection#createControls(org.eclipse.swt.widgets.Composite, org.eclipse.wst.common.ui.properties.TabbedPropertySheetWidgetFactory)
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISection#createControls(org.eclipse.swt.widgets.Composite, org.eclipse.wst.common.ui.properties.internal.provisional.TabbedPropertySheetWidgetFactory)
    */
   public void createControls(Composite parent, TabbedPropertySheetWidgetFactory aFactory)
   {
@@ -68,7 +68,7 @@ public class AbstractSection implements ISection, IPropertyChangeListener, Liste
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISection#setInput(org.eclipse.ui.IWorkbenchPart, org.eclipse.jface.viewers.ISelection)
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISection#setInput(org.eclipse.ui.IWorkbenchPart, org.eclipse.jface.viewers.ISelection)
    */
   public void setInput(IWorkbenchPart part, ISelection selection)
   {
@@ -92,7 +92,7 @@ public class AbstractSection implements ISection, IPropertyChangeListener, Liste
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISection#aboutToBeShown()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISection#aboutToBeShown()
    */
   public void aboutToBeShown()
   {
@@ -100,21 +100,21 @@ public class AbstractSection implements ISection, IPropertyChangeListener, Liste
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISection#aboutToBeHidden()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISection#aboutToBeHidden()
    */
   public void aboutToBeHidden()
   {
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISection#dispose()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISection#dispose()
    */
   public void dispose()
   {
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISection#getMinimumHeight()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISection#getMinimumHeight()
    */
   public int getMinimumHeight()
   {
@@ -122,7 +122,7 @@ public class AbstractSection implements ISection, IPropertyChangeListener, Liste
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISection#shouldUseExtraSpace()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISection#shouldUseExtraSpace()
    */
   public boolean shouldUseExtraSpace()
   {
@@ -130,7 +130,7 @@ public class AbstractSection implements ISection, IPropertyChangeListener, Liste
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISection#refresh()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISection#refresh()
    */
   public void refresh()
   {

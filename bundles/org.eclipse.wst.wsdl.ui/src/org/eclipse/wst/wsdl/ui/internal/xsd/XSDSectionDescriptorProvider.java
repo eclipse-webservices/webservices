@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.xsd;
 
-import org.eclipse.wst.common.ui.properties.ISectionDescriptor;
-import org.eclipse.wst.common.ui.properties.ISectionDescriptorProvider;
+import org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor;
+import org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptorProvider;
 
 public class XSDSectionDescriptorProvider implements ISectionDescriptorProvider
 {
@@ -26,7 +26,7 @@ public class XSDSectionDescriptorProvider implements ISectionDescriptorProvider
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptorProvider#getSectionDescriptors()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptorProvider#getSectionDescriptors()
    */
   public ISectionDescriptor[] getSectionDescriptors()
   {

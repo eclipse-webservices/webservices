@@ -16,9 +16,9 @@ import java.util.List;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.wst.common.ui.properties.ISection;
-import org.eclipse.wst.common.ui.properties.ISectionDescriptor;
-import org.eclipse.wst.common.ui.properties.ITypeMapper;
+import org.eclipse.wst.common.ui.properties.internal.provisional.ISection;
+import org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor;
+import org.eclipse.wst.common.ui.properties.internal.provisional.ITypeMapper;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
 
@@ -33,7 +33,7 @@ public class AbstractSectionDescriptor implements ISectionDescriptor
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptor#getId()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor#getId()
    */
   public String getId()
   {
@@ -41,7 +41,7 @@ public class AbstractSectionDescriptor implements ISectionDescriptor
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptor#getFilter()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor#getFilter()
    */
   public ITypeMapper getFilter()
   {
@@ -49,7 +49,7 @@ public class AbstractSectionDescriptor implements ISectionDescriptor
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptor#getInputTypes()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor#getInputTypes()
    */
   public List getInputTypes()
   {
@@ -59,7 +59,7 @@ public class AbstractSectionDescriptor implements ISectionDescriptor
  }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptor#getSectionClass()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor#getSectionClass()
    */
   public ISection getSectionClass()
   {
@@ -67,7 +67,7 @@ public class AbstractSectionDescriptor implements ISectionDescriptor
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptor#getTargetTab()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor#getTargetTab()
    */
   public String getTargetTab()
   {
@@ -76,7 +76,7 @@ public class AbstractSectionDescriptor implements ISectionDescriptor
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptor#appliesTo(org.eclipse.ui.IWorkbenchPart, org.eclipse.jface.viewers.ISelection)
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor#appliesTo(org.eclipse.ui.IWorkbenchPart, org.eclipse.jface.viewers.ISelection)
    */
   public boolean appliesTo(IWorkbenchPart part, ISelection selection)
   {
@@ -94,7 +94,7 @@ public class AbstractSectionDescriptor implements ISectionDescriptor
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptor#getAfterSection()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor#getAfterSection()
    */
   public String getAfterSection()
   {

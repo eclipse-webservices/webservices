@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
-import org.eclipse.wst.common.ui.properties.ITabbedPropertySheetPageContributor;
+import org.eclipse.wst.common.ui.properties.internal.provisional.ITabbedPropertySheetPageContributor;
 import org.eclipse.wst.sse.ui.internal.StructuredTextEditor;
 import org.eclipse.wst.sse.ui.view.events.INodeSelectionListener;
 import org.eclipse.wst.sse.ui.view.events.NodeSelectionChangedEvent;
@@ -180,7 +180,7 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
   }
 
 	/**
-	 * @see org.eclipse.wst.common.ui.properties.ITabbedPropertySheetPageContributor#getContributorId()
+	 * @see org.eclipse.wst.common.ui.properties.internal.provisional.ITabbedPropertySheetPageContributor#getContributorId()
 	 */
 	public String getContributorId()
 	{

@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.wst.common.ui.properties.ISectionDescriptor;
-import org.eclipse.wst.common.ui.properties.ISectionDescriptorProvider;
+import org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptor;
+import org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptorProvider;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtension;
@@ -43,7 +43,7 @@ public class WSDLSectionDescriptorProvider implements ISectionDescriptorProvider
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.common.ui.properties.ISectionDescriptorProvider#getSectionDescriptors()
+   * @see org.eclipse.wst.common.ui.properties.internal.provisional.ISectionDescriptorProvider#getSectionDescriptors()
    */
   public ISectionDescriptor[] getSectionDescriptors()
   {
