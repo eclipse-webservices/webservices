@@ -1910,32 +1910,55 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 	/**
 	 * Gets the client Web project name
 	 * 
-	 * @param project
+	 * @param projectName
 	 *            The project name to base on.
+	 * @param typeId the webservice type id.
 	 * @return The client Web project name.
 	 */
-
-	public static String getClientWebProjectName(String projectName) {
-		String baseClientWebProjectName = projectName
-				+ DEFAULT_CLIENT_WEB_PROJECT_EXT;
-		IPath projectPath;
+	public static String getClientWebProjectName(String projectName, String typeId) 
+	{
+		String   baseClientWebProjectName = projectName + DEFAULT_CLIENT_WEB_PROJECT_EXT;
+		IPath    projectPath;
 		IProject project;
-		boolean foundWebProject = false;
-		int i = 1;
-		String clientWebProjectName = baseClientWebProjectName;
-		while (!foundWebProject) {
-			projectPath = new Path(clientWebProjectName).makeAbsolute();
-			project = ResourceUtils.getProjectOf(projectPath);
-			if (project.exists() && !ResourceUtils.isWebProject(project)) {
-				clientWebProjectName = baseClientWebProjectName + i;
-				i++;
-			} else {
-				foundWebProject = true;
-			}
+		boolean  foundWebProject     = false;
+		int      i                   = 1;
+		
+		if( isSkeletonEJBType( typeId ) )
+		{
+		  // For the skeleton EJB scenario we need to create a slightly different
+		  // base name.  When the EJB project is created another project
+		  // is created with "Client" tacked onto the end.  We will
+		  // add "WS" to our client so we don't collide with the other
+		  // client project.
+		  baseClientWebProjectName = projectName + "WS" + DEFAULT_CLIENT_WEB_PROJECT_EXT;    
 		}
+		
+		String  clientWebProjectName = baseClientWebProjectName;
+		
+		while (!foundWebProject) 
+		{
+		  projectPath = new Path(clientWebProjectName).makeAbsolute();
+		  project = ResourceUtils.getProjectOf(projectPath);
+		  
+		  if (project.exists() && !ResourceUtils.isWebProject(project)) 
+		  {
+			clientWebProjectName = baseClientWebProjectName + i;
+			i++;
+		  }
+		  else 
+		  {
+			foundWebProject = true;
+		  }
+		}
+		
 		return clientWebProjectName;
 	}
 
+	public static boolean isSkeletonEJBType( String typeID )
+	{
+	  return typeID.equals( "com.ibm.etools.webservice.type.wsdl.ejb" );    
+	}
+	
 	public static String getDefaultEJBProjectName() {
 		return DEFAULT_EJB_PROJECT_NAME;
 	}

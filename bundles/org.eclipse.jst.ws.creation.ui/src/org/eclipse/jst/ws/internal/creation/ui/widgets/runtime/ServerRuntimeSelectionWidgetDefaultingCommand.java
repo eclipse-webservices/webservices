@@ -80,6 +80,9 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
        serviceIds_.setRuntimeId(webServiceRuntimeJ2EEType.getWsrId()); 
      }
    
+     // Set the default client type to a web client type.
+     setWebClientType();
+     
      // Default projects EARs and servers.
      setDefaultProjects();
      setDefaultEARs();
@@ -97,6 +100,17 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     
   }  
 
+  private void setWebClientType()
+  {
+    SelectionListChoices choices = getRuntime2ClientTypes();
+    String               webId   = "com.ibm.etools.webservice.consumption.ui.clientProjectType.Web";
+    
+    if( choices != null )
+    {
+      choices.getChoice().getList().setSelectionValue( webId );   
+    }
+  }
+  
   private WSRuntimeJ2EEType getWSRuntimeAndJ2EEFromProject(IProject project)
   {
     WSRuntimeJ2EEType wsrJ2EE = null;
@@ -228,7 +242,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       String serviceProjectName = getServiceProject2EARProject().getList().getSelection();
      
       //Select a client project with "client" added to the above project name.
-      String clientProjectName = ResourceUtils.getClientWebProjectName(serviceProjectName);
+      String clientProjectName = ResourceUtils.getClientWebProjectName(serviceProjectName, serviceIds_.getTypeId() );
       getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(clientProjectName);
       return;
     }    
@@ -237,7 +251,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 
 	//Set the service project selection to this initialProject
 	getServiceProject2EARProject().getList().setSelectionValue(initialProject_.getName());
-	String clientProjectName = ResourceUtils.getClientWebProjectName(initialProject_.getName()); 
+	String clientProjectName = ResourceUtils.getClientWebProjectName(initialProject_.getName(), serviceIds_.getTypeId() ); 
 	//Set the client project selection to clientProject
 	getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(clientProjectName);
 		      	    

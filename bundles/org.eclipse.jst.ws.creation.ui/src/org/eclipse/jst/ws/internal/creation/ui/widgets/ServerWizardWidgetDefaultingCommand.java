@@ -18,7 +18,6 @@ import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 
-
 public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefaultingCommand
 {    
   private TypeRuntimeServer typeRuntimeServer_;
@@ -27,15 +26,17 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
   public Status execute(Environment env)
   {
     WebServiceServerRuntimeTypeRegistry registry = WebServiceServerRuntimeTypeRegistry.getInstance();
-    String                       type     = getScenarioContext().getWebServiceType();                       
-    String                       runtime  = registry.getDefaultRuntimeValueFor( type );
-    String                       server   = registry.getDefaultServerValueFor( type );
     
+    String type      = getScenarioContext().getWebServiceType();                       
+    String runtime   = registry.getDefaultRuntimeValueFor( type );
+    String serverID  = registry.getDefaultServerValueFor( type );
+    String factoryID = registry.getServerFactoryIdFromServerId( serverID );
+        
     typeRuntimeServer_ = new TypeRuntimeServer();
     
     typeRuntimeServer_.setTypeId( type );
     typeRuntimeServer_.setRuntimeId( runtime );
-    typeRuntimeServer_.setServerId( server );
+    typeRuntimeServer_.setServerId( factoryID );
     
     //Default the typeId from the initial selection
     String[] typeIds = registry.getWebServiceTypeBySelection(initialSelection_);
