@@ -657,7 +657,7 @@ public final class ResourceUtils {
 					serverFactoryId, server, true, new NullProgressMonitor());
 			if (serverInstance != null) {
 //				URL url = ((IURLProvider) serverInstance.getDelegate()).getModuleRootURL(module);
-				URL url = ((IURLProvider) serverInstance).getModuleRootURL(module);
+				URL url = ((IURLProvider)serverInstance.getAdapter(IURLProvider.class)).getModuleRootURL(module);
 				if (url != null) {
 					String s = url.toString();
 					webProjectURL = (s.endsWith("/") ? s.substring(0, s
@@ -752,7 +752,7 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 		if (module != null) {
 			IServer serverInstance = ServerUtils.getServerForModule(module);
 			if (serverInstance != null) {
-				URL url = ((IURLProvider) serverInstance).getModuleRootURL(module);
+				URL url = ((IURLProvider)serverInstance.getAdapter(IURLProvider.class)).getModuleRootURL(module);
 				if (url != null) {
 					String s = url.toString();
 					webProjectURL = (s.endsWith("/") ? s.substring(0, s

@@ -28,7 +28,10 @@ public class ServerInstToIServerTransformer implements Transformer {
   public Object transform(Object value) {
     
     String existingServerInstId = (String)value;
-    IServer serverInst = ServerCore.findServer(existingServerInstId);
+    IServer serverInst = null;
+    if (existingServerInstId != null) {
+    	serverInst = ServerCore.findServer(existingServerInstId);
+    }
     return serverInst;
   }
 
