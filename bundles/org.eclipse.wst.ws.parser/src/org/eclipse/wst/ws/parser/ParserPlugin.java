@@ -12,6 +12,7 @@
 package org.eclipse.wst.ws.parser;
 
 import org.eclipse.core.runtime.*;
+
 import java.util.*;
 
 /**
@@ -26,8 +27,8 @@ public class ParserPlugin extends Plugin {
 	/**
 	 * The constructor.
 	 */
-	public ParserPlugin(IPluginDescriptor descriptor) {
-		super(descriptor);
+	public ParserPlugin() {
+		super();
 		plugin = this;
 		try {
 			resourceBundle   = ResourceBundle.getBundle("org.eclipse.wst.ws.parser.ParserPluginResources");

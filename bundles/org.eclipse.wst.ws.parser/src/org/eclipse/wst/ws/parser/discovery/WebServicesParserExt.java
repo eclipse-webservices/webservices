@@ -13,8 +13,6 @@ package org.eclipse.wst.ws.parser.discovery;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.Security;
-
 import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 
 public class WebServicesParserExt extends WebServicesParser {
