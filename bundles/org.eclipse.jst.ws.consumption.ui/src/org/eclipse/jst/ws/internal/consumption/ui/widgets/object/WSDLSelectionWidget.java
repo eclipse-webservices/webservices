@@ -50,7 +50,7 @@ import org.eclipse.wst.ws.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.parser.wsil.WebServiceEntity;
 import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceImpl;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 
 public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget, Runnable
 {

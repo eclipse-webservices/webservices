@@ -186,7 +186,7 @@
       </objectContribution>
 
       <objectContribution
-            objectClass="org.eclipse.wst.wsdl.internal.util.WSDLResourceImpl"
+            objectClass="org.eclipse.wst.wsdl.util.WSDLResourceImpl"
             nameFilter="*"
             id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton">
          <action

@@ -33,7 +33,7 @@ import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceImpl;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 

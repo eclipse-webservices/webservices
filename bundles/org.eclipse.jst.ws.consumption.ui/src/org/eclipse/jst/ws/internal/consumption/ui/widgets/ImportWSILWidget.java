@@ -45,7 +45,7 @@ import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceImpl;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 
 /**
 * Page for importing WSDL references into a WSIL in the workbench.
