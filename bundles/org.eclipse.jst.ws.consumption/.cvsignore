@@ -1,2 +1,5 @@
 bin
 build.xml
+temp.folder
+webserviceutils.jar
+wsc.jar
