@@ -4,6 +4,7 @@
 	<component-depends unrestricted="true"></component-depends>
 	<plugin id="org.eclipse.wst.wsdl" fragment="false" />
 	<plugin id="org.eclipse.wst.wsdl.ui" fragment="false" />
+	<plugin id="org.eclipse.wst.wsdl.validation" fragment="false" />
 	<package name="org.eclipse.wst.wsdl">
 		<type name="BindingFault" />
 		<type name="BindingOutput" />
