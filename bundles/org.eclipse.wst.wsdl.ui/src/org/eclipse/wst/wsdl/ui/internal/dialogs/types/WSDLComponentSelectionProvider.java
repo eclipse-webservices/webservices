@@ -33,6 +33,7 @@ import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentFinder;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSelectionDialog;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSelectionProvider;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSpecification;
+import org.eclipse.wst.xsd.ui.internal.util.XSDDOMHelper;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDImport;
@@ -261,17 +262,9 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         return list;
     }
     
-    private void createXSDBuiltInTypeObjects(IComponentList list) {
-        ITypeSystemProvider systemProvider = getTypeSystemProvider();
-        Iterator it = systemProvider.getAvailableTypeNames(definition, ITypeSystemProvider.BUILT_IN_TYPE).iterator();
-        while (it.hasNext()) {
-            String builtIn = (String) it.next();
-            //We need to remove the prefix
-            int colonIndex = builtIn.indexOf(":");
-            if (colonIndex >= 0) {
-                builtIn = builtIn.substring(colonIndex + 1);
-            }
-                
+    private void createXSDBuiltInTypeObjects(IComponentList list) { 
+        for (int i = 0; i < XSDDOMHelper.dataType.length; i++) {
+            String builtIn = XSDDOMHelper.dataType[i][0];
             XMLComponentSpecification spec = new XMLComponentSpecification(BUILT_IN_TYPE); 
             spec.addAttributeInfo("name", builtIn);
             spec.setTargetNamespace(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001);
@@ -383,7 +376,8 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
                     if (tagPath.equals("/definitions/types/schema/complexType")) {
                         while (typeIterator.hasNext()) {
                             Object type = typeIterator.next();
-                            if (type instanceof XSDComplexTypeDefinition) {
+                            if (type instanceof XSDComplexTypeDefinition &&
+                                    ((XSDComplexTypeDefinition) type).getSchema().equals(schema)) {
                                 keepTypes.add(type);
                             }
                         }
@@ -391,7 +385,8 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
                     else if (tagPath.equals("/definitions/types/schema/simpleType")) {
                         while (typeIterator.hasNext()) {
                             Object type = typeIterator.next();
-                            if (type instanceof XSDSimpleTypeDefinition) {
+                            if (type instanceof XSDSimpleTypeDefinition &&
+                                    ((XSDSimpleTypeDefinition) type).getSchema().equals(schema)) {
                                 keepTypes.add(type);
                             }
                         }
@@ -573,6 +568,9 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
             }
             else if (spec.getTagPath().equals("/definitions/portType")) {
                 return WSDLEditorPlugin.getInstance().getImage("icons/port_obj.gif");
+            }
+            else if (spec.getTagPath().equals("/definitions/message")) {
+                return WSDLEditorPlugin.getInstance().getImage("icons/message_obj.gif");
             }
             else if (spec.getTagPath().equals("/definitions/types/schema/complexType") ||
                      spec.getTagPath().equals("/schema/complexType")) {

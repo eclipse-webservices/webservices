@@ -10,57 +10,22 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.actions;
 
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.InvokeSetDialog;
 import org.w3c.dom.Node;
 
 
 
-public class AddNewComponentAction extends AddElementAction
+public class SetExistingComponentAction extends AddElementAction
 {
   Object input;
   protected IEditorPart editorPart;
   protected String kind;
 
-  /**
-   * Constructor for AddNewComponentAction.
-   * @param text
-   * @param imageDescriptorKey
-   * @param parentNode
-   * @param nodeName
-   */
-  public AddNewComponentAction(
-    String text,
-    String imageDescriptorKey,
-    Node parentNode,
-    String nodeName,
-    Object input)
-  {
-    super(text, imageDescriptorKey, parentNode, nodeName);
-    this.input = input;
-  }
-  /**
-   * Constructor for AddNewComponentAction.
-   * @param text
-   * @param imageDescriptorKey
-   * @param parentNode
-   * @param prefix
-   * @param localName
-   */
-  public AddNewComponentAction(
-    String text,
-    String imageDescriptorKey,
-    Node parentNode,
-    String prefix,
-    String localName,
-    Object input)
-  {
-    super(text, imageDescriptorKey, parentNode, prefix, localName);
-    this.input = input;
-  }
-
-  public AddNewComponentAction(
+  public SetExistingComponentAction(
     String text,
     Node parentNode,
     String prefix,
@@ -89,5 +54,9 @@ public class AddNewComponentAction extends AddElementAction
       dialog.setReferenceKind(kind);
     }
     dialog.run(input, editorPart);
+    
+    // We shouldn't know about the editor in this class
+    WSDLEditor editor = (WSDLEditor) editorPart;
+    editor.getSelectionManager().setSelection(new StructuredSelection(input));
   }
 }

@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
@@ -28,12 +27,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
@@ -48,12 +41,15 @@ import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
+import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddInputCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddOperationCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddOutputCommand;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.IMenuActionContributor;
 import org.eclipse.wst.wsdl.ui.internal.graph.editparts.WSDLTreeNodeEditPart;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
@@ -65,10 +61,11 @@ import org.eclipse.wst.wsdl.ui.internal.widgets.NewComponentDialog;
 import org.eclipse.wst.wsdl.ui.internal.widgets.NewComponentWithChildDialog;
 import org.eclipse.wst.wsdl.ui.internal.wizards.BindingWizard;
 import org.eclipse.wst.wsdl.ui.internal.wizards.PortWizard;
-import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
-import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
 import org.eclipse.wst.xml.core.document.XMLNode;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 public class WSDLMenuActionContributor implements IMenuActionContributor
@@ -138,6 +135,7 @@ public class WSDLMenuActionContributor implements IMenuActionContributor
             menu.add(new AddBindingOperationAction(node, "NewBindingOperation", prefix)); //$NON-NLS-1$
             menu.add(new Separator());
           }
+          
           menu.add(createSetPortTypeMenu(binding, isEditable));
           menu.add(new GenerateBindingContentAction(binding, isEditable));
           return null;
@@ -422,72 +420,135 @@ public class WSDLMenuActionContributor implements IMenuActionContributor
   }
   */
 
-  protected AddNewComponentAction createSetBindingMenu(Port port, Element portElement, boolean isEditable)
+  protected MenuManager createSetBindingMenu(Port port, Element portElement, boolean isEditable)
   {
+    MenuManager submenu = new MenuManager("Set Binding");       // TODO: Externalize String
+    
     Definition definition = port.getEnclosingDefinition();
     String prefix = definition.getPrefix(WSDLConstants.WSDL_NAMESPACE_URI);
     Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
 
-    AddNewComponentAction action = new AddNewComponentAction(WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_BINDIG"), definitionElement, prefix, "binding", port);
+    // TODO: Externalize String below
+    SetNewComponentAction setNewAction = new SetNewComponentAction("Create Binding...", definitionElement, prefix, "binding", port);
+    setNewAction.setEditor(editorPart);
+    setNewAction.setEnabled(true);
+    submenu.add(setNewAction);     
+    
+    // WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_BINDIG")
+    SetExistingComponentAction action = new SetExistingComponentAction("Set Existing Binding...", definitionElement, prefix, "binding", port);
     action.setEditor(editorPart);
     action.setEnabled(isEditable);
-    return action;
+    submenu.add(action);
+    
+    return submenu;
   }
 
-  protected AddNewComponentAction createSetPortTypeMenu(Binding binding, boolean isEditable)
-  {
+  protected MenuManager createSetPortTypeMenu(Binding binding, boolean isEditable)
+  {      
+    MenuManager submenu = new MenuManager("Set PortType");  // TODO: Externalize Strings
+
     if (binding != null)
     {
       Definition definition = binding.getEnclosingDefinition();
       Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
       String prefix = definition.getPrefix(WSDLConstants.WSDL_NAMESPACE_URI);
+      
+      // TODO: Externalize String below
+      SetNewComponentAction setNewAction = new SetNewComponentAction("Create New Port Type...", definitionElement, prefix, "portType", binding);
+      setNewAction.setEditor(editorPart);
+      setNewAction.setEnabled(true);
+      submenu.add(setNewAction);      
 
-      AddNewComponentAction action = new AddNewComponentAction(WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_PORTTYPE"), definitionElement, prefix, "portType", binding);
+      // WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_PORTTYPE")
+      SetExistingComponentAction action = new SetExistingComponentAction("Set Existing Port Type...", definitionElement, prefix, "portType", binding);
       action.setEditor(editorPart);
-      action.setEnabled(isEditable);
-      return action;
+      action.setEnabled(isEditable);      
+      submenu.add(action);
     }
-    return null;
+    return submenu;
   }
 
-  protected AddNewComponentAction createSetMessageMenu(WSDLElement wsdlElement, boolean isEditable)
+  protected MenuManager createSetMessageMenu(WSDLElement wsdlElement, boolean isEditable)
   {
     Definition definition = wsdlElement.getEnclosingDefinition();
     Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
     Element referencingElement = WSDLEditorUtil.getInstance().getElementForObject(wsdlElement);
 
+    MenuManager submenu = new MenuManager("Set Message");       // TODO: Externalize Strings
     if (definitionElement != null && referencingElement != null)
     {
       String prefix = definition.getPrefix(WSDLConstants.WSDL_NAMESPACE_URI);
-      AddNewComponentAction action = new AddNewComponentAction(WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_MESSAGE"), definitionElement, prefix, "message", wsdlElement);
+      
+      // TODO: Externalize String below
+      SetNewComponentAction setNewAction = new SetNewComponentAction("Create Message...", definitionElement, prefix, "message", wsdlElement);
+      setNewAction.setEditor(editorPart);
+      setNewAction.setEnabled(true);
+      submenu.add(setNewAction);  
+      
+      // WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_MESSAGE")
+      SetExistingComponentAction action = new SetExistingComponentAction("Set Existing Messgae...", definitionElement, prefix, "message", wsdlElement);
       action.setEditor(editorPart);
       action.setEnabled(isEditable);
-      return action;
+      submenu.add(action);
     }
-    return null;
+    
+    return submenu;
   }
 
-  protected AddNewComponentAction createSetPartMenu(Part part, Element portElement, String referenceKind, boolean isEditable)
+  protected MenuManager createSetPartMenu(Part part, Element portElement, String referenceKind, boolean isEditable)
   {
     Definition definition = part.getEnclosingDefinition();
     String prefix = definition.getPrefix(WSDLConstants.WSDL_NAMESPACE_URI);
     Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
 
     String actionName;
-    if (referenceKind.equals("element")) // NON NLS
+    MenuManager submenu = null;
+    if (referenceKind.equalsIgnoreCase("element")) // NON NLS
     {
-      actionName = WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_ELEMENT");
+//      actionName = WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_ELEMENT");
+      actionName = "Set Existing Element...";
+  
+      submenu = new MenuManager("Set Element");       // TODO: Externalize Strings
+      
+      // TODO: Externalize String below
+      SetNewComponentAction setNewElementAction = new SetNewComponentAction("Create Element...", definitionElement, prefix, "element", part);
+      setNewElementAction.setEditor(editorPart);
+      setNewElementAction.setEnabled(true);
+      setNewElementAction.setReferenceKind(referenceKind);
+      submenu.add(setNewElementAction);
     }
     else
     {
-      actionName = WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_TYPE");
+//      actionName = WSDLEditorPlugin.getWSDLString("_UI_ACTION_SET_TYPE");
+      actionName = "Set Existing Type...";
+          
+      submenu = new MenuManager("Set Type");       // TODO: Externalize Strings
+      
+      // TODO: Externalize String below
+      SetNewComponentAction setNewComplexAction = new SetNewComponentAction("Create Complex Type...", definitionElement, prefix, "complex type", part);
+      setNewComplexAction.setEditor(editorPart);
+      setNewComplexAction.setEnabled(true);
+      setNewComplexAction.setReferenceKind(referenceKind);
+      setNewComplexAction.setTypeKind("complex");
+      submenu.add(setNewComplexAction);
+      
+      // TODO: Externalize String below
+      SetNewComponentAction setNewSimpleAction = new SetNewComponentAction("Create Simple Type...", definitionElement, prefix, "simple type", part);
+      setNewSimpleAction.setEditor(editorPart);
+      setNewSimpleAction.setEnabled(true);
+      setNewSimpleAction.setReferenceKind(referenceKind);
+      setNewSimpleAction.setTypeKind("simple");
+      submenu.add(setNewSimpleAction); 
     }
 
-    AddNewComponentAction action = new AddNewComponentAction(actionName, definitionElement, prefix, actionName, part);
+    
+    SetExistingComponentAction action = new SetExistingComponentAction(actionName, definitionElement, prefix, actionName, part);
     action.setReferenceKind(referenceKind);
     action.setEditor(editorPart);
     action.setEnabled(isEditable);
-    return action;
+    submenu.add(action);
+    
+    return submenu;
   }
   
   private WSDLElement showPasteAction(WSDLElement element, IEditorPart ePart) {

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Import;
@@ -24,9 +25,12 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.ui.internal.actions.AddElementDeclarationAction;
 import org.eclipse.wst.wsdl.ui.internal.actions.AddImportAction;
+import org.eclipse.wst.wsdl.ui.internal.actions.AddWSISchemaImportAction;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
+import org.eclipse.wst.xml.uriresolver.util.URIHelper;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSpecification;
 import org.eclipse.xsd.XSDImport;
 import org.eclipse.xsd.XSDSchema;
@@ -162,20 +166,48 @@ public class WSDLSetComponentHelper {
         }
         
         if (!foundMatch) {
-            String newSelectedFileLoc = spec.getFileLocation();
-            String currentFileLoc = getNormalizedLocation(definition.getLocation());
-            String relativeLoc = ComponentReferenceUtil.computeRelativeURI(newSelectedFileLoc, currentFileLoc, true);
-            
-            org.w3c.dom.Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
-            String prefix = definition.getPrefix(WSDLConstants.WSDL_NAMESPACE_URI);
-            String namespace = spec.getTargetNamespace();
-            
-            AddImportAction addImportAction = new AddImportAction(null, definition, definitionElement, prefix, namespace, relativeLoc);
-            addImportAction.run();            
-            
-            String uniquePrefix = getUniquePrefix(definition, prefix);            
-            definitionElement.setAttribute("xmlns:" + uniquePrefix, namespace);
+            boolean wsiStyleImport = isXSDSchemaFile(spec);
+            if (wsiStyleImport) {
+                AddElementDeclarationAction action = new AddElementDeclarationAction(definition, spec.getTargetNamespace(), "xsd");
+                action.run();
+             
+                String location = URIHelper.getRelativeURI(new Path(spec.getFileLocation()), currentIFile.getLocation());
+                AddWSISchemaImportAction addImport = new AddWSISchemaImportAction(definition, spec.getTargetNamespace(), location);
+                addImport.run();
+            }
+            else {
+                String newSelectedFileLoc = spec.getFileLocation();
+                String currentFileLoc = getNormalizedLocation(definition.getLocation());
+                String relativeLoc = ComponentReferenceUtil.computeRelativeURI(newSelectedFileLoc, currentFileLoc, true);
+                
+                org.w3c.dom.Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
+                String prefix = definition.getPrefix(WSDLConstants.WSDL_NAMESPACE_URI);
+                String namespace = spec.getTargetNamespace();
+                
+                AddImportAction addImportAction = new AddImportAction(null, definition, definitionElement, prefix, namespace, relativeLoc);
+                addImportAction.run();            
+                
+                String uniquePrefix = getUniquePrefix(definition, prefix);            
+                definitionElement.setAttribute("xmlns:" + uniquePrefix, namespace);
+            }
         }
+    }
+    /*
+     * Try to determine if the passed in XMLComponentSpecification refers to
+     * an XSD or WSDL file.  If it's an XSD, return true.
+     */
+    private boolean isXSDSchemaFile(XMLComponentSpecification spec) {
+        String fileLocation = spec.getFileLocation();
+        int periodIndex = fileLocation.lastIndexOf(".");
+        
+        if (periodIndex > 0) {
+            String extension = fileLocation.substring(periodIndex + 1);
+            if (extension.equalsIgnoreCase("xsd")) {
+                return true;
+            }
+        }
+
+        return false;
     }
     
     private String getUniquePrefix(Definition definition, String initPrefix) {

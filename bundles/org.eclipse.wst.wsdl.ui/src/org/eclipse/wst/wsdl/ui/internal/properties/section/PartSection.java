@@ -10,12 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.properties.section;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.jface.window.Window;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
@@ -24,25 +22,15 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.wst.common.ui.properties.ITabbedPropertyConstants;
 import org.eclipse.wst.common.ui.properties.TabbedPropertySheetWidgetFactory;
-import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.WSDLElement;
-import org.eclipse.wst.wsdl.internal.util.WSDLConstants;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.InvokeSetDialog;
-import org.eclipse.wst.wsdl.ui.internal.dialogs.types.WSDLComponentSelectionDialog;
-import org.eclipse.wst.wsdl.ui.internal.dialogs.types.WSDLComponentSelectionProvider;
-import org.eclipse.wst.wsdl.ui.internal.dialogs.types.WSDLSetComponentHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
-import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSpecification;
-import org.eclipse.xsd.util.XSDConstants;
 
 
 public class PartSection extends AbstractSection
@@ -203,69 +191,18 @@ public class PartSection extends AbstractSection
     }
     else if (e.widget == button)
     {
-      if (e.widget == button)
-      {
-          Shell shell = Display.getCurrent().getActiveShell();
-          IFile iFile = ((IFileEditorInput) editorPart.getEditorInput()).getFile();
-          Definition definition = ((WSDLElement) getElement()).getEnclosingDefinition();
-          String dialogTitle = "";
-          String property = "";
-
-          WSDLComponentSelectionDialog dialog = null;
-          WSDLComponentSelectionProvider provider = null; 
+        InvokeSetDialog dialog = new InvokeSetDialog();
           
-          List validExtensions = new ArrayList(2);
-          validExtensions.add("wsdl");
-          validExtensions.add("xsd");
-          List lookupPaths = new ArrayList(4);
-          if (isType) {
-              property = ""; 
-              dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_TYPE");
-              
-              provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLConstants.TYPE, validExtensions);
-              dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, provider);
-          }
-          else {
-              property = ""; 
-              dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_ELEMENT");
-              
-              provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLConstants.ELEMENT, validExtensions);
-              dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, provider);
-          }
-          provider.setDialog(dialog);
-
-
-          dialog.setBlockOnOpen(true);
-          dialog.create();
-
-          if (dialog.open() == Window.OK) {
-              XMLComponentSpecification spec = dialog.getSelection();
-              
-              WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, definition);
-              if (isType) {
-                  helper.setXSDTypeComponent(part, dialog.getSelection());
-              }
-              else {
-                  helper.setXSDElementComponent(part, dialog.getSelection());
-              }
-          }
-
-          // TODO: Need to select the Part
-          // We need to select the Part
-          
-          
-//        InvokeSetDialog dialog = new InvokeSetDialog();
-//        
-//        if (getElement() instanceof Part)
-//        {
-//          dialog.setReferenceKind(referenceKindCombo.getText());
-//        }
-//        dialog.run(getElement(), editorPart);
-//        refresh();
-      }
-
+        if (getElement() instanceof Part)
+        {
+            dialog.setReferenceKind(referenceKindCombo.getText());
+        }
+        dialog.setReferenceKind(referenceKindCombo.getText());
+        dialog.run(getElement(), editorPart);
+        
+        WSDLEditor editor = (WSDLEditor) editorPart;
+        editor.getSelectionManager().setSelection(new StructuredSelection(getElement()));
     }
-
   }
   
   public void setEditorPart(IEditorPart editorPart)
