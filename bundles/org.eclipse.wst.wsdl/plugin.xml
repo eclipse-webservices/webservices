@@ -5,7 +5,7 @@
    name="%pluginName"
    version="1.0.0"
    provider-name="Eclipse.org"
-   class="org.eclipse.wst.wsdl.WSDLPlugin.Implementation">
+   class="org.eclipse.wst.wsdl.WSDLPlugin$Implementation">
 
    <runtime>
       <library name="wsdl.jar">
