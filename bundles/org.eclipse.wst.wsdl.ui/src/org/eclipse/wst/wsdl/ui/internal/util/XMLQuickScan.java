@@ -13,6 +13,8 @@ package org.eclipse.wst.wsdl.ui.internal.util;
 import java.io.InputStream;
 import java.net.URL;
 
+import javax.xml.transform.TransformerFactory;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -43,6 +45,9 @@ public class XMLQuickScan
   {  
     TargetNamespaceURIContentHandler handler = new TargetNamespaceURIContentHandler();                                                                  
     ClassLoader prevClassLoader = Thread.currentThread().getContextClassLoader();
+    Thread.currentThread().setContextClassLoader(XMLQuickScan.class.getClassLoader());
+    // Line below is a hack to get XMLReader working
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
     try
     {
     	XMLReader reader = org.xml.sax.helpers.XMLReaderFactory.createXMLReader();
