@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/wsdlvalidateui"/>
+	<classpathentry kind="src" path="src/wsdlvalidate"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="lib" path="jars/wsdl4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/qname.jar"/>
+	<classpathentry kind="lib" path="jars/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="jars/xmlParserAPIs.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
