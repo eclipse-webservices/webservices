@@ -84,7 +84,7 @@
      	namespace="http://schemas.xmlsoap.org/wsdl/soap/"
      	class="org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPExtensibilityElementFactory"/>  
   </extension>
-
+<!--
   <extension point = "org.eclipse.wst.xml.uriresolver.catalogContributor">
      <catalogContributor catalogId="default">
        <mappingInfo key="http://schemas.xmlsoap.org/wsdl/" uri="xsd/wsdl.xsd"/>
@@ -94,4 +94,5 @@
        <mappingInfo key="http://schemas.xmlsoap.org/soap/encoding/" uri="xsd/soapenc.xsd"/>
      </catalogContributor>
   </extension>
+  -->
 </plugin>
