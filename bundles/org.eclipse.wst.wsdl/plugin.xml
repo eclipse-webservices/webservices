@@ -31,10 +31,10 @@
    <extension point="org.eclipse.wst.common.dependencychecker.requiredFiles">
       <requiredFile
             pluginRelativePath="lib/qname.jar"
-            locationURL="ftp://www-126.ibm.com/pub/wsdl4j/WSDL4J/1.4/wsdl4j-bin-1.4.zip"/>
+            locationURL="http://prdownloads.sourceforge.net/wsdl4j/wsdl4j-bin-1.4.zip?download"/>
       <requiredFile
             pluginRelativePath="lib/wsdl4j.jar"
-            locationURL="ftp://www-126.ibm.com/pub/wsdl4j/WSDL4J/1.4/wsdl4j-bin-1.4.zip"/>
+            locationURL="http://prdownloads.sourceforge.net/wsdl4j/wsdl4j-bin-1.4.zip?download"/>
    </extension>
 
    <extension-point id="extensibilityElementFactories" name="WSDL Extensibility Element Factories"/>
