@@ -13,13 +13,9 @@ package org.eclipse.jst.ws.internal.consumption.plugin;
 
 import java.text.MessageFormat;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
-
 
 /**
 * This is the plugin class for the Web Services plugin.
@@ -47,18 +43,11 @@ public class WebServiceConsumptionPlugin extends Plugin
  
   /**
   * Constructs a runtime plugin object for this plugin.
-  * The "plugin" element in plugin.xml should include the attribute
-  * class = "org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin".
-  * @param descriptor The descriptor of this plugin.
   */
-  public WebServiceConsumptionPlugin ( IPluginDescriptor descriptor )
+  public WebServiceConsumptionPlugin ()
   {
-    super(descriptor);
-    if (instance_ == null)
-    {
-      instance_ = this;
-    }
-    log_ = new EclipseLog();
+    super();
+    instance_ = this;
   }
 
   /**
@@ -71,27 +60,7 @@ public class WebServiceConsumptionPlugin extends Plugin
     return instance_;
   }
 
-  /**
-  * Called once by the platform when this plugin is first loaded.
-  * @throws CoreException If this plugin fails to start.
-  */
-  public void startup () throws CoreException
-  {
-  	log_.log(Log.INFO, 5042, this, "startup", "Starting plugin org.eclipse.jst.ws.consumption");
-    super.startup();
-  }
-
-  /**
-  * Called once by the platform when this plugin is unloaded.
-  * @throws CoreException If this plugin fails to shutdown.
-  */
-  public void shutdown () throws CoreException
-  {
-    log_.log(Log.INFO, 5043, this, "shutdown", "Shutting plugin org.eclipse.jst.ws.consumption");
-    super.shutdown();
-  }
-  
-  /**
+    /**
   * Returns the message string identified by the given key from
   * plugin.properties.
   * @return The String message.

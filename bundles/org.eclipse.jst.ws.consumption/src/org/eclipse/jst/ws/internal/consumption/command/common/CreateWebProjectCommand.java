@@ -478,25 +478,6 @@ public class CreateWebProjectCommand extends SimpleCommand {
 
   }
 
-  private boolean isTomcat(String runtimeTargetId)
-  {
-    if (runtimeTargetId == null || runtimeTargetId.length()==0)
-    {
-      return false;
-    }
-    else
-    {
-      if (runtimeTargetId.equals("org.eclipse.jst.server.tomcat.41.runtime") ||
-      	  runtimeTargetId.equals("org.eclipse.jst.server.tomcat.40.runtime") ||
-		  runtimeTargetId.equals("org.eclipse.jst.server.tomcat.32.runtime"))
-      {
-      	return true;
-      }
-      else
-      	return false;
-    }
-  }
-  
   /**
    * @param earProjectName
    *          The earProjectName to set.

@@ -18,11 +18,12 @@ import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.server.core.IMonitoredServerPort;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.IServerMonitorManager;
 import org.eclipse.wst.server.core.IServerPort;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.internal.IMonitoredServerPort;
+import org.eclipse.wst.server.core.internal.ServerMonitorManager;
+import org.eclipse.wst.server.core.internal.IServerMonitorManager;
 
 public class CreateMonitorCommand extends SimpleCommand {
 
@@ -57,7 +58,7 @@ public class CreateMonitorCommand extends SimpleCommand {
           }
         }
         if (port != null) {
-          IServerMonitorManager serverMonitorManager = ServerCore.getServerMonitorManager();
+          IServerMonitorManager serverMonitorManager = ServerMonitorManager.getInstance();
           IMonitoredServerPort[] monitoredPorts = serverMonitorManager.getMonitoredPorts(server);
           for (int it2 = 0; it2 < monitoredPorts.length; it2++) {
             IMonitoredServerPort imsPort = monitoredPorts[it2];

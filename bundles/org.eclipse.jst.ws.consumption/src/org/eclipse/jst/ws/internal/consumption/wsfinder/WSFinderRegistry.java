@@ -17,7 +17,7 @@ import java.util.Vector;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 public class WSFinderRegistry
@@ -46,7 +46,7 @@ public class WSFinderRegistry
   
   private void init()
   {
-    IPluginRegistry pluginReg = Platform.getPluginRegistry();
+    IExtensionRegistry pluginReg = Platform.getExtensionRegistry();
     IConfigurationElement[] configElements = pluginReg.getConfigurationElementsFor("org.eclipse.jst.ws.consumption", "wsfinder");
     for (int i = 0; i < configElements.length; i++)
     {
