@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.context;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.command.env.context.PersistentContext;
 import org.eclipse.wst.command.env.core.context.ResourceContext;
 import org.eclipse.wst.command.env.core.context.ResourceDefaults;
 import org.eclipse.wst.command.env.core.context.TransientResourceContext;
+import org.eclipse.wst.command.internal.env.plugin.EnvPlugin;
 
 
 public class PersistentResourceContext extends PersistentContext implements ResourceContext
@@ -34,7 +34,7 @@ public class PersistentResourceContext extends PersistentContext implements Reso
   
   private PersistentResourceContext()
   {
-    super(Platform.getPlugin( "org.eclipse.wst.command.env"));
+    super(EnvPlugin.getInstance());
   }
 
   public void load()

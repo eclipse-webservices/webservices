@@ -13,6 +13,7 @@ package org.eclipse.wst.command.env.eclipse;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.command.internal.env.plugin.EnvPlugin;
 
 public class EclipseLog implements Log 
 {
@@ -29,7 +30,7 @@ public class EclipseLog implements Log
 	 * @see org.eclipse.wst.command.env.core.common.Log#isEnabled()
 	 */
 	public boolean isEnabled() {
-		return Platform.getPlugin("org.eclipse.wst.command.env").isDebugging();
+		return EnvPlugin.getInstance().isDebugging();
 	}
 	
 	/**

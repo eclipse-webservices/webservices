@@ -14,7 +14,7 @@ package org.eclipse.wst.command.internal.env.context;
 import java.util.Vector;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.command.internal.env.preferences.ActionDialogPreferenceType;
 
@@ -45,7 +45,7 @@ public class ActionDialogPreferenceTypeRegistry
   //
   private void loadDialogsPreferences ()
   {
-    IPluginRegistry reg = Platform.getPluginRegistry();
+  	IExtensionRegistry reg = Platform.getExtensionRegistry();
     IConfigurationElement[] config = reg.getConfigurationElementsFor( "org.eclipse.wst.command.env",
                                                                       "actionDialogPreferenceType");
     

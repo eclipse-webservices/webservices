@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.context;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.command.env.context.PersistentContext;
+import org.eclipse.wst.command.internal.env.plugin.EnvPlugin;
 import org.eclipse.wst.command.internal.env.preferences.ActionDialogPreferenceType;
 
 
@@ -23,7 +23,7 @@ public class PersistentActionDialogsContext extends PersistentContext
 
   private PersistentActionDialogsContext()
   {
-    super(Platform.getPlugin("org.eclipse.wst.command.env"));
+    super(EnvPlugin.getInstance());
   }
   
   static public PersistentActionDialogsContext getInstance()
