@@ -187,7 +187,7 @@ public class WebServiceClientTypeRegistry implements CommandRegistry
         if ((wssrt.runtimeId_).equalsIgnoreCase(runtimeId)) {
           WebServiceServer wss = (WebServiceServer)webServiceServers.get(wssrt.serverId_);
           String thisFactoryId = wss.getFactoryId();
-          IServerType serverType = ServerCore.getServerType(thisFactoryId);
+          IServerType serverType = ServerCore.findServerType(thisFactoryId);
           if (serverType == null)
             continue;
           
@@ -359,7 +359,7 @@ public class WebServiceClientTypeRegistry implements CommandRegistry
   
   public String getServerInstanceLabelFromInstanceId( String instanceId )
   {
-    IServer server = ServerCore.getResourceManager().getServer( instanceId );
+    IServer server = ServerCore.findServer( instanceId );
     
     return server.getName();
   }

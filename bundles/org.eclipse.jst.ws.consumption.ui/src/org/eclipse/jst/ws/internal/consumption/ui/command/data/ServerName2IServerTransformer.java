@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.command.data;
 
-import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.wst.command.env.core.data.Transformer;
@@ -24,12 +23,12 @@ public class ServerName2IServerTransformer implements Transformer
     Vector serverIds = new Vector();
     {
       String serverName = value.toString();
-      List servers = ServerCore.getResourceManager().getServers();
-      if (servers != null && !servers.isEmpty())
+      IServer[] servers = ServerCore.getServers();
+      if (servers != null && servers.length!=0)
       {
-        for (int i = 0; i < servers.size(); i++)
+        for (int i = 0; i < servers.length; i++)
         {
-          IServer server = (IServer)servers.get(i);
+          IServer server = (IServer)servers[i];
           if ((server.getName()).equals(serverName))
             return server;
         }

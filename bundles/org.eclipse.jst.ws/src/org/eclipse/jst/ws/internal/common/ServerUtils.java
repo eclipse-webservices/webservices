@@ -27,6 +27,7 @@ import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IProjectProperties;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
@@ -34,10 +35,7 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
-import org.eclipse.wst.server.core.model.IModule;
-import org.eclipse.wst.server.core.model.IProjectModule;
 import org.eclipse.wst.server.core.model.IRunningActionServer;
-import org.eclipse.wst.server.core.model.IServerDelegate;
 
 /**
  * This class contains useful methods for working with Server plugin functions
@@ -66,10 +64,10 @@ public final class ServerUtils {
   public void getServerLabelsAndIds() {
     serverIdToLabel_ = new Hashtable();
     serverLabelToId_ = new Hashtable();
-    List serverTypes = ServerCore.getServerTypes();
-    for (int idx = 0; idx < serverTypes.size(); idx++) {
+    IServerType[] serverTypes = ServerCore.getServerTypes();
+    for (int idx = 0; idx < serverTypes.length; idx++) {
 
-      IServerType serverType = (IServerType) serverTypes.get(idx);
+      IServerType serverType = (IServerType) serverTypes[idx];
 
       String id = serverType.getId();
       String serverLabel = serverType.getName();
@@ -98,13 +96,14 @@ public final class ServerUtils {
   	Status status = new SimpleStatus("");
     try {
 
-      if (module==null || !module.exists()) {
+      if (module==null || !module.getProject().exists()) {
     	return status;
       }
 
+
       // check if module is a true Java project
-  	  if (module instanceof IProjectModule){
-  	  	IProjectModule pm = (IProjectModule)module;
+  	  if (module instanceof IModule){
+  	  	IModule pm = (IModule)module;
   	  	if (pm!=null){
   	  		IProject project = pm.getProject();
   	  		if (project==null || ResourceUtils.isTrueJavaProject(project)) {
@@ -113,18 +112,18 @@ public final class ServerUtils {
   	  	}
   	  }
        
-      wc = server.getWorkingCopy();     
+      wc = server.createWorkingCopy();     
       if (wc!=null){
-      	IServerDelegate delegate = wc.getDelegate();
-        if (delegate!=null && delegate instanceof IRunningActionServer) {
-         byte state = wc.getServerState();
-         if (state == IServer.SERVER_STOPPED || state == IServer.SERVER_UNKNOWN) {
+      	Object x = server.getAdapter(IRunningActionServer.class);
+        if (x!=null && x instanceof IRunningActionServer) {
+         int state = server.getServerState();
+         if (state == IServer.STATE_STOPPED || state == IServer.STATE_UNKNOWN) {
            String mode = ILaunchManager.RUN_MODE;
-           wc.synchronousStart(mode, monitor);
+           server.synchronousStart(mode, monitor);
          }
         }
      
-      List list = Arrays.asList(server.getModules());
+      List list = Arrays.asList(server.getModules(monitor));
       if (add) {
         if (!list.contains(module)) {
           ServerUtil.modifyModules(wc, new IModule[] { module}, new IModule[0], monitor);
@@ -149,8 +148,7 @@ public final class ServerUtils {
         if (wc != null) {
           // Always saveAll and release the serverWorkingCopy
           try {
-          	wc.saveAll(monitor);
-          	wc.release();
+          	wc.saveAll(true, monitor);
           }
           catch(CoreException cex){
             status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_SERVER"), Status.ERROR, cex);
@@ -167,18 +165,18 @@ public final class ServerUtils {
 
   	IServerWorkingCopy wc = null;  	
     try {
-      wc = server.getWorkingCopy();
+      wc = server.createWorkingCopy();
       if (wc!=null){
-      	IServerDelegate delegate = wc.getDelegate();      	
-        if (delegate!=null && delegate instanceof IRunningActionServer) {
-            byte state = wc.getServerState();
-            if (state == IServer.SERVER_STOPPED || state == IServer.SERVER_UNKNOWN) {
+      	Object x = server.getAdapter(IRunningActionServer.class);      	
+        if (x!=null && x instanceof IRunningActionServer) {
+            int state = server.getServerState();
+            if (state == IServer.STATE_STOPPED || state == IServer.STATE_UNKNOWN) {
               String mode = ILaunchManager.RUN_MODE;
-              wc.synchronousStart(mode, monitor);
+              server.synchronousStart(mode, monitor);
             }
         }
         
-      	List list = Arrays.asList(server.getModules());
+      	List list = Arrays.asList(server.getModules(monitor));
       	if (add) {
       		if (!list.contains(module)) {
       			ServerUtil.modifyModules(wc, new IModule[] { module}, new IModule[0], monitor);
@@ -197,8 +195,7 @@ public final class ServerUtils {
     finally{
     	try{
     		if (wc!=null){
-    			wc.saveAll(monitor);
-    			wc.release();
+    			wc.saveAll(true, monitor);
     		}
     	}
         catch(CoreException ce){
@@ -218,7 +215,7 @@ public final class ServerUtils {
   public static IServer getServerForModule(IModule module, String serverTypeId, boolean create, IProgressMonitor monitor) {
     try {
 
-      IServer[] servers = ServerUtil.getServersByModule(module);
+      IServer[] servers = ServerUtil.getServersByModule(module, monitor);
 
       if (servers != null && servers.length > 0) {
         if (serverTypeId == null || serverTypeId.length() == 0)
@@ -240,7 +237,7 @@ public final class ServerUtils {
 
   public static IServer getServerForModule(IModule module) {
     try {
-      IServer[] servers = ServerUtil.getServersByModule(module);
+      IServer[] servers = ServerUtil.getServersByModule(module, null);
       return ((servers != null && servers.length > 0) ? servers[0] : null);
     }
     catch (Exception e) {
@@ -249,26 +246,28 @@ public final class ServerUtils {
   }
 
   public IServer createServer(Environment env, IModule module, String serverTypeId, boolean create, IProgressMonitor monitor){
-  	IServerWorkingCopy server = null;
+  	IServerWorkingCopy serverWC = null;
+  	IServer server = null;
   	try {
-      IServerType serverType = ServerCore.getServerType(serverTypeId);
-      server = serverType.createServer(serverTypeId, null, monitor);
+      IServerType serverType = ServerCore.findServerType(serverTypeId);
+      serverWC = serverType.createServer(serverTypeId, null, monitor);
+      server = serverWC.getOriginal();
       if (server != null) {
-      	IServerDelegate delegate = server.getDelegate();
-        if (delegate!=null && delegate instanceof IRunningActionServer) {
-         byte state = server.getServerState();
-         if (state == IServer.SERVER_STOPPED || state == IServer.SERVER_UNKNOWN) {
+      	Object x = server.getAdapter(IRunningActionServer.class);
+        if (x!=null && x instanceof IRunningActionServer) {
+         int state = server.getServerState();
+         if (state == IServer.STATE_STOPPED || state == IServer.STATE_UNKNOWN) {
            String mode = ILaunchManager.RUN_MODE;
            server.synchronousStart(mode, monitor);
          }
         }  
         
-        if (module != null && module.exists()) {
-          List parentModules = server.getParentModules(module);
-          if (parentModules!=null && !parentModules.isEmpty()) {
-          	module = (IModule)parentModules.get(0);
+        if (module != null && module.getProject().exists()) {
+          IModule[] parentModules = server.getParentModules(module, monitor);
+          if (parentModules!=null && parentModules.length!=0) {
+          	module = (IModule)parentModules[0];
           }
-          server.modifyModules(new IModule[] { module}, new IModule[0], monitor);
+          serverWC.modifyModules(new IModule[] { module}, new IModule[0], monitor);
         }
       }
 
@@ -281,9 +280,8 @@ public final class ServerUtils {
     }
     finally{
     	try{
-    		if (server!=null){
-    			server.saveAll(monitor);
-    			server.release();
+    		if (serverWC!=null){
+    			serverWC.saveAll(true, monitor);
     		}
     	}
     	catch(CoreException ce){
@@ -296,26 +294,28 @@ public final class ServerUtils {
   }  
   
   public static IServer createServer(IModule module, String serverTypeId, boolean create, IProgressMonitor monitor) {
-  	IServerWorkingCopy server = null;
+  	IServerWorkingCopy serverWC = null;
+  	IServer server= null;
   	try {
-      IServerType serverType = ServerCore.getServerType(serverTypeId);
-      server = serverType.createServer(serverTypeId, null, monitor);
+      IServerType serverType = ServerCore.findServerType(serverTypeId);
+      serverWC = serverType.createServer(serverTypeId, null, monitor);
+      server = serverWC.getOriginal();
       if (server != null) {
-      	IServerDelegate delegate = server.getDelegate();
-        if (delegate!=null && delegate instanceof IRunningActionServer) {
-         byte state = server.getServerState();
-         if (state == IServer.SERVER_STOPPED || state == IServer.SERVER_UNKNOWN) {
+      	Object x = server.getAdapter(IRunningActionServer.class);
+        if (x!=null && x instanceof IRunningActionServer) {
+         int state = server.getServerState();
+         if (state == IServer.STATE_STOPPED || state == IServer.STATE_UNKNOWN) {
            String mode = ILaunchManager.RUN_MODE;
            server.synchronousStart(mode, monitor);
          }
         }  
         
         if (module != null) {
-          List parentModules = server.getParentModules(module);
-          if (parentModules!=null && !parentModules.isEmpty()) {
-          	module = (IModule)parentModules.get(0);
+          IModule[] parentModules = server.getParentModules(module, monitor);
+          if (parentModules!=null && parentModules.length!=0) {
+          	module = (IModule)parentModules[0];
           }
-          server.modifyModules(new IModule[] { module}, new IModule[0], monitor);
+          serverWC.modifyModules(new IModule[] { module}, new IModule[0], monitor);
         }
       }
 
@@ -326,9 +326,8 @@ public final class ServerUtils {
     }
     finally{
     	try{
-    		if (server!=null){
-    			server.saveAll(monitor);
-    			server.release();
+    		if (serverWC!=null){
+    			serverWC.saveAll(true, monitor);
     		}
     	}
     	catch(CoreException ce){
@@ -341,7 +340,7 @@ public final class ServerUtils {
   public static String[] getServerTypeIdsByModule(IProject project) {
     Vector serverIds = new Vector();
     if (project != null) {
-      IServer[] servers = ServerUtil.getServersByModule(ResourceUtils.getModule(project));
+      IServer[] servers = ServerUtil.getServersByModule(ResourceUtils.getModule(project), null);
       if (servers != null && servers.length > 0) {
         for (int i = 0; i < servers.length; i++) {
           serverIds.add(servers[i].getId());
@@ -361,10 +360,10 @@ public final class ServerUtils {
     if (preferredServer != null)
       return preferredServer;
 
-    IServer[] configuredServers = ServerUtil.getServersByModule(ResourceUtils.getModule(project));
+    IServer[] configuredServers = ServerUtil.getServersByModule(ResourceUtils.getModule(project), null);
     if (configuredServers != null && configuredServers.length > 0) { return configuredServers[0]; }
 
-    IServer[] nonConfiguredServers = ServerUtil.getAvailableServersForModule(ResourceUtils.getModule(project), false);
+    IServer[] nonConfiguredServers = ServerUtil.getAvailableServersForModule(ResourceUtils.getModule(project), false, null);
     if (nonConfiguredServers != null && nonConfiguredServers.length > 0) { return nonConfiguredServers[0]; }
     return null;
   }
@@ -378,7 +377,7 @@ public final class ServerUtils {
    */
   public static String getServerTargetIdFromFactoryId(String serverFactoryId, String moduleType, String j2eeVersion)
   {
-    IServerType serverType = ServerCore.getServerType(serverFactoryId);
+    IServerType serverType = ServerCore.findServerType(serverFactoryId);
     if (serverType == null)
       return null;
     
@@ -405,7 +404,7 @@ public final class ServerUtils {
    */
   public static String getRuntimeTargetIdFromFactoryId(String serverFactoryId)
   {
-    IServerType serverType = ServerCore.getServerType(serverFactoryId);
+    IServerType serverType = ServerCore.findServerType(serverFactoryId);
     if (serverType!=null)
     {
       String serverRuntimeId = serverType.getRuntimeType().getId();
@@ -421,7 +420,7 @@ public final class ServerUtils {
    */  
   public static String getServerTypeIdFromFactoryId(String serverFactoryId)
   {
-  	IServerType serverType = ServerCore.getServerType(serverFactoryId);
+  	IServerType serverType = ServerCore.findServerType(serverFactoryId);
   	if (serverType!=null)
   	{
   	  String serverTypeId = serverType.getId();

@@ -44,7 +44,7 @@ import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.common.StatusException;
 import org.eclipse.wst.command.env.core.selection.BooleanSelection;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.webbrowser.WebBrowser;
+import org.eclipse.wst.internet.webbrowser.WebBrowser;
 
 public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTestCommand
 {

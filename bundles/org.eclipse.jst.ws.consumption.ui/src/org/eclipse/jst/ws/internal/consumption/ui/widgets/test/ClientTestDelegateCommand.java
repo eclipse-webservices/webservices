@@ -119,7 +119,7 @@ public class ClientTestDelegateCommand extends SimpleCommand
         command.setMethods(methods);
         command.setEndpoint(endpoints);
         if (clientIds.getServerInstanceId() != null) 
-      	  sampleExistingServer = ServerCore.getResourceManager().getServer(clientIds.getServerInstanceId());
+      	  sampleExistingServer = ServerCore.findServer(clientIds.getServerInstanceId());
       	if (sampleExistingServer != null)
       	  sampleServerTypeID = sampleExistingServer.getServerType().getId();
       	else
@@ -136,7 +136,7 @@ public class ClientTestDelegateCommand extends SimpleCommand
     	wtfc.setEndpoint(endpoints);
     	if(serverIds != null){
     	  if (serverIds.getServerInstanceId() != null) 
-    	    sampleExistingServer = ServerCore.getResourceManager().getServer(serverIds.getServerInstanceId());
+    	    sampleExistingServer = ServerCore.findServer(serverIds.getServerInstanceId());
     	  if (sampleExistingServer != null)
     	    sampleServerTypeID = sampleExistingServer.getServerType().getId();
     	  else
@@ -146,7 +146,7 @@ public class ClientTestDelegateCommand extends SimpleCommand
     	else if(clientIds != null)
     	{
           if (clientIds.getServerInstanceId() != null) 
-            sampleExistingServer = ServerCore.getResourceManager().getServer(clientIds.getServerInstanceId());
+            sampleExistingServer = ServerCore.findServer(clientIds.getServerInstanceId());
           if (sampleExistingServer != null)
             sampleServerTypeID = sampleExistingServer.getServerType().getId();
           else

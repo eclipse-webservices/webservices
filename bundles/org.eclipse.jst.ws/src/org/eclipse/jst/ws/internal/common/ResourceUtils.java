@@ -18,8 +18,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IContainer;
@@ -51,16 +49,14 @@ import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
 import org.eclipse.jst.j2ee.internal.ejb.project.EJBNatureRuntime;
 import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
 import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
-import org.eclipse.jst.j2ee.internal.web.operations.IBaseWebNature;
+import org.eclipse.jst.j2ee.internal.web.operations.IDynamicWebNature;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.eclipse.EclipseLog;
+import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.IServerPort;
 import org.eclipse.wst.server.core.ServerUtil;
-import org.eclipse.wst.server.core.model.IModule;
-import org.eclipse.wst.server.core.model.IMonitorableServer;
-import org.eclipse.wst.server.core.model.IServerDelegate;
-import org.eclipse.wst.server.core.model.IServerPort;
 import org.eclipse.wst.server.core.model.IURLProvider;
 
 import com.ibm.wtp.emf.workbench.ProjectUtilities;
@@ -320,7 +316,7 @@ public final class ResourceUtils {
 		try {
 			IProjectNature nature = project
 					.getNature(IWebNatureConstants.J2EE_NATURE_ID);
-			return (nature != null && (nature instanceof IBaseWebNature));
+			return (nature != null && (nature instanceof IDynamicWebNature));
 		} catch (CoreException e) {
 		}
 		return false;
@@ -438,7 +434,11 @@ public final class ResourceUtils {
 	 *         project has no Web nature.
 	 */
 	public static IModule getModule(IProject project) {
-		return ServerUtil.getModuleProject(project);
+		IModule[] modules = ServerUtil.getModules(project);
+		if (modules!=null && modules.length!=0) {
+			return modules[0];
+		}
+		return null;
 	}
 
 	/**
@@ -623,8 +623,8 @@ public final class ResourceUtils {
 		try {
 			IProjectNature nature = project
 					.getNature(IWebNatureConstants.J2EE_NATURE_ID);
-			if (nature != null && (nature instanceof IBaseWebNature)) {
-				IBaseWebNature webNature = (IBaseWebNature) nature;
+			if (nature != null && (nature instanceof IDynamicWebNature)) {
+			  IDynamicWebNature webNature = (IDynamicWebNature) nature;
 				webModuleServerRoot = webNature.getRootPublishableFolder();
 			}
 		} catch (CoreException e) {
@@ -656,9 +656,8 @@ public final class ResourceUtils {
 			IServer serverInstance = ServerUtils.getServerForModule(module,
 					serverFactoryId, server, true, new NullProgressMonitor());
 			if (serverInstance != null) {
-				URL url = ((IURLProvider) serverInstance.getDelegate())
-						.getModuleRootURL(module);
-
+//				URL url = ((IURLProvider) serverInstance.getDelegate()).getModuleRootURL(module);
+				URL url = ((IURLProvider) serverInstance).getModuleRootURL(module);
 				if (url != null) {
 					String s = url.toString();
 					webProjectURL = (s.endsWith("/") ? s.substring(0, s
@@ -693,19 +692,16 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 		  // serverFactoryId, server, true, new NullProgressMonitor());
   		if (server != null)
   		{
-  			String hostname = server.getHostname();
+  			String hostname = server.getHost();
 
   			// get ServerPort
   			int portNumber = 0;
-  	        IServerDelegate serverDelegate = server.getDelegate();
-  	        if (serverDelegate instanceof IMonitorableServer)
-  	        {
-  	          IMonitorableServer monitorableServer = (IMonitorableServer) serverDelegate;
-  	          List ports = monitorableServer.getServerPorts();
+
+  	          IServerPort[] ports = server.getServerPorts();
   	          IServerPort port = null;
-  	          for (Iterator it = ports.iterator(); it.hasNext();)
+  	          for (int it = 0; it<ports.length; it++)
   	          {
-  	            IServerPort p = (IServerPort) it.next();
+  	            IServerPort p = ports[it];
   	            String protocol = p.getProtocol();
   	            if (protocol != null && protocol.trim().toLowerCase().equals("http"))
   	            {
@@ -715,7 +711,7 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
   	            }
   	          }
   	          
-  	        }
+  	        
   	        
   	        URL url = null;
   	        try {
@@ -756,8 +752,7 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 		if (module != null) {
 			IServer serverInstance = ServerUtils.getServerForModule(module);
 			if (serverInstance != null) {
-				URL url = ((IURLProvider) serverInstance.getDelegate())
-						.getModuleRootURL(module);
+				URL url = ((IURLProvider) serverInstance).getModuleRootURL(module);
 				if (url != null) {
 					String s = url.toString();
 					webProjectURL = (s.endsWith("/") ? s.substring(0, s
@@ -779,8 +774,8 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 			if (index != -1) {
 				StringBuffer encodedURL = new StringBuffer();
 				encodedURL.append(url.substring(0, index + 1));
-				String ctxtRoot = URLEncoder.encode(url.substring(index + 1,
-						url.length()));
+				String ctxtRoot = URLEncoder.encode(url.substring(index + 1, url.length()));
+				
 				int plusIndex = ctxtRoot.indexOf('+');
 				while (plusIndex != -1) {
 					StringBuffer sb = new StringBuffer();

@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IPluginRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.wst.server.core.ServerUtil;
-import org.eclipse.wst.server.core.model.IModule;
+import org.eclipse.wst.server.core.IModule;
 
 public class WebServiceDeployAction extends WindowActionDelegate {
 public void run(org.eclipse.jface.action.IAction action) {
@@ -84,8 +84,12 @@ public void run(org.eclipse.jface.action.IAction action) {
 }
  
 
-private IModule getModule(IProject project) 
-  {
-    return ServerUtil.getModuleProject(project);
+	private IModule getModule(IProject project) {
+	
+		IModule[] modules = ServerUtil.getModules(project);
+		if (modules!=null && modules.length!=0) {
+			return modules[0];
+		}
+		return null;	
  	}
 }

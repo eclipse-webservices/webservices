@@ -15,8 +15,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.j2ee.J2EEVersionConstants;
-import org.eclipse.jst.j2ee.application.operations.EARProjectCreationDataModel;
-import org.eclipse.jst.j2ee.application.operations.EARProjectCreationOperation;
+import org.eclipse.jst.j2ee.application.operations.EnterpriseApplicationCreationDataModel;
+import org.eclipse.jst.j2ee.application.operations.EnterpriseApplicationCreationOperation;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
@@ -51,19 +51,19 @@ public class CreateEARProjectCommand extends SimpleCommand
       IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(earProjectName_);
       if (project != null && !project.exists())
       {
-        EARProjectCreationDataModel info = new EARProjectCreationDataModel();
-        info.setProperty(EARProjectCreationDataModel.PROJECT_NAME, project.getName());
+        EnterpriseApplicationCreationDataModel info = new EnterpriseApplicationCreationDataModel();
+        info.setProperty(EnterpriseApplicationCreationDataModel.PROJECT_NAME, project.getName());
         
         //Set the J2EE version
         String finalJ2EEVersion = null;
         if (j2eeVersion_ != null && j2eeVersion_.length()>0)
         {
-          info.setProperty(EARProjectCreationDataModel.EAR_VERSION, new Integer(j2eeVersion_));
+          info.setProperty(EnterpriseApplicationCreationDataModel.APPLICATION_VERSION, new Integer(j2eeVersion_));
           finalJ2EEVersion = j2eeVersion_;
         }
         else
         {
-          info.setProperty(EARProjectCreationDataModel.EAR_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+          info.setProperty(EnterpriseApplicationCreationDataModel.APPLICATION_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
           finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
         }
         
@@ -71,12 +71,12 @@ public class CreateEARProjectCommand extends SimpleCommand
         if (serverFactoryId_!=null && serverFactoryId_.length()>0)
         {
           String runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId_, IServerTargetConstants.EAR_TYPE, finalJ2EEVersion); 
-          info.setProperty(EARProjectCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
-          info.setProperty(EARProjectCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
+          info.setProperty(EnterpriseApplicationCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
+          info.setProperty(EnterpriseApplicationCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
         }
 
         //Create the EAR
-        EARProjectCreationOperation operation = new EARProjectCreationOperation(info);
+        EnterpriseApplicationCreationOperation operation = new EnterpriseApplicationCreationOperation(info);
         operation.run(new NullProgressMonitor());
       }
     }

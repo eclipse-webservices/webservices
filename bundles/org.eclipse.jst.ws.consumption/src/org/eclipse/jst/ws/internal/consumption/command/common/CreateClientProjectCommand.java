@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -88,26 +86,21 @@ public class CreateClientProjectCommand extends SimpleCommand
   	Status status = new SimpleStatus("");
   	//Get the existing server
 
-    List servers = ServerCore.getResourceManager().getServers();
+    IServer[] servers = ServerCore.getServers();
     IServer existingServer = null;
 	fExistingServer = null;    
-    for (int i=0; i<servers.size(); i++)
+    for (int i=0; i<servers.length; i++)
     {
-      IServer thisServer = (IServer)servers.get(i);
+      IServer thisServer = (IServer)servers[i];
       IServerWorkingCopy wc = null;
       String thisServerId = null;
-      try{
-      	wc = thisServer.getWorkingCopy();
-        thisServerId = (wc!=null ? wc.getId() : null);
+      if (thisServer!=null) {
+      	wc = thisServer.createWorkingCopy();
+      	thisServerId = (wc!=null ? wc.getId() : null);
       }
-      finally{
-      	if (wc!=null) {
-	      	wc.release();
-      	}
-      }      
-
-      if (thisServerId.equals(existingServerId_))
+      if (thisServerId.equals(existingServerId_)){
         existingServer = thisServer;
+      }
     } 
     
     //Create the project

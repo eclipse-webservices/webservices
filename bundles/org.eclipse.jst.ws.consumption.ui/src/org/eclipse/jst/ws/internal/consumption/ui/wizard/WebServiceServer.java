@@ -66,7 +66,7 @@ public class WebServiceServer implements IWebServiceServer
   {
     if (serverLabel_ == null)
     {
-      IServerType serverType = ServerCore.getServerType(getFactoryId());    
+      IServerType serverType = ServerCore.findServerType(getFactoryId());    
       serverLabel_ = ServerUICore.getLabelProvider().getText(serverType);
     }
     return serverLabel_;    

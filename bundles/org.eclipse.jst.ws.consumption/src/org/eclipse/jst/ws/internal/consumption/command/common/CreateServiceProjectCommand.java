@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -92,33 +90,28 @@ public class CreateServiceProjectCommand extends SimpleCommand {
   }  
   
   public Status execute(Environment env) {
-
 	
     if (projectName == null) {
       return new SimpleStatus("");
     }
     
   	Status status = new SimpleStatus("");
-    List servers = ServerCore.getResourceManager().getServers();
+    IServer[] servers = ServerCore.getServers();
     IServer existingServer = null;    
     fExistingServer = null; 
-    for (int i=0; i<servers.size(); i++)
+    for (int i=0; i<servers.length; i++)
     {
-      IServer thisServer = (IServer)servers.get(i);
+      IServer thisServer = (IServer)servers[i];
       IServerWorkingCopy wc = null;
       String thisServerId = null;
-      try{
-      	wc = thisServer.getWorkingCopy();
-        thisServerId = (wc!=null ? wc.getId() : null);
-      }
-      finally{
-      	if (wc!=null) {
-	      	wc.release();
-      	}
-      }
       
-      if (thisServerId.equals(existingServerId))
+      if (thisServer!=null) {
+      	wc = thisServer.createWorkingCopy();
+      	thisServerId = (wc!=null ? wc.getId() : null);
+      }
+      if (thisServerId.equals(existingServerId)) {
         existingServer = thisServer;
+      }
     }
     if (isServiceProjectEJB_)
     {

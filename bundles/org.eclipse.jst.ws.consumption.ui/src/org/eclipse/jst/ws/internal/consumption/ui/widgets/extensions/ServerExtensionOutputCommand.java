@@ -12,8 +12,6 @@
  */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -84,22 +82,17 @@ public class ServerExtensionOutputCommand extends SimpleCommand
   	
   	Status status = new SimpleStatus("");  	
   	
-    List servers = ServerCore.getResourceManager().getServers();
+    IServer[] servers = ServerCore.getServers();
     IServer existingServer =null;
     fExistingServer = null; 
-    for (int i=0; i<servers.size(); i++)
+    for (int i=0; i<servers.length; i++)
     {
-      IServer thisServer = (IServer)servers.get(i);
+      IServer thisServer = (IServer)servers[i];
       IServerWorkingCopy wc = null;
       String thisServerId = null;
-      try {
-      	wc = thisServer.getWorkingCopy();
+      if (thisServer!=null) {
+      	wc = thisServer.createWorkingCopy();
         thisServerId = (wc!=null ? wc.getId() : null);
-      }
-      finally{
-		if (wc!=null){            
-      	  wc.release();
-      	}
       }
       
       if (thisServerId.equals(existingServerId_))

@@ -28,7 +28,7 @@ public class StartTomcatServer extends AbstractStartServer {
 
 		if (server != null) {
 
-			if (server.getServerState() != IServer.SERVER_STOPPED) {
+			if (server.getServerState() != IServer.STATE_STOPPED) {
 				server.synchronousStop();
 			}
 		}

@@ -48,11 +48,11 @@ public class FinishDefaultCommand extends SimpleCommand
   	Status status = new SimpleStatus( "" );
   	if(clientIds != null){
   	  if (clientIds.getServerInstanceId() != null) 
-        sampleExistingServer = ServerCore.getResourceManager().getServer(clientIds.getServerInstanceId());
+        sampleExistingServer = ServerCore.findServer(clientIds.getServerInstanceId());
   	  if (sampleExistingServer==null && existingServerId_!=null && existingServerId_.length()>0)
   	  {
   	    //Use the existingServerId
-  	    sampleExistingServer = ServerCore.getResourceManager().getServer(existingServerId_);
+  	    sampleExistingServer = ServerCore.findServer(existingServerId_);
   	  }
       if (sampleExistingServer != null)
         sampleServerTypeID = sampleExistingServer.getServerType().getId();

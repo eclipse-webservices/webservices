@@ -38,7 +38,7 @@
       <import plugin="org.eclipse.wst.server.ui"/>
       <import plugin="org.eclipse.jst.server.core"/>
       <import plugin="org.eclipse.wst.wsdl"/>
-      <import plugin="org.eclipse.wst.monitor.core"/>
+      <import plugin="org.eclipse.wst.internet.monitor.core"/>
       <import plugin="org.eclipse.wst.common.emf"/>
       <import plugin="org.eclipse.jst.j2ee.core"/>
       <import plugin="org.eclipse.jst.j2ee.ejb"/>
@@ -46,6 +46,8 @@
       <import plugin="org.eclipse.jst.j2ee.web"/>
       <import plugin="org.eclipse.wst.common.emfworkbench.integration"/>
       <import plugin="org.eclipse.wst.common.frameworks"/>
+      <import plugin="org.eclipse.jst.j2ee.ui"/>
+      <import plugin="org.eclipse.wst.web"/>
    </requires>
 
    <extension-point

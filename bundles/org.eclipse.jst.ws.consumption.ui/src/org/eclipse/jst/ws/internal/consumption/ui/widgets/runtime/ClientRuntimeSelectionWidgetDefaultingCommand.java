@@ -483,7 +483,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   {
     if (project!=null && project.exists()) 
     {
-      IServer[] configuredServers = ServerUtil.getServersByModule(ResourceUtils.getModule(project));
+      IServer[] configuredServers = ServerUtil.getServersByModule(ResourceUtils.getModule(project), null);
       IServer firstSupportedServer = ClientServerSelectionUtils.getFirstSupportedServer(configuredServers, clientIds_.getTypeId() );
       
       EARNatureRuntime[] earProjects = J2EEUtils.getEARProjects(project, firstSupportedServer);

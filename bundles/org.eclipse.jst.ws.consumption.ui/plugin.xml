@@ -48,7 +48,8 @@
       <import plugin="org.eclipse.wst.common.emf"/>
       <import plugin="org.eclipse.wst.common.emfworkbench.integration"/>
       <import plugin="org.eclipse.wst.common.frameworks"/>
-      <import plugin="org.eclipse.wst.webbrowser"/>
+      <import plugin="org.eclipse.wst.internet.webbrowser"/>
+      <import plugin="org.eclipse.jst.j2ee.webservice"/>
    </requires>
 
 

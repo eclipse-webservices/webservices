@@ -49,7 +49,7 @@ public class ServerSelectionUtils
     String[] serverInfo = new String[2]; //serverInfp[0] contains factoryId, serverInfo[1] contains instance Id
 
     // If the project has been added to an existing server, pick that server
-    IServer[] configuredServers = ServerUtil.getServersByModule(ResourceUtils.getModule(project));
+    IServer[] configuredServers = ServerUtil.getServersByModule(ResourceUtils.getModule(project), null);
     IServer firstSupportedServer = getFirstSupportedServer(configuredServers, typeId );
     if (firstSupportedServer != null)
     {
@@ -83,7 +83,7 @@ public class ServerSelectionUtils
       //If the preferred server is compatible with the project's runtime target, use it.
       PersistentServerRuntimeContext ctx = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
       String pFactoryId = ctx.getServerFactoryId();
-      IServerType serverType = ServerCore.getServerType(pFactoryId);
+      IServerType serverType = ServerCore.findServerType(pFactoryId);
       if (serverType!=null){
       	String serverRuntimeId = serverType.getRuntimeType().getId();
       	if (serverRuntimeId.equals(runtimeTarget.getRuntimeType().getId()))
@@ -142,7 +142,7 @@ public class ServerSelectionUtils
     String[] serverInfo = new String[2]; //serverInfp[0] contains factoryId, serverInfo[1] contains instance Id
 
     // If the project has been added to an existing server, pick that server
-    IServer[] configuredServers = ServerUtil.getServersByModule(ResourceUtils.getModule(project));
+    IServer[] configuredServers = ServerUtil.getServersByModule(ResourceUtils.getModule(project), null);
     IServer firstSupportedServer = getFirstSupportedServer(configuredServers, typeId );
     if (firstSupportedServer != null)
     {
@@ -176,7 +176,7 @@ public class ServerSelectionUtils
       //If the preferred server is compatible with the project's runtime target, use it.
       PersistentServerRuntimeContext ctx = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
       String pFactoryId = ctx.getServerFactoryId();
-      IServerType serverType = ServerCore.getServerType(pFactoryId);
+      IServerType serverType = ServerCore.findServerType(pFactoryId);
       if (serverType!=null){
       	String serverRuntimeId = serverType.getRuntimeType().getId();
       	if (serverRuntimeId.equals(runtimeTarget.getRuntimeType().getId()))
@@ -258,7 +258,7 @@ public class ServerSelectionUtils
     String[] serverFactoryIds = wssrtRegistry.getServerFactoryIdsByType(typeId);
     for (int i=0; i<serverFactoryIds.length; i++)
     {
-      IServerType serverType = ServerCore.getServerType(serverFactoryIds[i]);
+      IServerType serverType = ServerCore.findServerType(serverFactoryIds[i]);
       if (serverType!=null){
       	String serverRuntimeId = serverType.getRuntimeType().getId();
       	if (serverRuntimeId.equals(runtimeId))
@@ -300,14 +300,14 @@ public class ServerSelectionUtils
   
   public static IServer getFirstExistingServerFromFactoryId(String factoryId)
   {
-  	List servers = ServerCore.getResourceManager().getServers();
-  	if (servers==null || servers.isEmpty())
+  	IServer[] servers = ServerCore.getServers();
+  	if (servers==null || servers.length!=0)
         return null;
   	else
   	{
-  	  for (int i=0; i<servers.size(); i++)
+  	  for (int i=0; i<servers.length; i++)
   	  {
-  	    IServer server = (IServer)servers.get(i);
+  	    IServer server = (IServer)servers[i];
   	    if (server.getServerType().getId().equals(factoryId))
   	    {
   	      return server;
@@ -322,15 +322,15 @@ public class ServerSelectionUtils
     if (runtime == null)
       return null;
     
-    List servers = ServerCore.getResourceManager().getServers();
-    if (servers==null || servers.isEmpty())
+    IServer[] servers = ServerCore.getServers();
+    if (servers==null || servers.length!=0)
       return null;
     
     ArrayList compatibleServersList = new ArrayList();
     String runtimeId = runtime.getRuntimeType().getId();
-    for (int i=0; i<servers.size(); i++)
+    for (int i=0; i<servers.length; i++)
     {
-      IServer server = (IServer)servers.get(i);
+      IServer server = (IServer)servers[i];
       String serverRuntimeId = server.getRuntime().getRuntimeType().getId();
       if (serverRuntimeId.equals(runtimeId))
         compatibleServersList.add(server);
@@ -434,7 +434,7 @@ public class ServerSelectionUtils
       return null;
     
     //Get all existing servers
-    List servers = ServerCore.getResourceManager().getServers(); //Get all existing servers
+    IServer[] servers = ServerCore.getServers(); //Get all existing servers
     
     //Get the preferred server.
   	PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
@@ -444,9 +444,9 @@ public class ServerSelectionUtils
                                 && isServerValid(prefServerFactoryId, j2eeVersion);
     if (preferredIsValid)
     {
-      for (int i=0; i<servers.size(); i++)
+      for (int i=0; i<servers.length; i++)
       {
-        IServer server = (IServer)servers.get(i);
+        IServer server = (IServer)servers[i];
         String thisFactoryId = server.getServerType().getId();
         
         if (thisFactoryId.equals(prefServerFactoryId))
@@ -460,9 +460,9 @@ public class ServerSelectionUtils
     
     //Either the preferred server was not valid or it was valid but does not exist.
     //Check the existing servers for validity
-    for (int i=0; i<servers.size(); i++)
+    for (int i=0; i<servers.length; i++)
     {
-      IServer server = (IServer)servers.get(i);
+      IServer server = (IServer)servers[i];
       String thisFactoryId = server.getServerType().getId();
       
       boolean thisServerValid = containsString(validServerFactoryIds, thisFactoryId) 

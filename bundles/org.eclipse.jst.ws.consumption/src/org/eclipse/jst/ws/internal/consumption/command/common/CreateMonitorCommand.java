@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -24,93 +21,86 @@ import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.server.core.IMonitoredServerPort;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerMonitorManager;
+import org.eclipse.wst.server.core.IServerPort;
 import org.eclipse.wst.server.core.ServerCore;
-import org.eclipse.wst.server.core.model.IMonitorableServer;
-import org.eclipse.wst.server.core.model.IServerDelegate;
-import org.eclipse.wst.server.core.model.IServerPort;
 
-public class CreateMonitorCommand extends SimpleCommand
-{
+public class CreateMonitorCommand extends SimpleCommand {
+
   private static final String WEB_SERVICES = "Web services";
+
   private Boolean monitorService;
+
   private String serviceServerInstanceId;
+
   private Integer monitoredPort;
 
-  public CreateMonitorCommand()
-  {
-    super("org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand", "org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand");
+  public CreateMonitorCommand() {
+    super("org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand",
+        "org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand");
   }
 
-  public Status execute(Environment env)
-  {
-    if (monitorService != null && monitorService.booleanValue())
-    {
-      IServer server = ServerCore.getResourceManager().getServer(serviceServerInstanceId);
-      if (server != null)
-      {
-        IServerDelegate serverDelegate = server.getDelegate();
-        if (serverDelegate instanceof IMonitorableServer)
-        {
-          IMonitorableServer monitorableServer = (IMonitorableServer) serverDelegate;
-          List ports = monitorableServer.getServerPorts();
-          IServerPort port = null;
-          for (Iterator it = ports.iterator(); it.hasNext();)
-          {
-            IServerPort p = (IServerPort) it.next();
-            String protocol = p.getProtocol();
-            if (protocol != null && protocol.trim().toLowerCase().equals("http"))
-            {
-              port = p;
-              break;
-            }
+  public Status execute(Environment env) {
+    if (monitorService != null && monitorService.booleanValue()) {
+      IServer server = ServerCore.findServer(serviceServerInstanceId);
+      if (server != null) {
+
+        // IMonitorableServer monitorableServer = (IMonitorableServer)
+        // serverDelegate;
+        IServerPort[] ports = server.getServerPorts();
+        IServerPort port = null;
+        for (int it = 0; it < ports.length; it++) {
+          IServerPort p = ports[it];
+          String protocol = p.getProtocol();
+          if (protocol != null && protocol.trim().toLowerCase().equals("http")) {
+            port = p;
+            break;
           }
-          if (port != null)
-          {
-            IServerMonitorManager serverMonitorManager = ServerCore.getServerMonitorManager();
-            List monitoredPorts = serverMonitorManager.getMonitoredPorts(server);
-            for (Iterator it2 = monitoredPorts.iterator(); it2.hasNext();)
+        }
+        if (port != null) {
+          IServerMonitorManager serverMonitorManager = ServerCore.getServerMonitorManager();
+          IMonitoredServerPort[] monitoredPorts = serverMonitorManager.getMonitoredPorts(server);
+          for (int it2 = 0; it2 < monitoredPorts.length; it2++) {
+            IMonitoredServerPort imsPort = monitoredPorts[it2];
+            if (port.getPort() == imsPort.getServerPort().getPort() && hasContentWebServices(imsPort)) // port
+            // already
+            // being
+            // monitored
             {
-              IMonitoredServerPort imsPort = (IMonitoredServerPort)it2.next();
-              if (port.getPort() == imsPort.getServerPort().getPort() && hasContentWebServices(imsPort)) // port already being monitored
-              {
-                if (!imsPort.isStarted())
-                {
-                  try
-                  {
-                    serverMonitorManager.startMonitor(imsPort);
-                  }
-                  catch (CoreException ce)
-                  {
-                    MessageUtils msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
-                    Status error = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[] {String.valueOf(port.getPort()), server.getName()}), Status.ERROR, ce);
-                    env.getStatusHandler().reportError(error);
-                    return error;
-                  }
+              if (!imsPort.isStarted()) {
+                try {
+                  serverMonitorManager.startMonitor(imsPort);
                 }
-                monitoredPort = new Integer(imsPort.getMonitorPort());
-                return new SimpleStatus("");
+                catch (CoreException ce) {
+                  MessageUtils msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
+                  Status error = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR",
+                      new Object[] { String.valueOf(port.getPort()), server.getName()}), Status.ERROR, ce);
+                  env.getStatusHandler().reportError(error);
+                  return error;
+                }
               }
-            }
-            try
-            {
-              IMonitoredServerPort imsPort = serverMonitorManager.createMonitor(server, port, -1, new String[] {WEB_SERVICES});
-              serverMonitorManager.startMonitor(imsPort);
               monitoredPort = new Integer(imsPort.getMonitorPort());
               return new SimpleStatus("");
             }
-            catch (CoreException ce)
-            {
-              MessageUtils msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
-              Status error = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[] {String.valueOf(port.getPort()), server.getName()}), Status.ERROR, ce);
-              env.getStatusHandler().reportError(error);
-              return error;
-            }
+          }
+          try {
+            IMonitoredServerPort imsPort = serverMonitorManager.createMonitor(server, port, -1, new String[] { WEB_SERVICES});
+            serverMonitorManager.startMonitor(imsPort);
+            monitoredPort = new Integer(imsPort.getMonitorPort());
+            return new SimpleStatus("");
+          }
+          catch (CoreException ce) {
+            MessageUtils msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
+            Status error = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[] {
+                String.valueOf(port.getPort()), server.getName()}), Status.ERROR, ce);
+            env.getStatusHandler().reportError(error);
+            return error;
           }
         }
-        else
-        {
+
+        else {
           MessageUtils msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
-          Status info = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils.getMessage("MSG_INFO_MONITORING_NOT_SUPPORTED", new Object[] {server.getName()}), Status.INFO);
+          Status info = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils.getMessage("MSG_INFO_MONITORING_NOT_SUPPORTED",
+              new Object[] { server.getName()}), Status.INFO);
           env.getStatusHandler().reportInfo(info);
           return info;
         }
@@ -118,33 +108,27 @@ public class CreateMonitorCommand extends SimpleCommand
     }
     return new SimpleStatus("");
   }
-  
-  private boolean hasContentWebServices(IMonitoredServerPort imsPort)
-  {
+
+  private boolean hasContentWebServices(IMonitoredServerPort imsPort) {
     String[] contents = imsPort.getContentTypes();
     for (int i = 0; i < contents.length; i++)
-      if (WEB_SERVICES.equals(contents[i]))
-        return true;
+      if (WEB_SERVICES.equals(contents[i])) return true;
     return false;
   }
 
-  public void setServiceTypeRuntimeServer(TypeRuntimeServer typeRuntimeServer)
-  {
+  public void setServiceTypeRuntimeServer(TypeRuntimeServer typeRuntimeServer) {
     this.serviceServerInstanceId = typeRuntimeServer.getServerInstanceId();
   }
-  
-  public void setServiceServerInstanceId(String serviceServerInstanceId)
-  {
+
+  public void setServiceServerInstanceId(String serviceServerInstanceId) {
     this.serviceServerInstanceId = serviceServerInstanceId;
   }
 
-  public Integer getMonitoredPort()
-  {
+  public Integer getMonitoredPort() {
     return monitoredPort;
   }
 
-  public void setMonitorService(Boolean value)
-  {
+  public void setMonitorService(Boolean value) {
     monitorService = value;
   }
 }

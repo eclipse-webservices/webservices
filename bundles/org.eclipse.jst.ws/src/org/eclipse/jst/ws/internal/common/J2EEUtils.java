@@ -21,6 +21,7 @@ import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.j2ee.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.applicationclient.creation.IApplicationClientNatureConstants;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
@@ -40,7 +41,7 @@ import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.eclipse.EclipseLog;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
-import org.eclipse.wst.server.core.model.IModule;
+import org.eclipse.wst.server.core.IModule;
 
 import com.ibm.wtp.emf.workbench.ProjectUtilities;
 
@@ -456,7 +457,7 @@ public final class J2EEUtils
   						earProject = ear.getProject();
   						IModule module = ResourceUtils.getModule(earProject);
   						if (module != null) {
-  							if (server!=null || ServerUtil.containsModule(server, module)) {
+  							if (server!=null || ServerUtil.containsModule(server, module, new NullProgressMonitor())) {
   								preferredEARList.add(ear);
   							}
   							else {

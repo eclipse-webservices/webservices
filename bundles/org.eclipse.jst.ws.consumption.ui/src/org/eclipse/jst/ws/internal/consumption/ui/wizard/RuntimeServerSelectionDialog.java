@@ -647,7 +647,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
       if (id != null)
         existingServersTree[0].setImage(id.createImage());
       for (int k = 0; k < serverIds.length; k++) {
-        IServerType serverType = ServerCore.getServerType(((IServer) existingServersTable_.get(serverIds[k])).getServerType().getId());
+        IServerType serverType = ServerCore.findServerType(((IServer) existingServersTable_.get(serverIds[k])).getServerType().getId());
         if (serverType != null) {
           existingServerItems[k] = new TreeItem(existingServersTree[0], SWT.NONE);
           existingServerItems[k].setText(serverIds[k]);
@@ -697,7 +697,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
           String server = ServerUtils.getInstance().getServerLabelForId(serverIds[i]);
           if (server != null) {
             RuntimeServerSelectionDialog.this.serverLabels_.put(server, serverIds[i]);
-            IServerType serverType = ServerCore.getServerType(serverIds[i]);
+            IServerType serverType = ServerCore.findServerType(serverIds[i]);
             IRuntimeType runtimeType = serverType.getRuntimeType();
             if (!categories_.containsKey(serverType) && runtimeType != null) {
               categories_.put(serverType, runtimeType);
@@ -739,10 +739,10 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     private String[] getAllExistingServers() {
       Vector serverIds = new Vector();
       {
-        List servers = ServerCore.getResourceManager().getServers();
-        if (servers != null && !servers.isEmpty()) {
-          for (int i = 0; i < servers.size(); i++) {
-            IServer server = (IServer) servers.get(i);
+        IServer[] servers = ServerCore.getServers();
+        if (servers != null && servers.length!=0) {
+          for (int i = 0; i < servers.length; i++) {
+            IServer server = (IServer) servers[i];
             serverIds.add(server.getName());
             existingServersTable_.put(server.getName(), server);
           }
@@ -758,9 +758,9 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
      */
     private String[] getAllServerTypes() {
       Vector serverTypes_ = new Vector();
-      List defaultServersList = ServerCore.getServerTypes();
-      for (int i = 0; i < defaultServersList.size(); i++) {
-        IServerType serverType = (IServerType) defaultServersList.get(i);
+      IServerType[] defaultServersList = ServerCore.getServerTypes();
+      for (int i = 0; i < defaultServersList.length; i++) {
+        IServerType serverType = (IServerType) defaultServersList[i];
         serverTypes_.add(serverType.getId());
       }
       return (String[]) serverTypes_.toArray(new String[serverTypes_.size()]);

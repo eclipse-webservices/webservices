@@ -11,9 +11,6 @@
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
@@ -41,18 +38,18 @@ public class CheckProjectOKCommand extends SimpleCommand {
     Status status = new SimpleStatus("");
     
     String typeid = serviceServerTypeId_;
-    List servers = ServerCore.getResourceManager().getServers();
-    Iterator iterator = servers.iterator();
+    IServer[] servers = ServerCore.getServers();
+//    Iterator iterator = servers.iterator();
     boolean viewOpen = false;
     String serverName = null;
 
-    while (iterator.hasNext()) {
-      IServer server = (IServer) iterator.next();
+    for (int i=0;i<servers.length;i++) {
+      IServer server = (IServer) servers[i];
 
       // If the configuration editor is open for the server that we are
       // deploying
       // to we will prompt the user to close it.
-      if (server != null && server.isWorkingCopiesExist() && server.getServerType().getId().equals(typeid)) {
+      if (server != null && server.getServerType().getId().equals(typeid)) {
         viewOpen = true;
         serverName = server.getName();
         break;

@@ -69,7 +69,7 @@ public class BUAxisDefaultingCommand extends SimpleCommand
     msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
     
     if (serviceIds_.getServerInstanceId() != null) { // server exists
-    	serviceExistingServer_ = ServerCore.getResourceManager().getServer(serviceIds_.getServerInstanceId());
+    	serviceExistingServer_ = ServerCore.findServer(serviceIds_.getServerInstanceId());
     }
     if (serviceExistingServer_ != null)
     {

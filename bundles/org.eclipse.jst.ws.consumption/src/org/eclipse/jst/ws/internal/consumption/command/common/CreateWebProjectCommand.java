@@ -20,8 +20,8 @@ import org.eclipse.jst.j2ee.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
-import org.eclipse.jst.j2ee.internal.web.archive.operations.WebProjectCreationDataModel;
-import org.eclipse.jst.j2ee.internal.web.archive.operations.WebProjectCreationOperation;
+import org.eclipse.jst.j2ee.internal.web.archive.operations.WebModuleCreationDataModel;
+import org.eclipse.jst.j2ee.internal.web.archive.operations.WebModuleCreationOperation;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
@@ -103,14 +103,14 @@ public class CreateWebProjectCommand extends SimpleCommand {
     boolean addedToServer = false;
     if (projectExists)
     {
-      addedToServer = ServerUtil.containsModule(existingServer_,ResourceUtils.getModule(webProject));
+      addedToServer = ServerUtil.containsModule(existingServer_,ResourceUtils.getModule(webProject), new NullProgressMonitor());
     }
     
     boolean earExists = earProject!=null && earProject.exists();
     boolean earAddedToServer = true;
     if (earExists)
     {
-      earAddedToServer = ServerUtil.containsModule(existingServer_,ResourceUtils.getModule(earProject));
+      earAddedToServer = ServerUtil.containsModule(existingServer_,ResourceUtils.getModule(earProject), new NullProgressMonitor());
     }
     
     boolean areAssociated = false;
@@ -219,7 +219,7 @@ public class CreateWebProjectCommand extends SimpleCommand {
       if (earAddedToServer && serverRequiresEARRemoval)
       {
         // Stopping server and removing EAR from Server
-        if (existingServer_.getServerState() != IServer.SERVER_STOPPED)
+        if (existingServer_.getServerState() != IServer.STATE_STOPPED)
         {
           existingServer_.synchronousStop();
         }        
@@ -234,7 +234,7 @@ public class CreateWebProjectCommand extends SimpleCommand {
         return status;
       webProject = root.getProject(projectName_);
 
-      boolean earAddedToServerFinal = ServerUtil.containsModule(existingServer_,ResourceUtils.getModule(earProject));
+      boolean earAddedToServerFinal = ServerUtil.containsModule(existingServer_,ResourceUtils.getModule(earProject), new NullProgressMonitor());
       if (!earAddedToServerFinal)
       {
       	Status mmStatus = ServerUtils.getInstance().modifyModules(env, existingServer_, ResourceUtils.getModule(webProject) , true, new NullProgressMonitor());  
@@ -249,7 +249,7 @@ public class CreateWebProjectCommand extends SimpleCommand {
       if (earAddedToServer && serverRequiresEARRemoval)
       {
         // Stopping server and removing EAR from Server
-        if (existingServer_.getServerState() != IServer.SERVER_STOPPED)
+        if (existingServer_.getServerState() != IServer.STATE_STOPPED)
         {
           existingServer_.synchronousStop();
         }        
@@ -261,7 +261,7 @@ public class CreateWebProjectCommand extends SimpleCommand {
       //Associate the Web project and the EAR project
       J2EEUtils.associateWebProject(webProject, earProject);
       
-      boolean earAddedToServerFinal = ServerUtil.containsModule(existingServer_,ResourceUtils.getModule(earProject));      
+      boolean earAddedToServerFinal = ServerUtil.containsModule(existingServer_,ResourceUtils.getModule(earProject), new NullProgressMonitor());      
       if (!earAddedToServerFinal)
       {
       	Status mmStatus = ServerUtils.getInstance().modifyModules(env, existingServer_, ResourceUtils.getModule(webProject) , true, new NullProgressMonitor());  
@@ -278,12 +278,13 @@ public class CreateWebProjectCommand extends SimpleCommand {
   {
     try
     {
-    WebProjectCreationDataModel projectInfo = new WebProjectCreationDataModel();
-    projectInfo.setProperty(WebProjectCreationDataModel.PROJECT_NAME, projectName_);
+    	
+    WebModuleCreationDataModel projectInfo = new WebModuleCreationDataModel();
+    projectInfo.setProperty(WebModuleCreationDataModel.PROJECT_NAME, projectName_);
     String finalJ2EEVersion = null;
     if (j2eeVersion_ != null && j2eeVersion_.length()>0)
     {
-      projectInfo.setProperty(WebProjectCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
+      projectInfo.setProperty(WebModuleCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
       finalJ2EEVersion = j2eeVersion_;
     }        
     else        
@@ -296,18 +297,18 @@ public class CreateWebProjectCommand extends SimpleCommand {
         {
           EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
           int earVersion = ear.getJ2EEVersion();
-          projectInfo.setProperty(WebProjectCreationDataModel.J2EE_VERSION, new Integer(earVersion));
+          projectInfo.setProperty(WebModuleCreationDataModel.J2EE_VERSION, new Integer(earVersion));
           finalJ2EEVersion = String.valueOf(earVersion);
         }
         else
         {          
-          projectInfo.setProperty(WebProjectCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+          projectInfo.setProperty(WebModuleCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
           finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
         }
       }
       else
       {
-        projectInfo.setProperty(WebProjectCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+        projectInfo.setProperty(WebModuleCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
         finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);        
       }
       
@@ -316,24 +317,24 @@ public class CreateWebProjectCommand extends SimpleCommand {
     if (serverFactoryId_!=null && serverFactoryId_.length()>0)
     {
       runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId_,IServerTargetConstants.WEB_TYPE, finalJ2EEVersion); 
-      projectInfo.setProperty(WebProjectCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
-      projectInfo.setProperty(WebProjectCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);      
+      projectInfo.setProperty(WebModuleCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
+      projectInfo.setProperty(WebModuleCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);      
     } 
     
     if (earProjectName_ !=null && earProjectName_.length()>0)
     {
-      projectInfo.setProperty(WebProjectCreationDataModel.EAR_PROJECT_NAME, earProjectName_);
-      projectInfo.setProperty(WebProjectCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
+      projectInfo.setProperty(WebModuleCreationDataModel.EAR_PROJECT_NAME, earProjectName_);
+      projectInfo.setProperty(WebModuleCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
     }
     else
     {
-      projectInfo.setProperty(WebProjectCreationDataModel.ADD_TO_EAR, Boolean.FALSE);
+      projectInfo.setProperty(WebModuleCreationDataModel.ADD_TO_EAR, Boolean.FALSE);
     }
     	
     
 
     //Create and run the operation
-    WebProjectCreationOperation op = new WebProjectCreationOperation(projectInfo);
+    WebModuleCreationOperation op = new WebModuleCreationOperation(projectInfo);
       op.run(new NullProgressMonitor());    
     return new SimpleStatus("");
     } catch (Exception e)
@@ -393,20 +394,20 @@ public class CreateWebProjectCommand extends SimpleCommand {
       }
       IProject webProject = root.getProject(webProjectName);
       if (webProject != null && !webProject.exists()) {
-        WebProjectCreationDataModel info = new WebProjectCreationDataModel();
-        info.setProperty(WebProjectCreationDataModel.PROJECT_NAME, webProjectName);
-        info.setProperty(WebProjectCreationDataModel.EAR_PROJECT_NAME, earProjectName);
-        //info.setProperty(WebProjectCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
-        info.setProperty(WebProjectCreationDataModel.ADD_TO_EAR, Boolean.FALSE);
+        WebModuleCreationDataModel info = new WebModuleCreationDataModel();
+        info.setProperty(WebModuleCreationDataModel.PROJECT_NAME, webProjectName);
+        info.setProperty(WebModuleCreationDataModel.EAR_PROJECT_NAME, earProjectName);
+        //info.setProperty(WebModuleCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
+        info.setProperty(WebModuleCreationDataModel.ADD_TO_EAR, Boolean.FALSE);
         if (serverFactoryId_!=null && serverFactoryId_.length()>0)
         {
           String runtimeTargetId = ServerUtils.getRuntimeTargetIdFromFactoryId(serverFactoryId_); 
-          info.setProperty(WebProjectCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
-          info.setProperty(WebProjectCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
+          info.setProperty(WebModuleCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
+          info.setProperty(WebModuleCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
         }
         if (j2eeVersion_ != null && j2eeVersion_.length()>0)
         {
-          info.setProperty(WebProjectCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
+          info.setProperty(WebModuleCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
         }                
 
         WebProjectCreationOperation operation = new WebProjectCreationOperation(info);

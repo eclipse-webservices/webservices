@@ -193,10 +193,10 @@ public class AxisClientDefaultingCommand extends SimpleCommand
 			// Maybe this should be in WebServiceServerRuntimeTypeRegistry
 			Vector serverIds = new Vector();
 			{
-				List servers = ServerCore.getResourceManager().getServers();
-				if (servers != null && !servers.isEmpty()) {
-					for (int i = 0; i < servers.size(); i++) {
-						IServer server = (IServer) servers.get(i);
+				IServer[] servers = ServerCore.getServers();
+				if (servers != null && servers.length!=0) {
+					for (int i = 0; i < servers.length; i++) {
+						IServer server = (IServer) servers[i];
 						if ((server.getName()).equals(clientServer_))
 							return server;
 					}

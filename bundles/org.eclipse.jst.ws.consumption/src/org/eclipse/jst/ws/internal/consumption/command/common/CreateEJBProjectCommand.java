@@ -17,8 +17,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.j2ee.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
-import org.eclipse.jst.j2ee.internal.ejb.project.operations.EJBProjectCreationDataModel;
-import org.eclipse.jst.j2ee.internal.ejb.project.operations.EJBProjectCreationOperation;
+import org.eclipse.jst.j2ee.internal.ejb.project.operations.EJBModuleCreationDataModel;
+import org.eclipse.jst.j2ee.internal.ejb.project.operations.EJBModuleCreationOperation;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEPlugin;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
@@ -91,9 +91,9 @@ public class CreateEJBProjectCommand extends SimpleCommand
     }
 
     // Create EJBProjectInfo
-    EJBProjectCreationDataModel projectInfo = new EJBProjectCreationDataModel();
-    projectInfo.setProperty( EJBProjectCreationDataModel.PROJECT_NAME, ejbProjectName_ );
-    projectInfo.setProperty(EJBProjectCreationDataModel.CREATE_DEFAULT_SESSION_BEAN,Boolean.TRUE);
+    EJBModuleCreationDataModel projectInfo = new EJBModuleCreationDataModel();
+    projectInfo.setProperty( EJBModuleCreationDataModel.PROJECT_NAME, ejbProjectName_ );
+    projectInfo.setProperty(EJBModuleCreationDataModel.CREATE_DEFAULT_SESSION_BEAN,Boolean.TRUE);
 
     Status status;
     if (earProjectName_ != null)
@@ -111,7 +111,7 @@ public class CreateEJBProjectCommand extends SimpleCommand
    return new SimpleStatus("");
   }
 
-  private Status addEARToProject(String earProjectName, EJBProjectCreationDataModel projectInfo)
+  private Status addEARToProject(String earProjectName, EJBModuleCreationDataModel projectInfo)
   {
     IProject earProject = null;
     // IProject earProject = ResourcesPlugin.getWorkspace().getRoot().getProject(earProjectName);
@@ -136,14 +136,14 @@ public class CreateEJBProjectCommand extends SimpleCommand
       }
     }
 
-    projectInfo.setProperty(EJBProjectCreationDataModel.EAR_PROJECT_NAME, earProject.getName());
-    projectInfo.setProperty(EJBProjectCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
+    projectInfo.setProperty(EJBModuleCreationDataModel.EAR_PROJECT_NAME, earProject.getName());
+    projectInfo.setProperty(EJBModuleCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
     
     //Set the J2EE version
     String finalJ2EEVersion = null;    
     if (j2eeVersion_ != null && j2eeVersion_.length()>0)
     {
-      projectInfo.setProperty(EJBProjectCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
+      projectInfo.setProperty(EJBModuleCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
       finalJ2EEVersion = j2eeVersion_;
     }    
     else
@@ -152,12 +152,12 @@ public class CreateEJBProjectCommand extends SimpleCommand
       {
         EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
         int earVersion = ear.getJ2EEVersion();
-        projectInfo.setProperty(EJBProjectCreationDataModel.J2EE_VERSION, new Integer(earVersion));
+        projectInfo.setProperty(EJBModuleCreationDataModel.J2EE_VERSION, new Integer(earVersion));
         finalJ2EEVersion = String.valueOf(earVersion);
       }
       else
       {
-        projectInfo.setProperty(EJBProjectCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+        projectInfo.setProperty(EJBModuleCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
         finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
       }            
     }
@@ -165,11 +165,11 @@ public class CreateEJBProjectCommand extends SimpleCommand
     if (serverFactoryId_!=null && serverFactoryId_.length()>0)
     {
       String runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId_, IServerTargetConstants.EJB_TYPE, j2eeVersion_); 
-      projectInfo.setProperty(EJBProjectCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
-      projectInfo.setProperty(EJBProjectCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
+      projectInfo.setProperty(EJBModuleCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
+      projectInfo.setProperty(EJBModuleCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
     }
 
-    EJBProjectCreationOperation ejbProjectCreationOperation = new EJBProjectCreationOperation(projectInfo);    	
+    EJBModuleCreationOperation ejbProjectCreationOperation = new EJBModuleCreationOperation(projectInfo);    	
 
     try
     {
@@ -186,7 +186,7 @@ public class CreateEJBProjectCommand extends SimpleCommand
     return new SimpleStatus("");
   }
 
-  private Status addEARToProject(IProject serviceProject, EJBProjectCreationDataModel projectInfo, Environment env)
+  private Status addEARToProject(IProject serviceProject, EJBModuleCreationDataModel projectInfo, Environment env)
   {
         EARNatureRuntime ear = null;
         IProject earProject = null;
@@ -201,7 +201,7 @@ public class CreateEJBProjectCommand extends SimpleCommand
              earProject = ear.getProject();
              if (serviceExistingServer != null)
              {
-               if (serviceExistingServer.getServerState() != IServer.SERVER_STOPPED)
+               if (serviceExistingServer.getServerState() != IServer.STATE_STOPPED)
                  serviceExistingServer.synchronousStop();     
                Status mmStatus = ServerUtils.getInstance().modifyModules(env, serviceExistingServer, ResourceUtils.getModule(earProject), false, new NullProgressMonitor());
                if (mmStatus.getSeverity()==Status.ERROR)
@@ -221,7 +221,7 @@ public class CreateEJBProjectCommand extends SimpleCommand
               IServer defaultServer = ServerUtils.getDefaultExistingServer(earProject);    
               if (defaultServer!=null)
               {
-              	if (defaultServer.getServerState() != IServer.SERVER_STOPPED) {
+              	if (defaultServer.getServerState() != IServer.STATE_STOPPED) {
                 	 defaultServer.synchronousStop();                    
                 	 }
               	Status mmStatus = ServerUtils.getInstance().modifyModules(env, defaultServer, ResourceUtils.getModule(earProject), false, new NullProgressMonitor());
@@ -241,9 +241,9 @@ public class CreateEJBProjectCommand extends SimpleCommand
 	      
       IProject ejbProject = null;
       //Add the project back to the Server config
-      projectInfo.setProperty(EJBProjectCreationDataModel.EAR_PROJECT_NAME, earProject.getName());
-      projectInfo.setProperty(EJBProjectCreationDataModel.ADD_TO_EAR, Boolean.TRUE);	
-      EJBProjectCreationOperation ejbProjectCreationOperation = new EJBProjectCreationOperation(projectInfo);    	
+      projectInfo.setProperty(EJBModuleCreationDataModel.EAR_PROJECT_NAME, earProject.getName());
+      projectInfo.setProperty(EJBModuleCreationDataModel.ADD_TO_EAR, Boolean.TRUE);	
+      EJBModuleCreationOperation ejbProjectCreationOperation = new EJBModuleCreationOperation(projectInfo);    	
 
       try {
         ejbProjectCreationOperation.run(new NullProgressMonitor());
@@ -293,18 +293,18 @@ public class CreateEJBProjectCommand extends SimpleCommand
       IProject ejbProject = root.getProject(ejbProjectName);
       if (ejbProject != null && !ejbProject.exists())
       {
-        EJBProjectCreationDataModel info = new EJBProjectCreationDataModel();
-        info.setProperty(EJBProjectCreationDataModel.PROJECT_NAME, ejbProjectName);
-        info.setProperty(EJBProjectCreationDataModel.EAR_PROJECT_NAME, earProjectName);
-        info.setProperty(EJBProjectCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
+        EJBModuleCreationDataModel info = new EJBModuleCreationDataModel();
+        info.setProperty(EJBModuleCreationDataModel.PROJECT_NAME, ejbProjectName);
+        info.setProperty(EJBModuleCreationDataModel.EAR_PROJECT_NAME, earProjectName);
+        info.setProperty(EJBModuleCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
         
-        info.setProperty(EJBProjectCreationDataModel.CREATE_DEFAULT_SESSION_BEAN,Boolean.TRUE);        
+        info.setProperty(EJBModuleCreationDataModel.CREATE_DEFAULT_SESSION_BEAN,Boolean.TRUE);        
         
         //Set the J2EE version
         String finalJ2EEVersion = null;
         if (j2eeVersion_ != null && j2eeVersion_.length()>0)
         {
-          info.setProperty(EJBProjectCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
+          info.setProperty(EJBModuleCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
           finalJ2EEVersion = j2eeVersion_;
         }                                
         else
@@ -313,12 +313,12 @@ public class CreateEJBProjectCommand extends SimpleCommand
           {
             EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
             int earVersion = ear.getJ2EEVersion();
-            info.setProperty(EJBProjectCreationDataModel.J2EE_VERSION, new Integer(earVersion));
+            info.setProperty(EJBModuleCreationDataModel.J2EE_VERSION, new Integer(earVersion));
             finalJ2EEVersion = String.valueOf(earVersion);
           }
           else
           {
-            info.setProperty(EJBProjectCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+            info.setProperty(EJBModuleCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
             finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
           }            
         }
@@ -327,18 +327,18 @@ public class CreateEJBProjectCommand extends SimpleCommand
         if (serverFactoryId_!=null && serverFactoryId_.length()>0)
         {
           String runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId_,IServerTargetConstants.EJB_TYPE, finalJ2EEVersion); 
-          info.setProperty(EJBProjectCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
-          info.setProperty(EJBProjectCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
+          info.setProperty(EJBModuleCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
+          info.setProperty(EJBModuleCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
         }
 
         //Create the EJB Project
-        EJBProjectCreationOperation operation = new EJBProjectCreationOperation(info);
+        EJBModuleCreationOperation operation = new EJBModuleCreationOperation(info);
         operation.run(new NullProgressMonitor());
       }
       
       // add EAR to Server
       if (serviceExistingServer!=null){
-        boolean earAddedToServer = ServerUtil.containsModule(serviceExistingServer,ResourceUtils.getModule(earProject));
+        boolean earAddedToServer = ServerUtil.containsModule(serviceExistingServer,ResourceUtils.getModule(earProject), new NullProgressMonitor());
         
         if (!earAddedToServer) {
           Status mmStatus = ServerUtils.getInstance().modifyModules(env, serviceExistingServer, ResourceUtils.getModule(earProject) , true, new NullProgressMonitor());  

@@ -16,8 +16,8 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.j2ee.J2EEVersionConstants;
-import org.eclipse.jst.j2ee.applicationclient.creation.AppClientProjectCreationDataModel;
-import org.eclipse.jst.j2ee.applicationclient.creation.AppClientProjectCreationOperation;
+import org.eclipse.jst.j2ee.applicationclient.creation.AppClientModuleCreationDataModel;
+import org.eclipse.jst.j2ee.applicationclient.creation.AppClientModuleCreationOperation;
 import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -65,16 +65,16 @@ public class CreateAppClientProjectCommand extends SimpleCommand
       IProject appClientProject = root.getProject(appClientProjectName_);
       if (appClientProject != null && !appClientProject.exists())
       {
-        AppClientProjectCreationDataModel info = new AppClientProjectCreationDataModel();
-        info.setProperty(AppClientProjectCreationDataModel.PROJECT_NAME, appClientProjectName_);
-        info.setProperty(AppClientProjectCreationDataModel.EAR_PROJECT_NAME, earProjectName_);
-        info.setProperty(AppClientProjectCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
+        AppClientModuleCreationDataModel info = new AppClientModuleCreationDataModel();
+        info.setProperty(AppClientModuleCreationDataModel.PROJECT_NAME, appClientProjectName_);
+        info.setProperty(AppClientModuleCreationDataModel.EAR_PROJECT_NAME, earProjectName_);
+        info.setProperty(AppClientModuleCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
         
         //Set the J2EE version
         String finalJ2EEVersion = null;
         if (j2eeVersion_ != null && j2eeVersion_.length()>0)
         {
-          info.setProperty(AppClientProjectCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
+          info.setProperty(AppClientModuleCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
           finalJ2EEVersion = j2eeVersion_;
         }                        
         else
@@ -83,12 +83,12 @@ public class CreateAppClientProjectCommand extends SimpleCommand
           {
             EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
             int earVersion = ear.getJ2EEVersion();
-            info.setProperty(AppClientProjectCreationDataModel.J2EE_VERSION, new Integer(earVersion));
+            info.setProperty(AppClientModuleCreationDataModel.J2EE_VERSION, new Integer(earVersion));
             finalJ2EEVersion = String.valueOf(earVersion);
           }
           else
           {
-            info.setProperty(AppClientProjectCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+            info.setProperty(AppClientModuleCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
             finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
           }            
         }        
@@ -97,12 +97,12 @@ public class CreateAppClientProjectCommand extends SimpleCommand
         if (serverFactoryId_!=null && serverFactoryId_.length()>0)
         {
           String runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId_, IServerTargetConstants.APP_CLIENT_TYPE, finalJ2EEVersion); 
-          info.setProperty(AppClientProjectCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
-          info.setProperty(AppClientProjectCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
+          info.setProperty(AppClientModuleCreationDataModel.SERVER_TARGET_ID, runtimeTargetId );
+          info.setProperty(AppClientModuleCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
         }
 
         //Create the AppClient project
-        AppClientProjectCreationOperation operation = new AppClientProjectCreationOperation(info);
+        AppClientModuleCreationOperation operation = new AppClientModuleCreationOperation(info);
         operation.run(new NullProgressMonitor());
       }
     }

@@ -251,7 +251,7 @@ public class WebServiceServerRuntimeTypeRegistry implements CommandRegistry
         {
           IWebServiceServer wsserver = getWebServiceServerById(wssrt.serverId_);
           String thisFactoryId = wsserver.getFactoryId();
-          IServerType serverType = ServerCore.getServerType(thisFactoryId);
+          IServerType serverType = ServerCore.findServerType(thisFactoryId);
           if (serverType == null)
             continue;
           

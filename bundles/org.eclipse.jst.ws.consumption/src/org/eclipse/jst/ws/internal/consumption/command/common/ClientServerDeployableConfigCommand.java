@@ -89,12 +89,12 @@ public class ClientServerDeployableConfigCommand extends SimpleCommand {
       }
       else {
       // get an IServer object; either existing or create one
-       server = ServerCore.getResourceManager().getServer(existingServerInstId);
+       server = ServerCore.findServer(existingServerInstId);
       }
    
       if (server != null) {
       	// find exact server for given project
-        IServer[] servers = ServerUtil.getServersByModule(ResourceUtils.getModule(project));
+        IServer[] servers = ServerUtil.getServersByModule(ResourceUtils.getModule(project), null);
         boolean foundServer = false;
         for (int i = 0; i < servers.length; i++) {
           if (servers[i].equals(server))
@@ -172,15 +172,9 @@ public class ClientServerDeployableConfigCommand extends SimpleCommand {
   public String getServiceExistingServerInstId() {
 	String id = null;
 	IServerWorkingCopy wc = null;
-	try {
-		if (serviceExistingServer_!=null){
-		  wc = serviceExistingServer_.getWorkingCopy();
-		  id = (wc!=null ? wc.getId() : null);
-		}
-	} finally {
-		if (wc!=null){
-			wc.release();
-		}
+	if (serviceExistingServer_!=null){
+	  wc = serviceExistingServer_.createWorkingCopy();
+	  id = (wc!=null ? wc.getId() : null);
 	}
 	return id;
   }
@@ -196,15 +190,9 @@ public class ClientServerDeployableConfigCommand extends SimpleCommand {
   public String getSampleExistingServerInstId() {
 	String id = null;
 	IServerWorkingCopy wc = null;
-	try {
-		if (sampleExistingServer_!=null){
-		  wc = sampleExistingServer_.getWorkingCopy();
-		  id = (wc!=null ? wc.getId() : null);
-		}
-	} finally {
-		if (wc!=null) {
-			wc.release();
-		}
+	if (sampleExistingServer_!=null){
+	  wc = sampleExistingServer_.createWorkingCopy();
+	  id = (wc!=null ? wc.getId() : null);
 	}
 	return id;
   }

@@ -30,9 +30,9 @@ import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.common.StatusException;
-import org.eclipse.wst.monitor.core.IMonitor;
-import org.eclipse.wst.monitor.core.IMonitorWorkingCopy;
-import org.eclipse.wst.monitor.core.MonitorCore;
+import org.eclipse.wst.internet.monitor.core.IMonitor;
+import org.eclipse.wst.internet.monitor.core.IMonitorWorkingCopy;
+import org.eclipse.wst.internet.monitor.core.MonitorCore;
 import org.eclipse.wst.server.core.util.SocketUtil;
 import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 
@@ -118,7 +118,7 @@ public class GetMonitorCommand extends SimpleCommand
                     monitorWorkingCopy.setLocalPort(monitoredPort);
                     monitorWorkingCopy.setRemoteHost(host);
                     monitorWorkingCopy.setRemotePort(port);
-                    monitorWorkingCopy.setProtocolAdapter(MonitorCore.getProtocolAdapter(MonitorCore.HTTP_PROTOCOL_ID));
+                    monitorWorkingCopy.setProtocolAdapter(MonitorCore.findProtocolAdapter(MonitorCore.HTTP_PROTOCOL_ID));
                     m = monitorWorkingCopy.save();
                   }
                   if (m != null)

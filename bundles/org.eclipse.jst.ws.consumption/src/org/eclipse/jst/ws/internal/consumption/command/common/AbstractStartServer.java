@@ -55,9 +55,9 @@ public void StartServer (IProject project, IServer server, IProgressMonitor moni
 //    addJarsToClassPath(javaServer);
     validateRemoteServerPath(server);
 
-    if (server.getServerState() != IServer.SERVER_STOPPED)  // The Server is running
+    if (server.getServerState() != IServer.STATE_STOPPED)  // The Server is running
     { 
-      if (server.isRestartNeeded())
+      if (server.getServerRestartState())
       {    
       	
         server.synchronousStop();
@@ -126,7 +126,7 @@ protected void restartProject(IProject project, IServer server) throws CoreExcep
     for (int i = 0; i < ears.length; i++)
     {
       IProject earProject = ears[i].getProject();
-      if (earProject != null && ServerUtil.containsModule(server,ResourceUtils.getModule(earProject)))    
+      if (earProject != null && ServerUtil.containsModule(server,ResourceUtils.getModule(earProject), monitor))    
       {
         (new org.eclipse.wst.server.ui.actions.RestartProjectAction(earProject)).run();
         log_.log(Log.INFO, 5053, this, "restartProject", "earProject="+earProject+", Restart project command completed");
@@ -158,7 +158,7 @@ public void stopServer(IServer server) throws CoreException {
 
 	if (server != null) {
 
-		if (server.getServerState() != IServer.SERVER_STOPPED) {
+		if (server.getServerState() != IServer.STATE_STOPPED) {
 			server.synchronousStop();
 		}
 	}	
