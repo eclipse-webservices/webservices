@@ -25,6 +25,7 @@
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.xsd"/>
       <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.wst.sse.core"/>
    </requires>
 
    <extension point="org.eclipse.wst.common.dependencychecker.requiredFiles">
