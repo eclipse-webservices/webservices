@@ -339,7 +339,7 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
   	  // Under what conditions does this code get executed (i.e. why would schema == null)?
       schema = XSDFactory.eINSTANCE.createXSDSchema();
       schema.setSchemaForSchemaQNamePrefix("xsd");
-      schema.setTargetNamespace("http://www.ibm.com/");
+      schema.setTargetNamespace("http://tempuri.org/");
       java.util.Map qNamePrefixToNamespaceMap = schema.getQNamePrefixToNamespaceMap();
       qNamePrefixToNamespaceMap.put("", schema.getTargetNamespace());
       qNamePrefixToNamespaceMap.put
