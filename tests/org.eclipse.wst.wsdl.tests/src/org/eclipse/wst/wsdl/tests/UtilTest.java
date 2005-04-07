@@ -12,11 +12,15 @@ package org.eclipse.wst.wsdl.tests;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLPackage;
+import org.eclipse.wst.wsdl.WSDLPlugin;
+//import org.eclipse.wst.wsdl.internal.extensibility.ExtensibilityElementFactoryRegistryImpl;
+//import org.eclipse.wst.wsdl.internal.extensibility.ExtensibilityElementFactoryRegistryReader;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
+import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
+// import org.eclipse.wst.wsdl.util.ExtensibilityElementFactoryRegistry;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
@@ -24,6 +28,8 @@ import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.ibm.wsdl.extensions.soap.SOAPConstants;
 
 import junit.framework.Assert;
 import junit.framework.Test;
@@ -75,7 +81,27 @@ public class UtilTest extends TestCase {
 	          }
 	        }
 	      );
+	    suite.addTest
+	      (new UtilTest("ExtensibilityElementFactory") 
+	        {
+	          protected void runTest() 
+	          {
+	            testExtensibilityElementFactory();
+	          }
+	        }
+	      );
+	    suite.addTest
+	      (new UtilTest("ExtensibilityElementFactoryRegistry") 
+	        {
+	          protected void runTest() 
+	          {
+	            testExtensibilityElementFactoryRegistry();
+	          }
+	        }
+	      );
+		
 
+		
 	    return suite;
 	  }
 	  
@@ -169,4 +195,33 @@ public class UtilTest extends TestCase {
 		  Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
 		}   
 	  }
+	  
+	  public void testExtensibilityElementFactory()
+	  {
+	    try
+	    {
+		    ExtensibilityElementFactory factory = WSDLPlugin.INSTANCE.getExtensibilityElementFactory(SOAPConstants.NS_URI_SOAP);
+		    if (factory != null)
+			{
+		      ExtensibilityElement ee = factory.createExtensibilityElement(SOAPConstants.NS_URI_SOAP, SOAPConstants.ELEM_BODY);
+              Assert.assertTrue("Problem creating SOAP extensibility element", ee != null);
+			}
+	    }
+		catch (Exception e)
+		{
+		  Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
+		}   
+	  }
+	  
+	  public void testExtensibilityElementFactoryRegistry()
+	  {
+	    try
+	    {
+	    }
+		catch (Exception e)
+		{
+		  Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
+		}   
+	  }
+
 }
