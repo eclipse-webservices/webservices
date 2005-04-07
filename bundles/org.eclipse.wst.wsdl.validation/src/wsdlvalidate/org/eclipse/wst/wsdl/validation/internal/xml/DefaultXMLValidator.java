@@ -22,7 +22,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.xerces.jaxp.SAXParserFactoryImpl;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.xml.sax.Attributes;
