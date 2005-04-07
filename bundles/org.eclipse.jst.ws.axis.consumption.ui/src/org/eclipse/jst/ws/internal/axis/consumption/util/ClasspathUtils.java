@@ -16,9 +16,11 @@ import java.net.URL;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -27,6 +29,11 @@ import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
 import org.eclipse.jst.j2ee.internal.earcreation.IEARNatureConstants;
 import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
 import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
+import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
 
 public class ClasspathUtils {
 
@@ -50,6 +57,36 @@ public class ClasspathUtils {
 	public String getClasspathString(IProject project) {
 		StringBuffer classpath = new StringBuffer();
 		String[] classpathEntries = getClasspath(project, false);
+		
+		// TODO: workaround for 90515
+		try {
+		
+			IVirtualComponent component = ComponentCore.createComponent(project, J2EEUtils.getFirstWebModuleName(project));
+			if (component != null) {
+				IVirtualFolder webInfLib = component.getFolder(new Path(
+						"/WEB-INF/lib"));
+				if (webInfLib != null) {
+					IVirtualResource[] resources = webInfLib.members();
+					IResource aResource = null;
+					String resourceLocation = null;
+					String resourcePath = null;
+					for (int i = 0; i < resources.length; i++) {
+						aResource = resources[i].getUnderlyingResource();
+						resourceLocation = aResource.getLocation().toOSString();
+
+						System.out.println(resourceLocation);
+						classpath.append(resourceLocation);
+						classpath.append(";"); //$NON-NLS-1$
+					}
+				}
+			}
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// end of workaround
+		
 		Vector classpathVector = new Vector();
 		for (int i = 0; i < classpathEntries.length; i++) {
 			if (!classpathVector.contains(classpathEntries[i])) {

@@ -25,6 +25,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
 import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
@@ -42,9 +44,12 @@ import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.j2ee.web.modulecore.util.WebArtifactEdit;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.eclipse.EclipseLog;
+import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -893,19 +898,23 @@ public final class J2EEUtils {
 		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
 		  
 		  if (wbcs.length!=0) {
-			WebArtifactEdit webEdit = null;
-			try {
-			  webEdit = WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
-			  if (webEdit!=null){
-				  IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
-				  modulePath = webXMLPath.removeLastSegments(1);
-				  System.out.println("WebModulePath/DDPath = "+modulePath);
-			  }
-			}
-			finally{
-				if (webEdit!=null)
-					webEdit.dispose();
-			}
+//			WebArtifactEdit webEdit = null;
+//			try {
+//			  webEdit = WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
+//			  if (webEdit!=null){
+//				  IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
+//				  modulePath = webXMLPath.removeLastSegments(1);
+//				  System.out.println("WebModulePath/DDPath = "+modulePath);
+//			  }
+//			}
+//			finally{
+//				if (webEdit!=null)
+//					webEdit.dispose();
+//			}
+			IVirtualComponent component = ComponentCore.createComponent(project, wbcs[0].getName());
+			IVirtualFolder webInfDir = component.getFolder(new Path("/WEB-INF"));
+			modulePath = webInfDir.getWorkspaceRelativePath();
+			System.out.println("FirstWebInfPath = " +modulePath);
 		  }
 		}
 		catch(Exception ex){}
@@ -925,19 +934,22 @@ public final class J2EEUtils {
 		  mc = StructureEdit.getStructureEditForRead(project);
 		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
 		  if (wbcs.length!=0) {
-			WebArtifactEdit webEdit = null;
-			try {
-			  webEdit = WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
-			  if (webEdit!=null){
-				  IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
-				  modulePath = webXMLPath.removeLastSegments(2);
-				  System.out.println("WebContent Path = "+modulePath);
-			  }
-			}
-			finally{
-				if (webEdit!=null)
-					webEdit.dispose();
-			}
+//			WebArtifactEdit webEdit = null;
+//			try {
+//			  webEdit = WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
+//			  if (webEdit!=null){
+//				  IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
+//				  modulePath = webXMLPath.removeLastSegments(2);
+//				  System.out.println("WebContent Path = "+modulePath);
+//			  }
+//			}
+//			finally{
+//				if (webEdit!=null)
+//					webEdit.dispose();
+//			}
+			IVirtualComponent component = ComponentCore.createComponent(project, wbcs[0].getName());
+			modulePath = component.getWorkspaceRelativePath();
+			System.out.println("FirstWebContentPath = " +modulePath);
 		  }
 		}
 		catch(Exception ex){}
@@ -985,5 +997,5 @@ public final class J2EEUtils {
 
 		return moduleName;				
 	}
-
+	
 }
