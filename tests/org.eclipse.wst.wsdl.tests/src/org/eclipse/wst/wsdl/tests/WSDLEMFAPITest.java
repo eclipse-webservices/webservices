@@ -44,10 +44,10 @@ import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 
 import org.eclipse.wst.wsdl.binding.soap.*;
+import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.tests.util.DefinitionVisitor;
-import org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl;
 import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Element;
@@ -232,8 +232,6 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     currentPortType.setDocumentationElement(portType.getDocumentationElement());
     currentPortType.setQName(portType.getQName());
     currentPortType.setUndefined(portType.isUndefined());
-    currentPortType.setProxy(portType.isProxy());
-    currentPortType.setResourceURI(portType.getResourceURI());
     
     currentPortType.setEnclosingDefinition(newDefinition);
     newDefinition.getEPortTypes().add(currentPortType);
@@ -248,8 +246,6 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     currentOperation.setName(operation.getName());
     currentOperation.setStyle(operation.getStyle());
     currentOperation.setUndefined(operation.isUndefined());
-    currentService.setProxy(operation.isProxy());
-    currentService.setResourceURI(operation.getResourceURI());
     operation.getEParameterOrdering(); // TBD
     currentOperation.setEnclosingDefinition(newDefinition);
     currentPortType.getEOperations().add(currentOperation);
@@ -296,8 +292,6 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     currentBinding.setQName(binding.getQName());
     currentBinding.setEPortType(binding.getEPortType());
     currentBinding.setUndefined(binding.isUndefined());
-    currentBinding.setProxy(binding.isProxy());
-    currentBinding.setResourceURI(binding.getResourceURI());
 
     super.visitBinding(binding);
   }
@@ -348,8 +342,6 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     currentService = factory.createService();
     currentService.setDocumentationElement(service.getDocumentationElement());   
     currentService.setQName(service.getQName());
-    currentService.setProxy(service.isProxy());
-    currentService.setResourceURI(service.getResourceURI());
     
     newDefinition.getEServices().add(currentService);
     

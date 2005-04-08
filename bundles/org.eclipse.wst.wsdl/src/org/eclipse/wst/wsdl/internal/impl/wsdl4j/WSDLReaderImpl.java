@@ -22,7 +22,7 @@ import javax.wsdl.xml.WSDLReader;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl;
+import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

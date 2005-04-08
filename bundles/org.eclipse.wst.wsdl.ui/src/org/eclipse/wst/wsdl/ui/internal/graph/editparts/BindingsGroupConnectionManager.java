@@ -24,8 +24,8 @@ import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
+import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
-import org.eclipse.wst.wsdl.util.WSDLSwitch;
 
                                                    
 public class BindingsGroupConnectionManager extends AbstractConnectionManager

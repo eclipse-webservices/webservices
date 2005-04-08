@@ -18,7 +18,6 @@ import java.util.List;
 
 import javax.wsdl.OperationType;
 
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
@@ -48,11 +47,11 @@ import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.UnknownExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.internal.impl.OperationImpl;
+import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.ITreeChildProvider;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
-import org.eclipse.wst.wsdl.internal.impl.OperationImpl;
-import org.eclipse.wst.wsdl.util.WSDLSwitch;
 import org.eclipse.wst.xml.core.document.IDOMNode;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

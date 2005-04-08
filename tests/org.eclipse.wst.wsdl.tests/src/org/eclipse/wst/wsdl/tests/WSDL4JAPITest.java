@@ -29,11 +29,11 @@ import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.WSDL4JDefinitionVisitor;
 
 import org.eclipse.wst.wsdl.WSDLPlugin;
 import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl;
 
 import javax.wsdl.*;
 import javax.wsdl.extensions.soap.*;

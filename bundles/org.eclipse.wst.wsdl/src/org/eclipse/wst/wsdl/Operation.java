@@ -122,58 +122,6 @@ public interface Operation extends WSDLElement, javax.wsdl.Operation{
 	void setUndefined(boolean value);
 
   /**
-   * Returns the value of the '<em><b>Proxy</b></em>' attribute.
-   * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Proxy</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-   * @return the value of the '<em>Proxy</em>' attribute.
-   * @see #setProxy(boolean)
-   * @see org.eclipse.wsdl.WSDLPackage#getOperation_Proxy()
-   * @model 
-   * @generated
-   */
-	boolean isProxy();
-
-  /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Operation#isProxy <em>Proxy</em>}' attribute.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Proxy</em>' attribute.
-   * @see #isProxy()
-   * @generated
-   */
-	void setProxy(boolean value);
-
-  /**
-   * Returns the value of the '<em><b>Resource URI</b></em>' attribute.
-   * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Resource URI</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-   * @return the value of the '<em>Resource URI</em>' attribute.
-   * @see #setResourceURI(String)
-   * @see org.eclipse.wsdl.WSDLPackage#getOperation_ResourceURI()
-   * @model 
-   * @generated
-   */
-	String getResourceURI();
-
-  /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Operation#getResourceURI <em>Resource URI</em>}' attribute.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Resource URI</em>' attribute.
-   * @see #getResourceURI()
-   * @generated
-   */
-	void setResourceURI(String value);
-
-  /**
    * Returns the value of the '<em><b>EInput</b></em>' containment reference.
    * <!-- begin-user-doc -->
 	 * <p>

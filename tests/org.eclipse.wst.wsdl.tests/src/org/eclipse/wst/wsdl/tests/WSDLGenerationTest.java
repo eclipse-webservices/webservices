@@ -25,10 +25,10 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.wst.wsdl.*;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl;
 
 import org.eclipse.wst.wsdl.binding.soap.*;
 import org.eclipse.wst.wsdl.binding.soap.internal.util.*;
+import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 

@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.util;
 
 import java.lang.reflect.Method;
 
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
@@ -33,10 +32,10 @@ import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.WSDLElement;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.internal.impl.ImportImpl;
+import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.wsdl.util.WSDLSwitch;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

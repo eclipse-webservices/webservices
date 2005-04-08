@@ -18,11 +18,11 @@ import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.WSDLPlugin;
 //import org.eclipse.wst.wsdl.internal.extensibility.ExtensibilityElementFactoryRegistryImpl;
 //import org.eclipse.wst.wsdl.internal.extensibility.ExtensibilityElementFactoryRegistryReader;
+import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
 // import org.eclipse.wst.wsdl.util.ExtensibilityElementFactoryRegistry;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
@@ -172,6 +172,7 @@ public class UtilTest extends TestCase {
 	    try
 		{
 		  WSDLResourceImpl resourceImpl = new WSDLResourceImpl(URI.createFileURI("./samples/createResourceTest.wsdl"));
+          Assert.assertTrue("Resource is not of type WSDLResourceImpl", resourceImpl instanceof WSDLResourceImpl);
 		  
 	      definition = DefinitionLoader.load("./samples/LoadAndPrintTest.wsdl");
 	      Assert.assertTrue(definition.eResource() instanceof WSDLResourceImpl);
@@ -187,8 +188,6 @@ public class UtilTest extends TestCase {
 		  {
 			resourceImpl.serialize(System.out, document, null);
 		  }
-		  
-          Assert.assertTrue("Resource is not of type WSDLResourceImpl", resourceImpl instanceof WSDLResourceImpl);
 		}
 		catch (Exception e)
 		{

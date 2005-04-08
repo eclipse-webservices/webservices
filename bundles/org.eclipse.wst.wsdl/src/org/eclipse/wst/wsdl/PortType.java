@@ -92,58 +92,6 @@ public interface PortType extends WSDLElement, javax.wsdl.PortType{
 	void setUndefined(boolean value);
 
   /**
-   * Returns the value of the '<em><b>Proxy</b></em>' attribute.
-   * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Proxy</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-   * @return the value of the '<em>Proxy</em>' attribute.
-   * @see #setProxy(boolean)
-   * @see org.eclipse.wsdl.WSDLPackage#getPortType_Proxy()
-   * @model 
-   * @generated
-   */
-	boolean isProxy();
-
-  /**
-   * Sets the value of the '{@link org.eclipse.wsdl.PortType#isProxy <em>Proxy</em>}' attribute.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Proxy</em>' attribute.
-   * @see #isProxy()
-   * @generated
-   */
-	void setProxy(boolean value);
-
-  /**
-   * Returns the value of the '<em><b>Resource URI</b></em>' attribute.
-   * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Resource URI</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-   * @return the value of the '<em>Resource URI</em>' attribute.
-   * @see #setResourceURI(String)
-   * @see org.eclipse.wsdl.WSDLPackage#getPortType_ResourceURI()
-   * @model 
-   * @generated
-   */
-	String getResourceURI();
-
-  /**
-   * Sets the value of the '{@link org.eclipse.wsdl.PortType#getResourceURI <em>Resource URI</em>}' attribute.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Resource URI</em>' attribute.
-   * @see #getResourceURI()
-   * @generated
-   */
-	void setResourceURI(String value);
-
-  /**
    * Returns the value of the '<em><b>EOperations</b></em>' containment reference list.
    * The list contents are of type {@link org.eclipse.wsdl.Operation}.
    * <!-- begin-user-doc -->

@@ -50,7 +50,7 @@
          point="org.eclipse.emf.ecore.extension_parser">
       <parser
             type="wsdl"
-            class="org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl">
+            class="org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl">
       </parser>
    </extension>
 

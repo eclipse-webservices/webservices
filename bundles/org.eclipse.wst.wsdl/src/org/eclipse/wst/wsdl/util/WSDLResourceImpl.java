@@ -37,6 +37,7 @@ import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPlugin;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
+import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.internal.util.XSDSchemaLocatorAdapterFactory;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocator;
@@ -54,7 +55,7 @@ import org.xml.sax.SAXParseException;
  * outside of the model implementation; it is intended to be used as is with the 
  * Resource framework.
  * <!-- end-user-doc -->
- * @see org.eclipse.wst.wsdl.util.WSDLResourceFactoryImpl
+ * @see org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl
  * @generated
  */
 public class WSDLResourceImpl extends ResourceImpl 
@@ -109,12 +110,12 @@ public class WSDLResourceImpl extends ResourceImpl
     return getContents().size() == 1 && getContents().get(0) instanceof Definition ? (Definition) getContents().get(0) : null;
   }
 
-  protected static void doSerialize(OutputStream outputStream, Document document) throws IOException
+  private static void doSerialize(OutputStream outputStream, Document document) throws IOException
   {
     doSerialize(outputStream, document, null);
   }
 
-  protected static void doSerialize(OutputStream outputStream, Document document, String encoding)
+  private static void doSerialize(OutputStream outputStream, Document document, String encoding)
   {
     try
     {
@@ -240,7 +241,7 @@ public class WSDLResourceImpl extends ResourceImpl
    * @param errorHandler the handled used by the parser.
    * @return a document.
    */
-  protected static Document getDocument(InputStream inputStream, ErrorHandler errorHandler) throws IOException
+  private static Document getDocument(InputStream inputStream, ErrorHandler errorHandler) throws IOException
   {
     ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
     try
@@ -276,7 +277,7 @@ public class WSDLResourceImpl extends ResourceImpl
     }
   }
 
-  protected boolean findDefinition(Element element)
+  private boolean findDefinition(Element element)
   {
     if (WSDLConstants.nodeType(element) == WSDLConstants.DEFINITION)
     {
@@ -302,7 +303,7 @@ public class WSDLResourceImpl extends ResourceImpl
     }
   }
 
-  protected void handleDefinitionElement(Element element)
+  private void handleDefinitionElement(Element element)
   {
     Definition definition = null;
     if (element == null)
@@ -347,7 +348,7 @@ public class WSDLResourceImpl extends ResourceImpl
     }
   }
 
-  protected static void doSerialize(OutputStream outputStream, Element element, String encoding) throws IOException
+  private static void doSerialize(OutputStream outputStream, Element element, String encoding) throws IOException
   {
     try
     {

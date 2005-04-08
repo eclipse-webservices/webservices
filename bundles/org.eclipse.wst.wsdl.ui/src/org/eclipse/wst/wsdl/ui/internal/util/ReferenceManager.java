@@ -29,7 +29,7 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.util.WSDLSwitch;
+import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
 
 
 public class ReferenceManager

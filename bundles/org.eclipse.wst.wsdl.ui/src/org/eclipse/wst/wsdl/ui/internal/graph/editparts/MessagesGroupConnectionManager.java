@@ -18,7 +18,7 @@ import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.util.WSDLSwitch;
+import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
 
                                                    
 public class MessagesGroupConnectionManager extends AbstractConnectionManager

@@ -28,7 +28,7 @@ import org.eclipse.emf.common.util.EList;
  * @model 
  * @generated
  */
-public interface SOAPHeader extends SOAPHeaderBase{
+public interface SOAPHeader extends SOAPHeaderBase {
   /**
    * Returns the value of the '<em><b>Header Faults</b></em>' containment reference list.
    * The list contents are of type {@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault}.

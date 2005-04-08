@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.wsdl.util;
+package org.eclipse.wst.wsdl.internal.util;
 
 import java.net.URL;
 import java.util.Iterator;
