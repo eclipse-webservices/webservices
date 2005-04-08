@@ -13,21 +13,16 @@ package org.eclipse.wst.wsi.ui.internal.actions;
 //import java.util.Iterator;
 //import java.util.List;
 import org.eclipse.core.resources.IFile;
-//import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
-
+import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 import org.eclipse.wst.wsi.internal.analyzer.MessageAnalyzer;
 import org.eclipse.wst.wsi.internal.analyzer.WSIAnalyzerException;
-//import org.eclipse.wst.wsi.internal.report.AssertionError;
 import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
-//import org.eclipse.wst.wsi.ui.internal.WSIMessageValidator;
-//import org.eclipse.wst.validation.core.IReporter;
-import org.eclipse.wst.validation.core.IValidator;
 import org.eclipse.wst.xml.validation.internal.core.ValidateAction;
 import org.xml.sax.SAXParseException;
 

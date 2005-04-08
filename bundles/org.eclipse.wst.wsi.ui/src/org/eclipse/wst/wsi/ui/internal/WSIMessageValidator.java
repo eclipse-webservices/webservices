@@ -11,12 +11,12 @@
 package org.eclipse.wst.wsi.ui.internal;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.wst.validation.internal.provisional.core.IFileDelta;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
+import org.eclipse.wst.validation.internal.provisional.core.IValidator;
+import org.eclipse.wst.validation.internal.provisional.core.ValidationException;
 import org.eclipse.wst.wsi.ui.internal.actions.WSIValidateAction;
-import org.eclipse.wst.validation.core.IFileDelta;
-import org.eclipse.wst.validation.core.IReporter;
-import org.eclipse.wst.validation.core.IValidationContext;
-import org.eclipse.wst.validation.core.IValidator;
-import org.eclipse.wst.validation.core.ValidationException;
 //import org.eclipse.wst.wsi.internal.core.report.impl.DefaultReporter;
 
 /**
