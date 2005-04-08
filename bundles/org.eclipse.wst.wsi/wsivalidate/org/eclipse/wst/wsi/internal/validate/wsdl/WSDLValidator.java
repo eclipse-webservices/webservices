@@ -22,22 +22,22 @@ import javax.wsdl.PortType;
 import javax.wsdl.Service;
 import javax.wsdl.WSDLException;
 
+import org.eclipse.wst.wsdl.validation.internal.IValidationInfo;
 import org.eclipse.wst.wsdl.validation.internal.IWSDLValidator;
-import org.eclipse.wst.wsdl.validation.internal.ValidationInfo;
-import org.eclipse.wst.wsdl.validation.internal.exception.ValidateWSDLException;
 import org.eclipse.wst.wsdl.validation.internal.ValidationInfoImpl;
+import org.eclipse.wst.wsdl.validation.internal.exception.ValidateWSDLException;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfoImpl;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDLDocument;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDLReaderImpl;
+import org.eclipse.wst.wsi.internal.WSIPreferences;
+import org.eclipse.wst.wsi.internal.WSITestToolsPlugin;
+import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
 import org.eclipse.wst.wsi.internal.analyzer.WSDLAnalyzer;
 import org.eclipse.wst.wsi.internal.analyzer.WSIAnalyzerException;
 import org.eclipse.wst.wsi.internal.report.AssertionError;
 import org.w3c.dom.Document;
-import org.eclipse.wst.wsi.internal.WSIPreferences;
-import org.eclipse.wst.wsi.internal.WSITestToolsPlugin;
-import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
 
 /**
  * The WSI validator plugs into the WSDL validator to provide
@@ -69,7 +69,7 @@ public class WSDLValidator implements IWSDLValidator
   /* (non-Javadoc)
    * @see org.eclipse.wsdl.validate.IWSDLValidator#validate(org.w3c.dom.Document, org.eclipse.wsdl.validate.ValidationInfo)
    */
-  public void validate(Document domModel, ValidationInfo valInfo) throws ValidateWSDLException
+  public void validate(Document domModel, IValidationInfo valInfo) throws ValidateWSDLException
   {
 	boolean withAttachments = false;
 	boolean withBasic = false;
@@ -296,7 +296,7 @@ public class WSDLValidator implements IWSDLValidator
    * @param errors The list of errors to add.
    * @param valInfo The object that contains the validation information.
    */
-  protected void addErrors(List errors, ValidationInfo valInfo)
+  protected void addErrors(List errors, IValidationInfo valInfo)
   {
     reportProblems(errors, valInfo, ERROR);
   }
@@ -307,7 +307,7 @@ public class WSDLValidator implements IWSDLValidator
    * @param warnings The list of warnings to add.
    * @param valInfo The object that contains the validation information.
    */
-  protected void addWarnings(List warnings, ValidationInfo valInfo)
+  protected void addWarnings(List warnings, IValidationInfo valInfo)
   {
     reportProblems(warnings, valInfo, WARNING);
   }
@@ -319,7 +319,7 @@ public class WSDLValidator implements IWSDLValidator
    * @param valInfo The object to report the problems to.
    * @param type The type of messages to add.
    */
-  protected void reportProblems(List problems, ValidationInfo valInfo, int type)
+  protected void reportProblems(List problems, IValidationInfo valInfo, int type)
   {
     // if there were no problems just return
     if (problems == null)
@@ -336,7 +336,8 @@ public class WSDLValidator implements IWSDLValidator
         valInfo.addError(
           WSI_PREFIX + assertionerror.getErrorMessage(),
           assertionerror.getLine(),
-          assertionerror.getColumn());
+          assertionerror.getColumn(),
+          valInfo.getFileURI());
 
       }
       else if (type == WARNING)
@@ -344,7 +345,8 @@ public class WSDLValidator implements IWSDLValidator
         valInfo.addWarning(
           WSI_PREFIX + assertionerror.getErrorMessage(),
           assertionerror.getLine(),
-          assertionerror.getColumn());
+          assertionerror.getColumn(),
+          valInfo.getFileURI());
       }
     }
   }
