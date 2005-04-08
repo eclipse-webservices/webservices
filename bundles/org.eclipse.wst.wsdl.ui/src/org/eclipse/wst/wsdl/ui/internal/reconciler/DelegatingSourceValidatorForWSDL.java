@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.reconciler;
 
-import org.eclipse.wst.validation.core.IValidator;
 import org.eclipse.wst.validation.internal.ValidationRegistryReader;
+import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 import org.eclipse.wst.xml.ui.reconcile.DelegatingSourceValidator;
 
 /**
