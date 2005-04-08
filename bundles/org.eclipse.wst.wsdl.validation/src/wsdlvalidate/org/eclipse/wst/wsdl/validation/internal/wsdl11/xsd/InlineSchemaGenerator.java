@@ -15,6 +15,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import org.w3c.dom.Element;
@@ -30,18 +32,18 @@ import com.ibm.wsdl.Constants;
  */
 public class InlineSchemaGenerator
 {
-  protected final String SOAP_ENCODING_URI = "http://schemas.xmlsoap.org/soap/encoding/";
-  protected final String FILE_PREFIX = "file:///";
-  protected final String XMLNS = "xmlns";
-  protected final String TARGETNAMESPACE = "targetNamespace";
-  protected final String NAMESPACE = "namespace";
-  protected final String IMPORT = "import";
-  protected final String INCLUDE = "include";
-  protected final String SCHEMA = "schema";
-  protected final String SCHEMALOCATION = "schemaLocation";
-  protected final String TYPE = "type";
-  protected final String NAME = "name";
-  protected final String[] ignoreNamespaces =
+  protected static final String SOAP_ENCODING_URI = "http://schemas.xmlsoap.org/soap/encoding/";
+  protected static final String FILE_PREFIX = "file:///";
+  protected static final String XMLNS = "xmlns";
+  protected static final String TARGETNAMESPACE = "targetNamespace";
+  protected static final String NAMESPACE = "namespace";
+  protected static final String IMPORT = "import";
+  protected static final String INCLUDE = "include";
+  protected static final String SCHEMA = "schema";
+  protected static final String SCHEMALOCATION = "schemaLocation";
+  protected static final String TYPE = "type";
+  protected static final String NAME = "name";
+  protected static final String[] ignoreNamespaces =
     { Constants.NS_URI_XSD_1999, Constants.NS_URI_XSD_2000, Constants.NS_URI_XSD_2001 };
 
   protected static InlineSchemaGenerator instance = null;
@@ -73,11 +75,12 @@ public class InlineSchemaGenerator
    * @param element The root element of the schema.
    * @param elements A list of the elements in the schema in order.
    * @param filelocation The URI of the file that contains the schema.
+   * @param validImportNSs A set of namespaces for which it's valid to create import statements.
    * @return A string representation of a schema.
    */
-  public static String createXSDString(Element element, List elements, String filelocation)
+  public static String createXSDString(Element element, List elements, String filelocation, Set validImportNSs)
   {
-    return InlineSchemaGenerator.createXSDString(element, elements, filelocation, new Hashtable());
+	  return InlineSchemaGenerator.createXSDString(element, elements, filelocation, new Hashtable(), validImportNSs);
   }
   
   /**
@@ -89,10 +92,15 @@ public class InlineSchemaGenerator
   	* @param elements A list to contain the elements in the schema in order.
   	* @param filelocation The location of the file the schema is located in.
   	* @param parentNSs A hashtable of parent namespaces to used to resolve prefixes.
+  	* @param validImportNSs A set of namespaces for which it's valid to create import statements.
   	* @return A string representation of the schema with the root element 'element'.
   	*/
-  public static String createXSDString(Element element, List elements, String filelocation, Hashtable parentNSs)
+  public static String createXSDString(Element element, List elements, String filelocation, Hashtable parentNSs, Set validImportNSs)
   {
+	Set importNSs = new TreeSet(); 
+    importNSs.addAll(validImportNSs); 
+    importNSs.add(SOAP_ENCODING_URI); 
+
     InlineSchemaGenerator schemaGenerator = InlineSchemaGenerator.getInstance();
     Hashtable nsResolver = schemaGenerator.getNSResolver(element);
     List reqns = schemaGenerator.getRequiredNamespaces(element);
@@ -101,6 +109,7 @@ public class InlineSchemaGenerator
     List importNS = schemaGenerator.getImportNamespaces(element);
     reqns = schemaGenerator.removeImports(reqns, importNS);
     reqns = schemaGenerator.removeLocalNamespaces(reqns, element);
+	reqns = schemaGenerator.restrictImports(reqns, validImportNSs);
     return schemaGenerator.createXSDStringRecursively(element, elements, reqns, reqNSDecl, filelocation);
   }
   /**
@@ -123,7 +132,6 @@ public class InlineSchemaGenerator
     List importNS = schemaGenerator.getImportNamespaces(element);
     reqns = schemaGenerator.removeImports(reqns, importNS);
     reqns = schemaGenerator.removeLocalNamespaces(reqns, element);
-
     return schemaGenerator.checkSOAPEncodingRequired(reqns);
   }
   /**
@@ -607,6 +615,29 @@ public class InlineSchemaGenerator
     return namespaces;
   }
   
+  /** 
+   * Remove all the namespaces in the namespaces list that aren't contained in the 
+   * validImportNSs set. 
+   * 
+   * @param namespaces A list of namespaces. 
+   * @param validImportNSs A set of valid namespaces. 
+   * @return A list of namespaces that does not contain any members which aren't in the validImportNSs set. 
+   */ 
+  protected List restrictImports(List namespaces, Set validImportNSs) 
+  { 
+        Iterator nsIter = namespaces.iterator(); 
+        while(nsIter.hasNext()) 
+        { 
+          String ns = (String)nsIter.next(); 
+          if(!validImportNSs.contains(ns)) 
+          { 
+                namespaces.remove(ns); 
+				nsIter = namespaces.iterator();
+          } 
+        } 
+        return namespaces; 
+  } 
+
   /**
    * Returns true if the SOAP encoding namespace is in the list of required namespaces,
    * false otherwise.

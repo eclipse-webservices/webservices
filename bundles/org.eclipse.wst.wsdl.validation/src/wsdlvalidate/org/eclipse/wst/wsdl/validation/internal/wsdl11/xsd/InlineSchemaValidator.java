@@ -11,11 +11,13 @@
 
 package org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Vector;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.wsdl.Definition;
 import javax.wsdl.Types;
@@ -43,15 +45,13 @@ public class InlineSchemaValidator implements IWSDL11Validator
   private final String EMPTY_STRING = "";
   private final String QUOTE = "'";
   MessageGenerator messagegenerator = null;
-  List elements = null;
-
   
   /**
    * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.WSDL11ValidationInfo)
    */
   public void validate(Object element, List parents, WSDL11ValidationInfo valInfo)
   {
-  	elements = new Vector();
+  	List elements = new ArrayList();
     UnknownExtensibilityElement elem = (UnknownExtensibilityElement) element;
     Definition wsdlDefinition = (Definition) parents.get(parents.size() - 1);
     String baseLocation = wsdlDefinition.getDocumentBaseURI();
@@ -71,8 +71,6 @@ public class InlineSchemaValidator implements IWSDL11Validator
 	  targetNamespace = wsdlDefinition.getTargetNamespace();
 	  w3celement.setAttribute(Constants.ATTR_TARGET_NAMESPACE,targetNamespace);
 	}
-	
-	String xsd = InlineSchemaGenerator.createXSDString(w3celement, elements, baseLocation, parentnamespaces);
 	
     // If the namespace given is one of the old schema namespaces produce a warning.
 	String namespace = w3celement.getNamespaceURI();
@@ -94,6 +92,11 @@ public class InlineSchemaValidator implements IWSDL11Validator
     entityResolverChain.addEntityResolver((XMLEntityResolver)valInfo.getURIResolver());
     //entityResolverChain.addEntityResolver(XMLCatalogResolver.getInstance());
     entityResolverChain.addEntityResolver(new FileEntityResolver());
+	
+    //	 Create the string representation of the inline schema. 
+    String xsd = InlineSchemaGenerator.createXSDString(w3celement, elements, baseLocation, parentnamespaces, inlineEntityResolver.getInlineSchemaNSs()); 
+
+	
     schemav.validateInlineSchema(xsd, targetNamespace, baseLocation, entityResolverChain, inlineEntityResolver);
     
 //	check if the SOAP Encoding namespace is required but not imported
@@ -120,14 +123,14 @@ public class InlineSchemaValidator implements IWSDL11Validator
         {
           if(uri == null || uri.equals(valInfo.getFileURI()))
           {
-            valInfo.addError(errmess, getObjectAtLine(line - 1));
+			valInfo.addError(errmess, getObjectAtLine(line - 1, elements));
           }
-          else if(!inlineEntityResolver.isInlineSchema(uri))
+		  else if(!inlineEntityResolver.isInlineSchema(uri) && !uri.equals(valInfo.getFileURI() + InlineXSDResolver.INLINE_SCHEMA_ID))
           {
             valInfo.addError(errmess, line, err.getErrorColumn(), uri);
           }
         }
-        else if(uri != null && !inlineEntityResolver.isInlineSchema(uri))
+		else if(uri != null && !inlineEntityResolver.isInlineSchema(uri) && !uri.equals(valInfo.getFileURI() + InlineXSDResolver.INLINE_SCHEMA_ID))
         {
 	      valInfo.addError(errmess, 0,0, uri);
         }
@@ -159,6 +162,18 @@ public class InlineSchemaValidator implements IWSDL11Validator
     if (schemas != null)
     {
       Iterator iSchemas = schemas.iterator();
+	  Set namespaces = new TreeSet(); 
+      while (iSchemas.hasNext()) 
+      { 
+        UnknownExtensibilityElement extElem = (UnknownExtensibilityElement) iSchemas.next(); 
+        String thisNamespace = extElem.getElement().getAttribute(Constants.ATTR_TARGET_NAMESPACE); 
+        if(thisNamespace != null) 
+        { 
+                namespaces.add(thisNamespace); 
+        } 
+      } 
+      iSchemas = schemas.iterator(); 
+
       while (iSchemas.hasNext())
       {
         UnknownExtensibilityElement extElem = (UnknownExtensibilityElement) iSchemas.next();
@@ -171,7 +186,7 @@ public class InlineSchemaValidator implements IWSDL11Validator
 //			create the inline schema string
 			 //Element w3celement = elem.getElement();
 			 Hashtable parentnamespaces = getNamespaceDeclarationsFromParents(wsdlDefinition,element);
-			 String xsd = InlineSchemaGenerator.createXSDString(element, elements, referenceLocation, parentnamespaces);
+			 String xsd = InlineSchemaGenerator.createXSDString(element, new ArrayList(), referenceLocation, parentnamespaces, namespaces);
         	//addNamespaceDeclarationsFromParents(wsdlDefinition,element);
           entityResolver.add(thisNamespace, xsd);
         }
@@ -249,9 +264,10 @@ public class InlineSchemaValidator implements IWSDL11Validator
    * Useful for obtaining elements from schema Strings.
    * 
    * @param line The line number for the schema.
+   * @param elements The list of elements to check.
    * @return The object located at the line or at line 0 if the line is invalid.
    */
-   protected Object getObjectAtLine(int line)
+   protected Object getObjectAtLine(int line, List elements)
    {
    	if(line < 0 || line >= elements.size())
    	{

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Hashtable;
+import java.util.Set;
 
 import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.apache.xerces.xni.XNIException;
@@ -26,6 +27,7 @@ import org.apache.xerces.xni.parser.XMLInputSource;
  */
 public class InlineXSDResolver implements XMLEntityResolver
 {
+  public static final String INLINE_SCHEMA_ID = "#inlineschema";
   protected final String FILE_PREFIX = "file:";
   protected final String XMLNS = "xmlns";
   protected Hashtable entities = new Hashtable();
@@ -80,7 +82,7 @@ public class InlineXSDResolver implements XMLEntityResolver
 	}
 	else if ((schema = (String) entities.get(systemId)) != null && !schema.equals(""))
 	{
-		is = new XMLInputSource(publicId, systemId, systemId,new StringReader(schema),null);
+		is = new XMLInputSource(publicId, referringSchemaInputSource.getSystemId() + INLINE_SCHEMA_ID, null, new StringReader(schema),null);
 	}
 	
     //if(is == null)
@@ -123,4 +125,15 @@ public class InlineXSDResolver implements XMLEntityResolver
   {
     return entities.containsKey(namespace);
   }
+  
+  /** 
+   * Get the set of the inline schema namespaces. 
+   * 
+   * @return The set of the inline schema namespaces. 
+   */ 
+  public Set getInlineSchemaNSs() 
+  { 
+        return entities.keySet(); 
+  } 
+
 }
