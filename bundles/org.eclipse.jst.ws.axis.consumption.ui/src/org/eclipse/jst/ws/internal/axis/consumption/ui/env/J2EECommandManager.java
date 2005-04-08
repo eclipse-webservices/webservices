@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.axis.consumption.ui.env;
 
 import org.eclipse.wst.command.env.core.CommandManager;
+import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 
 /**
  * 
@@ -24,4 +25,9 @@ public class J2EECommandManager implements CommandManager
   {
     return false;
   }
+
+public DataMappingRegistry getMappingRegistry() {
+	return null;
+}
+  
 }

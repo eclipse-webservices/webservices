@@ -68,18 +68,18 @@ public class BUAxisDefaultingCommand extends SimpleCommand
   	String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
     msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
     
-    if (serviceIds_.getServerInstanceId() != null) { // server exists
-    	serviceExistingServer_ = ServerCore.findServer(serviceIds_.getServerInstanceId());
-    }
-    if (serviceExistingServer_ != null)
-    {
-      serviceServerTypeID_ = serviceExistingServer_.getServerType().getId();
-    }
-    else
-    {
-    	serviceServerTypeID_ = serviceIds_.getServerId();
-      // server will be created in ServerDeployableConfigurationCommand
-    }
+//    if (serviceIds_.getServerInstanceId() != null) { // server exists
+//    	serviceExistingServer_ = ServerCore.findServer(serviceIds_.getServerInstanceId());
+//    }
+//    if (serviceExistingServer_ != null)
+//    {
+//      serviceServerTypeID_ = serviceExistingServer_.getServerType().getId();
+//    }
+//    else
+//    {
+//    	serviceServerTypeID_ = serviceIds_.getServerId();
+//      // server will be created in ServerDeployableConfigurationCommand
+//    }
     
     //javaWSDLParam
     javaWSDLParam_ = new JavaWSDLParameter();
@@ -241,10 +241,10 @@ public class BUAxisDefaultingCommand extends SimpleCommand
     return serviceExistingServer_;
   }
   
-  public String getServiceServerTypeID()
-  {
-    return serviceServerTypeID_;
-  }
+//  public String getServiceServerTypeID()
+//  {
+//    return serviceServerTypeID_;
+//  }
   
   public boolean getCustomizeServiceMappings()
   {
@@ -258,8 +258,8 @@ public class BUAxisDefaultingCommand extends SimpleCommand
     return IsWebProjectStartupRequested;
   }
   
-  public void setServiceTypeRuntimeServer(TypeRuntimeServer ids)
-  {
-    serviceIds_ = ids;
-  }
+//  public void setServiceTypeRuntimeServer(TypeRuntimeServer ids)
+//  {
+//    serviceIds_ = ids;
+//  }
 }
