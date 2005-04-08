@@ -38,7 +38,6 @@
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.wst.xml.validation"/>
       <import plugin="org.eclipse.wst.wsdl.validation"/>
       <import plugin="org.eclipse.wst.ws.uddi4j"/>
       <import plugin="org.eclipse.wst.ws.apache.axis"/>
