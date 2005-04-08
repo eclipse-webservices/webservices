@@ -780,5 +780,128 @@
             id="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.WSDLSelectionWidget">
       </objectSelectionWidget>
    </extension>
+   
+   <!-- New extension points for WTP M4 -->
+   <extension-point id="discovery" name="UI Browsers for implementation artifacts"/>      
+   <extension-point id="wsImpl" name="Web service implementations"/>
+   <extension-point id="wsClientImpl" name="Web service client implementations"/>
+   <extension-point id="serviceType" name="Extensions that provide unique combinations of service implementations, scenarios, and module types "/>
+   <extension-point id="clientType" name="Extensions that provide unique combinations of client implementations and module types"/>
+   <extension-point id="webServiceRuntime" name="Web service runtimes"/>
+   <extension-point id="tester" name="Web service test facilities"/>
+   <extension-point id="publisher" name="Web service publication facilities"/>      
 
+<!-- M4 Extensions to the new extension points -->
+<extension point="org.eclipse.jst.ws.consumption.ui.wsImpl">
+  <webServiceImpl
+            id="org.eclipse.jst.ws.wsImpl.java"
+            label="%WEBSERVICETYPE_NAME_JAVA"
+            resourceTypeMetadata="File IResource CompilationUnit"
+            extensionMetadata=".java .class">
+  </webServiceImpl>
+</extension>   
+<extension point="org.eclipse.jst.ws.consumption.ui.wsClientImpl">
+  <webServiceClientImpl
+            id="org.eclipse.jst.ws.wsClientImpl.java"
+            label="Java Proxy">
+  </webServiceClientImpl>
+</extension>   
+<extension point="org.eclipse.jst.ws.consumption.ui.serviceType">
+  <serviceType
+            id="org.eclipse.jst.ws.serviceType.java"
+            implId="org.eclipse.jst.ws.wsImpl.java"
+            buModuleTypesInclude="org.eclipse.jst.j2ee.web.WebNature"
+            buModuleTypesExclude=""
+            tdModuleTypesInclude="org.eclipse.jst.j2ee.web.WebNature"
+            tdModuleTypesExclude=""
+            webServiceTypeId="org.eclipse.jst.ws.type.java">
+  </serviceType>
+</extension>   
+<extension point="org.eclipse.jst.ws.consumption.ui.serviceType">
+  <serviceType
+            id="org.eclipse.jst.ws.serviceType.wsdl"
+            implId="org.eclipse.jst.ws.wsImpl.java"
+            buModuleTypesInclude="org.eclipse.jst.j2ee.web.WebNature"
+            buModuleTypesExclude=""
+            tdModuleTypesInclude="org.eclipse.jst.j2ee.web.WebNature"
+            tdModuleTypesExclude=""
+            webServiceTypeId="org.eclipse.jst.ws.type.wsdl">
+  </serviceType>
+</extension>
+<extension point="org.eclipse.jst.ws.consumption.ui.clientType">
+  <clientType
+            id="org.eclipse.jst.ws.clientType.java.webOnly"
+            implId="org.eclipse.jst.ws.wsClientImpl.java"
+            moduleTypesInclude="org.eclipse.jst.ws.consumption.ui.clientProjectType.Web"
+			moduleTypesExclude=""
+            webServiceClientTypeId="org.eclipse.jst.ws.client.type.java">
+  </clientType>
+</extension>
+<extension point="org.eclipse.jst.ws.consumption.ui.webServiceRuntime">
+  <webServiceRuntime
+    id="org.eclipse.jst.ws.dummyRT"
+    label="Dummy"
+    serviceTypes="org.eclipse.jst.ws.serviceType.java org.eclipse.jst.ws.serviceType.wsdl"
+    clientTypes="org.eclipse.jst.ws.clientType.java.webOnly"
+    servletLevels="23 24"
+    j2eeLevels="13 14"
+    servers="org.eclipse.jst.server.tomcat.40 org.eclipse.jst.server.tomcat.41 org.eclipse.jst.server.tomcat.50"
+    class="org.eclipse.jst.ws.internal.dummy.DummyWebServiceRuntime">
+  </webServiceRuntime>
+</extension>   
+
+<extension point="org.eclipse.jst.ws.consumption.ui.webServiceRuntime">
+  <webServiceRuntime
+    id="org.eclipse.jst.ws.barneyRT"
+    label="Barney Rubble"
+    serviceTypes="org.eclipse.jst.ws.serviceType.java"
+    clientTypes="org.eclipse.jst.ws.clientType.java.webOnly"
+    servletLevels="24"
+    j2eeLevels="14"
+    servers="org.eclipse.jst.server.tomcat.40 org.eclipse.jst.server.tomcat.41 org.eclipse.jst.server.tomcat.50"
+    class="org.eclipse.jst.ws.internal.barney.BarneyWebServiceRuntime">
+  </webServiceRuntime>
+</extension>   
+
+    <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory   
+             id="DummyId1"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.dummy.DummyWebService$TestCommand3"
+             class="org.eclipse.jst.ws.internal.dummy.DummyWidgetFactory2"/>
+    </extension>
+    
+    <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory   
+             id="DummyId2"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.dummy.DummyWebService$TestCommand2"
+             class="org.eclipse.jst.ws.internal.dummy.DummyWidgetFactory"/>
+    </extension>
+    
+    <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory   
+             id="DummyId3"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.dummy.DummyWebServiceClient$TestCommand4"
+             class="org.eclipse.jst.ws.internal.dummy.DummyWidgetFactory2"/>
+    </extension>
+    
+    <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory   
+             id="DummyId4"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.dummy.DummyWebServiceClient$TestCommand5"
+             class="org.eclipse.jst.ws.internal.dummy.DummyWidgetFactory"/>
+    </extension>        
+    
+    <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory   
+             id="BarneyId1"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.barney.BarneyWebService$TestCommand1"
+             class="org.eclipse.jst.ws.internal.barney.BarneyWidgetFactory"/>
+    </extension> 
+    
+    <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory   
+             id="BarneyId2"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.barney.BarneyWebService$TestCommand6"
+             class="org.eclipse.jst.ws.internal.barney.BarneyWidgetFactory2"/>
+    </extension>     
 </plugin>

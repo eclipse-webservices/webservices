@@ -12,10 +12,10 @@ package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PreferencesSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WebServiceClientTypeWidget;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -187,8 +187,10 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
   
   public void setServiceTypeRuntimeServer( TypeRuntimeServer ids )
   {
-    WebServiceServerRuntimeTypeRegistry registry   = WebServiceServerRuntimeTypeRegistry.getInstance();
-    LabelsAndIds                        labelIds   = registry.getServiceTypeLabels();
+	//rskreg  
+    //WebServiceServerRuntimeTypeRegistry registry   = WebServiceServerRuntimeTypeRegistry.getInstance();	  
+    LabelsAndIds                        labelIds   = WebServiceRuntimeExtensionUtils.getServiceTypeLabels();
+	//rskreg
     int                                 selection  = 0;
     String[]                            serviceIds = labelIds.getIds_();
     String                              selectedId = ids.getTypeId();

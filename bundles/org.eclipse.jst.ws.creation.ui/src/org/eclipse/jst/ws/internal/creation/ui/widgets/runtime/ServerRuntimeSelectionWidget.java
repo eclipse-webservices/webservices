@@ -17,9 +17,9 @@ import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ProjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.RuntimeServerSelectionWidget;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -263,13 +263,16 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
         //Determine whether an EJB project is required
         String webServiceRuntimeId = runtimeWidget_.getTypeRuntimeServer().getRuntimeId();
         String webServiceTypeId = runtimeWidget_.getTypeRuntimeServer().getTypeId();
-        WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
-        String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceServerFactoryId).getId();
-        boolean isEJBRequired = wssrtRegistry.requiresEJBModuleFor(serverTypeId, webServiceRuntimeId, webServiceTypeId);
+		// rskreg
+        //WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
+        //String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceServerFactoryId).getId();
+		//String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceServerFactoryId).getId();
+        boolean isEJBRequired = WebServiceRuntimeExtensionUtils.requiresEJBModuleFor(serviceServerFactoryId, webServiceRuntimeId, webServiceTypeId);
         if (!isEJBRequired)
         {
           //Check the Web service type to see if an EJB project is required
-          isEJBRequired = wssrtRegistry.requiresEJBProject(webServiceTypeId);
+          //isEJBRequired = wssrtRegistry.requiresEJBProject(webServiceTypeId);
+			isEJBRequired = WebServiceRuntimeExtensionUtils.requiresEJBProject(webServiceTypeId);
         }
         
         if (isEJBRequired && !ResourceUtils.isEJBProject(serviceProj))

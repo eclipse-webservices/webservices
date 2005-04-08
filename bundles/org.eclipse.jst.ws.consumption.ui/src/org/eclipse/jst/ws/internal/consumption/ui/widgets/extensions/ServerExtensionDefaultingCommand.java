@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.ws.parser.discovery.WebServicesParserExt;
@@ -210,14 +210,19 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
     //is required, return true.
     boolean ejbRequired = false;
     boolean ejbRequired2 = false;
-    WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
+	// rskreg
+    //WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
     if (serviceIds_ != null)
     {      
-      String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceIds_.getServerId()).getId();
-      ejbRequired = wssrtRegistry.requiresEJBModuleFor(serverTypeId, serviceIds_.getRuntimeId(), serviceIds_.getTypeId());
-      ejbRequired2 = wssrtRegistry.requiresEJBProject(serviceIds_.getTypeId()); 
+      //String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceIds_.getServerId()).getId();
+	  //String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceIds_.getServerId()).getId();
+      //ejbRequired = wssrtRegistry.requiresEJBModuleFor(serverTypeId, serviceIds_.getRuntimeId(), serviceIds_.getTypeId());
+	  ejbRequired = WebServiceRuntimeExtensionUtils.requiresEJBModuleFor(serviceIds_.getServerId(), serviceIds_.getRuntimeId(), serviceIds_.getTypeId());
+      //ejbRequired2 = wssrtRegistry.requiresEJBProject(serviceIds_.getTypeId()); 
+	  ejbRequired2 = WebServiceRuntimeExtensionUtils.requiresEJBProject(serviceIds_.getTypeId());
     }
- 
+
+	// rskreg
     return (ejbRequired || ejbRequired2);    
   }
   

@@ -24,10 +24,10 @@ import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUI
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceRuntime;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
 import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
@@ -71,24 +71,32 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      }
      Status status = new SimpleStatus("");
 
-     setDefaultServiceRuntimeFromPreference();
-     setDefaultServiceJ2EEVersionFromPreference();      
-     webServiceRuntimeJ2EEType = getWSRuntimeAndJ2EEFromProject(initialProject_);
-     if (webServiceRuntimeJ2EEType != null)
-     {
-       serviceJ2EEVersion_ = webServiceRuntimeJ2EEType.getJ2eeVersionId();
-       serviceIds_.setRuntimeId(webServiceRuntimeJ2EEType.getWsrId()); 
-     }
-   
+	 // rskreg Remove all the intelligent defaulting for M4
+     //setDefaultServiceRuntimeFromPreference();
+     //setDefaultServiceJ2EEVersionFromPreference();      
+     //webServiceRuntimeJ2EEType = getWSRuntimeAndJ2EEFromProject(initialProject_);
+     //if (webServiceRuntimeJ2EEType != null)
+     //{
+       //serviceJ2EEVersion_ = webServiceRuntimeJ2EEType.getJ2eeVersionId();
+       //serviceIds_.setRuntimeId(webServiceRuntimeJ2EEType.getWsrId()); 
+     //}
+	 
+	 serviceIds_.setRuntimeId(WebServiceRuntimeExtensionUtils.getDefaultRuntimeValueFor(serviceIds_.getTypeId()));
+	 serviceJ2EEVersion_ = (WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(serviceIds_.getRuntimeId()).getJ2eeLevels())[0]; 
+
+	 
      // Set the default client type to a web client type.
      setWebClientType();
      
      // Default projects EARs and servers.
-     setDefaultProjects();
+     //setDefaultProjects();
      setDefaultEARs();
-     setDefaultServer();
+     //setDefaultServer();
+	 serviceIds_.setServerId((WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(serviceIds_.getRuntimeId()).getServerFactoryIds())[0]);
      updateServiceEARs();
      updateClientEARs();
+	 
+     // rskreg	 
      return status;
     } catch (Exception e)
     {
@@ -116,6 +124,8 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
    * @param project
    * @return
    */
+  // rskreg
+  /*
   private WSRuntimeJ2EEType getWSRuntimeAndJ2EEFromProject(IProject project)
   {
     WSRuntimeJ2EEType wsrJ2EE = null;
@@ -175,7 +185,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     }    
     return wsrJ2EE;
   }
+  */
+  // rskreg
   
+  // rskreg
+  /*
   private void setDefaultServiceRuntimeFromPreference()
   {
   	
@@ -197,8 +211,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       }
     }
   }
+  */
+  // rskreg
   
-  
+  // rskreg
+  /*
   private void setDefaultServiceJ2EEVersionFromPreference()
   {
     if (serviceIds_ != null)
@@ -234,7 +251,12 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
         }
       }
     }
-  }  
+  } 
+  */ 
+  // rskreg
+  
+  // rskreg
+  /*
   private void setDefaultProjects()
   {
 	
@@ -252,7 +274,6 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     }    
 	    
 
-
 	//Set the service project selection to this initialProject
 	getServiceProject2EARProject().getList().setSelectionValue(initialProject_.getName());
 	String clientProjectName = ResourceUtils.getClientWebProjectName(initialProject_.getName(), serviceIds_.getTypeId() ); 
@@ -261,6 +282,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 		      	    
   }
   
+
   private void setServiceProjectToFirstValid()
   {
     WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
@@ -297,7 +319,8 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     //Didn't find a single project that worked. Default to a new project name.
     getServiceProject2EARProject().getList().setSelectionValue(ResourceUtils.getDefaultWebProjectName());
   }
-  
+  */
+  // rskreg
   
   private void setDefaultEARs()
   {
@@ -351,6 +374,8 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     
   }
   
+  // rskreg
+  /*
   private void setDefaultServer()
   {
     //Calculate reasonable default server based on the default project selection. 
@@ -418,6 +443,8 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     
     //Default the client server    
   }
+  */
+  // rskreg
   
   private void updateServiceEARs()
   {
@@ -481,8 +508,10 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   {
     if (serviceProject2EARProject_ == null)
     {
-      IProject[] projects = WebServiceServerRuntimeTypeRegistry.getInstance().getProjectsByWebServiceType(serviceIds_.getTypeId());
-	  
+	  // rskreg
+      //IProject[] projects = WebServiceServerRuntimeTypeRegistry.getInstance().getProjectsByWebServiceType(serviceIds_.getTypeId());
+	  IProject[] projects = WebServiceRuntimeExtensionUtils.getProjectsByWebServiceType(serviceIds_.getTypeId());
+	  // rskreg
 	  String[] projectNames = new String[projects.length];
 	  for (int i = 0; i < projects.length; i++) {
   		projectNames[i] = projects[i].getName();

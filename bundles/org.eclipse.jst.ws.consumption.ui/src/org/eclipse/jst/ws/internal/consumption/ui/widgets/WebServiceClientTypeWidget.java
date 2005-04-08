@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceClientTypeRegistry;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -76,12 +76,15 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 
   public void setTypeRuntimeServer( TypeRuntimeServer ids )
   {
-    WebServiceClientTypeRegistry registry   = WebServiceClientTypeRegistry.getInstance();
-    LabelsAndIds                 labelIds   = registry.getClientTypeLabels();
+		// rskreg
+    //WebServiceClientTypeRegistry registry   = WebServiceClientTypeRegistry.getInstance();
+    //LabelsAndIds                 labelIds   = registry.getClientTypeLabels();
+		LabelsAndIds                 labelIds   = WebServiceRuntimeExtensionUtils.getClientTypeLabels();
     int                          selection  = 0;
     String[]                     clientIds  = labelIds.getIds_();
     String                       selectedId = ids.getTypeId();
     
+		// rskreg
     clientTypeCombo_.setItems( labelIds.getLabels_() );
     
     // Now find the selected one.

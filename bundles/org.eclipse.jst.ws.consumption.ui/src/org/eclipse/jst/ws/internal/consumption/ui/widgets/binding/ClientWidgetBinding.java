@@ -14,11 +14,13 @@ import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.ClientServerDeployableConfigCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateClientProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForMissingFiles;
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForServiceProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerInstToIServerTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
+import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
+import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.selection.SelectionTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand;
@@ -28,6 +30,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionWidgetWra
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionOutputCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.AddModuleDependenciesCommand;
@@ -231,21 +234,24 @@ public class ClientWidgetBinding implements CommandWidgetBinding
   {
     public ClientRootCommandFragment()
     {
-      add( new SimpleFragment( new CheckForMissingFiles(), "" ) );
+      //add( new SimpleFragment( new CheckForMissingFiles(), "" ) );
       add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(), "" ) );
       add( new SimpleFragment( new InitClientRegistry(), "" ));
       add( new SimpleFragment( "ClientWizardWidget" ) );
+	  //add( new TestCommandFactoryFragment() );
       add( new SimpleFragment( new ClientWizardWidgetOutputCommand(), "" ));
       add( new SimpleFragment( new WSDLSelectionWidgetDefaultingCommand(), ""));
       add( new SimpleFragment( "WSDLSelectionWidgetWrapper" ) );
       add( new SimpleFragment( new WSDLSelectionOutputCommand(), ""));
       add( new SimpleFragment( new ClientRuntimeSelectionWidgetDefaultingCommand(), ""));
+	  //add( new TestCommandFactoryFragment2() );
       add( new SimpleFragment( "ClientRuntimeSelectionWidget" ) );
-      add( new SimpleFragment( new CheckForServiceProjectCommand(), ""));
+      //add( new SimpleFragment( new CheckForServiceProjectCommand(), ""));
       add( new SimpleFragment( new ClientExtensionDefaultingCommand( true ), ""));
-      add(new SimpleFragment(new ClientServerDeployableConfigCommand(false), "")); //Note: added here for client      
-      add( new SimpleFragment( new CreateClientProjectCommand(), ""));  
-      add( new ClientExtensionFragment() );
+      //add(new SimpleFragment(new ClientServerDeployableConfigCommand(false), "")); //Note: added here for client      
+      //add( new SimpleFragment( new CreateClientProjectCommand(), ""));  
+      //add( new ClientExtensionFragment() );
+	  add( new ClientRootFragment() );
       add( new SimpleFragment( new ClientExtensionOutputCommand(), "" ) );
       add( new SimpleFragment(new GetMonitorCommand(), ""));
       add( new SimpleFragment(new TestDefaultingFragment(),""));
@@ -303,6 +309,14 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", ClientServerDeployableConfigCommand.class, "ClientTypeRuntimeServer", null);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServerInstance", ClientServerDeployableConfigCommand.class,"SampleExistingServer", new ServerInstToIServerTransformer());
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServer", ClientServerDeployableConfigCommand.class,"SampleServerTypeID", null);
+	  
+	  // Setup the PreServiceDevelopCommand.
+	  dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", PreClientDevelopCommand.class );
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", PreClientDevelopCommand.class);
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientProject", PreClientDevelopCommand.class, "Module", null );
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientProjectEAR", PreClientDevelopCommand.class, "Ear", null );
+      dataRegistry.addMapping( ClientWizardWidgetOutputCommand.class, "ResourceContext", PreClientDevelopCommand.class);
+	  dataRegistry.addMapping( ObjectSelectionOutputCommand.class, "ObjectSelection", PreClientDevelopCommand.class, "Selection", new SelectionTransformer() );
              
       // Map ClientExtensionDefaultingCommand command.
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", ClientExtensionFragment.class);

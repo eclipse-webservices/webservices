@@ -20,6 +20,7 @@ import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 
 
@@ -58,6 +59,14 @@ public class CommandFragmentEngine implements CommandManager
   	dataManager_ = dataManager;
   	environment_ = environment;
   } 
+  
+  /**
+   * @return returns the Data mapping registry.
+   */
+  public DataMappingRegistry getMappingRegistry()
+  {
+	return dataManager_.getMappingRegistry();
+  }
   
   /**
    * 
@@ -245,9 +254,13 @@ public class CommandFragmentEngine implements CommandManager
     
 	Command cmd = entry.command_;
   	  
-  	if( cmd != null && cmd.isUndoable() ) cmd.undo( environment_ ); 
+  	if( cmd != null && cmd.isUndoable() && !entry.beforeExecute_ )
+	{
+	  cmd.undo( environment_ );
+	  entry.beforeExecute_ = true;
+	}
   	  
-  	undoFragmentListener_.notify( entry.fragment_ );
+	undoFragmentListener_.notify( entry.fragment_ );  	
   }
   
   private boolean navigateChildFragments( CommandFragment fragment, boolean visitCurrent )
@@ -320,6 +333,7 @@ public class CommandFragmentEngine implements CommandManager
   	      environment_.getLog().log(Log.INFO, "command", 5001, this, "runCommand", "Executing: " + cmd.getClass().getName());
   	  	    
  	      status = cmd.execute( environment_ ); 	      
+		  entry.beforeExecute_ = false;
   	    }
   	    catch( Throwable exc )
   	    {
@@ -352,11 +366,13 @@ public class CommandFragmentEngine implements CommandManager
   	  fragment_        = fragment;
   	  parentIndex_     = parentIndex;
   	  fragmentStopped_ = false;
+	  beforeExecute_   = true;
   	}
   	  	
   	public Command         command_;
   	public CommandFragment fragment_;
   	public int             parentIndex_;
   	public boolean         fragmentStopped_;
+	public boolean         beforeExecute_;
   }    
 }

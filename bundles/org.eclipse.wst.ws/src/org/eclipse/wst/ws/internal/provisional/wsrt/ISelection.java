@@ -13,6 +13,6 @@ package org.eclipse.wst.ws.internal.provisional.wsrt;
 
 public interface ISelection {
 	
-	String[] getSelection();
+	Object[] getSelection();
 
 }

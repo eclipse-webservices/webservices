@@ -17,8 +17,8 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
@@ -90,7 +90,10 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
   {
     if (typeRuntimeServer != null)
     {
-      IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeRuntimeServer.getTypeId());
+	  // rskreg
+      //IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeRuntimeServer.getTypeId());
+	  IWebServiceType wst = WebServiceRuntimeExtensionUtils.getWebServiceTypeById(typeRuntimeServer.getTypeId());
+	  // rskreg
       if (wst != null)
       {
         objectSelectionWidgetId_ = wst.getObjectSelectionWidget();

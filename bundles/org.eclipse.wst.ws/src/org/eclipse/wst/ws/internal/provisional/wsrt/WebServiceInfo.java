@@ -22,4 +22,78 @@ public class WebServiceInfo {
 	private java.lang.String wsdlURL;
 	private java.lang.String endPointURL;
 	private java.lang.String implURL;
+	public java.lang.String getEndPointURL()
+	{
+		return endPointURL;
+	}
+	public void setEndPointURL(java.lang.String endPointURL)
+	{
+		this.endPointURL = endPointURL;
+	}
+	public java.lang.String getImplURL()
+	{
+		return implURL;
+	}
+	public void setImplURL(java.lang.String implURL)
+	{
+		this.implURL = implURL;
+	}
+	public java.lang.String getJ2eeLevel()
+	{
+		return j2eeLevel;
+	}
+	public void setJ2eeLevel(java.lang.String level)
+	{
+		j2eeLevel = level;
+	}
+	public java.lang.String getServerFactoryId()
+	{
+		return serverFactoryId;
+	}
+	public void setServerFactoryId(java.lang.String serverFactoryId)
+	{
+		this.serverFactoryId = serverFactoryId;
+	}
+	public java.lang.String getServerInstanceId()
+	{
+		return serverInstanceId;
+	}
+	public void setServerInstanceId(java.lang.String serverInstanceId)
+	{
+		this.serverInstanceId = serverInstanceId;
+	}
+	public java.lang.String getServletLevel()
+	{
+		return servletLevel;
+	}
+	public void setServletLevel(java.lang.String servletLevel)
+	{
+		this.servletLevel = servletLevel;
+	}
+	public WebServiceState getState()
+	{
+		return state;
+	}
+	public void setState(WebServiceState state)
+	{
+		this.state = state;
+	}
+	public java.lang.String getWebServiceRuntimeId()
+	{
+		return webServiceRuntimeId;
+	}
+	public void setWebServiceRuntimeId(java.lang.String webServiceRuntimeId)
+	{
+		this.webServiceRuntimeId = webServiceRuntimeId;
+	}
+	public java.lang.String getWsdlURL()
+	{
+		return wsdlURL;
+	}
+	public void setWsdlURL(java.lang.String wsdlURL)
+	{
+		this.wsdlURL = wsdlURL;
+	}
+	
+	
 }

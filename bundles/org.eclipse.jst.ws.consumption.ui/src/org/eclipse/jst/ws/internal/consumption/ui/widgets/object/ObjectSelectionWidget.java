@@ -17,8 +17,8 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -65,7 +65,10 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
     }
     if (typeRuntimeServer != null)
     {
-      IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeRuntimeServer.getTypeId());
+		// rskreg
+      //IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeRuntimeServer.getTypeId());
+	  IWebServiceType wst = WebServiceRuntimeExtensionUtils.getWebServiceTypeById(typeRuntimeServer.getTypeId());
+	  // rskreg
       if (wst != null)
       {
         String objectSelectionWidgetId = wst.getObjectSelectionWidget();

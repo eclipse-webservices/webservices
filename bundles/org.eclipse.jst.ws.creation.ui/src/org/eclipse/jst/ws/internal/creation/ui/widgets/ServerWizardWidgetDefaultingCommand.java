@@ -12,8 +12,8 @@ package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
@@ -25,13 +25,15 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
   
   public Status execute(Environment env)
   {
-    WebServiceServerRuntimeTypeRegistry registry = WebServiceServerRuntimeTypeRegistry.getInstance();
+    // rskreg	  
+    //WebServiceServerRuntimeTypeRegistry registry = WebServiceServerRuntimeTypeRegistry.getInstance();
     
     String type      = getScenarioContext().getWebServiceType();                       
-    String runtime   = registry.getDefaultRuntimeValueFor( type );
-    String serverID  = registry.getDefaultServerValueFor( type );
-    String factoryID = registry.getServerFactoryIdFromServerId( serverID );
-        
+    String runtime   = WebServiceRuntimeExtensionUtils.getDefaultRuntimeValueFor( type );
+	
+    //String serverID  = WebServiceRuntimeExtensionUtils.getDefaultServerValueFor( type );
+    String factoryID = WebServiceRuntimeExtensionUtils.getDefaultServerValueFor(type);
+    // rskreg    
     typeRuntimeServer_ = new TypeRuntimeServer();
     
     typeRuntimeServer_.setTypeId( type );
@@ -39,7 +41,9 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
     typeRuntimeServer_.setServerId( factoryID );
     
     //Default the typeId from the initial selection
-    String[] typeIds = registry.getWebServiceTypeBySelection(initialSelection_);
+	// rskreg
+    String[] typeIds = WebServiceRuntimeExtensionUtils.getWebServiceTypeBySelection(initialSelection_);
+	// rskreg
     if (typeIds!=null && typeIds.length>0)
     {
       typeRuntimeServer_.setTypeId(typeIds[0]);

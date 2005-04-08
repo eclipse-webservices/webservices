@@ -15,10 +15,10 @@ import org.eclipse.wst.command.internal.provisional.ICommandFactory;
 
 public abstract class AbstractWebServiceRuntime implements IWebServiceRuntime {
 
-	public abstract IWebService getWebService();
+	public abstract IWebService getWebService(WebServiceInfo info);
 	/**
 	 */
-	public abstract IWebServiceClient getWebServiceClient();
+	public abstract IWebServiceClient getWebServiceClient(WebServiceClientInfo info);
 	/**
 	 */
 	public ICommandFactory announce(IWebService webService)

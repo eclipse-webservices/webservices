@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceClientTypeRegistry;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.context.ResourceContext;
 
@@ -46,11 +46,15 @@ public class ClientWizardWidgetDefaultingCommand extends SimpleCommand
   // TODO Set client name defaults here.  
   public TypeRuntimeServer getClientTypeRuntimeServer()
   {
-    WebServiceClientTypeRegistry registry = WebServiceClientTypeRegistry.getInstance();
+    // rskreg
+		//WebServiceClientTypeRegistry registry = WebServiceClientTypeRegistry.getInstance();
     String                       type     = getScenarioContext().getClientWebServiceType();
-    String                       runtime  = registry.getAllClientRuntimes()[0];
-    String                       server   = registry.getAllClientServerFactoryIds()[0];
+    //String                       runtime  = registry.getAllClientRuntimes()[0];
+		String                       runtime  = WebServiceRuntimeExtensionUtils.getAllClientRuntimes()[0];
+    //String                       server   = registry.getAllClientServerFactoryIds()[0];
+		String                       server   = WebServiceRuntimeExtensionUtils.getAllClientServerFactoryIds()[0];
     TypeRuntimeServer            result   = new TypeRuntimeServer();
+		// rskreg
     
     result.setTypeId( type );
     result.setRuntimeId( runtime );

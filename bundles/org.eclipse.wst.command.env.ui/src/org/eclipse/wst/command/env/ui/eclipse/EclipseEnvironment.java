@@ -109,4 +109,9 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
   {
     return resourceContext_;
   }
+  
+  public void setCommandManager( CommandManager manager )
+  {
+	commandManager_ = manager;  
+  }
 }

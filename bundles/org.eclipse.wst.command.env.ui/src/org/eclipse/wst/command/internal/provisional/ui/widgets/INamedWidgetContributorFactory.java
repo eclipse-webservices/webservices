@@ -9,21 +9,11 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.ws.internal.wsrt;
+package org.eclipse.wst.command.internal.provisional.ui.widgets;
 
-import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
-
-public class Selection implements ISelection {
-
-	private String[] selection;
-	
-	public String[] getSelection() {
-		return selection;
-	}
-	
-	public void setSelection(String[] selection)
-	{
-		this.selection = selection;
-	}
-
+public interface INamedWidgetContributorFactory 
+{
+  INamedWidgetContributor getFirstNamedWidget();
+  
+  INamedWidgetContributor getNextNamedWidget( INamedWidgetContributor widgetContributor );
 }

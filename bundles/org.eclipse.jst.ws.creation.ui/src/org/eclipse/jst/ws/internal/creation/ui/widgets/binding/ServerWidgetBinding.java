@@ -21,6 +21,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.ServerDeployableCo
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForMissingFiles;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerInstToIServerTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
+import org.eclipse.jst.ws.internal.consumption.ui.selection.SelectionTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishToPrivateUDDICommandFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishWSWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand;
@@ -44,6 +45,8 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WSDLTestLaunchCom
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceClientTestArrivalCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceClientTypeRegistry;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
+import org.eclipse.jst.ws.internal.creation.ui.extension.PreServiceDevelopCommand;
+import org.eclipse.jst.ws.internal.creation.ui.extension.ServiceRootFragment;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidget;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand;
@@ -381,7 +384,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
   {
     public ServiceRootCommandFragment()
     {
-      add( new SimpleFragment( new CheckForMissingFiles(), "" ) );
+      //add( new SimpleFragment( new CheckForMissingFiles(), "" ) );
       add( new SimpleFragment( new InitRegistries(), "" ) );
       add( new SimpleFragment( new ServerWizardWidgetDefaultingCommand(), ""));
       add( new SimpleFragment( "ServerWizardWidget" ) );
@@ -390,9 +393,10 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       add( new SimpleFragment( new ServerRuntimeSelectionWidgetDefaultingCommand(), ""));
       add( new SimpleFragment( "ServerRuntimeSelectionWidget" ) );
       add( new SimpleFragment( new ServerExtensionDefaultingCommand(), ""));
-      add(new SimpleFragment(new ServerDeployableConfigurationCommand(), "")); //Note: added here            
-      add( new SimpleFragment( new CreateServiceProjectCommand(), ""));
-      add( new ServerExtensionFragment() );
+      //add(new SimpleFragment(new ServerDeployableConfigurationCommand(), "")); //Note: added here            
+      //add( new SimpleFragment( new CreateServiceProjectCommand(), ""));
+      //add( new ServerExtensionFragment() );
+	  add( new ServiceRootFragment() );
       add( new SimpleFragment( new ServerExtensionOutputCommand(), "" ));
       add(new SimpleFragment(new CreateMonitorCommand(), ""));
       add(new SimpleFragment(new ComputeEndpointCommand(), ""));
@@ -434,7 +438,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "PublishService", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "GenerateProxy", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ResourceContext", ServerWizardWidgetOutputCommand.class);
-      
+      	  
       // Map ServerWizardWidgetOutputCommand.
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "ServiceTypeRuntimeServer", ObjectSelectionFragment.class, "TypeRuntimeServer", null);
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "ClientTypeRuntimeServer", ServerRuntimeSelectionWidgetDefaultingCommand.class);
@@ -452,7 +456,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerExtensionOutputCommand.class, "WsdlURI", WSDLTestLaunchCommand.class);
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProject", WSDLTestLaunchCommand.class);
       
-      
+	  
       
       // Map ServerRuntimeSelectionWidgetDefaultingCommand
       dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerExtensionDefaultingCommand.class);
@@ -473,6 +477,14 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "Publish", PublishToPrivateUDDICommandFragment.class);      
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer",WSDLTestLaunchCommand.class);
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", ClientTestDelegateCommand.class);
+	  
+	  // Setup the PreServiceDevelopCommand.
+	  dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", PreServiceDevelopCommand.class );
+      dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceJ2EEVersion", PreServiceDevelopCommand.class);
+      dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServerProject", PreServiceDevelopCommand.class, "Module", null );
+      dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServerProjectEAR", PreServiceDevelopCommand.class, "Ear", null );
+      dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "ResourceContext", PreServiceDevelopCommand.class);
+	  dataRegistry.addMapping( ObjectSelectionOutputCommand.class, "ObjectSelection", PreServiceDevelopCommand.class, "Selection", new SelectionTransformer() );
       
       // Map CreateServiceProjectCommand
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProject", CreateServiceProjectCommand.class, "ProjectName", null);

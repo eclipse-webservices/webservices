@@ -8,10 +8,10 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.ws.internal.wsrt;
+package org.eclipse.jst.ws.internal.wsrt;
 
-import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
+import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 
 /**
  * @author rsinha

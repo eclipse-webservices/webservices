@@ -15,12 +15,12 @@ import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.env.core.fragment.CommandFragmentEngine;
 import org.eclipse.wst.command.env.core.fragment.FragmentListener;
+import org.eclipse.wst.command.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 
@@ -39,12 +39,12 @@ public class SimpleCommandEngineManager
 {
   protected CommandFragmentEngine engine_;
   protected DataFlowManager       dataManager_;
-  private   Environment           environment_;
+  private   EclipseEnvironment    environment_;
   
   private   boolean               foundStop_;
   private   boolean               doNotRunInTransaction_;
   
-  public SimpleCommandEngineManager( Environment environment, DataFlowManager dataManager )
+  public SimpleCommandEngineManager( EclipseEnvironment environment, DataFlowManager dataManager )
   {
     environment_ = environment;
     dataManager_ = dataManager;
@@ -58,7 +58,9 @@ public class SimpleCommandEngineManager
    */
   public void setRootFragment( CommandFragment root )
   {
-  	engine_ = new CommandFragmentEngine( root, dataManager_, environment_ );  	  
+  	engine_ = new CommandFragmentEngine( root, dataManager_, environment_ );
+	
+	environment_.setCommandManager( engine_ );
   	
     engine_.setPeekFragmentListener( 
       new FragmentListener()

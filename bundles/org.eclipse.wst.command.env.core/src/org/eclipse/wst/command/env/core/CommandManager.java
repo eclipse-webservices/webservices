@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.command.env.core;
 
+import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
+
 /**
  * CommandManagers help manage the lifecycle of Commands.
  */
@@ -26,4 +28,6 @@ public interface CommandManager
 
   // There's probably more, like factory methods for creating
   // Undo/Redo stacks and stuff like that.
+  
+  public DataMappingRegistry getMappingRegistry();
 }

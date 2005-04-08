@@ -30,9 +30,8 @@ import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUI
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.ClientProjectTypeRegistry;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceRuntime;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceClientTypeRegistry;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
@@ -112,26 +111,33 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   {
     try
     {
-      WebServiceClientTypeRegistry reg = WebServiceClientTypeRegistry.getInstance();
-      String[] runtimeIds = gatherAttributeValues(reg.getConfigurationElement(clientIds_.getTypeId()), "runtime");
+	  // rskreg		
+      //WebServiceClientTypeRegistry reg = WebServiceClientTypeRegistry.getInstance();
+
+      //String[] runtimeIds = gatherAttributeValues(reg.getConfigurationElement(clientIds_.getTypeId()), "runtime");
+	  String[] runtimeIds = WebServiceRuntimeExtensionUtils.getRuntimesByClientType(clientIds_.getTypeId()); 
+	  // rskreg
       SelectionList list = new SelectionList(runtimeIds, 0);
       Vector choices = new Vector();
       for (int i = 0; i < runtimeIds.length; i++) {
         choices.add(getClientTypesChoice(runtimeIds[i]));
       }
       runtimeClientTypes_ = new SelectionListChoices(list, choices);
-      setClientDefaultRuntimeFromPreference();
-      setClientDefaultJ2EEVersionFromPreference();
-      clientRuntimeJ2EEType_ = getClientRuntimeAndJ2EEFromProject(clientInitialProject_);
-      if (clientRuntimeJ2EEType_ != null)
-      {
-        clientJ2EEVersion_ = clientRuntimeJ2EEType_.getJ2eeVersionId();
-        setClientRuntimeId(clientRuntimeJ2EEType_.getWsrId());
-        setClientProjectType(clientRuntimeJ2EEType_.getClientProjectTypeId());
-      }
+      //setClientDefaultRuntimeFromPreference();
+      //setClientDefaultJ2EEVersionFromPreference();
+      //clientRuntimeJ2EEType_ = getClientRuntimeAndJ2EEFromProject(clientInitialProject_);
+      //if (clientRuntimeJ2EEType_ != null)
+      //{
+        //clientJ2EEVersion_ = clientRuntimeJ2EEType_.getJ2eeVersionId();
+        //setClientRuntimeId(clientRuntimeJ2EEType_.getWsrId());
+        //setClientProjectType(clientRuntimeJ2EEType_.getClientProjectTypeId());
+      //}
+	  setClientRuntimeId((WebServiceRuntimeExtensionUtils.getRuntimesByClientType(clientIds_.getTypeId()))[0]);
+	  clientJ2EEVersion_ = (WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getJ2eeLevels())[0];
 	  
       //If clientInitialProject is the service project, check the initialInitialProject
       //to see if it is valid.
+	  /*
       ValidationUtils vu = new ValidationUtils();
       if (vu.isProjectServiceProject(clientInitialProject_, wsdlURI_, parser_))
       {            
@@ -147,10 +153,11 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
           clientInitialProject_ = initialInitialProject_;
         }
       }
-
-      setClientDefaultProject();
-      setClientDefaultEAR();
-      setClientDefaultServer();
+      */
+      //setClientDefaultProject();
+      //setClientDefaultEAR();
+      //setClientDefaultServer();
+	  clientIds_.setServerId((WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getServerFactoryIds())[0]);
       updateClientEARs();
       return new SimpleStatus("");
     } catch (Exception e)
@@ -171,11 +178,14 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
    */
   private SelectionListChoices getClientTypesChoice(String runtimeId)
   {
-    WebServiceClientTypeRegistry reg = WebServiceClientTypeRegistry.getInstance();
+    //WebServiceClientTypeRegistry reg = WebServiceClientTypeRegistry.getInstance();
     ClientProjectTypeRegistry cptr = ClientProjectTypeRegistry.getInstance();
     String[] clientTypes;
-    String[] clientProjectTypes = gatherAttributeValues(reg.getConfigurationElement(clientIds_.getTypeId(), runtimeId), "clientProjectType");
-    if (clientProjectTypes.length > 0)
+	// rskreg
+    //String[] clientProjectTypes = gatherAttributeValues(reg.getConfigurationElement(clientIds_.getTypeId(), runtimeId), "clientProjectType");
+	clientTypes = WebServiceRuntimeExtensionUtils.getClientProjectTypes(clientIds_.getTypeId(), runtimeId);
+	/*
+    if (clientProjectTypes!=null && clientProjectTypes.length > 0)
     {
       StringTokenizer st = new StringTokenizer(clientProjectTypes[0]);
       clientTypes = new String[st.countTokens()];
@@ -184,7 +194,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     }
     else
       clientTypes = new String[] {cptr.getDefaultElement().getAttribute("id")};
-    
+    */
+    // rskreg
 	// Seng's Note: Check flexible project structure non-support here!!!
     SelectionList list = new SelectionList(clientTypes, 0);
     Vector choices = new Vector();
@@ -253,6 +264,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     return new SelectionList(earProjectNames, 0);
   }
 
+  // rskreg
+  /*
   private String[] gatherAttributeValues(IConfigurationElement[] elements, String key)
   {
     Vector v = new Vector();
@@ -267,8 +280,11 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     }
     return (String [])v.toArray(new String[0]);
   }
-
+  */
+  // rskreg
   
+  // rskreg
+  /*
   private void setClientDefaultRuntimeFromPreference()
   {
     PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
@@ -277,6 +293,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     //set the client runtime to be the preferred runtime if the client type allows.
     setClientRuntimeId(pRuntimeId);
   }
+  */
+  // rskreg
   
   private void setClientRuntimeId(String id)
   {
@@ -305,6 +323,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     }        
   }
   
+  // rskreg
+  /*
   protected void setClientDefaultJ2EEVersionFromPreference()
   {
     if (clientIds_ != null)
@@ -338,7 +358,10 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
       }
     }  	
   }
-  
+  */
+  // rskreg
+  // rskreg
+  /*
   private WSRuntimeJ2EEType getClientRuntimeAndJ2EEFromProject(IProject project)
   {
     WSRuntimeJ2EEType cRJ2EE = null;
@@ -406,7 +429,10 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     }    
     return cRJ2EE;
   }
-  
+  */
+  // rskreg
+  // rskreg
+  /*
   private void setClientDefaultProject()
   {    
 	//Handle the case where no valid initial selection exists
@@ -428,7 +454,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     }
 
   }
-  
+  */
+  /*
   private void setClientProjectToFirstValid()
   {
     WebServiceClientTypeRegistry wsctReg = WebServiceClientTypeRegistry.getInstance();
@@ -468,7 +495,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     
     //No valid project was found. Enter a new project name.
     getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(ResourceUtils.getDefaultWebProjectName());
-  }  
+  }
+  */
+  // rskreg
   
   protected IResource getResourceFromInitialSelection(IStructuredSelection selection)
   {

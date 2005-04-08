@@ -17,10 +17,10 @@ public interface IWebServiceRuntime {
 	
 	/**
 	 */
-	public IWebService getWebService();
+	public IWebService getWebService(WebServiceInfo info);
 	/**
 	 */
-	public IWebServiceClient getWebServiceClient();
+	public IWebServiceClient getWebServiceClient(WebServiceClientInfo info);
 	/**
 	 */
 	public ICommandFactory announce(IWebService webService);

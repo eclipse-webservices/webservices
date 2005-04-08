@@ -23,5 +23,6 @@
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.osgi"/>
    </requires>
-
+   
+   <extension-point id="widgetRegistry" name="%WIDGET_REGISTRY_NAME" schema="schema/widgetRegistry.exsd"/>   
 </plugin>

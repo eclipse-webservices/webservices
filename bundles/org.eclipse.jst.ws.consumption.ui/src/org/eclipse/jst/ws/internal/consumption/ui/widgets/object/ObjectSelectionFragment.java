@@ -11,8 +11,8 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.wst.command.env.core.common.Condition;
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.env.core.fragment.BooleanFragment;
@@ -67,7 +67,10 @@ public class ObjectSelectionFragment extends SequenceFragment implements Conditi
     this.typeRuntimeServer = typeRuntimeServer;
     if (typeRuntimeServer != null)
     {
-      IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeRuntimeServer.getTypeId());
+	  // rskreg
+      //IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeRuntimeServer.getTypeId());
+	  IWebServiceType wst = WebServiceRuntimeExtensionUtils.getWebServiceTypeById(typeRuntimeServer.getTypeId());
+	  // rskreg
       if (wst != null)
       {
         String objectSelectionWidgetId = wst.getObjectSelectionWidget();
