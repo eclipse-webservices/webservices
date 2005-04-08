@@ -14,7 +14,6 @@ package org.eclipse.wst.wsdl.validation.internal.resolver;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,37 +33,15 @@ import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog;
  */
 public class URIResolver implements IURIResolver, XMLEntityResolver
 {
-  //private static URIResolver instance = null;
-
   private List extURIResolversList = new ArrayList();
 
-  //private URIResolverDelegate[] extResolversArray;
-
-  //private int numExtResolvers;
-
   /**
-   * Constructor. This class cannot be instantiated directly.
+   * Constructor. 
    */
   public URIResolver()
   {
-    //numExtResolvers = URIResolver.extURIResolversList.size();
-    //extResolversArray = (URIResolverDelegate[]) URIResolver.extURIResolversList
-    //    .toArray(new URIResolverDelegate[numExtResolvers]);
   }
 
-  /**
-   * Return the one and only instance of this URIResolver.
-   * 
-   * @return The instance of this URIResolver.
-   */
-//  public static URIResolver getInstance()
-//  {
-//    if (instance == null)
-//    {
-//      instance = new URIResolver();
-//    }
-//    return instance;
-//  }
 
   /**
    * Add an extension URI resolver.
@@ -95,7 +72,7 @@ public class URIResolver implements IURIResolver, XMLEntityResolver
         continue;
       }
       result = resolver.resolve(baseLocation, publicId, systemId);
-      if (result == null || !result.equals(systemId))
+      if (result != null && !result.equals(systemId))
       {
         break;
       }
@@ -103,7 +80,7 @@ public class URIResolver implements IURIResolver, XMLEntityResolver
 
     // If we haven't been able to locate the result yet ask the internal XML
     // catalog.
-    if (result == null)
+    if (result == null && (publicId != null || systemId != null))
     {
       result = XMLCatalog.getInstance().resolveEntityLocation(publicId, systemId);
     }
@@ -145,26 +122,163 @@ public class URIResolver implements IURIResolver, XMLEntityResolver
     return xmlInputSource;
   }
   
+  /**
+   * Normalize the systemId. Make it absolute with respect to the
+   * baseLocation if necessary.
+   * 
+   * @param baseLocation The base location of the file.
+   * @param systemId The system id of the file.
+   * @return A normalized version of the system id.
+   */
   protected String normalize(String baseLocation, String systemId)
-	{
-	  // If no systemId has been specified there is nothing to do
-	  // so return null;
-	  if(systemId == null)
-	    return null;
-		String result = systemId;
-		// normalize the URI
-		URI systemURI = URI.create(systemId);
-		if (!systemURI.isAbsolute())
-		{
-			URI baseURI = URI.create(baseLocation);
-			try
-			{
-			  result = baseURI.resolve(systemURI).toString();
-			}
-			catch(IllegalArgumentException e)
-			{}
-			
-		}
-		return result;
-	}
+  {
+  	if(systemId == null)
+  	{
+  	  return systemId;
+  	}
+  	// Try to find a scheme in the systemId.
+  	int schemaLoc = systemId.indexOf(':');
+  	if(schemaLoc != -1 && systemId.charAt(schemaLoc+1) == '/')
+  	{
+  	  // A scheme has been found. The systemId is an
+  	  // absolute location so return it.
+  	  return systemId;
+  	}
+  	if(baseLocation == null)
+  	{
+  	  return baseLocation;
+  	}
+  	
+  	String result = "";
+  	
+  	// Ensure all slashes in the locations are /.
+  	baseLocation = baseLocation.replace('\\','/');
+  	systemId = systemId.replace('\\','/');
+  	
+  	// Remove the trailing section of the baseLocation.
+	int lastSlash = baseLocation.lastIndexOf('/');
+  	String tempresult = baseLocation.substring(0, lastSlash+1);
+  	
+  	if(systemId.startsWith("/"))
+  	{
+  	  systemId = systemId.substring(1);
+  	}
+  	
+  	// Join the base location with the systemid
+  	tempresult = tempresult + systemId;
+  	
+  	// While the relative location starts with a ../ or ./ change
+  	// the result and the relative location.
+  	int loc;
+  	while((loc = tempresult.lastIndexOf("./")) != -1)
+  	{
+  	  result = tempresult.substring(loc + 2) + result;
+  	  if(tempresult.charAt(loc - 1) == '.')
+  	  {
+  	  	if(tempresult.charAt(loc - 2) == '/')
+  	  	{
+  	  	  String temp = tempresult.substring(0, loc - 2);
+  	  	  int loc2 = temp.lastIndexOf('/');
+  	  	  if(loc2 == -1)
+  	  	  {
+  	  	  	// If there is no other / before this the URL must start with scheme:/../
+  	  	  	result = "../" + result;
+  	  	  	tempresult = tempresult.substring(0, loc - 1);
+  	  	  }
+  	  	  else
+  	  	  {
+  	  	  	// Remove the section that comes before this one from tempresult unless it's ../.
+  	  	    tempresult = tempresult.substring(0, loc - 1);
+  	  	    int numSectsToRemove = 1;
+  	  	    
+  	  	    while(tempresult.endsWith("./"))
+  	  	    {
+  	  	      int tempreslen = tempresult.length();
+  	  	      if(tempreslen > 2 && tempresult.charAt(tempreslen -3) == '.')
+  	  	      {
+  	  	      	if(tempreslen > 3 && tempresult.charAt(tempreslen - 4) == '/')
+  	  	      	{
+  	  	      	  numSectsToRemove++;
+  	  	      	  tempresult = tempresult.substring(0, tempresult.length() -3);
+  	  	        }
+  	  	      	else
+  	  	      	{
+  	  	      	  break;
+  	  	      	}
+  	  	      }
+  	  	      else
+  	  	      {
+  	  	      	if(tempresult.charAt(tempresult.length() -2) == '/')
+  	  	      	{
+  	  	      	  tempresult = tempresult.substring(0, tempresult.length() -2);
+  	  	      	}
+  	  	      	else
+  	  	      	{
+  	  	      	  break;
+  	  	      	}
+  	  	      }
+  	  	    }
+  	  	    // Remove the sections.
+  	  	    for(int i = 0; i < numSectsToRemove; i++)
+  	  	    {
+  	  	      String temp2 = tempresult.substring(0,tempresult.length()-1);
+  	  	      int loc3 = temp2.lastIndexOf('/');
+  	  	      if(loc3 == -1)
+  	  	      {
+  	  	      	break;
+  	  	      }
+  	  	      tempresult = tempresult.substring(0, loc3+1);
+  	  	    }
+  	  	  } 
+  	  	}
+  	  	else
+  	  	{
+  	  	  // The URI is of the form file://somedir../ so copy it as is
+  	  	  String temp = tempresult.substring(0, loc - 1);
+	  	  int loc2 = temp.lastIndexOf('/');
+	  	  if(loc2 == -1)
+	  	  {
+	  	  	// The URI must look like file:../ or ../ so copy over the whole tempresult.
+	  	  	result = tempresult.substring(0,loc+2) + result;
+	  	  	tempresult = "";
+	  	  }
+	  	  else
+	  	  {
+	  	  	// Copy over the whole somedir../
+	  	  	result = tempresult.substring(loc2 + 1, tempresult.length());
+	  	    tempresult = tempresult.substring(0, loc2+1);
+	  	  }
+  	  	}
+  	  }
+  	  else
+  	  {
+  	    if(tempresult.charAt(loc -1 ) == '/')
+	  	{
+  	  	  // Result is of the form file://something/./something so remove the ./
+  	      tempresult = tempresult.substring(0,loc);
+	  	}
+  	    else
+  	    {
+  	      // Result URI is of form file://somedir./ so copy over the whole section.
+    	  String temp = tempresult.substring(0, loc - 1);
+  	  	  int loc2 = temp.lastIndexOf('/');
+  	  	  if(loc2 == -1)
+  	  	  {
+  	  	  	// The URI must look like file:./ or ./ so copy over the whole tempresult.
+  	  	  	result = tempresult.substring(0, loc) + result;
+  	  	  	tempresult = "";
+  	  	  }
+  	  	  else
+  	  	  {
+  	  	  	// Copy over the whole somedir./
+  	  	  	result = tempresult.substring(loc2 + 1, tempresult.length());
+  	  	    tempresult = tempresult.substring(0, loc2+1);
+  	  	  }
+  	    }
+  	  }
+  	}
+  	result = tempresult + result;
+  	return result;
+  }
+
 }
