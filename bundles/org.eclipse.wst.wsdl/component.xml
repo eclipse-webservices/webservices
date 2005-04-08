@@ -38,7 +38,7 @@
 		<type name="ExtensibilityElementFactoryRegistry" />
 		<type name="WSDLResourceFactoryImpl" />
 		<type name="ExtensibilityElementFactory" />
-		<type name="WSDLResourceImpl" />
+		<type name="WSDLResourceImpl" subclass="false"/>
 	</package>
 	<package name="org.eclipse.wst.wsdl.binding.soap" api="false">
 		<type name="SOAPBody" />
