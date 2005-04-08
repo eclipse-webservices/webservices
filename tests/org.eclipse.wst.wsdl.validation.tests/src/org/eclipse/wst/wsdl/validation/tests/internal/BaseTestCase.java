@@ -36,8 +36,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.wst.wsdl.validation.internal.ValidationMessage;
-import org.eclipse.wst.wsdl.validation.internal.ValidationReport;
+import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
+import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.ui.eclipse.WSDLValidator;
 
 /**
@@ -86,7 +86,7 @@ public class BaseTestCase extends TestCase
    */
   public void runTest(String testfile, String loglocation, String idealloglocation)
   {
-    ValidationReport valreport = validator.validate(testfile);
+    IValidationReport valreport = validator.validate(testfile);
     try
     {
       createLog(loglocation, valreport);
@@ -146,7 +146,7 @@ public class BaseTestCase extends TestCase
    * @param valreport The validation report for this file.
    * @return The file contents as a string if successful or null if not successful.
    */
-  private String createLog(String filename, ValidationReport valreport)
+  private String createLog(String filename, IValidationReport valreport)
   {
     if(filename.startsWith("file:"))
   	{
@@ -156,7 +156,7 @@ public class BaseTestCase extends TestCase
   	  	filename = filename.substring(1);
   	  }
   	}
-     ValidationMessage[] valmessages = valreport.getValidationMessages();
+     IValidationMessage[] valmessages = valreport.getValidationMessages();
      int nummessages = valmessages.length;//validator.getErrors().size() + validator.getWarnings().size();
      StringBuffer errorsString = new StringBuffer();
      StringBuffer warningsString = new StringBuffer();
@@ -164,8 +164,8 @@ public class BaseTestCase extends TestCase
      int numwarnings = 0;
      for(int i = 0; i < nummessages; i++)
      {
-       ValidationMessage valmes = valmessages[i];
-       if(valmes.getSeverity() == ValidationMessage.SEV_WARNING)
+       IValidationMessage valmes = valmessages[i];
+       if(valmes.getSeverity() == IValidationMessage.SEV_WARNING)
        {
          numwarnings++;
          // If the message contains any file references make them relative.
@@ -249,7 +249,7 @@ public class BaseTestCase extends TestCase
       Iterator nestedMesIter = nestedMessages.iterator();
       while(nestedMesIter.hasNext())
       {
-        ValidationMessage nesvalmes = (ValidationMessage)nestedMesIter.next();
+        IValidationMessage nesvalmes = (IValidationMessage)nestedMesIter.next();
         for(int i = 0; i < depth; i++)
         {
           messageString += " ";
