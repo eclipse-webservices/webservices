@@ -214,7 +214,8 @@ public class WSDL11ValidatorController implements IWSDLValidator
     }
     else
     {
-      wsdlvalinfo.addWarning(messagegenerator.getString(_WARN_NO_VALDIATOR, namespace), element);
+	  //TODO: Add this as a preference.
+      //wsdlvalinfo.addWarning(messagegenerator.getString(_WARN_NO_VALDIATOR, namespace), element);
     }
   }
 
