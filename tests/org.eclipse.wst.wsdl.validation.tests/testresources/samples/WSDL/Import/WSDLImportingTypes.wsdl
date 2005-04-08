@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://tempuri.org/WSDLImportingTypes/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="WSDLImportingTypes" targetNamespace="http://tempuri.org/WSDLImportingTypes/" xmlns:wsdl1="http://tempuri.org/WSDLOnlyTypes/">
+    <wsdl:import namespace="http://tempuri.org/WSDLOnlyTypes/" location="WSDLOnlyTypes.wsdl"></wsdl:import>    
+    <wsdl:message name="NewMessage">
+    	<wsdl:part name="NewMessage" element="wsdl1:NewGlobalElement"></wsdl:part>
+    </wsdl:message>
+    
+</wsdl:definitions>

@@ -1,0 +1,8 @@
+number of errors      : 1
+number of warnings    : 0
+
+------------error list-------------------------------------------
+The value of attribute "value" associated with an element type "xsd:pattern" must not contain the '<' character. [11, 55]
+------------warning list-----------------------------------------
+(none)
+-----------------------------------------------------------------

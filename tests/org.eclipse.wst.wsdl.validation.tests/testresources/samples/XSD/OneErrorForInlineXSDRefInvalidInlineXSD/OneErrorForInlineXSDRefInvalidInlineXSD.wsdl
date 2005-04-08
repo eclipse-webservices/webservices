@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://tempuri.org/OneErrorForInlineXSDRefInvalidInlineXSD/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="OneErrorForInlineXSDRefInvalidInlineXSD" targetNamespace="http://tempuri.org/OneErrorForInlineXSDRefInvalidInlineXSD/" xmlns:xsd1="http://tempuri.org/OneErrorForInlineXSDRefInvalidInlineXSD/1" xmlns:xsd2="http://tempuri.org/OneErrorForInlineXSDRefInvalidInlineXSD/1">
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			elementFormDefault="qualified"
+			targetNamespace="http://tempuri.org/OneErrorForInlineXSDRefInvalidInlineXSD/1">
+		  <xsd:element name="NewGlobalElement" type="xsd:stringa"></xsd:element>
+        </xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			elementFormDefault="qualified"
+			targetNamespace="http://tempuri.org/OneErrorForInlineXSDRefInvalidInlineXSD/2">
+		  <xsd:complexType name="NewComplexType">
+            <xsd:sequence>
+              <xsd:element ref="xsd1:NewGlobalElement"></xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+</wsdl:definitions>

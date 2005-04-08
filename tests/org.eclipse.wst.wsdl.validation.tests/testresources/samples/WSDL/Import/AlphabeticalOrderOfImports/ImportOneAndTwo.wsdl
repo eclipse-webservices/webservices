@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	name="ImportOneAndTwo"
+	targetNamespace="http://ImportOneAndTwo" 
+	xmlns:wsdl1="http://tempuri.org/one.wsdl"
+	xmlns:wsdl2="http://atempuri.org/two.wsdl">
+
+	
+<wsdl:import namespace="http://tempuri.org/one.wsdl" location="one.wsdl"/>
+<wsdl:import namespace="http://atempuri.org/two.wsdl" location="two.wsdl"/>
+	
+</wsdl:definitions>

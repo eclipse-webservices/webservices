@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Licensed Material - Property of IBM
+ (C) Copyright IBM Corp. 2002-2003 - All Rights Reserved.
+ US Government Users Restricted Rights - Use, duplication or disclosure
+ restricted by GSA ADP Schedule Contract with IBM Corp.
+-->
+<wsdl:definitions 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" 
+	xmlns:impl="http://www.ws-i.org/SampleApplications/SupplyChainManagement/2002-10/Manufacturer_Impl.wsdl" 
+	xmlns:intf="http://www.ws-i.org/SampleApplications/SupplyChainManagement/2002-10/Manufacturer.wsdl" 
+	xmlns:ct="http://www.ws-i.org/SampleApplications/SupplyChainManagement/2002-08/Configuration.xsd" 
+	xmlns:cfg="http://www.ws-i.org/SampleApplications/SupplyChainManagement/2002-08/Configuration.wsdl"
+	xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://www.ws-i.org/SampleApplications/SupplyChainManagement/2002-10/Manufacturer.wsdl"
+	targetNamespace="http://www.ws-i.org/SampleApplications/SupplyChainManagement/2002-10/Manufacturer.wsdl">
+
+   <wsdl:import location="http://www.ws-i.org/SampleApplications/SupplyChainManagement/2002-10/Manufacturer.wsdl" 
+   		namespace="http://www.ws-i.org/SampleApplications/SupplyChainManagement/2002-10/Manufacturer.wsdl"/>
+   <wsdl:import namespace="http://www.ws-i.org/SampleApplications/SupplyChainManagement/2002-08/Configuration.wsdl"
+		location="http://www.ws-i.org/SampleApplications/SupplyChainManagement/2002-08/Configuration.wsdl"/>
+
+	<wsdl:binding name="ManufacturerCSoapBinding" type="tns:ManufacturerPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="submitPO">
+			<soap:operation/>
+			<wsdl:input>
+				<soap:body parts="PurchaseOrder" use="literal"/>
+				<soap:header message="tns:POSubmit" part="ConfigurationHeader" use="literal">
+					<soap:headerfault message="cfg:ConfigurationFaultMessage" part="ConfigurationFault" use="literal" />
+				</soap:header>
+				<soap:header message="tns:POSubmit" part="StartHeader" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="POFault">
+				<soap:fault name="POFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+   <wsdl:service name="ManufacturerCService">
+      <wsdl:port binding="intf:ManufacturerCSoapBinding" name="ManufacturerC">
+         <wsdlsoap:address location="http://localhost:9080/ManufacturerC/services/ManufacturerC"/>
+      </wsdl:port>
+   </wsdl:service>  
+
+</wsdl:definitions>

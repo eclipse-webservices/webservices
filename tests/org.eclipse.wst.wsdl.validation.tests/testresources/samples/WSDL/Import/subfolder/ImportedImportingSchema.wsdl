@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://tempuri.org/ImportedImportingSchema/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ImportedImportingSchema" targetNamespace="http://tempuri.org/ImportedImportingSchema/">
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			elementFormDefault="qualified"
+			targetNamespace="http://tempuri.org/ImportedImportingSchema/"
+            xmlns:ImportedWSDLImportedSchema="http://ImportedWSDLImportedSchema">
+		<xsd:import namespace="http://ImportedWSDLImportedSchema" schemaLocation="ImportedWSDLImportedSchema.xsd"></xsd:import>
+		<xsd:element name="NewGlobalElement" type="ImportedWSDLImportedSchema:NewSimpleType"></xsd:element></xsd:schema>
+	</wsdl:types>
+</wsdl:definitions>

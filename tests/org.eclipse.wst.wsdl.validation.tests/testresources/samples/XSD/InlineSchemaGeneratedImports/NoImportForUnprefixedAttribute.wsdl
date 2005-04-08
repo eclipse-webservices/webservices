@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://www.example.com/NoImportForUnprefixedAttribute/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema" name="NoImportForUnprefixedAttribute" targetNamespace="http://www.example.com/NoImportForUnprefixedAttribute/">
+	<wsdl:types>
+		<xs:schema targetNamespace="http://www.example.com/NoImportForUnprefixedAttribute/" elementFormDefault="qualified" attributeFormDefault="unqualified">
+			<xs:complexType name="typeWithMinMaxOccurs">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="elem1" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="elem2" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="typeWithRestriction">
+				<xs:sequence>
+					<xs:element name="elem3">
+						<xs:simpleType>
+							<xs:restriction base="xs:NMTOKEN">
+								<xs:enumeration value="something"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+</wsdl:definitions>

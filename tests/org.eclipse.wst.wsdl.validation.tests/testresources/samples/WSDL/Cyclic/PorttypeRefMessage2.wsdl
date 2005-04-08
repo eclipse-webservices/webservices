@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://tempuri.org/cyclic2/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="cyclic2" targetNamespace="http://tempuri.org/cyclic2/" xmlns:cyclic1="http://tempuri.org/cyclic1/">
+  <wsdl:import namespace="http://tempuri.org/cyclic1/" location="PorttypeRefMessage1.wsdl"></wsdl:import>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/cyclic2/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:element name="NewOperationResponse" type="xsd:string"/>
+      <xsd:element name="NewOperationRequest" type="xsd:string"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="NewOperationResponse">
+    <wsdl:part element="tns:NewOperationResponse" name="NewOperationResponse"/>
+  </wsdl:message>
+  <wsdl:message name="NewOperationRequest">
+    <wsdl:part element="tns:NewOperationRequest" name="NewOperationRequest"/>
+  </wsdl:message>
+  <wsdl:portType name="cyclic2">
+    <wsdl:operation name="NewOperation">
+      <wsdl:input message="cyclic1:NewOperationRequest"/>
+      <wsdl:output message="cyclic1:NewOperationResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

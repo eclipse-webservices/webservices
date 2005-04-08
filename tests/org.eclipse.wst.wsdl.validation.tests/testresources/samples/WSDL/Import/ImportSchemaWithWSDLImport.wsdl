@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://tempuri.org/ImportSchemaWithWSDLImport/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ImportSchemaWithWSDLImport" targetNamespace="http://tempuri.org/ImportSchemaWithWSDLImport/" xmlns:schema="http://www.example.com">
+  <wsdl:import namespace="http://www.example.com" location="schema.xsd"></wsdl:import>    
+  <wsdl:message name="NewMessage">
+    	<wsdl:part name="NewMessage" element="schema:NewGlobalElement"></wsdl:part>
+    </wsdl:message>   
+</wsdl:definitions>

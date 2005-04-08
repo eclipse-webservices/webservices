@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://tempuri.org/ImportSchemaWithWSDLImportInvalidNS/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ImportSchemaWithWSDLImportInvalidNS" targetNamespace="http://tempuri.org/ImportSchemaWithWSDLImportInvalidNS/">
+	<wsdl:import namespace="http://invalidnamespace" location="schema.xsd"></wsdl:import>
+</wsdl:definitions>

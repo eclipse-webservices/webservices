@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="ImportInlineSchemaWithInclude"
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="http://test.com/ImportInlineSchemaWithInclude"
+	xmlns:tns="http://test.com/ImportInlineSchemaWithInclude"
+	xmlns:sch="http://test.com/schema"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	
+	<types>
+		<xsd:schema targetNamespace="http://test.com/schema">			
+			<xsd:include schemaLocation="schema.xsd"/>
+		</xsd:schema>
+			
+		<xsd:schema targetNamespace="http://test.com/ImportInlineSchemaWithInclude" xmlns:sch="http://test.com/schema">
+			<xsd:import namespace="http://test.com/schema"/>
+			<xsd:element name="Element" type="sch:MyType"/>
+		</xsd:schema>
+	</types>	
+	
+	<message name="request">
+		<part name="part" element="tns:Element"/>
+	</message>		
+	
+</definitions>

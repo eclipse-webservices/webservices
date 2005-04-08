@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://tempuri.org/ImportingWSDLWithImportedSchema/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ImportingWSDLWithImportedSchema" targetNamespace="http://tempuri.org/ImportingWSDLWithImportedSchema/" xmlns:wsdl1="http://tempuri.org/ImportedImportingSchema/">
+	<wsdl:import namespace="http://tempuri.org/ImportedImportingSchema/" location="subfolder/ImportedImportingSchema.wsdl"></wsdl:import>
+	<wsdl:message name="NewMessage">
+		<wsdl:part name="NewMessage" element="wsdl1:NewGlobalElement"></wsdl:part>
+	</wsdl:message>
+</wsdl:definitions>
