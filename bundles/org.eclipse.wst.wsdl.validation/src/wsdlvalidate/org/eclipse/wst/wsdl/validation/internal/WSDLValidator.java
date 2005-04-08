@@ -19,14 +19,11 @@ import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 
 /**
- * An external entry point into the WSDL validator. There only needs
- * to be one WSDL validator so we will only allow one through the getInstance
- * method.
+ * An main WSDL validator class. The WSDL validator validates WSDL documents.
  */
 public class WSDLValidator
 {
   private static String VALIDATOR_RESOURCE_BUNDLE = "validatewsdl";
-  private static WSDLValidator instance = null;
   private ValidationController validationController;
   private URIResolver uriResolver;
   private Hashtable attributes = new Hashtable();
@@ -39,23 +36,6 @@ public class WSDLValidator
     ResourceBundle rb = ResourceBundle.getBundle(VALIDATOR_RESOURCE_BUNDLE);
     uriResolver = new URIResolver();
     validationController = new ValidationController(rb, uriResolver);
-  }
-  
-  /**
-   * The WSDL validator no longer uses one instance. Clients
-   * are free to create their own validators and customize 
-   * them. Use the constructor to create a new validator.
-   * 
-   * @return The one and only instance of this validator.
-   * @deprecated
-   */
-  public static WSDLValidator getInstance()
-  {
-    if(instance == null)
-    {
-      instance = new WSDLValidator();
-    }
-    return instance;
   }
   
   /**
