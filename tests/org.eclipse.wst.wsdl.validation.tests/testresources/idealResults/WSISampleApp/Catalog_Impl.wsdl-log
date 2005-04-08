@@ -1,8 +1,0 @@
-number of errors      : 1
-number of warnings    : 0
-
-------------error list-------------------------------------------
-WS-I: A descendant element or attribute in the wsdl:binding is from a namespace of WSDL MIME, HTTP GET/POST or DIME binding extensions. [69, 70]
-------------warning list-----------------------------------------
-(none)
------------------------------------------------------------------
