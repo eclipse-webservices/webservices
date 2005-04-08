@@ -20,7 +20,7 @@ import java.util.List;
  * A validation message is created when there is information to report from
  * validating a WSDL document.
  */
-public class ValidationMessageImpl implements ValidationMessage
+public class ValidationMessageImpl implements IValidationMessage
 {
   protected String message;
   protected int lineNumber;
@@ -28,6 +28,8 @@ public class ValidationMessageImpl implements ValidationMessage
   protected String uri;
   protected int severity = SEV_ERROR;
   protected List nestedErrors;
+  protected String errorKey = null;
+  protected Object[] messageArguments = null;
 
   /**
    * Constructor.
@@ -53,11 +55,29 @@ public class ValidationMessageImpl implements ValidationMessage
    */
   public ValidationMessageImpl(String message, int lineNumber, int columnNumber, int severity, String uri)
   {
+      this(message, lineNumber, columnNumber, severity, uri, null, null);
+  }
+  
+  /**
+   * Constructor.
+   * Allows specifying a uri for the reference that the message refers to.
+   * 
+   * @param message The validation message.
+   * @param lineNumber The line where the message should be displayed.
+   * @param columnNumber The column where the message should be displayed.
+   * @param uri The uri of the reference file for the message.
+   * @param errorKey The Xerces Error key
+   * @param messageArguments The values used to "fill in the blanks" of a Xerces error Message
+   */
+  public ValidationMessageImpl(String message, int lineNumber, int columnNumber, int severity, String uri, String errorKey, Object[] messageArguments)
+  {
     this.message = message;
     this.lineNumber = lineNumber;
     this.columnNumber = columnNumber;
     this.severity = severity;
     this.uri = uri;
+    this.errorKey = errorKey;
+    this.messageArguments = messageArguments;
   }
 
   /**
@@ -100,7 +120,7 @@ public class ValidationMessageImpl implements ValidationMessage
     return uri;
   }
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.ValidationMessage#getSeverity()
+   * @see org.eclipse.wst.wsdl.validation.internal.IValidationMessage#getSeverity()
    */
   public int getSeverity()
   {
@@ -125,7 +145,7 @@ public class ValidationMessageImpl implements ValidationMessage
    * 
    * @param validationMessage The validation message to add as a nested message.
    */
-  public void addNestedMessage(ValidationMessage validationMessage)
+  public void addNestedMessage(IValidationMessage validationMessage)
   {
     if (nestedErrors == null)
     {
@@ -148,5 +168,26 @@ public class ValidationMessageImpl implements ValidationMessage
   {
     return nestedErrors != null ? nestedErrors : Collections.EMPTY_LIST;
   }
-
+  /**
+   * @return the error key
+   */
+  public String getErrorKey()
+  {
+    return errorKey;
+  }
+  
+  /**
+   * @param errorKey the error key to set
+   */
+  public void setErrorKey(String errorKey)
+  {
+    this.errorKey = errorKey;
+  }
+  /**
+   * @return the Xerces message arguments used to "fill in the blanks" of the messages
+   */
+  public Object[] getMessageArguments()
+  {
+    return messageArguments;
+  }
 }

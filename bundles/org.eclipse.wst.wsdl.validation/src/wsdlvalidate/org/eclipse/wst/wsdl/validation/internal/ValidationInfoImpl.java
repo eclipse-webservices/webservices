@@ -25,7 +25,7 @@ import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 /**
  * An implementation of the validation info interface.
  */
-public class ValidationInfoImpl implements ValidationReport, ControllerValidationInfo
+public class ValidationInfoImpl implements IValidationReport, ControllerValidationInfo
 {
   private boolean WRAPPER_ERROR_SUPPORT_ENABLED = true;
   private final String _WARN_NO_VALDIATOR = "_WARN_NO_VALDIATOR";
@@ -65,7 +65,7 @@ public class ValidationInfoImpl implements ValidationReport, ControllerValidatio
     this.messagegenerator = messagegenerator;
   }
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.ValidationReport#getFileURI()
+   * @see org.eclipse.wst.wsdl.validation.internal.IValidationReport#getFileURI()
    */
   public String getFileURI()
   {
@@ -73,7 +73,7 @@ public class ValidationInfoImpl implements ValidationReport, ControllerValidatio
   }
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.ValidationReport#isWSDLValid()
+   * @see org.eclipse.wst.wsdl.validation.internal.IValidationReport#isWSDLValid()
    */
   public boolean isWSDLValid()
   {
@@ -81,7 +81,7 @@ public class ValidationInfoImpl implements ValidationReport, ControllerValidatio
   }
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.ValidationInfo#addError(java.lang.String,
+   * @see org.eclipse.wst.wsdl.validation.internal.IValidationInfo#addError(java.lang.String,
    *      int, int)
    */
   public void addError(String message, int line, int column)
@@ -90,7 +90,7 @@ public class ValidationInfoImpl implements ValidationReport, ControllerValidatio
   }
   
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.ValidationInfo#addError(java.lang.String,
+   * @see org.eclipse.wst.wsdl.validation.internal.IValidationInfo#addError(java.lang.String,
    *      int, int)
    */
   public void addError(String message, int line, int column, String uri)
@@ -101,8 +101,17 @@ public class ValidationInfoImpl implements ValidationReport, ControllerValidatio
     }
   }
 
+  public void addError(String message, int line, int column, String uri, String errorKey, Object[] messageArguments)
+  {
+    if(addMessage(message, line, column, uri, ValidationMessageImpl.SEV_ERROR, errorKey, messageArguments))
+    {
+      haserrors = true;
+    }
+  }
+  
+  
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.ValidationInfo#addWarning(java.lang.String,
+   * @see org.eclipse.wst.wsdl.validation.internal.IValidationInfo#addWarning(java.lang.String,
    *      int, int)
    */
   public void addWarning(String message, int line, int column)
@@ -110,7 +119,7 @@ public class ValidationInfoImpl implements ValidationReport, ControllerValidatio
     addWarning(message, line, column, validating_file_uri);
   }
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.ValidationInfo#addWarning(java.lang.String,
+   * @see org.eclipse.wst.wsdl.validation.internal.IValidationInfo#addWarning(java.lang.String,
    *      int, int)
    */
   public void addWarning(String message, int line, int column, String uri)
@@ -131,6 +140,25 @@ public class ValidationInfoImpl implements ValidationReport, ControllerValidatio
    * @return True if the message was able to be added, false otherwise.
    */
   private boolean addMessage(String message, int line, int column, String uri, int severity)
+  {
+      return this.addMessage(message, line, column, uri, severity, null, null);
+  }
+  
+  /**
+   * Add a message to the list. A message may not be added to the list in 
+   * certain circumstances such as when the URI is invalid or the message 
+   * is null.
+   * 
+   * @param message The message to add.
+   * @param line The line location of the message.
+   * @param column The column location of the message.
+   * @param uri The URI of the file that contains the message.
+   * @param severity The severity of the message.
+   * @param errorKey The Xerces Error Key
+   * @param messageArguments The Xerces arguments used to create the error message
+   * @return True if the message was able to be added, false otherwise.
+   */
+  private boolean addMessage(String message, int line, int column, String uri, int severity, String errorKey, Object[] messageArguments)
   {
     boolean successfullyAdded = false;
     // If the message is null there is nothing to report.
@@ -166,7 +194,7 @@ public class ValidationInfoImpl implements ValidationReport, ControllerValidatio
       {
 
         ValidationMessageImpl valmes = new ValidationMessageImpl(message, line,
-            column, severity, uri);
+            column, severity, uri, errorKey, messageArguments);
         messages.add(valmes);
       }
       // If nested error support is enabled create a nested error.
@@ -181,26 +209,27 @@ public class ValidationInfoImpl implements ValidationReport, ControllerValidatio
         {
           // Initially set the nested error to a warning. This will automatically be changed
           // to an error if a nested message has a severity of error.
-          container = new ValidationMessageImpl(messagegenerator.getString(_REF_FILE_ERROR_MESSAGE, nesteduri), 1, 0, ValidationMessage.SEV_WARNING, nesteduri);
+          container = new ValidationMessageImpl(messagegenerator.getString(_REF_FILE_ERROR_MESSAGE, nesteduri), 1, 0, IValidationMessage.SEV_WARNING, nesteduri);
           nestedMessages.put(nesteduri, container);
           messages.add(container);
         }
         container.addNestedMessage(nestedmess);
       }
     }
+
     return successfullyAdded;
   }
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.ValidationReport#getValidationMessages()
+   * @see org.eclipse.wst.wsdl.validation.internal.IValidationReport#getValidationMessages()
    */
-  public ValidationMessage[] getValidationMessages()
+  public IValidationMessage[] getValidationMessages()
   {
-    return (ValidationMessage[])messages.toArray(new ValidationMessage[messages.size()]);
+    return (IValidationMessage[])messages.toArray(new IValidationMessage[messages.size()]);
   }
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.ValidationInfo#addNamespaceWithNoValidator(java.lang.String)
+   * @see org.eclipse.wst.wsdl.validation.internal.IValidationInfo#addNamespaceWithNoValidator(java.lang.String)
    */
   public void addNamespaceWithNoValidator(String namespace)
   {
@@ -231,7 +260,7 @@ public class ValidationInfoImpl implements ValidationReport, ControllerValidatio
   }
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.ValidationReport#hasErrors()
+   * @see org.eclipse.wst.wsdl.validation.internal.IValidationReport#hasErrors()
    */
   public boolean hasErrors()
   {

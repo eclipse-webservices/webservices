@@ -28,7 +28,7 @@ import org.apache.xerces.xs.XSModel;
 import org.eclipse.wst.wsdl.validation.internal.util.ErrorMessage;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator;
-import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -49,7 +49,7 @@ public class InlineSchemaValidator implements IWSDL11Validator
   /**
    * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.WSDL11ValidationInfo)
    */
-  public void validate(Object element, List parents, WSDL11ValidationInfo valInfo)
+  public void validate(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
   	List elements = new ArrayList();
     UnknownExtensibilityElement elem = (UnknownExtensibilityElement) element;

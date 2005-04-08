@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.eclipse.wst.wsdl.validation.internal.IWSDLValidator;
-import org.eclipse.wst.wsdl.validation.internal.ValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.IValidationInfo;
 import org.eclipse.wst.wsdl.validation.internal.exception.ValidateWSDLException;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.w3c.dom.Document;
@@ -54,7 +54,7 @@ public class WSDL20ValidatorController implements IWSDLValidator
   /* (non-Javadoc)
    * @see org.eclipse.wsdl.validate.IWSDLValidator#validate(org.w3c.dom.Document, org.eclipse.wsdl.validate.ValidationInfo)
    */
-  public void validate(Document domModel, ValidationInfo valInfo) throws ValidateWSDLException
+  public void validate(Document domModel, IValidationInfo valInfo) throws ValidateWSDLException
   {
     // reset the variables
     //reset();
@@ -116,7 +116,7 @@ public class WSDL20ValidatorController implements IWSDLValidator
    * @param element The element to validate.
    * @param parents The list of parents for this element.
    */
-  public void validateWSDLElement(String namespace, Object element, List parents, ValidationInfo valInfo)
+  public void validateWSDLElement(String namespace, Object element, List parents, IValidationInfo valInfo)
   {
     IWSDL20Validator val = ver.queryValidatorRegistry(namespace);
     if (val != null)

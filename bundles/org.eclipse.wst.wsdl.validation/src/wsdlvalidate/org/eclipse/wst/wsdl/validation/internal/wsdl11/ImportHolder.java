@@ -24,7 +24,7 @@ import javax.wsdl.Import;
 import javax.wsdl.WSDLException;
 
 import org.apache.xerces.xs.XSModel;
-import org.eclipse.wst.wsdl.validation.internal.ValidationMessage;
+import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.util.ErrorMessage;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.XSDValidator;
@@ -60,7 +60,7 @@ public class ImportHolder implements Comparable
   private boolean isWSDLFileImport = true;
   private boolean importInvalid = false;
   private Import importDef = null;
-  private WSDL11ValidationInfo valinfo;
+  private IWSDL11ValidationInfo valinfo;
   
   /**
    * Constructor.
@@ -74,7 +74,7 @@ public class ImportHolder implements Comparable
    * @param messagegenerator A messagegenerator for obtaining strings.
    * @param valinfo The WSDL11ValidationInfo for reporting messages.
    */
-  public ImportHolder(String namespace, String location, String contextURI, WSDLDocument importingWSDLDoc, int depth, Element importingDocImportElement, MessageGenerator messagegenerator, WSDL11ValidationInfo valinfo)
+  public ImportHolder(String namespace, String location, String contextURI, WSDLDocument importingWSDLDoc, int depth, Element importingDocImportElement, MessageGenerator messagegenerator, IWSDL11ValidationInfo valinfo)
   {
     this.messagegenerator = messagegenerator;
     this.valinfo = valinfo;
@@ -156,7 +156,7 @@ public class ImportHolder implements Comparable
       Iterator errorsIter = errors.iterator();
       while (errorsIter.hasNext())
       {
-        ValidationMessage valMes = (ValidationMessage)errorsIter.next();
+        IValidationMessage valMes = (IValidationMessage)errorsIter.next();
         valinfo.addError(valMes.getMessage(), valMes.getLine(), valMes.getColumn(), valMes.getURI());
       }
       importInvalid = true;

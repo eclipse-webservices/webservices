@@ -48,14 +48,14 @@ import com.ibm.wsdl.util.StringUtils;
 public class WSDLReaderImpl
 {
   protected MessageGenerator messagegenerator;
-  protected WSDL11ValidationInfo wsdlvalinfo;
+  protected IWSDL11ValidationInfo wsdlvalinfo;
   
   /**
    * Constructor.
    * 
    * @param wsdlvalinfo The WSDL 1.1 validation info object to use.
    */
-  public WSDLReaderImpl(WSDL11ValidationInfo wsdlvalinfo)
+  public WSDLReaderImpl(IWSDL11ValidationInfo wsdlvalinfo)
   {
     this.wsdlvalinfo = wsdlvalinfo;
   }

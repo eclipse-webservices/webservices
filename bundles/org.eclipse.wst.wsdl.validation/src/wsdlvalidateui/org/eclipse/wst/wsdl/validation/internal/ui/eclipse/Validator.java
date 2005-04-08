@@ -11,17 +11,17 @@
 
 package org.eclipse.wst.wsdl.validation.internal.ui.eclipse;
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.wst.validation.core.IFileDelta;
-import org.eclipse.wst.validation.core.IReporter;
-import org.eclipse.wst.validation.core.IValidationContext;
-import org.eclipse.wst.validation.core.IValidator;
-import org.eclipse.wst.validation.core.MessageLimitException;
-import org.eclipse.wst.validation.core.ValidationException;
+import org.eclipse.wst.validation.internal.provisional.core.IFileDelta;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
+import org.eclipse.wst.validation.internal.provisional.core.IValidator;
+import org.eclipse.wst.validation.internal.provisional.core.ValidationException;
 import org.eclipse.wst.validation.internal.operations.IRuleGroup;
 import org.eclipse.wst.validation.internal.operations.ValidatorManager;
 import org.eclipse.wst.xml.validation.internal.core.Helper;
@@ -39,10 +39,19 @@ public class Validator implements IValidator
    * @param file
    *          The file to validate.
    */
-  public void validate(IFile file)
+//  public void validate(IFile file)
+//  {
+//    ValidateWSDLAction validateAction = new ValidateWSDLAction(file, false);
+//    validateAction.setValidator(this);
+//    validateAction.run();
+//  }
+  
+  protected void validate(IFile file, InputStream inputStream, IReporter reporter)
   {
     ValidateWSDLAction validateAction = new ValidateWSDLAction(file, false);
     validateAction.setValidator(this);
+    validateAction.setReporter(reporter);
+    validateAction.setInputStream(inputStream);
     validateAction.run();
   }
 
@@ -53,23 +62,34 @@ public class Validator implements IValidator
   {
     if (changedFiles != null && changedFiles.length > 0)
     {
-      for (int i = 0; i < changedFiles.length; i++)
-      {
-        IFileDelta changedFile = changedFiles[i];
-
-        String fileName = changedFile.getFileName();
-        if (fileName != null)
+      InputStream streamToValidate = (InputStream) helper.loadModel("inputStream");
+      if (streamToValidate != null)
+      {   
+        String fileName = changedFiles[0].getFileName();
+        Object[] parms = { fileName };
+        IFile file = (IFile) helper.loadModel(Helper.GET_FILE, parms);
+        
+        validate(file, streamToValidate, reporter);
+        
+      } else
+      { for (int i = 0; i < changedFiles.length; i++)
         {
-          Object[] parms = {fileName};
-
-          IFile file = (IFile) helper.loadModel(Helper.GET_FILE, parms);
-          if (file != null)
+          IFileDelta changedFile = changedFiles[i];
+          String fileName = changedFile.getFileName();
+          
+          if (fileName != null)
           {
-            if (((Helper) helper).isInJavaBuildPath(file) && !((Helper)helper).isInJavaSourcePath(file))
+            Object[] parms = {fileName};
+            
+            IFile file = (IFile) helper.loadModel(Helper.GET_FILE, parms);
+            if (file != null)
             {
-              continue;
+              if (((Helper) helper).isInJavaBuildPath(file)  && !((Helper) helper).isInJavaSourcePath(file))
+              {
+                continue;
+              }
+              validateIfNeeded(file, helper, reporter);
             }
-            validateIfNeeded(file, helper, reporter);
           }
         }
       }
@@ -91,7 +111,7 @@ public class Validator implements IValidator
    * @param reporter
    * @param ruleGroup
    */
-  public void validate(IFile file, IReporter reporter, int ruleGroup)
+  protected void validate(IFile file, IReporter reporter, int ruleGroup)
   {
     ValidateWSDLAction validateAction = new ValidateWSDLAction(file, false);
     validateAction.setValidator(this);
@@ -148,10 +168,6 @@ public class Validator implements IValidator
   protected void validateIfNeeded(IFile file, IValidationContext helper, IReporter reporter)
   {
     ValidatorManager mgr = ValidatorManager.getManager();
-    if (mgr.isMessageLimitExceeded(file))
-    {
-      throw new MessageLimitException();
-    }
     // Pass in a "null" so that loadModel doesn't attempt to cast the result into a RefObject.
     Integer ruleGroupInt = (Integer) helper.loadModel(IRuleGroup.PASS_LEVEL, null); 
     int ruleGroup = (ruleGroupInt == null) ? IRuleGroup.PASS_FULL : ruleGroupInt.intValue();

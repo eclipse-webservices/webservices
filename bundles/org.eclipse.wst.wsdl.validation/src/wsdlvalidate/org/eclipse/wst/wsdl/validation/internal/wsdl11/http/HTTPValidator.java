@@ -24,7 +24,7 @@ import javax.wsdl.extensions.http.HTTPOperation;
 
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator;
-import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo;
 
 import com.ibm.wsdl.BindingImpl;
 import com.ibm.wsdl.BindingInputImpl;
@@ -64,9 +64,9 @@ public class HTTPValidator implements IWSDL11Validator
   private MessageGenerator messagegenerator;
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.WSDL11ValidationInfo)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.IWSDL11ValidationInfo)
    */
-  public void validate(Object element, List parents, WSDL11ValidationInfo valInfo)
+  public void validate(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     // Port HTTP definition
     // make sure every port has only one address element defined
@@ -169,7 +169,7 @@ public class HTTPValidator implements IWSDL11Validator
    * @param parents The list of parents of the HTTP address element.
    * @param validatorcontroller The validator controller in charge of validation.
    */
-  protected void validateAddress(Object element, List parents, WSDL11ValidationInfo valInfo)
+  protected void validateAddress(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     HTTPAddressImpl ha = (HTTPAddressImpl)element;
 
@@ -201,7 +201,7 @@ public class HTTPValidator implements IWSDL11Validator
    * @param parents The list of parents of the HTTP binding element.
    * @param validatorcontroller The validator controller in charge of validation.
    */
-  protected void validateBinding(Object element, List parents, WSDL11ValidationInfo valInfo)
+  protected void validateBinding(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     HTTPBindingImpl hb = (HTTPBindingImpl)element;
 
@@ -220,7 +220,7 @@ public class HTTPValidator implements IWSDL11Validator
    * @param parents The list of parents of the HTTP operation element.
    * @param validatorcontroller The validator controller in charge of validation.
    */
-  protected void validateOperation(Object element, List parents, WSDL11ValidationInfo valInfo)
+  protected void validateOperation(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     HTTPOperation ho = (HTTPOperation)element;
 
@@ -248,7 +248,7 @@ public class HTTPValidator implements IWSDL11Validator
    * @param parents The list of parents of the HTTP binding operation element.
    * @param validatorcontroller The validator controller in charge of validation.
    */
-  protected void validateHttpUrl(Object element, List parents, WSDL11ValidationInfo valInfo)
+  protected void validateHttpUrl(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     BindingOperation operation = (BindingOperation)parents.get(1);
 

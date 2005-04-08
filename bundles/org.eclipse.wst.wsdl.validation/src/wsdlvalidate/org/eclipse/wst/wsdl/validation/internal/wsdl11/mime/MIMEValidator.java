@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator;
-import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo;
 
 /**
  * The MIME validator plugs into the WSDL validator to provide
@@ -27,9 +27,9 @@ public class MIMEValidator implements IWSDL11Validator
   protected MessageGenerator messagegenerator;
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.WSDL11ValidationInfo)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.IWSDL11ValidationInfo)
    */
-  public void validate(Object element, List parents, WSDL11ValidationInfo valInfo)
+  public void validate(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
 
   }

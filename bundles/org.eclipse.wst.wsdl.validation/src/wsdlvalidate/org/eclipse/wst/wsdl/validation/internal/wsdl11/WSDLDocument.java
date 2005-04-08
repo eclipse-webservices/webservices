@@ -103,7 +103,7 @@ public class WSDLDocument
   private int depth;
   // Hold the schemas that are imported or declared inline in this wsdl document.
   private List schemas = new ArrayList();
-  private WSDL11ValidationInfo valinfo;
+  private IWSDL11ValidationInfo valinfo;
   
   /**
    * Constructor. Performs a preparse of the document and handles imports and types.
@@ -115,7 +115,7 @@ public class WSDLDocument
    * @param valinfo A WSDL11ValidationInfo object for reporting messages.
    * @throws WSDLException
    */
-  public WSDLDocument(String documentBaseURI, Element defEl, int depth, MessageGenerator messagegenerator, WSDL11ValidationInfo valinfo) throws WSDLException
+  public WSDLDocument(String documentBaseURI, Element defEl, int depth, MessageGenerator messagegenerator, IWSDL11ValidationInfo valinfo) throws WSDLException
   {
     this.messagegenerator = messagegenerator;
     this.valinfo = valinfo;

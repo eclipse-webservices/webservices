@@ -11,6 +11,10 @@
 
 package org.eclipse.wst.wsdl.validation.internal;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -24,10 +28,12 @@ import org.eclipse.wst.wsdl.validation.internal.exception.ValidateWSDLException;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.xml.AbstractXMLConformanceFactory;
+import org.eclipse.wst.wsdl.validation.internal.xml.DefaultXMLValidator;
 import org.eclipse.wst.wsdl.validation.internal.xml.IXMLValidator;
 import org.eclipse.wst.wsdl.validation.internal.xml.LineNumberDOMParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 /**
  * This is the main entrypoint to the WSDL Validator. The controller is
@@ -86,36 +92,62 @@ public class ValidationController
    *            The level of WS-I conformance to use for validation.
    * @return A validation report with the validation info for the file.
    */
-  public ValidationReport validate(String uri)
+//  public IValidationReport validate(String uri)
+//  { return validate(uri, null);
+//  }
+  
+  /**
+   * Validate the WSDL file with the stream. This method will run the check of the 
+   * WSDL document. The validation is broken up into three stages: XML conformance,
+   * WSDL semantic, and post validation.
+   * 
+ * @param uri The URI of the WSDL document to be validated.
+ * @param inputStream The contents of the WSDL document to be validated.
+ * @return A validation report with the validation info for the file.
+ */
+  public IValidationReport validate(String uri, InputStream inputStream)
   {
+    
+    InputStream xmlValidateStream = null;
+    InputStream wsdlValidateStream = null;
+    if (inputStream != null)
+    { //copy the inputStream so we can use it more than once
+      String contents = createStringForInputStream(inputStream);
+      xmlValidateStream = new ByteArrayInputStream(contents.getBytes());
+      wsdlValidateStream = new ByteArrayInputStream(contents.getBytes());
+    }
+    
     ControllerValidationInfo valInfo = new ValidationInfoImpl(uri, messagegenerator);
     ((ValidationInfoImpl)valInfo).setURIResolver(uriResolver);
     ((ValidationInfoImpl)valInfo).setAttributes(attributes);
 
-    if (validateXML(valInfo))
+    if (validateXML(valInfo, xmlValidateStream))
     {
-      Document wsdldoc = getDocument(uri);
+      Document wsdldoc = getDocument(uri, wsdlValidateStream);
       String wsdlns = getWSDLNamespace(wsdldoc);
       if (validateWSDL(wsdldoc, valInfo, wsdlns))
       {
         validateExtensionValidators(wsdldoc, valInfo, wsdlns);
       }
     }
-    return (ValidationReport)valInfo;
+    return (IValidationReport)valInfo;
   }
 
   /**
    * Validate the file for XML conformance.
-   * 
-   * @param uri
-   *            The uri where the WSDL document is located.
+	 * @param valInfo information about the validation
+   * @param inputStream the inputStream to validate
    * @return True if the file is conformant, false otherwise.
    */
-  protected boolean validateXML(ControllerValidationInfo valInfo)
+  protected boolean validateXML(ControllerValidationInfo valInfo, InputStream inputStream)
   {
     IXMLValidator xmlValidator = AbstractXMLConformanceFactory.getInstance().getXMLValidator();
     xmlValidator.setURIResolver(uriResolver);
     xmlValidator.setFile(valInfo.getFileURI());
+    if (xmlValidator instanceof DefaultXMLValidator)
+    {
+        ((DefaultXMLValidator)xmlValidator).setInputStream(inputStream);
+    }
     //xmlValidator.setValidationInfo(valInfo);
     xmlValidator.run();
     // if there are no xml conformance problems go on to check the wsdl stuff
@@ -126,13 +158,31 @@ public class ValidationController
       Iterator errorsIter = errors.iterator();
       while (errorsIter.hasNext())
       {
-        ValidationMessage valMes = (ValidationMessage)errorsIter.next();
-        valInfo.addError(valMes.getMessage(), valMes.getLine(), valMes.getColumn(), valMes.getURI());
+        IValidationMessage valMes = (IValidationMessage)errorsIter.next();
+        
+        if (valMes instanceof ValidationMessageImpl && valInfo instanceof ValidationInfoImpl)
+        {   String errorKey = ((ValidationMessageImpl)valMes).getErrorKey();
+            Object[] messageArgs = ((ValidationMessageImpl)valMes).getMessageArguments();
+            ((ValidationInfoImpl)valInfo).addError(valMes.getMessage(), valMes.getLine(), valMes.getColumn(), valMes.getURI(), errorKey, messageArgs);
+        }
+        else
+        {
+            valInfo.addError(valMes.getMessage(), valMes.getLine(), valMes.getColumn(), valMes.getURI());
+        }
       }
       return false;
     }
     //wsdlNamespace = xmlValidator.getWSDLNamespace();
     return true;
+  }
+  
+  /**
+   * Validate the file for XML conformance.
+	 * @param valInfo information about the validation
+   * @return True if the file is conformant, false otherwise.
+   */
+  protected boolean validateXML(ControllerValidationInfo valInfo)
+  { return validateXML(valInfo, null);
   }
 
   /**
@@ -252,7 +302,7 @@ public class ValidationController
    * @param uri The uri of the file to read
    * @return The DOM model of the WSDL document or null if the document can't be read.
    */
-  private Document getDocument(String uri)
+  private Document getDocument(String uri, InputStream inputStream)
   {
     try
     {
@@ -279,9 +329,18 @@ public class ValidationController
           };
         }
       };
-
+      
+      InputSource inputSource = null;
+      if (inputStream != null)
+      { //then we want to create a DOM from the inputstream
+        inputSource = new InputSource(inputStream);
+      }
+      else
+      { inputSource = new InputSource(uri);
+      }
+      
       DOMParser builder = new LineNumberDOMParser(configuration);
-      builder.parse(uri);
+      builder.parse(inputSource);
       Document doc = builder.getDocument();
 
       return doc;
@@ -306,4 +365,31 @@ public class ValidationController
     }
     return wsdlns;
   }
+  
+  
+  
+  private final String createStringForInputStream(InputStream inputStream)
+  {
+    // Here we are reading the file and storing to a stringbuffer.
+    StringBuffer fileString = new StringBuffer();
+    try
+    {
+      InputStreamReader inputReader = new InputStreamReader(inputStream);
+      BufferedReader reader = new BufferedReader(inputReader);
+      char[] chars = new char[1024];
+      int numberRead = reader.read(chars);
+      while (numberRead != -1)
+      {
+        fileString.append(chars, 0, numberRead);
+        numberRead = reader.read(chars);
+      }
+    }
+    catch (Exception e)
+    {
+      //TODO: log error message
+      //e.printStackTrace();
+    }
+    return fileString.toString();
+  }
+  
 }

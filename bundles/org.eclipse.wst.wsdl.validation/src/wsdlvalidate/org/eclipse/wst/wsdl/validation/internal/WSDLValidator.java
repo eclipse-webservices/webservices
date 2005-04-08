@@ -11,6 +11,7 @@
 
 package org.eclipse.wst.wsdl.validation.internal;
 
+import java.io.InputStream;
 import java.util.Hashtable;
 import java.util.ResourceBundle;
 
@@ -63,12 +64,24 @@ public class WSDLValidator
    * @param uri The location of the WSDL file to validate.
    * @return A validation report summarizing the results of the validation.
    */
-  public ValidationReport validate(String uri)
+  public IValidationReport validate(String uri)
+  {
+   return validate(uri, null);
+  }
+  
+  /**
+   * 
+   * Validate the inputStream
+   * @param uri The location of the WSDL file being validated
+   * @param inputStream The stream to validate
+   * @return A Validation report summarizing the results of the validation
+   */
+  public IValidationReport validate(String uri, InputStream inputStream)
   {
     if(uri == null) 
       return null;
     validationController.setAttributes(attributes);
-    return validationController.validate(formatURI(uri));
+    return validationController.validate(formatURI(uri), inputStream);
   }
   
   /**

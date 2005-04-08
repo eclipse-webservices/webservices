@@ -24,8 +24,8 @@ import org.apache.tools.ant.types.DTDLocation;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.XMLCatalog;
-import org.eclipse.wst.wsdl.validation.internal.ValidationMessage;
-import org.eclipse.wst.wsdl.validation.internal.ValidationReport;
+import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
+import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
 import org.eclipse.wst.wsdl.validation.internal.ui.WSDLConfigurator;
@@ -334,9 +334,9 @@ public class WSDLValidate extends Task
         result.append(infoDelim).append("\n");
         result.append(messGen.getString(_UI_ACTION_VALIDATING_FILE, filename)).append(" - ");
 
-        ValidationReport valReport = wsdlValidator.validate(filename);
+        IValidationReport valReport = wsdlValidator.validate(filename);
 
-        ValidationMessage[] messages = valReport.getValidationMessages();
+        IValidationMessage[] messages = valReport.getValidationMessages();
 
         if (!valReport.hasErrors())
         {
@@ -376,7 +376,7 @@ public class WSDLValidate extends Task
    * @param warningmarker The marker to use for warning messages.
    * @return A string with the formatted output.
    */
-  protected String reportMessages(ValidationMessage[] messages, String errormarker, String warningmarker)
+  protected String reportMessages(IValidationMessage[] messages, String errormarker, String warningmarker)
   {
     StringBuffer returnBuffer = new StringBuffer();
 
@@ -387,46 +387,46 @@ public class WSDLValidate extends Task
     int numMessages = messages.length;
     for(int i = 0; i < numMessages; i++)
     {
-      ValidationMessage message = messages[i];
+      IValidationMessage message = messages[i];
 
-      if(message.getSeverity() == ValidationMessage.SEV_ERROR)
+      if(message.getSeverity() == IValidationMessage.SEV_ERROR)
        {
         prefix = errormarker;
       }
-      else if(message.getSeverity() == ValidationMessage.SEV_WARNING)
+      else if(message.getSeverity() == IValidationMessage.SEV_WARNING)
        {
         prefix = warningmarker;
       }
       else
        {
         prefix = "";
-      }if(message.getSeverity() == ValidationMessage.SEV_ERROR)
+      }if(message.getSeverity() == IValidationMessage.SEV_ERROR)
        {
         prefix = errormarker;
       }
-      else if(message.getSeverity() == ValidationMessage.SEV_WARNING)
+      else if(message.getSeverity() == IValidationMessage.SEV_WARNING)
        {
         prefix = warningmarker;
       }
       else
        {
         prefix = "";
-      }if(message.getSeverity() == ValidationMessage.SEV_ERROR)
+      }if(message.getSeverity() == IValidationMessage.SEV_ERROR)
        {
         prefix = errormarker;
       }
-      else if(message.getSeverity() == ValidationMessage.SEV_WARNING)
+      else if(message.getSeverity() == IValidationMessage.SEV_WARNING)
        {
         prefix = warningmarker;
       }
       else
        {
         prefix = "";
-      }if(message.getSeverity() == ValidationMessage.SEV_ERROR)
+      }if(message.getSeverity() == IValidationMessage.SEV_ERROR)
        {
         prefix = errormarker;
       }
-      else if(message.getSeverity() == ValidationMessage.SEV_WARNING)
+      else if(message.getSeverity() == IValidationMessage.SEV_WARNING)
        {
         prefix = warningmarker;
       }

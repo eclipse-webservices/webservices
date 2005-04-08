@@ -31,7 +31,7 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator;
-import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo;
 
 import com.ibm.wsdl.BindingFaultImpl;
 import com.ibm.wsdl.BindingImpl;
@@ -98,9 +98,9 @@ public class SOAPValidator implements IWSDL11Validator
   protected MessageGenerator messagegenerator;
  
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.WSDL11ValidationInfo)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.IWSDL11ValidationInfo)
    */
-  public void validate(Object element, List parents, WSDL11ValidationInfo valInfo)
+  public void validate(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     // Port SOAP definition
     // make sure every port has only one address element defined
@@ -218,7 +218,7 @@ public class SOAPValidator implements IWSDL11Validator
    * @param parents A list of parents of the SOAP address element.
    * @param valInfo The validation info for this validation.
    */
-  protected void validateAddress(Object element, List parents, WSDL11ValidationInfo valInfo)
+  protected void validateAddress(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     SOAPAddressImpl sa = (SOAPAddressImpl)element;
 
@@ -250,7 +250,7 @@ public class SOAPValidator implements IWSDL11Validator
    * @param parents A list of parents of the SOAP binding element.
    * @param valInfo The validation info for this validation.
    */
-  protected void validateBinding(Object element, List parents, WSDL11ValidationInfo valInfo)
+  protected void validateBinding(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     SOAPBindingImpl sb = (SOAPBindingImpl)element;
 
@@ -276,7 +276,7 @@ public class SOAPValidator implements IWSDL11Validator
    * @param parents A list of parents of the SOAP operation element.
    * @param valInfo The validation info for this validation.
    */
-  protected void validateOperation(Object element, List parents, WSDL11ValidationInfo valInfo)
+  protected void validateOperation(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     SOAPOperation so = (SOAPOperation)element;
 
@@ -304,7 +304,7 @@ public class SOAPValidator implements IWSDL11Validator
    * @param parents A list of parents of the SOAP body element.
    * @param valInfo The validation info for this validation.
    */
-  protected void validateBody(Object element, List parents, WSDL11ValidationInfo valInfo)
+  protected void validateBody(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     SOAPBodyImpl sb = (SOAPBodyImpl)element;
 
@@ -417,7 +417,7 @@ public class SOAPValidator implements IWSDL11Validator
    * @param parents A list of parents of the SOAP header element.
    * @param valInfo The validation info for this validation.
    */
-  protected void validateHeader(Object element, List parents, WSDL11ValidationInfo valInfo)
+  protected void validateHeader(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     SOAPHeaderImpl soapHeader = (SOAPHeaderImpl)element;
 
@@ -495,7 +495,7 @@ public class SOAPValidator implements IWSDL11Validator
    * @param parents A list of parents of the SOAP header fault element.
    * @param valInfo The validation info for this validation.
    */
-  protected void validateHeaderFault(Object element, List parents, WSDL11ValidationInfo valInfo)
+  protected void validateHeaderFault(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     SOAPHeaderFaultImpl soapHeaderFault = (SOAPHeaderFaultImpl)element;
 
@@ -558,7 +558,7 @@ public class SOAPValidator implements IWSDL11Validator
    * @param parents A list of parents of the SOAP fault element.
    * @param validationInfo The validation info for this validation.
   */
-  protected void validateFault(Object element, List parents, WSDL11ValidationInfo valInfo)
+  protected void validateFault(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     SOAPFaultImpl fault = (SOAPFaultImpl)element;
 

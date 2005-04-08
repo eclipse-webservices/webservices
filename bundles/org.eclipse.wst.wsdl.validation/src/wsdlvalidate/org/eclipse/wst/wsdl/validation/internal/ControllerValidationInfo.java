@@ -16,7 +16,7 @@ package org.eclipse.wst.wsdl.validation.internal;
  * An interface for the validation info that allows for starting and
  * completing WSDL and WS-I validation.
  */
-public interface ControllerValidationInfo extends ValidationInfo
+public interface ControllerValidationInfo extends IValidationInfo
 {
   
   /**

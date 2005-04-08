@@ -26,7 +26,7 @@ public interface IWSDL11Validator
    * @param parents A list of parents of this element.
    * @param valInfo The current validation information.
    */
-  public void validate(Object element, List parents, WSDL11ValidationInfo valInfo);
+  public void validate(Object element, List parents, IWSDL11ValidationInfo valInfo);
 
   /**
    * Set the resource bundle of the validator.

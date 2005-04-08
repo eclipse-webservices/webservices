@@ -21,7 +21,7 @@ import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
  * validation info object and provides methods to set and retrieve
  * schemas and convenience methods for setting errors with objects.
  */
-public interface WSDL11ValidationInfo
+public interface IWSDL11ValidationInfo
 {
   /**
    * Returns the URI of the file being validated.
@@ -63,6 +63,16 @@ public interface WSDL11ValidationInfo
    * @param element The object to add the error for.
    */
   public void addError(String message, Object element);
+  
+  /**
+   * Convenience method for extensibly validators to add error messages.
+   * 
+   * @param message The error to add.
+   * @param element The object to add the error for.
+   * @param errorKey The error key for this message
+   * @param messageArguments The strings used to create the message.
+   */
+  public void addError(String message, Object element, String errorKey, Object[] messageArguments);
   
   /**
    * Add an error message at the given line and column.

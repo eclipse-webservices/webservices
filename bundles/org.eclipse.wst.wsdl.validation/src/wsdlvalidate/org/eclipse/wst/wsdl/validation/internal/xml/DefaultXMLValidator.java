@@ -11,17 +11,25 @@
 
 package org.eclipse.wst.wsdl.validation.internal.xml;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.xerces.impl.XMLErrorReporter;
 import org.apache.xerces.jaxp.SAXParserFactoryImpl;
+import org.apache.xerces.parsers.SAXParser;
+import org.apache.xerces.parsers.StandardParserConfiguration;
+import org.apache.xerces.xni.XNIException;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.xml.sax.Attributes;
@@ -59,9 +67,17 @@ public class DefaultXMLValidator implements IXMLValidator
   protected List errors = new ArrayList();
   protected StringBuffer schemaLocationString = new StringBuffer();
   protected List ignoredNamespaceList = new ArrayList();
+  
+  protected InputStream inputStream = null;
+  
+  protected String currentErrorKey = null;
+  protected Object[] currentMessageArguments = null;
 //  protected String wsdlNamespace = null;
 
-  /**
+
+
+
+/**
    * Constructor.
    */
   public DefaultXMLValidator()
@@ -96,10 +112,34 @@ public class DefaultXMLValidator implements IXMLValidator
     // Validate the XML file.
     try
     {
-      preparse(uri);
+      Reader reader1 = null; // Used for the preparse.
+      Reader reader2 = null; // Used for validation parse.
+      
+      InputSource validateInputSource; 
+     
+      
+      if (this.inputStream != null)
+      {    
+      
+
+        String string = createStringForInputStream(inputStream);
+        reader1 = new StringReader(string);
+        reader2 = new StringReader(string); 
+          
+        validateInputSource = new InputSource(inputStream);
+        validateInputSource.setCharacterStream(reader2);
+      } else
+      { validateInputSource = new InputSource(uri);
+      }
+      
+      preparse(uri, reader1);
+      
       SAXParser saxparser = createSAXParser();
       XMLConformanceDefaultHandler handler = new XMLConformanceDefaultHandler();
-      saxparser.parse(uri, handler);
+
+      saxparser.setErrorHandler(handler);
+      
+      saxparser.parse(validateInputSource);
 //      wsdlNamespace = handler.getWSDLNamespace();
     }
     catch (SAXParseException e)
@@ -125,17 +165,15 @@ public class DefaultXMLValidator implements IXMLValidator
     SAXParser saxParser = null;
     try
     {
-      SAXParserFactory parserfactory = new SAXParserFactoryImpl();
+      //SAXParserFactory parserfactory = new SAXParserFactoryImpl();
       try
-      {
-        parserfactory.setFeature(_APACHE_FEATURE_CONTINUE_AFTER_FATAL_ERROR, true);
-        parserfactory.setFeature(_APACHE_FEATURE_NAMESPACE_PREFIXES, true);
-        parserfactory.setFeature(_APACHE_FEATURE_NAMESPACES, true);
-        parserfactory.setFeature(_APACHE_FEATURE_VALIDATION, true);
-        parserfactory.setFeature(_APACHE_FEATURE_VALIDATION_SCHEMA, true);
-      }
-      catch (ParserConfigurationException e)
-      {
+      { MyStandardParserConfiguration configuration = new MyStandardParserConfiguration();
+        saxParser = new org.apache.xerces.parsers.SAXParser(configuration);
+        saxParser.setFeature(_APACHE_FEATURE_CONTINUE_AFTER_FATAL_ERROR, true);
+        saxParser.setFeature(_APACHE_FEATURE_NAMESPACE_PREFIXES, true);
+        saxParser.setFeature(_APACHE_FEATURE_NAMESPACES, true);
+        saxParser.setFeature(_APACHE_FEATURE_VALIDATION, true);
+        saxParser.setFeature(_APACHE_FEATURE_VALIDATION_SCHEMA, true);
       }
       catch (SAXNotRecognizedException e)
       {
@@ -143,13 +181,9 @@ public class DefaultXMLValidator implements IXMLValidator
       catch (SAXNotSupportedException e)
       {
       }
-      parserfactory.setNamespaceAware(true);
-      parserfactory.setValidating(true);
-      saxParser = parserfactory.newSAXParser();
-
       if (schemaLocationString.length() > 0)
       {
-        saxParser.getXMLReader().setProperty(_APACHE_PROPERTY_EXTERNAL_SCHEMALOCATION, schemaLocationString.toString());
+        saxParser.setProperty(_APACHE_PROPERTY_EXTERNAL_SCHEMALOCATION, schemaLocationString.toString());
       }
     }
     catch (FactoryConfigurationError e)
@@ -158,29 +192,64 @@ public class DefaultXMLValidator implements IXMLValidator
     catch (SAXNotRecognizedException e)
     {
     }
-    catch (ParserConfigurationException e)
-    {
-    }
     catch (SAXNotSupportedException e)
     {
     }
-    catch (SAXException e)
-    {
-    }
+//    catch (SAXException e)
+//    {
+//    }
     return saxParser;
   }
 
+  
+  final String createStringForInputStream(InputStream inputStream)
+  {
+    // Here we are reading the file and storing to a stringbuffer.
+    StringBuffer fileString = new StringBuffer();
+    try
+    {
+      InputStreamReader inputReader = new InputStreamReader(inputStream);
+      BufferedReader reader = new BufferedReader(inputReader);
+      char[] chars = new char[1024];
+      int numberRead = reader.read(chars);
+      while (numberRead != -1)
+      {
+        fileString.append(chars, 0, numberRead);
+        numberRead = reader.read(chars);
+      }
+    }
+    catch (Exception e)
+    {
+      //TODO: log error message
+      //e.printStackTrace();
+    }
+    return fileString.toString();
+  }
+  
   /**
    * Preparse the file to find all of the namespaces that are defined in order
    * to specify the schemalocation.
    * 
    * @param uri The uri of the file to parse.
    */
-  protected void preparse(String uri)
+  protected void preparse(String uri, Reader characterStream)
   {
-    SAXParser saxParser = null;
+      javax.xml.parsers.SAXParser saxParser = null;
     try
     {
+        
+      InputSource inputSource; 
+      
+      if (characterStream != null)
+      {   
+          inputSource = new InputSource(uri);
+          inputSource.setCharacterStream(characterStream);
+      }
+      else
+      {
+          inputSource = new InputSource(uri);
+      }
+      
       SAXParserFactory parserfactory = new SAXParserFactoryImpl();
 
       parserfactory.setFeature(_APACHE_FEATURE_NAMESPACE_PREFIXES, true);
@@ -188,7 +257,8 @@ public class DefaultXMLValidator implements IXMLValidator
 
       saxParser = parserfactory.newSAXParser();
       SchemaStringHandler handler = new SchemaStringHandler(uri);
-      saxParser.parse(uri, handler);
+      
+      saxParser.parse(inputSource, handler);
     }
     catch (FactoryConfigurationError e)
     {
@@ -236,7 +306,7 @@ public class DefaultXMLValidator implements IXMLValidator
    */
   protected void addError(String error, int line, int column, String uri)
   {
-    errors.add(new ValidationMessageImpl(error, line, column, ValidationMessageImpl.SEV_ERROR, uri));
+    errors.add(new ValidationMessageImpl(error, line, column, ValidationMessageImpl.SEV_ERROR, uri, currentErrorKey, currentMessageArguments));
   }
 
   /**
@@ -250,7 +320,13 @@ public class DefaultXMLValidator implements IXMLValidator
      */
     public void error(SAXParseException arg0) throws SAXException
     {
-      addError(arg0.getMessage(), arg0.getLineNumber(), arg0.getColumnNumber(), arg0.getSystemId());
+     String tempURI = arg0.getSystemId();
+     if (inputStream!= null && arg0.getSystemId() == null)
+     {
+       //mh: In this case we are validating a stream so the URI may be null in this exception
+       tempURI = uri;       
+     }
+     addError(arg0.getMessage(), arg0.getLineNumber(), arg0.getColumnNumber(), tempURI);
     }
 
     /**
@@ -327,6 +403,15 @@ public class DefaultXMLValidator implements IXMLValidator
     {
       schemaLocationString.append(" ").append(namespace).append(" ").append(formatURI(location));
     }
+  }
+  
+  
+  /**
+   * @param inputStream - set the inputStream to validate
+   */
+  public void setInputStream(InputStream inputStream)
+  {
+      this.inputStream = inputStream;
   }
 
   /**
@@ -409,5 +494,33 @@ public class DefaultXMLValidator implements IXMLValidator
 //  {
 //    return wsdlNamespace;
 //  }
+  
+  protected class MyStandardParserConfiguration extends StandardParserConfiguration
+  {
+    public MyStandardParserConfiguration()
+    {
+    }
 
+    /* (non-Javadoc)
+     * @see org.apache.xerces.parsers.DTDConfiguration#createErrorReporter()
+     */
+    protected XMLErrorReporter createErrorReporter()
+    {
+      return new XMLErrorReporter()
+      {
+        /* (non-Javadoc)
+         * @see org.apache.xerces.impl.XMLErrorReporter#reportError(java.lang.String, java.lang.String, java.lang.Object[], short)
+         */
+        public void reportError(String domain, String key, Object[] arguments,
+            short severity) throws XNIException
+        {
+          currentErrorKey = key;
+          currentMessageArguments = arguments;
+          super.reportError(domain, key, arguments, severity);
+        }
+      };
+    }
+  }
+  
+  
 }

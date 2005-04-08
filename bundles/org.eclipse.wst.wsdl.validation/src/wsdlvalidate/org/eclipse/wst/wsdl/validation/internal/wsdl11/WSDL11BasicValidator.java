@@ -61,7 +61,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
   private final String _PORT_NAME_NOT_UNIQUE = "_PORT_NAME_NOT_UNIQUE";
   private final String _NO_BINDING_FOR_PORT = "_NO_BINDING_FOR_PORT";
   private final String _NO_ADDRESS_PORT = "_NO_ADDRESS_PORT";
-  private final String _MORE_THEN_ONE_ADDRESS_PORT = "_MORE_THEN_ONE_ADDRESS_PORT";
+  private final String _MORE_THEN_ONE_ADDRESS_PORT = "_MORE_THEN_ONE_ADDRESS_PORT"; //TODO should be _MORE_THAN_ONE_ADDRESS_PORT, not THEN
   private final String _PORTTYPE_UNDEFINED_FOR_BINDING = "_PORTTYPE_UNDEFINED_FOR_BINDING";
   private final String _OPERATION_UNDEFINED_FOR_PORTTYPE = "_OPERATION_UNDEFINED_FOR_PORTTYPE";
   private final String _OPERATION_NO_INPUT_OR_OUTPUT = "_OPERATION_NO_INPUT_OR_OUTPUT";
@@ -89,9 +89,9 @@ public class WSDL11BasicValidator implements IWSDL11Validator
   protected MessageGenerator messagegenerator;
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.WSDL11ValidationInfo)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.IWSDL11ValidationInfo)
    */
-  public void validate(Object element, List parents, WSDL11ValidationInfo valInfo)
+  public void validate(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
     //this.validatorcontroller = validatorcontroller;
     //setDefaultResourceBundleIfNeeded(validatorcontroller);
@@ -116,7 +116,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
   protected void validateExtensibilityElementList(
     List parents,
     List extensibilityElements,
-    WSDL11ValidationInfo valInfo)
+    IWSDL11ValidationInfo valInfo)
   {
     ValidatorRegistry ver = ValidatorRegistry.getInstance();
     Iterator extElems = extensibilityElements.iterator();
@@ -165,7 +165,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
    * @param wsdlDefinition The definitions element from the current document.
    */
 
-  protected void validateTypes(Definition wsdlDefinition, WSDL11ValidationInfo valInfo)
+  protected void validateTypes(Definition wsdlDefinition, IWSDL11ValidationInfo valInfo)
   {
     Types types = wsdlDefinition.getTypes();
     // ensure that types is defined
@@ -185,7 +185,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
    * 
    * @param wsdlDefinition The WSDL definitions element.
    */
-  protected void validateServices(Definition wsdlDefinition, WSDL11ValidationInfo valInfo)
+  protected void validateServices(Definition wsdlDefinition, IWSDL11ValidationInfo valInfo)
   {
     if (wsdlDefinition.getServices() == null)
       return;
@@ -223,8 +223,10 @@ public class WSDL11BasicValidator implements IWSDL11Validator
         parents.add(0, p);
         // a Port name must be unique within the entire WDSL document
         if (allPorts.contains(p.getName()))
-        {
-          valInfo.addError(messagegenerator.getString(_PORT_NAME_NOT_UNIQUE, QUOTE + p.getName() + QUOTE), p);
+        {  String[] args = {p.getName()};
+          
+          valInfo.addError(messagegenerator.getString(_PORT_NAME_NOT_UNIQUE, QUOTE + args[0] + QUOTE),
+                            p, _PORT_NAME_NOT_UNIQUE, args);
         }
         else
         {
@@ -239,9 +241,10 @@ public class WSDL11BasicValidator implements IWSDL11Validator
             {
               bindingName = p.getBinding().getQName().getLocalPart();
             }
+            String args[] = {p.getName()};
             valInfo.addError(
-              messagegenerator.getString(_NO_BINDING_FOR_PORT, QUOTE + p.getName() + QUOTE, QUOTE + bindingName + QUOTE),
-              p);
+              messagegenerator.getString(_NO_BINDING_FOR_PORT, QUOTE + args[0] + QUOTE, QUOTE + bindingName + QUOTE),
+              p, _NO_BINDING_FOR_PORT, args);
           }
           else
           {
@@ -250,16 +253,18 @@ public class WSDL11BasicValidator implements IWSDL11Validator
             // there can only be one and must be one extensibility element defined for a port
             List extelems = p.getExtensibilityElements();
             if (extelems.size() < 1)
-            {
-              valInfo.addError(messagegenerator.getString(_NO_ADDRESS_PORT, QUOTE + p.getName() + QUOTE), p);
+            { String args[]= {p.getName()};
+              valInfo.addError(messagegenerator.getString(_NO_ADDRESS_PORT, QUOTE + args[0] + QUOTE),
+                  p, _NO_ADDRESS_PORT, args);
             }
             else if (extelems.size() > 1)
             {
               for (int k = 1; k < extelems.size(); k++)
               {
+                String[] args = {p.getName()};
                 valInfo.addError(
-                  messagegenerator.getString(_MORE_THEN_ONE_ADDRESS_PORT, QUOTE + p.getName() + QUOTE),
-                  extelems.get(k));
+                  messagegenerator.getString(_MORE_THEN_ONE_ADDRESS_PORT, QUOTE + args[0] + QUOTE),
+                  extelems.get(k), _MORE_THEN_ONE_ADDRESS_PORT, args);
               }
             }
             validateExtensibilityElementList(parents, p.getExtensibilityElements(), valInfo);
@@ -281,7 +286,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
    * 
    * @param wsdlDefinition The WSDL definitions element.
    */
-  protected void validateBindings(Definition wsdlDefinition, WSDL11ValidationInfo valInfo)
+  protected void validateBindings(Definition wsdlDefinition, IWSDL11ValidationInfo valInfo)
   {
     if (wsdlDefinition.getBindings() == null)
       return;
@@ -300,13 +305,13 @@ public class WSDL11BasicValidator implements IWSDL11Validator
       }
       // the PortType is not defined so don't bother checking the operations
       if (portType.isUndefined())
-      {
+      { String[] args = {portType.getQName().getLocalPart(), b.getQName().getLocalPart()};
         valInfo.addError(
           messagegenerator.getString(
             _PORTTYPE_UNDEFINED_FOR_BINDING,
-            QUOTE + portType.getQName().getLocalPart() + QUOTE,
-            QUOTE + b.getQName().getLocalPart() + QUOTE),
-          b);
+            QUOTE + args[0] + QUOTE,
+            QUOTE + args[1] + QUOTE),
+          b, _PORTTYPE_UNDEFINED_FOR_BINDING, args);
       }
       else
       {
@@ -320,12 +325,13 @@ public class WSDL11BasicValidator implements IWSDL11Validator
           parents.add(0, bo);
           if (bo.getOperation() == null || bo.getOperation().isUndefined())
           {
+            String[] args = {b.getQName().getLocalPart(), portType.getQName().getLocalPart()};
             valInfo.addError(
               messagegenerator.getString(
                 _OPERATION_UNDEFINED_FOR_PORTTYPE,
-                QUOTE + b.getQName().getLocalPart() + QUOTE,
-                QUOTE + portType.getQName().getLocalPart() + QUOTE),
-              bo);
+                QUOTE + args[0] + QUOTE,
+                QUOTE + args[1] + QUOTE),
+              bo, _OPERATION_UNDEFINED_FOR_PORTTYPE, args);
             // nice idea to add suggestions to other elements to fix the error
             // but it doesn't work with multipe files like this
             //addValidationMessage(warningList,portType,portType.getQName().getLocalPart() + "Define an operation here to correspond with the operation in: " + bo.getName());
@@ -357,10 +363,10 @@ public class WSDL11BasicValidator implements IWSDL11Validator
             }
             // no input or output has been defined for the operation
             if (binput == null && boutput == null)
-            {
+            { String[] args = { bo.getName() };
               valInfo.addError(
-                messagegenerator.getString(_OPERATION_NO_INPUT_OR_OUTPUT, QUOTE + bo.getName() + QUOTE),
-                bo);
+                messagegenerator.getString(_OPERATION_NO_INPUT_OR_OUTPUT, QUOTE + args[0] + QUOTE),
+                bo, _OPERATION_NO_INPUT_OR_OUTPUT, args);
             }
             // extensibility elements for each binding operation fault
             Iterator faults = bo.getBindingFaults().values().iterator();
@@ -390,7 +396,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
    * 
    * @param wsdlDefinition The WSDL definitions element.
    */
-  protected void validatePortTypes(Definition wsdlDefinition, WSDL11ValidationInfo valInfo)
+  protected void validatePortTypes(Definition wsdlDefinition, IWSDL11ValidationInfo valInfo)
   {
     if (wsdlDefinition.getPortTypes() == null)
       return;
@@ -421,13 +427,13 @@ public class WSDL11BasicValidator implements IWSDL11Validator
             inputName = o.getName() + REQUEST;
           }
           if (inAndOutNames.contains(inputName))
-          {
+          { String[] args = {inputName, p.getQName().getLocalPart() };
             valInfo.addError(
               messagegenerator.getString(
                 _INPUT_NAME_NOT_UNIQUE,
-                QUOTE + inputName + QUOTE,
-                QUOTE + p.getQName().getLocalPart() + QUOTE),
-              input);
+                QUOTE + args[0] + QUOTE,
+                QUOTE + args[1] + QUOTE),
+              input, _INPUT_NAME_NOT_UNIQUE, args);
           }
           else
           {
@@ -443,7 +449,9 @@ public class WSDL11BasicValidator implements IWSDL11Validator
             {
               messName = messQName.getLocalPart();
             }
-            valInfo.addError(messagegenerator.getString(_MESSAGE_UNDEFINED_FOR_INPUT, QUOTE + messName + QUOTE), input);
+            String[] args = {messName};
+            valInfo.addError(messagegenerator.getString(_MESSAGE_UNDEFINED_FOR_INPUT, QUOTE + args[0] + QUOTE),
+                input, _MESSAGE_UNDEFINED_FOR_INPUT, args);
           }
         }
         Output output = o.getOutput();
@@ -458,12 +466,14 @@ public class WSDL11BasicValidator implements IWSDL11Validator
 
           if (inAndOutNames.contains(outputName))
           {
+            String[] args = {outputName, p.getQName().getLocalPart()};
+            
             valInfo.addError(
               messagegenerator.getString(
                 _OUTPUT_NAME_NOT_UNIQUE,
-                QUOTE + outputName + QUOTE,
-                QUOTE + p.getQName().getLocalPart() + QUOTE),
-              output);
+                QUOTE + args[0] + QUOTE,
+                QUOTE + args[1] + QUOTE),
+              output, _OUTPUT_NAME_NOT_UNIQUE, args);
           }
           else
           {
@@ -479,7 +489,9 @@ public class WSDL11BasicValidator implements IWSDL11Validator
             {
               messName = messQName.getLocalPart();
             }
-            valInfo.addError(messagegenerator.getString(_MESSAGE_UNDEFINED_FOR_OUTPUT, QUOTE + messName + QUOTE), output);
+            String[] args = {messName};
+            valInfo.addError(messagegenerator.getString(_MESSAGE_UNDEFINED_FOR_OUTPUT, QUOTE + args[0] + QUOTE),
+                output, _MESSAGE_UNDEFINED_FOR_OUTPUT, args);
           }
         }
 
@@ -498,7 +510,9 @@ public class WSDL11BasicValidator implements IWSDL11Validator
             {
               messName = messQName.getLocalPart();
             }
-            valInfo.addError(messagegenerator.getString(_MESSAGE_UNDEFINED_FOR_FAULT, QUOTE + messName + QUOTE), f);
+            String args[] = {messName};
+            valInfo.addError(messagegenerator.getString(_MESSAGE_UNDEFINED_FOR_FAULT, QUOTE + args[0] + QUOTE),
+                f, _MESSAGE_UNDEFINED_FOR_FAULT, args);
           }
         }
       }
@@ -510,7 +524,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
    * 
    * @param wsdlDefinition The WSDL definitions element.
    */
-  protected void validateMessages(Definition wsdlDefinition, WSDL11ValidationInfo valInfo)
+  protected void validateMessages(Definition wsdlDefinition, IWSDL11ValidationInfo valInfo)
   {
     if (wsdlDefinition.getMessages() == null)
       return;
@@ -535,13 +549,15 @@ public class WSDL11BasicValidator implements IWSDL11Validator
             // TODO:This will have to be extended as parts can have extensibility elements
             //ensure the part has a type or an element defined
             if (elementName == null && typeName == null && (extAtts == null || extAtts.isEmpty()))
-            {
-              valInfo.addError(messagegenerator.getString(_PART_NO_ELEMENT_OR_TYPE, QUOTE + p.getName() + QUOTE), p);
+            { String[] args = { p.getName()};
+              valInfo.addError(messagegenerator.getString(_PART_NO_ELEMENT_OR_TYPE, QUOTE + args[0] + QUOTE),
+                  p, _PART_NO_ELEMENT_OR_TYPE, args);
             }
             //here the part has both the element and type defined and it can only have one defined	
             else if (elementName != null && typeName != null)
-            {
-              valInfo.addError(messagegenerator.getString(_PART_BOTH_ELEMENT_AND_TYPE, QUOTE + p.getName() + QUOTE), p);
+            { String[] args = {p.getName()};
+              valInfo.addError(messagegenerator.getString(_PART_BOTH_ELEMENT_AND_TYPE, QUOTE + args[0] + QUOTE),
+                  p, _PART_BOTH_ELEMENT_AND_TYPE, args);
             }
             else if (elementName != null)
             {
@@ -550,26 +566,26 @@ public class WSDL11BasicValidator implements IWSDL11Validator
                 ELEMENT,
                 p,
                 valInfo))
-              {
+              { String[] args = {p.getName(), elementName.getLocalPart()};
                 valInfo.addError(
                   messagegenerator.getString(
                     _PART_INVALID_ELEMENT,
-                    QUOTE + p.getName() + QUOTE,
-                    QUOTE + elementName.getLocalPart() + QUOTE),
-                  p);
+                    QUOTE + args[0] + QUOTE,
+                    QUOTE + args[1] + QUOTE),
+                  p, _PART_INVALID_ELEMENT, args);
               }
             }
             else if (typeName != null)
             {
               // check that the type itself is defined properly
               if (!checkPartConstituent(typeName.getNamespaceURI(), typeName.getLocalPart(), TYPE, p, valInfo))
-              {
+              { String[] args = {p.getName(), typeName.getLocalPart() }; 
                 valInfo.addError(
                   messagegenerator.getString(
                     _PART_INVALID_TYPE,
-                    QUOTE + p.getName() + QUOTE,
-                    QUOTE + typeName.getLocalPart() + QUOTE),
-                  p);
+                    QUOTE + args[0] + QUOTE,
+                    QUOTE + args[1] + QUOTE),
+                  p, _PART_INVALID_TYPE, args);
               }
             }
           }
@@ -593,7 +609,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
     String name,
     int part,
     Part partObject,
-    WSDL11ValidationInfo valInfo)
+    IWSDL11ValidationInfo valInfo)
   {
 
     boolean partvalid = false;

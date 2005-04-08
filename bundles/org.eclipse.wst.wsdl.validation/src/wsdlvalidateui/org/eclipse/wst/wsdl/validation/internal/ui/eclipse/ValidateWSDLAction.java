@@ -12,6 +12,7 @@
 package org.eclipse.wst.wsdl.validation.internal.ui.eclipse;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -24,8 +25,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.wst.wsdl.validation.internal.ValidationMessage;
-import org.eclipse.wst.wsdl.validation.internal.ValidationReport;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.wsdl.validation.internal.ValidationInfoImpl;
+import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
+import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
+import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
+import org.eclipse.wst.wsdl.validation.internal.xml.XMLMessageInfoHelper;
 import org.eclipse.wst.xml.validation.internal.core.ValidateAction;
 
 /**
@@ -44,6 +49,7 @@ public class ValidateWSDLAction extends ValidateAction
   private static final String _UI_REF_FILE_ERROR_MESSAGE = "_UI_REF_FILE_ERROR_MESSAGE";
   private static final String NESTED_ERRORS = "NESTED_ERRORS";
 
+  private InputStream inputStream = null;
   /**
    * Constructor.
    * 
@@ -71,7 +77,7 @@ public class ValidateWSDLAction extends ValidateAction
       {
         WSDLValidator wsdlValidator = WSDLValidator.getInstance();
         clearMarkers(file);
-        ValidationReport valReport = null;
+        IValidationReport valReport = null;
 
         String location = null;
         try
@@ -84,11 +90,11 @@ public class ValidateWSDLAction extends ValidateAction
         }
         if (location.startsWith("/"))
         {
-          valReport = wsdlValidator.validate(location);
+          valReport = wsdlValidator.validate(location, inputStream);
         }
         else
         {
-          valReport = wsdlValidator.validate(FILE_PROTOCOL + location);
+          valReport = wsdlValidator.validate(FILE_PROTOCOL + location, inputStream);
         }
         validationOutcome.isWSDLValid = valReport.isWSDLValid();
         validationOutcome.isValid = !valReport.hasErrors();
@@ -102,8 +108,7 @@ public class ValidateWSDLAction extends ValidateAction
         }
 
         createMarkers(file, convertValidationMessages(valReport.getValidationMessages()));
-        //createMarkers(file, validatormanager.getWarningList(),
-        // WARNING_MARKER);
+        //createMarkers(file, validatormanager.getWarningList(), WARNING_MARKER);
         
         //file.setSessionProperty(ValidationMessage.ERROR_MESSAGE_MAP_QUALIFIED_NAME, valReport.getNestedMessages());
         file.setSessionProperty(org.eclipse.wst.xml.validation.internal.core.ValidationMessage.ERROR_MESSAGE_MAP_QUALIFIED_NAME, convertNestedValidationMessages(valReport.getNestedMessages()));
@@ -121,7 +126,7 @@ public class ValidateWSDLAction extends ValidateAction
     }
     catch (Exception e)
     {
-      System.out.println(e.getMessage());
+      e.printStackTrace();
     }
   }
   
@@ -131,16 +136,26 @@ public class ValidateWSDLAction extends ValidateAction
    * @param messages The WSDL validation messages to convert.
    * @return The converted validation messages.
    */
-  private org.eclipse.wst.xml.validation.internal.core.ValidationMessage[] convertValidationMessages(ValidationMessage[] messages)
+  private org.eclipse.wst.xml.validation.internal.core.ValidationMessage[] convertValidationMessages(IValidationMessage[] messages)
   {
   	int numMessages = messages.length;
   	org.eclipse.wst.xml.validation.internal.core.ValidationMessage[] convertedMessages = new org.eclipse.wst.xml.validation.internal.core.ValidationMessage[numMessages];
   	
   	for(int i = 0; i < numMessages; i++)
   	{
-  	  ValidationMessage mess = messages[i];
-  	  org.eclipse.wst.xml.validation.internal.core.ValidationMessage convertMess = new org.eclipse.wst.xml.validation.internal.core.ValidationMessage(mess.getMessage(),mess.getLine(),mess.getColumn(), mess.getURI());
-  	  if(mess.getSeverity() == ValidationMessage.SEV_WARNING)
+  	  IValidationMessage mess = messages[i];
+      
+      org.eclipse.wst.xml.validation.internal.core.ValidationMessage convertMess = null;
+      if (mess instanceof ValidationMessageImpl)
+      {   String errorKey = ((ValidationMessageImpl)mess).getErrorKey();
+          Object[] messageArgs = ((ValidationMessageImpl)mess).getMessageArguments();
+          convertMess = new org.eclipse.wst.xml.validation.internal.core.ValidationMessage(mess.getMessage(), mess.getLine(), mess.getColumn(), mess.getURI(), errorKey, messageArgs);
+      }
+      else
+      {
+         convertMess = new org.eclipse.wst.xml.validation.internal.core.ValidationMessage(mess.getMessage(),mess.getLine(),mess.getColumn(), mess.getURI());
+      }
+  	  if(mess.getSeverity() == IValidationMessage.SEV_WARNING)
 	  {
 	  	convertMess.setSeverity(org.eclipse.wst.xml.validation.internal.core.ValidationMessage.SEV_LOW);
 	  }
@@ -156,9 +171,9 @@ public class ValidateWSDLAction extends ValidateAction
   	  	Iterator nestedIter = nestedMessages.iterator();
   	    while(nestedIter.hasNext())
         {
-          ValidationMessage nestedMess = (ValidationMessage)nestedIter.next();
+          IValidationMessage nestedMess = (IValidationMessage)nestedIter.next();
     	  org.eclipse.wst.xml.validation.internal.core.ValidationMessage convertNestedMess = new org.eclipse.wst.xml.validation.internal.core.ValidationMessage(nestedMess.getMessage(),nestedMess.getLine(),nestedMess.getColumn(), nestedMess.getURI());
-    	  if(nestedMess.getSeverity() == ValidationMessage.SEV_WARNING)
+    	  if(nestedMess.getSeverity() == IValidationMessage.SEV_WARNING)
     	  {
     	  	convertNestedMess.setSeverity(org.eclipse.wst.xml.validation.internal.core.ValidationMessage.SEV_LOW);
     	  }
@@ -189,8 +204,8 @@ public class ValidateWSDLAction extends ValidateAction
   	while(keysIter.hasNext())
   	{
   	  String key = (String)keysIter.next();
-  	  ValidationMessage message = (ValidationMessage)nestedMessages.get(key);
-  	  org.eclipse.wst.xml.validation.internal.core.ValidationMessage[] convertedMessage = convertValidationMessages(new ValidationMessage[]{message});
+  	  IValidationMessage message = (IValidationMessage)nestedMessages.get(key);
+  	  org.eclipse.wst.xml.validation.internal.core.ValidationMessage[] convertedMessage = convertValidationMessages(new IValidationMessage[]{message});
   	  
   	  convertedMap.put(key, convertedMessage[0]);
   	}
@@ -425,6 +440,27 @@ public class ValidateWSDLAction extends ValidateAction
     public ValidationOutcome()
     {
     }
+  }
+
+  public void setInputStream(InputStream inputStream)
+  {  this.inputStream = inputStream;
+  }
+  
+  /**
+   * Set extra attributes in the IMessage to provide information on what should be "squiggled"
+   * @param valMess the ValidationMessage corresponding to this error
+   * @param message the IMessage to set the attributes for
+   */
+  protected void addInfoToMessage(org.eclipse.wst.xml.validation.internal.core.ValidationMessage valMess, IMessage message)
+  {   if (valMess.getKey() != null)
+      {
+          XMLMessageInfoHelper helper = new XMLMessageInfoHelper();
+          String[] squiggleInfo = helper.createMessageInfo(valMess.getKey(), valMess.getMessageArguments());
+      
+          message.setAttribute(COLUMN_NUMBER_ATTRIBUTE, new Integer(valMess.getColumnNumber()));
+          message.setAttribute(SQUIGGLE_SELECTION_STRATEGY_ATTRIBUTE, squiggleInfo[0]);
+          message.setAttribute(SQUIGGLE_NAME_OR_VALUE_ATTRIBUTE, squiggleInfo[1]);
+      }
   }
 
 }

@@ -16,24 +16,25 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.xerces.xs.XSModel;
-import org.eclipse.wst.wsdl.validation.internal.ValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.IValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.ValidationInfoImpl;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
 
 /**
  * An implemenation of WSDL11ValidationInfo.
  */
-public class WSDL11ValidationInfoImpl implements WSDL11ValidationInfo
+public class WSDL11ValidationInfoImpl implements IWSDL11ValidationInfo
 {
-  private ValidationInfo valinfo = null;
+  private IValidationInfo valinfo = null;
   private Hashtable elementlocations = null;
   private List schemas = new Vector();
   
-  public WSDL11ValidationInfoImpl(ValidationInfo valinfo)
+  public WSDL11ValidationInfoImpl(IValidationInfo valinfo)
   {
     this.valinfo = valinfo;
   }
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfo#getFileURI()
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo#getFileURI()
    */
   public String getFileURI()
   {
@@ -41,7 +42,7 @@ public class WSDL11ValidationInfoImpl implements WSDL11ValidationInfo
   }
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfo#addSchema(org.apache.xerces.xs.XSModel)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo#addSchema(org.apache.xerces.xs.XSModel)
    */
   public void addSchema(XSModel xsModel)
   {
@@ -53,7 +54,7 @@ public class WSDL11ValidationInfoImpl implements WSDL11ValidationInfo
   }
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfo#getSchemas()
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo#getSchemas()
    */
   public XSModel[] getSchemas()
   {
@@ -68,7 +69,7 @@ public class WSDL11ValidationInfoImpl implements WSDL11ValidationInfo
     schemas.clear();
   }
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfo#setElementLocations(java.util.Hashtable)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo#setElementLocations(java.util.Hashtable)
    */
   public void setElementLocations(Hashtable elementLocations)
   {
@@ -76,15 +77,23 @@ public class WSDL11ValidationInfoImpl implements WSDL11ValidationInfo
   }
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfo#addError(java.lang.String, java.lang.Object)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo#addError(java.lang.String, java.lang.Object)
    */
   public void addError(String message, Object element)
+  {
+    addError(message, element, null, null);
+  }
+  
+  /**
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo#addError(java.lang.String, java.lang.Object, java.lang.String, java.lang.Object[])
+   */
+  public void addError(String message, Object element, String errorKey, Object[] messageArguments)
   {
     LocationHolder location;
     if (elementlocations.containsKey(element))
     {
       location = (LocationHolder)elementlocations.get(element);
-      addError(message, location.getLine(), location.getColumn(), location.getURI());
+      addError(message, location.getLine(), location.getColumn(), location.getURI(), errorKey, messageArguments);
     }
     // if we give it an element that hasn't been defined we'll set the location
     // at (0,0) so the error shows up but no line marker in the editor
@@ -95,7 +104,7 @@ public class WSDL11ValidationInfoImpl implements WSDL11ValidationInfo
   }
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfo#addWarning(java.lang.String, java.lang.Object)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo#addWarning(java.lang.String, java.lang.Object)
    */
   public void addWarning(String message, Object element)
   {
@@ -124,15 +133,26 @@ public class WSDL11ValidationInfoImpl implements WSDL11ValidationInfo
 //  }
 
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfo#addError(java.lang.String, int, int)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo#addError(java.lang.String, int, int)
    */
   public void addError(String message, int line, int column, String uri)
   {
-    valinfo.addError(message, line, column, uri);
+    addError(message, line, column, uri, null, null);
   }
 
+  public void addError(String message, int line, int column, String uri, String errorKey, Object[] messageArguments)
+  { 
+    try
+    { ((ValidationInfoImpl)valinfo).addError(message, line, column, uri, errorKey, messageArguments);
+    }
+    catch (ClassCastException e)
+    { System.err.println(e);
+      valinfo.addError(message, line, column, uri);
+    }
+  }
+  
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfo#addWarning(java.lang.String, int, int)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo#addWarning(java.lang.String, int, int)
    */
   public void addWarning(String message, int line, int column, String uri)
   {

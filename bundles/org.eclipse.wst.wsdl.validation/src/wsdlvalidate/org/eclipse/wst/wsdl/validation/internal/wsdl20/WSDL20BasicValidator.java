@@ -14,7 +14,7 @@ package org.eclipse.wst.wsdl.validation.internal.wsdl20;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.eclipse.wst.wsdl.validation.internal.ValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.IValidationInfo;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 /**
  * Validate the elements defined in a WSDL 1.1 Document.
@@ -43,9 +43,9 @@ public class WSDL20BasicValidator implements IWSDL20Validator
   }
   
   /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.validator.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.ValidationInfo)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.validator.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.IValidationInfo)
    */
-  public void validate(Object element, List parents, ValidationInfo valInfo)
+  public void validate(Object element, List parents, IValidationInfo valInfo)
   {
     //this.validatorcontroller = validatorcontroller;
     //setDefaultResourceBundleIfNeeded(validatorcontroller);
@@ -175,7 +175,7 @@ public class WSDL20BasicValidator implements IWSDL20Validator
    * @param valInfo Validation info for the current validation.
    * @return True if the part element is defined, false otherwise.
    */
-  protected boolean checkMessage(String namespace, String name, ValidationInfo valInfo)
+  protected boolean checkMessage(String namespace, String name, IValidationInfo valInfo)
   {
 
     boolean partvalid = false;

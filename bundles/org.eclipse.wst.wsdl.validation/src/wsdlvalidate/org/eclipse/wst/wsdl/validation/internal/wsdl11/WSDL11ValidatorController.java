@@ -21,7 +21,7 @@ import javax.wsdl.WSDLException;
 
 import org.apache.xerces.xs.XSModel;
 import org.eclipse.wst.wsdl.validation.internal.IWSDLValidator;
-import org.eclipse.wst.wsdl.validation.internal.ValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.IValidationInfo;
 import org.eclipse.wst.wsdl.validation.internal.exception.ValidateWSDLException;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.w3c.dom.Document;
@@ -54,14 +54,14 @@ public class WSDL11ValidatorController implements IWSDLValidator
   /* (non-Javadoc)
    * @see org.eclipse.wsdl.validate.IWSDLValidator#validate(org.w3c.dom.Document, org.eclipse.wsdl.validate.ValidationInfo)
    */
-  public void validate(Document domModel, ValidationInfo valInfo) throws ValidateWSDLException
+  public void validate(Document domModel, IValidationInfo valInfo) throws ValidateWSDLException
   {
     // reset the variables
 //    reset();
 //    fileURI = valInfo.getFileURI();
     //this.validationController = validationcontroller;
 
-    WSDL11ValidationInfo wsdlvalinfo = new WSDL11ValidationInfoImpl(valInfo);
+    IWSDL11ValidationInfo wsdlvalinfo = new WSDL11ValidationInfoImpl(valInfo);
     WSDLDocument[] wsdlDocs = readWSDLDocument(domModel, valInfo.getFileURI(), getMessageGenerator(), wsdlvalinfo);
     // Don't validate an null definitions element. Either the file is emtpy and valid or
     // had an error when reading.
@@ -147,7 +147,7 @@ public class WSDL11ValidatorController implements IWSDLValidator
    * @return The definitions element for the WSDL document.
    * @throws ValidateWSDLException
    */
-  protected WSDLDocument[] readWSDLDocument(Document domModel, String file, MessageGenerator messagegenerator, WSDL11ValidationInfo wsdlvalinfo) throws ValidateWSDLException
+  protected WSDLDocument[] readWSDLDocument(Document domModel, String file, MessageGenerator messagegenerator, IWSDL11ValidationInfo wsdlvalinfo) throws ValidateWSDLException
   {
     WSDLDocument[] wsdlDocs = null;
     try
@@ -205,7 +205,7 @@ public class WSDL11ValidatorController implements IWSDLValidator
    * @param element The element to validate.
    * @param parents The list of parents for this element.
    */
-  public void validateWSDLElement(String namespace, Object element, List parents, WSDL11ValidationInfo wsdlvalinfo)
+  public void validateWSDLElement(String namespace, Object element, List parents, IWSDL11ValidationInfo wsdlvalinfo)
   {
     IWSDL11Validator val = ver.queryValidatorRegistry(namespace);
     if (val != null)

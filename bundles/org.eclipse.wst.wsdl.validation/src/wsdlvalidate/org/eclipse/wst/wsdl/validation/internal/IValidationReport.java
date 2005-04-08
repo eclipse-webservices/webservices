@@ -16,7 +16,7 @@ import java.util.HashMap;
 /**
  * An interface for a WSDL validation report.
  */
-public interface ValidationReport
+public interface IValidationReport
 {
   /**
    * Returns the URI for the file the report refers to.
@@ -37,7 +37,7 @@ public interface ValidationReport
    * 
    * @return An array of validation messages.
    */
-  public ValidationMessage[] getValidationMessages();
+  public IValidationMessage[] getValidationMessages();
   
   /**
    * Returns true if there are errors, false otherwise.

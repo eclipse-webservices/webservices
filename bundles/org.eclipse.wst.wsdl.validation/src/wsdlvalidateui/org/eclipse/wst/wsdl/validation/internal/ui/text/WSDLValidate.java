@@ -19,8 +19,8 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
-import org.eclipse.wst.wsdl.validation.internal.ValidationMessage;
-import org.eclipse.wst.wsdl.validation.internal.ValidationReport;
+import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
+import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
@@ -94,7 +94,7 @@ public class WSDLValidate
    * @param validatorRB - the WSDL validator resource bundle
    * @throws Exception
    */
-  protected ValidationReport validateFile(String directory, String filename, ResourceBundle validatorRB)
+  protected IValidationReport validateFile(String directory, String filename, ResourceBundle validatorRB)
     throws Exception
   {
     //	resolve the location of the file
@@ -109,7 +109,7 @@ public class WSDLValidate
       throw new Exception("Unable to resolve WSDL file location");
     }
     // run validation on the file and record the errors and warnings
-    ValidationReport valReport = wsdlValidator.validate(filelocation);
+    IValidationReport valReport = wsdlValidator.validate(filelocation);
     return valReport;
   }
 
@@ -121,7 +121,7 @@ public class WSDLValidate
    * @param warningmarker The marker to use to label warning messages.
    * @return A string with a formatted list of the messages.
    */
-  protected String getMessages(ValidationMessage[] messages, String errormarker, String warningmarker)
+  protected String getMessages(IValidationMessage[] messages, String errormarker, String warningmarker)
   {
     StringBuffer outputBuffer = new StringBuffer();
     if (messages != null)
@@ -132,13 +132,13 @@ public class WSDLValidate
       String marker = null;
       for (int i = 0; i < numMessages; i++)
       {
-        ValidationMessage message = messages[i];
+        IValidationMessage message = messages[i];
         int severity = message.getSeverity();
-        if (severity == ValidationMessage.SEV_ERROR)
+        if (severity == IValidationMessage.SEV_ERROR)
         {
           marker = errormarker;
         }
-        else if (severity == ValidationMessage.SEV_WARNING)
+        else if (severity == IValidationMessage.SEV_WARNING)
         {
           marker = warningmarker;
         }
@@ -282,7 +282,7 @@ public class WSDLValidate
       String wsdlFile = (String)filesIter.next();
       try
       {
-        ValidationReport valReport = wsdlValidator.validateFile(System.getProperty("user.dir"), wsdlFile, validatorRB);
+        IValidationReport valReport = wsdlValidator.validateFile(System.getProperty("user.dir"), wsdlFile, validatorRB);
 
         outputBuffer.append(infoDelim).append("\n");
         outputBuffer.append(messGen.getString(_UI_ACTION_VALIDATING_FILE, wsdlFile)).append(" - ");

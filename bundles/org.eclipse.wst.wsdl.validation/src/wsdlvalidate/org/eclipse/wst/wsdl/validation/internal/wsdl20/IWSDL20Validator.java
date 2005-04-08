@@ -14,7 +14,7 @@ package org.eclipse.wst.wsdl.validation.internal.wsdl20;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.eclipse.wst.wsdl.validation.internal.ValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.IValidationInfo;
 
 /**
  * Interface for a validator plugged into the WSDL 2.0 validator.
@@ -28,7 +28,7 @@ public interface IWSDL20Validator
    * @param parents A list of parents of this element.
    * @param valInfo The validation info for the current validation.
    */
-  public void validate(Object element, List parents, ValidationInfo valInfo);
+  public void validate(Object element, List parents, IValidationInfo valInfo);
 
   /**
    * Set the resource bundle of the validator.

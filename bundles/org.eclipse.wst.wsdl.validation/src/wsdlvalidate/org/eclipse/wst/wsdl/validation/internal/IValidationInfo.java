@@ -18,7 +18,7 @@ import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
  * An interface representing the current validation information.
  * This interface is not meant to be implemented by clients.
  */
-public interface ValidationInfo extends ValidationReport
+public interface IValidationInfo extends IValidationReport
 {
   
   /**

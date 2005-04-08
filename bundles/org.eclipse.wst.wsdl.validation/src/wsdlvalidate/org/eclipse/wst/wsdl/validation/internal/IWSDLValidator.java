@@ -29,7 +29,7 @@ public interface IWSDLValidator
    * @param valInfo The information for the validation that is being performed.
    * @throws ValidateWSDLException
    */
-  public void validate(Document domModel, ValidationInfo valInfo) throws ValidateWSDLException;
+  public void validate(Document domModel, IValidationInfo valInfo) throws ValidateWSDLException;
 
   /**
    * setResourceBundle

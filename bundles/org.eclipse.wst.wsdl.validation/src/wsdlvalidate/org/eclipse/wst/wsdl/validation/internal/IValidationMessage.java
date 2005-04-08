@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.QualifiedName;
  * An interface for a validation message. A validation message contains information
  * for the message, its severity and where it's located.
  */
-public interface ValidationMessage
+public interface IValidationMessage
 {
   public static final QualifiedName ERROR_MESSAGE_MAP_QUALIFIED_NAME = new QualifiedName("org.eclipse.wsdl.validate", "errorMessageMap");
   /**
