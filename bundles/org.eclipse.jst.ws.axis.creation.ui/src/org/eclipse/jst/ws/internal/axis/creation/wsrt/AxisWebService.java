@@ -9,35 +9,25 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.AddJarsToProjectBuil
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CheckAxisDeploymentDescriptorsTask;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisRunInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUAxisOutputCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.command.ComputeAxisSkeletonBeanCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.UpdateWEBXMLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.LiteralSupportMessageTask;
-import org.eclipse.jst.ws.internal.axis.creation.ui.task.MoveDeploymentFilesTask;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.MoveJavaFilesTask;
-import org.eclipse.jst.ws.internal.axis.creation.ui.task.Skeleton2WSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.UpdateAxisWSDDFileTask;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.AxisBeanFragment;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BUAxisDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.ValidateObjectSelectionCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonDefaultingCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.command.OpenJavaEditorCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.WSINonCompliantRuntimeCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand;
 import org.eclipse.wst.command.env.common.WaitForAutoBuildCommand;
-import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.env.ui.widgets.SelectionCommand;
 import org.eclipse.wst.command.internal.provisional.ICommandFactory;
@@ -45,13 +35,11 @@ import org.eclipse.wst.command.internal.provisional.SimpleCommandFactory;
 import org.eclipse.wst.ws.internal.provisional.wsrt.AbstractWebService;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceInfo;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 public class AxisWebService extends AbstractWebService
 {
-	
+	private AxisWebServiceInfo axisWebServiceInfo_;
 
 	public AxisWebService(WebServiceInfo info)
 	{
@@ -61,17 +49,13 @@ public class AxisWebService extends AbstractWebService
 	public ICommandFactory assemble(Environment env, IContext ctx,
 			ISelection sel, String module, String ear)
 	{
-		Vector commands = new Vector();
-		commands.add(new TestCommand3(this));
-		return new SimpleCommandFactory(commands);
+		return null;
 	}
 
 	public ICommandFactory deploy(Environment env, IContext ctx, ISelection sel,
 			String module, String ear)
 	{
-		Vector commands = new Vector();
-		commands.add(new TestCommand4(this));
-		return new SimpleCommandFactory(commands);
+		return null;
 	}
 
 	public ICommandFactory develop(Environment env, IContext ctx, ISelection sel,
@@ -80,10 +64,9 @@ public class AxisWebService extends AbstractWebService
 		registerDataMappings( env.getCommandManager().getMappingRegistry());
 		
 		Vector commands = new Vector();
+		
 //		if (ctx.getScenario().getValue() == WebServiceScenario.BOTTOMUP) {
 			
-			commands.add(new TestCommand1(this));
-			commands.add(new TestCommand2(this));
 			commands.add(new BUAxisInputCommand(this, module));
 			commands.add(new ValidateObjectSelectionCommand());
 			commands.add(new BUAxisDefaultingCommand());
@@ -143,113 +126,19 @@ public class AxisWebService extends AbstractWebService
 	public ICommandFactory install(Environment env, IContext ctx, ISelection sel,
 			String module, String ear)
 	{
-		Vector commands = new Vector();
-		commands.add(new TestCommand5(this));
-		return new SimpleCommandFactory(commands);
+		return null;
 	}
 
 	public ICommandFactory run(Environment env, IContext ctx, ISelection sel,
 			String module, String ear)
 	{
 		Vector commands = new Vector();
-		commands.add(new TestCommand6(this));
+		commands.add(new AxisRunInputCommand(this, module));
 		commands.add(new AxisDeployCommand());
 		commands.add(new RefreshProjectCommand());
 		return new SimpleCommandFactory(commands);
 	}
 	
- private class TestCommand1 extends SimpleCommand
-	{
-	 IWebService ws;
-	 public TestCommand1(IWebService ws)
-	 {
-		 this.ws=ws;
-	 }
-	 public Status execute(Environment env)
-	 {
-		System.out.println("In develop command 1");
-		ws.getWebServiceInfo().setWsdlURL("http://someWSDLURL");
-		return super.execute(env);
-	 }
-	}
-
-	private class TestCommand2 extends SimpleCommand
-	{
-		 IWebService ws;
-		 public TestCommand2(IWebService ws)
-		 {
-			 this.ws=ws;
-		 }
-		 
-		public Status execute(Environment env)
-		{
-			System.out.println("In develop command 2");
-			ws.getWebServiceInfo().setImplURL("file://someImplURL");
-			return super.execute(env);
-		}
-	}
-	
-	private class TestCommand3 extends SimpleCommand
-	{
-		 IWebService ws;
-		 public TestCommand3(IWebService ws)
-		 {
-			 this.ws=ws;
-		 }
-		 
-		public Status execute(Environment env)
-		{
-			System.out.println("In assemble command");
-			return super.execute(env);
-		}
-	}
-	
-	private class TestCommand4 extends SimpleCommand
-	{
-		 IWebService ws;
-		 public TestCommand4(IWebService ws)
-		 {
-			 this.ws=ws;
-		 }
-		 
-		public Status execute(Environment env)
-		{
-			System.out.println("In deploy command");
-			ws.getWebServiceInfo().setEndPointURL("http://someEndpointURL");
-			return super.execute(env);
-		}
-	}
-	
-	private class TestCommand5 extends SimpleCommand
-	{
-		 IWebService ws;
-		 public TestCommand5(IWebService ws)
-		 {
-			 this.ws=ws;
-		 }
-		 
-		public Status execute(Environment env)
-		{
-			System.out.println("In install command");
-			return super.execute(env);
-		}
-	}	
-	
-	private class TestCommand6 extends SimpleCommand
-	{
-		 IWebService ws;
-		 public TestCommand6(IWebService ws)
-		 {
-			 this.ws=ws;
-		 }
-		 
-		public Status execute(Environment env)
-		{
-			System.out.println("In run command");
-			return super.execute(env);
-		}
-	}	
-
 	public void registerDataMappings(DataMappingRegistry registry) 
 	  {
 		//BUAxisInputCommand
@@ -328,11 +217,27 @@ public class AxisWebService extends AbstractWebService
 	    registry.addMapping(BUAxisDefaultingCommand.class, "SampleExistingServer", StartProjectCommand.class);
 	    registry.addMapping(BUAxisDefaultingCommand.class, "IsWebProjectStartupRequested",StartProjectCommand.class);
 	        
+		// BUAxisOutputCommand
+	    registry.addMapping(Java2WSDLCommand.class, "WsdlURI", BUAxisOutputCommand.class);
+		registry.addMapping(UpdateAxisWSDDFileTask.class, "JavaWSDLParam", BUAxisOutputCommand.class);    
+		
+		// Run extension
+		
 	    //AxisDeployCommand
-	    registry.addMapping(UpdateAxisWSDDFileTask.class, "JavaWSDLParam", AxisDeployCommand.class);
+	    registry.addMapping(AxisRunInputCommand.class, "JavaWSDLParam", AxisDeployCommand.class);
+		//RefreshProjectCommand
+	    registry.addMapping(AxisRunInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", new StringToIProjectTransformer());
+
 	    
-	    // ServerExtensionOutputCommand
-	    registry.addMapping(Java2WSDLCommand.class, "WsdlURI", BUAxisOutputCommand.class);    
+	    
 	  }
+
+	public AxisWebServiceInfo getAxisWebServiceInfo() {
+		return axisWebServiceInfo_;
+	}
+
+	public void setAxisWebServiceInfo(AxisWebServiceInfo axisWebServiceInfo) {
+		axisWebServiceInfo_ = axisWebServiceInfo;
+	}
 }	
 

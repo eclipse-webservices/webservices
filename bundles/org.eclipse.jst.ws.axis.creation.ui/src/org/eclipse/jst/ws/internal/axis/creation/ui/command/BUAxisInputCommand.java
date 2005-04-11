@@ -11,36 +11,14 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
 
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jem.internal.plugin.JavaEMFNature;
-import org.eclipse.jem.java.JavaClass;
-import org.eclipse.jem.java.Method;
-import org.eclipse.jem.java.impl.JavaClassImpl;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
-import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
-import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
-import org.eclipse.wst.ws.parser.discovery.WebServicesParserExt;
-import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 
 
 public class BUAxisInputCommand extends SimpleCommand {
@@ -105,7 +83,6 @@ public class BUAxisInputCommand extends SimpleCommand {
 		   */
 		  public String getServerProject()
 		  {
-//		    return serviceChoices_.getList().getSelection();
 			  return serverProject_;
 		  }
 
