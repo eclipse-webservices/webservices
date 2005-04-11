@@ -11,9 +11,29 @@
 
 package org.eclipse.wst.command.internal.provisional.ui.widgets;
 
+import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
+
 public interface INamedWidgetContributorFactory 
 {
+  /**
+   * 
+   * @return returns the first named widget.
+   */
   INamedWidgetContributor getFirstNamedWidget();
   
+  /**
+   * 
+   * @param widgetContributor
+   * @return returns the next named widget after the one specified.
+   */
   INamedWidgetContributor getNextNamedWidget( INamedWidgetContributor widgetContributor );
+  
+  /**
+   * This method is used by extenions to register the data mappings
+   * that their widgets use.
+   * 
+   * @param dataRegistry
+   */
+  public void registerDataMappings( DataMappingRegistry dataRegistry );
+  
 }

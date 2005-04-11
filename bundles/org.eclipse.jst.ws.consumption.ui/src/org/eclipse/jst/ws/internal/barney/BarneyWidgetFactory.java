@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.env.ui.widgets.WidgetContributorFactory;
@@ -105,6 +106,11 @@ public class BarneyWidgetFactory implements INamedWidgetContributorFactory {
 		  };
 		}  
 	  };
+	}
+
+	public void registerDataMappings(DataMappingRegistry dataRegistry) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

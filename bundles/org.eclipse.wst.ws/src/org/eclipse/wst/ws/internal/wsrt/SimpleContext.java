@@ -5,64 +5,116 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 public class SimpleContext implements IContext {
 
+	boolean develop;
+	boolean assemble;
+	boolean deploy;
+	boolean install;
+	boolean run;
+	boolean client;
+	boolean test;
+	boolean publish;
+	
+	WebServiceScenario scenario;
+	
+	boolean overwriteFiles;
+	boolean createFolders;
+	boolean checkOutFiles;
+	
+	
+	
+	
+	public SimpleContext()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public SimpleContext(boolean develop, boolean assemble, boolean deploy, boolean install, boolean run, boolean client, boolean test, boolean publish, WebServiceScenario scenario, boolean overwriteFiles, boolean folders, boolean checkOutFiles) {
+		super();		
+		this.develop = develop;
+		this.assemble = assemble;
+		this.deploy = deploy;
+		this.install = install;
+		this.run = run;
+		this.client = client;
+		this.test = test;
+		this.publish = publish;
+		this.scenario = scenario;
+		this.overwriteFiles = overwriteFiles;
+		this.createFolders = folders;
+		this.checkOutFiles = checkOutFiles;
+	}
+	
 	public boolean getAssemble() {
-		// TODO Auto-generated method stub
-		return false;
+		return assemble;
 	}
-
+	public void setAssemble(boolean assemble) {
+		this.assemble = assemble;
+	}
 	public boolean getCheckOutFiles() {
-		// TODO Auto-generated method stub
-		return false;
+		return checkOutFiles;
 	}
-
+	public void setCheckOutFiles(boolean checkOutFiles) {
+		this.checkOutFiles = checkOutFiles;
+	}
 	public boolean getClient() {
-		// TODO Auto-generated method stub
-		return false;
+		return client;
 	}
-
+	public void setClient(boolean client) {
+		this.client = client;
+	}
 	public boolean getCreateFolders() {
-		// TODO Auto-generated method stub
-		return false;
+		return createFolders;
 	}
-
+	public void setCreateFolders(boolean createFolders) {
+		this.createFolders = createFolders;
+	}
 	public boolean getDeploy() {
-		// TODO Auto-generated method stub
-		return false;
+		return deploy;
 	}
-
+	public void setDeploy(boolean deploy) {
+		this.deploy = deploy;
+	}
 	public boolean getDevelop() {
-		// TODO Auto-generated method stub
-		return false;
+		return develop;
 	}
-
+	public void setDevelop(boolean develop) {
+		this.develop = develop;
+	}
 	public boolean getInstall() {
-		// TODO Auto-generated method stub
-		return false;
+		return install;
 	}
-
+	public void setInstall(boolean install) {
+		this.install = install;
+	}
 	public boolean getOverWriteFiles() {
-		// TODO Auto-generated method stub
-		return false;
+		return overwriteFiles;
 	}
-
+	public void setOverWriteFiles(boolean overwriteFiles) {
+		this.overwriteFiles = overwriteFiles;
+	}
 	public boolean getPublish() {
-		// TODO Auto-generated method stub
-		return false;
+		return publish;
 	}
-
+	public void setPublish(boolean publish) {
+		this.publish = publish;
+	}
 	public boolean getRun() {
-		// TODO Auto-generated method stub
-		return false;
+		return run;
 	}
-
+	public void setRun(boolean run) {
+		this.run = run;
+	}
 	public WebServiceScenario getScenario() {
-		// TODO Auto-generated method stub
-		return null;
+		return scenario;
 	}
-
+	public void setScenario(WebServiceScenario scenario) {
+		this.scenario = scenario;
+	}
 	public boolean getTest() {
-		// TODO Auto-generated method stub
-		return false;
+		return test;
 	}
-
+	public void setTest(boolean test) {
+		this.test = test;
+	}
 }

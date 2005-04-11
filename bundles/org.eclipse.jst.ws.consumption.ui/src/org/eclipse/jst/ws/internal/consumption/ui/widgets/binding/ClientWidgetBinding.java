@@ -310,7 +310,11 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServerInstance", ClientServerDeployableConfigCommand.class,"SampleExistingServer", new ServerInstToIServerTransformer());
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServer", ClientServerDeployableConfigCommand.class,"SampleServerTypeID", null);
 	  
-	  // Setup the PreServiceDevelopCommand.
+	  // Setup the PreClientDevelopCommand.
+			//
+      dataRegistry.addMapping( ClientWizardWidgetOutputCommand.class, "TestService", PreClientDevelopCommand.class);           
+      dataRegistry.addMapping( ClientWizardWidgetOutputCommand.class, "ResourceContext", PreClientDevelopCommand.class);						
+			//
 	  dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", PreClientDevelopCommand.class );
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", PreClientDevelopCommand.class);
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientProject", PreClientDevelopCommand.class, "Module", null );

@@ -23,6 +23,7 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceRuntime;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceClientInfo;
+import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceState;
 import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
 
@@ -37,6 +38,7 @@ public class PreClientDevelopCommand extends SimpleCommand
   private IWebServiceClient webServiceClient_;
   private String            j2eeLevel_;
   private ResourceContext   resourceContext_;
+	private boolean						test_;
 
   public Status execute(Environment environment) 
   {
@@ -52,7 +54,12 @@ public class PreClientDevelopCommand extends SimpleCommand
 
 	environment_       = environment;
 	webServiceClient_  = wsrt.getWebServiceClient( wsInfo );
-	context_           = new SimpleContext();
+	WebServiceScenario scenario = WebServiceScenario.CLIENT_LITERAL;
+	context_           = new SimpleContext(true, true, true, true, true, true, test_, false, 
+																					scenario, 
+																					resourceContext_.isOverwriteFilesEnabled(), 
+																					resourceContext_.isCreateFoldersEnabled(), 
+																					resourceContext_.isCheckoutFilesEnabled());
 
     return new SimpleStatus("");
   }
@@ -116,4 +123,9 @@ public class PreClientDevelopCommand extends SimpleCommand
   {
 	ear_ = ear;  
   }
+	
+	public void setTestService(boolean testService)
+	{
+		test_ = testService;
+	}		
 }

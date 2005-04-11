@@ -478,13 +478,20 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer",WSDLTestLaunchCommand.class);
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", ClientTestDelegateCommand.class);
 	  
-	  // Setup the PreServiceDevelopCommand.
-	  dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", PreServiceDevelopCommand.class );
+	    // Setup the PreServiceDevelopCommand.
+			//
+      dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "StartService", PreServiceDevelopCommand.class);
+      dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "TestService", PreServiceDevelopCommand.class);
+      dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "PublishService", PreServiceDevelopCommand.class);      
+      dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "GenerateProxy", PreServiceDevelopCommand.class);      
+      dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "ResourceContext", PreServiceDevelopCommand.class);			
+			//
+	    dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", PreServiceDevelopCommand.class );
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceJ2EEVersion", PreServiceDevelopCommand.class);
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServerProject", PreServiceDevelopCommand.class, "Module", null );
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServerProjectEAR", PreServiceDevelopCommand.class, "Ear", null );
-      dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "ResourceContext", PreServiceDevelopCommand.class);
-	  dataRegistry.addMapping( ObjectSelectionOutputCommand.class, "ObjectSelection", PreServiceDevelopCommand.class, "Selection", new SelectionTransformer() );
+      //
+	    dataRegistry.addMapping( ObjectSelectionOutputCommand.class, "ObjectSelection", PreServiceDevelopCommand.class, "Selection", new SelectionTransformer() );
       
       // Map CreateServiceProjectCommand
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProject", CreateServiceProjectCommand.class, "ProjectName", null);

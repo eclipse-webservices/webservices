@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.wst.command.env.core.context.ResourceContext;
 
 
 public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCommand
@@ -21,6 +22,7 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
   private boolean           testService_;
   private boolean           publishService_;
   private boolean           generateProxy_;
+	private ResourceContext   resourceContext_;
     
   
   public TypeRuntimeServer getServiceTypeRuntimeServer()
@@ -47,6 +49,11 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
   {
     return generateProxy_;  
   }
+	
+	public ResourceContext getResourceContext()
+	{
+		return resourceContext_;
+	}
   
   /**
    * @param generateProxy_ The generateProxy_ to set.
@@ -83,4 +90,9 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
   {
     this.typeRuntimeServer_ = typeRuntimeServer_;
   }
+	
+	public void setResourceContext(ResourceContext rc)
+	{
+		resourceContext_ = rc;
+	}
 }

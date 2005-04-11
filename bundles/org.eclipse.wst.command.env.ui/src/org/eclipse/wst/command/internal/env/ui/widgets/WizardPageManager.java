@@ -287,6 +287,8 @@ public class WizardPageManager extends SimpleCommandEngineManager
 		
 		StackEntry entry = new StackEntry();
 		
+		widgetFactory_.registerDataMappings( dataManager_.getMappingRegistry() );
+		
 		entry.factory_ = widgetFactory_;
 		entry.stack_   = widgetStack_;
 		widgetStackStack_.push( entry );
@@ -409,7 +411,6 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	  
 	  page = pageFactory_.getPage( pageInfo, this );
 	  widgetTable_.put( widget, page );
-	  widget.registerDataMappings( dataManager_.getMappingRegistry() );
 	}
 	
 	return page;
