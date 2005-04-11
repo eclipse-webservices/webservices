@@ -196,7 +196,7 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
   
   public boolean getCustomizeServiceMappings()
   {
-    return showMappingsCheckbox_.getSelection();
+    return showMappingsCheckbox_ == null ? false : showMappingsCheckbox_.getSelection();
   }
   
   public void setJavaParameter( JavaWSDLParameter javaParameter )
