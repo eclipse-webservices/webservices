@@ -22,7 +22,7 @@ import org.w3c.dom.Node;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.commands.WSDLElementCommand;
 import org.eclipse.wst.xml.core.document.IDOMNode;
-import org.eclipse.wst.xml.core.format.FormatProcessorXML;
+import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
 
 public abstract class WSDLElementUIAction extends Action
 {

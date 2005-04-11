@@ -30,7 +30,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.ui.BaseDesignWindow;
 import org.eclipse.wst.wsdl.ui.internal.util.ui.BorderPainter;
 import org.eclipse.wst.wsdl.ui.internal.util.ui.FlatViewUtility;
 import org.eclipse.wst.xml.core.document.IDOMNode;
-import org.eclipse.wst.xml.core.format.FormatProcessorXML;
+import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

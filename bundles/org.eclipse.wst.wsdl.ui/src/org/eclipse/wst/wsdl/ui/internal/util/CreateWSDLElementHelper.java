@@ -46,7 +46,7 @@ import org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.document.IDOMNode;
-import org.eclipse.wst.xml.core.format.FormatProcessorXML;
+import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
 
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDElementDeclaration;
