@@ -184,5 +184,12 @@
              insertBeforeCommandId="org.eclipse.jst.ws.internal.axis.creation.ui.task.BUCheckAxisDeploymentDescriptors"
              class="org.eclipse.jst.ws.internal.axis.creation.wsrt.AxisBeanConfigWidgetFactory"/>
     </extension> 
+    
+	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory   
+             id="AxisSkeletonConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.axis.creation.ui.task.TDCheckAxisDeploymentDescriptors"
+             class="org.eclipse.jst.ws.internal.axis.creation.wsrt.AxisSkeletonConfigWidgetFactory"/>
+    </extension> 
 
 </plugin>

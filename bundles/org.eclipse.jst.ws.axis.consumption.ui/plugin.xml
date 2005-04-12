@@ -135,5 +135,12 @@
         </runtime>         
      </generator>
    </extension>
+   
+	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory   
+             id="AxisClientConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand"
+             class="org.eclipse.jst.ws.internal.axis.consumption.wsrt.AxisClientConfigWidgetFactory"/>
+    </extension> 
 
 </plugin>

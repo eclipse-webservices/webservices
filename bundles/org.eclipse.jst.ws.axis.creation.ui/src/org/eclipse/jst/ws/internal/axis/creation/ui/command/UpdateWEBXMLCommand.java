@@ -17,9 +17,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
-import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
-import org.eclipse.jst.j2ee.internal.web.operations.WebEditModel;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.jst.j2ee.web.modulecore.util.WebArtifactEdit;
 import org.eclipse.jst.j2ee.webapplication.Servlet;
 import org.eclipse.jst.j2ee.webapplication.ServletMapping;
 import org.eclipse.jst.j2ee.webapplication.ServletType;
@@ -30,12 +29,16 @@ import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.StructureEdit;
+import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 
 public class UpdateWEBXMLCommand extends SimpleCommand {
 
 	private String LABEL = "TASK_LABEL_UPDATE_WEB_XML";
 	private String DESCRIPTION = "TASK_DESC_UPDATE_WEB_XML";
-	private final String webProjectNature = IWebNatureConstants.J2EE_NATURE_ID;
 
 	private MessageUtils msgUtils_;
 	private IProject serverProject;
@@ -108,15 +111,21 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 	public Status addServlet(
 		IProject webProject,
 		ServletDescriptor servletDescriptor) {
-		J2EEWebNatureRuntime nature = null;
-		WebEditModel resource = null;
-		Object accessorKey = new Object();
-		try {
-			nature =
-				(J2EEWebNatureRuntime) (webProject.getNature(webProjectNature));
-			resource = nature.getWebAppEditModelForWrite(accessorKey);
-			WebApp webapp = resource.getWebApp();
 
+		Object accessorKey = new Object();
+		WebArtifactEdit webEdit = null;		
+		StructureEdit structEdit = null;
+		try {
+			// 
+			WebApp webapp = null;
+			structEdit = StructureEdit.getStructureEditForRead(webProject);;
+			WorkbenchComponent wbcs[] = structEdit.getWorkbenchModules();
+			
+			webEdit = WebArtifactEdit.getWebArtifactEditForWrite(wbcs[0]);
+			if (webEdit != null)
+				webapp = (WebApp) webEdit.getDeploymentDescriptorRoot();
+			//
+			
 			boolean foundServlet = false;
 
 			List theServlets = webapp.getServlets();
@@ -128,7 +137,6 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 			}
 
 			if (foundServlet) {
-				if (resource != null) resource.releaseAccess(accessorKey);
 				return new SimpleStatus( "" );
 			}
 
@@ -159,15 +167,20 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 					webapp.getServletMappings().add(servletMapping);					
 				}
 			}
-			resource.save(accessorKey);
-			if (resource != null) resource.releaseAccess(accessorKey);
+
 			return new SimpleStatus( "" );
 		} catch (Exception e) {
-			if (resource != null) resource.releaseAccess(accessorKey);
+
 			return new SimpleStatus(
 					"UpdateWEBXMLCommand.addServlet", //$NON-NLS-1$
 					msgUtils_.getMessage("MSG_ERROR_UPDATE_WEB_XML"),
 					Status.ERROR, e);
+		}
+		finally{
+			if (webEdit != null)
+				webEdit.dispose();	
+			if (structEdit!=null)
+				structEdit.dispose();
 		}
 	}
 
