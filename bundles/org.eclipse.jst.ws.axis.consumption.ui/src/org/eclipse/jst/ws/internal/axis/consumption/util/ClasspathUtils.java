@@ -15,6 +15,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Vector;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -31,6 +32,8 @@ import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
 import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.StructureEdit;
+import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
@@ -57,19 +60,38 @@ public class ClasspathUtils {
 	public String getClasspathString(IProject project) {
 		StringBuffer classpath = new StringBuffer();
 		String[] classpathEntries = getClasspath(project, false);
+		String resourceLocation = null;
 		
-		// TODO: workaround for 90515
+		// TODO: workaround for 90515 and 90560
 		try {
 		
 			IVirtualComponent component = ComponentCore.createComponent(project, J2EEUtils.getFirstWebModuleName(project));
 			if (component != null) {
+				
+				IFolder webModuleClasses = null;
+				StructureEdit mc = null;
+				try {
+					mc = StructureEdit.getStructureEditForRead(project);
+					WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+					if (wbcs.length!=0) {
+						IFolder  webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
+						webModuleClasses  = webModuleServerRoot.getFolder("WEB-INF").getFolder("classes");
+						resourceLocation = webModuleClasses.getLocation().toOSString();
+						classpath.append(resourceLocation);
+						classpath.append(";"); //$NON-NLS-1$
+					}
+				}
+				finally{
+					if (mc!=null)
+						mc.dispose();			
+				}
+				
 				IVirtualFolder webInfLib = component.getFolder(new Path(
 						"/WEB-INF/lib"));
 				if (webInfLib != null) {
 					IVirtualResource[] resources = webInfLib.members();
 					IResource aResource = null;
-					String resourceLocation = null;
-					String resourcePath = null;
+					
 					for (int i = 0; i < resources.length; i++) {
 						aResource = resources[i].getUnderlyingResource();
 						resourceLocation = aResource.getLocation().toOSString();
