@@ -27,13 +27,15 @@ import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 import org.eclipse.wst.ws.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 
 public class ServerExtensionOutputCommand extends SimpleCommand
 {
-  private String            wsdlURI_;
+  //private String            wsdlURI_;
   private WebServicesParser wsdlParser_;
+	private IWebService 			webService_;
   
   private String existingServerId_;
   private String earProjectName_;
@@ -46,8 +48,12 @@ public class ServerExtensionOutputCommand extends SimpleCommand
   }
 
   public Status undo(Environment env){
-  	Status stat = new SimpleStatus("");
+		
 
+  	Status stat = new SimpleStatus("");
+		
+		//Commenting out all extranseous sever startups
+		/*
     try	{
     	
       // check existingServer
@@ -74,14 +80,15 @@ public class ServerExtensionOutputCommand extends SimpleCommand
       env.getStatusHandler().reportError(stat);
   		return stat;
   	}  	
-  	
+  	*/
   	return stat;
   }  
 
   public Status execute(Environment env){
   	
   	Status status = new SimpleStatus("");  	
-  	
+  	// Commenting out all extraneous server startups
+		/*
     IServer[] servers = ServerCore.getServers();
     IServer existingServer =null;
     fExistingServer = null; 
@@ -120,7 +127,7 @@ public class ServerExtensionOutputCommand extends SimpleCommand
     	env.getStatusHandler().reportError(status);
   		return status;
   	}
-  	
+  	*/
   	return status;      	
   }
   
@@ -130,18 +137,25 @@ public class ServerExtensionOutputCommand extends SimpleCommand
    */
   public String getWsdlURI()
   {
-    return wsdlURI_;
+    return webService_.getWebServiceInfo().getWsdlURL();
   }
 
   /**
    * @param wsdlURI
    *            The wsdlURI to set.
    */
+	/*
   public void setWsdlURI(String wsdlURI)
   {
     wsdlURI_ = wsdlURI;
   }
-  
+  */
+	
+	public void setWebService(IWebService ws)
+	{
+		webService_ = ws;
+	}
+	
   /**
    * @return Returns the wsdlParser_.
    */

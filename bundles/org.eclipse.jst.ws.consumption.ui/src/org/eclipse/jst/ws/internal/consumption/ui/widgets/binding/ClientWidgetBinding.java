@@ -59,6 +59,7 @@ import org.eclipse.wst.command.env.ui.widgets.SelectionCommand;
 import org.eclipse.wst.command.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.env.ui.widgets.WidgetRegistry;
+import org.eclipse.wst.ws.internal.extensions.DevelopClientFragment;
 
 
 public class ClientWidgetBinding implements CommandWidgetBinding
@@ -315,13 +316,15 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping( ClientWizardWidgetOutputCommand.class, "TestService", PreClientDevelopCommand.class);           
       dataRegistry.addMapping( ClientWizardWidgetOutputCommand.class, "ResourceContext", PreClientDevelopCommand.class);						
 			//
-	  dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", PreClientDevelopCommand.class );
+	    dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", PreClientDevelopCommand.class );
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", PreClientDevelopCommand.class);
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientProject", PreClientDevelopCommand.class, "Module", null );
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientProjectEAR", PreClientDevelopCommand.class, "Ear", null );
       dataRegistry.addMapping( ClientWizardWidgetOutputCommand.class, "ResourceContext", PreClientDevelopCommand.class);
-	  dataRegistry.addMapping( ObjectSelectionOutputCommand.class, "ObjectSelection", PreClientDevelopCommand.class, "Selection", new SelectionTransformer() );
-             
+	    dataRegistry.addMapping( ObjectSelectionOutputCommand.class, "ObjectSelection", PreClientDevelopCommand.class, "Selection", new SelectionTransformer() );
+      
+			dataRegistry.addMapping( PreClientDevelopCommand.class, "WebService", ClientExtensionOutputCommand.class, "WebServiceClient", null );
+			
       // Map ClientExtensionDefaultingCommand command.
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", ClientExtensionFragment.class);
       

@@ -27,12 +27,14 @@ import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
 public class ClientExtensionOutputCommand extends SimpleCommand
 {
   private String  proxyBean_;
   private boolean genProxy_;
   private String setEndpointMethod;
+	private IWebServiceClient webServiceClient_;
   
   private String existingServerId_;
   private String earProjectName_;  
@@ -129,41 +131,48 @@ public class ClientExtensionOutputCommand extends SimpleCommand
   
   public String getProxyBean()
   {
-    return proxyBean_;
+    return webServiceClient_.getWebServiceClientInfo().getImplURL();
   }
   /**
    * @param proxyBean The proxyBean to set.
    */
+	/*
   public void setProxyBean(String proxyBean)
   {
     this.proxyBean_ = proxyBean;
   }
+  */
   
   public boolean getGenerateProxy()
   {
-    return genProxy_;
+    //return genProxy_;
+		return true;
   }
   
+	/*
   public void setGenerateProxy( boolean genProxy )
   {
     genProxy_ = genProxy;
   }
+  */
   
   /**
    * @return Returns the setEndpointMethod.
    */
   public String getSetEndpointMethod()
   {
-    return setEndpointMethod;
+    //return setEndpointMethod;
+		return "setEndpoint";
   }
   /**
    * @param setEndpointMethod The setEndpointMethod to set.
    */
+	/*
   public void setSetEndpointMethod(String setEndpointMethod)
   {
     this.setEndpointMethod = setEndpointMethod;
   }
-  
+  */
   /**
    * @param earProjectName The earProjectName to set.
    */
@@ -176,4 +185,9 @@ public class ClientExtensionOutputCommand extends SimpleCommand
   public void setExistingServerId(String existingServerId) {
   	this.existingServerId_ = existingServerId;
   }  
+	
+	public void setWebServiceClient(IWebServiceClient wsc)
+	{
+		webServiceClient_ = wsc;
+	}
 }

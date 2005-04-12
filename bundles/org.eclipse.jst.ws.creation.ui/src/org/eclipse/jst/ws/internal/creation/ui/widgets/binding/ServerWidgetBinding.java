@@ -492,6 +492,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServerProjectEAR", PreServiceDevelopCommand.class, "Ear", null );
       //
 	    dataRegistry.addMapping( ObjectSelectionOutputCommand.class, "ObjectSelection", PreServiceDevelopCommand.class, "Selection", new SelectionTransformer() );
+			
+			dataRegistry.addMapping( PreServiceDevelopCommand.class, "WebService", ServerExtensionOutputCommand.class );
       
       // Map CreateServiceProjectCommand
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProject", CreateServiceProjectCommand.class, "ProjectName", null);

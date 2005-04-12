@@ -11,6 +11,7 @@
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
+import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
@@ -33,8 +34,11 @@ public class PreServiceDevelopCommand extends SimpleCommand
   private Environment       environment_;
   private IContext          context_;
   private ISelection        selection_;
+	private String						project_;
   private String            module_;
+	private String						earProject_;
   private String            ear_;
+	
   private IWebService       webService_;
   private String            j2eeLevel_;
   private ResourceContext   resourceContext_;
@@ -76,19 +80,43 @@ public class PreServiceDevelopCommand extends SimpleCommand
 																		resourceContext_.isCreateFoldersEnabled(),
 																		resourceContext_.isCheckoutFilesEnabled());
 
-    return new SimpleStatus("");
+    //Create the service module
+		CreateModuleCommand command = new CreateModuleCommand();
+		command.setProjectName(project_);
+		command.setModuleName(module_);
+		//rsk todo -- pick the correct module type based on the Web service type, it's hard coded to WEB for now.
+		command.setModuleType(CreateModuleCommand.WEB);
+		command.setServerFactoryId(typeRuntimeServer_.getServerId());
+		command.setJ2eeLevel(j2eeLevel_);
+		Status status = command.execute(environment);
+		
+		if (status.getSeverity()==Status.ERROR)
+		{
+			environment.getStatusHandler().reportError(status);
+		}			
+	  return status;				
   }
   
   public void setServiceTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )
   {
-	typeRuntimeServer_ = typeRuntimeServer;  
+	  typeRuntimeServer_ = typeRuntimeServer;  
   }
   
+  public TypeRuntimeServer getServiceTypeRuntimeServer()
+  {
+	  return typeRuntimeServer_;
+  }
+	
   public void setJ2eeLevel( String j2eeLevel )
   {
 	j2eeLevel_ = j2eeLevel;  
   }
   
+  public String getJ2eeLevel()
+  {
+	  return j2eeLevel_;  
+  }
+	
   public IWebService getWebService()
   {
 	return webService_;  
@@ -119,16 +147,36 @@ public class PreServiceDevelopCommand extends SimpleCommand
 	selection_ = selection;  
   }
   
+  public String getProject()
+  {
+    return project_;	  
+  }
+	
+  public void setProject( String project )
+  {
+	  project_ = project;
+  }
+	 
   public String getModule()
   {
     return module_;	  
   }
-  
+	
   public void setModule( String module )
   {
-	module_ = module;
+	  module_ = module;
   }
-  
+	
+  public String getEarProject()
+  {
+    return earProject_;	  
+  }
+	
+  public void setEarProject( String earProject )
+  {
+	  earProject_ = earProject;
+  }
+	
   public String getEar()
   {
 	  return ear_;  

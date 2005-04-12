@@ -38,40 +38,67 @@ public class ServiceRootFragment extends SequenceFragment
 
   public void registerDataMappings(DataMappingRegistry registry) 
   {
+		//Mappings from framework to extension fragments
   	registry.addMapping( PreServiceDevelopCommand.class, "WebService", DevelopServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Environment", DevelopServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Context", DevelopServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Selection", DevelopServiceFragment.class );  
-  	registry.addMapping( PreServiceDevelopCommand.class, "Module", DevelopServiceFragment.class );  
+		registry.addMapping( PreServiceDevelopCommand.class, "Project", DevelopServiceFragment.class );
+  	registry.addMapping( PreServiceDevelopCommand.class, "Module", DevelopServiceFragment.class );
+		registry.addMapping( PreServiceDevelopCommand.class, "EarProject", DevelopServiceFragment.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Ear", DevelopServiceFragment.class );
-	
+		
   	registry.addMapping( PreServiceDevelopCommand.class, "WebService", AssembleServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Environment", AssembleServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Context", AssembleServiceFragment.class );  
-  	registry.addMapping( PreServiceDevelopCommand.class, "Selection", AssembleServiceFragment.class );  
+  	registry.addMapping( PreServiceDevelopCommand.class, "Selection", AssembleServiceFragment.class );
+		registry.addMapping( PreServiceDevelopCommand.class, "Project", AssembleServiceFragment.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Module", AssembleServiceFragment.class );  
+		registry.addMapping( PreServiceDevelopCommand.class, "EarProject", AssembleServiceFragment.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Ear", AssembleServiceFragment.class );
 	
   	registry.addMapping( PreServiceDevelopCommand.class, "WebService", DeployServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Environment", DeployServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Context", DeployServiceFragment.class );  
-  	registry.addMapping( PreServiceDevelopCommand.class, "Selection", DeployServiceFragment.class );  
+  	registry.addMapping( PreServiceDevelopCommand.class, "Selection", DeployServiceFragment.class );
+		registry.addMapping( PreServiceDevelopCommand.class, "Project", DeployServiceFragment.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Module", DeployServiceFragment.class );  
+		registry.addMapping( PreServiceDevelopCommand.class, "EarProject", DeployServiceFragment.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Ear", DeployServiceFragment.class );
 	
   	registry.addMapping( PreServiceDevelopCommand.class, "WebService", InstallServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Environment", InstallServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Context", InstallServiceFragment.class );  
-  	registry.addMapping( PreServiceDevelopCommand.class, "Selection", InstallServiceFragment.class );  
+  	registry.addMapping( PreServiceDevelopCommand.class, "Selection", InstallServiceFragment.class );
+		registry.addMapping( PreServiceDevelopCommand.class, "Project", InstallServiceFragment.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Module", InstallServiceFragment.class );  
+		registry.addMapping( PreServiceDevelopCommand.class, "EarProject", InstallServiceFragment.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Ear", InstallServiceFragment.class );
 	
   	registry.addMapping( PreServiceDevelopCommand.class, "WebService", RunServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Environment", RunServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Context", RunServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Selection", RunServiceFragment.class );  
+		registry.addMapping( PreServiceDevelopCommand.class, "Project", RunServiceFragment.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Module", RunServiceFragment.class );  
+		registry.addMapping( PreServiceDevelopCommand.class, "EarProject", RunServiceFragment.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Ear", RunServiceFragment.class );
+		
+		//Mappings from framework to framework commands
+  	registry.addMapping( PreServiceDevelopCommand.class, "WebService", PreServiceAssembleCommand.class );
+		registry.addMapping( PreServiceDevelopCommand.class, "Project", PreServiceAssembleCommand.class );
+  	registry.addMapping( PreServiceDevelopCommand.class, "Module", PreServiceAssembleCommand.class );
+		registry.addMapping( PreServiceDevelopCommand.class, "EarProject", PreServiceAssembleCommand.class );
+  	registry.addMapping( PreServiceDevelopCommand.class, "Ear", PreServiceAssembleCommand.class );		
+		registry.addMapping( PreServiceDevelopCommand.class, "J2eeLevel", PreServiceAssembleCommand.class );
+		
+  	registry.addMapping( PreServiceDevelopCommand.class, "WebService", PreServiceInstallCommand.class );
+		registry.addMapping( PreServiceDevelopCommand.class, "Project", PreServiceInstallCommand.class );
+  	registry.addMapping( PreServiceDevelopCommand.class, "Module", PreServiceInstallCommand.class );
+		registry.addMapping( PreServiceDevelopCommand.class, "EarProject", PreServiceInstallCommand.class );
+  	registry.addMapping( PreServiceDevelopCommand.class, "Ear", PreServiceInstallCommand.class );		
+
+  	registry.addMapping( PreServiceDevelopCommand.class, "WebService", PreServiceRunCommand.class );
 	
   }
 }
