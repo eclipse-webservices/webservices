@@ -17,14 +17,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.wst.validation.internal.provisional.core.IFileDelta;
+import org.eclipse.wst.validation.internal.operations.IRuleGroup;
+import org.eclipse.wst.validation.internal.operations.ValidatorManager;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
 import org.eclipse.wst.validation.internal.provisional.core.IValidator;
-import org.eclipse.wst.validation.internal.provisional.core.ValidationException;
-import org.eclipse.wst.validation.internal.operations.IRuleGroup;
-import org.eclipse.wst.validation.internal.operations.ValidatorManager;
 import org.eclipse.wst.xml.validation.internal.core.Helper;
+import org.eclispe.wst.validation.internal.core.ValidationException;
 
 
 /**
@@ -58,14 +57,15 @@ public class Validator implements IValidator
   /* (non-Javadoc)
    * @see org.eclipse.wst.validation.core.IValidator#validate(org.eclipse.wst.validation.core.IHelper, org.eclipse.wst.validation.core.IReporter, org.eclipse.wst.validation.core.IFileDelta[])
    */
-  public void validate(IValidationContext helper, IReporter reporter, IFileDelta[] changedFiles) throws ValidationException
+  public void validate(IValidationContext helper, IReporter reporter) throws ValidationException
   {
+	String[] changedFiles = helper.getURIs();
     if (changedFiles != null && changedFiles.length > 0)
     {
       InputStream streamToValidate = (InputStream) helper.loadModel("inputStream");
       if (streamToValidate != null)
       {   
-        String fileName = changedFiles[0].getFileName();
+        String fileName = changedFiles[0];
         Object[] parms = { fileName };
         IFile file = (IFile) helper.loadModel(Helper.GET_FILE, parms);
         
@@ -74,9 +74,7 @@ public class Validator implements IValidator
       } else
       { for (int i = 0; i < changedFiles.length; i++)
         {
-          IFileDelta changedFile = changedFiles[i];
-          String fileName = changedFile.getFileName();
-          
+          String fileName = changedFiles[i];
           if (fileName != null)
           {
             Object[] parms = {fileName};
