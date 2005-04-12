@@ -22,6 +22,7 @@ import org.eclipse.jst.ws.internal.ext.test.WSDLTestFinishCommand;
 import org.eclipse.jst.ws.internal.explorer.LaunchOption;
 import org.eclipse.jst.ws.internal.explorer.LaunchOptions;
 import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
+import org.eclipse.jst.ws.internal.explorer.plugin.ExplorerPlugin;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
@@ -67,6 +68,8 @@ public class ExplorerServiceTestCommand extends SimpleCommand implements WSDLTes
     WSExplorerLauncherCommand launchCommand = new WSExplorerLauncherCommand();
     launchCommand.setForceLaunchOutsideIDE(externalBrowser);
     Vector launchOptionVector = new Vector();
+	String stateLocation = ExplorerPlugin.getInstance().getPluginStateLocation();
+	launchOptionVector.add(new LaunchOption(LaunchOptions.STATE_LOCATION,stateLocation));
     launchOptionVector.add(new LaunchOption(LaunchOptions.WSDL_URL,wsdlServiceURL));
     if (endpoints != null)
       for (Iterator it = endpoints.iterator(); it.hasNext();)

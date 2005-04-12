@@ -13,7 +13,10 @@ package org.eclipse.jst.ws.internal.consumption.ui.action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 
+import org.eclipse.jst.ws.internal.explorer.LaunchOption;
+import org.eclipse.jst.ws.internal.explorer.LaunchOptions;
 import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
+import org.eclipse.jst.ws.internal.explorer.plugin.ExplorerPlugin;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.wst.command.env.core.context.TransientResourceContext;
@@ -32,7 +35,12 @@ public class LaunchWSEAction implements IWorkbenchWindowActionDelegate
     EclipseEnvironment               environment = new EclipseEnvironment( null, context, monitor, handler ); 
     WSExplorerLauncherCommand        cmd         = new WSExplorerLauncherCommand();
     
-    cmd.execute( environment );
+    String stateLocation = ExplorerPlugin.getInstance().getPluginStateLocation();
+	LaunchOption[] launchOptions = new LaunchOption[] {
+		new LaunchOption(LaunchOptions.STATE_LOCATION,stateLocation)
+	};
+    cmd.setLaunchOptions(launchOptions);
+	cmd.execute( environment );
   }
   
   /* (non-Javadoc)
