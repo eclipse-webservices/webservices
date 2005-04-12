@@ -17,8 +17,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jst.j2ee.web.modulecore.util.WebArtifactEdit;
+import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.jst.j2ee.webapplication.Servlet;
 import org.eclipse.jst.j2ee.webapplication.ServletMapping;
 import org.eclipse.jst.j2ee.webapplication.ServletType;
@@ -29,11 +28,8 @@ import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
-import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 
 public class UpdateWEBXMLCommand extends SimpleCommand {
 
