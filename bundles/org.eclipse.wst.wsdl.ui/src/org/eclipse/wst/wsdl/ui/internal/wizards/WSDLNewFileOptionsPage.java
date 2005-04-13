@@ -36,7 +36,7 @@ import org.eclipse.ui.part.PageBook;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.util.ValidateHelper;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceInfo;
-import org.eclipse.wst.xml.ui.dialogs.UpdateListener;
+import org.eclipse.wst.xml.ui.internal.dialogs.UpdateListener;
 
 public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener, UpdateListener, SelectionListener
 {

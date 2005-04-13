@@ -11,7 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.actions;
 
 import org.eclipse.ui.IActionBars;
-import org.eclipse.wst.xml.ui.actions.ActionContributorXML;
+import org.eclipse.wst.xml.ui.internal.actions.ActionContributorXML;
 
 
 /**

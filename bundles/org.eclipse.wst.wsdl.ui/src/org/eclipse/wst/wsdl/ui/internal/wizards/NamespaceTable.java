@@ -49,9 +49,9 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wst.common.ui.viewers.NavigableTableViewer;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceInfo;
-import org.eclipse.wst.xml.ui.dialogs.EditNamespaceInfoDialog;
-import org.eclipse.wst.xml.ui.dialogs.UpdateListener;
-import org.eclipse.wst.xml.ui.util.XMLCommonResources;
+import org.eclipse.wst.xml.ui.internal.dialogs.EditNamespaceInfoDialog;
+import org.eclipse.wst.xml.ui.internal.dialogs.UpdateListener;
+import org.eclipse.wst.xml.ui.internal.util.XMLCommonResources;
  
 public class NamespaceTable extends Composite
 {

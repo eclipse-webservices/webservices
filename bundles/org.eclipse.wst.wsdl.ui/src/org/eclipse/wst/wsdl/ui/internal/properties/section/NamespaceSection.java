@@ -29,8 +29,8 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.actions.EditNamespacesAction;
 import org.eclipse.wst.xml.core.internal.document.AttrImpl;
-import org.eclipse.wst.xml.ui.nsedit.CommonEditNamespacesTargetFieldDialog;
-import org.eclipse.wst.xml.ui.nsedit.CommonNamespaceInfoTable;
+import org.eclipse.wst.xml.ui.internal.nsedit.CommonEditNamespacesTargetFieldDialog;
+import org.eclipse.wst.xml.ui.internal.nsedit.CommonNamespaceInfoTable;
 import org.w3c.dom.Element;
 
 public class NamespaceSection extends AbstractSection

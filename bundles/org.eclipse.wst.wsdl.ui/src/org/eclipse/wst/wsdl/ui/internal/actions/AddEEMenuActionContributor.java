@@ -43,8 +43,8 @@ import org.eclipse.wst.xml.core.internal.contentmodel.util.DOMContentBuilderImpl
 import org.eclipse.wst.xml.core.internal.contentmodel.util.DOMNamespaceHelper;
 import org.eclipse.wst.xml.core.internal.modelquery.ModelQueryUtil;
 import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
-import org.eclipse.wst.xml.ui.actions.MenuBuilder;
-import org.eclipse.wst.xml.ui.util.XMLCommonResources;
+import org.eclipse.wst.xml.ui.internal.actions.MenuBuilder;
+import org.eclipse.wst.xml.ui.internal.util.XMLCommonResources;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
