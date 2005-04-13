@@ -175,7 +175,7 @@ public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPro
 	      // dispose editor
 	      dispose();
 
-	      throw new SourceEditingRuntimeException(SSECorePlugin.getResourceString("An_error_has_occurred_when1_ERROR_")); //$NON-NLS-1$
+	      throw new SourceEditingRuntimeException(WSDLEditorPlugin.getWSDLString("An_error_has_occurred_when1_ERROR_")); //$NON-NLS-1$
 	    }
 	  }
 
@@ -322,11 +322,11 @@ public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPro
 	            // very unlikely
 //	            Logger.logException(ce);
 	          }
-	          throw new PartInitException(SSECorePlugin.getResourceString("23concat_EXC_", (new Object[]{input.getName()}))); //$NON-NLS-1$
+	          throw new PartInitException(WSDLEditorPlugin.getWSDLString("23concat_EXC_", input.getName())); //$NON-NLS-1$
 	          //$NON-NLS-1$ = "Resource {0} does not exist."
 	        }
 	        else {
-	          throw new PartInitException(SSECorePlugin.getResourceString("32concat_EXC_", (new Object[]{input.getName()}))); //$NON-NLS-1$
+	          throw new PartInitException(WSDLEditorPlugin.getWSDLString("32concat_EXC_", input.getName())); //$NON-NLS-1$
 	          //$NON-NLS-1$ = "Editor could not be open on {0}"
 	        }
 	      }
@@ -339,7 +339,7 @@ public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPro
 	      catch (CoreException noStorageExc) {
 	      }
 	      if (contents == null) {
-	        throw new PartInitException(SSECorePlugin.getResourceString("32concat_EXC_", (new Object[]{input.getName()}))); //$NON-NLS-1$
+	        throw new PartInitException(WSDLEditorPlugin.getWSDLString("32concat_EXC_", input.getName())); //$NON-NLS-1$
 	      }
 	      else {
 	        try {

@@ -223,7 +223,7 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
     }
     catch (PartInitException exception)
     {
-      throw new SourceEditingRuntimeException(SSECorePlugin.getResourceString("An_error_has_occurred_when1_ERROR_")); //$NON-NLS-1$ = "An error has occurred when initializing the input for the the editor's source page."
+      throw new SourceEditingRuntimeException(WSDLEditorPlugin.getWSDLString("An_error_has_occurred_when1_ERROR_")); //$NON-NLS-1$ = "An error has occurred when initializing the input for the the editor's source page."
     }
     // TODO: add a catch block here for any exception the design page throws and convert it into a more informative message.
   }
