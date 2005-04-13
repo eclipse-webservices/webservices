@@ -72,6 +72,8 @@ public class DefaultXMLValidator implements IXMLValidator
   
   protected String currentErrorKey = null;
   protected Object[] currentMessageArguments = null;
+  
+  protected boolean isChildOfDoc = false;
 //  protected String wsdlNamespace = null;
 
 
@@ -138,6 +140,8 @@ public class DefaultXMLValidator implements IXMLValidator
       XMLConformanceDefaultHandler handler = new XMLConformanceDefaultHandler();
 
       saxparser.setErrorHandler(handler);
+	  saxparser.setEntityResolver(handler);
+	  saxparser.setContentHandler(handler);
       
       saxparser.parse(validateInputSource);
 //      wsdlNamespace = handler.getWSDLNamespace();
@@ -344,6 +348,29 @@ public class DefaultXMLValidator implements IXMLValidator
     {
       addError(arg0.getMessage(), arg0.getLineNumber(), arg0.getColumnNumber(), arg0.getSystemId());
     }
+	
+	/**
+	 * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public void endElement(String uri, String localName, String qName)
+			throws SAXException {
+		if(localName.equals("documentation") && (uri.equals(Constants.NS_URI_WSDL) || uri.equals(Constants.NS_URI_XSD_2001)|| uri.equals(Constants.NS_URI_XSD_1999) || uri.equals(Constants.NS_URI_XSD_2000)))
+		{
+		  isChildOfDoc = false;
+		}
+		super.endElement(uri, localName, qName);
+	}
+	/**
+	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 */
+	public void startElement(String uri, String localName, String qName,
+			Attributes atts) throws SAXException {
+		if(localName.equals("documentation") && (uri.equals(Constants.NS_URI_WSDL) || uri.equals(Constants.NS_URI_XSD_2001)|| uri.equals(Constants.NS_URI_XSD_1999) || uri.equals(Constants.NS_URI_XSD_2000)))
+		{
+		  isChildOfDoc = true;
+		}
+		super.startElement(uri, localName, qName, atts);
+	}
 
     /**
      * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String,
@@ -351,6 +378,13 @@ public class DefaultXMLValidator implements IXMLValidator
      */
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException
     {
+      // If we're currently examining a subelement of the 
+	  // WSDL or schema documentation element we don't want to resolve it
+	  // as anything is allowed as a child of documentation.
+	  if(isChildOfDoc)
+	  {
+	    return new InputSource();
+	  }
       String uri = uriResolver.resolve(null, publicId, systemId);
       if (uri != null && !uri.equals(""))
       {
