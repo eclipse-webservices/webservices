@@ -16,7 +16,6 @@ import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.context.ResourceContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
@@ -57,8 +56,10 @@ public class PreServiceDevelopCommand extends SimpleCommand
 	
 	  wsInfo.setJ2eeLevel( j2eeLevel_ );
 		wsInfo.setServerFactoryId( typeRuntimeServer_.getServerId() );
+    wsInfo.setServerInstanceId( typeRuntimeServer_.getServerInstanceId());
 		wsInfo.setState( WebServiceState.UNKNOWN_LITERAL );
 		wsInfo.setWebServiceRuntimeId( typeRuntimeServer_.getRuntimeId() );
+    
 
 		environment_ = environment;
 		webService_  = wsrt.getWebService( wsInfo );
@@ -68,10 +69,14 @@ public class PreServiceDevelopCommand extends SimpleCommand
 		if (typeRuntimeServer_.getTypeId().equals("org.eclipse.jst.ws.type.java"))
 		{
 			scenario = WebServiceScenario.BOTTOMUP_LITERAL;
+      String impl = (String)(selection_.getSelection())[0];
+      wsInfo.setImplURL(impl);
 		}
 		else if (typeRuntimeServer_.getTypeId().equals("org.eclipse.jst.ws.type.wsdl"))
 		{
 		  scenario = WebServiceScenario.TOPDOWN_LITERAL;
+      String wsdlURL = (String)(selection_.getSelection())[0];
+      wsInfo.setWsdlURL(wsdlURL);      
 		}
 	
 		context_     = new SimpleContext(true, true, true, true, run_, client_, test_, publish_, 
@@ -100,11 +105,6 @@ public class PreServiceDevelopCommand extends SimpleCommand
   public void setServiceTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )
   {
 	  typeRuntimeServer_ = typeRuntimeServer;  
-  }
-  
-  public TypeRuntimeServer getServiceTypeRuntimeServer()
-  {
-	  return typeRuntimeServer_;
   }
 	
   public void setJ2eeLevel( String j2eeLevel )

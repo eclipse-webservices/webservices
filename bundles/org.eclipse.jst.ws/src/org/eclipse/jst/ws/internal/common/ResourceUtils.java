@@ -52,9 +52,11 @@ import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.eclipse.EclipseLog;
+import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerPort;
@@ -99,6 +101,12 @@ public final class ResourceUtils {
 	 * the given project has an EJB project nature.
 	 */
 	public static byte PROJECT_TYPE_EJB = 4;
+	
+	/**
+	 * As returned by {@link #getProjectType getProjectType()}, indicates that
+	 * the given project has an Application client project nature.
+	 */	
+	public static byte PROJECT_TYPE_APPCLIENT = 8;
 
 	/**
 	 * Status Code explaining the CoreException thrown
@@ -277,6 +285,26 @@ public final class ResourceUtils {
 	}
 
 	/**
+	 * 
+	 * @param absolutePath
+	 * @return
+	 */
+	public static IVirtualComponent getComponentOf(IPath absolutePath){
+		if (absolutePath.isAbsolute()) {
+			String componentName = absolutePath.segment(1);
+			if (componentName != null) {
+				String projectName = absolutePath.segment(0);
+				IProject project = getWorkspaceRoot().getProject(projectName);
+				if (projectName != null) {
+					return ComponentCore.createComponent(project, componentName);
+				}
+			}
+		}
+		return null;
+	}
+	
+	
+	/**
 	 * Returns true if the given <code>project</code> is a Java Project.
 	 * 
 	 * @param project
@@ -307,7 +335,7 @@ public final class ResourceUtils {
 
 	/**
 	 * Returns true if the given <code>project</code> is a Web Project.
-	 * 
+	 * Note: For components; use J2EEUtils.isWebComponent()
 	 * @param project
 	 *            The project.
 	 * @return True if the project is a Web Project.
@@ -333,6 +361,11 @@ public final class ResourceUtils {
 		return isWeb;
 	}
 
+	/**
+	 * Note: for components; use J2EEUtils.isEARComponent()
+	 * @param project
+	 * @return
+	 */
 	public static boolean isEARProject(IProject project){
 		boolean isEAR = false;
 		StructureEdit mc = null;
@@ -364,7 +397,7 @@ public final class ResourceUtils {
 	/**
 	 * Returns true if the given <code>project</code> is an EJB 1.1 or EJB 2.0
 	 * Project.
-	 * 
+	 * Note: for components, use J2EEUtils.isEJBComponent
 	 * @param project
 	 *            The project.
 	 * @return True if the project is an EJB 1.1 or an EJB 2.0 Project.
@@ -401,7 +434,7 @@ public final class ResourceUtils {
 	/**
 	 * Returns true if the given <code>project</code> is an Application Client
 	 * Project.
-	 * 
+	 * Note: for components, use J2EEUtils.isAppClientComponent()
 	 * @param project
 	 *            The project.
 	 * @return True if the project is an Application Client Project
@@ -467,9 +500,36 @@ public final class ResourceUtils {
 		return projectType;
 	}
 
+	public static byte getComponentType(IProject project, String componentName){
+		IVirtualComponent comp = ComponentCore.createComponent(project, componentName);
+		return getComponentType(comp);
+	}
+	
+	public static byte getComponentType(IVirtualComponent component){
+		
+		byte ctype = PROJECT_TYPE_NONE;
+		if (J2EEUtils.isJavaComponent(component)) {
+			ctype |= PROJECT_TYPE_JAVA;
+		}
+		if (J2EEUtils.isWebComponent(component)) {
+			ctype |= PROJECT_TYPE_WEB;
+		}
+		if (J2EEUtils.isEJBComponent(component)) {
+			ctype |= PROJECT_TYPE_EJB;
+		}
+		if (J2EEUtils.isAppClientComponent(component)){
+			ctype |= PROJECT_TYPE_APPCLIENT;
+		}
+
+		return ctype;		
+	}
+	
 	/**
 	 * 
-	 *  
+	 * @param project
+	 * @return
+	 * 
+	 * @deprecated not used
 	 */
 	public static String getProjectTypeAsString(IProject project) {
 		if (ResourceUtils.isEJBProject(project))
@@ -481,6 +541,7 @@ public final class ResourceUtils {
 		else
 			return "";
 	}
+	
 
 	/**
 	 * Returns WebModule Deployable of the <code>project</code> as an
@@ -490,6 +551,7 @@ public final class ResourceUtils {
 	 *            The project.
 	 * @return WebModule Deployable of the <code>project</code> or null if the
 	 *         project has no Web nature.
+	 * @deprecated  should be using a more specific call (ServerUtils?)
 	 */
 	public static IModule getModule(IProject project) {
 		IModule[] modules = ServerUtil.getModules(project);
@@ -522,6 +584,11 @@ public final class ResourceUtils {
 				"project=" + project + ",outputLocation=" + outputLocation);
 
 		return outputLocation;
+	}
+	
+	public static IPath getJavaOutputLocation(IVirtualComponent comp){
+		
+		return null;
 	}
 
 	/**
@@ -564,6 +631,11 @@ public final class ResourceUtils {
 		return sourceLocation;
 	}
 
+	public static IPath getJavaSourceLocation(IVirtualComponent comp){
+		
+		return null;
+	}
+	
 	public static IPath[] getAllJavaSourceLocations(IProject project) {
 		Vector pathVector = new Vector();
 		IPackageFragmentRoot[] fragmentRoots = getJavaPackageFragmentRoots(project);
@@ -587,6 +659,10 @@ public final class ResourceUtils {
 		return (IPath[]) pathVector.toArray(new Path[pathVector.size()]);
 	}
 
+	public static IPath[] getAllJavaSourceLocations(IVirtualComponent[] components) {
+		return null;
+	}
+	
 	/**
 	 * Returns a build source package fragment root of the <code>project</code>
 	 * as an <code>IPackageFragmentRoot</code>, or null if the project either
@@ -600,6 +676,8 @@ public final class ResourceUtils {
 	 * @return A build source package fragment root of the <code>project</code>
 	 *         or null if the project has no Java nature or if the project's
 	 *         build classpath contains no folders local to the project.
+	 *         
+	 * @deprecated not used
 	 */
 	public static IPackageFragmentRoot getJavaSourcePackageFragmentRoot(
 			IProject project) {
@@ -654,6 +732,8 @@ public final class ResourceUtils {
 	 * @param project
 	 *            The project.
 	 * @return The classpath entries of the <code>project</code>.
+	 * 
+	 * @deprecated not used
 	 */
 	public static IClasspathEntry[] getJavaClasspath(IProject project) {
 		try {
@@ -677,6 +757,7 @@ public final class ResourceUtils {
 	 *            The project.
 	 * @return The web server module root container or null if the project has
 	 *         no Web nature.
+	 * @deprecated use getWebModuleServerRoot(project, compName)
 	 */
 	public static IContainer getWebModuleServerRoot(IProject project) {
 		IContainer webModuleServerRoot = null;
@@ -686,6 +767,9 @@ public final class ResourceUtils {
 			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
 			if (wbcs.length!=0) {
 				webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
+				IFolder fwebModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
+				fwebModuleServerRoot.getFolder("WEB-INF").getFolder("classes");
+				
 				IFolder[] folder = StructureEdit.getOutputContainersForProject(project);
 				
 				if (folder.length!=0)
@@ -711,6 +795,10 @@ public final class ResourceUtils {
 		return webModuleServerRoot;
 	}
 
+	public static IContainer getWebModuleServerRoot(IProject project, String componentName){
+		
+		return null;
+	}
 
 	/**
 	 * Returns the URL string corresponding to the web server module root of the
@@ -721,6 +809,7 @@ public final class ResourceUtils {
 	 *            The project.
 	 * @return The web server module root URL or null if the project has no Web
 	 *         nature or has no association to a server instance.
+	 * @deprecated use getWebComponentURL(..)
 	 */
 	public static String getWebProjectURL(IProject project,
 			String serverFactoryId, IServer server) {
@@ -747,6 +836,12 @@ public final class ResourceUtils {
 
 		return webProjectURL;
 	}
+	
+	public static String getWebComponentURL(IProject project, String componentName,
+							String serverFactoryId, IServer server){
+		
+		return null;
+	}
 
 	/**
 	 * Returns the forged URL string corresponding to the web server module root
@@ -756,8 +851,9 @@ public final class ResourceUtils {
 	 * @param project
 	 * @return The web server module root URL or null if the project has no Web
 	 *         nature or has no association to a server instance.
+	 * @deprecated 
 	 */
-public static String getForgedWebProjectURL(IProject project, String serverFactoryId, IServer server){
+	public static String getForgedWebProjectURL(IProject project, String serverFactoryId, IServer server){
   	
   	String webProjectURL = null;
   	IModule module = getModule(project);
@@ -820,6 +916,7 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 	 *            The project.
 	 * @return The web server module root URL or null if the project has no Web
 	 *         nature or has no association to a server instance.
+	 *
 	 */
 	public static String getWebProjectURL(IProject project) {
 		String webProjectURL = null;
@@ -842,6 +939,11 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 		return webProjectURL;
 	}
 
+	public static String getWebComponentURL(IVirtualComponent component){
+		
+		return null;
+	}
+	
 	public static String getEncodedWebProjectURL(IProject project) {
 		String url = getWebProjectURL(project);
 		if (url != null) {
@@ -871,6 +973,11 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 		return url;
 	}
 
+	public static String getEncodedWebComponentURL(IVirtualComponent component){
+		
+		return null;
+	}
+	
 	/**
 	 * Given the <code>absolutePath</code> of a Java resource, returns the
 	 * package name of the resource or null if the resource is not properly
@@ -2043,6 +2150,12 @@ public static String getForgedWebProjectURL(IProject project, String serverFacto
 		return DEFAULT_WEB_PROJECT_NAME;
 	}
 
+	/**
+	 * 
+	 * @param projectName
+	 * @return
+	 * 
+	 */
 	public static String getRouterProjectName(String projectName) {
 		return projectName + DEFAULT_ROUTER_PROJECT_EXT;
 	}

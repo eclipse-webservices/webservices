@@ -11,17 +11,31 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
 
+import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
 public class PreClientRunCommand extends SimpleCommand 
 {
-	  public Status execute(Environment environment) 
-	  {
-		System.out.println( "In Pre client run command." );
+  private IWebServiceClient webServiceClient_;
 
-		return super.execute(environment);
-	  }
+  public Status execute(Environment environment)
+  {
+    System.out.println("In Pre client run command.");
+    StartServerCommand command = new StartServerCommand();
+    command.setServerInstanceId(webServiceClient_.getWebServiceClientInfo().getServerInstanceId());
+    Status status = command.execute(environment);
+    if (status.getSeverity()==Status.ERROR)
+    {
+      environment.getStatusHandler().reportError(status);       
+    }     
+    return status;    
+  }
 
+  public void setWebService( IWebServiceClient webServiceClient )
+  {
+    webServiceClient_ = webServiceClient;  
+  }
 }

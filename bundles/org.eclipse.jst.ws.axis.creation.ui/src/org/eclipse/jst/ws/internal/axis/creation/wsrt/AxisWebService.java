@@ -267,6 +267,7 @@ public class AxisWebService extends AbstractWebService
 //	    dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "ObjectSelection", AxisSkeletonDefaultingCommand.class);
 //	    dataRegistry.addMapping(TDAxisInputCommand.class, "WebServicesParser", AxisSkeletonDefaultingCommand.class);
 	    
+		dataRegistry.addMapping(TDAxisInputCommand.class, "WsdlURI", AxisSkeletonDefaultingCommand.class);
 	    // ValidateWSDLCommand
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", ValidateWSDLCommand.class);
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WsdlURI", ValidateWSDLCommand.class);

@@ -27,6 +27,7 @@ import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IProjectProperties;
 import org.eclipse.wst.server.core.IRuntime;
@@ -321,6 +322,11 @@ public final class ServerUtils {
     }
   }
 
+  public static String[] getServerTypeIdsByModule( IVirtualComponent component )
+  {
+	return null;  
+  }
+  
   public static String[] getServerTypeIdsByModule(IProject project) {
     Vector serverIds = new Vector();
     if (project != null) {
@@ -333,7 +339,12 @@ public final class ServerUtils {
     }
     return (String[]) serverIds.toArray(new String[serverIds.size()]);
   }
-
+  
+  public static IServer getDefaultExistingServer( IVirtualComponent component )
+  {
+    return null;
+  }
+  
   public static IServer getDefaultExistingServer(IProject project) {
     String defaultServerName;
 

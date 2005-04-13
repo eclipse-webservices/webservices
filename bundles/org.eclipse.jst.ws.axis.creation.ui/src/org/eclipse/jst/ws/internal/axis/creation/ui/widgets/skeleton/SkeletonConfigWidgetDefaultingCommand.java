@@ -13,12 +13,14 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
 import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 
 public class SkeletonConfigWidgetDefaultingCommand extends SimpleCommand
@@ -44,17 +46,11 @@ public class SkeletonConfigWidgetDefaultingCommand extends SimpleCommand
   
   public String getOutputWSDLFolder()
   {
-    try
-    {
-      J2EEWebNatureRuntime nature = (J2EEWebNatureRuntime)serverProject.getNature(IWebNatureConstants.J2EE_NATURE_ID);
-      StringBuffer sb = new StringBuffer(nature.getModuleServerRoot().getFullPath().addTrailingSeparator().toString());
-      sb.append("wsdl");
-      return sb.toString();
-    }
-    catch (CoreException ce)
-    {
-    }
-    return null;
+//      J2EEWebNatureRuntime nature = (J2EEWebNatureRuntime)serverProject.getNature(IWebNatureConstants.J2EE_NATURE_ID);
+//      StringBuffer sb = new StringBuffer(nature.getModuleServerRoot().getFullPath().addTrailingSeparator().toString());
+//      sb.append("wsdl");
+	  IPath wsdlPath = J2EEUtils.getFirstWebContentPath(serverProject).append("wsdl");
+      return wsdlPath.toString();
   }
   
   public String getOutputWSDLFile()

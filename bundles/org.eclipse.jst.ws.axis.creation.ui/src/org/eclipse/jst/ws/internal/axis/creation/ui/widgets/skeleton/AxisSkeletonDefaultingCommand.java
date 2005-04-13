@@ -25,6 +25,7 @@ public class AxisSkeletonDefaultingCommand extends SimpleCommand
   private IStructuredSelection initialSelection;
   private IStructuredSelection objectSelection;
   private WebServicesParser webServicesParser;
+  private String wsdlURI_;
 
   public void setInitialSelection(IStructuredSelection initialSelection)
   {
@@ -70,15 +71,22 @@ public class AxisSkeletonDefaultingCommand extends SimpleCommand
   
   public String getWsdlURI()
   {
-    if (objectSelection != null && !objectSelection.isEmpty())
-    {
-      Object object = objectSelection.getFirstElement();
-      if (object instanceof IResource)
-        return ((IResource)object).getLocation().toString();
-      else
-        return object.toString();
-    }
-    return "";
+//    if (objectSelection != null && !objectSelection.isEmpty())
+//    {
+//      Object object = objectSelection.getFirstElement();
+//      if (object instanceof IResource)
+//        return ((IResource)object).getLocation().toString();
+//      else
+//        return object.toString();
+//    }
+//    return "";
+	  return wsdlURI_;
+  }
+  
+  public void setWsdlURI(String wsdlURI)
+  {
+	  wsdlURI_ = wsdlURI;
+	  
   }
   
   public boolean getGenWSIL()

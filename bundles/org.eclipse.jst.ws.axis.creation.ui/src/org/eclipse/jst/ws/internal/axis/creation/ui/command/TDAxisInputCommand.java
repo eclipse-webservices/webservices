@@ -30,6 +30,7 @@ public class TDAxisInputCommand extends SimpleCommand {
 	private String serverProject_; 
 
 	  private String serverServer_;
+	  private String wsdlURI_;
 	  
 	  private MessageUtils msgUtils_;
 	  
@@ -59,6 +60,7 @@ public class TDAxisInputCommand extends SimpleCommand {
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	    
 		String serverServer = ws_.getWebServiceInfo().getServerInstanceId();	
+		wsdlURI_ = ws_.getWebServiceInfo().getWsdlURL();
 		
 		return new SimpleStatus("");
 	  }
@@ -75,4 +77,8 @@ public class TDAxisInputCommand extends SimpleCommand {
 		  {
 		    return serverServer_;
 		  }
+
+		public String getWsdlURI() {
+			return wsdlURI_;
+		}
 }

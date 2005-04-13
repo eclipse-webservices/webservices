@@ -26,12 +26,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.j2ee.applicationclient.componentcore.util.AppClientArtifactEdit;
+import org.eclipse.jst.j2ee.componentcore.util.EARArtifactEdit;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
 import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
 import org.eclipse.jst.j2ee.ejb.Session;
 import org.eclipse.jst.j2ee.ejb.SessionType;
+import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.earcreation.AddModuleToEARProjectCommand;
 import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
@@ -42,8 +44,10 @@ import org.eclipse.jst.j2ee.internal.project.J2EENature;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
+import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.eclipse.EclipseLog;
+import org.eclipse.wst.common.componentcore.ArtifactEdit;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
@@ -64,6 +68,17 @@ public final class J2EEUtils {
 	private static final String ejbProjectNature = IModuleConstants.JST_EJB_MODULE; // IEJBNatureConstants.NATURE_ID;
 	private static final String earProjectNature = IModuleConstants.JST_EAR_MODULE; // IEARNatureConstants.NATURE_ID;
 
+	
+	/**
+	 * Returns an IVirtualComponent
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static IVirtualComponent getIVirtualComponent(IProject project, String componentName){
+		return ComponentCore.createComponent(project, componentName);
+	}
+	
 	/**
 	 * Returns the J2EE version id (defined in J2EEVersionConstants) of the
 	 * project. If the project does not have a J2EENature, -1 is returned.
@@ -73,6 +88,7 @@ public final class J2EEUtils {
 	 *         does not have a J2EENature.
 	 * 
 	 * @deprecated this method only returns the first module's j2ee version
+	 * 				use getJ2EEVersion(IProject, String)
 	 */
 	public static int getJ2EEVersion(IProject p) {
 		int j2eeVer = -1;
@@ -81,7 +97,7 @@ public final class J2EEUtils {
 			mc = StructureEdit.getStructureEditForRead(p);
 			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
 			if (wbcs.length!=0) {
-				j2eeVer = getWebModuleJ2EEVersion(wbcs[0]);
+//				j2eeVer = getWebModuleJ2EEVersion(wbcs[0]);
 			}
 		}
 		catch (Exception e){
@@ -94,7 +110,106 @@ public final class J2EEUtils {
 		return j2eeVer;
 	}
 
+	/**
+	 * TODO: Implement this method
+	 * @param p
+	 * @param module
+	 * @return
+	 */
+	public static int getJ2EEVersion(IProject p, String componentName){
+		int j2eeVer = -1;
+		StructureEdit mc = null;
+		try {
+			mc = StructureEdit.getStructureEditForRead(p);
+			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			
+			for (int i=0;i<wbcs.length;i++){
+				if (wbcs[i].getName().equals(componentName)){
+					j2eeVer = getComponentJ2EEVersion(p, wbcs[i]);
+				}
+			}
+			
+		}
+		catch (Exception e){
+			//handle exception
+		}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
+		return j2eeVer;	
+	}
+	
+	/**
+	 * Returns the J2EEVersion of the component identified by project and component name
+	 * @param project
+	 * @param wbc
+	 * @return int version if applicable, otherwise returns -1
+	 */
+	private static int getComponentJ2EEVersion(IProject project, WorkbenchComponent wbc){
+		int j2eeVer = -1;
+		//check type
+		if (wbc!=null) {
+			if (isWebComponent(project, wbc.getName()))
+				j2eeVer = getWebComponentJ2EEVersion(wbc);
+			if (isAppClientComponent(project, wbc.getName()))
+				j2eeVer = getAppClientComponentJ2EEVersion(wbc);
+			if (isEJBComponent(project, wbc.getName()))
+				j2eeVer = getEJBComponentJ2EEVersion(wbc);
+			if (isEARComponent(project, wbc.getName()))
+				j2eeVer = getEARComponentJ2EEVersion(wbc);
+					
+			// TODO: isJavaComponent
+			
+		}
+		return j2eeVer;
+	}
+	
+	/**
+	 * Return's the EAR module's J2EEVersion
+	 * @param wbc
+	 * @return
+	 */
+	private static int getEARComponentJ2EEVersion(WorkbenchComponent wbc){
+		EARArtifactEdit edit = null;
+		int nVersion = 12;
+		try {
+			edit = EARArtifactEdit.getEARArtifactEditForRead(wbc);
+			if (edit != null) {
+				nVersion = edit.getJ2EEVersion();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (edit != null)
+				edit.dispose();
+		}
+		return nVersion;		
+	}
+	
+	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 * @deprecated
+	 */
 	public static String getJ2EEVersionAsString(IProject p){
+		int j2eeVer = getJ2EEVersion(p);
+		if (j2eeVer!=-1){
+			return String.valueOf(j2eeVer);
+		}
+		else 
+			return null;
+	}
+	
+	/**
+	 * TODO
+	 * @param p
+	 * @param compName
+	 * @return
+	 */
+	public static String getJ2EEVersionAsString(IProject p, String compName){
 		int j2eeVer = getJ2EEVersion(p);
 		if (j2eeVer!=-1){
 			return String.valueOf(j2eeVer);
@@ -108,7 +223,7 @@ public final class J2EEUtils {
 	 * @param wbModule
 	 * @return the J2EE version id
 	 */
-	public static int getWebModuleJ2EEVersion(WorkbenchComponent wbModule) {
+	private static int getWebComponentJ2EEVersion(WorkbenchComponent wbModule) {
 		WebArtifactEdit webEdit = null;
 		int nVersion = 12;
 		try {
@@ -126,6 +241,50 @@ public final class J2EEUtils {
 	}
 
 	/**
+	 * Returns Application client's J2EE version
+	 * @param wbc
+	 * @return
+	 */
+	private static int getAppClientComponentJ2EEVersion(WorkbenchComponent wbc){
+		AppClientArtifactEdit edit = null;
+		int nVersion = 12;
+		try {
+			edit = AppClientArtifactEdit.getAppClientArtifactEditForRead(wbc);
+			if (edit != null) {
+				nVersion = edit.getJ2EEVersion();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (edit != null)
+				edit.dispose();
+		}
+		return nVersion;		
+	}
+	
+	/**
+	 * Returns EJB component's J2EE version
+	 * @param wbc
+	 * @return
+	 */
+	private static int getEJBComponentJ2EEVersion(WorkbenchComponent wbc){
+		EJBArtifactEdit edit = null;
+		int nVersion = 12;
+		try {
+			edit = EJBArtifactEdit.getEJBArtifactEditForRead(wbc);
+			if (edit != null) {
+				nVersion = edit.getJ2EEVersion();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (edit != null)
+				edit.dispose();
+		}
+		return nVersion;			
+	}
+	
+	/**
 	 * This method returns all of the EAR projects that reference the specified
 	 * project.
 	 * 
@@ -136,33 +295,136 @@ public final class J2EEUtils {
 		EARNatureRuntime[] ears = J2EEProjectUtilities.getReferencingEARProjects(project);
 		return ears;
 	}
+	
+	/**
+	 * Returns the EAR components in a Project
+	 * @param project
+	 * @return empty if no EAR components, null if no components at all
+	 */
+	public static String[] getEARComponents(IProject project){
 		
+		//get all components in the project
+		StructureEdit mc = null;
+		String[] earComponents = new String[0];
+		try {
+			mc = StructureEdit.getStructureEditForRead(project);
+			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			earComponents = new String[wbcs.length];
+			for (int i=0;i<wbcs.length;i++){
+				if (isEARComponent(project, wbcs[i].getName()))
+					earComponents[i] = wbcs[i].getName();
+			}
+		}
+		catch (Exception e){
+			//handle exception
+		}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}		
+		return earComponents;
+	}
+	
+	/**
+	 * Returns Web components names in a project
+	 * @param project
+	 * @return empty array if no web components
+	 */
+	public static String[] getWebComponents(IProject project){
+		
+		//get all components in the project
+		StructureEdit mc = null;
+		String[] components = new String[0];
+		try {
+			mc = StructureEdit.getStructureEditForRead(project);
+			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			components = new String[wbcs.length];
+			for (int i=0;i<wbcs.length;i++){
+				if (isWebComponent(project, wbcs[i].getName()))
+					components[i] = wbcs[i].getName();
+			}
+			
+		}
+		catch (Exception e){
+			//handle exception
+		}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}		
+		return components;
+	} 
+	
+	/**
+	 * True if there exists a underlying resource backing up the component and project 
+	 * @param projectName
+	 * @param componentName
+	 * @return
+	 */
+	public static boolean exists(String projectName, String componentName){
+		IProject project = null;
+		if (projectName!=null && projectName.length() > 0 )
+		  project = FileResourceUtils.getWorkspaceRoot().getProject(projectName);
+		else 
+			return false;
+		
+		return exists(project, componentName);
+	}
+	
+	/**
+	 * True if there exists a underlying resource backing up the component and project
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	private static boolean exists(IProject project, String componentName){
+		if (project!=null && 
+				componentName!=null && 
+				componentName.length() > 0) {
+			IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+			return vc.exists();
+		}
+		else 
+			return false;
+		
+	}
+	
 	/**
 	 * 
 	 * @param project
 	 * @return
+	 * 
+	 * @deprecated  --  use getEARProjects(IProject)
 	 */
-	public static String[] getEARProjectNamesForWebProject(IProject project) {
-		Vector EARNames = new Vector();
-		if (project != null) {
-			EARNatureRuntime[] ears = getEARProjects(project);
-			for (int i = 0; i < ears.length; i++) {
-				EARNames.add(ears[i].getProject().getName());
-			}
-		}
-		return EARNames.isEmpty() ? null : (String[]) EARNames
-				.toArray(new String[0]);
-	}
+//	public static String[] getEARProjectNamesForWebProject(IProject project) {
+//		Vector EARNames = new Vector();
+//		if (project != null) {
+//			EARNatureRuntime[] ears = getEARProjects(project);
+//			for (int i = 0; i < ears.length; i++) {
+//				EARNames.add(ears[i].getProject().getName());
+//			}
+//		}
+//		return EARNames.isEmpty() ? null : (String[]) EARNames
+//				.toArray(new String[0]);
+//	}
 
 	/**
 	 * This method returns all of the EAR projects that reference the specified
 	 * ejb project.
+	 * 
+	 * @deprecated  - use getEARProjects(IProject)
 	 */
 	public static EARNatureRuntime[] getEJBEARProjects(IProject project) {
 		EARNatureRuntime[] ears = J2EEProjectUtilities.getReferencingEARProjects(project);
 		return ears;
 	}
 
+	/**
+	 * 
+	 * @param project
+	 * @return
+	 * @deprecated use getEARProjectNames (not used; to be deleted)
+	 */
 	public static String[] getEARProjectNamesForEJBProject(IProject project) {
 		Vector EARNames = new Vector();
 		if (project != null) {
@@ -175,9 +437,14 @@ public final class J2EEUtils {
 				.toArray(new String[0]);
 	}
 
+	/**
+	 * 
+	 * @param project
+	 * @return
+	 * @deprecated not used; to be deleted
+	 */
 	public static EARNatureRuntime[] getAppClientEARProjects(IProject project) {
-		EARNatureRuntime[] ears = J2EEProjectUtilities
-				.getReferencingEARProjects(project);
+		EARNatureRuntime[] ears = J2EEProjectUtilities.getReferencingEARProjects(project);
 		return ears;
 	}
 
@@ -187,6 +454,8 @@ public final class J2EEUtils {
 	 * @param IProject
 	 *            the EAR project
 	 * @return EARNatureRuntime of the project
+	 * 
+	 * @deprecated not used; to be deleted
 	 */
 	public static EARNatureRuntime getEARNatureRuntimeFromProject(
 			IProject project) {
@@ -196,6 +465,8 @@ public final class J2EEUtils {
 	/**
 	 * This method returns a list of EAR names that are referenced by the
 	 * specified web project.
+	 * 
+	 * @deprecated not used; to be deleted
 	 */
 	public static String[] getEARNames(IProject project) {
 		EARNatureRuntime[] ears = getEARProjects(project);
@@ -212,6 +483,7 @@ public final class J2EEUtils {
 	 * Find all EJB projects for a particular EAR Nature.
 	 * 
 	 * @return a vector of EJBNatureRuntimes.
+	 * @deprecated use getEJBProjectsFromEAR(IProject, String)
 	 */
 	public static Vector getEJBProjects(EARNatureRuntime ear) {
 		Vector ejbs = new Vector();
@@ -231,11 +503,25 @@ public final class J2EEUtils {
 
 		return ejbs;
 	}
+	
+	/**
+	 * TODO: implement
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static IProject[] getEJBProjectsFromEAR(IProject project, String componentName){
+		
+		return null;
+	}
 
 	/**
 	 * Find all Web projects for a particular EAR Nature.
 	 * 
 	 * @return a vector of J2EEWebNatureRuntimes.
+	 * 
+	 * @deprecated use getWebProjectsFromEAR(IProject, String)
+	 * 			!! not used; to be deleted
 	 */
 	public static Vector getWebProjects(EARNatureRuntime ear) {
 		Vector webProjects = new Vector();
@@ -256,8 +542,11 @@ public final class J2EEUtils {
 		return webProjects;
 	}
 
+
 	/**
 	 * @return returns a list of projects names for a given ear.
+	 * @deprecated use getEJBProjectFromEAR(IProject, String)
+	 * 	!! not used; to be deleted
 	 */
 	public static String[] getEJBProjectNames(EARNatureRuntime ear) {
 		Vector ejbNatures = getEJBProjects(ear);
@@ -271,8 +560,12 @@ public final class J2EEUtils {
 		return ejbProjectNames;
 	}
 
+
+	
 	/**
-	 * @return returns a Vector of bean String names.
+	 * 
+	 * @param jar
+	 * @return  Vector of bean String names.
 	 */
 	public static Vector getBeanNames(EJBJar jar) {
 		// We currently only support Stateless session beans.
@@ -313,7 +606,9 @@ public final class J2EEUtils {
 	}
 
 	/**
-	 * Get the WebProject, given the EJB
+	 * Uses emg ProjectUtilities to get the project
+	 * @param ejb eObject
+	 * @return IProject
 	 */
 	public static IProject getProjectFromEJB(EnterpriseBean ejb) {
 		return ProjectUtilities.getProject(ejb);
@@ -321,6 +616,8 @@ public final class J2EEUtils {
 
 	/**
 	 * Get an array of IProject, given a Vector of J2EENature's
+	 * 
+	 * @deprecated pls request a new method if necessary
 	 */
 	public static IProject[] getIProjectsFromJ2EENatures(Vector j2eenatureVector) {
 		IProject[] projects = new IProject[j2eenatureVector == null
@@ -337,13 +634,16 @@ public final class J2EEUtils {
 
 		return projects;
 	}
-
-	public static IProject[] getEARProjects() {
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static String[] getAllEARComponents() {
 		Vector v = new Vector();
 		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
 		for (int i = 0; i < projects.length; i++) {
 			try {
-//				if (projects[i].hasNature(IEARNatureConstants.NATURE_ID)) {
 				if (ResourceUtils.isEARProject(projects[i])) {
 					v.add(projects[i]);
 				}
@@ -353,7 +653,7 @@ public final class J2EEUtils {
 			}
 
 		}
-		IProject[] earProjects = new IProject[v.size()];
+		String[] earProjects = new String[v.size()];
 		v.copyInto(earProjects);
 		return earProjects;
 	}
@@ -363,7 +663,7 @@ public final class J2EEUtils {
 	 * Get a J2EE 1.2 EAR Project. Returns null if no J2EE 1.2 EAR Projects
 	 * exist
 	 * 
-	 * @deprecated
+	 * @deprecated  use getDefault12EARProject()
 	 */
 	public static EARNatureRuntime get12EAR() {
 		try {
@@ -382,10 +682,16 @@ public final class J2EEUtils {
 		return null;
 
 	}
-
-	public static IProject get12EARProject(){
+	
+	/**
+	 *  Returns the first j2ee 1.2 EAR project in the workspace
+	 * @return null if no 1.2 EAR projects
+	 * 
+	 * @deprecated -  if not used; to be deleted
+	 */
+	public static IProject getDefault12EARProject(){
 		try{
-			IProject[] allEARs = getEARProjects();
+			IProject[] allEARs = ResourceUtils.getWorkspaceRoot().getProjects(); // getEARProjects();
 			for (int i=0;i<allEARs.length;i++){
 				// return the first 1.2 EAR project
 				IProject ear = allEARs[i];
@@ -401,11 +707,12 @@ public final class J2EEUtils {
 		return null;
 	}
 	
+		
 	/**
 	 * Get a J2EE 1.3 EAR Project. Returns null if no J2EE 1.3 EAR Projects
 	 * exist
 	 * 
-	 * @deprecated
+	 * @deprecated use getDefault13EARComponent()
 	 * 
 	 */
 	public static EARNatureRuntime get13EAR() {
@@ -427,33 +734,51 @@ public final class J2EEUtils {
 	}
 
 	/**
-	 * Get a J2EE 1.3 EAR Project. Returns null if no J2EE 1.3 EAR Projects exists
-	 * @return
+	 * Returns a default J2EE 1.3 EAR component in the workspace
+	 * @return EAR component name
 	 */
-	public static IProject get13EARProject(){
-		try{
-			IProject[] allEARs = getEARProjects();
-			for (int i=0;i<allEARs.length;i++){
-				// return the first 1.3 EAR project
-				IProject ear = allEARs[i];
-				if (getJ2EEVersionAsString(ear).equals(IModuleConstants.J2EE_VERSION_1_3)){
-					return ear;
-				}
-			}
+	public static String getDefault13EARComponent(){
+		String earComponentName = null;
+		boolean found = false;
+		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
+		for (int i=0;i<projects.length;i++){
+			 String[] earComponents = getEARComponents(projects[i]);
+			 for (int j=0;j<earComponents.length;j++){
+				 int j2eeVersion = getJ2EEVersion(projects[i], earComponents[j]);
+				 if (j2eeVersion == J2EEVersionConstants.J2EE_1_3_ID) {
+					 return earComponents[j];
+				 }
+			 }
 		}
-		catch(Exception e){
-			e.printStackTrace();
-			//handle exception
-		}
-		return null;
+		return earComponentName;
 	}
 	
+	/**
+	 * Returns a default J2EE 1.4 EAR component in the workspace
+	 * @return EAR component name
+	 */
+	public static String getDefault14EARComponent(){
+		String earComponentName = null;
+		boolean found = false;
+		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
+		for (int i=0;i<projects.length;i++){
+			 String[] earComponents = getEARComponents(projects[i]);
+			 for (int j=0;j<earComponents.length;j++){
+				 int j2eeVersion = getJ2EEVersion(projects[i], earComponents[j]);
+				 if (j2eeVersion == J2EEVersionConstants.J2EE_1_4_ID) {
+					 return earComponents[j];
+				 }
+			 }
+		}
+		return earComponentName;
+	}
+		
 	/**
 	 * 
 	 * @param versionId
 	 * @return
 	 * 
-	 * @deprecated
+	 * @deprecated use getEARProjectOfVersion(int)
 	 */
 	public static EARNatureRuntime getEAR(int versionId) {
 		try {
@@ -471,10 +796,16 @@ public final class J2EEUtils {
 		return null;
 	}
 	
+	public static String getEARComponentofJ2EEVersion(int versionId){
+		
+		return null;
+	}
+	
 	/**
 	 * Returns the first EAR project of a given version id
 	 * @param versionId
 	 * @return
+	 * @deprecated // use getEARComponentofJ2EEVersion
 	 */
 	public static IProject getEARProjectOfVersion(int versionId){
 		try {
@@ -491,6 +822,12 @@ public final class J2EEUtils {
 		return null;		
 	}
 
+
+	/**
+	 * 
+	 * @param j2eeVersionInt
+	 * @return
+	 */
 	public static String getLabelFromJ2EEVersion(String j2eeVersionInt) {
 		if (j2eeVersionInt == null || j2eeVersionInt.length() == 0)
 			return "";
@@ -541,6 +878,7 @@ public final class J2EEUtils {
 	public static EARNatureRuntime[] getEARProjects(IProject serviceProject,
 			IServer server) {
 
+	
 		EARNatureRuntime[] earProjects = null;
 		EARNatureRuntime ear = null;
 		IProject earProject = null;
@@ -556,8 +894,7 @@ public final class J2EEUtils {
 					return null;
 				}
 
-				ears = J2EEProjectUtilities
-						.getReferencingEARProjects(serviceProject);
+				ears = J2EEProjectUtilities.getReferencingEARProjects(serviceProject);
 
 				// separate EARs which are already deployed to the existing
 				// server
@@ -598,12 +935,39 @@ public final class J2EEUtils {
 	}
 
 	/**
+	 * 
+	 * @return
+	 * 
+	 * @deprecated  // use getALLEARComponents
+	 */
+	public static IProject[] getEARProjects() {
+		Vector v = new Vector();
+		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
+		for (int i = 0; i < projects.length; i++) {
+			try {
+//				if (projects[i].hasNature(IEARNatureConstants.NATURE_ID)) {
+				if (ResourceUtils.isEARProject(projects[i])) {
+					v.add(projects[i]);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				//handle exception
+			}
+
+		}
+		IProject[] earProjects = new IProject[v.size()];
+		v.copyInto(earProjects);
+		return earProjects;
+	}
+	
+	
+	/**
 	 * Returns the first EAR project associated with the project and server
 	 * @param serviceProject
 	 * @param server
 	 * @return
 	 * 
-	 * @deprecated
+	 * @deprecated  // to be simplified
 	 */
 	public static IProject getDefaultEARProject(IProject serviceProject, IServer server) {
 
@@ -663,6 +1027,8 @@ public final class J2EEUtils {
 	 * 
 	 * @param earProjects
 	 * @return projects EJB projects
+	 * 
+	 * @deprecated use getEJB20ComponentsFromEars
 	 */
 	public static IProject[] getEJB2_0ProjectsFromEARS(EARNatureRuntime[] earProjects) {
 		if (earProjects == null)
@@ -694,12 +1060,19 @@ public final class J2EEUtils {
 
 		return (IProject[]) ejbProjects.toArray(new IProject[0]);
 	}
+	
+	public static String[] getEJB20ComponentsFromEars(String[] earComponentNames){
+		
+		return null;
+	}
 
 	/**
 	 * Returns EJB projects in the ears
 	 * 
 	 * @param earProjects
 	 * @return projects EJB projects
+	 * 
+	 * @deprecated
 	 */
 	public static IProject[] getEJBProjectsFromEARS(
 			EARNatureRuntime[] earProjects) {
@@ -732,6 +1105,23 @@ public final class J2EEUtils {
 		return (IProject[]) ejbProjects.toArray(new IProject[0]);
 	}
 
+	/**
+	 * 
+	 * @param earComponents
+	 * @return
+	 */
+	public static IVirtualComponent[] getEJBComponentsFromEars(IVirtualComponent[] earComponents){
+		
+		return null;
+	}
+	
+	
+	/**
+	 * Utility method to combine two IProject[]
+	 * @param projectArray1
+	 * @param projectArray2
+	 * @return
+	 */
 	public static IProject[] combineProjectArrays(IProject[] projectArray1,
 			IProject[] projectArray2) {
 
@@ -761,6 +1151,7 @@ public final class J2EEUtils {
 	 * 
 	 * @param earProjects
 	 * @return projects Web projects
+	 * @deprecated  use getWebComponentsForEars
 	 */
 	public static IProject[] getWebProjectsFromEARS(
 			EARNatureRuntime[] earProjects) {
@@ -794,6 +1185,23 @@ public final class J2EEUtils {
 		return (IProject[]) webProjects.toArray(new IProject[0]);
 	}
 
+	/**
+	 * 
+	 * @param earComponents
+	 * @return
+	 */
+	public static IVirtualComponent[] getWebComponentsForEars(IVirtualComponent earComponents){
+		
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param project
+	 * @return
+	 * 
+	 * @deprecated // use isEJB20Component
+	 */
 	public static boolean isEJB2_0Project(IProject project) {
 
 		if (ResourceUtils.isEJBProject(project)) {
@@ -809,6 +1217,16 @@ public final class J2EEUtils {
 		}
 		return false;
 	}
+	
+	/**
+	 * 
+	 * @param ejbComponent
+	 * @return
+	 */
+	public static boolean isEJB20Component(IVirtualComponent ejbComponent){
+		
+		return false;
+	}
 
 	/**
 	 * Returns true if the given <code>project</code> is an EAR 1.2 or EAR 1.3
@@ -818,7 +1236,7 @@ public final class J2EEUtils {
 	 *            The project.
 	 * @return True if the project is an EAR 1.2 or an EAR 1.3 Project.
 	 * 
-	 * @deprecated
+	 * @deprecated // use isEARComponent
 	 */
 	public static boolean isEARProject(IProject project) {
 		try {
@@ -829,9 +1247,17 @@ public final class J2EEUtils {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param module
+	 * @param EAR
+	 * @return
+	 * 
+	 * @deprecated   use isComponentAssociated
+	 */
 	public static boolean isEARAssociated(IProject module, IProject EAR) {
 
-		EARNatureRuntime[] ears = getEARProjects(module, null);
+		EARNatureRuntime[] ears = getEARProjects(module);
 		if (ears != null && ears.length != 0) {
 			Vector EARNames = new Vector();
 			for (int i = 0; i < ears.length; i++) {
@@ -844,7 +1270,25 @@ public final class J2EEUtils {
 		}
 		return false;
 	}
+	
+	/**
+	 * 
+	 * @param ear
+	 * @param component
+	 * @return
+	 */
+	public static boolean isComponentAssociated(IVirtualComponent ear, IVirtualComponent component){
+		
+		return false;
+	}
 
+	/**
+	 * 
+	 * @param module
+	 * @param EARProject
+	 * 
+	 * @deprecated new method to be determined
+	 */
 	public static void associateWebProject(IProject module, IProject EARProject) {
 		try {
 
@@ -869,6 +1313,13 @@ public final class J2EEUtils {
 		}
 	}
 
+	/**
+	 * 
+	 * @param ejbProject
+	 * @param EARProject
+	 * 
+	 * @deprecated to be determined
+	 */
 	public static void associateEJBProject(IProject ejbProject,
 			IProject EARProject) {
 		try {
@@ -889,6 +1340,8 @@ public final class J2EEUtils {
 	 * Returns the first Module's WEB-INF directory
 	 * @param project
 	 * @return
+	 * 
+	 * @deprecated  use getWebInfPath(project, compName) instead
 	 */
 	public static IPath getFirstWebInfPath(IProject project){
 		IPath modulePath = null;
@@ -926,6 +1379,30 @@ public final class J2EEUtils {
 		return modulePath;		
 	}
 	
+	/**
+	 * TODO: to be implemented
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static IPath getWebInfPath(IProject project, String componentName){
+		
+		IVirtualComponent component = ComponentCore.createComponent(project, componentName);
+		IVirtualFolder webInfDir = component.getFolder(new Path("/WEB-INF"));
+		IPath modulePath = webInfDir.getWorkspaceRelativePath();
+		System.out.println("FirstWebInfPath = " +modulePath);
+		
+		return modulePath;
+	}
+	
+	
+	/**
+	 * 
+	 * @param project
+	 * @return
+	 * 
+	 * @deprecated use getWebContentPath(IProject, String)
+	 */
 	public static IPath getFirstWebContentPath(IProject project){
 		
 		IPath modulePath = null;
@@ -961,9 +1438,48 @@ public final class J2EEUtils {
 		return modulePath;			
 	}
 	
+	/**
+	 * TODO: implement
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static IPath getWebContentPath(IProject project, String componentName){
+		
+		IVirtualComponent component = ComponentCore.createComponent(project, componentName);
+		IPath modulePath = component.getWorkspaceRelativePath();
+		System.out.println("FirstWebContentPath = " +modulePath);
+		
+		return modulePath;
+	}
+	
+	/**
+	 * 
+	 * @param project
+	 * @return
+	 * 
+	 * @deprecated use getWebContentContainer(IProject, String)
+	 */
 	public static IContainer getFirstWebContentContainer(IProject project){
 		IContainer container = null;
 		IPath modulePath = getFirstWebContentPath(project);
+		IResource res = ResourceUtils.findResource(modulePath);
+		if (res!=null){
+		  container = res.getParent();
+		}		
+		  
+		return container;
+	}
+	
+	/**
+	 * TODO: implement
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static IContainer getWebContentContainer(IProject project, String componentName){
+		IContainer container = null;
+		IPath modulePath = getWebContentPath(project, componentName);
 		IResource res = ResourceUtils.findResource(modulePath);
 		if (res!=null){
 		  container = res.getParent();
@@ -977,6 +1493,8 @@ public final class J2EEUtils {
 	 * Returns the first Module name 
 	 * @param project
 	 * @return
+	 * 
+	 * @deprecated  not necessary; to be deleted
 	 */
 	public static String getFirstWebModuleName(IProject project){
 		String moduleName = null;
@@ -997,5 +1515,173 @@ public final class J2EEUtils {
 
 		return moduleName;				
 	}
+	
+
+	/**
+	 * True if the component is a valid Web component
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static boolean isWebComponent(IProject project, String componentName) {
+		boolean isWeb = false;
+		StructureEdit mc = null;
+		try {
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  for(int i=0;i<wbcs.length;i++){
+			  if (wbcs[i].getName().equals(componentName)){
+				  isWeb = WebArtifactEdit.isValidWebModule(wbcs[i]);
+				  break;
+			  }
+		  }
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			// handle Unresolveable URI exception
+		}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
+
+		return isWeb;
+	}
+	
+	public static boolean isWebComponent(IVirtualComponent comp){
+		return isWebComponent(comp.getProject(), comp.getName());
+	}
+
+	/**
+	 * True is the component is a valid EAR component
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static boolean isEARComponent(IProject project, String componentName){
+		boolean isEAR = false;
+		StructureEdit mc = null;
+		try {
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  for(int i=0;i<wbcs.length;i++){
+			  if (wbcs[i].getName().equals(componentName)){
+				  isEAR = EARArtifactEdit.isValidEARModule(wbcs[i]);
+				  break;
+			  }
+		  }
+		}
+		catch(Exception ex){}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
+		
+		return isEAR;
+	}
+	
+	public static boolean isEARComponent(IVirtualComponent comp){
+		return isEARComponent(comp.getProject(), comp.getName());
+	}
+
+	/**
+	 * True if the component is a valid EJB component
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static boolean isEJBComponent(IProject project, String componentName) {
+		boolean isEJB = false;
+		StructureEdit mc = null;
+		try {
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  for(int i=0;i<wbcs.length;i++){
+			  if (wbcs[i].getName().equals(componentName)){
+				  isEJB = EJBArtifactEdit.isValidEJBModule(wbcs[i]);
+				  break;
+			  }
+		  }
+		}
+		catch(Exception ex){}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
+		
+		return isEJB;	
+	}
+
+	public static boolean isEJBComponent(IVirtualComponent comp){
+		return isEJBComponent(comp.getProject(), comp.getName());
+	}
+	
+	/**
+	 * True if the component is a true Application client component
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static boolean isAppClientComponent(IProject project, String componentName) {
+		boolean isAppClient = false;
+		StructureEdit mc = null;
+		try {
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  for(int i=0;i<wbcs.length;i++){
+			  if (wbcs[i].getName().equals(componentName)){
+				  isAppClient = AppClientArtifactEdit.isValidApplicationClientModule(wbcs[i]);
+				  break;
+			  }
+		  }
+		}
+		catch(Exception ex){}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
+		
+		return isAppClient;	
+	}	
+
+	public static boolean isAppClientComponent(IVirtualComponent comp){
+		return isAppClientComponent(comp.getProject(), comp.getName());
+	}
+	
+	/**
+	 * True if the component is a valid Java component
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static boolean isJavaComponent(IProject project, String componentName) {
+		boolean isJava = false;
+		StructureEdit mc = null;
+		try {
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  for(int i=0;i<wbcs.length;i++){
+			  if (wbcs[i].getName().equals(componentName)){
+				  isJava = ArtifactEdit.isValidEditableModule(wbcs[i]);
+				  break;
+			  }
+		  }
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			// handle Unresolveable URI exception
+		}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
+
+		return isJava;
+	}
+	
+	public static boolean isJavaComponent(IVirtualComponent comp){
+		return isJavaComponent(comp.getProject(), comp.getName());
+	}	
+	
 	
 }
