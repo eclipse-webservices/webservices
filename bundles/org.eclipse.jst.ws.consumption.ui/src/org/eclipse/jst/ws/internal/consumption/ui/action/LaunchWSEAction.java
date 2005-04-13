@@ -36,8 +36,10 @@ public class LaunchWSEAction implements IWorkbenchWindowActionDelegate
     WSExplorerLauncherCommand        cmd         = new WSExplorerLauncherCommand();
     
     String stateLocation = ExplorerPlugin.getInstance().getPluginStateLocation();
+	String defaultFavoritesLocation = ExplorerPlugin.getInstance().getDefaultFavoritesLocation();
 	LaunchOption[] launchOptions = new LaunchOption[] {
-		new LaunchOption(LaunchOptions.STATE_LOCATION,stateLocation)
+		new LaunchOption(LaunchOptions.STATE_LOCATION,stateLocation),
+		new LaunchOption(LaunchOptions.DEFAULT_FAVORITES_LOCATION,defaultFavoritesLocation)
 	};
     cmd.setLaunchOptions(launchOptions);
 	cmd.execute( environment );

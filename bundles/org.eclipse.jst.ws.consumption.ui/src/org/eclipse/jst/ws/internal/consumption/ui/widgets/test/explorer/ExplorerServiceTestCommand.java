@@ -69,7 +69,9 @@ public class ExplorerServiceTestCommand extends SimpleCommand implements WSDLTes
     launchCommand.setForceLaunchOutsideIDE(externalBrowser);
     Vector launchOptionVector = new Vector();
 	String stateLocation = ExplorerPlugin.getInstance().getPluginStateLocation();
+	String defaultFavoritesLocation = ExplorerPlugin.getInstance().getDefaultFavoritesLocation();
 	launchOptionVector.add(new LaunchOption(LaunchOptions.STATE_LOCATION,stateLocation));
+	launchOptionVector.add(new LaunchOption(LaunchOptions.DEFAULT_FAVORITES_LOCATION,defaultFavoritesLocation));
     launchOptionVector.add(new LaunchOption(LaunchOptions.WSDL_URL,wsdlServiceURL));
     if (endpoints != null)
       for (Iterator it = endpoints.iterator(); it.hasNext();)
