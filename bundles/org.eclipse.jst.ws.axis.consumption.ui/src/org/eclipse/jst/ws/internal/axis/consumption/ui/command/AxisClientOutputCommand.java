@@ -38,14 +38,14 @@ public class AxisClientOutputCommand extends SimpleCommand {
 		* Default CTOR
 		*/
 		public AxisClientOutputCommand() {
-			String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
+			String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 		    setName (msgUtils_.getMessage(LABEL));
 			setDescription( msgUtils_.getMessage(DESCRIPTION));
 		}
 		
 		public AxisClientOutputCommand(IWebServiceClient wsc, IContext context, String module) {
-			String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
+			String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 		    setName (msgUtils_.getMessage(LABEL));
 			setDescription( msgUtils_.getMessage(DESCRIPTION));
@@ -53,11 +53,7 @@ public class AxisClientOutputCommand extends SimpleCommand {
 		}
 		
 	  public Status execute(Environment env)
-	  {
-	    
-	  	String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );	
-		
+	  {		
 		wsc_.getWebServiceClientInfo().setImplURL(proxyBean_);
 		return new SimpleStatus("");
 	  }

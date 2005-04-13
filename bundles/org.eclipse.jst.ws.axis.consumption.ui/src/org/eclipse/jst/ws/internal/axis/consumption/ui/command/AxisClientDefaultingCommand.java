@@ -15,6 +15,7 @@ import java.util.Vector;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
@@ -69,6 +70,7 @@ public class AxisClientDefaultingCommand extends SimpleCommand
 		
 		// proxyProjectFolber_
 		
+		webServicesParser_ = WSDLParserFactory.getWSDLParser();
 		return status;
 	}
 

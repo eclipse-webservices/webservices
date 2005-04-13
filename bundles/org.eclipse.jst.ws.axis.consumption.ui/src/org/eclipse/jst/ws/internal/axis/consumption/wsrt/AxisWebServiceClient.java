@@ -51,6 +51,8 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 	public ICommandFactory develop(Environment env, IContext ctx, ISelection sel,
 			String module, String ear)
 	{
+		registerDataMappings( env.getCommandManager().getMappingRegistry());
+		
 		Vector commands = new Vector();
 		commands.add(new AxisClientInputCommand(this, ctx, module));
 		commands.add(new AxisClientDefaultingCommand());

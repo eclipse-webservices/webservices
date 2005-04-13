@@ -26,8 +26,8 @@ import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 
 public class AxisClientInputCommand extends SimpleCommand {
 
-	private static String LABEL = "TASK_LABEL_BU_AXIS_INPUT";
-	private static String DESCRIPTION = "TASK_DESC_BU_AXIS_INPUT";
+	private static String LABEL = "TASK_LABEL_AXIS_CLIENT_INPUT";
+	private static String DESCRIPTION = "TASK_DESC_AXIS_CLIENT_INPUT";
 	
 	private IWebServiceClient wsc_;
 	private String serverProject_; 
@@ -49,14 +49,14 @@ public class AxisClientInputCommand extends SimpleCommand {
 		* Default CTOR
 		*/
 		public AxisClientInputCommand() {
-			String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
+			String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 		    setName (msgUtils_.getMessage(LABEL));
 			setDescription( msgUtils_.getMessage(DESCRIPTION));
 		}
 		
 		public AxisClientInputCommand(IWebServiceClient wsc, IContext context, String module) {
-			String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
+			String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 		    setName (msgUtils_.getMessage(LABEL));
 			setDescription( msgUtils_.getMessage(DESCRIPTION));
@@ -67,9 +67,6 @@ public class AxisClientInputCommand extends SimpleCommand {
 		
 	  public Status execute(Environment env)
 	  {
-	    
-	  	String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	    
 		generateProxy_ = context_.getClient();
 		wsdlURL_ = wsc_.getWebServiceClientInfo().getWsdlURL();
