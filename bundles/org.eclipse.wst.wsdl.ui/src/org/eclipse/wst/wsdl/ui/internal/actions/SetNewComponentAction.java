@@ -30,6 +30,7 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDElementDeclarationCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDTypeDefinitionCommand;
@@ -87,7 +88,7 @@ public class SetNewComponentAction extends AddElementAction
 
   // TODO: Clean up next methods below!!!
   private WSDLElementCommand command;
-  private String newDialogTitle = "New Component";
+  private String newDialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_COMPONENT");
   
   protected void performAddElement()
   {
@@ -234,20 +235,20 @@ public class SetNewComponentAction extends AddElementAction
       
       return (new ArrayList());
   }
-  
+
   private String getDefaultName() {
       if (input instanceof Port) {
-          newDialogTitle = "New Binding";       // TODO: Ugly Hack... remove
+          newDialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_BINDING");       // TODO: Ugly Hack... remove
           Definition def = ((Port) input).getEnclosingDefinition();
           return NameUtil.getUniqueNameHelper("NewBinding", NameUtil.getUsedBindingNames(def));
       }
       else if (input instanceof Binding) {
-          newDialogTitle = "New Port Type";       // TODO: Ugly Hack... remove
+          newDialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_PORTTYPE");       // TODO: Ugly Hack... remove
           Definition def = ((Binding) input).getEnclosingDefinition();
           return NameUtil.getUniqueNameHelper("NewPortType", NameUtil.getUsedPortTypeNames(def));
       }
       else if (input instanceof Input || input instanceof Output || input instanceof Fault) {
-          newDialogTitle = "New Message";       // TODO: Ugly Hack... remove
+          newDialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_MESSAGE");       // TODO: Ugly Hack... remove
           Definition def = ((MessageReference) input).getEnclosingDefinition();
           return NameUtil.getUniqueNameHelper("NewMessage", NameUtil.getUsedMessageNames(def));
       }
@@ -255,7 +256,7 @@ public class SetNewComponentAction extends AddElementAction
           Definition def = ((Part) input).getEnclosingDefinition();
           
           if (kind.equalsIgnoreCase("element")) {
-              newDialogTitle = "New Element";       // TODO: Ugly Hack... remove
+              newDialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_ELEMENT");      // TODO: Ugly Hack... remove
               if (command == null) {
                   command = new AddXSDElementDeclarationCommand(def, "NewElement");
               }
@@ -273,11 +274,11 @@ public class SetNewComponentAction extends AddElementAction
               String newItemName = "NewComplexType";
               List usedNames = null;
               if (typeKind.equalsIgnoreCase("complex")) {
-                  newDialogTitle = "New Complex Type";       // TODO: Ugly Hack... remove
+                  newDialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_COMPLEX_TYPE");       // TODO: Ugly Hack... remove
                   usedNames = getUsedComplexTypeNames(parentSchema);    
               }
               else {
-                  newDialogTitle = "New Simple Type";       // TODO: Ugly Hack... remove
+                  newDialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_SIMPLE_TYPE");       // TODO: Ugly Hack... remove
                   usedNames = getUsedSimpleTypeNames(parentSchema);
                   newItemName = "NewSimpleType";
               }

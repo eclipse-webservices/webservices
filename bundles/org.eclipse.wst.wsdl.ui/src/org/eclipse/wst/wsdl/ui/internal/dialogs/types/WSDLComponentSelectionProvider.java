@@ -530,51 +530,51 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
 		{
 		case WSDLConstants.BINDING :
 		{
-			return "Matching Bindings:";
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_MATCHING_BINDINGS");
 		}
 		case WSDLConstants.PORT_TYPE :
 		{
-			return "Matching Port Types:";
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_MATCHING_PORTTYPES");
 		}	
 		case WSDLConstants.MESSAGE :
 		{
-			return "Matching Messages:";
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_MATCHING_MESSAGES");
 		}   
 		case WSDLConstants.TYPE :
 		{
-			return "Matching Types:";
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_MATCHING_TYPES");
 		}
 		case WSDLConstants.ELEMENT :
 		{
-			return "Matching Elements:";
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_MATCHING_ELEMENTS");
 		}
 		}    	
 		return null;	   
 	}
 
 	public String getNameFieldTitle() {
-		
+		String nameString = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAME") + ":";
 		switch (kind)
 		{
 		case WSDLConstants.BINDING :
 		{
-			return "Binding Name:";
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_BINDING") + " " + nameString;
 		}
 		case WSDLConstants.PORT_TYPE :
 		{
-			return "Port Type Name:";
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_PORTTYPE") + " " + nameString;
 		}	
 		case WSDLConstants.MESSAGE :
 		{
-			return "Message Name:";
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_MESSAGE") + " " + nameString;
 		}   
 		case WSDLConstants.TYPE :
 		{
-			return "Type Name:";
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_TYPE") + " " + nameString;
 		}
 		case WSDLConstants.ELEMENT :
 		{
-			return "Element Name:";
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_ELEMENT") + " " + nameString;
 		}
 		}    	
 		return null;	   
