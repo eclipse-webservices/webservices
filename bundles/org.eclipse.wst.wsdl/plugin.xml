@@ -11,12 +11,6 @@
       <library name="wsdl.jar">
          <export name="*"/>
       </library>
-      <library name="lib/qname.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/wsdl4j.jar">
-         <export name="*"/>
-      </library>
    </runtime>
 
    <requires>
@@ -26,6 +20,7 @@
       <import plugin="org.eclipse.xsd"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.wst.sse.core"/>
+      <import plugin="org.wsdl4j"/>
    </requires>
 
    <extension point="org.eclipse.wst.common.dependencychecker.requiredFiles">

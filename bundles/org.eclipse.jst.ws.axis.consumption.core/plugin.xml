@@ -8,7 +8,6 @@
    provider-name="%PLUGIN_PROVIDER">
 
    <requires>
-      <import plugin="org.eclipse.wst.ws.apache.axis"/>
       <import plugin="org.apache.ant"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.core.runtime"/>
@@ -16,6 +15,7 @@
       <import plugin="org.eclipse.jst.ws"/>
       <import plugin="org.eclipse.jst.ws.consumption"/>
       <import plugin="org.eclipse.jst.j2ee.web"/>
+      <import plugin="org.apache.axis11"/>
    </requires>
 
    <runtime>

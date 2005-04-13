@@ -46,6 +46,7 @@
       <import plugin="org.eclipse.wst.common.emf"/>
       <import plugin="org.eclipse.wst.common.emfworkbench.integration"/>
       <import plugin="org.eclipse.wst.common.frameworks"/>
+      <import plugin="org.wsdl4j"/>
    </requires>
 
    <!-- Web Service Server Types -->

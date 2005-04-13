@@ -21,9 +21,10 @@
       <import plugin="org.eclipse.wst.command.env.core"/>
       <import plugin="org.eclipse.wst.wsdl"/>
       <import plugin="org.eclipse.wst.ws.parser"/>
-      <import plugin="org.eclipse.wst.ws.apache.wsil"/>
       <import plugin="org.eclipse.wst.command.env"/>
       <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.wsdl4j"/>
+      <import plugin="org.apache.wsil4j"/>
    </requires>
 
 </plugin>

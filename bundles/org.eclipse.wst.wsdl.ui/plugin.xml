@@ -40,6 +40,7 @@
       <import plugin="org.eclipse.emf.edit"/>
       <import plugin="org.eclipse.emf.edit.ui"/>
       <import plugin="org.eclipse.wst.validation"/>
+      <import plugin="org.wsdl4j"/>
    </requires>
 
    <extension

@@ -15,11 +15,12 @@
    </runtime>
 
    <requires>
-      <import plugin="org.eclipse.wst.ws.apache.wsil"/>
-      <import plugin="org.eclipse.wst.ws.uddi4j"/>
       <import plugin="org.eclipse.wst.wsdl"/>
-      <import plugin="org.eclipse.wst.ws.apache.axis"/>
       <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.apache.wsil4j"/>
+      <import plugin="org.uddi4j"/>
+      <import plugin="org.apache.axis11"/>
+      <import plugin="org.wsdl4j"/>
    </requires>
 
 </plugin>

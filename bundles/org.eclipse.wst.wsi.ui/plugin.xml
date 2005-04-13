@@ -43,6 +43,7 @@
       <import plugin="org.eclipse.wst.internet.monitor.core"/>
       <import plugin="org.eclipse.wst.internet.monitor.ui"/>
       <import plugin="org.eclipse.core.runtime.compatibility"/>
+      <import plugin="org.wsdl4j"/>
    </requires>
 
 <!-- ======================================================= -->

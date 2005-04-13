@@ -42,7 +42,8 @@
       <import plugin="org.eclipse.wst.web"/>
       <import plugin="org.eclipse.wst.ws"/>
       <import plugin="org.eclipse.wst.common.modulecore"/>
-      <import plugin="org.eclipse.wst.ws.apache.axis"/>
+      <import plugin="org.wsdl4j"/>
+      <import plugin="org.apache.axis11"/>
    </requires>
 
    <!-- Web Service Client Types -->

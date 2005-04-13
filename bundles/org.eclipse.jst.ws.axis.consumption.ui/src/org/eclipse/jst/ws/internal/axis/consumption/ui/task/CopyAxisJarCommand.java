@@ -33,7 +33,7 @@ import org.eclipse.wst.command.env.core.context.TransientResourceContext;
 
 public class CopyAxisJarCommand extends SimpleCommand {
 
-  public static String AXIS_RUNTIME_PLUGIN_ID = "org.eclipse.wst.ws.apache.axis"; //$NON-NLS-1$
+  public static String AXIS_RUNTIME_PLUGIN_ID = "org.apache.axis11"; //$NON-NLS-1$
 
   private String DESCRIPTION = "TASK_DESC_COPY_JARS_TO_PROJECT";
   private String LABEL = "TASK_LABEL_COPY_JARS_TO_PROJECT";

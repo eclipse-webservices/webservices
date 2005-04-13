@@ -32,7 +32,6 @@
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.wst.ws"/>
       <import plugin="org.eclipse.wst.ws.parser"/>
-      <import plugin="org.eclipse.wst.ws.apache.wsil"/>
       <import plugin="org.eclipse.wst.server.core"/>
       <import plugin="org.eclipse.wst.server.ui"/>
       <import plugin="org.eclipse.jst.server.core"/>
@@ -48,6 +47,8 @@
       <import plugin="org.eclipse.jst.j2ee.ui"/>
       <import plugin="org.eclipse.wst.web"/>
       <import plugin="org.eclipse.wst.common.modulecore"/>
+      <import plugin="org.wsdl4j"/>
+      <import plugin="org.apache.wsil4j"/>
    </requires>
 
    <extension-point
