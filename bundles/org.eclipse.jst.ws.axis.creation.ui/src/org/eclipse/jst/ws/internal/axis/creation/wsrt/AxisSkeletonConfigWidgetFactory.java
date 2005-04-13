@@ -12,7 +12,7 @@
 package org.eclipse.jst.ws.internal.axis.creation.wsrt;
 
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidget;
-import org.eclipse.jst.ws.internal.axis.creation.ui.wizard.beans.WSBeanAxisType;
+import org.eclipse.jst.ws.internal.axis.creation.ui.wizard.wsdl.WSWSDLAxisType;
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.provisional.ui.widgets.INamedWidgetContributor;
 import org.eclipse.wst.command.internal.provisional.ui.widgets.INamedWidgetContributorFactory;
@@ -27,7 +27,7 @@ public class AxisSkeletonConfigWidgetFactory implements INamedWidgetContributorF
 	
 	public AxisSkeletonConfigWidgetFactory()
 	{
-	  adapter_ = new WidgetBindingToWidgetFactoryAdapter( new WSBeanAxisType() );
+	  adapter_ = new WidgetBindingToWidgetFactoryAdapter( new WSWSDLAxisType() );
 	  
 	  skelConfigWidget_ = adapter_.getWidget( "SkeletonConfig" );
 	  skelWidget_       = (SkeletonConfigWidget)skelConfigWidget_.getWidgetContributorFactory().create();

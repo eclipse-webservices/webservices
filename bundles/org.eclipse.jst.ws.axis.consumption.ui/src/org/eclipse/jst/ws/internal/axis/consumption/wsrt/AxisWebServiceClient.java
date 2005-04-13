@@ -92,7 +92,7 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 //		registry.addMapping(ClientExtensionDefaultingCommand.class, "WebServicesParser", AxisClientDefaultingCommand.class);
 //		registry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProjectEAR", AxisClientDefaultingCommand.class,
 //				"ClientProjectEAR", new StringToIProjectTransformer());
-		registry.addMapping(AxisClientInputCommand.class, "WsdlURI", AxisClientDefaultingCommand.class, "WsdlURL", null); // URI
+		registry.addMapping(AxisClientInputCommand.class, "WsdlURL", AxisClientDefaultingCommand.class); // URI
 																																	// to
 		// URL
 		// transformer
