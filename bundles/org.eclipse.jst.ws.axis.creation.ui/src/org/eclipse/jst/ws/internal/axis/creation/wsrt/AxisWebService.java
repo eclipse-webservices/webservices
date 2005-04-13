@@ -9,24 +9,34 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.AddJarsToProjectBuil
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CheckAxisDeploymentDescriptorsTask;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisOutputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisRunInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUAxisInputCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUAxisOutputCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.ComputeAxisSkeletonBeanCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.UpdateWEBXMLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.BUCheckAxisDeploymentDescriptors;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.LiteralSupportMessageTask;
+import org.eclipse.jst.ws.internal.axis.creation.ui.task.MoveDeploymentFilesTask;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.MoveJavaFilesTask;
+import org.eclipse.jst.ws.internal.axis.creation.ui.task.Skeleton2WSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.TDCheckAxisDeploymentDescriptors;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.UpdateAxisWSDDFileTask;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.AxisBeanFragment;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BUAxisDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.ValidateObjectSelectionCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonDefaultingCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.command.OpenJavaEditorCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.WSINonCompliantRuntimeCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.command.data.ProjectName2IProjectTransformer;
+import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerName2IServerTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand;
 import org.eclipse.wst.command.env.common.WaitForAutoBuildCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
@@ -38,6 +48,7 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.AbstractWebService;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceInfo;
+import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 public class AxisWebService extends AbstractWebService
 {
@@ -63,11 +74,12 @@ public class AxisWebService extends AbstractWebService
 	public ICommandFactory develop(Environment env, IContext ctx, ISelection sel,
 			String module, String ear)
 	{
-		registerDataMappings( env.getCommandManager().getMappingRegistry());
 		
 		Vector commands = new Vector();
 		
-//		if (ctx.getScenario().getValue() == WebServiceScenario.BOTTOMUP) {
+		if (ctx.getScenario().getValue() == WebServiceScenario.BOTTOMUP) {
+			
+			registerBUDataMappings( env.getCommandManager().getMappingRegistry());
 			
 			commands.add(new BUAxisInputCommand(this, module));
 			commands.add(new ValidateObjectSelectionCommand());
@@ -91,35 +103,35 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new RefreshProjectCommand());
 			commands.add(new BuildProjectCommand());
 			commands.add(new StartProjectCommand());
-			commands.add(new BUAxisOutputCommand(this));
+			commands.add(new AxisOutputCommand(this));
 			
-//		} else if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
-//			
-//			commands.add(new TestCommand1(this));
-//			commands.add(new AxisSkeletonDefaultingCommand());
-//		    commands.add(new ValidateWSDLCommand());
-//		    commands.add(new SkeletonConfigWidgetDefaultingCommand());
-////			commands.add(new SimpleFragment( "SkeletonConfig" ));
-////			commands.add(new SimpleFragment( "AxisMappingsWidget" ));
-//		    commands.add(new TDCheckAxisDeploymentDescriptors());
-//		    commands.add(new AddJarsToProjectBuildPathTask());
-//		    commands.add(new CopyAxisJarCommand());
-//		    commands.add(new WSDL2JavaCommand());
-//		    commands.add(new MoveDeploymentFilesTask());
-//		    commands.add(new Skeleton2WSDLCommand());
-//		    commands.add(new UpdateWEBXMLCommand());
-//		    commands.add(new RefreshProjectCommand());
-//		    commands.add(new BuildProjectCommand());
-//		    commands.add(new StartProjectCommand());
-//		    commands.add(new BuildProjectCommand());
-//		    commands.add(new AxisDeployCommand());
-//		    commands.add(new RefreshProjectCommand());
-//			commands.add(new ComputeAxisSkeletonBeanCommand());
-//		    commands.add(new OpenJavaEditorCommand());
-//			
-//		} else {
-//			System.out.println("Error - WebServiceScenario should not be Client for AxisWebService");
-//		}
+		} else if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
+			
+			registerTDDataMappings( env.getCommandManager().getMappingRegistry());
+			
+			commands.add(new TDAxisInputCommand(this, module));
+			commands.add(new AxisSkeletonDefaultingCommand());
+		    commands.add(new ValidateWSDLCommand());
+		    commands.add(new SkeletonConfigWidgetDefaultingCommand());
+//			commands.add(new SimpleFragment( "SkeletonConfig" ));
+//			commands.add(new SimpleFragment( "AxisMappingsWidget" ));
+		    commands.add(new TDCheckAxisDeploymentDescriptors());
+		    commands.add(new AddJarsToProjectBuildPathTask());
+		    commands.add(new CopyAxisJarCommand());
+		    commands.add(new WSDL2JavaCommand());
+		    commands.add(new MoveDeploymentFilesTask());
+		    commands.add(new Skeleton2WSDLCommand());
+		    commands.add(new UpdateWEBXMLCommand());
+		    commands.add(new RefreshProjectCommand());
+		    commands.add(new BuildProjectCommand());
+		    commands.add(new StartProjectCommand());
+		    commands.add(new BuildProjectCommand());
+			commands.add(new ComputeAxisSkeletonBeanCommand());
+			commands.add(new AxisOutputCommand(this));
+			
+		} else {
+			System.out.println("Error - WebServiceScenario should not be Client for AxisWebService");
+		}
 		
 		
 		return new SimpleCommandFactory(commands);
@@ -135,13 +147,23 @@ public class AxisWebService extends AbstractWebService
 			String module, String ear)
 	{
 		Vector commands = new Vector();
-		commands.add(new AxisRunInputCommand(this, module));
-		commands.add(new AxisDeployCommand());
-		commands.add(new RefreshProjectCommand());
+		if (ctx.getScenario().getValue() == WebServiceScenario.BOTTOMUP) {
+			commands.add(new AxisRunInputCommand(this, module));
+			commands.add(new AxisDeployCommand());
+			commands.add(new RefreshProjectCommand());
+		} else if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
+			commands.add(new AxisRunInputCommand(this, module));
+			commands.add(new AxisDeployCommand());
+			commands.add(new RefreshProjectCommand());
+			commands.add(new OpenJavaEditorCommand());
+		} else {
+			System.out
+					.println("Error - WebServiceScenario should not be Client for AxisWebService");
+		}
 		return new SimpleCommandFactory(commands);
 	}
 	
-	public void registerDataMappings(DataMappingRegistry registry) 
+	public void registerBUDataMappings(DataMappingRegistry registry) 
 	  {
 		//BUAxisInputCommand
 		registry.addMapping(BUAxisInputCommand.class, "ServiceServerTypeID", StartProjectCommand.class);
@@ -219,9 +241,9 @@ public class AxisWebService extends AbstractWebService
 	    registry.addMapping(BUAxisDefaultingCommand.class, "SampleExistingServer", StartProjectCommand.class);
 	    registry.addMapping(BUAxisDefaultingCommand.class, "IsWebProjectStartupRequested",StartProjectCommand.class);
 	        
-		// BUAxisOutputCommand
-	    registry.addMapping(Java2WSDLCommand.class, "WsdlURI", BUAxisOutputCommand.class);
-		registry.addMapping(UpdateAxisWSDDFileTask.class, "JavaWSDLParam", BUAxisOutputCommand.class);    
+		// AxisOutputCommand
+	    registry.addMapping(Java2WSDLCommand.class, "WsdlURI", AxisOutputCommand.class);
+		registry.addMapping(UpdateAxisWSDDFileTask.class, "JavaWSDLParam", AxisOutputCommand.class);    
 		
 		// Run extension
 		
@@ -234,6 +256,81 @@ public class AxisWebService extends AbstractWebService
 	    
 	  }
 
+	public void registerTDDataMappings(DataMappingRegistry dataRegistry)
+	  {
+	    // Transformers
+	    ProjectName2IProjectTransformer projectTransformer = new ProjectName2IProjectTransformer();
+
+		// TODO:  map "InitialSelection" and "ObjectSelection" from TDAxisInputCommand
+		
+//	    dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", AxisSkeletonDefaultingCommand.class);
+//	    dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "ObjectSelection", AxisSkeletonDefaultingCommand.class);
+//	    dataRegistry.addMapping(TDAxisInputCommand.class, "WebServicesParser", AxisSkeletonDefaultingCommand.class);
+	    
+	    // ValidateWSDLCommand
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", ValidateWSDLCommand.class);
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WsdlURI", ValidateWSDLCommand.class);
+	    
+	    // SkeletonConfigWidgetDefaultingCommand
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", SkeletonConfigWidgetDefaultingCommand.class);
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WsdlURI", SkeletonConfigWidgetDefaultingCommand.class);
+	    
+	    // CheckAxisDeploymentDescriptorsTask
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", CheckAxisDeploymentDescriptorsTask.class, "ServerProject", projectTransformer);
+
+	    // AddJarsToProjectBuildPathTask
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", AddJarsToProjectBuildPathTask.class, "Project", projectTransformer);
+	    
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WsdlURI", WSDL2JavaCommand.class);
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "HttpBasicAuthUsername", WSDL2JavaCommand.class);
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "HttpBasicAuthPassword", WSDL2JavaCommand.class);
+
+//		WSDL2JavaCommand
+	  	dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "JavaWSDLParam", WSDL2JavaCommand.class);
+		
+	    // MoveDeploymentFilesTask
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", MoveDeploymentFilesTask.class, "ServerProject", projectTransformer);
+	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", MoveDeploymentFilesTask.class);
+
+	    // CopyAxisJarCommand
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", projectTransformer);
+
+	    // Skeleton2WSDLCommand
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", Skeleton2WSDLCommand.class);
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", Skeleton2WSDLCommand.class, "ServerProject", projectTransformer);
+	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", Skeleton2WSDLCommand.class);
+
+	    // UpdateWEBXMLCommand
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", UpdateWEBXMLCommand.class, "ServerProject", projectTransformer);
+
+	    // RefreshProjectCommand
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", projectTransformer);
+	    
+	    // BuildProjectCommand
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", BuildProjectCommand.class, "Project", projectTransformer);
+
+	    // StartProjectCommand
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", StartProjectCommand.class, "ServiceProject", projectTransformer);
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerServer", StartProjectCommand.class, "ServiceExistingServer", new ServerName2IServerTransformer());
+	    dataRegistry.addMapping(CopyAxisJarCommand.class, "ProjectRestartRequired", StartProjectCommand.class, "IsWebProjectStartupRequested", null);
+
+	    // AxisDeployCommand
+	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", AxisDeployCommand.class);
+	    
+	    // AxisOutputCommand
+	    dataRegistry.addMapping(Skeleton2WSDLCommand.class, "WsdlURI", AxisOutputCommand.class);
+		dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", AxisOutputCommand.class); 
+//	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", AxisOutputCommand.class);
+	    
+	    // ComputeAxisSkeletonBeanCommand
+	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", ComputeAxisSkeletonBeanCommand.class);
+	    //dataRegistry.addMapping(Skeleton2WSDLCommand.class, "WsdlURI", ComputeAxisSkeletonBeanCommand.class);
+	    //dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", ComputeAxisSkeletonBeanCommand.class);
+	    
+	    // OpenJavaEditorCommand
+	    dataRegistry.addMapping(ComputeAxisSkeletonBeanCommand.class, "ClassNames", OpenJavaEditorCommand.class);
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", OpenJavaEditorCommand.class, "Project", projectTransformer);
+	  }
 	public AxisWebServiceInfo getAxisWebServiceInfo() {
 		return axisWebServiceInfo_;
 	}

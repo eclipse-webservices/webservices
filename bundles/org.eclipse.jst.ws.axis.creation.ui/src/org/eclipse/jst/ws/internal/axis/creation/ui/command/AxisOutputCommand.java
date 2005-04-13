@@ -21,7 +21,7 @@ import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 
 
-public class BUAxisOutputCommand extends SimpleCommand {
+public class AxisOutputCommand extends SimpleCommand {
 
 	private static String LABEL = "TASK_LABEL_BU_AXIS_OUTPUT";
 	private static String DESCRIPTION = "TASK_DESC_BU_AXIS_OUTPUT";
@@ -38,14 +38,14 @@ public class BUAxisOutputCommand extends SimpleCommand {
 		/**
 		* Default CTOR
 		*/
-		public BUAxisOutputCommand() {
+		public AxisOutputCommand() {
 			String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 		    setName (msgUtils_.getMessage(LABEL));
 			setDescription( msgUtils_.getMessage(DESCRIPTION));
 		}
 		
-		public BUAxisOutputCommand(AxisWebService ws) {
+		public AxisOutputCommand(AxisWebService ws) {
 			String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 		    setName (msgUtils_.getMessage(LABEL));
