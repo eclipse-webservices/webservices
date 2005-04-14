@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:tns="http://tempuri.org/ImportedUsingClasspath/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ImportedUsingClasspath" targetNamespace="http://tempuri.org/ImportedUsingClasspath/">
-	<wsdl:message name="message">
-		<wsdl:part name="message" type="xsd:string"></wsdl:part>
-	</wsdl:message>
-</wsdl:definitions>
