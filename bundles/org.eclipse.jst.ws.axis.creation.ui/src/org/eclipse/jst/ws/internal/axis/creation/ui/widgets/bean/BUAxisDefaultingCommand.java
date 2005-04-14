@@ -84,24 +84,31 @@ public class BUAxisDefaultingCommand extends SimpleCommand
     //javaWSDLParam
     javaWSDLParam_ = new JavaWSDLParameter();
      
-    if (initialSelection_ == null) {
-    	Status status = new SimpleStatus("BUAxisDefaultingCommand", //$NON-NLS-1$
-				msgUtils_.getMessage("MSG_ERROR_INITIAL_SELECTION"), Status.ERROR);
-		env.getStatusHandler().reportError(status);
-		return status;
-    }
+//    if (initialSelection_ == null) {
+//    	Status status = new SimpleStatus("BUAxisDefaultingCommand", //$NON-NLS-1$
+//				msgUtils_.getMessage("MSG_ERROR_INITIAL_SELECTION"), Status.ERROR);
+//		env.getStatusHandler().reportError(status);
+//		return status;
+//    }
     
-    try {
-		
-		javaBeanName_ = getJavaBeanFromInitialSelection(env);
-		
-	} catch (CoreException e) {
+	if (javaBeanName_ == null) {
 		Status status = new SimpleStatus("BUAxisDefaultingCommand", //$NON-NLS-1$
-				msgUtils_.getMessage("MSG_ERROR_INITIAL_SELECTION") + " " //$NON-NLS-1$
-				+e.getCause().toString(), Status.ERROR);
+				msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"), //$NON-NLS-1$
+				Status.ERROR);
 		env.getStatusHandler().reportError(status);
 		return status;
 	}
+//    try {
+//		
+//		javaBeanName_ = getJavaBeanFromInitialSelection(env);
+//		
+//	} catch (CoreException e) {
+//		Status status = new SimpleStatus("BUAxisDefaultingCommand", //$NON-NLS-1$
+//				msgUtils_.getMessage("MSG_ERROR_INITIAL_SELECTION") + " " //$NON-NLS-1$
+//				+e.getCause().toString(), Status.ERROR);
+//		env.getStatusHandler().reportError(status);
+//		return status;
+//	}
     
     //parser
     parser_ = new WebServicesParserExt();
@@ -257,6 +264,10 @@ public class BUAxisDefaultingCommand extends SimpleCommand
   {
     return IsWebProjectStartupRequested;
   }
+
+public void setJavaBeanName(String javaBeanName) {
+	this.javaBeanName_ = javaBeanName;
+}
   
 //  public void setServiceTypeRuntimeServer(TypeRuntimeServer ids)
 //  {

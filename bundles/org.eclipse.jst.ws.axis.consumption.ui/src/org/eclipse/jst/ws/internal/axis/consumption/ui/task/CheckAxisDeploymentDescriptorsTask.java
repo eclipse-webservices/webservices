@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
 import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
@@ -49,18 +50,21 @@ public class CheckAxisDeploymentDescriptorsTask extends SimpleCommand {
 		IPath filePath = null;
     IProject project = serverProject;
     filePath = project.getFullPath();
-		try {
-			if (project.hasNature(IWebNatureConstants.J2EE_NATURE_ID)) {
-        J2EEWebNatureRuntime webProject = (J2EEWebNatureRuntime) project.getNature(IWebNatureConstants.J2EE_NATURE_ID);
-        filePath = filePath.append(webProject.getWEBINFPath());
-        filePath = filePath.append("/server-config.wsdd");
-      }
-		} catch (CoreException e) {
-			status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_DEFAULT_BEAN"), Status.ERROR, e);
-			env.getStatusHandler().reportError(status);
-			return status;
-		}
+//		try {
+//			if (project.hasNature(IWebNatureConstants.J2EE_NATURE_ID)) {
+//        J2EEWebNatureRuntime webProject = (J2EEWebNatureRuntime) project.getNature(IWebNatureConstants.J2EE_NATURE_ID);
+//        filePath = filePath.append(webProject.getWEBINFPath());
+//        filePath = filePath.append("/server-config.wsdd");
+//      }
+//		} catch (CoreException e) {
+//			status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_DEFAULT_BEAN"), Status.ERROR, e);
+//			env.getStatusHandler().reportError(status);
+//			return status;
+//		}
 
+		filePath = J2EEUtils.getFirstWebInfPath(serverProject);
+        filePath = filePath.append("/server-config.wsdd");
+		
 		if(filePath==null || filePath.isEmpty())
 		{
 			status = new SimpleStatus("", coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR);

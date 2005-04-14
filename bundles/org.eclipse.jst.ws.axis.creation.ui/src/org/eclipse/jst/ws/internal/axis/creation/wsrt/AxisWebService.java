@@ -6,7 +6,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.core.command.AxisDeployComma
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.AddJarsToProjectBuildPathTask;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CheckAxisDeploymentDescriptorsTask;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
@@ -82,7 +81,7 @@ public class AxisWebService extends AbstractWebService
 			registerBUDataMappings( env.getCommandManager().getMappingRegistry());
 			
 			commands.add(new BUAxisInputCommand(this, project, module));
-			commands.add(new ValidateObjectSelectionCommand());
+//			commands.add(new ValidateObjectSelectionCommand());
 			commands.add(new BUAxisDefaultingCommand());
 			commands.add(new WSINonCompliantRuntimeCommand());
 			commands.add(new DefaultsForServerJavaWSDLCommand());
@@ -167,14 +166,14 @@ public class AxisWebService extends AbstractWebService
 	  {
 		//BUAxisInputCommand
 		registry.addMapping(BUAxisInputCommand.class, "ServiceServerTypeID", StartProjectCommand.class);
-
+		registry.addMapping(BUAxisInputCommand.class, "JavaBeanName", BUAxisDefaultingCommand.class );
 		
 	    //ValidateObjectSelectionCommand
-	    registry.addMapping(ObjectSelectionOutputCommand.class, "ObjectSelection", ValidateObjectSelectionCommand.class);
-	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", ValidateObjectSelectionCommand.class,"ServiceProjectName", null );
+//	    registry.addMapping(ObjectSelectionOutputCommand.class, "ObjectSelection", ValidateObjectSelectionCommand.class);
+//	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", ValidateObjectSelectionCommand.class,"ServiceProjectName", null );
 	    
 	    //BUAxisDefaultingCommand
-	    registry.addMapping(SelectionCommand.class, "InitialSelection", BUAxisDefaultingCommand.class );
+//	    registry.addMapping(SelectionCommand.class, "InitialSelection", BUAxisDefaultingCommand.class );
 //KSC   registry.addMapping(BUAxisInputCommand.class, "ServiceTypeRuntimeServer", BUAxisDefaultingCommand.class );
 	    
 	    //WSINonCompliantRuntimeCommand
@@ -198,7 +197,7 @@ public class AxisWebService extends AbstractWebService
 	    
 	    //CheckAxisDeploymentDescriptorsTask
 	    //registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", CheckAxisDeploymentDescriptorsTask.class);
-	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", CheckAxisDeploymentDescriptorsTask.class, "ServerProject", new StringToIProjectTransformer());
+	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", BUCheckAxisDeploymentDescriptors.class, "ServerProject", new StringToIProjectTransformer());
 	    
 	    //CopyAxisJarCommand
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", new StringToIProjectTransformer());
@@ -277,7 +276,7 @@ public class AxisWebService extends AbstractWebService
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WsdlURI", SkeletonConfigWidgetDefaultingCommand.class);
 	    
 	    // CheckAxisDeploymentDescriptorsTask
-	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", CheckAxisDeploymentDescriptorsTask.class, "ServerProject", projectTransformer);
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", TDCheckAxisDeploymentDescriptors.class, "ServerProject", projectTransformer);
 
 	    // AddJarsToProjectBuildPathTask
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", AddJarsToProjectBuildPathTask.class, "Project", projectTransformer);

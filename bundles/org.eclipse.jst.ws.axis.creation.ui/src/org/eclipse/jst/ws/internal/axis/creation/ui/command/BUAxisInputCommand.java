@@ -29,6 +29,7 @@ public class BUAxisInputCommand extends SimpleCommand {
 	private IWebService ws_;
 	private String serverProject_; 
 	private String serverModule_;
+	private String javaBeanName_;
 
 	  private String serviceServerTypeID_;
 	  
@@ -61,6 +62,7 @@ public class BUAxisInputCommand extends SimpleCommand {
 	    
 		String serverInstanceId = ws_.getWebServiceInfo().getServerInstanceId();
 		String serverFactoryId = ws_.getWebServiceInfo().getServerFactoryId();
+		javaBeanName_ = ws_.getWebServiceInfo().getImplURL();
 		
 		IServer serviceExistingServer=null;
 		
@@ -94,5 +96,9 @@ public class BUAxisInputCommand extends SimpleCommand {
 
 		public String getServerModule() {
 			return serverModule_;
+		}
+
+		public String getJavaBeanName() {
+			return javaBeanName_;
 		}
 }
