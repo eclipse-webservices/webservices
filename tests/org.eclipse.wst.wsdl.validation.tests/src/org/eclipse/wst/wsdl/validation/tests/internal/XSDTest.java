@@ -44,7 +44,7 @@ public class XSDTest extends BaseTestCase
   public void testNormalizeEntitiesValid()
   {
     String testname = "normalizeEntitiesValid";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "Entities/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "Entities/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "Entities/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "Entities/" + testname + ".wsdl-log";
     
@@ -57,7 +57,7 @@ public class XSDTest extends BaseTestCase
   public void testNormalizeEntitiesInvalid()
   {
     String testname = "normalizeEntitiesInvalid";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "Entities/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "Entities/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "Entities/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "Entities/" + testname + ".wsdl-log";
     
@@ -70,7 +70,7 @@ public class XSDTest extends BaseTestCase
   public void testReferToAnotherInlineType()
   {
     String testname = "ReferToAnotherInlineType";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "ReferToAnotherInlineType/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "ReferToAnotherInlineType/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "ReferToAnotherInlineType/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "ReferToAnotherInlineType/" + testname + ".wsdl-log";
     
@@ -83,7 +83,7 @@ public class XSDTest extends BaseTestCase
   public void testNoImportForUnprefixedAttribute()
   {
     String testname = "NoImportForUnprefixedAttribute";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "InlineSchemaGeneratedImports/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "InlineSchemaGeneratedImports/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "InlineSchemaGeneratedImports/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "InlineSchemaGeneratedImports/" + testname + ".wsdl-log";
     
@@ -96,7 +96,7 @@ public class XSDTest extends BaseTestCase
   public void testOneErrorForInlineXSDRefInvalidInlineXSD()
   {
     String testname = "OneErrorForInlineXSDRefInvalidInlineXSD";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "OneErrorForInlineXSDRefInvalidInlineXSD/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "OneErrorForInlineXSDRefInvalidInlineXSD/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "OneErrorForInlineXSDRefInvalidInlineXSD/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "OneErrorForInlineXSDRefInvalidInlineXSD/" + testname + ".wsdl-log";
     
@@ -109,7 +109,7 @@ public class XSDTest extends BaseTestCase
   public void testSchemaDocElemWithSourceAndSubElem()
   {
     String testname = "SchemaDocElemWithSourceAndSubElem";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "SchemaDocElemWithSourceAndSubElem/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "SchemaDocElemWithSourceAndSubElem/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "SchemaDocElemWithSourceAndSubElem/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "SchemaDocElemWithSourceAndSubElem/" + testname + ".wsdl-log";
     
@@ -122,7 +122,7 @@ public class XSDTest extends BaseTestCase
   public void testRestrictionPatternWithColon()
   {
     String testname = "RestrictionPatternWithColon";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "RestrictionPatternWithColon/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "RestrictionPatternWithColon/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "RestrictionPatternWithColon/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "RestrictionPatternWithColon/" + testname + ".wsdl-log";
     
@@ -135,7 +135,7 @@ public class XSDTest extends BaseTestCase
   public void testImportInlineSchemaWithInclude()
   {
     String testname = "ImportInlineSchemaWithInclude";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "ImportInlineSchemaWithInclude/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "ImportInlineSchemaWithInclude/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "ImportInlineSchemaWithInclude/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "ImportInlineSchemaWithInclude/" + testname + ".wsdl-log";
     
@@ -148,7 +148,7 @@ public class XSDTest extends BaseTestCase
   public void testValueColon()
   {
     String testname = "ValueColon";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "ValueColon/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "ValueColon/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "ValueColon/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "ValueColon/" + testname + ".wsdl-log";
     

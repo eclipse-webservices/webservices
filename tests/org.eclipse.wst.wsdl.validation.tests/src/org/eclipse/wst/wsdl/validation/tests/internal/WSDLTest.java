@@ -57,7 +57,7 @@ public class WSDLTest extends BaseTestCase
   public void testImportSchemaWithWSDLImport()
   {
     String testname = "ImportSchemaWithWSDLImport";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     
@@ -70,7 +70,7 @@ public class WSDLTest extends BaseTestCase
   public void testImportSchemaWithWSDLImportInvalidNS()
   {
     String testname = "ImportSchemaWithWSDLImportInvalidNS";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     
@@ -96,7 +96,7 @@ public class WSDLTest extends BaseTestCase
   public void testImportWSDLWithWSDLInvalidNS()
   {
     String testname = "ImportWSDLWithWSDLInvalidNS";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     
@@ -109,7 +109,7 @@ public class WSDLTest extends BaseTestCase
   public void testImportWSDLWithWSDLInvalidFilename()
   {
     String testname = "ImportWSDLWithWSDLInvalidFilename";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     
@@ -122,7 +122,7 @@ public class WSDLTest extends BaseTestCase
   public void testWSDLImportingTypes()
   {
     String testname = "WSDLImportingTypes";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     
@@ -135,7 +135,7 @@ public class WSDLTest extends BaseTestCase
   public void testImportNonExistantFile()
   {
     String testname = "ImportNonExistantFile";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     
@@ -148,7 +148,7 @@ public class WSDLTest extends BaseTestCase
   public void testWSDLNamespaceAAA()
   {
     String testname = "WSDLNamespaceAAA";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     
@@ -161,7 +161,7 @@ public class WSDLTest extends BaseTestCase
   public void testImportingWSDLWithImportedSchema()
   {
     String testname = "ImportingWSDLWithImportedSchema";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     
@@ -174,7 +174,7 @@ public class WSDLTest extends BaseTestCase
   public void testWSDLImportingSchemaInmportingSchema()
   {
     String testname = "WSDLImportingSchemaImportingSchema";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
     
@@ -187,7 +187,7 @@ public class WSDLTest extends BaseTestCase
   public void testImportXMLInvalidWSDL()
   {
     String testname = "ImportXMLInvalidWSDL";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/ImportXMLInvalidWSDL/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/ImportXMLInvalidWSDL/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/ImportXMLInvalidWSDL/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/ImportXMLInvalidWSDL/" + testname + ".wsdl-log";
     
@@ -236,7 +236,7 @@ public class WSDLTest extends BaseTestCase
   public void testImportOneAndTwo()
   {
     String testname = "ImportOneAndTwo";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/AlphabeticalOrderOfImports/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/AlphabeticalOrderOfImports/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/AlphabeticalOrderOfImports/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/AlphabeticalOrderOfImports/" + testname + ".wsdl-log";
     
@@ -249,7 +249,7 @@ public class WSDLTest extends BaseTestCase
   public void testImportOneAndTwo_One()
   {
     String testname = "one";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/AlphabeticalOrderOfImports/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/AlphabeticalOrderOfImports/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/AlphabeticalOrderOfImports/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/AlphabeticalOrderOfImports/" + testname + ".wsdl-log";
     
@@ -262,7 +262,7 @@ public class WSDLTest extends BaseTestCase
   public void testImportOneAndTwo_Two()
   {
     String testname = "two";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/AlphabeticalOrderOfImports/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/AlphabeticalOrderOfImports/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/AlphabeticalOrderOfImports/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/AlphabeticalOrderOfImports/" + testname + ".wsdl-log";
     
@@ -279,7 +279,7 @@ public class WSDLTest extends BaseTestCase
   public void testPorttypeRefMessage1()
   {
     String testname = "PorttypeRefMessage1";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Cyclic/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Cyclic/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Cyclic/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Cyclic/" + testname + ".wsdl-log";
     
@@ -292,7 +292,7 @@ public class WSDLTest extends BaseTestCase
   public void testPorttypeRefMessage2()
   {
     String testname = "PorttypeRefMessage2";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Cyclic/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Cyclic/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Cyclic/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Cyclic/" + testname + ".wsdl-log";
     
@@ -305,7 +305,7 @@ public class WSDLTest extends BaseTestCase
   public void testReferenceInlineTypes()
   {
     String testname = "ReferenceInlineTypes";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl-log";
     
@@ -318,7 +318,7 @@ public class WSDLTest extends BaseTestCase
   public void testEmpty()
   {
     String testname = "Empty";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl-log";
     
@@ -331,7 +331,7 @@ public class WSDLTest extends BaseTestCase
   public void testSOAPBodyEncodedNoNamespace()
   {
     String testname = "SOAPBodyEncodedNoNamespace";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl-log";
     
@@ -344,7 +344,7 @@ public class WSDLTest extends BaseTestCase
   public void testSOAPBodyEncodedWithNamespace()
   {
     String testname = "SOAPBodyEncodedWithNamespace";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "SelfContained/" + testname + ".wsdl-log";
     
@@ -357,7 +357,7 @@ public class WSDLTest extends BaseTestCase
   public void testNoDefaultNamespace()
   {
     String testname = "NoDefaultNamespace";
-    String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfContained/NoDefaultNamespace/" + testname + ".wsdl";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfContained/NoDefaultNamespace/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "SelfContained/NoDefaultNamespace/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "SelfContained/NoDefaultNamespace/" + testname + ".wsdl-log";
     
