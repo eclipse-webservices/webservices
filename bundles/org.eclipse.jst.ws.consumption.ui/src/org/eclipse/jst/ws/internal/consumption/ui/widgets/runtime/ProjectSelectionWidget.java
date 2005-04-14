@@ -53,6 +53,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   private String projectTypeId_ = EAR_PERMITTED_PROJECT_TYPE;
 
   private ModifyListener projectListener_;
+  private ModifyListener earListener_;
 
   private Listener statusListener_;
 
@@ -67,6 +68,9 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   private byte CREATE_EAR = (byte) 2;
 
   private byte ADD_EAR_ASSOCIATION = (byte) 4;
+  
+  private Text moduleProject_;
+  private Text earProject_;
 
   /*
    * CONTEXT_ID PWRS0006 for the service-side Web project combo box of the
@@ -100,31 +104,65 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 
     statusListener_ = statusListener;
     // project
-    projectListener_ = new ModifyListener() {
-
-      public void modifyText(ModifyEvent evt) {
-        handleSetEarProjects();
-        //        handleSetMessageText();
-      }
-    };
+    projectListener_ = new ModifyListener() 
+                       {
+                         public void modifyText(ModifyEvent evt) 
+	                     {
+                           handleSetEarProjects();
+		                   updateModuleProject();
+                          }
+                       };
     
-    if (isClient_){
-      project_ = uiUtils.createCombo(parent, "LABEL_CLIENT_PROJECT", "TOOLTIP_PWRS_COMBO_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER);
+	earListener_ = new ModifyListener()
+	               {
+	                 public void modifyText(ModifyEvent evt) 
+					 {
+					   updateEarProject();
+		             }
+	               };
+				   
+	
+    if (isClient_)
+	{
+	  moduleProject_ = uiUtils.createText(parent, "LABEL_CLIENT_PROJECT", "LABEL_CLIENT_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.READ_ONLY | SWT.BORDER );
+      project_ = uiUtils.createCombo(parent, "LABEL_CLIENT_MODULE", "LABEL_CLIENT_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER);
+	  earProject_ = uiUtils.createText(parent, "LABEL_CLIENT_EAR_PROJECT", "LABEL_CLIENT_EAR_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.READ_ONLY | SWT.BORDER );
+	  ear_ = uiUtils.createCombo(parent, "LABEL_CLIENT_EAR_MODULE", "LABEL_CLIENT_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER);
     }
-    else {
-      project_ = uiUtils.createCombo(parent, "LABEL_SERVICE_WEB_MODULE", "TOOLTIP_PWRS_COMBO_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER);
+    else 
+	{
+	  moduleProject_ = uiUtils.createText(parent, "LABEL_SERVICE_PROJECT", "LABEL_SERVICE_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.READ_ONLY | SWT.BORDER );
+      project_ = uiUtils.createCombo(parent, "LABEL_SERVICE_MODULE", "LABEL_SERVICE_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER);
+	  earProject_ = uiUtils.createText(parent, "LABEL_SERVICE_EAR_PROJECT", "LABEL_SERVICE_EAR_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.READ_ONLY | SWT.BORDER );
+	  ear_ = uiUtils.createCombo(parent, "LABEL_SERVICE_EAR_MODULE", "LABEL_SERVICE_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER);
     }
+	
     project_.addModifyListener(projectListener_);
-
-    ear_ = uiUtils.createCombo(parent, "LABEL_SERVICE_EAR_PROJECT", "TOOLTIP_PWRS_COMBO_PROJECT", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER);
-    //ear_.addModifyListener(earListener_);
+	
+    ear_.addModifyListener(earListener_);
     ear_.addListener(SWT.Modify, statusListener);
+	
     // message area
     messageText_ = uiUtils.createText(parent, "LABEL_NO_LABEL", "LABEL_NO_LABEL", null, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY);
     return this;
   }
 
-  public void setProjectChoices(SelectionListChoices projects) {
+  private void updateEarProject() 
+  {
+    String earModule = ear_.getText();
+	String earProject = earModule; // Some J2ee call here.
+	earProject_.setText( earProject );
+  }
+
+  private void updateModuleProject() 
+  {
+	String module        = project_.getText();
+	String moduleProject = module; // Some J2ee call here.
+	moduleProject_.setText( moduleProject );
+  }
+
+  public void setProjectChoices(SelectionListChoices projects) 
+  {
     projects_ = projects;
     SelectionList projectList = projects_.getList();
     // We remove listener here so that modifications to the Combo will
@@ -138,7 +176,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     project_.addListener(SWT.Modify, statusListener_);
 
     handleSetEarProjects();
-
+    updateEarProject();
+	updateModuleProject();
   }
 
   public SelectionListChoices getProjectChoices() {

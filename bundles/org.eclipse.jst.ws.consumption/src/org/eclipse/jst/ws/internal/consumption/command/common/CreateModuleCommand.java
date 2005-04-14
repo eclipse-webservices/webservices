@@ -13,11 +13,11 @@ public class CreateModuleCommand extends SimpleCommand
 	public static int APPCLIENT = 2;
 	public static int EAR = 3;
 	
-	private String projectName;
-	private String moduleName;
-	private int moduleType;;
-	private String j2eeLevel;
-	private String serverFactoryId;
+	private String   projectName;
+	private String   moduleName;
+	private int      moduleType;;
+	private String   j2eeLevel;
+	private String   serverFactoryId;
 	
 	public Status execute(Environment env)
 	{

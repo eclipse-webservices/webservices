@@ -49,6 +49,10 @@ public class PreServiceDevelopCommand extends SimpleCommand
 
   public Status execute(Environment environment) 
   {
+    // Split up the project and module
+    project_ = module_.substring(0,module_.indexOf("/"));
+    module_ = module_.substring(module_.indexOf("/")+1);
+    
 	  IWebServiceRuntime wsrt   = WebServiceRuntimeExtensionUtils.getWebServiceRuntime( typeRuntimeServer_.getRuntimeId() );
 	  WebServiceInfo     wsInfo = new WebServiceInfo();
 
@@ -151,11 +155,6 @@ public class PreServiceDevelopCommand extends SimpleCommand
   {
     return project_;	  
   }
-	
-  public void setProject( String project )
-  {
-	  project_ = project;
-  }
 	 
   public String getModule()
   {
@@ -170,11 +169,6 @@ public class PreServiceDevelopCommand extends SimpleCommand
   public String getEarProject()
   {
     return earProject_;	  
-  }
-	
-  public void setEarProject( String earProject )
-  {
-	  earProject_ = earProject;
   }
 	
   public String getEar()

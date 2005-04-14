@@ -31,6 +31,7 @@ public class AxisClientInputCommand extends SimpleCommand {
 	
 	private IWebServiceClient wsc_;
 	private String serverProject_; 
+	private String serverModule_;
 	private IContext context_;
 
 	  private String serviceServerTypeID_;
@@ -38,6 +39,7 @@ public class AxisClientInputCommand extends SimpleCommand {
 		private boolean generateProxy_ = true;
 		private JavaWSDLParameter javaWSDLParam_;
 		private String clientProject_ = null;
+		private String clientModule_ = null;
 		private String wsdlURL_;
 		private IServer clientExistingServer_;
 		private String clientServer_;
@@ -55,14 +57,15 @@ public class AxisClientInputCommand extends SimpleCommand {
 			setDescription( msgUtils_.getMessage(DESCRIPTION));
 		}
 		
-		public AxisClientInputCommand(IWebServiceClient wsc, IContext context, String module) {
+		public AxisClientInputCommand(IWebServiceClient wsc, IContext context, String project, String module) {
 			String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 		    setName (msgUtils_.getMessage(LABEL));
 			setDescription( msgUtils_.getMessage(DESCRIPTION));
 			wsc_ = wsc;
 			context_ = context;
-			clientProject_ = module; 
+			clientProject_ = project; 
+			clientModule_ = module;
 		}
 		
 	  public Status execute(Environment env)
@@ -89,6 +92,10 @@ public class AxisClientInputCommand extends SimpleCommand {
 
 	public String getWsdlURL() {
 		return wsdlURL_;
+	}
+
+	public String getClientModule() {
+		return clientModule_;
 	}
 	  
 		

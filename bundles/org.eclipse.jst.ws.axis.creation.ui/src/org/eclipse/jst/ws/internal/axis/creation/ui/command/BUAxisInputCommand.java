@@ -28,6 +28,7 @@ public class BUAxisInputCommand extends SimpleCommand {
 	
 	private IWebService ws_;
 	private String serverProject_; 
+	private String serverModule_;
 
 	  private String serviceServerTypeID_;
 	  
@@ -43,14 +44,14 @@ public class BUAxisInputCommand extends SimpleCommand {
 			setDescription( msgUtils_.getMessage(DESCRIPTION));
 		}
 		
-		public BUAxisInputCommand(IWebService ws, String module) {
+		public BUAxisInputCommand(IWebService ws, String project, String module) {
 			String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 		    setName (msgUtils_.getMessage(LABEL));
 			setDescription( msgUtils_.getMessage(DESCRIPTION));
 			ws_ = ws;
-			serverProject_ = module; 
-		}
+			serverProject_ = project; 
+			serverModule_ = module;	}
 		
 	  public Status execute(Environment env)
 	  {
@@ -90,4 +91,8 @@ public class BUAxisInputCommand extends SimpleCommand {
 		  {
 		    return serviceServerTypeID_;
 		  }
+
+		public String getServerModule() {
+			return serverModule_;
+		}
 }

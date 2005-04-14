@@ -23,7 +23,9 @@ public abstract class AbstractServiceFragment extends CommandFactoryFragment
   protected Environment environment_;
   protected IContext    context_;
   protected ISelection  selection_;
+  protected String      project_;
   protected String      module_;
+  protected String      earProject_;
   protected String      ear_;
     
   public AbstractServiceFragment()
@@ -62,9 +64,19 @@ public abstract class AbstractServiceFragment extends CommandFactoryFragment
 	selection_ = selection;  
   }
   
+  public void setProject( String project)
+  {
+    project_ = project;
+  }
+  
   public void setModule( String module )
   {
 	module_ = module;
+  }
+  
+  public void setEarProject(String earProject)
+  {
+    earProject_ = earProject;  
   }
   
   public void setEar( String ear )

@@ -42,7 +42,7 @@ public class AssembleServiceFragment extends AbstractServiceFragment
 	}
 	else
 	{
-	  factory = webService_.assemble( environment_, context_, selection_, module_, ear_ );	
+	  factory = webService_.assemble( environment_, context_, selection_, project_, module_, earProject_, ear_ );	
 	}
 	
 	return factory;

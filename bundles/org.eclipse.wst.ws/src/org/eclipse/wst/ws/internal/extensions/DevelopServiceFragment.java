@@ -42,7 +42,7 @@ public class DevelopServiceFragment extends AbstractServiceFragment
 	}
 	else
 	{
-	  factory = webService_.develop( environment_, context_, selection_, module_, ear_ );	
+	  factory = webService_.develop( environment_, context_, selection_, project_, module_, earProject_, ear_ );	
 	}
 	
 	return factory;

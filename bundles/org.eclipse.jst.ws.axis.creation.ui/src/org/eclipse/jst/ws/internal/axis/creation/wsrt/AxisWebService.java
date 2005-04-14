@@ -60,19 +60,19 @@ public class AxisWebService extends AbstractWebService
 	}
 
 	public ICommandFactory assemble(Environment env, IContext ctx,
-			ISelection sel, String module, String ear)
+			ISelection sel, String project, String module, String earProject, String ear)
 	{
 		return null;
 	}
 
 	public ICommandFactory deploy(Environment env, IContext ctx, ISelection sel,
-			String module, String ear)
+			String project, String module, String earProject, String ear)
 	{
 		return null;
 	}
 
 	public ICommandFactory develop(Environment env, IContext ctx, ISelection sel,
-			String module, String ear)
+			String project, String module, String earProject, String ear)
 	{
 		
 		Vector commands = new Vector();
@@ -81,7 +81,7 @@ public class AxisWebService extends AbstractWebService
 			
 			registerBUDataMappings( env.getCommandManager().getMappingRegistry());
 			
-			commands.add(new BUAxisInputCommand(this, module));
+			commands.add(new BUAxisInputCommand(this, project, module));
 			commands.add(new ValidateObjectSelectionCommand());
 			commands.add(new BUAxisDefaultingCommand());
 			commands.add(new WSINonCompliantRuntimeCommand());
@@ -109,7 +109,7 @@ public class AxisWebService extends AbstractWebService
 			
 			registerTDDataMappings( env.getCommandManager().getMappingRegistry());
 			
-			commands.add(new TDAxisInputCommand(this, module));
+			commands.add(new TDAxisInputCommand(this, project, module));
 			commands.add(new AxisSkeletonDefaultingCommand());
 		    commands.add(new ValidateWSDLCommand());
 		    commands.add(new SkeletonConfigWidgetDefaultingCommand());
@@ -138,21 +138,21 @@ public class AxisWebService extends AbstractWebService
 	}
 
 	public ICommandFactory install(Environment env, IContext ctx, ISelection sel,
-			String module, String ear)
+			String project, String module, String earProject, String ear)
 	{
 		return null;
 	}
 
 	public ICommandFactory run(Environment env, IContext ctx, ISelection sel,
-			String module, String ear)
+			String project, String module, String earProject, String ear)
 	{
 		Vector commands = new Vector();
 		if (ctx.getScenario().getValue() == WebServiceScenario.BOTTOMUP) {
-			commands.add(new AxisRunInputCommand(this, module));
+			commands.add(new AxisRunInputCommand(this, project, module));
 			commands.add(new AxisDeployCommand());
 			commands.add(new RefreshProjectCommand());
 		} else if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
-			commands.add(new AxisRunInputCommand(this, module));
+			commands.add(new AxisRunInputCommand(this, project, module));
 			commands.add(new AxisDeployCommand());
 			commands.add(new RefreshProjectCommand());
 			commands.add(new OpenJavaEditorCommand());

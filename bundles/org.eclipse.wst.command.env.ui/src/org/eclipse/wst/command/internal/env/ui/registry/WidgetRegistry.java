@@ -63,9 +63,11 @@ public class WidgetRegistry
 	  }
 	  catch( CoreException exc )
 	  {
+	    exc.printStackTrace();
 	  }
 	  catch( Throwable exc )
 	  {
+		exc.printStackTrace();
 	  }
 	}
 	

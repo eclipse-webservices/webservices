@@ -95,9 +95,11 @@ public final class J2EEUtils {
 		StructureEdit mc = null;
 		try {
 			mc = StructureEdit.getStructureEditForRead(p);
-			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			if (wbcs.length!=0) {
-//				j2eeVer = getWebModuleJ2EEVersion(wbcs[0]);
+			if (mc != null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+				if (wbcs.length != 0) {
+					// j2eeVer = getWebModuleJ2EEVersion(wbcs[0]);
+				}
 			}
 		}
 		catch (Exception e){
@@ -121,11 +123,13 @@ public final class J2EEUtils {
 		StructureEdit mc = null;
 		try {
 			mc = StructureEdit.getStructureEditForRead(p);
-			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			
-			for (int i=0;i<wbcs.length;i++){
-				if (wbcs[i].getName().equals(componentName)){
-					j2eeVer = getComponentJ2EEVersion(p, wbcs[i]);
+			if (mc != null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+
+				for (int i = 0; i < wbcs.length; i++) {
+					if (wbcs[i].getName().equals(componentName)) {
+						j2eeVer = getComponentJ2EEVersion(p, wbcs[i]);
+					}
 				}
 			}
 			
@@ -308,11 +312,13 @@ public final class J2EEUtils {
 		String[] earComponents = new String[0];
 		try {
 			mc = StructureEdit.getStructureEditForRead(project);
-			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			earComponents = new String[wbcs.length];
-			for (int i=0;i<wbcs.length;i++){
-				if (isEARComponent(project, wbcs[i].getName()))
-					earComponents[i] = wbcs[i].getName();
+			if (mc != null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+				earComponents = new String[wbcs.length];
+				for (int i = 0; i < wbcs.length; i++) {
+					if (isEARComponent(project, wbcs[i].getName()))
+						earComponents[i] = wbcs[i].getName();
+				}
 			}
 		}
 		catch (Exception e){
@@ -337,13 +343,14 @@ public final class J2EEUtils {
 		String[] components = new String[0];
 		try {
 			mc = StructureEdit.getStructureEditForRead(project);
-			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			components = new String[wbcs.length];
-			for (int i=0;i<wbcs.length;i++){
-				if (isWebComponent(project, wbcs[i].getName()))
-					components[i] = wbcs[i].getName();
+			if (mc != null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+				components = new String[wbcs.length];
+				for (int i = 0; i < wbcs.length; i++) {
+					if (isWebComponent(project, wbcs[i].getName()))
+						components[i] = wbcs[i].getName();
+				}
 			}
-			
 		}
 		catch (Exception e){
 			//handle exception
@@ -1347,28 +1354,33 @@ public final class J2EEUtils {
 		IPath modulePath = null;
 		StructureEdit mc = null;
 		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-		  
-		  if (wbcs.length!=0) {
-//			WebArtifactEdit webEdit = null;
-//			try {
-//			  webEdit = WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
-//			  if (webEdit!=null){
-//				  IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
-//				  modulePath = webXMLPath.removeLastSegments(1);
-//				  System.out.println("WebModulePath/DDPath = "+modulePath);
-//			  }
-//			}
-//			finally{
-//				if (webEdit!=null)
-//					webEdit.dispose();
-//			}
-			IVirtualComponent component = ComponentCore.createComponent(project, wbcs[0].getName());
-			IVirtualFolder webInfDir = component.getFolder(new Path("/WEB-INF"));
-			modulePath = webInfDir.getWorkspaceRelativePath();
-			System.out.println("FirstWebInfPath = " +modulePath);
-		  }
+			mc = StructureEdit.getStructureEditForRead(project);
+			if (mc != null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+
+				if (wbcs.length != 0) {
+					// WebArtifactEdit webEdit = null;
+					// try {
+					// webEdit =
+					// WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
+					// if (webEdit!=null){
+					// IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
+					// modulePath = webXMLPath.removeLastSegments(1);
+					// System.out.println("WebModulePath/DDPath = "+modulePath);
+					// }
+					// }
+					// finally{
+					// if (webEdit!=null)
+					// webEdit.dispose();
+					// }
+					IVirtualComponent component = ComponentCore
+							.createComponent(project, wbcs[0].getName());
+					IVirtualFolder webInfDir = component.getFolder(new Path(
+							"/WEB-INF"));
+					modulePath = webInfDir.getWorkspaceRelativePath();
+					System.out.println("FirstWebInfPath = " + modulePath);
+				}
+			}
 		}
 		catch(Exception ex){}
 		finally{
@@ -1408,26 +1420,30 @@ public final class J2EEUtils {
 		IPath modulePath = null;
 		StructureEdit mc = null;
 		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-		  if (wbcs.length!=0) {
-//			WebArtifactEdit webEdit = null;
-//			try {
-//			  webEdit = WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
-//			  if (webEdit!=null){
-//				  IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
-//				  modulePath = webXMLPath.removeLastSegments(2);
-//				  System.out.println("WebContent Path = "+modulePath);
-//			  }
-//			}
-//			finally{
-//				if (webEdit!=null)
-//					webEdit.dispose();
-//			}
-			IVirtualComponent component = ComponentCore.createComponent(project, wbcs[0].getName());
-			modulePath = component.getWorkspaceRelativePath();
-			System.out.println("FirstWebContentPath = " +modulePath);
-		  }
+			mc = StructureEdit.getStructureEditForRead(project);
+			if (mc != null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+				if (wbcs.length != 0) {
+					// WebArtifactEdit webEdit = null;
+					// try {
+					// webEdit =
+					// WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
+					// if (webEdit!=null){
+					// IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
+					// modulePath = webXMLPath.removeLastSegments(2);
+					// System.out.println("WebContent Path = "+modulePath);
+					// }
+					// }
+					// finally{
+					// if (webEdit!=null)
+					// webEdit.dispose();
+					// }
+					IVirtualComponent component = ComponentCore
+							.createComponent(project, wbcs[0].getName());
+					modulePath = component.getWorkspaceRelativePath();
+					System.out.println("FirstWebContentPath = " + modulePath);
+				}
+			}
 		}
 		catch(Exception ex){}
 		finally{
@@ -1500,12 +1516,14 @@ public final class J2EEUtils {
 		String moduleName = null;
 		StructureEdit mc = null;
 		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-		  if (wbcs.length!=0) {
-			  moduleName = wbcs[0].getName();
-			  System.out.println("First Module name = "+moduleName);
-		  }
+			mc = StructureEdit.getStructureEditForRead(project);
+			if (mc != null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+				if (wbcs.length != 0) {
+					moduleName = wbcs[0].getName();
+					System.out.println("First Module name = " + moduleName);
+				}
+			}
 		}
 		catch(Exception ex){}
 		finally{
@@ -1527,14 +1545,16 @@ public final class J2EEUtils {
 		boolean isWeb = false;
 		StructureEdit mc = null;
 		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-		  for(int i=0;i<wbcs.length;i++){
-			  if (wbcs[i].getName().equals(componentName)){
-				  isWeb = WebArtifactEdit.isValidWebModule(wbcs[i]);
-				  break;
-			  }
-		  }
+			mc = StructureEdit.getStructureEditForRead(project);
+			if (mc != null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+				for (int i = 0; i < wbcs.length; i++) {
+					if (wbcs[i].getName().equals(componentName)) {
+						isWeb = WebArtifactEdit.isValidWebModule(wbcs[i]);
+						break;
+					}
+				}
+			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -1562,14 +1582,16 @@ public final class J2EEUtils {
 		boolean isEAR = false;
 		StructureEdit mc = null;
 		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-		  for(int i=0;i<wbcs.length;i++){
-			  if (wbcs[i].getName().equals(componentName)){
-				  isEAR = EARArtifactEdit.isValidEARModule(wbcs[i]);
-				  break;
-			  }
-		  }
+			mc = StructureEdit.getStructureEditForRead(project);
+			if (mc != null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+				for (int i = 0; i < wbcs.length; i++) {
+					if (wbcs[i].getName().equals(componentName)) {
+						isEAR = EARArtifactEdit.isValidEARModule(wbcs[i]);
+						break;
+					}
+				}
+			}
 		}
 		catch(Exception ex){}
 		finally{
@@ -1594,14 +1616,16 @@ public final class J2EEUtils {
 		boolean isEJB = false;
 		StructureEdit mc = null;
 		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-		  for(int i=0;i<wbcs.length;i++){
-			  if (wbcs[i].getName().equals(componentName)){
-				  isEJB = EJBArtifactEdit.isValidEJBModule(wbcs[i]);
-				  break;
-			  }
-		  }
+			mc = StructureEdit.getStructureEditForRead(project);
+			if (mc != null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+				for (int i = 0; i < wbcs.length; i++) {
+					if (wbcs[i].getName().equals(componentName)) {
+						isEJB = EJBArtifactEdit.isValidEJBModule(wbcs[i]);
+						break;
+					}
+				}
+			}
 		}
 		catch(Exception ex){}
 		finally{
@@ -1626,14 +1650,17 @@ public final class J2EEUtils {
 		boolean isAppClient = false;
 		StructureEdit mc = null;
 		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-		  for(int i=0;i<wbcs.length;i++){
-			  if (wbcs[i].getName().equals(componentName)){
-				  isAppClient = AppClientArtifactEdit.isValidApplicationClientModule(wbcs[i]);
-				  break;
-			  }
-		  }
+			mc = StructureEdit.getStructureEditForRead(project);
+			if (mc != null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+				for (int i = 0; i < wbcs.length; i++) {
+					if (wbcs[i].getName().equals(componentName)) {
+						isAppClient = AppClientArtifactEdit
+								.isValidApplicationClientModule(wbcs[i]);
+						break;
+					}
+				}
+			}
 		}
 		catch(Exception ex){}
 		finally{
@@ -1658,14 +1685,16 @@ public final class J2EEUtils {
 		boolean isJava = false;
 		StructureEdit mc = null;
 		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-		  for(int i=0;i<wbcs.length;i++){
-			  if (wbcs[i].getName().equals(componentName)){
-				  isJava = ArtifactEdit.isValidEditableModule(wbcs[i]);
-				  break;
-			  }
-		  }
+			mc = StructureEdit.getStructureEditForRead(project);
+			if (mc != null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+				for (int i = 0; i < wbcs.length; i++) {
+					if (wbcs[i].getName().equals(componentName)) {
+						isJava = ArtifactEdit.isValidEditableModule(wbcs[i]);
+						break;
+					}
+				}
+			}
 		}
 		catch(Exception e){
 			e.printStackTrace();

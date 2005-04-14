@@ -42,7 +42,7 @@ public class DeployServiceFragment extends AbstractServiceFragment
 	}
 	else
 	{
-	  factory = webService_.deploy( environment_, context_, selection_, module_, ear_ );	
+	  factory = webService_.deploy( environment_, context_, selection_, project_, module_, earProject_, ear_ );	
 	}
 	
 	return factory;

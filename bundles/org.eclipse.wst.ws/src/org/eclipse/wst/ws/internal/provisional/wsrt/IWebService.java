@@ -21,9 +21,9 @@ public interface IWebService {
 	 */
 	public WebServiceInfo getWebServiceInfo();
 	
-	public ICommandFactory develop(Environment env, IContext ctx, ISelection sel, String module, String ear);
-	public ICommandFactory deploy(Environment env, IContext ctx, ISelection sel, String module, String ear);
-	public ICommandFactory assemble(Environment env, IContext ctx, ISelection sel, String module, String ear);
-	public ICommandFactory install(Environment env, IContext ctx, ISelection sel, String module, String ear);
-	public ICommandFactory run(Environment env, IContext ctx, ISelection sel, String module, String ear);
+	public ICommandFactory develop(Environment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
+	public ICommandFactory deploy(Environment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
+	public ICommandFactory assemble(Environment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
+	public ICommandFactory install(Environment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
+	public ICommandFactory run(Environment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
 }

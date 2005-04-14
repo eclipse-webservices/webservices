@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
@@ -96,7 +101,25 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
    */
   public String getServerProject()
   {
-    return serviceChoices_.getList().getSelection();
+	String   projectName       = serviceChoices_.getList().getSelection();
+	
+    return getModuleProjectName( projectName ); 
+  }
+  
+  private String getModuleProjectName( String projectName )
+  {
+	String result = "";
+	
+	if( projectName != null && !projectName.equals("") )
+	{
+	  IPath    projectPath = new Path( projectName );
+	  IProject project     = (IProject)ResourceUtils.findResource( projectPath );
+	  String   moduleName  = J2EEUtils.getFirstWebModuleName( project );
+	  
+	  result = projectName + "/" + moduleName;
+	}
+	
+	return result;
   }
 
   /**
@@ -104,7 +127,9 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
    */
   public String getServerProjectEAR()
   {
-    return serviceChoices_.getChoice().getList().getSelection();
+    String earName = serviceChoices_.getChoice().getList().getSelection();
+	
+	return getModuleProjectName( earName );
   }
 
   /**

@@ -28,6 +28,7 @@ public class TDAxisInputCommand extends SimpleCommand {
 	
 	private IWebService ws_;
 	private String serverProject_; 
+	private String serverModule_;
 
 	  private String serverServer_;
 	  private String wsdlURI_;
@@ -44,13 +45,14 @@ public class TDAxisInputCommand extends SimpleCommand {
 			setDescription( msgUtils_.getMessage(DESCRIPTION));
 		}
 		
-		public TDAxisInputCommand(IWebService ws, String module) {
+		public TDAxisInputCommand(IWebService ws, String project, String module) {
 			String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 		    setName (msgUtils_.getMessage(LABEL));
 			setDescription( msgUtils_.getMessage(DESCRIPTION));
 			ws_ = ws;
-			serverProject_ = module; 
+			serverProject_ = project;
+			serverModule_ = module;
 		}
 		
 	  public Status execute(Environment env)
@@ -80,5 +82,9 @@ public class TDAxisInputCommand extends SimpleCommand {
 
 		public String getWsdlURI() {
 			return wsdlURI_;
+		}
+
+		public String getServerModule() {
+			return serverModule_;
 		}
 }

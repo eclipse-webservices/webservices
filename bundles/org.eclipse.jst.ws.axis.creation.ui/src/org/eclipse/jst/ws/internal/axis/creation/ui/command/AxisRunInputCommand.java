@@ -29,6 +29,7 @@ public class AxisRunInputCommand extends SimpleCommand{
 	private AxisWebService ws_;
 	private JavaWSDLParameter javaWSDLParam_;
 	private String serverProject_; 
+	private String serverModule_;
 	  
 	private MessageUtils msgUtils_;
 	
@@ -39,13 +40,14 @@ public class AxisRunInputCommand extends SimpleCommand{
 		setDescription( msgUtils_.getMessage(DESCRIPTION));
 	}
 	
-	public AxisRunInputCommand(AxisWebService ws, String module) {
+	public AxisRunInputCommand(AxisWebService ws, String project, String module) {
 		String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	    setName (msgUtils_.getMessage(LABEL));
 		setDescription( msgUtils_.getMessage(DESCRIPTION));
 		ws_ = ws;
-		serverProject_ = module; 
+		serverProject_ = project; 
+		serverModule_ = module;
 	}
 	
 	 public Status execute(Environment env)

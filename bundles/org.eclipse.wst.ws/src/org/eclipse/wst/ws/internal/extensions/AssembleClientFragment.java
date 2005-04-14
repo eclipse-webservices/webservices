@@ -42,7 +42,7 @@ public class AssembleClientFragment extends AbstractClientFragment
 	}
 	else
 	{
-	  factory = webServiceClient_.assemble( environment_, context_, selection_, module_, ear_ );	
+	  factory = webServiceClient_.assemble( environment_, context_, selection_, project_, module_, earProject_, ear_ );	
 	}
 	
 	return factory;

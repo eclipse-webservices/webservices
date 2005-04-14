@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.context.ResourceContext;
@@ -103,7 +108,9 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
    */
   public String getClientProject()
   {
-    return clientChoices_.getChoice().getChoice().getList().getSelection();
+    String projectName = clientChoices_.getChoice().getChoice().getList().getSelection();
+	
+	return getModuleProjectName( projectName );
   }
 
   /**
@@ -111,7 +118,25 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
    */
   public String getClientProjectEAR()
   {
-    return clientChoices_.getChoice().getChoice().getChoice().getList().getSelection();
+    String projectName = clientChoices_.getChoice().getChoice().getChoice().getList().getSelection();
+	
+	return getModuleProjectName( projectName );	
+  }
+  
+  private String getModuleProjectName( String projectName )
+  {
+	String result = "";
+	
+	if( projectName != null && !projectName.equals("") )
+	{
+	  IPath    projectPath = new Path( projectName );
+	  IProject project     = (IProject)ResourceUtils.findResource( projectPath );
+	  String   moduleName  = J2EEUtils.getFirstWebModuleName( project );
+	  
+	  result = projectName + "/" + moduleName;
+	}
+	
+	return result;
   }
 
   /**

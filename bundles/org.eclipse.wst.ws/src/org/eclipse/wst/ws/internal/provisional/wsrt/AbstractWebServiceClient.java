@@ -29,22 +29,22 @@ public abstract class AbstractWebServiceClient implements IWebServiceClient {
 	}
 
 	public abstract ICommandFactory assemble(Environment env, IContext ctx, ISelection sel,
-			String module, String ear);
+      String project, String module, String earProject, String ear);
 	
 
 	public abstract ICommandFactory deploy(Environment env, IContext ctx, ISelection sel,
-			String module, String ear);
+      String project, String module, String earProject, String ear);
 	
 
 	public abstract ICommandFactory develop(Environment env, IContext ctx, ISelection sel,
-			String module, String ear);
+      String project, String module, String earProject, String ear);
 		
 
 	public abstract ICommandFactory install(Environment env, IContext ctx, ISelection sel,
-			String module, String ear);
+      String project, String module, String earProject, String ear);
 	
 
 	public abstract ICommandFactory run(Environment env, IContext ctx, ISelection sel,
-			String module, String ear);
+      String project, String module, String earProject, String ear);
 }
 

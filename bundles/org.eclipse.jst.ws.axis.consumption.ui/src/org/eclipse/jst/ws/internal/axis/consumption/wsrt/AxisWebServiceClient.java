@@ -37,24 +37,24 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 	}
 
 	public ICommandFactory assemble(Environment env, IContext ctx,
-			ISelection sel, String module, String ear)
+			ISelection sel, String project, String module, String earProject, String ear)
 	{
 		return null;
 	}
 
 	public ICommandFactory deploy(Environment env, IContext ctx, ISelection sel,
-			String module, String ear)
+			String project, String module, String earProject, String ear)
 	{
 		return null;
 	}
 
 	public ICommandFactory develop(Environment env, IContext ctx, ISelection sel,
-			String module, String ear)
+			String project, String module, String earProject, String ear)
 	{
 		registerDataMappings( env.getCommandManager().getMappingRegistry());
 		
 		Vector commands = new Vector();
-		commands.add(new AxisClientInputCommand(this, ctx, module));
+		commands.add(new AxisClientInputCommand(this, ctx, project, module));
 		commands.add(new AxisClientDefaultingCommand());
 //		commands.add(new SimpleFragment("AxisClientStart"));
 //		commands.add(new SimpleFragment("AxisClientBeanMapping"));
@@ -71,13 +71,13 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 	}
 
 	public ICommandFactory install(Environment env, IContext ctx, ISelection sel,
-			String module, String ear)
+			String project, String module, String earProject, String ear)
 	{
 		return null;
 	}
 
 	public ICommandFactory run(Environment env, IContext ctx, ISelection sel,
-			String module, String ear)
+			String project, String module, String earProject, String ear)
 	{
 		return null;
 	}

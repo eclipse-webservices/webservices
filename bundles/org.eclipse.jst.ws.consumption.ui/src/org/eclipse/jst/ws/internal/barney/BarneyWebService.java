@@ -23,7 +23,7 @@ public class BarneyWebService extends AbstractWebService
 	}
 
 	public ICommandFactory assemble(Environment env, IContext ctx,
-			ISelection sel, String module, String ear)
+			ISelection sel, String project, String module, String earProject, String ear)
 	{
 		Vector commands = new Vector();
 		commands.add(new TestCommand3(this));
@@ -31,7 +31,7 @@ public class BarneyWebService extends AbstractWebService
 	}
 
 	public ICommandFactory deploy(Environment env, IContext ctx, ISelection sel,
-			String module, String ear)
+      String project, String module, String earProject, String ear)
 	{
 		Vector commands = new Vector();
 		commands.add(new TestCommand4(this));
@@ -39,7 +39,7 @@ public class BarneyWebService extends AbstractWebService
 	}
 
 	public ICommandFactory develop(Environment env, IContext ctx, ISelection sel,
-			String module, String ear)
+      String project, String module, String earProject, String ear)
 	{
 		Vector commands = new Vector();
 		commands.add(new TestCommand1(this));
@@ -48,7 +48,7 @@ public class BarneyWebService extends AbstractWebService
 	}
 
 	public ICommandFactory install(Environment env, IContext ctx, ISelection sel,
-			String module, String ear)
+      String project, String module, String earProject, String ear)
 	{
 		Vector commands = new Vector();
 		commands.add(new TestCommand5(this));
@@ -56,7 +56,7 @@ public class BarneyWebService extends AbstractWebService
 	}
 
 	public ICommandFactory run(Environment env, IContext ctx, ISelection sel,
-			String module, String ear)
+      String project, String module, String earProject, String ear)
 	{
 		Vector commands = new Vector();
 		commands.add(new TestCommand6(this));
