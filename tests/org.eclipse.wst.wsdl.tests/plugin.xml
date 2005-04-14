@@ -18,6 +18,7 @@
       <import plugin="org.eclipse.xsd"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.junit"/>
+      <import plugin="org.wsdl4j"/>
       <import plugin="org.eclipse.wst.common.uriresolver"/>
    </requires>
 
