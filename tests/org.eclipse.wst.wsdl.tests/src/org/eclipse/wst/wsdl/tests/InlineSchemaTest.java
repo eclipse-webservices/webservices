@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Types;
+import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
@@ -108,6 +109,7 @@ public class InlineSchemaTest extends TestCase
     try
     {
       Definition definition = DefinitionLoader.load("./samples/LoadAndPrintTest.wsdl");
+      //Definition definition = DefinitionLoader.load("./samples/getBalanceBinding.wsdl");
       traverseDefinition(definition);
     }
     catch (Exception e)
@@ -132,7 +134,14 @@ public class InlineSchemaTest extends TestCase
   public void traverseDefinition(Definition definition) throws Exception
   {
     Assert.assertNotNull(definition);
-      
+    
+    Iterator iter = definition.getEImports().iterator();
+    while (iter.hasNext())
+    {
+      Import myImport = (Import)iter.next();
+      //traverseImport(myImport);
+    }    
+    
     // Get Inline Schema
     Types types = (org.eclipse.wst.wsdl.Types)definition.getTypes();
     Assert.assertNotNull("<types> is null",types);
@@ -146,6 +155,12 @@ public class InlineSchemaTest extends TestCase
         traverseSchema(schema);
       }
     }  	
+  }
+  
+  private void traverseImport(Import myImport) throws Exception
+  {
+    Definition def = myImport.getEDefinition();
+    traverseDefinition(def);
   }
   
   private void traverseSchema(XSDSchema schema)
@@ -193,7 +208,7 @@ public class InlineSchemaTest extends TestCase
   
   private Definition loadDefinition(String wsdlFile) throws IOException
   {
-    return DefinitionLoader.load("./PTATimeDistribution.wsdl");
+    return DefinitionLoader.load(wsdlFile);
   }
   
   private Definition loadDefinitionForWSDL4J(String wsdlFile) throws Exception

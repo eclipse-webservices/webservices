@@ -312,6 +312,8 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     BindingInput myInput = factory.createBindingInput();
     myInput.setDocumentationElement(input.getDocumentationElement());    
     myInput.setName(input.getName());
+    myInput.setInput(input.getInput());
+    myInput.setEInput(input.getEInput());
     currentBindingOperation.setEBindingInput(myInput);
     
     super.visitBindingInput(input);
@@ -322,6 +324,8 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     BindingOutput myOutput = factory.createBindingOutput();
     myOutput.setDocumentationElement(output.getDocumentationElement());   
     myOutput.setName(output.getName());
+    myOutput.setOutput(output.getOutput());
+    myOutput.setEOutput(output.getEOutput());
     currentBindingOperation.setEBindingOutput(myOutput);
     
     super.visitBindingOutput(output);
@@ -332,6 +336,8 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     BindingFault myFault = factory.createBindingFault();
     myFault.setDocumentationElement(fault.getDocumentationElement());   
     myFault.setName(fault.getName());
+    myFault.setEFault(fault.getEFault());
+    myFault.setFault(fault.getFault());
     currentBindingOperation.getEBindingFaults().add(myFault);
     
     super.visitBindingFault(fault); 
@@ -362,6 +368,12 @@ public class WSDLEMFAPITest extends DefinitionVisitor
 
   protected void visitExtensibilityElement(ExtensibleElement owner, ExtensibilityElement extensibilityElement)
   {
+    ExtensibilityElement myEE = factory.createExtensibilityElement();
+    myEE.setElementType(extensibilityElement.getElementType());
+    myEE.setRequired(extensibilityElement.getRequired());
+    myEE.setRequired(extensibilityElement.isRequired());
+    owner.addExtensibilityElement(myEE);
+    
     if (extensibilityElement instanceof SOAPBody)
       visitSOAPBody((SOAPBody)extensibilityElement);
     else if (extensibilityElement instanceof SOAPBinding)
