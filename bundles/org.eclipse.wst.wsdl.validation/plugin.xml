@@ -28,6 +28,7 @@
       <import plugin="org.apache.xerces" export="true"/>
    </requires>
    
+   <!--
    <extension point="org.eclipse.wst.common.dependencychecker.requiredFiles">
       <requiredFile
             pluginRelativePath="lib/qname.jar"
@@ -36,6 +37,7 @@
             pluginRelativePath="lib/wsdl4j.jar"
             locationURL="http://prdownloads.sourceforge.net/wsdl4j/wsdl4j-bin-1.4.zip?download"/>
    </extension>
+   -->
 
    <!-- WSDL extension validator. This is an extension that will run
         after WSDL validation if WSDL validation is successful.  -->
