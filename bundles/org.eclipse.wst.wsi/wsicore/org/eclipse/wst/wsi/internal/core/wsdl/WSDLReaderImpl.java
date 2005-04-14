@@ -11,6 +11,8 @@
 package org.eclipse.wst.wsi.internal.core.wsdl;
 
 import org.apache.xerces.dom.ElementImpl;
+import org.eclipse.wst.wsi.internal.core.WSIException;
+import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
 import org.eclipse.wst.wsi.internal.core.xml.dom.ElementLocation;
 
 import com.ibm.wsdl.*;
@@ -51,12 +53,27 @@ public class WSDLReaderImpl extends com.ibm.wsdl.xml.WSDLReaderImpl
     Map importedDefs)
     throws WSDLException
   {
-    Definition def =
+	  Definition def = null;
+	ClassLoader currentLoader = Thread.currentThread().getContextClassLoader();   
+	try
+	{
+   	  Thread.currentThread().setContextClassLoader(WSDLReaderImpl.class.getClassLoader());   
+	
+      def =
       super.parseDefinitions(documentBaseURI, defEl, importedDefs);
 
     // Try to add element to list
     addElementToList(defEl, def);
 
+
+	}
+catch (Exception e)
+	{
+	}
+    finally
+    { 
+      Thread.currentThread().setContextClassLoader(currentLoader);
+    }  
     return def;
   }
 

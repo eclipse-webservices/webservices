@@ -394,7 +394,7 @@ public interface WSIConstants {
 	// Conformance Report";
 	public static final String DEFAULT_REPORT_TITLE = "WS-I Basic Profile Conformance Report.";
 
-	public static final String DEFAULT_TEST_ASSERTIONS_DOCUMENT_URI = "../common/profiles/SSBP10_BP11_TAD.xml";
+	public static final String DEFAULT_TEST_ASSERTIONS_DOCUMENT_URI = "http://www.ws-i.org/Testing/Tools/2004/12/AP10_BP11_SSBP10_TAD.xml";
 
 	public static final String DEFAULT_LOG_XSL = "../common/xsl/log.xsl";
 

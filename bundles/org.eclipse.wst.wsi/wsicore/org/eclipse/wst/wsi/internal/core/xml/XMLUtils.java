@@ -303,41 +303,46 @@ public final class XMLUtils
 	public static Document parseXML(InputSource source, boolean validate)
 			throws WSIException {
 		Document doc = null;
-
-		// Get the document factory
-		DocumentBuilderFactory factory = new org.eclipse.wst.wsi.internal.core.xml.jaxp.DocumentBuilderFactoryImpl();
-
-		// Set namespace aware, but for now do not validate
-		factory.setNamespaceAware(true);
-		factory.setIgnoringElementContentWhitespace(true);
-
-		// ADD: This should be set to true when we have access to the schema
-		// document
-		factory.setValidating(validate);
-
+		ClassLoader currentLoader = Thread.currentThread().getContextClassLoader();   
 		try
 		{
-			// Parse the document
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			doc = builder.parse(source);
-			// workaround for compatibility Xerces 2.2.1 with Xerces 2.6.2,
-			// Xerces 2.6.2 supported XML 1.1 but WSI-tool and Xerces 2.2.1
-			// supported only XML 1.0
-			if (doc instanceof org.apache.xerces.dom.DocumentImpl)
-			{
-				if (((org.apache.xerces.dom.DocumentImpl) doc).getXmlVersion().equals(
-						"1.1"))
-				{
-					throw new WSIException("Fatal Error: XML version &quot;1.1&quot; "
-							+ "is not supported, only XML 1.0 is supported.");
-				}
-			}
-		}
+    	  Thread.currentThread().setContextClassLoader(XMLUtils.class.getClassLoader());   
 
+  		  // Get the document factory
+		  DocumentBuilderFactory factory = new org.eclipse.wst.wsi.internal.core.xml.jaxp.DocumentBuilderFactoryImpl();
+
+		  // Set namespace aware, but for now do not validate
+		  factory.setNamespaceAware(true);
+		  factory.setIgnoringElementContentWhitespace(true);
+
+		  // ADD: This should be set to true when we have access to the schema
+		  // document
+		  factory.setValidating(false);
+
+ 		  // Parse the document
+		  DocumentBuilder builder = factory.newDocumentBuilder();
+		  doc = builder.parse(source);
+		  // workaround for compatibility Xerces 2.2.1 with Xerces 2.6.2,
+		  // Xerces 2.6.2 supported XML 1.1 but WSI-tool and Xerces 2.2.1
+		  // supported only XML 1.0
+		  if (doc instanceof org.apache.xerces.dom.DocumentImpl)
+		  {
+			if (((org.apache.xerces.dom.DocumentImpl) doc).getXmlVersion().equals(
+						"1.1"))
+			{
+				throw new WSIException("Fatal Error: XML version &quot;1.1&quot; "
+						+ "is not supported, only XML 1.0 is supported.");
+			}
+		  }
+		}
 		catch (Exception e)
 		{
 			throw new WSIException("Could not parse XML document.", e);
 		}
+	    finally
+	    { 
+	      Thread.currentThread().setContextClassLoader(currentLoader);
+	    }    
 
 		// Return document
 		return doc;
@@ -372,7 +377,7 @@ public final class XMLUtils
 
 		  // ADD: This should be set to true when we have access to the schema
 		  // document
-		  factory.setValidating(validate);
+		  factory.setValidating(false);
 
 		  // Parse the document
 		  DocumentBuilder builder = factory.newDocumentBuilder();
@@ -493,7 +498,7 @@ public final class XMLUtils
 
 		  try
 		  {
-		    factory.setValidating(true);
+		    factory.setValidating(false);
 			factory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
  		  }
    		  catch (IllegalArgumentException e)
@@ -546,54 +551,59 @@ public final class XMLUtils
 	public static Document parseXML(InputSource source, String schema)
 			throws WSIException {
 		Document doc = null;
-		// Get the document factory
-		DocumentBuilderFactory factory = new org.eclipse.wst.wsi.internal.core.xml.jaxp.DocumentBuilderFactoryImpl();
-
-		// Set namespace aware, but for now do not validate
-		factory.setNamespaceAware(true);
-		factory.setIgnoringElementContentWhitespace(true);
-
-		factory.setValidating(true);
+		ClassLoader currentLoader = Thread.currentThread().getContextClassLoader();   
 		try
 		{
-			factory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
-		}
+    	  Thread.currentThread().setContextClassLoader(XMLUtils.class.getClassLoader());   
+ 		  // Get the document factory
+		  DocumentBuilderFactory factory = new org.eclipse.wst.wsi.internal.core.xml.jaxp.DocumentBuilderFactoryImpl();
 
-		catch (IllegalArgumentException e)
-		{
+		  // Set namespace aware, but for now do not validate
+		  factory.setNamespaceAware(true);
+		  factory.setIgnoringElementContentWhitespace(true);
+
+		  factory.setValidating(false);
+		  try
+		  {
+			factory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
+		  }
+
+		  catch (IllegalArgumentException e)
+		  {
 			String errMessage = "Error: JAXP DocumentBuilderFactory attribute not recognized: "
 					+ JAXP_SCHEMA_LANGUAGE
 					+ "\n"
 					+ "Check to see if parser conforms to JAXP 1.2 spec.";
 			throw new WSIException(errMessage, e);
-		}
-		factory.setAttribute(JAXP_SCHEMA_SOURCE, new InputSource(schema));
+		  }
+		  factory.setAttribute(JAXP_SCHEMA_SOURCE, new InputSource(schema));
 
-		try
-		{
-			// Parse the document
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			builder.setErrorHandler(new ErrHandler());
-			doc = builder.parse(source);
+          // Parse the document
+		  DocumentBuilder builder = factory.newDocumentBuilder();
+		  builder.setErrorHandler(new ErrHandler());
+		  doc = builder.parse(source);
 
-			// workaround for compatibility Xerces 2.2.1 with Xerces 2.6.2,
-			// Xerces 2.6.2 supported XML 1.1 but WSI-tool and Xerces 2.2.1
-			// supported only XML 1.0
-			if (doc instanceof org.apache.xerces.dom.DocumentImpl)
-			{
-				if (((org.apache.xerces.dom.DocumentImpl) doc).getXmlVersion().equals(
+		  // workaround for compatibility Xerces 2.2.1 with Xerces 2.6.2,
+		  // Xerces 2.6.2 supported XML 1.1 but WSI-tool and Xerces 2.2.1
+		  // supported only XML 1.0
+		  if (doc instanceof org.apache.xerces.dom.DocumentImpl)
+		  {
+			if (((org.apache.xerces.dom.DocumentImpl) doc).getXmlVersion().equals(
 						"1.1"))
-				{
-					throw new WSIException("Fatal Error: XML version &quot;1.1&quot; "
-							+ "is not supported, only XML 1.0 is supported.");
-				}
+			{
+				throw new WSIException("Fatal Error: XML version &quot;1.1&quot; "
+						+ "is not supported, only XML 1.0 is supported.");
 			}
+		  }
 		}
-
 		catch (Exception e)
 		{
 			throw new WSIException("Could not parse XML document.", e);
 		}
+	    finally
+	    { 
+	      Thread.currentThread().setContextClassLoader(currentLoader);
+	    }    
 
 		// Return document
 		return doc;
@@ -612,40 +622,48 @@ public final class XMLUtils
 			throws WSIException {
 
 		Document doc = null;
-
-		// Create input source
-		InputSource inputSource = new InputSource(filename);
-
-		// Get the document factory
-		DocumentBuilderFactory factory = new org.eclipse.wst.wsi.internal.core.xml.jaxp.DocumentBuilderFactoryImpl();
-
-		// Set namespace aware, but for now do not validate
-		factory.setNamespaceAware(true);
-		factory.setIgnoringElementContentWhitespace(true);
-
-		factory.setValidating(true);
+		ClassLoader currentLoader = Thread.currentThread().getContextClassLoader();   
 		try
 		{
+    	  Thread.currentThread().setContextClassLoader(XMLUtils.class.getClassLoader());   
+
+		  // Create input source
+		  InputSource inputSource = new InputSource(filename);
+
+		  // Get the document factory
+		  DocumentBuilderFactory factory = new org.eclipse.wst.wsi.internal.core.xml.jaxp.DocumentBuilderFactoryImpl();
+
+		  // Set namespace aware, but for now do not validate
+		  factory.setNamespaceAware(true);
+		  factory.setIgnoringElementContentWhitespace(true);
+
+		  factory.setValidating(false);
+		  try
+		  {
 			factory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
-		} catch (IllegalArgumentException e)
-		{
+		  } catch (IllegalArgumentException e)
+		  {
 			String errMessage = "Error: JAXP DocumentBuilderFactory attribute not recognized: "
 					+ JAXP_SCHEMA_LANGUAGE
 					+ "\n"
 					+ "Check to see if parser conforms to JAXP 1.2 spec.";
 			throw new WSIException(errMessage, e);
+		  }
+		  factory.setAttribute(JAXP_SCHEMA_SOURCE, new InputSource(schemaString));
+
+		  // Parse the document
+		  DocumentBuilder builder = factory.newDocumentBuilder();
+		  builder.setErrorHandler(new ErrHandler());
+		  doc = builder.parse(inputSource);
 		}
-		factory.setAttribute(JAXP_SCHEMA_SOURCE, new InputSource(schemaString));
-		try
-		{
-			// Parse the document
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			builder.setErrorHandler(new ErrHandler());
-			doc = builder.parse(inputSource);
-		} catch (Exception e)
+		catch (Exception e)
 		{
 			throw new WSIException("Could not parse XML document.", e);
 		}
+	    finally
+	    { 
+	      Thread.currentThread().setContextClassLoader(currentLoader);
+	    }    
 
 		// Return document
 		return doc;
@@ -664,52 +682,59 @@ public final class XMLUtils
 			throws WSIException {
 
 		Document doc = null;
-
-		// Create input source
-		InputSource inputSource = new InputSource(filename);
-
-		// Get the document factory
-		DocumentBuilderFactory factory = new org.eclipse.wst.wsi.internal.core.xml.jaxp.DocumentBuilderFactoryImpl();
-
-		// Set namespace aware, but for now do not validate
-		factory.setNamespaceAware(true);
-		factory.setIgnoringElementContentWhitespace(true);
-
-		factory.setValidating(true);
+		ClassLoader currentLoader = Thread.currentThread().getContextClassLoader();   
 		try
 		{
+    	  Thread.currentThread().setContextClassLoader(XMLUtils.class.getClassLoader());   
+
+		  // Create input source
+		  InputSource inputSource = new InputSource(filename);
+
+		  // Get the document factory
+		  DocumentBuilderFactory factory = new org.eclipse.wst.wsi.internal.core.xml.jaxp.DocumentBuilderFactoryImpl();
+
+		  // Set namespace aware, but for now do not validate
+		  factory.setNamespaceAware(true);
+		  factory.setIgnoringElementContentWhitespace(true);
+
+		  factory.setValidating(false);
+		  try
+		  {
 			factory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
-		} catch (IllegalArgumentException e)
-		{
-			String errMessage = "Error: JAXP DocumentBuilderFactory attribute not recognized: "
+		  } catch (IllegalArgumentException e)
+		  {
+		    String errMessage = "Error: JAXP DocumentBuilderFactory attribute not recognized: "
 					+ JAXP_SCHEMA_LANGUAGE
 					+ "\n"
 					+ "Check to see if parser conforms to JAXP 1.2 spec.";
 			throw new WSIException(errMessage, e);
-		}
-		// convert schema strings to array of InputSources
-		Iterator i = schemaStrings.iterator();
-		Vector readers = new Vector();
-		while (i.hasNext())
-		{
+		  }
+		  // convert schema strings to array of InputSources
+		  Iterator i = schemaStrings.iterator();
+		  Vector readers = new Vector();
+		  while (i.hasNext())
+		  {
 			String nextSchema = (String) i.next();
 			readers.add(new InputSource(new StringReader(nextSchema)));
-		}
-		InputSource[] inputSources = (InputSource[]) readers
+		  }
+		  InputSource[] inputSources = (InputSource[]) readers
 				.toArray(new InputSource[]{});
-		// pass an array of schema strings (each of which contains a schema)
-		factory.setAttribute(JAXP_SCHEMA_SOURCE, inputSources);
+		  // pass an array of schema strings (each of which contains a schema)
+		  factory.setAttribute(JAXP_SCHEMA_SOURCE, inputSources);
 
-		try
-		{
-			// Parse the document
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			builder.setErrorHandler(new ErrHandler());
-			doc = builder.parse(inputSource);
-		} catch (Exception e)
+		  // Parse the document
+		  DocumentBuilder builder = factory.newDocumentBuilder();
+		  builder.setErrorHandler(new ErrHandler());
+		  doc = builder.parse(inputSource);
+		}
+		catch (Exception e)
 		{
 			throw new WSIException("Could not parse XML document.", e);
 		}
+	    finally
+	    { 
+	      Thread.currentThread().setContextClassLoader(currentLoader);
+	    }    
 
 		// Return document
 		return doc;
@@ -1278,6 +1303,8 @@ public final class XMLUtils
 			throw new IllegalArgumentException(
 					"Local part of the attribute name can not be NULL");
 
+		attributeName.getNamespaceURI();
+		attributeName.getLocalPart();
 		Attr a = el.getAttributeNodeNS(attributeName.getNamespaceURI(),
 				attributeName.getLocalPart());
 		if (a == null)

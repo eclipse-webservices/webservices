@@ -89,48 +89,58 @@ public class TargetNamespaceProcessor extends XMLSchemaProcessor
    */
   private List processAllSchema(Node node, String ctx) throws WSIException
   {
-    // if xsd:schema element is found -> process schema
-    if (XMLUtils.equals(node, ELEM_XSD_SCHEMA))
-    {
-      processSchema((Element) node);
-
-      Node n = node.getFirstChild();
-      while (n != null)
+	ClassLoader currentLoader = Thread.currentThread().getContextClassLoader();   
+	try
+	{
+   	  Thread.currentThread().setContextClassLoader(XMLUtils.class.getClassLoader());   
+	
+      // if xsd:schema element is found -> process schema
+      if (XMLUtils.equals(node, ELEM_XSD_SCHEMA))
       {
-        if (Node.ELEMENT_NODE == n.getNodeType()&& XMLUtils.equals(n, ELEM_XSD_IMPORT))
+        processSchema((Element) node);
+
+        Node n = node.getFirstChild();
+        while (n != null)
         {
-          Attr schemaLocation = XMLUtils.getAttribute((Element) n, ATTR_XSD_SCHEMALOCATION);
-
-          // Try to parse imported XSD
-          if (schemaLocation != null && schemaLocation.getValue() != null)
+          if (Node.ELEMENT_NODE == n.getNodeType()&& XMLUtils.equals(n, ELEM_XSD_IMPORT))
           {
-         	if (!schemaLocations.contains(schemaLocation.getValue()))
-          	{
-              schemaLocations.add(schemaLocation.getValue());
-              try
-              {
-                // Read and pParse the XML schema document
-                Document document = parseXMLDocumentURL(schemaLocation.getValue(), ctx, TestUtils.getXMLSchemaLocation());
-                processAllSchema(document.getDocumentElement(), XMLUtils.createURLString(schemaLocation.getValue(), ctx));
-              }
-              catch (WSIException e)
-              {
-                if (throwException) throw e;
-              }
-              catch (Throwable t)
-              {
-                // NOTE: An exception will occur if the XML schema file is not
-  			    // found or if it is not formatted correctly
-                if (throwException) throw new WSIException(t.getMessage(), t);
-              }
-            }
-          }
-        }
-        n = n.getNextSibling();
-      }
-    }
+            Attr schemaLocation = XMLUtils.getAttribute((Element) n, ATTR_XSD_SCHEMALOCATION);
 
-    // Return list created by the class that extends this class
-    return returnList;
-  }
+            // Try to parse imported XSD
+            if (schemaLocation != null && schemaLocation.getValue() != null)
+            {
+         	  if (!schemaLocations.contains(schemaLocation.getValue()))
+          	  {
+                schemaLocations.add(schemaLocation.getValue());
+                try
+                {
+                  // Read and pParse the XML schema document
+                  Document document = parseXMLDocumentURL(schemaLocation.getValue(), ctx, TestUtils.getXMLSchemaLocation());
+                  processAllSchema(document.getDocumentElement(), XMLUtils.createURLString(schemaLocation.getValue(), ctx));
+                }
+                catch (WSIException e)
+                {
+                  if (throwException) throw e;
+                }
+                catch (Throwable t)
+               {
+                 // NOTE: An exception will occur if the XML schema file is not
+  			     // found or if it is not formatted correctly
+                 if (throwException) throw new WSIException(t.getMessage(), t);
+               }
+             }
+           }
+         }
+         n = n.getNextSibling();
+       }
+     }
+
+     // Return list created by the class that extends this class
+     return returnList;
+    }
+    finally
+    { 
+      Thread.currentThread().setContextClassLoader(currentLoader);
+    }    
+}
 }

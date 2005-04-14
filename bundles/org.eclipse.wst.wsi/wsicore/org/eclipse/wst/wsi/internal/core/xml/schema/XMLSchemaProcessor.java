@@ -87,72 +87,83 @@ public abstract class XMLSchemaProcessor
    */
   private List processAllSchema(Node node, String ctx) throws WSIException
   {
-    // Process all nodes
-    while (node != null)
-    {
-      // If this is an element node, then continue
-      if (Node.ELEMENT_NODE == node.getNodeType())
+	ClassLoader currentLoader = Thread.currentThread().getContextClassLoader();   
+	try
+	{
+   	  Thread.currentThread().setContextClassLoader(XMLSchemaProcessor.class.getClassLoader());   
+      // Process all nodes
+      while (node != null)
       {
-        // if xsd:schema element is found -> process schema
-        if (XMLUtils.equals(node, ELEM_XSD_SCHEMA))
+        // If this is an element node, then continue
+        if (Node.ELEMENT_NODE == node.getNodeType())
         {
-          processSchema((Element) node);
-
-          // Process all children of the schema element
-          processAllSchema(node.getFirstChild(), ctx);
-        }
-
-        // if xsd:import element is found -> load schema and process schema
-        else if (XMLUtils.equals(node, ELEM_XSD_IMPORT))
-        {
-
-          Attr schemaLocation =
-            XMLUtils.getAttribute((Element) node, ATTR_XSD_SCHEMALOCATION);
-
-          // Try to parse imported XSD
-          if (schemaLocation != null && schemaLocation.getValue() != null)
+          // if xsd:schema element is found -> process schema
+          if (XMLUtils.equals(node, ELEM_XSD_SCHEMA))
           {
-          	if (!schemaLocations.contains(schemaLocation.getValue()))
-          	{
+            processSchema((Element) node);
+
+            // Process all children of the schema element
+            processAllSchema(node.getFirstChild(), ctx);
+          }
+
+          // if xsd:import element is found -> load schema and process schema
+          else if (XMLUtils.equals(node, ELEM_XSD_IMPORT))
+          {
+
+            Attr schemaLocation =
+              XMLUtils.getAttribute((Element) node, ATTR_XSD_SCHEMALOCATION);
+
+            // Try to parse imported XSD
+            if (schemaLocation != null && schemaLocation.getValue() != null)
+            {
+          	  if (!schemaLocations.contains(schemaLocation.getValue()))
+          	  {
           		schemaLocations.add(schemaLocation.getValue());
-              try
-              {
-                // Read and pParse the XML schema document
-                Document document =
-                  parseXMLDocumentURL(
-                    schemaLocation.getValue(),
-                    ctx,
-                    TestUtils.getXMLSchemaLocation());
+                try
+                {
+                  // Read and pParse the XML schema document
+                  Document document =
+                    parseXMLDocumentURL(
+                      schemaLocation.getValue(),
+                      ctx,
+                      TestUtils.getXMLSchemaLocation());
 
-                processAllSchema(document.getDocumentElement(),
-                    XMLUtils.createURLString(schemaLocation.getValue(), ctx));
-              }
-              catch (WSIException e)
-              {
-                if (throwException)
-                  throw e;
-              }
+                  processAllSchema(document.getDocumentElement(),
+                      XMLUtils.createURLString(schemaLocation.getValue(), ctx));
+                }
+                catch (WSIException e)
+                {
+                  if (throwException)
+                    throw e;
+                }
 
-              catch (Throwable t)
-              {
-                // NOTE: An exception will occur if the XML schema file is not found or if it is not formatted correctly
-                if (throwException)
-                  throw new WSIException(t.getMessage(), t);
+                catch (Throwable t)
+                {
+                  // NOTE: An exception will occur if the XML schema file is not found or if it is not formatted correctly
+                  if (throwException)
+                    throw new WSIException(t.getMessage(), t);
+                }
               }
             }
           }
+
+          else
+          {
+            // else iterate element recursively
+            processAllSchema(node.getFirstChild(), ctx);
+          }
         }
 
-        else
-        {
-          // else iterate element recursively
-          processAllSchema(node.getFirstChild(), ctx);
-        }
+        // Get next sibiling
+        node = node.getNextSibling();
       }
 
-      // Get next sibiling
-      node = node.getNextSibling();
     }
+    finally
+    { 
+      Thread.currentThread().setContextClassLoader(currentLoader);
+    }    
+
 
     // Return list created by the class that extends this class
     return returnList;

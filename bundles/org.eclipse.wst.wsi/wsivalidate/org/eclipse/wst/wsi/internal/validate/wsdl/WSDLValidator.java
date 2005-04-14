@@ -147,14 +147,14 @@ public class WSDLValidator implements IWSDLValidator
 	  {
 	  	WSIPreferences preferences = new WSIPreferences();
    	    preferences.setComplianceLevel(wsiLevel);
-	    preferences.setTADFile(WSITestToolsPlugin.getPlugin().getInstallURL() + WSITestToolsProperties.AP_ASSERTION_FILE);
+	    preferences.setTADFile(WSITestToolsProperties.AP_ASSERTION_FILE);
 	    wsdlAnalyzer = new WSDLAnalyzer(uri, preferences);
 	  }
 	  else if(withBasic)
 	  {
 	  	WSIPreferences preferences = new WSIPreferences();
 		preferences.setComplianceLevel(wsiLevel);	
-	    preferences.setTADFile(WSITestToolsPlugin.getPlugin().getInstallURL() + WSITestToolsProperties.SSBP_ASSERTION_FILE);
+	    preferences.setTADFile(WSITestToolsProperties.SSBP_ASSERTION_FILE);
 	    wsdlAnalyzer = new WSDLAnalyzer(uri, preferences);
 	  }
 	  else

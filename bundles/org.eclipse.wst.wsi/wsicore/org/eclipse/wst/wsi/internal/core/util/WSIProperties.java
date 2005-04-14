@@ -79,7 +79,7 @@ public final class WSIProperties
   /**
    * Default WSDL schema location.
    */
-  public static final String DEF_WSDL_SCHEMA = "common/schemas/wsdl11.xsd";
+  public static final String DEF_WSDL_SCHEMA = "http://schemas.xmlsoap.org/wsdl/";
 
   /**
    * Property that contains WSDL schema location.
@@ -90,7 +90,7 @@ public final class WSIProperties
    * Default WSDL SOAP schema location.
    */
   public static final String DEF_WSDL_SOAP_SCHEMA =
-    "common/schemas/wsdlsoap.xsd";
+    "http://schemas.xmlsoap.org/wsdl/soap/";
 
   /**
    * Property that contains WSDL SOAP schema location.
@@ -102,7 +102,7 @@ public final class WSIProperties
    * Default WSDL MIME schema location.
    */
   public static final String DEF_WSDL_MIME_SCHEMA =
-    "common/schemas/wsdlMime.xsd";
+    "http://schemas.xmlsoap.org/wsdl/mime/";
 
   /**
    * Property that contains WSDL SOAP schema location.
@@ -114,7 +114,7 @@ public final class WSIProperties
    * Default SOAP schema location.
    */
   public static final String DEF_SOAP_SCHEMA =
-    "common/schemas/soapEnvelope.xsd";
+    "http://schemas.xmlsoap.org/soap/envelope/";
 
   /**
    * Property that contains SOAP schema location.
@@ -124,7 +124,7 @@ public final class WSIProperties
   /**
    * Default SOAP schema location.
    */
-  public static final String DEF_XML_SCHEMA = "common/schemas/XMLSchema.xsd";
+  public static final String DEF_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema.xsd";
 
   /**
    * Property that contains SOAP schema location.

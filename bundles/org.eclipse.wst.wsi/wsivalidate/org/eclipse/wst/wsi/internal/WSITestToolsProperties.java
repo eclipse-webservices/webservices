@@ -35,8 +35,8 @@ public class WSITestToolsProperties
   protected static String tadfile = "";
 
   public final static String schemaDir = "common/schemas/";
-  public final static String SSBP_ASSERTION_FILE = "common/profiles/SSBP10_BP11_TAD.xml";
-  public final static String AP_ASSERTION_FILE = "common/profiles/AP10_BP11_SSBP10_TAD.xml";
+  public final static String SSBP_ASSERTION_FILE = "http://www.ws-i.org/Testing/Tools/2005/01/SSBP10_BP11_TAD_1-0.xml";
+  public final static String AP_ASSERTION_FILE = "http://www.ws-i.org/Testing/Tools/2004/12/AP10_BP11_SSBP10_TAD.xml";
   public final static String DEFAULT_ASSERTION_FILE = AP_ASSERTION_FILE;
   
   public static final String STOP_NON_WSI = "0";
@@ -127,27 +127,27 @@ public class WSITestToolsProperties
       
       if (APcontext.projectStopNonWSICompliances(project))
       {
-      	preferences.setTADFile(installURL + AP_ASSERTION_FILE);
+      	preferences.setTADFile(AP_ASSERTION_FILE);
         preferences.setComplianceLevel(PersistentWSIContext.STOP_NON_WSI);
       } 
       else if (APcontext.projectWarnNonWSICompliances(project))
       {
-      	preferences.setTADFile(installURL + AP_ASSERTION_FILE);
+      	preferences.setTADFile(AP_ASSERTION_FILE);
         preferences.setComplianceLevel(PersistentWSIContext.WARN_NON_WSI);
       }
       else if (SSBPcontext.projectStopNonWSICompliances(project))
       {
-      	preferences.setTADFile(installURL + SSBP_ASSERTION_FILE);
+      	preferences.setTADFile(SSBP_ASSERTION_FILE);
         preferences.setComplianceLevel(PersistentWSIContext.STOP_NON_WSI);
       }
       else if (SSBPcontext.projectWarnNonWSICompliances(project))
       {
-      	preferences.setTADFile(installURL + SSBP_ASSERTION_FILE);
+      	preferences.setTADFile(SSBP_ASSERTION_FILE);
         preferences.setComplianceLevel(PersistentWSIContext.WARN_NON_WSI);
       }
       else
       {
-      	preferences.setTADFile(installURL + DEFAULT_ASSERTION_FILE);
+      	preferences.setTADFile(DEFAULT_ASSERTION_FILE);
         preferences.setComplianceLevel(PersistentWSIContext.IGNORE_NON_WSI);
       }
     }
@@ -158,27 +158,27 @@ public class WSITestToolsProperties
       String SSBPlevel = SSBPcontext.getPersistentWSICompliance();
       if(APlevel.equals(PersistentWSIContext.STOP_NON_WSI))
       {
-      	preferences.setTADFile(installURL + AP_ASSERTION_FILE);
+      	preferences.setTADFile(AP_ASSERTION_FILE);
         preferences.setComplianceLevel(PersistentWSIContext.STOP_NON_WSI);
       }
       else if(APlevel.equals(PersistentWSIContext.WARN_NON_WSI))
       {
-      	preferences.setTADFile(installURL + AP_ASSERTION_FILE);
+      	preferences.setTADFile(AP_ASSERTION_FILE);
         preferences.setComplianceLevel(PersistentWSIContext.WARN_NON_WSI);
      }
      if(SSBPlevel.equals(PersistentWSIContext.STOP_NON_WSI))
      {
-   	   preferences.setTADFile(installURL + SSBP_ASSERTION_FILE);
+   	   preferences.setTADFile(SSBP_ASSERTION_FILE);
        preferences.setComplianceLevel(PersistentWSIContext.STOP_NON_WSI);
      }
      else if(SSBPlevel.equals(PersistentWSIContext.WARN_NON_WSI))
      {
-    	preferences.setTADFile(installURL + SSBP_ASSERTION_FILE);
+    	preferences.setTADFile(SSBP_ASSERTION_FILE);
         preferences.setComplianceLevel(PersistentWSIContext.WARN_NON_WSI);
      }
      else
      {
-      	preferences.setTADFile(installURL + DEFAULT_ASSERTION_FILE);
+      	preferences.setTADFile(DEFAULT_ASSERTION_FILE);
         preferences.setComplianceLevel(PersistentWSIContext.IGNORE_NON_WSI);
       }
     }

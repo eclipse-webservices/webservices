@@ -26,6 +26,8 @@ import javax.wsdl.xml.WSDLReader;
 
 import org.eclipse.wst.wsi.internal.core.wsdl.xsd.InlineSchemaValidator;
 import org.eclipse.wst.wsi.internal.core.xml.XMLTags;
+import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
+import org.w3c.dom.Document;
 
 /**
  * This class provides a interface to a single WSDL document.
@@ -88,7 +90,8 @@ public class WSDLDocument
       //wsdlReader.setFeature(com.ibm.wsdl.Constants.FEATURE_IMPORT_DOCUMENTS,true);
 
       // Parse the WSDL document
-      this.definitions = wsdlReader.readWSDL(null, fileName);
+      Document document = XMLUtils.parseXMLDocument(fileName);
+      this.definitions = wsdlReader.readWSDL(fileName, document);
 
       // Since inline schema validator is used by several assertions, validate all
       // schemas right after WSDL validation
@@ -100,7 +103,7 @@ public class WSDLDocument
       // DEBUG:
       //System.err.println(wsdlElementList.toString());
     }
-    catch (ClassCastException cce)
+    catch (Exception cce)
     {
       // Set element list to null
       this.wsdlElementList = null;

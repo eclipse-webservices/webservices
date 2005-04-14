@@ -159,34 +159,34 @@ public final class TestUtils
     String propertyName,
     String defaultValue)
   {
-    String schemaLocation = null;
+    //String schemaLocation = null;
 
     // Get the wsi.home system property
-    String wsiHome = System.getProperty(WSIProperties.PROP_WSI_HOME);
-    String fileLocation = WSIProperties.getProperty(propertyName, defaultValue);
-
+    //String wsiHome = System.getProperty(WSIProperties.PROP_WSI_HOME);
+    //String fileLocation = WSIProperties.getProperty(propertyName, defaultValue);
+    //
     // If the file location is specified in the wsi.properties file then build location
-    if (fileLocation != null)
-    {
-      // If wsi.home is set, then use it
-      if (wsiHome != null)
-      {
-        schemaLocation = wsiHome;
-      }
-      if (schemaLocation == null)
-      {
-        schemaLocation = fileLocation;
-      }
-      else
-      {
-        if (!schemaLocation.endsWith("/"))
-        {
-          schemaLocation += "/";
-        }
-
-        schemaLocation += fileLocation;
-      }
-    }
-    return schemaLocation;
+    //if (fileLocation != null)
+    //{
+    // If wsi.home is set, then use it
+    //  if (wsiHome != null)
+    //  {
+    //     schemaLocation = wsiHome;
+    //   }
+    //   if (schemaLocation == null)
+    //   {
+    //    schemaLocation = fileLocation;
+    //  }
+    //  else
+    //  {
+    //   if (!schemaLocation.endsWith("/"))
+    //    {
+    //     schemaLocation += "/";
+    //   }
+    //
+    //    schemaLocation += fileLocation;
+    //  }
+    // }
+    return defaultValue;
   }
 }
