@@ -104,31 +104,40 @@ public class WizardPageManager extends SimpleCommandEngineManager
   
   public IWizardPage getNextPage()
   {  	
-	System.out.println( "Start get next page" );
-	
-  	// Need to externalize the data for the current page so that
-  	// when we move forward below the data is available.
-  	if( currentPage_ != null ) currentPage_.getDataEvents().externalize();
-  	
-	nextPage_ = getNextPageInGroup( widgetFactory_, true );
-	
-	if( nextPage_ == null )
+	try
 	{
-	  widgetFactory_ = null;
-	  widgetStack_   = null;
-		
-  	  Status status = runForwardToNextStop();
+	  System.out.println( "Start get next page" );
+	
+  	  // Need to externalize the data for the current page so that
+  	  // when we move forward below the data is available.
+  	  if( currentPage_ != null ) currentPage_.getDataEvents().externalize();
   	
-  	  if( status.getSeverity() == Status.ERROR )
-  	  {
-  	    // An error has occured so we need undo to the previous stop point.
-  	    undoToLastPage();
-  	  }
+	  nextPage_ = getNextPageInGroup( widgetFactory_, true );
+	
+	  if( nextPage_ == null )
+	  {
+	    widgetFactory_ = null;
+	    widgetStack_   = null;
+		
+  	    Status status = runForwardToNextStop();
+  	
+  	    if( status.getSeverity() == Status.ERROR )
+  	    {
+  	      // An error has occured so we need undo to the previous stop point.
+  	      undoToLastPage();
+  	    }
+	  }
+	
+  	  if( nextPage_ != null ) nextPage_.setWizard( wizard_ );
+  	  	
+  	  return nextPage_;
+	}
+	catch( Throwable exc )
+	{
+	  exc.printStackTrace();	
 	}
 	
-  	if( nextPage_ != null ) nextPage_.setWizard( wizard_ );
-  	  	
-  	return nextPage_;
+	return null;
   }
     
   public void handlePageVisible( PageWizardDataEvents page, boolean isPageVisible )
@@ -175,19 +184,26 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	}	
   	else if( isPageVisible )
   	{
-  	  // We are moving forward one page.
-  	  WidgetDataEvents dataEvents = page.getDataEvents();
+	  try
+	  {
+  	    // We are moving forward one page.
+  	    WidgetDataEvents dataEvents = page.getDataEvents();
   	  
-  	  dataManager_.process( dataEvents );  // Push model data into the new page.
-  	  dataEvents.internalize();
+  	    dataManager_.process( dataEvents );  // Push model data into the new page.
+  	    dataEvents.internalize();
   	  
-  	  page.validatePageToStatus();
+  	    page.validatePageToStatus();
   	  
-  	  if( currentPage_ != null ) page.setPreviousPage( currentPage_ );
+  	    if( currentPage_ != null ) page.setPreviousPage( currentPage_ );
   	  
-  	  if( firstPage_ == null ) firstPage_ = page;
+  	    if( firstPage_ == null ) firstPage_ = page;
   	  
-  	  currentPage_ = page;
+  	    currentPage_ = page;
+	  }
+	  catch( Throwable exc )
+	  {
+		exc.printStackTrace();
+	  }
   	}
   }
   

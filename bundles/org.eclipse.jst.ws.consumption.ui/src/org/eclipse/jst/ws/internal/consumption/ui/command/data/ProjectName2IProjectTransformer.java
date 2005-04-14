@@ -17,6 +17,15 @@ public class ProjectName2IProjectTransformer implements Transformer
 {
   public Object transform(Object value)
   {
-    return ResourcesPlugin.getWorkspace().getRoot().getProject(value.toString());
+	String project     = (String)value;
+	int    slashIndex  = project.indexOf( '/' );
+	String projectName = project;
+	
+	if( slashIndex != -1 )
+	{
+	  projectName = project.substring( 0, slashIndex );
+	}
+	
+    return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
   }
 }

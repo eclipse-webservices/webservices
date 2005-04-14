@@ -255,7 +255,7 @@ public class WebServiceRuntimeExtensionUtils
     ArrayList validProjects = new ArrayList();
     for (int i = 0; i < projects.length; i++)
     {
-			if (!projects[i].getName().equals("Servers"))
+			if (!projects[i].getName().equals("Servers") && !projects[i].getName().startsWith("."))
 			{
 				validProjects.add(projects[i]);
 			}
