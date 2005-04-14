@@ -36,6 +36,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
+import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.ui.eclipse.WSDLValidator;
@@ -45,12 +47,10 @@ import org.eclipse.wst.wsdl.validation.internal.ui.eclipse.WSDLValidator;
  * - create logs
  * - read from logs
  * - run log comparison tests
- * 
- * @author Lawrence Mandel, IBM
  */
 public class BaseTestCase extends TestCase
 {
-  protected String FILE_PROTOCOL = "file://"; 
+  protected String FILE_PROTOCOL = "file:///"; 
   protected String PLUGIN_ABSOLUTE_PATH;
   protected String SAMPLES_DIR = "testresources/samples/";
   protected String GENERATED_RESULTS_DIR = "testresources/generatedResults/";
@@ -65,15 +65,14 @@ public class BaseTestCase extends TestCase
    */
   protected void setUp()
   {
-    PLUGIN_ABSOLUTE_PATH = WSDLValidatorTestsPlugin.getPluginLocation();
+    PLUGIN_ABSOLUTE_PATH = FILE_PROTOCOL + WSDLValidatorTestsPlugin.getInstallURL();//getPluginLocation();
     
     // Set the WS-I preference to ignore so only WSDL errors will be tested.
-	// TODO: Re-enable this WS-I disablement code once WS preference plugin is moved to WST.
-    //WebServiceUIPlugin wsui = WebServiceUIPlugin.getInstance();
-    //PersistentWSIContext wsicontext = wsui.getWSISSBPContext();
-    //wsicontext.updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
-    //wsicontext = wsui.getWSIAPContext();
-    //wsicontext.updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
+    WSUIPlugin wsui = WSUIPlugin.getInstance();
+    PersistentWSIContext wsicontext = wsui.getWSISSBPContext();
+    wsicontext.updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
+    wsicontext = wsui.getWSIAPContext();
+    wsicontext.updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
   }
   
   /**
@@ -170,8 +169,8 @@ public class BaseTestCase extends TestCase
          numwarnings++;
          // If the message contains any file references make them relative.
          String message = valmes.getMessage();
-         message = message.replaceAll("'[^']*" + PLUGIN_NAME, "'" + PLUGIN_NAME);
-         message = message.replaceAll("[(][^(]*" + PLUGIN_NAME, "[(]" + PLUGIN_NAME);
+         message = message.replaceAll("'[^']*" + PLUGIN_NAME + "[^'/]*/", "'");
+         message = message.replaceAll("[(][^(]*" + PLUGIN_NAME + "[^'/]*/", "[(]");
          warningsString.append(message + " [" + valmes.getLine() +", " + valmes.getColumn() +"]\n");
          warningsString.append(createNestedMessageString(valmes.getNestedMessages()));
        }
@@ -180,8 +179,8 @@ public class BaseTestCase extends TestCase
          numerrors++;
          // If the message contains any file references make them relative.
          String message = valmes.getMessage();
-         message = message.replaceAll("'[^']*" + PLUGIN_NAME, "'" + PLUGIN_NAME);
-         message = message.replaceAll("[(][^(]*" + PLUGIN_NAME, "(" + PLUGIN_NAME);
+         message = message.replaceAll("'[^']*" + PLUGIN_NAME + "[^'/]*/", "'");
+         message = message.replaceAll("[(][^(]*" + PLUGIN_NAME + "[^'/]*/", "(");
          errorsString.append(message + " [" + valmes.getLine() +", " + valmes.getColumn() +"]\n");
          errorsString.append(createNestedMessageString(valmes.getNestedMessages()));
        }
@@ -256,8 +255,8 @@ public class BaseTestCase extends TestCase
         }
         // If the message contains any file references make them relative.
         String message = nesvalmes.getMessage();
-        message = message.replaceAll("'[^']*" + PLUGIN_NAME, "'" + PLUGIN_NAME);
-        message = message.replaceAll("[(][^(]*" + PLUGIN_NAME, "[(]" + PLUGIN_NAME);
+        message = message.replaceAll("'[^']*" + PLUGIN_NAME + "[^'/]*/", "'");
+        message = message.replaceAll("[(][^(]*" + PLUGIN_NAME + "[^'/]*/", "[(]");
         messageString += ("-> " + message + " [" + nesvalmes.getLine() +", " + nesvalmes.getColumn() +"]\n");
         messageString += createNestedMessageString(nesvalmes.getNestedMessages(), depth + 1);
       }

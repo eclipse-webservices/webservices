@@ -11,27 +11,20 @@
 package org.eclipse.wst.wsdl.validation.tests.internal;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
- * 
- * @author Lawrence Mandel, IBM
  */
 public class WSDLValidatorTestsPlugin extends AbstractUIPlugin
 {
   //The shared instance.
   private static WSDLValidatorTestsPlugin plugin;
-
-  //Resource bundle.
-  private ResourceBundle resourceBundle;
+  private static Bundle pluginBundle = null;
 
   /**
    * The constructor.
@@ -40,14 +33,6 @@ public class WSDLValidatorTestsPlugin extends AbstractUIPlugin
   {
     super();
     plugin = this;
-//    try
-//    {
-//      resourceBundle = ResourceBundle.getBundle("org.eclipse.wsdl.validate.tests.WSDLValidatorTestsPluginResources");
-//    }
-//    catch (MissingResourceException x)
-//    {
-//      resourceBundle = null;
-//    }
   }
 
   /**
@@ -56,6 +41,7 @@ public class WSDLValidatorTestsPlugin extends AbstractUIPlugin
   public void start(BundleContext context) throws Exception
   {
     super.start(context);
+	pluginBundle = context.getBundle();
   }
 
   /**
@@ -73,47 +59,21 @@ public class WSDLValidatorTestsPlugin extends AbstractUIPlugin
   {
     return plugin;
   }
-
+  
   /**
-   * Returns the string from the plugin's resource bundle, or 'key' if not
-   * found.
-   */
-  public static String getResourceString(String key)
-  {
-    ResourceBundle bundle = WSDLValidatorTestsPlugin.getDefault().getResourceBundle();
-    try
-    {
-      return (bundle != null) ? bundle.getString(key) : key;
-    }
-    catch (MissingResourceException e)
-    {
-      return key;
-    }
-  }
-
-  /**
-   * Returns the plugin's resource bundle,
-   */
-  public ResourceBundle getResourceBundle()
-  {
-    return resourceBundle;
-  }
-
-  /**
-   * Return the location of this plugin (ie. where this plugin is installed.)
+   * Get the install URL of this plugin.
    * 
-   * @return The location of this plugin.
+   * @return the install url of this plugin
    */
-  public static String getPluginLocation()
+  public static String getInstallURL()
   {
     try
     {
-      URL location = Platform.resolve(getDefault().find(new Path("")));
-      return location.toExternalForm();
+      return Platform.resolve(pluginBundle.getEntry("/")).getFile();
     }
-    catch(IOException e)
+    catch (IOException e)
     {
+      return null;
     }
-    return null;
   }
 }
