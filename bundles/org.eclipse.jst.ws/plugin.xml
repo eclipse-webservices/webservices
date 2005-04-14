@@ -41,6 +41,7 @@
       <import plugin="org.eclipse.wst.common.modulecore"/>
       <import plugin="org.wsdl4j"/>
       <import plugin="org.uddi4j"/>
+      <import plugin="org.eclipse.wst.common.frameworks"/>
    </requires>
 
 </plugin>

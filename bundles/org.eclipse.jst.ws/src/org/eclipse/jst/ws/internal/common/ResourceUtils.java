@@ -57,6 +57,7 @@ import org.eclipse.wst.common.componentcore.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerPort;
@@ -78,6 +79,13 @@ public final class ResourceUtils {
 	//
 	private static IWorkspace workspace_ = null;
 
+	public final static String JST_WEB = IModuleConstants.JST_WEB_MODULE; //$NON-NLS-1$
+	public final static String JST_EJB = IModuleConstants.JST_EJB_MODULE; //$NON-NLS-1$
+	public final static String JST_JAVA = IModuleConstants.JST_UTILITY_MODULE; //$NON-NLS-1$
+	public final static String WST_WEB = IModuleConstants.WST_WEB_MODULE; //$NON-NLS-1$
+	public final static String JST_EAR = IModuleConstants.JST_EAR_MODULE; //$NON-NLS-1$
+	public final static String JST_APPCLIENT = IModuleConstants.JST_APPCLIENT_MODULE; //$NON-NLS-1$
+	
 	/**
 	 * As returned by {@link #getProjectType getProjectType()}, indicates that
 	 * the given project has no Java or Web nature.
@@ -112,7 +120,7 @@ public final class ResourceUtils {
 	 * Status Code explaining the CoreException thrown
 	 */
 
-	private static final String ejbProjectNature = IModuleConstants.JST_EJB_MODULE;
+	//private static final String ejbProjectNature = IModuleConstants.JST_EJB_MODULE;
 	// ksc private static final String ejb2ProjectNature =
 	// IEJBNatureConstants.EJB_20_NATURE_ID;
 
@@ -131,7 +139,6 @@ public final class ResourceUtils {
 
 	/**
 	 * Returns the IWorkspaceRoot object.
-	 * 
 	 * @return The IWorkspaceRoot object.
 	 */
 	public static IWorkspaceRoot getWorkspaceRoot() {
@@ -143,7 +150,6 @@ public final class ResourceUtils {
 
 	/**
 	 * Returns the IWorkspace object.
-	 * 
 	 * @return The IWorkspace object.
 	 */
 	public static IWorkspace getWorkspace() {
@@ -198,9 +204,11 @@ public final class ResourceUtils {
 	 * @return The status with a value if <code>IStatus.OK</code> if the path
 	 *         is valid, or with appropriate severity and message information if
 	 *         the path is not valid.
+	 *         
+	 * @deprecated not used         
 	 */
 	public static IStatus validateName(String segment, int typeMask) {
-		return ResourcesPlugin.getWorkspace().validateName(segment, typeMask);
+		return getWorkspace().validateName(segment, typeMask);
 	}
 
 	/**
@@ -215,9 +223,10 @@ public final class ResourceUtils {
 	 * @return The status with a value if <code>IStatus.OK</code> if the path
 	 *         is valid, or with appropriate severity and message information if
 	 *         the path is not valid.
+	 * @deprecated not used 
 	 */
 	public static IStatus validatePath(String path, int typeMask) {
-		return ResourcesPlugin.getWorkspace().validatePath(path, typeMask);
+		return getWorkspace().validatePath(path, typeMask);
 	}
 
 	/**
@@ -230,6 +239,7 @@ public final class ResourceUtils {
 	 *         name is not valid. The primitive types (boolean, char, byte,
 	 *         short, int, long, float, double) are valid. Arrays of valid types
 	 *         are themselves valid.
+	 * @deprecated use JavaConventions in the jdt core 
 	 */
 	public static IStatus validateJavaTypeName(String typeName) {
 		//
@@ -256,6 +266,8 @@ public final class ResourceUtils {
 	 * (boolean, char, byte, short, int, long, float, double).
 	 * 
 	 * @return True if the type name is a Java primitive.
+	 * 
+	 * @deprecated
 	 */
 	public static boolean isPrimitiveJavaType(String typeName) {
 		return (typeName.equals("boolean") || typeName.equals("char")
@@ -292,8 +304,10 @@ public final class ResourceUtils {
 	public static IVirtualComponent getComponentOf(IPath absolutePath){
 		if (absolutePath.isAbsolute()) {
 			String componentName = absolutePath.segment(1);
+			System.out.println("Testing >> ComponentName ? = "+componentName);
 			if (componentName != null) {
 				String projectName = absolutePath.segment(0);
+				System.out.println("Testing >> ProjectName ? = "+projectName);
 				IProject project = getWorkspaceRoot().getProject(projectName);
 				if (projectName != null) {
 					return ComponentCore.createComponent(project, componentName);
@@ -345,11 +359,9 @@ public final class ResourceUtils {
 		StructureEdit mc = null;
 		try {
 		  mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				if (wbcs.length != 0) {
-					isWeb = WebArtifactEdit.isValidWebModule(wbcs[0]);
-				}
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  if (wbcs.length!=0) {
+			  isWeb = WebArtifactEdit.isValidWebModule(wbcs[0]);
 		  }
 		}
 		catch(Exception ex){
@@ -372,23 +384,21 @@ public final class ResourceUtils {
 		boolean isEAR = false;
 		StructureEdit mc = null;
 		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				if (wbcs.length != 0) {
-					EARArtifactEdit earEdit = null;
-					try {
-						earEdit = EARArtifactEdit
-								.getEARArtifactEditForRead(wbcs[0]);
-						if (earEdit != null) {
-							isEAR = true;
-						}
-					} finally {
-						if (earEdit != null)
-							earEdit.dispose();
-					}
-				}
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  if (wbcs.length!=0) {
+			EARArtifactEdit earEdit = null;
+			try {
+			  earEdit = EARArtifactEdit.getEARArtifactEditForRead(wbcs[0]);
+			  if (earEdit!=null){
+				isEAR = true;
+			  }
 			}
+			finally{
+				if (earEdit!=null)
+					earEdit.dispose();
+			}
+		  }
 		}
 		catch(Exception ex){}
 		finally{
@@ -410,23 +420,21 @@ public final class ResourceUtils {
 		boolean isEJB = false;
 		StructureEdit mc = null;
 		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				if (wbcs.length != 0) {
-					EJBArtifactEdit ejbEdit = null;
-					try {
-						ejbEdit = EJBArtifactEdit
-								.getEJBArtifactEditForRead(wbcs[0]);
-						if (ejbEdit != null) {
-							isEJB = true;
-						}
-					} finally {
-						if (ejbEdit != null)
-							ejbEdit.dispose();
-					}
-				}
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  if (wbcs.length!=0) {
+			EJBArtifactEdit ejbEdit = null;
+			try {
+			  ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(wbcs[0]);
+			  if (ejbEdit!=null){
+				isEJB = true;
+			  }
 			}
+			finally{
+				if (ejbEdit!=null)
+					ejbEdit.dispose();
+			}
+		  }
 		}
 		catch(Exception ex){}
 		finally{
@@ -449,23 +457,21 @@ public final class ResourceUtils {
 		boolean isAppClient = false;
 		StructureEdit mc = null;
 		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				if (wbcs.length != 0) {
-					AppClientArtifactEdit appClientEdit = null;
-					try {
-						appClientEdit = AppClientArtifactEdit
-								.getAppClientArtifactEditForRead(wbcs[0]);
-						if (appClientEdit != null) {
-							isAppClient = true;
-						}
-					} finally {
-						if (appClientEdit != null)
-							appClientEdit.dispose();
-					}
-				}
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  if (wbcs.length!=0) {
+			AppClientArtifactEdit appClientEdit = null;
+			try {
+				appClientEdit = AppClientArtifactEdit.getAppClientArtifactEditForRead(wbcs[0]);
+			  if (appClientEdit!=null){
+				  isAppClient = true;
+			  }
 			}
+			finally{
+				if (appClientEdit!=null)
+					appClientEdit.dispose();
+			}
+		  }
 		}
 		catch(Exception ex){}
 		finally{
@@ -489,7 +495,9 @@ public final class ResourceUtils {
 	 * @param project
 	 *            The project.
 	 * @return The type bitmask of the project.
-	 */
+	 * 
+	 * @deprecated use getComponentType
+	 */ 
 	public static byte getProjectType(IProject project) {
 		byte projectType = PROJECT_TYPE_NONE;
 		if (ResourceUtils.isJavaProject(project)) {
@@ -501,35 +509,27 @@ public final class ResourceUtils {
 		if (ResourceUtils.isEJBProject(project)) {
 			projectType |= PROJECT_TYPE_EJB;
 		}
-		Log log = new EclipseLog();
-		log.log(Log.INFO, 5031, ResourceUtils.class, "getProjectType",
-				"project=" + project + ",projectType=" + projectType);
-
 		return projectType;
 	}
 
-	public static byte getComponentType(IProject project, String componentName){
+	/**
+	 * Returns the component type id as defined in IModuleConstants
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static String getComponentType(IProject project, String componentName){
 		IVirtualComponent comp = ComponentCore.createComponent(project, componentName);
 		return getComponentType(comp);
 	}
 	
-	public static byte getComponentType(IVirtualComponent component){
-		
-		byte ctype = PROJECT_TYPE_NONE;
-		if (J2EEUtils.isJavaComponent(component)) {
-			ctype |= PROJECT_TYPE_JAVA;
-		}
-		if (J2EEUtils.isWebComponent(component)) {
-			ctype |= PROJECT_TYPE_WEB;
-		}
-		if (J2EEUtils.isEJBComponent(component)) {
-			ctype |= PROJECT_TYPE_EJB;
-		}
-		if (J2EEUtils.isAppClientComponent(component)){
-			ctype |= PROJECT_TYPE_APPCLIENT;
-		}
-
-		return ctype;		
+	/**
+	 * Returns the component type
+	 * @param component
+	 * @return
+	 */
+	public static String getComponentType(IVirtualComponent component){
+		return component.getComponentTypeId();
 	}
 	
 	/**
@@ -594,11 +594,6 @@ public final class ResourceUtils {
 		return outputLocation;
 	}
 	
-	public static IPath getJavaOutputLocation(IVirtualComponent comp){
-		
-		return null;
-	}
-
 	/**
 	 * Returns a build source location of the <code>project</code> as an
 	 * <code>IPath</code>, or null if the project either has no Java nature
@@ -614,6 +609,7 @@ public final class ResourceUtils {
 	 * @return A build source location of the <code>project</code> or null if
 	 *         the project has no Java nature or if the project's build
 	 *         classpath contains no folders local to the project.
+	 * @deprecated 
 	 */
 	public static IPath getJavaSourceLocation(IProject project) {
 		IPath sourceLocation = null;
@@ -639,8 +635,26 @@ public final class ResourceUtils {
 		return sourceLocation;
 	}
 
+	/**
+	 * Returns the "JavaSource" folder
+	 * @param project
+	 * @param compName
+	 * @return
+	 */
+	public static IPath getJavaSourceLocation(IProject project, String compName){
+		return getJavaSourceLocation(ComponentCore.createComponent(project, compName));
+	}
+	
+	/**
+	 * Returns the "JavaSource" folder
+	 * @param comp
+	 * @return
+	 */
 	public static IPath getJavaSourceLocation(IVirtualComponent comp){
-		
+		IVirtualFolder sourceFolder = comp.getFolder("JavaSource");
+		if (sourceFolder.exists()){
+			return sourceFolder.getUnderlyingResource().getFullPath();
+		}
 		return null;
 	}
 	
@@ -668,6 +682,7 @@ public final class ResourceUtils {
 	}
 
 	public static IPath[] getAllJavaSourceLocations(IVirtualComponent[] components) {
+		//TODO
 		return null;
 	}
 	
@@ -772,32 +787,23 @@ public final class ResourceUtils {
 		StructureEdit mc = null;
 		try {
 			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				if (wbcs.length != 0) {
-					webModuleServerRoot = StructureEdit
-							.getOutputContainerRoot(wbcs[0]);
-					IFolder fwebModuleServerRoot = StructureEdit
-							.getOutputContainerRoot(wbcs[0]);
-					fwebModuleServerRoot.getFolder("WEB-INF").getFolder(
-							"classes");
-
-					IFolder[] folder = StructureEdit
-							.getOutputContainersForProject(project);
-
-					if (folder.length != 0)
-						System.out
-								.println("WebModuleServerRoot = " + folder[0]);
-
-				}
-				// IProjectNature nature =
-				// project.getNature(IWebNatureConstants.J2EE_NATURE_ID);
-				// if (nature != null && (nature instanceof IDynamicWebNature))
-				// {
-				// IDynamicWebNature webNature = (IDynamicWebNature) nature;
-				// webModuleServerRoot = webNature.getRootPublishableFolder();
-				//			}
+			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			if (wbcs.length!=0) {
+				webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
+				IFolder fwebModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
+				fwebModuleServerRoot.getFolder("WEB-INF").getFolder("classes");
+				
+				IFolder[] folder = StructureEdit.getOutputContainersForProject(project);
+				
+				if (folder.length!=0)
+				System.out.println("WebModuleServerRoot = "+folder[0]);
+				
 			}
+//			IProjectNature nature = project.getNature(IWebNatureConstants.J2EE_NATURE_ID);
+//			if (nature != null && (nature instanceof IDynamicWebNature)) {
+//			  IDynamicWebNature webNature = (IDynamicWebNature) nature;
+//				webModuleServerRoot = webNature.getRootPublishableFolder();
+//			}
 		} catch (Exception e) {
 			Log log = new EclipseLog();
 			log.log(Log.ERROR, 5035, ResourceUtils.class, "getWebModuleServerRoot",
@@ -812,8 +818,8 @@ public final class ResourceUtils {
 		return webModuleServerRoot;
 	}
 
-	public static IContainer getWebModuleServerRoot(IProject project, String componentName){
-		
+	public static IContainer getWebComponentServerRoot(IProject project, String componentName){
+		//TODO
 		return null;
 	}
 
@@ -856,7 +862,7 @@ public final class ResourceUtils {
 	
 	public static String getWebComponentURL(IProject project, String componentName,
 							String serverFactoryId, IServer server){
-		
+		//TODO
 		return null;
 	}
 
@@ -933,6 +939,7 @@ public final class ResourceUtils {
 	 *            The project.
 	 * @return The web server module root URL or null if the project has no Web
 	 *         nature or has no association to a server instance.
+	 * @deprecated use getWebComponentURL)(IProject, String) instead
 	 *
 	 */
 	public static String getWebProjectURL(IProject project) {
@@ -956,8 +963,8 @@ public final class ResourceUtils {
 		return webProjectURL;
 	}
 
-	public static String getWebComponentURL(IVirtualComponent component){
-		
+	public static String getWebComponentURL(IProject project, String componentName){
+		//TODO
 		return null;
 	}
 	
@@ -991,7 +998,7 @@ public final class ResourceUtils {
 	}
 
 	public static String getEncodedWebComponentURL(IVirtualComponent component){
-		
+		//TODO
 		return null;
 	}
 	
@@ -1131,7 +1138,7 @@ public final class ResourceUtils {
 			}
 		}
 		if (url.length() < 1) {
-			IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
+			IWorkspaceRoot workspace = getWorkspaceRoot();
 			url.append(getResourceURI(workspace.getFile(absolutePath)));
 		}
 		Log log = new EclipseLog();

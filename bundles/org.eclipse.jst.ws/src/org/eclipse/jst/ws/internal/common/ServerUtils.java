@@ -324,9 +324,39 @@ public final class ServerUtils {
 
   public static String[] getServerTypeIdsByModule( IVirtualComponent component )
   {
-	return null;  
+	IProject project   = component.getProject();
+	String[] serverIds = null;
+	
+	if( project != null )
+	{
+	  IServer[] servers = ServerUtil.getServersByModule(getModule(project, component.getName() ), null);
+	  
+	  if( servers != null )
+	  {
+		serverIds = new String[servers.length];
+		
+		for( int index = 0; index < servers.length; index++ )
+		{
+		  serverIds[index] = servers[index].getId();
+		  
+		}
+	  }
+	}
+	
+	if( serverIds == null )
+	{
+	  serverIds = new String[0];	
+	}
+	
+	return serverIds;  
   }
   
+  /**
+   * 
+   * @param project
+   * @return
+   * @deprecated  should be using getServerTypeIdsByModule( IVirtualComponent )
+   */
   public static String[] getServerTypeIdsByModule(IProject project) {
     Vector serverIds = new Vector();
     if (project != null) {
@@ -340,11 +370,58 @@ public final class ServerUtils {
     return (String[]) serverIds.toArray(new String[serverIds.size()]);
   }
   
-  public static IServer getDefaultExistingServer( IVirtualComponent component )
+  public static IModule getModule(IProject project, String componentName ) 
   {
-    return null;
+	IModule[] modules     = ServerUtil.getModules(project);
+	IModule   moduleFound = null;
+	
+	for( int index = 0; index < modules.length; index++ )
+	{
+	  if( modules[index].getName().equals( componentName ) )
+	  {
+	    moduleFound = modules[index];
+		break;
+	  }
+	}
+	
+	return moduleFound;
   }
   
+  public static IServer getDefaultExistingServer( IVirtualComponent component )
+  {
+	IProject           project           = component.getProject();
+	IProjectProperties props             = ServerCore.getProjectProperties(project);
+	IServer            preferredServer   = props.getDefaultServer();
+	
+	if( preferredServer == null )
+	{
+	  IModule   module            = getModule( project, component.getName() );
+	  IServer[] configuredServers = ServerUtil.getServersByModule( module, null );
+	  
+	  if( configuredServers != null && configuredServers.length > 0) 
+	  { 
+	    preferredServer = configuredServers[0];
+	  }
+	  else
+	  {
+	    IServer[] nonConfiguredServers = ServerUtil.getAvailableServersForModule( module, false, null );
+		
+	    if (nonConfiguredServers != null && nonConfiguredServers.length > 0) 
+		{ 
+		  preferredServer = nonConfiguredServers[0]; 
+		}
+	  }
+	}
+	
+    return preferredServer;
+  }
+  
+  /**
+   * 
+   * @param project
+   * @return
+   * @deprecated  should be using getDefaultExistingServer( IVirtualComponent )
+   */
   public static IServer getDefaultExistingServer(IProject project) {
     String defaultServerName;
 

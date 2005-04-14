@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2004, 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,10 +26,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationDataModel;
+import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationOperation;
 import org.eclipse.jst.j2ee.applicationclient.componentcore.util.AppClientArtifactEdit;
 import org.eclipse.jst.j2ee.componentcore.util.EARArtifactEdit;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
+import org.eclipse.jst.j2ee.ejb.EJBResource;
 import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
 import org.eclipse.jst.j2ee.ejb.Session;
 import org.eclipse.jst.j2ee.ejb.SessionType;
@@ -47,9 +51,9 @@ import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.eclipse.EclipseLog;
-import org.eclipse.wst.common.componentcore.ArtifactEdit;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.StructureEdit;
+import org.eclipse.wst.common.componentcore.internal.ReferencedComponent;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -58,16 +62,9 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
 /**
- * This class contains some useful J2EE utilities.
- * 
- * @author Peter Moogk
- * @date August 23, 2001
+ * This class contains some useful J2EE utilities for Web services internal use.
  */
 public final class J2EEUtils {
-	private static final String webProjectNature = IModuleConstants.JST_WEB_MODULE; // IWebNatureConstants.J2EE_NATURE_ID;
-	private static final String ejbProjectNature = IModuleConstants.JST_EJB_MODULE; // IEJBNatureConstants.NATURE_ID;
-	private static final String earProjectNature = IModuleConstants.JST_EAR_MODULE; // IEARNatureConstants.NATURE_ID;
-
 	
 	/**
 	 * Returns an IVirtualComponent
@@ -75,7 +72,21 @@ public final class J2EEUtils {
 	 * @param componentName
 	 * @return
 	 */
-	public static IVirtualComponent getIVirtualComponent(IProject project, String componentName){
+	public static IVirtualComponent getVirtualComponent(IProject project, String componentName){
+		return ComponentCore.createComponent(project, componentName);
+	}
+	
+	/**
+	 * 
+	 * @param projectName
+	 * @param componentName
+	 * @return
+	 */
+	public static IVirtualComponent getVirtualComponent(String projectName, String componentName){
+		IProject project = null;
+		if (projectName!=null && projectName.length() > 0 )
+		  project = FileResourceUtils.getWorkspaceRoot().getProject(projectName);
+		
 		return ComponentCore.createComponent(project, componentName);
 	}
 	
@@ -87,52 +98,36 @@ public final class J2EEUtils {
 	 * @return the J2EE version id (defined in J2EEVersionConstants), -1 if p
 	 *         does not have a J2EENature.
 	 * 
-	 * @deprecated this method only returns the first module's j2ee version
-	 * 				use getJ2EEVersion(IProject, String)
+	 * @deprecated use getJ2EEVersion(IProject, String)
 	 */
 	public static int getJ2EEVersion(IProject p) {
-		int j2eeVer = -1;
-		StructureEdit mc = null;
-		try {
-			mc = StructureEdit.getStructureEditForRead(p);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				if (wbcs.length != 0) {
-					// j2eeVer = getWebModuleJ2EEVersion(wbcs[0]);
-				}
-			}
-		}
-		catch (Exception e){
-			//handle exception
-		}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
-		return j2eeVer;
+	  	J2EENature nature = J2EENature.getRegisteredRuntime(p);
+	  	if (nature != null)
+	  	{
+	  		return nature.getJ2EEVersion();
+	  	}
+	  	return -1;
 	}
 
 	/**
-	 * TODO: Implement this method
-	 * @param p
-	 * @param module
-	 * @return
+	 * Returns the J2EE version
+	 * @param p project
+	 * @param component name
+	 * @return int
 	 */
 	public static int getJ2EEVersion(IProject p, String componentName){
 		int j2eeVer = -1;
 		StructureEdit mc = null;
 		try {
 			mc = StructureEdit.getStructureEditForRead(p);
-			if (mc != null) {
+			if (mc!=null) {
 				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-
-				for (int i = 0; i < wbcs.length; i++) {
-					if (wbcs[i].getName().equals(componentName)) {
+				for (int i=0;i<wbcs.length;i++){
+					if (wbcs[i].getName().equals(componentName)){
 						j2eeVer = getComponentJ2EEVersion(p, wbcs[i]);
 					}
 				}
 			}
-			
 		}
 		catch (Exception e){
 			//handle exception
@@ -142,6 +137,10 @@ public final class J2EEUtils {
 				mc.dispose();
 		}
 		return j2eeVer;	
+	}
+	
+	public static int getJ2EEVersion(IVirtualComponent component){
+		return getJ2EEVersion(component.getProject(), component.getName()); 
 	}
 	
 	/**
@@ -162,12 +161,11 @@ public final class J2EEUtils {
 				j2eeVer = getEJBComponentJ2EEVersion(wbc);
 			if (isEARComponent(project, wbc.getName()))
 				j2eeVer = getEARComponentJ2EEVersion(wbc);
-					
-			// TODO: isJavaComponent
 			
 		}
 		return j2eeVer;
 	}
+	
 	
 	/**
 	 * Return's the EAR module's J2EEVersion
@@ -208,13 +206,13 @@ public final class J2EEUtils {
 	}
 	
 	/**
-	 * TODO
-	 * @param p
+	 * Returns the J2EEVersion
+	 * @param p IProject
 	 * @param compName
-	 * @return
+	 * @return String
 	 */
 	public static String getJ2EEVersionAsString(IProject p, String compName){
-		int j2eeVer = getJ2EEVersion(p);
+		int j2eeVer = getJ2EEVersion(p, compName);
 		if (j2eeVer!=-1){
 			return String.valueOf(j2eeVer);
 		}
@@ -300,24 +298,96 @@ public final class J2EEUtils {
 		return ears;
 	}
 	
+	public static IVirtualComponent[] getAllComponents(){
+		Vector v = new Vector();
+		StructureEdit mc = null;
+		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
+		for (int i = 0; i < projects.length; i++) {
+			try {
+				mc = StructureEdit.getStructureEditForRead(projects[i]);
+				if (mc!=null){
+					WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+					for (int j=0;j<wbcs.length;j++){
+						v.add(ComponentCore.createComponent(projects[i], wbcs[j].getName()));
+					}
+				}
+			}
+			catch (Exception e){
+				//handle exception
+				e.printStackTrace();				
+			}
+			finally{
+				if (mc!=null)
+					mc.dispose();
+			}			
+		}
+		IVirtualComponent[] components = new IVirtualComponent[v.size()];
+		v.copyInto(components);
+		return components;		
+	}
+	
 	/**
-	 * Returns the EAR components in a Project
-	 * @param project
-	 * @return empty if no EAR components, null if no components at all
+	 * Returns all the EAR components in the workspace
+	 * @return IVirtualComponent[]; empty if none
 	 */
-	public static String[] getEARComponents(IProject project){
+	public static IVirtualComponent[] getAllEARComponents() {
+		Vector v = new Vector();
+		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
+		for (int i = 0; i < projects.length; i++) {
+			try {
+				IVirtualComponent[] components = getEARComponentsFromProject(projects[i]);
+				for (int j=0; j<components.length; j++) {
+					v.add(components[j]);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				//handle exception
+			}
+
+		}
+		IVirtualComponent[] earComponents = new IVirtualComponent[v.size()];
+		v.copyInto(earComponents);
+		return earComponents;
+	}
+	
+	public static IVirtualComponent[] getAllWebComponents(){
+		Vector v = new Vector();
+		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
+		for (int i = 0; i < projects.length; i++) {
+			try {
+				IVirtualComponent[] components = getWebComponents(projects[i]);
+				for (int j=0; j<components.length; j++) {
+					v.add(components[j]);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				//handle exception
+			}
+
+		}
+		IVirtualComponent[] earComponents = new IVirtualComponent[v.size()];
+		v.copyInto(earComponents);
+		return earComponents;		
+	}
+	
+	/**
+	 * Returns the EAR components in a given IProject
+	 * @param project
+	 * @return empty if no EAR components
+	 */
+	public static IVirtualComponent[] getEARComponentsFromProject(IProject project){
 		
 		//get all components in the project
 		StructureEdit mc = null;
-		String[] earComponents = new String[0];
+		IVirtualComponent[] earComponents = null;
 		try {
 			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
+			if (mc!=null){
 				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				earComponents = new String[wbcs.length];
-				for (int i = 0; i < wbcs.length; i++) {
+				earComponents = new IVirtualComponent[wbcs.length];
+				for (int i=0;i<wbcs.length;i++){
 					if (isEARComponent(project, wbcs[i].getName()))
-						earComponents[i] = wbcs[i].getName();
+						earComponents[i] = ComponentCore.createComponent(project, wbcs[i].getName());
 				}
 			}
 		}
@@ -336,19 +406,19 @@ public final class J2EEUtils {
 	 * @param project
 	 * @return empty array if no web components
 	 */
-	public static String[] getWebComponents(IProject project){
+	public static IVirtualComponent[] getWebComponents(IProject project){
 		
 		//get all components in the project
 		StructureEdit mc = null;
-		String[] components = new String[0];
+		IVirtualComponent[] components = null;
 		try {
 			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
+			if (mc!=null){
 				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				components = new String[wbcs.length];
-				for (int i = 0; i < wbcs.length; i++) {
+				components = new IVirtualComponent[wbcs.length];
+				for (int i=0;i<wbcs.length;i++){
 					if (isWebComponent(project, wbcs[i].getName()))
-						components[i] = wbcs[i].getName();
+						components[i] = ComponentCore.createComponent(project, wbcs[i].getName());
 				}
 			}
 		}
@@ -361,6 +431,16 @@ public final class J2EEUtils {
 		}		
 		return components;
 	} 
+	
+	public static String[] getWebComponentNames(IProject project){
+		IVirtualComponent[] vcs = getWebComponents(project);
+		return toComponentNamesArray(vcs);
+	}
+	
+	public static String[] getEARComponentNames(IProject project){
+		IVirtualComponent[] vcs = getEARComponentsFromProject(project);
+		return toComponentNamesArray(vcs);
+	}
 	
 	/**
 	 * True if there exists a underlying resource backing up the component and project 
@@ -384,7 +464,7 @@ public final class J2EEUtils {
 	 * @param componentName
 	 * @return
 	 */
-	private static boolean exists(IProject project, String componentName){
+	public static boolean exists(IProject project, String componentName){
 		if (project!=null && 
 				componentName!=null && 
 				componentName.length() > 0) {
@@ -401,20 +481,66 @@ public final class J2EEUtils {
 	 * @param project
 	 * @return
 	 * 
-	 * @deprecated  --  use getEARProjects(IProject)
+	 * @deprecated  --  use getEARComponentNames(IProject)
 	 */
-//	public static String[] getEARProjectNamesForWebProject(IProject project) {
-//		Vector EARNames = new Vector();
-//		if (project != null) {
-//			EARNatureRuntime[] ears = getEARProjects(project);
-//			for (int i = 0; i < ears.length; i++) {
-//				EARNames.add(ears[i].getProject().getName());
-//			}
-//		}
-//		return EARNames.isEmpty() ? null : (String[]) EARNames
-//				.toArray(new String[0]);
-//	}
+	public static String[] getEARProjectNamesForWebProject(IProject project) {
+		Vector EARNames = new Vector();
+		if (project != null) {
+			EARNatureRuntime[] ears = getEARProjects(project);
+			for (int i = 0; i < ears.length; i++) {
+				EARNames.add(ears[i].getProject().getName());
+			}
+		}
+		return EARNames.isEmpty() ? null : (String[]) EARNames
+				.toArray(new String[0]);
+	}
 
+	/**
+	 * Returns an array of EAR components which are referenced by the component
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static IVirtualComponent[] getReferencingEARComponents(IProject project, String componentName){
+		StructureEdit core = null;
+		IVirtualComponent[] earComponents = null;
+		try{
+			Vector ears = new Vector();
+			core = StructureEdit.getStructureEditForRead(project);
+			if (core!=null){
+				WorkbenchComponent wc = core.findComponentByName(componentName);
+			
+				List refs = wc.getReferencedComponents();
+				for (int i=0; i<refs.size();i++){
+					ReferencedComponent refComp = (ReferencedComponent)refs.get(i);
+					if (refComp!=null){
+						try {
+							URI handle = refComp.getHandle();
+							IProject proj = StructureEdit.getContainingProject(handle);
+							String compName = StructureEdit.getDeployedName(handle);
+							if (isEARComponent(proj, compName)){
+								ears.add(ComponentCore.createComponent(proj, compName));
+							}
+						} catch(Exception e){
+							// handle unresolvable URI exception
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			
+			earComponents = new IVirtualComponent[ears.size()];
+			ears.copyInto(earComponents);
+			
+		}
+		finally{
+			if (core!=null)
+				core.dispose();
+		}
+		return earComponents;
+	}
+	
+	
 	/**
 	 * This method returns all of the EAR projects that reference the specified
 	 * ejb project.
@@ -490,7 +616,7 @@ public final class J2EEUtils {
 	 * Find all EJB projects for a particular EAR Nature.
 	 * 
 	 * @return a vector of EJBNatureRuntimes.
-	 * @deprecated use getEJBProjectsFromEAR(IProject, String)
+	 * @deprecated use getReferencingEJBComponents(IProject, String)
 	 */
 	public static Vector getEJBProjects(EARNatureRuntime ear) {
 		Vector ejbs = new Vector();
@@ -512,14 +638,47 @@ public final class J2EEUtils {
 	}
 	
 	/**
-	 * TODO: implement
+	 * Returns the EJB Components referenced by the ear
 	 * @param project
 	 * @param componentName
 	 * @return
 	 */
-	public static IProject[] getEJBProjectsFromEAR(IProject project, String componentName){
-		
-		return null;
+	public static IVirtualComponent[] getReferencingEJBComponentsFromEAR(IProject project, String earComponentName){
+		StructureEdit core = null;
+		IVirtualComponent[] ejbComponents = null;
+		try{
+			Vector ejbComps = new Vector();
+			core = StructureEdit.getStructureEditForRead(project);
+			if (core!=null) {
+				WorkbenchComponent wc = core.findComponentByName(earComponentName);
+				
+				List refs = wc.getReferencedComponents();
+				for (int i=0; i<refs.size();i++){
+					ReferencedComponent refComp = (ReferencedComponent)refs.get(i);
+					if (refComp!=null){
+						try {
+						URI handle = refComp.getHandle();
+						IProject proj = StructureEdit.getContainingProject(handle);
+						String compName = StructureEdit.getDeployedName(handle);
+						if (isEJBComponent(proj, compName)){
+							ejbComps.add(ComponentCore.createComponent(proj, compName));
+						}
+						} catch(Exception e){
+							// handle unresolvable URI exception
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			ejbComponents = new IVirtualComponent[ejbComps.size()];
+			ejbComps.copyInto(ejbComponents);
+			
+		}
+		finally{
+			if (core!=null)
+				core.dispose();
+		}
+		return ejbComponents;		
 	}
 
 	/**
@@ -613,7 +772,7 @@ public final class J2EEUtils {
 	}
 
 	/**
-	 * Uses emg ProjectUtilities to get the project
+	 * Uses jem ProjectUtilities to get the project
 	 * @param ejb eObject
 	 * @return IProject
 	 */
@@ -642,30 +801,6 @@ public final class J2EEUtils {
 		return projects;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public static String[] getAllEARComponents() {
-		Vector v = new Vector();
-		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
-		for (int i = 0; i < projects.length; i++) {
-			try {
-				if (ResourceUtils.isEARProject(projects[i])) {
-					v.add(projects[i]);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				//handle exception
-			}
-
-		}
-		String[] earProjects = new String[v.size()];
-		v.copyInto(earProjects);
-		return earProjects;
-	}
-
-
 	/**
 	 * Get a J2EE 1.2 EAR Project. Returns null if no J2EE 1.2 EAR Projects
 	 * exist
@@ -744,40 +879,28 @@ public final class J2EEUtils {
 	 * Returns a default J2EE 1.3 EAR component in the workspace
 	 * @return EAR component name
 	 */
-	public static String getDefault13EARComponent(){
-		String earComponentName = null;
-		boolean found = false;
-		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
-		for (int i=0;i<projects.length;i++){
-			 String[] earComponents = getEARComponents(projects[i]);
-			 for (int j=0;j<earComponents.length;j++){
-				 int j2eeVersion = getJ2EEVersion(projects[i], earComponents[j]);
-				 if (j2eeVersion == J2EEVersionConstants.J2EE_1_3_ID) {
-					 return earComponents[j];
-				 }
-			 }
-		}
-		return earComponentName;
+	public static IVirtualComponent getDefault13EARComponent(){
+		IVirtualComponent[] allEARComponents = getAllEARComponents();
+		for (int j=0;j<allEARComponents.length;j++){
+			int j2eeVersion = getJ2EEVersion(allEARComponents[j]);
+			if (j2eeVersion == J2EEVersionConstants.J2EE_1_3_ID)
+				 return allEARComponents[j];
+		 }	
+		return null;
 	}
 	
 	/**
 	 * Returns a default J2EE 1.4 EAR component in the workspace
 	 * @return EAR component name
 	 */
-	public static String getDefault14EARComponent(){
-		String earComponentName = null;
-		boolean found = false;
-		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
-		for (int i=0;i<projects.length;i++){
-			 String[] earComponents = getEARComponents(projects[i]);
-			 for (int j=0;j<earComponents.length;j++){
-				 int j2eeVersion = getJ2EEVersion(projects[i], earComponents[j]);
-				 if (j2eeVersion == J2EEVersionConstants.J2EE_1_4_ID) {
-					 return earComponents[j];
-				 }
-			 }
-		}
-		return earComponentName;
+	public static IVirtualComponent getDefault14EARComponent(){
+		IVirtualComponent[] allEARComponents = getAllEARComponents();
+		for (int j=0;j<allEARComponents.length;j++){
+			int j2eeVersion = getJ2EEVersion(allEARComponents[j]);
+			if (j2eeVersion == J2EEVersionConstants.J2EE_1_4_ID)
+				 return allEARComponents[j];
+		 }	
+		return null;
 	}
 		
 	/**
@@ -803,8 +926,17 @@ public final class J2EEUtils {
 		return null;
 	}
 	
-	public static String getEARComponentofJ2EEVersion(int versionId){
-		
+	/**
+	 * Returns the first EAR component of the J2EE version
+	 * @param versionId
+	 * @return
+	 */
+	public static IVirtualComponent getEARComponentofJ2EEVersion(int versionId){
+		IVirtualComponent[] components = getAllEARComponents();
+		for (int i=0; i<components.length; i++){
+			if (getJ2EEVersion(components[i]) == versionId)
+				return components[i];
+		}
 		return null;
 	}
 	
@@ -1068,11 +1200,6 @@ public final class J2EEUtils {
 		return (IProject[]) ejbProjects.toArray(new IProject[0]);
 	}
 	
-	public static String[] getEJB20ComponentsFromEars(String[] earComponentNames){
-		
-		return null;
-	}
-
 	/**
 	 * Returns EJB projects in the ears
 	 * 
@@ -1114,12 +1241,47 @@ public final class J2EEUtils {
 
 	/**
 	 * 
-	 * @param earComponents
+	 * @param project
+	 * @param earComponentName
 	 * @return
 	 */
-	public static IVirtualComponent[] getEJBComponentsFromEars(IVirtualComponent[] earComponents){
-		
-		return null;
+	public static IVirtualComponent[] getReferencingEJB20ComponentsFromEAR(IProject project, String earComponentName){
+		StructureEdit core = null;
+		IVirtualComponent[] ejbComponents = null;
+		try{
+			Vector ejbComps = new Vector();
+			core = StructureEdit.getStructureEditForRead(project);
+			if (core!=null){
+				WorkbenchComponent wc = core.findComponentByName(earComponentName);
+			
+				List refs = wc.getReferencedComponents();
+				for (int i=0; i<refs.size();i++){
+					ReferencedComponent refComp = (ReferencedComponent)refs.get(i);
+					if (refComp!=null){
+						try {
+						URI handle = refComp.getHandle();
+						IProject proj = StructureEdit.getContainingProject(handle);
+						String compName = StructureEdit.getDeployedName(handle);
+						IVirtualComponent vc = ComponentCore.createComponent(proj, compName);
+						if (isEJB20Component(vc)){
+							ejbComps.add(vc);
+						}
+						} catch(Exception e){
+							// handle unresolvable URI exception
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			ejbComponents = new IVirtualComponent[ejbComps.size()];
+			ejbComps.copyInto(ejbComponents);
+			
+		}
+		finally{
+			if (core!=null)
+				core.dispose();
+		}
+		return ejbComponents;		
 	}
 	
 	
@@ -1158,7 +1320,7 @@ public final class J2EEUtils {
 	 * 
 	 * @param earProjects
 	 * @return projects Web projects
-	 * @deprecated  use getWebComponentsForEars
+	 * @deprecated  use getReferencingWebComponentsForEar
 	 */
 	public static IProject[] getWebProjectsFromEARS(
 			EARNatureRuntime[] earProjects) {
@@ -1197,9 +1359,42 @@ public final class J2EEUtils {
 	 * @param earComponents
 	 * @return
 	 */
-	public static IVirtualComponent[] getWebComponentsForEars(IVirtualComponent earComponents){
-		
-		return null;
+	public static IVirtualComponent[] getReferencingWebComponentsFromEAR(IProject project, String earComponentName){
+		StructureEdit core = null;
+		IVirtualComponent[] webComponents = null;
+		try{
+			Vector webComps = new Vector();
+			core = StructureEdit.getStructureEditForRead(project);
+			if(core!=null){
+				WorkbenchComponent wc = core.findComponentByName(earComponentName);
+				
+				List refs = wc.getReferencedComponents();
+				for (int i=0; i<refs.size();i++){
+					ReferencedComponent refComp = (ReferencedComponent)refs.get(i);
+					if (refComp!=null){
+						try {
+						URI handle = refComp.getHandle();
+						IProject proj = StructureEdit.getContainingProject(handle);
+						String compName = StructureEdit.getDeployedName(handle);
+						if (isWebComponent(proj, compName)){
+							webComps.add(ComponentCore.createComponent(proj, compName));
+						}
+						} catch(Exception e){
+							// handle unresolvable URI exception
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			webComponents = new IVirtualComponent[webComps.size()];
+			webComps.copyInto(webComponents);
+			
+		}
+		finally{
+			if (core!=null)
+				core.dispose();
+		}
+		return webComponents;	
 	}
 	
 	/**
@@ -1231,8 +1426,43 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean isEJB20Component(IVirtualComponent ejbComponent){
+		return isEJB20Component(ejbComponent.getProject(), ejbComponent.getName());
+	}
+	
+	public static boolean isEJB20Component(IProject project, String componentName){
+		boolean isEJB = false;
+		StructureEdit mc = null;
+		try {
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  if (mc!=null){
+			  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			  for(int i=0;i<wbcs.length;i++){
+				  if (wbcs[i].getName().equals(componentName)){
+					  if (EJBArtifactEdit.isValidEJBModule(wbcs[i])) {
+						  EJBArtifactEdit  ejbEdit = null;
+						  try {
+							  ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(wbcs[i]);
+							  EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
+							  if (ejbRes.getModuleVersionID()== J2EEVersionConstants.EJB_2_0_ID) {
+								  return true;
+							  }
+						  }
+						  finally {
+							  if (ejbEdit!=null)
+								  ejbEdit.dispose();
+						  }
+					  }
+				  }
+			  }
+		  }
+		}
+		catch(Exception ex){}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
 		
-		return false;
+		return isEJB;			
 	}
 
 	/**
@@ -1279,22 +1509,110 @@ public final class J2EEUtils {
 	}
 	
 	/**
-	 * 
-	 * @param ear
+	 * Checks if the component at compName is referenced by the ear at earCompName
+	 * @param earProject
+	 * @param earCompName
+	 * @param project
+	 * @param compName
+	 * @return
+	 */
+	public static boolean isComponentAssociated(IProject earProject, String earCompName,
+								IProject project, String compName) {
+		IVirtualComponent vc1 = ComponentCore.createComponent(earProject, earCompName);
+		IVirtualComponent vc2 = ComponentCore.createComponent(project, compName);
+		return isComponentAssociated(vc1, vc2);
+	}
+	
+	/**
+	 * Checks if the component is referenced by the ear
+	 * @param ear 
 	 * @param component
 	 * @return
 	 */
-	public static boolean isComponentAssociated(IVirtualComponent ear, IVirtualComponent component){
+	private static boolean isComponentAssociated(IVirtualComponent ear, IVirtualComponent component){
+		boolean isAssociated = false;
+		StructureEdit core = null;
+		try{
+			IProject project = component.getProject();
+			core = StructureEdit.getStructureEditForRead(project);
+			if (core!=null){
+				WorkbenchComponent wc = core.findComponentByName(component.getName());
+				URI wcHandle = wc.getHandle();
+				core.dispose();
+				
+				IProject earProject = ear.getProject();
+				core = StructureEdit.getStructureEditForRead(earProject);
+				if (core!=null ){
+					WorkbenchComponent earWC = core.findComponentByName(ear.getName());
+					
+					// Note: if this doesn't work, get the WorkbenchComponent by URI instead
+					List referencedComponents = earWC.getReferencedComponents();
+					for (int i=0; i<referencedComponents.size(); i++){
+						ReferencedComponent rc = (ReferencedComponent)referencedComponents.get(i);
+						if(rc.getHandle().equals(wcHandle)) {
+							isAssociated = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+		finally {
+            if(core != null)
+                core.dispose();			
+		}
 		
-		return false;
+		return isAssociated;
 	}
 
+	/**
+	 * 
+	 * @param project
+	 * @param componentName
+	 * @param earProject
+	 * @param earComponentName
+	 */
+	public static void associateComponentToEAR(IProject project, String componentName,
+							IProject earProject, String earComponentName) {
+		
+        StructureEdit core = null;
+        try {
+            core = StructureEdit.getStructureEditForRead(project);
+			if (core!=null){
+	            WorkbenchComponent wc = core.findComponentByName(componentName);
+	            
+	            AddComponentToEnterpriseApplicationDataModel addComponentToEARDataModel = new AddComponentToEnterpriseApplicationDataModel();;
+	            
+	            addComponentToEARDataModel.setProperty(AddComponentToEnterpriseApplicationDataModel.EAR_PROJECT_NAME, earProject.getName());
+	            addComponentToEARDataModel.setProperty(AddComponentToEnterpriseApplicationDataModel.PROJECT_NAME, project.getName());               
+	            addComponentToEARDataModel.setProperty(AddComponentToEnterpriseApplicationDataModel.MODULE_NAME, componentName);
+	            addComponentToEARDataModel.setProperty(AddComponentToEnterpriseApplicationDataModel.EAR_MODULE_NAME, earComponentName);
+	            
+	            List modulesList = new ArrayList();
+	            modulesList.add(wc);
+	            //String ejbComponentDeployName = model.getStringProperty(EJB_COMPONENT_DEPLOY_NAME);
+	            
+	            addComponentToEARDataModel.setProperty(AddComponentToEnterpriseApplicationDataModel.MODULE_LIST,modulesList);
+	            
+	            AddComponentToEnterpriseApplicationOperation addModuleOp = new AddComponentToEnterpriseApplicationOperation(addComponentToEARDataModel);
+	            addModuleOp.run(null);
+			}
+        } catch (Exception e) {
+			//handle InvocationTargetException
+        }finally {
+            if(core != null)
+                core.dispose();
+        }		
+	}
+	
+	
+	
 	/**
 	 * 
 	 * @param module
 	 * @param EARProject
 	 * 
-	 * @deprecated new method to be determined
+	 * @deprecated 
 	 */
 	public static void associateWebProject(IProject module, IProject EARProject) {
 		try {
@@ -1354,33 +1672,28 @@ public final class J2EEUtils {
 		IPath modulePath = null;
 		StructureEdit mc = null;
 		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-
-				if (wbcs.length != 0) {
-					// WebArtifactEdit webEdit = null;
-					// try {
-					// webEdit =
-					// WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
-					// if (webEdit!=null){
-					// IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
-					// modulePath = webXMLPath.removeLastSegments(1);
-					// System.out.println("WebModulePath/DDPath = "+modulePath);
-					// }
-					// }
-					// finally{
-					// if (webEdit!=null)
-					// webEdit.dispose();
-					// }
-					IVirtualComponent component = ComponentCore
-							.createComponent(project, wbcs[0].getName());
-					IVirtualFolder webInfDir = component.getFolder(new Path(
-							"/WEB-INF"));
-					modulePath = webInfDir.getWorkspaceRelativePath();
-					System.out.println("FirstWebInfPath = " + modulePath);
-				}
-			}
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  
+		  if (wbcs.length!=0) {
+//			WebArtifactEdit webEdit = null;
+//			try {
+//			  webEdit = WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
+//			  if (webEdit!=null){
+//				  IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
+//				  modulePath = webXMLPath.removeLastSegments(1);
+//				  System.out.println("WebModulePath/DDPath = "+modulePath);
+//			  }
+//			}
+//			finally{
+//				if (webEdit!=null)
+//					webEdit.dispose();
+//			}
+			IVirtualComponent component = ComponentCore.createComponent(project, wbcs[0].getName());
+			IVirtualFolder webInfDir = component.getFolder(new Path("/WEB-INF"));
+			modulePath = webInfDir.getWorkspaceRelativePath();
+			System.out.println("FirstWebInfPath = " +modulePath);
+		  }
 		}
 		catch(Exception ex){}
 		finally{
@@ -1392,7 +1705,6 @@ public final class J2EEUtils {
 	}
 	
 	/**
-	 * TODO: to be implemented
 	 * @param project
 	 * @param componentName
 	 * @return
@@ -1402,7 +1714,7 @@ public final class J2EEUtils {
 		IVirtualComponent component = ComponentCore.createComponent(project, componentName);
 		IVirtualFolder webInfDir = component.getFolder(new Path("/WEB-INF"));
 		IPath modulePath = webInfDir.getWorkspaceRelativePath();
-		System.out.println("FirstWebInfPath = " +modulePath);
+		System.out.println("WebInfPath = " +modulePath);
 		
 		return modulePath;
 	}
@@ -1420,30 +1732,26 @@ public final class J2EEUtils {
 		IPath modulePath = null;
 		StructureEdit mc = null;
 		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				if (wbcs.length != 0) {
-					// WebArtifactEdit webEdit = null;
-					// try {
-					// webEdit =
-					// WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
-					// if (webEdit!=null){
-					// IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
-					// modulePath = webXMLPath.removeLastSegments(2);
-					// System.out.println("WebContent Path = "+modulePath);
-					// }
-					// }
-					// finally{
-					// if (webEdit!=null)
-					// webEdit.dispose();
-					// }
-					IVirtualComponent component = ComponentCore
-							.createComponent(project, wbcs[0].getName());
-					modulePath = component.getWorkspaceRelativePath();
-					System.out.println("FirstWebContentPath = " + modulePath);
-				}
-			}
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  if (wbcs.length!=0) {
+//			WebArtifactEdit webEdit = null;
+//			try {
+//			  webEdit = WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
+//			  if (webEdit!=null){
+//				  IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
+//				  modulePath = webXMLPath.removeLastSegments(2);
+//				  System.out.println("WebContent Path = "+modulePath);
+//			  }
+//			}
+//			finally{
+//				if (webEdit!=null)
+//					webEdit.dispose();
+//			}
+			IVirtualComponent component = ComponentCore.createComponent(project, wbcs[0].getName());
+			modulePath = component.getWorkspaceRelativePath();
+			System.out.println("FirstWebContentPath = " +modulePath);
+		  }
 		}
 		catch(Exception ex){}
 		finally{
@@ -1455,17 +1763,13 @@ public final class J2EEUtils {
 	}
 	
 	/**
-	 * TODO: implement
 	 * @param project
 	 * @param componentName
 	 * @return
 	 */
 	public static IPath getWebContentPath(IProject project, String componentName){
-		
 		IVirtualComponent component = ComponentCore.createComponent(project, componentName);
 		IPath modulePath = component.getWorkspaceRelativePath();
-		System.out.println("FirstWebContentPath = " +modulePath);
-		
 		return modulePath;
 	}
 	
@@ -1488,7 +1792,6 @@ public final class J2EEUtils {
 	}
 	
 	/**
-	 * TODO: implement
 	 * @param project
 	 * @param componentName
 	 * @return
@@ -1516,14 +1819,12 @@ public final class J2EEUtils {
 		String moduleName = null;
 		StructureEdit mc = null;
 		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				if (wbcs.length != 0) {
-					moduleName = wbcs[0].getName();
-					System.out.println("First Module name = " + moduleName);
-				}
-			}
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+		  if (wbcs.length!=0) {
+			  moduleName = wbcs[0].getName();
+			  System.out.println("First Module name = "+moduleName);
+		  }
 		}
 		catch(Exception ex){}
 		finally{
@@ -1545,16 +1846,15 @@ public final class J2EEUtils {
 		boolean isWeb = false;
 		StructureEdit mc = null;
 		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				for (int i = 0; i < wbcs.length; i++) {
-					if (wbcs[i].getName().equals(componentName)) {
-						isWeb = WebArtifactEdit.isValidWebModule(wbcs[i]);
-						break;
-					}
-				}
-			}
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  if(mc!=null){
+			  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			  for(int i=0;i<wbcs.length;i++){
+				  if (wbcs[i].getName().equals(componentName)){
+					  return WebArtifactEdit.isValidWebModule(wbcs[i]);
+				  }
+			  }
+		  }
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -1582,23 +1882,21 @@ public final class J2EEUtils {
 		boolean isEAR = false;
 		StructureEdit mc = null;
 		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				for (int i = 0; i < wbcs.length; i++) {
-					if (wbcs[i].getName().equals(componentName)) {
-						isEAR = EARArtifactEdit.isValidEARModule(wbcs[i]);
-						break;
-					}
-				}
-			}
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  if(mc!=null){
+			  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			  for(int i=0;i<wbcs.length;i++){
+				  if (wbcs[i].getName().equals(componentName)){
+					  return EARArtifactEdit.isValidEARModule(wbcs[i]);
+				  }
+			  }
+		  }
 		}
 		catch(Exception ex){}
 		finally{
 			if (mc!=null)
 				mc.dispose();
 		}
-		
 		return isEAR;
 	}
 	
@@ -1616,16 +1914,15 @@ public final class J2EEUtils {
 		boolean isEJB = false;
 		StructureEdit mc = null;
 		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				for (int i = 0; i < wbcs.length; i++) {
-					if (wbcs[i].getName().equals(componentName)) {
-						isEJB = EJBArtifactEdit.isValidEJBModule(wbcs[i]);
-						break;
-					}
-				}
-			}
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  if (mc!=null){
+			  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			  for(int i=0;i<wbcs.length;i++){
+				  if (wbcs[i].getName().equals(componentName)){
+					  return EJBArtifactEdit.isValidEJBModule(wbcs[i]);
+				  }
+			  }
+		  }
 		}
 		catch(Exception ex){}
 		finally{
@@ -1650,17 +1947,15 @@ public final class J2EEUtils {
 		boolean isAppClient = false;
 		StructureEdit mc = null;
 		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				for (int i = 0; i < wbcs.length; i++) {
-					if (wbcs[i].getName().equals(componentName)) {
-						isAppClient = AppClientArtifactEdit
-								.isValidApplicationClientModule(wbcs[i]);
-						break;
-					}
-				}
-			}
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  if(mc!=null){
+			  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			  for(int i=0;i<wbcs.length;i++){
+				  if (wbcs[i].getName().equals(componentName)){
+					  return AppClientArtifactEdit.isValidApplicationClientModule(wbcs[i]);
+				  }
+			  }
+		  }
 		}
 		catch(Exception ex){}
 		finally{
@@ -1685,16 +1980,19 @@ public final class J2EEUtils {
 		boolean isJava = false;
 		StructureEdit mc = null;
 		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc != null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				for (int i = 0; i < wbcs.length; i++) {
-					if (wbcs[i].getName().equals(componentName)) {
-						isJava = ArtifactEdit.isValidEditableModule(wbcs[i]);
-						break;
-					}
-				}
-			}
+		  mc = StructureEdit.getStructureEditForRead(project);
+		  if (mc!=null) {
+			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			for(int i=0;i<wbcs.length;i++){
+			  if (wbcs[i].getComponentType().getComponentTypeId().equals(IModuleConstants.JST_UTILITY_MODULE)){
+				  return true;
+			  }
+//			  if (wbcs[i].getName().equals(componentName)){
+//				  isJava = ArtifactEdit.isValidEditableModule(wbcs[i]);
+//				  break;
+//			  }
+		  	}
+		  }
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -1712,5 +2010,19 @@ public final class J2EEUtils {
 		return isJavaComponent(comp.getProject(), comp.getName());
 	}	
 	
+	private static String[] toComponentNamesArray(IVirtualComponent[] components){
+		String[] ecNames = new String[components.length];
+		for(int i=0; i<components.length; i++){
+			ecNames[i] = components[i].getName();
+		}
+		return ecNames;		
+	}
 	
+	private static IProject[] toProjectArray(IVirtualComponent[] components){
+		IProject[] projects = new IProject[components.length];
+		for (int i=0; i<components.length; i++){
+			projects[i] = components[i].getProject();
+		}
+		return projects;
+	}
 }
