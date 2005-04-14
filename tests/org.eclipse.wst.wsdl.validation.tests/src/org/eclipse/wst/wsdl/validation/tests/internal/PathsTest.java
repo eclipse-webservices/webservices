@@ -15,8 +15,6 @@ import junit.framework.TestSuite;
 
 /**
  * Tests for file paths.
- * 
- * @author Lawrence Mandel, IBM
  */
 public class PathsTest extends BaseTestCase
 {

@@ -14,8 +14,6 @@ import junit.framework.Test;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverTest;
 /**
  * The root test suite that contains all other WSDL validator test suites.
- * 
- * @author Lawrence Mandel, IBM
  */
 public class AllWSDLTests extends junit.framework.TestSuite
 {

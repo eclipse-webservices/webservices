@@ -15,8 +15,6 @@ import junit.framework.TestSuite;
 
 /**
  * XSD validation tests for the WSDL validator.
- * 
- * @author Lawrence Mandel, IBM
  */
 public class XSDTest extends BaseTestCase
 {
