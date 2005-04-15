@@ -556,6 +556,19 @@ public class MessageImpl extends WSDLElementImpl implements Message
 
   protected void handleReconciliation(Collection remainingModelObjects)
   {
+    for (Iterator i = remainingModelObjects.iterator(); i.hasNext();)
+    {
+      remove(this, i.next());
+    }
+  }
+  
+  protected void remove(Object component, Object modelObject)
+  {
+    Message message = (Message) component;
+    if (modelObject instanceof Part)
+    {
+      message.getEParts().clear();
+    }
   }
 
   //
