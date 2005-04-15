@@ -10,31 +10,32 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests;
 
+import javax.xml.namespace.QName;
+
+import junit.framework.Assert;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.WSDLPlugin;
-//import org.eclipse.wst.wsdl.internal.extensibility.ExtensibilityElementFactoryRegistryImpl;
-//import org.eclipse.wst.wsdl.internal.extensibility.ExtensibilityElementFactoryRegistryReader;
+import org.eclipse.wst.wsdl.binding.soap.SOAPHeader;
+import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
+import org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
-// import org.eclipse.wst.wsdl.util.ExtensibilityElementFactoryRegistry;
+import org.eclipse.wst.wsdl.util.ExtensibilityElementFactoryRegistry;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.ibm.wsdl.extensions.soap.SOAPConstants;
-
-import junit.framework.Assert;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 public class UtilTest extends TestCase {
 
@@ -188,6 +189,7 @@ public class UtilTest extends TestCase {
 		  {
 			resourceImpl.serialize(System.out, document, null);
 		  }
+	  
 		}
 		catch (Exception e)
 		{
@@ -199,11 +201,11 @@ public class UtilTest extends TestCase {
 	  {
 	    try
 	    {
-		    ExtensibilityElementFactory factory = WSDLPlugin.INSTANCE.getExtensibilityElementFactory(SOAPConstants.NS_URI_SOAP);
+		    ExtensibilityElementFactory factory = WSDLPlugin.INSTANCE.getExtensibilityElementFactory(SOAPConstants.SOAP_NAMESPACE_URI);
 		    if (factory != null)
 			{
-		      ExtensibilityElement ee = factory.createExtensibilityElement(SOAPConstants.NS_URI_SOAP, SOAPConstants.ELEM_BODY);
-              Assert.assertTrue("Problem creating SOAP extensibility element", ee != null);
+		      ExtensibilityElement ee = factory.createExtensibilityElement(SOAPConstants.SOAP_NAMESPACE_URI, SOAPConstants.HEADER_ELEMENT_TAG);
+              Assert.assertTrue("Problem creating SOAP extensibility element", ee instanceof SOAPHeader);
 			}
 	    }
 		catch (Exception e)
@@ -212,10 +214,52 @@ public class UtilTest extends TestCase {
 		}   
 	  }
 	  
+	  class TestExtensibilityElement extends ExtensibilityElementImpl implements ExtensibilityElement
+	  {
+		String ns, name;
+		
+		public TestExtensibilityElement(String ns, String name)
+		{
+		  super();
+		  this.ns = ns;
+		  this.name = name;
+		}
+
+		public QName getElementType()
+		{
+		  if (elementType == null)
+		  {
+			elementType = new QName(ns, name);
+		  }
+	      return elementType;
+		}
+	  }
+	  
+	  class WSDLTestFactory implements ExtensibilityElementFactory
+	  {
+		public WSDLTestFactory()
+		{
+		}
+				  
+		public ExtensibilityElement createExtensibilityElement(String namespace, String localName)
+		{
+		  return new TestExtensibilityElement(namespace, localName);
+		}
+	  }
+	  
 	  public void testExtensibilityElementFactoryRegistry()
 	  {
 	    try
-	    {
+	    {	
+		    ExtensibilityElementFactoryRegistry factoryRegistry = WSDLPlugin.INSTANCE.getExtensibilityElementFactoryRegistry();
+			factoryRegistry.registerFactory("http://org.eclipse.wst.wsdl.tests", new WSDLTestFactory());
+			
+			ExtensibilityElementFactory factory = WSDLPlugin.INSTANCE.getExtensibilityElementFactory("http://org.eclipse.wst.wsdl.tests");
+			ExtensibilityElement ee = factory.createExtensibilityElement("http://org.eclipse.wst.wsdl.tests", "TestElement");
+			Assert.assertTrue("1. Problem creating custom Test extensibility element", ee instanceof TestExtensibilityElement);
+			Assert.assertTrue("2. Problem creating custom Test extensibility element", ee.getElementType().getLocalPart().equals("TestElement"));
+			Assert.assertTrue("3. Problem creating custom Test extensibility element", ee.getElementType().getNamespaceURI().equals("http://org.eclipse.wst.wsdl.tests"));
+			
 	    }
 		catch (Exception e)
 		{
