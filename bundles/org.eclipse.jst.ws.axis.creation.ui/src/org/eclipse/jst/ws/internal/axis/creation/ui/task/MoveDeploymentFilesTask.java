@@ -19,6 +19,7 @@ import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
 import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.util.FileUtil;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
@@ -68,14 +69,14 @@ public class MoveDeploymentFilesTask extends SimpleCommand {
 			javaWSDLParam_.setProjectURL(projectURL);
 		}
 
-		try {
-			if (!project.hasNature(IWebNatureConstants.J2EE_NATURE_ID))
-				return status;
-		} catch (Exception ex) {
-		  status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_INTERAL"), Status.ERROR, ex);
-		  env.getStatusHandler().reportError(status);
-		  return status;		  
-		}
+//		try {
+//			if (!project.hasNature(IWebNatureConstants.J2EE_NATURE_ID))
+//				return status;
+//		} catch (Exception ex) {
+//		  status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_INTERAL"), Status.ERROR, ex);
+//		  env.getStatusHandler().reportError(status);
+//		  return status;		  
+//		}
 		String[] deployFiles = javaWSDLParam_.getDeploymentFiles();
 		String javaOutput = javaWSDLParam_.getJavaOutput();
 
@@ -84,19 +85,13 @@ public class MoveDeploymentFilesTask extends SimpleCommand {
 		}
 
 
-		IPath webinfPath = project.getLocation();
-		try {
+		IPath webinfPath;
+		webinfPath = J2EEUtils.getFirstWebInfPath(project);
 
-			if (project.hasNature(IWebNatureConstants.J2EE_NATURE_ID)) {
-				J2EEWebNatureRuntime webProject =
-					(J2EEWebNatureRuntime) project.getNature(
-						IWebNatureConstants.J2EE_NATURE_ID);
-				webinfPath = webinfPath.append(webProject.getWEBINFPath());
-			}
 			for (int i = 0; i < deployFiles.length; i++) {
         File f = new File(deployFiles[i]);
         String resourceToMove = f.getName();
-				String targetFileName = webinfPath.addTrailingSeparator().append(resourceToMove).toString();
+				String targetFileName = ResourceUtils.getWorkspaceRoot().getFile(webinfPath.addTrailingSeparator().append(resourceToMove)).getLocation().toString();
 				FileUtil.createTargetFile(deployFiles[i], targetFileName, true);
 				File deploymentFile = new File(deployFiles[i]);
 				deploymentFile.delete();
