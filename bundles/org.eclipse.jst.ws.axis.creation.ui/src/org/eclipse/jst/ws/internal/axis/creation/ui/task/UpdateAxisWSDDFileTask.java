@@ -113,14 +113,14 @@ public class UpdateAxisWSDDFileTask extends SimpleCommand {
 		if (outputLocation == null) {
 			return status;
 		}
-		try {
-			if (!project.hasNature(IWebNatureConstants.J2EE_NATURE_ID))
-				return status;
-		} catch (Exception ex) {
-		    status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_INTERAL"), Status.ERROR, ex);
-		    env.getStatusHandler().reportError(status);
-		    return status;		  
-		}
+//		try {
+//			if (!project.hasNature(IWebNatureConstants.J2EE_NATURE_ID))
+//				return status;
+//		} catch (Exception ex) {
+//		    status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_INTERAL"), Status.ERROR, ex);
+//		    env.getStatusHandler().reportError(status);
+//		    return status;		  
+//		}
 		String[] javaFiles = javaWSDLParam_.getJavaFiles();
 		String javaoutput = javaWSDLParam_.getJavaOutput();
 		String output = javaWSDLParam_.getOutput();

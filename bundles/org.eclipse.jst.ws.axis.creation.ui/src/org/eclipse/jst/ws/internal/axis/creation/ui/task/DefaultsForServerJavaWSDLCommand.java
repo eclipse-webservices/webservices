@@ -144,7 +144,7 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 //					moduleServerRoot = container.getFullPath();
 //				}
 				
-				modulePath = modulePath.append(J2EEUtils.getFirstWebModuleName(serviceProject_));
+				modulePath = J2EEUtils.getFirstWebContentPath(serviceProject_);
 				webinfPath = J2EEUtils.getFirstWebInfPath(serviceProject_);
 			}
 

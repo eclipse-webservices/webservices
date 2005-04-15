@@ -61,7 +61,7 @@ public class TDAxisInputCommand extends SimpleCommand {
 	  	String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	    
-		String serverServer = ws_.getWebServiceInfo().getServerInstanceId();	
+		serverServer_ = ws_.getWebServiceInfo().getServerInstanceId();	
 		wsdlURI_ = ws_.getWebServiceInfo().getWsdlURL();
 		
 		return new SimpleStatus("");

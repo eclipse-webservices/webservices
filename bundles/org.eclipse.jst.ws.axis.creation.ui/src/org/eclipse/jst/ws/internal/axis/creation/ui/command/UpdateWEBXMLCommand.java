@@ -114,7 +114,7 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 		try {
 			// 
 			WebApp webapp = null;
-			structEdit = StructureEdit.getStructureEditForRead(webProject);;
+			structEdit = StructureEdit.getStructureEditForWrite(webProject);;
 			WorkbenchComponent wbcs[] = structEdit.getWorkbenchModules();
 			
 			webEdit = WebArtifactEdit.getWebArtifactEditForWrite(wbcs[0]);
