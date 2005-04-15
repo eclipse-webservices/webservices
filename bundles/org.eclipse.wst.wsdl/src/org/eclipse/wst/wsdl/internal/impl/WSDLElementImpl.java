@@ -670,26 +670,30 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       {
         if (contents.hasNext())
         {
-          referencedElement = ((WSDLElement)contents.next()).getElement();
-          while (referencedElement != null)
+          Object next = contents.next();
+          if (next instanceof WSDLElement)
           {
-            Node parent = referencedElement.getParentNode(); 
-            if (parent == null )
+            referencedElement = ((WSDLElement)next).getElement();
+            while (referencedElement != null)
             {
-              referencedElement = null;
-              break;
-            }
-            else if (parent == adoptionParent)
-            {
-              break;
-            }
-            else if (parent.getNodeType() == Node.ELEMENT_NODE)
-            {
-              referencedElement = (Element)parent;
-            }
-            else
-            {
-              break;
+              Node parent = referencedElement.getParentNode(); 
+              if (parent == null )
+              {
+                referencedElement = null;
+                break;
+              }
+              else if (parent == adoptionParent)
+              {
+                break;
+              }
+              else if (parent.getNodeType() == Node.ELEMENT_NODE)
+              {
+                referencedElement = (Element)parent;
+              }
+              else
+              {
+                break;
+              }
             }
           }
         }
