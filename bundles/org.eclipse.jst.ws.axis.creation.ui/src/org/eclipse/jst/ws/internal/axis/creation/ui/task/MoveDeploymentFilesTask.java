@@ -69,7 +69,7 @@ public class MoveDeploymentFilesTask extends SimpleCommand {
 			javaWSDLParam_.setProjectURL(projectURL);
 		}
 
-//		try {
+		try {
 //			if (!project.hasNature(IWebNatureConstants.J2EE_NATURE_ID))
 //				return status;
 //		} catch (Exception ex) {
