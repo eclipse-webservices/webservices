@@ -6,7 +6,7 @@
    version="1.0.0"
    name="%PLUGIN_NAME"
    provider-name="%PLUGIN_PROVIDER"
-   class="org.eclipse.wst.ws.WSPlugin">
+   class="org.eclipse.wst.ws.internal.plugin.WSPlugin">
 
    <runtime>
       <library name="ws.jar">

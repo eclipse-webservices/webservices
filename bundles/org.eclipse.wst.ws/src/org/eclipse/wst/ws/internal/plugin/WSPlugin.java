@@ -1,4 +1,4 @@
-package org.eclipse.wst.ws;
+package org.eclipse.wst.ws.internal.plugin;
 
 import java.text.MessageFormat;
 import java.util.MissingResourceException;

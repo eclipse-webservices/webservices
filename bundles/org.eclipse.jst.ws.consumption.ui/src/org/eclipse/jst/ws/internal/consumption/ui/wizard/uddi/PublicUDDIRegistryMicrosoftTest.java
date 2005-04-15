@@ -11,7 +11,7 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi;
 
-import org.eclipse.wst.ws.WSPlugin;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
 public class PublicUDDIRegistryMicrosoftTest implements PublicUDDIRegistryType
 {
