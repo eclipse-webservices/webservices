@@ -101,7 +101,6 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new UpdateWEBXMLCommand());
 			commands.add(new RefreshProjectCommand());
 			commands.add(new BuildProjectCommand());
-			commands.add(new StartProjectCommand());
 			commands.add(new AxisOutputCommand(this));
 			
 		} else if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
@@ -123,13 +122,12 @@ public class AxisWebService extends AbstractWebService
 		    commands.add(new UpdateWEBXMLCommand());
 		    commands.add(new RefreshProjectCommand());
 		    commands.add(new BuildProjectCommand());
-		    commands.add(new StartProjectCommand());
-		    commands.add(new BuildProjectCommand());
 			commands.add(new ComputeAxisSkeletonBeanCommand());
 			commands.add(new AxisOutputCommand(this));
 			
 		} else {
 			System.out.println("Error - WebServiceScenario should not be Client for AxisWebService");
+			return null;
 		}
 		
 		
@@ -146,20 +144,21 @@ public class AxisWebService extends AbstractWebService
 			String project, String module, String earProject, String ear)
 	{
 		Vector commands = new Vector();
-		if (ctx.getScenario().getValue() == WebServiceScenario.BOTTOMUP) {
-			commands.add(new AxisRunInputCommand(this, project, module));
-			commands.add(new AxisDeployCommand());
-			commands.add(new RefreshProjectCommand());
-		} else if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
-			commands.add(new AxisRunInputCommand(this, project, module));
-			commands.add(new AxisDeployCommand());
-			commands.add(new RefreshProjectCommand());
-			commands.add(new OpenJavaEditorCommand());
-		} else {
+
+		if (ctx.getScenario().getValue() == WebServiceScenario.CLIENT) {
 			System.out
 					.println("Error - WebServiceScenario should not be Client for AxisWebService");
+			return null;
+		} else {// For BOTTOM_UP and TOP_DOWN
+			commands.add(new AxisRunInputCommand(this, project, module));
+			commands.add(new StartProjectCommand());
+			commands.add(new AxisDeployCommand());
+			commands.add(new RefreshProjectCommand());
+			if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
+				commands.add(new OpenJavaEditorCommand());
+			}
+			return new SimpleCommandFactory(commands);
 		}
-		return new SimpleCommandFactory(commands);
 	}
 	
 	public void registerBUDataMappings(DataMappingRegistry registry) 
