@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.jst.j2ee.webapplication.Servlet;
 import org.eclipse.jst.j2ee.webapplication.ServletMapping;
@@ -118,7 +119,7 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 			WorkbenchComponent wbcs[] = structEdit.getWorkbenchModules();
 			
 			webEdit = WebArtifactEdit.getWebArtifactEditForWrite(wbcs[0]);
-			if (webEdit != null)
+			if (webEdit != null) {
 				webapp = (WebApp) webEdit.getDeploymentDescriptorRoot();
 			//
 			
@@ -162,6 +163,8 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 					servletMapping.setUrlPattern(servletDescriptor._mappings[i]);
 					webapp.getServletMappings().add(servletMapping);					
 				}
+			}
+			webEdit.save(new NullProgressMonitor());
 			}
 
 			return new SimpleStatus( "" );
