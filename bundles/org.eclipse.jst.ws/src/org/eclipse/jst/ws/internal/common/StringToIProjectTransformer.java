@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.common;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.data.Transformer;
 
@@ -25,13 +26,18 @@ public class StringToIProjectTransformer implements Transformer
    * @param Object This must be a java.lang.String
    * @return Object Returns an IProject
    */
+
   public Object transform(Object value)
   {
-    IProject project = null;
-    String valueString = (String)value;
-    if (valueString.length() > 0)
-      project = FileResourceUtils.getWorkspaceRoot().getProject((String)value);
-    
-    return project;    
+	String project     = (String)value;
+	int    slashIndex  = project.indexOf( '/' );
+	String projectName = project;
+	
+	if( slashIndex != -1 )
+	{
+	  projectName = project.substring( 0, slashIndex );
+	}
+	
+    return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
   }
 }
