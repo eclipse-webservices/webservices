@@ -30,6 +30,7 @@ import org.eclipse.wst.wsdl.ExtensibleElement;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.Input;
+import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Output;
@@ -223,7 +224,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
       myPart.setExtensionAttribute(key,value);
     }
     currentMessage.setEnclosingDefinition(newDefinition);
-    currentMessage.getEParts().add(myPart);
+    currentMessage.addPart(myPart);
   }
 
   protected void visitPortType(PortType portType)
@@ -253,14 +254,23 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     super.visitOperation(operation);
   }
   
+  protected void visitMessage(Message message)
+  {
+    Message myMessage = factory.createMessage();
+    myMessage.setQName(message.getQName());
+    myMessage.setUndefined(message.isUndefined());
+
+    super.visitMessage(message);
+  }
+  
   protected void visitInput(Input input)
   {
-    Input myInput = factory.createInput();
+    MessageReference myInput = factory.createInput();
     myInput.setDocumentationElement(input.getDocumentationElement());    
     myInput.setName(input.getName());
     myInput.setEMessage(input.getEMessage());
     myInput.setEnclosingDefinition(newDefinition);
-    currentOperation.setEInput(myInput);
+    currentOperation.setEInput((Input)myInput);
   }
 
   protected void visitOutput(Output output)
