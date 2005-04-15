@@ -122,7 +122,6 @@ public class AxisWebService extends AbstractWebService
 		    commands.add(new UpdateWEBXMLCommand());
 		    commands.add(new RefreshProjectCommand());
 		    commands.add(new BuildProjectCommand());
-			commands.add(new ComputeAxisSkeletonBeanCommand());
 			commands.add(new AxisOutputCommand(this));
 			
 		} else {
@@ -155,6 +154,7 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new AxisDeployCommand());
 			commands.add(new RefreshProjectCommand());
 			if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
+				commands.add(new ComputeAxisSkeletonBeanCommand());
 				commands.add(new OpenJavaEditorCommand());
 			}
 			return new SimpleCommandFactory(commands);
