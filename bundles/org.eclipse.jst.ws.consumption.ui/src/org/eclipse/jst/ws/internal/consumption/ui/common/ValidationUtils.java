@@ -42,7 +42,7 @@ import org.eclipse.wst.command.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.server.core.IRuntime;
-import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 /**
  *

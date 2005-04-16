@@ -43,7 +43,7 @@ import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
-import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
 {   

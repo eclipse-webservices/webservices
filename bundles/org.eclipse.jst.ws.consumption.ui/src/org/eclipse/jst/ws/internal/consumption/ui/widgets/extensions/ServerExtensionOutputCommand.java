@@ -27,9 +27,9 @@ import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
-import org.eclipse.wst.ws.parser.discovery.WebServicesParserExt;
-import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 
 public class ServerExtensionOutputCommand extends SimpleCommand
 {

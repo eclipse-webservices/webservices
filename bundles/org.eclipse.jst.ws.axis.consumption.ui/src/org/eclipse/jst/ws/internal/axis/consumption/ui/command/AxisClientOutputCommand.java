@@ -18,10 +18,10 @@ import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
-import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 
 
 public class AxisClientOutputCommand extends SimpleCommand {

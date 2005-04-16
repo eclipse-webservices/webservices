@@ -1,7 +1,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 /**
  * This class is a very simple wrapper that binds a WSDL parser with

@@ -16,8 +16,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
 import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.ws.parser.discovery.WebServicesParserExt;
-import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
 public class AxisSkeletonDefaultingCommand extends SimpleCommand

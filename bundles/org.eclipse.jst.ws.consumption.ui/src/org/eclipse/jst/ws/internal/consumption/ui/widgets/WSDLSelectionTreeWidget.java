@@ -37,8 +37,8 @@ import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
-import org.eclipse.wst.ws.parser.wsil.WebServiceEntity;
-import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
 /**

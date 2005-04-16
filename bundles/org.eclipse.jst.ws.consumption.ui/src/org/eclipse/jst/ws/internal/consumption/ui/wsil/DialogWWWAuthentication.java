@@ -22,8 +22,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.ws.parser.wsil.WWWAuthenticationException;
-import org.eclipse.wst.ws.parser.wsil.WWWAuthenticationHandler;
+import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
+import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationHandler;
 
 
 public class DialogWWWAuthentication extends Dialog implements WWWAuthenticationHandler
