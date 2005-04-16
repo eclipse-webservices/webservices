@@ -1,4 +1,4 @@
-package org.eclipse.jst.ws.internal.axis.creation.wsrt;
+package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
 
 import java.util.Vector;
 

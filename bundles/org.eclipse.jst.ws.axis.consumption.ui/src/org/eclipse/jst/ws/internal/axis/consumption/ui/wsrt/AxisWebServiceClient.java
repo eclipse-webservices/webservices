@@ -1,4 +1,4 @@
-package org.eclipse.jst.ws.internal.axis.consumption.wsrt;
+package org.eclipse.jst.ws.internal.axis.consumption.ui.wsrt;
 
 import java.util.Vector;
 

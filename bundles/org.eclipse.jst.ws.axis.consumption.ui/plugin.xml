@@ -141,7 +141,7 @@
        <widgetFactory   
              id="AxisClientConfig"
              insertBeforeCommandId="org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand"
-             class="org.eclipse.jst.ws.internal.axis.consumption.wsrt.AxisClientConfigWidgetFactory"/>
+             class="org.eclipse.jst.ws.internal.axis.consumption.ui.wsrt.AxisClientConfigWidgetFactory"/>
     </extension> 
 
 </plugin>

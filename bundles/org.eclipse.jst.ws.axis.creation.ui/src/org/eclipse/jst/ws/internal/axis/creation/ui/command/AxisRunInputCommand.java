@@ -11,7 +11,7 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.jst.ws.internal.axis.creation.wsrt.AxisWebService;
+import org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebService;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;

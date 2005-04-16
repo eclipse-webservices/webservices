@@ -9,39 +9,39 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.axis.consumption.wsrt;
+package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
 
-import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisProxyWidget;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.wizard.client.WebServiceClientAxisType;
+import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidget;
+import org.eclipse.jst.ws.internal.axis.creation.ui.wizard.wsdl.WSWSDLAxisType;
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.provisional.ui.widgets.INamedWidgetContributor;
 import org.eclipse.wst.command.internal.provisional.ui.widgets.INamedWidgetContributorFactory;
 import org.eclipse.wst.command.internal.provisional.ui.widgets.WidgetBindingToWidgetFactoryAdapter;
 
-public class AxisClientConfigWidgetFactory implements INamedWidgetContributorFactory {
+public class AxisSkeletonConfigWidgetFactory implements INamedWidgetContributorFactory {
 
-	private INamedWidgetContributor             proxyConfigWidget_;
+	private INamedWidgetContributor             skelConfigWidget_;
 	private INamedWidgetContributor             mappingsWidget_;
-	private AxisProxyWidget                     proxyWidget_;
+	private SkeletonConfigWidget                skelWidget_;
 	private WidgetBindingToWidgetFactoryAdapter adapter_;
 	
-	public AxisClientConfigWidgetFactory()
+	public AxisSkeletonConfigWidgetFactory()
 	{
-	  adapter_ = new WidgetBindingToWidgetFactoryAdapter( new WebServiceClientAxisType() );
+	  adapter_ = new WidgetBindingToWidgetFactoryAdapter( new WSWSDLAxisType() );
 	  
-	  proxyConfigWidget_ = adapter_.getWidget( "AxisClientStart" );
-	  proxyWidget_       = (AxisProxyWidget)proxyConfigWidget_.getWidgetContributorFactory().create();
-	  mappingsWidget_   = adapter_.getWidget( "AxisClientBeanMapping" );
+	  skelConfigWidget_ = adapter_.getWidget( "SkeletonConfig" );
+	  skelWidget_       = (SkeletonConfigWidget)skelConfigWidget_.getWidgetContributorFactory().create();
+	  mappingsWidget_   = adapter_.getWidget( "AxisMappingsWidget" );
 	}
 	
 	public INamedWidgetContributor getFirstNamedWidget() 
 	{
-	  return proxyConfigWidget_;
+	  return skelConfigWidget_;
 	}
 
 	public INamedWidgetContributor getNextNamedWidget( INamedWidgetContributor widgetContributor) 
 	{
-	  return widgetContributor == proxyConfigWidget_ && proxyWidget_.getCustomizeClientMappings() ? mappingsWidget_ : null;
+	  return widgetContributor == skelConfigWidget_ && skelWidget_.getShowMapping() ? mappingsWidget_ : null;
 	}
 	
 	public void registerDataMappings(DataMappingRegistry dataRegistry) 

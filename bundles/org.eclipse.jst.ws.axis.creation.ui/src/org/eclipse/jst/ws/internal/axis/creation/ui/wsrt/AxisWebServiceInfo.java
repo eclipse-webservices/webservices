@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.axis.creation.wsrt;
+package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
 
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 

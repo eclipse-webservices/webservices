@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.axis.consumption.util;
+package org.eclipse.jst.ws.internal.axis.consumption.ui.util;
 
 import java.text.Collator;
 import java.util.Arrays;

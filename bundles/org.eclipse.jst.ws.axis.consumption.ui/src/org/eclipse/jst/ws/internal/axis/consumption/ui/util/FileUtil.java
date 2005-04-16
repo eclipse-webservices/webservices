@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.axis.consumption.util;
+package org.eclipse.jst.ws.internal.axis.consumption.ui.util;
 
 import java.io.File;
 import java.io.FileInputStream;

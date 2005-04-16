@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.wsrt;
+package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
 import java.util.HashMap;
 import java.util.Hashtable;

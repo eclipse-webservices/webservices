@@ -1,4 +1,4 @@
-package org.eclipse.jst.ws.internal.wsrt;
+package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
 import java.util.ArrayList;
 import java.util.Iterator;

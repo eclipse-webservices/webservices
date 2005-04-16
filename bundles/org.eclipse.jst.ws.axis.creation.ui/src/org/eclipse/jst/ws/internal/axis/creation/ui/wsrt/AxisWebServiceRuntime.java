@@ -1,6 +1,6 @@
-package org.eclipse.jst.ws.internal.axis.creation.wsrt;
+package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
 
-import org.eclipse.jst.ws.internal.axis.consumption.wsrt.AxisWebServiceClient;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.wsrt.AxisWebServiceClient;
 import org.eclipse.wst.ws.internal.provisional.wsrt.AbstractWebServiceRuntime;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
