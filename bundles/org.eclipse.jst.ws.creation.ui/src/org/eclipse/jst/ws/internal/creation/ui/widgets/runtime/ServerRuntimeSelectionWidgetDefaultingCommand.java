@@ -36,6 +36,7 @@ import org.eclipse.wst.command.env.core.selection.SelectionList;
 import org.eclipse.wst.command.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 
 public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntimeSelectionWidgetDefaultingCommand
@@ -89,10 +90,9 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      setWebClientType();
      
      // Default projects EARs and servers.
-     //setDefaultProjects();
+     setDefaultProjects();
      setDefaultEARs();
-     //setDefaultServer();
-	 serviceIds_.setServerId((WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(serviceIds_.getRuntimeId()).getServerFactoryIds())[0]);
+     setDefaultServer();
      updateServiceEARs();
      updateClientEARs();
 	 
@@ -255,6 +255,24 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   */ 
   // rskreg
   
+  private void setDefaultProjects()
+  {
+    if (initialProject_ != null)
+    {
+      getServiceProject2EARProject().getList().setSelectionValue(initialProject_.getName());
+      String moduleName = J2EEUtils.getFirstWebModuleName(initialProject_);
+      String version = String.valueOf(J2EEUtils.getJ2EEVersion(initialProject_, moduleName));
+      String[] validVersions = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(serviceIds_.getRuntimeId()).getJ2eeLevels();
+      for (int i=0; i< validVersions.length; i++)
+      {
+        if (validVersions[i].equals(version))
+        {
+          serviceJ2EEVersion_ = validVersions[i];
+        }
+      }
+    }
+  }
+
   // rskreg
   /*
   private void setDefaultProjects()
@@ -374,6 +392,20 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     
   }
   
+  private void setDefaultServer()
+  {
+    //Temporarily pick the first existing server in the workspace
+    IServer[] servers = ServerCore.getServers();
+    if (servers.length > 0)
+    {
+      serviceIds_.setServerId(servers[0].getServerType().getId());
+      serviceIds_.setServerInstanceId(servers[0].getId());
+    }
+    else
+    {
+     serviceIds_.setServerId((WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(serviceIds_.getRuntimeId()).getServerFactoryIds())[0]);
+    }
+  }
   // rskreg
   /*
   private void setDefaultServer()

@@ -41,6 +41,7 @@ import org.eclipse.wst.command.env.core.selection.SelectionList;
 import org.eclipse.wst.command.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
 
@@ -154,10 +155,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
         }
       }
       */
-      //setClientDefaultProject();
+      setClientDefaultProject();
       //setClientDefaultEAR();
-      //setClientDefaultServer();
-	  clientIds_.setServerId((WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getServerFactoryIds())[0]);
+      setClientDefaultServer();
       updateClientEARs();
       return new SimpleStatus("");
     } catch (Exception e)
@@ -431,6 +431,23 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   }
   */
   // rskreg
+  private void setClientDefaultProject()
+  {
+    if (clientInitialProject_ != null)
+    {
+      getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(clientInitialProject_.getName());
+      String moduleName = J2EEUtils.getFirstWebModuleName(clientInitialProject_);
+      String version = String.valueOf(J2EEUtils.getJ2EEVersion(clientInitialProject_, moduleName));
+      String[] validVersions = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getJ2eeLevels();
+      for (int i=0; i< validVersions.length; i++)
+      {
+        if (validVersions[i].equals(version))
+        {
+          clientJ2EEVersion_ = validVersions[i];
+        }
+      }           
+    }    
+  }
   // rskreg
   /*
   private void setClientDefaultProject()
@@ -564,6 +581,21 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   
   private void setClientDefaultServer()
   {
+    //Temporarily pick the first existing server in the workspace
+    IServer[] servers = ServerCore.getServers();
+    if (servers.length > 0)
+    {
+      clientIds_.setServerId(servers[0].getServerType().getId());
+      clientIds_.setServerInstanceId(servers[0].getId());
+    }
+    else
+    {
+     clientIds_.setServerId((WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getServerFactoryIds())[0]);
+    }    
+  }
+  /*
+  private void setClientDefaultServer()
+  {
     //Calculate reasonable default server based on initial project selection. 
     String initialClientProjectName = runtimeClientTypes_.getChoice().getChoice().getList().getSelection(); 
     IProject initialClientProject = (IProject)((new StringToIProjectTransformer()).transform(initialClientProjectName));
@@ -620,7 +652,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
       
     }        
   }  
-
+  */
   
   protected void updateClientEARs()
   {

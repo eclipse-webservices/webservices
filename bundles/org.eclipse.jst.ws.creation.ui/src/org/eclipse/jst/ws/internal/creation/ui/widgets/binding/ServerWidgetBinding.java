@@ -21,7 +21,10 @@ import org.eclipse.jst.ws.internal.consumption.command.common.ServerDeployableCo
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForMissingFiles;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerInstToIServerTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
+import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
+import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.selection.SelectionTransformer;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishToPrivateUDDICommandFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishWSWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand;
@@ -356,9 +359,10 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       SequenceFragment clientRoot = new SequenceFragment();
       
       clientRoot.add( new SimpleFragment( new ClientExtensionDefaultingCommand( false ), ""));
-      clientRoot.add(new SimpleFragment(new ClientServerDeployableConfigCommand(), "")); //Note: added here for client
-      clientRoot.add( new SimpleFragment( new CreateClientProjectCommand(), ""));      
-      clientRoot.add( new ClientExtensionFragment() );
+      //clientRoot.add(new SimpleFragment(new ClientServerDeployableConfigCommand(), "")); //Note: added here for client
+      //clientRoot.add( new SimpleFragment( new CreateClientProjectCommand(), ""));      
+      //clientRoot.add( new ClientExtensionFragment() );
+      clientRoot.add( new ClientRootFragment() );
       clientRoot.add( new SimpleFragment( new ClientExtensionOutputCommand(), "" ));
       
       setTrueFragment( clientRoot );
@@ -377,6 +381,17 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       // Map the output of the service scenario to the client scenario.
       dataRegistry.addMapping( ServerExtensionOutputCommand.class, "WebServicesParser", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping( ServerExtensionOutputCommand.class, "WsdlURI", ClientExtensionDefaultingCommand.class );
+      
+      // Setup the PreClientDevelopCommand.
+      dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "TestService", PreClientDevelopCommand.class);           
+      dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "ResourceContext", PreClientDevelopCommand.class);            
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", PreClientDevelopCommand.class );
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", PreClientDevelopCommand.class);
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientProject", PreClientDevelopCommand.class, "Module", null );
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientProjectType", PreClientDevelopCommand.class, "ModuleType", null);
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientProjectEAR", PreClientDevelopCommand.class, "Ear", null );      
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "WsdlURI", PreClientDevelopCommand.class);
+      dataRegistry.addMapping( PreClientDevelopCommand.class, "WebService", ClientExtensionOutputCommand.class, "WebServiceClient", null );      
     }
   }
   
