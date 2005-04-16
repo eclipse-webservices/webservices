@@ -11,8 +11,8 @@
 
 package org.eclipse.jst.ws.internal.consumption.common;
 
-import org.eclipse.wst.ws.parser.discovery.WebServicesParserExt;
-import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 /**
  * 

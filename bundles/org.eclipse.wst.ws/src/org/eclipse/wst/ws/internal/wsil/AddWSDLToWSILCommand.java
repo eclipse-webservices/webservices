@@ -51,10 +51,10 @@ import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.uri.URIException;
 import org.eclipse.wst.command.env.core.uri.URIFactory;
-import org.eclipse.wst.ws.parser.wsil.IllegalArgumentsException;
-import org.eclipse.wst.ws.parser.wsil.WWWAuthenticationException;
-import org.eclipse.wst.ws.parser.wsil.WWWAuthenticationHandler;
-import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.parser.wsil.IllegalArgumentsException;
+import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
+import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationHandler;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -65,7 +65,7 @@ public class AddWSDLToWSILCommand extends SimpleCommand
   public static final String ARG_RESOLVE_WSDL = "-resolvewsdl";
   public static final String ARG_HTTP_BASIC_AUTH_USERNAME = "-httpusername";
   public static final String ARG_HTTP_BASIC_AUTH_PASSWORD = "-httppassword";
-  private final String id = "org.eclipse.wst.ws.parser.wsil.AddWSDLToWSILCommand";
+  private final String id = "org.eclipse.wst.ws.internal.parser.wsil.AddWSDLToWSILCommand";
   private ResourceBundle resBundle_;
   private WWWAuthenticationHandler wwwAuthHandler_;
   private String[] args_;
@@ -77,8 +77,8 @@ public class AddWSDLToWSILCommand extends SimpleCommand
 
   public AddWSDLToWSILCommand()
   {
-    super("org.eclipse.wst.ws.parser.wsil.AddWSDLToWSILCommand", "org.eclipse.wst.ws.parser.wsil.AddWSDLToWSILCommand");
-    resBundle_ = ResourceBundle.getBundle("org.eclipse.wst.ws.parser.wsil.wsil");
+    super("org.eclipse.wst.ws.internal.parser.wsil.AddWSDLToWSILCommand", "org.eclipse.wst.ws.internal.parser.wsil.AddWSDLToWSILCommand");
+    resBundle_ = ResourceBundle.getBundle("org.eclipse.wst.ws.internal.parser.wsil.wsil");
     wwwAuthHandler_ = null;
     args_ = new String[0];
     clearParsedArgs();

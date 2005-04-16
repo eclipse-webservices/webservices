@@ -36,7 +36,7 @@ import org.eclipse.wst.internet.monitor.core.IMonitor;
 import org.eclipse.wst.internet.monitor.core.IMonitorWorkingCopy;
 import org.eclipse.wst.internet.monitor.core.MonitorCore;
 import org.eclipse.wst.server.core.util.SocketUtil;
-import org.eclipse.wst.ws.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class GetMonitorCommand extends SimpleCommand
 {

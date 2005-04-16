@@ -25,8 +25,8 @@ import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.http.HTTPAddress;
 import javax.wsdl.extensions.soap.SOAPAddress;
 
-import org.eclipse.wst.ws.parser.discovery.WebServicesParserExt;
-import org.eclipse.wst.ws.parser.wsil.WWWAuthenticationException;
+import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
+import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
 
 public class LiveWSDLFilter extends Thread
 {
