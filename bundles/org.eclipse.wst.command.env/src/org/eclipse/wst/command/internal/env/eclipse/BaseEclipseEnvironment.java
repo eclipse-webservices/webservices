@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.eclipse;
+package org.eclipse.wst.command.internal.env.eclipse;
 
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.context.ResourceContext;

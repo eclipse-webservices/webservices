@@ -12,7 +12,7 @@
 package org.eclipse.jst.ws.internal.ui.preferences;
 
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
-import org.eclipse.wst.command.env.context.PersistentContext;
+import org.eclipse.wst.command.internal.env.context.PersistentContext;
 
 
 public class PersistentActionDialogsContext extends PersistentContext

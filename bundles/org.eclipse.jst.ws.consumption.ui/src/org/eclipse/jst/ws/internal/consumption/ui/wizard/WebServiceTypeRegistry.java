@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 
 public class WebServiceTypeRegistry
 {

@@ -22,7 +22,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 
 /**
 * This is the plugin class for the Web Services plugin.

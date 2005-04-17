@@ -19,9 +19,9 @@ import org.eclipse.wst.command.env.core.context.ResourceContext;
 import org.eclipse.wst.command.env.core.uri.SimpleURIFactory;
 import org.eclipse.wst.command.env.core.uri.URIFactory;
 import org.eclipse.wst.command.env.core.uri.file.FileScheme;
-import org.eclipse.wst.command.env.eclipse.BaseEclipseEnvironment;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
-import org.eclipse.wst.command.env.eclipse.EclipseScheme;
+import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseScheme;
 
 
 /**

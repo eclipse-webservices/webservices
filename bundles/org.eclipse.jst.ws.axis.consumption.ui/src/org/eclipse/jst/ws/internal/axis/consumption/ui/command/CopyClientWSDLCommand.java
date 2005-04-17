@@ -25,13 +25,13 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.SimpleCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 

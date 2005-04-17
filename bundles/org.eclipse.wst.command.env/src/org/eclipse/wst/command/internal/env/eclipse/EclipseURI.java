@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.eclipse;
+package org.eclipse.wst.command.internal.env.eclipse;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +23,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
@@ -32,6 +31,7 @@ import org.eclipse.wst.command.env.core.uri.URI;
 import org.eclipse.wst.command.env.core.uri.URIException;
 import org.eclipse.wst.command.env.core.uri.URIFilter;
 import org.eclipse.wst.command.env.core.uri.URIScheme;
+import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 
 
 public class EclipseURI extends RelativeURI
@@ -47,7 +47,7 @@ public class EclipseURI extends RelativeURI
     
     environment_  = environment;
     scheme_       = new EclipseScheme( environment );
-    msg_          = new MessageUtils( "org.eclipse.wst.command.env.common.environment", this );
+    msg_          = new MessageUtils( "org.eclipse.wst.command.internal.env.common.environment", this );
     file_         = getFile();
   }
     

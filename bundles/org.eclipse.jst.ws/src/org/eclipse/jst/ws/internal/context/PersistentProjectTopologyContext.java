@@ -14,7 +14,7 @@ package org.eclipse.jst.ws.internal.context;
 import java.util.StringTokenizer;
 
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.env.context.PersistentContext;
+import org.eclipse.wst.command.internal.env.context.PersistentContext;
 
 
 public class PersistentProjectTopologyContext extends PersistentContext implements ProjectTopologyContext

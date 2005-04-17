@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.context;
 
-import org.eclipse.wst.command.env.context.PersistentContext;
 import org.eclipse.wst.command.internal.env.plugin.EnvPlugin;
 import org.eclipse.wst.command.internal.env.preferences.ActionDialogPreferenceType;
 

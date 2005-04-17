@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.eclipse;
+package org.eclipse.wst.command.internal.env.eclipse;
 
 import org.eclipse.wst.command.env.core.CommandManager;
 import org.eclipse.wst.command.env.core.common.JavaCompiler;
@@ -55,7 +55,7 @@ public class ConsoleEclipseEnvironment implements BaseEclipseEnvironment
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.wst.command.env.eclipse.BaseEclipseEnvironment#getResourceContext()
+	 * @see org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment#getResourceContext()
 	 */
 	public ResourceContext getResourceContext() 
 	{

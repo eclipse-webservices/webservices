@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 
 
 /**

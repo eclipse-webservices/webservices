@@ -51,7 +51,7 @@ import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;

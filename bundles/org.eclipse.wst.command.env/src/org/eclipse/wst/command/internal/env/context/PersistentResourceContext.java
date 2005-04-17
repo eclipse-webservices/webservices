@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.context;
 
-import org.eclipse.wst.command.env.context.PersistentContext;
 import org.eclipse.wst.command.env.core.context.ResourceContext;
 import org.eclipse.wst.command.env.core.context.ResourceDefaults;
 import org.eclipse.wst.command.env.core.context.TransientResourceContext;

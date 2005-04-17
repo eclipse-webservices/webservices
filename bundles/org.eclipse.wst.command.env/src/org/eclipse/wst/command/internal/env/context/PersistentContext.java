@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.context;
+package org.eclipse.wst.command.internal.env.context;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Preferences;

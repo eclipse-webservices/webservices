@@ -16,7 +16,7 @@ import java.util.StringTokenizer;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.env.context.PersistentContext;
+import org.eclipse.wst.command.internal.env.context.PersistentContext;
 
 
 public class PersistentScenarioContext extends PersistentContext implements ScenarioContext

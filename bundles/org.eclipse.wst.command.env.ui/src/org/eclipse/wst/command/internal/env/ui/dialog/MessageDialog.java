@@ -30,9 +30,9 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.env.common.StringUtils;
 import org.eclipse.wst.command.env.core.common.Choice;
 import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.command.internal.env.common.StringUtils;
 
 
 /**

@@ -11,7 +11,7 @@ import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 

@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.eclipse;
+package org.eclipse.wst.command.internal.env.eclipse;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,7 +31,7 @@ public class EclipseScheme implements URIScheme
   public EclipseScheme( BaseEclipseEnvironment environment )
   {
     environment_ = environment;
-    msg_         = new MessageUtils( "org.eclipse.wst.command.env.common.environment", this );
+    msg_         = new MessageUtils( "org.eclipse.wst.command.internal.env.common.environment", this );
   }
   
   /**

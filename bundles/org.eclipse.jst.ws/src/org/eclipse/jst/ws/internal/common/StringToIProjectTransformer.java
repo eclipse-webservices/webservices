@@ -12,8 +12,8 @@ package org.eclipse.jst.ws.internal.common;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.wst.command.env.common.FileResourceUtils;
 import org.eclipse.wst.command.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 
 
 /**

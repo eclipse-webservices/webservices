@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.common;
+package org.eclipse.wst.command.internal.env.common;
 
 
 import java.io.IOException;
@@ -54,7 +54,7 @@ public final class FileResourceUtils
   //
   private static IWorkspaceRoot root_ = null;
   
-  private static MessageUtils msg_ = new MessageUtils( "org.eclipse.wst.command.env.common.environment", new FileResourceUtils() );
+  private static MessageUtils msg_ = new MessageUtils( "org.eclipse.wst.command.internal.env.common.environment", new FileResourceUtils() );
 
 
  /**

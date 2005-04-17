@@ -11,7 +11,7 @@
 package org.eclipse.jst.ws.internal.context;
 
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.env.context.PersistentContext;
+import org.eclipse.wst.command.internal.env.context.PersistentContext;
 
 
 public class PersistentUDDIPreferenceContext extends PersistentContext implements UDDIPreferenceContext

@@ -37,9 +37,9 @@ import org.eclipse.jst.ws.internal.consumption.ui.command.WSINonCompliantRuntime
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ProjectName2IProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerName2IServerTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand;
-import org.eclipse.wst.command.env.common.WaitForAutoBuildCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.command.internal.env.common.WaitForAutoBuildCommand;
 import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
 import org.eclipse.wst.command.internal.provisional.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.SimpleCommandFactory;

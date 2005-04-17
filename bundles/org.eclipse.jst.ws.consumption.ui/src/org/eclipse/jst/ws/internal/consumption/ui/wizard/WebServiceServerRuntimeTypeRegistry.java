@@ -37,7 +37,7 @@ import org.eclipse.wst.command.env.core.fragment.CommandFragmentFactoryFactory;
 import org.eclipse.wst.command.env.core.registry.CommandRegistry;
 import org.eclipse.wst.command.env.core.selection.SelectionList;
 import org.eclipse.wst.command.env.core.selection.SelectionListChoices;
-import org.eclipse.wst.command.env.eclipse.EclipseLog;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBindingList;

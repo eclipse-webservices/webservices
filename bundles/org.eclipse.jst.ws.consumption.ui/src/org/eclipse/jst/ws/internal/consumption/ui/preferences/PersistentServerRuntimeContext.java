@@ -12,7 +12,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
-import org.eclipse.wst.command.env.context.PersistentContext;
+import org.eclipse.wst.command.internal.env.context.PersistentContext;
 
 
 /**
