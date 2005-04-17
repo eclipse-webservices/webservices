@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.uddi;
 
-import org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding;
+import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 
 public interface PrivateUDDIRegistryType
 {

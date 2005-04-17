@@ -16,8 +16,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.context.ResourceContext;
-import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
-import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
+import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
+import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
 
 public class PreferencesSelectionWidget extends SimpleWidgetDataContributor

@@ -20,9 +20,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.ui.widgets.PageWizardDataEvents;
-import org.eclipse.wst.command.env.ui.widgets.WidgetContributor;
-import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
 
 
 

@@ -15,7 +15,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 import org.eclipse.jst.ws.internal.uddiregistry.widgets.binding.PrivateUDDIWidgetBinding;
-import org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding;
+import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 
 
 public class PrivateUDDIRegistryTypeImpl implements org.eclipse.jst.ws.internal.ui.uddi.PrivateUDDIRegistryType

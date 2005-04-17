@@ -18,7 +18,7 @@ import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.env.core.fragment.BooleanFragment;
 import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
-import org.eclipse.wst.command.env.ui.widgets.SelectionCommand;
+import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
 
 
 public class ObjectSelectionFragment extends SequenceFragment implements Condition

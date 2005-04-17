@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
-import org.eclipse.wst.command.env.ui.widgets.PageWizardDataEvents;
 
 /**
  * 

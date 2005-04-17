@@ -9,29 +9,30 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.command.env.ui.widgets;
+package org.eclipse.wst.command.internal.env.ui.widgets;
 
-import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.env.ui.widgets.WizardPageManager;
 
 
 /**
- * This Command can be used to get the current page.
- * Use of this class is not recommended.
+ * This SelectionCommand is execute at the very beginning of the
+ * dynamic wizard.  Commands executed in the wizard that need
+ * the initial selection can get it through a data mapping from 
+ * this command to the command that needs it.
  *
  */
-public class CurrentPageCommand extends SimpleCommand
+public class SelectionCommand extends SimpleCommand
 {
-  private WizardPageManager pageManager_;
+  private IStructuredSelection selection_;
   
-  public CurrentPageCommand( WizardPageManager pageManager )
+  public SelectionCommand( IStructuredSelection selection )
   {
-    pageManager_ = pageManager;
+    selection_ = selection;  
   }
   
-  public IWizardPage getCurrentPage()
+  public IStructuredSelection getInitialSelection()
   {
-    return pageManager_.getCurrentPage();
+    return selection_;
   }
 }

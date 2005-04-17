@@ -11,7 +11,7 @@
 package org.eclipse.jst.ws.internal.uddiregistry.wizard;
 
 import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding;
+import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 
 
 public interface PrivateUDDIRegistryType extends CommandWidgetBinding

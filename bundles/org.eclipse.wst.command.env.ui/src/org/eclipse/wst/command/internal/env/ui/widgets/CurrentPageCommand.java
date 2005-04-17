@@ -8,14 +8,29 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.ui.widgets;
+
+package org.eclipse.wst.command.internal.env.ui.widgets;
+
+import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.wst.command.env.core.SimpleCommand;
+
 
 /**
- * This interface provide a way for creating WidgetContributors
- *
+ * This Command can be used to get the current page.
+ * Use of this class is not recommended.
  *
  */
-public interface WidgetContributorFactory 
+public class CurrentPageCommand extends SimpleCommand
 {
-  public WidgetContributor create();
+  private WizardPageManager pageManager_;
+  
+  public CurrentPageCommand( WizardPageManager pageManager )
+  {
+    pageManager_ = pageManager;
+  }
+  
+  public IWizardPage getCurrentPage()
+  {
+    return pageManager_.getCurrentPage();
+  }
 }

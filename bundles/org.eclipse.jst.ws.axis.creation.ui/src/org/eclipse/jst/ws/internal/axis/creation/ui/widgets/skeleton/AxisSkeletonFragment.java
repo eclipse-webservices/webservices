@@ -33,7 +33,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelection
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
-import org.eclipse.wst.command.env.ui.widgets.SelectionCommand;
+import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
 
 public class AxisSkeletonFragment extends SequenceFragment
 {

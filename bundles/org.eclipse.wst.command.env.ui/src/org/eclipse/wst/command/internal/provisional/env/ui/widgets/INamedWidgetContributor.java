@@ -9,9 +9,9 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.command.internal.provisional.ui.widgets;
+package org.eclipse.wst.command.internal.provisional.env.ui.widgets;
 
-import org.eclipse.wst.command.env.ui.widgets.WidgetContributorFactory;
+import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 
 public interface INamedWidgetContributor 
 {

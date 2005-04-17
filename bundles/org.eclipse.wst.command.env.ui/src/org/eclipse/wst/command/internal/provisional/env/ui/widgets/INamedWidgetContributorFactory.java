@@ -12,35 +12,21 @@
 package org.eclipse.wst.command.internal.provisional.env.ui.widgets;
 
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 
-public interface INamedWidgetContributor 
+public interface INamedWidgetContributorFactory 
 {
   /**
    * 
-   * @return returns the WidgetContributor for this Named widget.
+   * @return returns the first named widget.
    */
-  public WidgetContributor getWidgetContributor();
+  INamedWidgetContributor getFirstNamedWidget();
   
   /**
    * 
-   * @return returns the name.
+   * @param widgetContributor
+   * @return returns the next named widget after the one specified.
    */
-  public String getName ();
-  
-  /**
-   * 
-   * @return returns a description that might be displayed on
-   * a wizard page.
-   */
-  public String getDescription ();
-  
-  /**
-   * 
-   * @return returns title that may be displayed on 
-   * a wizard page.
-   */
-  public String getTitle();
+  INamedWidgetContributor getNextNamedWidget( INamedWidgetContributor widgetContributor );
   
   /**
    * This method is used by extenions to register the data mappings
@@ -49,4 +35,5 @@ public interface INamedWidgetContributor
    * @param dataRegistry
    */
   public void registerDataMappings( DataMappingRegistry dataRegistry );
+  
 }

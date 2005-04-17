@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.ui.widgets;
+package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
@@ -23,7 +23,7 @@ import org.eclipse.wst.command.env.core.common.Status;
 public class SimpleWidgetDataContributor implements WidgetDataContributor
 {  
   /**
-   * @see org.eclipse.wst.command.env.ui.widgets.WidgetContributor#addControls(org.eclipse.swt.widgets.Composite, org.eclipse.swt.widgets.Listener)
+   * @see org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor#addControls(org.eclipse.swt.widgets.Composite, org.eclipse.swt.widgets.Listener)
    */
   public WidgetDataEvents addControls( Composite parent, Listener statusListener)
   {
@@ -31,7 +31,7 @@ public class SimpleWidgetDataContributor implements WidgetDataContributor
   }
 
   /**
-   * @see org.eclipse.wst.command.env.ui.widgets.WidgetContributor#getStatus()
+   * @see org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor#getStatus()
    */
   public Status getStatus()
   {
@@ -39,14 +39,14 @@ public class SimpleWidgetDataContributor implements WidgetDataContributor
   }
 
   /**
-   * @see org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents#externalize()
+   * @see org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents#externalize()
    */
   public void externalize()
   {
   }
 
   /**
-   * @see org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents#internalize()
+   * @see org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents#internalize()
    */
   public void internalize()
   {

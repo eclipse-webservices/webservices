@@ -28,8 +28,8 @@ import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.selection.SelectionList;
 import org.eclipse.wst.command.env.core.selection.SelectionListChoices;
-import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
-import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
+import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
+import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
 
 public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor

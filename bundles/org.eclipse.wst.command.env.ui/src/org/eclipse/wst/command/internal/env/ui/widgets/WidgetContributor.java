@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.ui.widgets;
+package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;

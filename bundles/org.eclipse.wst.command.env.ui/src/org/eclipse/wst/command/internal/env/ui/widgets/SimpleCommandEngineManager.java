@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.ui.widgets;
+package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -20,9 +20,9 @@ import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.env.core.fragment.CommandFragmentEngine;
 import org.eclipse.wst.command.env.core.fragment.FragmentListener;
-import org.eclipse.wst.command.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 
 
 /**

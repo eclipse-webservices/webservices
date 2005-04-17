@@ -26,15 +26,15 @@ import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.fragment.CommandFragment;
-import org.eclipse.wst.command.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.env.ui.eclipse.EclipseProgressMonitor;
-import org.eclipse.wst.command.env.ui.eclipse.EclipseStatusHandler;
-import org.eclipse.wst.command.env.ui.widgets.DynamicWizard;
-import org.eclipse.wst.command.env.ui.widgets.SimpleCommandEngineManager;
 import org.eclipse.wst.command.internal.env.context.PersistentActionDialogsContext;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
+import org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard;
+import org.eclipse.wst.command.internal.env.ui.widgets.SimpleCommandEngineManager;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimplePopupPageFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WizardPageFactory;
 
@@ -92,7 +92,7 @@ public class DynamicPopupWizard extends DynamicWizard implements IActionDelegate
   
   /**
    * 
-   * @see org.eclipse.wst.command.env.ui.widgets.DynamicWizard#getWizardPageFactory()
+   * @see org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard#getWizardPageFactory()
    */
   protected WizardPageFactory getWizardPageFactory()
   {

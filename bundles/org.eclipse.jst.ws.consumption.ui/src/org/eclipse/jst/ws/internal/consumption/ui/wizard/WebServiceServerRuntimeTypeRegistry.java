@@ -38,10 +38,10 @@ import org.eclipse.wst.command.env.core.registry.CommandRegistry;
 import org.eclipse.wst.command.env.core.selection.SelectionList;
 import org.eclipse.wst.command.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.command.env.eclipse.EclipseLog;
-import org.eclipse.wst.command.env.ui.widgets.CanFinishRegistry;
-import org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding;
-import org.eclipse.wst.command.env.ui.widgets.WidgetRegistry;
+import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
+import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBindingList;
+import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 

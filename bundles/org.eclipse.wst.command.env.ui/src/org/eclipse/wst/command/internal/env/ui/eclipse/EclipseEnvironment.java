@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.ui.eclipse;
+package org.eclipse.wst.command.internal.env.ui.eclipse;
 
 import org.eclipse.wst.command.env.core.CommandManager;
 import org.eclipse.wst.command.env.core.common.JavaCompiler;

@@ -50,7 +50,7 @@
             name="%PLUGIN_NEW_WIZARD_NAME_WS_UNIT_TEST_UDDI"
             icon="icons/registry.gif"
             category="org.eclipse.jst.ws.ui.new"
-            class="org.eclipse.wst.command.env.ui.widgets.DynamicWizard"
+            class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
             id="org.eclipse.jst.ws.internal.uddiregistry.widgets.binding.PrivateUDDIWidgetBinding">
       </wizard>
    </extension>

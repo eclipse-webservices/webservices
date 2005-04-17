@@ -43,8 +43,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.selection.BooleanSelection;
 import org.eclipse.wst.command.env.core.selection.SelectionList;
-import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
-import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
+import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
+import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
 
 public class ClientTestWidget extends SimpleWidgetDataContributor

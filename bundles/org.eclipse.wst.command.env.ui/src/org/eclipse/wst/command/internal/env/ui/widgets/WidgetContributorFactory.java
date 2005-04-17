@@ -8,13 +8,14 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.ui.widgets;
+package org.eclipse.wst.command.internal.env.ui.widgets;
 
 /**
- * This interface is a combination of the WidgetContributor interface and
- * the WidgetDataEvents interface.
+ * This interface provide a way for creating WidgetContributors
+ *
  *
  */
-public interface WidgetDataContributor extends WidgetContributor, WidgetDataEvents 
+public interface WidgetContributorFactory 
 {
+  public WidgetContributor create();
 }

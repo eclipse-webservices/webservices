@@ -47,7 +47,7 @@ import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class Skeleton2WSDLCommand extends SimpleCommand

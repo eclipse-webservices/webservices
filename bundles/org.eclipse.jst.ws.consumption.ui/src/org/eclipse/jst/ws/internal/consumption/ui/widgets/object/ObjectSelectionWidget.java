@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
+import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
 
 public class ObjectSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget

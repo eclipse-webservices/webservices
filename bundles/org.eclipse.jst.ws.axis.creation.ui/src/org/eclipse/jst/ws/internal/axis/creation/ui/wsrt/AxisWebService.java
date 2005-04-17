@@ -40,7 +40,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelection
 import org.eclipse.wst.command.env.common.WaitForAutoBuildCommand;
 import org.eclipse.wst.command.env.core.common.Environment;
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.env.ui.widgets.SelectionCommand;
+import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
 import org.eclipse.wst.command.internal.provisional.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.SimpleCommandFactory;
 import org.eclipse.wst.ws.internal.provisional.wsrt.AbstractWebService;

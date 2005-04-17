@@ -16,7 +16,7 @@ import java.util.Hashtable;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.wst.command.internal.provisional.ui.widgets.INamedWidgetContributorFactory;
+import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributorFactory;
 
 public class WidgetRegistry 
 {

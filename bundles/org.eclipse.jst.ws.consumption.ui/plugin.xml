@@ -253,7 +253,7 @@
             name="%PLUGIN_NEW_WIZARD_NAME_WS_CLIENT"
             icon="icons/full/ctool16/newclient_webserv_wiz.gif"
             category="org.eclipse.jst.ws.ui.new"
-            class="org.eclipse.wst.command.env.ui.widgets.DynamicWizard"
+            class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard">
          <description>
                %PLUGIN_NEW_WIZARD_DESC_WS_CLIENT
@@ -319,7 +319,7 @@
       <wizard
             name="%PLUGIN_IMPORT_WIZARD_NAME_WS"
             icon="icons/import_ws.gif"
-            class="org.eclipse.wst.command.env.ui.widgets.DynamicWizard"
+            class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
             id="wsimport">
          <description>
                %PLUGIN_IMPORT_WIZARD_DESC_WS
@@ -342,7 +342,7 @@
       <wizard
             name="%IMPORT_WIZARD_NAME_WSIL"
             icon="icons/wsil/import_wsil.gif"
-            class="org.eclipse.wst.command.env.ui.widgets.DynamicWizard"
+            class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
             id="wsilimport">
          <description>
                %IMPORT_WIZARD_DESC_WSIL

@@ -52,7 +52,7 @@
             name="%PLUGIN_NEW_WIZARD_NAME_WS_SERVICE"
             icon="icons/full/ctool16/new_webserv_wiz.gif"
             category="org.eclipse.jst.ws.ui.new"
-            class="org.eclipse.wst.command.env.ui.widgets.DynamicWizard"
+            class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
             id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard">
          <description>
             %PLUGIN_NEW_WIZARD_DESC_WS_SERVICE
@@ -75,7 +75,7 @@
       <wizard
             name="%PLUGIN_EXPORT_WIZARD_NAME_WS"
             icon="icons/export_ws.gif"
-            class="org.eclipse.wst.command.env.ui.widgets.DynamicWizard"
+            class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
             id="wsexport">
          <description>
             %PLUGIN_EXPORT_WIZARD_DESC_WS

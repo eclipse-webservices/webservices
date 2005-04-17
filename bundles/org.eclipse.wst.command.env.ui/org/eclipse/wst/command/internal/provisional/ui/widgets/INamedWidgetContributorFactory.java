@@ -1,4 +1,4 @@
-package org.eclipse.wst.command.internal.provisional.ui.widgets;
+package org.eclipse.wst.command.internal.provisional.env.ui.widgets;
 
 public interface INamedWidgetContributorFactory 
 {

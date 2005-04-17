@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.ui.widgets;
+package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,17 +32,12 @@ import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
-import org.eclipse.wst.command.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.env.ui.eclipse.EclipseProgressMonitor;
-import org.eclipse.wst.command.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
-import org.eclipse.wst.command.internal.env.ui.widgets.SimpleCanFinishRegistry;
-import org.eclipse.wst.command.internal.env.ui.widgets.SimplePageFactory;
-import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetRegistry;
-import org.eclipse.wst.command.internal.env.ui.widgets.WizardPageFactory;
-import org.eclipse.wst.command.internal.env.ui.widgets.WizardPageManager;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.osgi.framework.Bundle;
 
 

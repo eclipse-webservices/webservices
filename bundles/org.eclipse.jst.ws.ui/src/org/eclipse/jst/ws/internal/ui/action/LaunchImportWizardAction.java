@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.env.ui.widgets.DynamicWizard;
+import org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard;
 
 
 /**

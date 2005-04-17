@@ -31,8 +31,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.ui.widgets.SimpleWidgetDataContributor;
-import org.eclipse.wst.command.env.ui.widgets.WidgetDataEvents;
+import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
+import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
 
 public class PublishWSWidget extends SimpleWidgetDataContributor

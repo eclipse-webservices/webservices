@@ -27,11 +27,11 @@ import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.env.core.fragment.CommandFragmentFactory;
-import org.eclipse.wst.command.env.ui.widgets.CanFinishRegistry;
-import org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding;
-import org.eclipse.wst.command.env.ui.widgets.WidgetContributor;
-import org.eclipse.wst.command.env.ui.widgets.WidgetContributorFactory;
-import org.eclipse.wst.command.env.ui.widgets.WidgetRegistry;
+import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
+import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
+import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
+import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
+import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
 
 /**
 * This is the class for the Axis Web service type.

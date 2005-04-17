@@ -15,8 +15,8 @@ import org.eclipse.wst.command.env.core.CommandFactory;
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.env.core.fragment.AbstractCommandFragment;
 import org.eclipse.wst.command.env.core.fragment.CommandFragment;
-import org.eclipse.wst.command.env.ui.widgets.CanFinishRegistry;
-import org.eclipse.wst.command.env.ui.widgets.WidgetRegistry;
+import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
+import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
 
 
 public class PrivateUDDISelectionCommandFragment extends AbstractCommandFragment

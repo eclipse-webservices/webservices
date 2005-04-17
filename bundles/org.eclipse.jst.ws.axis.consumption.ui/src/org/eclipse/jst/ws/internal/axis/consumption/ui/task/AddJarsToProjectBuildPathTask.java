@@ -39,7 +39,7 @@ import org.eclipse.wst.command.env.core.common.ProgressMonitor;
 import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.common.StatusException;
-import org.eclipse.wst.command.env.ui.eclipse.EclipseProgressMonitor;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 
 public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 

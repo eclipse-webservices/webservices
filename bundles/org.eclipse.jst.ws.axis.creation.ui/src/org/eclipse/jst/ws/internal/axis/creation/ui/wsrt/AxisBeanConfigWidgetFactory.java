@@ -14,9 +14,9 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BeanConfigWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.wizard.beans.WSBeanAxisType;
 import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.internal.provisional.ui.widgets.INamedWidgetContributor;
-import org.eclipse.wst.command.internal.provisional.ui.widgets.INamedWidgetContributorFactory;
-import org.eclipse.wst.command.internal.provisional.ui.widgets.WidgetBindingToWidgetFactoryAdapter;
+import org.eclipse.wst.command.internal.env.ui.widgets.WidgetBindingToWidgetFactoryAdapter;
+import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributor;
+import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributorFactory;
 
 public class AxisBeanConfigWidgetFactory implements INamedWidgetContributorFactory {
 

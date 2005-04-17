@@ -19,8 +19,8 @@ import org.eclipse.wst.command.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.env.core.context.ResourceContext;
 import org.eclipse.wst.command.env.core.context.TransientResourceContext;
-import org.eclipse.wst.command.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.env.ui.eclipse.EclipseProgressMonitor;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 
 
 

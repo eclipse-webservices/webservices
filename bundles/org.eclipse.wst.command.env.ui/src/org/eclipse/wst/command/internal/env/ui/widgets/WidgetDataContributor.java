@@ -10,25 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
-import java.util.Hashtable;
-
-
-
-public class SimpleWidgetRegistry implements WidgetRegistry
+/**
+ * This interface is a combination of the WidgetContributor interface and
+ * the WidgetDataEvents interface.
+ *
+ */
+public interface WidgetDataContributor extends WidgetContributor, WidgetDataEvents 
 {
-  private Hashtable table_ = new Hashtable();
-  
-  public void add( String fragmentId,
-                   String pageName,
-                   String pageTitle,
-                   WidgetContributorFactory widgetFactory )
-  {
-  	PageInfo entry = new PageInfo( pageName, pageTitle, widgetFactory );
-  	table_.put( fragmentId, entry );
-  }                   
-  
-  public PageInfo getPageInfo( String fragmentId )
-  {
-    return (PageInfo)table_.get( fragmentId );
-  }
 }
