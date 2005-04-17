@@ -30,10 +30,10 @@ import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerName2IServe
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand;
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
-import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 public class AxisSkeletonFragment extends SequenceFragment
 {
@@ -63,7 +63,7 @@ public class AxisSkeletonFragment extends SequenceFragment
   }
   
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.fragment.CommandFragment#registerDataMappings(org.eclipse.wst.command.env.core.data.DataMappingRegistry)
+   * @see org.eclipse.wst.command.internal.env.core.fragment.CommandFragment#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry)
   {

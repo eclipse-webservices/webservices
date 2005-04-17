@@ -21,9 +21,9 @@ import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
 

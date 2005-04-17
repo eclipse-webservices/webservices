@@ -38,10 +38,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget
 {

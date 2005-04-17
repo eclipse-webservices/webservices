@@ -19,10 +19,10 @@ import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.jst.ws.internal.explorer.plugin.ExplorerPlugin;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.wst.command.env.core.context.TransientResourceContext;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
+import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
 
 
 public class LaunchWSEAction implements IWorkbenchWindowActionDelegate

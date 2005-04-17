@@ -11,9 +11,9 @@
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
-import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.ws.internal.extensions.AssembleServiceFragment;
 import org.eclipse.wst.ws.internal.extensions.DeployServiceFragment;
 import org.eclipse.wst.ws.internal.extensions.DevelopServiceFragment;

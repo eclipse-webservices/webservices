@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 
 
 public class UIUtils 

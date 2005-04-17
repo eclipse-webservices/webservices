@@ -12,7 +12,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceClientTypeRegistry;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.env.core.fragment.ExtensionFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.ExtensionFragment;
 
 
 public class ClientExtensionFragment extends ExtensionFragment

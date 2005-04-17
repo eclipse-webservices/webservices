@@ -12,11 +12,11 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 
 
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;

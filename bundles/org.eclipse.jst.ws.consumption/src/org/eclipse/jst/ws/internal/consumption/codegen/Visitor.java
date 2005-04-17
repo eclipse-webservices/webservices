@@ -11,7 +11,7 @@
 
 package org.eclipse.jst.ws.internal.consumption.codegen;
 
-import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**

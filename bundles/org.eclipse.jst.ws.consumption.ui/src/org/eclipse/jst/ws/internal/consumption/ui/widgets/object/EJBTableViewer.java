@@ -24,7 +24,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 
 public class EJBTableViewer extends TableViewer
 {

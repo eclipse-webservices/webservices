@@ -11,8 +11,8 @@
 
 package org.eclipse.wst.ws.internal.extensions;
 
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.fragment.CommandFactoryFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFactoryFragment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;

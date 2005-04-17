@@ -22,15 +22,15 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.common.StatusHandler;
-import org.eclipse.wst.command.env.core.context.ResourceContext;
-import org.eclipse.wst.command.env.core.context.TransientResourceContext;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
 
 
 public class CopyWebServiceUtilsJarCommand extends SimpleCommand {

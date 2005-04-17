@@ -36,11 +36,11 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.uri.URIException;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.uri.URIException;
 import org.eclipse.wst.ws.internal.parser.discovery.NetUtils;
 import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;

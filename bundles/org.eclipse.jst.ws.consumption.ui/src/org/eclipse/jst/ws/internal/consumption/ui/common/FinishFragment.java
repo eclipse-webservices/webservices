@@ -17,7 +17,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment;
-import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 
 
 /**

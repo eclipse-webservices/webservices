@@ -21,8 +21,8 @@ import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIAPContext;
 import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
 import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSISSBPContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 
 
 /**

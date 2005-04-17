@@ -22,8 +22,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
-import org.eclipse.wst.command.env.core.context.ResourceContext;
-import org.eclipse.wst.command.env.core.context.ResourceDefaults;
+import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceDefaults;
 
 
 

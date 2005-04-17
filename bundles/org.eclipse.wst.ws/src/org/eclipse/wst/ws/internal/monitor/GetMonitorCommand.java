@@ -24,11 +24,11 @@ import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.http.HTTPAddress;
 import javax.wsdl.extensions.soap.SOAPAddress;
 
-import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.common.StatusException;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
 import org.eclipse.wst.internet.monitor.core.IMonitor;
 import org.eclipse.wst.internet.monitor.core.IMonitorWorkingCopy;
 import org.eclipse.wst.internet.monitor.core.MonitorCore;

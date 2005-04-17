@@ -13,10 +13,10 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateWebProjectCommand;
-import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
 
 public class CreateSampleProjectCommand extends SimpleCommand

@@ -12,7 +12,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.command.data;
 
 import java.util.Vector;
 
-import org.eclipse.wst.command.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 

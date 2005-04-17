@@ -32,13 +32,13 @@ import org.eclipse.jst.ws.internal.consumption.ui.wizard.ClientProjectTypeRegist
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceRuntime;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.selection.SelectionList;
-import org.eclipse.wst.command.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
+import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
@@ -106,7 +106,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   }
   
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.env.core.common.Environment)
+   * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.provisional.env.core.common.Environment)
    */
   public Status execute(Environment environment)
   {

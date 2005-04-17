@@ -13,9 +13,9 @@
 package org.eclipse.jst.ws.internal.creation.ui.widgets.test;
 
 import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
-import org.eclipse.wst.command.env.core.common.Condition;
-import org.eclipse.wst.command.env.core.fragment.BooleanFragment;
-import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
 
 
 public class LaunchFragment extends BooleanFragment

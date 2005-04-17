@@ -34,23 +34,23 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragmen
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceClientTestArrivalCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceClientTypeRegistry;
-import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.env.core.data.Transformer;
-import org.eclipse.wst.command.env.core.fragment.CommandFragment;
-import org.eclipse.wst.command.env.core.fragment.CommandFragmentFactory;
-import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
-import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
+import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 
 
 public class GenSampleWidgetBinding implements CommandWidgetBinding
@@ -82,7 +82,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.env.core.data.DataMappingRegistry)
+   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry)
   {
@@ -141,7 +141,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     private WebServiceClientTypeRegistry clientRegistry_ = WebServiceClientTypeRegistry.getInstance();
     
     /* (non-Javadoc)
-     * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.env.core.common.Environment)
+     * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.provisional.env.core.common.Environment)
      */
     public Status execute(Environment environment) 
     {
@@ -214,7 +214,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     }
     
     /* (non-Javadoc)
-     * @see org.eclipse.wst.command.env.core.fragment.CommandFragment#registerDataMappings(org.eclipse.wst.command.env.core.data.DataMappingRegistry)
+     * @see org.eclipse.wst.command.internal.env.core.fragment.CommandFragment#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
      */
     public void registerDataMappings(DataMappingRegistry dataRegistry)
     {

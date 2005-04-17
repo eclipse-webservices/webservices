@@ -13,9 +13,9 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 public abstract class AbstractObjectSelectionWidget extends SimpleWidgetDataContributor implements IObjectSelectionWidget

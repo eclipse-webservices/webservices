@@ -11,7 +11,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.command.data;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.wst.command.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 
 public class ProjectName2IProjectTransformer implements Transformer
 {

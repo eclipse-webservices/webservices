@@ -13,8 +13,8 @@ package org.eclipse.wst.command.internal.env.core.data;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 
 
 public class DataMappingRegistryImpl implements DataMappingRegistry
@@ -27,7 +27,7 @@ public class DataMappingRegistryImpl implements DataMappingRegistry
   }
   
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.data.DataMappingRegistry#addMapping(java.lang.Class, java.lang.String, java.lang.Class, java.lang.String, org.eclipse.wst.command.env.core.data.Transformer)
+   * @see org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry#addMapping(java.lang.Class, java.lang.String, java.lang.Class, java.lang.String, org.eclipse.wst.command.internal.provisional.env.core.data.Transformer)
    */
   public void addMapping( Class sourceType, String sourceProperty,
                           Class targetType, String targetProperty, 
@@ -111,7 +111,7 @@ public class DataMappingRegistryImpl implements DataMappingRegistry
 //  }
   
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.data.DataMappingRegistry#addMapping(java.lang.Class, java.lang.String, java.lang.Class)
+   * @see org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry#addMapping(java.lang.Class, java.lang.String, java.lang.Class)
    */
   public void addMapping(Class sourceType, String sourceProperty, Class targetType) 
   {

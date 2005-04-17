@@ -16,10 +16,10 @@ import java.lang.reflect.Modifier;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 
 
 public class DataFlowManager 

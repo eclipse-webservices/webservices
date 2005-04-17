@@ -35,9 +35,9 @@ import org.eclipse.jem.java.impl.JavaClassImpl;
 import org.eclipse.jem.util.emf.workbench.JavaProjectUtilities;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.env.core.common.ProgressMonitor;
-import org.eclipse.wst.command.env.core.common.StatusHandler;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
 
 public class Stub2BeanInfo
 {

@@ -31,17 +31,17 @@ import org.eclipse.jst.ws.internal.consumption.fragments.ServicePreDeployFragmen
 import org.eclipse.jst.ws.internal.consumption.fragments.ServicePreDevelopFragment;
 import org.eclipse.jst.ws.internal.consumption.fragments.ServicePreInstallFragment;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
-import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.env.core.fragment.CommandFragmentFactoryFactory;
-import org.eclipse.wst.command.env.core.registry.CommandRegistry;
-import org.eclipse.wst.command.env.core.selection.SelectionList;
-import org.eclipse.wst.command.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactoryFactory;
+import org.eclipse.wst.command.internal.env.core.registry.CommandRegistry;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBindingList;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
+import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 

@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.env;
 
-import org.eclipse.wst.command.env.core.CommandManager;
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.command.internal.provisional.env.core.CommandManager;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 /**
  * 

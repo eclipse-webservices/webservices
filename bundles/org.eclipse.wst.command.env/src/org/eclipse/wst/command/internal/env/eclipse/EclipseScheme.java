@@ -14,13 +14,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.uri.RelativeURI;
-import org.eclipse.wst.command.env.core.uri.URI;
-import org.eclipse.wst.command.env.core.uri.URIException;
-import org.eclipse.wst.command.env.core.uri.URIScheme;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.uri.RelativeURI;
+import org.eclipse.wst.command.internal.provisional.env.core.uri.URI;
+import org.eclipse.wst.command.internal.provisional.env.core.uri.URIException;
+import org.eclipse.wst.command.internal.provisional.env.core.uri.URIScheme;
 
 
 public class EclipseScheme implements URIScheme

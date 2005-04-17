@@ -20,7 +20,7 @@ import javax.wsdl.Service;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.soap.SOAPAddress;
 
-import org.eclipse.wst.command.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class ComputeEndpointCommand extends SimpleCommand

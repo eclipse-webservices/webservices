@@ -20,8 +20,8 @@ import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.env.core.common.Condition;
-import org.eclipse.wst.command.env.core.fragment.BooleanFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
 
 
 /**

@@ -16,7 +16,7 @@
  */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
-import org.eclipse.wst.command.env.core.fragment.BooleanFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
 
 /**
  * @author gilberta

@@ -11,9 +11,9 @@
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
-import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 public class PreServiceDeployCommand extends SimpleCommand 
 {

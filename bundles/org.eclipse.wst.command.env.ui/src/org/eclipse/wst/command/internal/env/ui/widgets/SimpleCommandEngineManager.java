@@ -15,14 +15,14 @@ import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.fragment.CommandFragment;
-import org.eclipse.wst.command.env.core.fragment.CommandFragmentEngine;
-import org.eclipse.wst.command.env.core.fragment.FragmentListener;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentEngine;
+import org.eclipse.wst.command.internal.env.core.fragment.FragmentListener;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**

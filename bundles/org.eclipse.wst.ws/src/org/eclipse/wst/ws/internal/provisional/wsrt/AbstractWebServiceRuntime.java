@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.ws.internal.provisional.wsrt;
 
-import org.eclipse.wst.command.internal.provisional.ICommandFactory;
+import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
 
 public abstract class AbstractWebServiceRuntime implements IWebServiceRuntime {
 

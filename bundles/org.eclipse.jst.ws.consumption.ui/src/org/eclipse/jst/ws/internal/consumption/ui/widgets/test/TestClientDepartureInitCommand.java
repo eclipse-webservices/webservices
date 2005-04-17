@@ -16,7 +16,7 @@
  */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
-import org.eclipse.wst.command.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 
 /**
  * @author gilberta

@@ -13,8 +13,8 @@ package org.eclipse.wst.ws.internal.extensions;
 
 import java.util.Vector;
 
-import org.eclipse.wst.command.internal.provisional.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.SimpleCommandFactory;
+import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommandFactory;
 
 public class AssembleClientFragment extends AbstractClientFragment 
 {

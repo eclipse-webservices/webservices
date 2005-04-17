@@ -18,9 +18,9 @@ import java.io.OutputStream;
 import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.wst.command.env.core.common.ProgressMonitor;
-import org.eclipse.wst.command.env.core.common.StatusHandler;
-import org.eclipse.wst.command.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 
 
 

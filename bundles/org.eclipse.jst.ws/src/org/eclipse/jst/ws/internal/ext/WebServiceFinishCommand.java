@@ -11,7 +11,7 @@
 
 package org.eclipse.jst.ws.internal.ext;
 
-import org.eclipse.wst.command.env.core.Command;
+import org.eclipse.wst.command.internal.provisional.env.core.Command;
 
 public interface WebServiceFinishCommand extends Command
 {

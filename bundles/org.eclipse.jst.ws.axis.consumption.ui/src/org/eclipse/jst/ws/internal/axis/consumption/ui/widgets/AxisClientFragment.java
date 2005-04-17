@@ -23,11 +23,11 @@ import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionOutputCommand;
-import org.eclipse.wst.command.env.core.common.Condition;
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.env.core.fragment.BooleanFragment;
-import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
-import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 
 public class AxisClientFragment extends SequenceFragment 

@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.wst.command.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 
 public class JavaBeanSelectionTransformer implements Transformer
 {

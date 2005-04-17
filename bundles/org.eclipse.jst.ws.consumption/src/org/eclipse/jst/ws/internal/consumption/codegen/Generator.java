@@ -13,8 +13,8 @@ package org.eclipse.jst.ws.internal.consumption.codegen;
 
 import java.util.Vector;
 
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 

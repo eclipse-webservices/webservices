@@ -11,7 +11,7 @@
 package org.eclipse.jst.ws.internal.common;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.wst.command.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 
 
 

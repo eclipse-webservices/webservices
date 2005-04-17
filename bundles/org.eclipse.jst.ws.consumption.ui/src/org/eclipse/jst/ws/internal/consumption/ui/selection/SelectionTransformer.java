@@ -13,7 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.selection;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.Selection;
-import org.eclipse.wst.command.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 
 public class SelectionTransformer implements Transformer 
 {

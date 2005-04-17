@@ -18,8 +18,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.context.PersistentActionDialogsContext;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 
 
 

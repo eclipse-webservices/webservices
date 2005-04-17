@@ -13,8 +13,8 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
 
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.wizard.wsdl.WSWSDLAxisType;
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetBindingToWidgetFactoryAdapter;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributor;
 import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributorFactory;
 

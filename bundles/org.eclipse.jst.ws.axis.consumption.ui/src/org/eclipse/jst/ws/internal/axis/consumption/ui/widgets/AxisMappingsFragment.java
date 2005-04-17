@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.widgets;
 
-import org.eclipse.wst.command.env.core.common.Condition;
-import org.eclipse.wst.command.env.core.fragment.BooleanFragment;
-import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
 
 
 public class AxisMappingsFragment extends BooleanFragment

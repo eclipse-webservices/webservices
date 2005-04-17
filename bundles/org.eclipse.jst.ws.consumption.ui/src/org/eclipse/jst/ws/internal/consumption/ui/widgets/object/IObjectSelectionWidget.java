@@ -12,8 +12,8 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataContributor;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 /**
  * This interface defines extra methods that Object Selection Widgets

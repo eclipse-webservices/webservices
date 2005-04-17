@@ -16,8 +16,8 @@ import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 
 
 /**

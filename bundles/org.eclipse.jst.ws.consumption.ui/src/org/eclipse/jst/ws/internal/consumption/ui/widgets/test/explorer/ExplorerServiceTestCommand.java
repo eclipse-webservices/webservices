@@ -23,10 +23,10 @@ import org.eclipse.jst.ws.internal.explorer.LaunchOption;
 import org.eclipse.jst.ws.internal.explorer.LaunchOptions;
 import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.jst.ws.internal.explorer.plugin.ExplorerPlugin;
-import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
 
 public class ExplorerServiceTestCommand extends SimpleCommand implements WSDLTestFinishCommand

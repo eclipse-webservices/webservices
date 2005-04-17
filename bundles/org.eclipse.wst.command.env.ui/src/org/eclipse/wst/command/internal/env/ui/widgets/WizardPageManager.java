@@ -16,11 +16,11 @@ import java.util.Stack;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.registry.WidgetRegistry;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributor;
 import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributorFactory;
 

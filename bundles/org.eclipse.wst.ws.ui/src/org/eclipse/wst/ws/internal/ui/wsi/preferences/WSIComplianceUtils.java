@@ -13,11 +13,11 @@ package org.eclipse.wst.ws.internal.ui.wsi.preferences;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
-import org.eclipse.wst.command.env.core.common.Choice;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.common.StatusHandler;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
 
 
 public class WSIComplianceUtils

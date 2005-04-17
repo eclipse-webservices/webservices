@@ -60,24 +60,24 @@ import org.eclipse.jst.ws.internal.creation.ui.widgets.test.ServiceTestFragment;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.test.ServiceTestWidget;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.test.WebServiceTestDefaultingCommand;
 import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
-import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.command.env.core.common.Condition;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.env.core.fragment.BooleanFragment;
-import org.eclipse.wst.command.env.core.fragment.CommandFragment;
-import org.eclipse.wst.command.env.core.fragment.CommandFragmentFactory;
-import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
-import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
+import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 public class ServerWidgetBinding implements CommandWidgetBinding
 {
@@ -115,7 +115,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
   }
 
   /* (non-Javadoc), 
-   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.env.core.data.DataMappingRegistry)
+   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry)
   {
@@ -374,7 +374,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     }
     
     /* (non-Javadoc)
-     * @see org.eclipse.wst.command.env.core.fragment.CommandFragment#registerDataMappings(org.eclipse.wst.command.env.core.data.DataMappingRegistry)
+     * @see org.eclipse.wst.command.internal.env.core.fragment.CommandFragment#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
      */
     public void registerDataMappings(DataMappingRegistry dataRegistry)
     {
@@ -427,7 +427,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     }
     
     /* (non-Javadoc)
-     * @see org.eclipse.wst.command.env.core.fragment.CommandFragment#registerDataMappings(org.eclipse.wst.command.env.core.data.DataMappingRegistry)
+     * @see org.eclipse.wst.command.internal.env.core.fragment.CommandFragment#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
      */
     public void registerDataMappings(DataMappingRegistry dataRegistry)
     {

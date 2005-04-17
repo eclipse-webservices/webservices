@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.fragments;
 
-import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 
 public class ServicePreDeployFragment extends SequenceFragment
 {

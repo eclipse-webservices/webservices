@@ -30,13 +30,13 @@ import org.eclipse.jst.ws.internal.consumption.ui.command.WSINonCompliantRuntime
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand;
-import org.eclipse.wst.command.env.core.common.Condition;
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.env.core.fragment.BooleanFragment;
-import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
-import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.common.WaitForAutoBuildCommand;
+import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
   
 public class AxisBeanFragment extends SequenceFragment

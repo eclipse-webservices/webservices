@@ -20,9 +20,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 
 
 public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.env;
 
-import org.eclipse.wst.command.env.core.common.ProgressMonitor;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
 
 /**
  * @author rsinha
@@ -21,14 +21,14 @@ import org.eclipse.wst.command.env.core.common.ProgressMonitor;
 public class J2EEProgressMonitor implements ProgressMonitor
 {
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.common.ProgressMonitor#report(java.lang.String)
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor#report(java.lang.String)
    */
   public void report(String progress)
   {
     // TODO Auto-generated method stub
   }
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.common.ProgressMonitor#getChildProgressMonitor()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor#getChildProgressMonitor()
    */
   public ProgressMonitor getChildProgressMonitor()
   {
@@ -36,7 +36,7 @@ public class J2EEProgressMonitor implements ProgressMonitor
     return null;
   }
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.common.ProgressMonitor#isCancelRequested()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor#isCancelRequested()
    */
   public boolean isCancelRequested()
   {

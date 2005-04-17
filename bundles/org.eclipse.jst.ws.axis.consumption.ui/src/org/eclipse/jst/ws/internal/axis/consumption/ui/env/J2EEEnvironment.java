@@ -10,14 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.env;
 
-import org.eclipse.wst.command.env.core.CommandManager;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.JavaCompiler;
-import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.core.common.ProgressMonitor;
-import org.eclipse.wst.command.env.core.common.StatusHandler;
-import org.eclipse.wst.command.env.core.uri.SimpleURIFactory;
-import org.eclipse.wst.command.env.core.uri.URIFactory;
+import org.eclipse.wst.command.internal.provisional.env.core.CommandManager;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.JavaCompiler;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.command.internal.provisional.env.core.uri.SimpleURIFactory;
+import org.eclipse.wst.command.internal.provisional.env.core.uri.URIFactory;
 
 
 /**
@@ -32,7 +32,7 @@ public class J2EEEnvironment implements Environment
   J2EECommandManager j2eeCommandManager_;
   
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.common.Environment#getLog()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getLog()
    */
   public Log getLog()
   {
@@ -44,7 +44,7 @@ public class J2EEEnvironment implements Environment
     
   }
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.common.Environment#getProgressMonitor()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getProgressMonitor()
    */
   public ProgressMonitor getProgressMonitor()
   {
@@ -57,7 +57,7 @@ public class J2EEEnvironment implements Environment
   }
   
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.common.Environment#getStatusHandler()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getStatusHandler()
    */
   public StatusHandler getStatusHandler()
   {
@@ -69,7 +69,7 @@ public class J2EEEnvironment implements Environment
   }
   
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.common.Environment#getURIFactory()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getURIFactory()
    */
   public URIFactory getURIFactory()
   {
@@ -81,7 +81,7 @@ public class J2EEEnvironment implements Environment
   }
   
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.common.Environment#getJavaCompiler()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getJavaCompiler()
    */
   public JavaCompiler getJavaCompiler()
   {
@@ -89,7 +89,7 @@ public class J2EEEnvironment implements Environment
     return null;
   }
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.common.Environment#getCommandManager()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getCommandManager()
    */
   public CommandManager getCommandManager()
   {

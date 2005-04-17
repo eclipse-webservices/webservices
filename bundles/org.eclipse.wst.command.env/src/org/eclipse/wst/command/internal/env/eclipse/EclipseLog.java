@@ -11,9 +11,9 @@
 package org.eclipse.wst.command.internal.env.eclipse;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.wst.command.env.core.common.Log;
-import org.eclipse.wst.command.env.core.common.Status;
 import org.eclipse.wst.command.internal.env.plugin.EnvPlugin;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 public class EclipseLog implements Log 
 {
@@ -27,14 +27,14 @@ public class EclipseLog implements Log
 	}
 	
 	/**
-	 * @see org.eclipse.wst.command.env.core.common.Log#isEnabled()
+	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Log#isEnabled()
 	 */
 	public boolean isEnabled() {
 		return EnvPlugin.getInstance().isDebugging();
 	}
 	
 	/**
-	 * @see org.eclipse.wst.command.env.core.common.Log#isEnabled(java.lang.String)
+	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Log#isEnabled(java.lang.String)
 	 */
 	public boolean isEnabled(String option) {
 		return "true".equals(Platform.getDebugOption("org.eclipse.wst.command.env/trace/"
@@ -42,7 +42,7 @@ public class EclipseLog implements Log
 	}
 	
 	/**
-	 * @see org.eclipse.wst.command.env.core.common.Log#log(int, int, java.lang.Object, java.lang.String, java.lang.Object)
+	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Log#log(int, int, java.lang.Object, java.lang.String, java.lang.Object)
 	 */
 	public void log(int severity, int messageNum, Object caller,
 			String method, Object object) {
@@ -85,7 +85,7 @@ public class EclipseLog implements Log
 	}
 	
 	/**
-	 * @see org.eclipse.wst.command.env.core.common.Log#log(int, int, java.lang.Object, java.lang.String, org.eclipse.wst.command.env.core.common.Status)
+	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Log#log(int, int, java.lang.Object, java.lang.String, org.eclipse.wst.command.internal.provisional.env.core.common.Status)
 	 */
 	public void log(int severity, int messageNum, Object caller,
 			String method, Status status) {
@@ -93,7 +93,7 @@ public class EclipseLog implements Log
 	}
 	
 	/**
-	 * @see org.eclipse.wst.command.env.core.common.Log#log(int, int, java.lang.Object, java.lang.String, java.lang.Throwable)
+	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Log#log(int, int, java.lang.Object, java.lang.String, java.lang.Throwable)
 	 */
 	public void log(int severity, int messageNum, Object caller,
 			String method, Throwable throwable) {
@@ -126,7 +126,7 @@ public class EclipseLog implements Log
 	}
 	
 	/**
-	 * @see org.eclipse.wst.command.env.core.common.Log#log(int, java.lang.String, int, java.lang.Object, java.lang.String, java.lang.Object)
+	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Log#log(int, java.lang.String, int, java.lang.Object, java.lang.String, java.lang.Object)
 	 */
 	public void log(int severity, String option, int messageNum,
 			Object caller, String method, Object object) {
@@ -141,7 +141,7 @@ public class EclipseLog implements Log
 	}
 	
 	/**
-	 * @see org.eclipse.wst.command.env.core.common.Log#log(int, java.lang.String, int, java.lang.Object, java.lang.String, java.lang.Throwable)
+	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Log#log(int, java.lang.String, int, java.lang.Object, java.lang.String, java.lang.Throwable)
 	 */
 	public void log(int severity, String option, int messageNum,
 			Object caller, String method, Throwable throwable) {
@@ -160,7 +160,7 @@ public class EclipseLog implements Log
 	}
 	
 	/**
-	 * @see org.eclipse.wst.command.env.core.common.Log#log(int, java.lang.String, int, java.lang.Object, java.lang.String, org.eclipse.wst.command.env.core.common.Status)
+	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Log#log(int, java.lang.String, int, java.lang.Object, java.lang.String, org.eclipse.wst.command.internal.provisional.env.core.common.Status)
 	 */
 	public void log(int severity, String option, int messageNum,
 			Object caller, String method, Status status) {

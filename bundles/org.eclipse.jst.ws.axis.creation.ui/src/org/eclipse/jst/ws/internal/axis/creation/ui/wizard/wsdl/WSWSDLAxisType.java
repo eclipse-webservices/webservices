@@ -23,15 +23,15 @@ import org.eclipse.jst.ws.internal.consumption.common.WSDLResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ProjectName2IProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeType;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.env.core.fragment.CommandFragment;
-import org.eclipse.wst.command.env.core.fragment.CommandFragmentFactory;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 /**
 * This is the class for the Axis Web service type.
@@ -148,7 +148,7 @@ public class WSWSDLAxisType implements WebServiceServerRuntimeType, CommandWidge
   {
   }
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.env.core.data.DataMappingRegistry)
+   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry) 
   {
@@ -232,7 +232,7 @@ public class WSWSDLAxisType implements WebServiceServerRuntimeType, CommandWidge
   }
   
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.fragment.CommandFragmentFactoryFactory#create()
+   * @see org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactoryFactory#create()
    */
   public CommandFragmentFactory create() 
   {

@@ -11,13 +11,13 @@
 package org.eclipse.wst.command.internal.env.ui.eclipse;
 
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.wst.command.env.core.common.Choice;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.common.StatusException;
-import org.eclipse.wst.command.env.core.common.StatusHandler;
 import org.eclipse.wst.command.internal.env.ui.dialog.MessageDialog;
 import org.eclipse.wst.command.internal.env.ui.dialog.StatusDialogConstants;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
 
 
 /**
@@ -114,7 +114,7 @@ public class EclipseStatusHandler implements StatusHandler
   }
   
   /**
-   * @see org.eclipse.wst.command.env.core.common.StatusHandler#reportError(org.eclipse.wst.command.env.core.common.Status)
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler#reportError(org.eclipse.wst.command.internal.provisional.env.core.common.Status)
    */
   public void reportError(Status status)
   {
@@ -122,7 +122,7 @@ public class EclipseStatusHandler implements StatusHandler
   }
   
   /**
-   * @see org.eclipse.wst.command.env.core.common.StatusHandler#reportInfo(org.eclipse.wst.command.env.core.common.Status)
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler#reportInfo(org.eclipse.wst.command.internal.provisional.env.core.common.Status)
    */
   public void reportInfo(Status status)
   {

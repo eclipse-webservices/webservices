@@ -19,10 +19,10 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectComman
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
-import org.eclipse.wst.command.env.core.common.Condition;
-import org.eclipse.wst.command.env.core.fragment.BooleanFragment;
-import org.eclipse.wst.command.env.core.fragment.SequenceFragment;
-import org.eclipse.wst.command.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
 
 
 public class AxisClientCommandsFragment extends BooleanFragment

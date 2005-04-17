@@ -15,9 +15,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
-import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.internal.env.context.PersistentContext;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 
 
 

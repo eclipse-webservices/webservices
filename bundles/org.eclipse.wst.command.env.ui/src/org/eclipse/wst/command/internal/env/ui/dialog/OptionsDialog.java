@@ -16,8 +16,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.env.core.common.Choice;
-import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**

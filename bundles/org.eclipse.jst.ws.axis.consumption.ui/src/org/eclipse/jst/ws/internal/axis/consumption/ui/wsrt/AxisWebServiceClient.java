@@ -18,10 +18,10 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisClientFragmen
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionOutputCommand;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.internal.provisional.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.SimpleCommandFactory;
+import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommandFactory;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.ws.internal.provisional.wsrt.AbstractWebServiceClient;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;

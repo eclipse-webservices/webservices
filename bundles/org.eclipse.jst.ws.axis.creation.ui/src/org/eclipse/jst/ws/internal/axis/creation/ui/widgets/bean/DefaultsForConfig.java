@@ -13,7 +13,7 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean;
 import java.util.Hashtable;
 
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.wst.command.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 
 
 public class DefaultsForConfig extends SimpleCommand

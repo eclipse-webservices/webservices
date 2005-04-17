@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.core.data;
 
-import org.eclipse.wst.command.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 
 public class RuleEntry 
 {

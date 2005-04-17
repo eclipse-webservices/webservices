@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.command.internal.provisional.env.ui.widgets;
 
-import org.eclipse.wst.command.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 public interface INamedWidgetContributorFactory 
 {

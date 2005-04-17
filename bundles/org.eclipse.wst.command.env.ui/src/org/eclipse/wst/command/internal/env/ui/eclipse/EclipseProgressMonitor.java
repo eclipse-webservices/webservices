@@ -12,7 +12,7 @@ package org.eclipse.wst.command.internal.env.ui.eclipse;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.wst.command.env.core.common.ProgressMonitor;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
 
 
 public class EclipseProgressMonitor implements ProgressMonitor

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
-import org.eclipse.wst.command.env.core.common.Condition;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
 
 /**
  * This is an interface for an abstract can finish registry.

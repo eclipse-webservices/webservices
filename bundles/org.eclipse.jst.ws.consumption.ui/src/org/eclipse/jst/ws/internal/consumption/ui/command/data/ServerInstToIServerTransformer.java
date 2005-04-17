@@ -13,7 +13,7 @@
  */
 package org.eclipse.jst.ws.internal.consumption.ui.command.data;
 
-import org.eclipse.wst.command.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 
@@ -23,7 +23,7 @@ import org.eclipse.wst.server.core.ServerCore;
 public class ServerInstToIServerTransformer implements Transformer {
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.data.Transformer#transform(java.lang.Object)
+   * @see org.eclipse.wst.command.internal.provisional.env.core.data.Transformer#transform(java.lang.Object)
    */
   public Object transform(Object value) {
     

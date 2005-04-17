@@ -13,8 +13,8 @@ package org.eclipse.jst.ws.internal.ext;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.wst.command.env.core.common.Log;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 
 
 

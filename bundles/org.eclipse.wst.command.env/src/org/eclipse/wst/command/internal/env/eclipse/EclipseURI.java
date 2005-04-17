@@ -23,15 +23,15 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.wst.command.env.core.common.MessageUtils;
-import org.eclipse.wst.command.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.env.core.common.Status;
-import org.eclipse.wst.command.env.core.uri.RelativeURI;
-import org.eclipse.wst.command.env.core.uri.URI;
-import org.eclipse.wst.command.env.core.uri.URIException;
-import org.eclipse.wst.command.env.core.uri.URIFilter;
-import org.eclipse.wst.command.env.core.uri.URIScheme;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.uri.RelativeURI;
+import org.eclipse.wst.command.internal.provisional.env.core.uri.URI;
+import org.eclipse.wst.command.internal.provisional.env.core.uri.URIException;
+import org.eclipse.wst.command.internal.provisional.env.core.uri.URIFilter;
+import org.eclipse.wst.command.internal.provisional.env.core.uri.URIScheme;
 
 
 public class EclipseURI extends RelativeURI
@@ -473,7 +473,7 @@ public class EclipseURI extends RelativeURI
   }
   
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.uri.URI#isAvailableAsFile()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.uri.URI#isAvailableAsFile()
    */
   public boolean isAvailableAsFile() 
   {

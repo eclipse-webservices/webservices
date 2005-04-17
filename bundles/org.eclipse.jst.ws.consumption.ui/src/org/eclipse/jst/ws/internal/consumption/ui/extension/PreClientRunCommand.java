@@ -12,9 +12,9 @@
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
 
 import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
-import org.eclipse.wst.command.env.core.SimpleCommand;
-import org.eclipse.wst.command.env.core.common.Environment;
-import org.eclipse.wst.command.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
 public class PreClientRunCommand extends SimpleCommand 

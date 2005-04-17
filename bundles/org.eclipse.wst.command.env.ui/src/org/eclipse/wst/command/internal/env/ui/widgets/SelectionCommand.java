@@ -12,7 +12,7 @@
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.wst.command.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 
 
 /**
