@@ -125,7 +125,7 @@ protected void restartProject(IProject project, IServer server) throws CoreExcep
       IProject earProject = ears[i].getProject();
       if (earProject != null && ServerUtil.containsModule(server,ResourceUtils.getModule(earProject), monitor))    
       {
-        (new org.eclipse.wst.server.ui.actions.RestartProjectAction(earProject)).run();
+        // TODO: restart project?
         log_.log(Log.INFO, 5053, this, "restartProject", "earProject="+earProject+", Restart project command completed");
        
       }

@@ -32,8 +32,12 @@ import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.ResultFileGener
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.TestClientFileGenerator;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.GeneratePageCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.JavaToModelCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.CopyWebServiceUtilsJarCommand;
 import org.eclipse.jst.ws.internal.ext.test.JavaProxyTestCommand;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
@@ -44,7 +48,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.StatusExcept
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.datamodel.Model;
-import org.eclipse.wst.internet.webbrowser.WebBrowser;
 
 public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTestCommand
 {
@@ -199,7 +202,6 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
     try{
       URL url;
       url = new URL(urlString.toString());
-      int style = WebBrowser.LOCATION_BAR | WebBrowser.BUTTON_BAR;  
 
       for( int retries = 0; retries < 10; retries++ )
       {
@@ -223,8 +225,20 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
         }
       }
 
-      WebBrowser.openURL(url,style,null);
-      return status;  
+		IWorkbenchBrowserSupport browserSupport = WebServiceConsumptionUIPlugin.getInstance().getWorkbench().getBrowserSupport();
+		IWebBrowser browser = browserSupport.createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.NAVIGATION_BAR, null, null, null);
+		browser.openURL(url);
+      return status;
+	 }catch(PartInitException exc){
+		//TODO: change error message
+		env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
+		status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.WARNING );
+		try {
+			env.getStatusHandler().report(status);
+		} catch (StatusException e) {
+			status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.ERROR );
+		}
+    	return status;
     }catch(MalformedURLException exc){
     	env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
 		status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.WARNING );
