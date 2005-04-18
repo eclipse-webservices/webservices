@@ -26,10 +26,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.wsdl.validation.internal.ValidationInfoImpl;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
-import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
+import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLMessageInfoHelper;
 import org.eclipse.wst.xml.validation.internal.core.ValidateAction;
 
