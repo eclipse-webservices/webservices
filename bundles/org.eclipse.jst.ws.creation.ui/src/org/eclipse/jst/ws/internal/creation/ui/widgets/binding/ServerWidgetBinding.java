@@ -59,7 +59,6 @@ import org.eclipse.jst.ws.internal.creation.ui.widgets.test.LaunchFragment;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.test.ServiceTestFragment;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.test.ServiceTestWidget;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.test.WebServiceTestDefaultingCommand;
-import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
@@ -78,6 +77,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
 
 public class ServerWidgetBinding implements CommandWidgetBinding
 {

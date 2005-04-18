@@ -17,8 +17,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.wizard.PrivateUDDIRegistryType
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.PublicUDDIRegistryTypeRegistry;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistryType;
 import org.eclipse.jst.ws.internal.ui.uddi.PrivateUDDIRegistryType;
-import org.eclipse.jst.ws.internal.explorer.LaunchOption;
-import org.eclipse.jst.ws.internal.explorer.LaunchOptions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -33,6 +31,8 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.ws.internal.explorer.LaunchOption;
+import org.eclipse.wst.ws.internal.explorer.LaunchOptions;
 
 
 public class PublishWSWidget extends SimpleWidgetDataContributor

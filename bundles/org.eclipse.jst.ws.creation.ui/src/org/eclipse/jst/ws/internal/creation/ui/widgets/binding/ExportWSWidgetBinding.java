@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishToPrivateUDDICommandFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishWSWidget;
-import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
@@ -24,6 +23,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
 
 
 public class ExportWSWidgetBinding implements CommandWidgetBinding

@@ -13,16 +13,16 @@ package org.eclipse.jst.ws.internal.consumption.ui.action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 
-import org.eclipse.jst.ws.internal.explorer.LaunchOption;
-import org.eclipse.jst.ws.internal.explorer.LaunchOptions;
-import org.eclipse.jst.ws.internal.explorer.WSExplorerLauncherCommand;
-import org.eclipse.jst.ws.internal.explorer.plugin.ExplorerPlugin;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
+import org.eclipse.wst.ws.internal.explorer.LaunchOption;
+import org.eclipse.wst.ws.internal.explorer.LaunchOptions;
+import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
+import org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin;
 
 
 public class LaunchWSEAction implements IWorkbenchWindowActionDelegate
