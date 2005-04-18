@@ -23,13 +23,13 @@ import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.WSDLElement; 
+import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
-import org.eclipse.wst.xsd.ui.internal.gef.util.figures.IConnectedFigure;
 import org.eclipse.wst.wsdl.ui.internal.graph.WSDLComponentViewer;
 import org.eclipse.wst.wsdl.ui.internal.graph.editparts.GroupEditPart;
 import org.eclipse.wst.wsdl.ui.internal.graph.editparts.WSDLTreeNodeEditPart;
-import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
+import org.eclipse.wst.xsd.ui.internal.gef.util.figures.IConnectedFigure;
 
 public class WSDLDragSetMessageAction extends WSDLDragAction {
 	protected EditPart pointerEditPart;

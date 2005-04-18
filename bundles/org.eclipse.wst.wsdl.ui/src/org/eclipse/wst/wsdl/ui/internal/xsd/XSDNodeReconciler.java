@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.xsd;
                                            
-import org.eclipse.wst.sse.core.INodeNotifier;
+import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.ui.internal.extension.INodeReconciler;
 import org.eclipse.xsd.XSDConcreteComponent;

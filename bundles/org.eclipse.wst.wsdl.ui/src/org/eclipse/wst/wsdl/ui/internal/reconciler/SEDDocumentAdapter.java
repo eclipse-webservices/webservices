@@ -10,16 +10,16 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.reconciler;    
 
-import org.eclipse.wst.sse.core.INodeAdapter;
-import org.eclipse.wst.sse.core.INodeNotifier;
-import org.eclipse.wst.sse.core.IStructuredModel;
+import org.eclipse.wst.sse.core.internal.provisional.INodeAdapter;
+import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xml.core.document.IDOMModel;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.w3c.dom.Document;

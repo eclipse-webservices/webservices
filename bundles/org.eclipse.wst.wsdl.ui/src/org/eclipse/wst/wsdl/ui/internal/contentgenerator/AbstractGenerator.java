@@ -22,7 +22,7 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.actions.AddNamespaceDeclarationsAction;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

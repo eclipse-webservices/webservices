@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.outline;
 
 import java.util.HashMap;
 
-
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;

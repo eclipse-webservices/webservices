@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.actions;
 
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.wst.wsdl.ui.internal.graph.editparts.WSDLTreeNodeEditPart;
 import org.w3c.dom.Node;
 

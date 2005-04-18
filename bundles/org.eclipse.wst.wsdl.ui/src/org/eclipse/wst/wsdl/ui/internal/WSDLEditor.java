@@ -36,14 +36,12 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.TextSelectionNavigationLocation;
-import org.eclipse.wst.sse.core.IStructuredModel;
-import org.eclipse.wst.sse.core.exceptions.SourceEditingRuntimeException;
-import org.eclipse.wst.sse.core.internal.SSECorePlugin;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.sse.core.internal.provisional.exceptions.SourceEditingRuntimeException;
 import org.eclipse.wst.sse.ui.internal.StructuredTextEditor;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
-import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.wst.wsdl.ui.internal.actions.WSDLMenuActionContributor;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtension;
 import org.eclipse.wst.wsdl.ui.internal.graph.WSDLGraphViewer;
@@ -63,7 +61,8 @@ import org.eclipse.wst.wsdl.ui.internal.util.WSDLResourceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.XSDSchemaLocationResolverAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.viewers.WSDLDetailsViewer;
 import org.eclipse.wst.wsdl.ui.internal.viewers.WSDLDetailsViewerProvider;
-import org.eclipse.wst.xml.core.document.IDOMModel;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.w3c.dom.Document;
 
 //public class WSDLEditor extends StructuredTextMultiPageEditorPart implements INavigationLocationProvider

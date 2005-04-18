@@ -14,15 +14,12 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
-
 import org.eclipse.ui.IEditorPart;
-
-
-import org.w3c.dom.Node;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.commands.WSDLElementCommand;
-import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
+import org.w3c.dom.Node;
 
 public abstract class WSDLElementUIAction extends Action
 {

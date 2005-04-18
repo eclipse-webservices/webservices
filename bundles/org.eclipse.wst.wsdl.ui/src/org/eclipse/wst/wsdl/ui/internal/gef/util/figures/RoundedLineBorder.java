@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.gef.util.figures;
             
-import org.eclipse.draw2d.*; 
-import org.eclipse.draw2d.geometry.*; 
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.swt.graphics.Color;
 
 public class RoundedLineBorder extends LineBorder

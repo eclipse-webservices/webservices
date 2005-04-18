@@ -23,7 +23,6 @@ import org.eclipse.wst.wsdl.ui.internal.graph.editparts.DefinitionEditPart;
 import org.eclipse.wst.wsdl.ui.internal.graph.editparts.GroupEditPart;
 import org.eclipse.wst.wsdl.ui.internal.graph.editparts.PartReferenceSectionEditPart;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
-
 import org.eclipse.wst.xsd.ui.internal.gef.util.figures.IConnectedFigure;
               
 

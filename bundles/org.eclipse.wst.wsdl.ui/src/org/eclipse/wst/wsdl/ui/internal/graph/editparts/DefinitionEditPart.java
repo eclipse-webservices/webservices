@@ -30,7 +30,6 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.gef.util.figures.RoundedLineBorder;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
 import org.eclipse.wst.wsdl.ui.internal.util.OpenOnSelectionHelper;
-
 import org.eclipse.wst.xsd.ui.internal.gef.util.figures.ContainerFigure;
 import org.eclipse.wst.xsd.ui.internal.gef.util.figures.ContainerLayout;
 import org.eclipse.wst.xsd.ui.internal.gef.util.figures.FillLayout;

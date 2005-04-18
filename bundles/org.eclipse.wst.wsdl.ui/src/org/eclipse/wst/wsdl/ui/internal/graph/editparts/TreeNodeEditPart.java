@@ -30,13 +30,13 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.gef.util.editparts.InteractorHelper;
-import org.eclipse.wst.xsd.ui.internal.gef.util.figures.ContainerFigure;
 import org.eclipse.wst.wsdl.ui.internal.graph.GraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.graph.WSDLComponentViewer;
 import org.eclipse.wst.wsdl.ui.internal.graph.editpolicies.WSDLSelectionHandlesEditPolicyImpl;
 import org.eclipse.wst.wsdl.ui.internal.graph.figures.TreeNodeContentFigure;
 import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapter;
 import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapterListener;
+import org.eclipse.wst.xsd.ui.internal.gef.util.figures.ContainerFigure;
 
 public abstract class TreeNodeEditPart extends AbstractGraphicalEditPart implements ModelAdapterListener, GraphicsConstants, IFeedbackHandler
 {

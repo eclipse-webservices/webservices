@@ -29,7 +29,6 @@ import org.eclipse.wst.common.ui.properties.internal.provisional.ITabbedProperty
 import org.eclipse.wst.sse.ui.internal.StructuredTextEditor;
 import org.eclipse.wst.sse.ui.internal.view.events.INodeSelectionListener;
 import org.eclipse.wst.sse.ui.internal.view.events.NodeSelectionChangedEvent;
-import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.wsdl.ui.internal.extension.IModelQueryContributor;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtension;
 import org.eclipse.wst.wsdl.ui.internal.filter.ExtensiblityElementFilter;
@@ -39,7 +38,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.OpenOnSelectionHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.SelectionAdapter;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
-import org.eclipse.wst.xml.core.document.IDOMModel;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
@@ -47,6 +46,8 @@ import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.ModelQuery;
 import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.extension.DataTypeValueExtension;
 import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.extension.ElementContentFilterExtension;
 import org.eclipse.wst.xml.core.internal.modelquery.ModelQueryUtil;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -231,7 +232,7 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
 
       // the text editor can only accept sed nodes!
       //
-      if (!(node instanceof org.eclipse.wst.xml.core.document.IDOMNode))
+      if (!(node instanceof IDOMNode))
       {
         node = null;
       }

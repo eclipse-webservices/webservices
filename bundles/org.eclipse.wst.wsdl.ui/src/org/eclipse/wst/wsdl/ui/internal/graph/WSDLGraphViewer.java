@@ -43,7 +43,7 @@ import org.eclipse.wst.wsdl.ui.internal.graph.editparts.TreeNodeEditPart;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
 import org.eclipse.wst.wsdl.ui.internal.util.SelectionAdapter;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
-import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDElementDeclaration;

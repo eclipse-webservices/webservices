@@ -28,13 +28,14 @@ import org.eclipse.wst.wsdl.ui.internal.graph.WSDLComponentViewer;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
 import org.eclipse.wst.wsdl.ui.internal.xsd.actions.AddSchemaAction;
 import org.eclipse.wst.wsdl.ui.internal.xsd.actions.BackAction;
-import org.eclipse.wst.xml.core.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.document.DocumentImpl;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xsd.ui.internal.XSDEditorPlugin;
 import org.eclipse.wst.xsd.ui.internal.XSDMenuListener;
 import org.eclipse.wst.xsd.ui.internal.actions.CreateElementAction;
 import org.eclipse.wst.xsd.ui.internal.actions.CreateGroupAction;
 import org.eclipse.wst.xsd.ui.internal.actions.DOMAttribute;
+import org.eclipse.wst.xsd.ui.internal.gef.util.editparts.AbstractComponentViewerRootEditPart;
 import org.eclipse.wst.xsd.ui.internal.graph.editparts.TopLevelComponentEditPart;
 import org.eclipse.wst.xsd.ui.internal.graph.model.Category;
 import org.eclipse.wst.xsd.ui.internal.provider.CategoryAdapter;
@@ -46,8 +47,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import org.eclipse.wst.xsd.ui.internal.gef.util.editparts.AbstractComponentViewerRootEditPart;
 
 public class XSDMenuActionContributor implements IMenuActionContributor
 {

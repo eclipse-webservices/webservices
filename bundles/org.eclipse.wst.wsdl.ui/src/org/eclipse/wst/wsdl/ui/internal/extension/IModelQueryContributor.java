@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.extension;
 
-import org.eclipse.wst.xml.core.document.IDOMModel;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
                    
 // Note this class will likely be removed in the future when the ModelQuery's extension mechanism is updated
 //

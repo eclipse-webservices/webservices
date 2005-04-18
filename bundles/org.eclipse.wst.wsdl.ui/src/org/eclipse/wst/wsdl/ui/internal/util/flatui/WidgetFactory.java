@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;

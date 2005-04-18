@@ -13,14 +13,15 @@ package org.eclipse.wst.wsdl.ui.internal.actions;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import javax.wsdl.OperationType;
 
+import javax.wsdl.OperationType;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Polyline;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
@@ -28,12 +29,10 @@ import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.internal.impl.OperationImpl;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
-import org.eclipse.wst.wsdl.ui.internal.actions.WSDLDragAction;
 import org.eclipse.wst.wsdl.ui.internal.graph.WSDLComponentViewer;
 import org.eclipse.wst.wsdl.ui.internal.graph.editparts.WSDLTreeNodeEditPart;
-import org.eclipse.wst.wsdl.internal.impl.OperationImpl;
-import org.eclipse.gef.EditPart;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 

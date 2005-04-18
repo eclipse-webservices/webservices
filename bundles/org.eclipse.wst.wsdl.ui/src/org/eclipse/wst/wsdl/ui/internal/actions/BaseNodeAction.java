@@ -11,9 +11,8 @@
 package org.eclipse.wst.wsdl.ui.internal.actions; 
                       
 import org.eclipse.jface.action.Action;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.w3c.dom.Node;
-
-import org.eclipse.wst.xml.core.document.IDOMNode;
 
 public abstract class BaseNodeAction extends Action
 { 

@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.ui.internal.graph.figures;
                                          
 import org.eclipse.draw2d.IFigure;
-
 import org.eclipse.wst.xsd.ui.internal.gef.util.figures.ContainerFigure;
 import org.eclipse.wst.xsd.ui.internal.gef.util.figures.IConnectedFigure;
               

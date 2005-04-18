@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;

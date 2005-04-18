@@ -19,10 +19,10 @@ import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.xsd.ui.internal.gef.util.figures.ContainerFigure;
 import org.eclipse.wst.wsdl.ui.internal.graph.model.WSDLGraphModelAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapter;
 import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapterListener;
+import org.eclipse.wst.xsd.ui.internal.gef.util.figures.ContainerFigure;
 import org.eclipse.xsd.XSDElementDeclaration;
                                                    
 

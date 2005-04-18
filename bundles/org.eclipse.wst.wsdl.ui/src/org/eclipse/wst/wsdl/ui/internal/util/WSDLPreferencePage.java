@@ -12,15 +12,14 @@ package org.eclipse.wst.wsdl.ui.internal.util;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPreferencePage;
-//import org.eclipse.ui.help.WorkbenchHelp;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 
 public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 

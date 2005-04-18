@@ -13,20 +13,16 @@ package org.eclipse.wst.wsdl.ui.internal.actions;
 import java.util.Iterator;
 import java.util.Map;
 
-
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddOperationCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.WSDLElementCommand;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.graph.editparts.WSDLTreeNodeEditPart;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
-
-
-
 import org.w3c.dom.Node;
 
 /*

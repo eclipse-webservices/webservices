@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.graph;
 
 import java.util.List;
 
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
@@ -43,10 +42,9 @@ import org.eclipse.wst.wsdl.ui.internal.graph.editparts.ComponentViewerRootEditP
 import org.eclipse.wst.wsdl.ui.internal.graph.figures.MyConnectionRenderingHelper;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
 import org.eclipse.wst.wsdl.ui.internal.util.OpenOnSelectionHelper;
-import org.w3c.dom.Node;
-
 import org.eclipse.wst.xsd.ui.internal.gef.util.figures.ConnectionRenderingFigure;
 import org.eclipse.wst.xsd.ui.internal.gef.util.figures.IConnectionRenderingViewer;
+import org.w3c.dom.Node;
 
 public class WSDLComponentViewer extends ScrollingGraphicalViewer implements IConnectionRenderingViewer
 {

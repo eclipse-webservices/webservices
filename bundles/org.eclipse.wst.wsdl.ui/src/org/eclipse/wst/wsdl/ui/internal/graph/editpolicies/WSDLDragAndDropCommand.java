@@ -34,7 +34,7 @@ import org.eclipse.wst.wsdl.ui.internal.actions.WSDLDragAction;
 import org.eclipse.wst.wsdl.ui.internal.actions.WSDLDragReorderAction;
 import org.eclipse.wst.wsdl.ui.internal.actions.WSDLDragSetMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.graph.editparts.WSDLTreeNodeEditPart;
-import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 
 public class WSDLDragAndDropCommand extends Command //AbstractCommand

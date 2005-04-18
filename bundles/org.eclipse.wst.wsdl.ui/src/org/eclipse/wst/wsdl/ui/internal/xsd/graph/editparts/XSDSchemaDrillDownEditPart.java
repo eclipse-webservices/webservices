@@ -11,10 +11,9 @@
 package org.eclipse.wst.wsdl.ui.internal.xsd.graph.editparts;
          
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.xsd.XSDSchema;
-
 import org.eclipse.wst.wsdl.ui.internal.graph.editparts.DrillDownEditPart;
 import org.eclipse.wst.xsd.ui.internal.XSDEditorPlugin;
+import org.eclipse.xsd.XSDSchema;
 
 
 public class XSDSchemaDrillDownEditPart extends DrillDownEditPart 

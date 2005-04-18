@@ -13,9 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.util;
 import java.util.Iterator;
 import java.util.List;
 
-import org.w3c.dom.Element;
-
-
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Fault;
@@ -30,6 +27,8 @@ import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl;
+import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddFaultCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddInputCommand;
@@ -41,15 +40,12 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddPortCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddPortTypeCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddServiceCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDElementDeclarationCommand;
-import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
-import org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl;
-import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
-
-import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDSchema;
+import org.w3c.dom.Element;
 
 public class CreateWSDLElementHelper {
 	// Constants used for getting Part information

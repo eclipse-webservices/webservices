@@ -62,7 +62,7 @@ import org.eclipse.wst.wsdl.ui.internal.widgets.NewComponentWithChildDialog;
 import org.eclipse.wst.wsdl.ui.internal.wizards.BindingWizard;
 import org.eclipse.wst.wsdl.ui.internal.wizards.PortWizard;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xsd.ui.internal.XSDEditorPlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

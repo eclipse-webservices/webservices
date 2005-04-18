@@ -17,9 +17,9 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Panel;
 import org.eclipse.gef.EditPart;
+import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapter;
 import org.eclipse.wst.xsd.ui.internal.gef.util.editparts.AbstractComponentViewerRootEditPart;
 import org.eclipse.wst.xsd.ui.internal.gef.util.figures.ContainerLayout;
-import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapter;
               
 
 public class ComponentViewerRootEditPart extends AbstractComponentViewerRootEditPart

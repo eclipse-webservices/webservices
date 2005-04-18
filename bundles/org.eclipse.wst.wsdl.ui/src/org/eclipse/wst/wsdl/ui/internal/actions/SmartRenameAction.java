@@ -13,8 +13,8 @@ package org.eclipse.wst.wsdl.ui.internal.actions;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import javax.xml.namespace.QName;
 
+import javax.xml.namespace.QName;
 
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;

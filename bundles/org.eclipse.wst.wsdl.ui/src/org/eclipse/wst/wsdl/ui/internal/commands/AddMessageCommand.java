@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.commands;
 
 import java.util.Iterator;
+
 import javax.xml.namespace.QName;
 
 import org.eclipse.wst.wsdl.Definition;

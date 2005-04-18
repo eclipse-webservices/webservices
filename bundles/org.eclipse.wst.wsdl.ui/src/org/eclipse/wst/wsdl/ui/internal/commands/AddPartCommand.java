@@ -24,7 +24,7 @@ import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.impl.PartImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
 

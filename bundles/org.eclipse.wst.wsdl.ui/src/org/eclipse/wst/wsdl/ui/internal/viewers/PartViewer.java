@@ -13,7 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.viewers;
 import java.util.Iterator;
 import java.util.List;
 
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionEvent;

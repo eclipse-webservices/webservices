@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -38,10 +37,9 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
-import org.w3c.dom.Element;
-
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.xml.core.document.IDOMElement;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
+import org.w3c.dom.Element;
 
 public class AttributesTable extends TableViewer implements ICellModifier
 {                           

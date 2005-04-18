@@ -12,12 +12,13 @@ package org.eclipse.wst.wsdl.ui.internal.gef.util.editpolicies;
                                                   
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.*;
-import org.eclipse.gef.tools.*;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.tools.CellEditorLocator;
-import org.eclipse.jface.viewers.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.gef.tools.DirectEditManager;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Text;
 
 public abstract class TextCellEditorManager extends DirectEditManager implements IDirectEditPolicyDelegate
 {

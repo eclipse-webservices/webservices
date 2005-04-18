@@ -13,7 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.viewers.widgets;
 
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
-import org.eclipse.wst.sse.core.INodeNotifier;
+import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.properties.section.IPropertyDescriptorProvider;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;

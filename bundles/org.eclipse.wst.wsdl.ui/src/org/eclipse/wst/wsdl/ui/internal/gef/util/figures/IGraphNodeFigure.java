@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.gef.util.figures;
             
-import org.eclipse.draw2d.*; 
-import java.util.*; 
+import java.util.List;
+
+import org.eclipse.draw2d.IFigure;
 
 public interface IGraphNodeFigure extends IFigure
 {                       

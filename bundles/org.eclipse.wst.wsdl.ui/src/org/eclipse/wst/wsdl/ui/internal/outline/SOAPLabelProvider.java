@@ -12,11 +12,10 @@ package org.eclipse.wst.wsdl.ui.internal.outline;
 
 import java.util.HashMap;
 
-
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.w3c.dom.Node;
 
 

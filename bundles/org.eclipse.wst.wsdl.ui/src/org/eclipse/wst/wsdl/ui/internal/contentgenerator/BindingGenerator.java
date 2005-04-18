@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;

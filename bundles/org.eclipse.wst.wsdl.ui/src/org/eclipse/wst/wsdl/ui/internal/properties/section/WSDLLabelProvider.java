@@ -25,7 +25,7 @@ import org.eclipse.wst.wsdl.ui.internal.graph.model.WSDLGraphModelAdapterFactory
 import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapter;
 import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLModelAdapterFactory;
-import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.w3c.dom.Element;
 

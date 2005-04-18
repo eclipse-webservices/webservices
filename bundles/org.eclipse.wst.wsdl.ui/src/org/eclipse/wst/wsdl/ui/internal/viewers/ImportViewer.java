@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.viewers;
 
 import java.util.Map;
 
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;

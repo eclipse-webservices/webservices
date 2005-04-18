@@ -14,8 +14,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.wst.wsdl.WSDLElement;
-import org.eclipse.wst.wsdl.ui.internal.extension.INodeAssociationProvider;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
+import org.eclipse.wst.wsdl.ui.internal.extension.INodeAssociationProvider;
 import org.eclipse.xsd.impl.XSDComponentImpl;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

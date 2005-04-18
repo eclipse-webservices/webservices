@@ -13,7 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.util;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.INodeAssociationProvider;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtension;

@@ -18,8 +18,8 @@ import org.eclipse.draw2d.MouseEvent;
 import org.eclipse.draw2d.MouseListener;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.wst.xsd.ui.internal.gef.util.figures.IExpandable;
 import org.eclipse.wst.wsdl.ui.internal.gef.util.figures.Interactor;
+import org.eclipse.wst.xsd.ui.internal.gef.util.figures.IExpandable;
 
                  
 // hooks up an interactor with an edit part and the figure that needs to be expanded and collapsed

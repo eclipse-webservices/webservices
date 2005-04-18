@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.gef.util.figures;
             
-import org.eclipse.draw2d.*; 
-import org.eclipse.draw2d.geometry.*; 
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.RectangleFigure;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Interactor the +/- control commonly found in trees

@@ -10,16 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.xsd;
                                                                     
-import org.eclipse.xsd.XSDConcreteComponent;
-import org.eclipse.xsd.XSDSchema;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
-
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.ui.internal.extension.INodeAssociationProvider;
 import org.eclipse.wst.xsd.ui.internal.graph.model.Category;
 import org.eclipse.wst.xsd.ui.internal.provider.CategoryAdapter;
+import org.eclipse.xsd.XSDConcreteComponent;
+import org.eclipse.xsd.XSDSchema;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 class XSDNodeAssociationProvider implements INodeAssociationProvider
 {                    

@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;

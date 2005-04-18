@@ -18,7 +18,6 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
-
 import org.eclipse.wst.xsd.ui.internal.gef.util.figures.ContainerFigure;
 
 

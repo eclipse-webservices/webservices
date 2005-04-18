@@ -11,22 +11,18 @@
 package org.eclipse.wst.wsdl.ui.internal.actions;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
-
 import org.eclipse.ui.IEditorPart;
-
-
-import org.w3c.dom.Node;
 import org.eclipse.wst.wsdl.WSDLElement;
-import org.eclipse.wst.wsdl.ui.internal.commands.WSDLElementCommand;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.commands.WSDLElementCommand;
 import org.eclipse.wst.wsdl.ui.internal.widgets.NewComponentDialog;
-import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
-
-import org.eclipse.jface.dialogs.IDialogConstants;
+import org.w3c.dom.Node;
 
 public abstract class WSDLElementAction extends Action
 {

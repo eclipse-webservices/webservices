@@ -25,7 +25,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.part.EditorActionBarContributor;
-
 import org.eclipse.wst.common.ui.UIPlugin;
 
 abstract public class BaseDesignWindow extends Viewer

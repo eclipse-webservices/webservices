@@ -11,29 +11,23 @@
 package org.eclipse.wst.wsdl.ui.internal.actions;
 
 
-import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.swt.widgets.Shell;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.xsd.XSDSchema;
-
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.SelectionEvent;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Message;
@@ -42,7 +36,10 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
+import org.eclipse.xsd.XSDSchema;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class DeleteAction extends BaseNodeAction {
 	 protected List list;

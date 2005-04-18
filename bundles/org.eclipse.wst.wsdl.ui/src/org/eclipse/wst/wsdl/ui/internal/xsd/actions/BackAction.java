@@ -16,9 +16,8 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.graph.WSDLGraphViewer;
-import org.eclipse.xsd.XSDSchema;
-
 import org.eclipse.wst.xsd.ui.internal.gef.util.editparts.AbstractComponentViewerRootEditPart;
+import org.eclipse.xsd.XSDSchema;
 
 public class BackAction extends Action
 {

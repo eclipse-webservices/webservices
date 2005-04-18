@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.gef.util.editparts;
                                
-import org.eclipse.draw2d.*; 
-import org.eclipse.gef.*;
-import org.eclipse.gef.editparts.*;   
-                
-import java.util.*;
+import java.util.List;
+
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 
 public abstract class MultiContentPaneEditPart extends AbstractGraphicalEditPart

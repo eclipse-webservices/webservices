@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.commands;
 
+import java.util.Iterator;
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 
 import org.eclipse.wst.wsdl.ExtensibleElement;
@@ -17,10 +20,6 @@ import org.eclipse.wst.wsdl.UnknownExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.internal.impl.UnknownExtensibilityElementImpl;
-
-
-import java.util.Map;
-import java.util.Iterator;
 
 public final class AddUnknownExtensibilityElementCommand extends WSDLElementCommand
 {

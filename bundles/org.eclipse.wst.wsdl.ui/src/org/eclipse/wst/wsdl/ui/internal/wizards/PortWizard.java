@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.wizards;
 
 import java.util.List;
 
-
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
