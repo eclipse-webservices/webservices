@@ -13,7 +13,10 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
@@ -55,10 +58,10 @@ public class BuildProjectCommand extends SimpleCommand
     catch (Exception e)
     {
     }
-    /*
+    
     try
     {
-      Platform.getJobManager().join(null, new NullProgressMonitor());
+      Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, new NullProgressMonitor());   
     }
     catch (InterruptedException ie)
     {
@@ -68,7 +71,7 @@ public class BuildProjectCommand extends SimpleCommand
     {
       // continue execution
     }
-    */
+    
     return new SimpleStatus("");
   }
   /**

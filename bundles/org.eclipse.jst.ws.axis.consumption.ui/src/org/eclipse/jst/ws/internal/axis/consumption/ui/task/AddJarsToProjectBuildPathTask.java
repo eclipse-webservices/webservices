@@ -14,8 +14,11 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IPluginDescriptor;
@@ -28,10 +31,9 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
-import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -40,6 +42,10 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMoni
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
+import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
 
 public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 
@@ -68,23 +74,158 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 	/**
 	* Execute AddJarsToProjectBuildPathTask
 	*/
-	public Status execute(Environment environment) {
-		try {
-			if (project.hasNature(IWebNatureConstants.J2EE_NATURE_ID)) {
-				J2EEWebNatureRuntime webNatureRuntime =
-					(J2EEWebNatureRuntime) project.getNature(
-						IWebNatureConstants.J2EE_NATURE_ID);
-				isJ2EE_13 = webNatureRuntime.isJ2EE1_3();
+	public Status execute(Environment env) {
+//		try {
+//			if (project.hasNature(IWebNatureConstants.J2EE_NATURE_ID)) {
+//				J2EEWebNatureRuntime webNatureRuntime =
+//					(J2EEWebNatureRuntime) project.getNature(
+//						IWebNatureConstants.J2EE_NATURE_ID);
+//				isJ2EE_13 = webNatureRuntime.isJ2EE1_3();
+//			}
+//		} catch (Exception e) {
+//		}
+//    Status status = new SimpleStatus("");
+//		if (!isJ2EE_13)
+//		{
+//		//	AddJar(project, null, "XERCES_API_JAR", status, environment);
+//		}
+//		return status;
+		
+		Status status = new SimpleStatus("");
+//		 TODO: workaround for 90515 and 90560
+		//
+		   // Get the current classpath.
+		   //
+		   javaProject_ = null;
+		   oldClasspath_ = null;
+		   try
+		   {    
+			 javaProject_ = JavaCore.create(project);    
+			 if (javaProject_ != null)
+			 {
+			   oldClasspath_ = javaProject_.getRawClasspath();
+			 }
+			 else
+			 {
+			   status = new SimpleStatus("", msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"), Status.ERROR);	
+			   env.getStatusHandler().reportError(status);
+			   return status;
+			 }
+		   }
+		   catch (JavaModelException e)
+		   {
+			   status = new SimpleStatus("", msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"), Status.ERROR);
+			   env.getStatusHandler().reportError(status);
+			   return status;	   	
+		   }
+
+
+			try {
+				
+				ArrayList aList = new ArrayList();
+				String classpathEntry = null;
+				IVirtualComponent component = ComponentCore.createComponent(project, J2EEUtils.getFirstWebModuleName(project));
+				if (component != null) {
+					
+//					IFolder webModuleClasses = null;
+//					StructureEdit mc = null;
+//					try {
+//						mc = StructureEdit.getStructureEditForRead(project);
+//						WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+//						if (wbcs.length!=0) {
+//							IFolder  webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
+//							webModuleClasses  = webModuleServerRoot.getFolder("WEB-INF").getFolder("classes");
+//							classpathEntry = webModuleClasses.getLocation().toOSString();
+	//
+//							if (!FoundClasspathEntry(classpathEntry)) {
+//								aList.add(classpathEntry);
+//							}
+//						}
+//					}
+//					finally{
+//						if (mc!=null)
+//							mc.dispose();			
+//					}
+					
+					IVirtualFolder webInfLib = component.getFolder(new Path(
+							"/WEB-INF/lib"));
+					if (webInfLib != null) {
+						IVirtualResource[] resources = webInfLib.members();
+						IResource aResource = null;
+						
+						for (int i = 0; i < resources.length; i++) {
+							aResource = resources[i].getUnderlyingResource();
+							classpathEntry = aResource.getLocation().toOSString();
+							if (!FoundClasspathEntry(classpathEntry)) {
+								aList.add(classpathEntry);
+							}
+						}
+					}
+				}
+				
+				int newListSize = aList.size();
+
+				newClasspath_ = new IClasspathEntry[oldClasspath_.length + newListSize];
+				Iterator iter = aList.iterator();
+		
+				int j=0;
+				while (iter.hasNext()) {
+					newClasspath_[j] = JavaCore.newLibraryEntry(new Path((String)iter.next()), null, null);
+					j++;
+				}
+				for (int i=0; i<oldClasspath_.length; i++) {
+					newClasspath_[j+i] = oldClasspath_[i];
+				}
+				   
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
+
+			
+
+			//
+			   // Then update the project classpath.
+			   //
+			   try
+			   {
+			   	 ProgressMonitor monitor = env.getProgressMonitor();
+			   	 IProgressMonitor eclipseMonitor = null;
+			   	 if (monitor instanceof EclipseProgressMonitor)
+			   	 {
+			   	 	eclipseMonitor = ((EclipseProgressMonitor)monitor).getMonitor();
+			   	 }
+				 javaProject_.setRawClasspath(newClasspath_,eclipseMonitor);
+			   }
+			   catch (JavaModelException e)
+			   {
+				 status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.WARNING, e);
+				 try
+				 {
+				 	env.getStatusHandler().report(status);	
+				 }
+				 catch(StatusException se)
+				 {
+				 	status = new SimpleStatus("", "User aborted", Status.ERROR);
+				 }
+			   }
+//			 end of workaround
+			return status;
+		}  
+		   
+
+		private boolean FoundClasspathEntry(String classpathEntry)  {
+			   
+
+			   boolean found = false;
+			   for (int i=0; i<oldClasspath_.length && !found; i++)
+			   {
+				 if (oldClasspath_[i].getPath().toString().toLowerCase().equals(classpathEntry.toLowerCase())) {
+					 found=true;
+				 }
+			   }
+		   	 return found;
 		}
-    Status status = new SimpleStatus("");
-		if (!isJ2EE_13)
-		{
-		//	AddJar(project, null, "XERCES_API_JAR", status, environment);
-		}
-		return status;
-	}
 
 	private void AddJar(IProject webProject, String pluginId, String jarName, Status status, Environment env)  {
 	   //
