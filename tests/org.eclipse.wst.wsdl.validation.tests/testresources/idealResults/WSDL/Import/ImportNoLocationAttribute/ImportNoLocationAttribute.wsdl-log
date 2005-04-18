@@ -1,0 +1,8 @@
+number of errors      : 1
+number of warnings    : 0
+
+------------error list-------------------------------------------
+cvc-complex-type.4: Attribute 'location' must appear on element 'wsdl:import'. [7, 44]
+------------warning list-----------------------------------------
+(none)
+-----------------------------------------------------------------

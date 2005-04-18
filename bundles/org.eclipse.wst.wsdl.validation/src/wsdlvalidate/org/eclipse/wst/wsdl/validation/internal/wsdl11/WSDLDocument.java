@@ -29,7 +29,6 @@ import javax.wsdl.BindingOperation;
 import javax.wsdl.BindingOutput;
 import javax.wsdl.Definition;
 import javax.wsdl.Fault;
-import javax.wsdl.Import;
 import javax.wsdl.Input;
 import javax.wsdl.Message;
 import javax.wsdl.Operation;
@@ -79,6 +78,7 @@ public class WSDLDocument
   private static final List STYLE_NOTIFICATION = Arrays.asList(new String[] { Constants.ELEM_OUTPUT });
   
   private static final String _ERROR_MULTIPLE_TYPES_DEFINED = "_ERROR_MULTIPLE_TYPES_DEFINED";
+  private static final String _UNABLE_TO_IMPORT_NO_LOCATION = "_UNABLE_TO_IMPORT_NO_LOCATION";
 
   protected ExtensionRegistry extReg = null;
   protected String factoryImplName = null;
@@ -191,8 +191,15 @@ public class WSDLDocument
       {
         String namespaceURI = DOMUtils.getAttribute(tempEl, Constants.ATTR_NAMESPACE);
         String locationURI = DOMUtils.getAttribute(tempEl, Constants.ATTR_LOCATION);
-        ImportHolder ih = new ImportHolder(namespaceURI, locationURI, def.getDocumentBaseURI(), this, depth+1, tempEl, messagegenerator, valinfo);
-        importedDefs.add(ih);
+        if(locationURI == null || locationURI.equals(""))
+        {
+          addReaderError(def, tempEl, messagegenerator.getString(_UNABLE_TO_IMPORT_NO_LOCATION));
+        }
+        else
+        {
+          ImportHolder ih = new ImportHolder(namespaceURI, locationURI, def.getDocumentBaseURI(), this, depth+1, tempEl, messagegenerator, valinfo);
+          importedDefs.add(ih);
+        }
         setLocation(tempEl, tempEl);
 //        if (importedDefs == null)
 //        {
@@ -284,15 +291,19 @@ public class WSDLDocument
    * @param namespace
    * @param location
    */
-  public void setImport(Definition def, Element doc, String namespace, String location)
-  {
-    Import imp = def.createImport();
-    imp.setDefinition(def);
-    imp.setDocumentationElement(doc);
-    imp.setNamespaceURI(namespace);
-    imp.setLocationURI(location);
-    def.addImport(imp);
-  }
+//  public void setImport(Definition def, Element doc, String namespace, String location)
+//  {
+//    if(location == null || location.equals(""))
+//    {
+//      valinfo.addError()_UNABLE_TO_IMPORT_NO_LOCATION 
+//    }
+//    Import imp = def.createImport();
+//    imp.setDefinition(def);
+//    imp.setDocumentationElement(doc);
+//    imp.setNamespaceURI(namespace);
+//    imp.setLocationURI(location);
+//    def.addImport(imp);
+//  }
   
   /**
    * Parse the types in the WSDL document. Handles documentation, import and schema

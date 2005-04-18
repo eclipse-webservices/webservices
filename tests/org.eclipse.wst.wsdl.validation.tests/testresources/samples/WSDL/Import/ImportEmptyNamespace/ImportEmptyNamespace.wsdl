@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://example.com/ImportEmptyNamespace/" 
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  name="ImportEmptyNamespace" 
+                  targetNamespace="http://example.com/ImportEmptyNamespace/">
+  <wsdl:import namespace="" location="simple.wsdl"/>
+  <wsdl:message name="message">
+		<wsdl:part name="message" type="xsd:string"></wsdl:part>
+	</wsdl:message>
+</wsdl:definitions>

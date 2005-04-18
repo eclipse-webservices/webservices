@@ -270,6 +270,58 @@ public class WSDLTest extends BaseTestCase
   }
   
   /**
+   * Test /WSDL/Import/ImportEmptyLocation/ImportEmptyLocation.wsdl
+   */
+  public void testImportEmptyLocation()
+  {
+    String testname = "ImportEmptyLocation";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/ImportEmptyLocation/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/ImportEmptyLocation/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/ImportEmptyLocation/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/Import/ImportEmptyNamespace/ImportEmptyNamespace.wsdl
+   */
+  public void testImportEmptyNamespace()
+  {
+    String testname = "ImportEmptyNamespace";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/ImportEmptyNamespace/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/ImportEmptyNamespace/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/ImportEmptyNamespace/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/Import/ImportEmptyNamespaceAndLocation/ImportEmptyNamespaceAndLocation.wsdl
+   */
+  public void testImportEmptyNamespaceAndLocation()
+  {
+    String testname = "ImportEmptyNamespaceAndLocation";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/ImportEmptyNamespaceAndLocation/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/ImportEmptyNamespaceAndLocation/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/ImportEmptyNamespaceAndLocation/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/Import/ImportNoLocationAttribute/ImportNoLocationAttribute.wsdl
+   */
+  public void testImportNoLocationAttribute()
+  {
+    String testname = "ImportNoLocationAttribute";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/ImportNoLocationAttribute/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/ImportNoLocationAttribute/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/ImportNoLocationAttribute/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
    * CYCLIC TESTS
    */
   
