@@ -92,7 +92,7 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 //		return status;
 		
 		Status status = new SimpleStatus("");
-//		 TODO: workaround for 90515 and 90560
+//		 TODO: workaround for 90515 
 		//
 		   // Get the current classpath.
 		   //
@@ -127,26 +127,6 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 				IVirtualComponent component = ComponentCore.createComponent(project, J2EEUtils.getFirstWebModuleName(project));
 				if (component != null) {
 					
-//					IFolder webModuleClasses = null;
-//					StructureEdit mc = null;
-//					try {
-//						mc = StructureEdit.getStructureEditForRead(project);
-//						WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-//						if (wbcs.length!=0) {
-//							IFolder  webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
-//							webModuleClasses  = webModuleServerRoot.getFolder("WEB-INF").getFolder("classes");
-//							classpathEntry = webModuleClasses.getLocation().toOSString();
-	//
-//							if (!FoundClasspathEntry(classpathEntry)) {
-//								aList.add(classpathEntry);
-//							}
-//						}
-//					}
-//					finally{
-//						if (mc!=null)
-//							mc.dispose();			
-//					}
-					
 					IVirtualFolder webInfLib = component.getFolder(new Path(
 							"/WEB-INF/lib"));
 					if (webInfLib != null) {
@@ -155,7 +135,7 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 						
 						for (int i = 0; i < resources.length; i++) {
 							aResource = resources[i].getUnderlyingResource();
-							classpathEntry = aResource.getLocation().toOSString();
+							classpathEntry = aResource.getLocation().toString();
 							if (!FoundClasspathEntry(classpathEntry)) {
 								aList.add(classpathEntry);
 							}
@@ -164,7 +144,12 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 				}
 				
 				int newListSize = aList.size();
-
+				
+				if (newListSize == 0) {
+					return status;
+				}
+				
+				// Update classpath
 				newClasspath_ = new IClasspathEntry[oldClasspath_.length + newListSize];
 				Iterator iter = aList.iterator();
 		
@@ -176,19 +161,7 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 				for (int i=0; i<oldClasspath_.length; i++) {
 					newClasspath_[j+i] = oldClasspath_[i];
 				}
-				   
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			
-
-			//
-			   // Then update the project classpath.
-			   //
-			   try
-			   {
+ 
 			   	 ProgressMonitor monitor = env.getProgressMonitor();
 			   	 IProgressMonitor eclipseMonitor = null;
 			   	 if (monitor instanceof EclipseProgressMonitor)
@@ -196,7 +169,7 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 			   	 	eclipseMonitor = ((EclipseProgressMonitor)monitor).getMonitor();
 			   	 }
 				 javaProject_.setRawClasspath(newClasspath_,eclipseMonitor);
-			   }
+			}
 			   catch (JavaModelException e)
 			   {
 				 status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.WARNING, e);
@@ -209,6 +182,10 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 				 	status = new SimpleStatus("", "User aborted", Status.ERROR);
 				 }
 			   }
+			 catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 //			 end of workaround
 			return status;
 		}  
