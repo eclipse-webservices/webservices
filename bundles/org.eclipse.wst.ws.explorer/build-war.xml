@@ -15,7 +15,7 @@
 				</fileset>
 			</classpath>
 		</java>
-		<javac destdir="${wsexplorerDir}/WEB-INF/classes" includeAntRuntime="false">
+		<javac destdir="${wsexplorerDir}/WEB-INF/classes" includeAntRuntime="false" failonerror="false">
 			<src path="${wsexplorerDir}"/>
 			<classpath>
 				<fileset dir="${buildDirectory}/plugins">
