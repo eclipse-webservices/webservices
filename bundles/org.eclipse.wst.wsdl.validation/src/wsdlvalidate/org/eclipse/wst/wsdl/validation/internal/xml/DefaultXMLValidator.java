@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -30,6 +31,7 @@ import org.apache.xerces.jaxp.SAXParserFactoryImpl;
 import org.apache.xerces.parsers.SAXParser;
 import org.apache.xerces.parsers.StandardParserConfiguration;
 import org.apache.xerces.xni.XNIException;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.xml.sax.Attributes;
@@ -388,11 +390,26 @@ public class DefaultXMLValidator implements IXMLValidator
       String uri = uriResolver.resolve(null, publicId, systemId);
       if (uri != null && !uri.equals(""))
       {
-        InputSource is = new InputSource(uri);
-        if (is != null)
-        {
-          return is;
-        }
+		try
+		{
+	      String entity;
+		  entity = systemId;
+		  if(publicId != null)
+		  {
+			entity = publicId;
+		  }
+		  URL entityURL = new URL(uri);
+          InputSource is = new InputSource(entity);
+		  is.setByteStream(entityURL.openStream());
+          if (is != null)
+          {
+            return is;
+          }
+		}
+		catch(Exception e)
+		{
+		  // Do nothing.
+		}
       }
       // This try/catch block with the IOException is here to handle a difference
       // between different versions of the EntityResolver interface.
@@ -481,6 +498,7 @@ public class DefaultXMLValidator implements IXMLValidator
   protected class SchemaStringHandler extends DefaultHandler
   {
     private final String XMLNS = "xmlns";
+	private final String TARGETNAMESPACE = "targetNamespace";
     private String baselocation = null;
 
     public SchemaStringHandler(String baselocation)
@@ -495,7 +513,7 @@ public class DefaultXMLValidator implements IXMLValidator
     {
       if (localname.equals(DEFINITIONS))
       {
-        
+        String targetNamespace = attributes.getValue(TARGETNAMESPACE);
         int numAtts = attributes.getLength();
         for (int i = 0; i < numAtts; i++)
         {
@@ -504,13 +522,10 @@ public class DefaultXMLValidator implements IXMLValidator
           if (attname.startsWith(XMLNS))
           {
             String namespace = attributes.getValue(i);
-            if(!ignoredNamespaceList.contains(namespace))
+            if(!(namespace.equals(targetNamespace) || ignoredNamespaceList.contains(namespace)))
             {
-              String resolvedURI = uriResolver.resolve(baselocation, namespace, namespace);
-              if(resolvedURI != null)
-              {
-                setSchemaLocation(namespace, resolvedURI);
-              }
+              String resolvedURI = namespace;
+              setSchemaLocation(namespace, resolvedURI);
             }
           }
         }
