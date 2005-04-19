@@ -247,4 +247,11 @@ public class SOAPAddressImpl extends ExtensibilityElementImpl implements SOAPAdd
         niceSetAttribute(theElement,SOAPConstants.LOCATION_ATTRIBUTE,getLocationURI());
     }
   }
+  
+  public QName getElementType()
+  {
+    if (elementType == null)
+      elementType = new QName(SOAPConstants.SOAP_NAMESPACE_URI, SOAPConstants.ADDRESS_ELEMENT_TAG);
+    return elementType;
+  } 
 } //SOAPAddressImpl

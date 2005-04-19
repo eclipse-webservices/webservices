@@ -20,6 +20,7 @@ import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault;
 import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
+import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.w3c.dom.Element;
 
 /**
@@ -196,5 +197,12 @@ public class SOAPHeaderFaultImpl extends SOAPHeaderBaseImpl implements SOAPHeade
     }
     return eDynamicIsSet(eFeature);
   }
+  
+  public QName getElementType()
+  {
+    if (elementType == null)
+      elementType = new QName(SOAPConstants.SOAP_NAMESPACE_URI, SOAPConstants.HEADER_FAULT_ELEMENT_TAG);
+    return elementType;
+  } 
 
 } //SOAPHeaderFaultImpl

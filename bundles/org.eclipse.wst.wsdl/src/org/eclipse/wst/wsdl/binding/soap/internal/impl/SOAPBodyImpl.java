@@ -107,10 +107,10 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody {
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @see #getParts()
-   * @generated
+   * @generated NOT
    * @ordered
    */
-	protected EList parts = null;
+	protected List parts = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -198,7 +198,7 @@ public void setEncodingStyles(List list)
 
   public void setParts(List list)
   {
-    parts = (EList)list;
+    parts = list;
   }
 
   /**
@@ -479,4 +479,11 @@ public void setEncodingStyles(List list)
     }
   }
   */
+  
+  public QName getElementType()
+  {
+    if (elementType == null)
+      elementType = new QName(SOAPConstants.SOAP_NAMESPACE_URI, SOAPConstants.BODY_ELEMENT_TAG);
+    return elementType;
+  } 
 } //SOAPBodyImpl

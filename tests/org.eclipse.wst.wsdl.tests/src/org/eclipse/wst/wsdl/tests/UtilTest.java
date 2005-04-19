@@ -189,6 +189,15 @@ public class UtilTest extends TestCase {
 		  {
 			resourceImpl.serialize(System.out, document, null);
 		  }
+		  
+		  try
+		  {
+		    resourceImpl.attached(definition);
+		  }
+		  catch (Exception e)
+		  {
+
+		  }
 	  
 		}
 		catch (Exception e)

@@ -292,5 +292,12 @@ public class SOAPHeaderImpl extends SOAPHeaderBaseImpl implements SOAPHeader {
       header.getHeaderFaults().remove(modelObject);
     }
   }
+  
+  public QName getElementType()
+  {
+    if (elementType == null)
+      elementType = new QName(SOAPConstants.SOAP_NAMESPACE_URI, SOAPConstants.HEADER_ELEMENT_TAG);
+    return elementType;
+  } 
 
 } //SOAPHeaderImpl

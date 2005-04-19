@@ -374,5 +374,12 @@ public void setEncodingStyles(List list)
       	niceSetAttribute(theElement,SOAPConstants.NAME_ATTRIBUTE,getName()); // Revisit Rose model
     }
   }
+  
+  public QName getElementType()
+  {
+    if (elementType == null)
+      elementType = new QName(SOAPConstants.SOAP_NAMESPACE_URI, SOAPConstants.FAULT_ELEMENT_TAG);
+    return elementType;
+  }
 
 } //SOAPFaultImpl

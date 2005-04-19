@@ -158,6 +158,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     newDefinition.setTargetNamespace(def.getTargetNamespace());
     newDefinition.setDocumentBaseURI(def.getDocumentBaseURI());
     
+    // getENamespaces does not work.
     Iterator iterator = def.getENamespaces().iterator();
     Namespace ns = null;   
     String prefix = null;
@@ -171,6 +172,18 @@ public class WSDLEMFAPITest extends DefinitionVisitor
       ns.setPrefix(prefix);
       newDefinition.getENamespaces().add(ns);
     }
+    
+    iterator = def.getNamespaces().keySet().iterator();
+    prefix = null;
+    String namespace = null;
+
+    while (iterator.hasNext())
+    {
+      prefix = (String)iterator.next();
+      namespace = def.getNamespace(prefix);
+      newDefinition.addNamespace(prefix,namespace);
+    }
+    //newDefinition.updateElement();
     
     currentExtensibleElement = def;
     super.visitDefinition(def);
@@ -272,6 +285,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     currentMessage = factory.createMessage();
     currentMessage.setQName(message.getQName());
     currentMessage.setUndefined(message.isUndefined());
+    newDefinition.addMessage(currentMessage);
 
     super.visitMessage(message);
   }
@@ -492,7 +506,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     SOAPBody mySoapBody = SOAPFactory.eINSTANCE.createSOAPBody();
     mySoapBody.setEncodingStyles(soapBody.getEncodingStyles());
     mySoapBody.setNamespaceURI(soapBody.getNamespaceURI());
-    //mySoapBody.setParts(soapBody.getParts()); TBD
+    mySoapBody.setParts(soapBody.getParts());
     mySoapBody.setUse(soapBody.getUse());
   }
   

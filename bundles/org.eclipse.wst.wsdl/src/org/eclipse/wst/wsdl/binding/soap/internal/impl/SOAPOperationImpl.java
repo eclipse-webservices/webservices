@@ -307,5 +307,12 @@ public class SOAPOperationImpl extends ExtensibilityElementImpl implements SOAPO
         niceSetAttribute(theElement,SOAPConstants.STYLE_ATTRIBUTE,getStyle());
     }
   }
+  
+  public QName getElementType()
+  {
+    if (elementType == null)
+      elementType = new QName(SOAPConstants.SOAP_NAMESPACE_URI, SOAPConstants.OPERATION_ELEMENT_TAG);
+    return elementType;
+  } 
 
 } //SOAPOperationImpl

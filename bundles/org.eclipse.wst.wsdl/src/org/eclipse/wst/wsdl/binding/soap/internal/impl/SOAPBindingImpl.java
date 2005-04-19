@@ -307,4 +307,11 @@ public class SOAPBindingImpl extends ExtensibilityElementImpl implements SOAPBin
         niceSetAttribute(theElement,SOAPConstants.TRANSPORT_ATTRIBUTE,getTransportURI());
     }
   }
+  
+  public QName getElementType()
+  {
+    if (elementType == null)
+      elementType = new QName(SOAPConstants.SOAP_NAMESPACE_URI, SOAPConstants.BINDING_ELEMENT_TAG);
+    return elementType;
+  }
 } //SOAPBindingImpl
