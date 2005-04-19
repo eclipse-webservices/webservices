@@ -2,11 +2,8 @@
 <component xmlns="http://eclipse.org/wtp/releng/tools/component-model" name="org.eclipse.wst.ws">
    <component-depends unrestricted="true">
    </component-depends>
-   <plugin id="org.eclipse.wst.ws.apache.axis" fragment="false"/>
-   <plugin id="org.eclipse.wst.ws.apache.soap" fragment="false"/>
-   <plugin id="org.eclipse.wst.ws.apache.wsil" fragment="false"/>
    <plugin id="org.eclipse.wst.ws" fragment="false"/>
    <plugin id="org.eclipse.wst.ws.parser" fragment="false"/>
-   <plugin id="org.eclipse.wst.ws.uddi4j" fragment="false"/>
    <plugin id="org.eclipse.wst.ws.ui" fragment="false"/>
+   <plugin id="org.eclipse.wst.ws.explorer" fragment="false"/>
 </component>

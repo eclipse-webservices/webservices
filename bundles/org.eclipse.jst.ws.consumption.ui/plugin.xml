@@ -26,7 +26,7 @@
       org.eclipse.jst.common.jdt.internal.integration.WorkingCopyProvider
       -->
       <import plugin="org.eclipse.jst.common.frameworks"/>
-      <import plugin="org.eclipse.jst.ws.explorer"/>
+      <import plugin="org.eclipse.wst.ws.explorer"/>
       <import plugin="org.eclipse.jst.ws"/>
       <import plugin="org.eclipse.jst.ws.ui"/>
       <import plugin="org.eclipse.jst.ws.consumption"/>
@@ -68,9 +68,6 @@
    <!-- Third party file dependencies -->
    <extension point="org.eclipse.wst.common.dependencychecker.dependencies">
       <dependency description="%FEATURE_DESCRIPTION">
-         <requiredPlugin id="org.eclipse.wst.ws.apache.axis"/>
-         <requiredPlugin id="org.eclipse.wst.ws.apache.wsil"/>
-         <requiredPlugin id="org.eclipse.wst.ws.uddi4j"/>
          <requiredPlugin id="org.eclipse.wst.wsdl"/>
       </dependency>
    </extension>
@@ -108,17 +105,6 @@
       name="%XP_OBJECT_SELECTION_WIDGET"
       schema="schema/objectSelectionWidget.exsd"/>
 
-
-   <!-- Third party file dependencies -->
-   <extension point="org.eclipse.wst.common.dependencychecker.dependencies">
-     <dependency description="%FEATURE_DESCRIPTION">
-       <requiredPlugin id="org.eclipse.wst.ws.apache.axis"/>
-       <requiredPlugin id="org.eclipse.wst.ws.apache.wsil"/>
-       <requiredPlugin id="org.eclipse.wst.ws.uddi4j"/>
-       <requiredPlugin id="org.eclipse.wst.wsdl"/>
-     </dependency>
-   </extension>
-   
    <!-- UDDI Registry Types -->
    
    <extension

@@ -49,8 +49,6 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
 
 public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 
-	public static String AXIS_RUNTIME_PLUGIN_ID = "org.eclipse.jst.ws.axis.rt"; //$NON-NLS-1$
-
 	private String DESCRIPTION = "TASK_DESC_JARS_TO_PROJECT";
 	private String LABEL = "TASK_LABEL_JARS_TO_PROJECT";
 

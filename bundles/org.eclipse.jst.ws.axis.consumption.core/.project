@@ -4,7 +4,6 @@
 	<comment></comment>
 	<projects>
 		<project>org.eclipse.wst.command.env.core</project>
-		<project>org.eclipse.wst.ws.apache.axis</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

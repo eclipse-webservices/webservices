@@ -20,7 +20,7 @@
       <import plugin="org.eclipse.wst.command.env.core"/>
       <import plugin="org.eclipse.wst.wsdl"/>
       <import plugin="org.eclipse.wst.ws"/>
-      <import plugin="org.eclipse.jst.ws.explorer"/>
+      <import plugin="org.eclipse.wst.ws.explorer"/>
       <import plugin="org.eclipse.jst.ws"/>
       <import plugin="org.eclipse.jst.ws.consumption"/>
       <import plugin="org.eclipse.jst.ws.ui"/>

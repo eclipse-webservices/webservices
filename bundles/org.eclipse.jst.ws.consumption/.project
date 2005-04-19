@@ -7,7 +7,6 @@
 		<project>org.eclipse.wst.command.env.core</project>
 		<project>org.eclipse.jst.ws</project>
 		<project>org.eclipse.wst.wsdl</project>
-		<project>org.eclipse.wst.ws.apache.soap</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

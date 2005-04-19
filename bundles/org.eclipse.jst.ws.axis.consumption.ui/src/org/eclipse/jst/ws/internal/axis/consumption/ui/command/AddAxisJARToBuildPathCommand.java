@@ -44,7 +44,7 @@ public class AddAxisJARToBuildPathCommand extends SimpleCommand
 {
   private String pluginId_ = "org.eclipse.jst.ws.axis.consumption.ui";
   private MessageUtils msgUtils;
-  private String jarPluginId = "org.eclipse.wst.ws.apache.axis";
+  private String jarPluginId = "org.apache.axis11";
   private String jarPluginRelPath = "lib";
   private String jarName = "axis.jar";
   private IProject project;

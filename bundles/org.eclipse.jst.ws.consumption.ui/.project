@@ -11,7 +11,6 @@
 		<project>org.eclipse.jst.ws.ui</project>
 		<project>org.eclipse.wst.wsdl</project>
 		<project>org.eclipse.wst.ws.parser</project>
-		<project>org.eclipse.wst.ws.apache.wsil</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

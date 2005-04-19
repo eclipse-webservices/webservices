@@ -6,7 +6,6 @@
 		<project>org.eclipse.wst.command.env</project>
 		<project>org.eclipse.wst.command.env.core</project>
 		<project>org.eclipse.wst.wsdl</project>
-		<project>org.eclipse.wst.ws.uddi4j</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
