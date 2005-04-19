@@ -1,0 +1,56 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+
+package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
+
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ImportToFileSystemAction;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ImportToWorkbenchAction;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.WSILPerspective;
+
+import java.util.Hashtable;
+
+public class WsilImportWSDLToWorkbenchAction extends ImportToWorkbenchAction {
+    public WsilImportWSDLToWorkbenchAction(Controller controller) {
+        super(controller);
+    }
+
+    public FormTool getSelectedFormTool() {
+        WSILPerspective wsilPerspective = controller_.getWSILPerspective();
+        return (FormTool)wsilPerspective.getNodeManager().getSelectedNode().getToolManager().getSelectedTool();
+    }
+
+    public ImportToFileSystemAction newImportToFileSystemAction() {
+        ImportWSDLToFileSystemAction action = new ImportWSDLToFileSystemAction(controller_);
+        Hashtable table = action.getPropertyTable();
+
+        WSILPerspective wsilPerspective = controller_.getWSILPerspective();
+        NodeManager nodeManager = wsilPerspective.getNodeManager();
+        Node selectedNode = nodeManager.getSelectedNode();
+
+        table.put(ActionInputs.NODEID, String.valueOf(selectedNode.getNodeId()));
+        table.put(ActionInputs.TOOLID, String.valueOf(selectedNode.getToolManager().getSelectedToolId()));
+        table.put(ActionInputs.VIEWID, String.valueOf(selectedNode.getViewId()));
+
+        return action;
+    }
+
+    public final String getStatusContentVar()
+    {
+      return controller_.getWSILPerspective().getStatusContentVar();
+    }
+    
+    public final String getStatusContentPage()
+    {
+      return controller_.getWSILPerspective().getStatusContentPage();
+    }    
+}

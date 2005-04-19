@@ -1,0 +1,1383 @@
+geo#--#World#--
+geo#AE#United Arab Emirates#--
+geo#AF#Afghanistan#--
+geo#AG#Antigua And Barbuda#--
+geo#AI#Anguilla#--
+geo#AL#Albania#--
+geo#AM#Armenia#--
+geo#AN#Netherlands Antilles#--
+geo#AO#Angola#--
+geo#AQ#Antarctica#--
+geo#AR#Argentina#--
+geo#AR-A#Salta#AR
+geo#AR-B#Buenos Aires#AR
+geo#AR-C#Distrito Federal#AR
+geo#AR-D#San Luis#AR
+geo#AR-E#Entre Rios#AR
+geo#AR-F#La Rioja#AR
+geo#AR-G#Santiago Del Estero#AR
+geo#AR-H#Chaco#AR
+geo#AR-J#San Juan#AR
+geo#AR-K#Catamarca#AR
+geo#AR-L#La Pampa#AR
+geo#AR-M#Mendoza#AR
+geo#AR-N#Misiones#AR
+geo#AR-P#Formosa#AR
+geo#AR-Q#Neuquen#AR
+geo#AR-R#Rio Negro#AR
+geo#AR-S#Santa Fe#AR
+geo#AR-T#Tucuman#AR
+geo#AR-U#Chubut#AR
+geo#AR-V#Tierra Del Fuego#AR
+geo#AR-W#Corrientes#AR
+geo#AR-X#Cordoba#AR
+geo#AR-Y#Jujuy#AR
+geo#AR-Z#Santa Cruz#AR
+geo#AS#American Samoa#--
+geo#AT#Austria#--
+geo#AU#Australia#--
+geo#AU-CT#Australian Capital Territory#AU
+geo#AU-NS#New South Wales#AU
+geo#AU-NT#Northern Territory#AU
+geo#AU-QL#Queensland#AU
+geo#AU-SA#South Australia#AU
+geo#AU-TS#Tasmania#AU
+geo#AU-VI#Victoria#AU
+geo#AU-WA#Western Australia#AU
+geo#AW#Aruba#--
+geo#AZ#Azerbaijan#--
+geo#BA#Bosnia-Hercegovina#--
+geo#BB#Barbados#--
+geo#BD#Bangladesh#--
+geo#BE#Belgium#--
+geo#BF#Burkina Faso#--
+geo#BG#Bulgaria#--
+geo#BH#Bahrain#--
+geo#BI#Burundi#--
+geo#BJ#Benin#--
+geo#BM#Bermuda#--
+geo#BN#Brunei Darussalam#--
+geo#BO#Bolivia#--
+geo#BR#Brazil#--
+geo#BR-AC#Acre#BR
+geo#BR-AL#Alagoas#BR
+geo#BR-AM#Amazonas#BR
+geo#BR-AP#Amapa#BR
+geo#BR-BA#Bahia#BR
+geo#BR-CE#Ceara#BR
+geo#BR-DF#Distrito Federal#BR
+geo#BR-ES#Espirito Santo#BR
+geo#BR-GO#Goias#BR
+geo#BR-MA#Maranhao#BR
+geo#BR-MG#Minas Gerais#BR
+geo#BR-MS#Mato Grosso Do Sul#BR
+geo#BR-MT#Mato Grosso#BR
+geo#BR-PA#Para#BR
+geo#BR-PB#Paraiba#BR
+geo#BR-PE#Pernambuco#BR
+geo#BR-PI#Piaui#BR
+geo#BR-PR#Parana#BR
+geo#BR-RJ#Rio De Janeiro#BR
+geo#BR-RN#Rio Grande Do Norte#BR
+geo#BR-RO#Rondonia#BR
+geo#BR-RR#Roraima#BR
+geo#BR-RS#Rio Grande Do Sul#BR
+geo#BR-SC#Santa Catarina#BR
+geo#BR-SE#Sergipe#BR
+geo#BR-SP#Sao Paulo#BR
+geo#BR-TO#Tocantina#BR
+geo#BS#Bahamas#--
+geo#BT#Bhutan#--
+geo#BU#Burma (See MM Myanmar)#--
+geo#BW#Botswana#--
+geo#BY#Belarus#--
+geo#BY-BR#Brestskaya voblasts'#BY
+geo#BY-HO#Homyel'skaya voblasts'#BY
+geo#BY-HR#Hrodzenskaya voblasts'#BY
+geo#BY-MA#Mahilyowskaya voblasts'#BY
+geo#BY-MI#Minskaya voblasts'#BY
+geo#BY-VI#Vitsyebskaya voblasts'#BY
+geo#BZ#Belize#--
+geo#CA#Canada#--
+geo#CA-AB#Alberta#CA
+geo#CA-BC#British Columbia#CA
+geo#CA-MB#Manitoba#CA
+geo#CA-NB#New Brunswick#CA
+geo#CA-NF#Newfoundland#CA
+geo#CA-NS#Nova Scotia#CA
+geo#CA-NT#Northwest Territories#CA
+geo#CA-NU#Nunavut#CA
+geo#CA-ON#Ontario#CA
+geo#CA-PE#Prince Edward Island#CA
+geo#CA-QC#Quebec#CA
+geo#CA-SK#Saskatchewan#CA
+geo#CA-YT#Yukon Territory#CA
+geo#CC#Cocos (Keeling) Islands#--
+geo#CD#"Congo, Democratic Republic of"#--
+geo#CF#Central African Republic#--
+geo#CG#Congo#--
+geo#CH#Switzerland#--
+geo#CH-AG#Aargau#CH
+geo#CH-AI#Appenzell Inner-Rhoden#CH
+geo#CH-AR#Appenzell Ausser-Rhoden#CH
+geo#CH-BE#Bern#CH
+geo#CH-BL#Basel-Landschaft#CH
+geo#CH-BS#Basel-Stadt#CH
+geo#CH-FR#Fribourg#CH
+geo#CH-GE#Genève#CH
+geo#CH-GL#Glarus#CH
+geo#CH-GR#Graubünden#CH
+geo#CH-JU#Jura#CH
+geo#CH-LU#Luzern#CH
+geo#CH-NE#Neuchatel#CH
+geo#CH-NW#Nidwalden#CH
+geo#CH-OW#Obwalden#CH
+geo#CH-SG#St Gallen#CH
+geo#CH-SH#Schaffhausen#CH
+geo#CH-SO#Solothurn#CH
+geo#CH-SZ#Schwyz#CH
+geo#CH-TG#Thurgau#CH
+geo#CH-TI#Ticino#CH
+geo#CH-UR#Uri#CH
+geo#CH-VD#Vaud#CH
+geo#CH-VS#Valais#CH
+geo#CH-ZG#Zug#CH
+geo#CH-ZH#Zürich#CH
+geo#CI#Cote D'Ivoire#--
+geo#CK#Cook Islands#--
+geo#CL#Chile#--
+geo#CM#Cameroon#--
+geo#CN#China#--
+geo#CN-11#Beijing#CN
+geo#CN-12#Tianjin#CN
+geo#CN-13#Hebei#CN
+geo#CN-14#Shanxi#CN
+geo#CN-15#Nei Mongol#CN
+geo#CN-21#Liaoning#CN
+geo#CN-22#Jilin#CN
+geo#CN-23#Heilongjiang#CN
+geo#CN-31#Shanghai#CN
+geo#CN-32#Jiangsu#CN
+geo#CN-33#Zhejiang#CN
+geo#CN-34#Anhui#CN
+geo#CN-35#Fujian#CN
+geo#CN-36#Jiangxi#CN
+geo#CN-37#Shandong#CN
+geo#CN-41#Henan#CN
+geo#CN-42#Hubei#CN
+geo#CN-43#Hunan#CN
+geo#CN-44#Guangdong#CN
+geo#CN-45#Guangxi#CN
+geo#CN-46#Hainan#CN
+geo#CN-51#Sichuan#CN
+geo#CN-52#Guizhou#CN
+geo#CN-53#Yunnan#CN
+geo#CN-54#Xizang#CN
+geo#CN-61#Shaanxi#CN
+geo#CN-62#Gansu#CN
+geo#CN-63#Qinghai#CN
+geo#CN-64#Ningxia#CN
+geo#CN-65#Xinjiang#CN
+geo#CN-71#Taiwan#CN
+geo#CN-91#Xianggang (Hong Kong)#CN
+geo#CN-92#Aomen (Macau)#CN
+geo#CO#Colombia#--
+geo#CR#Costa Rica#--
+geo#CS#Former Czechoslovakia#--
+geo#CU#Cuba#--
+geo#CV#Cape Verde#--
+geo#CX#Christmas Islands#--
+geo#CY#Cyprus#--
+geo#CZ#Czech Republic#--
+geo#DE#"Germany, Federal Republic of"#--
+geo#DE-BE#Berlin#DE
+geo#DE-BR#Brandenburg#DE
+geo#DE-BW#Baden-Württemberg#DE
+geo#DE-BY#Bayern#DE
+geo#DE-HB#Bremen (Hansestadt)#DE
+geo#DE-HE#Hessen#DE
+geo#DE-HH#Hamburg (Hansestadt)#DE
+geo#DE-MV#Mecklenburg-Vorpommern#DE
+geo#DE-NI#Niedersachsen#DE
+geo#DE-NW#Nordrhein-Westfalen#DE
+geo#DE-RP#Rheinland-Pfalz#DE
+geo#DE-SH#Schleswig-Holstein#DE
+geo#DE-SL#Saarland#DE
+geo#DE-SN#Sachsen#DE
+geo#DE-ST#Sachsen-Anhalt#DE
+geo#DE-TH#Thüringen#DE
+geo#DJ#Djibouti#--
+geo#DK#Denmark#--
+geo#DM#Dominica#--
+geo#DO#Dominican Republic#--
+geo#DO-02#Azua#DO
+geo#DO-03#Bahoruco#DO
+geo#DO-04#Barahona#DO
+geo#DO-05#Dajabón#DO
+geo#DO-06#Duarte#DO
+geo#DO-08#El Seybo#DO
+geo#DO-09#Espaillat#DO
+geo#DO-30#Hato Mayor#DO
+geo#DO-10#Independencia#DO
+geo#DO-11#La Altagracia#DO
+geo#DO-07#La Estrelleta#DO
+geo#DO-12#La Romana#DO
+geo#DO-13#La Vega#DO
+geo#DO-14#María Trinidad Sánchez#DO
+geo#DO-28#Monsenor Nouel#DO
+geo#DO-15#Monte Cristi#DO
+geo#DO-29#Monte Plata#DO
+geo#DO-16#Pedernales#DO
+geo#DO-17#Peravia#DO
+geo#DO-18#Puerto Plata#DO
+geo#DO-19#Solcedo#DO
+geo#DO-20#Samaná#DO
+geo#DO-21#San Cristóbal#DO
+geo#DO-22#San Juan#DO
+geo#DO-23#San Pedro de Macorís#DO
+geo#DO-24#Sánchez Ramírez#DO
+geo#DO-25#Santiago#DO
+geo#DO-26#Santiago Rodríguez#DO
+geo#DO-27#Valverde#DO
+geo#DZ#Algeria#--
+geo#EC#Ecuador#--
+geo#EE#Estonia#--
+geo#EG#Egypt#--
+geo#EH#Western Sahara#--
+geo#ER#Eritrea#--
+geo#ER-AN#Anseba#ER
+geo#ER-DU#Debub#ER
+geo#ER-DK#Debubawi Keyih Bahri [Debub-Keih-Bahri]#ER
+geo#ER-GB#Gash-Barka#ER
+geo#ER-MA#Maakel [Maekel]#ER
+geo#ER-SK#Semenawi Keyih Bahri [Semien-Keih-Bahri]#ER
+geo#ES#Spain#--
+geo#ES-AN#Andalucía#ES
+geo#ES-AL#Almería#ES-AN
+geo#ES-CA#Cádiz#ES-AN
+geo#ES-CO#Córdoba#ES-AN
+geo#ES-GR#Granada#ES-AN
+geo#ES-H#Huelva#ES-AN
+geo#ES-J#Jaén#ES-AN
+geo#ES-MA#Málaga#ES-AN
+geo#ES-SE#Sevilla#ES-AN
+geo#ES-AR#Aragón#ES
+geo#ES-HU#Huesca#ES-AR
+geo#ES-TE#Teruel#ES-AR
+geo#ES-Z#Zaragoza#ES-AR
+geo#ES-O#"Asturias, Principado de"#ES
+geo#ES-CN#Canarias#ES
+geo#ES-GC#Las Palmas#ES-CN
+geo#ES-TF#Santa Cruz de Tenerife#ES-CN
+geo#ES-S#Cantabria#ES
+geo#ES-CM#Castilla-La Mancha#ES
+geo#ES-AB#Albacete#ES-CM
+geo#ES-CR#Cuidad Real#ES-CM
+geo#ES-CU#Cuenca#ES-CM
+geo#ES-GU#Guadalajara#ES-CM
+geo#ES-TO#Toledo#ES-CM
+geo#ES-CL#Castilla y León#ES
+geo#ES-AV#Ávila#ES-CL
+geo#ES-BU#Burgos#ES-CL
+geo#ES-LE#León#ES-CL
+geo#ES-P#Palencia#ES-CL
+geo#ES-SA#Salamanca#ES-CL
+geo#ES-SG#Segovia#ES-CL
+geo#ES-SO#Soria#ES-CL
+geo#ES-VA#Valladolid#ES-CL
+geo#ES-ZA#Zamora#ES-CL
+geo#ES-CT#Cataluna#ES
+geo#ES-B#Barcelona#ES-CT
+geo#ES-GE#Girona [Gerona]#ES-CT
+geo#ES-L#Lleida [Léruda]#ES-CT
+geo#ES-T#Tarragona#ES-CT
+geo#ES-EX#Extremadura#ES
+geo#ES-BA#Badajoz#ES-EX
+geo#ES-CC#Cáceres#ES-EX
+geo#ES-GA#Galicia#ES
+geo#ES-C#La Coruna#ES-GA
+geo#ES-LU#Lugo#ES-GA
+geo#ES-OR#Orense#ES-GA
+geo#ES-PO#Pontevedra#ES-GA
+geo#ES-PM#Islas Baleares#ES
+geo#ES-LO#La Rioja#ES
+geo#ES-M#"Madrid, Comunidad de"#ES
+geo#ES-MU#"Murcia, Región de"#ES
+geo#ES-NA#"Navarra, Comunidad Foral de"#ES
+geo#ES-PV#País Vasci#ES
+geo#ES-VI#Álava#ES-PV
+geo#ES-SS#Guipúzcoa#ES-PV
+geo#ES-BI#Vizcaya#ES-PV
+geo#ES-VC#"Valenciana, Comunidad"#ES
+geo#ES-A#Alicante#ES-VC
+geo#ES-CS#Castellón#ES-VC
+geo#ES-V#Valencia#ES-VC
+geo#ES-CE#Ceuta#ES
+geo#ES-ML#Melilla#ES
+geo#ET#Ethiopia#--
+geo#FI#Finland#--
+geo#FI-AL#Ahvenanmaan Maakunta (Fi) Ålands Län (Sv)#FI
+geo#FI-ES#Etelä-Suomen Lääni (Fi) Södra Finlands Län (Sv)#FI
+geo#FI-IS#Itä-Suomen Lääni (Fi) Östra Finlands Län (Sv)#FI
+geo#FI-LL#Lapin Lääni (Fi) Laplands Län (Sv)#FI
+geo#FI-LS#Länsi-Suomen Lääni (Fi) Västra Finlands Län (Sv)#FI
+geo#FI-OL#Oulun Lääni (Fi) Uleåborgs Län (Sv)#FI
+geo#FJ#Fiji#--
+geo#FK#Falkland Islands (Malvinas)#--
+geo#FM#Federated States Of Micronesia#--
+geo#FO#Faeroe Islands#--
+geo#FR#France#--
+geo#FR-01#Ain#FR-V
+geo#FR-02#Aisne#FR-S
+geo#FR-03#Allier#FR-C
+geo#FR-04#Alpes-De-Haute-Provence#FR-U
+geo#FR-05#Hautes-Alpes#FR-U
+geo#FR-06#Alpes-Maritimes#FR-U
+geo#FR-07#Ardèche#FR-V
+geo#FR-08#Ardennes#FR-G
+geo#FR-09#Ariège#FR-N
+geo#FR-10#Aube#FR-G
+geo#FR-11#Aude#FR-K
+geo#FR-12#Aveyron#FR-N
+geo#FR-13#Bouches-Du-Rhône#FR-U
+geo#FR-14#Calvados#FR-P
+geo#FR-15#Cantal#FR-C
+geo#FR-16#Charente#FR-T
+geo#FR-17#Charente-Maritime#FR-T
+geo#FR-18#Cher#FR-F
+geo#FR-19#Corrèze#FR-L
+geo#FR-21#Côte-D'Or#FR-D
+geo#FR-22#Côtes-D'Armor#FR-E
+geo#FR-23#Creuse#FR-L
+geo#FR-24#Dordogne#FR-B
+geo#FR-25#Doubs#FR-I
+geo#FR-26#Drôme#FR-V
+geo#FR-27#Eure#FR-Q
+geo#FR-28#Eure-Et-Loir#FR-F
+geo#FR-29#Finistère#FR-E
+geo#FR-2A#Corse-Du-Sud#FR-H
+geo#FR-2B#Haute-Corse#FR-H
+geo#FR-30#Gard#FR-K
+geo#FR-31#Haute-Garonne#FR-N
+geo#FR-32#Gers#FR-N
+geo#FR-33#Gironde#FR-B
+geo#FR-34#Hérault#FR-K
+geo#FR-35#Ille-Et-Vilaine#FR-E
+geo#FR-36#Indre#FR-F
+geo#FR-37#Indre-Et-Loire#FR-F
+geo#FR-38#Isère#FR-V
+geo#FR-39#Jura#FR-I
+geo#FR-40#Landes#FR-B
+geo#FR-41#Loir-Et-Cher#FR-F
+geo#FR-42#Loire#FR-V
+geo#FR-43#Haute-Loire#FR-C
+geo#FR-44#Loire-Atlantique#FR-R
+geo#FR-45#Loiret#FR-F
+geo#FR-46#Lot#FR-N
+geo#FR-47#Lot-Et-Garonne#FR-B
+geo#FR-48#Lozère#FR-K
+geo#FR-49#Maine-Et-Loire#FR-R
+geo#FR-50#Manche#FR-P
+geo#FR-51#Marne#FR-G
+geo#FR-52#Haute-Marne#FR-G
+geo#FR-53#Mayenne#FR-R
+geo#FR-54#Meurthe-Et-Moselle#FR-M
+geo#FR-55#Meuse#FR-M
+geo#FR-56#Morbihan#FR-E
+geo#FR-57#Moselle#FR-M
+geo#FR-58#Nièvre#FR-D
+geo#FR-59#Nord#FR-O
+geo#FR-60#Oise#FR-S
+geo#FR-61#Orne#FR-P
+geo#FR-62#Pas-De-Calais#FR-O
+geo#FR-63#Puy-De-Dôme#FR-C
+geo#FR-64#Pyrénées-Atlantiques#FR-B
+geo#FR-65#Hautes-Pyrénées#FR-N
+geo#FR-66#Pyrénées-Orientales#FR-K
+geo#FR-67#Bas-Rhin#FR-A
+geo#FR-68#Haut-Rhin#FR-A
+geo#FR-69#Rhône#FR-V
+geo#FR-70#Haute-Saône#FR-I
+geo#FR-71#Saône-Et-Loire#FR-D
+geo#FR-72#Sarthe#FR-R
+geo#FR-73#Savoie#FR-V
+geo#FR-74#Haute-Savoie#FR-V
+geo#FR-75#Paris#FR-J
+geo#FR-76#Seine-Maritime#FR-Q
+geo#FR-77#Seine-Et-Marne#FR-J
+geo#FR-78#Yvelines#FR-J
+geo#FR-79#Deux-Sèvres#FR-B
+geo#FR-80#Somme#FR-S
+geo#FR-81#Tarn#FR-N
+geo#FR-82#Tarn-Et-Garonne#FR-N
+geo#FR-83#Var#FR-U
+geo#FR-84#Vaucluse#FR-U
+geo#FR-85#Vendée#FR-R
+geo#FR-86#Vienne#FR-T
+geo#FR-87#Haute-Vienne#FR-L
+geo#FR-88#Vosges#FR-M
+geo#FR-89#Yonne#FR-D
+geo#FR-90#Territoire De Belfort#FR-I
+geo#FR-91#Essonne#FR-J
+geo#FR-92#Hauts-De-Seine#FR-J
+geo#FR-93#Seine-Saint-Denis#FR-J
+geo#FR-94#Val-De-Marne#FR-J
+geo#FR-95#Val-D'Oise#FR-J
+geo#FR-A#Alsace#FR
+geo#FR-B#Aquitaine#FR
+geo#FR-C#Auvergne#FR
+geo#FR-D#Bourgogne#FR
+geo#FR-E#Bretagne#FR
+geo#FR-F#Centre#FR
+geo#FR-G#Champagne-Ardenne#FR
+geo#FR-H#Corse#FR
+geo#FR-I#Franche-Comté#FR
+geo#FR-J#Ile-De-France#FR
+geo#FR-K#Languedoc-Roussillon#FR
+geo#FR-L#Limousin#FR
+geo#FR-M#Lorraine#FR
+geo#FR-N#Midi-Pyrénées#FR
+geo#FR-O#Nord-Pas-De-Calais#FR
+geo#FR-P#Basse-Normandie#FR
+geo#FR-Q#Haute-Normandie#FR
+geo#FR-R#Pays De La Loire#FR
+geo#FR-S#Picardie#FR
+geo#FR-T#Poitou-Charentes#FR
+geo#FR-U#Provence-Alpes-Côte D'Azur#FR
+geo#FR-V#Rhône-Alpes#FR
+geo#GA#Gabon#--
+geo#GB#United Kingdom#--
+geo#GB-ANT#Antrim#GB-NIR
+geo#GB-ARD#Ards#GB-NIR
+geo#GB-ARM#Armagh#GB-NIR
+geo#GB-AVN#Avon#GB-ENG
+geo#GB-BDF#Bedfordshire#GB-ENG
+geo#GB-BFS#Belfast#GB-NIR
+geo#GB-BKM#Buckinghamshire#GB-ENG
+geo#GB-BLA#Ballymena#GB-NIR
+geo#GB-BLY#Ballymoney#GB-NIR
+geo#GB-BNB#Banbridge#GB-NIR
+geo#GB-BOR#Borders Region#GB-SCT
+geo#GB-BRK#Berkshire#GB-ENG
+geo#GB-CAM#Cambridgeshire#GB-ENG
+geo#GB-CEN#Central Region#GB-SCT
+geo#GB-CGV#Craigavon#GB-NIR
+geo#GB-CHA#Channel Islands#GB
+geo#GB-CHS#Cheshire#GB-ENG
+geo#GB-CKF#Carrickfergus#GB-NIR
+geo#GB-CKT#Cookstown#GB-NIR
+geo#GB-CLR#Coleraine#GB-NIR
+geo#GB-CLV#Cleveland#GB-ENG
+geo#GB-CMA#Cumbria#GB-ENG
+geo#GB-CON#Cornwall#GB-ENG
+geo#GB-CSR#Castlereagh#GB-NIR
+geo#GB-CWD#Clwyd#GB-WLS
+geo#GB-DBY#Derbyshire#GB-ENG
+geo#GB-DFD#Dyfed#GB-WLS
+geo#GB-DGN#Dungannon#GB-NIR
+geo#GB-DGY#Dumfries & Galloway Region#GB-SCT
+geo#GB-DOR#Dorset#GB-ENG
+geo#GB-DOW#Down#GB-NIR
+geo#GB-DRY#Derry#GB-NIR
+geo#GB-DUR#Durham#GB-ENG
+geo#GB-DVV#Devon#GB-ENG
+geo#GB-ENG#England#GB
+geo#GB-ESS#Essex#GB-ENG
+geo#GB-ESX#East Sussex#GB-ENG
+geo#GB-FER#Fermanagh#GB-NIR
+geo#GB-FIF#Fife Region#GB-SCT
+geo#GB-GLS#Gloucestershire#GB-ENG
+geo#GB-GMP#Grampian Region#GB-SCT
+geo#GB-GNT#Gwent#GB-WLS
+geo#GB-GSY#Guernsey#GB-CHA
+geo#GB-GTL#Greater London#GB-ENG
+geo#GB-GTM#Greater Manchester#GB-ENG
+geo#GB-GWN#Gwynedd#GB-WLS
+geo#GB-HAM#Hampshire#GB-ENG
+geo#GB-HLD#Highland Region#GB-SCT
+geo#GB-HRT#Hertfordshire#GB-ENG
+geo#GB-HUM#Humberside#GB-ENG
+geo#GB-HWR#Hereford And Worcester#GB-ENG
+geo#GB-IOM#Isle Of Man#GB
+geo#GB-IOS#Isles Of Scilly#GB-ENG
+geo#GB-IOW#Isle Of Wight#GB-ENG
+geo#GB-JSY#Jersey#GB-CHA
+geo#GB-KEN#Kent#GB-ENG
+geo#GB-LAN#Lancashire#GB-ENG
+geo#GB-LEC#Leicestershire#GB-ENG
+geo#GB-LIN#Lincolnshire#GB-ENG
+geo#GB-LMV#Limavady#GB-NIR
+geo#GB-LRN#Larne#GB-NIR
+geo#GB-LSB#Lisburn#GB-NIR
+geo#GB-LTN#Lothian Region#GB-SCT
+geo#GB-MFT#Magherafelt#GB-NIR
+geo#GB-MGM#Mid Glamorgan#GB-WLS
+geo#GB-MSY#Merseyside#GB-ENG
+geo#GB-MYL#Moyle#GB-NIR
+geo#GB-NBL#Northumberland#GB-ENG
+geo#GB-NDN#North Down#GB-NIR
+geo#GB-NFK#Norfolk#GB-ENG
+geo#GB-NIR#Northern Ireland#GB
+geo#GB-NTA#Newtonabbey#GB-NIR
+geo#GB-NTH#Northamptonshire#GB-ENG
+geo#GB-NTT#Nottinghamshire#GB-ENG
+geo#GB-NYK#North Yorkshire#GB-ENG
+geo#GB-NYM#Newry And Mourne#GB-NIR
+geo#GB-OMH#Omagh#GB-NIR
+geo#GB-ORK#Orkney#GB-SCT
+geo#GB-OXF#Oxfordshire#GB-ENG
+geo#GB-POW#Powys#GB-WLS
+geo#GB-SCT#Scotland#GB
+geo#GB-SFK#Suffolk#GB-ENG
+geo#GB-SGM#South Glamorgan#GB-WLS
+geo#GB-SHR#Shropshire#GB-ENG
+geo#GB-SOM#Somerset#GB-ENG
+geo#GB-SRY#Surrey#GB-ENG
+geo#GB-STB#Strabane#GB-NIR
+geo#GB-STD#Strathclyde Region#GB-SCT
+geo#GB-STS#Staffordshire#GB-ENG
+geo#GB-SYK#South Yorkshire#GB-ENG
+geo#GB-TAY#Tayside Region#GB-SCT
+geo#GB-TWR#Tyne And Wear#GB-ENG
+geo#GB-WAR#Warwickshire#GB-ENG
+geo#GB-WGM#West Glamorgan#GB-WLS
+geo#GB-WIL#Wiltshire#GB-ENG
+geo#GB-WIS#Western Isles#GB-SCT
+geo#GB-WLS#Wales#GB
+geo#GB-WMD#West Midlands#GB-ENG
+geo#GB-WSX#West Sussex#GB-ENG
+geo#GB-WYK#West Yorkshire#GB-ENG
+geo#GB-ZET#Shetland (Zetland)#GB-SCT
+geo#GD#Grenada#--
+geo#GE#Georgia#--
+geo#GF#French Guiana#--
+geo#GH#Ghana#--
+geo#GI#Gibraltar#--
+geo#GL#Greenland#--
+geo#GM#Gambia#--
+geo#GN#Guinea#--
+geo#GP#Guadeloupe#--
+geo#GQ#Equatorial Guinea#--
+geo#GR#Greece#--
+geo#GS#Georgia & Sandwich Islands#--
+geo#GT#Guatemala#--
+geo#GU#Guam#--
+geo#GW#Guinea-Bissau#--
+geo#GY#Guyana#--
+geo#HK#Hong Kong#--
+geo#HN#Honduras#--
+geo#HR#Croatia#--
+geo#HT#Haiti#--
+geo#HU#Hungary#--
+geo#ID#Indonesia#--
+geo#IE#Ireland#--
+geo#IL#Israel#--
+geo#IN#India#--
+geo#IO#Indian Ocean Territory#--
+geo#IQ#Iraq#--
+geo#IR#"Iran, Islamic Republic of"#--
+geo#IS#Iceland#--
+geo#IT#Italy#--
+geo#IT-21#Piemonte#IT
+geo#IT-AL#Alessandria#IT-21
+geo#IT-AT#Asti#IT-22
+geo#IT-BI#Biella#IT-23
+geo#IT-AO#Aosta Aoste (fr)#IT-23
+geo#IT-CN#Cuneo#IT-24
+geo#IT-NO#Novara#IT-25
+geo#IT-BG#Bergamo#IT-25
+geo#IT-BS#Brescia#IT-25
+geo#IT-CO#Como#IT-25
+geo#IT-CR#Cremona#IT-25
+geo#IT-LC#Lecco#IT-25
+geo#IT-LO#Lodi#IT-25
+geo#IT-MN#Mantova#IT-25
+geo#IT-MI#Milano#IT-25
+geo#IT-PV#Pavia#IT-25
+geo#IT-SO#Sondrio#IT-25
+geo#IT-VA#Varese#IT-25
+geo#IT-TO#Torino#IT-26
+geo#IT-VB#Verbano-Cusio-Ossola#IT-27
+geo#IT-VC#Vercelli#IT-28
+geo#IT-23#Valle d'Aosta#IT
+geo#IT-25#Lombardia#IT
+geo#IT-32#Trentino-Alto Adige#IT
+geo#IT-BZ#Bolzano Bozen (de)#IT-32
+geo#IT-TN#Trento#IT-32
+geo#IT-34#Veneto#IT
+geo#IT-BL#Belluno#IT-34
+geo#IT-PD#Padova#IT-34
+geo#IT-RO#Rovigo#IT-34
+geo#IT-TV#Treviso#IT-34
+geo#IT-VE#Venezia#IT-34
+geo#IT-VR#Verona#IT-34
+geo#IT-VI#Vicenza#IT-34
+geo#IT-36#Friuli-Venezia Giulia#IT
+geo#IT-GO#Gorizia#IT-36
+geo#IT-PN#Pordenone#IT-36
+geo#IT-TS#Trieste#IT-36
+geo#IT-UD#Udine#IT-36
+geo#IT-42#Liguria#IT
+geo#IT-GE#Genova#IT-42
+geo#IT-IM#Imperia#IT-42
+geo#IT-SP#La Spezia#IT-42
+geo#IT-SV#Savona#IT-42
+geo#IT-45#Emilia-Romagna#IT
+geo#IT-BO#Bologna#IT-45
+geo#IT-FE#Ferrara#IT-45
+geo#IT-FO#Forlì#IT-45
+geo#IT-MO#Modena#IT-45
+geo#IT-PR#Parma#IT-45
+geo#IT-PC#Piacenza#IT-45
+geo#IT-RA#Ravenna#IT-45
+geo#IT-RE#Reggio Emilia#IT-45
+geo#IT-RN#Rimini#IT-45
+geo#IT-52#Toscana#IT
+geo#IT-AR#Arezzo#IT-52
+geo#IT-FI#Firenze#IT-52
+geo#IT-GR#Grosseto#IT-52
+geo#IT-LI#Livorno#IT-52
+geo#IT-LU#Lucca#IT-52
+geo#IT-MS#Massa-Carrara#IT-52
+geo#IT-PI#Pisa#IT-52
+geo#IT-PT#Pistoia#IT-52
+geo#IT-PO#Prato#IT-52
+geo#IT-SI#Siena#IT-52
+geo#IT-55#Umbria#IT
+geo#IT-PG#Perugia#IT-55
+geo#IT-TR#Terni#IT-55
+geo#IT-57#Marche#IT
+geo#IT-AN#Ancona#IT-57
+geo#IT-AP#Ascoli Piceno#IT-57
+geo#IT-MC#Macerata#IT-57
+geo#IT-PS#Pesaro e Urbino#IT-57
+geo#IT-62#Lazio#IT
+geo#IT-FR#Frosinone#IT-62
+geo#IT-LT#Latina#IT-62
+geo#IT-RI#Rieti#IT-62
+geo#IT-RM#Roma#IT-62
+geo#IT-VT#Viterbo#IT-62
+geo#IT-65#Abruzzo#IT
+geo#IT-CH#Chieti#IT-65
+geo#IT-AQ#L'Aquila#IT-65
+geo#IT-PE#Pescara#IT-65
+geo#IT-TE#Teramo#IT-65
+geo#IT-67#Molise#IT
+geo#IT-CB#Campobasso#IT-67
+geo#IT-IS#Isernia#IT-67
+geo#IT-72#Campania#IT
+geo#IT-BN#Benevento#IT-72
+geo#IT-CE#Caserta#IT-72
+geo#IT-NA#Napoli#IT-72
+geo#IT-SA#Salerno#IT-72
+geo#IT-AV#Avellino#IT-72
+geo#IT-75#Puglia#IT
+geo#IT-BA#Bari#IT-75
+geo#IT-BR#Brindisi#IT-75
+geo#IT-FG#Foggia#IT-75
+geo#IT-LE#Lecce#IT-75
+geo#IT-TA#Taranto#IT-75
+geo#IT-77#Basilicata#IT
+geo#IT-MT#Matera#IT-77
+geo#IT-PZ#Potenza#IT-77
+geo#IT-78#Calabria#IT
+geo#IT-CZ#Catanzaro#IT-78
+geo#IT-CS#Cosenza#IT-78
+geo#IT-KR#Crotone#IT-78
+geo#IT-RC#Reggio Calabria#IT-78
+geo#IT-VV#Vibo Valentia#IT-78
+geo#IT-82#Sicilia#IT
+geo#IT-AG#Agrigento#IT-82
+geo#IT-CL#Caltanissetta#IT-82
+geo#IT-CT#Catania#IT-82
+geo#IT-EN#Enna#IT-82
+geo#IT-ME#Messina#IT-82
+geo#IT-PA#Palermo#IT-82
+geo#IT-RG#Ragusa#IT-82
+geo#IT-SR#Siracusa#IT-82
+geo#IT-TP#Trapani#IT-82
+geo#IT-88#Sardegna#IT
+geo#IT-CA#Cagliari#IT-88
+geo#IT-NU#Nuoro#IT-88
+geo#IT-OR#Oristano#IT-88
+geo#IT-SS#Sassari#IT-88
+geo#JM#Jamaica#--
+geo#JO#Jordan#--
+geo#JP#Japan#--
+geo#JP-01#Hokkaido#JP
+geo#JP-02#Aomori#JP
+geo#JP-03#Iwate#JP
+geo#JP-04#Miyagi#JP
+geo#JP-05#Akita#JP
+geo#JP-06#Yamagata#JP
+geo#JP-07#Hukusima (Fukushima)#JP
+geo#JP-08#Ibaraki#JP
+geo#JP-09#Totigi (Tochigi)#JP
+geo#JP-10#Gunma#JP
+geo#JP-11#Saitama#JP
+geo#JP-12#Tiba (Chiba)#JP
+geo#JP-13#Tokyo#JP
+geo#JP-14#Kanagawa#JP
+geo#JP-15#Niigata#JP
+geo#JP-16#Toyama#JP
+geo#JP-17#Isikawa (Ishikawa)#JP
+geo#JP-18#Hukui (Fukui)#JP
+geo#JP-19#Yamanasi (Yamanashi)#JP
+geo#JP-20#Nagano#JP
+geo#JP-21#Gihu (Gifu)#JP
+geo#JP-22#Sizuoka (Shizuoka)#JP
+geo#JP-23#Aiti (Aichi)#JP
+geo#JP-24#Mie#JP
+geo#JP-25#Siga (Shiga)#JP
+geo#JP-26#Kyoto#JP
+geo#JP-27#Osaka#JP
+geo#JP-28#Hyogo#JP
+geo#JP-29#Nara#JP
+geo#JP-30#Wakayama#JP
+geo#JP-31#Tottori#JP
+geo#JP-32#Simane (Shimane)#JP
+geo#JP-33#Okayama#JP
+geo#JP-34#Hirosima (Hiroshima)#JP
+geo#JP-35#Yamaguti (Yamaguchi)#JP
+geo#JP-36#Tokusima (Tokushima)#JP
+geo#JP-37#Kagawa#JP
+geo#JP-38#Ehime#JP
+geo#JP-39#Koti (Kochi)#JP
+geo#JP-40#Hukuoka (Fukuoka)#JP
+geo#JP-41#Saga#JP
+geo#JP-42#Nagasaki#JP
+geo#JP-43#Kumamoto#JP
+geo#JP-44#Oita#JP
+geo#JP-45#Miyazaki#JP
+geo#JP-46#Kagosima (Kagoshima)#JP
+geo#JP-47#Okinawa#JP
+geo#KE#Kenya#--
+geo#KG#Kyrgyzstan#--
+geo#KH#Cambodia#--
+geo#KI#Kiribati#--
+geo#KM#Comoros#--
+geo#KN#St Kitts-Nevis#--
+geo#KP#"Korea, Dem People's Republic"#--
+geo#KR#"Korea, Republic of"#--
+geo#KR-11#Seoul Teugbyeolsi#KR
+geo#KR-26#Busan Gwang'yeogsi#KR
+geo#KR-27#Daegu Gwang'yeogsi#KR
+geo#KR-30#Daejeon Gwang'yeogsi#KR
+geo#KR-29#Gwangju Gwang'yeogsi#KR
+geo#KR-28#Incheon Gwang'yeogsi#KR
+geo#KR-31#Ulsan Gwang'yeogsi#KR
+geo#KR-43#Chungcheongbugdo#KR
+geo#KR-44#Chungcheongnamdo#KR
+geo#KR-42#Gang'weondo#KR
+geo#KR-41#Gyeonggido#KR
+geo#KR-47#Gyeongsangbugdo#KR
+geo#KR-48#Gyeongsangnamdo#KR
+geo#KR-49#Jejudo#KR
+geo#KR-45#Jeonrabugdo#KR
+geo#KR-46#Jeonranamdo#KR
+geo#KW#Kuwait#--
+geo#KY#Cayman Islands#--
+geo#KZ#Kazakhstan#--
+geo#LA#Lao People's Democratic Republic#--
+geo#LB#Lebanon#--
+geo#LC#Saint Lucia#--
+geo#LI#Liechtenstein#--
+geo#LK#Sri Lanka#--
+geo#LR#Liberia#--
+geo#LS#Lesotho#--
+geo#LT#Lithuania#--
+geo#LU#Luxembourg#--
+geo#LV#Latvia#--
+geo#LY#Lybian Arab Jamahiriya#--
+geo#MA#Morocco#--
+geo#MC#Monaco#--
+geo#MD#Moldova#--
+geo#MG#Madagascar#--
+geo#MH#Marshall Islands#--
+geo#MK#Former Yugoslav Republic Of Macedonia#--
+geo#ML#Mali#--
+geo#MM#Myanmar (Former Burma)#--
+geo#MN#Mongolia#--
+geo#MO#Macau#--
+geo#MP#Northern Marianas#--
+geo#MQ#Martinique#--
+geo#MR#Mauritania#--
+geo#MS#Montserrat#--
+geo#MT#Malta#--
+geo#MU#Mauritius#--
+geo#MV#Maldives#--
+geo#MW#Malawi#--
+geo#MX#Mexico#--
+geo#MX-AGU#Aguascalientes#MX
+geo#MX-BCN#Baja California#MX
+geo#MX-BCS#Baja California Sur#MX
+geo#MX-CAM#Campeche#MX
+geo#MX-CHH#Chihuahua#MX
+geo#MX-CHP#Chiapas#MX
+geo#MX-COA#Coahuila#MX
+geo#MX-COL#Colima#MX
+geo#MX-DF#Distrito Federal#MX
+geo#MX-DUR#Durango#MX
+geo#MX-GRO#Guerrero#MX
+geo#MX-GUA#Guanajuato#MX
+geo#MX-HID#Hidalgo#MX
+geo#MX-JAL#Jalisco#MX
+geo#MX-MEX#Mexico#MX
+geo#MX-MIC#Michoacan#MX
+geo#MX-MOR#Morelos#MX
+geo#MX-NAY#Nayarit#MX
+geo#MX-NLE#Nuevo Leon#MX
+geo#MX-OAX#Oaxaca#MX
+geo#MX-PUE#Puebla#MX
+geo#MX-QUE#Queretaro#MX
+geo#MX-ROO#Quintana Roo#MX
+geo#MX-SIN#Sinaloa#MX
+geo#MX-SLP#San Luis Potosi#MX
+geo#MX-SON#Sonora#MX
+geo#MX-TAB#Tabasco#MX
+geo#MX-TAM#Tamaulipas#MX
+geo#MX-TLA#Tlaxcala#MX
+geo#MX-VER#Veracruz#MX
+geo#MX-YUC#Yucatan#MX
+geo#MX-ZAC#Zacatecas#MX
+geo#MY#Malaysia#--
+geo#MZ#Mozambique#--
+geo#NA#Namibia#--
+geo#NC#New Caledonia#--
+geo#NE#Niger#--
+geo#NF#Norfolk Island#--
+geo#NG#Nigeria#--
+geo#NG-FC#Abuja Capital Territory#NG
+geo#NG-AB#Abia#NG
+geo#NG-AD#Adamawa#NG
+geo#NG-AK#Akwa Ibom#NG
+geo#NG-AN#Anambra#NG
+geo#NG-BA#Bauchi#NG
+geo#NG-BY#Bayelsa#NG
+geo#NG-BE#Benue#NG
+geo#NG-BO#Borno#NG
+geo#NG-CR#Cross River#NG
+geo#NG-DE#Delta#NG
+geo#NG-EB#Ebonyi#NG
+geo#NG-ED#Edo#NG
+geo#NG-EK#Ekiti#NG
+geo#NG-EN#Enugu#NG
+geo#NG-GO#Gombe#NG
+geo#NG-IM#Imo#NG
+geo#NG-JI#Jigawa#NG
+geo#NG-KD#Kaduna#NG
+geo#NG-KN#Kano#NG
+geo#NG-KT#Katsina#NG
+geo#NG-KE#Kebbi#NG
+geo#NG-KO#Kogi#NG
+geo#NG-KW#Kwara#NG
+geo#NG-LA#Lagos#NG
+geo#NG-NA#Nassarawa#NG
+geo#NG-NI#Niger#NG
+geo#NG-OG#Ogun#NG
+geo#NG-ON#Ondo#NG
+geo#NG-OS#Osun#NG
+geo#NG-OY#Oyo#NG
+geo#NG-PL#Plateau#NG
+geo#NG-RI#Rivers#NG
+geo#NG-SO#Sokoto#NG
+geo#NG-TA#Taraba#NG
+geo#NG-YO#Yobe#NG
+geo#NG-ZA#Zamfara#NG
+geo#NI#Nicaragua#--
+geo#NL#Netherlands#--
+geo#NO#Norway#--
+geo#NO-01#Østfold#NO
+geo#NO-02#Akershus#NO
+geo#NO-03#Oslo#NO
+geo#NO-04#Hedmark#NO
+geo#NO-05#Oppland#NO
+geo#NO-06#Buskerud#NO
+geo#NO-07#Vestfold#NO
+geo#NO-08#Telemark#NO
+geo#NO-09#Aust-Agder#NO
+geo#NO-10#Vest-Agder#NO
+geo#NO-11#Rogaland#NO
+geo#NO-12#Nordaland#NO
+geo#NO-14#Sogn Og Fjordane#NO
+geo#NO-15#Møre Og Romsdal#NO
+geo#NO-16#Sør-Trøndelag#NO
+geo#NO-17#Nord-Trøndelag#NO
+geo#NO-18#Nordland#NO
+geo#NO-19#Troms#NO
+geo#NO-20#Finnmark#NO
+geo#NP#Nepal#--
+geo#NR#Nauru#--
+geo#NU#Niue#--
+geo#NZ#New Zealand#--
+geo#NZ-AUK#Auckland#NZ-N
+geo#NZ-BOP#Bay Of Plenty#NZ-N
+geo#NZ-CAN#Canterbury#NZ-S
+geo#NZ-GIS#Gisborne#NZ-N
+geo#NZ-HKB#Hawkes'S Bay#NZ-N
+geo#NZ-MBH#Marlborough#NZ-S
+geo#NZ-MWT#Manawatu-Wanganui#NZ-N
+geo#NZ-N#North Island#NZ
+geo#NZ-NSN#Nelson#NZ-S
+geo#NZ-NTL#Northland#NZ-N
+geo#NZ-OTA#Otago#NZ-S
+geo#NZ-S#South Island#NZ
+geo#NZ-STL#Southland#NZ-S
+geo#NZ-TAS#Tasman#NZ-S
+geo#NZ-TKI#Taranaki#NZ-N
+geo#NZ-WGN#Wellington#NZ-N
+geo#NZ-WKO#Waikato#NZ-N
+geo#NZ-WTC#West Coast#NZ-S
+geo#OM#Oman#--
+geo#PA#Panama#--
+geo#PE#Peru#--
+geo#PF#French Polynesia#--
+geo#PG#Papua New Guinea#--
+geo#PH#Philippines#--
+geo#PK#Pakistan#--
+geo#PL#Poland#--
+geo#PL-DS#Dolnośląskie#PL
+geo#PL-KP#Kujawsko-pomorskie#PL
+geo#PL-LU#Lubelskie#PL
+geo#PL-LB#Lubuskie#PL
+geo#PL-LD#Łódzkie#PL
+geo#PL-MA#Małopolskie#PL
+geo#PL-MZ#Mazowieckie#PL
+geo#PL-OP#Opolskie#PL
+geo#PL-PK#Podkarpackie#PL
+geo#PL-PD#Podlaskie#PL
+geo#PL-PM#Pomorskie#PL
+geo#PL-SL#Śląskie#PL
+geo#PL-SK#Świętokrzyskie#PL
+geo#PL-WN#Warmińsko-mazurskie#PL
+geo#PL-WP#Wielkopolskie#PL
+geo#PL-ZP#Zachodniopomorskie#PL
+geo#PM#St Pierre And Miquelon#--
+geo#PN#Pitcairn#--
+geo#PR#Puerto Rico#--
+geo#PS#"Palestinian Territory, Occupied"#--
+geo#PT#Portugal#--
+geo#PW#Palau#--
+geo#PY#Paraguay#--
+geo#QA#Qatar#--
+geo#RE#Reunion#--
+geo#RO#Romania#--
+geo#RO-B#Bucureşti#RO
+geo#RO-AB#Alba#RO
+geo#RO-AR#Arad#RO
+geo#RO-AG#Argeş#RO
+geo#RO-BC#Bacău#RO
+geo#RO-BH#Bihor#RO
+geo#RO-BN#Bistriţa-Năsăud#RO
+geo#RO-BT#Botoşani#RO
+geo#RO-BV#Braşov#RO
+geo#RO-BR#Brăila#RO
+geo#RO-BZ#Buzău#RO
+geo#RO-CS#Caraş-Severin#RO
+geo#RO-CL#Călăraşi#RO
+geo#RO-CJ#Cluj#RO
+geo#RO-CT#Constanţa#RO
+geo#RO-CV#Covasna#RO
+geo#RO-DB#Dâmboviţa#RO
+geo#RO-DJ#Dolj#RO
+geo#RO-GL#Galaţi#RO
+geo#RO-GR#Giurgiu#RO
+geo#RO-GJ#Gorj#RO
+geo#RO-HR#Harghita#RO
+geo#RO-HD#Hunedoara#RO
+geo#RO-IL#Ialomiţa#RO
+geo#RO-IS#Iaşi#RO
+geo#RO-MM#Maramureş#RO
+geo#RO-MH#Mehedinţi#RO
+geo#RO-MS#Mureş#RO
+geo#RO-NT#Neamţ#RO
+geo#RO-OT#Olt#RO
+geo#RO-PH#Prahova#RO
+geo#RO-SM#Satu Mare#RO
+geo#RO-SJ#Sălaj#RO
+geo#RO-SB#Sibiu#RO
+geo#RO-SV#Suceava#RO
+geo#RO-TR#Teleorman#RO
+geo#RO-TM#Timiş#RO
+geo#RO-TL#Tulcea#RO
+geo#RO-VS#Vaslui#RO
+geo#RO-VL#Vâlcea#RO
+geo#RO-VN#Vrancea#RO
+geo#RU#Russian Federation#--
+geo#RU-AD#"Adygeja, Respublika"#RU
+geo#RU-AL#"Altaj, Respublika"#RU
+geo#RU-BA#"Baškortostan, Respublika"#RU
+geo#RU-BU#"Burjatija, Respublika"#RU
+geo#RU-CE#Čečenskaja Respublika#RU
+geo#RU-CU#Čuvašskaja Respublika#RU
+geo#RU-DA#"Dagestan, Respublika"#RU
+geo#RU-IN#Ingušskaja Respublika [Respublika Ingušetija]#RU
+geo#RU-KB#Kabardino-Balkarskaja Respublika#RU
+geo#RU-KL#"Kalmykija, Respublika"#RU
+geo#RU-KC#Karačajevo-Čerkesskaja Respublika#RU
+geo#RU-KR#"Karelija, Respublika"#RU
+geo#RU-KK#"Hakasija, Respublika"#RU
+geo#RU-KO#"Komi, Respublika"#RU
+geo#RU-ME#"Marij Èl, Respublika"#RU
+geo#RU-MO#"Mordovija, Respublika"#RU
+geo#RU-SA#"Saha, Respublika [Jakutija]"#RU
+geo#RU-SE#"Severnaja Osetija, Respublika [Alanija] [Respublika Severnaja Osetija-Alanija]"#RU
+geo#RU-TA#"Tatarstan, Respublika"#RU
+geo#RU-TY#"Tyva, Respublika [Tuva]"#RU
+geo#RU-UD#Udmurtskaja Respublika#RU
+geo#RU-ALT#Altajskij kraj#RU
+geo#RU-KHA#Habarovskij kraj#RU
+geo#RU-KDA#Krasnodarskij kraj#RU
+geo#RU-KYA#Krasnojarskij kraj#RU
+geo#RU-PRI#Primorskij kraj#RU
+geo#RU-STA#Stavropol'skij kraj#RU
+geo#RU-AMU#Amurskaja oblast'#RU
+geo#RU-ARK#Arhangel'skaja oblast'#RU
+geo#RU-AST#Astrahanskaja oblast'#RU
+geo#RU-BEL#Belgorodskaja oblast'#RU
+geo#RU-BRY#Brjanskaja oblast'#RU
+geo#RU-CHE#Čeljabinskaja oblast'#RU
+geo#RU-CHI#Čitinskaja oblast'#RU
+geo#RU-IRK#Irkutskaja oblast'#RU
+geo#RU-IVA#Ivanovskaja oblast'#RU
+geo#RU-KGD#Kaliningradskaja oblast'#RU
+geo#RU-KLU#Kalužskaja oblast'#RU
+geo#RU-KAM#Kamčatskaja oblast'#RU
+geo#RU-KEM#Kemerovskaja oblast'#RU
+geo#RU-KIR#Kirovskaja oblast'#RU
+geo#RU-KOS#Kostromskaja oblast'#RU
+geo#RU-KGN#Kurganskaja oblast'#RU
+geo#RU-KRS#Kurskaja oblast'#RU
+geo#RU-LEN#Leningradskaja oblast'#RU
+geo#RU-LIP#Lipetskaja oblast'#RU
+geo#RU-MAG#Magadanskaja oblast'#RU
+geo#RU-MOS#Moskovskaja oblast'#RU
+geo#RU-MUR#Murmanskaja oblast'#RU
+geo#RU-NIZ#Nižegorodskaja oblast'#RU
+geo#RU-NGR#Novgorodskaja oblast'#RU
+geo#RU-NVS#Novosibirskaja oblast'#RU
+geo#RU-OMS#Omskaja oblast'#RU
+geo#RU-ORE#Orenburgskaja oblast'#RU
+geo#RU-ORL#Orlovskaja oblast'#RU
+geo#RU-PNZ#Penzenskaja oblast'#RU
+geo#RU-PER#Permskaja oblast'#RU
+geo#RU-PSK#Pskovskaja oblast'#RU
+geo#RU-ROS#Rostovskaja oblast'#RU
+geo#RU-RYA#Rjazanskaja oblast'#RU
+geo#RU-SAK#Sahalinskaja oblast'#RU
+geo#RU-SAM#Samarskaja oblast'#RU
+geo#RU-SAR#Saratovskaja oblast'#RU
+geo#RU-SMO#Smolenskaja oblast'#RU
+geo#RU-SVE#Sverdlovskaja oblast'#RU
+geo#RU-TAM#Tambovskaja oblast'#RU
+geo#RU-TOM#Tomskaja oblast'#RU
+geo#RU-TUL#Tul'skaja oblast'#RU
+geo#RU-TVE#Tverskaja oblast'#RU
+geo#RU-TYU#Tjumenskaja oblast'#RU
+geo#RU-ULY#Ul'janovskaja oblast'#RU
+geo#RU-VLA#Vladimirskaja oblast'#RU
+geo#RU-VGG#Volgogradskaja oblast'#RU
+geo#RU-VLG#Vologodskaja oblast'#RU
+geo#RU-VOR#Voronežskaja oblast'#RU
+geo#RU-YAR#Jaroslavskaja oblast'#RU
+geo#RU-MOW#Moskva#RU
+geo#RU-SPE#Sankt-Peterburg#RU
+geo#RU-YEV#Evrejskaja avtonomnaja oblast'#RU
+geo#RU-AGB#Aginskij Burjatskij avtonomnyj okrug#RU
+geo#RU-CHU#Čukotskij avtonomnyj okrug#RU
+geo#RU-EVE#Èvenkijskij avtonomnyj okrug#RU
+geo#RU-KHM#Hanty-Mansijskij avtonomnyj okrug#RU
+geo#RU-KOP#Komi-Permjatskij avtonomnyj okrug#RU
+geo#RU-KOR#Korjakskij avtonomnyj okrug#RU
+geo#RU-NEN#Nenetskij avtonomnyj okrug#RU
+geo#RU-TAY#Tajmyrskij (Dolgano-Nenetskij) avtonomnyj okrug#RU
+geo#RU-UOB#Ust'-Ordynskij Burjatskij avtonomnyj okrug#RU
+geo#RU-YAN#Jamalo-Nenetskij avtonomnyj okrug#RU
+geo#RW#Rwanda#--
+geo#SA#Saudi Arabia#--
+geo#SB#Solomon Islands#--
+geo#SC#Seychelles#--
+geo#SD#Sudan#--
+geo#SE#Sweden#--
+geo#SE-AB#Stockholms Län#SE
+geo#SE-AC#Västerbottens Län#SE
+geo#SE-BD#Norrbottens Län#SE
+geo#SE-C#Uppsala Län#SE
+geo#SE-D#Södermanlands Län#SE
+geo#SE-E#Östergötlands Län#SE
+geo#SE-F#Jönköpings Län#SE
+geo#SE-G#Kronoborgs Län#SE
+geo#SE-H#Kalmar Län#SE
+geo#SE-I#Gotlands Län#SE
+geo#SE-K#Blekinge Län#SE
+geo#SE-M#Skåne Län#SE
+geo#SE-N#Hallands Län#SE
+geo#SE-O#Västra Götalands Län#SE
+geo#SE-S#Värmlands Län#SE
+geo#SE-T#Örebro Län#SE
+geo#SE-U#Västmanlands Län#SE
+geo#SE-W#Dalarnes Län#SE
+geo#SE-X#Gävleborgs Län#SE
+geo#SE-Y#Västernorrlands Län#SE
+geo#SE-Z#Jämtlands Län#SE
+geo#SG#Singapore#--
+geo#SH#St Helena#--
+geo#SI#Slovenia#--
+geo#SJ#Svalbard And Jan Mayen#--
+geo#SK#Slovakia#--
+geo#SL#Sierra Leone#--
+geo#SM#San Marino#--
+geo#SN#Senegal#--
+geo#SO#Somalia#--
+geo#SR#Suriname#--
+geo#ST#Sao Tome And Principe#--
+geo#SV#El Salvador#--
+geo#SY#Syrian Arab Republic#--
+geo#SZ#Swaziland#--
+geo#TC#Turks And Caicos Islands#--
+geo#TD#Chad#--
+geo#TF#French Southern Territories#--
+geo#TG#Togo#--
+geo#TH#Thailand#--
+geo#TJ#Tajikistan#--
+geo#TM#Turkmenistan#--
+geo#TN#Tunisia#--
+geo#TO#Tonga#--
+geo#TP#East Timor#--
+geo#TR#Turkey#--
+geo#TR-01#Adana#TR
+geo#TR-02#Adıyaman#TR
+geo#TR-03#Afyon#TR
+geo#TR-04#Ağrı#TR
+geo#TR-05#Amasya#TR
+geo#TR-06#Ankara#TR
+geo#TR-07#Antalya#TR
+geo#TR-08#Artvin#TR
+geo#TR-09#Aydın#TR
+geo#TR-10#Balıkesir#TR
+geo#TR-11#Bilecik#TR
+geo#TR-12#Bingöl#TR
+geo#TR-13#Bitlis#TR
+geo#TR-14#Bolu#TR
+geo#TR-15#Burdur#TR
+geo#TR-16#Bursa#TR
+geo#TR-17#Çanakkale#TR
+geo#TR-18#Çankırı#TR
+geo#TR-19#Çorum#TR
+geo#TR-20#Denizli#TR
+geo#TR-21#Diyarbakır#TR
+geo#TR-22#Edirne#TR
+geo#TR-23#Elazıg#TR
+geo#TR-24#Erzincan#TR
+geo#TR-25#Erzurum#TR
+geo#TR-26#Eskişehir#TR
+geo#TR-27#Gaziantep#TR
+geo#TR-28#Giresun#TR
+geo#TR-29#Gümüşhane#TR
+geo#TR-30#Hakkâri#TR
+geo#TR-31#Hatay#TR
+geo#TR-32#Isparta#TR
+geo#TR-33#İçel#TR
+geo#TR-34#İstanbul#TR
+geo#TR-35#İzmir#TR
+geo#TR-36#Kars#TR
+geo#TR-37#Kastamonu#TR
+geo#TR-38#Kayseri#TR
+geo#TR-39#Kırklareli#TR
+geo#TR-40#Kırşehir#TR
+geo#TR-41#Kocaeli#TR
+geo#TR-42#Konya#TR
+geo#TR-43#Kütahya#TR
+geo#TR-44#Malatya#TR
+geo#TR-45#Manisa#TR
+geo#TR-46#Kahramanmaraş#TR
+geo#TR-47#Mardin#TR
+geo#TR-48#Muğla#TR
+geo#TR-49#Muş#TR
+geo#TR-50#Nevşehir#TR
+geo#TR-51#Niğde#TR
+geo#TR-52#Ordu#TR
+geo#TR-53#Rize#TR
+geo#TR-54#Sakarya#TR
+geo#TR-55#Samsun#TR
+geo#TR-56#Siirt#TR
+geo#TR-57#Sinop#TR
+geo#TR-58#Sivas#TR
+geo#TR-59#Tekirdağ#TR
+geo#TR-60#Tokat#TR
+geo#TR-61#Trabzon#TR
+geo#TR-62#Tunceli#TR
+geo#TR-63#Şanlıurfa#TR
+geo#TR-64#Uşak#TR
+geo#TR-65#Van#TR
+geo#TR-66#Yozgat#TR
+geo#TR-67#Zonguldak#TR
+geo#TR-68#Aksaray#TR
+geo#TR-69#Bayburt#TR
+geo#TR-70#Karaman#TR
+geo#TR-71#Kırıkkale#TR
+geo#TR-72#Batman#TR
+geo#TR-73#Şırnak#TR
+geo#TR-74#Bartın#TR
+geo#TR-75#Ardahan#TR
+geo#TR-76#Iğdır#TR
+geo#TR-77#Yalova#TR
+geo#TR-78#Karabük#TR
+geo#TR-79#Kilis#TR
+geo#TR-80#Osmaniye#TR
+geo#TT#Trinidad And Tobago#--
+geo#TV#Tuvalu#--
+geo#TW#"Taiwan, Province Of China"#--
+geo#TZ#"Tanzania, United Republic of"#--
+geo#UA#Ukraine#--
+geo#UG#Uganda#--
+geo#UM#US Minor Outlying Islands#--
+geo#UM-67#Johnston Atoll#UM
+geo#UM-71#Midway Islands#UM
+geo#UM-76#Navassa Island#UM
+geo#UM-79#Wake Island#UM
+geo#UM-81#Baker Island#UM
+geo#UM-84#Howland Island#UM
+geo#UM-86#Jarvis Island#UM
+geo#UM-89#Kingman Reef#UM
+geo#UM-95#Palmyra Atoll#UM
+geo#US#United States#--
+geo#US-AK#Alaska#US
+geo#US-AL#Alabama#US
+geo#US-AR#Arkansas#US
+geo#US-AS#American Samoa#US
+geo#US-AZ#Arizona#US
+geo#US-CA#California#US
+geo#US-CO#Colorado#US
+geo#US-CT#Connecticut#US
+geo#US-DC#District Of Columbia#US
+geo#US-DE#Delaware#US
+geo#US-FL#Florida#US
+geo#US-GA#Georgia#US
+geo#US-GU#Guam#US
+geo#US-HI#Hawaii#US
+geo#US-IA#Iowa#US
+geo#US-ID#Idaho#US
+geo#US-IL#Illinois#US
+geo#US-IN#Indiana#US
+geo#US-KS#Kansas#US
+geo#US-KY#Kentucky#US
+geo#US-LA#Louisiana#US
+geo#US-MA#Massachusetts#US
+geo#US-MD#Maryland#US
+geo#US-ME#Maine#US
+geo#US-MI#Michigan#US
+geo#US-MN#Minnesota#US
+geo#US-MO#Missouri#US
+geo#US-MP#Northern Mariana Islands#US
+geo#US-MS#Mississippi#US
+geo#US-MT#Montana#US
+geo#US-NC#North Carolina#US
+geo#US-ND#North Dakota#US
+geo#US-NE#Nebraska#US
+geo#US-NH#New Hampshire#US
+geo#US-NJ#New Jersey#US
+geo#US-NM#New Mexico#US
+geo#US-NV#Nevada#US
+geo#US-NY#New York#US
+geo#US-OH#Ohio#US
+geo#US-OK#Oklahoma#US
+geo#US-OR#Oregon#US
+geo#US-PA#Pennsylvania#US
+geo#US-PR#Puerto Rico#US
+geo#US-RI#Rhode Island#US
+geo#US-SC#South Carolina#US
+geo#US-SD#South Dakota#US
+geo#US-TN#Tennessee#US
+geo#US-TX#Texas#US
+geo#US-UM#U.S. Minor Outlying Islands#US
+geo#US-UT#Utah#US
+geo#US-VA#Virginia#US
+geo#US-VI#Virgin Islands Of The U.S.#US
+geo#US-VT#Vermont#US
+geo#US-WA#Washington#US
+geo#US-WI#Wisconsin#US
+geo#US-WV#West Virginia#US
+geo#US-WY#Wyoming#US
+geo#UY#Uruguay#--
+geo#UZ#Uzbekistan#--
+geo#VA#Vatican City State#--
+geo#VC#St Vincent And Grenadines#--
+geo#VE#Venezuela#--
+geo#VG#"Virgin Islands, British"#--
+geo#VI#United States Virgin Islands#--
+geo#VN#Viet Nam#--
+geo#VN-01#Lai Chau#VN
+geo#VN-02#Lao Cai#VN
+geo#VN-03#Ha Giang#VN
+geo#VN-04#Cao Bang#VN
+geo#VN-05#Son La#VN
+geo#VN-06#Yen Bai#VN
+geo#VN-07#Tuyen Quang#VN
+geo#VN-09#Lang Son#VN
+geo#VN-13#Quang Ninh#VN
+geo#VN-14#Hoa Binh#VN
+geo#VN-15#Ha Tay#VN
+geo#VN-18#Ninh Binh#VN
+geo#VN-20#Thai Binh#VN
+geo#VN-21#Thanh Hoa#VN
+geo#VN-22#Nghe An#VN
+geo#VN-23#Ha Tinh#VN
+geo#VN-24#Quang Binh#VN
+geo#VN-25#Quang Tri#VN
+geo#VN-26#Thua Thien-Hue#VN
+geo#VN-27#Quang Nam#VN
+geo#VN-28#Kon Tum#VN
+geo#VN-29#Quang Ngai#VN
+geo#VN-30#Gia Lai#VN
+geo#VN-31#Binh Dinh#VN
+geo#VN-32#Phu Yen#VN
+geo#VN-33#Dac Lac#VN
+geo#VN-34#Khanh Hoa#VN
+geo#VN-35#Lam Dong#VN
+geo#VN-36#Ninh Thuan#VN
+geo#VN-37#Tay Ninh#VN
+geo#VN-39#Dong Nai#VN
+geo#VN-40#Binh Thuan#VN
+geo#VN-41#Long An#VN
+geo#VN-43#Ba Ria - Vung Tau#VN
+geo#VN-44#An Giang#VN
+geo#VN-45#Dong Thap#VN
+geo#VN-46#Tien Giang#VN
+geo#VN-47#Kien Giang#VN
+geo#VN-48#Can Tho#VN
+geo#VN-49#Vinh Long#VN
+geo#VN-50#Ben Tre#VN
+geo#VN-51#Tra Vinh#VN
+geo#VN-52#Soc Trang#VN
+geo#VN-53#Bac Can#VN
+geo#VN-54#Bac Giang#VN
+geo#VN-55#Bac Lieu#VN
+geo#VN-56#Bac Ninh#VN
+geo#VN-57#Binh Duong#VN
+geo#VN-58#Binh Phuoc#VN
+geo#VN-59#Ca Mau#VN
+geo#VN-60#"Da Nang, thanh pho"#VN
+geo#VN-61#Hai Duong#VN
+geo#VN-62#"Hai Phong, thanh pho"#VN
+geo#VN-63#Ha Nam#VN
+geo#VN-64#"Ha Noi, thu do"#VN
+geo#VN-65#"Ho Chi Minh, thanh po [Sai Gon]"#VN
+geo#VN-66#Hung Yen#VN
+geo#VN-67#Nam Dinh#VN
+geo#VN-68#Phu Tho#VN
+geo#VN-69#Thai Nguyen#VN
+geo#VN-70#Vinh Phuc#VN
+geo#VU#Vanuatu#--
+geo#WF#Wallis And Futuna Islands#--
+geo#WS#Samoa#--
+geo#YE#Yemen#--
+geo#YT#Mayotte#--
+geo#YU#Yugoslavia (Fed Rep Of)#--
+geo#YU-CG#Crna Gora#YU
+geo#YU-SR#Srbija#YU
+geo#YU-KM#Kosovo-Metohija#YU-SR
+geo#YU-VO#Vojvodina#YU-SR
+geo#ZA#South Africa#--
+geo#ZM#Zambia#--
+geo#ZW#Zimbabwe#--
