@@ -31,14 +31,17 @@ public class CheckAxisDeploymentDescriptorsTask extends SimpleCommand {
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;
 	private IProject serverProject;
+	private String   moduleName_;
     
-  public CheckAxisDeploymentDescriptorsTask()
+  public CheckAxisDeploymentDescriptorsTask( String moduleName )
   {
     String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
     setDescription(msgUtils_.getMessage("CHECK_WS_DD_TASK_DESCRIPTION"));
-    setName(msgUtils_.getMessage("CHECK_WS_DD_TASK_LABEL"));        
+    setName(msgUtils_.getMessage("CHECK_WS_DD_TASK_LABEL"));
+	
+	moduleName_ = moduleName;
   }
 	
 	public Status execute(Environment env) {
@@ -47,25 +50,14 @@ public class CheckAxisDeploymentDescriptorsTask extends SimpleCommand {
       return status;
 		}
 
-		IPath filePath = null;
-    IProject project = serverProject;
-    filePath = project.getFullPath();
-//		try {
-//			if (project.hasNature(IWebNatureConstants.J2EE_NATURE_ID)) {
-//        J2EEWebNatureRuntime webProject = (J2EEWebNatureRuntime) project.getNature(IWebNatureConstants.J2EE_NATURE_ID);
-//        filePath = filePath.append(webProject.getWEBINFPath());
-//        filePath = filePath.append("/server-config.wsdd");
-//      }
-//		} catch (CoreException e) {
-//			status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_DEFAULT_BEAN"), Status.ERROR, e);
-//			env.getStatusHandler().reportError(status);
-//			return status;
-//		}
+	  IPath    filePath = null;
+      IProject project = serverProject;
+	  	  
 
-		filePath = J2EEUtils.getFirstWebInfPath(serverProject);
-        filePath = filePath.append("/server-config.wsdd");
-		
-		if(filePath==null || filePath.isEmpty())
+      filePath = J2EEUtils.getWebInfPath( project, moduleName_ );
+      filePath = filePath.append("/server-config.wsdd");
+
+	  if(filePath==null || filePath.isEmpty())
 		{
 			status = new SimpleStatus("", coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR);
 			env.getStatusHandler().reportError(status);

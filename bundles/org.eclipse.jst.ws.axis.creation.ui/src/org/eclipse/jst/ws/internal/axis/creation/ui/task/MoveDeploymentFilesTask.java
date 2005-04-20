@@ -37,16 +37,20 @@ public class MoveDeploymentFilesTask extends SimpleCommand {
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;
 	private IProject serverProject;
-  private JavaWSDLParameter javaWSDLParam_;
+	private String   moduleName_;
 	
-	public MoveDeploymentFilesTask()
-  {
-    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-    setDescription(msgUtils_.getMessage(DESCRIPTION));
-    setName(msgUtils_.getMessage(LABEL));
-  }
+    private JavaWSDLParameter javaWSDLParam_;
+	
+	public MoveDeploymentFilesTask( String moduleName )
+    {
+      String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
+      msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
+      coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
+      setDescription(msgUtils_.getMessage(DESCRIPTION));
+      setName(msgUtils_.getMessage(LABEL));
+	  
+	  moduleName_ = moduleName;
+    }
 
   /**
 	* Execute DefaultsForJavaToWSDLTask
@@ -85,8 +89,7 @@ public class MoveDeploymentFilesTask extends SimpleCommand {
 		}
 
 
-		IPath webinfPath;
-		webinfPath = J2EEUtils.getFirstWebInfPath(project);
+		IPath webinfPath = J2EEUtils.getWebInfPath(project, moduleName_ );
 
 			for (int i = 0; i < deployFiles.length; i++) {
         File f = new File(deployFiles[i]);

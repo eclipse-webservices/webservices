@@ -34,9 +34,9 @@ public class AxisClientCommandsFragment extends BooleanFragment
     SequenceFragment root = new SequenceFragment();
     
     root.add(new SimpleFragment(new DefaultsForHTTPBasicAuthCommand(), ""));
-    root.add(new SimpleFragment(new CopyAxisJarCommand(), ""));
+    //root.add(new SimpleFragment(new CopyAxisJarCommand(), ""));
     root.add(new SimpleFragment(new AddJarsToProjectBuildPathTask(), ""));
-    root.add(new SimpleFragment(new DefaultsForClientJavaWSDLCommand(), "")); 
+    //root.add(new SimpleFragment(new DefaultsForClientJavaWSDLCommand(), "")); 
     root.add(new SimpleFragment(new ValidateWSDLCommand(), ""));
     root.add(new SimpleFragment(new WSDL2JavaCommand(), "")); 
     root.add(new SimpleFragment(new RefreshProjectCommand(), ""));

@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -40,6 +40,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CopyWSDLCommand;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
@@ -66,12 +67,15 @@ public class Skeleton2WSDLCommand extends SimpleCommand
   private IProject serverProject;
   private HashMap visitedLinks;
   private MessageUtils msgUtils_;
+  private String       moduleName_;
 
-  public Skeleton2WSDLCommand() {
+  public Skeleton2WSDLCommand( String moduleName ) {
     super(WebServiceAxisCreationUIPlugin.getMessage(LABEL), WebServiceAxisCreationUIPlugin.getMessage(DESCRIPTION));
 	msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.creation.ui.plugin", this );
     setName( LABEL );
     setDescription( DESCRIPTION );
+	
+	moduleName_ = moduleName;
   }
 
   /**
@@ -167,20 +171,22 @@ public class Skeleton2WSDLCommand extends SimpleCommand
 		outputFile = workspace.getFileForLocation( new Path(wsdlLocation));
      }
      else{
-		wsdlPath = serverProject.getFullPath();
-		if (serverProject.hasNature(IWebNatureConstants.J2EE_NATURE_ID)) {
-			   J2EEWebNatureRuntime webProject =
-				 (J2EEWebNatureRuntime) serverProject.getNature(
-				   IWebNatureConstants.J2EE_NATURE_ID);
-			   wsdlPath = webProject.getWebModulePath();
-			   //wsdlPath = wsdlPath.append(webProject.getWEBINFPath());
-			 }
-		else if (serverProject.hasNature(IEJBNatureConstants.NATURE_ID))
-		{
-			EJBNatureRuntime ejbProject = EJBNatureRuntime.getRuntime(serverProject);
-			wsdlPath = wsdlPath.append(ejbProject.getMetaFolder().getProjectRelativePath().addTrailingSeparator());
-		}		
-
+//		wsdlPath = serverProject.getFullPath();
+//		
+//		if (serverProject.hasNature(IWebNatureConstants.J2EE_NATURE_ID)) {
+//			   J2EEWebNatureRuntime webProject =
+//				 (J2EEWebNatureRuntime) serverProject.getNature(
+//				   IWebNatureConstants.J2EE_NATURE_ID);
+//			   wsdlPath = J2EEUtils.getWebContentPath( serverProject, moduleName_ );
+//			   //wsdlPath = wsdlPath.append(webProject.getWEBINFPath());
+//			 }
+//		else if (serverProject.hasNature(IEJBNatureConstants.NATURE_ID))
+//		{
+//			EJBNatureRuntime ejbProject = EJBNatureRuntime.getRuntime(serverProject);
+//			wsdlPath = wsdlPath.append(ejbProject.getMetaFolder().getProjectRelativePath().addTrailingSeparator());
+//		}		
+// TODO:  handle EJB case
+		     wsdlPath = J2EEUtils.getWebContentPath( serverProject, moduleName_ );
 			 IPath wsdlFilePath = wsdlPath.append(WSDL_FOLDER).append(port.getName()).addFileExtension(WSDL_EXT);
 		     IFolder folder = ResourceUtils
 								.getWorkspaceRoot()

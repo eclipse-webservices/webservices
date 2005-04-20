@@ -642,7 +642,9 @@ public final class ResourceUtils {
 	 * @return
 	 */
 	public static IPath getJavaSourceLocation(IProject project, String compName){
-		return getJavaSourceLocation(ComponentCore.createComponent(project, compName));
+//		return getJavaSourceLocation(ComponentCore.createComponent(project, compName));
+// TODO: Workaround for 92028
+		return getJavaSourceLocation(project);
 	}
 	
 	/**

@@ -154,7 +154,7 @@ public class AxisBeanFragment extends SequenceFragment
   {
     public BUAxisCommandsFragment2()
     {
-      add(new SimpleFragment(new DefaultsForServerJavaWSDLCommand(), ""));
+      //add(new SimpleFragment(new DefaultsForServerJavaWSDLCommand(), ""));
       add(new SimpleFragment(new JavaToWSDLMethodCommand(), ""));
     }    
   }
@@ -164,19 +164,19 @@ public class AxisBeanFragment extends SequenceFragment
     public BUAxisCommandsFragment3()
     {
       add(new SimpleFragment(new LiteralSupportMessageTask(), ""));
-      add(new SimpleFragment(new CheckAxisDeploymentDescriptorsTask(), ""));
-      add(new SimpleFragment(new CopyAxisJarCommand(), ""));
+      //add(new SimpleFragment(new CheckAxisDeploymentDescriptorsTask(), ""));
+      //add(new SimpleFragment(new CopyAxisJarCommand(), ""));
       add(new SimpleFragment(new AddJarsToProjectBuildPathTask(), ""));
       add(new SimpleFragment(new WaitForAutoBuildCommand(), "" ));
       add(new SimpleFragment(new Java2WSDLCommand(), ""));
       add(new SimpleFragment(new RefreshProjectCommand(), ""));
       add(new SimpleFragment(new WSDL2JavaCommand(), ""));
       add(new SimpleFragment(new MoveJavaFilesTask(), ""));
-      add(new SimpleFragment(new UpdateAxisWSDDFileTask(), ""));
-      add(new SimpleFragment(new UpdateWEBXMLCommand(), ""));
+      //add(new SimpleFragment(new UpdateAxisWSDDFileTask(), ""));
+      //add(new SimpleFragment(new UpdateWEBXMLCommand(), ""));
       add(new SimpleFragment(new RefreshProjectCommand(), ""));
       add(new SimpleFragment(new BuildProjectCommand(), ""));
-      add(new SimpleFragment(new StartProjectCommand(), ""));
+      //add(new SimpleFragment(new StartProjectCommand(), ""));
       add(new SimpleFragment(new AxisDeployCommand(), ""));
       //add(new SimpleFragment(new CopyAxisServerConfigTask(), ""));
       add(new SimpleFragment(new RefreshProjectCommand(), ""));

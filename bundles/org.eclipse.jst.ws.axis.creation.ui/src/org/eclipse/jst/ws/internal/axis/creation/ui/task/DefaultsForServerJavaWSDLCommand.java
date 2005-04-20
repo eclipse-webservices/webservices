@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
 import javax.wsdl.Definition;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -52,6 +51,7 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 	private String WSDLServicePathname_;
 	private WebServicesParser WSParser_;
 	// rm private WebServiceElement wse_; // temporary
+	private String moduleName_;
 	
 	private String LABEL = "TASK_LABEL_SERVER_JAVA_WSDL_DEFAULTS";
 	private String DESCRIPTION = "TASK_DESC_SERVER_JAVA_WSDL_DEFAULTS";
@@ -61,12 +61,13 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 	public final byte MODE_BEAN = (byte) 0;
 	public final String SERVICE_NAME_EXT = "Service"; //$NON-NLS-1$
 
-	public DefaultsForServerJavaWSDLCommand() {
-
+	public DefaultsForServerJavaWSDLCommand( String moduleName ) 
+	{
 		String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
 	    conMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.ui.plugin", this );
+		moduleName_  = moduleName;
 
 		setName (msgUtils_.getMessage(LABEL));
 		setDescription( msgUtils_.getMessage(DESCRIPTION));
@@ -137,15 +138,17 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 		IPath webinfPath = serviceProject_.getFullPath();
 		try {
 			if ( ResourceUtils.isWebProject(serviceProject_)) {
-				moduleServerRoot = ResourceUtils.getJavaSourceLocation(serviceProject_);
+				moduleServerRoot = ResourceUtils.getJavaSourceLocation(serviceProject_, moduleName_);
+
 				// should use ModuleCore.getSourceContainers();
 //				IContainer container = ResourceUtils.getWebModuleServerRoot(serviceProject_);
 //				if (container!=null) {
 //					moduleServerRoot = container.getFullPath();
 //				}
 				
-				modulePath = J2EEUtils.getFirstWebContentPath(serviceProject_);
-				webinfPath = J2EEUtils.getFirstWebInfPath(serviceProject_);
+				modulePath = J2EEUtils.getWebContentPath(serviceProject_, moduleName_);
+				webinfPath = J2EEUtils.getWebInfPath( serviceProject_, moduleName_ );
+				
 			}
 
 		} catch (Exception e) {
@@ -213,6 +216,7 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 		//		String output = PlatformUtils.getPlatformURL(modulePath);
 
 		String javaOutput =	ResourceUtils.findResource(moduleServerRoot).getLocation().toString();
+//		String javaOutput = ResourceUtils.getWorkspaceRoot().getFolder(moduleServerRoot).getLocation().toString();
 	
 		String serviceName = javaWSDLParam_.getServiceName();
 		IPath outputPath =	ResourceUtils.findResource(webinfPath).getLocation();

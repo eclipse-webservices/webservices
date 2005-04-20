@@ -64,7 +64,7 @@ public class AxisClientGenerator extends WebServiceClientGenerator
     //Generate the artifacts
     Status status = new SimpleStatus("");
     //AxisClientDefaultingCommand
-    AxisClientDefaultingCommand axisClientDefaultingCommand = new AxisClientDefaultingCommand();
+    AxisClientDefaultingCommand axisClientDefaultingCommand = new AxisClientDefaultingCommand("");
                                                                                                 axisClientDefaultingCommand.setWsdlURL(wsdlURL);
     axisClientDefaultingCommand.setWebServicesParser(new WebServicesParserExt());
     axisClientDefaultingCommand.setClientProject((IProject)(new StringToIProjectTransformer().transform(project)));
@@ -100,7 +100,7 @@ public class AxisClientGenerator extends WebServiceClientGenerator
     //in the future.
     if (isWebProject)
     {
-	    CopyAxisJarCommand axjCommand = new CopyAxisJarCommand();
+	    CopyAxisJarCommand axjCommand = new CopyAxisJarCommand("");
 	    axjCommand.setProject(axisClientDefaultingCommand.getClientProject());
 	    status = axjCommand.execute(j2eeEnvironment);
 	    if (status.getSeverity()!=Status.OK)
@@ -129,7 +129,7 @@ public class AxisClientGenerator extends WebServiceClientGenerator
     }    
     
     //DefaultsForClientJavaWSDLCommand
-    DefaultsForClientJavaWSDLCommand defClientCommand = new DefaultsForClientJavaWSDLCommand();
+    DefaultsForClientJavaWSDLCommand defClientCommand = new DefaultsForClientJavaWSDLCommand("");
     defClientCommand.setJavaWSDLParam(axisClientDefaultingCommand.getJavaWSDLParam());
     defClientCommand.setProxyProject(axisClientDefaultingCommand.getClientProject());
     defClientCommand.setWSDLServiceURL(axisClientDefaultingCommand.getWsdlURL());

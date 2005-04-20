@@ -33,16 +33,19 @@ public class DefaultsForClientJavaWSDLCommand extends SimpleCommand {
 	private String WSDLServicePathname_;
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;
+	private String moduleName_;
 	
 	private String LABEL = "TASK_LABEL_CLIENT_JAVA_WSDL_DEFAULTS";
 	private String DESCRIPTION = "TASK_DESC_CLIENT_JAVA_WSDL_DEFAULTS";
 
-	public DefaultsForClientJavaWSDLCommand() {
+	public DefaultsForClientJavaWSDLCommand( String moduleName ) {
 		String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
 	    setName (msgUtils_.getMessage(LABEL));
 		setDescription( msgUtils_.getMessage(DESCRIPTION));		
+		
+		moduleName_ = moduleName;
 	}
 	
 	/**
@@ -74,14 +77,14 @@ public class DefaultsForClientJavaWSDLCommand extends SimpleCommand {
 		javaWSDLParam_.setMetaInfOnly(false);
 		javaWSDLParam_.setServerSide(JavaWSDLParameter.SERVER_SIDE_NONE);
 		
-		IPath webModuleServerRoot = ResourceUtils.getJavaSourceLocation(proxyProject_);
+		IPath webModuleServerRoot = ResourceUtils.getJavaSourceLocation(proxyProject_, moduleName_ );
 		//String output = PlatformUtils.getPlatformURL(webModuleServerRoot);
 		String output =	ResourceUtils.findResource(webModuleServerRoot).getLocation().toString();
-
+//		String output = ResourceUtils.getWorkspaceRoot().getFolder(webModuleServerRoot).getLocation().toString();
 		javaWSDLParam_.setJavaOutput(output);
 
 
-		IContainer webModuleContainer = ResourceUtils.getWebModuleServerRoot(proxyProject_);
+		IContainer webModuleContainer = ResourceUtils.getWebComponentServerRoot(proxyProject_, moduleName_);
 		if (webModuleContainer !=null)
 		{
 		  IPath webModulePath = webModuleContainer.getFullPath();

@@ -54,13 +54,18 @@ public class UpdateAxisWSDDFileTask extends SimpleCommand {
 	private JavaWSDLParameter javaWSDLParam_;
 	private IProject serviceProject_;
 	// rm private Model model_;
+	
+	private String moduleName_;
 
-	public UpdateAxisWSDDFileTask() {
+	public UpdateAxisWSDDFileTask( String moduleName) 
+	{
 	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
 	    setDescription(msgUtils_.getMessage(DESCRIPTION));
-	    setName(msgUtils_.getMessage(LABEL));	    
+	    setName(msgUtils_.getMessage(LABEL));	 
+		
+		moduleName_ = moduleName;
 	}
 	
 	public UpdateAxisWSDDFileTask(JavaWSDLParameter javaWSDLParam) {
@@ -126,7 +131,7 @@ public class UpdateAxisWSDDFileTask extends SimpleCommand {
 		String output = javaWSDLParam_.getOutput();
 
 //		String webContentPath =	ResourceUtils.getWebModuleServerRoot(project).getLocation().toString();
-		String webContentPath =	J2EEUtils.getFirstWebContentContainer(project).getLocation().toString();
+		String webContentPath =	J2EEUtils.getWebContentContainer( project, moduleName_ ).getLocation().toString();
 		try {
 
 			if (javaWSDLParam_.getDeploymentFiles() != null

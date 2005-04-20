@@ -35,7 +35,7 @@ public class AxisClientFragment extends SequenceFragment
 
 	public AxisClientFragment() 
 	{
-		add(new SimpleFragment(new AxisClientDefaultingCommand(), ""));
+		//add(new SimpleFragment(new AxisClientDefaultingCommand(), ""));
 		add(new SimpleFragment("AxisClientStart"));
 		add(new MappingFragment());
 		add(new AxisClientCommandsFragment());

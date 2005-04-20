@@ -43,13 +43,16 @@ public class ManageServerStartUpCommand extends SimpleCommand {
 	private IServer sampleExistingServer_;
 	
 	private boolean isWebProjectStartupRequested_;
+	private String  moduleName_;
 
 	/**
 	 * Default CTOR;
 	 */
-	public ManageServerStartUpCommand() {
+	public ManageServerStartUpCommand( String moduleName ) {
 		String pluginId = "org.eclipse.jst.ws.consumption";
 		msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
+		
+		moduleName_ = moduleName;
 	}
 	
 	/**
@@ -62,7 +65,7 @@ public class ManageServerStartUpCommand extends SimpleCommand {
 	 
 	    if (isStartServiceEnabled_.booleanValue() && serviceExistingServer_!=null){
 	    	//System.out.println("Calling service server start: "+serviceProject_+"  "+serviceServerTypeId_);
-	    	StartProjectCommand spc = new StartProjectCommand();
+	    	StartProjectCommand spc = new StartProjectCommand( moduleName_ );
 	    	spc.setServiceProject(serviceProject_);
 	    	spc.setServiceServerTypeID(serviceServerTypeId_);
 	    	spc.setServiceExistingServer(serviceExistingServer_);
@@ -72,7 +75,7 @@ public class ManageServerStartUpCommand extends SimpleCommand {
 	    
 	    if(isTestServiceEnabled_.booleanValue()&& sampleExistingServer_!=null && serviceExistingServer_!=null && !sampleExistingServer_.equals(serviceExistingServer_)){
 	    	//System.out.println("Calling client server start: "+sampleProject_+"  "+sampleExistingServer__);
-	    	StartProjectCommand spc = new StartProjectCommand();
+	    	StartProjectCommand spc = new StartProjectCommand( moduleName_ );
 	    	spc.setSampleProject(sampleProject_);
 	    	spc.setSampleServerTypeID(sampleServerTypeId_);
 	    	spc.setSampleExistingServer(sampleExistingServer_);

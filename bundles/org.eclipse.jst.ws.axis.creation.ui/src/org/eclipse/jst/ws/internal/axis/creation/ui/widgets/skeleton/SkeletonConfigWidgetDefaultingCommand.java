@@ -28,7 +28,13 @@ public class SkeletonConfigWidgetDefaultingCommand extends SimpleCommand
   private String wsdlURI;
   private IProject serverProject;
   private JavaWSDLParameter javaWSDLParam;
+  private String moduleName_;
 
+  public SkeletonConfigWidgetDefaultingCommand( String moduleName )
+  {
+    moduleName_ = moduleName;
+  }
+  
   public void setWsdlURI(String wsdlURI)
   {
     this.wsdlURI = wsdlURI;
@@ -49,7 +55,7 @@ public class SkeletonConfigWidgetDefaultingCommand extends SimpleCommand
 //      J2EEWebNatureRuntime nature = (J2EEWebNatureRuntime)serverProject.getNature(IWebNatureConstants.J2EE_NATURE_ID);
 //      StringBuffer sb = new StringBuffer(nature.getModuleServerRoot().getFullPath().addTrailingSeparator().toString());
 //      sb.append("wsdl");
-	  IPath wsdlPath = J2EEUtils.getFirstWebContentPath(serverProject).append("wsdl");
+	  IPath wsdlPath = J2EEUtils.getWebContentPath(serverProject, moduleName_ ).append("wsdl");
       return wsdlPath.toString();
   }
   

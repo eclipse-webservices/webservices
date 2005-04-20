@@ -55,13 +55,13 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		
 		Vector commands = new Vector();
 		commands.add(new AxisClientInputCommand(this, ctx, project, module));
-		commands.add(new AxisClientDefaultingCommand());
+		commands.add(new AxisClientDefaultingCommand(module));
 //		commands.add(new SimpleFragment("AxisClientStart"));
 //		commands.add(new SimpleFragment("AxisClientBeanMapping"));
 		commands.add(new DefaultsForHTTPBasicAuthCommand());
-		commands.add(new CopyAxisJarCommand());
+		commands.add(new CopyAxisJarCommand(module));
 		commands.add(new AddJarsToProjectBuildPathTask());
-		commands.add(new DefaultsForClientJavaWSDLCommand());
+		commands.add(new DefaultsForClientJavaWSDLCommand(module));
 		commands.add(new ValidateWSDLCommand());
 		commands.add(new WSDL2JavaCommand());
 		commands.add(new RefreshProjectCommand());

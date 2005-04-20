@@ -46,15 +46,18 @@ public class CreateClientProjectCommand extends SimpleCommand
 
   private IServer fExistingServer = null;
   private MessageUtils msgUtils_;
+  private String moduleName_;
   
   /**
    * Default CTOR
    */
-  public CreateClientProjectCommand()
+  public CreateClientProjectCommand( String moduleName )
   {
     super("org.eclipse.jst.ws.internal.consumption.command.common.CreateClientProjectCommand", "org.eclipse.jst.ws.internal.consumption.command.common.CreateClientProjectCommand");
     String       pluginId = "org.eclipse.jst.ws.consumption";
-    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );    
+    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );  
+	
+	moduleName_ = moduleName;
   }
 
   public boolean isUndoable(){
@@ -192,7 +195,7 @@ public class CreateClientProjectCommand extends SimpleCommand
   	try{
   	    // start server(Bug 4377)
   	    if (needEAR_ &&  fExistingServer != null){
-  	    	StartProjectCommand spc = new StartProjectCommand();
+  	    	StartProjectCommand spc = new StartProjectCommand( moduleName_ );
   	    	spc.setSampleProject(webProject);
   	    	spc.setSampleExistingServer(fExistingServer);
   	    	spc.setCreationScenario(new Boolean("false"));

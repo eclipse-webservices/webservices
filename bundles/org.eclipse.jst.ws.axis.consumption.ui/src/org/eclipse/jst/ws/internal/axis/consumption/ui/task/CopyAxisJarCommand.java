@@ -42,16 +42,19 @@ public class CopyAxisJarCommand extends SimpleCommand {
   private MessageUtils baseConMsgUtils_;
   private IProject project;
   private Boolean projectRestartRequired_ = Boolean.FALSE;
+  private String  moduleName_;
 
   /**
    * Default CTOR;
    */
-  public CopyAxisJarCommand() {
+  public CopyAxisJarCommand( String moduleName ) {
     String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     baseConMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
     setDescription(msgUtils_.getMessage(DESCRIPTION));
     setName(msgUtils_.getMessage(LABEL));
+	
+	moduleName_ = moduleName;
   }
 
   /**
@@ -67,7 +70,7 @@ public class CopyAxisJarCommand extends SimpleCommand {
 
   private void copyAxisJarsToProject(IProject project, Status status, Environment env) {
 //    IPath webModulePath = ResourceUtils.getWebModuleServerRoot(project).getFullPath();
-	IPath webModulePath = J2EEUtils.getFirstWebContentPath(project);
+	IPath webModulePath = J2EEUtils.getWebContentPath( project, moduleName_ );
     if (webModulePath == null) {
       status = new SimpleStatus("", baseConMsgUtils_.getMessage("MSG_ERROR_PROJECT_NOT_FOUND"), Status.ERROR);
       env.getStatusHandler().reportError(status);

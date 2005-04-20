@@ -418,7 +418,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       add( new ServiceTestFragment( "TestService") );
       add( new SimpleFragment(new TestDefaultingFragment(),""));
       add( new ClientFragment() );
-      add( new SimpleFragment(new ManageServerStartUpCommand(),""));
+//      add( new SimpleFragment(new ManageServerStartUpCommand(),""));
       add( new ClientTestFragment( "ClientTestWidget") );
       add( new SimpleFragment( "Publish") );
       add(publishToPrivateUDDICmdFrag);

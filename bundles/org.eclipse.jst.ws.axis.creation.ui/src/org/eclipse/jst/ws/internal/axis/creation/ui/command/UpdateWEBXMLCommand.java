@@ -39,19 +39,22 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 
 	private MessageUtils msgUtils_;
 	private IProject serverProject;
+	private String   moduleName_;
 
-  public UpdateWEBXMLCommand()
+  public UpdateWEBXMLCommand( String moduleName )
   {
     String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
     msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
     setName (msgUtils_.getMessage(LABEL));
     setDescription( msgUtils_.getMessage(DESCRIPTION));
+	
+	moduleName_ = moduleName;
   }
 
 	public Status execute(Environment environment) {
 		if (serverProject != null) {
 			Status status = null;
-			status = addServlet(serverProject, getAxisServletDescriptor());
+			status = addServlet(serverProject, moduleName_, getAxisServletDescriptor());
 			if (status.getSeverity() == Status.ERROR) {
 				environment.getStatusHandler().reportError(status);
 				return status;
@@ -60,7 +63,7 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 				environment.getStatusHandler().reportError(status);
 				return status;
 			}
-			addServlet(serverProject, getAdmintServletDescriptor());
+			addServlet(serverProject, moduleName_, getAdmintServletDescriptor());
 			if (status.getSeverity() == Status.ERROR) {
 				environment.getStatusHandler().reportError(status);
 				return status;
@@ -107,6 +110,7 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 
 	public Status addServlet(
 		IProject webProject,
+		String   moduleName,
 		ServletDescriptor servletDescriptor) {
 
 		Object accessorKey = new Object();
@@ -116,55 +120,58 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 			// 
 			WebApp webapp = null;
 			structEdit = StructureEdit.getStructureEditForWrite(webProject);;
-			WorkbenchComponent wbcs[] = structEdit.getWorkbenchModules();
 			
-			webEdit = WebArtifactEdit.getWebArtifactEditForWrite(wbcs[0]);
-			if (webEdit != null) {
+			WorkbenchComponent component = getComponent( structEdit, moduleName );
+						
+			webEdit = WebArtifactEdit.getWebArtifactEditForWrite( component );
+			if (webEdit != null)
+			{
 				webapp = (WebApp) webEdit.getDeploymentDescriptorRoot();
-			//
+			   //
 			
-			boolean foundServlet = false;
+			   boolean foundServlet = false;
 
-			List theServlets = webapp.getServlets();
-			for (int i = 0; i < theServlets.size(); i++) {
+			   List theServlets = webapp.getServlets();
+			   for (int i = 0; i < theServlets.size(); i++) {
 				Servlet aServlet = (Servlet) theServlets.get(i);
 				if (aServlet.getServletName().equals(servletDescriptor._name)) {
 					foundServlet = true;
-				}
-			}
+				 }
+			   }
 
-			if (foundServlet) {
-				return new SimpleStatus( "" );
-			}
+			   if (foundServlet) {
+				  return new SimpleStatus( "" );
+			   }
 
-			WebapplicationFactory factory = WebapplicationFactory.eINSTANCE;
+			   WebapplicationFactory factory = WebapplicationFactory.eINSTANCE;
 
-			Servlet servlet = factory.createServlet();
-			ServletType servletType = factory.createServletType();
-			servlet.setWebType(servletType);
-			servlet.setServletName(servletDescriptor._name);
-			servletType.setClassName(servletDescriptor._className);
-			if(servletDescriptor._displayName != null){
-			   servlet.setDisplayName(servletDescriptor._displayName);
-			}
-			if(servletDescriptor._loadOnStartup != null){
-				servlet.setLoadOnStartup(servletDescriptor._loadOnStartup);
-			}
-			if(servletDescriptor._params != null){
-				Properties properties = servlet.getParamsAsProperties();
-				properties.putAll(servletDescriptor._params);
-			}
-			webapp.getServlets().add(servlet);
+			   Servlet servlet = factory.createServlet();
+			   ServletType servletType = factory.createServletType();
+			   servlet.setWebType(servletType);
+			   servlet.setServletName(servletDescriptor._name);
+			   servletType.setClassName(servletDescriptor._className);
+			   if(servletDescriptor._displayName != null){
+			     servlet.setDisplayName(servletDescriptor._displayName);
+			   }
+			   if(servletDescriptor._loadOnStartup != null){
+				  servlet.setLoadOnStartup(servletDescriptor._loadOnStartup);
+			   }
+			   if(servletDescriptor._params != null){
+				  Properties properties = servlet.getParamsAsProperties();
+				  properties.putAll(servletDescriptor._params);
+			   }
+			   webapp.getServlets().add(servlet);
 			
-			if(servletDescriptor._mappings != null){
-				for(int i=0; i<servletDescriptor._mappings.length; i++){
+			   if(servletDescriptor._mappings != null){
+				  for(int i=0; i<servletDescriptor._mappings.length; i++){
 					ServletMapping servletMapping = factory.createServletMapping();
 					servletMapping.setServlet(servlet);
 					servletMapping.setUrlPattern(servletDescriptor._mappings[i]);
 					webapp.getServletMappings().add(servletMapping);					
-				}
-			}
-			webEdit.save(new NullProgressMonitor());
+				  }
+			   }
+			   
+			   webEdit.save(new NullProgressMonitor());
 			}
 
 			return new SimpleStatus( "" );
@@ -183,6 +190,23 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 		}
 	}
 
+  private WorkbenchComponent getComponent( StructureEdit structEdit, String moduleName )
+  {
+    WorkbenchComponent component = null;
+	WorkbenchComponent wbcs[]    = structEdit.getWorkbenchModules();
+	
+	for( int index = 0; index < wbcs.length; index++ )
+	{
+	  if( wbcs[index].getName().equals( moduleName ) ) 
+	  {
+		component = wbcs[index];
+		break;
+	  }
+	}
+	
+	return component;
+  }
+  
   public void setServerProject(IProject serverProject)
   {
     this.serverProject = serverProject;

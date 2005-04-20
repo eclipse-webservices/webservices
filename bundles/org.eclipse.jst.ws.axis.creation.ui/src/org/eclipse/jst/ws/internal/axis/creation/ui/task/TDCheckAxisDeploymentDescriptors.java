@@ -4,4 +4,8 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CheckAxisDeploymentD
 
 public class TDCheckAxisDeploymentDescriptors extends CheckAxisDeploymentDescriptorsTask 
 {
+  public TDCheckAxisDeploymentDescriptors(String moduleName) 
+  {
+	super(moduleName);
+  }
 }

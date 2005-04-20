@@ -41,19 +41,19 @@ public class AxisSkeletonFragment extends SequenceFragment
   {
     add( new SimpleFragment( new AxisSkeletonDefaultingCommand(), "" ) );
     add( new SimpleFragment( new ValidateWSDLCommand(), ""));
-    add( new SimpleFragment( new SkeletonConfigWidgetDefaultingCommand(), ""));
+    //add( new SimpleFragment( new SkeletonConfigWidgetDefaultingCommand(), ""));
     add( new SimpleFragment( "SkeletonConfig") );
     add( new AxisMappingsFragment() );
-    add( new SimpleFragment( new CheckAxisDeploymentDescriptorsTask(), ""));
+    //add( new SimpleFragment( new CheckAxisDeploymentDescriptorsTask(), ""));
     add( new SimpleFragment( new AddJarsToProjectBuildPathTask(), ""));
-    add( new SimpleFragment( new CopyAxisJarCommand(), ""));
+    //add( new SimpleFragment( new CopyAxisJarCommand(), ""));
     add( new SimpleFragment( new WSDL2JavaCommand(), ""));
-    add( new SimpleFragment( new MoveDeploymentFilesTask(), ""));
-    add( new SimpleFragment( new Skeleton2WSDLCommand(), ""));
-    add( new SimpleFragment( new UpdateWEBXMLCommand(), ""));
+    //add( new SimpleFragment( new MoveDeploymentFilesTask(), ""));
+    //add( new SimpleFragment( new Skeleton2WSDLCommand(), ""));
+    //add( new SimpleFragment( new UpdateWEBXMLCommand(), ""));
     add( new SimpleFragment( new RefreshProjectCommand(), ""));
     add( new SimpleFragment( new BuildProjectCommand(), ""));
-    add( new SimpleFragment( new StartProjectCommand(), ""));
+    //add( new SimpleFragment( new StartProjectCommand(), ""));
     // the second build project command is needed to synchronize with workspace auto build
     add( new SimpleFragment( new BuildProjectCommand(), ""));
     add( new SimpleFragment( new AxisDeployCommand(), ""));

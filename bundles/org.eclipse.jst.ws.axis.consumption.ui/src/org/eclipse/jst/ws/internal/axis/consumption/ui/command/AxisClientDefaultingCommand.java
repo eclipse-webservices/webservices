@@ -46,9 +46,12 @@ public class AxisClientDefaultingCommand extends SimpleCommand
 	private boolean clientIsExistingServer_;
 	private String proxyProjectFolder_;
 	private WebServicesParser webServicesParser_;
+	private String            moduleName_;
 	
 	
-	public AxisClientDefaultingCommand() {
+	public AxisClientDefaultingCommand( String moduleName ) 
+	{
+	  moduleName_ = moduleName;
 	}
 
 	/*
@@ -214,7 +217,7 @@ public class AxisClientDefaultingCommand extends SimpleCommand
 	 */
 	public String getProxyProjectFolder() {
 		if (proxyProject_!=null) {
-			proxyProjectFolder_ = ResourceUtils.getJavaSourceLocation(proxyProject_).toString();
+			proxyProjectFolder_ = ResourceUtils.getJavaSourceLocation(proxyProject_, moduleName_ ).toString();
 		}		
 		return proxyProjectFolder_;  
 	}

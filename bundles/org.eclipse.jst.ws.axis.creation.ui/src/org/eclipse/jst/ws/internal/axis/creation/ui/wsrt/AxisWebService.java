@@ -84,21 +84,21 @@ public class AxisWebService extends AbstractWebService
 //			commands.add(new ValidateObjectSelectionCommand());
 			commands.add(new BUAxisDefaultingCommand());
 			commands.add(new WSINonCompliantRuntimeCommand());
-			commands.add(new DefaultsForServerJavaWSDLCommand());
+			commands.add(new DefaultsForServerJavaWSDLCommand(module));
 			commands.add(new JavaToWSDLMethodCommand());
 			// commands.add(new SimpleFragment( "BeanConfig" ));
 			// commands.add(new SimpleFragment( "AxisServiceBeanMapping" ));
-			commands.add(new BUCheckAxisDeploymentDescriptors());
+			commands.add(new BUCheckAxisDeploymentDescriptors(module));
 			commands.add(new LiteralSupportMessageTask());
-			commands.add(new CopyAxisJarCommand());
+			commands.add(new CopyAxisJarCommand(module));
 			commands.add(new AddJarsToProjectBuildPathTask());
 			commands.add(new WaitForAutoBuildCommand());
 			commands.add(new Java2WSDLCommand());
 			commands.add(new RefreshProjectCommand());
 			commands.add(new WSDL2JavaCommand());
 			commands.add(new MoveJavaFilesTask());
-			commands.add(new UpdateAxisWSDDFileTask());
-			commands.add(new UpdateWEBXMLCommand());
+			commands.add(new UpdateAxisWSDDFileTask(module));
+			commands.add(new UpdateWEBXMLCommand(module));
 			commands.add(new RefreshProjectCommand());
 			commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
@@ -110,16 +110,16 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new TDAxisInputCommand(this, project, module));
 			commands.add(new AxisSkeletonDefaultingCommand());
 		    commands.add(new ValidateWSDLCommand());
-		    commands.add(new SkeletonConfigWidgetDefaultingCommand());
+		    commands.add(new SkeletonConfigWidgetDefaultingCommand(module));
 //			commands.add(new SimpleFragment( "SkeletonConfig" ));
 //			commands.add(new SimpleFragment( "AxisMappingsWidget" ));
-		    commands.add(new TDCheckAxisDeploymentDescriptors());
+		    commands.add(new TDCheckAxisDeploymentDescriptors(module));
 		    commands.add(new AddJarsToProjectBuildPathTask());
-		    commands.add(new CopyAxisJarCommand());
+		    commands.add(new CopyAxisJarCommand(module));
 		    commands.add(new WSDL2JavaCommand());
-		    commands.add(new MoveDeploymentFilesTask());
-		    commands.add(new Skeleton2WSDLCommand());
-		    commands.add(new UpdateWEBXMLCommand());
+		    commands.add(new MoveDeploymentFilesTask(module));
+		    commands.add(new Skeleton2WSDLCommand(module));
+		    commands.add(new UpdateWEBXMLCommand(module));
 		    commands.add(new RefreshProjectCommand());
 		    commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
@@ -150,7 +150,7 @@ public class AxisWebService extends AbstractWebService
 			return null;
 		} else {// For BOTTOM_UP and TOP_DOWN
 			commands.add(new AxisRunInputCommand(this, project, module));
-			commands.add(new StartProjectCommand());
+			commands.add(new StartProjectCommand(module));
 			commands.add(new AxisDeployCommand());
 			commands.add(new RefreshProjectCommand());
 			if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
