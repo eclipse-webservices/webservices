@@ -60,13 +60,24 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 	private MessageUtils msgUtils_;
 	
 	private IProject project;
+	private String module_;
 
 	public AddJarsToProjectBuildPathTask()
+	  {
+			String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
+			msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
+			setDescription(msgUtils_.getMessage(DESCRIPTION));
+			setName(msgUtils_.getMessage(LABEL));
+			module_ = J2EEUtils.getFirstWebModuleName(project);
+		}
+	
+	public AddJarsToProjectBuildPathTask(String module)
   {
 		String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 		msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 		setDescription(msgUtils_.getMessage(DESCRIPTION));
 		setName(msgUtils_.getMessage(LABEL));
+		module_ = module;
 	}
 
 	/**
@@ -122,7 +133,7 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 				
 				ArrayList aList = new ArrayList();
 				String classpathEntry = null;
-				IVirtualComponent component = ComponentCore.createComponent(project, J2EEUtils.getFirstWebModuleName(project));
+				IVirtualComponent component = ComponentCore.createComponent(project, module_);
 				if (component != null) {
 					
 					IVirtualFolder webInfLib = component.getFolder(new Path(

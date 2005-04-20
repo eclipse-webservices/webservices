@@ -60,7 +60,7 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 //		commands.add(new SimpleFragment("AxisClientBeanMapping"));
 		commands.add(new DefaultsForHTTPBasicAuthCommand());
 		commands.add(new CopyAxisJarCommand(module));
-		commands.add(new AddJarsToProjectBuildPathTask());
+		commands.add(new AddJarsToProjectBuildPathTask(module));
 		commands.add(new DefaultsForClientJavaWSDLCommand(module));
 		commands.add(new ValidateWSDLCommand());
 		commands.add(new WSDL2JavaCommand());

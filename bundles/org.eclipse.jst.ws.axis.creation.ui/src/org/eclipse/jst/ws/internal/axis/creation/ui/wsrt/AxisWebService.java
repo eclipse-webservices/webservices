@@ -91,7 +91,7 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new BUCheckAxisDeploymentDescriptors(module));
 			commands.add(new LiteralSupportMessageTask());
 			commands.add(new CopyAxisJarCommand(module));
-			commands.add(new AddJarsToProjectBuildPathTask());
+			commands.add(new AddJarsToProjectBuildPathTask(module));
 			commands.add(new WaitForAutoBuildCommand());
 			commands.add(new Java2WSDLCommand());
 			commands.add(new RefreshProjectCommand());
@@ -114,7 +114,7 @@ public class AxisWebService extends AbstractWebService
 //			commands.add(new SimpleFragment( "SkeletonConfig" ));
 //			commands.add(new SimpleFragment( "AxisMappingsWidget" ));
 		    commands.add(new TDCheckAxisDeploymentDescriptors(module));
-		    commands.add(new AddJarsToProjectBuildPathTask());
+		    commands.add(new AddJarsToProjectBuildPathTask(module));
 		    commands.add(new CopyAxisJarCommand(module));
 		    commands.add(new WSDL2JavaCommand());
 		    commands.add(new MoveDeploymentFilesTask(module));
