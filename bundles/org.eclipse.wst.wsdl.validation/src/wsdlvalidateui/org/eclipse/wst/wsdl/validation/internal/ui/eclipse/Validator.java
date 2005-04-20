@@ -82,10 +82,6 @@ public class Validator implements IValidator
             IFile file = (IFile) helper.loadModel(Helper.GET_FILE, parms);
             if (file != null)
             {
-              if (((Helper) helper).isInJavaBuildPath(file)  && !((Helper) helper).isInJavaSourcePath(file))
-              {
-                continue;
-              }
               validateIfNeeded(file, helper, reporter);
             }
           }
