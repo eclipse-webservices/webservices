@@ -275,10 +275,10 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	moduleProject_.setText( selectedModuleProject );
 	earProject_.setItems( projectNames );
 	earProject_.setText( selectedEarModuleProject );
-	
-    listenersOn();
-	
+		
 	handleModuleProjectChanged();	
+	updateEAREnabledState();	
+    listenersOn();
   }
 
   public SelectionListChoices getProjectChoices() 
@@ -293,7 +293,9 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   public void setComponentName( String name )
   {
+	listenersOff();
     module_.setText( name );
+	listenersOn();
   }
   
   public String getEarComponentName()
@@ -334,14 +336,17 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   public void setTypeRuntimeServer(TypeRuntimeServer trs)
   {
     trsIds_ = trs;
+	listenersOff();
     updateEAREnabledState();
-    
+    listenersOn();
   }
   
   public void setJ2EEVersion(String j2eeVersion)
   {
     j2eeVersion_ = j2eeVersion;
+	listenersOff();
     updateEAREnabledState();
+	listenersOn();
   }
   
   public void setProjectTypeId(String id)
