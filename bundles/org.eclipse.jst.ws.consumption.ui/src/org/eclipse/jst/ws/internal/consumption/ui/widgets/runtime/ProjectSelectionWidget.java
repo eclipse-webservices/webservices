@@ -173,8 +173,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   private void handleModuleProjectChanged()
   {
-	System.out.println( "In handle Module project changed." );
-	
 	String   projectName = moduleProject_.getText(); 
 	IProject project     = ProjectUtilities.getProject( projectName );
 	
@@ -202,8 +200,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   private void handleModuleChanged()
   {
-	System.out.println( "In module changed");
-	
 	IVirtualComponent component = getEarModuleForModule();
 	
 	if( component != null )
@@ -228,8 +224,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   {
 	
 	String   projectName = earProject_.getText(); 
-	
-	System.out.println( "In ear project changed=" + projectName + "<<" );
 	
 	if( projectName != null && !projectName.equals( "" ))
 	{
@@ -269,7 +263,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     
   public void setProjectChoices(SelectionListChoices projects) 
   {
-	System.out.println( "Set project choices start" );
+	listenersOff();
 	
     projects_ = projects;
 	
@@ -285,8 +279,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     listenersOn();
 	
 	handleModuleProjectChanged();	
-	
-	System.out.println( "Set project choices end" );
   }
 
   public SelectionListChoices getProjectChoices() 

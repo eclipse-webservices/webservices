@@ -309,7 +309,7 @@ public final class J2EEUtils {
 	}
 	
 	public static IVirtualComponent[] getAllComponents(){
-		Vector v = new Vector();
+		List v = new ArrayList();
 		StructureEdit mc = null;
 		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
 		for (int i = 0; i < projects.length; i++) {
@@ -340,7 +340,7 @@ public final class J2EEUtils {
 	 * @return IVirtualComponent[]; empty if none
 	 */
 	public static IVirtualComponent[] getAllEARComponents() {
-		Vector v = new Vector();
+		List v = new ArrayList();
 		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
 		for (int i = 0; i < projects.length; i++) {
 			try {
@@ -359,7 +359,7 @@ public final class J2EEUtils {
 	}
 	
 	public static IVirtualComponent[] getAllWebComponents(){
-		Vector v = new Vector();
+		List v = new ArrayList();
 		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
 		for (int i = 0; i < projects.length; i++) {
 			try {
@@ -383,9 +383,8 @@ public final class J2EEUtils {
 	 * @return empty if no EAR components; must not return null
 	 */
 	public static IVirtualComponent[] getEARComponentsFromProject(IProject project){
-		
 		//get all components in the project
-		Vector v = new Vector();		
+		List v = new ArrayList();		
 		try {
 			IFlexibleProject flex = ComponentCore.createFlexibleProject(project);
 			IVirtualComponent[] components = flex.getComponents();
@@ -410,7 +409,7 @@ public final class J2EEUtils {
 	public static IVirtualComponent[] getWebComponents(IProject project){
 		
 		//get all components in the project
-		Vector v = new Vector();
+		List v = new ArrayList();
 		try {
 			IFlexibleProject flex = ComponentCore.createFlexibleProject(project);
 			IVirtualComponent[] components = flex.getComponents();
@@ -446,22 +445,22 @@ public final class J2EEUtils {
 	 */
 	public static IVirtualComponent[] getComponentsByType(IProject project, int componentType){
 		
-		Vector v = new Vector();
+		List v = new ArrayList();
 		if ( (WEB & componentType)==WEB ){
 			IVirtualComponent[] webVC = getWebComponents(project);
-			addToVectorHelper(webVC, v);
+			addToArrayListHelper(webVC, v);
 		}
 		if ( (EJB & componentType)==WEB ){
 			IVirtualComponent[] ejbVC = getEJBComponents(project);
-			addToVectorHelper(ejbVC, v);
+			addToArrayListHelper(ejbVC, v);
 		}
 		if ( (APPCLIENT & componentType)==APPCLIENT ) {
 			IVirtualComponent[] appClientVC = getAppClientComponents(project);
-			addToVectorHelper(appClientVC, v);
+			addToArrayListHelper(appClientVC, v);
 		}
 		if ( (EAR & componentType)==EAR ) {
 			IVirtualComponent[] earVC = getEARComponentsFromProject(project);
-			addToVectorHelper(earVC, v);
+			addToArrayListHelper(earVC, v);
 		}
 		
 		return (IVirtualComponent[])v.toArray(new IVirtualComponent[0]);		
@@ -472,9 +471,9 @@ public final class J2EEUtils {
 	 * @param vcs
 	 * @param vect
 	 */
-	private static void addToVectorHelper(IVirtualComponent[] vcs, Vector vect){
+	private static void addToArrayListHelper(IVirtualComponent[] vcs, List al){
 		for (int i=0;i<vcs.length;i++){
-			vect.add(vcs[i]);
+			al.add(vcs[i]);
 		}		
 	}
 
@@ -485,7 +484,7 @@ public final class J2EEUtils {
 	 */
 	public static IProject[] getAllFlexibleProjects(){
 
-		Vector v = new Vector();
+		List v = new ArrayList();
 		try {
 			IProject[] projects = ProjectUtilities.getAllProjects();
 			for(int i=0; i<projects.length;i++) {
@@ -543,7 +542,7 @@ public final class J2EEUtils {
 	 * @deprecated  --  use getEARComponentNames(IProject)
 	 */
 	public static String[] getEARProjectNamesForWebProject(IProject project) {
-		Vector EARNames = new Vector();
+		List EARNames = new ArrayList();
 		if (project != null) {
 			EARNatureRuntime[] ears = getEARProjects(project);
 			for (int i = 0; i < ears.length; i++) {
@@ -561,7 +560,7 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static IVirtualComponent[] getReferencingEARComponents(IProject project, String componentName){
-		Vector ears = new Vector();
+		List ears = new ArrayList();
 		try{
 			IVirtualComponent targetVC = ComponentCore.createComponent(project, componentName);
 			
@@ -601,7 +600,7 @@ public final class J2EEUtils {
 	 * @deprecated use getEARProjectNames (not used; to be deleted)
 	 */
 	public static String[] getEARProjectNamesForEJBProject(IProject project) {
-		Vector EARNames = new Vector();
+		List EARNames = new ArrayList();
 		if (project != null) {
 			EARNatureRuntime[] ears = getEJBEARProjects(project);
 			for (int i = 0; i < ears.length; i++) {
@@ -657,7 +656,7 @@ public final class J2EEUtils {
 	/**
 	 * Find all EJB projects for a particular EAR Nature.
 	 * 
-	 * @return a vector of EJBNatureRuntimes.
+	 * @return a Vector of EJBNatureRuntimes.
 	 * @deprecated use getReferencingEJBComponents(IProject, String)
 	 */
 	public static Vector getEJBProjects(EARNatureRuntime ear) {
@@ -687,7 +686,7 @@ public final class J2EEUtils {
 	 */
 	public static IVirtualComponent[] getReferencingEJBComponentsFromEAR(IProject project, String earComponentName){
 
-		Vector ejbComps = new Vector();
+		List ejbComps = new ArrayList();
 		try{
 			IVirtualComponent vc = ComponentCore.createComponent(project, earComponentName);
 			IVirtualReference[] refs = vc.getReferences();
@@ -1284,7 +1283,7 @@ public final class J2EEUtils {
 	public static IVirtualComponent[] getEJBComponents(IProject project){
 		
 		//get all components in the project
-		Vector v = new Vector();
+		List v = new ArrayList();
 		try {
 			IFlexibleProject flex = ComponentCore.createFlexibleProject(project);
 			IVirtualComponent[] comps = flex.getComponents();
@@ -1308,7 +1307,7 @@ public final class J2EEUtils {
 	public static IVirtualComponent[] getAppClientComponents(IProject project){
 		
 		//get all components in the project
-		Vector v = new Vector();
+		List v = new ArrayList();
 		try {
 			IFlexibleProject flex = ComponentCore.createFlexibleProject(project);
 			IVirtualComponent[] comps = flex.getComponents();
@@ -1332,7 +1331,7 @@ public final class J2EEUtils {
 	 */
 	public static IVirtualComponent[] getReferencingEJB20ComponentsFromEAR(IProject project, String earComponentName){
 		 
-		Vector ejbComps = new Vector();
+		List ejbComps = new ArrayList();
 		try{
 			IVirtualComponent vc = ComponentCore.createComponent(project, earComponentName);
 			IVirtualReference[] refs = vc.getReferences();
@@ -1423,7 +1422,7 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static IVirtualComponent[] getReferencingWebComponentsFromEAR(IProject project, String earComponentName){
-		Vector webComps = new Vector();
+		List webComps = new ArrayList();
 		try{
 			IVirtualComponent vc = ComponentCore.createComponent(project, earComponentName);
 			IVirtualReference[] refs = vc.getReferences();

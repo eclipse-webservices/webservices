@@ -18,6 +18,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IContainer;
@@ -54,6 +55,7 @@ import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.StructureEdit;
+import org.eclipse.wst.common.componentcore.internal.ComponentResource;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -69,23 +71,13 @@ import org.eclipse.wst.server.core.model.IURLProvider;
  */
 public final class ResourceUtils {
 
-	//
 	// Keeps the IWorkspaceRoot hanging around. See getWorkspaceRoot().
-	//
 	private static IWorkspaceRoot root_ = null;
 
-	//
 	// Keeps the IWorkspace hanging around. See getWorkspace().
-	//
+
 	private static IWorkspace workspace_ = null;
 
-	public final static String JST_WEB = IModuleConstants.JST_WEB_MODULE; //$NON-NLS-1$
-	public final static String JST_EJB = IModuleConstants.JST_EJB_MODULE; //$NON-NLS-1$
-	public final static String JST_JAVA = IModuleConstants.JST_UTILITY_MODULE; //$NON-NLS-1$
-	public final static String WST_WEB = IModuleConstants.WST_WEB_MODULE; //$NON-NLS-1$
-	public final static String JST_EAR = IModuleConstants.JST_EAR_MODULE; //$NON-NLS-1$
-	public final static String JST_APPCLIENT = IModuleConstants.JST_APPCLIENT_MODULE; //$NON-NLS-1$
-	
 	/**
 	 * As returned by {@link #getProjectType getProjectType()}, indicates that
 	 * the given project has no Java or Web nature.
@@ -115,14 +107,6 @@ public final class ResourceUtils {
 	 * the given project has an Application client project nature.
 	 */	
 	public static byte PROJECT_TYPE_APPCLIENT = 8;
-
-	/**
-	 * Status Code explaining the CoreException thrown
-	 */
-
-	//private static final String ejbProjectNature = IModuleConstants.JST_EJB_MODULE;
-	// ksc private static final String ejb2ProjectNature =
-	// IEJBNatureConstants.EJB_20_NATURE_ID;
 
 	/**
 	 * The SOAP rpcrouter servlet extension to be added to web project URL
@@ -518,6 +502,7 @@ public final class ResourceUtils {
 
 	/**
 	 * Returns the component type id as defined in IModuleConstants
+	 * i.e. IModuleConstants.JST_WEB_MODULE = "jst.web"
 	 * @param project
 	 * @param componentName
 	 * @return
@@ -563,7 +548,7 @@ public final class ResourceUtils {
 	 *            The project.
 	 * @return WebModule Deployable of the <code>project</code> or null if the
 	 *         project has no Web nature.
-	 * @deprecated  should be using a more specific call (ServerUtils?)
+	 * @deprecated  see ServerUtils.getModule(IProject, String)
 	 */
 	public static IModule getModule(IProject project) {
 		IModule[] modules = ServerUtil.getModules(project);
@@ -576,11 +561,12 @@ public final class ResourceUtils {
 	/**
 	 * Returns the build output location of the <code>project</code> as an
 	 * <code>IPath</code>, or null if the project has no Java nature.
-	 * 
+	 * i.e. WP\.deployables\webModule\WEB-INF\classes
 	 * @param project
 	 *            The project.
 	 * @return The build output location of the <code>project</code> or null
 	 *         if the project has no Java nature.
+	 * @deprecated not used 
 	 */
 	public static IPath getJavaOutputLocation(IProject project) {
 		IPath outputLocation = null;
@@ -613,7 +599,7 @@ public final class ResourceUtils {
 	 * @return A build source location of the <code>project</code> or null if
 	 *         the project has no Java nature or if the project's build
 	 *         classpath contains no folders local to the project.
-	 * @deprecated 
+	 * @deprecated use getJavaSourceLocation(IProject project, String compName)
 	 */
 	public static IPath getJavaSourceLocation(IProject project) {
 		IPath sourceLocation = null;
@@ -646,34 +632,56 @@ public final class ResourceUtils {
 	 * @return
 	 */
 	public static IPath getJavaSourceLocation(IProject project, String compName){
-//		return getJavaSourceLocation(ComponentCore.createComponent(project, compName));
-// TODO: Workaround for 92028
-		return getJavaSourceLocation(project);
+		IPath javaSourceLocation = null;
+		StructureEdit mc = null;
+		try {
+			mc = StructureEdit.getStructureEditForRead(project);
+			if (mc!=null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+				for (int i=0;i<wbcs.length;i++){
+					if (wbcs[i].getName().equals(compName)){
+						List cl = wbcs[i].getResources();
+						for (int j=0; j<cl.size(); j++) {
+							ComponentResource cr = (ComponentResource)cl.get(j);
+							System.out.println("SourcePath  = "+cr.getSourcePath());
+							return cr.getSourcePath();
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e){
+			//handle exception
+		}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
+		return javaSourceLocation;			
 	}
 	
 	/**
-	 * Returns the "JavaSource" folder
+	 * Returns the JavaSource location folder
 	 * @param comp
 	 * @return
 	 */
 	public static IPath getJavaSourceLocation(IVirtualComponent comp){
-		IVirtualFolder sourceFolder = comp.getFolder("JavaSource");
-		if (sourceFolder.exists()){
-			return sourceFolder.getUnderlyingResource().getFullPath();
-		}
-		return null;
+		return getJavaSourceLocation(comp.getProject(), comp.getName());
 	}
 	
+	/**
+	 * Returns the JavaSource locations in each project
+	 * @param project
+	 * @return
+	 */
 	public static IPath[] getAllJavaSourceLocations(IProject project) {
 		Vector pathVector = new Vector();
 		IPackageFragmentRoot[] fragmentRoots = getJavaPackageFragmentRoots(project);
 
 		for (int i = 0; i < fragmentRoots.length; i++) {
 			try {
-				IResource fragmentRoot = fragmentRoots[i]
-						.getCorrespondingResource();
-				if (fragmentRoot != null
-						&& (fragmentRoot.getProject().equals(project))
+				IResource fragmentRoot = fragmentRoots[i].getCorrespondingResource();
+				if (fragmentRoot != null && (fragmentRoot.getProject().equals(project))
 						&& (fragmentRoot.getType() != IResource.FILE)) {
 					pathVector.add(fragmentRoot.getFullPath());
 				}
@@ -739,8 +747,7 @@ public final class ResourceUtils {
 	 *            The project.
 	 * @return The package fragment roots of the <code>project</code>.
 	 */
-	public static IPackageFragmentRoot[] getJavaPackageFragmentRoots(
-			IProject project) {
+	public static IPackageFragmentRoot[] getJavaPackageFragmentRoots(IProject project) {
 		try {
 			IJavaProject javaProject = JavaCore.create(project);
 			if (javaProject != null) {
@@ -824,9 +831,45 @@ public final class ResourceUtils {
 		return webModuleServerRoot;
 	}
 
+	/**
+	 * 
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
 	public static IContainer getWebComponentServerRoot(IProject project, String componentName){
-		//TODO
-		return null;
+		IContainer webModuleServerRoot = null;
+		StructureEdit mc = null;
+		try {
+			mc = StructureEdit.getStructureEditForRead(project);
+			if (mc!=null) {
+				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+				if (wbcs.length!=0) {
+					for (int i=0; i<wbcs.length;i++){
+						if (wbcs[i].getName().equals(componentName)){
+							webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[i]);
+							System.out.println("webModuleServerRoot = "+webModuleServerRoot);
+						}
+					webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
+//					IFolder fwebModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
+//					fwebModuleServerRoot.getFolder("WEB-INF").getFolder("classes");
+					
+//					IFolder[] folder = StructureEdit.getOutputContainersForProject(project);
+					}
+				}
+			}
+		} catch (Exception e) {
+			Log log = new EclipseLog();
+			log.log(Log.ERROR, 5035, ResourceUtils.class, "getWebModuleServerRoot",
+					"project=" + project + ",webModuleServerRoot="
+							+ webModuleServerRoot);			
+		}
+		finally{
+			if (mc!=null)
+				mc.dispose();
+		}
+
+		return webModuleServerRoot;
 	}
 
 	/**
@@ -838,7 +881,7 @@ public final class ResourceUtils {
 	 *            The project.
 	 * @return The web server module root URL or null if the project has no Web
 	 *         nature or has no association to a server instance.
-	 * @deprecated use getWebComponentURL(..)
+	 * @deprecated use getWebComponentURL(..) which belongs in ServerUtils
 	 */
 	public static String getWebProjectURL(IProject project,
 			String serverFactoryId, IServer server) {
@@ -866,12 +909,6 @@ public final class ResourceUtils {
 		return webProjectURL;
 	}
 	
-	public static String getWebComponentURL(IProject project, String componentName,
-							String serverFactoryId, IServer server){
-		//TODO
-		return null;
-	}
-
 	/**
 	 * Returns the forged URL string corresponding to the web server module root
 	 * of the project in a server instance or null if the project has no Web
@@ -880,7 +917,7 @@ public final class ResourceUtils {
 	 * @param project
 	 * @return The web server module root URL or null if the project has no Web
 	 *         nature or has no association to a server instance.
-	 * @deprecated 
+	 * @deprecated  not used
 	 */
 	public static String getForgedWebProjectURL(IProject project, String serverFactoryId, IServer server){
   	
@@ -945,7 +982,7 @@ public final class ResourceUtils {
 	 *            The project.
 	 * @return The web server module root URL or null if the project has no Web
 	 *         nature or has no association to a server instance.
-	 * @deprecated use getWebComponentURL)(IProject, String) instead
+	 * @deprecated belongs in ServerUtils
 	 *
 	 */
 	public static String getWebProjectURL(IProject project) {
@@ -969,11 +1006,13 @@ public final class ResourceUtils {
 		return webProjectURL;
 	}
 
-	public static String getWebComponentURL(IProject project, String componentName){
-		//TODO
-		return null;
-	}
-	
+	/**
+	 * 
+	 * @param project
+	 * @return
+	 * 
+	 * @deprecated should be in ServerUtils
+	 */
 	public static String getEncodedWebProjectURL(IProject project) {
 		String url = getWebProjectURL(project);
 		if (url != null) {
@@ -1003,11 +1042,6 @@ public final class ResourceUtils {
 		return url;
 	}
 
-	public static String getEncodedWebComponentURL(IVirtualComponent component){
-		//TODO
-		return null;
-	}
-	
 	/**
 	 * Given the <code>absolutePath</code> of a Java resource, returns the
 	 * package name of the resource or null if the resource is not properly
@@ -1069,6 +1103,7 @@ public final class ResourceUtils {
 	 *            The absolute path of the Java resource.
 	 * @return The absolute path of the project or folder containing the fully
 	 *         qualified Java resource.
+	 * @deprecated not used
 	 */
 	public static IPath getJavaResourceRootPath(IPath absolutePath) {
 		try {
@@ -1114,6 +1149,7 @@ public final class ResourceUtils {
 	 * @param absolutePath
 	 *            The absolute path of the resource.
 	 * @return The URL of the file, or null if no URL can be determined.
+	 * @deprecated not used
 	 */
 	public static String getURLFromPath(IPath absolutePath,
 			String serverFactoryId, IServer server) {
@@ -1121,6 +1157,13 @@ public final class ResourceUtils {
 				getProjectOf(absolutePath), serverFactoryId, server));
 	}
 
+	/**
+	 * 
+	 * @param absolutePath
+	 * @param webProjectURL
+	 * @return
+	 * @deprecated not used
+	 */
 	public static String getURLFromPath(IPath absolutePath, String webProjectURL) {
 		StringBuffer url = new StringBuffer();
 		IProject project = getProjectOf(absolutePath);
@@ -1154,393 +1197,6 @@ public final class ResourceUtils {
 		return url.toString();
 	}
 
-	/**
-	 * Creates a file of the given <code>absolutePath</code> and returns its
-	 * handle as an <code>IFile</code>. If the file cannot be created, a
-	 * <code>CoreException</code> containing an <code>IStatus</code> object
-	 * is thrown.
-	 * 
-	 * @param absolutePath
-	 *            The absolute path of the file to create. The project at the
-	 *            beginning of the path must already exist, that is, this method
-	 *            cannot be used to create projects.
-	 * @param progressMonitor
-	 *            The progress monitor for the operation, or null.
-	 * @return The {@link org.eclipse.core.resources.IFile IFile}handle of the
-	 *         file.
-	 * @throws CoreException
-	 *             An exception containing an
-	 *             {@link org.eclipse.core.runtime.IStatus IStatus}with a
-	 *             severity of <code>IStatus.ERROR</code> and a
-	 *             locale-specific description of the cause.
-	 */
-	//  public static IFile createFile (
-	//        ResourceContext resourceContext,
-	//    IPath absolutePath,
-	//    InputStream inputStream,
-	//    IProgressMonitor progressMonitor,
-	//    StatusMonitor statusMonitor
-	//  )
-	//  throws CoreException
-	//  {
-	//    if (!absolutePath.isAbsolute())
-	//    {
-	//      throw new CoreException(new
-	// Status(IStatus.ERROR,WebServicePlugin.ID,0,WebServicePlugin.getMessage("%MSG_ERROR_PATH_NOT_ABSOLUTE",new
-	// Object[] {absolutePath.toString()}),null));
-	//    }
-	//    if (absolutePath.segmentCount() < 1)
-	//    {
-	//      throw new CoreException(new
-	// Status(IStatus.ERROR,WebServicePlugin.ID,0,WebServicePlugin.getMessage("%MSG_ERROR_PATH_EMPTY",new
-	// Object[] {absolutePath.toString()}),null));
-	//    }
-	//    if (absolutePath.segmentCount() < 2)
-	//    {
-	//      throw new CoreException(new
-	// Status(IStatus.ERROR,WebServicePlugin.ID,0,WebServicePlugin.getMessage("%MSG_ERROR_PATH_NOT_FOLDER",new
-	// Object[] {absolutePath.toString()}),null));
-	//    }
-	//    IContainer parent = makeFolderPath(resourceContext,
-	// absolutePath.removeLastSegments(1), progressMonitor, statusMonitor);
-	//    String fileName = absolutePath.lastSegment();
-	//    return makeFile(resourceContext, parent, fileName, inputStream,
-	// progressMonitor, statusMonitor);
-	//  }
-	/**
-	 * Creates under the given <code>project</code> a file of the given
-	 * <code>relativePath</code> and returns its handle as an
-	 * <code>IFile</code>. If the file cannot be created, a
-	 * <code>CoreException</code> containing an <code>IStatus</code> object
-	 * is thrown.
-	 * 
-	 * @param absolutePath
-	 *            The absolute path of the file to create. The project at the
-	 *            beginning of the path must already exist, that is, this method
-	 *            cannot be used to create projects.
-	 * @param createFolders
-	 *            The intermediate folder creation policy, one of
-	 *            {@link #CREATE CREATE}or {@link #DONT_CREATE DONT_CREATE}.
-	 *            <ul>
-	 *            <li><code>CREATE</code>- If any intermediate folders in
-	 *            the given <code>absolutePath</code> do not exist, they will
-	 *            be created.
-	 *            <li><code>DONT_CREATE</code>- If any intermediate folders
-	 *            in the given <code>absolutePath</code> do not exist, the
-	 *            method will throw a <code>CoreException</code>.
-	 *            </ul>
-	 * @param overwriteFile
-	 *            The policy for existing files, one of
-	 *            {@link #OVERWRITE OVERWRITE}or
-	 *            {@link #DONT_OVERWRITE DONT_OVERWRITE}.
-	 *            <ul>
-	 *            <li><code>OVERWRITE</code>- If a resource of the same name
-	 *            as the given <code>absolutePath</code> already exists and is
-	 *            a file, it will be replaced. If the resource already exists
-	 *            and it is not a file, then no file will be created and a
-	 *            <code>CoreException</code> will be thrown.
-	 *            <li><code>DONT_OVERWRITE</code>- If any resource of the
-	 *            same name as the given <code>absolutePath</code> already
-	 *            exists, then no file will be created and a
-	 *            <code>CoreException</code> will be thrown.
-	 *            </ul>
-	 * @param progressMonitor
-	 *            The progress monitor for the operation, or null.
-	 * @return The {@link org.eclipse.core.resources.IFile IFile}handle of the
-	 *         file.
-	 * @throws CoreException
-	 *             An exception containing an
-	 *             {@link org.eclipse.core.runtime.IStatus IStatus}with a
-	 *             severity of <code>IStatus.ERROR</code> and a
-	 *             locale-specific description of the cause.
-	 */
-	//  public static IFile createFile (
-	//        ResourceContext resourceContext,
-	//    IProject project,
-	//    IPath relativePath,
-	//    InputStream inputStream,
-	//    IProgressMonitor progressMonitor,
-	//    StatusMonitor statusMonitor
-	//  )
-	//  throws CoreException
-	//  {
-	//    IPath absolutePath = project.getFullPath().append(relativePath);
-	//    return createFile(resourceContext, absolutePath, inputStream,
-	// progressMonitor, statusMonitor);
-	//  }
-	/**
-	 * Creates an output stream that can be used to write to the given
-	 * <code>file</code>. Actual changes to the workspace may occur during
-	 * creation of the stream, while writing to the stream, or when the stream
-	 * is closed. A <code>CoreException</code> containing an
-	 * <code>IStatus</code> will be thrown at some point in the lifecycle of
-	 * the stream if the file resource cannot be created.
-	 * 
-	 * @param file
-	 *            The {@link org.eclipse.core.resources.IFile IFile}handle of
-	 *            the file resource to create. The project implied by the
-	 *            pathname of the file must already exist, that is, this method
-	 *            cannot be used to create projects.
-	 * @param progressMonitor
-	 *            The progress monitor for the operation, or null.
-	 * @return An <code>OutputStream</code> tied to the file resource. Actual
-	 *         checks of or changes to the workspace may occur as early during
-	 *         stream creation, closure, or any time in between.
-	 * @throws CoreException
-	 *             An exception containing an
-	 *             {@link org.eclipse.core.runtime.IStatus IStatus}with a
-	 *             severity of <code>IStatus.ERROR</code> and a
-	 *             locale-specific description of the cause. Reasons include:
-	 *             <ol>
-	 *             <li>The project of the given file's path does not exist.
-	 *             <li>A non-file resource of the same name of the given file
-	 *             already exists.
-	 *             <li>A file resource of the same name of the given file
-	 *             already exists, and <code>overwriteFile</code> is false.
-	 *             <li>One or more intermediate folders to the given file do
-	 *             not exist, and <code>createFolders</code> is false.
-	 *             </ol>
-	 */
-
-	//  public static OutputStream newFileOutputStream (
-	//        ResourceContext context,
-	//    IFile file,
-	//    IProgressMonitor progressMonitor,
-	//    StatusMonitor statusMonitor
-	//  )
-	//  throws CoreException
-	//  {
-	//    return new FileResourceOutputStream(context, file, progressMonitor,
-	// statusMonitor);
-	//  }
-	/**
-	 * Copies a set of files from a plugin's installation location to an Eclipse
-	 * folder. The files are named in an index file located relative to the
-	 * plugin's installation location.
-	 * 
-	 * @param plugin
-	 *            The plugin containing the files to copy. Must not be null.
-	 * @param sourcePath
-	 *            The path, relative to the <code>plugin</code> install
-	 *            location, containing the files to copy. If null, then the
-	 *            plugin install location is the source path (ie. null is
-	 *            equivalent to ".").
-	 * @param indexPathname
-	 *            A file containing a whitespace-delimitted list of pathnames of
-	 *            the files to copy. The pathnames are relative to the
-	 *            <code>plugin sourcePath</code>. Must not be null.
-	 * @param targetPath
-	 *            The absolute Eclipse path of the folder to which the files
-	 *            will be copied. The relative pathnames of the files named in
-	 *            the <code>indexPathname</code> file are preserved. Must not
-	 *            be null.
-	 * @param createFolders
-	 *            The intermediate folder creation policy, one of
-	 *            {@link #CREATE CREATE}or {@link #DONT_CREATE DONT_CREATE}.
-	 *            <ul>
-	 *            <li><code>CREATE</code>- If any intermediate folders in
-	 *            the given <code>absolutePath</code> do not exist, they will
-	 *            be created.
-	 *            <li><code>DONT_CREATE</code>- If any intermediate folders
-	 *            in the given <code>absolutePath</code> do not exist, the
-	 *            method will throw a <code>CoreException</code>.
-	 *            </ul>
-	 * @param overwriteFiles
-	 *            The policy for existing files, one of
-	 *            {@link #OVERWRITE OVERWRITE}or
-	 *            {@link #DONT_OVERWRITE DONT_OVERWRITE}.
-	 *            <ul>
-	 *            <li><code>OVERWRITE</code>- If a resource of the same name
-	 *            as the given <code>absolutePath</code> already exists and is
-	 *            a file, it will be replaced. If the resource already exists
-	 *            and it is not a file, then no file will be created and a
-	 *            <code>CoreException</code> will be thrown.
-	 *            <li><code>DONT_OVERWRITE</code>- If any resource of the
-	 *            same name as the given <code>absolutePath</code> already
-	 *            exists, then no file will be created and a
-	 *            <code>CoreException</code> will be thrown.
-	 *            </ul>
-	 * @param progressMonitor
-	 *            The progress monitor for the operation, or null.
-	 * @throws CoreException
-	 *             An exception containing an
-	 *             {@link org.eclipse.core.runtime.IStatus IStatus}with a
-	 *             severity of <code>IStatus.ERROR</code> and a
-	 *             locale-specific description of the cause.
-	 */
-	//  static public void copyIndexedFiles (
-	//        ResourceContext resourceContext,
-	//    Plugin plugin,
-	//    IPath sourcePath,
-	//    IPath indexPathname,
-	//    IPath targetPath,
-	//    IProgressMonitor progressMonitor,
-	//    StatusMonitor statusMonitor
-	//  )
-	//  throws CoreException
-	//  {
-	//    try
-	//    {
-	//      InputStream input = plugin.openStream(indexPathname);
-	//      Enumeration filenames = StringUtils.parseFilenamesFromStream(input);
-	//      copyEnumeratedFiles(resourceContext, plugin, sourcePath, filenames,
-	// targetPath, progressMonitor, statusMonitor);
-	//    }
-	//    catch (IOException e)
-	//    {
-	//      throw new CoreException(new
-	// Status(IStatus.ERROR,plugin.getDescriptor().getUniqueIdentifier(),0,WebServicePlugin.getMessage("%MSG_ERROR_IO"),e));
-	//    }
-	//  }
-	/**
-	 * Copies a set of files from a plugin's installation location to an Eclipse
-	 * folder. The files are named in an enumeration.
-	 * 
-	 * @param plugin
-	 *            The plugin containing the files to copy. Must not be null.
-	 * @param sourcePath
-	 *            The path, relative to the <code>plugin</code> install
-	 *            location, containing the files to copy. If null, then the
-	 *            plugin install location is the source path (ie. null is
-	 *            equivalent to ".").
-	 * @param pathnames
-	 *            An enumeration of pathnames of the files to copy. The
-	 *            pathnames are relative to the <code>plugin sourcePath</code>.
-	 *            Must not be null.
-	 * @param targetPath
-	 *            The absolute Eclipse path of the folder to which the files
-	 *            will be copied. The relative pathnames of the files named in
-	 *            the <code>pathnames</code> enumeration are preserved. Must
-	 *            not be null.
-	 * @param createFolders
-	 *            The intermediate folder creation policy, one of
-	 *            {@link #CREATE CREATE}or {@link #DONT_CREATE DONT_CREATE}.
-	 *            <ul>
-	 *            <li><code>CREATE</code>- If any intermediate folders in
-	 *            the given <code>absolutePath</code> do not exist, they will
-	 *            be created.
-	 *            <li><code>DONT_CREATE</code>- If any intermediate folders
-	 *            in the given <code>absolutePath</code> do not exist, the
-	 *            method will throw a <code>CoreException</code>.
-	 *            </ul>
-	 * @param overwriteFiles
-	 *            The policy for existing files, one of
-	 *            {@link #OVERWRITE OVERWRITE}or
-	 *            {@link #DONT_OVERWRITE DONT_OVERWRITE}.
-	 *            <ul>
-	 *            <li><code>OVERWRITE</code>- If a resource of the same name
-	 *            as the given <code>absolutePath</code> already exists and is
-	 *            a file, it will be replaced. If the resource already exists
-	 *            and it is not a file, then no file will be created and a
-	 *            <code>CoreException</code> will be thrown.
-	 *            <li><code>DONT_OVERWRITE</code>- If any resource of the
-	 *            same name as the given <code>absolutePath</code> already
-	 *            exists, then no file will be created and a
-	 *            <code>CoreException</code> will be thrown.
-	 *            </ul>
-	 * @param progressMonitor
-	 *            The progress monitor for the operation, or null.
-	 * @throws CoreException
-	 *             An exception containing an
-	 *             {@link org.eclipse.core.runtime.IStatus IStatus}with a
-	 *             severity of <code>IStatus.ERROR</code> and a
-	 *             locale-specific description of the cause.
-	 */
-	//  static public void copyEnumeratedFiles (
-	//        ResourceContext resourceContext,
-	//    Plugin plugin,
-	//    IPath sourcePath,
-	//    Enumeration pathnames,
-	//    IPath targetPath,
-	//    IProgressMonitor progressMonitor,
-	//    StatusMonitor statusMonitor
-	//  )
-	//  throws CoreException
-	//  {
-	//    while (pathnames.hasMoreElements())
-	//    {
-	//      String filename = (String)pathnames.nextElement();
-	//      copyFile(resourceContext, plugin, sourcePath, new Path(filename),
-	// targetPath, progressMonitor, statusMonitor);
-	//    }
-	//  }
-	/**
-	 * Copies a file from a plugin's installation location to an Eclipse folder.
-	 * 
-	 * @param plugin
-	 *            The plugin containing the files to copy. Must not be null.
-	 * @param sourcePath
-	 *            The path, relative to the <code>plugin</code> install
-	 *            location, containing the files to copy. If null, then the
-	 *            plugin install location is the source path (ie. null is
-	 *            equivalent to ".").
-	 * @param pathname
-	 *            The pathname of the file to copy. The pathname is relative to
-	 *            the <code>plugin sourcePath</code>. Must not be null.
-	 * @param targetPath
-	 *            The absolute Eclipse path of the folder to which the file will
-	 *            be copied. The relative pathname of the file is preserved.
-	 *            Must not be null.
-	 * @param createFolders
-	 *            The intermediate folder creation policy, one of
-	 *            {@link #CREATE CREATE}or {@link #DONT_CREATE DONT_CREATE}.
-	 *            <ul>
-	 *            <li><code>CREATE</code>- If any intermediate folders in
-	 *            the given <code>absolutePath</code> do not exist, they will
-	 *            be created.
-	 *            <li><code>DONT_CREATE</code>- If any intermediate folders
-	 *            in the given <code>absolutePath</code> do not exist, the
-	 *            method will throw a <code>CoreException</code>.
-	 *            </ul>
-	 * @param overwriteFile
-	 *            The policy for existing files, one of
-	 *            {@link #OVERWRITE OVERWRITE}or
-	 *            {@link #DONT_OVERWRITE DONT_OVERWRITE}.
-	 *            <ul>
-	 *            <li><code>OVERWRITE</code>- If a resource of the same name
-	 *            as the given <code>absolutePath</code> already exists and is
-	 *            a file, it will be replaced. If the resource already exists
-	 *            and it is not a file, then no file will be created and a
-	 *            <code>CoreException</code> will be thrown.
-	 *            <li><code>DONT_OVERWRITE</code>- If any resource of the
-	 *            same name as the given <code>absolutePath</code> already
-	 *            exists, then no file will be created and a
-	 *            <code>CoreException</code> will be thrown.
-	 *            </ul>
-	 * @param progressMonitor
-	 *            The progress monitor for the operation, or null.
-	 * @throws CoreException
-	 *             An exception containing an
-	 *             {@link org.eclipse.core.runtime.IStatus IStatus}with a
-	 *             severity of <code>IStatus.ERROR</code> and a
-	 *             locale-specific description of the cause.
-	 */
-	//  static public void copyFile (
-	//        ResourceContext resourceContext,
-	//    Plugin plugin,
-	//    IPath sourcePath,
-	//    IPath pathname,
-	//    IPath targetPath,
-	//    IProgressMonitor progressMonitor,
-	//    StatusMonitor statusMonitor
-	//  )
-	//  throws CoreException
-	//  {
-	//    try
-	//    {
-	//      IPath target = targetPath.append(pathname);
-	//      IPath source = sourcePath == null ? pathname :
-	// sourcePath.append(pathname);
-	//      InputStream input = plugin.openStream(source);
-	//      createFile(resourceContext, target, input, progressMonitor,
-	// statusMonitor);
-	//    }
-	//    catch (IOException e)
-	//    {
-	//      throw new CoreException(new
-	// Status(IStatus.ERROR,plugin.getDescriptor().getUniqueIdentifier(),0,WebServicePlugin.getMessage("%MSG_ERROR_IO"),e));
-	//    }
-	//  }
 	/**
 	 * Copies a set of files from a plugin's installation location to a native
 	 * directory. The files are named in an index file located relative to the
@@ -2214,5 +1870,4 @@ public final class ResourceUtils {
     return DEFAULT_CLIENT_EAR_COMPONENT_NAME;
   }
 }
-
 
