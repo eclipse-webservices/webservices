@@ -15,6 +15,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWit
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
@@ -31,6 +32,10 @@ public class PreClientAssembleCommand extends SimpleCommand
   {
     System.out.println("In Pre client assemble command.");
 
+	// Check if EAR module is req'd, ie. !=null
+	if (earProject_==null)
+		return new SimpleStatus("");
+	
     //Create the client EAR module
     CreateModuleCommand command = new CreateModuleCommand();
     command.setProjectName(earProject_);

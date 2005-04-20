@@ -33,6 +33,11 @@ public class PreServiceAssembleCommand extends SimpleCommand
   {
 	  System.out.println( "In Pre service assemble command." );
     
+		// Check if EAR module is req'd, ie. !=null
+		if (earProject_==null)
+			return new SimpleStatus("");
+	  
+	  
 		//Create the service EAR module
 		CreateModuleCommand command = new CreateModuleCommand();
 		command.setProjectName(earProject_);
