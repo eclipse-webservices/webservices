@@ -11,10 +11,8 @@
 package org.eclipse.wst.ws.internal.provisional.wsrt;
 
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 
 public interface IWebServiceTester {
-
-	public ICommandFactory generate(Environment env, IContext ctx, ISelection sel, String module, String ear);
-	public ICommandFactory launch(Environment env, IContext ctx, ISelection sel, String module, String ear);
+  public ICommandFactory generate(TestInfo testInfo);
+  public ICommandFactory launch(TestInfo testInfo);
 }

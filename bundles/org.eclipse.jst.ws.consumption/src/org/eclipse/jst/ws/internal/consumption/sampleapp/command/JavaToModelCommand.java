@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.java.JavaClass;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions.JavaMofBeanVisitorAction;
@@ -200,7 +201,7 @@ public class JavaToModelCommand extends SimpleCommand
   {
   	Status status = new SimpleStatus("");
     if(clientProject == null) return status;
-    IProject project = (IProject)ResourceUtils.findResource(clientProject);
+    IProject project = (IProject)ProjectUtilities.getProject(clientProject);
     
   	status = createJavaReflection(env);
     if (status.getSeverity()==Status.ERROR) return status;

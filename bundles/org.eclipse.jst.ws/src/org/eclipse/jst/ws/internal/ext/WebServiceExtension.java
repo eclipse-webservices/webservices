@@ -28,7 +28,7 @@ public interface WebServiceExtension
   * @return WebServiceExecutable this interface holds executable code and a 
   * fragment
   */
-  public WebServiceExecutable getWebServiceExecutableExtension();
+  public Object getWebServiceExecutableExtension();
 
   /**
   * This is the config element that holds the extension info

@@ -66,11 +66,11 @@ public abstract class WebServiceExtensionRegistryImpl implements WebServiceExten
     for(int idx=0; idx<config.length; idx++) 
     {
       IConfigurationElement elem = config[idx];
-      String name = elem.getAttribute( "name" );
+      String label = elem.getAttribute( "label" );
       String id =   elem.getAttribute( "id" );      
       WebServiceExtension webServiceExtension = createWebServiceExtension(elem);	
-      nameExtensionTable_.put(name,webServiceExtension);
-      label_.add(name);
+      nameExtensionTable_.put(label,webServiceExtension);
+      label_.add(label);
       id_.add(id);
     }
   }

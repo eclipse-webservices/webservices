@@ -61,7 +61,7 @@ public class WebServiceTestRegistry extends WebServiceExtensionRegistryImpl
     IExtensionRegistry reg = Platform.getExtensionRegistry();
     IConfigurationElement[] config = reg.getConfigurationElementsFor(
                                      "org.eclipse.jst.ws.consumption.ui",
-                                     "webServiceTest");
+                                     "tester");
     return config;    
   }
 

@@ -14,11 +14,10 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.Method;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
@@ -61,6 +60,8 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
  
   
   private String clientProject;
+  private String clientP;
+  private String clientComponent;
   private IProject clientIProject;
   private String clientProjectEAR;
   private String sampleServerTypeID;
@@ -96,8 +97,10 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
 
   public Status execute(Environment env)
   {
-  	Status status = new SimpleStatus( "" );
-  	sampleProjectAndEarSetup();
+  	
+	Status status = new SimpleStatus( "" );
+  	
+	sampleProjectAndEarSetup();
   	
     //Get the sample Folder ready
     StringBuffer sb = new StringBuffer();
@@ -123,7 +126,7 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
     
     JavaMofReflectionCommand javamofcommand = new JavaMofReflectionCommand(); 
     javamofcommand.setProxyBean(proxyBean);
-    javamofcommand.setClientProject(clientProject);
+    javamofcommand.setClientProject(clientP);
     
     
     
@@ -162,26 +165,7 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
     return status;
   }
  
-  /**
-  * Helper method which sets up project stuff
-  *
-  */
-  private String getClientProjectFolder()
-  {
-     	
-  	//First the inital part of the path is project related
-    String javaSourceLocation = "";
-    if (clientProject != null) {
-      IPath javaSourcePath = ResourceUtils.getJavaSourceLocation((IProject)clientIProject);
-      if (javaSourcePath != null)
-      	javaSourceLocation = javaSourcePath.toString();
-      else {
-        javaSourceLocation = "/"+clientIProject.getName() + "/Java Source";  // to be updated by Web Tooling API
-      }
-    }
-    return javaSourceLocation;
-
-  }
+  
   public static String WEBID = "org.eclipse.jst.ws.consumption.ui.clientProjectType.Web"; 
   public static String EJBID = "org.eclipse.jst.ws.consumption.ui.clientProjectType.EJB";
   public static String APPCLIENT = "org.eclipse.jst.ws.consumption.ui.clientProjectType.AppClient";
@@ -189,7 +173,14 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
   
   private void sampleProjectAndEarSetup()
   {
-  	clientIProject = (IProject)ResourceUtils.findResource(clientProject);
+  	if(clientProject == null) return;
+  	else{
+	  int index = clientProject.indexOf("/");
+	  clientP = clientProject.substring(0,index);
+	  clientComponent = clientProject.substring(index + 1);
+  	}
+	  
+	clientIProject = (IProject)ProjectUtilities.getProject(clientP);
   	//move to the web level
   	SelectionListChoices slc = runtime2ClientTypes.getChoice();
   	String projectType = slc.getList().getSelection();

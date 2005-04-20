@@ -54,17 +54,12 @@ public class WebServiceExtensionImpl implements WebServiceExtension
   * @return WebServiceExecutable this interface holds executable code and a 
   * fragment
   */
-  public WebServiceExecutable getWebServiceExecutableExtension()
+  public Object getWebServiceExecutableExtension()
   {
     if(webServiceExecutable_ != null) return webServiceExecutable_;
 
     try{
-      Object webServiceExecutable = configElement_.createExecutableExtension("class");
-      
-      if( webServiceExecutable instanceof WebServiceExecutable)
-        return (WebServiceExecutable)webServiceExecutable; 
-      else
-      	log_.log(Log.ERROR, 5028, this, "getWebServiceExecutableExtension", "Incorrect WebServiceTest:" + webServiceExecutable.getClass().getName());      
+      return configElement_.createExecutableExtension("class");
     }catch (CoreException e){
       log_.log(Log.ERROR, 5029, this, "getWebServiceExecutableExtension",e);
     }

@@ -14,15 +14,15 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.jst.ws.internal.ext.WebServiceExecutable;
-import org.eclipse.jst.ws.internal.ext.test.JavaProxyTestCommand;
-import org.eclipse.jst.ws.internal.ext.test.WSDLTestFinishCommand;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
-import org.eclipse.jst.ws.internal.ext.test.WebServiceTestFinishCommand;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.wst.command.internal.provisional.env.core.Command;
+import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -32,6 +32,8 @@ import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSe
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceTester;
+import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
 
 
 /*
@@ -79,92 +81,95 @@ public class ClientTestDelegateCommand extends SimpleCommand
   {
   	Status status = new SimpleStatus( "" );
   	String clientTestID = testFacilities.getSelection();
-  	WebServiceTestFinishCommandFactory wtfcf = new WebServiceTestFinishCommandFactory();
-  	WebServiceTestFinishCommand command = wtfcf.getWebServiceTestFinishCommand(clientTestID,env);
-     
-    command.setExistingServer(sampleExistingServer);
-    command.setServerTypeID(sampleServerTypeID);
-    status = command.execute(env);
-    if(status.getSeverity() == Status.ERROR){
-      StatusHandler sHandler = env.getStatusHandler();
-      sHandler.reportError(status);
-      return status;
+  	
+	//Get the webservice extension
+	
+	WebServiceTestExtension wscte = (WebServiceTestExtension)testRegistry.getWebServiceExtensionsByName(clientTestID);
+    IWebServiceTester iwst = (IWebServiceTester)wscte.getWebServiceExecutableExtension();
+	TestInfo testInfo = getTestInfo();
+	
+	status = commandFactoryExecution(iwst.generate(testInfo),env);
+	if(status.getSeverity() == Status.ERROR){
+	  return status;	
+	}
+	status = commandFactoryExecution(iwst.launch(testInfo),env);
+	if(status.getSeverity() == Status.ERROR){
+	  return status;	
+	}
+	
+    return status;
+  }
+  
+  private Status commandFactoryExecution(ICommandFactory commandFactory,Environment env)
+  {
+    Status status = new SimpleStatus( "" );  	
+	
+	while(commandFactory.hasNext()){ 
+      status = commandFactory.getNextCommand().execute(env);
+	  if(status.getSeverity() == Status.ERROR){
+	    StatusHandler sHandler = env.getStatusHandler();
+		sHandler.reportError(status);
+		return status;
+	  }
     }
     return status;
   }
   
-  private class WebServiceTestFinishCommandFactory
+  
+  //Helper method which sets up the TestInfo data structure
+  private TestInfo getTestInfo()
   {
-  
-    private WebServiceTestFinishCommand getWebServiceTestFinishCommand(String clientTestID,Environment env)
-    {
-  	  WebServiceTestExtension wscte = (WebServiceTestExtension)testRegistry.getWebServiceExtensionsByName(clientTestID);
-  	  boolean isJava = true;
-  	  if(wscte.isJava() && !generateProxy){
-  	  	isJava = false;
-        wscte = (WebServiceTestExtension)testRegistry.getWebServiceExtensionsByName(scenarioContext.getNonJavaTestService());   	  
-  	  }
-  	  if(!wscte.isJava())
-  	    isJava = false;	
-  	  WebServiceExecutable wse = wscte.getWebServiceExecutableExtension();
-      
-      if(isJava){
-        JavaProxyTestCommand command = (JavaProxyTestCommand)wse.getFinishCommand();
-        command.setProxyBean(proxyBean);
-        command.setSampleProject(sampleProject);
-        command.setClientProject(clientProject);
-        command.setRunClientTest(runClientTest);
-        command.setJspFolder(jspFolder); 
-        command.setSetEndpointMethod(setEndpointMethod);
-        command.setMethods(methods);
-        command.setEndpoint(endpoints);
-        if (clientIds.getServerInstanceId() != null) 
-      	  sampleExistingServer = ServerCore.findServer(clientIds.getServerInstanceId());
-      	if (sampleExistingServer != null)
-      	  sampleServerTypeID = sampleExistingServer.getServerType().getId();
-      	else
-      	  sampleServerTypeID = clientIds.getServerId();
-      	// server will be created in ServerDeployableConfigurationCommand
-      	
-        return command;
-      }
-      else{
-      	WSDLTestFinishCommand wtfc = (WSDLTestFinishCommand)wse.getFinishCommand();
-      	wtfc.setServiceProject(getWSDLProject());
-    	wtfc.setWsdlServiceURL(wsdlServiceURL);
-    	wtfc.setExternalBrowser(false);
-    	wtfc.setEndpoint(endpoints);
-    	if(serverIds != null){
-    	  if (serverIds.getServerInstanceId() != null) 
-    	    sampleExistingServer = ServerCore.findServer(serverIds.getServerInstanceId());
-    	  if (sampleExistingServer != null)
-    	    sampleServerTypeID = sampleExistingServer.getServerType().getId();
-    	  else
-    	    sampleServerTypeID = serverIds.getServerId();
-    	  // server will be created in ServerDeployableConfigurationCommand
-    	}
-    	else if(clientIds != null)
-    	{
-          if (clientIds.getServerInstanceId() != null) 
-            sampleExistingServer = ServerCore.findServer(clientIds.getServerInstanceId());
-          if (sampleExistingServer != null)
-            sampleServerTypeID = sampleExistingServer.getServerType().getId();
-          else
-            sampleServerTypeID = clientIds.getServerId();
-          // server will be created in ServerDeployableConfigurationCommand
-            		
-    	}
-    	return wtfc; 
-      } 	
-    }
-  
-    public Status getStatus()
-    {
-      return new SimpleStatus("");	
-    }
-  
+	IServer clientExistingServer = null;
+	String clientServerTypeID = null;
+	
+	//client server info  
+	if(clientIds != null){
+	  if (clientIds.getServerInstanceId() != null) 
+        clientExistingServer = ServerCore.findServer(clientIds.getServerInstanceId());
+	}
+	if (clientExistingServer != null)
+	  clientServerTypeID = clientExistingServer.getServerType().getId();
+	
+	IServer serviceExistingServer = null;
+	String serviceServerTypeID = null;
+		
+	//service server info
+	if(serverIds != null){
+	  if (serverIds.getServerInstanceId() != null) 
+	    serviceExistingServer = ServerCore.findServer(serverIds.getServerInstanceId());
+	}	
+	if (serviceExistingServer != null)
+      serviceServerTypeID = serviceExistingServer.getServerType().getId();
+    
+	String clientP = null;
+	String clientComponent = null;
+	
+	if(clientProject != null){
+  	  int index = clientProject.indexOf("/");
+	  clientP = clientProject.substring(0,index);
+	  clientComponent = clientProject.substring(index + 1);
+  	}
+	    	  
+	TestInfo testInfo = new TestInfo();  
+	testInfo.setClientExistingServer(clientExistingServer);
+	testInfo.setClientServerTypeID(clientServerTypeID);
+	testInfo.setJspFolder(jspFolder);
+	testInfo.setEndpoint(endpoints);
+	testInfo.setGenerationProject(sampleProject);
+	testInfo.setProxyBean(proxyBean);
+	testInfo.setSetEndpointMethod(setEndpointMethod);
+	testInfo.setClientProject(clientP);
+	testInfo.setMethods(methods);
+	testInfo.setServiceServerTypeID(serviceServerTypeID);
+	testInfo.setServiceExistingServer(serviceExistingServer);
+	//wsdl stuff
+	testInfo.setServiceProject(getWSDLProject());
+	testInfo.setWsdlServiceURL(wsdlServiceURL);
+	return testInfo;
   }
+   
 
+  
   //The test facilities retrieved from the extension
   //plus the default
   public void setTestFacility(SelectionList selection)
