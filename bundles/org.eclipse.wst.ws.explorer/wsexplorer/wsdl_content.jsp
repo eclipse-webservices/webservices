@@ -12,8 +12,6 @@
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.core.resources.*,
                                                         org.eclipse.core.runtime.*,
-                                                        org.eclipse.jst.ws.internal.common.*,
-                                                        org.eclipse.jst.ws.internal.consumption.wsfinder.WSFinderRegistry,
                                                         org.eclipse.wst.ws.internal.explorer.platform.uddi.util.Uddi4jHelper,
                                                         org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.*,
@@ -55,7 +53,10 @@
      {
        if (!projects[i].isOpen())
          continue;
-       if (ResourceUtils.isWebProject(projects[i]))
+// TODO: Stubbed out following line to remove unwanted dependency
+// on org.eclipse.jst.ws.internal.common.ResourceUtils.
+// This entire JSP will be rewritten in M5 to use the new WSFinder F/w.
+//     if (ResourceUtils.isWebProject(projects[i]))
        {
 %>
     document.forms[0].<%=ActionInputs.PROJECT%>.options[x++] = new Option("<%=HTMLUtils.JSMangle(projects[i].getName())%>","<%=HTMLUtils.JSMangle(projects[i].getName())%>");
@@ -80,14 +81,21 @@
       document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[0] = null;
 <%
    {
-     List ws = WSFinderRegistry.getInstance().getWebServices();
+// TODO: Stubbed out following line to remove unwanted dependency
+// on org.eclipse.jst.ws.internal.consumption.wsfinder.WSFinderRegistry.
+// This entire JSP will be rewritten in M5 to use the new WSFinder F/w.
+//   List ws = WSFinderRegistry.getInstance().getWebServices();
+     List ws = new java.util.ArrayList();
      IWorkspaceRoot iWorkspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
      IProject[] projects = iWorkspaceRoot.getProjects();
      for (int i=0;i<projects.length;i++)
      {
        if (!projects[i].isOpen())
          continue;
-       if (ResourceUtils.isWebProject(projects[i]))
+// TODO: Stubbed out following line to remove unwanted dependency
+// on org.eclipse.jst.ws.internal.common.ResourceUtils.
+// This entire JSP will be rewritten in M5 to use the new WSFinder F/w.
+//     if (ResourceUtils.isWebProject(projects[i]))
        {
 %>
     if (selectedWebProjectName == "<%=HTMLUtils.JSMangle(projects[i].getName())%>")
@@ -122,9 +130,12 @@
                    String ext = resourceFullPath.getFileExtension();
                    if (ext != null && ext.equalsIgnoreCase("wsdl") && resourceFullPath.toString().startsWith(wsdlFolder))
                    {
-                     String wsdl = ResourceUtils.getURLFromPath(resourceFullPath, null, null);
-                     if (!wsdlURLs_.contains(wsdl))
-                       wsdlURLs_.add(wsdl);
+// TODO: Stubbed out following lines to remove unwanted dependency
+// on org.eclipse.jst.ws.internal.common.ResourceUtils.
+// This entire JSP will be rewritten in M5 to use the new WSFinder F/w.
+//                   String wsdl = ResourceUtils.getURLFromPath(resourceFullPath, null, null);
+//                   if (!wsdlURLs_.contains(wsdl))
+//                     wsdlURLs_.add(wsdl);
                    }
                  }
                  return true;
