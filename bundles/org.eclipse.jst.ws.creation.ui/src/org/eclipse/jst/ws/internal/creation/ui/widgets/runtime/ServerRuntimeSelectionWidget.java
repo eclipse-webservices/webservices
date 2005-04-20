@@ -33,6 +33,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 
 /*
@@ -186,6 +187,81 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   {
     clientWidget_.setClientNeedEAR(b);
   }  
+  
+  public String getServiceComponentName()
+  {
+	return projectWidget_.getComponentName();  
+  }
+  
+  public void setServiceComponentName( String name )
+  {
+    projectWidget_.setComponentName( name );
+  }
+  
+  public String getServiceEarComponentName()
+  {
+    return projectWidget_.getEarComponentName();	  
+  }
+  
+  public void setServiceEarComponentName( String name )
+  {
+	projectWidget_.setEarComponentName( name );  
+  }
+  
+  public void setServiceComponentType( int type )
+  {
+	projectWidget_.setComponentType( type );  
+  }
+  
+  public String getClientComponentName()
+  {
+	return clientWidget_.getClientComponentName();  
+  }
+  
+  public void setClientComponentName( String name )
+  {
+    clientWidget_.setClientComponentName( name );
+  }
+  
+  public String getClientEarComponentName()
+  {
+    return clientWidget_.getClientEarComponentName();	  
+  }
+  
+  public void setClientEarComponentName( String name )
+  {
+	clientWidget_.setClientEarComponentName( name );  
+  }
+  
+  public String getClientComponentType()
+  {
+    return clientWidget_.getClientComponentType();
+  }  
+  
+  public void setComponentType( int type )
+  {
+	clientWidget_.setClientComponentType( type );  
+  }
+  
+  public String getServiceProjectName()
+  {
+    return projectWidget_.getProjectName();  
+  }
+  
+  public String getServiceEarProjectName()
+  {
+	return projectWidget_.getEarProjectName();  
+  }
+  
+  public String getClientProjectName()
+  {
+    return clientWidget_.getClientProjectName();  
+  }
+  
+  public String getClientEarProjectName()
+  {
+	return clientWidget_.getClientEarProjectName();  
+  }
   
   private class TextModifyListener implements ModifyListener 
   {

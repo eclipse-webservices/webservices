@@ -32,6 +32,11 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
   
   // ClientRuntimeSelectionWidget
   private SelectionListChoices clientChoices_;
+  private String clientProjectName_;
+  private String clientEarProjectName_;
+  private String clientComponentName_;
+  private String clientEarComponentName_;
+  private String clientComponentType_;
   private String j2eeVersion;
   private boolean clientNeedEAR_;
   
@@ -67,6 +72,7 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
     return isClientScenario_; 
   }
   
+  
   public void setRuntime2ClientTypes( SelectionListChoices choices )
   {
     clientChoices_ = choices;  
@@ -76,6 +82,7 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
   {
     return clientChoices_;  
   }
+  
   
   public void setClientTypeRuntimeServer(TypeRuntimeServer ids)
   {
@@ -108,9 +115,7 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
    */
   public String getClientProject()
   {
-    String projectName = clientChoices_.getChoice().getChoice().getList().getSelection();
-	
-	return getModuleProjectName( projectName );
+	  return clientProjectName_ + "/" + clientComponentName_;
   }
 
   /**
@@ -118,11 +123,18 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
    */
   public String getClientProjectEAR()
   {
-    String projectName = clientChoices_.getChoice().getChoice().getChoice().getList().getSelection();
-	
-	return getModuleProjectName( projectName );	
+    if (clientEarProjectName_!=null && clientEarProjectName_.length()>0 
+        && clientEarComponentName_!=null && clientEarComponentName_.length()>0)
+    {
+	    return clientEarProjectName_ + "/" + clientEarComponentName_;
+    }
+    else
+    {
+      return "";
+    }
   }
   
+  /*
   private String getModuleProjectName( String projectName )
   {
 	String result = "";
@@ -138,15 +150,17 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
 	
 	return result;
   }
-
+  */
   /**
    * @return Returns the clientProjectType.
    */
+  
   public String getClientProjectType()
   {
-    return clientChoices_.getChoice().getList().getSelection();
+    //return clientChoices_.getChoice().getList().getSelection();
+    return clientComponentType_;
   }
-
+  
   /**
    * @return Returns the clientRuntime.
    */
@@ -336,4 +350,33 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
   {
     clientNeedEAR_ = clientNeedEAR;
   }
+
+  
+  public void setClientComponentType(String clientComponentType)
+  {
+    this.clientComponentType_ = clientComponentType;
+  }
+
+  public void setClientProjectName(String clientProjectName)
+  {
+    this.clientProjectName_ = clientProjectName;
+  }
+
+  public void setClientComponentName(String clientComponentName)
+  {
+    this.clientComponentName_ = clientComponentName;
+  }
+
+  public void setClientEarProjectName(String clientEarProjectName)
+  {
+    this.clientEarProjectName_ = clientEarProjectName;
+  }
+  
+  public void setClientEarComponentName(String clientEarComponentName)
+  {
+    this.clientEarComponentName_ = clientEarComponentName;
+  }
+  
+  
+  
 }

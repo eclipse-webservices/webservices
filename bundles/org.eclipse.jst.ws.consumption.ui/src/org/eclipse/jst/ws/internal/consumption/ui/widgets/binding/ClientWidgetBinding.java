@@ -113,12 +113,19 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientRuntimeSelectionWidget.class);
     dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientJ2EEVersion", ClientRuntimeSelectionWidget.class, "J2EEVersion", null);
     dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "Runtime2ClientTypes", ClientRuntimeSelectionWidget.class);
+    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentName", ClientRuntimeSelectionWidget.class);
+    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarComponentName", ClientRuntimeSelectionWidget.class);
     dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientNeedEAR", ClientRuntimeSelectionWidget.class,"NeedEAR",null);
     
     // After ClientRuntimeSelectionWidget
     dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientTypeRuntimeServer", ClientExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "J2EEVersion", ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", null);
     dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "Runtime2ClientTypes", ClientExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientProjectName", ClientExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientEarProjectName", ClientExtensionDefaultingCommand.class); 
+    dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientComponentName", ClientExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientEarComponentName", ClientExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientComponentType", ClientExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientNeedEAR", ClientExtensionDefaultingCommand.class);
     
     // The ClientRuntimeSelectionWidget can control what client extension comes up.
@@ -283,6 +290,11 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       // Map ClientRuntimeSelectionWidgetDefaultingCommand command
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientExtensionDefaultingCommand.class); 
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "Runtime2ClientTypes", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientProjectName", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarProjectName", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarComponentName", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentName", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentType", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientJ2EEVersion", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientNeedEAR", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "Runtime2ClientTypes", CheckForServiceProjectCommand.class);

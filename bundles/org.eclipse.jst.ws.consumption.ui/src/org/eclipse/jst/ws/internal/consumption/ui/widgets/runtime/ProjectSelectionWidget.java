@@ -11,10 +11,10 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ServerSelectionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -25,14 +25,13 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IRuntime;
 
 public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
@@ -52,9 +51,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   private String projectTypeId_ = EAR_PERMITTED_PROJECT_TYPE;
 
-  private ModifyListener projectListener_;
-  private ModifyListener earListener_;
-
   private Listener statusListener_;
 
   private Text messageText_;
@@ -69,8 +65,13 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 
   private byte ADD_EAR_ASSOCIATION = (byte) 4;
   
-  private Text moduleProject_;
-  private Text earProject_;
+  private Combo moduleProject_;
+  private Combo earProject_;
+  private int   componentType_;
+  
+  private ModifyListener moduleProjectListener_;
+  private ModifyListener moduleListener_;
+  private ModifyListener earProjectListener_;
 
   /*
    * CONTEXT_ID PWRS0006 for the service-side Web project combo box of the
@@ -78,12 +79,12 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
    */
   private String INFOPOP_PWRS_COMBO_PROJECT = pluginId_ + ".PWRS0006";
 
-  private Combo project_;
+  private Combo module_;
 
   /* CONTEXT_ID PWRS0012 for the EAR combo box of the runtime selection Page */
   private String INFOPOP_PWRS_COMBO_EAR = pluginId_ + ".PWRS0012";
 
-  private Combo ear_;
+  private Combo earModule_;
 
   /*
    * Default Constructor
@@ -103,91 +104,219 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     UIUtils uiUtils = new UIUtils(msgUtils, pluginId_);
 
     statusListener_ = statusListener;
-    // project
-    projectListener_ = new ModifyListener() 
-                       {
-                         public void modifyText(ModifyEvent evt) 
-	                     {
-                           handleSetEarProjects();
-		                   updateModuleProject();
-                          }
-                       };
-    
-	earListener_ = new ModifyListener()
-	               {
-	                 public void modifyText(ModifyEvent evt) 
-					 {
-					   updateEarProject();
-		             }
-	               };
-				   
-	
+		
     if (isClient_)
 	{
-	  moduleProject_ = uiUtils.createText(parent, "LABEL_CLIENT_PROJECT", "LABEL_CLIENT_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.READ_ONLY | SWT.BORDER );
-      project_ = uiUtils.createCombo(parent, "LABEL_CLIENT_MODULE", "LABEL_CLIENT_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER);
-	  earProject_ = uiUtils.createText(parent, "LABEL_CLIENT_EAR_PROJECT", "LABEL_CLIENT_EAR_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.READ_ONLY | SWT.BORDER );
-	  ear_ = uiUtils.createCombo(parent, "LABEL_CLIENT_EAR_MODULE", "LABEL_CLIENT_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER);
+	  moduleProject_ = uiUtils.createCombo(parent, "LABEL_CLIENT_PROJECT", "LABEL_CLIENT_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
+      module_ = uiUtils.createCombo(parent, "LABEL_CLIENT_MODULE", "LABEL_CLIENT_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER);
+	  earProject_ = uiUtils.createCombo(parent, "LABEL_CLIENT_EAR_PROJECT", "LABEL_CLIENT_EAR_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
+	  earModule_ = uiUtils.createCombo(parent, "LABEL_CLIENT_EAR_MODULE", "LABEL_CLIENT_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER);
     }
     else 
 	{
-	  moduleProject_ = uiUtils.createText(parent, "LABEL_SERVICE_PROJECT", "LABEL_SERVICE_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.READ_ONLY | SWT.BORDER );
-      project_ = uiUtils.createCombo(parent, "LABEL_SERVICE_MODULE", "LABEL_SERVICE_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER);
-	  earProject_ = uiUtils.createText(parent, "LABEL_SERVICE_EAR_PROJECT", "LABEL_SERVICE_EAR_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.READ_ONLY | SWT.BORDER );
-	  ear_ = uiUtils.createCombo(parent, "LABEL_SERVICE_EAR_MODULE", "LABEL_SERVICE_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER);
+	  moduleProject_ = uiUtils.createCombo(parent, "LABEL_SERVICE_PROJECT", "LABEL_SERVICE_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
+      module_ = uiUtils.createCombo(parent, "LABEL_SERVICE_MODULE", "LABEL_SERVICE_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER);
+	  earProject_ = uiUtils.createCombo(parent, "LABEL_SERVICE_EAR_PROJECT", "LABEL_SERVICE_EAR_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
+	  earModule_ = uiUtils.createCombo(parent, "LABEL_SERVICE_EAR_MODULE", "LABEL_SERVICE_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER);
     }
 	
-    project_.addModifyListener(projectListener_);
+    //module_.addModifyListener(projectListener_);
 	
-    ear_.addModifyListener(earListener_);
-    ear_.addListener(SWT.Modify, statusListener);
+    //earModule_.addModifyListener(earListener_);
+    //earModule_.addListener(SWT.Modify, statusListener);
 	
+	moduleProjectListener_ = new ModifyListener()
+	                         {
+	                           public void modifyText(ModifyEvent evt) 
+					           {
+					             handleModuleProjectChanged();
+					             statusListener_.handleEvent( null );
+		                       }
+	                         };
+
+	moduleListener_ = new ModifyListener()
+                      {
+                        public void modifyText(ModifyEvent evt) 
+			            {
+			              handleModuleChanged();
+				          statusListener_.handleEvent( null );
+	                    }
+                      };
+	
+	earProjectListener_ = new ModifyListener()
+                          {
+                            public void modifyText(ModifyEvent evt) 
+				            {
+				              handleEarProjectChanged();
+				              statusListener_.handleEvent( null );
+	                        }
+                          };
+							  
     // message area
     messageText_ = uiUtils.createText(parent, "LABEL_NO_LABEL", "LABEL_NO_LABEL", null, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY);
     return this;
   }
-
-  private void updateEarProject() 
+  
+  private void listenersOn()
   {
-    String earModule = ear_.getText();
-	String earProject = earModule; // Some J2ee call here.
-	earProject_.setText( earProject );
+	module_.addModifyListener( moduleListener_ );
+	moduleProject_.addModifyListener( moduleProjectListener_ );
+	earProject_.addModifyListener( earProjectListener_ );
+  }
+  
+  private void listenersOff()
+  {
+    module_.removeModifyListener( moduleListener_ );
+	moduleProject_.removeModifyListener( moduleProjectListener_ );
+	earProject_.removeModifyListener( earProjectListener_ );
+  }
+  
+  private void handleModuleProjectChanged()
+  {
+	System.out.println( "In handle Module project changed." );
+	
+	String   projectName = moduleProject_.getText(); 
+	IProject project     = ProjectUtilities.getProject( projectName );
+	
+	componentType_ = J2EEUtils.WEB;
+	
+	IVirtualComponent[] components = J2EEUtils.getComponentsByType( project, componentType_ );
+	String[] modules = new String[components.length];
+	
+	for( int index = 0; index < components.length; index++ )
+	{
+	  modules[index] = components[index].getName();	
+	}
+	
+	module_.setItems( modules );
+		
+	if( modules.length > 0 )
+	{
+	  module_.setText( modules[0] );
+	}
+	else
+	{
+	  module_.setText("");
+	}
+  }
+  
+  private void handleModuleChanged()
+  {
+	System.out.println( "In module changed");
+	
+	IVirtualComponent component = getEarModuleForModule();
+	
+	if( component != null )
+	{
+	  String earProject    = component.getProject().getName();
+	  String componentName = component.getName();
+	
+      // This will cause the module list to be update via a listener.
+	  earProject_.setText( earProject );  
+	  earModule_.setText( componentName );
+	}
+	else
+	{
+	  earProject_.setText( "" );  
+	  earModule_.setText( "" );
+	}
+	
+	updateEAREnabledState();
   }
 
-  private void updateModuleProject() 
+  private void handleEarProjectChanged()
   {
-	String module        = project_.getText();
-	String moduleProject = module; // Some J2ee call here.
-	moduleProject_.setText( moduleProject );
+	
+	String   projectName = earProject_.getText(); 
+	
+	System.out.println( "In ear project changed=" + projectName + "<<" );
+	
+	if( projectName != null && !projectName.equals( "" ))
+	{
+	  IProject project     = ProjectUtilities.getProject( projectName );
+	
+	  IVirtualComponent[] components = J2EEUtils.getComponentsByType( project, J2EEUtils.EAR );
+	  String[] earModules = new String[components.length];
+	
+	  for( int index = 0; index < components.length; index++ )
+	  {
+	    earModules[index] = components[index].getName();	
+	  }
+	
+	  earModule_.setItems( earModules );
+	
+	  if( earModules.length > 0 )
+	  {
+	    earModule_.setText( earModules[0] );	
+	  }
+	  else
+	  {
+	    earModule_.setText( "" );	
+	  }
+	}
   }
-
+  
+  private IVirtualComponent getEarModuleForModule()
+  {
+	String   projectName = moduleProject_.getText(); 
+	IProject project     = ProjectUtilities.getProject( projectName );
+	String   compName    = module_.getText();
+	
+	IVirtualComponent[] components = J2EEUtils.getReferencingEARComponents( project, compName );
+	
+	return components.length == 0 ? null : components[0];
+  }
+    
   public void setProjectChoices(SelectionListChoices projects) 
   {
+	System.out.println( "Set project choices start" );
+	
     projects_ = projects;
-    SelectionList projectList = projects_.getList();
-    // We remove listener here so that modifications to the Combo will
-    // NOT trigger a
-    // modifcation event.
-    project_.removeModifyListener(projectListener_);
-    project_.removeListener(SWT.Modify, statusListener_);
-    project_.setItems(projectList.getList());
-    project_.setText(projectList.getSelection());
-    project_.addModifyListener(projectListener_);
-    project_.addListener(SWT.Modify, statusListener_);
-
-    handleSetEarProjects();
-    updateEarProject();
-	updateModuleProject();
+	
+	String   selectedModuleProject    = projects.getList().getSelection();
+	String   selectedEarModuleProject = projects.getChoice().getList().getSelection();
+	String[] projectNames             = getProjects();
+	
+	moduleProject_.setItems( projectNames );
+	moduleProject_.setText( selectedModuleProject );
+	earProject_.setItems( projectNames );
+	earProject_.setText( selectedEarModuleProject );
+	
+    listenersOn();
+	
+	handleModuleProjectChanged();	
+	
+	System.out.println( "Set project choices end" );
   }
 
-  public SelectionListChoices getProjectChoices() {
-    if (projects_ != null) {
-      SelectionList projectList = projects_.getList();
-      projectList.setSelectionValue(project_.getText());
-      SelectionListChoices ears = projects_.getChoice();
-      if (ears != null) ears.getList().setSelectionValue(ear_.getText());
-    }
+  public SelectionListChoices getProjectChoices() 
+  {
     return projects_;
+  }
+  
+  public String getComponentName()
+  {
+	return module_.getText();  
+  }
+  
+  public void setComponentName( String name )
+  {
+    module_.setText( name );
+  }
+  
+  public String getEarComponentName()
+  {
+    return earModule_.getText();	  
+  }
+  
+  public void setEarComponentName( String name )
+  {
+	earModule_.setText( name );  
+  }
+  
+  public void setComponentType( int type )
+  {
+	componentType_ = type;  
   }
   
   public boolean getNeedEAR()
@@ -195,12 +324,21 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     return needEAR_;
   }
   
+  public String getProjectName()
+  {
+    return moduleProject_.getText();  
+  }
+  
+  public String getEarProjectName()
+  {
+	return earProject_.getText();  
+  }
+  
   public void setNeedEAR(boolean b)
   {
     needEAR_ = b;
   }    
 
-  
   public void setTypeRuntimeServer(TypeRuntimeServer trs)
   {
     trsIds_ = trs;
@@ -219,38 +357,38 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     projectTypeId_ = id;
   }
   
-  private void handleSetEarProjects() {
-    SelectionList projectList = projects_.getList();
-    projectList.setSelectionValue(project_.getText());
-    SelectionList earList = projects_.getChoice().getList();
-    ear_.removeListener(SWT.Modify, statusListener_);
-    ear_.setItems(earList.getList());
-    ear_.setText(earList.getSelection());
-    ear_.addListener(SWT.Modify, statusListener_);
-    updateEAREnabledState();
-    handleSetMessageText();
+  private String[] getProjects()
+  {
+	IProject[] projects     = J2EEUtils.getAllFlexibleProjects();
+	String[]   projectNames = new String[projects.length];
+	
+	for( int index = 0; index < projects.length; index++ )
+	{
+	  projectNames[index] = projects[index].getName();	
+	}
+	
+	return projectNames;
   }
-
+    
   private void updateEAREnabledState()
   {
-    ear_.removeListener(SWT.Modify, statusListener_);
     if (projects_ != null)
     {
-      SelectionList earList = projects_.getChoice().getList();
-      if(!projectNeedsEAR(project_.getText()))
+      if(!projectNeedsEAR(moduleProject_.getText()))
       {
-        earList.setIndex(-1);        
-        ear_.setText("");
+	    earModule_.setEnabled(false);   
+		earProject_.setEnabled(false);
+        earModule_.setText("");
+		earProject_.setText("");
         needEAR_ = false;
-        ear_.setEnabled(false);        
       }
       else
       {
         needEAR_ = true;
-        ear_.setEnabled(true);
+        earModule_.setEnabled(true);
+		earProject_.setEnabled(true);
       }
     }
-    ear_.addListener(SWT.Modify, statusListener_);
   }
 
   private boolean projectNeedsEAR(String projectName)
@@ -300,9 +438,9 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     Status status = new SimpleStatus("");
     try {
       byte result = (byte) 0;
-      if (project_.getText().length() != 0 && ear_.getText().length() != 0) {
-        String projectText = project_.getText();
-        String earText = ear_.getText();
+      if (module_.getText().length() != 0 && earModule_.getText().length() != 0) {
+        String projectText = module_.getText();
+        String earText = earModule_.getText();
         IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectText);
         IProject ear = ResourceUtils.getWorkspaceRoot().getProject(earText);
         if (project != null) {
@@ -357,8 +495,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   public Status getStatus() {
     Status finalStatus = new SimpleStatus("");
     handleSetMessageText();
-    String projectText = project_.getText();
-    String earText = ear_.getText();
+    String projectText = module_.getText();
+    String earText = earModule_.getText();
     if (projectText==null || projectText.length()==0)
     {
       if (isClient_)

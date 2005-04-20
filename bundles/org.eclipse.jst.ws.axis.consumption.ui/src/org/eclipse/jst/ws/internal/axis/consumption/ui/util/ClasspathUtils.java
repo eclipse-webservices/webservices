@@ -58,14 +58,18 @@ public class ClasspathUtils {
 	}
 
 	public String getClasspathString(IProject project) {
+		return getClasspathString(project, J2EEUtils.getFirstWebModuleName(project));
+	}
+	
+	public String getClasspathString(IProject project, String module) {
 		StringBuffer classpath = new StringBuffer();
 		String[] classpathEntries = getClasspath(project, false);
 		String resourceLocation = null;
 		
 		// TODO: workaround for 90515 and 90560
 		try {
-		
-			IVirtualComponent component = ComponentCore.createComponent(project, J2EEUtils.getFirstWebModuleName(project));
+	
+			IVirtualComponent component = ComponentCore.createComponent(project, module);
 			if (component != null) {
 				
 				IFolder webModuleClasses = null;

@@ -42,6 +42,8 @@
       <import plugin="org.wsdl4j"/>
       <import plugin="org.uddi4j"/>
       <import plugin="org.eclipse.wst.common.frameworks"/>
+      <import plugin="org.eclipse.wst.common.emf"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
    </requires>
 
 </plugin>

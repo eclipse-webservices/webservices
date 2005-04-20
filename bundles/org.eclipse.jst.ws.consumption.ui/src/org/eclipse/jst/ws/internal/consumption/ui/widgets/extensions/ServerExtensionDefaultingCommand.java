@@ -29,10 +29,15 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
   private Boolean              testService;
   private Boolean              publishService;
   private TypeRuntimeServer    serviceIds_;
-  private SelectionListChoices serviceChoices_;
+  //private SelectionListChoices serviceChoices_;
+  private String               serviceProjectName_;
+  private String               serviceEarProjectName_;
+  private String               serviceComponentName_;
+  private String               serviceEarComponentName_;
   private String j2eeVersion;
   private boolean serviceNeedEAR_;
   private WebServicesParser wsdlParser_;
+  
 
   
   public void setServiceTypeRuntimeServer(TypeRuntimeServer ids)
@@ -56,11 +61,12 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
     return serviceIds_;
   }
 
+  /*
   public void setServiceProject2EARProject(SelectionListChoices choices)
   {
     serviceChoices_ = choices;
   }
-
+  */
 
   /**
    * @return Returns the publishService.
@@ -101,13 +107,12 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
    */
   public String getServerProject()
   {
-	String   projectName       = serviceChoices_.getList().getSelection();
-	
-    return getModuleProjectName( projectName ); 
+    return serviceProjectName_ + "/" + serviceComponentName_; 
   }
   
   private String getModuleProjectName( String projectName )
   {
+    
 	String result = "";
 	
 	if( projectName != null && !projectName.equals("") )
@@ -127,9 +132,15 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
    */
   public String getServerProjectEAR()
   {
-    String earName = serviceChoices_.getChoice().getList().getSelection();
-	
-	return getModuleProjectName( earName );
+    if (serviceEarProjectName_!=null && serviceEarProjectName_.length()>0 && 
+        serviceEarComponentName_!=null && serviceEarComponentName_.length()>0)
+    {
+      return serviceEarProjectName_ + "/" + serviceEarComponentName_;
+    }
+    else
+    {
+      return "";
+    }
   }
 
   /**
@@ -269,5 +280,26 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
   public void setWebServicesParser(WebServicesParser wsdlParser )
   {
     wsdlParser_ = wsdlParser;
+  }
+  
+  
+  public void setServiceProjectName(String serviceProjectName)
+  {
+    this.serviceProjectName_ = serviceProjectName;
+  }
+
+  public void setServiceComponentName(String s)
+  {
+    serviceComponentName_ = s;
+  }
+
+  public void setServiceEarProjectName(String serviceEarProjectName)
+  {
+    this.serviceEarProjectName_ = serviceEarProjectName;
+  }
+  
+  public void setServiceEarComponentName(String s)
+  {
+    serviceEarComponentName_ = s;
   }
 }

@@ -145,6 +145,48 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
     projectWidget_.setNeedEAR(b);
   }  
   
+  public String getClientComponentName()
+  {
+	return projectWidget_.getComponentName();  
+  }
+  
+  public void setClientComponentName( String name )
+  {
+    projectWidget_.setComponentName( name );
+  }
+  
+  public String getClientEarComponentName()
+  {
+    return projectWidget_.getEarComponentName();	  
+  }
+  
+  public void setClientEarComponentName( String name )
+  {
+	projectWidget_.setEarComponentName( name );  
+  }
+  
+  public String getClientComponentType()
+  {
+    SelectionList projTypeList = runtime2ClientTypes_.getChoice().getList();
+    projTypeList.setIndex( clientType_.getSelectionIndex() );
+    return projTypeList.getSelection();
+  }
+  
+  public void setClientComponentType( int type )
+  {
+	projectWidget_.setComponentType( type );  
+  }
+  
+  public String getClientProjectName()
+  {
+    return projectWidget_.getProjectName();  
+  }
+  
+  public String getClientEarProjectName()
+  {
+	return projectWidget_.getEarProjectName();  
+  }
+  
   /**
    * @param runtime2ClientTypes The runtime2ClientTypes to set.
    */

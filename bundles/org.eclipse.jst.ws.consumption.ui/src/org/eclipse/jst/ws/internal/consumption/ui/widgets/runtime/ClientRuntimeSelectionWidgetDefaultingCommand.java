@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -32,6 +34,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.wizard.ClientProjectTypeRegist
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceRuntime;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -39,6 +42,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
@@ -55,6 +59,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   
   private TypeRuntimeServer    clientIds_;
   private SelectionListChoices runtimeClientTypes_;
+  private String clientComponentName_;
+  private String clientEarComponentName_;
+
   
   //A note on initialSelections ...
   //The difference between clientInitialSelection_ and initialInitialSelection is that
@@ -98,6 +105,31 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   public SelectionListChoices getRuntime2ClientTypes()
   {
     return runtimeClientTypes_;
+  }
+  
+  public String getClientProjectName()
+  {
+    return getRuntime2ClientTypes().getChoice().getChoice().getList().getSelection();
+  }
+  
+  public String getClientEarProjectName()
+  {
+    return getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().getSelection();
+  }
+  
+  public String getClientComponentName()
+  {
+    return clientComponentName_;
+  }
+  
+  public String getClientEarComponentName()
+  {
+    return clientEarComponentName_;
+  }
+  
+  public String getClientComponentType()
+  {
+    return  getRuntime2ClientTypes().getChoice().getList().getSelection();
   }
   
   public String getClientJ2EEVersion()
@@ -156,7 +188,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
       }
       */
       setClientDefaultProject();
-      //setClientDefaultEAR();
+      setClientDefaultEAR();
       setClientDefaultServer();
       updateClientEARs();
       return new SimpleStatus("");
@@ -232,6 +264,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   protected SelectionListChoices getProjectEARChoice(IProject project)
   {
     Vector v = new Vector();
+    /*
 	// TODO used to be J2EEUtils.getEARProjects(project) -- referenced EARs
     IProject[] earNatures = J2EEUtils.getEARProjects();
     if (earNatures != null){
@@ -249,19 +282,25 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     	  	v.add(earProjectName);
     	}
     }
-    SelectionList list = new SelectionList((String[])v.toArray(new String[0]), 0);
+    */
+
+    String[] flexProjects = getAllFlexibleProjects();
+    SelectionList list = new SelectionList(flexProjects, 0);
     return new SelectionListChoices(list, null);
   }
   
   protected SelectionList getEARProjects()
   {
+    /*
     IProject[] earProjects = J2EEUtils.getEARProjects();
     String[] earProjectNames = new String[earProjects.length];
     for (int i=0; i<earProjects.length; i++)
     {
       earProjectNames[i] = earProjects[i].getName();
     }
-    return new SelectionList(earProjectNames, 0);
+    */
+    String[] flexProjects = getAllFlexibleProjects();
+    return new SelectionList(flexProjects, 0);
   }
 
   // rskreg
@@ -437,6 +476,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     {
       getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(clientInitialProject_.getName());
       String moduleName = J2EEUtils.getFirstWebModuleName(clientInitialProject_);
+      clientComponentName_ = moduleName;
       String version = String.valueOf(J2EEUtils.getJ2EEVersion(clientInitialProject_, moduleName));
       String[] validVersions = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getJ2eeLevels();
       for (int i=0; i< validVersions.length; i++)
@@ -446,7 +486,34 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
           clientJ2EEVersion_ = validVersions[i];
         }
       }           
-    }    
+    }
+    else
+    {
+      //Pick the first one
+      IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
+      if (projects.length>0)
+      {
+        getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(projects[0].getName());
+        String moduleName = J2EEUtils.getFirstWebModuleName(projects[0]);
+        clientComponentName_ = moduleName;
+        String version = String.valueOf(J2EEUtils.getJ2EEVersion(projects[0], moduleName));
+        String[] validVersions = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getJ2eeLevels();
+        for (int i=0; i< validVersions.length; i++)
+        {
+          if (validVersions[i].equals(version))
+          {
+            clientJ2EEVersion_ = validVersions[i];
+          }
+        }        
+        
+      }
+      else
+      {
+        //there are no projects in the workspace. Pass the default names for new projects.
+        getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(ResourceUtils.getDefaultWebProjectName());
+        clientComponentName_ = ResourceUtils.getDefaultWebComponentName();
+      }      
+    }
   }
   // rskreg
   /*
@@ -536,13 +603,58 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     return null;
   }
   
-  private void setClientDefaultEAR()
+  /*
+  private void setClientDefaultEAR2()
   {
-  	//Client-side
+    //Client-side
     String initialClientProjectName = getRuntime2ClientTypes().getChoice().getChoice().getList().getSelection(); 
-    IProject initialClientProject = (IProject)((new StringToIProjectTransformer()).transform(initialClientProjectName));  	
-  	IProject defaultClientEAR = getDefaultEARFromClientProject(initialClientProject);
-  	getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(defaultClientEAR.getName());
+    IProject initialClientProject = (IProject)((new StringToIProjectTransformer()).transform(initialClientProjectName));    
+    IProject defaultClientEAR = getDefaultEARFromClientProject(initialClientProject);
+    getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(defaultClientEAR.getName());
+  }
+  */
+  
+  private void setClientDefaultEAR()
+  {    
+    String initialClientProjectName = getRuntime2ClientTypes().getChoice().getChoice().getList().getSelection(); 
+    IProject initialClientProject =   (IProject)((new StringToIProjectTransformer()).transform(initialClientProjectName));
+    IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(initialClientProject, clientComponentName_);
+    if (earComps.length>0)
+    {
+      //Pick the first one
+      IVirtualComponent earComp = earComps[0];
+      String earProjectName = earComp.getProject().getName();
+      String earComponentName = earComp.getName();
+      getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(earProjectName);
+      clientEarComponentName_ = earComponentName;      
+    }
+    else
+    {
+      //Component is not associated with any EARs, so pick the first EAR you see with the correct J2EE version.
+      IVirtualComponent[] allEarComps = J2EEUtils.getAllEARComponents();
+      if (allEarComps.length>0)
+      {
+        for (int i=0; i<allEarComps.length; i++)
+        {
+          if (clientJ2EEVersion_.equals(String.valueOf(J2EEUtils.getJ2EEVersion(allEarComps[i]))))
+          {
+            String earProjectName = allEarComps[i].getProject().getName();
+            getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(earProjectName);
+            clientEarComponentName_ = allEarComps[i].getName();
+            
+          }
+            
+        }
+      }
+      else
+      {
+        //there are no Ears.
+        getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(ResourceUtils.getDefaultClientEARProjectName());
+        clientEarComponentName_ = ResourceUtils.getDefaultClientEARComponentName();
+      }
+      
+      
+    }
   }
   
   /**
@@ -663,13 +775,14 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   	{
   	  //Get the runtime target on the serviceProject
   	  IRuntime clientTarget = ClientServerSelectionUtils.getRuntimeTarget(clientProjectName);
-  	  String j2eeVersion = String.valueOf(J2EEUtils.getJ2EEVersion(clientProject));
+  	  String j2eeVersion = String.valueOf(J2EEUtils.getJ2EEVersion(clientProject, clientComponentName_));
   	  if (clientTarget != null)
   	  {
   	  	if (!ServerUtils.isTargetValidForEAR(clientTarget.getRuntimeType().getId(),j2eeVersion))
   	  	{
   	      //Default the EAR selection to be empty
   	  	  getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setIndex(-1);
+          clientEarComponentName_="";
   	  	  clientNeedEAR_ = false;
   	  	}  	  		
   	  }
@@ -685,6 +798,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   	  	  {
   	        //Default the EAR selection to be empty
   	  	    getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setIndex(-1);
+            clientEarComponentName_="";
   	  	    clientNeedEAR_ = false;
   	  	  }
   		}
@@ -792,6 +906,23 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     //This means that this runtime does not support that client type. Return null
     return null;
   }
+  
+  protected String[] getAllFlexibleProjects()
+  {
+    Vector v = new Vector();
+    IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+    for (int i = 0; i < projects.length; i++)
+    {
+      if (!projects[i].getName().equals("Servers") && !projects[i].getName().startsWith("."))
+      {
+        v.add(projects[i].getName());
+      }
+    }    
+    
+    return (String[])v.toArray(new String[0]);
+    
+  }
+  
   /**
    * This inner class is being used to pass around Web service runtime
    * and J2EE level information.
