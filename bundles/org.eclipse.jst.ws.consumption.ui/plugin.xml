@@ -58,19 +58,11 @@
       <import plugin="org.eclipse.wst.internet.webbrowser"/>
       <import plugin="org.eclipse.jst.j2ee.webservice"/>
       <import plugin="org.eclipse.jst.j2ee.webservices.ui"/>
-      <import plugin="org.eclipse.wst.common.dependencychecker"/>
       <import plugin="org.eclipse.wst.common.modulecore"/>
       <import plugin="org.eclipse.wst.ws.ui"/>
       <import plugin="org.wsdl4j"/>
       <import plugin="org.apache.wsil4j"/>
    </requires>
-
-   <!-- Third party file dependencies -->
-   <extension point="org.eclipse.wst.common.dependencychecker.dependencies">
-      <dependency description="%FEATURE_DESCRIPTION">
-         <requiredPlugin id="org.eclipse.wst.wsdl"/>
-      </dependency>
-   </extension>
 
    <extension-point
       id="publicUDDIRegistryType"
