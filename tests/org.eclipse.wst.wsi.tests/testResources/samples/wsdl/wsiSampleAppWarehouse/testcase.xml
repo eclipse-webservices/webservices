@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testcase name="wsiSampleAppWarehouse">
+  <description>
+    This is the WS-I Sample Application exercising the  Warehouse wsdl 
+    in the WS-I Basic Profile.
+    This should validate against the WS-I Simple Soap Binding Profile.
+    This should also validate against the WS-I Attachments Profile.
+  </description>
+  <expectedFailures/>
+</testcase>
