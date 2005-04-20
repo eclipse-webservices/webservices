@@ -114,7 +114,7 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 		javaWSDLParam_.setSkeletonDeploy(false);
 
 		javaWSDLParam_.setBeanName(javaBeanName_);
-		String classpath = ClasspathUtils.getInstance().getClasspathString(serviceProject_);
+		String classpath = ClasspathUtils.getInstance().getClasspathString(serviceProject_, moduleName_);
 		javaWSDLParam_.setClasspath(classpath);
 
 		String simpleBeanName = javaBeanName_;

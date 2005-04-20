@@ -77,12 +77,14 @@ public class ClasspathUtils {
 				try {
 					mc = StructureEdit.getStructureEditForRead(project);
 					WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-					if (wbcs.length!=0) {
-						IFolder  webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
+					for (int i=0; i < wbcs.length; i++) {
+					  if (module.equals(wbcs[i].getName())) {
+						IFolder  webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[i]);
 						webModuleClasses  = webModuleServerRoot.getFolder("WEB-INF").getFolder("classes");
 						resourceLocation = webModuleClasses.getLocation().toOSString();
 						classpath.append(resourceLocation);
 						classpath.append(";"); //$NON-NLS-1$
+					  }
 					}
 				}
 				finally{
