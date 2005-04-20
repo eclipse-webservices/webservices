@@ -45,9 +45,9 @@ public class CreateServerCommand extends SimpleCommand
 		try {
 			IServerType serverType = ServerCore.findServerType(serverFactoryId);
 			if (env!=null)
-				serverWC = serverType.createServer(serverFactoryId, null, EnvironmentUtils.getIProgressMonitor(env));
+				serverWC = serverType.createServer(null, null, EnvironmentUtils.getIProgressMonitor(env));
 			else 
-				serverWC = serverType.createServer(serverFactoryId, null, null);
+				serverWC = serverType.createServer(null, null, null);
 			
 			if (serverWC != null) {
 				if (env!=null)
