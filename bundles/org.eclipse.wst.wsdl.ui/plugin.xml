@@ -203,7 +203,7 @@
 	<!-- place everything in "Web and XML" -->
       <page
 			name="%_UI_WSDL_LABEL"
-			category="org.eclipse.wst.sse.ui.preferences"
+			category="org.eclipse.wst.sse.ui.internal.provisional.preferences"
 			class="org.eclipse.wst.wsdl.ui.internal.util.WSDLPreferencePage"
 			id="org.eclipse.wst.wsdl.ui.internal.util.WSDLPreferencePage"
       />
