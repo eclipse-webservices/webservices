@@ -771,6 +771,34 @@
    <extension-point id="publisher" name="Web service publication facilities"/>      
 
 <!-- M4 Extensions to the new extension points -->
+
+<!-- Test Extensions beginning  -->
+
+<extension point="org.eclipse.jst.ws.consumption.ui.tester">
+  <tester
+    id="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceSampleTest"
+    label="%SAMPLE_TYPE_WEBSERVICES_ID"
+    testWSDL="no"
+    wsClientImplIds="org.eclipse.jst.ws.wsClientImpl.java"
+    moduletypes="webmodule"
+    methodsneeded="true"
+    class="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample.GSTCWebServiceTester">
+  </tester>
+</extension>
+<extension point="org.eclipse.jst.ws.consumption.ui.tester">
+  <tester
+    id="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.explorer.WebServiceExplorer"
+    label="%WSEXPLORER_ID"
+    testWSDL="yes"
+    wsClientImplIds="org.eclipse.jst.ws.wsClientImpl.java"
+    moduletypes="webmodule"
+    methodsneeded="false"
+    class="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.explorer.WSEWebServiceTester">
+  </tester>
+</extension>
+
+<!-- Test Extensions end  -->
+
 <extension point="org.eclipse.jst.ws.consumption.ui.wsImpl">
   <webServiceImpl
             id="org.eclipse.jst.ws.wsImpl.java"

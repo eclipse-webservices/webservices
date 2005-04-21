@@ -58,7 +58,11 @@ public class ClientTestDelegateCommand extends SimpleCommand
   private IServer sampleExistingServer;
   private String proxyBean;
   private String sampleProject;
+  private String sampleP;
+  private String sampleC;
   private String clientProject;
+  private String clientP;
+  private String clientC;
   private String clientServer;
   private TypeRuntimeServer clientIds;
   private TypeRuntimeServer serverIds;
@@ -141,25 +145,36 @@ public class ClientTestDelegateCommand extends SimpleCommand
 	if (serviceExistingServer != null)
       serviceServerTypeID = serviceExistingServer.getServerType().getId();
     
-	String clientP = null;
-	String clientComponent = null;
 	
 	if(clientProject != null){
   	  int index = clientProject.indexOf("/");
 	  clientP = clientProject.substring(0,index);
-	  clientComponent = clientProject.substring(index + 1);
+	  clientC = clientProject.substring(index + 1);
   	}
-	    	  
+	  
+	if(sampleProject != null){
+	  int index = sampleProject.indexOf("/");
+	  sampleP = sampleProject.substring(0,index);
+	  sampleC = sampleProject.substring(index + 1);
+	}
+	
 	TestInfo testInfo = new TestInfo();  
 	testInfo.setClientExistingServer(clientExistingServer);
 	testInfo.setClientServerTypeID(clientServerTypeID);
 	testInfo.setJspFolder(jspFolder);
 	testInfo.setEndpoint(endpoints);
-	testInfo.setGenerationProject(sampleProject);
+	testInfo.setGenerationProject(sampleP);
 	testInfo.setProxyBean(proxyBean);
 	testInfo.setSetEndpointMethod(setEndpointMethod);
 	testInfo.setClientProject(clientP);
 	testInfo.setMethods(methods);
+	
+	//if this is a client scenario the service stuff is empty
+	if(serviceServerTypeID == null){
+	  serviceServerTypeID = clientServerTypeID;
+	  serviceExistingServer = clientExistingServer;
+	}
+		
 	testInfo.setServiceServerTypeID(serviceServerTypeID);
 	testInfo.setServiceExistingServer(serviceExistingServer);
 	//wsdl stuff
@@ -264,10 +279,14 @@ public class ClientTestDelegateCommand extends SimpleCommand
   
   public String getWSDLProject()
   {
-  	if(serviceProject != null)
-     return serviceProject;
-  	
-  	return clientProject;
+  	 if(serviceProject != null){
+	    int index = serviceProject.indexOf("/");
+		sampleP = serviceProject.substring(0,index);
+		sampleC = serviceProject.substring(index + 1);
+	    return sampleP;
+  	}	
+	
+  	return clientP;
   }
   
   public void setWsdlURI(String wsdlServiceURL)

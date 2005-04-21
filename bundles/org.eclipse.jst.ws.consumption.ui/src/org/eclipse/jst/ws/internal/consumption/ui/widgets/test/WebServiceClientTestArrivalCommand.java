@@ -185,7 +185,7 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
   	SelectionListChoices slc = runtime2ClientTypes.getChoice();
   	String projectType = slc.getList().getSelection();
   	if(projectType.equals(WEBID)){
-      sampleProject = slc.getChoice().getList().getSelection();
+      sampleProject = clientProject;
   	}  	
   	else{ 
   	  sampleProject = (new StringBuffer(clientIProject.getName())).append(DEFAULT_SAMPLE_WEB_PROJECT_EXT).toString();	

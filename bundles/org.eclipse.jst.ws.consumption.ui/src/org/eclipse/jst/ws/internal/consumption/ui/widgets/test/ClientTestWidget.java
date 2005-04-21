@@ -143,7 +143,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     projectExistsLabel_ = new Label( comboGroup_, SWT.NONE );
     
     
-    earCombo_ = uiUtils.createCombo( comboGroup_, "LABEL_EAR_PROJECT",
+    earCombo_ = uiUtils.createCombo( comboGroup_, "LABEL_EAR_PROJECTS",
                                      "TOOLTIP_PWSM_EAR_PROJECT",
                                      INFOPOP_PWSM_EAR_COMBO,
                                      SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );

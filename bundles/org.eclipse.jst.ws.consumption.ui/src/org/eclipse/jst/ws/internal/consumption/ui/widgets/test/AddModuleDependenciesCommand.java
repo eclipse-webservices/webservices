@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.applicationclient.internal.creation.IApplicationClientNatureConstants;
 import org.eclipse.jst.j2ee.commonarchivecore.internal.helpers.ArchiveManifest;
 import org.eclipse.jst.j2ee.internal.earcreation.AddUtilityJARMapCommand;
@@ -40,6 +41,10 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 {
   private String sampleProject;
   private String sampleEAR;
+  private String sampleP;
+  private String sampleC;
+  private String clientC;
+  private String clientP;
   private String clientProject;
   private String sampleServerTypeID;
   private IServer sampleExistingServer;
@@ -58,10 +63,14 @@ public class AddModuleDependenciesCommand extends SimpleCommand
   {
     try
     {
-      IResource res = (IProject)ResourceUtils.findResource(sampleProject);
-      IProject sampleIProject = null;
-      if (res instanceof IProject)
-        sampleIProject = (IProject)res;
+      
+	  if(sampleProject != null){
+	    int index = sampleProject.indexOf("/");
+		sampleP = sampleProject.substring(0,index);
+		sampleC = sampleProject.substring(index + 1);
+	  }
+	  IProject sampleIProject = (IProject)ProjectUtilities.getProject(sampleP);
+              
       if (sampleIProject == null)
       {
         CreateSampleProjectCommand createSample = new CreateSampleProjectCommand();
@@ -74,19 +83,21 @@ public class AddModuleDependenciesCommand extends SimpleCommand
         createSample.setJ2eeVersion(clientJ2EEVersion);
         Status status = createSample.execute(env);
       }
-      res = ResourceUtils.findResource(sampleProject);
-      if (res instanceof IProject)
-        sampleIProject = (IProject)res;
-      res = ResourceUtils.findResource(sampleEAR);
+      IResource res = ResourceUtils.findResource(sampleEAR);
       IProject sampleIEAR = null;
       if (res instanceof IProject)
         sampleIEAR = (IProject)res;
       if (sampleIProject == null)
         return new SimpleStatus("", "", Status.ERROR);
-      res = ResourceUtils.findResource(clientProject);
-      IProject clientIProject = null;
-      if (res instanceof IProject)
-        clientIProject = (IProject)res;
+      
+	  if(clientProject != null){
+	    int index = clientProject.indexOf("/");
+		clientP = clientProject.substring(0,index);
+		clientC = clientProject.substring(index + 1);
+	  }
+	  IProject clientIProject = (IProject)ProjectUtilities.getProject(clientP);
+	       
+      
       if (clientIProject != null && !ResourceUtils.isWebProject(clientIProject))
       {
         String uri = clientIProject.getName() + ".jar";

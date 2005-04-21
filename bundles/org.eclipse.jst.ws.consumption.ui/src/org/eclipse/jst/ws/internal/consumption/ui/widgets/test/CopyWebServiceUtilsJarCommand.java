@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
@@ -38,6 +39,8 @@ public class CopyWebServiceUtilsJarCommand extends SimpleCommand {
 	private static java.lang.String DESCRIPTION = "Copy WebserviceUtils.jar";
 	private static java.lang.String LABEL           = "CopyWebserviceJarCommand";
     private String sampleProject;
+	private String sampleP;
+	private String sampleC;
     private MessageUtils msgUtils;
 	
 /**
@@ -60,7 +63,7 @@ public Status execute(Environment env)
   try
   {
     env.getProgressMonitor().report( msgUtils.getMessage( "PROGRESS_INFO_COPY_WEBSERVICE_UTILS" ) );
-    IProject sampleIProject = (IProject)ResourceUtils.findResource(sampleProject);    
+	IProject sampleIProject = (IProject)ProjectUtilities.getProject(sampleProject);    
 //    IPath webModulePath = ResourceUtils.getWebModuleServerRoot(sampleIProject).getFullPath();
     IPath webModulePath = J2EEUtils.getFirstWebContentPath(sampleIProject);	
     if (webModulePath == null)

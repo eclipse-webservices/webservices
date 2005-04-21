@@ -65,7 +65,7 @@ public class GSTCLaunchCommand extends SimpleCommand {
 	if (status.getSeverity() == Status.ERROR) return status;
 	    
 	IPath newPath = new Path(ResourceUtils.getWebProjectURL(ResourceUtils.getProjectOf(fDestinationFolderPath),testInfo.getClientServerTypeID(),testInfo.getClientExistingServer()));
-	newPath = newPath.append(fDestinationFolderPath.removeFirstSegments(2).makeAbsolute());
+	newPath = newPath.append(fDestinationFolderPath.removeFirstSegments(3).makeAbsolute());
 	StringBuffer urlString = new StringBuffer(newPath.append(TEST_CLIENT).toString());
 	if (testInfo.getEndpoint() != null && !testInfo.getEndpoint().isEmpty())
 	{
@@ -74,55 +74,54 @@ public class GSTCLaunchCommand extends SimpleCommand {
 	}
 	    
 	try{
-	  URL url;
-	  url = new URL(urlString.toString());
-//KSC	  
-//	  int style = IWebBrowser.LOCATION_BAR | WebBrowser.BUTTON_BAR; 
-	  IWorkbenchBrowserSupport browserSupport = WebServiceConsumptionUIPlugin.getInstance().getWorkbench().getBrowserSupport();
-	  IWebBrowser browser = browserSupport.createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.NAVIGATION_BAR, null, null, null);
-	  browser.openURL(url);
-// End KSC
-	  for( int retries = 0; retries < 10; retries++ )
-	  {
-	    try
-	    {
-	      // Test the URLs
-	      (new URL(newPath.append(RESULT).toString())).openStream();
-	      (new URL(newPath.append(METHOD).toString())).openStream();
-	      (new URL(newPath.append(INPUT).toString())).openStream();
-	      (new URL(newPath.append(TEST_CLIENT).toString())).openStream();
-	      // Looks good, exit loop
-	      break;
-	    }
-	    catch( IOException ioe ){
-	    try {
-	      Thread.sleep(1000);
-	    }
-	    catch (InterruptedException ie) {} 	  	          
-      }
-    }
-//KSC    WebBrowser.openURL(url,style,null);
-	return status;  
-  }catch(PartInitException exc){
-		//TODO: change error message
-		env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
-		status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.WARNING );
-		try {
-			env.getStatusHandler().report(status);
-		} catch (StatusException e) {
-			status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.ERROR );
-		}
-  	return status;
-	}catch(MalformedURLException exc){
-	  env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
-	  status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.WARNING );
-	  try {
-		env.getStatusHandler().report(status);
-	  } catch (StatusException e) {
-		status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.ERROR );
-	   	}
-	  return status;
-    }
-  }
+	      URL url;
+	      url = new URL(urlString.toString());
 
+	      for( int retries = 0; retries < 10; retries++ )
+	      {
+	        try
+	        {
+	          // Test the URLs
+	          (new URL(newPath.append(RESULT).toString())).openStream();
+	          (new URL(newPath.append(METHOD).toString())).openStream();
+	          (new URL(newPath.append(INPUT).toString())).openStream();
+	          (new URL(newPath.append(TEST_CLIENT).toString())).openStream();
+	          // Looks good, exit loop
+	          break;
+	        }
+	        catch( IOException ioe )
+	        {
+	          try
+	          {
+	            Thread.sleep(1000);
+	          }
+	          catch (InterruptedException ie) {} 	  	          
+	        }
+	      }
+
+			IWorkbenchBrowserSupport browserSupport = WebServiceConsumptionUIPlugin.getInstance().getWorkbench().getBrowserSupport();
+			IWebBrowser browser = browserSupport.createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR, null, null, null);
+			browser.openURL(url);
+	      return status;
+		 }catch(PartInitException exc){
+			//TODO: change error message
+			env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
+			status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.WARNING );
+			try {
+				env.getStatusHandler().report(status);
+			} catch (StatusException e) {
+				status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.ERROR );
+			}
+	    	return status;
+	    }catch(MalformedURLException exc){
+	    	env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
+			status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.WARNING );
+			try {
+				env.getStatusHandler().report(status);
+			} catch (StatusException e) {
+				status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.ERROR );
+			}
+	    	return status;
+	    }
+     }
 }

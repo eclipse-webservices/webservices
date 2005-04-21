@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
@@ -33,7 +34,7 @@ public class WSEGenerateCommand extends SimpleCommand {
     StartProjectCommand spc = new StartProjectCommand( true );
     spc.setServiceServerTypeID(testInfo.getServiceServerTypeID());
     spc.setServiceExistingServer(testInfo.getServiceExistingServer());
-    IProject project = (IProject) ResourceUtils.findResource(testInfo.getServiceProject());
+    IProject project = (IProject) ProjectUtilities.getProject(testInfo.getServiceProject());
     spc.setServiceProject(project);
     spc.setIsWebProjectStartupRequested(true);
     
