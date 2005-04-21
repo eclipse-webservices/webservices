@@ -350,9 +350,7 @@ public final class ServerUtils {
 		String[] serverIds = null;
 
 		if (project != null) {
-			IServer[] servers = ServerUtil.getServersByModule(getModule(
-					project, component.getName()), null);
-
+			IServer[] servers = ServerUtil.getServersByModule(getModule(project, component.getName()), null);
 			if (servers != null) {
 				serverIds = new String[servers.length];
 
@@ -413,20 +411,41 @@ public final class ServerUtils {
 	 * @return The web server module root URL or null if the project has no Web
 	 *         nature or has no association to a server instance.
 	 */
-	public static String getWebComponentURL(IProject project,
-			String componentName) {
+	public static String getWebComponentURL(IProject project, String componentName) {
 		String webProjectURL = null;
 		IModule module = getModule(project, componentName);
 		if (module != null) {
 			IServer serverInstance = getServerForModule(module);
 			if (serverInstance != null) {
-				URL url = ((IURLProvider) serverInstance
-						.getAdapter(IURLProvider.class))
-						.getModuleRootURL(module);
+				URL url = ((IURLProvider) serverInstance.getAdapter(IURLProvider.class)).getModuleRootURL(module);
 				if (url != null) {
 					String s = url.toString();
-					webProjectURL = (s.endsWith("/") ? s.substring(0, s
-							.length() - 1) : s);
+					webProjectURL = (s.endsWith("/") ? s.substring(0, s.length() - 1) : s);
+				}
+			}
+			else {
+				IRuntime projectTarget = ServerCore.getProjectProperties(project).getRuntimeTarget();
+				if (projectTarget!=null)
+				{
+					String projectTargetId = projectTarget.getRuntimeType().getId();
+					String serverFactoryId = getFactoryIdFromRuntimeTargetId(projectTargetId);
+					IServerType serverType = ServerCore.findServerType(serverFactoryId);
+					try {
+						if (serverType!=null) {
+							IServerWorkingCopy serverWC = serverType.createServer(null, null, projectTarget, null);
+							URL url = ((IURLProvider)serverWC.getAdapter(IURLProvider.class)).getModuleRootURL(module);
+							if (url != null) {
+								String s = url.toString();
+								webProjectURL = (s.endsWith("/") ? s.substring(0, s.length() - 1) : s);
+							}				
+						}
+					} catch(CoreException ce){
+						ce.printStackTrace();
+					}
+					finally{
+						
+					}
+					
 				}
 			}
 		}
@@ -594,6 +613,17 @@ public final class ServerUtils {
 		} else
 			return "";
 	}
+	
+	public static String getFactoryIdFromRuntimeTargetId(String runtimeTargetId){
+		IServerType[] serverTypes = ServerCore.getServerTypes();
+		for (int i=0;i<serverTypes.length;i++) {
+			if (serverTypes[i].getRuntimeType().getId().equals(runtimeTargetId))
+				return serverTypes[i].getId();
+		}
+		return "";
+		
+	}
+	
 
 	/*
 	 * @param serverFactoryId the server's factory id @returns the server type

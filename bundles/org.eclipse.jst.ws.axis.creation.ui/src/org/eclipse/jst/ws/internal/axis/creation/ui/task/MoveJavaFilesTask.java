@@ -15,7 +15,7 @@ import java.io.File;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -32,16 +32,27 @@ public class MoveJavaFilesTask extends SimpleCommand {
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;
 	private IProject serviceProject_;
+	
+	private String moduleName_;
 	// rm private Model model_;
 
+	public MoveJavaFilesTask(String moduleName) {
+	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
+	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
+	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
+	    setDescription(msgUtils_.getMessage(DESCRIPTION));
+	    setName(msgUtils_.getMessage(LABEL));
+		
+		this.moduleName_ = moduleName;
+	}
+	
 	public MoveJavaFilesTask() {
 	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
 	    setDescription(msgUtils_.getMessage(DESCRIPTION));
-	    setName(msgUtils_.getMessage(LABEL));	  
-	}
-	
+	    setName(msgUtils_.getMessage(LABEL));
+	}	
 
 	public MoveJavaFilesTask(JavaWSDLParameter javaWSDLParam) {
 	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
@@ -83,7 +94,8 @@ public class MoveJavaFilesTask extends SimpleCommand {
 		*/
 
 		IProject project = serviceProject_;
-		String projectURL = ResourceUtils.getEncodedWebProjectURL(project);
+		//String projectURL = ResourceUtils.getEncodedWebProjectURL(project);
+		String projectURL = ServerUtils.getEncodedWebComponentURL(project, moduleName_);
 		if (projectURL == null) {
 		    status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] {project.toString()}), Status.ERROR);
 		    env.getStatusHandler().reportError(status);

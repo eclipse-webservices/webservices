@@ -27,6 +27,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.Utils;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -199,19 +200,20 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 		javaWSDLParam_.setStyle(JavaWSDLParameter.STYLE_RPC);
 		javaWSDLParam_.setUse(JavaWSDLParameter.USE_ENCODED);
 
-		String projectURL =	ResourceUtils.getEncodedWebProjectURL(serviceProject_);
-		String serviceURL = null;
+		String projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_, moduleName_);
 		if (projectURL == null) {
 			status = new SimpleStatus( "DefaultsForServerJavaWSDLTask", msgUtils_.getMessage("MSG_ERROR_PROJECT_URL"), Status.ERROR);
 			env.getStatusHandler().reportError(status);
 			return status;
 		}
-		serviceURL = projectURL + SERVICE_EXT + simpleBeanName;
-
+//		else {
+//			javaWSDLParam_.setUrlLocation("http://localhost:8080/"+moduleName_);
+//		}
+		
+		String serviceURL = projectURL + SERVICE_EXT + simpleBeanName;
 		javaWSDLParam_.setUrlLocation(serviceURL);
-
+		
 		javaWSDLParam_.setMetaInfOnly(true);
-
 		//		String javaOutput = PlatformUtils.getPlatformURL(moduleServerRoot);
 		//		String output = PlatformUtils.getPlatformURL(modulePath);
 

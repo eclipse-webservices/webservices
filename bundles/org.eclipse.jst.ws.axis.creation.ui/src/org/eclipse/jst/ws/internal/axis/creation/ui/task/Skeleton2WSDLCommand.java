@@ -31,10 +31,6 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jst.j2ee.internal.ejb.project.EJBNatureRuntime;
-import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
-import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
-import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
@@ -42,6 +38,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CopyWSDLCommand;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
@@ -232,7 +229,8 @@ public class Skeleton2WSDLCommand extends SimpleCommand
     }
     if (soapAddress != null)
     {
-      String projectURL = ResourceUtils.getEncodedWebProjectURL(serverProject);
+//      String projectURL = ResourceUtils.getEncodedWebProjectURL(serverProject);
+	  String projectURL = ServerUtils.getEncodedWebComponentURL(serverProject, moduleName_);
       if (projectURL == null)
         return new SimpleStatus(WebServiceAxisCreationUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_PROJECT_URL", new String[] {serverProject.toString()}), Status.ERROR, null);
       StringBuffer serviceURL = new StringBuffer(projectURL);

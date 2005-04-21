@@ -15,12 +15,11 @@ import java.io.File;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
-import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -64,7 +63,9 @@ public class MoveDeploymentFilesTask extends SimpleCommand {
 		}
 
 		IProject project = serverProject;
-		String projectURL = ResourceUtils.getEncodedWebProjectURL(project);
+		//String projectURL = ResourceUtils.getEncodedWebProjectURL(project);
+		String projectURL = ServerUtils.getEncodedWebComponentURL(project, moduleName_);
+		
 		if (projectURL == null) {
 		    status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] { project.toString()}), Status.ERROR);
 		    env.getStatusHandler().reportError(status);
