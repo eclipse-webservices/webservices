@@ -16,6 +16,7 @@ import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreation
 import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationOperation;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -213,35 +214,6 @@ public class CreateModuleCommand extends SimpleCommand
 	}
 	
 	/**
-	 * Creates Flexible Project structure
-	 * This project is required if it doesn't already exist in order to create the component 
-	 * @return
-	 * 
-	 * Note: This call may not be necessary once J2EE implements creating a flex project automatically
-	 * 		with the creation of components.
-	 */
-	public Status createFlexibleProject(){
-		Status status = new SimpleStatus("");
-		try
-		{
-		  FlexibleProjectCreationDataModel projectInfo = new FlexibleProjectCreationDataModel();
-		  projectInfo.setProperty(FlexibleProjectCreationDataModel.PROJECT_NAME,projectName);
-		  projectInfo.setProperty(FlexibleProjectCreationDataModel.SERVER_TARGET_ID,serverFactoryId);
-		  projectInfo.setProperty(FlexibleProjectCreationDataModel.ADD_SERVER_TARGET,Boolean.TRUE);
-		  FlexibleProjectCreationOperation op = new FlexibleProjectCreationOperation(projectInfo);
-		  if (env!=null)
-			  op.run(EnvironmentUtils.getIProgressMonitor(env));
-		  else 
-			  op.run(new NullProgressMonitor());
-		}
-		catch (Exception e)
-		{
-			status = new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_CREATE_FLEX_PROJET", new String[]{projectName}),Status.ERROR,e);
-		}
-		return status;		
-	}
-	
-	/**
 	 * Creates Flexible Java Project structure
 	 * This project is required if it doesn't already exist in order to create the component 
 	 * @return
@@ -255,7 +227,8 @@ public class CreateModuleCommand extends SimpleCommand
 		{
 		  FlexibleJavaProjectCreationDataModel projectInfo = new FlexibleJavaProjectCreationDataModel();
 		  projectInfo.setProperty(FlexibleJavaProjectCreationDataModel.PROJECT_NAME,projectName);
-		  projectInfo.setProperty(FlexibleJavaProjectCreationDataModel.SERVER_TARGET_ID,serverFactoryId);
+      String runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId, ServerUtils.getServerTargetModuleType(moduleType), j2eeLevel);
+		  projectInfo.setProperty(FlexibleJavaProjectCreationDataModel.SERVER_TARGET_ID,runtimeTargetId);
 		  projectInfo.setProperty(FlexibleJavaProjectCreationDataModel.ADD_SERVER_TARGET,Boolean.TRUE);
 		  WTPOperation op = projectInfo.getDefaultOperation();
 		  if (env!=null)

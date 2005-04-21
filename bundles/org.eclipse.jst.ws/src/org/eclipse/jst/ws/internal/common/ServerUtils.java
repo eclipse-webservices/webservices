@@ -707,4 +707,24 @@ public final class ServerUtils {
 			return null;
 		}
 	}
+	
+	//Converts a module type from J2EEUtils to a module type like
+	//the one in IServerTargetConstants.
+	public static String getServerTargetModuleType(int moduleType)
+	{
+		switch (moduleType)
+    {
+    case J2EEUtils.WEB :
+      return IServerTargetConstants.WEB_TYPE;
+    case J2EEUtils.EJB :
+      return IServerTargetConstants.EJB_TYPE;
+    case J2EEUtils.APPCLIENT :
+      return IServerTargetConstants.APP_CLIENT_TYPE;
+    case J2EEUtils.EAR :
+      return IServerTargetConstants.EAR_TYPE;
+    default:
+      return null;
+      
+    }      			
+	}
 }
