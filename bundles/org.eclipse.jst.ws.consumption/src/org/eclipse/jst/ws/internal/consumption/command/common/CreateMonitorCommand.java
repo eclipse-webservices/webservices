@@ -47,7 +47,7 @@ public class CreateMonitorCommand extends SimpleCommand {
 
         // IMonitorableServer monitorableServer = (IMonitorableServer)
         // serverDelegate;
-        ServerPort[] ports = server.getServerPorts();
+        ServerPort[] ports = server.getServerPorts(null);
         ServerPort port = null;
         for (int it = 0; it < ports.length; it++) {
           ServerPort p = ports[it];
