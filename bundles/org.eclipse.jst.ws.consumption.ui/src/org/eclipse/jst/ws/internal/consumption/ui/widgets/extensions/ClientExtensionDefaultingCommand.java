@@ -40,6 +40,9 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
   private String j2eeVersion;
   private boolean clientNeedEAR_;
   
+  private String serviceServerFactoryId_;
+  private String serviceServerInstanceId_;
+  
   // WSDLSelectionWidget
   private boolean           genWSIL;
   private String            wsilURI;
@@ -91,6 +94,20 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
   
   public TypeRuntimeServer getClientTypeRuntimeServer()
   {
+	if (clientIds_.getServerInstanceId()==null || clientIds_.getServerInstanceId().length()==0)
+	{
+		//Set the instance id from the service side if the factory ids match
+		if (serviceServerInstanceId_!=null && serviceServerInstanceId_.length()>0)
+		{
+			if (serviceServerFactoryId_!=null && serviceServerFactoryId_.length()>0)
+			{
+				if (serviceServerFactoryId_.equals(clientIds_.getServerId()))
+				{
+					clientIds_.setServerInstanceId(serviceServerInstanceId_);
+				}
+			}
+		}
+	}
     return clientIds_;
   }
   
@@ -377,6 +394,15 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
     this.clientEarComponentName_ = clientEarComponentName;
   }
   
+  public void setServiceServerFactoryId(String id)
+  {
+  	serviceServerFactoryId_ = id;
+  }
+
+  public void setServiceServerInstanceId(String id)
+  {
+  	serviceServerInstanceId_ = id;
+  }
   
   
 }

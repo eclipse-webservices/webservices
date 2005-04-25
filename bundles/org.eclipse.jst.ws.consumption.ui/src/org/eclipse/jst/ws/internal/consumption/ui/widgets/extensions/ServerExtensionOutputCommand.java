@@ -200,4 +200,14 @@ public boolean getIsWebProjectStartupRequested() {
 public void setIsWebProjectStartupRequested(boolean isRestartProjectNeeded) {
 	this.isWebProjectStartupRequested_ = isRestartProjectNeeded;
 }
+
+public String getServiceServerFactoryId()
+{
+	return webService_.getWebServiceInfo().getServerFactoryId();
+}
+
+public String getServiceServerInstanceId()
+{
+	return webService_.getWebServiceInfo().getServerInstanceId();
+}
 }

@@ -395,6 +395,9 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       // Map the output of the service scenario to the client scenario.
       dataRegistry.addMapping( ServerExtensionOutputCommand.class, "WebServicesParser", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping( ServerExtensionOutputCommand.class, "WsdlURI", ClientExtensionDefaultingCommand.class );
+	  dataRegistry.addMapping( ServerExtensionOutputCommand.class, "ServiceServerFactoryId", ClientExtensionDefaultingCommand.class );
+	  dataRegistry.addMapping( ServerExtensionOutputCommand.class, "ServiceServerInstanceId", ClientExtensionDefaultingCommand.class );
+	  
       
       // Setup the PreClientDevelopCommand.
       dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "TestService", PreClientDevelopCommand.class);           
