@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <schema elementFormDefault="qualified" 
+         targetNamespace="2011.xsd" 
+         xmlns="http://www.w3.org/2001/XMLSchema" 
+         xmlns:apachesoap="http://xml.apache.org/xml-soap" 
+         xmlns:intf="2011-1.xsd" 
+         xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <xs:annotation>
+  </schema>

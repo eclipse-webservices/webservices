@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testcase name="2020-2">
+  <description>
+    This is an example of a non conformant wsdl containing a rpc literal binding
+    wih a nampace attribute specified in the soapbind:body element that has a 
+    value that is not an absolute URI.
+  </description>
+  <expectedFailures>
+    <assertion id="BP2020" tadID="SSBP10"/>
+    <assertion id="BP2020" tadID="AP10"/>
+  </expectedFailures>
+
+</testcase>

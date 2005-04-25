@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<testcase name="wsiSampleAppWarehouse">
+<testcase name="sampleAppWarehouse">
   <description>
     This is the WS-I Sample Application exercising the  Warehouse wsdl 
     in the WS-I Basic Profile.

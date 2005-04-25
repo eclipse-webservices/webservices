@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testcase name="2018-3">
+  <description>
+    This is an example of a non conformant wsdl containing a message
+    element preceding the types element. 
+  </description>
+  <expectedFailures>
+    <assertion id="BP2018" tadID="SSBP10"/>
+    <assertion id="BP2018" tadID="AP10"/>
+  </expectedFailures>
+</testcase>

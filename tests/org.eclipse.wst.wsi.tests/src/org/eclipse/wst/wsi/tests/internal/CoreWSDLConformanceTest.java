@@ -28,6 +28,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.eclipse.wst.wsi.internal.WSIPreferences;
 import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
 import org.eclipse.wst.wsi.internal.analyzer.WSDLAnalyzer;
+import org.eclipse.wst.wsi.internal.core.wsdl.WSDLReaderImpl;
+import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
 import org.eclipse.wst.wsi.internal.report.AssertionError;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -63,12 +65,12 @@ public class CoreWSDLConformanceTest extends TestCase
    * @param tad he WS-I Test Assertion Document
    * @param testName the name of the test containing the wsdl document
    */
-  protected void runConformanceWSDLTest(String testName, String tadID)
+  protected void runTest(String category, String testName, String tadID)
   {	
 	this.tadID = tadID;
 
     assertNotNull("Problems determining base url", pluginURI);
-    String testDirectory  = pluginURI + WSDL_BASE_DIRECTORY + "/" + testName;
+    String testDirectory  = pluginURI + WSDL_BASE_DIRECTORY + "/" + category + "/" + testName;
     String wsdlFile = "file://" + testDirectory + "/" + testName + WSDL_EXTENSION;
     String testcaseFile = testDirectory +  "/" + TEST_CASE_FILE;
     
@@ -187,9 +189,16 @@ public class CoreWSDLConformanceTest extends TestCase
   {
     try
     {
-      WSDLFactory factory = WSDLFactory.newInstance();
-      WSDLReader reader = factory.newWSDLReader();
-      Definition definition = reader.readWSDL(filename);
+      WSDLReader wsdlReader = new WSDLReaderImpl();
+
+      // Set features
+      wsdlReader.setFeature(com.ibm.wsdl.Constants.FEATURE_VERBOSE, false);
+      wsdlReader.setFeature(com.ibm.wsdl.Constants.FEATURE_IMPORT_DOCUMENTS, true);
+
+      // Parse the WSDL document
+      Document document = XMLUtils.parseXMLDocument(filename);
+	  Definition definition = wsdlReader.readWSDL(filename, document);
+      //Definition definition = reader.readWSDL(filename);
 
 	  String namespace = definition.getTargetNamespace();
 

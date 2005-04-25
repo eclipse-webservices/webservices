@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testcase name="2105-2">
+  <description>
+    This is an example of a non conformant wsdl containing a types
+    element between the 2 import elements. 
+  </description>
+  <expectedFailures>
+    <assertion id="BP2105" tadID="SSBP10"/>
+    <assertion id="BP2105" tadID="AP10"/>
+  </expectedFailures>
+</testcase>

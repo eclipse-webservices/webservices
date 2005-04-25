@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testcase name="addressBook">
+  <description>
+    This is an example of a conformant wsdl used in the WS-I 
+    interoperability demo.
+  </description>
+  <expectedFailures/>
+</testcase>

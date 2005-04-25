@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testcase name="2013-1">
+  <description>
+    This is an example of a conformant wsdl used in the WS-I 
+    interoperability demo.
+  </description>
+  <expectedFailures>
+	<assertion id="BP2013" tadID="SSBP10"/>
+	<assertion id="BP2013" tadID="AP10"/>
+	<assertion id="BP2112" tadID="SSBP10"/>
+	<assertion id="BP2112" tadID="AP10"/>
+   </expectedFailures>
+</testcase>
