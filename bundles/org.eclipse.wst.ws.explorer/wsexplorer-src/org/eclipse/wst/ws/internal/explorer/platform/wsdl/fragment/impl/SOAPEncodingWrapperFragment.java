@@ -143,7 +143,8 @@ public class SOAPEncodingWrapperFragment extends XSDDelegationFragment implement
         if (node instanceof Element)
         {
           Element child = resolveURIReferences(uriReferences, resolvedElement.getOwnerDocument(), (Element)node, usedIds);
-          resolvedElement.replaceChild(child, node);
+		  if (child != node)
+            resolvedElement.replaceChild(child, node);
         }
       }
     }
