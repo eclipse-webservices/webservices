@@ -61,6 +61,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   private int serviceComponentType_;
   private IStructuredSelection initialSelection_;
   private IProject initialProject_;
+  private String initialComponentName_;
   private String serviceJ2EEVersion_;
   private boolean serviceNeedEAR_ = true;
 
@@ -308,7 +309,16 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     if (initialProject_ != null)
     {
       getServiceProject2EARProject().getList().setSelectionValue(initialProject_.getName());
-      String moduleName = J2EEUtils.getFirstWebModuleName(initialProject_);
+      String moduleName = null;
+      if (initialComponentName_!=null && initialComponentName_.length()>0)
+      {
+        moduleName = initialComponentName_;
+      }
+      else
+      {
+        moduleName = J2EEUtils.getFirstWebModuleName(initialProject_);
+      }
+      
       serviceComponentName_ = moduleName;
       String version = String.valueOf(J2EEUtils.getJ2EEVersion(initialProject_, moduleName));
       String[] validVersions = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(serviceIds_.getRuntimeId()).getJ2eeLevels();
@@ -323,7 +333,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     else
     {
       //Pick the first one
-      IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
+      IProject[] projects = WebServiceRuntimeExtensionUtils.getProjectsByWebServiceType(serviceIds_.getTypeId());
       if (projects.length>0)
       {
         getServiceProject2EARProject().getList().setSelectionValue(projects[0].getName());
@@ -660,6 +670,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   public void setInitialProject(IProject initialProject)
   {
     initialProject_ = initialProject;
+  }
+  
+  public void setInitialComponentName(String name)
+  {
+    initialComponentName_ = name;  
   }
   
   public void setServiceTypeRuntimeServer( TypeRuntimeServer ids )

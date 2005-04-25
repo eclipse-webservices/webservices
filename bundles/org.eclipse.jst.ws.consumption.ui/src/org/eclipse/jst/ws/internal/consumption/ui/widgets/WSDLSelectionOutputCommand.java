@@ -25,6 +25,7 @@ public class WSDLSelectionOutputCommand extends SimpleCommand
   private WebServicesParser webServicesParser;
   private String wsdlURI;
   private IProject project;
+  private String componentName;
   
   /**
    * @return Returns the project.
@@ -43,6 +44,18 @@ public class WSDLSelectionOutputCommand extends SimpleCommand
     this.project = project;
   }
   
+  
+  
+  public String getComponentName()
+  {
+    return componentName;
+  }
+
+  public void setComponentName(String componentName)
+  {
+    this.componentName = componentName;
+  }
+
   public String getWsdlURI()
   {
     return wsdlURI;

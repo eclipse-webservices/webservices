@@ -134,11 +134,13 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     // Before WSDLSelectionWidgetWrapper
     dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "WebServiceURI", WSDLSelectionWidgetWrapper.class );
     dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "Project", WSDLSelectionWidgetWrapper.class );
+    dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "ComponentName", WSDLSelectionWidgetWrapper.class );
     
     // After WSDLSelectionWidgetWrapper
     dataRegistry.addMapping(WSDLSelectionWidgetWrapper.class, "WsdlURI", WSDLSelectionOutputCommand.class);
     dataRegistry.addMapping(WSDLSelectionWidgetWrapper.class, "WebServicesParser", WSDLSelectionOutputCommand.class);
     dataRegistry.addMapping(WSDLSelectionWidgetWrapper.class, "Project", WSDLSelectionOutputCommand.class);
+    dataRegistry.addMapping(WSDLSelectionWidgetWrapper.class, "ComponentName", WSDLSelectionOutputCommand.class);
         
     // Before Client Test widget.
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService",FinishTestFragment.class);
@@ -305,6 +307,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "WsilURI", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "WebServiceURI", WSDLSelectionOutputCommand.class, "WsdlURI", new EclipseIPath2URLStringTransformer());
       dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "Project", WSDLSelectionOutputCommand.class);
+      dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "ComponentName", WSDLSelectionOutputCommand.class);
       
       // WSDLSelectionOutputCommand
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WsdlURI", ClientExtensionDefaultingCommand.class);
@@ -313,6 +316,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WebServicesParser", GetMonitorCommand.class);
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "Project", ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientInitialProject", null);
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WsdlURI", ClientRuntimeSelectionWidgetDefaultingCommand.class);
+      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "ComponentName", ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientInitialComponentName", null);
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WebServicesParser", ClientRuntimeSelectionWidgetDefaultingCommand.class);
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WsdlURI", CheckForServiceProjectCommand.class);
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WebServicesParser", CheckForServiceProjectCommand.class);      

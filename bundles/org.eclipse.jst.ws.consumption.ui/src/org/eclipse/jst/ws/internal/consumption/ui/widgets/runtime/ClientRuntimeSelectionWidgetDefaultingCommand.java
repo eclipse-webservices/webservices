@@ -75,6 +75,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   //   is not supported by any of the registered Web service runtimes.
   private IStructuredSelection clientInitialSelection_;
   private IProject clientInitialProject_;
+  private String clientInitialComponentName_;
   private IStructuredSelection initialInitialSelection_;
   private IProject initialInitialProject_;
 
@@ -475,7 +476,15 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     if (clientInitialProject_ != null)
     {
       getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(clientInitialProject_.getName());
-      String moduleName = J2EEUtils.getFirstWebModuleName(clientInitialProject_);
+      String moduleName = null;
+      if (clientInitialComponentName_!=null && clientInitialComponentName_.length()>0)
+      {
+        moduleName = clientInitialComponentName_;
+      }
+      else
+      {
+        moduleName = J2EEUtils.getFirstWebModuleName(clientInitialProject_);
+      }
       clientComponentName_ = moduleName;
       String version = String.valueOf(J2EEUtils.getJ2EEVersion(clientInitialProject_, moduleName));
       String[] validVersions = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getJ2eeLevels();
@@ -490,7 +499,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     else
     {
       //Pick the first one
-      IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
+      IProject[] projects = WebServiceRuntimeExtensionUtils.getProjectsByWebServiceType(clientIds_.getTypeId());
       if (projects.length>0)
       {
         getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(projects[0].getName());
@@ -811,6 +820,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     if (clientInitialProject_ == null)
     {
       clientInitialProject_ = getProjectFromInitialSelection(selection);
+      clientInitialComponentName_ = getComponentNameFromInitialSelection(selection);
     }
   }
 
@@ -818,6 +828,11 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   {
     clientInitialProject_ = clientInitialProject;
   }
+  
+  public void setClientInitialComponentName(String name)
+  {
+    clientInitialComponentName_ = name;
+  }  
   
   /**
    * @param initialInitialSelection_ The initialInitialSelection_ to set.
@@ -859,6 +874,33 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
             return null;
           IProject p = ResourceUtils.getProjectOf(resource.getFullPath());
           return p;
+        } catch(CoreException e)
+        {
+          return null;
+        }        
+      }
+    }
+    return null;
+  }
+  
+  private String getComponentNameFromInitialSelection(IStructuredSelection selection)
+  {
+    if (selection != null && selection.size() == 1)
+    {
+      Object obj = selection.getFirstElement();
+      if (obj != null) 
+      {
+        try
+        { 
+          IResource resource = ResourceUtils.getResourceFromSelection(obj);
+          if (resource==null) 
+            return null;
+          
+          IVirtualComponent comp = ResourceUtils.getComponentOf(resource.getFullPath());
+          if (comp!=null)
+          {
+            return comp.getName();
+          }
         } catch(CoreException e)
         {
           return null;

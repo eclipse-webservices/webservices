@@ -47,6 +47,7 @@ public class ObjectSelectionFragment extends SequenceFragment implements Conditi
     
     dataRegistry.addMapping(ObjectSelectionWidget.class, "ObjectSelection", ObjectSelectionOutputCommand.class);
     dataRegistry.addMapping(ObjectSelectionWidget.class, "Project", ObjectSelectionOutputCommand.class);
+    dataRegistry.addMapping(ObjectSelectionWidget.class, "ComponentName", ObjectSelectionOutputCommand.class);
   }
 
   public boolean evaluate()

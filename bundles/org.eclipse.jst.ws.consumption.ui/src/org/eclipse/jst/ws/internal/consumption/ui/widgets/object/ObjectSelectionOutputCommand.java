@@ -25,6 +25,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
@@ -34,6 +35,7 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
   private IStructuredSelection   objectSelection_;
   private IObjectSelectionWidget objectSelectionWidget_;
   private IProject               project_;
+  private String                 componentName_;
   private WebServicesParser      parser_;
 
   public Status execute(Environment env)
@@ -144,6 +146,12 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
       project_ = getProjectFromObjectSelection(objectSelection);
     }
     
+    //Set the componentName if you can
+    if (componentName_ == null)
+    {
+      componentName_ = getComponentNameFromObjectSelection(objectSelection);
+    }
+    
     // Check if this is a WSDL selection object.  If it is we need
     // to unwrap it.
     if( objectSelection != null && !objectSelection.isEmpty() )
@@ -168,9 +176,18 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
   public void setProject(IProject project)
   {
     this.project_ = project;
+  }  
+  
+  public String getComponentName()
+  {
+    return componentName_;
   }
-  
-  
+
+  public void setComponentName(String componentName)
+  {
+    this.componentName_ = componentName;
+  }
+
   /**
    * @return Returns the parser_.
    */
@@ -198,6 +215,36 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
         } catch(CoreException e)
         {
 			e.printStackTrace();
+          return null;
+        }        
+      }
+    }
+    return null;
+  }
+  
+  private String getComponentNameFromObjectSelection(IStructuredSelection selection)
+  {
+    if (selection != null && selection.size() == 1)
+    {
+      Object obj = selection.getFirstElement();
+      if (obj != null) 
+      {
+        try
+        { 
+          IResource resource = ResourceUtils.getResourceFromSelection(obj);
+          System.out.println("getProjectFromObjectSelection - resource = "+resource);
+          if (resource==null) 
+            return null;
+     
+          IVirtualComponent comp = ResourceUtils.getComponentOf(resource.getFullPath());
+          if (comp!=null)
+          {
+            return comp.getName();
+          }
+          System.out.println("ObjectSelection component = "+comp.getName());
+        } catch(CoreException e)
+        {
+      e.printStackTrace();
           return null;
         }        
       }

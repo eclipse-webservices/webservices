@@ -59,4 +59,12 @@ public interface IObjectSelectionWidget extends WidgetDataContributor
    * null if there is no IProject for this object.
    */
   public IProject getProject();
+  
+  /**
+   * 
+   * @return returns the name of the IVirtualComponent that contains the selection
+   * object that the user has chosen with this widget.  The value can be 
+   * null if there is no IVirtualComponent for this object
+   */
+  public String getComponentName();  
 }

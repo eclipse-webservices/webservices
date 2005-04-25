@@ -19,6 +19,7 @@ import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 
@@ -89,6 +90,12 @@ public class WSDLSelectionWidgetDefaultingCommand extends SimpleCommand
   	return p;
   }
   
+  public String getComponentName()
+  {
+    String cname = getComponentNameFromInitialSelection(selection_);
+    return cname;
+  }
+  
   private IProject getProjectFromInitialSelection(IStructuredSelection selection)
   {
     if (selection != null && selection.size() == 1)
@@ -103,6 +110,33 @@ public class WSDLSelectionWidgetDefaultingCommand extends SimpleCommand
             return null;
           IProject p = ResourceUtils.getProjectOf(resource.getFullPath());
           return p;
+        } catch(CoreException e)
+        {
+          return null;
+        }        
+      }
+    }
+    return null;
+  }
+  
+  private String getComponentNameFromInitialSelection(IStructuredSelection selection)
+  {
+    if (selection != null && selection.size() == 1)
+    {
+      Object obj = selection.getFirstElement();
+      if (obj != null) 
+      {
+        try
+        { 
+          IResource resource = ResourceUtils.getResourceFromSelection(obj);
+          if (resource==null) 
+            return null;
+          
+          IVirtualComponent comp = ResourceUtils.getComponentOf(resource.getFullPath());
+          if (comp!=null)
+          {
+            return comp.getName();
+          }
         } catch(CoreException e)
         {
           return null;

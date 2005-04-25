@@ -45,11 +45,13 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
 public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget
 {
   private String             pluginId_ = "org.eclipse.jst.ws.consumption.ui";
   private IProject           serverProject_ = null;
+  private String             serverComponentName_ = null;
   private Composite          parent_ = null;
   private IWizardContainer   context_ = null;
   private JavaResourceFilter filter_ = new JavaResourceFilter();
@@ -126,6 +128,7 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
   {
     statusListener.handleEvent(null);
     serverProject_ = null;
+    serverComponentName_ = null;
   }
 
   private void handleBrowseClasses()
@@ -139,13 +142,24 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
       {
         IResource res = itype.getCorrespondingResource();
         if (res != null)
+        {
           serverProject_ = res.getProject();
+          IVirtualComponent comp = ResourceUtils.getComponentOf(res.getFullPath());
+          if (comp!=null)
+          {
+            serverComponentName_ = comp.getName();
+          }
+        }
         else
+        {
           serverProject_ = null;
+          serverComponentName_ = null;
+        }
       }
       catch (JavaModelException jme)
       {
         serverProject_ = null;
+        serverComponentName_ = null;
       }
     }
   }
@@ -176,6 +190,12 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
         
         beanClassText_.setText(beanClass);
         serverProject_ =  ResourceUtils.getProjectOf(path);
+        IVirtualComponent comp = ResourceUtils.getComponentOf(path);
+        if (comp!=null)
+        {
+          serverComponentName_ = comp.getName();
+        }        
+        
       }
     }
   }
@@ -233,6 +253,11 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
   public IProject getProject()
   {
     return serverProject_;
+  }
+
+  public String getComponentName()
+  {
+    return serverComponentName_;
   }
   
   public Status getStatus()

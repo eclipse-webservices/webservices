@@ -73,6 +73,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   private ModifyListener moduleListener_;
   private ModifyListener earProjectListener_;
 
+  private String initialModuleName_;
+  
   /*
    * CONTEXT_ID PWRS0006 for the service-side Web project combo box of the
    * runtime selection Page
@@ -129,7 +131,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	                         {
 	                           public void modifyText(ModifyEvent evt) 
 					           {
-					             handleModuleProjectChanged();
+					             handleModuleProjectChanged(null);
 					             statusListener_.handleEvent( null );
 		                       }
 	                         };
@@ -171,7 +173,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	earProject_.removeModifyListener( earProjectListener_ );
   }
   
-  private void handleModuleProjectChanged()
+  private void handleModuleProjectChanged(String moduleName)
   {
 	String   projectName = moduleProject_.getText(); 
 	IProject project     = ProjectUtilities.getProject( projectName );
@@ -187,15 +189,24 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	}
 	
 	module_.setItems( modules );
-		
-	if( modules.length > 0 )
-	{
-	  module_.setText( modules[0] );
-	}
-	else
-	{
-	  module_.setText("");
-	}
+	
+	  if( modules.length > 0 )
+	  {
+      if (moduleName != null)
+      {
+       module_.setText(moduleName); 
+      }
+      else
+      {
+	      module_.setText( modules[0] );
+      }
+       
+	  }
+	  else
+	  {
+	    module_.setText("");
+	  }
+  
   }
   
   private void handleModuleChanged()
@@ -276,7 +287,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	earProject_.setItems( projectNames );
 	earProject_.setText( selectedEarModuleProject );
 		
-	handleModuleProjectChanged();	
+	handleModuleProjectChanged(initialModuleName_);
+  handleModuleChanged();
 	updateEAREnabledState();	
     listenersOn();
   }
@@ -295,6 +307,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   {
 	listenersOff();
     module_.setText( name );
+    initialModuleName_ = name;
 	listenersOn();
   }
   

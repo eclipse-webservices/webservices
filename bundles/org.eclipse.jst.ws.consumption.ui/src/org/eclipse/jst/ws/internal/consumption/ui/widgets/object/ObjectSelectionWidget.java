@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
 
 public class ObjectSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget
@@ -39,6 +40,7 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
   private TypeRuntimeServer typeRuntimeServer;
   private IStructuredSelection initialSelection;
   private IProject project;
+  private String componentName;
   private IObjectSelectionWidget child;
   
   public WidgetDataEvents addControls(Composite parent, Listener statusListener)
@@ -123,6 +125,7 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
   {
     this.initialSelection = initialSelection;
     project = getProjectFromInitialSelection(initialSelection);
+    componentName = getComponentNameFromInitialSelection(initialSelection);
     if (child != null)
       child.setInitialSelection(initialSelection);
   }
@@ -153,6 +156,23 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
     }
   }
   
+  public String getComponentName()
+  {
+    if (child != null)
+    {
+      String cname = child.getComponentName();
+      if (cname != null && cname.length()>0)
+        return cname;
+      else
+        return componentName;
+    }
+    else
+    {
+      return null;
+    }    
+	 
+  }
+  
   private IProject getProjectFromInitialSelection(IStructuredSelection selection)
   {
     if (selection != null && selection.size() == 1)
@@ -174,5 +194,32 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
       }
     }
     return null;
-  }  
+  }
+  
+  private String getComponentNameFromInitialSelection(IStructuredSelection selection)
+  {
+    if (selection != null && selection.size() == 1)
+    {
+      Object obj = selection.getFirstElement();
+      if (obj != null) 
+      {
+        try
+        { 
+          IResource resource = ResourceUtils.getResourceFromSelection(obj);
+          if (resource==null) 
+            return null;
+          IProject p = ResourceUtils.getProjectOf(resource.getFullPath());
+          IVirtualComponent comp = ResourceUtils.getComponentOf(resource.getFullPath());
+          if (comp != null)
+          {
+            return comp.getName();  
+          }          
+        } catch(CoreException e)
+        {
+          return null;
+        }        
+      }
+    }
+    return null;    
+  }
 }

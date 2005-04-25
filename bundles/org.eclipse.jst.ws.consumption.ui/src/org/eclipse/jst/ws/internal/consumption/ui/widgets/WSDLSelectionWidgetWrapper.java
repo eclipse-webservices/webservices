@@ -34,6 +34,7 @@ public class WSDLSelectionWidgetWrapper extends SimpleWidgetDataContributor
   private WSDLSelectionWidget wsdlSelectionWidget;
   private String webServiceURI;
   private IProject project;
+  private String componentName;
   
   public WSDLSelectionWidgetWrapper()
   {
@@ -116,4 +117,22 @@ public class WSDLSelectionWidgetWrapper extends SimpleWidgetDataContributor
   	else
   	  return p;
   }
+
+  public String getComponentName()
+  {
+    String cname = wsdlSelectionWidget.getComponentName();
+    if (cname==null)
+    {
+      return componentName;
+    }
+    else
+      return cname;
+  }
+
+  public void setComponentName(String componentName)
+  {
+    this.componentName = componentName;
+  }
+  
+    
 }

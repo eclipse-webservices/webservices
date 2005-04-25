@@ -46,6 +46,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -335,6 +336,30 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     return null;
   }
   
+  public String getComponentName()
+  {
+    String wsdlURI = tree.getWsdlURI();
+    if (wsdlURI != null)
+    {
+      String cname = getComponentNameFromURI(wsdlURI);
+      if (cname!=null && cname.length()>0)
+        return cname;
+      
+      String wsRelPath = webServiceURI.getText();
+      IResource wsRes = ResourceUtils.findResource(wsRelPath);
+      if (wsRes!=null && wsRes instanceof IFile)
+      {
+        IVirtualComponent comp = ResourceUtils.getComponentOf(wsRes.getFullPath());
+        if (comp!=null)
+        {
+          return comp.getName();
+        }
+      }
+      
+    }
+    return null;
+  }
+  
   private IProject getProjectFromURI(String uri)
   {
     IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -351,5 +376,26 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       }
     }
     return null;
+  }
+  
+  private String getComponentNameFromURI(String uri)
+  {
+    IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+    String wkspcRootLoc = root.getLocation().toString();
+    int idx = uri.indexOf(wkspcRootLoc);
+    if (idx != -1) 
+    {
+      String relPath = uri.substring(wkspcRootLoc.length()+idx);
+      IResource res = root.findMember(new Path(relPath));
+      if (res instanceof IFile)
+      {
+        IVirtualComponent comp = ResourceUtils.getComponentOf(res.getFullPath());
+        if (comp!=null)
+        {
+          return comp.getName();
+        }        
+      }
+    }
+    return null;    
   }
 }

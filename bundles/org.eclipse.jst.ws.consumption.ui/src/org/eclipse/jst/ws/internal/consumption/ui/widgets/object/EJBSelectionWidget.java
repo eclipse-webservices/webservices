@@ -269,6 +269,19 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
       return null;
   }
   
+  public String getComponentName()
+  {
+    String projectName = getSelectedProject();
+    if (projectName != null && projectName.length() > 0)
+    {
+      IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+      String comp = J2EEUtils.getFirstWebModuleName(p);
+      return comp;
+    }
+    else
+      return null;    
+  }
+  
   public Status validateSelection(IStructuredSelection objectSelection)
   {
     return new SimpleStatus("");
