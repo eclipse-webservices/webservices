@@ -45,6 +45,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.selection.Selection
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -702,17 +703,72 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   
   private void setClientDefaultServer()
   {
-    //Temporarily pick the first existing server in the workspace
-    IServer[] servers = ServerCore.getServers();
-    if (servers.length > 0)
+    String initialClientProjectName = runtimeClientTypes_.getChoice().getChoice().getList().getSelection();
+    IRuntime runtimeTarget = ServerSelectionUtils.getRuntimeTarget(initialClientProjectName);
+    String runtimeTargetId = null;
+    if (runtimeTarget != null)
     {
-      clientIds_.setServerId(servers[0].getServerType().getId());
-      clientIds_.setServerInstanceId(servers[0].getId());
+      runtimeTargetId = runtimeTarget.getRuntimeType().getId();
+      //Pick a compatible existing server if one exists.
+      IServer[] servers = ServerSelectionUtils.getCompatibleExistingServers(runtimeTarget);
+      if (servers!=null && servers.length>0)
+      {
+        for (int i=0; i<servers.length; i++)
+        {
+          String thisFactoryId = servers[0].getServerType().getId();
+          if (WebServiceRuntimeExtensionUtils.doesRuntimeSupportServer(clientIds_.getRuntimeId(), thisFactoryId))
+          {
+            //Pick this server and return.
+            clientIds_.setServerId(thisFactoryId);
+            clientIds_.setServerInstanceId(servers[0].getId());
+            return;
+          }
+        }
+      }
+      
+      //No compatible existing server, set the factory id to something the runtime supports
+      String[] factoryIds = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getServerFactoryIds();
+      if (factoryIds!=null && factoryIds.length>0)
+      {
+        for (int i=0; i<factoryIds.length; i++)
+        {
+          IServerType serverType = ServerCore.findServerType(factoryIds[i]);
+          if (serverType != null)
+          {
+            String serverRuntimeTypeId = serverType.getRuntimeType().getId();            
+            if (serverRuntimeTypeId.equals(runtimeTargetId))
+            {
+              //Found a match
+              clientIds_.setServerId(factoryIds[i]);
+              return;
+            }
+          }
+        }        
+      }
+      else
+      {
+        //Runtime does not specify any server factory ids
+        IServerType[] serverTypes = ServerCore.getServerTypes();
+        clientIds_.setServerId(serverTypes[0].getId());
+      }
+      
     }
     else
     {
-     clientIds_.setServerId((WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getServerFactoryIds())[0]);
-    }    
+      // The project has no server target so pick a server factory id that is supported by the runtime
+      String[] fids = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getServerFactoryIds();
+      if (fids!=null && fids.length>0)
+      {
+        clientIds_.setServerId(fids[0]);  
+      }
+      else
+      {
+        //Runtime does not specify any server factory ids
+        IServerType[] serverTypes = ServerCore.getServerTypes();
+        clientIds_.setServerId(serverTypes[0].getId());        
+      }
+            
+    }        
   }
   /*
   private void setClientDefaultServer()

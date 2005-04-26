@@ -446,6 +446,41 @@ public class WebServiceRuntimeExtensionUtils
     return server.getName();
   }  
   
+  public static boolean doesRuntimeSupportServer(String runtimeId, String factoryId)
+  {
+    WebServiceRuntimeInfo wsrt = getWebServiceRuntimeById(runtimeId);
+    if (wsrt != null)
+    {
+      String[] fids = wsrt.getServerFactoryIds();
+      if (fids!=null)
+      {
+        for (int i=0; i<fids.length; i++)
+        {
+          if (fids[i].equals(factoryId))
+          {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+  
+  public static String getFirstSupportedServer(String runtimeId)
+  {
+    WebServiceRuntimeInfo wsrt = getWebServiceRuntimeById(runtimeId);
+    
+    if (wsrt != null)
+    {
+      String[] fids = wsrt.getServerFactoryIds();
+      if (fids!=null && fids.length>0)
+      {
+        return fids[0];
+      }
+    }
+    
+    return null;    
+  }
   
   public static String[] getRuntimesByClientType(String clientTypeId) 
   {

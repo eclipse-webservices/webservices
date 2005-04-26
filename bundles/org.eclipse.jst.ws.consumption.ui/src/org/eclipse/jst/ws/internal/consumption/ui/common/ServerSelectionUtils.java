@@ -230,6 +230,7 @@ public class ServerSelectionUtils
    * Given a list of existing servers, this returns the first one that is supported
    * by the given Web service type id. 
    * Returns null of there are no supported servers in the array.
+   * @deprecated
    */
   public static IServer getFirstSupportedServer(IServer[] servers, String typeId)
   {
@@ -250,6 +251,7 @@ public class ServerSelectionUtils
   /*
    * Returns the factory id of a server type compatible with the Web service type and the runtime target.
    * Returns null if there are none.
+   * @deprecated
    */
   public static String getFirstSupportedServerType(IRuntime runtimeTarget, String typeId)
   {
@@ -273,6 +275,7 @@ public class ServerSelectionUtils
   /*
    * Return the factory id of the first server type compatible with the runtimeTargets and typeId.
    * Returns null if there are none.
+   * @deprecated
    */
   public static String getFirstSupportedServerType(List runtimeTargets, String typeId)
   {
@@ -323,7 +326,7 @@ public class ServerSelectionUtils
       return null;
     
     IServer[] servers = ServerCore.getServers();
-    if (servers==null || servers.length!=0)
+    if (servers==null || servers.length==0)
       return null;
     
     ArrayList compatibleServersList = new ArrayList();
@@ -348,13 +351,16 @@ public class ServerSelectionUtils
     }
     
     return compatibleServers;
-  }  
+  }
+  
+  
   /*
    * Returns the factory Id and instance id of the first exiting server compatible
    * with the runtime targets and typeId
    * Returns null if there are none.
    * The item at [0] is the factory id.
    * The item at [1] is the instance id.
+   * @deprecated
    */
   public static String[] getCompatibleExistingServer(List runtimeTargets, String typeId)
   {
@@ -400,6 +406,13 @@ public class ServerSelectionUtils
     return null;
   }
   
+  /**
+   * 
+   * @param runtimeTargets
+   * @param webServiceRuntimeId
+   * @return
+   * @deprecated
+   */
   private static List getRuntimeTargetsSupportedByWSRuntime(List runtimeTargets, String webServiceRuntimeId)
   {
     ArrayList suppRuntimeTargets = new ArrayList();
@@ -422,6 +435,7 @@ public class ServerSelectionUtils
    * @param webServiceRuntimeId
    * @param j2eeVersion String representation of the int values in J2EEVersionConstants i.e. "12", "13", "14"
    * @return String[] index [0] contains factoryId, index[1] contains instance Id.
+   * @deprecated
    */
   public static String[] getServerFromWebServceRuntimeAndJ2EE(String webServiceRuntimeId, String j2eeVersion)
   {
