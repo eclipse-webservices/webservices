@@ -58,7 +58,7 @@ public class WebServiceTestDefaultingCommand extends SimpleCommand
   	Vector wsdlNames = new Vector();
   	for(int i =0 ;i<testTypes.length;i++){
   	  WebServiceTestExtension wscte = (WebServiceTestExtension)wsttRegistry.getWebServiceExtensionsByName(testTypes[i]);  	
-  	  if(!wscte.isJava()){
+  	  if(wscte.testWSDL()){
   	    wsdlNames.addElement(testTypes[i]);
   	  }
   	}

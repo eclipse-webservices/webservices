@@ -103,9 +103,13 @@ public class WebServiceTestExtension extends WebServiceExtensionImpl
     return getConfigElement().getAttribute( "useserver" );
   }
 
-  public boolean isJava()
+  public boolean testWSDL()
   {
-  	return Boolean.valueOf(getConfigElement().getAttribute( "java" )).booleanValue();
+  	String wsdl = getConfigElement().getAttribute( "testWSDL" );
+    if(wsdl.equals("yes") || wsdl.equals("true"))
+	  return true;
+	 
+	return false;  
   }
   	
   

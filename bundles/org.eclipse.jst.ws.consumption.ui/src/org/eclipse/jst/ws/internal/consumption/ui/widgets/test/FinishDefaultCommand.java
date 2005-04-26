@@ -11,7 +11,6 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
-import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -34,7 +33,7 @@ public class FinishDefaultCommand extends SimpleCommand
   private String sampleServerTypeID;
   private IServer sampleExistingServer;
   private String existingServerId_;
-  private TypeRuntimeServer clientIds;
+  private String sampleServerInstanceId;
 
   
   public FinishDefaultCommand ()
@@ -46,31 +45,25 @@ public class FinishDefaultCommand extends SimpleCommand
   public Status execute(Environment env)
   {
   	Status status = new SimpleStatus( "" );
-  	if(clientIds != null){
-  	  if (clientIds.getServerInstanceId() != null) 
-        sampleExistingServer = ServerCore.findServer(clientIds.getServerInstanceId());
-  	  if (sampleExistingServer==null && existingServerId_!=null && existingServerId_.length()>0)
-  	  {
-  	    //Use the existingServerId
-  	    sampleExistingServer = ServerCore.findServer(existingServerId_);
-  	  }
-      if (sampleExistingServer != null)
-        sampleServerTypeID = sampleExistingServer.getServerType().getId();
-      else
-        sampleServerTypeID = clientIds.getServerId();
+  	if(sampleServerInstanceId != null){
+  	  sampleExistingServer = ServerCore.findServer(sampleServerInstanceId);
+  	if (sampleExistingServer != null)
+      sampleServerTypeID = sampleExistingServer.getServerType().getId();
+      
   	}
     return status;
   
   }
   
-  public void setClientTypeRuntimeServer(TypeRuntimeServer ids)
+  public void setServerInstanceId(String serverInstanceId)
   {
-    clientIds = ids;
+	this.sampleServerInstanceId = serverInstanceId;
   }
   
   public String getSampleServerTypeID()
   {
   	return sampleServerTypeID;
+	
   }
   
   public IServer getSampleExistingServer()

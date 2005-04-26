@@ -123,17 +123,6 @@ public class ClientTestDelegateCommand extends SimpleCommand
   //Helper method which sets up the TestInfo data structure
   private TestInfo getTestInfo()
   {
-	IServer clientExistingServer = null;
-	String clientServerTypeID = null;
-	
-	//client server info  
-	if(clientIds != null){
-	  if (clientIds.getServerInstanceId() != null) 
-        clientExistingServer = ServerCore.findServer(clientIds.getServerInstanceId());
-	}
-	if (clientExistingServer != null)
-	  clientServerTypeID = clientExistingServer.getServerType().getId();
-	
 	IServer serviceExistingServer = null;
 	String serviceServerTypeID = null;
 		
@@ -158,12 +147,15 @@ public class ClientTestDelegateCommand extends SimpleCommand
 	  sampleC = sampleProject.substring(index + 1);
 	}
 	
+    
+	
 	TestInfo testInfo = new TestInfo();  
-	testInfo.setClientExistingServer(clientExistingServer);
-	testInfo.setClientServerTypeID(clientServerTypeID);
+	testInfo.setClientExistingServer(sampleExistingServer);
+	testInfo.setClientServerTypeID(sampleServerTypeID);
 	testInfo.setJspFolder(jspFolder);
 	testInfo.setEndpoint(endpoints);
 	testInfo.setGenerationProject(sampleP);
+	testInfo.setGenerationModule(sampleC);
 	testInfo.setProxyBean(proxyBean);
 	testInfo.setSetEndpointMethod(setEndpointMethod);
 	testInfo.setClientProject(clientP);
@@ -171,10 +163,11 @@ public class ClientTestDelegateCommand extends SimpleCommand
 	
 	//if this is a client scenario the service stuff is empty
 	if(serviceServerTypeID == null){
-	  serviceServerTypeID = clientServerTypeID;
-	  serviceExistingServer = clientExistingServer;
+	  serviceServerTypeID = sampleServerTypeID;
+	  serviceExistingServer = sampleExistingServer;
 	}
-		
+	
+	
 	testInfo.setServiceServerTypeID(serviceServerTypeID);
 	testInfo.setServiceExistingServer(serviceExistingServer);
 	//wsdl stuff

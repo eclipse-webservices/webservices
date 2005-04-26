@@ -58,7 +58,7 @@ public class PersistentScenarioContext extends PersistentContext implements Scen
     {
       WebServiceTestExtension wse = (WebServiceTestExtension) registry
           .getWebServiceExtensionsByName(testTypes[i]);
-      if (!wse.isJava()) return testTypes[i];
+      if (wse.testWSDL()) return testTypes[i];
     }
     return "";
   }

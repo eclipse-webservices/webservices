@@ -68,7 +68,7 @@ public class FinishTestFragment extends BooleanFragment{
 	String[] testTypes = scenarioContext.getWebServiceTestTypes();
 	WebServiceTestRegistry wsttRegistry = WebServiceTestRegistry.getInstance();
 	WebServiceTestExtension wscte = (WebServiceTestExtension)wsttRegistry.getWebServiceExtensionsByName(testTypes[0]);  	
-	if(!wscte.isJava())	
+	if(wscte.testWSDL())	
 	  return true;
 	return false;
   }
@@ -78,7 +78,7 @@ public class FinishTestFragment extends BooleanFragment{
   	if(testID == null) return false;
   	WebServiceTestRegistry wsttRegistry = WebServiceTestRegistry.getInstance();
 	WebServiceTestExtension wscte = (WebServiceTestExtension)wsttRegistry.getWebServiceExtensionsByName(testID);  	
-	if(wscte.isJava())	
+	if(!wscte.testWSDL())	
       return true;
     return false;   	
   }

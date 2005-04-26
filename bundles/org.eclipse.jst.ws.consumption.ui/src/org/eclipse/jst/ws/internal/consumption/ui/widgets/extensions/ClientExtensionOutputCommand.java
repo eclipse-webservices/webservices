@@ -190,4 +190,14 @@ public class ClientExtensionOutputCommand extends SimpleCommand
 	{
 		webServiceClient_ = wsc;
 	}
+	
+	public String getServerInstanceId()
+	{
+		return webServiceClient_.getWebServiceClientInfo().getServerInstanceId();
+	}
+	
+	public String getServerFactoryId()
+	{
+		return webServiceClient_.getWebServiceClientInfo().getServerFactoryId();
+	}
 }
