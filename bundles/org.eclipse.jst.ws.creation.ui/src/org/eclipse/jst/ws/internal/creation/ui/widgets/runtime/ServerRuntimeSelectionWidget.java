@@ -312,23 +312,20 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     }
     
     //Validate service side server target and J2EE level
-    SelectionListChoices serviceProjects = projectWidget_.getProjectChoices();
     String serviceEARName = null;
     String serviceProjName = null;
     String serviceServerFactoryId = null;
-    ValidationUtils valUtils = new ValidationUtils();
-    if (serviceProjects!=null)
-    {
-      serviceEARName  = serviceProjects.getChoice().getList().getSelection();
-      serviceProjName = serviceProjects.getList().getSelection();
-      serviceServerFactoryId = runtimeWidget_.getTypeRuntimeServer().getServerId();
-      String serviceJ2EElevel = runtimeWidget_.getJ2EEVersion();
-      Status serviceProjectStatus = valUtils.validateProjectTargetAndJ2EE(serviceProjName, serviceEARName, serviceServerFactoryId, serviceJ2EElevel);
-      if(serviceProjectStatus.getSeverity()==Status.ERROR)
-      {
-        finalStatus = serviceProjectStatus;
-      }
-    }
+
+	ValidationUtils valUtils = new ValidationUtils();
+	serviceEARName  = projectWidget_.getEarProjectName();
+	serviceProjName = projectWidget_.getProjectName();
+	serviceServerFactoryId = runtimeWidget_.getTypeRuntimeServer().getServerId();
+	String serviceJ2EElevel = runtimeWidget_.getJ2EEVersion();
+	Status serviceProjectStatus = valUtils.validateProjectTargetAndJ2EE(serviceProjName, serviceEARName, serviceServerFactoryId, serviceJ2EElevel);
+	if(serviceProjectStatus.getSeverity()==Status.ERROR)
+	{
+		finalStatus = serviceProjectStatus;
+	}
     
     //Ensure the service project type (Web/EJB) is valid
     if (serviceProjName!=null && serviceProjName.length()>0)
@@ -364,30 +361,35 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     
     if (isClientWidgetVisible_) 
     {
-      SelectionListChoices clientProjects = clientWidget_.getProjectSelectionWidget().getProjectChoices();      
-      if (clientProjects!=null && serviceProjects!=null) 
-      {
-        String clientEARName   = clientProjects.getChoice().getList().getSelection();
-        String clientProjName  = clientProjects.getList().getSelection();
-
-        // check same EAR-ness -----
-        String warning_msg = getEARProjectWarningMessage(serviceEARName, clientEARName);
-        
-        if( clientProjName != null && serviceProjName != null && 
-            clientProjName.equalsIgnoreCase( serviceProjName ))
-        {
-          if (finalStatus.getSeverity()!=Status.ERROR)
-          {
-            warning_msg = msgUtils_.getMessage( "MSG_SAME_CLIENT_AND_SERVICE_EARS", new String[]{ "WEB" } );
-            finalStatus = new SimpleStatus( "", warning_msg, Status.WARNING );
-          }
-        }
-        else if (warning_msg != null)
-        {
-          if (finalStatus.getSeverity()!=Status.ERROR)
-          	return new SimpleStatus( "", warning_msg, Status.WARNING );          
-        }         
-      }      
+	    String clientEARName   = clientWidget_.getClientEarProjectName();
+	    String clientProjName  = clientWidget_.getClientProjectName();
+	
+		String serviceComponentName = projectWidget_.getComponentName();
+		String clientComponentName = clientWidget_.getClientComponentName();
+		
+	    // check same EAR-ness -----
+	    String warning_msg = getEARProjectWarningMessage(serviceEARName, clientEARName);
+	    
+	    if( clientProjName != null && serviceProjName != null && 
+	        clientProjName.equalsIgnoreCase( serviceProjName ))
+	    {
+		  if (finalStatus.getSeverity()!=Status.ERROR) {			
+			  if (!serviceComponentName.equalsIgnoreCase(clientComponentName)){
+				  String error_msg = msgUtils_.getMessage("MSG_INCOMPATIBLE_PROJECTS_AND_COMPONENTS");
+				  finalStatus = new SimpleStatus("", error_msg, Status.ERROR);
+			  }
+			  else{
+				  warning_msg = msgUtils_.getMessage( "MSG_SAME_CLIENT_AND_SERVICE_EARS", new String[]{ "WEB" } );
+				  finalStatus = new SimpleStatus( "", warning_msg, Status.WARNING );
+			  }
+	      }
+	    }
+	    else if (warning_msg != null)
+	    {
+	      if (finalStatus.getSeverity()!=Status.ERROR)
+	      	return new SimpleStatus( "", warning_msg, Status.WARNING );          
+	    }         
+      
     }
     
     // TODO: validate projects (i.e 1.2 vs 1.3 Web Projects) against servers
