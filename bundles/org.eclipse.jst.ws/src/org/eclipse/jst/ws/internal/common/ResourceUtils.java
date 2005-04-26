@@ -18,11 +18,9 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -54,10 +52,10 @@ import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.internal.ComponentResource;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerPort;
@@ -630,32 +628,8 @@ public final class ResourceUtils {
 	 * @return
 	 */
 	public static IPath getJavaSourceLocation(IProject project, String compName){
-		IPath javaSourceLocation = null;
-		StructureEdit mc = null;
-		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc!=null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				for (int i=0;i<wbcs.length;i++){
-					if (wbcs[i].getName().equals(compName)){
-						List cl = wbcs[i].getResources();
-						for (int j=0; j<cl.size(); j++) {
-							ComponentResource cr = (ComponentResource)cl.get(j);
-							System.out.println("SourcePath  = "+cr.getSourcePath());
-							return cr.getSourcePath();
-						}
-					}
-				}
-			}
-		}
-		catch (Exception e){
-			//handle exception
-		}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
-		return javaSourceLocation;			
+		IVirtualComponent component = ComponentCore.createComponent(project, compName);
+		return getJavaSourceLocation(component);			
 	}
 	
 	/**
@@ -664,7 +638,11 @@ public final class ResourceUtils {
 	 * @return
 	 */
 	public static IPath getJavaSourceLocation(IVirtualComponent comp){
-		return getJavaSourceLocation(comp.getProject(), comp.getName());
+		if (comp!=null){
+		   IVirtualFolder folder = comp.getFolder(new Path("/WEB-INF/classes"));
+		   return folder.getWorkspaceRelativePath();
+		}
+		return null;
 	}
 	
 	/**
@@ -686,10 +664,6 @@ public final class ResourceUtils {
 			} catch (JavaModelException e) {
 			}
 		}
-		Log log = new EclipseLog();
-		log.log(Log.INFO, 5033, ResourceUtils.class,
-				"getAllJavaSourceLocations", "project=" + project);
-
 		return (IPath[]) pathVector.toArray(new Path[pathVector.size()]);
 	}
 
@@ -714,25 +688,16 @@ public final class ResourceUtils {
 	 *         
 	 * @deprecated not used
 	 */
-	public static IPackageFragmentRoot getJavaSourcePackageFragmentRoot(
-			IProject project) {
+	public static IPackageFragmentRoot getJavaSourcePackageFragmentRoot(IProject project) {
 		IPackageFragmentRoot packageFragmentRoot = null;
 		IPath javaSourceLocation = getJavaSourceLocation(project);
 		try {
 			IJavaProject javaProject = JavaCore.create(project);
 			if (javaProject != null) {
-				packageFragmentRoot = javaProject
-						.findPackageFragmentRoot(javaSourceLocation);
-
+				packageFragmentRoot = javaProject.findPackageFragmentRoot(javaSourceLocation);
 			}
 		} catch (JavaModelException e) {
 		}
-		Log log = new EclipseLog();
-		log.log(Log.INFO, 5034, ResourceUtils.class,
-				"getJavaSourcePackageFragmentRoot", "project=" + project
-						+ ",sourceLocation=" + javaSourceLocation
-						+ ",sourcePackageFragmentRoot=" + packageFragmentRoot);
-
 		return packageFragmentRoot;
 	}
 
@@ -793,41 +758,41 @@ public final class ResourceUtils {
 	 *         no Web nature.
 	 * @deprecated use getWebModuleServerRoot(project, compName)
 	 */
-	public static IContainer getWebModuleServerRoot(IProject project) {
-		IContainer webModuleServerRoot = null;
-		StructureEdit mc = null;
-		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			if (wbcs.length!=0) {
-				webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
-				IFolder fwebModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
-				fwebModuleServerRoot.getFolder("WEB-INF").getFolder("classes");
-				
-				IFolder[] folder = StructureEdit.getOutputContainersForProject(project);
-				
-				if (folder.length!=0)
-				System.out.println("WebModuleServerRoot = "+folder[0]);
-				
-			}
+//	public static IContainer getWebModuleServerRoot(IProject project) {
+//		IContainer webModuleServerRoot = null;
+//		StructureEdit mc = null;
+//		try {
+//			mc = StructureEdit.getStructureEditForRead(project);
+//			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+//			if (wbcs.length!=0) {
+//				webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
+//				IFolder fwebModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
+//				fwebModuleServerRoot.getFolder("WEB-INF").getFolder("classes");
+//				
+//				IFolder[] folder = StructureEdit.getOutputContainersForProject(project);
+//				
+//				if (folder.length!=0)
+//				System.out.println("WebModuleServerRoot = "+folder[0]);
+//				
+//			}
 //			IProjectNature nature = project.getNature(IWebNatureConstants.J2EE_NATURE_ID);
 //			if (nature != null && (nature instanceof IDynamicWebNature)) {
 //			  IDynamicWebNature webNature = (IDynamicWebNature) nature;
 //				webModuleServerRoot = webNature.getRootPublishableFolder();
 //			}
-		} catch (Exception e) {
-			Log log = new EclipseLog();
-			log.log(Log.ERROR, 5035, ResourceUtils.class, "getWebModuleServerRoot",
-					"project=" + project + ",webModuleServerRoot="
-							+ webModuleServerRoot);			
-		}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
-
-		return webModuleServerRoot;
-	}
+//		} catch (Exception e) {
+//			Log log = new EclipseLog();
+//			log.log(Log.ERROR, 5035, ResourceUtils.class, "getWebModuleServerRoot",
+//					"project=" + project + ",webModuleServerRoot="
+//							+ webModuleServerRoot);			
+//		}
+//		finally{
+//			if (mc!=null)
+//				mc.dispose();
+//		}
+//
+//		return webModuleServerRoot;
+//	}
 
 	/**
 	 * 
@@ -1149,11 +1114,11 @@ public final class ResourceUtils {
 	 * @return The URL of the file, or null if no URL can be determined.
 	 * @deprecated not used
 	 */
-	public static String getURLFromPath(IPath absolutePath,
-			String serverFactoryId, IServer server) {
-		return getURLFromPath(absolutePath, getWebProjectURL(
-				getProjectOf(absolutePath), serverFactoryId, server));
-	}
+//	public static String getURLFromPath(IPath absolutePath,
+//			String serverFactoryId, IServer server) {
+//		return getURLFromPath(absolutePath, getWebProjectURL(
+//				getProjectOf(absolutePath), serverFactoryId, server));
+//	}
 
 	/**
 	 * 
@@ -1162,38 +1127,38 @@ public final class ResourceUtils {
 	 * @return
 	 * @deprecated not used
 	 */
-	public static String getURLFromPath(IPath absolutePath, String webProjectURL) {
-		StringBuffer url = new StringBuffer();
-		IProject project = getProjectOf(absolutePath);
-		IContainer webModuleServerRoot = getWebModuleServerRoot(project);
-		if (webModuleServerRoot != null) {
-			IPath webModuleServerRootPath = webModuleServerRoot.getFullPath();
-			if (webModuleServerRootPath.isPrefixOf(absolutePath)) {
-				int numSegment = webModuleServerRootPath.segmentCount();
-				int numSegmentFromPath = absolutePath.segmentCount();
-				if (numSegmentFromPath > numSegment) {
-					String nextSegment = absolutePath.segment(numSegment);
-					// check if the segment after the WebModuleServerRoot is
-					// WEB-INF (ignoring case)
-					if (nextSegment != null	&& !nextSegment.equalsIgnoreCase("WEB-INF")) {
-						IPath relativePath = absolutePath.removeFirstSegments(numSegment);
-						if (webProjectURL != null)
-							url.append(webProjectURL).append(IPath.SEPARATOR).append(relativePath.toString());
-					}
-				} else if (numSegmentFromPath == numSegment)
-					url.append(webProjectURL);
-			}
-		}
-		if (url.length() < 1) {
-			IWorkspaceRoot workspace = getWorkspaceRoot();
-			url.append(getResourceURI(workspace.getFile(absolutePath)));
-		}
-		Log log = new EclipseLog();
-		log.log(Log.INFO, 5038, ResourceUtils.class, "getURLFromPath",
-				"absolutePath=" + absolutePath + ",url=" + url);
-
-		return url.toString();
-	}
+//	public static String getURLFromPath(IPath absolutePath, String webProjectURL) {
+//		StringBuffer url = new StringBuffer();
+//		IProject project = getProjectOf(absolutePath);
+//		IContainer webModuleServerRoot = getWebModuleServerRoot(project);
+//		if (webModuleServerRoot != null) {
+//			IPath webModuleServerRootPath = webModuleServerRoot.getFullPath();
+//			if (webModuleServerRootPath.isPrefixOf(absolutePath)) {
+//				int numSegment = webModuleServerRootPath.segmentCount();
+//				int numSegmentFromPath = absolutePath.segmentCount();
+//				if (numSegmentFromPath > numSegment) {
+//					String nextSegment = absolutePath.segment(numSegment);
+//					// check if the segment after the WebModuleServerRoot is
+//					// WEB-INF (ignoring case)
+//					if (nextSegment != null	&& !nextSegment.equalsIgnoreCase("WEB-INF")) {
+//						IPath relativePath = absolutePath.removeFirstSegments(numSegment);
+//						if (webProjectURL != null)
+//							url.append(webProjectURL).append(IPath.SEPARATOR).append(relativePath.toString());
+//					}
+//				} else if (numSegmentFromPath == numSegment)
+//					url.append(webProjectURL);
+//			}
+//		}
+//		if (url.length() < 1) {
+//			IWorkspaceRoot workspace = getWorkspaceRoot();
+//			url.append(getResourceURI(workspace.getFile(absolutePath)));
+//		}
+//		Log log = new EclipseLog();
+//		log.log(Log.INFO, 5038, ResourceUtils.class, "getURLFromPath",
+//				"absolutePath=" + absolutePath + ",url=" + url);
+//
+//		return url.toString();
+//	}
 
 	/**
 	 * Copies a set of files from a plugin's installation location to a native
