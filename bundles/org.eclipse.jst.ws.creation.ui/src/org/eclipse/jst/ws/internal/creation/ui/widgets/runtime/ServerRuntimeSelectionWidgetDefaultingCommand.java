@@ -105,6 +105,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      setDefaultEARs();
      setDefaultServer();
      updateServiceEARs();
+     updateClientProject(getServiceProject2EARProject().getList().getSelection(), serviceComponentName_);
      updateClientEARs();
 	 
      // rskreg	 

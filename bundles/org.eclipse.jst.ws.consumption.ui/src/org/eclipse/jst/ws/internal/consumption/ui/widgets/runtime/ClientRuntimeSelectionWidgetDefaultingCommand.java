@@ -831,6 +831,14 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   }  
   */
   
+  protected void updateClientProject(String projectName, String componentName)
+  {
+    String[] updatedNames = ResourceUtils.getClientProjectComponentName(projectName, componentName);
+    getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(updatedNames[0]);
+    clientComponentName_ = updatedNames[1];
+    
+  }
+  
   protected void updateClientEARs()
   {
   	//Set EAR selection to null if the project/server defaults imply an EAR should not be created

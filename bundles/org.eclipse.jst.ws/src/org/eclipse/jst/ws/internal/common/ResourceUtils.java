@@ -1786,6 +1786,36 @@ public final class ResourceUtils {
 		return clientWebProjectName;
 	}
 
+  public static String[] getClientProjectComponentName(String projectName, String componentName)
+  {
+    String clientProjectName = projectName + DEFAULT_CLIENT_WEB_PROJECT_EXT;
+    String baseName = clientProjectName;
+    String clientComponentName = componentName + DEFAULT_CLIENT_WEB_PROJECT_EXT;
+    String baseCompName = clientComponentName;
+    
+//    boolean  foundWebProject     = false;
+//    int      i                   = 1;
+//    
+//    while (!foundWebProject) 
+//    {
+//      IPath projectPath = new Path(clientProjectName).makeAbsolute();
+//      IProject project = ResourceUtils.getProjectOf(projectPath);
+//      
+//      if (project.exists()) 
+//      {
+//        clientProjectName = baseName + i;
+//        clientComponentName = baseCompName + i;
+//        i++;
+//      }
+//      else 
+//      {
+//        foundWebProject = true;
+//      }
+//    }
+    
+    return new String[]{clientProjectName, clientComponentName};
+  }
+  
 	public static boolean isSkeletonEJBType( String typeID )
 	{
 	  return typeID.equals( "org.eclipse.jst.ws.type.wsdl.ejb" );    
@@ -1807,6 +1837,10 @@ public final class ResourceUtils {
     return DEFAULT_WEB_COMPONENT_NAME;
   }
 
+  public static String getDefaultClientExtension() {
+    return DEFAULT_CLIENT_WEB_PROJECT_EXT;
+  }
+  
 	/**
 	 * 
 	 * @param projectName
