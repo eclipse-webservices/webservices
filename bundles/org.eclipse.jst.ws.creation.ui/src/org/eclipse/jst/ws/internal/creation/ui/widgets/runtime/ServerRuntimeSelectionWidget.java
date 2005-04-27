@@ -33,7 +33,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 
 /*
@@ -370,31 +369,25 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 	    // check same EAR-ness -----
 	    String warning_msg = getEARProjectWarningMessage(serviceEARName, clientEARName);
 	    
+		if (serviceComponentName.equalsIgnoreCase(clientComponentName)){
+			  String err_msg = msgUtils_.getMessage( "MSG_SAME_CLIENT_AND_SERVICE_COMPONENTS", new String[]{ "WEB" } );
+			  finalStatus = new SimpleStatus( "", err_msg, Status.ERROR );				
+		}
+		
 	    if( clientProjName != null && serviceProjName != null && 
 	        clientProjName.equalsIgnoreCase( serviceProjName ))
 	    {
-		  if (finalStatus.getSeverity()!=Status.ERROR) {			
-			  if (!serviceComponentName.equalsIgnoreCase(clientComponentName)){
-				  String error_msg = msgUtils_.getMessage("MSG_INCOMPATIBLE_PROJECTS_AND_COMPONENTS");
-				  finalStatus = new SimpleStatus("", error_msg, Status.ERROR);
-			  }
-			  else{
-				  warning_msg = msgUtils_.getMessage( "MSG_SAME_CLIENT_AND_SERVICE_EARS", new String[]{ "WEB" } );
-				  finalStatus = new SimpleStatus( "", warning_msg, Status.WARNING );
-			  }
-	      }
+		  String error_msg = msgUtils_.getMessage("MSG_SAME_CLIENT_AND_SERVICE_PROJECTS");
+		  finalStatus = new SimpleStatus("", error_msg, Status.ERROR);
 	    }
-	    else if (warning_msg != null)
+	    
+		if (warning_msg != null)
 	    {
 	      if (finalStatus.getSeverity()!=Status.ERROR)
 	      	return new SimpleStatus( "", warning_msg, Status.WARNING );          
 	    }         
       
     }
-    
-    // TODO: validate projects (i.e 1.2 vs 1.3 Web Projects) against servers
-    
-    
     
     return finalStatus;
   }
