@@ -11,9 +11,6 @@
 package org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl;
 
 import javax.wsdl.Definition;
-import javax.xml.namespace.QName;
-
-import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.WSITag;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
@@ -69,24 +66,6 @@ public class BP2018 extends AssertionProcess implements WSITag
     return isEx;
   }
 
-  /*
-   * Create failed report.
-  * @param el - xml element
-  * @param entryContext - Entry context
-  */
-  private void createFailed(
-    String message,
-    Element el,
-    EntryContext entryContext)
-  {
-    QName context =
-      (el != null)
-        ? new QName(el.getNamespaceURI(), el.getLocalName())
-        : new QName("definition");
-    result = AssertionResult.RESULT_FAILED;
-    failureDetail = this.validator.createFailureDetail(message, entryContext);
-  }
-
   /**
    * Validates the test assertion.
    * @see org.eclipse.wst.wsi.test.profile.validator.impl.BaseValidatorImpl.AssertionProcess#validate(org.wsi.test.profile.TestAssertion, org.wsi.test.profile.validator.EntryContext)
@@ -114,67 +93,19 @@ public class BP2018 extends AssertionProcess implements WSITag
       if (types != null)
       {
         Element el = XMLUtils.findPreviousSibling(types);
-        while (isExtensibilityElement(el) && el != null)
-          if (el != null)
-            el = XMLUtils.findPreviousSibling(el);
-
-        boolean documentIsPresent =
-          (XMLUtils.findChildElement((Element) root, WSDL_DOCUMENTATION)
-            != null);
-        boolean importIsPresent =
-          (XMLUtils.findChildElement((Element) root, WSDL_IMPORT) != null);
-
-        if (importIsPresent)
-          if (!XMLUtils.equals(el, WSDL_IMPORT))
-          {
-            createFailed(
-              "Types element can not follow import element.",
-              el,
-              entryContext);
-            return validator.createAssertionResult(
-              testAssertion,
-              result,
-              failureDetail);
-          }
-          else
-            el = XMLUtils.findPreviousSibling(el);
-
-        while (isExtensibilityElement(el) && el != null)
-          if (el != null)
-            el = XMLUtils.findPreviousSibling(el);
-
-        if (documentIsPresent)
-          if (!XMLUtils.equals(el, WSDL_DOCUMENTATION))
-          {
-            createFailed(
-              "Types element must follow only a documentation element.",
-              el,
-              entryContext);
-            return validator.createAssertionResult(
-              testAssertion,
-              result,
-              failureDetail);
-          }
-          else
-            el = XMLUtils.findPreviousSibling(el);
-
-        if (!importIsPresent && !documentIsPresent && el != null)
-          createFailed(
-            "Types element must follow only a documentation element.",
-            el,
-            entryContext);
-
-        if (importIsPresent
-          && documentIsPresent
-          && el != null
-          && !XMLUtils.equals(el, WSDL_DEFINITIONS)
-          && el.getNamespaceURI().equals(WSIConstants.NS_URI_WSDL))
-          createFailed(
-            "Types element must not follow the "
-              + el.getTagName()
-              + " element.",
-            el,
-            entryContext);
+        while (el != null)
+		{
+          if (!isExtensibilityElement(el) &&
+			   ((!XMLUtils.equals(el, WSDL_IMPORT)) &&
+			    (!XMLUtils.equals(el, WSDL_DOCUMENTATION))))
+		  {
+		    result = AssertionResult.RESULT_FAILED;
+			String message = "The " + el.getLocalName() + " element must not precede the types element.";
+		    failureDetail = this.validator.createFailureDetail(message, entryContext);
+  		    break;
+		  }
+          el = XMLUtils.findPreviousSibling(el);
+		}
       }
     }
 
