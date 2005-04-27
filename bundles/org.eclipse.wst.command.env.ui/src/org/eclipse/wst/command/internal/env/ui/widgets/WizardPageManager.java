@@ -389,7 +389,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
 		}
 	  }
 	  
-	  doneUndoing = page != null && !stackEmpty;
+	  doneUndoing = page != null || stackEmpty;
 	}	
   }
   
