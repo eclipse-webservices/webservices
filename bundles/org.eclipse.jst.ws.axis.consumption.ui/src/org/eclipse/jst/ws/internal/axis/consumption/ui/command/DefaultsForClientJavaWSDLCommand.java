@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
@@ -89,7 +90,10 @@ public class DefaultsForClientJavaWSDLCommand extends SimpleCommand {
 		{
 		  IPath webModulePath = webModuleContainer.getFullPath();
 		  //output =  PlatformUtils.getPlatformURL(webModulePath);
-		  output = ResourceUtils.findResource(webModulePath).getLocation().toString();
+		  IResource res = ResourceUtils.findResource(webModulePath);
+		  if (res!=null){
+			  output = res.getLocation().toString();
+		  } 
 		  javaWSDLParam_.setOutput(output);
 		}
 

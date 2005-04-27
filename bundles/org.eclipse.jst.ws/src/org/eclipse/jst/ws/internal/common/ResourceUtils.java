@@ -806,26 +806,13 @@ public final class ResourceUtils {
 		try {
 			mc = StructureEdit.getStructureEditForRead(project);
 			if (mc!=null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				if (wbcs.length!=0) {
-					for (int i=0; i<wbcs.length;i++){
-						if (wbcs[i].getName().equals(componentName)){
-							webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[i]);
-							System.out.println("webModuleServerRoot = "+webModuleServerRoot);
-						}
-					webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
-//					IFolder fwebModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
-//					fwebModuleServerRoot.getFolder("WEB-INF").getFolder("classes");
-					
-//					IFolder[] folder = StructureEdit.getOutputContainersForProject(project);
-					}
+				WorkbenchComponent wbc = mc.findComponentByName(componentName);
+				if (wbc!=null) {
+					webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbc);
 				}
+				System.out.println("webModuleServerRoot = "+webModuleServerRoot);				
 			}
 		} catch (Exception e) {
-			Log log = new EclipseLog();
-			log.log(Log.ERROR, 5035, ResourceUtils.class, "getWebModuleServerRoot",
-					"project=" + project + ",webModuleServerRoot="
-							+ webModuleServerRoot);			
 		}
 		finally{
 			if (mc!=null)
