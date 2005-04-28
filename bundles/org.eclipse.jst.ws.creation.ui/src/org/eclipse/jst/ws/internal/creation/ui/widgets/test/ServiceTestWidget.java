@@ -48,6 +48,8 @@ public class ServiceTestWidget extends SimpleWidgetDataContributor
   
   private SelectionList facilities_;
   
+  private String serviceServerInstanceId = null;
+  
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
     MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
@@ -77,6 +79,7 @@ public class ServiceTestWidget extends SimpleWidgetDataContributor
   
   private TypeRuntimeServer serviceids;
   private String serverProject;
+  private String module;
   private String wsdlURI;
   private String launchedServiceTestName = "";
   private Environment env;
@@ -84,13 +87,21 @@ public class ServiceTestWidget extends SimpleWidgetDataContributor
   
   private void handleLaunchButton()
   {
+	// Split up the project and module
+	int p = serverProject.indexOf("/");
+	if (p != -1){
+		module = serverProject.substring(p+1);
+		serverProject = serverProject.substring(0,p);
+	}
   	
   	String testID = testTypeCombo_.getText();
   	launchedServiceTestName = testID;
   	WSDLTestLaunchCommand wtlc = new WSDLTestLaunchCommand();
   	wtlc.setTestID(testID);
   	wtlc.setServiceTypeRuntimeServer(serviceids);
+	wtlc.setServiceServerInstanceId(serviceServerInstanceId);
   	wtlc.setServerProject(serverProject);
+	wtlc.setServerModule(module);
   	wtlc.setWsdlURI(wsdlURI);
   	wtlc.setExternalBrowser(true);
   	wtlc.setEndpoint(endpoints);
@@ -154,4 +165,9 @@ public class ServiceTestWidget extends SimpleWidgetDataContributor
   {
     this.endpoints = endpoints;
   }
+  
+  public void setServiceServerInstanceId(String ssInstanceId){
+	  this.serviceServerInstanceId = ssInstanceId;
+  }
+  
 }

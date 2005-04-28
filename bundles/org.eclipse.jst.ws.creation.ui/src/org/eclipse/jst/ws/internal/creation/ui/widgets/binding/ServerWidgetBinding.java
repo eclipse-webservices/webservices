@@ -201,6 +201,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProject", ServiceTestWidget.class);
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", CreateMonitorCommand.class);
     dataRegistry.addMapping(ServerExtensionOutputCommand.class, "WsdlURI", ServiceTestWidget.class);
+	dataRegistry.addMapping(ServerExtensionOutputCommand.class, "ServiceServerInstanceId", ServiceTestWidget.class);
     dataRegistry.addMapping(ServerExtensionOutputCommand.class, "WsdlURI", ComputeEndpointCommand.class);
     dataRegistry.addMapping(ServerExtensionOutputCommand.class, "WebServicesParser", ComputeEndpointCommand.class);
     dataRegistry.addMapping(WebServiceTestDefaultingCommand.class, "ServiceTestFacilities", ServiceTestWidget.class);    

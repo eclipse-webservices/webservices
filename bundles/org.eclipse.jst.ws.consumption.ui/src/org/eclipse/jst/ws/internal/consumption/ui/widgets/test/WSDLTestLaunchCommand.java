@@ -18,8 +18,6 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 import java.util.List;
 
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.jst.ws.internal.ext.WebServiceExecutable;
-import org.eclipse.jst.ws.internal.ext.test.WSDLTestFinishCommand;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.Command;
@@ -46,12 +44,14 @@ public class WSDLTestLaunchCommand extends SimpleCommand
   private String launchedServiceTestName;
   private TypeRuntimeServer serviceids;
   private String serverProject;
+  private String serverModule;
   private String wsdlURI;
   private MessageUtils msgUtils;
   private boolean externalBrowser;
   private List endpoints;
   private IServer serviceExistingServer = null;
   private String serviceServerTypeID = null;
+  private String serviceServerInstanceId = null;
 	
   public WSDLTestLaunchCommand()
   {
@@ -84,16 +84,16 @@ public class WSDLTestLaunchCommand extends SimpleCommand
 
   private Status commandFactoryExecution(ICommandFactory commandFactory,Environment env)
   {
-    Command command = commandFactory.getNextCommand(); 
 	Status status = new SimpleStatus( "" );  	
-	while(command != null){ 
-      status = command.execute(env);
+	while(commandFactory.hasNext()){ 
+	  Command command = commandFactory.getNextCommand();
+	  if (command != null)
+	    status = command.execute(env);
 	  if(status.getSeverity() == Status.ERROR){
 	    StatusHandler sHandler = env.getStatusHandler();
 		sHandler.reportError(status);
 		return status;
 	  }
-      commandFactory.getNextCommand();
     }
     return status;
   }
@@ -104,6 +104,9 @@ public class WSDLTestLaunchCommand extends SimpleCommand
     //	get the server stuff
     if (serviceids.getServerInstanceId() != null) 
 	  serviceExistingServer = ServerCore.findServer(serviceids.getServerInstanceId());
+    else if (serviceServerInstanceId!=null)
+		serviceExistingServer = ServerCore.findServer(serviceServerInstanceId);
+	
 	if (serviceExistingServer != null)
 	  serviceServerTypeID = serviceExistingServer.getServerType().getId();
 	else
@@ -111,6 +114,8 @@ public class WSDLTestLaunchCommand extends SimpleCommand
 	// server will be created in ServerDeployableConfigurationCommand
   
     TestInfo testInfo = new TestInfo();
+	if (serviceExistingServer!=null)
+		testInfo.setServiceExistingServer(serviceExistingServer);
     testInfo.setServiceServerTypeID(serviceServerTypeID);
 	testInfo.setServiceProject(serverProject);
 	testInfo.setWsdlServiceURL(wsdlURI);
@@ -139,6 +144,7 @@ public class WSDLTestLaunchCommand extends SimpleCommand
     this.serverProject = serverProject;
   }
 
+  
   public void setServiceTypeRuntimeServer(TypeRuntimeServer serviceids)
   {
     this.serviceids = serviceids;
@@ -153,4 +159,17 @@ public class WSDLTestLaunchCommand extends SimpleCommand
   {
     this.endpoints = endpoints;
   }
+
+public String getServerModule() {
+	return serverModule;
+}
+
+public void setServerModule(String serverModule) {
+	this.serverModule = serverModule;
+}
+
+public void setServiceServerInstanceId(String ssInstanceId){
+	this.serviceServerInstanceId = ssInstanceId;
+}
+
 }
