@@ -153,7 +153,6 @@ public class WSWSDLAxisType implements WebServiceServerRuntimeType, CommandWidge
   public void registerDataMappings(DataMappingRegistry dataRegistry) 
   {
     // SkeletonConfigWidget
-    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "JavaWSDLParam", SkeletonConfigWidgetDefaultingCommand.class);
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProject", SkeletonConfigWidget.class, "ServerProject", new ProjectName2IProjectTransformer());
     dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "JavaWSDLParam", SkeletonConfigWidget.class);
     dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "EndpointURI", SkeletonConfigWidget.class);
