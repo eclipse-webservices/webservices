@@ -103,7 +103,7 @@ public class StartServerCommand extends SimpleCommand
       case IServer.STATE_STOPPED:
         if (server.canStart(ILaunchManager.RUN_MODE).getSeverity()==IStatus.OK)
         {
-          start(server);
+          status = start(server);
           if (status.getSeverity() == Status.ERROR)
           {
             env.getStatusHandler().reportError(status);
@@ -115,7 +115,7 @@ public class StartServerCommand extends SimpleCommand
         //Restart the server if needed
         if (publishState != IServer.PUBLISH_STATE_NONE && server.canRestart(ILaunchManager.RUN_MODE).getSeverity()==IStatus.OK)
         {
-          restart(server);
+          status = restart(server);
           if (status.getSeverity() == Status.ERROR)
           {
             env.getStatusHandler().reportError(status);
