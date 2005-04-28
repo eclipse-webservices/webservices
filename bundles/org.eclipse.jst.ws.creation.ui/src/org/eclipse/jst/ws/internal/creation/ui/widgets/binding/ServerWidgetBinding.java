@@ -576,7 +576,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerDeployableConfigurationCommand.class, "SampleExistingServerInstId", ClientExtensionDefaultingCommand.class,"ClientExistingServerInstanceId", null);
       dataRegistry.addMapping(ServerDeployableConfigurationCommand.class, "ServiceExistingServerInstId", CreateServiceProjectCommand.class,"ExistingServerId", null);
       dataRegistry.addMapping(ServerDeployableConfigurationCommand.class, "AddedProjectToServer", CreateServiceProjectCommand.class);      
-      dataRegistry.addMapping(ServerDeployableConfigurationCommand.class, "ServiceExistingServerInstId", CreateMonitorCommand.class, "ServiceServerInstanceId", null);
+      dataRegistry.addMapping(ServerExtensionOutputCommand.class, "ServiceServerInstanceId", CreateMonitorCommand.class);
       dataRegistry.addMapping(ClientServerDeployableConfigCommand.class, "ServiceExistingServerInstId", FinishDefaultCommand.class, "ExistingServerId", null);
 
       // Map ServerExtensionOutputCommand for ServerStart()
