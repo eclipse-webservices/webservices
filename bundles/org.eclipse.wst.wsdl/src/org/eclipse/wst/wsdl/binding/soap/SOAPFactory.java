@@ -101,13 +101,13 @@ public interface SOAPFactory extends EFactory{
    */
 	SOAPHeader createSOAPHeader();
 
-  /**
+  /*
    * Returns the package supported by this factory.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @return the package supported by this factory.
    * @generated
    */
-	SOAPPackage getSOAPPackage();
+   // SOAPPackage getSOAPPackage();
 
 } //SOAPFactory

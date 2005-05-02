@@ -218,13 +218,13 @@ public interface WSDLFactory extends EFactory{
    */
 	XSDSchemaExtensibilityElement createXSDSchemaExtensibilityElement();
 
-  /**
+  /*
    * Returns the package supported by this factory.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @return the package supported by this factory.
    * @generated
    */
-	WSDLPackage getWSDLPackage();
+   // WSDLPackage getWSDLPackage();
 
 } //WSDLFactory
