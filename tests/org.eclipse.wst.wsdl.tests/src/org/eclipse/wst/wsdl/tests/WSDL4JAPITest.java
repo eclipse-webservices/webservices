@@ -11,15 +11,36 @@
 package org.eclipse.wst.wsdl.tests;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.Iterator;
 
+import javax.wsdl.Binding;
+import javax.wsdl.BindingFault;
+import javax.wsdl.BindingInput;
+import javax.wsdl.BindingOperation;
+import javax.wsdl.BindingOutput;
+import javax.wsdl.Definition;
+import javax.wsdl.Fault;
+import javax.wsdl.Import;
+import javax.wsdl.Input;
 import javax.wsdl.Message;
-import javax.wsdl.OperationType;
+import javax.wsdl.Operation;
+import javax.wsdl.Output;
 import javax.wsdl.Part;
-import javax.wsdl.xml.WSDLReader;
-import javax.xml.namespace.QName;
+import javax.wsdl.Port;
+import javax.wsdl.PortType;
+import javax.wsdl.Service;
+import javax.wsdl.Types;
+import javax.wsdl.extensions.ExtensibilityElement;
+import javax.wsdl.extensions.soap.SOAPAddress;
+import javax.wsdl.extensions.soap.SOAPBinding;
+import javax.wsdl.extensions.soap.SOAPBody;
+import javax.wsdl.extensions.soap.SOAPOperation;
 import javax.wsdl.factory.WSDLFactory;
+import javax.wsdl.xml.WSDLReader;
+import javax.wsdl.xml.WSDLWriter;
+import javax.xml.namespace.QName;
 
 import junit.framework.Assert;
 import junit.framework.Test;
@@ -28,21 +49,12 @@ import junit.framework.TestSuite;
 import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.resource.Resource;
-
+import org.eclipse.wst.wsdl.WSDLPackage;
+import org.eclipse.wst.wsdl.WSDLPlugin;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.WSDL4JDefinitionVisitor;
-
-import org.eclipse.wst.wsdl.WSDLPlugin;
-import org.eclipse.wst.wsdl.WSDLPackage;
-
-import javax.wsdl.*;
-import javax.wsdl.extensions.soap.*;
-import javax.wsdl.extensions.*;
-
 import org.eclipse.xsd.XSDPackage;
-import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
-
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
@@ -117,7 +129,7 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
   {
     if (docElement == null)
       return;
-    println("documentation: " + docElement); // TBD - serialize docElement
+    //println("documentation: " + docElement);
   }
   
   private void println(String s)
@@ -340,7 +352,7 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
       visitSOAPOperation((SOAPOperation)extensibilityElement);
   }
  
-  //Needs to improve this part
+  // Need to improve this part
   private boolean soapOperationVisited = false;
   private void visitSOAPOperation(SOAPOperation soapOperation)
   {
@@ -404,6 +416,7 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
       Definition def = loadDefinitionForWSDL4J("./samples/LoadAndPrintTest.wsdl");
       WSDL4JAPITest test = new WSDL4JAPITest(def);
       test.visit();
+      serialize(test.newDefinition,"./samples/ClonedLoadAndPrintTest.wsdl");
     }
     catch (Exception e)
     {
@@ -412,6 +425,21 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
     }    
   }
   
+  private void serialize(Definition def, String clonedFile) throws Exception
+  {
+    WSDLWriter writer = factory.newWSDLWriter();
+    IPluginDescriptor pd = Platform.getPluginRegistry().getPluginDescriptor("org.eclipse.wst.wsdl.tests");
+    URL url = pd.getInstallURL();
+    //System.out.println(url.toString());
+    url = new URL(url,clonedFile);
+    //System.out.println(url.toString());
+    //String s = Platform.resolve(url).getFile();
+    //System.out.println(Platform.getInstanceLocation().getURL().toString());
+    //String s = url.toString();
+    //System.out.println(s);
+    //writer.writeWSDL(def,new FileOutputStream(s));
+  }  
+  
   private Definition loadDefinitionForWSDL4J(String wsdlFile) throws Exception
   {    
     WSDLReader reader = factory.newWSDLReader();
@@ -419,7 +447,8 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
     URL url = pd.getInstallURL();
     url = new URL(url,wsdlFile);
     String s = Platform.resolve(url).getFile();
-    Definition definition = (org.eclipse.wst.wsdl.Definition)reader.readWSDL(s,new InputSource(new FileInputStream(s)));
+    //System.out.println("loading " + s);
+    Definition definition = reader.readWSDL(s,new InputSource(new FileInputStream(s)));
     return definition;
   }  
   
