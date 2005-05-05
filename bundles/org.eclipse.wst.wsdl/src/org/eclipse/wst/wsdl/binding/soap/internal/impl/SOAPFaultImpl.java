@@ -12,6 +12,7 @@ package org.eclipse.wst.wsdl.binding.soap.internal.impl;
 
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -365,11 +366,24 @@ public void setEncodingStyles(List list)
     if (theElement != null)
     {
       if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPFault_NamespaceURI())
-        niceSetAttribute(theElement,SOAPConstants.NAMESPACE_URI_ATTRIBUTE,getNamespaceURI());
+        niceSetAttribute(theElement,SOAPConstants.NAMESPACE_ATTRIBUTE,getNamespaceURI());
       if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPFault_Use())
         niceSetAttribute(theElement,SOAPConstants.USE_ATTRIBUTE,getUse());
       if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPFault_EncodingStyles())
-        ; // TBD - handle encodingStyles
+	  {
+	        List encodingStyleList = getEncodingStyles();
+	        String encodingStyles = "";
+	        Iterator iterator = encodingStyleList.iterator();
+	        while (iterator.hasNext())
+	        {
+	          if (encodingStyles.equals("")) // first iteration
+	            encodingStyles += (String)iterator.next();
+	          else
+	          	encodingStyles += " " + (String)iterator.next();
+	        }
+	        if (!encodingStyles.equals(""))
+	          niceSetAttribute(theElement,SOAPConstants.ENCODING_STYLE_ATTRIBUTE,encodingStyles);
+	      } // TBD - Is this the proper way to handle encodingStyles
       if (getName() != null)
       	niceSetAttribute(theElement,SOAPConstants.NAME_ATTRIBUTE,getName()); // Revisit Rose model
     }
