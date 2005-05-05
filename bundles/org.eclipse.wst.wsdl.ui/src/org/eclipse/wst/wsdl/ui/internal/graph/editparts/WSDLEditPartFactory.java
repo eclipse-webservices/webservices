@@ -48,15 +48,15 @@ public class WSDLEditPartFactory implements EditPartFactory
         {   
           return new DefinitionEditPart();
 	    }  
-		
-		public Object caseExtensibilityElement(ExtensibilityElement object) 
+				
+		public Object defaultCase(EObject object)
 		{
 	       return new WSDLTreeNodeEditPart();
 		}
       };
 	 
 	  
-    EditPart editPart = null;                                
+    EditPart editPart = null;       	
     if (model instanceof EObject)
     {
       editPart = (EditPart)wsdlSwitch.doSwitch((EObject)model);
