@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLGroupObject;
@@ -41,17 +42,24 @@ public class WSDLEditPartFactory implements EditPartFactory
       	public Object caseWSDLElement(WSDLElement wsdlElement)
         {   
           return new WSDLTreeNodeEditPart();
-	      }   
+	    }   
        
       	public Object caseDefinition(Definition definition)
         {   
           return new DefinitionEditPart();
-	      }                   
-      };   
+	    }  
+		
+		public Object caseExtensibilityElement(ExtensibilityElement object) 
+		{
+	       return new WSDLTreeNodeEditPart();
+		}
+      };
+	 
+	  
     EditPart editPart = null;                                
     if (model instanceof EObject)
     {
-      editPart = (EditPart)wsdlSwitch.doSwitch((EObject)model);                    
+      editPart = (EditPart)wsdlSwitch.doSwitch((EObject)model);
     }
     else if (model instanceof WSDLGroupObject)
     {
