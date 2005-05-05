@@ -107,16 +107,6 @@ public class RenameAction //extends BaseNodeAction implements Runnable
 
   protected void renameOperationHelper(Operation operation)
   {
-    // find binding operations with a matching signature
-    Definition definition = operation.getEnclosingDefinition(); 
-    ComponentReferenceUtil util = new ComponentReferenceUtil(definition);
-
-    for (Iterator i = util.getBindingOperations(operation).iterator(); i.hasNext(); )
-    {
-      BindingOperation bindingOperation = (BindingOperation)i.next();
-      renameModelObjectHelper(bindingOperation, newName);
-    }                                           
-
     renameModelObjectHelper(operation, newName);
   }
 
