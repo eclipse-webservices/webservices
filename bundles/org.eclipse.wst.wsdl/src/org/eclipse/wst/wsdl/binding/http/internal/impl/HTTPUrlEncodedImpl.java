@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.wst.wsdl.binding.http.HTTPPackage;
 import org.eclipse.wst.wsdl.binding.http.HTTPUrlEncoded;
+import org.eclipse.wst.wsdl.binding.http.internal.util.HTTPConstants;
 
 import org.w3c.dom.Element;
 
@@ -134,4 +135,11 @@ public class HTTPUrlEncodedImpl extends ExtensibilityElementImpl implements HTTP
 		return eDynamicIsSet(eFeature);
 	}
 
+	  public QName getElementType()
+	  {
+	    if (elementType == null)
+	      elementType = new QName(HTTPConstants.HTTP_NAMESPACE_URI, HTTPConstants.URL_ENCODED_ELEMENT_TAG);
+	    return elementType;
+	  }
+	  
 } //HTTPUrlEncodedImpl

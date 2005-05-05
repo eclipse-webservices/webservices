@@ -239,4 +239,11 @@ public class HTTPAddressImpl extends ExtensibilityElementImpl implements HTTPAdd
         niceSetAttribute(theElement,HTTPConstants.LOCATION_URI_ATTRIBUTE,getLocationURI());
     }
   }
+  
+  public QName getElementType()
+  {
+    if (elementType == null)
+      elementType = new QName(HTTPConstants.HTTP_NAMESPACE_URI, HTTPConstants.ADDRESS_ELEMENT_TAG);
+    return elementType;
+  }
 } //HTTPAddressImpl

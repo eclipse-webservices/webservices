@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
 import org.eclipse.wst.wsdl.binding.http.HTTPPackage;
 import org.eclipse.wst.wsdl.binding.http.internal.util.HTTPConstants;
+import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 
 import org.w3c.dom.Element;
 
@@ -239,4 +240,11 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
     }
   }
 
+  public QName getElementType()
+  {
+    if (elementType == null)
+      elementType = new QName(HTTPConstants.HTTP_NAMESPACE_URI, HTTPConstants.BINDING_ELEMENT_TAG);
+    return elementType;
+  }
+  
 } //HTTPBindingImpl
