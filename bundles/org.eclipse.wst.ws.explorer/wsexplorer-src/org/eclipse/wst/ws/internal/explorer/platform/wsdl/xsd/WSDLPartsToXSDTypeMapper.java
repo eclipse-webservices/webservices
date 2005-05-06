@@ -84,17 +84,21 @@ public class WSDLPartsToXSDTypeMapper
       for (int i = 0; i < xsdSchemaList_.size(); i++)
       {
         XSDSchema xsdSchema = (XSDSchema)xsdSchemaList_.elementAt(i);
-        if (xsdSchema != null && xsdSchema.getTargetNamespace().equals(trimQName(uri, qname)))
+        if (xsdSchema != null)
         {
-          XSDNamedComponent resolvedComponent = null;
-          if (component instanceof XSDTypeDefinition)
-            resolvedComponent = xsdSchema.resolveTypeDefinition(qname);
-          else if (component instanceof XSDElementDeclaration)
-            resolvedComponent = xsdSchema.resolveElementDeclaration(qname);
-          else if (component instanceof XSDModelGroupDefinition)
-            resolvedComponent = xsdSchema.resolveModelGroupDefinition(qname);
-          if (isComponentResolvable(resolvedComponent))
-            return resolvedComponent;
+          String targetNS = xsdSchema.getTargetNamespace();
+          if (targetNS != null && targetNS.equals(trimQName(uri, qname)))
+          {
+            XSDNamedComponent resolvedComponent = null;
+            if (component instanceof XSDTypeDefinition)
+              resolvedComponent = xsdSchema.resolveTypeDefinition(qname);
+            else if (component instanceof XSDElementDeclaration)
+              resolvedComponent = xsdSchema.resolveElementDeclaration(qname);
+            else if (component instanceof XSDModelGroupDefinition)
+              resolvedComponent = xsdSchema.resolveModelGroupDefinition(qname);
+            if (isComponentResolvable(resolvedComponent))
+              return resolvedComponent;
+          }
         }
       }
     }
