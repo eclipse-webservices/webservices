@@ -17,6 +17,7 @@ import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragment
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.XSDTypeDefinitionUtil;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDComplexTypeContent;
+import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.XSDModelGroup;
 import org.eclipse.xsd.XSDComplexFinal;
@@ -166,6 +167,19 @@ public abstract class XSDComplexFragment extends XSDMapFragment implements IXSDC
     if (complexType.getDerivationMethod().getValue() == XSDComplexFinal.EXTENSION)
     {
       XSDTypeDefinition extType = complexType.getBaseType();
+      if (extType != null && !(extType instanceof XSDComplexTypeDefinition))
+      {
+        String namespace = extType.getTargetNamespace();
+        String localname = extType.getName();
+        if (namespace != null && localname != null)
+        {
+          XSDNamedComponent xsdNamedComp = getXSDToFragmentController().getWSDLPartsToXSDTypeMapper().getXSDTypeFromSchema(namespace, localname, false);
+          if (xsdNamedComp instanceof XSDComplexTypeDefinition)
+          {
+            extType = (XSDComplexTypeDefinition)xsdNamedComp;
+          }
+        }
+      }
       if (extType != null && extType != complexType && extType instanceof XSDComplexTypeDefinition)
       {
         XSDComplexTypeContent extTypeContent = XSDTypeDefinitionUtil.getXSDComplexTypeContent((XSDComplexTypeDefinition)extType);
