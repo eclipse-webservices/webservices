@@ -1,0 +1,945 @@
+
+(object Petal
+    version    	42
+    _written   	"Rose 4.5.8054a"
+    charSet    	0)
+
+(object Class_Category "soap"
+    is_unit    	TRUE
+    is_loaded  	TRUE
+    quid       	"3A01CF0C01A2"
+    exportControl 	"Public"
+    logical_models 	(list unit_reference_list
+	(object Class "SOAPBinding"
+	    quid       	"3A01D3B901AD"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AE09A3801AB"
+		    supplier   	"Logical View::wsdl::ExtensibilityElement"
+		    quidu      	"3AD5DBB602A9"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "transportURI"
+		    quid       	"3A01D3DF01E4"
+		    type       	"String")
+		(object ClassAttribute "style"
+		    quid       	"3A01D3F1029E"
+		    type       	"String"))
+	    language   	"Java")
+	(object Class "SOAPBody"
+	    quid       	"3A01DED5031F"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AE09A450041"
+		    supplier   	"Logical View::wsdl::ExtensibilityElement"
+		    quidu      	"3AD5DBB602A9"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "use"
+		    quid       	"3A01E2D501A5"
+		    type       	"String")
+		(object ClassAttribute "namespaceURI"
+		    quid       	"3A93477C01B2"
+		    type       	"String")
+		(object ClassAttribute "encodingStyles"
+		    quid       	"3EE4A4DB0072"
+		    stereotype 	"0..*"
+		    type       	"IString"))
+	    language   	"Java")
+	(object Class "SOAPHeaderBase"
+	    quid       	"3A01DEE7034D"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AE09A3E0326"
+		    supplier   	"Logical View::wsdl::ExtensibilityElement"
+		    quidu      	"3AD5DBB602A9"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "use"
+		    quid       	"3AD62E9C0056"
+		    type       	"String")
+		(object ClassAttribute "namespaceURI"
+		    quid       	"3AD62EA2025D"
+		    type       	"String")
+		(object ClassAttribute "encodingStyles"
+		    quid       	"3EE4A58F01AE"
+		    stereotype 	"0..*"
+		    type       	"IString"))
+	    language   	"Java")
+	(object Class "SOAPFault"
+	    quid       	"3A06D9FA00F7"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AE09A4A0020"
+		    supplier   	"Logical View::wsdl::ExtensibilityElement"
+		    quidu      	"3AD5DBB602A9"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "use"
+		    quid       	"3A09821A012B"
+		    type       	"String")
+		(object ClassAttribute "namespaceURI"
+		    quid       	"3AD6204803AE"
+		    type       	"String")
+		(object ClassAttribute "encodingStyles"
+		    quid       	"3EE4A56303AF"
+		    stereotype 	"0..*"
+		    type       	"IString"))
+	    language   	"Java")
+	(object Class "SOAPOperation"
+	    quid       	"3A0AD45500E8"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AE09A4E031F"
+		    supplier   	"Logical View::wsdl::ExtensibilityElement"
+		    quidu      	"3AD5DBB602A9"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "soapActionURI"
+		    quid       	"3A0AD464004A"
+		    type       	"String")
+		(object ClassAttribute "style"
+		    quid       	"3A0AD46C018C"
+		    type       	"String"))
+	    language   	"Java")
+	(object Class "SOAPAddress"
+	    quid       	"3AD1FF750287"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AE095350098"
+		    supplier   	"Logical View::wsdl::ExtensibilityElement"
+		    quidu      	"3AD5DBB602A9"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "locationURI"
+		    quid       	"3AD211C9025C"
+		    type       	"String"))
+	    language   	"Java")
+	(object Class "SOAPHeaderFault"
+	    quid       	"3AD632B803DD"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AD633340038"
+		    supplier   	"Logical View::soap::SOAPHeaderBase"
+		    quidu      	"3A01DEE7034D"))
+	    language   	"Java")
+	(object Class "SOAPHeader"
+	    quid       	"3AD63309016D"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"3AD63330017D"
+		    supplier   	"Logical View::soap::SOAPHeaderBase"
+		    quidu      	"3A01DEE7034D"))
+	    language   	"Java")
+	(object Class "IString"
+	    quid       	"3B8DD90C0220"
+	    stereotype 	"datatype"
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "java.lang.String"
+		    quid       	"3B8DD9320383"
+		    stereotype 	"javaclass")))
+	(object Association "$UNNAMED$0"
+	    quid       	"3A06E0B50036"
+	    roles      	(list role_list
+		(object Role "$UNNAMED$1"
+		    quid       	"3A06E0B600C4"
+		    supplier   	"Logical View::soap::SOAPBody"
+		    quidu      	"3A01DED5031F")
+		(object Role "parts"
+		    quid       	"3A06E0B600C5"
+		    label      	"parts"
+		    supplier   	"Logical View::wsdl::Part"
+		    quidu      	"3AD5CE1C032E"
+		    client_cardinality 	(value cardinality "0..n")
+		    Containment 	"By Reference"
+		    is_navigable 	TRUE)))
+	(object Association "$UNNAMED$2"
+	    quid       	"3AD62DE60130"
+	    roles      	(list role_list
+		(object Role "message"
+		    quid       	"3AD62DE7004B"
+		    label      	"message"
+		    supplier   	"Logical View::wsdl::Message"
+		    quidu      	"3AD5C9590078"
+		    client_cardinality 	(value cardinality "1..1")
+		    is_navigable 	TRUE)
+		(object Role "$UNNAMED$3"
+		    quid       	"3AD62DE70055"
+		    supplier   	"Logical View::soap::SOAPHeaderBase"
+		    quidu      	"3A01DEE7034D")))
+	(object Association "$UNNAMED$4"
+	    quid       	"3AD62DF802D1"
+	    roles      	(list role_list
+		(object Role "part"
+		    quid       	"3AD62DFA0002"
+		    label      	"part"
+		    supplier   	"Logical View::wsdl::Part"
+		    quidu      	"3AD5CE1C032E"
+		    client_cardinality 	(value cardinality "1..1")
+		    is_navigable 	TRUE)
+		(object Role "$UNNAMED$5"
+		    quid       	"3AD62DFA0003"
+		    supplier   	"Logical View::soap::SOAPHeaderBase"
+		    quidu      	"3A01DEE7034D")))
+	(object Association "$UNNAMED$6"
+	    quid       	"3AD6333701CD"
+	    roles      	(list role_list
+		(object Role "$UNNAMED$7"
+		    quid       	"3AD633370372"
+		    supplier   	"Logical View::soap::SOAPHeader"
+		    quidu      	"3AD63309016D"
+		    is_aggregate 	TRUE)
+		(object Role "headerFaults"
+		    quid       	"3AD633370373"
+		    label      	"headerFaults"
+		    supplier   	"Logical View::soap::SOAPHeaderFault"
+		    quidu      	"3AD632B803DD"
+		    client_cardinality 	(value cardinality "0..n")
+		    Constraints 	"ordered"
+		    Containment 	"By Value"
+		    is_navigable 	TRUE))))
+    logical_presentations 	(list unit_reference_list
+	(object ClassDiagram "Binding"
+	    quid       	"3A01CF23029F"
+	    title      	"Binding"
+	    zoom       	87
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	324
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::soap::SOAPBinding" @1
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(272, 208)
+		    label      	(object ItemLabel
+			Parent_View 	@1
+			location   	(55, 100)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	434
+			justify    	0
+			label      	"SOAPBinding")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3A01D3B901AD"
+		    width      	452
+		    height     	240
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::soap::SOAPOperation" @2
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1040, 208)
+		    label      	(object ItemLabel
+			Parent_View 	@2
+			location   	(803, 100)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	474
+			justify    	0
+			label      	"SOAPOperation")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3A0AD45500E8"
+		    width      	492
+		    height     	240
+		    annotation 	8)
+		(object ClassView "Class" "Logical View::soap::SOAPHeader" @3
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(560, 960)
+		    label      	(object ItemLabel
+			Parent_View 	@3
+			location   	(395, 907)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	330
+			justify    	0
+			label      	"SOAPHeader")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD63309016D"
+		    width      	348
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::soap::SOAPHeaderFault" @4
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1360, 960)
+		    label      	(object ItemLabel
+			Parent_View 	@4
+			location   	(1142, 907)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	436
+			justify    	0
+			label      	"SOAPHeaderFault")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD632B803DD"
+		    width      	454
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object AssociationViewNew "$UNNAMED$6" @5
+		    location   	(933, 961)
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD6333701CD"
+		    roleview_list 	(list RoleViews
+			(object RoleView "$UNNAMED$7" @6
+			    Parent_View 	@5
+			    location   	(277, -543)
+			    stereotype 	TRUE
+			    line_color 	3342489
+			    quidu      	"3AD633370372"
+			    client     	@5
+			    supplier   	@3
+			    line_style 	3
+			    origin_attachment 	(933, 961)
+			    terminal_attachment 	(734, 961))
+			(object RoleView "headerFaults" @7
+			    Parent_View 	@5
+			    location   	(277, -543)
+			    label      	(object SegLabel @8
+				Parent_View 	@7
+				location   	(928, 921)
+				anchor     	1
+				anchor_loc 	1
+				nlines     	1
+				max_width  	346
+				justify    	0
+				label      	"+headerFaults"
+				pctDist    	-0.030702
+				height     	41
+				orientation 	0)
+			    stereotype 	TRUE
+			    line_color 	3342489
+			    quidu      	"3AD633370373"
+			    client     	@5
+			    supplier   	@4
+			    line_style 	3
+			    origin_attachment 	(933, 961)
+			    terminal_attachment 	(1133, 961)
+			    label      	(object SegLabel @9
+				Parent_View 	@7
+				location   	(1080, 924)
+				anchor     	2
+				anchor_loc 	1
+				nlines     	1
+				max_width  	15
+				justify    	0
+				label      	"0..*"
+				pctDist    	0.736842
+				height     	38
+				orientation 	0)
+			    label      	(object SegLabel @10
+				Parent_View 	@7
+				location   	(1056, 999)
+				anchor     	3
+				anchor_loc 	1
+				nlines     	1
+				max_width  	151
+				justify    	0
+				label      	"{ordered}"
+				pctDist    	0.614035
+				height     	38
+				orientation 	1))))
+		(object ClassView "Class" "Logical View::wsdl::Message" @11
+		    ShowCompartmentStereotypes 	TRUE
+		    location   	(1824, 496)
+		    label      	(object ItemLabel
+			Parent_View 	@11
+			location   	(1701, 419)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	246
+			justify    	0
+			label      	"Message")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD5C9590078"
+		    width      	264
+		    height     	178
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::soap::SOAPHeaderBase" @12
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1040, 528)
+		    label      	(object ItemLabel
+			Parent_View 	@12
+			location   	(794, 420)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	492
+			justify    	0
+			label      	"SOAPHeaderBase")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3A01DEE7034D"
+		    width      	510
+		    height     	240
+		    annotation 	8)
+		(object AssociationViewNew "$UNNAMED$2" @13
+		    location   	(1493, 485)
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD62DE60130"
+		    roleview_list 	(list RoleViews
+			(object RoleView "message" @14
+			    Parent_View 	@13
+			    location   	(341, -683)
+			    label      	(object SegLabel @15
+				Parent_View 	@14
+				location   	(1574, 515)
+				anchor     	1
+				anchor_loc 	1
+				nlines     	1
+				max_width  	256
+				justify    	0
+				label      	"+message"
+				pctDist    	0.412322
+				height     	30
+				orientation 	1)
+			    stereotype 	TRUE
+			    line_color 	3342489
+			    quidu      	"3AD62DE7004B"
+			    client     	@13
+			    supplier   	@11
+			    line_style 	3
+			    origin_attachment 	(1493, 485)
+			    terminal_attachment 	(1692, 485)
+			    label      	(object SegLabel @16
+				Parent_View 	@14
+				location   	(1630, 448)
+				anchor     	2
+				anchor_loc 	1
+				nlines     	1
+				max_width  	15
+				justify    	0
+				label      	"1..1"
+				pctDist    	0.687204
+				height     	38
+				orientation 	0))
+			(object RoleView "$UNNAMED$3" @17
+			    Parent_View 	@13
+			    location   	(341, -683)
+			    label      	(object SegLabel @18
+				Parent_View 	@17
+				location   	(1420, 525)
+				hidden     	TRUE
+				anchor     	1
+				anchor_loc 	1
+				nlines     	1
+				max_width  	192
+				justify    	0
+				label      	""
+				pctDist    	0.372254
+				height     	40
+				orientation 	0)
+			    stereotype 	TRUE
+			    line_color 	3342489
+			    quidu      	"3AD62DE70055"
+			    client     	@13
+			    supplier   	@12
+			    line_style 	3
+			    origin_attachment 	(1493, 485)
+			    terminal_attachment 	(1295, 485))))
+		(object ClassView "Class" "Logical View::soap::SOAPBody" @19
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1040, 1344)
+		    label      	(object ItemLabel
+			Parent_View 	@19
+			location   	(794, 1236)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	492
+			justify    	0
+			label      	"SOAPBody")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3A01DED5031F"
+		    width      	510
+		    height     	240
+		    annotation 	8)
+		(object ClassView "Class" "Logical View::wsdl::Part" @20
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1824, 1200)
+		    label      	(object ItemLabel
+			Parent_View 	@20
+			location   	(1628, 956)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	392
+			justify    	0
+			label      	"Part")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD5CE1C032E"
+		    width      	410
+		    height     	512
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object AssociationViewNew "$UNNAMED$4" @21
+		    location   	(1590, 704)
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD62DF802D1"
+		    roleview_list 	(list RoleViews
+			(object RoleView "part" @22
+			    Parent_View 	@21
+			    location   	(438, -464)
+			    label      	(object SegLabel @23
+				Parent_View 	@22
+				location   	(1917, 886)
+				anchor     	1
+				anchor_loc 	1
+				nlines     	1
+				max_width  	120
+				justify    	0
+				label      	"+part"
+				pctDist    	0.881465
+				height     	90
+				orientation 	0)
+			    stereotype 	TRUE
+			    line_color 	3342489
+			    quidu      	"3AD62DFA0002"
+			    client     	@21
+			    supplier   	@20
+			    vertices   	(list Points
+				(1590, 704)
+				(1827, 704)
+				(1827, 944))
+			    line_style 	3
+			    origin_attachment 	(1590, 704)
+			    terminal_attachment 	(1827, 944)
+			    label      	(object SegLabel @24
+				Parent_View 	@22
+				location   	(1774, 886)
+				anchor     	2
+				anchor_loc 	1
+				nlines     	1
+				max_width  	15
+				justify    	0
+				label      	"1..1"
+				pctDist    	0.881465
+				height     	54
+				orientation 	1))
+			(object RoleView "$UNNAMED$5" @25
+			    Parent_View 	@21
+			    location   	(438, -464)
+			    label      	(object SegLabel @26
+				Parent_View 	@25
+				location   	(1209, 746)
+				hidden     	TRUE
+				anchor     	1
+				anchor_loc 	1
+				nlines     	1
+				max_width  	120
+				justify    	0
+				label      	""
+				pctDist    	0.800000
+				height     	42
+				orientation 	0)
+			    stereotype 	TRUE
+			    line_color 	3342489
+			    quidu      	"3AD62DFA0003"
+			    client     	@21
+			    supplier   	@12
+			    vertices   	(list Points
+				(1590, 704)
+				(1170, 704)
+				(1170, 648))
+			    line_style 	3
+			    origin_attachment 	(1590, 704)
+			    terminal_attachment 	(1170, 648))))
+		(object AssociationViewNew "$UNNAMED$0" @27
+		    location   	(1457, 1390)
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3A06E0B50036"
+		    roleview_list 	(list RoleViews
+			(object RoleView "$UNNAMED$1" @28
+			    Parent_View 	@27
+			    location   	(225, -914)
+			    stereotype 	TRUE
+			    line_color 	3342489
+			    quidu      	"3A06E0B600C4"
+			    client     	@27
+			    supplier   	@19
+			    line_style 	3
+			    origin_attachment 	(1457, 1390)
+			    terminal_attachment 	(1295, 1390))
+			(object RoleView "parts" @29
+			    Parent_View 	@27
+			    location   	(225, -914)
+			    label      	(object SegLabel @30
+				Parent_View 	@29
+				location   	(1591, 1494)
+				anchor     	1
+				anchor_loc 	1
+				nlines     	1
+				max_width  	159
+				justify    	0
+				label      	"+parts"
+				pctDist    	0.833856
+				height     	104
+				orientation 	1)
+			    stereotype 	TRUE
+			    line_color 	3342489
+			    quidu      	"3A06E0B600C5"
+			    client     	@27
+			    supplier   	@20
+			    line_style 	3
+			    origin_attachment 	(1457, 1390)
+			    terminal_attachment 	(1619, 1390)
+			    label      	(object SegLabel @31
+				Parent_View 	@29
+				location   	(1591, 1344)
+				anchor     	2
+				anchor_loc 	1
+				nlines     	1
+				max_width  	15
+				justify    	0
+				label      	"0..*"
+				pctDist    	0.833856
+				height     	47
+				orientation 	0))))
+		(object ClassView "Class" "Logical View::soap::SOAPFault" @32
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1040, 1648)
+		    label      	(object ItemLabel
+			Parent_View 	@32
+			location   	(794, 1540)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	492
+			justify    	0
+			label      	"SOAPFault")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3A06D9FA00F7"
+		    width      	510
+		    height     	240
+		    annotation 	8)
+		(object ClassView "Class" "Logical View::soap::IString" @33
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(240, 1360)
+		    label      	(object ItemLabel
+			Parent_View 	@33
+			location   	(66, 1332)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	348
+			justify    	0
+			label      	"IString")
+		    stereotype 	(object ItemLabel
+			Parent_View 	@33
+			location   	(66, 1282)
+			fill_color 	13434879
+			anchor     	10
+			nlines     	1
+			max_width  	348
+			justify    	0
+			label      	"<<datatype>>")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3B8DD90C0220"
+		    width      	366
+		    height     	180
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritTreeView "" @34
+		    location   	(1040, 750)
+		    line_color 	3342489
+		    fill_color 	13434879
+		    supplier   	@12
+		    vertices   	(list Points
+			(1040, 750)
+			(1040, 648)))
+		(object InheritView "" @35
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD63330017D"
+		    client     	@3
+		    supplier   	@12
+		    line_style 	3
+		    origin_attachment 	(645, 895)
+		    terminal_attachment 	(645, 750)
+		    drawSupplier 	@34)
+		(object InheritView "" @36
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD633340038"
+		    client     	@4
+		    supplier   	@12
+		    line_style 	3
+		    origin_attachment 	(1316, 895)
+		    terminal_attachment 	(1316, 750)
+		    drawSupplier 	@34)))
+	(object ClassDiagram "Port"
+	    quid       	"3A085E30035C"
+	    title      	"Port"
+	    zoom       	90
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::soap::SOAPAddress" @37
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(352, 320)
+		    label      	(object ItemLabel
+			Parent_View 	@37
+			location   	(151, 239)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	402
+			justify    	0
+			label      	"SOAPAddress")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD1FF750287"
+		    width      	420
+		    height     	186
+		    annotation 	8
+		    autoResize 	TRUE)))
+	(object ClassDiagram "Extensibility"
+	    quid       	"3AE099B10161"
+	    title      	"Extensibility"
+	    zoom       	90
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::soap::SOAPAddress" @38
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1520, 576)
+		    label      	(object ItemLabel
+			Parent_View 	@38
+			location   	(1371, 527)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	298
+			justify    	0
+			label      	"SOAPAddress")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD1FF750287"
+		    width      	316
+		    height     	122
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::soap::SOAPBinding" @39
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(304, 592)
+		    label      	(object ItemLabel
+			Parent_View 	@39
+			location   	(162, 543)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	284
+			justify    	0
+			label      	"SOAPBinding")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3A01D3B901AD"
+		    width      	302
+		    height     	122
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::soap::SOAPBody" @40
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1072, 1104)
+		    label      	(object ItemLabel
+			Parent_View 	@40
+			location   	(950, 1055)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	244
+			justify    	0
+			label      	"SOAPBody")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3A01DED5031F"
+		    width      	262
+		    height     	122
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::soap::SOAPFault" @41
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1232, 1264)
+		    label      	(object ItemLabel
+			Parent_View 	@41
+			location   	(1112, 1215)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	240
+			justify    	0
+			label      	"SOAPFault")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3A06D9FA00F7"
+		    width      	258
+		    height     	122
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::soap::SOAPOperation" @42
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(512, 752)
+		    label      	(object ItemLabel
+			Parent_View 	@42
+			location   	(344, 703)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	336
+			justify    	0
+			label      	"SOAPOperation")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3A0AD45500E8"
+		    width      	354
+		    height     	122
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::soap::SOAPHeaderBase" @43
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(816, 928)
+		    label      	(object ItemLabel
+			Parent_View 	@43
+			location   	(627, 879)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	378
+			justify    	0
+			label      	"SOAPHeaderBase")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3A01DEE7034D"
+		    width      	396
+		    height     	122
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::wsdl::ExtensibilityElement" @44
+		    ShowCompartmentStereotypes 	TRUE
+		    location   	(608, 128)
+		    font       	(object Font
+			italics    	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@44
+			location   	(408, 53)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	400
+			justify    	0
+			label      	"ExtensibilityElement")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD5DBB602A9"
+		    width      	418
+		    height     	174
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritTreeView "" @45
+		    location   	(608, 305)
+		    line_color 	3342489
+		    fill_color 	13434879
+		    supplier   	@44
+		    vertices   	(list Points
+			(608, 305)
+			(608, 215)))
+		(object InheritView "" @46
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE09A3801AB"
+		    client     	@39
+		    supplier   	@44
+		    line_style 	3
+		    origin_attachment 	(344, 531)
+		    terminal_attachment 	(344, 305)
+		    drawSupplier 	@45)
+		(object InheritView "" @47
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE09A3E0326"
+		    client     	@43
+		    supplier   	@44
+		    line_style 	3
+		    origin_attachment 	(815, 867)
+		    terminal_attachment 	(815, 305)
+		    drawSupplier 	@45)
+		(object InheritView "" @48
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE09A450041"
+		    client     	@40
+		    supplier   	@44
+		    line_style 	3
+		    origin_attachment 	(1068, 1043)
+		    terminal_attachment 	(1068, 305)
+		    drawSupplier 	@45)
+		(object InheritView "" @49
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE09A4E031F"
+		    client     	@42
+		    supplier   	@44
+		    line_style 	3
+		    origin_attachment 	(506, 691)
+		    terminal_attachment 	(506, 305)
+		    drawSupplier 	@45)
+		(object InheritView "" @50
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE09A4A0020"
+		    client     	@41
+		    supplier   	@44
+		    line_style 	3
+		    origin_attachment 	(1231, 1203)
+		    terminal_attachment 	(1231, 305)
+		    drawSupplier 	@45)
+		(object InheritView "" @51
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE095350098"
+		    client     	@38
+		    supplier   	@44
+		    line_style 	3
+		    origin_attachment 	(1520, 515)
+		    terminal_attachment 	(1520, 305)
+		    drawSupplier 	@45)))))

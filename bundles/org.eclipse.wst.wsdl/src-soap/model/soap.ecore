@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ecore:EPackage xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="soap"
+    nsURI="http://www.ibm.com/wsdl/2003/SOAP" nsPrefix="soap">
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPBinding" eSuperTypes="wsdl.ecore#//ExtensibilityElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="transportURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="style" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPBody" eSuperTypes="wsdl.ecore#//ExtensibilityElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="use" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespaceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="encodingStyles" upperBound="-1"
+        eType="#//IString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parts" upperBound="-1"
+        eType="ecore:EClass wsdl.ecore#//Part"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPHeaderBase" eSuperTypes="wsdl.ecore#//ExtensibilityElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="use" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespaceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="encodingStyles" upperBound="-1"
+        eType="#//IString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="message" lowerBound="1"
+        eType="ecore:EClass wsdl.ecore#//Message"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="part" lowerBound="1" eType="ecore:EClass wsdl.ecore#//Part"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPFault" eSuperTypes="wsdl.ecore#//ExtensibilityElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="use" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespaceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="encodingStyles" upperBound="-1"
+        eType="#//IString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPOperation" eSuperTypes="wsdl.ecore#//ExtensibilityElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="soapActionURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="style" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPAddress" eSuperTypes="wsdl.ecore#//ExtensibilityElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="locationURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPHeaderFault" eSuperTypes="#//SOAPHeaderBase"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPHeader" eSuperTypes="#//SOAPHeaderBase">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="headerFaults" upperBound="-1"
+        eType="#//SOAPHeaderFault" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IString" instanceClassName="java.lang.String"/>
+</ecore:EPackage>
