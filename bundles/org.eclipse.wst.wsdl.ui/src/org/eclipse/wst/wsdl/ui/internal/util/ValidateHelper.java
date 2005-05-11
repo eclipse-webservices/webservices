@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.util;
 
-import org.eclipse.wst.common.ui.UIPlugin;
+import org.eclipse.wst.common.ui.internal.UIPlugin;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 
 public class ValidateHelper
