@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EContentsEList;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.Namespace;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
@@ -370,18 +371,13 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     if (eClass().getEAllReferences().contains(feature))
     {
       EReference eReference = (EReference) feature;
-      if (feature == WSDLPackage.eINSTANCE.getDefinition_ENamespaces())
-      {
-        //System.out.println("eNotify: namespaces");
-      }
-      else if (eReference.isContainment() && !eReference.isTransient())
+      if (eReference.isContainment() && !eReference.isTransient())
       {
         switch (eventType)
         {
           case Notification.ADD :
           {
-            if (newValue instanceof WSDLElement)
-              adoptContent(eReference, (WSDLElement) newValue);
+              adoptContent(eReference,newValue);
             break;
           }
           case Notification.ADD_MANY :
@@ -648,6 +644,16 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       {
         ((WSDLElementImpl) wsdlElement).adoptBy(definition);
       }
+    }
+    else if (object instanceof Namespace)
+    {
+      // Add a namespace attribute to the Definitions element.
+      Namespace ns = (Namespace)object;
+      Node adoptionParent = getAdoptionParentNode(eReference); // Definitions node
+      // KB: Assumption - The prefix is unique if we are here (by the Definitions model). 
+	  if (adoptionParent != null) {
+		  ((Element)adoptionParent).setAttribute("xmlns:"+ns.getPrefix(),ns.getURI());
+	  }
     }
   }
 
