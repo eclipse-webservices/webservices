@@ -86,7 +86,7 @@
       <contentGenerator
         name="SOAP"
         namespace="http://schemas.xmlsoap.org/wsdl/soap/"
-        class="org.eclipse.wst.wsdl.binding.soap.internal.generator.SoapGen">
+        class="org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator">
       </contentGenerator>
    </extension>  
   
@@ -94,7 +94,7 @@
       <contentGenerator
         name="HTTP"
         namespace="http://schemas.xmlsoap.org/wsdl/http/"
-        class="org.eclipse.wst.wsdl.binding.http.internal.generator.HttpGen">
+        class="org.eclipse.wst.wsdl.binding.http.internal.generator.HTTPContentGenerator">
      </contentGenerator>
    </extension>
   
