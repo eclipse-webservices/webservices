@@ -109,7 +109,7 @@ public class WSDLResourceUtil
   public static Definition createDefinition(ResourceSet resourceSet, IFile file, Document document)
   {
     Definition definition = WSDLFactory.eINSTANCE.createDefinition();
-    ((DefinitionImpl)definition).setUseExtensionFactories(false);
+    ((DefinitionImpl)definition).setUseExtensionFactories(true);
     String baseURI = URI.createPlatformResourceURI(file.getFullPath().toString()).toString();
     definition.setDocumentBaseURI(baseURI);
     try

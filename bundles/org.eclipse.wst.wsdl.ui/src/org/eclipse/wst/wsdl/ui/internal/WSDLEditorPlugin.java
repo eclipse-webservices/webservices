@@ -31,9 +31,6 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ContentGeneratorExtension;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ContentGeneratorExtensionRegistry;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ContentGeneratorProviderExtension;
 import org.eclipse.wst.wsdl.ui.internal.extension.ExtensibilityItemTreeProviderRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extension.NSKeyedExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtensionRegistry;
@@ -48,7 +45,7 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
   public final static String PLUGIN_ID = "org.eclipse.wst.wsdl.ui";
   public final static String XSD_EDITOR_ID = "org.eclipse.wst.xsd.ui.XSDEditor"; 
   
-  public final static String DEFAULT_TARGET_NAMESPACE = "http://tempuri.org";
+  public final static String DEFAULT_TARGET_NAMESPACE = "http://www.example.org";
   
   public static int DEPENDECIES_CHANGED_POLICY_PROMPT = 0;
   public static int DEPENDECIES_CHANGED_POLICY_IGNORE = 1;
@@ -64,7 +61,6 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
   private NSKeyedExtensionRegistry propertyDescriptorProviderRegistry;
   private NSKeyedExtensionRegistry propertySourceProviderRegistry;
   private NSKeyedExtensionRegistry propertySectionDescriptorProviderRegistry;
-  private ContentGeneratorExtensionRegistry contentGeneratorExtensionRegistry;
   private NSKeyedExtensionRegistry detailsViewerProviderRegistry;  
   //private static Hashtable grayedImageMap = new Hashtable();
   private int dependenciesChangedPolicy = DEPENDECIES_CHANGED_POLICY_RELOAD;
@@ -167,16 +163,6 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
       new PropertySectionDescriptorProviderRegistry(propertySectionDescriptorProviderRegistry).readRegistry();
     }
     return propertySectionDescriptorProviderRegistry;
-  }
-
-  public ContentGeneratorExtensionRegistry getContentGeneratorExtensionRegistry()
-  {
-    if (contentGeneratorExtensionRegistry == null)
-    {
-      contentGeneratorExtensionRegistry = new ContentGeneratorExtensionRegistry();
-      new ContentGeneratorExtensionRegistryReader(contentGeneratorExtensionRegistry).readRegistry();
-    }
-    return contentGeneratorExtensionRegistry;
   }
 
   /**
@@ -326,6 +312,7 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     
     // WSDLPreferencePage prefs
     store.setDefault(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"), DEFAULT_TARGET_NAMESPACE);
+    store.setDefault(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING"), true);
     // Do we need this preference below?  Look at WSDLPreferencePage.java
 //    store.setDefault("Defualt Location:", "http://www.example.com");
   }
@@ -362,7 +349,6 @@ class BaseRegistryReader
    */
   public void readRegistry(String extensionPointId)
   {
-  	boolean  boo = true;
     IPluginRegistry pluginRegistry = Platform.getPluginRegistry();
     IExtensionPoint point = pluginRegistry.getExtensionPoint(PLUGIN_ID, extensionPointId);
     if (point != null)
@@ -421,76 +407,6 @@ class InternalEditorExtensionRegistryReader extends BaseRegistryReader
         catch (Exception e)
         {
         }
-      }
-    }
-  }
-}
-
-/**
- * This class reads the plugin manifests and registers each extensibility item tree provider
- */
-class ContentGeneratorExtensionRegistryReader extends BaseRegistryReader
-{
-  protected static final String PLUGIN_ID = "org.eclipse.wst.wsdl.ui";
-  protected static final String EXTENSION_POINT_ID = "contentGenerators";
-  protected static final String ELEMENT_CONTENT_GENERATOR = "contentGenerator";
-  protected static final String ELEMENT_CONTENT_GENERATOR_PROVIDER = "contentGeneratorProvider";
-  protected static final String ATT_CLASS = "class";
-  protected static final String ATT_NAME = "name";
-  protected static final String ATT_NAMESPACE = "namespace";
-  protected static final String ATT_CONTENT_GENERATOR_CLASS = "contentGeneratorClass";
-  protected static final String ATT_PORT_OPTIONS_PAGE_CLASS = "portOptionsPageClass";
-  protected static final String ATT_BINDING_OPTIONS_PAGE_CLASS = "bindingOptionsPageClass";
-
-  protected ContentGeneratorExtensionRegistry registry;
-
-  public ContentGeneratorExtensionRegistryReader(ContentGeneratorExtensionRegistry registry)
-  {
-    this.registry = registry;
-  }
-
-  /**
-   * read from plugin registry and parse it.
-   */
-  public void readRegistry()
-  {
-    super.readRegistry(EXTENSION_POINT_ID);
-  }
-
-  /**
-   * readElement()
-   */
-  protected void readElement(IConfigurationElement element)
-  {
-    if (element.getName().equals(ELEMENT_CONTENT_GENERATOR))
-    {
-      String name = element.getAttribute(ATT_NAME);
-      String namespace = element.getAttribute(ATT_NAMESPACE);
-      String generatorClass = element.getAttribute(ATT_CONTENT_GENERATOR_CLASS);
-      if (name != null && generatorClass != null)
-      {
-        ContentGeneratorExtension bindingGeneratorExtension = new ContentGeneratorExtension(name, generatorClass);
-        bindingGeneratorExtension.setNamespace(namespace);
-        bindingGeneratorExtension.setPortOptionsPageClassName(element.getAttribute(ATT_PORT_OPTIONS_PAGE_CLASS));
-        bindingGeneratorExtension.setBindingOptionsPageClassName(element.getAttribute(ATT_BINDING_OPTIONS_PAGE_CLASS));
-        try
-        {
-          ClassLoader pluginClasssLoader = element.getDeclaringExtension().getDeclaringPluginDescriptor().getPlugin().getClass().getClassLoader();
-          bindingGeneratorExtension.setClassLoader(pluginClasssLoader);
-          registry.add(bindingGeneratorExtension);
-        }
-        catch (Exception e)
-        {
-        }
-      }
-    }
-    else if (element.getName().equals(ELEMENT_CONTENT_GENERATOR_PROVIDER))
-    {
-      String className = element.getAttribute(ATT_CLASS);
-      if (className != null)
-      {
-		ContentGeneratorProviderExtension contentGeneratorExtension = new ContentGeneratorProviderExtension(className);
-        registry.add(contentGeneratorExtension);
       }
     }
   }

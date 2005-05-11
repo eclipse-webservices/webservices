@@ -10,12 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.wizards;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.xml.namespace.QName;
@@ -38,14 +35,15 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wst.common.ui.internal.UIPlugin;
 import org.eclipse.wst.sse.core.internal.encoding.CommonEncodingPreferenceNames;
+import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.binding.http.internal.util.HTTPConstants;
+import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.commands.AddUnknownExtensibilityElementCommand;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.BindingGenerator;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.CreateWSDLElementHelper;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
@@ -63,6 +61,10 @@ import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.ModelQuery;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.CMVisitor;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceInfo;
 import org.w3c.dom.Element;
+
+import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
+import org.eclipse.wst.wsdl.binding.http.internal.generator.HTTPContentGenerator;
+import org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator;
 
 public class NewWSDLWizard extends Wizard implements INewWizard {
 	private WSDLNewFilePage newFilePage;
@@ -95,9 +97,15 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 		String prefix = optionsPage.getPrefix();
 		String definitionName = optionsPage.getDefinitionName();
 
+		URI uri2 = URI.createPlatformResourceURI(file.getFullPath().toOSString());
+		ResourceSet resourceSet = new ResourceSetImpl();
+		WSDLResourceImpl resource = (WSDLResourceImpl) resourceSet.createResource(URI.createURI("*.wsdl"));
+		resource.setURI(uri2);
+		
 		WSDLFactoryImpl factory = new WSDLFactoryImpl();
 		DefinitionImpl definition = (DefinitionImpl) factory.createDefinition();
-
+		resource.getContents().add(definition);
+		
 		definition.setTargetNamespace(optionsPage.getTargetNamespace());
 		definition.setLocation(file.getLocation().toString());
 		definition.setEncoding(charSet);
@@ -114,7 +122,8 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 				definition.addNamespace(null, info.uri);
 			}
 		}
-
+		// TODO : cs... why do we need this?  these calls are evil!
+		definition.updateElement(true);
 		try {
 			if (optionsPage.getCreateSkeletonBoolean()) {
 				if (optionsPage.isSoapDocLiteralProtocol()) {
@@ -127,40 +136,62 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 				CreateWSDLElementHelper.serviceName = definitionName;
 				CreateWSDLElementHelper.portName = definitionName + optionsPage.getProtocol();
 				Service service = CreateWSDLElementHelper.createService(definition);
-				definition.updateElement(true);
+
 
 				// Generate Binding
-				BindingGenerator bindingGenerator = new BindingGenerator(definition);
+				Iterator bindingIt = definition.getEBindings().iterator();
+				Binding binding = null;
+				if (bindingIt.hasNext()) {
+					binding = (Binding) bindingIt.next();
+				}
+				BindingGenerator bindingGenerator = new BindingGenerator(definition, binding, SOAPConstants.SOAP_NAMESPACE_URI);
 				Port port = (Port) service.getEPorts().iterator().next();
 				bindingGenerator.setName(ComponentReferenceUtil.getName(port.getEBinding()));
-				bindingGenerator.setPortTypeName(ComponentReferenceUtil.getPortTypeReference(port.getEBinding()));
-				bindingGenerator.setProtocol(optionsPage.getProtocol());
+				bindingGenerator.setRefName(ComponentReferenceUtil.getPortTypeReference(port.getEBinding()));
 				bindingGenerator.setOverwrite(true);
-				bindingGenerator.setOptions(optionsPage.getProtocolOptions());
-				bindingGenerator.generate();
+				
+				if (optionsPage.getProtocol().equals("SOAP")) {
+					String namespace = SOAPConstants.SOAP_NAMESPACE_URI;
+					bindingGenerator.setContentGenerator(BindingGenerator.getContentGenerator(namespace));
 
-				// Generate address
-				String addressName = optionsPage.getProtocol().toLowerCase() + ":address";
-				Map table = new Hashtable(1);
-				String uri = WSDLEditorPlugin.getInstance().getPluginPreferences().getString(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"));
-				table.put("location", uri);
-				AddUnknownExtensibilityElementCommand addEECommand = new AddUnknownExtensibilityElementCommand(port, "", addressName, table);
-				addEECommand.run();
+					SOAPContentGenerator soapGen = (SOAPContentGenerator) bindingGenerator.getContentGenerator();
+					Boolean booleanValue = (Boolean) optionsPage.getProtocolOptions()[0];
+					Boolean booleanValue2 = (Boolean) optionsPage.getProtocolOptions()[2];
+					if (booleanValue.booleanValue()) {
+						// Document Literal
+						soapGen.setStyle(SOAPContentGenerator.STYLE_DOCUMENT);
+						soapGen.setUse(SOAPContentGenerator.USE_LITERAL);
+					}
+					else if (booleanValue2.booleanValue()){
+						// RPC Literal
+						soapGen.setStyle(SOAPContentGenerator.STYLE_RPC);
+						soapGen.setUse(SOAPContentGenerator.USE_LITERAL);
+					}
+					else {
+						// RPC Encoded
+						soapGen.setStyle(SOAPContentGenerator.STYLE_RPC);
+						soapGen.setUse(SOAPContentGenerator.USE_ENCODED);
+					}
+				}
+				else if (optionsPage.getProtocol().equals("HTTP")) {
+					String namespace = HTTPConstants.HTTP_NAMESPACE_URI;
+					bindingGenerator.setContentGenerator(BindingGenerator.getContentGenerator(namespace));
 
-				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-				WSDLResourceImpl.serialize(outputStream, definition.getDocument(), charSet);
-				ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-				file.setContents(inputStream, true, false, null);
+					Boolean booleanValue = (Boolean) optionsPage.getProtocolOptions()[0];
+					if (booleanValue.booleanValue()) {
+						// Post
+						((HTTPContentGenerator) bindingGenerator.getContentGenerator()).setVerb(HTTPContentGenerator.VERB_POST);
+					}
+					else {
+						// Get
+						((HTTPContentGenerator) bindingGenerator.getContentGenerator()).setVerb(HTTPContentGenerator.VERB_GET);
+					}
+				}
+				
+				bindingGenerator.generateBinding();
+				bindingGenerator.generatePortContent();				
 			}
-			else {
-				URI uri = URI.createPlatformResourceURI(file.getFullPath().toOSString());
-				definition.updateElement(true);
-				ResourceSet resourceSet = new ResourceSetImpl();
-				WSDLResourceImpl resource = (WSDLResourceImpl) resourceSet.createResource(URI.createURI("*.wsdl"));
-				resource.setURI(uri);
-				resource.getContents().add(definition);
-				resource.save(null);
-			}
+			resource.save(null);
 		}
 		catch (Exception e) {
 			System.out.println("\nCould not write new WSDL file in WSDL Wizard: " + e);

@@ -11,12 +11,17 @@
 package org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui;  
         
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.AbstractGenerator;
 
+import org.eclipse.wst.wsdl.internal.generator.BaseGenerator;
 
 public interface ContentGeneratorOptionsPage
 {                                          
-  public void init(AbstractGenerator abstractGenerator);             
+  public void init(BaseGenerator baseGenerator);             
   public Composite createControl(Composite parent);
+  public Composite getControl();
+  
+  // TODO can this go into init?
+  //
+  public void setOptionsOnGenerator();
   public boolean isOverwriteApplicable();
 }

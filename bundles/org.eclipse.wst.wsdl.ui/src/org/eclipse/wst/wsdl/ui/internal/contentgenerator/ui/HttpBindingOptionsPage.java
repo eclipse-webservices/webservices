@@ -25,8 +25,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
+import org.eclipse.wst.wsdl.binding.http.internal.generator.HTTPContentGenerator;
+import org.eclipse.wst.wsdl.internal.generator.BaseGenerator;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.AbstractGenerator;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.w3c.dom.Element;
 
@@ -36,15 +37,19 @@ public class HttpBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
   protected Button getButton;
   protected Button postButton;
   protected Composite control;
-  protected AbstractGenerator generator;
+  protected BaseGenerator generator;
+  protected HTTPContentGenerator httpGenerator;
 
   public HttpBindingOptionsPage()
   {
   }
 
-  public void init(AbstractGenerator generator)
+  public void init(BaseGenerator generator)
   {
     this.generator = generator;
+	if (generator.getContentGenerator() instanceof HTTPContentGenerator) {
+		httpGenerator = (HTTPContentGenerator) generator.getContentGenerator();
+	}
   }
 
   public Composite createControl(Composite parent)
@@ -100,6 +105,10 @@ public class HttpBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
     return control;
   }
   
+  public Composite getControl() {
+	  return control;
+  }
+  
   public boolean isOverwriteApplicable()
   {
   	return true;
@@ -112,9 +121,20 @@ public class HttpBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
 
   protected void computeOptions()
   {
-    Object[] options = new Object[1];
-    options[0] = new Boolean(postButton.getSelection());
-    generator.setOptions(options);
+	  if (generator.getContentGenerator() instanceof HTTPContentGenerator) {
+		  HTTPContentGenerator httpGenerator = (HTTPContentGenerator) generator.getContentGenerator();
+
+		  if (postButton.getSelection()) {
+			  httpGenerator.setVerb(HTTPContentGenerator.VERB_POST);
+		  }	  
+		  else if (getButton.getSelection()) {
+			  httpGenerator.setVerb(HTTPContentGenerator.VERB_GET);
+		  }
+	  }
+  }
+  
+  public void setOptionsOnGenerator() {
+	  computeOptions();
   }
 
   public void widgetDefaultSelected(SelectionEvent event)

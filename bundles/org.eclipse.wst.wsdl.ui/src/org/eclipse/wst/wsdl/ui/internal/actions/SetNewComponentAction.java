@@ -29,13 +29,14 @@ import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
+import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDElementDeclarationCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDTypeDefinitionCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.WSDLElementCommand;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.BindingGenerator;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.CreateWSDLElementHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
@@ -104,10 +105,13 @@ public class SetNewComponentAction extends AddElementAction
             String newName = dialog.getName();
             
             // TODO: We should be smarter in choosing some default options/settings for generating a new Binding
-            BindingGenerator bindingGenerator = new BindingGenerator(definition);
-            bindingGenerator.setName(newName);
-            bindingGenerator.setProtocol("SOAP");
-            bindingGenerator.generate();
+//            BindingGenerator bindingGenerator = new BindingGenerator(definition);
+//            bindingGenerator.setName(newName);
+//            bindingGenerator.setProtocol("SOAP");
+//            bindingGenerator.generate();
+			BindingGenerator bindingGenerator = new BindingGenerator(definition, null, SOAPConstants.SOAP_NAMESPACE_URI);
+			bindingGenerator.setName(newName);
+			bindingGenerator.generateBinding();
             
           String itemPrefix = definition.getPrefix(definition.getTargetNamespace());
           if (itemPrefix == null)

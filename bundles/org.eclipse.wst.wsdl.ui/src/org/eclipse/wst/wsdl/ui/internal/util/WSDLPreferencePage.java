@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.util;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
@@ -62,13 +63,17 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
     data1.grabExcessHorizontalSpace = true;
     composite.setLayoutData(data1);
 	
-    StringFieldEditor targetNamespace = new StringFieldEditor(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"), WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"), composite); // Externalize
+	String namespaceLabel = WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"); 
+    StringFieldEditor targetNamespace = new StringFieldEditor(namespaceLabel, namespaceLabel, composite); // Externalize
     GridLayout compositeLayout = (GridLayout)composite.getLayout();
     compositeLayout.marginWidth = 5;   // Default value
     compositeLayout.numColumns = 2;
     addField(targetNamespace);
     targetNamespace.setFocus();
-
+	
+	String generateLabel = WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING");
+	BooleanFieldEditor generateBindingOnSave = new BooleanFieldEditor(generateLabel, generateLabel, parent);
+	addField(generateBindingOnSave);
 
     /* Do we need this preference below?  If so, change WSDLEditorPlugin.java and use this preference in:
        HttpContentGenerator.java

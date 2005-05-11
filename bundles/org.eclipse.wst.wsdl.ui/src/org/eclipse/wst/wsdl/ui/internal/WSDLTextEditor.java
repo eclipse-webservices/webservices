@@ -15,6 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.xml.namespace.QName;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -29,6 +32,8 @@ import org.eclipse.wst.common.ui.properties.internal.provisional.ITabbedProperty
 import org.eclipse.wst.sse.ui.internal.StructuredTextEditor;
 import org.eclipse.wst.sse.ui.internal.view.events.INodeSelectionListener;
 import org.eclipse.wst.sse.ui.internal.view.events.NodeSelectionChangedEvent;
+import org.eclipse.wst.wsdl.Binding;
+import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
 import org.eclipse.wst.wsdl.ui.internal.extension.IModelQueryContributor;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtension;
 import org.eclipse.wst.wsdl.ui.internal.filter.ExtensiblityElementFilter;
@@ -299,6 +304,33 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
     super.update();
     if (outlinePage != null)
       outlinePage.setModel(getModel());
+  }
+  
+  /*
+   * We override this method so we can hook in our automatic Binding generation.
+   * We will generate the Binding after a save is executed (If this preference
+   * has been set to true).
+   */
+  public void doSave(IProgressMonitor monitor) {
+      try{
+	  if (WSDLEditorPlugin.getInstance().getPluginPreferences().getBoolean(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING"))) {
+		  Iterator bindingsIt = wsdlEditor.getDefinition().getEBindings().iterator();
+		  while (bindingsIt.hasNext()) {
+			  Binding binding = (Binding) bindingsIt.next();
+			  BindingGenerator generator = new BindingGenerator(binding.getEnclosingDefinition(), binding);
+			  generator.generateBinding();
+		  }
+
+		  // Little hack to 'redraw' connecting lines in the graph viewer
+		  String localPart = wsdlEditor.getDefinition().getQName().getLocalPart();
+		  String namespace = wsdlEditor.getDefinition().getQName().getNamespaceURI();
+		  wsdlEditor.getDefinition().setQName(new QName(namespace, localPart));
+	  }
+      }
+      catch (Exception e)
+      {
+      }
+	  super.doSave(monitor);
   }
 
   public class ModelQueryExtensionHelper

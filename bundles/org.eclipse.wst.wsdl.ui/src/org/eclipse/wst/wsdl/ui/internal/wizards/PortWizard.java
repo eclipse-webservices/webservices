@@ -20,13 +20,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.AbstractGenerator;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ContentGeneratorExtension;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.PortGenerator;
 import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.ContentGeneratorOptionsPage;
+import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.SoapBindingOptionsPage;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.widgets.ProtocolComponentControl;
+
+import org.eclipse.wst.wsdl.internal.generator.PortGenerator;
 
 public class PortWizard extends Wizard
 {
@@ -70,11 +70,10 @@ public class PortWizard extends Wizard
 
   public boolean performFinish()
   {
-    portGenerator.generate();
+    Object object = portGenerator.generatePort();
 
     try
     {
-      Object object = portGenerator.getNewComponent();
       if (object != null)
       {
         IEditorPart editorPart = WSDLEditorPlugin.getInstance().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
@@ -103,7 +102,7 @@ public class PortWizard extends Wizard
       setDescription(WSDLEditorPlugin.getWSDLString("_UI_SPECIFY_PORT_DETAILS_TO_BE_CREATED"));
     }
 
-    public AbstractGenerator getGenerator()
+    public PortGenerator getGenerator()
     {
       return portGenerator;
     }
@@ -119,7 +118,7 @@ public class PortWizard extends Wizard
   class PortProtocolComponentControl extends ProtocolComponentControl
   {
 
-    public PortProtocolComponentControl(Composite parent, AbstractGenerator generator)
+    public PortProtocolComponentControl(Composite parent, PortGenerator generator)
     {
       super(parent, generator, false);
     }
@@ -142,12 +141,19 @@ public class PortWizard extends Wizard
 
     public ContentGeneratorOptionsPage createContentGeneratorOptionsPage(String protocol)
     {
-      ContentGeneratorOptionsPage optionsPage = null;
-      ContentGeneratorExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorExtensionRegistry().getContentGeneratorExtension(protocol);
-      if (extension != null)
-      {
-        optionsPage = extension.createPortContentGeneratorOptionsPage();
-      }
+      ContentGeneratorOptionsPage optionsPage = null;	  
+	  String protocolSelection = protocolCombo.getItem(protocolCombo.getSelectionIndex());
+	  if (protocolSelection.equals("SOAP")) {
+		  optionsPage = new SoapBindingOptionsPage();
+	  }
+	  else if (protocolSelection.equals("HTTP")) {
+		  optionsPage = new SoapBindingOptionsPage();
+	  }	  
+//      ContentGeneratorExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorExtensionRegistry().getContentGeneratorExtension(protocol);
+//      if (extension != null)
+//      {
+//        optionsPage = extension.createPortContentGeneratorOptionsPage();
+//      }
       return optionsPage;
     }
   }

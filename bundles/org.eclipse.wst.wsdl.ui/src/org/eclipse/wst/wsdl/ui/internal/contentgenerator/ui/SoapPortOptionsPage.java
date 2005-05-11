@@ -18,21 +18,22 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator;
+import org.eclipse.wst.wsdl.internal.generator.BaseGenerator;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.AbstractGenerator;
 
 
 public class SoapPortOptionsPage implements ContentGeneratorOptionsPage, ModifyListener
 {
   protected Text addressField;
   protected Composite control;
-  protected AbstractGenerator generator;
+  protected BaseGenerator generator;
 
   public SoapPortOptionsPage()
   {
   }
 
-  public void init(AbstractGenerator generator)
+  public void init(BaseGenerator generator)
   {
     this.generator = generator;
   }
@@ -77,8 +78,20 @@ public class SoapPortOptionsPage implements ContentGeneratorOptionsPage, ModifyL
 
   public void modifyText(ModifyEvent e)
   {
-    Object[] options = new Object[2];
-    options[1] = addressField.getText();
-    generator.setOptions(options);
+	  computeOptions();
+  }
+  
+  private void computeOptions() {
+	if (generator.getContentGenerator() instanceof SOAPContentGenerator) {
+		((SOAPContentGenerator) generator.getContentGenerator()).setAddressLocation(addressField.getText());
+	}
+  }
+  
+  public void setOptionsOnGenerator() {
+	  computeOptions();
+  }
+  
+  public Composite getControl() {
+	  return control;
   }
 }

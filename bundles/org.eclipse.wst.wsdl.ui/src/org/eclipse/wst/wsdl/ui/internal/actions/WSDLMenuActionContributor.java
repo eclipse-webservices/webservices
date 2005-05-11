@@ -1145,7 +1145,7 @@ class GenerateBindingContentAction extends Action
 	
 	public void run()
 	{
-		BindingWizard wizard = new BindingWizard(binding.getEnclosingDefinition(), BindingWizard.KIND_REGENERATE_BINDING);
+		BindingWizard wizard = new BindingWizard(binding.getEnclosingDefinition(), binding, BindingWizard.KIND_REGENERATE_BINDING);
 		wizard.setBindingName(ComponentReferenceUtil.getName(binding));
 		wizard.setPortTypeName(ComponentReferenceUtil.getPortTypeReference(binding));
 		WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);

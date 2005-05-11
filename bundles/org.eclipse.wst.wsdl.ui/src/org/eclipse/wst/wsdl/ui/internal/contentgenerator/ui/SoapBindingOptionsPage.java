@@ -27,8 +27,9 @@ import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
+import org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator;
+import org.eclipse.wst.wsdl.internal.generator.BaseGenerator;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.AbstractGenerator;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.w3c.dom.Element;
 
@@ -39,13 +40,13 @@ public class SoapBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
   protected Button rpcLiteral;
   protected Button rpcEncoded;
   protected Composite control;
-  protected AbstractGenerator generator;
+  protected BaseGenerator generator;
 
   public SoapBindingOptionsPage()
   {
   }
 
-  public void init(AbstractGenerator generator)
+  public void init(BaseGenerator generator)
   {
     this.generator = generator;
   }
@@ -81,6 +82,7 @@ public class SoapBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
       Definition definition = generator.getDefinition();
       QName qname = new QName(definition.getTargetNamespace(), generator.getName());
       Binding binding = (Binding) definition.getBinding(qname);
+
       if (binding != null)
       {
         List eeList = binding.getEExtensibilityElements();
@@ -144,6 +146,10 @@ public class SoapBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
     return control;
   }
 
+  public Composite getControl() {
+	  return control;
+  }
+  
   public boolean isOverwriteApplicable()
   {
     return true;
@@ -156,10 +162,25 @@ public class SoapBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
 
   protected void computeOptions()
   {
-    Object[] options = new Object[3];
-    options[0] = new Boolean(docLiteral.getSelection());
-    options[2] = new Boolean(rpcLiteral.getSelection());
-    generator.setOptions(options);
+	  if (generator.getContentGenerator() instanceof SOAPContentGenerator) {
+		  SOAPContentGenerator soapGenerator = (SOAPContentGenerator) generator.getContentGenerator();
+		  if (docLiteral.getSelection()) {
+			  soapGenerator.setStyle(SOAPContentGenerator.STYLE_DOCUMENT);
+			  soapGenerator.setUse(SOAPContentGenerator.USE_LITERAL);
+		  }	  
+		  else if (rpcLiteral.getSelection()) {
+			  soapGenerator.setStyle(SOAPContentGenerator.STYLE_RPC);
+			  soapGenerator.setUse(SOAPContentGenerator.USE_LITERAL);
+		  }
+		  else if (rpcEncoded.getSelection()) {
+			  soapGenerator.setStyle(SOAPContentGenerator.STYLE_RPC);
+			  soapGenerator.setUse(SOAPContentGenerator.USE_ENCODED);
+		  }
+	  }
+  }
+  
+  public void setOptionsOnGenerator() {
+	  computeOptions();
   }
 
   public void widgetDefaultSelected(SelectionEvent event)

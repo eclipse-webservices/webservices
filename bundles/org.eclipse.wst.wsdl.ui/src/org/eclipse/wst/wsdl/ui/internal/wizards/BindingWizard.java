@@ -26,15 +26,12 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.sse.core.internal.encoding.CommonEncodingPreferenceNames;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.AbstractGenerator;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.BindingGenerator;
-import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ContentGeneratorExtension;
 import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.ContentGeneratorOptionsPage;
+import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.HttpBindingOptionsPage;
+import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.SoapBindingOptionsPage;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
-import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.widgets.ProtocolComponentControl;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
@@ -42,6 +39,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
 
 public class BindingWizard extends Wizard
 {
@@ -54,39 +52,48 @@ public class BindingWizard extends Wizard
   public static final int KIND_NEW_BINDING = 1;
   public static final int KIND_REGENERATE_BINDING = 2;
 
-  /**
-   * Constructor for BindingWizard.
+  protected Definition definition;
+  
+  /*
+   * Constructor used when are creating a brand new Binding
    */
   public BindingWizard(Definition definition)
   {
-    this(definition, KIND_NEW_BINDING);
+    this(definition, null, KIND_NEW_BINDING);
   }
 
+  /*
+   * Constructor used when are creating a brand new Binding
+   */
   public BindingWizard(Definition definition, Document document)
   {
-    this(definition, KIND_NEW_BINDING);
+    this(definition, null, KIND_NEW_BINDING);
     this.document = document;
   }
   
-  public BindingWizard(Definition definition, int kind)
+  /*
+   * Constructor used when there is an existing Binding we wish to modify/regenerate
+   */
+  public BindingWizard(Definition definition, Binding binding, int kind)
   {
     super();
-    this.kind = kind;
-    bindingGenerator = new BindingGenerator(definition);
+	this.definition = definition;
+    this.kind = kind;	
+	bindingGenerator = new BindingGenerator(definition, binding);
+
     setWindowTitle(WSDLEditorPlugin.getWSDLString("_UI_BINDING_WIZARD")); //$NON-NLS-1$
     //setDefaultPageImageDescriptor(ImageDescriptor.createFromFile(WSDLEditorPlugin.class, "icons/NewXML.gif"));
   }
 
   public void setBindingName(String bindingName)
   {
-    bindingGenerator.setName(bindingName);
-
-    Definition definition = bindingGenerator.getDefinition();
     QName qname = new QName(definition.getTargetNamespace(), bindingName);
-    Binding binding = (Binding) definition.getBinding(qname);
-    if (binding != null)
+    bindingGenerator.setName(bindingName);
+/*
+ 	// Binding binding = (Binding) definition.getBinding(qname);
+	if (binding != null)
     {
-      List eeList = binding.getEExtensibilityElements();
+	  List eeList = binding.getEExtensibilityElements();
       if (eeList.size() > 0)
       {
         ExtensibilityElement ee = (ExtensibilityElement) eeList.get(0);
@@ -103,11 +110,12 @@ public class BindingWizard extends Wizard
         }
       }
     }
+    */
   }
 
   public void setPortTypeName(String portTypeName)
   {
-    bindingGenerator.setPortTypeName(portTypeName);
+    bindingGenerator.setRefName(portTypeName);
   }
 
   public BindingGenerator getBindingGenerator()
@@ -131,7 +139,6 @@ public class BindingWizard extends Wizard
 
   public boolean performFinish()
   {
-  	Definition definition = bindingGenerator.getDefinition();
   	boolean recordingStarted = false;
   	if (definition.getElement() == null || (document != null && document.getChildNodes().getLength() == 0)) {
   		recordingStarted = true;
@@ -158,19 +165,19 @@ public class BindingWizard extends Wizard
 
   		definition.setElement(root);	
   	}
-  	
-    bindingGenerator.generate();
 
+	// Generate/re-generate the Binding
     try
     {
-      Object object = bindingGenerator.getNewComponent();
-      if (object != null)
+		Binding binding = bindingGenerator.generateBinding();
+		
+      if (binding != null)
       {
         IEditorPart editorPart = WSDLEditorPlugin.getInstance().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
         ISelectionProvider selectionProvider = (ISelectionProvider) editorPart.getAdapter(ISelectionProvider.class);
         if (selectionProvider != null)
         {
-          selectionProvider.setSelection(new StructuredSelection(object));
+          selectionProvider.setSelection(new StructuredSelection(binding));
         }
       }
     }
@@ -237,7 +244,8 @@ public class BindingWizard extends Wizard
 
     public void createControl(Composite parent)
     {
-      ProtocolComponentControl protocolComponentControl = new BindingProtocolComponentControl(parent, bindingGenerator, kind == KIND_REGENERATE_BINDING);
+      ProtocolComponentControl protocolComponentControl = new BindingProtocolComponentControl(parent, bindingGenerator, false);
+//      ProtocolComponentControl protocolComponentControl = new BindingProtocolComponentControl(parent, bindingGenerator, kind == KIND_REGENERATE_BINDING);	  
       protocolComponentControl.initFields();
       setControl(protocolComponentControl);
     }
@@ -245,12 +253,12 @@ public class BindingWizard extends Wizard
 
   public static class BindingProtocolComponentControl extends ProtocolComponentControl
   {
-    public BindingProtocolComponentControl(Composite parent, AbstractGenerator generator)
+    public BindingProtocolComponentControl(Composite parent, BindingGenerator generator)
     {
       this(parent, generator, false);
     }
 
-    public BindingProtocolComponentControl(Composite parent, AbstractGenerator generator, boolean showOverwriteButton)
+    public BindingProtocolComponentControl(Composite parent, BindingGenerator generator, boolean showOverwriteButton)
     {
       super(parent, generator, showOverwriteButton);
 
@@ -279,11 +287,18 @@ public class BindingWizard extends Wizard
     public ContentGeneratorOptionsPage createContentGeneratorOptionsPage(String protocol)
     {
       ContentGeneratorOptionsPage optionsPage = null;
-      ContentGeneratorExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorExtensionRegistry().getContentGeneratorExtension(protocol);
-      if (extension != null)
-      {
-        optionsPage = extension.createBindingContentGeneratorOptionsPage();
-      }
+	  String protocolSelection = protocolCombo.getItem(protocolCombo.getSelectionIndex());
+	  if (protocolSelection.equals("SOAP")) {
+		  optionsPage = new SoapBindingOptionsPage();
+	  }
+	  else if (protocolSelection.equals("HTTP")) {
+		  optionsPage = new HttpBindingOptionsPage();
+	  }
+//      ContentGeneratorExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorExtensionRegistry().getContentGeneratorExtension(protocol);
+//      if (extension != null)
+//      {
+//        optionsPage = extension.createBindingContentGeneratorOptionsPage();
+//      }
       return optionsPage;
     }
   }
