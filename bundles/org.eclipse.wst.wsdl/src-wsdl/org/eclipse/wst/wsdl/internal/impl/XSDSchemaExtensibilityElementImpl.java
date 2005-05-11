@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.internal.impl;
 
 import javax.xml.namespace.QName;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EAttribute;
@@ -319,15 +318,6 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
   public void reconcileAttributes(Element changedElement)
   {
     super.reconcileAttributes(changedElement);
-    if (getSchema() == null)
-      return;
-    
-    // cs... why do we need to do this? isn't the schema taking care of this itself?
-    //
-    if (changedElement.hasAttribute(XSDConstants.SCHEMALOCATION_ATTRIBUTE))
-      	getSchema().setSchemaLocation(changedElement.getAttribute(XSDConstants.SCHEMALOCATION_ATTRIBUTE));
-    if (changedElement.hasAttribute(XSDConstants.NAMESPACE_ATTRIBUTE))
-    	getSchema().setSchemaLocation(changedElement.getAttribute(XSDConstants.NAMESPACE_ATTRIBUTE));
   }
   
   public Element createElement()
@@ -346,7 +336,7 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
         (schema.getSchemaForSchemaQNamePrefix(),org.eclipse.xsd.util.XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001);
       adopt(schema);
       schema.updateElement(true);
-      return element;
+      return schema.getElement();
     }
     else
     {
@@ -394,22 +384,30 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
   
   protected void changeAttribute(EAttribute eAttribute)
   {
-    if (isReconciling)
-      return;
-
-    if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getXSDSchemaExtensibilityElement_Schema())
-    {
-      // We got a new schema so re-parent it.
-      schema.setDocument(null);
-      schema.setElement(null);
-      adopt(schema);
-      schema.updateElement();
-    }
-    
-    if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getWSDLElement_Element())
-    {
-      // Are we creating a schema too many times?
-      setSchema(createSchema(element)); // element is not null
-    }    
+	  if (isReconciling)
+		  return;
+	  
+	  // TODO... revist this block of code
+	  //
+	  if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getXSDSchemaExtensibilityElement_Schema())
+	  {
+		  // We got a new schema so re-parent it.
+		  // cs... are we really doing the right thing here?  this seems strange
+		  if (schema != null)
+		  {
+			  if ((schema.getElement() == null && getElement() == null) ||
+					  (schema.getElement() != getElement()))
+			  {	
+				  schema.setDocument(null);
+				  schema.setElement(null);
+				  adopt(schema);
+				  schema.updateElement();
+			  }  
+		  }
+	  }    
+	  else if (eAttribute == WSDLPackage.eINSTANCE.getWSDLElement_Element())
+	  {
+		  setSchema(createSchema(element)); // element is not null
+	  }    
   }
 } //XSDSchemaExtensibilityElementImpl
