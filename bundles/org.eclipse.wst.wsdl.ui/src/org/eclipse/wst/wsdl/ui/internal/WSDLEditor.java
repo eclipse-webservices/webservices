@@ -200,7 +200,6 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
       ResourceSet resourceSet = new ResourceSetImpl();
       resourceSet.getAdapterFactories().add(new WSDLModelLocatorAdapterFactory());
       resourceSet.getAdapterFactories().add(new XSDSchemaLocationResolverAdapterFactory());
-      resourceSet.getLoadOptions().put(WSDLResourceImpl.USE_EXTENSION_FACTORIES, Boolean.FALSE);
 
       IFile file = ((IFileEditorInput)getEditorInput()).getFile();
 
