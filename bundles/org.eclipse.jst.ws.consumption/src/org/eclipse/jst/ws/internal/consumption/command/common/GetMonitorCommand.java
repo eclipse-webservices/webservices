@@ -32,9 +32,9 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
-import org.eclipse.wst.internet.monitor.core.IMonitor;
-import org.eclipse.wst.internet.monitor.core.IMonitorWorkingCopy;
-import org.eclipse.wst.internet.monitor.core.MonitorCore;
+import org.eclipse.wst.internet.monitor.core.internal.provisional.IMonitor;
+import org.eclipse.wst.internet.monitor.core.internal.provisional.IMonitorWorkingCopy;
+import org.eclipse.wst.internet.monitor.core.internal.provisional.MonitorCore;
 import org.eclipse.wst.server.core.util.SocketUtil;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
