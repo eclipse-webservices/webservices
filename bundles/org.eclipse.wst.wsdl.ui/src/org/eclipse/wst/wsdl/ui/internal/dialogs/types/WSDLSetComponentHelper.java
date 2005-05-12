@@ -30,7 +30,7 @@ import org.eclipse.wst.wsdl.ui.internal.actions.AddWSISchemaImportAction;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xml.uriresolver.util.URIHelper;
+import org.eclipse.wst.xml.uriresolver.internal.util.URIHelper;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSpecification;
 import org.eclipse.xsd.XSDImport;
 import org.eclipse.xsd.XSDSchema;

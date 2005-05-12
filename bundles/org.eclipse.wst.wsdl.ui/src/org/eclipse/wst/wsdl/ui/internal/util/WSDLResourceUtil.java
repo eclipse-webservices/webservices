@@ -31,7 +31,7 @@ import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLModelLocator;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
-import org.eclipse.wst.xml.uriresolver.util.URIHelper;
+import org.eclipse.wst.xml.uriresolver.internal.util.URIHelper;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSchemaDirective;
 import org.w3c.dom.Document;
