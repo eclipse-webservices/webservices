@@ -14,8 +14,8 @@ package org.eclipse.wst.wsdl.validation.internal.ui.eclipse;
 import java.net.URL;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.wst.common.uriresolver.URIResolver;
-import org.eclipse.wst.common.uriresolver.URIResolverPlugin;
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
 
 /**

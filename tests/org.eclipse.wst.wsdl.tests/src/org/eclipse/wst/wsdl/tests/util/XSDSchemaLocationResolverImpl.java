@@ -11,7 +11,7 @@
 package org.eclipse.wst.wsdl.tests.util;
 
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.wst.common.uriresolver.URIResolverPlugin;
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;

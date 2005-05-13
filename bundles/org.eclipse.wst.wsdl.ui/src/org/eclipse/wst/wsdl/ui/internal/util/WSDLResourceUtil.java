@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.wst.common.uriresolver.URIResolverPlugin;
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.Types;
@@ -253,7 +253,7 @@ public class WSDLResourceUtil
   public static class InternalURIResolver implements WSDLModelLocator
   {
     //IdResolver idResolver = new IdResolverImpl(null, true);
-    org.eclipse.wst.common.uriresolver.URIResolver resolver = URIResolverPlugin.createResolver();
+    org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver resolver = URIResolverPlugin.createResolver();
 
     InternalURIResolver()
     {  
