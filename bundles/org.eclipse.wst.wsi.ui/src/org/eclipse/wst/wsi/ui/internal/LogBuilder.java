@@ -19,7 +19,7 @@ import java.util.TimeZone;
 
 import org.eclipse.core.internal.preferences.Base64;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.wst.internet.monitor.core.Request;
+import org.eclipse.wst.internet.monitor.core.internal.provisional.Request;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.ToolInfo;
 import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;

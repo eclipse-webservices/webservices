@@ -33,6 +33,7 @@ import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.BindingOutput;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.ExtensibleElement;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Import;
@@ -51,6 +52,7 @@ import org.eclipse.wst.wsdl.internal.impl.OperationImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.ITreeChildProvider;
+import org.eclipse.wst.wsdl.ui.internal.graph.editparts.WSDLTreeNodeEditPart;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.w3c.dom.Element;
@@ -124,8 +126,19 @@ public class WSDLModelAdapterFactory implements ModelAdapterFactory
       {                   
       	public Object caseWSDLElement(WSDLElement wsdlElement)
         {   
-          return createWSDLElementAdapter();
-	      }   
+          // note that the WSDLSwitch doesn't handle 
+          // caseExtensibilityElement when the object
+          // comes from another package... that why
+          // we have an instanceof check here
+		  if (wsdlElement instanceof ExtensibilityElement)
+		  {	
+			return createExtensibilityElementAdapter();  
+		  }
+		  else
+		  {	  
+            return createWSDLElementAdapter();
+		  }	
+	    }   
 
       	public Object caseBinding(Binding binding)
         {   
@@ -210,15 +223,27 @@ public class WSDLModelAdapterFactory implements ModelAdapterFactory
       	public Object caseTypes(Types types)
         {   
           return createTypesAdapter();
-	      } 
+	    } 
         
-        public Object caseUnknownExtensibilityElement(UnknownExtensibilityElement uee)
-        {   
-          return createUnknownExtensibilityElementAdapter();
+		public Object defaultCase(EObject object)
+		{
+		  // note that the WSDLSwitch doesn't handle 
+          // caseExtensibilityElement when the object
+          // comes from another package... that why
+          // we have an instanceof check here
+		   if (object instanceof ExtensibilityElement)
+		   {	   
+	         return createExtensibilityElementAdapter();
+		   }
+		   else
+		   {
+			 return null;
+		   }	   
         }
       };   
 
       Object o = wsdlSwitch.doSwitch((EObject)target);
+
 
       Adapter result = null;
       if (o instanceof Adapter)
@@ -325,11 +350,12 @@ public class WSDLModelAdapterFactory implements ModelAdapterFactory
 		  return new TypesAdapter();
 	  } 
     
-    public Adapter createUnknownExtensibilityElementAdapter()
+    public Adapter createExtensibilityElementAdapter()
     {
-      return new UnknownExtensibilityElementAdapter();
+      return new ExtensibilityElementAdapter();
     }
-    
+
+	
     // convenience method
     //
     public Adapter adapt(Notifier target)
@@ -993,20 +1019,20 @@ public class WSDLModelAdapterFactory implements ModelAdapterFactory
     }
   } 
      
-  protected class UnknownExtensibilityElementAdapter extends WSDLElementAdapter implements ModelAdapterListener
+  protected class ExtensibilityElementAdapter extends WSDLElementAdapter implements ModelAdapterListener
   {                
-    protected UnknownExtensibilityElement uee;
+    protected ExtensibilityElement ee;
                          
     public void setTarget(Notifier newTarget) 
     {
       super.setTarget(newTarget);
-      this.uee = (UnknownExtensibilityElement)newTarget;
+      this.ee = (ExtensibilityElement)newTarget;
     }
                                                                              
     protected String getLabel()
     {  
       String result = null;
-      Node node = (Node) uee.getElement();
+      Node node = (Node) ee.getElement();
 
       ILabelProvider labelProvider = getExtensibilityLabelProvider(node);
       if (labelProvider != null)
@@ -1024,7 +1050,7 @@ public class WSDLModelAdapterFactory implements ModelAdapterFactory
     protected Image getImage()
     {                                
       Image image = null;
-      Node node = (Node) uee.getElement();
+      Node node = (Node) ee.getElement();
 
       ILabelProvider labelProvider = getExtensibilityLabelProvider(node);
       if (labelProvider != null)
@@ -1041,25 +1067,19 @@ public class WSDLModelAdapterFactory implements ModelAdapterFactory
 
     protected List getChildren()
     {
-      List list = null;
-      //Node node = (Node) uee.getElement();
-      //ITreeChildProvider childProvider = getExtensibilityContentProvider(node);
-      // TBD - Discuss with Craig why we would need childProvider
-      //if (childProvider != null)
-      //{
-      //  Object[] array = childProvider.getChildren(node);
-      //  list = Arrays.asList(array);
-      //}
-      //else
+      List list = null;	  
+	  //TODO... we need to push getChildren down the ExtensiblityElement
+	  // for now let's just cast to UnkownExtensiblityElement
+	  if (ee instanceof UnknownExtensibilityElement)
       {
-        list = uee.getChildren();
+        list = ((UnknownExtensibilityElement)ee).getChildren();
       }
       return list; 
     }
 
     public void propertyChanged(Object object, String property)
     {
-      firePropertyChanged(uee, property);
+      firePropertyChanged(ee, property);
     }
     
     protected ILabelProvider getExtensibilityLabelProvider(Node node)
@@ -1193,7 +1213,7 @@ public class WSDLModelAdapterFactory implements ModelAdapterFactory
       return WSDLEditorPlugin.getInstance().getImage("icons/types_obj.gif");
     }                                                                                      
   }
-
+  
   public static void addModelAdapterListener(Object modelObject, ModelAdapterListener listener)
   {                                                               
 // TODO: port check

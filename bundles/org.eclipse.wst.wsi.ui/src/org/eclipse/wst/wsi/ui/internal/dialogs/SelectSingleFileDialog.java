@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
 
-import org.eclipse.wst.common.ui.viewers.SelectSingleFileView;
+import org.eclipse.wst.common.ui.internal.viewers.SelectSingleFileView;
 import  org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
 
 

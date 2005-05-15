@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.wst.internet.monitor.core.Request;
+import org.eclipse.wst.internet.monitor.core.internal.provisional.Request;
 import org.eclipse.wst.wsi.ui.internal.LogBuilder;
 import org.eclipse.wst.wsi.ui.internal.wizards.ValidationWizard;
 import org.eclipse.wst.wsi.ui.internal.WSIValidator;
