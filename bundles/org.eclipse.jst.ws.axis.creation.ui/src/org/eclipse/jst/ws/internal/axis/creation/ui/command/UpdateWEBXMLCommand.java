@@ -29,8 +29,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.wst.common.componentcore.internal.StructureEdit;
-import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
+import org.eclipse.wst.common.componentcore.resources.ComponentHandle;
 
 public class UpdateWEBXMLCommand extends SimpleCommand {
 
@@ -115,20 +114,15 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 
 		Object accessorKey = new Object();
 		WebArtifactEdit webEdit = null;		
-		StructureEdit structEdit = null;
 		try {
 			// 
 			WebApp webapp = null;
-			structEdit = StructureEdit.getStructureEditForWrite(webProject);;
-			
-			WorkbenchComponent component = getComponent( structEdit, moduleName );
-						
-			webEdit = WebArtifactEdit.getWebArtifactEditForWrite( component );
+      ComponentHandle ch = ComponentHandle.create(webProject, moduleName);
+      webEdit = new WebArtifactEdit(ch, false);
 			if (webEdit != null)
 			{
 				webapp = (WebApp) webEdit.getDeploymentDescriptorRoot();
-			   //
-			
+
 			   boolean foundServlet = false;
 
 			   List theServlets = webapp.getServlets();
@@ -185,27 +179,8 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 		finally{
 			if (webEdit != null)
 				webEdit.dispose();	
-			if (structEdit!=null)
-				structEdit.dispose();
 		}
 	}
-
-  private WorkbenchComponent getComponent( StructureEdit structEdit, String moduleName )
-  {
-    WorkbenchComponent component = null;
-	WorkbenchComponent wbcs[]    = structEdit.getWorkbenchModules();
-	
-	for( int index = 0; index < wbcs.length; index++ )
-	{
-	  if( wbcs[index].getName().equals( moduleName ) ) 
-	  {
-		component = wbcs[index];
-		break;
-	  }
-	}
-	
-	return component;
-  }
   
   public void setServerProject(IProject serverProject)
   {

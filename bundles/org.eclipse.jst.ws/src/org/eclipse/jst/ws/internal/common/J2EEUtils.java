@@ -56,6 +56,7 @@ import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.componentcore.resources.ComponentHandle;
 import org.eclipse.wst.common.componentcore.resources.IFlexibleProject;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
@@ -92,7 +93,7 @@ public final class J2EEUtils {
 	public static IVirtualComponent getVirtualComponent(String projectName, String componentName){
 		IProject project = null;
 		if (projectName!=null && projectName.length() > 0 )
-		  project = FileResourceUtils.getWorkspaceRoot().getProject(projectName);
+      project = ProjectUtilities.getProject(projectName);
 		
 		return ComponentCore.createComponent(project, componentName);
 	}
@@ -124,50 +125,43 @@ public final class J2EEUtils {
 	 */
 	public static int getJ2EEVersion(IProject p, String componentName){
 		int j2eeVer = -1;
-		StructureEdit mc = null;
 		try {
-			mc = StructureEdit.getStructureEditForRead(p);
-			if (mc!=null) {
-				WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-				for (int i=0;i<wbcs.length;i++){
-					if (wbcs[i].getName().equals(componentName)){
-						j2eeVer = getComponentJ2EEVersion(p, wbcs[i]);
-					}
-				}
+      ComponentHandle ch = ComponentHandle.create(p, componentName);
+      
+			if (ch!=null) {
+			  j2eeVer = getComponentJ2EEVersion(p, ch);
 			}
 		}
 		catch (Exception e){
 			//handle exception
 		}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
+
 		return j2eeVer;	
 	}
 	
 	public static int getJ2EEVersion(IVirtualComponent component){
+  
 		return getJ2EEVersion(component.getProject(), component.getName()); 
 	}
 	
 	/**
 	 * Returns the J2EEVersion of the component identified by project and component name
 	 * @param project
-	 * @param wbc
+	 * @param ch
 	 * @return int version if applicable, otherwise returns -1
 	 */
-	private static int getComponentJ2EEVersion(IProject project, WorkbenchComponent wbc){
+	private static int getComponentJ2EEVersion(IProject project, ComponentHandle ch){
 		int j2eeVer = -1;
 		//check type
-		if (wbc!=null) {
-			if (isWebComponent(project, wbc.getName()))
-				j2eeVer = getWebComponentJ2EEVersion(wbc);
-			if (isAppClientComponent(project, wbc.getName()))
-				j2eeVer = getAppClientComponentJ2EEVersion(wbc);
-			if (isEJBComponent(project, wbc.getName()))
-				j2eeVer = getEJBComponentJ2EEVersion(wbc);
-			if (isEARComponent(project, wbc.getName()))
-				j2eeVer = getEARComponentJ2EEVersion(wbc);
+		if (ch!=null) {
+			if (isWebComponent(project, ch.getName()))
+				j2eeVer = getWebComponentJ2EEVersion(ch);
+			if (isAppClientComponent(project, ch.getName()))
+				j2eeVer = getAppClientComponentJ2EEVersion(ch);
+			if (isEJBComponent(project, ch.getName()))
+				j2eeVer = getEJBComponentJ2EEVersion(ch);
+			if (isEARComponent(project, ch.getName()))
+				j2eeVer = getEARComponentJ2EEVersion(ch);
 			
 		}
 		return j2eeVer;
@@ -179,11 +173,11 @@ public final class J2EEUtils {
 	 * @param wbc
 	 * @return
 	 */
-	private static int getEARComponentJ2EEVersion(WorkbenchComponent wbc){
+	private static int getEARComponentJ2EEVersion(ComponentHandle ch){
 		EARArtifactEdit edit = null;
 		int nVersion = 12;
 		try {
-			edit = EARArtifactEdit.getEARArtifactEditForRead(wbc);
+			edit = new EARArtifactEdit(ch, true);
 			if (edit != null) {
 				nVersion = edit.getJ2EEVersion();
 			}
@@ -232,11 +226,12 @@ public final class J2EEUtils {
 	 * @param wbModule
 	 * @return the J2EE version id
 	 */
-	private static int getWebComponentJ2EEVersion(WorkbenchComponent wbModule) {
+	private static int getWebComponentJ2EEVersion(ComponentHandle ch) {
 		WebArtifactEdit webEdit = null;
 		int nVersion = 12;
 		try {
-			webEdit = WebArtifactEdit.getWebArtifactEditForRead(wbModule);
+      
+			webEdit = new WebArtifactEdit(ch, true);
 			if (webEdit != null) {
 				nVersion = webEdit.getJ2EEVersion();
 			}
@@ -254,11 +249,11 @@ public final class J2EEUtils {
 	 * @param wbc
 	 * @return
 	 */
-	private static int getAppClientComponentJ2EEVersion(WorkbenchComponent wbc){
+	private static int getAppClientComponentJ2EEVersion(ComponentHandle ch){
 		AppClientArtifactEdit edit = null;
 		int nVersion = 12;
 		try {
-			edit = AppClientArtifactEdit.getAppClientArtifactEditForRead(wbc);
+			edit = new AppClientArtifactEdit(ch, true);
 			if (edit != null) {
 				nVersion = edit.getJ2EEVersion();
 			}
@@ -276,11 +271,11 @@ public final class J2EEUtils {
 	 * @param wbc
 	 * @return
 	 */
-	private static int getEJBComponentJ2EEVersion(WorkbenchComponent wbc){
+	private static int getEJBComponentJ2EEVersion(ComponentHandle ch){
 		EJBArtifactEdit edit = null;
 		int nVersion = 12;
 		try {
-			edit = EJBArtifactEdit.getEJBArtifactEditForRead(wbc);
+			edit = new EJBArtifactEdit(ch, true);
 			if (edit != null) {
 				nVersion = edit.getJ2EEVersion();
 			}
@@ -311,6 +306,8 @@ public final class J2EEUtils {
 		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
 		for (int i = 0; i < projects.length; i++) {
 			try {
+        
+        
 				mc = StructureEdit.getStructureEditForRead(projects[i]);
 				if (mc!=null){
 					WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
@@ -1474,36 +1471,24 @@ public final class J2EEUtils {
 	 */
 	public static boolean isEJB20Component(IProject project, String componentName){
 		boolean isEJB = false;
-		StructureEdit mc = null;
 		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  if (mc!=null){
-			  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			  for(int i=0;i<wbcs.length;i++){
-				  if (wbcs[i].getName().equals(componentName)){
-					  if (EJBArtifactEdit.isValidEJBModule(wbcs[i])) {
-						  EJBArtifactEdit  ejbEdit = null;
-						  try {
-							  ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(wbcs[i]);
-							  EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
-							  if (ejbRes.getModuleVersionID()== J2EEVersionConstants.EJB_2_0_ID) {
-								  return true;
-							  }
-						  }
-						  finally {
-							  if (ejbEdit!=null)
-								  ejbEdit.dispose();
-						  }
-					  }
+      IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+		  if (EJBArtifactEdit.isValidEJBModule(vc)) {
+			  EJBArtifactEdit  ejbEdit = null;
+			  try {
+				  ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(vc);
+				  EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
+				  if (ejbRes.getModuleVersionID()== J2EEVersionConstants.EJB_2_0_ID) {
+					  return true;
 				  }
+			  }
+			  finally {
+				  if (ejbEdit!=null)
+					  ejbEdit.dispose();
 			  }
 		  }
 		}
 		catch(Exception ex){}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
 		
 		return isEJB;			
 	}
@@ -1600,7 +1585,7 @@ public final class J2EEUtils {
         StructureEdit core = null;
         try {
             core = StructureEdit.getStructureEditForRead(project);
-			if (core!=null){
+			      if (core!=null){
 	            WorkbenchComponent wc = core.findComponentByName(componentName);
 	            
 	            AddComponentToEnterpriseApplicationDataModel addComponentToEARDataModel = new AddComponentToEnterpriseApplicationDataModel();;
@@ -1618,9 +1603,9 @@ public final class J2EEUtils {
 	            
 	            AddComponentToEnterpriseApplicationOperation addModuleOp = new AddComponentToEnterpriseApplicationOperation(addComponentToEARDataModel);
 	            addModuleOp.run(null);
-			}
+            }
         } catch (Exception e) {
-			//handle InvocationTargetException
+			  //handle InvocationTargetException
         }finally {
             if(core != null)
                 core.dispose();
@@ -1637,27 +1622,12 @@ public final class J2EEUtils {
 	 * @deprecated 
 	 */
 	public static void associateWebProject(IProject module, IProject EARProject) {
-		try {
-
 			String uri = module.getName() + ".war";
 			String contextRoot = module.getName();
 			AddModuleToEARProjectCommand amiec = new AddModuleToEARProjectCommand(
 					module, EARProject, uri, contextRoot, null);
 			if (amiec.canExecute())
 				amiec.execute();
-			/*
-			 * EARNatureRuntime EARNature =
-			 * (EARNatureRuntime)getEARNatureRuntimeFromProject(EARProject);
-			 * 
-			 * Application application = EARNature.getApplication(); Module mod =
-			 * (Module)application.getFirstModule(module.getName());
-			 * EAREditModel edm = EARNature.getEarEditModelForRead();
-			 * edm.addModuleMapping(mod, EARProject); edm.releaseAccess();
-			 * 
-			 */
-		} catch (Exception e) {
-
-		}
 	}
 
 	/**
@@ -1667,21 +1637,21 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated to be determined
 	 */
-	public static void associateEJBProject(IProject ejbProject,
-			IProject EARProject) {
-		try {
-			String uri = ejbProject.getName() + ".jar";
-			String contextRoot = ejbProject.getName();
-			AddModuleToEARProjectCommand amiec = new AddModuleToEARProjectCommand(
-					ejbProject, EARProject, uri, contextRoot, null);
-			if (amiec.canExecute())
-				amiec.execute();
-
-		} catch (Exception e) {
-
-		}
-
-	}
+//	public static void associateEJBProject(IProject ejbProject,
+//			IProject EARProject) {
+//		try {
+//			String uri = ejbProject.getName() + ".jar";
+//			String contextRoot = ejbProject.getName();
+//			AddModuleToEARProjectCommand amiec = new AddModuleToEARProjectCommand(
+//					ejbProject, EARProject, uri, contextRoot, null);
+//			if (amiec.canExecute())
+//				amiec.execute();
+//
+//		} catch (Exception e) {
+//
+//		}
+//
+//	}
 	
 	/**
 	 * Returns the first Module's WEB-INF directory
@@ -1690,14 +1660,14 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated  use getWebInfPath(project, compName) instead
 	 */
-	public static IPath getFirstWebInfPath(IProject project){
-		IPath modulePath = null;
-		StructureEdit mc = null;
-		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-		  
-		  if (wbcs.length!=0) {
+//	public static IPath getFirstWebInfPath(IProject project){
+//		IPath modulePath = null;
+//		StructureEdit mc = null;
+//		try {
+//		  mc = StructureEdit.getStructureEditForRead(project);
+//		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+//		  
+//		  if (wbcs.length!=0) {
 //			WebArtifactEdit webEdit = null;
 //			try {
 //			  webEdit = WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
@@ -1711,20 +1681,20 @@ public final class J2EEUtils {
 //				if (webEdit!=null)
 //					webEdit.dispose();
 //			}
-			IVirtualComponent component = ComponentCore.createComponent(project, wbcs[0].getName());
-			IVirtualFolder webInfDir = component.getFolder(new Path("/WEB-INF"));
-			modulePath = webInfDir.getWorkspaceRelativePath();
-			System.out.println("FirstWebInfPath = " +modulePath);
-		  }
-		}
-		catch(Exception ex){}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
-
-		return modulePath;		
-	}
+//			IVirtualComponent component = ComponentCore.createComponent(project, wbcs[0].getName());
+//			IVirtualFolder webInfDir = component.getFolder(new Path("/WEB-INF"));
+//			modulePath = webInfDir.getWorkspaceRelativePath();
+//			System.out.println("FirstWebInfPath = " +modulePath);
+//		  }
+//		}
+//		catch(Exception ex){}
+//		finally{
+//			if (mc!=null)
+//				mc.dispose();
+//		}
+//
+//		return modulePath;		
+//	}
 	
 	/**
 	 * @param project
@@ -1863,34 +1833,16 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean isWebComponent(IProject project, String componentName) {
-		boolean isWeb = false;
-		StructureEdit mc = null;
-		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  if(mc!=null){
-			  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			  for(int i=0;i<wbcs.length;i++){
-				  if (wbcs[i].getName().equals(componentName)){
-					  return WebArtifactEdit.isValidWebModule(wbcs[i]);
-				  }
-			  }
-		  }
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			// handle Unresolveable URI exception
-		}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
-
-		return isWeb;
+    IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+    return isWebComponent(vc);
 	}
 	
 	public static boolean isWebComponent(IVirtualComponent comp){
-		return isWebComponent(comp.getProject(), comp.getName());
-	}
+    if ( comp.getComponentTypeId().equals(IModuleConstants.JST_WEB_MODULE)){
+      return true;
+    }
+    return false;
+  }
 
 	/**
 	 * True is the component is a valid EAR component
@@ -1899,29 +1851,15 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean isEARComponent(IProject project, String componentName){
-		boolean isEAR = false;
-		StructureEdit mc = null;
-		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  if(mc!=null){
-			  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			  for(int i=0;i<wbcs.length;i++){
-				  if (wbcs[i].getName().equals(componentName)){
-					  return EARArtifactEdit.isValidEARModule(wbcs[i]);
-				  }
-			  }
-		  }
-		}
-		catch(Exception ex){}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
-		return isEAR;
+    IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+    return isEARComponent(vc);
 	}
 	
 	public static boolean isEARComponent(IVirtualComponent comp){
-		return isEARComponent(comp.getProject(), comp.getName());
+    if (comp.getComponentTypeId().equals(IModuleConstants.JST_EAR_MODULE)){
+      return true;
+    }
+    return false;
 	}
 
 	/**
@@ -1931,30 +1869,15 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean isEJBComponent(IProject project, String componentName) {
-		boolean isEJB = false;
-		StructureEdit mc = null;
-		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  if (mc!=null){
-			  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			  for(int i=0;i<wbcs.length;i++){
-				  if (wbcs[i].getName().equals(componentName)){
-					  return EJBArtifactEdit.isValidEJBModule(wbcs[i]);
-				  }
-			  }
-		  }
-		}
-		catch(Exception ex){}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
-		
-		return isEJB;	
+    IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+    return isEJBComponent(vc);
 	}
 
 	public static boolean isEJBComponent(IVirtualComponent comp){
-		return isEJBComponent(comp.getProject(), comp.getName());
+    if (comp.getComponentTypeId().equals(IModuleConstants.JST_EJB_MODULE)){
+      return true;
+    }
+    return false;
 	}
 	
 	/**
@@ -1964,30 +1887,15 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean isAppClientComponent(IProject project, String componentName) {
-		boolean isAppClient = false;
-		StructureEdit mc = null;
-		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  if(mc!=null){
-			  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			  for(int i=0;i<wbcs.length;i++){
-				  if (wbcs[i].getName().equals(componentName)){
-					  return AppClientArtifactEdit.isValidApplicationClientModule(wbcs[i]);
-				  }
-			  }
-		  }
-		}
-		catch(Exception ex){}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
-		
-		return isAppClient;	
+    IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+    return isAppClientComponent(vc);
 	}	
 
 	public static boolean isAppClientComponent(IVirtualComponent comp){
-		return isAppClientComponent(comp.getProject(), comp.getName());
+    if (comp.getComponentTypeId().equals(IModuleConstants.JST_APPCLIENT_MODULE)){
+      return true;
+    }
+    return false;
 	}
 	
 	/**
@@ -1997,37 +1905,15 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean isJavaComponent(IProject project, String componentName) {
-		boolean isJava = false;
-		StructureEdit mc = null;
-		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  if (mc!=null) {
-			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			for(int i=0;i<wbcs.length;i++){
-			  if (wbcs[i].getComponentType().getComponentTypeId().equals(IModuleConstants.JST_UTILITY_MODULE)){
-				  return true;
-			  }
-//			  if (wbcs[i].getName().equals(componentName)){
-//				  isJava = ArtifactEdit.isValidEditableModule(wbcs[i]);
-//				  break;
-//			  }
-		  	}
-		  }
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			// handle Unresolveable URI exception
-		}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
-
-		return isJava;
+    IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+    return isJavaComponent(vc);
 	}
 	
 	public static boolean isJavaComponent(IVirtualComponent comp){
-		return isJavaComponent(comp.getProject(), comp.getName());
+    if (comp.getComponentTypeId().equals(IModuleConstants.JST_UTILITY_MODULE)){
+      return true;
+    }
+    return false;
 	}	
 	
 	public static String[] toComponentNamesArray(IVirtualComponent[] components){

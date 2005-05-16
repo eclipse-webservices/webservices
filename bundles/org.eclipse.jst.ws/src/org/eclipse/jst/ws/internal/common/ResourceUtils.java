@@ -337,6 +337,8 @@ public final class ResourceUtils {
 	 * @param project
 	 *            The project.
 	 * @return True if the project is a Web Project.
+   * 
+   * @deprecated
 	 */
 	public static boolean isWebProject(IProject project) {
 		boolean isWeb = false;
@@ -345,7 +347,7 @@ public final class ResourceUtils {
 		  mc = StructureEdit.getStructureEditForRead(project);
 		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
 		  if (wbcs.length!=0) {
-			  isWeb = WebArtifactEdit.isValidWebModule(wbcs[0]);
+			  //isWeb = WebArtifactEdit.isValidWebModule(wbcs[0]);
 		  }
 		}
 		catch(Exception ex){
@@ -363,6 +365,8 @@ public final class ResourceUtils {
 	 * Note: for components; use J2EEUtils.isEARComponent()
 	 * @param project
 	 * @return
+   * 
+   * @deprecated
 	 */
 	public static boolean isEARProject(IProject project){
 		boolean isEAR = false;
@@ -373,7 +377,7 @@ public final class ResourceUtils {
 		  if (wbcs.length!=0) {
 			EARArtifactEdit earEdit = null;
 			try {
-			  earEdit = EARArtifactEdit.getEARArtifactEditForRead(wbcs[0]);
+			  //earEdit = EARArtifactEdit.getEARArtifactEditForRead(wbcs[0]);
 			  if (earEdit!=null){
 				isEAR = true;
 			  }
@@ -399,6 +403,9 @@ public final class ResourceUtils {
 	 * @param project
 	 *            The project.
 	 * @return True if the project is an EJB 1.1 or an EJB 2.0 Project.
+   * 
+   * @deprecated
+   * 
 	 */
 	public static boolean isEJBProject(IProject project) {
 		boolean isEJB = false;
@@ -409,7 +416,7 @@ public final class ResourceUtils {
 		  if (wbcs.length!=0) {
 			EJBArtifactEdit ejbEdit = null;
 			try {
-			  ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(wbcs[0]);
+			  //ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(wbcs[0]);
 			  if (ejbEdit!=null){
 				isEJB = true;
 			  }
@@ -436,6 +443,8 @@ public final class ResourceUtils {
 	 * @param project
 	 *            The project.
 	 * @return True if the project is an Application Client Project
+   * 
+   * @deprecated
 	 */
 	public static boolean isAppClientProject(IProject project) {
 		boolean isAppClient = false;
@@ -446,7 +455,7 @@ public final class ResourceUtils {
 		  if (wbcs.length!=0) {
 			AppClientArtifactEdit appClientEdit = null;
 			try {
-				appClientEdit = AppClientArtifactEdit.getAppClientArtifactEditForRead(wbcs[0]);
+				//appClientEdit = AppClientArtifactEdit.getAppClientArtifactEditForRead(wbcs[0]);
 			  if (appClientEdit!=null){
 				  isAppClient = true;
 			  }
@@ -738,61 +747,13 @@ public final class ResourceUtils {
 		try {
 			IJavaProject javaProject = JavaCore.create(project);
 			if (javaProject != null) {
-				IClasspathEntry[] classpathEntries = javaProject
-						.getRawClasspath();
+				IClasspathEntry[] classpathEntries = javaProject.getRawClasspath();
 				return classpathEntries;
 			}
 		} catch (JavaModelException e) {
 		}
 		return new IClasspathEntry[0];
 	}
-
-	/**
-	 * Returns the container corresponding to the web server module root of the
-	 * project (ie. the "webApplication" folder) or null if the project has no
-	 * Web nature.
-	 * 
-	 * @param project
-	 *            The project.
-	 * @return The web server module root container or null if the project has
-	 *         no Web nature.
-	 * @deprecated use getWebModuleServerRoot(project, compName)
-	 */
-//	public static IContainer getWebModuleServerRoot(IProject project) {
-//		IContainer webModuleServerRoot = null;
-//		StructureEdit mc = null;
-//		try {
-//			mc = StructureEdit.getStructureEditForRead(project);
-//			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-//			if (wbcs.length!=0) {
-//				webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
-//				IFolder fwebModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[0]);
-//				fwebModuleServerRoot.getFolder("WEB-INF").getFolder("classes");
-//				
-//				IFolder[] folder = StructureEdit.getOutputContainersForProject(project);
-//				
-//				if (folder.length!=0)
-//				System.out.println("WebModuleServerRoot = "+folder[0]);
-//				
-//			}
-//			IProjectNature nature = project.getNature(IWebNatureConstants.J2EE_NATURE_ID);
-//			if (nature != null && (nature instanceof IDynamicWebNature)) {
-//			  IDynamicWebNature webNature = (IDynamicWebNature) nature;
-//				webModuleServerRoot = webNature.getRootPublishableFolder();
-//			}
-//		} catch (Exception e) {
-//			Log log = new EclipseLog();
-//			log.log(Log.ERROR, 5035, ResourceUtils.class, "getWebModuleServerRoot",
-//					"project=" + project + ",webModuleServerRoot="
-//							+ webModuleServerRoot);			
-//		}
-//		finally{
-//			if (mc!=null)
-//				mc.dispose();
-//		}
-//
-//		return webModuleServerRoot;
-//	}
 
 	/**
 	 * 
