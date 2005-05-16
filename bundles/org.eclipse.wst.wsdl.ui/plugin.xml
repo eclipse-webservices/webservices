@@ -301,5 +301,13 @@
          </contentTypeIdentifier>       
       </validator>
    </extension>
+   
+    <!-- this extension point is used to augment the ModelQuery to provide WSDL specific guided editing -->
+    <extension point="org.eclipse.wst.xml.core.modelQueryExtensions">
+		<modelQueryExtension
+			class="org.eclipse.wst.wsdl.ui.internal.text.WSDLModelQueryExtension"
+			contentType="org.eclipse.wst.wsdl.wsdlsource">
+		</modelQueryExtension>
+	</extension>   
 </plugin>
                                

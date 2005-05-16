@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.ITypeSystemProvider;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtension;
@@ -28,7 +27,7 @@ public class ExtensibleTypeSystemProvider implements ITypeSystemProvider
 
   protected final static Object[] EMPTY_ARRAY = {};
 
-  public ExtensibleTypeSystemProvider(WSDLEditor wsdlEditor)
+  public ExtensibleTypeSystemProvider()
   {
     WSDLEditorExtensionRegistry registry = WSDLEditorPlugin.getInstance().getWSDLEditorExtensionRegistry(); 
 
@@ -36,7 +35,7 @@ public class ExtensibleTypeSystemProvider implements ITypeSystemProvider
     typeSystemProviders = new ITypeSystemProvider[extensions.length]; 
     for (int i = 0; i < extensions.length; i++)
     {
-      typeSystemProviders[i] = (ITypeSystemProvider)extensions[i].createExtensionObject(WSDLEditorExtension.TYPE_SYSTEM_PROVIDER, wsdlEditor);
+      typeSystemProviders[i] = (ITypeSystemProvider)extensions[i].createExtensionObject(WSDLEditorExtension.TYPE_SYSTEM_PROVIDER, null);
     }
   }          
         

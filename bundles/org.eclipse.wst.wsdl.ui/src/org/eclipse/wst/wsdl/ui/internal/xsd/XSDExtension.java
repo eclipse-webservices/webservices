@@ -116,7 +116,7 @@ public class XSDExtension implements WSDLEditorExtension
       }  
       case MODEL_QUERY_CONTRIBUTOR :
       {
-        result = new XSDModelQueryContributor(wsdlEditor);
+        //result = new XSDModelQueryContributor(wsdlEditor);
         break;
       }
       case PROPERTY_SOURCE_PROVIDER:

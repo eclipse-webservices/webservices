@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -36,6 +33,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.TextSelectionNavigationLocation;
+import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.exceptions.SourceEditingRuntimeException;
 import org.eclipse.wst.sse.ui.internal.StructuredTextEditor;
@@ -51,49 +49,42 @@ import org.eclipse.wst.wsdl.ui.internal.model.WSDLModelAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.outline.ExtensibleOutlineProvider;
 import org.eclipse.wst.wsdl.ui.internal.outline.ModelAdapterContentProvider;
 import org.eclipse.wst.wsdl.ui.internal.outline.ModelAdapterLabelProvider;
-import org.eclipse.wst.wsdl.ui.internal.reconciler.SEDDocumentAdapter;
+import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelAdapter;
 import org.eclipse.wst.wsdl.ui.internal.typesystem.ExtensibleTypeSystemProvider;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
-import org.eclipse.wst.wsdl.ui.internal.util.WSDLModelLocatorAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLNodeAssociationProvider;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLResourceUtil;
-import org.eclipse.wst.wsdl.ui.internal.util.XSDSchemaLocationResolverAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.viewers.WSDLDetailsViewer;
 import org.eclipse.wst.wsdl.ui.internal.viewers.WSDLDetailsViewerProvider;
-import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.w3c.dom.Document;
 
-//public class WSDLEditor extends StructuredTextMultiPageEditorPart implements INavigationLocationProvider
+// public class WSDLEditor extends StructuredTextMultiPageEditorPart implements
+// INavigationLocationProvider
 public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLocationProvider
 {
   protected ExtensibleOutlineProvider extensibleOutlineProvider;
-
   protected WSDLTextEditor textEditor;
   protected WSDLGraphViewer graphViewer;
   protected WSDLDetailsViewer detailsViewer;
   protected WSDLSelectionManager selectionManager;
   protected SashForm sashForm;
-
   int graphPageIndex;
-
-  //protected Resource resource;
-  protected Definition definition;
+  protected WSDLModelAdapter modelAdapter;
   protected WSDLEditorResourceChangeHandler resourceChangeHandler;
-  
-  // Used for Cut, Copy, Paste actions.  This acts as a copy, cut, paste clipboard
+  // Used for Cut, Copy, Paste actions. This acts as a copy, cut, paste
+  // clipboard
   protected WSDLElement clipboardElement;
 
   public WSDLEditor()
   {
     selectionManager = new WSDLSelectionManager();
   }
-  
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException
-	{
-    super.init(site, input);
 
+  public void init(IEditorSite site, IEditorInput input) throws PartInitException
+  {
+    super.init(site, input);
     try
     {
       IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
@@ -103,15 +94,13 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
         page.showView("org.eclipse.ui.views.PropertySheet");
       }
     }
-    catch (PartInitException partInitException) 
+    catch (PartInitException partInitException)
     {
-
     }
     catch (Exception exception)
     {
-      
     }
-	}
+  }
 
   public Object getAdapter(Class key)
   {
@@ -129,8 +118,9 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 
   public void dispose()
   {
-    // call the extensibleOutlineProvider's inputChanged method a null viewer 
-    // so that the outline's contentprovider/adapters don't attempt to update the viewer
+    // call the extensibleOutlineProvider's inputChanged method a null viewer
+    // so that the outline's contentprovider/adapters don't attempt to update
+    // the viewer
     // after the editor closes
     extensibleOutlineProvider.inputChanged(null, null, null);
     if (resourceChangeHandler != null)
@@ -171,12 +161,12 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 
   public Document getXMLDocument()
   {
-    return ((IDOMModel)textEditor.getModel()).getDocument();
+    return ((IDOMModel) textEditor.getModel()).getDocument();
   }
 
   public Definition getDefinition()
   {
-    return definition;
+    return modelAdapter != null ? modelAdapter.getDefinition() : null;
   }
 
   /**
@@ -196,34 +186,43 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
       }
       createSourcePage();
       addSourcePage();
-
-      ResourceSet resourceSet = new ResourceSetImpl();
-      resourceSet.getAdapterFactories().add(new WSDLModelLocatorAdapterFactory());
-      resourceSet.getAdapterFactories().add(new XSDSchemaLocationResolverAdapterFactory());
-
-      IFile file = ((IFileEditorInput)getEditorInput()).getFile();
-
-      // create a definition based on the text editor document
-      //                                                     
-      definition = WSDLResourceUtil.createDefinition(resourceSet, file, getXMLDocument());
-
-      WSDLEditorUtil.getInstance().setTypeSystemProvider(definition, new ExtensibleTypeSystemProvider(this));
-
-      //ReferenceManager.adaptDefinition(definition);
-      new SEDDocumentAdapter(getStructuredModel(), definition);
+      // create the wsdl model
+      //
+      lookupOrCreateWSDLModel();
       createAndAddGraphPage();
-
       // get the type of page and set the active page to show
       int pageIndexToShow = getDefaultPageIndex();
       setActivePage(pageIndexToShow);
-      
       getSelectionManager().setSelection(new StructuredSelection(getDefinition()));
     }
     catch (PartInitException exception)
     {
       throw new SourceEditingRuntimeException(WSDLEditorPlugin.getWSDLString("An_error_has_occurred_when1_ERROR_")); //$NON-NLS-1$ = "An error has occurred when initializing the input for the the editor's source page."
     }
-    // TODO: add a catch block here for any exception the design page throws and convert it into a more informative message.
+    // TODO: add a catch block here for any exception the design page throws and
+    // convert it into a more informative message.
+  }
+
+  protected void lookupOrCreateWSDLModel()
+  {
+    try
+    {
+      Document document = ((IDOMModel) getModel()).getDocument();
+      if (document instanceof INodeNotifier)
+      {
+        INodeNotifier notifier = (INodeNotifier) document;
+        modelAdapter = (WSDLModelAdapter) notifier.getAdapterFor(WSDLModelAdapter.class);
+        if (modelAdapter == null)
+        {
+          modelAdapter = new WSDLModelAdapter();
+          notifier.addAdapter(modelAdapter);
+          modelAdapter.createDefinition(document.getDocumentElement());
+        }
+      }
+    }
+    catch (Exception e)
+    {
+    }
   }
 
   protected int getDefaultPageIndex()
@@ -253,26 +252,26 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
   protected void createSourcePage() throws PartInitException
   {
     super.createSourcePage();
-
-    textEditor = (WSDLTextEditor)getTextEditor();
+    textEditor = (WSDLTextEditor) getTextEditor();
   }
-
   int sourcePageIndex = -1;
+
   /**
    * Adds the source page of the multi-page editor.
    */
   protected void addSourcePage() throws PartInitException
   {
     sourcePageIndex = addPage(textEditor, getEditorInput());
-
-  	setPageText(sourcePageIndex, WSDLEditorPlugin.getWSDLString("_UI_TAB_SOURCE"));
-    // defect 223043 ... do textEditor.setModel() here instead of in createSourcePage()
-    textEditor.setModel((IFileEditorInput)getEditorInput());
-    // the updates critical, to get viewer selection manager and highlighting to work
+    setPageText(sourcePageIndex, WSDLEditorPlugin.getWSDLString("_UI_TAB_SOURCE"));
+    // defect 223043 ... do textEditor.setModel() here instead of in
+    // createSourcePage()
+    textEditor.setModel((IFileEditorInput) getEditorInput());
+    // the updates critical, to get viewer selection manager and highlighting to
+    // work
     textEditor.update();
   }
-  
   int[] weights;
+
   public void setDesignWeights(int[] weights, boolean updateSourceDesign)
   {
     this.weights = weights;
@@ -285,46 +284,42 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
   protected void pageChange(int arg)
   {
     super.pageChange(arg);
-    if (getPageText(arg).equals(WSDLEditorPlugin.getWSDLString("_UI_TAB_SOURCE"))) // TRANSLATE !
+    if (getPageText(arg).equals(WSDLEditorPlugin.getWSDLString("_UI_TAB_SOURCE"))) // TRANSLATE
+                                                                                    // !
     {
       // update the input
     }
-    else if (getPageText(arg).equals(WSDLEditorPlugin.getWSDLString("_UI_TAB_GRAPH"))) // TRANSLATE !
+    else if (getPageText(arg).equals(WSDLEditorPlugin.getWSDLString("_UI_TAB_GRAPH"))) // TRANSLATE
+                                                                                        // !
     {
       // update the input
     }
   }
-
   static private Color dividerColor;
 
   /**
    * Creates the graph page and adds it to the multi-page editor.
-   **/
+   */
   protected void createAndAddGraphPage() throws PartInitException
   {
     // create the graph page
     sashForm = new SashForm(getContainer(), SWT.BORDER);
     sashForm.setLayoutData(new GridData(GridData.FILL_BOTH));
     sashForm.setOrientation(SWT.VERTICAL);
-    int[] weights = { 8, 3 };
-
+    int[] weights = {8, 3};
     graphPageIndex = addPage(sashForm);
     setPageText(graphPageIndex, WSDLEditorPlugin.getWSDLString("_UI_TAB_GRAPH"));
-
     // create the graph viewer
     graphViewer = new WSDLGraphViewer(this);
     graphViewer.createControl(sashForm);
-
-//    detailsViewer = new WSDLDetailsViewer(this);    
-//    detailsViewer.createControl(sashForm);  
-//
-//    sashForm.setWeights(weights);
-
+    // detailsViewer = new WSDLDetailsViewer(this);
+    // detailsViewer.createControl(sashForm);
+    //
+    // sashForm.setWeights(weights);
     if (dividerColor == null)
     {
       dividerColor = new Color(getContainer().getDisplay(), 143, 141, 138);
     }
-
     getContainer().addPaintListener(new PaintListener()
     {
       /**
@@ -335,7 +330,7 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
         Object source = e.getSource();
         if (source instanceof Composite)
         {
-          Composite comp = (Composite)source;
+          Composite comp = (Composite) source;
           Rectangle boundary = comp.getClientArea();
           e.gc.setForeground(dividerColor);
           e.gc.drawLine(boundary.x, boundary.y, boundary.x + boundary.width, boundary.y);
@@ -358,20 +353,14 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
       WSDLEditorPlugin.getInstance().setDefaultPage(WSDLEditorPlugin.GRAPH_PAGE);
     }
   }
-
   //
   //
   public static class BuiltInWSDLEditorExtension implements WSDLEditorExtension
   {
     public boolean isExtensionTypeSupported(int type)
     {
-      return type == OUTLINE_TREE_CONTENT_PROVIDER
-        || type == OUTLINE_LABEL_PROVIDER
-        || type == EDIT_PART_FACTORY
-        || type == DETAILS_VIEWER_PROVIDER
-        || type == MENU_ACTION_CONTRIBUTOR
-        || type == NODE_RECONCILER
-        || type == NODE_ASSOCIATION_PROVIDER;
+      return type == OUTLINE_TREE_CONTENT_PROVIDER || type == OUTLINE_LABEL_PROVIDER || type == EDIT_PART_FACTORY || type == DETAILS_VIEWER_PROVIDER || type == MENU_ACTION_CONTRIBUTOR
+          || type == NODE_RECONCILER || type == NODE_ASSOCIATION_PROVIDER;
     }
 
     public boolean isApplicable(Object object)
@@ -384,56 +373,53 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
       Object result = null;
       switch (type)
       {
-        case OUTLINE_TREE_CONTENT_PROVIDER :
-          {
-            result = new ModelAdapterContentProvider(WSDLModelAdapterFactory.getWSDLModelAdapterFactory());
-            break;
-          }
-        case OUTLINE_LABEL_PROVIDER :
-          {
-            result = new ModelAdapterLabelProvider(WSDLModelAdapterFactory.getWSDLModelAdapterFactory());
-            break;
-          }
-        case DETAILS_VIEWER_PROVIDER :
-          {
-            result = new WSDLDetailsViewerProvider();
-            break;
-          }
-        case MENU_ACTION_CONTRIBUTOR :
-          {
-            result = new WSDLMenuActionContributor(wsdlEditor);
-            break;
-          }
-        case NODE_ASSOCIATION_PROVIDER :
-          {
-            result = new WSDLNodeAssociationProvider();
-            break;
-          }
-        case EDIT_PART_FACTORY :
-          {
-            result = new WSDLEditPartFactory();
-            break;
-          }
+        case OUTLINE_TREE_CONTENT_PROVIDER : {
+          result = new ModelAdapterContentProvider(WSDLModelAdapterFactory.getWSDLModelAdapterFactory());
+          break;
+        }
+        case OUTLINE_LABEL_PROVIDER : {
+          result = new ModelAdapterLabelProvider(WSDLModelAdapterFactory.getWSDLModelAdapterFactory());
+          break;
+        }
+        case DETAILS_VIEWER_PROVIDER : {
+          result = new WSDLDetailsViewerProvider();
+          break;
+        }
+        case MENU_ACTION_CONTRIBUTOR : {
+          result = new WSDLMenuActionContributor(wsdlEditor);
+          break;
+        }
+        case NODE_ASSOCIATION_PROVIDER : {
+          result = new WSDLNodeAssociationProvider();
+          break;
+        }
+        case EDIT_PART_FACTORY : {
+          result = new WSDLEditPartFactory();
+          break;
+        }
       }
       return result;
     }
   }
 
- 
   public void reloadDependencies()
   {
     try
     {
       getGraphViewer().getComponentViewer().setPreserveExpansionEnabled(true);
-      WSDLResourceUtil.reloadDirectives(definition);
-      ComponentReferenceUtil.updateBindingReferences(definition);
-      ComponentReferenceUtil.updatePortTypeReferences(definition);
-      ComponentReferenceUtil.updateMessageReferences(definition);
-      ComponentReferenceUtil.updateSchemaReferences(definition);
-
-      // the line below simply causes a notification in order to update our views
-      //
-      definition.setDocumentationElement(definition.getDocumentationElement());
+      Definition definition = getDefinition();
+      if (definition != null)
+      {
+        WSDLResourceUtil.reloadDirectives(definition);
+        ComponentReferenceUtil.updateBindingReferences(definition);
+        ComponentReferenceUtil.updatePortTypeReferences(definition);
+        ComponentReferenceUtil.updateMessageReferences(definition);
+        ComponentReferenceUtil.updateSchemaReferences(definition);
+        // the line below simply causes a notification in order to update our
+        // views
+        //
+        definition.setDocumentationElement(definition.getDocumentationElement());
+      }
     }
     finally
     {
@@ -459,7 +445,6 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
   {
     return new InternalTextSelectionNavigationLocation(textEditor, true);
   }
-
   static class InternalTextSelectionNavigationLocation extends TextSelectionNavigationLocation
   {
     public InternalTextSelectionNavigationLocation(ITextEditor part, boolean initialize)
@@ -472,7 +457,7 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
       IEditorPart part = super.getEditorPart();
       if (part instanceof WSDLEditor)
       {
-        part = ((WSDLEditor)part).getTextEditor();
+        part = ((WSDLEditor) part).getTextEditor();
       }
       return part;
     }
@@ -482,7 +467,7 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
       IEditorPart part = getEditorPart();
       if (part instanceof WSDLTextEditor)
       {
-        return ((WSDLTextEditor)part).getWSDLEditor().getTitle();
+        return ((WSDLTextEditor) part).getWSDLEditor().getTitle();
       }
       else
       {
@@ -490,13 +475,15 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
       }
     }
   }
-  
+
   // Returns the element currently on the copy, cut, paste clipboard
-  public WSDLElement getClipboardContents() {
-  	return clipboardElement;
+  public WSDLElement getClipboardContents()
+  {
+    return clipboardElement;
   }
-  
-  public void setClipboardContents(WSDLElement element) {
-  	clipboardElement = element;
+
+  public void setClipboardContents(WSDLElement element)
+  {
+    clipboardElement = element;
   }
 }

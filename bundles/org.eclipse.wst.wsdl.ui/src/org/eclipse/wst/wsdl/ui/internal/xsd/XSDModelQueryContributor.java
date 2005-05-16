@@ -7,7 +7,7 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ *******************************************************************************
 package org.eclipse.wst.wsdl.ui.internal.xsd;      
 
 import java.util.Iterator;
@@ -87,4 +87,4 @@ public class XSDModelQueryContributor extends AbstractXSDModelQueryContributor i
 	  	};		
   	}  
   }
-}
+}*/
