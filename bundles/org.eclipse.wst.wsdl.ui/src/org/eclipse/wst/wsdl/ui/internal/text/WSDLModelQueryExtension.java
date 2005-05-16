@@ -1,7 +1,9 @@
 package org.eclipse.wst.wsdl.ui.internal.text;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -122,6 +124,20 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
     }
   }
 
+  
+  protected XSDSchema lookupOrCreateSchemaForElement(Element element)
+  {       
+    XSDSchema schema = null;
+    Definition definition = lookupOrCreateDefinition(element);
+    Object o = WSDLEditorUtil.getInstance().findModelObjectForElement(definition, element);
+    if (o instanceof XSDConcreteComponent)
+    {
+      schema = ((XSDConcreteComponent) o).getSchema();
+    } 
+    return schema;
+  }
+  
+  
   protected Definition lookupOrCreateDefinition(Element element)
   {
     Definition definition = null;
@@ -140,20 +156,39 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
     }
     return definition;
   }
-
-  protected TypesHelper getTypesHelper(Element element)
+  
+  
+  protected TypesHelper getTypesHelper(final Element element)
   {
-    TypesHelper typeHelper = null;
-    Definition definition = lookupOrCreateDefinition(element);
-    if (definition != null)
+    XSDSchema schema = lookupOrCreateSchemaForElement(element);
+    return new TypesHelper(schema)
     {
-      Object o = WSDLEditorUtil.getInstance().findModelObjectForElement(definition, element);
-      if (o instanceof XSDConcreteComponent)
+      // TODO... it seems as though the model is not correctly
+      // mainting the list of prefixes for a given namespace
+      // must be a bug!
+      //
+      protected List getPrefixesForNamespace(String namespace)
       {
-        XSDSchema schema = ((XSDConcreteComponent) o).getSchema();
-        typeHelper = new TypesHelper(schema);
-      }
-    }
-    return typeHelper;
-  }
+        List list = super.getPrefixesForNamespace(namespace);
+        Definition definition = lookupOrCreateDefinition(element);
+        if (definition != null)
+        {  
+          Map map = definition.getNamespaces();
+          for (Iterator i = map.keySet().iterator(); i.hasNext();)
+          {
+            String prefix = (String) i.next();
+            String ns = (String) map.get(prefix);
+            if (ns != null && ns.equals(namespace))
+            {
+              if (!list.contains(prefix))
+              {
+                list.add(prefix);
+              }
+            }
+          }
+        }
+        return list;
+      }       
+    };    
+  }  
 }
