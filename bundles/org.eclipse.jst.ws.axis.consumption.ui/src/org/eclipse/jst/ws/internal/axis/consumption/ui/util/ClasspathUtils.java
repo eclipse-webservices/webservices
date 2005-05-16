@@ -12,7 +12,7 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.util;
 
 
 import java.io.File;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IFolder;
@@ -26,10 +26,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
-import org.eclipse.jst.j2ee.internal.earcreation.IEARNatureConstants;
-import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
-import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
@@ -47,6 +43,9 @@ public class ClasspathUtils {
 	private static String DIR_CLASSES = "classes"; //$NON-NLS-1$
 	private static String DIR_LIB = "lib"; //$NON-NLS-1$
 	private static String DOT_JAR = ".jar"; //$NON-NLS-1$
+	private static String JAR = "jar"; //$NON-NLS-1$
+	private static String WEBINF_LIB = "/WEB-INF/lib"; //$NON-NLS-1$
+	private static String WEBINF = "WEB-INF"; //$NON-NLS-1$
 
 	private ClasspathUtils() {
 	}
@@ -56,65 +55,11 @@ public class ClasspathUtils {
 			instance_ = new ClasspathUtils();
 		return instance_;
 	}
-
-	public String getClasspathString(IProject project) {
-		return getClasspathString(project, J2EEUtils.getFirstWebModuleName(project));
-	}
 	
 	public String getClasspathString(IProject project, String module) {
 		StringBuffer classpath = new StringBuffer();
-		String[] classpathEntries = getClasspath(project, false);
-		String resourceLocation = null;
-		
-		// TODO: workaround for 90515 and 90560
-		try {
-	
-			IVirtualComponent component = ComponentCore.createComponent(project, module);
-			if (component != null) {
-				
-				IFolder webModuleClasses = null;
-				StructureEdit mc = null;
-				try {
-					mc = StructureEdit.getStructureEditForRead(project);
-					WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-					for (int i=0; i < wbcs.length; i++) {
-					  if (module.equals(wbcs[i].getName())) {
-						IFolder  webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[i]);
-						webModuleClasses  = webModuleServerRoot.getFolder("WEB-INF").getFolder("classes");
-						resourceLocation = webModuleClasses.getLocation().toOSString();
-						classpath.append(resourceLocation);
-						classpath.append(";"); //$NON-NLS-1$
-					  }
-					}
-				}
-				finally{
-					if (mc!=null)
-						mc.dispose();			
-				}
-				
-				IVirtualFolder webInfLib = component.getFolder(new Path(
-						"/WEB-INF/lib"));
-				if (webInfLib != null) {
-					IVirtualResource[] resources = webInfLib.members();
-					IResource aResource = null;
-					
-					for (int i = 0; i < resources.length; i++) {
-						aResource = resources[i].getUnderlyingResource();
-						resourceLocation = aResource.getLocation().toOSString();
+		String[] classpathEntries = getClasspath(project, false, module);
 
-						System.out.println(resourceLocation);
-						classpath.append(resourceLocation);
-						classpath.append(";"); //$NON-NLS-1$
-					}
-				}
-			}
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		// end of workaround
-		
 		Vector classpathVector = new Vector();
 		for (int i = 0; i < classpathEntries.length; i++) {
 			if (!classpathVector.contains(classpathEntries[i])) {
@@ -126,67 +71,108 @@ public class ClasspathUtils {
 		return classpath.toString();
 	}
 
-	public URL[] getClasspathURL(IProject project) {
-		String[] classpathEntries = getClasspath(project, false);
-		Vector classpathVector = new Vector();
-		for (int i = 0; i < classpathEntries.length; i++) {
-			try {
-				File file = new File(classpathEntries[i]);
-				//        System.out.println("adding project CP["+i+"] = "+file);
-				URL url = file.toURL();
-				if (!classpathVector.contains(url))
-					classpathVector.add(url);
-			} catch (Throwable t) {
-			}
-		}
-		addLibClassspath(classpathVector);
-		// add the plugin lib directory jars to classpath
-		URL[] classpath = new URL[classpathVector.size()];
-		classpathVector.copyInto(classpath);
-		return classpath;
-	}
-
-	private void addLibClassspath(Vector classpathVector) {
-	}
-
-	private String[] getClasspath(IProject project, boolean isDependent) {
+		
+	private String[] getClasspath(IProject project, boolean isDependent, String inputModule) {
+//		 inputModule is valid only if it's not a dependent project
+		String[] moduleClasspath = new String[0];
+		ArrayList projectClasspath = new ArrayList();
+		boolean needJavaClasspath = false;
+		StructureEdit mc = null;
+		IFolder webModuleServerRoot = null;
+		String resourceLocation = null;
+		IFolder webModuleClasses = null;
+		
 		try {
-			String[] classpath;
-			EARNatureRuntime earProject = castToEARProject(project);
-			if (earProject != null)
-				return getClasspathForEARProject(earProject);
-			else if (project.hasNature(IWebNatureConstants.J2EE_NATURE_ID))
-				return getClasspathForWebProject(
-					(J2EEWebNatureRuntime) project.getNature(
-						IWebNatureConstants.J2EE_NATURE_ID),
-					isDependent);
-			else if (project.hasNature(JavaCore.NATURE_ID))
-				return getClasspathForJavaProject(
-					(IJavaProject) project.getNature(JavaCore.NATURE_ID));
-			else
-				return new String[0];
-		} catch (CoreException ce) {
-			return new String[0];
-		}
-	}
-
-	private EARNatureRuntime castToEARProject(IProject project) {
-		try {
-			String[] earNatures = IEARNatureConstants.NATURE_IDS;
-			for (int i = 0; i < earNatures.length; i++) {
-				if (project.hasNature(earNatures[i]))
-					return (EARNatureRuntime) project.getNature(earNatures[i]);
+			String module;
+			mc = StructureEdit.getStructureEditForRead(project);
+			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			for (int i = 0; i < wbcs.length; i++) {
+				module = wbcs[i].getName();
+				// get the module's classpath
+				if (J2EEUtils.isEARComponent(project, module)) {
+					moduleClasspath = getClasspathForEARProject(project, module);
+				} else if (J2EEUtils.isWebComponent(project, module)) {
+					webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[i]);
+					if (webModuleServerRoot != null) { 
+						webModuleClasses = webModuleServerRoot.getFolder(WEBINF).getFolder(DIR_CLASSES);
+						if (webModuleClasses != null)
+							moduleClasspath = new String[] { webModuleClasses.getLocation().toOSString() };
+					}
+				} else if (J2EEUtils.isJavaComponent(project, module)) {
+					needJavaClasspath = true;
+					webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[i]);
+					if (webModuleServerRoot != null) { 
+						moduleClasspath = new String[] { webModuleServerRoot.getLocation().toOSString() };
+					}
+				}
+				
+				// add module classpath to project classpath
+				for (int j = 0; j < moduleClasspath.length; j++) {
+					projectClasspath.add(moduleClasspath[j]);
+				}
 			}
-			return null;
-		} catch (CoreException ce) {
-			return null;
+			if (!isDependent) {
+				if (J2EEUtils.isWebComponent(project, inputModule)) {
+					needJavaClasspath = true;
+					moduleClasspath = getWEBINFLib(project, inputModule);
+					for (int j = 0; j < moduleClasspath.length; j++) {
+						projectClasspath.add(moduleClasspath[j]);
+					}
+				}
+			}
+			
+			// If there are Web or Java module in the project, get the project's Java classpath
+			if (needJavaClasspath) {
+				String[] javaClasspath;
+				try {
+					IJavaProject javaProj = (IJavaProject) project.getNature(JavaCore.NATURE_ID);
+					if (javaProj != null) {
+						javaClasspath = getClasspathForJavaProject(javaProj);
+						for (int j = 0; j < javaClasspath.length; j++) {
+							projectClasspath.add(javaClasspath[j]);
+						}
+					}
+				} catch (CoreException e) {
+					// not able to get Java classpath, just ignore
+				}	
+			}
+		} finally {
+			if (mc != null)
+				mc.dispose();
 		}
+		return (String[]) projectClasspath.toArray(new String[projectClasspath.size()]);
 	}
 
-	private String[] getClasspathForEARProject(EARNatureRuntime earProject) {
-		IPath earPath =
-			earProject.getProject().getLocation().addTrailingSeparator();
-		return getDirectoryJarFiles(earPath);
+	// Need to get all modules in the project. If there's a EAR module, get the utility JARs 
+	private String[] getUtilityJarClasspath(IProject project) {
+		String[] moduleClasspath = new String[0];
+		ArrayList utilityJarsClasspath = new ArrayList();
+		StructureEdit mc = null;
+		try {
+			String module;
+			mc = StructureEdit.getStructureEditForRead(project);
+			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
+			for (int i = 0; i < wbcs.length; i++) {
+				module = wbcs[i].getName();
+				if (J2EEUtils.isEARComponent(project, module)) {
+					moduleClasspath = getClasspathForEARProject(project, module);
+					for (int j = 0; j < moduleClasspath.length; j++) {
+						utilityJarsClasspath.add(moduleClasspath[j]);
+					}
+				}
+			}
+
+		} finally {
+			if (mc != null)
+				mc.dispose();
+		}
+		return (String[]) utilityJarsClasspath.toArray(new String[utilityJarsClasspath.size()]);
+	}
+	
+	private String[] getClasspathForEARProject(IProject project, String module) {
+		IPath projectPath =
+			project.getProject().getLocation().addTrailingSeparator().append(module).addTrailingSeparator();
+		return getDirectoryJarFiles(projectPath);
 	}
 
 	private String[] getDirectoryJarFiles(IPath iPath) {
@@ -204,132 +190,78 @@ public class ClasspathUtils {
 		return jars;
 	}
 
-	private String[] getClasspathForWebProject(
-		J2EEWebNatureRuntime webProject,
-		boolean isDependent) {
-		String[] webinfClasses = getWEBINFClasses(webProject);
-		String[] webinfLib;
-		String[] javaClasspath;
-		if (isDependent) {
-			webinfLib = new String[0];
-			javaClasspath = new String[0];
-		} else {
-			webinfLib = getWEBINFLib(webProject);
-			javaClasspath =
-				getClasspathForJavaProject(webProject.getJ2EEJavaProject());
-		}
-		String[] webClasspath =
-			new String[webinfClasses.length
-				+ webinfLib.length
-				+ javaClasspath.length];
-		int index = 0;
-		for (int i = 0; i < webinfClasses.length; i++) {
-			webClasspath[index] = webinfClasses[i];
-			index++;
-		}
-		for (int i = 0; i < webinfLib.length; i++) {
-			webClasspath[index] = webinfLib[i];
-			index++;
-		}
-		for (int i = 0; i < javaClasspath.length; i++) {
-			webClasspath[index] = javaClasspath[i];
-			index++;
-		}
-		return webClasspath;
-	}
-
-	private String[] getWEBINFClasses(J2EEWebNatureRuntime webProject) {
-		IPath webinf =
-			webProject
-				.getProject()
-				.getLocation()
-				.addTrailingSeparator()
-				.append(
-				webProject.getWEBINFPath());
-		IPath classes =
-			((IPath) webinf.clone()).addTrailingSeparator().append(DIR_CLASSES);
-		return new String[] { path2String(classes)};
-	}
-
-	private String[] getWEBINFLib(J2EEWebNatureRuntime webProject) {
-		IPath webinf =
-			webProject
-				.getProject()
-				.getLocation()
-				.addTrailingSeparator()
-				.append(
-				webProject.getWEBINFPath());
-		IPath lib =
-			((IPath) webinf.clone())
-				.addTrailingSeparator()
-				.append(DIR_LIB)
-				.addTrailingSeparator();
-		return getDirectoryJarFiles(lib);
+	private String[] getWEBINFLib(IProject project, String module) {
+		String[] webinfLibJars = new String[0];
+		ArrayList anArrayList = new ArrayList();
+		try {
+			String resourceLocation = null;
+					IVirtualComponent component = ComponentCore.createComponent(project, module);
+					if (component != null) {
+						
+						IVirtualFolder webInfLib = component.getFolder(new Path(
+								WEBINF_LIB));
+						if (webInfLib != null) {
+							IVirtualResource[] resources = webInfLib.members();
+							IResource aResource = null;
+							for (int i = 0; i < resources.length; i++) {
+								aResource = resources[i].getUnderlyingResource();
+								if (JAR.equalsIgnoreCase(aResource.getFileExtension()))
+									anArrayList.add( aResource.getLocation().toOSString());
+							}
+							if (anArrayList.size() != 0)
+								webinfLibJars = (String[]) anArrayList.toArray(new String[anArrayList.size()]);
+							}
+					}
+				} catch (CoreException e) {
+				}
+		return webinfLibJars;
 	}
 
 	private String[] getClasspathForJavaProject(IJavaProject javaProject) {
-		String[] javaBuildPath;
+		ArrayList projectClasspath = new ArrayList();
 		try {
 			IClasspathEntry[] buildPath =
 				javaProject.getResolvedClasspath(true);
-			Vector v = new Vector();
 			for (int i = 0; i < buildPath.length; i++) {
 				String[] buildPathString =
 					classpathEntry2String(
 						buildPath[i],
 						javaProject.getProject());
 				for (int j = 0; j < buildPathString.length; j++) {
-					v.add(buildPathString[j]);
+					projectClasspath.add(buildPathString[j]);
 				}
 			}
-			javaBuildPath = new String[v.size()];
-			v.copyInto(javaBuildPath);
 		} catch (JavaModelException jme) {
-			javaBuildPath = new String[0];
 		}
 
-		String[] earClasspath;
-		Vector utilityJarsVector = new Vector();
+		String[] utilityJarsClasspath;
 		IProject project = javaProject.getProject();
 		IProject[] referencingProjects = project.getReferencingProjects();
 		for (int i = 0; i < referencingProjects.length; i++) {
-			EARNatureRuntime earProject =
-				castToEARProject(referencingProjects[i]);
-			if (earProject != null) {
-				String[] utilityJars = getClasspathForEARProject(earProject);
-				for (int j = 0; j < utilityJars.length; j++) {
-					utilityJarsVector.add(utilityJars[j]);
-				}
+			utilityJarsClasspath = getUtilityJarClasspath(referencingProjects[i]);
+			for (int j = 0; j < utilityJarsClasspath.length; j++) {
+				projectClasspath.add(utilityJarsClasspath[j]);
 			}
 		}
-		earClasspath = new String[utilityJarsVector.size()];
-		utilityJarsVector.copyInto(earClasspath);
 
-		String[] javaClasspath =
-			new String[javaBuildPath.length + earClasspath.length];
-		int index = 0;
-		for (int i = 0; i < javaBuildPath.length; i++) {
-			javaClasspath[index] = javaBuildPath[i];
-			index++;
-		}
-		for (int i = 0; i < earClasspath.length; i++) {
-			javaClasspath[index] = earClasspath[i];
-			index++;
-		}
-		return javaClasspath;
+		return (String[]) projectClasspath.toArray(new String[projectClasspath.size()]);
 	}
 
 	private String[] classpathEntry2String(
 		IClasspathEntry entry,
-		IProject project) {
+		IProject project) 
+	{
 		switch (entry.getEntryKind()) {
 			case IClasspathEntry.CPE_LIBRARY :
-				return new String[] { path2String(entry.getPath())};
+			{
+				return new String[] { path2String(entry.getPath())};	
+			}
 			case IClasspathEntry.CPE_PROJECT :
+			{			
 				return getClasspath(
 					ResourcesPlugin.getWorkspace().getRoot().getProject(
-						entry.getPath().lastSegment()),
-					true);
+						entry.getPath().lastSegment()), true, "");
+			}
 			case IClasspathEntry.CPE_SOURCE :
 				{
 					IPath path = entry.getPath();
@@ -344,11 +276,15 @@ public class ClasspathUtils {
 								path))};
 				}
 			case IClasspathEntry.CPE_VARIABLE :
+			{
 				return classpathEntry2String(
 					JavaCore.getResolvedClasspathEntry(entry),
 					project);
+			}
 			default :
+			{
 				return new String[] { path2String(entry.getPath())};
+			}
 		}
 	}
 
