@@ -31,7 +31,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.ClientProjectTypeRegistry;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceRuntime;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
@@ -40,6 +39,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -49,6 +49,14 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
+import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
+import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
+import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceRuntime;
+import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceClientInfo;
+import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
+import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceState;
+import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
 
 public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
 {   
@@ -62,7 +70,13 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   private SelectionListChoices runtimeClientTypes_;
   private String clientComponentName_;
   private String clientEarComponentName_;
-
+  
+  private Environment       environment_;
+  private IContext          context_;
+  private ISelection        selection_;
+  private IWebServiceClient webServiceClient_;
+  private ResourceContext   resourceContext_;
+  private boolean           test_;
   
   //A note on initialSelections ...
   //The difference between clientInitialSelection_ and initialInitialSelection is that
@@ -139,6 +153,26 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     return clientJ2EEVersion_;
   }
   
+  public IWebServiceClient getWebService()
+  {
+    return webServiceClient_;  
+  }
+  
+  public Environment getEnvironment()
+  {
+    return environment_;
+  }
+  
+  public IContext getContext()
+  {
+    return context_;
+  }  
+  
+  public ISelection getSelection()
+  {
+    return selection_;    
+  }
+  
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.provisional.env.core.common.Environment)
    */
@@ -193,6 +227,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
       setClientDefaultEAR();
       setClientDefaultServer();
       updateClientEARs();
+      
+      //Calculate default IWebServiceClient
+      setDefaultsForExtension(environment);
       return new SimpleStatus("");
     } catch (Exception e)
     {
@@ -878,6 +915,30 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   	}  	
   }  
   
+  private void setDefaultsForExtension(Environment env)
+  {
+    IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntime(clientIds_.getRuntimeId());  
+    WebServiceClientInfo wsInfo = new WebServiceClientInfo();
+
+    wsInfo.setJ2eeLevel(clientJ2EEVersion_);
+    wsInfo.setServerFactoryId(clientIds_.getServerId());
+    wsInfo.setServerInstanceId(clientIds_.getServerInstanceId());
+    wsInfo.setState(WebServiceState.UNKNOWN_LITERAL);
+    wsInfo.setWebServiceRuntimeId(clientIds_.getRuntimeId());
+    wsInfo.setWsdlURL(wsdlURI_);
+
+    environment_ = env;
+    webServiceClient_ = wsrt.getWebServiceClient(wsInfo);
+    WebServiceScenario scenario = WebServiceScenario.CLIENT_LITERAL;
+    if (resourceContext_!=null)
+    {
+      context_ = new SimpleContext(true, true, true, true, true, true, test_,
+        false, scenario, resourceContext_.isOverwriteFilesEnabled(),
+        resourceContext_.isCreateFoldersEnabled(), resourceContext_
+            .isCheckoutFilesEnabled());
+    }
+  }
+  
   public void setClientInitialSelection(IStructuredSelection selection)
   {
     clientInitialSelection_ = selection;
@@ -923,6 +984,16 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   {
     wsdlURI_ = wsdlURI;
   }
+  
+  public void setTestService(boolean testService)
+  {
+    test_ = testService;
+  }   
+  
+  public void setResourceContext( ResourceContext resourceContext )
+  {
+    resourceContext_ = resourceContext;   
+  }  
   
   private IProject getProjectFromInitialSelection(IStructuredSelection selection)
   {

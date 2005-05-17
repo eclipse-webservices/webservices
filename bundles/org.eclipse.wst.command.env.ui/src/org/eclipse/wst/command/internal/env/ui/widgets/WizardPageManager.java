@@ -87,16 +87,16 @@ public class WizardPageManager extends SimpleCommandEngineManager
     
   public boolean hasNextPage()
   {	
-  	//nextPage_ = getNextPageInGroup( widgetFactory_, false );
+  	nextPage_ = getNextPageInGroup( widgetFactory_, false );
 		
-	//if( nextPage_ == null )
-	//{
-	  // If a page is found nextPage_ will be set to its value in the method below.
-  	//  engine_.peekForwardToNextStop();
-	//}
+	  if( nextPage_ == null )
+	  {
+	    // If a page is found nextPage_ will be set to its value in the method below.
+  	  engine_.peekForwardToNextStop();
+	  }
   	
-    //return nextPage_ != null;
-	return true;
+    return nextPage_ != null;
+	  //return true;
   }
   
   public IWizardPage getNextPage()
