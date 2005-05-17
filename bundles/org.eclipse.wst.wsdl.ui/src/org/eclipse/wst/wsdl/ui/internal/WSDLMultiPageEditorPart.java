@@ -14,9 +14,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceStatus;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextInputListener;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Point;
@@ -50,7 +51,9 @@ import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.exceptions.SourceEditingRuntimeException;
 import org.eclipse.wst.sse.ui.internal.StructuredTextEditor;
 import org.eclipse.wst.xml.core.internal.provisional.IXMLPreferenceNames;
+import org.eclipse.wst.xml.ui.internal.Logger;
 import org.eclipse.wst.xml.ui.internal.provisional.StructuredTextEditorXML;
+import org.eclipse.wst.xml.ui.internal.tabletree.XMLEditorMessages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -301,55 +304,46 @@ public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPro
 	    //doSaveAsForStructuredTextMulitPagePart();
 	  }
 
-	  private void editorInputIsAcceptable(IEditorInput input) throws PartInitException {
-	    if (input instanceof IFileEditorInput) {
-	      // verify that it can be opened
-	      CoreException[] coreExceptionArray = new CoreException[1];
-	      if (fileDoesNotExist((IFileEditorInput) input, coreExceptionArray)) {
-	        // todo use message formatter for {0}
-	        Throwable coreException = coreExceptionArray[0];
-	        if (coreException instanceof ResourceException) {
-	          // I'm assuming this is always 'does not exist'
-	          // we'll refresh local go mimic behavior of default
-	          // editor, where the
-	          // troublesome file is refreshed (and will cause it to
-	          // 'disappear' from Navigator.
-	          try {
-	            ((IFileEditorInput) input).getFile().refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
-	          }
-	          catch (CoreException ce) {
-	            // very unlikely
-//	            Logger.logException(ce);
-	          }
-	          throw new PartInitException(WSDLEditorPlugin.getWSDLString("23concat_EXC_", input.getName())); //$NON-NLS-1$
-	          //$NON-NLS-1$ = "Resource {0} does not exist."
-	        }
-	        else {
-	          throw new PartInitException(WSDLEditorPlugin.getWSDLString("32concat_EXC_", input.getName())); //$NON-NLS-1$
-	          //$NON-NLS-1$ = "Editor could not be open on {0}"
-	        }
-	      }
-	    }
-	    else if (input instanceof IStorageEditorInput) {
-	      InputStream contents = null;
-	      try {
-	        contents = ((IStorageEditorInput) input).getStorage().getContents();
-	      }
-	      catch (CoreException noStorageExc) {
-	      }
-	      if (contents == null) {
-	        throw new PartInitException(WSDLEditorPlugin.getWSDLString("32concat_EXC_", input.getName())); //$NON-NLS-1$
-	      }
-	      else {
-	        try {
-	          contents.close();
-	        }
-	        catch (IOException e) {
-	        }
-	      }
-	    }
-	  }
-
+		private void editorInputIsAcceptable(IEditorInput input) throws PartInitException {
+			if (input instanceof IFileEditorInput) {
+				// verify that it can be opened
+				CoreException[] coreExceptionArray = new CoreException[1];
+				if (fileDoesNotExist((IFileEditorInput) input, coreExceptionArray)) {
+					CoreException coreException = coreExceptionArray[0];
+					if (coreException.getStatus().getCode() == IResourceStatus.FAILED_READ_LOCAL) {
+						// I'm assuming this is always 'does not exist'
+						// we'll refresh local go mimic behavior of default
+						// editor, where the
+						// troublesome file is refreshed (and will cause it to
+						// 'disappear' from Navigator.
+						try {
+							((IFileEditorInput) input).getFile().refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
+						} catch (CoreException ce) {
+							// very unlikely
+							Logger.logException(ce);
+						}
+						throw new PartInitException(NLS.bind(XMLEditorMessages.Resource__does_not_exist, (new Object[]{input.getName()})));
+					} else {
+						throw new PartInitException(NLS.bind(XMLEditorMessages.Editor_could_not_be_open, (new Object[]{input.getName()})));
+					}
+				}
+			} else if (input instanceof IStorageEditorInput) {
+				InputStream contents = null;
+				try {
+					contents = ((IStorageEditorInput) input).getStorage().getContents();
+				} catch (CoreException noStorageExc) {
+				}
+				if (contents == null) {
+					throw new PartInitException(NLS.bind(XMLEditorMessages.Editor_could_not_be_open, (new Object[]{input.getName()})));
+				} else {
+					try {
+						contents.close();
+					} catch (IOException e) {
+					}
+				}
+			}
+		}
+		
 	  //  void doSaveAsForStructuredTextMulitPagePart() {
 	  //    setPageText(getActivePage(), fTextEditor.getTitle());
 	  //    setInput(fTextEditor.getEditorInput());

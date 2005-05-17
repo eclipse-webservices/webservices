@@ -39,11 +39,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
-import org.eclipse.ui.internal.misc.Workbook;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.util.flatui.FlatPageHeader;
@@ -268,21 +266,6 @@ public class FlatViewUtility implements PaintListener
       pageBook.addPaintListener(new BorderPainter());
     }
     return pageBook;
-  }
-
-  public Workbook createWorkbook(Composite parent, int style)
-  {
-    Workbook workbook = new Workbook(parent, style | flatStyle);
-    TabFolder tabFolder = workbook.getTabFolder();
-    tabFolder.setBackground(backgroundColor);
-// TODO 3.0: Port
-//    PageBook pageBook = workbook.getPageBook();
-//    setColor(pageBook);
-//    if (flatStyle == SWT.FLAT)
-//    {
-//      pageBook.addPaintListener(new BorderPainter());
-//    }
-    return workbook;
   }
 
   public Label createHeadingLabel(Composite parent, String text, Color bg) {
