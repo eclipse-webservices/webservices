@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
+import java.util.Map;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -27,6 +29,18 @@ public class WSDLSelectionOutputCommand extends SimpleCommand
   private IProject project;
   private String componentName;
   
+  private boolean testService;
+  
+  
+  public boolean getTestService() {
+    return testService;
+  }
+
+  
+  public void setTestService(boolean testService) {
+    this.testService = testService;
+  }
+
   /**
    * @return Returns the project.
    */
@@ -87,11 +101,25 @@ public class WSDLSelectionOutputCommand extends SimpleCommand
 
   public Status execute(Environment env)
   {
-    if (wsdlURI != null && getWebServicesParser().getWSDLDefinition(wsdlURI) != null)
-      return new SimpleStatus("");
+    MessageUtils msgUtils = new MessageUtils("org.eclipse.jst.ws.consumption.ui.plugin", this);    
+    if (wsdlURI != null && getWebServicesParser().getWSDLDefinition(wsdlURI) != null) {
+      Status status = new SimpleStatus("");     
+      Map services = getWebServicesParser().getWSDLDefinition(wsdlURI).getServices();
+      if (services.isEmpty()){
+        if (testService==true){
+            testService = false;
+            status = new SimpleStatus("", msgUtils.getMessage("MSG_WARNING_NO_SERVICE_ELEMENT"), Status.WARNING);
+            try{
+              env.getStatusHandler().report(status);
+            }catch(Exception e){
+              status = new SimpleStatus("", msgUtils.getMessage("MSG_WARNING_NO_SERVICE_ELEMENT"), Status.ERROR);
+            }
+        }
+      }    
+    return status;
+  }
     else
     {
-      MessageUtils msgUtils = new MessageUtils("org.eclipse.jst.ws.consumption.ui.plugin", this);
       Status status = new SimpleStatus("", msgUtils.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL"), Status.ERROR);
       env.getStatusHandler().reportError(status);
       return status;
