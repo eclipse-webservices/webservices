@@ -11,12 +11,13 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
@@ -26,7 +27,18 @@ public class AxisSkeletonDefaultingCommand extends SimpleCommand
   private IStructuredSelection objectSelection;
   private WebServicesParser webServicesParser;
   private String wsdlURI_;
-
+  private JavaWSDLParameter javaWSDLParam;
+  
+  public Status execute(Environment env){
+    
+    javaWSDLParam = new JavaWSDLParameter();
+    javaWSDLParam.setServerSide(JavaWSDLParameter.SERVER_SIDE_BEAN);
+    javaWSDLParam.setSkeletonDeploy(true);
+    javaWSDLParam.setMetaInfOnly(false);
+    return new SimpleStatus("");
+    
+  }
+  
   public void setInitialSelection(IStructuredSelection initialSelection)
   {
     this.initialSelection = initialSelection;
@@ -109,10 +121,6 @@ public class AxisSkeletonDefaultingCommand extends SimpleCommand
   
   public JavaWSDLParameter getJavaWSDLParam()
   {
-    JavaWSDLParameter javaWSDLParam = new JavaWSDLParameter();
-    javaWSDLParam.setServerSide(JavaWSDLParameter.SERVER_SIDE_BEAN);
-    javaWSDLParam.setSkeletonDeploy(true);
-    javaWSDLParam.setMetaInfOnly(false);
     return javaWSDLParam;
   }
 
@@ -125,4 +133,5 @@ public class AxisSkeletonDefaultingCommand extends SimpleCommand
   {
     return getWebServicesParser().getHTTPBasicAuthUsername();
   }
+  
 }
