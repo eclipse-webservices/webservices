@@ -5,6 +5,7 @@
 	<plugin id="org.eclipse.wst.wsdl" fragment="false" />
 	<plugin id="org.eclipse.wst.wsdl.ui" fragment="false" />
 	<plugin id="org.eclipse.wst.wsdl.validation" fragment="false" />
+	<plugin id="org.wsdl4j" fragment="false" />
 	<package name="org.eclipse.wst.wsdl" api="false">
 		<type name="BindingFault" />
 		<type name="BindingOutput" />
