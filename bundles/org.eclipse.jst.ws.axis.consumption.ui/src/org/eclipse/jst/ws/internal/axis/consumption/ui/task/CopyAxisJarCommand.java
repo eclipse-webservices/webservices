@@ -34,6 +34,17 @@ import org.eclipse.wst.command.internal.provisional.env.core.context.TransientRe
 public class CopyAxisJarCommand extends SimpleCommand {
 
   public static String AXIS_RUNTIME_PLUGIN_ID = "org.apache.axis11"; //$NON-NLS-1$
+  public static String[] JARLIST = new String[] {
+	  "axis-ant.jar",
+	  "axis.jar",
+	  "commons-discovery.jar",
+	  "commons-logging.jar",
+	  "jaxrpc.jar",
+	  "log4j-1.2.8.jar",
+	  "saaj.jar",
+	  "wsdl4j.jar"
+	  
+  };
 
   private String DESCRIPTION = "TASK_DESC_COPY_JARS_TO_PROJECT";
   private String LABEL = "TASK_LABEL_COPY_JARS_TO_PROJECT";
@@ -76,35 +87,12 @@ public class CopyAxisJarCommand extends SimpleCommand {
       env.getStatusHandler().reportError(status);
       return;
     }
-
-    copyIFile("lib/axis.jar", //$NON-NLS-1$
-        webModulePath, "WEB-INF/lib/axis.jar", status, env); //$NON-NLS-1$
-    if (status.getSeverity() == Status.ERROR)
-      return;
-    copyIFile("lib/log4j-1.2.8.jar", //$NON-NLS-1$
-        webModulePath, "WEB-INF/lib/log4j-1.2.8.jar", status, env); //$NON-NLS-1$
-    if (status.getSeverity() == Status.ERROR)
-      return;
-    copyIFile("lib/commons-discovery.jar", //$NON-NLS-1$
-        webModulePath, "WEB-INF/lib/commons-discovery.jar", status, env); //$NON-NLS-1$
-    if (status.getSeverity() == Status.ERROR)
-      return;
-    copyIFile("lib/commons-logging.jar", //$NON-NLS-1$
-        webModulePath, "WEB-INF/lib/commons-logging.jar", status, env); //$NON-NLS-1$
-    if (status.getSeverity() == Status.ERROR)
-      return;
-    copyIFile("lib/saaj.jar", //$NON-NLS-1$
-        webModulePath, "WEB-INF/lib/saaj.jar", status, env); //$NON-NLS-1$
-    if (status.getSeverity() == Status.ERROR)
-      return;
-    copyIFile("lib/jaxrpc.jar", //$NON-NLS-1$
-        webModulePath, "WEB-INF/lib/jaxrpc.jar", status, env); //$NON-NLS-1$
-    if (status.getSeverity() == Status.ERROR)
-      return;
-    copyIFile("lib/wsdl4j.jar", //$NON-NLS-1$
-        webModulePath, "WEB-INF/lib/wsdl4j.jar", status, env); //$NON-NLS-1$
-    if (status.getSeverity() == Status.ERROR)
-      return;
+	
+	for (int i=0; i<JARLIST.length; ) {
+		copyIFile("lib/"+JARLIST[i], webModulePath, "WEB-INF/lib/"+JARLIST[i++], status, env); 
+	    if (status.getSeverity() == Status.ERROR)
+	      return;
+	}
     return;
   }
 
@@ -132,8 +120,6 @@ public class CopyAxisJarCommand extends SimpleCommand {
         }
 
       }
-      IFile file = FileResourceUtils.createFile(context, target, axisrt_plugin.openStream(new Path(source)), env.getProgressMonitor(), env
-          .getStatusHandler());
     }
     catch (Exception e) {
       status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_FILECOPY"), Status.ERROR, e);
