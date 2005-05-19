@@ -38,27 +38,24 @@ public class CreateServerCommand extends SimpleCommand
 			status = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_CREATE_SERVER"), Status.ERROR, null);
 			return status;			
 		}
-			
 		
 		IServerWorkingCopy serverWC = null;
 		IServer server = null;
 		try {
 			IServerType serverType = ServerCore.findServerType(serverFactoryId);
-			if (env!=null)
-				serverWC = serverType.createServer(null, null, EnvironmentUtils.getIProgressMonitor(env));
-			else 
-				serverWC = serverType.createServer(null, null, null);
-			
-			if (serverWC != null) {
+			if (serverType!=null) {
 				if (env!=null)
-					server = serverWC.saveAll(true, EnvironmentUtils.getIProgressMonitor(env));
-				else
-					server = serverWC.saveAll(true, null);
+					serverWC = serverType.createServer(null, null, EnvironmentUtils.getIProgressMonitor(env));
+				else 
+					serverWC = serverType.createServer(null, null, null);
+				
+				if (serverWC != null) {
+					if (env!=null)
+						server = serverWC.saveAll(true, EnvironmentUtils.getIProgressMonitor(env));
+					else
+						server = serverWC.saveAll(true, null);
+				}
 			}
-			else {
-				status = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_CREATE_SERVER"), Status.ERROR, null);
-			}
-
 		} catch (CoreException ce) {
 			status = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_CREATE_SERVER"), Status.ERROR, ce);
 			return status;
@@ -68,7 +65,7 @@ public class CreateServerCommand extends SimpleCommand
 		if (server!=null)
 			serverInstanceId = server.getId();
 		else {
-			
+			status = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_CREATE_SERVER"), Status.ERROR, null);			
 		}
 		
 		return status;

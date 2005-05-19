@@ -39,6 +39,7 @@ public class GSTCGenerateCommand extends SimpleCommand {
     Status status = new SimpleStatus( "" );
 	CopyWebServiceUtilsJarCommand copy = new CopyWebServiceUtilsJarCommand();    
 	copy.setSampleProject(testInfo.getGenerationProject());
+  copy.setSampleComponent(testInfo.getGenerationModule());
 	status = copy.execute(env);
 	if (status.getSeverity() == Status.ERROR) return status;
 	status = createModel(env);

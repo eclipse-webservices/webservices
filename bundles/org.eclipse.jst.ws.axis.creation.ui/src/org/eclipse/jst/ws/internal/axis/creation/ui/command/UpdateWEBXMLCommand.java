@@ -29,7 +29,8 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.wst.common.componentcore.resources.ComponentHandle;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
 public class UpdateWEBXMLCommand extends SimpleCommand {
 
@@ -117,8 +118,9 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 		try {
 			// 
 			WebApp webapp = null;
-      ComponentHandle ch = ComponentHandle.create(webProject, moduleName);
-      webEdit = new WebArtifactEdit(ch, false);
+      IVirtualComponent vc = ComponentCore.createComponent(webProject, moduleName);
+      System.out.println("WebProject: "+webProject+"  moduleName: "+moduleName);
+      webEdit = WebArtifactEdit.getWebArtifactEditForWrite(vc);
 			if (webEdit != null)
 			{
 				webapp = (WebApp) webEdit.getDeploymentDescriptorRoot();

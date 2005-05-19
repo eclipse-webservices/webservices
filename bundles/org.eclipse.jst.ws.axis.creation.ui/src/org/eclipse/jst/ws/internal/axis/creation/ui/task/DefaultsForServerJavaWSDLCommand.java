@@ -138,7 +138,8 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 		IPath modulePath = serviceProject_.getFullPath();
 		IPath webinfPath = serviceProject_.getFullPath();
 		try {
-			if ( ResourceUtils.isWebProject(serviceProject_)) {
+			//if ( ResourceUtils.isWebProject(serviceProject_)) {
+      if (J2EEUtils.isWebComponent(serviceProject_, moduleName_)){
 				moduleServerRoot = ResourceUtils.getJavaSourceLocation(serviceProject_, moduleName_);
 
 				// should use ModuleCore.getSourceContainers();

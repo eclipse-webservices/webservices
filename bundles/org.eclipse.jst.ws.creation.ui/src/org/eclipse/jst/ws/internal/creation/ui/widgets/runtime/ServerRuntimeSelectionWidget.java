@@ -11,8 +11,8 @@
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ProjectSelectionWidget;
@@ -311,16 +311,14 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     }
     
     //Validate service side server target and J2EE level
-    String serviceEARName = null;
-    String serviceProjName = null;
-    String serviceServerFactoryId = null;
-
 	ValidationUtils valUtils = new ValidationUtils();
-	serviceEARName  = projectWidget_.getEarProjectName();
-	serviceProjName = projectWidget_.getProjectName();
-	serviceServerFactoryId = runtimeWidget_.getTypeRuntimeServer().getServerId();
+	String serviceEARName  = projectWidget_.getEarProjectName();
+	String serviceProjName = projectWidget_.getProjectName();
+	String serviceServerFactoryId = runtimeWidget_.getTypeRuntimeServer().getServerId();
 	String serviceJ2EElevel = runtimeWidget_.getJ2EEVersion();
-	Status serviceProjectStatus = valUtils.validateProjectTargetAndJ2EE(serviceProjName, serviceEARName, serviceServerFactoryId, serviceJ2EElevel);
+  String serviceComponentName = projectWidget_.getComponentName();
+  String serviceEARComponentName = projectWidget_.getEarComponentName();
+	Status serviceProjectStatus = valUtils.validateProjectTargetAndJ2EE(serviceProjName,serviceComponentName, serviceEARName, serviceEARComponentName, serviceServerFactoryId, serviceJ2EElevel);
 	if(serviceProjectStatus.getSeverity()==Status.ERROR)
 	{
 		finalStatus = serviceProjectStatus;
@@ -329,7 +327,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     //Ensure the service project type (Web/EJB) is valid
     if (serviceProjName!=null && serviceProjName.length()>0)
     {
-      IProject serviceProj = (IProject)((new StringToIProjectTransformer().transform(serviceProjName)));
+      IProject serviceProj = ProjectUtilities.getProject(serviceProjName);
       if (serviceProj.exists())
       {
         //Determine whether an EJB project is required
@@ -347,11 +345,11 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 			isEJBRequired = WebServiceRuntimeExtensionUtils.requiresEJBProject(webServiceTypeId);
         }
         
-        if (isEJBRequired && !ResourceUtils.isEJBProject(serviceProj))
+        if (isEJBRequired && !J2EEUtils.isEJBComponent(serviceProj, serviceComponentName))
         {
           finalStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_INVALID_EJB_PROJECT",new String[]{serviceProjName}),Status.ERROR);          
         }
-        if (!isEJBRequired && !ResourceUtils.isWebProject(serviceProj))
+        if (!isEJBRequired && !J2EEUtils.isWebComponent(serviceProj, serviceComponentName))
         {
           finalStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_INVALID_WEB_PROJECT",new String[]{serviceProjName}),Status.ERROR);
         }
@@ -363,8 +361,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 	    String clientEARName   = clientWidget_.getClientEarProjectName();
 	    String clientProjName  = clientWidget_.getClientProjectName();
 	
-		String serviceComponentName = projectWidget_.getComponentName();
-		String clientComponentName = clientWidget_.getClientComponentName();
+  		String clientComponentName = clientWidget_.getClientComponentName();
 		
 	    // check same EAR-ness -----
 	    String warning_msg = getEARProjectWarningMessage(serviceEARName, clientEARName);

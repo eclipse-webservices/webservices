@@ -322,6 +322,9 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
       {
         String clientEARName = clientProjects.getChoice().getList().getSelection();
         String clientProjName = clientProjects.getList().getSelection();
+        
+        String clientCompName = projectWidget_.getComponentName();
+        String clientEARCompName = projectWidget_.getEarComponentName();
 
         //Validate that the selected client project is of the type indicated by client project type.
         Status clientProjectTypeStatus = valUtils.validateProjectType(clientProjName, runtime2ClientTypes_);
@@ -333,7 +336,7 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
         //Validate client side server targets and J2EE levels
         String clientServerFactoryId = getClientTypeRuntimeServer().getServerId();
         String clientJ2EElevel = getJ2EEVersion();
-        Status clientProjectStatus = valUtils.validateProjectTargetAndJ2EE(clientProjName, clientEARName, clientServerFactoryId,
+        Status clientProjectStatus = valUtils.validateProjectTargetAndJ2EE(clientProjName, clientCompName, clientEARName, clientEARCompName, clientServerFactoryId,
             clientJ2EElevel);
         if (clientProjectStatus.getSeverity() == Status.ERROR)
         {

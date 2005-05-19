@@ -37,11 +37,10 @@ import org.eclipse.wst.command.internal.provisional.env.core.context.TransientRe
 public class CopyWebServiceUtilsJarCommand extends SimpleCommand {
 
 	private static java.lang.String DESCRIPTION = "Copy WebserviceUtils.jar";
-	private static java.lang.String LABEL           = "CopyWebserviceJarCommand";
-    private String sampleProject;
-	private String sampleP;
+	private static java.lang.String LABEL           = "CopyWebServiceUtilsJarCommand";
+  private String sampleProject;
 	private String sampleC;
-    private MessageUtils msgUtils;
+  private MessageUtils msgUtils;
 	
 /**
  * Default CTOR;
@@ -63,9 +62,8 @@ public Status execute(Environment env)
   try
   {
     env.getProgressMonitor().report( msgUtils.getMessage( "PROGRESS_INFO_COPY_WEBSERVICE_UTILS" ) );
-	IProject sampleIProject = (IProject)ProjectUtilities.getProject(sampleProject);    
-//    IPath webModulePath = ResourceUtils.getWebModuleServerRoot(sampleIProject).getFullPath();
-    IPath webModulePath = J2EEUtils.getFirstWebContentPath(sampleIProject);	
+    IProject sampleIProject = ProjectUtilities.getProject(sampleProject);    
+    IPath webModulePath = J2EEUtils.getWebContentPath(sampleIProject, sampleC);	
     if (webModulePath == null)
       return new SimpleStatus(WebServiceConsumptionUIPlugin.ID,msgUtils.getMessage("MSG_ERROR_PROJECT_NOT_FOUND"), Status.ERROR);
       
@@ -133,6 +131,9 @@ public void setSampleProject(String sampleProject)
   this.sampleProject = sampleProject;  
 }
 
+public void setSampleComponent(String sampleComponent){
+  this.sampleC = sampleComponent;
+}
 
 
 }

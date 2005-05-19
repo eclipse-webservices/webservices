@@ -177,7 +177,7 @@ public final class J2EEUtils {
 		EARArtifactEdit edit = null;
 		int nVersion = 12;
 		try {
-			edit = new EARArtifactEdit(ch, true);
+			edit = EARArtifactEdit.getEARArtifactEditForRead(ch);
 			if (edit != null) {
 				nVersion = edit.getJ2EEVersion();
 			}
@@ -230,8 +230,7 @@ public final class J2EEUtils {
 		WebArtifactEdit webEdit = null;
 		int nVersion = 12;
 		try {
-      
-			webEdit = new WebArtifactEdit(ch, true);
+      webEdit = WebArtifactEdit.getWebArtifactEditForRead(ch);
 			if (webEdit != null) {
 				nVersion = webEdit.getJ2EEVersion();
 			}
@@ -253,7 +252,7 @@ public final class J2EEUtils {
 		AppClientArtifactEdit edit = null;
 		int nVersion = 12;
 		try {
-			edit = new AppClientArtifactEdit(ch, true);
+      edit = AppClientArtifactEdit.getAppClientArtifactEditForRead(ch);
 			if (edit != null) {
 				nVersion = edit.getJ2EEVersion();
 			}
@@ -275,7 +274,7 @@ public final class J2EEUtils {
 		EJBArtifactEdit edit = null;
 		int nVersion = 12;
 		try {
-			edit = new EJBArtifactEdit(ch, true);
+      edit = EJBArtifactEdit.getEJBArtifactEditForRead(ch);
 			if (edit != null) {
 				nVersion = edit.getJ2EEVersion();
 			}
@@ -1726,22 +1725,8 @@ public final class J2EEUtils {
 		  mc = StructureEdit.getStructureEditForRead(project);
 		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
 		  if (wbcs.length!=0) {
-//			WebArtifactEdit webEdit = null;
-//			try {
-//			  webEdit = WebArtifactEdit.getWebArtifactEditForRead(wbcs[0]);
-//			  if (webEdit!=null){
-//				  IPath webXMLPath = webEdit.getDeploymentDescriptorPath();
-//				  modulePath = webXMLPath.removeLastSegments(2);
-//				  System.out.println("WebContent Path = "+modulePath);
-//			  }
-//			}
-//			finally{
-//				if (webEdit!=null)
-//					webEdit.dispose();
-//			}
-			IVirtualComponent component = ComponentCore.createComponent(project, wbcs[0].getName());
-			modulePath = component.getWorkspaceRelativePath();
-			System.out.println("FirstWebContentPath = " +modulePath);
+        IVirtualComponent component = ComponentCore.createComponent(project, wbcs[0].getName());
+        modulePath = component.getWorkspaceRelativePath();
 		  }
 		}
 		catch(Exception ex){}

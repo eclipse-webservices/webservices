@@ -15,12 +15,13 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
 public class ClientProjectTypeRegistry
 {
@@ -86,13 +87,15 @@ public class ClientProjectTypeRegistry
     IConfigurationElement element = getElementById(id);
     if (element != null)
     {
-      IProject[] workspaceProjs = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-      for (int i = 0; i < workspaceProjs.length; i++) {
-		// TODO: Needs to be refactored to work with project/module topology described in XP
+      IProject[] workspaceProjs = ResourceUtils.getWorkspaceRoot().getProjects();
+      IVirtualComponent[] comps = J2EEUtils.getAllComponents();
+      for (int i = 0; i < comps.length; i++) {
+		  // TODO: Needs to be refactored to work with project/module topology described in XP
         //if (include(workspaceProjs[i], element.getAttribute("include")) && exclude(workspaceProjs[i], element.getAttribute("exclude")))
-		if (ResourceUtils.isWebProject(workspaceProjs[i]) || ResourceUtils.isEJBProject(workspaceProjs[i]))
-		{
-          v.add(workspaceProjs[i]);
+        // Note: Adding a project if the project contains a web or ejb module.
+		    if (J2EEUtils.isWebComponent(comps[i].getProject(), comps[i].getName()) 
+            || J2EEUtils.isEJBComponent(comps[i].getProject(), comps[i].getName()))	{
+          v.add(comps[i].getProject());
         }
       }
     }

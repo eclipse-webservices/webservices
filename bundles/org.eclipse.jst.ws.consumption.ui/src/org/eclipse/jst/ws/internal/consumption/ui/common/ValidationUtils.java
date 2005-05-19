@@ -21,6 +21,7 @@ import javax.wsdl.Service;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.internal.webservices.WebServiceEditModel;
 import org.eclipse.jst.j2ee.internal.webservices.WebServicesManager;
 import org.eclipse.jst.j2ee.webservice.internal.WebServiceConstants;
@@ -34,13 +35,10 @@ import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.ClientProjectTypeRegistry;
-import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
-import org.eclipse.wst.common.componentcore.internal.StructureEdit;
-import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
@@ -60,13 +58,13 @@ public class ValidationUtils
     msgUtils = new MessageUtils( pluginId + ".plugin", this );
   }
   
-  public Status validateProjectTargetAndJ2EE(String projectName, String earName, String serverFactoryId, String j2eeLevel)
+  public Status validateProjectTargetAndJ2EE(String projectName, String compName, String earName, String earCompName, String serverFactoryId, String j2eeLevel)
   {
-    IProject p = FileResourceUtils.getWorkspaceRoot().getProject(projectName);
-	IProject earP = null;
-	if (earName!=null && !earName.equalsIgnoreCase("")) {
-    	earP = FileResourceUtils.getWorkspaceRoot().getProject(earName);
-	}
+    IProject p = ProjectUtilities.getProject(projectName);
+    IProject earP = null;
+    if (earName!=null && !earName.equalsIgnoreCase("")) {
+    	earP = ProjectUtilities.getProject(earName);
+    }
     Status targetStatus = doesProjectTargetMatchServerType(p, serverFactoryId);
     if (earP!=null && targetStatus.getSeverity()==Status.OK)
     {
@@ -84,10 +82,10 @@ public class ValidationUtils
     
 
     //Validate service side J2EE level    
-    Status j2eeStatus = doesProjectMatchJ2EELevel(p, j2eeLevel);
+    Status j2eeStatus = doesProjectMatchJ2EELevel(p, compName, j2eeLevel);
     if(earP!=null && j2eeStatus.getSeverity()==Status.OK)
     {
-      Status earJ2EEStatus = doesProjectMatchJ2EELevel(earP, j2eeLevel);
+      Status earJ2EEStatus = doesProjectMatchJ2EELevel(earP, earCompName, j2eeLevel);
       if(earJ2EEStatus.getSeverity()==Status.ERROR)
       {
         return earJ2EEStatus;
@@ -123,17 +121,13 @@ public class ValidationUtils
     return new SimpleStatus("");        
   }
 
-  private Status doesProjectMatchJ2EELevel(IProject p, String j2eeLevel)
+  private Status doesProjectMatchJ2EELevel(IProject p, String compName, String j2eeLevel)
   {
-	StructureEdit mc = null;
+
     try {
 		if (p!=null && p.exists())
 		{
-		  mc = StructureEdit.getStructureEditForRead(p);
-		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-		  
-			
-		  int projectJ2EELevel = J2EEUtils.getJ2EEVersion(p);
+  	  int projectJ2EELevel = J2EEUtils.getJ2EEVersion(p, compName);
 		  if (projectJ2EELevel!=-1)
 		  {
 		    String projectJ2EELevelString = String.valueOf(projectJ2EELevel);
@@ -146,10 +140,10 @@ public class ValidationUtils
 		    }
 		  }
 		}
-	} finally {
-		if (mc != null)
-			mc.dispose();
-	}
+	} catch(Exception e){
+    
+  }
+    
     return new SimpleStatus("");        
   }
   
@@ -159,7 +153,7 @@ public class ValidationUtils
     IProject p = (IProject)((new StringToIProjectTransformer()).transform(projectName));
     if (p==null || !p.exists())
     {
-      //Project does not exist which means a new project of the correct type will be creates
+      //Project does not exist which means a new project of the correct type will be created
       //We're done. All is good.
       return status;
     }
@@ -195,6 +189,13 @@ public class ValidationUtils
     return clientTypeLabel;
   }  
   
+  /**
+   * 
+   * @param p
+   * @param wsdlURL
+   * @param parser
+   * @return
+   */
   public boolean isProjectServiceProject(IProject p, String wsdlURL, WebServicesParser parser)
   {
     if (p==null || wsdlURL==null || wsdlURL.length()==0 || parser==null)
@@ -245,7 +246,7 @@ public class ValidationUtils
     return false;
   }
   
-  /*
+  /**
    * @deprecated
    * 
    */

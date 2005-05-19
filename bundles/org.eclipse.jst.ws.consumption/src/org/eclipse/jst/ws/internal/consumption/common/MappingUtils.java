@@ -37,11 +37,11 @@ public final class MappingUtils
   * Returns the WSDL folder path
   * @param project the project
   */
-  public static IPath getWSDLFolderPath (IProject project)
+  public static IPath getWSDLFolderPath (IProject project, String componentName)
   {
     IPath wsdlFolder=null;
 //  	IPath webModuleServerRoot = ResourceUtils.getWebModuleServerRoot( project ).getFullPath();
-  	IPath webModuleServerRoot = J2EEUtils.getFirstWebContentPath(project);
+  	IPath webModuleServerRoot = J2EEUtils.getWebContentPath(project, componentName);
   	if (webModuleServerRoot != null )
   		wsdlFolder = webModuleServerRoot.append(WSDL_FOLDER);
     return wsdlFolder;

@@ -95,15 +95,15 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 		clientP = clientProject.substring(0,index);
 		clientC = clientProject.substring(index + 1);
 	  }
-	  IProject clientIProject = (IProject)ProjectUtilities.getProject(clientP);
+	  IProject clientIProject = ProjectUtilities.getProject(clientP);
 	       
       
-      if (clientIProject != null && !ResourceUtils.isWebProject(clientIProject))
+      if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject, clientC))
       {
         String uri = clientIProject.getName() + ".jar";
         if (ResourceUtils.isTrueJavaProject(clientIProject))
           addJavaProjectAsUtilityJar(clientIProject, sampleIEAR, uri);
-        addJAROrModuleDependency(sampleIProject, uri);
+        addJAROrModuleDependency(sampleIProject, sampleC, uri);
         addBuildPath(sampleIProject, clientIProject);
       }
     }
@@ -122,14 +122,14 @@ public class AddModuleDependenciesCommand extends SimpleCommand
     cmd.execute();
   }
 
-  private void addJAROrModuleDependency(IProject project, String uri) throws IOException, CoreException
+  private void addJAROrModuleDependency(IProject project, String compName, String uri) throws IOException, CoreException
   {
     J2EENature nature = null;
-    if (ResourceUtils.isWebProject(project))
+    if (J2EEUtils.isWebComponent(project, compName))
       nature = getWebNature(project);
-    else if (ResourceUtils.isAppClientProject(project))
+    else if (J2EEUtils.isAppClientComponent(project, compName))
       nature = getAppClientNature(project);
-    else if (ResourceUtils.isEJBProject(project))
+    else if (J2EEUtils.isEJBComponent(project, compName))
       nature = getEJBNature(project);
     if (nature != null)
     {

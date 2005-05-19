@@ -14,7 +14,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -72,7 +72,7 @@ public class CheckForServiceProjectCommand extends SimpleCommand
     if (clientProjectName==null || clientProjectName.length()==0)
       return status;
     
-    IProject clientProject = (IProject)((new StringToIProjectTransformer()).transform(clientProjectName));
+    IProject clientProject = ProjectUtilities.getProject(clientProjectName);
     ValidationUtils vu = new ValidationUtils();
     Calendar cal = new GregorianCalendar();
     boolean isServiceProject = vu.isProjectServiceProject(clientProject, wsdlURI, webServicesParser);
