@@ -64,6 +64,8 @@ public class ClientTestDelegateCommand extends SimpleCommand
   private TypeRuntimeServer clientIds;
   private TypeRuntimeServer serverIds;
   private String serviceProject;
+  private String serviceP;
+  private String serviceC;
   private String wsdlServiceURL;
   private boolean generateProxy;
   private boolean isTestWidget = false;
@@ -134,14 +136,19 @@ public class ClientTestDelegateCommand extends SimpleCommand
 	
 	if(clientProject != null){
   	  int index = clientProject.indexOf("/");
-	  clientP = clientProject.substring(0,index);
-	  clientC = clientProject.substring(index + 1);
+      if (index!=-1){
+        clientP = clientProject.substring(0,index);
+        clientC = clientProject.substring(index + 1);
+      }
   	}
-	  
+
+  
 	if(sampleProject != null){
 	  int index = sampleProject.indexOf("/");
-	  sampleP = sampleProject.substring(0,index);
-	  sampleC = sampleProject.substring(index + 1);
+    if (index!=-1){
+      sampleP = sampleProject.substring(0,index);
+      sampleC = sampleProject.substring(index + 1);
+    }
 	}
 	
     
@@ -270,10 +277,12 @@ public class ClientTestDelegateCommand extends SimpleCommand
   public String getWSDLProject()
   {
   	 if(serviceProject != null){
-	    int index = serviceProject.indexOf("/");
-		sampleP = serviceProject.substring(0,index);
-		sampleC = serviceProject.substring(index + 1);
-	    return sampleP;
+	     int index = serviceProject.indexOf("/");
+       if (index!=-1) {
+		     serviceP = serviceProject.substring(0,index);
+		     serviceC = serviceProject.substring(index + 1);
+	       return serviceP;
+       }
   	}	
 	
   	return clientP;

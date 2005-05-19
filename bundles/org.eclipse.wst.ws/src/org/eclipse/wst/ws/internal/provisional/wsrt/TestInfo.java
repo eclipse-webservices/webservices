@@ -55,7 +55,7 @@ public class TestInfo {
    * @param generationModule
    */
    public void setGenerationModule(String generationModule){
-     this.generationModule = generationProject;	  
+     this.generationModule = generationModule;	  
    }
    
    public String getGenerationModule(){
