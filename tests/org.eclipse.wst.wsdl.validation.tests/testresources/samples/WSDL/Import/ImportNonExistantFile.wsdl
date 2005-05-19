@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:tns="http://tempuri.org/ImportNonExistantFile/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ImportNonExistantFile" targetNamespace="http://tempuri.org/ImportNonExistantFile/">
-	<wsdl:import namespace="http://nonexistingfile" location="ThisFileDoesntExist.wsdl"></wsdl:import>
-</wsdl:definitions>
