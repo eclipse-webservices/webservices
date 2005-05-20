@@ -38,7 +38,7 @@ public class OpenEditorOAGISWSDLTestcase extends PerformanceTestCase
     Assert.assertNotNull(oagis80Dir);
     if (!oagis80Dir.endsWith("/") && !oagis80Dir.endsWith("\\"))
       oagis80Dir = oagis80Dir + "/";
-    File dir = new File(oagis80Dir);
+    File dir = new File(oagis80Dir + "OAGIS8.0");
     if (dir.exists() && dir.isDirectory())
     {
       IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("sp");
