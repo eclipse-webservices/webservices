@@ -55,12 +55,17 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
             // the following namespace are one that always should be filtered out            
             // for now this is hardcoded
             //
-            if (namespace.equals("http://schemas.xmlsoap.org/soap/encoding/") || namespace.equals(WSDLConstants.XSD_NAMESPACE_URI))
+            if (namespace.equals("http://schemas.xmlsoap.org/soap/encoding/"))
             {
               // exclude soap-enc elements
               //
               result = false;
             }
+            else if (namespace.equals(WSDLConstants.XSD_NAMESPACE_URI))
+            {
+              // eclipse all schema elements, except for 'schema' withing wsdl types elements 
+              result = parentElementName.equals("types") && name.equals("schema");
+            }   
             else
             {
               // TODO.. we should investigate removing the  ExtensiblityElementFilter extension point
