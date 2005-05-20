@@ -24,20 +24,23 @@ import org.eclipse.jst.j2ee.applicationclient.internal.creation.ApplicationClien
 import org.eclipse.jst.j2ee.client.ApplicationClient;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
 import org.eclipse.jst.j2ee.internal.ejb.project.EJBNatureRuntime;
-import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.j2ee.internal.webservice.WebServiceNavigatorGroupType;
-import org.eclipse.jst.j2ee.internal.webservices.WebServiceEditModel;
-import org.eclipse.jst.j2ee.internal.webservices.WebServicesManager;
+import org.eclipse.jst.j2ee.internal.webservice.helper.WebServicesManager;
+import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.jst.j2ee.webapplication.WebApp;
 import org.eclipse.jst.j2ee.webservice.wsclient.Handler;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.resources.ComponentHandle;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
 /**
  * ClientHandlersWidgetDefaultingCommand
@@ -58,12 +61,14 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
 
   private Hashtable refNameToServiceRefObj_;
 
-  private WebServiceEditModel wsEditModel_;
+//  private WebServiceEditModel wsEditModel_;
 
   private WebServicesManager webServicesManager_;
 
   private IProject project_;
-
+  
+  private String componentName_;
+  
   private WebServicesResource wsClientRes_;
 
   private String serviceRefName_ = null;
@@ -95,7 +100,7 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
       wsRefsToHandlersTable_ = new Hashtable();
       refNameToServiceRefObj_ = new Hashtable();
 
-      wsEditModel_ = getWebServiceEditModel();
+//      wsEditModel_ = getWebServiceEditModel();
 
       wsServiceRefs_ = getWSServiceRefsFromSelection();
 
@@ -166,9 +171,9 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
   /**
    * @return Returns the wsEditModel.
    */
-  public WebServiceEditModel getWsEditModel() {
-    return wsEditModel_;
-  }
+//  public WebServiceEditModel getWsEditModel() {
+//    return wsEditModel_;
+//  }
 
   public String getServiceRefName() {
     return this.serviceRefName_;
@@ -207,19 +212,35 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
       if (project_==null){
         return null;
       }
+      
+      // get module name
+      componentName_ = getComponentName();
+      
+      ComponentHandle ch = ComponentHandle.create(project_, componentName_);
+       
+      List clientWSResourceList = webServicesManager_.get13ServiceRefs(ch);
+      if (!clientWSResourceList.isEmpty())
+        wsClientRes_ = (WebServicesResource)clientWSResourceList.get(0);
 
-      wsClientRes_ = webServicesManager_.getWebServicesClientResource(project_);
-  
-      if (ResourceUtils.isWebProject(project_)) {
-        J2EEWebNatureRuntime rt = J2EEWebNatureRuntime.getRuntime(project_);
-        if (rt != null) {
-          WebApp webApp = rt.getWebApp();
-          if (webApp != null) {
-            return webServicesManager_.getServiceRefs(webApp);
+      if (J2EEUtils.isWebComponent(project_, componentName_)) {
+        WebArtifactEdit webEdit = null;
+        try {
+          IVirtualComponent vc = ComponentCore.createComponent(project_, componentName_);          
+          webEdit = WebArtifactEdit.getWebArtifactEditForRead(vc);
+          if (webEdit != null)
+          {
+            WebApp webApp = (WebApp) webEdit.getDeploymentDescriptorRoot();
+            if (webApp != null) {
+              return webServicesManager_.getServiceRefs(webApp);
+            }
           }
         }
+        finally{
+          if(webEdit!=null)
+            webEdit.dispose();
+        }
       }
-      else if (ResourceUtils.isAppClientProject(project_)){
+      else if (J2EEUtils.isAppClientComponent(project_, componentName_)){
         ApplicationClientNatureRuntime rt = ApplicationClientNatureRuntime.getRuntime(project_);
         if (rt!=null) {
           ApplicationClient appClient = rt.getApplicationClient();
@@ -228,7 +249,7 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
           }
         }
       }
-      else if (ResourceUtils.isEJBProject(project_)){
+      else if (J2EEUtils.isEJBComponent(project_, componentName_)){
         EJBNatureRuntime rt = EJBNatureRuntime.getRuntime(project_);
         if(rt!=null){
           EJBJar ejbJar = rt.getEJBJar();

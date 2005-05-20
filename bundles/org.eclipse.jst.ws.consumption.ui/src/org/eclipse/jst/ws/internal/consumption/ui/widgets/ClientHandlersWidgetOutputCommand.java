@@ -27,7 +27,6 @@ import org.eclipse.jst.j2ee.internal.J2EEEditModel;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.ejb.project.EJBNatureRuntime;
 import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
-import org.eclipse.jst.j2ee.internal.webservices.WebServiceEditModel;
 import org.eclipse.jst.j2ee.webservice.internal.wsclient.impl.Webservice_clientFactoryImpl;
 import org.eclipse.jst.j2ee.webservice.wsclient.Handler;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
@@ -54,7 +53,7 @@ public class ClientHandlersWidgetOutputCommand extends SimpleCommand {
 
   private Hashtable newWSServiceRefsToHandlersTable_;
 
-  private WebServiceEditModel wsEditModel_;
+//  private WebServiceEditModel wsEditModel_;
 
   private Hashtable handlersTable_;
 
@@ -190,9 +189,9 @@ public class ClientHandlersWidgetOutputCommand extends SimpleCommand {
    * @param wsEditModel
    *          The wsEditModel to set.
    */
-  public void setWsEditModel(WebServiceEditModel wsEditModel) {
-    this.wsEditModel_ = wsEditModel;
-  }
+//  public void setWsEditModel(WebServiceEditModel wsEditModel) {
+//    this.wsEditModel_ = wsEditModel;
+//  }
 
   public void setClientProject(IProject project) {
     this.project_ = project;

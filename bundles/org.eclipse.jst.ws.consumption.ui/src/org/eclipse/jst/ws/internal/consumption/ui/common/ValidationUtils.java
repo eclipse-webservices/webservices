@@ -22,13 +22,11 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.internal.webservices.WebServiceEditModel;
-import org.eclipse.jst.j2ee.internal.webservices.WebServicesManager;
+import org.eclipse.jst.j2ee.internal.webservice.helper.WebServicesManager;
 import org.eclipse.jst.j2ee.webservice.internal.WebServiceConstants;
 import org.eclipse.jst.j2ee.webservice.wsdd.PortComponent;
 import org.eclipse.jst.j2ee.webservice.wsdd.WSDLPort;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
-import org.eclipse.jst.j2ee.webservice.wsdd.WebServices;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -207,10 +205,10 @@ public class ValidationUtils
     
     
       //Make a list of all the wsdl-port's in webservices.xml
-    WebServicesManager wsm = new WebServicesManager();
-    WebServiceEditModel wsEditModel = wsm.getWSEditModel(p);
-    WebServices ws = wsEditModel.getWebServices();
-    Iterator wsDescs = ws.getWebServiceDescriptions().iterator();
+    WebServicesManager wsm = WebServicesManager.getInstance();
+    //WebServiceEditModel wsEditModel = wsm.getWSEditModel(p);
+    //WebServices ws = wsEditModel.getWebServices();
+    Iterator wsDescs = wsm.getInternalWebServicesDescriptions().iterator();
     ArrayList wsdlPortList = new ArrayList();
     while(wsDescs.hasNext())
     {

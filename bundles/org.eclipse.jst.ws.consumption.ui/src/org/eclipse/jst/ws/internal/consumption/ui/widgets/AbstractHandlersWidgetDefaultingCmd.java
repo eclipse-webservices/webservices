@@ -15,9 +15,8 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.j2ee.internal.webservices.WebServiceEditModel;
-import org.eclipse.jst.j2ee.internal.webservices.WebServicesManager;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -35,6 +34,7 @@ public abstract class AbstractHandlersWidgetDefaultingCmd extends SimpleCommand 
   
   private IStructuredSelection initialSelection_; 
   private IProject project_;
+  private String componentName_;
   
   public Status execute(Environment env){
     String       pluginId = "org.eclipse.jst.ws.consumption.ui";
@@ -97,10 +97,21 @@ public abstract class AbstractHandlersWidgetDefaultingCmd extends SimpleCommand 
 	return null;
   }
   
-  public WebServiceEditModel getWebServiceEditModel() {
-    WebServicesManager wsm = new WebServicesManager();
-    IProject project = getProject();
-    return wsm.getWSEditModel(project);    
+  public String getComponentName(){
+    IResource resource = getResourceFromInitialSelection();
+    if (resource!=null) {
+      IPath absolutePath = resource.getFullPath();
+      if (absolutePath.isAbsolute()) {
+        return absolutePath.segment(1);
+      }
+    }
+    return null;
   }
+  
+//  public WebServiceEditModel getWebServiceEditModel() {
+//    WebServicesManager wsm = new WebServicesManager();
+//    IProject project = getProject();
+//    return wsm.getWSEditModel(project);    
+//  }
   
 }

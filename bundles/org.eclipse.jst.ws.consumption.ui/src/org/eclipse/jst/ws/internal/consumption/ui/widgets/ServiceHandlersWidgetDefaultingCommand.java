@@ -16,10 +16,10 @@ import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.internal.webservice.WebServiceNavigatorGroupType;
-import org.eclipse.jst.j2ee.internal.webservices.WebServiceEditModel;
-import org.eclipse.jst.j2ee.internal.webservices.WebServicesManager;
+import org.eclipse.jst.j2ee.internal.webservice.helper.WebServicesManager;
 import org.eclipse.jst.j2ee.webservice.wsdd.Handler;
 import org.eclipse.jst.j2ee.webservice.wsdd.PortComponent;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
@@ -34,8 +34,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
-
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 
 /**
  * ServiceHandlersWidgetDefaultingCommand
@@ -80,11 +78,11 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
       wsDescToHandlers_ = new Hashtable();
       serviceDescNameToDescObj_ = new Hashtable();
       
-      WebServiceEditModel wsed = getWebServiceEditModel();
-      if (wsed == null)
+//      WebServiceEditModel wsed = getWebServiceEditModel();
+  //    if (wsed == null)
         wsddResource_ = getWsddResourceFromSelection();
-      else
-        wsddResource_ = wsed.getWebServicesXmlResource();
+  //    else
+  //      wsddResource_ = wsed.getWebServicesXmlResource();
 
       if (wsddResource_ == null) {
         Status status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED"), Status.ERROR, null);
