@@ -45,6 +45,8 @@ public class Stub2BeanCommand extends SimpleCommand
   private Vector portTypes_;
   private String proxyBean_;
   
+  private String module_ = "";
+  
   private IProject clientProject_;
 
   public Stub2BeanCommand()
@@ -52,6 +54,12 @@ public class Stub2BeanCommand extends SimpleCommand
     super("org.eclipse.jst.ws.was.creation.ui.task.Stub2BeanCommand", "org.eclipse.jst.ws.was.creation.ui.task.Stub2BeanCommand");
     portTypes_ = new Vector();
     //setRunInWorkspaceModifyOperation(false);
+  }
+  
+  public Stub2BeanCommand(String moduleName){
+	  super("org.eclipse.jst.ws.was.creation.ui.task.Stub2BeanCommand", "org.eclipse.jst.ws.was.creation.ui.task.Stub2BeanCommand");
+	  portTypes_ = new Vector();	  
+	  module_ = moduleName;
   }
 
   /**
@@ -128,6 +136,7 @@ public class Stub2BeanCommand extends SimpleCommand
             portTypes_.add(portTypeID.toString());
             Stub2BeanInfo stub2BeanInfo = new Stub2BeanInfo();
             stub2BeanInfo.setClientProject(clientProject_);
+            stub2BeanInfo.setClientModuleName(module_);
             String portTypePkgName = WSDLUtils.getPackageName(portType, pkg2nsMapping);
             String portTypeClassName = computeClassName(portTypeQName.getLocalPart());
             stub2BeanInfo.setPackage(portTypePkgName);

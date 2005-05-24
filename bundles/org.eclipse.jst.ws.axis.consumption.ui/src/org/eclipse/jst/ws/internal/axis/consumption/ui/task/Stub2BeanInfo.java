@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
@@ -32,8 +33,8 @@ import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.JavaVisibilityKind;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jem.java.impl.JavaClassImpl;
-import org.eclipse.jem.util.emf.workbench.JavaProjectUtilities;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
@@ -55,7 +56,8 @@ public class Stub2BeanInfo
   private Vector usedNames;
   
   private IProject clientProject_;
-
+  private String moduleName_;
+  
   public Stub2BeanInfo()
   {
     indentCount = 0;
@@ -73,6 +75,9 @@ public class Stub2BeanInfo
   	this.clientProject_ =  clientProject;
   }
   
+  public void setClientModuleName(String moduleName) {
+	  this.moduleName_ = moduleName;
+  }
 
   public void setPackage(String pkgName)
   {
@@ -212,7 +217,8 @@ public class Stub2BeanInfo
 //    IProject clientProject = wse.getProxyProject();
     JavaEMFNature javaMOF = (JavaEMFNature)JavaEMFNature.createRuntime(clientProject_);
     ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-    FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), JavaProjectUtilities.getSourceFolderOrFirst(javaMOF.getProject(), null).getFile(new Path(sb.toString())).getFullPath(), bais, progressMonitor, statusMonitor);
+    IPath sourceFolder = ResourceUtils.getJavaSourceLocation(clientProject_, moduleName_);
+    FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), sourceFolder.makeAbsolute(), bais, progressMonitor, statusMonitor);
   }
 
   private void writePackage(Writer w) throws IOException

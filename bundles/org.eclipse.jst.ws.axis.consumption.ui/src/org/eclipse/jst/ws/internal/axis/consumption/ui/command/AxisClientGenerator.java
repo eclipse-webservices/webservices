@@ -65,7 +65,7 @@ public class AxisClientGenerator extends WebServiceClientGenerator
     Status status = new SimpleStatus("");
     //AxisClientDefaultingCommand
     AxisClientDefaultingCommand axisClientDefaultingCommand = new AxisClientDefaultingCommand("");
-                                                                                                axisClientDefaultingCommand.setWsdlURL(wsdlURL);
+    axisClientDefaultingCommand.setWsdlURL(wsdlURL);
     axisClientDefaultingCommand.setWebServicesParser(new WebServicesParserExt());
     axisClientDefaultingCommand.setClientProject((IProject)(new StringToIProjectTransformer().transform(project)));
     axisClientDefaultingCommand.setTestProxySelected(false);

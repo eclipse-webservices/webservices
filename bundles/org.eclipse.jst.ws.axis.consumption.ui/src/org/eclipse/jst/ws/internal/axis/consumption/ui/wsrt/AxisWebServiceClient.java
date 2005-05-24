@@ -65,7 +65,7 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		commands.add(new ValidateWSDLCommand());
 		commands.add(new WSDL2JavaCommand());
 		commands.add(new RefreshProjectCommand());
-		commands.add(new Stub2BeanCommand());
+		commands.add(new Stub2BeanCommand(module));
 		commands.add(new AxisClientOutputCommand(this,ctx,module));
 		commands.add(new BuildProjectCommand());
 		return new SimpleCommandFactory(commands);
