@@ -77,7 +77,7 @@
 
   <target name="openEditorOAGISWSDLTestcase">
     <delete dir="${workspace}" quiet="true"/>
-    <ant target="core-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
       <property name="data-dir" value="${workspace}"/>
       <property name="plugin-name" value="${plugin-name}"/>
       <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.OpenEditorOAGISWSDLTestcase"/>
