@@ -16,12 +16,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
-import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jem.java.Method;
-import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
+import org.eclipse.jem.java.impl.JavaClassImpl;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
@@ -88,7 +87,11 @@ public class JavaToWSDLMethodCommand extends SimpleCommand {
 				qName = qName.substring(0, qName.lastIndexOf('.'));
 			}
 
-			JavaClass javaClass = JavaMOFUtils.getJavaClass(qName, serviceProject_);
+			JavaEMFNature jMOF =
+				(JavaEMFNature) JavaEMFNature.createRuntime(
+					serviceProject_);
+			JavaClass javaClass =
+				(JavaClass) JavaClassImpl.reflect(qName, jMOF.getResourceSet());
 			if (!javaClass.isExistingType()) {
 				environment.getLog().log(Log.ERROR, 5022, this, "execute", msgUtils_.getMessage(
 						"MSG_ERROR_JAVA_MOF_REFLECT_FAILED",

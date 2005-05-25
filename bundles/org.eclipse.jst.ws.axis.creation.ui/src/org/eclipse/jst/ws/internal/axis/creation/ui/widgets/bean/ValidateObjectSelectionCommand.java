@@ -13,9 +13,10 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
+import org.eclipse.jem.java.impl.JavaClassImpl;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
@@ -95,14 +96,22 @@ public class ValidateObjectSelectionCommand extends SimpleCommand
 		javaBeanName = javaBeanName.substring(0, javaBeanName.lastIndexOf('.'));
 	}
 	
-      JavaClass javaClass = JavaMOFUtils.getJavaClass(javaBeanName, serviceProject);
+    try
+    {
+	  JavaEMFNature jMOF = (JavaEMFNature) JavaEMFNature.createRuntime(serviceProject);
+	  JavaClass javaClass =(JavaClass) JavaClassImpl.reflect(javaBeanName, jMOF.getResourceSet());
 	  if (!javaClass.isExistingType()) 
 	  {		
 		Status errorStatus = new SimpleStatus("JavaToWSDLMethodCommand", msgUtils_.getMessage("MSG_ERROR_CANNOT_LOAD_JAVA_BEAN", new String[] { javaBeanName, serviceProjectName }),Status.ERROR);
 		env.getStatusHandler().reportError(errorStatus);
 		return errorStatus;
 	  }
-
+    } catch (CoreException ce)
+    {
+	  Status errorStatus = new SimpleStatus("JavaToWSDLMethodCommand", msgUtils_.getMessage("MSG_ERROR_CANNOT_LOAD_JAVA_BEAN", new String[] { javaBeanName, serviceProjectName }),Status.ERROR);
+	  env.getStatusHandler().reportError(errorStatus);
+      return errorStatus;      
+    }
     
     return new SimpleStatus("");
   }
