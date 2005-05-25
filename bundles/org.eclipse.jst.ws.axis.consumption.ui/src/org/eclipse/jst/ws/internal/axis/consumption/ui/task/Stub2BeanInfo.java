@@ -25,15 +25,13 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.JavaVisibilityKind;
 import org.eclipse.jem.java.Method;
-import org.eclipse.jem.java.impl.JavaClassImpl;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
+import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
@@ -215,7 +213,6 @@ public class Stub2BeanInfo
     sb.append(".java");
 //    WebServiceElement wse = WebServiceElement.getWebServiceElement(model_);
 //    IProject clientProject = wse.getProxyProject();
-    JavaEMFNature javaMOF = (JavaEMFNature)JavaEMFNature.createRuntime(clientProject_);
     ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
     IPath sourceFolder = ResourceUtils.getJavaSourceLocation(clientProject_, moduleName_);
     FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), sourceFolder.makeAbsolute(), bais, progressMonitor, statusMonitor);
@@ -508,12 +505,11 @@ public class Stub2BeanInfo
     newLine(w);
     //WebServiceElement wse = WebServiceElement.getWebServiceElement(model_);
     if (clientProject_ == null) return;//wse.getProxyProject();
-    JavaEMFNature javaMOF = (JavaEMFNature)JavaEMFNature.createRuntime(clientProject_);
     StringTokenizer st = new StringTokenizer(seis_.toString(), ";");
     while (st.hasMoreTokens())
     {
       String sei = st.nextToken();
-      JavaClass javaClass = (JavaClass)JavaClassImpl.reflect(getPackageName(sei), getClassName(sei), javaMOF.getResourceSet());
+      JavaClass javaClass = JavaMOFUtils.getJavaClass(sei, clientProject_);
       if (javaClass != null)
       {
         List methods = javaClass.getMethods();

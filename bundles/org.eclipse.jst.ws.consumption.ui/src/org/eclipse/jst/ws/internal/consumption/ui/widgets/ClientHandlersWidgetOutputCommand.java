@@ -19,9 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
-import org.eclipse.jem.java.impl.JavaClassImpl;
 import org.eclipse.jst.j2ee.applicationclient.internal.creation.ApplicationClientNatureRuntime;
 import org.eclipse.jst.j2ee.internal.J2EEEditModel;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
@@ -33,6 +31,7 @@ import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
 import org.eclipse.jst.j2ee.webservice.wsclient.Webservice_clientFactory;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
@@ -74,8 +73,6 @@ public class ClientHandlersWidgetOutputCommand extends SimpleCommand {
 
     try {
 
-      JavaEMFNature jMOF = (JavaEMFNature) JavaEMFNature.createRuntime(project_);
-
       oldWSServiceRefsToHandlersTable_ = new Hashtable();
       newWSServiceRefsToHandlersTable_ = new Hashtable();
 
@@ -116,7 +113,7 @@ public class ClientHandlersWidgetOutputCommand extends SimpleCommand {
                   Handler newHandler = wsClientFactory.createHandler();
                   newHandler.setHandlerName(hti.getHandlerName());
 
-                  JavaClass javaClass = (JavaClass) JavaClassImpl.reflect(hti.getHandlerClassName(), jMOF.getResourceSet());
+                  JavaClass javaClass = JavaMOFUtils.getJavaClass(hti.getHandlerClassName(), project_);
                   if (javaClass != null) {
                     newHandler.setHandlerClass(javaClass);
                   }

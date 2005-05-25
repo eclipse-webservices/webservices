@@ -14,11 +14,9 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 
 //core stuff
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaHelpers;
-import org.eclipse.jem.java.impl.JavaClassImpl;
+import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
@@ -98,15 +96,8 @@ public class JavaMofReflectionCommand extends SimpleCommand
   	processQName();
   	if(clientProject == null || qname == null)
   	  return new SimpleStatus(WebServiceConsumptionPlugin.ID,WebServiceConsumptionPlugin.getMessage("%MSG_WARN_UNABLE_TO_FIND_PROXY"),Status.WARNING);
-  	
-    JavaEMFNature nature = (JavaEMFNature)JavaEMFNature.getRuntime(clientIProject);
-    if(nature == null){
-      try{
-        nature = (JavaEMFNature)JavaEMFNature.createRuntime(clientIProject);  	
-      }catch(CoreException exc){}
-    }
-    resourceSet = nature.getResourceSet();
-    javaClass = (JavaHelpers)JavaClassImpl.reflect(qname, resourceSet); 
+    
+    javaClass = JavaMOFUtils.getJavaHelper(qname, clientIProject);
     
     return status;
   }
