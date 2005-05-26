@@ -213,12 +213,13 @@ public class Stub2BeanInfo
     sb.append(class_);
     sb = new StringBuffer(sb.toString().replace('.', '/'));
     sb.append(".java");
-//    WebServiceElement wse = WebServiceElement.getWebServiceElement(model_);
-//    IProject clientProject = wse.getProxyProject();
+
     JavaEMFNature javaMOF = (JavaEMFNature)JavaEMFNature.createRuntime(clientProject_);
     ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-    IPath sourceFolder = ResourceUtils.getJavaSourceLocation(clientProject_, moduleName_);
-    FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), sourceFolder.makeAbsolute(), bais, progressMonitor, statusMonitor);
+    IPath sourceFolderPath = ResourceUtils.getJavaSourceLocation(clientProject_, moduleName_);
+    IFolder sourceFolder = (IFolder)ResourceUtils.findResource(sourceFolderPath);
+    IPath filePath = sourceFolder.getFile(new Path(sb.toString())).getFullPath();
+    FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), filePath, bais, progressMonitor, statusMonitor);
   }
 
   private void writePackage(Writer w) throws IOException
