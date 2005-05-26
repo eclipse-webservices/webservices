@@ -22,11 +22,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
-import org.eclipse.ui.internal.WorkbenchImages;
-
+import org.eclipse.ui.internal.ide.IDEInternalWorkbenchImages;
 import org.eclipse.wst.common.ui.internal.viewers.SelectSingleFileView;
-import  org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
+import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
 
 
 public class SelectSingleFileDialog extends TitleAreaDialog
@@ -87,7 +85,7 @@ public class SelectSingleFileDialog extends TitleAreaDialog
     getShell().setText(WSIUIPlugin.getResourceString("_UI_DIALOG_SS_FILE_SHELL_TEXT"));
     setTitle(WSIUIPlugin.getResourceString("_UI_DIALOG_SS_FILE_TITLE"));
     setMessage(WSIUIPlugin.getResourceString("_UI_DIALOG_SS_FILE_DESCRIPTION"));
-    setTitleImage(WorkbenchImages.getImageDescriptor(IWorkbenchGraphicConstants.IMG_DLGBAN_SAVEAS_DLG).createImage());
+    setTitleImage(IDEInternalWorkbenchImages.getImageDescriptor(IDEInternalWorkbenchImages.IMG_DLGBAN_SAVEAS_DLG).createImage());
   }
 
   public void createFilterCombo(Composite composite)
