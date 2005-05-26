@@ -4,5 +4,5 @@ number of warnings    : 1
 ------------error list-------------------------------------------
 (none)
 ------------warning list-----------------------------------------
-The file cannot be imported because the namespace '' does not match the imported document's target namespace 'http://example.com/simple/'. [7, 53]
+The file cannot be imported because the namespace '' does not match the target namespace 'http://example.com/simple/' of the imported document. [7, 53]
 -----------------------------------------------------------------

@@ -4,5 +4,5 @@ number of warnings    : 1
 ------------error list-------------------------------------------
 (none)
 ------------warning list-----------------------------------------
-The file cannot be imported because the namespace 'http://invalidnamespace' does not match the imported document's target namespace 'http://www.example.com'. [3, 73]
+The file cannot be imported because the namespace 'http://invalidnamespace' does not match the target namespace 'http://www.example.com' of the imported document. [3, 73]
 -----------------------------------------------------------------
