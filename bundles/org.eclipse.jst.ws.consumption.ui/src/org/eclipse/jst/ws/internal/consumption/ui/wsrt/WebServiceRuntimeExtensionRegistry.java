@@ -11,6 +11,7 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 
@@ -19,6 +20,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceTypeImpl;
+import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 public class WebServiceRuntimeExtensionRegistry
 {
@@ -26,6 +28,10 @@ public class WebServiceRuntimeExtensionRegistry
   private static WebServiceRuntimeExtensionRegistry instance_;
 
   HashMap webServiceTypes_;
+  
+  ArrayList webServiceTypesList_;
+  
+  ArrayList webServiceClientTypesList_;
 
   Hashtable webServiceImpls_;
 
@@ -56,6 +62,8 @@ public class WebServiceRuntimeExtensionRegistry
   {
     // Can't get rid of webServiceTypes in M4
     webServiceTypes_ = new HashMap();
+    webServiceTypesList_ = new ArrayList();
+    webServiceClientTypesList_ = new ArrayList();
     webServiceImpls_ = new Hashtable();
     webServiceClientImpls_ = new Hashtable();
     serviceTypes_ = new Hashtable();
@@ -152,8 +160,70 @@ public class WebServiceRuntimeExtensionRegistry
         {
           WebServiceRuntimeInfo wsrtInfo = new WebServiceRuntimeInfo(elem, serviceTypes_, clientTypes_);
           webServiceRuntimes_.put(elem.getAttribute("id"), wsrtInfo);
+          
+          //Update the type lists
+          updateWebServiceTypeList(wsrtInfo);
+          updateWebServiceClientTypeList(wsrtInfo);
+          
         }        
     }
   }  
     
+  private void updateWebServiceTypeList(WebServiceRuntimeInfo wsrtInfo)
+  {
+    ServiceType[] sts = wsrtInfo.getServiceTypes();
+    for (int j=0; j<sts.length; j++)
+    {
+      String implId = sts[j].getWebServiceImpl().getId();
+      String[] bus = sts[j].getBottomUpModuleTypesInclude();
+      String[] tds = sts[j].getTopDownModuleTypesInclude();
+      if (bus != null)
+      {
+        StringBuffer entrybuff = new StringBuffer();
+        entrybuff.append(String.valueOf(WebServiceScenario.BOTTOMUP));
+        entrybuff.append("/");
+        entrybuff.append(implId);
+        String entry = entrybuff.toString();
+        if (!webServiceTypesList_.contains(entry))
+        {
+          webServiceTypesList_.add(entry);
+        }
+      }
+      if (tds != null)
+      {
+        StringBuffer entrybuff = new StringBuffer();
+        entrybuff.append(String.valueOf(WebServiceScenario.TOPDOWN));
+        entrybuff.append("/");
+        entrybuff.append(implId);
+        String entry = entrybuff.toString();
+        if (!webServiceTypesList_.contains(entry))
+        {
+          webServiceTypesList_.add(entry);
+        }
+      }      
+    }    
+  }
+  
+  private void updateWebServiceClientTypeList(WebServiceRuntimeInfo wsrtInfo)
+  {
+    ClientType[] cts = wsrtInfo.getClientTypes();
+    for (int j=0; j<cts.length; j++)
+    {
+      String implId = cts[j].getWebServiceClientImpl().getId();
+      String[] mods = cts[j].getModuleTypesInclude();
+      if (mods != null)
+      {
+        StringBuffer entrybuff = new StringBuffer();
+        entrybuff.append(String.valueOf(WebServiceScenario.CLIENT));
+        entrybuff.append("/");
+        entrybuff.append(implId);
+        String entry = entrybuff.toString();
+        if (!webServiceClientTypesList_.contains(entry))
+        {
+          webServiceClientTypesList_.add(entry);
+        }
+      }
+    }    
+  }
+  
 }

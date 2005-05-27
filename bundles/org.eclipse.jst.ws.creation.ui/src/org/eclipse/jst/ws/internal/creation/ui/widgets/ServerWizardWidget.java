@@ -187,8 +187,6 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
   
   public void setServiceTypeRuntimeServer( TypeRuntimeServer ids )
   {
-	//rskreg  
-    //WebServiceServerRuntimeTypeRegistry registry   = WebServiceServerRuntimeTypeRegistry.getInstance();	  
     LabelsAndIds                        labelIds   = WebServiceRuntimeExtensionUtils.getServiceTypeLabels();
 	//rskreg
     int                                 selection  = 0;

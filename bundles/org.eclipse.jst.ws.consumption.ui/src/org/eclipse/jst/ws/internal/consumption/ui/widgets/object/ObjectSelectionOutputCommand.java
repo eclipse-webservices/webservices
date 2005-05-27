@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
@@ -27,6 +28,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.StatusExcept
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 
 public class ObjectSelectionOutputCommand extends SimpleCommand
@@ -92,13 +94,25 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
   {
     if (typeRuntimeServer != null)
     {
-	  // rskreg
-      //IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeRuntimeServer.getTypeId());
-	  IWebServiceType wst = WebServiceRuntimeExtensionUtils.getWebServiceTypeById(typeRuntimeServer.getTypeId());
-	  // rskreg
-      if (wst != null)
+      String wst = typeRuntimeServer.getTypeId();
+
+      int scenario = WebServiceRuntimeExtensionUtils.getScenarioFromTypeId(wst);
+      String implId = WebServiceRuntimeExtensionUtils.getImplIdFromTypeId(wst);
+
+      WebServiceImpl wsimpl = WebServiceRuntimeExtensionUtils.getWebServiceImplById(implId);
+	    //IWebServiceType wst = WebServiceRuntimeExtensionUtils.getWebServiceTypeById(typeRuntimeServer.getTypeId());
+
+      if (wsimpl != null)
       {
-        objectSelectionWidgetId_ = wst.getObjectSelectionWidget();
+        String objectSelectionWidgetId = null;
+        if (scenario == WebServiceScenario.TOPDOWN)
+        {
+          objectSelectionWidgetId = "org.eclipse.jst.ws.internal.consumption.ui.widgets.object.WSDLSelectionWidget";
+        }
+        else
+        {
+          objectSelectionWidgetId = wsimpl.getObjectSelectionWidget();
+        }        
         
         if (objectSelectionWidgetId_ != null && objectSelectionWidgetId_.length() > 0)
         {

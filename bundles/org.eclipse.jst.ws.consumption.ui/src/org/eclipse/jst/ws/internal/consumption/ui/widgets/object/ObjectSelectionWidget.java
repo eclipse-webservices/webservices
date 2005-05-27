@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.swt.SWT;
@@ -29,6 +30,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 
 public class ObjectSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget
@@ -67,13 +69,24 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
     }
     if (typeRuntimeServer != null)
     {
-		// rskreg
-      //IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeRuntimeServer.getTypeId());
-	  IWebServiceType wst = WebServiceRuntimeExtensionUtils.getWebServiceTypeById(typeRuntimeServer.getTypeId());
-	  // rskreg
-      if (wst != null)
+      String wst = typeRuntimeServer.getTypeId();
+      int scenario = WebServiceRuntimeExtensionUtils.getScenarioFromTypeId(wst);
+      String implId = WebServiceRuntimeExtensionUtils.getImplIdFromTypeId(wst);
+      WebServiceImpl wsimpl = WebServiceRuntimeExtensionUtils.getWebServiceImplById(implId);
+      
+	    //IWebServiceType wst = WebServiceRuntimeExtensionUtils.getWebServiceTypeById(typeRuntimeServer.getTypeId());
+      if (wsimpl != null)
       {
-        String objectSelectionWidgetId = wst.getObjectSelectionWidget();
+        String objectSelectionWidgetId = null;
+        if (scenario == WebServiceScenario.TOPDOWN)
+        {
+          objectSelectionWidgetId = "org.eclipse.jst.ws.internal.consumption.ui.widgets.object.WSDLSelectionWidget";
+        }
+        else
+        {
+          objectSelectionWidgetId = wsimpl.getObjectSelectionWidget();
+        }
+
         if (objectSelectionWidgetId != null && objectSelectionWidgetId.length() > 0)
         {
           for (int i = 0; i < elements.length; i++)

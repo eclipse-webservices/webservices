@@ -255,7 +255,7 @@ public class ServerExtensionDefaultingCommand extends SimpleCommand
       //ejbRequired = wssrtRegistry.requiresEJBModuleFor(serverTypeId, serviceIds_.getRuntimeId(), serviceIds_.getTypeId());
 	  ejbRequired = WebServiceRuntimeExtensionUtils.requiresEJBModuleFor(serviceIds_.getServerId(), serviceIds_.getRuntimeId(), serviceIds_.getTypeId());
       //ejbRequired2 = wssrtRegistry.requiresEJBProject(serviceIds_.getTypeId()); 
-	  ejbRequired2 = WebServiceRuntimeExtensionUtils.requiresEJBProject(serviceIds_.getTypeId());
+	  ejbRequired2 = WebServiceRuntimeExtensionUtils.requiresEJBProject(serviceIds_.getRuntimeId(), serviceIds_.getTypeId());
     }
 
 	// rskreg

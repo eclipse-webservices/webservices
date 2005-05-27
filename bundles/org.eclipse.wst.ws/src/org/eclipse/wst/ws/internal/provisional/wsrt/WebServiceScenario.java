@@ -24,6 +24,9 @@ public final class WebServiceScenario extends AbstractEnumerator
   public static final int TOPDOWN = 1;
   public static final int CLIENT = 2;
   
+  public static final String BOTTOMUP_LABEL = "BOTTOMUP_LABEL";
+  public static final String TOPDOWN_LABEL = "TOPDOWN_LABEL";
+  public static final String CLIENT_LABEL = "CLIENT_LABEL";
   
   public static final WebServiceScenario BOTTOMUP_LITERAL = new WebServiceScenario(BOTTOMUP, "BOTTOMUP");
   public static final WebServiceScenario TOPDOWN_LITERAL = new WebServiceScenario(TOPDOWN, "TOPDOWN");
@@ -76,5 +79,6 @@ public final class WebServiceScenario extends AbstractEnumerator
   {
     super(value, name);
   }
+  
 
 } //WebServiceScenario

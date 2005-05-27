@@ -537,7 +537,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     else
     {
       //Pick the first one
-      IProject[] projects = WebServiceRuntimeExtensionUtils.getProjectsByWebServiceType(clientIds_.getTypeId());
+      IProject[] projects = WebServiceRuntimeExtensionUtils.getAllProjects();
       if (projects.length>0)
       {
         getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(projects[0].getName());
@@ -711,6 +711,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
    * 
    * @deprecated Needs to be re-written to deal with flexible project structure APIs 
    */
+  /*
   protected IProject getDefaultEARFromClientProject(IProject project)
   {
     if (project!=null && project.exists()) 
@@ -737,7 +738,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
 
     return earProject;  	
   }
-  
+  */
   private void setClientDefaultServer()
   {
     String initialClientProjectName = runtimeClientTypes_.getChoice().getChoice().getList().getSelection();

@@ -28,6 +28,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRu
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceRuntime;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceType;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -44,6 +45,7 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
+import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntimeSelectionWidgetDefaultingCommand
 {
@@ -122,20 +124,32 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 
   private void setServiceComponentType()
   {
-    IWebServiceType wst = WebServiceRuntimeExtensionUtils.getWebServiceTypeById(serviceIds_.getTypeId());
-    String includeNatures = wst.getConfigurationElement().getAttribute("includeNatures");
-    if (includeNatures == null || includeNatures.length()==0)
+    ServiceType st = WebServiceRuntimeExtensionUtils.getServiceType(serviceIds_.getRuntimeId(), serviceIds_.getTypeId());
+    int scenario = WebServiceRuntimeExtensionUtils.getScenarioFromTypeId(serviceIds_.getTypeId());
+    String[] includeNatures = null;
+    switch (scenario)
+    {
+    case WebServiceScenario.BOTTOMUP:
+      includeNatures = st.getBottomUpModuleTypesInclude();
+      break;
+    case WebServiceScenario.TOPDOWN:
+      includeNatures = st.getTopDownModuleTypesInclude();
+    }
+    //IWebServiceType wst = WebServiceRuntimeExtensionUtils.getWebServiceTypeById(serviceIds_.getTypeId());
+    //String includeNatures = wst.getConfigurationElement().getAttribute("includeNatures");
+    
+    if (includeNatures == null || includeNatures.length==0)
     {
       serviceComponentType_ = J2EEUtils.WEB | J2EEUtils.EJB;
     }
     else
     {
-      StringTokenizer st = new StringTokenizer(includeNatures, " ");
-      int size = st.countTokens();
+      //StringTokenizer st = new StringTokenizer(includeNatures, " ");
+      //int size = st.countTokens();
       ArrayList natureList = new ArrayList();
-      for (int i = 0; i < size; i++)
+      for (int i = 0; i < includeNatures.length; i++)
       {
-        natureList.add(st.nextToken());
+        natureList.add(includeNatures[i]);
       }
       
       boolean containsWeb = natureList.contains("org.eclipse.jst.j2ee.web.WebNature");
@@ -335,7 +349,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     else
     {
       //Pick the first one
-      IProject[] projects = WebServiceRuntimeExtensionUtils.getProjectsByWebServiceType(serviceIds_.getTypeId());
+      IProject[] projects = WebServiceRuntimeExtensionUtils.getAllProjects();
       if (projects.length>0)
       {
         getServiceProject2EARProject().getList().setSelectionValue(projects[0].getName());
@@ -819,6 +833,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
    * @param project
    * @return
    */
+  /*
   private IProject getDefaultEARFromServiceProject(IProject project)
   {
     if (project!=null && project.exists()) 
@@ -844,6 +859,6 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 
     return earProject;  	
   }
-  
+  */
   
 }

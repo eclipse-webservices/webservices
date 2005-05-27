@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
@@ -19,6 +20,7 @@ import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 
 public class ObjectSelectionFragment extends SequenceFragment implements Condition
@@ -68,14 +70,23 @@ public class ObjectSelectionFragment extends SequenceFragment implements Conditi
     this.typeRuntimeServer = typeRuntimeServer;
     if (typeRuntimeServer != null)
     {
-	  // rskreg
-      //IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeRuntimeServer.getTypeId());
-	  IWebServiceType wst = WebServiceRuntimeExtensionUtils.getWebServiceTypeById(typeRuntimeServer.getTypeId());
-	  // rskreg
-      if (wst != null)
+      String wst = typeRuntimeServer.getTypeId();
+
+      int scenario = WebServiceRuntimeExtensionUtils.getScenarioFromTypeId(wst);
+      String implId = WebServiceRuntimeExtensionUtils.getImplIdFromTypeId(wst);
+      if (scenario == WebServiceScenario.TOPDOWN)
       {
-        String objectSelectionWidgetId = wst.getObjectSelectionWidget();
-        hasObjectSelectionWidget = objectSelectionWidgetId != null && objectSelectionWidgetId.length() > 0;
+        //Must have WSDL object selection. No choice.
+        hasObjectSelectionWidget=true;        
+      }
+      else
+      {
+        WebServiceImpl wsimpl = WebServiceRuntimeExtensionUtils.getWebServiceImplById(implId);
+        if (wsimpl!=null)
+        {  
+          String objectSelectionWidgetId = wsimpl.getObjectSelectionWidget(); 
+          hasObjectSelectionWidget = objectSelectionWidgetId != null && objectSelectionWidgetId.length() > 0;
+        }
       }
     }
   }

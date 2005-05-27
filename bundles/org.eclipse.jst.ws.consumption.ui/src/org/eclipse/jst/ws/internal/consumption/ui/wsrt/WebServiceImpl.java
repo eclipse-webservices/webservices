@@ -21,6 +21,7 @@ public class WebServiceImpl {
 	private String label;
 	private String[] resourceTypeMetadata;
 	private String[] extensionMetadata;
+  private String objectSelectionWidget;
   
   public WebServiceImpl(IConfigurationElement elem_)
   {
@@ -81,6 +82,15 @@ public class WebServiceImpl {
       }      
     }
     return resourceTypeMetadata;
+  }
+
+  public String getObjectSelectionWidget()
+  {
+    if (objectSelectionWidget==null)
+    {
+      objectSelectionWidget = elem_.getAttribute("objectSelectionWidget");
+    }
+    return objectSelectionWidget;
   }
   
 	

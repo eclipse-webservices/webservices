@@ -171,7 +171,7 @@
   	<webServiceRuntime
     id="org.eclipse.jst.ws.axis.creation.axisWebServiceRT"
     label="%LABEL_RUNTIME_AXIS_11"
-    serviceTypes="org.eclipse.jst.ws.serviceType.java org.eclipse.jst.ws.serviceType.wsdl"
+    serviceTypes="org.eclipse.jst.ws.serviceType.java"
     clientTypes="org.eclipse.jst.ws.clientType.java.webOnly"
     servletLevels="23 24"
     j2eeLevels="13 14"

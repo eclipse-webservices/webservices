@@ -76,13 +76,14 @@ public class PreServiceDevelopCommand extends SimpleCommand
 	
 		//Set up the IContext
 		WebServiceScenario scenario = null;
-		if (typeRuntimeServer_.getTypeId().equals("org.eclipse.jst.ws.type.java"))
+    int scenarioInt = WebServiceRuntimeExtensionUtils.getScenarioFromTypeId(typeRuntimeServer_.getTypeId());
+    if (scenarioInt == WebServiceScenario.BOTTOMUP)
 		{
 			scenario = WebServiceScenario.BOTTOMUP_LITERAL;
       String impl = (String)(selection_.getSelection())[0];
       wsInfo.setImplURL(impl);
 		}
-		else if (typeRuntimeServer_.getTypeId().equals("org.eclipse.jst.ws.type.wsdl"))
+    else if (scenarioInt == WebServiceScenario.TOPDOWN)
 		{
 		  scenario = WebServiceScenario.TOPDOWN_LITERAL;
       String wsdlURL = (String)(selection_.getSelection())[0];

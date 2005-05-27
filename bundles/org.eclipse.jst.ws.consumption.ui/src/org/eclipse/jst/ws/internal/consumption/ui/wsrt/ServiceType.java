@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
+import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 public class ServiceType {
 
@@ -142,6 +143,7 @@ public class ServiceType {
     this.topDownModuleTypesInclude = topDownModuleTypesInclude;
   }
   
+  /*
   public IWebServiceType getWebSerivceType()
   {
     if (webServiceType==null)
@@ -151,6 +153,7 @@ public class ServiceType {
     }
     return webServiceType;
   }
+  */
   
   public void setWebServiceType(IWebServiceType webServiceType)
   {
@@ -172,7 +175,44 @@ public class ServiceType {
     this.webServiceImpl = webServiceImpl;
   }
   
-	
+  public boolean supportsScenario(int scenario)
+  {
+    switch(scenario)
+    {
+    case WebServiceScenario.BOTTOMUP:
+      String[] bus = getBottomUpModuleTypesInclude();
+      if (bus!=null && bus.length>0)
+      {
+        return true;
+      }
+      break;
+    case WebServiceScenario.TOPDOWN:
+      String[] tds = getTopDownModuleTypesInclude();
+      if (tds!=null && tds.length>0)
+      {
+        return true;
+      }
+      break;
+    default:
+     
+    }
+    
+    return false;
+  }
+  
+	public String[] getModuleTypesInclude(int scenario)
+  {
+    switch(scenario)
+    {
+    case WebServiceScenario.BOTTOMUP:
+      return getBottomUpModuleTypesInclude();
+    case WebServiceScenario.TOPDOWN:
+      return getTopDownModuleTypesInclude();
+    default:     
+    }
+    
+    return null;    
+  }
   
 	
 	

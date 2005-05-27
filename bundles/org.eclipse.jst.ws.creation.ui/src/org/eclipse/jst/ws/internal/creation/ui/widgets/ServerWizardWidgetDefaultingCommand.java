@@ -24,16 +24,11 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
   private IStructuredSelection initialSelection_;
   
   public Status execute(Environment env)
-  {
-    // rskreg	  
-    //WebServiceServerRuntimeTypeRegistry registry = WebServiceServerRuntimeTypeRegistry.getInstance();
-    
-    String type      = getScenarioContext().getWebServiceType();                       
+  {    
+    String type      = getScenarioContext().getWebServiceType();
     String runtime   = WebServiceRuntimeExtensionUtils.getDefaultRuntimeValueFor( type );
 	
-    //String serverID  = WebServiceRuntimeExtensionUtils.getDefaultServerValueFor( type );
-    String factoryID = WebServiceRuntimeExtensionUtils.getDefaultServerValueFor(type);
-    // rskreg    
+    String factoryID = WebServiceRuntimeExtensionUtils.getDefaultServerValueFor(type);    
     typeRuntimeServer_ = new TypeRuntimeServer();
     
     typeRuntimeServer_.setTypeId( type );
@@ -41,9 +36,8 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
     typeRuntimeServer_.setServerId( factoryID );
     
     //Default the typeId from the initial selection
-	// rskreg
     String[] typeIds = WebServiceRuntimeExtensionUtils.getWebServiceTypeBySelection(initialSelection_);
-	// rskreg
+
     if (typeIds!=null && typeIds.length>0)
     {
       typeRuntimeServer_.setTypeId(typeIds[0]);

@@ -779,7 +779,7 @@
     id="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceSampleTest"
     label="%SAMPLE_TYPE_WEBSERVICES_ID"
     testWSDL="no"
-    wsClientImplIds="org.eclipse.jst.ws.wsClientImpl.java"
+    wsClientImplIds="org.eclipse.jst.ws.client.type.java"
     moduletypes="webmodule"
     methodsneeded="true"
     class="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample.GSTCWebServiceTester">
@@ -790,7 +790,7 @@
     id="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.explorer.WebServiceExplorer"
     label="%WSEXPLORER_ID"
     testWSDL="yes"
-    wsClientImplIds="org.eclipse.jst.ws.wsClientImpl.java"
+    wsClientImplIds="org.eclipse.jst.ws.client.type.java"
     moduletypes="webmodule"
     methodsneeded="false"
     class="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.explorer.WSEWebServiceTester">
@@ -804,12 +804,13 @@
             id="org.eclipse.jst.ws.wsImpl.java"
             label="%WEBSERVICETYPE_NAME_JAVA"
             resourceTypeMetadata="File IResource CompilationUnit"
-            extensionMetadata=".java .class">
+            extensionMetadata=".java .class"
+            objectSelectionWidget="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.JavaBeanSelectionWidget">
   </webServiceImpl>
 </extension>   
 <extension point="org.eclipse.jst.ws.consumption.ui.wsClientImpl">
   <webServiceClientImpl
-            id="org.eclipse.jst.ws.wsClientImpl.java"
+            id="org.eclipse.jst.ws.client.type.java"
             label="Java Proxy">
   </webServiceClientImpl>
 </extension>   
@@ -820,10 +821,10 @@
             buModuleTypesInclude="org.eclipse.jst.j2ee.web.WebNature"
             buModuleTypesExclude=""
             tdModuleTypesInclude="org.eclipse.jst.j2ee.web.WebNature"
-            tdModuleTypesExclude=""
-            webServiceTypeId="org.eclipse.jst.ws.type.java">
+            tdModuleTypesExclude="">
   </serviceType>
 </extension>   
+<!--
 <extension point="org.eclipse.jst.ws.consumption.ui.serviceType">
   <serviceType
             id="org.eclipse.jst.ws.serviceType.wsdl"
@@ -835,13 +836,13 @@
             webServiceTypeId="org.eclipse.jst.ws.type.wsdl">
   </serviceType>
 </extension>
+-->
 <extension point="org.eclipse.jst.ws.consumption.ui.clientType">
   <clientType
             id="org.eclipse.jst.ws.clientType.java.webOnly"
-            implId="org.eclipse.jst.ws.wsClientImpl.java"
+            implId="org.eclipse.jst.ws.client.type.java"
             moduleTypesInclude="org.eclipse.jst.ws.consumption.ui.clientProjectType.Web"
-			moduleTypesExclude=""
-            webServiceClientTypeId="org.eclipse.jst.ws.client.type.java">
+			moduleTypesExclude="">
   </clientType>
 </extension>
   

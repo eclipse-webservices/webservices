@@ -101,7 +101,7 @@ public class ClientType {
   
 
 
-
+  /*
   public String getWebServiceClientTypeId()
   {
     if (webServiceClientTypeId==null)
@@ -110,7 +110,7 @@ public class ClientType {
     }
     return webServiceClientTypeId;
   }
-  
+  */
 
 
 	
