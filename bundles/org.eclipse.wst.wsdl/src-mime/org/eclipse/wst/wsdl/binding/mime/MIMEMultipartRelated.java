@@ -10,13 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime;
 
-import org.eclipse.wst.wsdl.ExtensibilityElement;
-
 import java.util.List;
 
 import javax.wsdl.extensions.mime.MIMEPart;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 
 /**
  * <!-- begin-user-doc -->

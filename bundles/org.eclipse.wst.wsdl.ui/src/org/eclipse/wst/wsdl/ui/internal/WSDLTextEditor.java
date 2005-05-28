@@ -12,7 +12,9 @@ package org.eclipse.wst.wsdl.ui.internal;
 
 import java.util.Iterator;
 import java.util.List;
+
 import javax.xml.namespace.QName;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;

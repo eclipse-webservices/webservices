@@ -18,7 +18,6 @@ import java.util.Hashtable;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceTypeImpl;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 

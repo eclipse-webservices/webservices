@@ -10,9 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.wsdl;
 
-import org.eclipse.wst.wsi.internal.core.xml.dom.ElementLocation;
+import java.util.HashMap;
+import java.util.Iterator;
 
-import java.util.*;
+import org.eclipse.wst.wsi.internal.core.xml.dom.ElementLocation;
 
 /**
  * This class maintains a WSDL element list.

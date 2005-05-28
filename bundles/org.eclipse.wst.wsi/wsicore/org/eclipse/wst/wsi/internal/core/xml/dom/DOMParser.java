@@ -10,18 +10,16 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.xml.dom;
 
-import org.w3c.dom.Element;
-
-import org.xml.sax.SAXNotSupportedException;
-import org.xml.sax.SAXNotRecognizedException;
-
 import org.apache.xerces.dom.ElementImpl;
 import org.apache.xerces.xni.Augmentations;
 import org.apache.xerces.xni.NamespaceContext;
 import org.apache.xerces.xni.QName;
-import org.apache.xerces.xni.XMLLocator;
 import org.apache.xerces.xni.XMLAttributes;
+import org.apache.xerces.xni.XMLLocator;
 import org.apache.xerces.xni.XNIException;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
 /**
  * This class specializes org.apache.xerces.parsers.DOMParser.

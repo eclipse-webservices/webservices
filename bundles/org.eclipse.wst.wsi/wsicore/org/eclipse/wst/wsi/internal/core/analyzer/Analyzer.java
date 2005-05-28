@@ -14,6 +14,11 @@
  */
 package org.eclipse.wst.wsi.internal.core.analyzer;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Vector;
+
 import org.eclipse.wst.wsi.internal.core.ToolInfo;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
@@ -25,11 +30,6 @@ import org.eclipse.wst.wsi.internal.core.profile.validator.ProfileValidatorFacto
 import org.eclipse.wst.wsi.internal.core.report.Reporter;
 import org.eclipse.wst.wsi.internal.core.util.MessageList;
 import org.eclipse.wst.wsi.internal.core.util.TestUtils;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.List;
-import java.util.Vector;
 
 /**
  * The Analyzer will process all Profile conformance functions.

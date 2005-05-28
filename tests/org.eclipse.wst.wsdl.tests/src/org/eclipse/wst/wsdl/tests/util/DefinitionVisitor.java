@@ -10,10 +10,29 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests.util;
 
-import org.eclipse.wst.wsdl.*;
-import java.util.*;
+import java.util.Iterator;
 
 import junit.framework.TestCase;
+
+import org.eclipse.wst.wsdl.Binding;
+import org.eclipse.wst.wsdl.BindingFault;
+import org.eclipse.wst.wsdl.BindingInput;
+import org.eclipse.wst.wsdl.BindingOperation;
+import org.eclipse.wst.wsdl.BindingOutput;
+import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
+import org.eclipse.wst.wsdl.ExtensibleElement;
+import org.eclipse.wst.wsdl.Fault;
+import org.eclipse.wst.wsdl.Import;
+import org.eclipse.wst.wsdl.Input;
+import org.eclipse.wst.wsdl.Message;
+import org.eclipse.wst.wsdl.Operation;
+import org.eclipse.wst.wsdl.Output;
+import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.Port;
+import org.eclipse.wst.wsdl.PortType;
+import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.Types;
 
 /**
  * @author Kihup Boo

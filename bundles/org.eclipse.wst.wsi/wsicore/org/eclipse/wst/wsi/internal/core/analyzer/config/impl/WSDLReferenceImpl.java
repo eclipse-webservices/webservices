@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.analyzer.config.impl;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.WSDLElement;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.WSDLReference;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
-
-import java.io.*;
 
 /**
  * The implementation for a reference to a description artifact.  

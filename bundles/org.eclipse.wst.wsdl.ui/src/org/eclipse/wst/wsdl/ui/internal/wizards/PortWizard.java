@@ -19,14 +19,13 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.internal.generator.PortGenerator;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.ContentGeneratorOptionsPage;
 import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.SoapBindingOptionsPage;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.widgets.ProtocolComponentControl;
-
-import org.eclipse.wst.wsdl.internal.generator.PortGenerator;
 
 public class PortWizard extends Wizard
 {

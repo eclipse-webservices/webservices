@@ -10,15 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile.impl;
 
-import org.eclipse.wst.wsi.internal.core.profile.ProfileArtifact;
-import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
-import org.eclipse.wst.wsi.internal.core.util.ArtifactType;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.Vector;
+
+import org.eclipse.wst.wsi.internal.core.profile.ProfileArtifact;
+import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
+import org.eclipse.wst.wsi.internal.core.util.ArtifactType;
 
 /**
  * An artifact contains a set of related test assertions.

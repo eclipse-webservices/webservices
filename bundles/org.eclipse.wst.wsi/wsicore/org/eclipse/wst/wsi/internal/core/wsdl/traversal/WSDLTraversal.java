@@ -9,24 +9,27 @@
  *   IBM - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.wsdl.traversal;
-import javax.wsdl.Part;
-import javax.wsdl.Service;
-import javax.wsdl.Types;
-import javax.wsdl.Operation;
-import javax.wsdl.Input;
-import javax.wsdl.Output;
-import javax.wsdl.Fault;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Vector;
+
 import javax.wsdl.Binding;
-import javax.wsdl.BindingOperation;
-import javax.wsdl.BindingInput;
-import javax.wsdl.BindingOutput;
 import javax.wsdl.BindingFault;
+import javax.wsdl.BindingInput;
+import javax.wsdl.BindingOperation;
+import javax.wsdl.BindingOutput;
+import javax.wsdl.Definition;
+import javax.wsdl.Fault;
 import javax.wsdl.Import;
-import org.w3c.dom.Element;
+import javax.wsdl.Input;
 import javax.wsdl.Message;
+import javax.wsdl.Operation;
+import javax.wsdl.Output;
+import javax.wsdl.Part;
 import javax.wsdl.Port;
 import javax.wsdl.PortType;
-import javax.wsdl.Definition;
+import javax.wsdl.Service;
+import javax.wsdl.Types;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.soap.SOAPBinding;
 import javax.wsdl.extensions.soap.SOAPBody;
@@ -35,9 +38,7 @@ import javax.wsdl.extensions.soap.SOAPHeader;
 import javax.wsdl.extensions.soap.SOAPHeaderFault;
 import javax.wsdl.extensions.soap.SOAPOperation;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Vector;
+import org.w3c.dom.Element;
 
 /**
  * The class implements plain traverse over WSDL artifacts.

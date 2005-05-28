@@ -15,10 +15,10 @@ import java.util.List;
 import org.eclipse.wst.wsi.internal.core.ToolInfo;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.analyzer.BasicProfileAnalyzer;
-import org.eclipse.wst.wsi.internal.document.DocumentFactoryImpl;
 import org.eclipse.wst.wsi.internal.core.profile.validator.ProfileValidatorFactory;
 import org.eclipse.wst.wsi.internal.core.report.Report;
 import org.eclipse.wst.wsi.internal.core.util.MessageList;
+import org.eclipse.wst.wsi.internal.document.DocumentFactoryImpl;
 
 /**
  * WSIBasicProfileAnalyzer

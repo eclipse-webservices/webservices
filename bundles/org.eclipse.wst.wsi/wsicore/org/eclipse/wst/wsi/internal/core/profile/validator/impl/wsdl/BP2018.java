@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl;
 
 import javax.wsdl.Definition;
+
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.WSITag;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;

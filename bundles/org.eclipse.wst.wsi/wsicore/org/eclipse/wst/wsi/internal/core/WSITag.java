@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core;
 
-import org.eclipse.wst.wsi.internal.core.xml.XMLTags;
-
 import javax.xml.namespace.QName;
+
+import org.eclipse.wst.wsi.internal.core.xml.XMLTags;
 
 /**
  * WS-I constants.  

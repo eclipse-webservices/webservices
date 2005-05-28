@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.report.impl;
 
+import java.util.TreeMap;
+
 import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
 import org.eclipse.wst.wsi.internal.core.report.EntryResult;
-
-import java.util.TreeMap;
 
 /**
  * Result for a specific test assertion.

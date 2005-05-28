@@ -11,18 +11,17 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.monitor;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InterruptedIOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.Socket;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
 import org.eclipse.wst.wsi.internal.core.util.Utils;
-
-import java.net.Socket;
-
-import java.io.InputStream;
-import java.io.InterruptedIOException;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 /**
  * Socket Handler.

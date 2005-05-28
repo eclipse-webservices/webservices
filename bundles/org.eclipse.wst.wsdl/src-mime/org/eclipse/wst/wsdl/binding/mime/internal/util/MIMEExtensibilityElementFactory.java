@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime.internal.util;
 
-import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
-
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
+import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
 
 public class MIMEExtensibilityElementFactory implements ExtensibilityElementFactory

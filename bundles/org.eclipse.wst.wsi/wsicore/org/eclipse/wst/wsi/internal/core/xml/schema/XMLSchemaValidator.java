@@ -10,20 +10,20 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.xml.schema;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.util.TestUtils;
 import org.eclipse.wst.wsi.internal.core.xml.XMLDocumentCache;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import com.ibm.wsdl.util.xml.DOM2Writer;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import com.ibm.wsdl.util.xml.DOM2Writer;
 
 /**
  * This class is used to validate an XML Schema.

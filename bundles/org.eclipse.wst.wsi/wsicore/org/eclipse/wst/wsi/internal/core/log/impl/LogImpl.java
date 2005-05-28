@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.log.impl;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Vector;
 
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
@@ -18,8 +20,6 @@ import org.eclipse.wst.wsi.internal.core.log.Log;
 import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
 import org.eclipse.wst.wsi.internal.core.util.TestUtils;
 import org.eclipse.wst.wsi.internal.core.util.Utils;
-
-import java.io.*;
 
 /**
  * This class represents the message log file.

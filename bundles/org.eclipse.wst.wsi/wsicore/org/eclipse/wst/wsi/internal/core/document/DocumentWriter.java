@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.document;
 
-import org.eclipse.wst.wsi.internal.core.WSIException;
-import org.w3c.dom.Document;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+
+import org.eclipse.wst.wsi.internal.core.WSIException;
+import org.w3c.dom.Document;
 
 /**
  * Defines the interface used to write the Conformance XML documents.

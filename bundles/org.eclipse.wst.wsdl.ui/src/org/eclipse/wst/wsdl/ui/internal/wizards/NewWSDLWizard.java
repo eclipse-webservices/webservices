@@ -38,8 +38,11 @@ import org.eclipse.wst.sse.core.internal.encoding.CommonEncodingPreferenceNames;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.binding.http.internal.generator.HTTPContentGenerator;
 import org.eclipse.wst.wsdl.binding.http.internal.util.HTTPConstants;
+import org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator;
 import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
+import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
@@ -61,10 +64,6 @@ import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.ModelQuery;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.CMVisitor;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceInfo;
 import org.w3c.dom.Element;
-
-import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
-import org.eclipse.wst.wsdl.binding.http.internal.generator.HTTPContentGenerator;
-import org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator;
 
 public class NewWSDLWizard extends Wizard implements INewWizard {
 	private WSDLNewFilePage newFilePage;

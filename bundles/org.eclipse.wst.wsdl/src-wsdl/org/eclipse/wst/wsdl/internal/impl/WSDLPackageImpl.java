@@ -27,11 +27,6 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-import org.eclipse.xsd.XSDPackage;
-import org.eclipse.xsd.impl.XSDPackageImpl;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
@@ -58,6 +53,10 @@ import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.xsd.XSDPackage;
+import org.eclipse.xsd.impl.XSDPackageImpl;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * <!-- begin-user-doc -->

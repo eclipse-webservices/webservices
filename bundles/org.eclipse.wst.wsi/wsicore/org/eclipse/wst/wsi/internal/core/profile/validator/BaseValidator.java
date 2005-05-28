@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsi.internal.core.profile.validator;
 
 import org.eclipse.wst.wsi.internal.core.WSIException;
-
 import org.w3c.dom.Document;
 
 /**

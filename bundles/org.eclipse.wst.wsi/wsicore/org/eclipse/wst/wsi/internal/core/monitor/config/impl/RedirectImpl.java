@@ -10,13 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.monitor.config.impl;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.monitor.config.Comment;
 import org.eclipse.wst.wsi.internal.core.monitor.config.Redirect;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
-
-import java.io.*;
-import java.net.*;
 
 /**
  *  The implementation for monitor config Redirect element.

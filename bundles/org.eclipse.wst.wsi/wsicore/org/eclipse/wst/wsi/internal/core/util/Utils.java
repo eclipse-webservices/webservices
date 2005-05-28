@@ -31,9 +31,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.Vector;
-import java.util.StringTokenizer;
 
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;

@@ -10,20 +10,25 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.monitor.config.impl;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.WSIFileNotFoundException;
 import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
 import org.eclipse.wst.wsi.internal.core.common.impl.AddStyleSheetImpl;
-import org.eclipse.wst.wsi.internal.core.monitor.config.*;
+import org.eclipse.wst.wsi.internal.core.monitor.config.Comment;
+import org.eclipse.wst.wsi.internal.core.monitor.config.ManInTheMiddle;
+import org.eclipse.wst.wsi.internal.core.monitor.config.MonitorConfig;
+import org.eclipse.wst.wsi.internal.core.monitor.config.MonitorConfigReader;
+import org.eclipse.wst.wsi.internal.core.monitor.config.Redirect;
 import org.eclipse.wst.wsi.internal.core.util.MessageList;
 import org.eclipse.wst.wsi.internal.core.util.TestUtils;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import java.io.*;
 
 /**
  * Defines the implementation used to read the monitor config documents.

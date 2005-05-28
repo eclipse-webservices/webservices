@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.wsdl;
 
-import org.eclipse.wst.wsi.internal.core.WSIConstants;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.wsdl.Binding;
 import javax.wsdl.BindingOperation;
@@ -27,7 +29,7 @@ import javax.wsdl.extensions.soap.SOAPHeaderFault;
 import javax.wsdl.extensions.soap.SOAPOperation;
 import javax.xml.namespace.QName;
 
-import java.util.*;
+import org.eclipse.wst.wsi.internal.core.WSIConstants;
 
 /**
  * Set of XML related utilities.

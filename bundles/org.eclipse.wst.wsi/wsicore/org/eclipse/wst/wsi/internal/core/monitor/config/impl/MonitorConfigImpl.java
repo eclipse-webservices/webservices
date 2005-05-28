@@ -10,15 +10,20 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.monitor.config.impl;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
 import org.eclipse.wst.wsi.internal.core.common.impl.AddStyleSheetImpl;
 import org.eclipse.wst.wsi.internal.core.monitor.Monitor;
-import org.eclipse.wst.wsi.internal.core.monitor.config.*;
+import org.eclipse.wst.wsi.internal.core.monitor.config.Comment;
+import org.eclipse.wst.wsi.internal.core.monitor.config.ManInTheMiddle;
+import org.eclipse.wst.wsi.internal.core.monitor.config.MonitorConfig;
+import org.eclipse.wst.wsi.internal.core.monitor.config.MonitorConfigReader;
+import org.eclipse.wst.wsi.internal.core.monitor.config.Redirect;
 import org.eclipse.wst.wsi.internal.core.util.MessageList;
-
-import java.io.*;
 
 /**
  * This is the implementation for the monitor configuration file.

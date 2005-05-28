@@ -10,17 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.http.internal.impl;
 
-import org.eclipse.wst.wsdl.WSDLPackage;
-
-
-import org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
+import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
 import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
 import org.eclipse.wst.wsdl.binding.http.HTTPFactory;
@@ -28,6 +22,7 @@ import org.eclipse.wst.wsdl.binding.http.HTTPOperation;
 import org.eclipse.wst.wsdl.binding.http.HTTPPackage;
 import org.eclipse.wst.wsdl.binding.http.HTTPUrlEncoded;
 import org.eclipse.wst.wsdl.binding.http.HTTPUrlReplacement;
+import org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl;
 import org.eclipse.xsd.impl.XSDPackageImpl;
 
 /**

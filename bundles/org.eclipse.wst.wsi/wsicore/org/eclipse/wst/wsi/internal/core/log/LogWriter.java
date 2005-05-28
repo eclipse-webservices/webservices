@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.log;
 
+import java.io.Writer;
+
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.document.DocumentWriter;
-import org.eclipse.wst.wsi.internal.core.log.Log;
-
-import java.io.Writer;
 
 /**
  * Defines the interface used to write the Log file.

@@ -11,11 +11,12 @@
 
 package org.eclipse.wst.wsi.internal;
 
-import java.io.ByteArrayOutputStream;
 import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.BitSet;
 
 /**

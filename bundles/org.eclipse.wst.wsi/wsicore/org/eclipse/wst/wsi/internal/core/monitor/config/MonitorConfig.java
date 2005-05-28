@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.monitor.config;
 
+import javax.xml.namespace.QName;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
 import org.eclipse.wst.wsi.internal.core.document.WSIDocument;
 import org.eclipse.wst.wsi.internal.core.util.MessageList;
-
-import javax.xml.namespace.QName;
 
 /**
  * This is the interface for the monitor configuration file.

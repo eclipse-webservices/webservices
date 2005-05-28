@@ -11,21 +11,17 @@
 package org.eclipse.wst.wsdl.binding.http.internal.impl;
 
 
-import org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl;
-
 import javax.xml.namespace.QName;
 
 import org.eclipse.emf.common.notify.Notification;
-
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EAttribute;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.wst.wsdl.binding.http.HTTPOperation;
 import org.eclipse.wst.wsdl.binding.http.HTTPPackage;
 import org.eclipse.wst.wsdl.binding.http.internal.util.HTTPConstants;
-
+import org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl;
 import org.w3c.dom.Element;
 
 /**

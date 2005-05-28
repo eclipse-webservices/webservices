@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile.impl;
 
+import java.util.Iterator;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import org.eclipse.wst.wsi.internal.core.profile.Profile;
 import org.eclipse.wst.wsi.internal.core.profile.ProfileArtifact;
 import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertions;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
-
-import java.util.Iterator;
-import java.util.TreeMap;
 
 /**
  * This class ...

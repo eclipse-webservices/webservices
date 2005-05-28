@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.common.impl;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.TreeMap;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
-
-import java.io.*;
-import java.util.TreeMap;
 
 /**
  * The implementation for AddStyleSheet element. 

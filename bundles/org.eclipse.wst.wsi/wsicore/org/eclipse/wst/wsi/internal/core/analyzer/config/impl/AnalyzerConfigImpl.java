@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.analyzer.config.impl;
 
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.analyzer.Analyzer;
@@ -24,10 +28,6 @@ import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
 import org.eclipse.wst.wsi.internal.core.common.impl.AddStyleSheetImpl;
 import org.eclipse.wst.wsi.internal.core.util.MessageList;
 import org.eclipse.wst.wsi.internal.core.util.Utils;
-
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 /**
  * This class is an implementation of the analyzer configuration file interface.

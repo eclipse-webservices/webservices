@@ -10,14 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.monitor;
 
+import java.net.Socket;
+import java.util.Iterator;
+import java.util.Vector;
+
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
 import org.eclipse.wst.wsi.internal.core.log.MimeParts;
 import org.eclipse.wst.wsi.internal.core.monitor.config.Redirect;
 import org.eclipse.wst.wsi.internal.core.util.Utils;
-
-import java.net.Socket;
-import java.util.*; // SS
 
 /**
  * A socket connection.

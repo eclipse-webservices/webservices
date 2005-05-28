@@ -17,10 +17,9 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.wst.wsi.internal.URIEncoder;
-import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.WSIPreferences;
 import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
-import org.eclipse.wst.wsi.internal.analyzer.WSIAnalyzerException;
+import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AnalyzerConfig;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AssertionResultType;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AssertionResultsOption;
@@ -33,12 +32,12 @@ import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
 import org.eclipse.wst.wsi.internal.core.common.impl.AddStyleSheetImpl;
 import org.eclipse.wst.wsi.internal.core.document.DocumentFactory;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
-import org.eclipse.wst.wsi.internal.report.AssertionError;
 import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
 import org.eclipse.wst.wsi.internal.core.report.Entry;
 import org.eclipse.wst.wsi.internal.core.report.impl.FailureDetailImpl;
 import org.eclipse.wst.wsi.internal.core.report.impl.ReportImpl;
 import org.eclipse.wst.wsi.internal.core.xml.dom.ElementLocation;
+import org.eclipse.wst.wsi.internal.report.AssertionError;
 
 /**
  * MessageAnalyzer

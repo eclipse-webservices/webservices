@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.internal.impl;
 
 import javax.xml.namespace.QName;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EAttribute;

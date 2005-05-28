@@ -17,7 +17,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisClientCommand
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisClientFragment.MappingFragment;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionOutputCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;

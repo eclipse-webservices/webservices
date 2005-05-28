@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui;  
         
 import org.eclipse.swt.widgets.Composite;
-
 import org.eclipse.wst.wsdl.internal.generator.BaseGenerator;
 
 public interface ContentGeneratorOptionsPage

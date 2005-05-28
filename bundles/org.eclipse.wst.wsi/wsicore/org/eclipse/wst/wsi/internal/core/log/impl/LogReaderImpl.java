@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.log.impl;
 
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
 import org.eclipse.wst.wsi.internal.core.ToolEnvironment;
 import org.eclipse.wst.wsi.internal.core.ToolInfo;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
@@ -19,8 +24,6 @@ import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
 import org.eclipse.wst.wsi.internal.core.log.MessageEntryHandler;
 import org.eclipse.wst.wsi.internal.core.log.MimePart;
 import org.eclipse.wst.wsi.internal.core.log.MimeParts;
-import org.eclipse.wst.wsi.internal.core.log.impl.MimePartImpl;
-import org.eclipse.wst.wsi.internal.core.log.impl.MimePartsImpl;
 import org.eclipse.wst.wsi.internal.core.monitor.config.Comment;
 import org.eclipse.wst.wsi.internal.core.monitor.config.impl.CommentImpl;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
@@ -32,12 +35,11 @@ import org.eclipse.wst.wsi.internal.core.util.EntryType;
 import org.eclipse.wst.wsi.internal.core.util.Utils;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
 import org.eclipse.wst.wsi.internal.core.xml.dom.ElementLocation;
-
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
-
-import java.io.*;
-import java.util.*;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.Locator;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Defines the implementation used to read the Log file.

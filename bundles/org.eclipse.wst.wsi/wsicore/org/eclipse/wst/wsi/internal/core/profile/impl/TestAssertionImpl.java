@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile.impl;
 
+import java.util.Vector;
+
 import org.eclipse.wst.wsi.internal.core.profile.EntryTypeList;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
-
-import java.util.Vector;
 
 /**
  * This class ...

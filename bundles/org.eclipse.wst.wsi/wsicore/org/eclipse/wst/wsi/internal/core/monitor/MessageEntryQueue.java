@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.monitor;
 
+import java.io.StringReader;
+import java.util.Vector;
+
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.log.Log;
 import org.eclipse.wst.wsi.internal.core.log.LogWriter;
 import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
-
-import java.io.*;
-import java.util.*;
 
 /**
  * This class is the queue that is used to write request and response messages

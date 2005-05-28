@@ -21,14 +21,18 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-
-import org.eclipse.wst.wsdl.*;
-import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
-import org.eclipse.wst.wsdl.util.WSDLConstants;
-
-import org.eclipse.wst.wsdl.binding.soap.*;
-import org.eclipse.wst.wsdl.binding.soap.internal.util.*;
+import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.Input;
+import org.eclipse.wst.wsdl.Message;
+import org.eclipse.wst.wsdl.Operation;
+import org.eclipse.wst.wsdl.Output;
+import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.PortType;
+import org.eclipse.wst.wsdl.WSDLFactory;
+import org.eclipse.wst.wsdl.WSDLPackage;
+import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 

@@ -11,12 +11,18 @@
 package org.eclipse.wst.wsi.internal.core.xml.jaxp;
 
 
-import org.apache.xerces.impl.Constants;
-import org.apache.xerces.dom.DocumentImpl;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Hashtable;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.xerces.dom.DOMImplementationImpl;
+import org.apache.xerces.dom.DocumentImpl;
+import org.apache.xerces.impl.Constants;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
 import org.eclipse.wst.wsi.internal.core.xml.dom.DOMParser;
-
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -24,13 +30,6 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Enumeration;
 
 /**
  * Using this class, we can obtain a Document from XML. This class is a 

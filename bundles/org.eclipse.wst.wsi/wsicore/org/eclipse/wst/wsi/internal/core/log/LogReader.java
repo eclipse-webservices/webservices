@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.log;
 
+import java.io.Reader;
+
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.document.DocumentReader;
-
-import java.io.*;
 
 /**
  * Defines the interface used to read the Log file.

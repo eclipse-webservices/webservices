@@ -10,11 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime.internal.impl;
 
-import org.eclipse.wst.wsdl.WSDLPackage;
-
-
-import org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl;
-
 import java.util.List;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -23,15 +18,15 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
+import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.binding.mime.MIMEContent;
 import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
 import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
 import org.eclipse.wst.wsdl.binding.mime.MIMEMultipartRelated;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
+import org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl;
 import org.eclipse.xsd.impl.XSDPackageImpl;
 
 /**

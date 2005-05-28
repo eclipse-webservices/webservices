@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile;
 
-import org.eclipse.wst.wsi.internal.core.WSIConstants;
-import org.eclipse.wst.wsi.internal.core.document.WSIDocument;
+import java.util.TreeMap;
+import java.util.Vector;
 
 import javax.xml.namespace.QName;
 
-import java.util.TreeMap;
-import java.util.Vector;
+import org.eclipse.wst.wsi.internal.core.WSIConstants;
+import org.eclipse.wst.wsi.internal.core.document.WSIDocument;
 
 /**
  * This interface maintains profile assertions.

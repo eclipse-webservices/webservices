@@ -10,14 +10,17 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.http.internal.util;
 
-import org.eclipse.wst.wsdl.WSDLElement;
-
-
 import javax.wsdl.extensions.ExtensibilityElement;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.wst.wsdl.binding.http.*;
+import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
+import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
+import org.eclipse.wst.wsdl.binding.http.HTTPOperation;
+import org.eclipse.wst.wsdl.binding.http.HTTPPackage;
+import org.eclipse.wst.wsdl.binding.http.HTTPUrlEncoded;
+import org.eclipse.wst.wsdl.binding.http.HTTPUrlReplacement;
 
 /**
  * <!-- begin-user-doc -->

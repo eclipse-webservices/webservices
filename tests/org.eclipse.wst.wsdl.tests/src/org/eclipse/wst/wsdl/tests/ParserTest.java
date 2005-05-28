@@ -10,15 +10,19 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import javax.xml.parsers.*;
-import org.w3c.dom.*;
-import org.xml.sax.*;
-import java.io.*;
+import org.w3c.dom.Document;
+import org.xml.sax.EntityResolver;
 
 public class ParserTest extends TestCase
 {

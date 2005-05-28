@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.http.internal.util;
 
-import org.eclipse.wst.wsdl.binding.http.HTTPFactory;
-
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
+import org.eclipse.wst.wsdl.binding.http.HTTPFactory;
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
 
 public class HTTPExtensibilityElementFactory implements ExtensibilityElementFactory

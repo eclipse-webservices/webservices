@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.xml;
 
+import java.net.URL;
+
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.w3c.dom.Document;
-
-import java.net.URL;
 
 /**
  * This is an abstract class that takes advantage of cached XML documents.

@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile;
 
+import java.io.Reader;
+
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.document.DocumentReader;
-import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertions;
-
-import java.io.Reader;
 
 /**
  * Defines the interface used to read a profile assertions documents.

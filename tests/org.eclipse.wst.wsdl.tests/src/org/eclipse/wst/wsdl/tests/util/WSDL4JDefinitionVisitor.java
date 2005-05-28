@@ -10,10 +10,26 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests.util;
 
-import javax.wsdl.*;
-import javax.wsdl.extensions.*;
+import java.util.Iterator;
 
-import java.util.*;
+import javax.wsdl.Binding;
+import javax.wsdl.BindingFault;
+import javax.wsdl.BindingInput;
+import javax.wsdl.BindingOperation;
+import javax.wsdl.BindingOutput;
+import javax.wsdl.Definition;
+import javax.wsdl.Fault;
+import javax.wsdl.Import;
+import javax.wsdl.Input;
+import javax.wsdl.Message;
+import javax.wsdl.Operation;
+import javax.wsdl.Output;
+import javax.wsdl.Part;
+import javax.wsdl.Port;
+import javax.wsdl.PortType;
+import javax.wsdl.Service;
+import javax.wsdl.Types;
+import javax.wsdl.extensions.ExtensibilityElement;
 
 import junit.framework.TestCase;
 

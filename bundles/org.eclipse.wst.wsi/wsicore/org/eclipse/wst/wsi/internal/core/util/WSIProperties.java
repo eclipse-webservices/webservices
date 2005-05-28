@@ -10,9 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.util;
 
-import org.uddi4j.transport.TransportFactory;
+import java.util.Enumeration;
+import java.util.MissingResourceException;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
-import java.util.*;
+import org.uddi4j.transport.TransportFactory;
 
 /**
  * The WSI properties can be defined in one of three locations.  

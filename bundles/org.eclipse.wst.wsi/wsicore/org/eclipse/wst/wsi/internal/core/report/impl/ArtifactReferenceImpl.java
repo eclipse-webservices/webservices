@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.report.impl;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.document.DocumentElement;
 import org.eclipse.wst.wsi.internal.core.report.ArtifactReference;
-
-import java.io.*;
 
 /**
  * An artifact reference.

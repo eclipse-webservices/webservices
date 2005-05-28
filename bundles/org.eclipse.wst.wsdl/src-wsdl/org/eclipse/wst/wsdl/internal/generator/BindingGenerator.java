@@ -23,8 +23,6 @@ import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.WSDLFactory;
-import org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl;
-
 import org.eclipse.wst.wsdl.internal.generator.extension.ContentGeneratorExtensionFactoryRegistry;
 
 /*

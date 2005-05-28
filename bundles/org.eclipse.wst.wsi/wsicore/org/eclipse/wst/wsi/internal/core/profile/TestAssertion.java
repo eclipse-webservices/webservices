@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile;
 
-import java.util.*;
+import java.util.Vector;
 
 /**
  * A test assertion is one assertion in a profile definition.

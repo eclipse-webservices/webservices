@@ -24,10 +24,8 @@ import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
 import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
 import org.eclipse.wst.wsdl.binding.soap.SOAPFault;
 import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
-import org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPFactoryImpl;
-import org.w3c.dom.Element;
-
 import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
+import org.w3c.dom.Element;
 
 public class SOAPContentGenerator implements ContentGenerator
 {	

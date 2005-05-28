@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.monitor.config;
 
+import javax.xml.namespace.QName;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.document.DocumentElement;
-
-import javax.xml.namespace.QName;
 
 /**
  * The interface for monitor config Comment element.  

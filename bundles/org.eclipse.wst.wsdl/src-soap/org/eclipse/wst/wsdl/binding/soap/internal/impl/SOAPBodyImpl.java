@@ -11,8 +11,12 @@
 package org.eclipse.wst.wsdl.binding.soap.internal.impl;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
+
 import javax.xml.namespace.QName;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
@@ -21,19 +25,16 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
-import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
-import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
-import org.w3c.dom.Element;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOutput;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
+import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
+import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl;
-
-import java.util.StringTokenizer;
-import java.util.Iterator;
+import org.w3c.dom.Element;
 
 /**
  * <!-- begin-user-doc -->

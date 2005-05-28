@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.log;
 
-import org.eclipse.wst.wsi.internal.core.WSIConstants;
-import org.eclipse.wst.wsi.internal.core.WSIException;
-import org.eclipse.wst.wsi.internal.core.document.WSIDocument;
+import java.util.Vector;
 
 import javax.xml.namespace.QName;
 
-import java.util.*;
+import org.eclipse.wst.wsi.internal.core.WSIConstants;
+import org.eclipse.wst.wsi.internal.core.WSIException;
+import org.eclipse.wst.wsi.internal.core.document.WSIDocument;
 
 /**
  * The interface for the message log file.

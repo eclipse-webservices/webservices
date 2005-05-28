@@ -11,11 +11,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.analyzer.config.impl;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AssertionResultType;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AssertionResultsOption;
-
-import java.io.*;
 
 /**
  * This class contains the assertion results option definition.

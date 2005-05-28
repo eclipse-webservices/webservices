@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.report.impl;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Iterator;
+import java.util.Vector;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.report.PrereqFailedList;
-
-import java.io.*;
-import java.util.*;
 
 /**
  * This interface is used to maintain and access the Prerequisite Failed List.

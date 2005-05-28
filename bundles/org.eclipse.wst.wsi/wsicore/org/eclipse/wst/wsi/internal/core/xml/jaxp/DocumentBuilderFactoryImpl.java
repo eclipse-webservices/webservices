@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.xml.jaxp;
 
+import java.util.Hashtable;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import java.util.Hashtable;
 
 /**
  * This class defines a factory API that enables us to obtain a parser

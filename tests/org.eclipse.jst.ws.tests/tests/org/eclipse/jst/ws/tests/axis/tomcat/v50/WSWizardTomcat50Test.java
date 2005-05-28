@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.tests.axis.tomcat.v50;
 
 import org.eclipse.jst.ws.tests.WSWizardTest;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
-import org.eclipse.wst.server.core.IServer;
 
 
 public abstract class WSWizardTomcat50Test extends WSWizardTest {

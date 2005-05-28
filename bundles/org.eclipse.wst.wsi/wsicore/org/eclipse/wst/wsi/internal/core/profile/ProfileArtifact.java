@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile;
 
-import org.eclipse.wst.wsi.internal.core.WSIConstants;
-import org.eclipse.wst.wsi.internal.core.document.DocumentElement;
-import org.eclipse.wst.wsi.internal.core.util.ArtifactType;
+import java.util.LinkedList;
+import java.util.Vector;
 
 import javax.xml.namespace.QName;
 
-import java.util.*;
+import org.eclipse.wst.wsi.internal.core.WSIConstants;
+import org.eclipse.wst.wsi.internal.core.document.DocumentElement;
+import org.eclipse.wst.wsi.internal.core.util.ArtifactType;
 
 /**
  * An artifact contains a set of related test assertions.

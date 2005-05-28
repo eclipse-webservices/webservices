@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.tests;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.Iterator;
 

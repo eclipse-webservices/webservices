@@ -10,28 +10,47 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.wsdl;
 
-import org.apache.xerces.dom.ElementImpl;
-import org.eclipse.wst.wsi.internal.core.WSIException;
-import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
-import org.eclipse.wst.wsi.internal.core.xml.dom.ElementLocation;
-
-import com.ibm.wsdl.*;
-import com.ibm.wsdl.util.StringUtils;
-import com.ibm.wsdl.util.xml.*;
-
-import org.w3c.dom.*;
-import org.xml.sax.*;
-
-import javax.wsdl.*;
-import javax.wsdl.extensions.*;
-import javax.wsdl.factory.*;
-import javax.xml.namespace.*;
-import javax.xml.parsers.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.*;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.wsdl.Binding;
+import javax.wsdl.BindingFault;
+import javax.wsdl.BindingInput;
+import javax.wsdl.BindingOperation;
+import javax.wsdl.BindingOutput;
+import javax.wsdl.Definition;
+import javax.wsdl.Fault;
+import javax.wsdl.Import;
+import javax.wsdl.Input;
+import javax.wsdl.Message;
+import javax.wsdl.Operation;
+import javax.wsdl.Output;
+import javax.wsdl.Part;
+import javax.wsdl.Port;
+import javax.wsdl.PortType;
+import javax.wsdl.Service;
+import javax.wsdl.Types;
+import javax.wsdl.WSDLException;
+import javax.wsdl.extensions.ExtensibilityElement;
+import javax.wsdl.factory.WSDLFactory;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.apache.xerces.dom.ElementImpl;
+import org.eclipse.wst.wsi.internal.core.xml.dom.ElementLocation;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+
+import com.ibm.wsdl.Constants;
+import com.ibm.wsdl.util.StringUtils;
+import com.ibm.wsdl.util.xml.DOMUtils;
+import com.ibm.wsdl.util.xml.QNameUtils;
+import com.ibm.wsdl.util.xml.XPathUtils;
 
 /**
  * This class is a specialization of com.ibm.wsdl.xml.WSDLReaderImpl in WSDL4J.

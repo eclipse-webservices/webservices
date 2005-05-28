@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.monitor.config;
 
+import java.io.Reader;
+
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.document.DocumentReader;
 import org.eclipse.wst.wsi.internal.core.util.MessageList;
-
-import java.io.Reader;
 
 /**
  * Defines the interface used to read the monitor config documents.

@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.report;
 
+import javax.xml.namespace.QName;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.document.DocumentElement;
-
-import javax.xml.namespace.QName;
 
 /**
  * An artifact reference.

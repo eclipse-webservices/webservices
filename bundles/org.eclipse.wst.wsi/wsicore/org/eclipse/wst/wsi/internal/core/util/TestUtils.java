@@ -10,14 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.util;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import org.eclipse.wst.wsi.internal.core.ToolInfo;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
-
 import org.w3c.dom.Element;
-
-import java.io.*;
 
 /**
  * Test Utility class.

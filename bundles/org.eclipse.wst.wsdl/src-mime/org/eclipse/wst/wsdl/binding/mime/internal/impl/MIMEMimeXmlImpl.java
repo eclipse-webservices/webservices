@@ -10,25 +10,19 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime.internal.impl;
 
-import org.eclipse.wst.wsdl.Part;
-
-
-import org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl;
-
 import javax.xml.namespace.QName;
 
 import org.eclipse.emf.common.notify.Notification;
-
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.EAttribute;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
 import org.eclipse.wst.wsdl.binding.mime.internal.util.MIMEConstants;
-
+import org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl;
 import org.w3c.dom.Element;
 
 /**

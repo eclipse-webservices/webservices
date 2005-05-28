@@ -10,20 +10,19 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.xml.schema;
 
+import java.util.List;
+import java.util.Vector;
+
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.util.TestUtils;
 import org.eclipse.wst.wsi.internal.core.xml.XMLDocumentCache;
 import org.eclipse.wst.wsi.internal.core.xml.XMLDocumentCacheUser;
 import org.eclipse.wst.wsi.internal.core.xml.XMLTags;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
-
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import java.util.List;
-import java.util.Vector;
 
 /**
  * This abstract class is used to process an XML Schema.

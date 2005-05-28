@@ -10,6 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.monitor;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.Iterator;
+import java.util.Vector;
+
 import org.eclipse.wst.wsi.internal.core.ToolInfo;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
@@ -17,13 +26,11 @@ import org.eclipse.wst.wsi.internal.core.WSIFileNotFoundException;
 import org.eclipse.wst.wsi.internal.core.document.DocumentFactory;
 import org.eclipse.wst.wsi.internal.core.log.Log;
 import org.eclipse.wst.wsi.internal.core.log.LogWriter;
-import org.eclipse.wst.wsi.internal.core.monitor.config.*;
+import org.eclipse.wst.wsi.internal.core.monitor.config.ManInTheMiddle;
+import org.eclipse.wst.wsi.internal.core.monitor.config.MonitorConfig;
+import org.eclipse.wst.wsi.internal.core.monitor.config.Redirect;
 import org.eclipse.wst.wsi.internal.core.util.MessageList;
 import org.eclipse.wst.wsi.internal.core.util.TestUtils;
-
-import java.io.*;
-import java.util.Iterator;
-import java.util.Vector;
 
 /**
  * Message Monitor.

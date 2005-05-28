@@ -18,7 +18,6 @@ import org.eclipse.wst.wsi.internal.core.report.Entry;
 import org.eclipse.wst.wsi.internal.core.util.EntryType;
 import org.eclipse.wst.wsi.internal.core.wsdl.WSDLDocument;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
-
 import org.w3c.dom.Document;
 
 /**

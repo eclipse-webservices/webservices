@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.wsdl.Binding;
-import javax.wsdl.*;
+import javax.wsdl.WSDLException;
 
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.analyzer.AnalyzerContext;
@@ -46,6 +46,7 @@ import org.uddi4j.response.BindingDetail;
 import org.uddi4j.response.TModelDetail;
 import org.uddi4j.util.CategoryBag;
 import org.uddi4j.util.KeyedReference;
+
 import com.ibm.wsdl.util.StringUtils;
 
 /**

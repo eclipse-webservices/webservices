@@ -20,18 +20,37 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.wst.wsdl.*;
-
+import org.eclipse.wst.wsdl.Binding;
+import org.eclipse.wst.wsdl.BindingFault;
+import org.eclipse.wst.wsdl.BindingInput;
+import org.eclipse.wst.wsdl.BindingOperation;
+import org.eclipse.wst.wsdl.BindingOutput;
+import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
+import org.eclipse.wst.wsdl.ExtensibleElement;
+import org.eclipse.wst.wsdl.Fault;
+import org.eclipse.wst.wsdl.Import;
+import org.eclipse.wst.wsdl.Input;
+import org.eclipse.wst.wsdl.Message;
+import org.eclipse.wst.wsdl.MessageReference;
+import org.eclipse.wst.wsdl.Operation;
+import org.eclipse.wst.wsdl.Output;
+import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.Port;
+import org.eclipse.wst.wsdl.PortType;
+import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.Types;
+import org.eclipse.wst.wsdl.WSDLPackage;
+import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
+import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
+import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
+import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
+import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.tests.util.DefinitionVisitor;
-
-import org.eclipse.wst.wsdl.binding.soap.*;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
-
 import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
-
 import org.w3c.dom.Element;
 
 /**

@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.analyzer.config.impl;
 
-import org.eclipse.wst.wsi.internal.core.WSIConstants;
-import org.eclipse.wst.wsi.internal.core.analyzer.config.WSDLElement;
-import org.eclipse.wst.wsi.internal.core.util.EntryType;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.xml.namespace.QName;
 
-import java.io.*;
+import org.eclipse.wst.wsi.internal.core.WSIConstants;
+import org.eclipse.wst.wsi.internal.core.analyzer.config.WSDLElement;
+import org.eclipse.wst.wsi.internal.core.util.EntryType;
 
 /**
  * The implementation for WSDL definitions. 

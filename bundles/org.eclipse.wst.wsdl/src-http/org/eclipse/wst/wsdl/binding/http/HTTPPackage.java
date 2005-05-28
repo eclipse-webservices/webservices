@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.http;
 
-import org.eclipse.wst.wsdl.WSDLPackage;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.wst.wsdl.WSDLPackage;
 
 /**
  * <!-- begin-user-doc -->

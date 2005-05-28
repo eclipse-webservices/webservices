@@ -11,11 +11,19 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.document.impl;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.document.DocumentWriter;
 import org.w3c.dom.Document;
-
-import java.io.*;
 
 /**
  * Defines the implementation used to write the Conformance XML 

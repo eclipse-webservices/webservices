@@ -14,16 +14,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.wsdl.Binding;
 import javax.wsdl.Definition;
 import javax.wsdl.Message;
 import javax.wsdl.Port;
 import javax.wsdl.PortType;
 import javax.wsdl.Service;
-import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import junit.framework.TestCase;
 
 import org.eclipse.wst.wsi.internal.WSIPreferences;
 import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
@@ -34,8 +36,6 @@ import org.eclipse.wst.wsi.internal.report.AssertionError;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import junit.framework.*;
 
 public class CoreWSDLConformanceTest extends TestCase 
 {

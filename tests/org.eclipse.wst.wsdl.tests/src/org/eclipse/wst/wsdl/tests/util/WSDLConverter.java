@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.tests.util;
 import java.io.FileOutputStream;
 import java.util.Iterator;
 
+import javax.wsdl.OperationType;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -52,8 +53,6 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import javax.wsdl.OperationType;
 
 /**
  * @author Kihup Boo

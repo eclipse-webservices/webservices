@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.monitor;
 
-import org.eclipse.wst.wsi.internal.core.monitor.config.Redirect;
-
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.Vector;
+
+import org.eclipse.wst.wsi.internal.core.monitor.config.Redirect;
 
 /**
  * A server socket listener.

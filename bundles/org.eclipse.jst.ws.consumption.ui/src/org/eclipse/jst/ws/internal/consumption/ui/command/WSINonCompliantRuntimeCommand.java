@@ -14,15 +14,15 @@ package org.eclipse.jst.ws.internal.consumption.ui.command;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIAPContext;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSISSBPContext;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.WSIComplianceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
+import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIAPContext;
+import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSISSBPContext;
+import org.eclipse.wst.ws.internal.ui.wsi.preferences.WSIComplianceUtils;
 
 
 

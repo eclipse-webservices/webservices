@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.report.impl;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.report.FailureDetail;
 import org.eclipse.wst.wsi.internal.core.xml.dom.ElementLocation;
 
 import com.ibm.wsdl.util.xml.DOMUtils;
-
-import java.io.*;
 
 /**
  * This class will ...

@@ -10,14 +10,20 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.soap.internal.util;
 
-import org.eclipse.wst.wsdl.WSDLElement;
-
-import org.eclipse.wst.wsdl.binding.soap.*;
-
 import javax.wsdl.extensions.ExtensibilityElement;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
+import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
+import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
+import org.eclipse.wst.wsdl.binding.soap.SOAPFault;
+import org.eclipse.wst.wsdl.binding.soap.SOAPHeader;
+import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase;
+import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault;
+import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
+import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
 
 /**
  * <!-- begin-user-doc -->

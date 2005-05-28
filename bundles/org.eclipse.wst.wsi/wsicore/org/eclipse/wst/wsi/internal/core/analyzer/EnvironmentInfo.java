@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.analyzer;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.util.XMLInfo;
-
-import java.io.*;
 
 /**
  * This class maintains the Environment information.

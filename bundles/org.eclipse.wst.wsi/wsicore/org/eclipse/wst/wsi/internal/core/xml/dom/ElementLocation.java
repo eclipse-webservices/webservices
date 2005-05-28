@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsi.internal.core.xml.dom;
 
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
-
 import org.xml.sax.Locator;
 
 /**
