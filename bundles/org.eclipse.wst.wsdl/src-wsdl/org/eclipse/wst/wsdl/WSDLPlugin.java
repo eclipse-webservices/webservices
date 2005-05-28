@@ -12,14 +12,13 @@ package org.eclipse.wst.wsdl;
 
 import javax.wsdl.factory.WSDLFactory;
 
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.eclipse.wst.wsdl.util.ExtensibilityElementFactoryRegistry;
 import org.eclipse.wst.wsdl.internal.extensibility.ExtensibilityElementFactoryRegistryImpl;
 import org.eclipse.wst.wsdl.internal.extensibility.ExtensibilityElementFactoryRegistryReader;
 import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
+import org.eclipse.wst.wsdl.util.ExtensibilityElementFactoryRegistry;
 
 
 /**
@@ -43,7 +42,7 @@ public final class WSDLPlugin extends EMFPlugin
   /**
    * The one instance of this class.
    */
-  static private Implementation plugin;
+  static WSDLPluginImplementation plugin;
   
   private ExtensibilityElementFactoryRegistryImpl extensibilityElementFactoryRegistry;
 
@@ -67,30 +66,11 @@ public final class WSDLPlugin extends EMFPlugin
    * Returns the singleton instance of the Eclipse plugin.
    * @return the singleton instance.
    */
-  public static Implementation getPlugin()
+  public static WSDLPluginImplementation getPlugin()
   {
     return plugin;
   }
 
-  /**
-   * The actual implementation of the Eclipse <b>Plugin</b>.
-   */
-  public static class Implementation extends EclipsePlugin
-  {
-    /**
-     * Creates an instance.
-     * @param descriptor the description of the plugin.
-     */
-    public Implementation(IPluginDescriptor descriptor)
-    {
-      super(descriptor);
-
-      // Remember the static instance.
-      //
-      plugin = this;
-    }
-  }
-  
   private ExtensibilityElementFactoryRegistryImpl internalGetExtensibilityElementFactoryRegistry()
   {
     if (extensibilityElementFactoryRegistry == null)
