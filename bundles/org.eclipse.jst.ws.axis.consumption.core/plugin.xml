@@ -1,30 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 
-<plugin
-   id="org.eclipse.jst.ws.axis.consumption.core"
-   version="1.0.0"
-   name="%PLUGIN_NAME"
-   provider-name="%PLUGIN_PROVIDER">
+<plugin>
 
-   <requires>
-      <import plugin="org.apache.ant"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.wst.command.env.core"/>
-      <import plugin="org.eclipse.jst.ws"/>
-      <import plugin="org.eclipse.jst.ws.consumption"/>
-      <import plugin="org.eclipse.jst.j2ee.web"/>
-      <import plugin="org.apache.axis11"/>
-   </requires>
-
-   <runtime>
-      <library name="wsc-axis.jar">
-      	<export name="*"/>
-      </library>
-   </runtime>
-
-   <extension point="org.eclipse.jst.ws.consumption.wsfinder">
+     <extension point="org.eclipse.jst.ws.consumption.wsfinder">
       <wsfinder
             id="org.eclipse.jst.ws.internal.axis.consumption.core.wsfinder.WSFinderAxis"
             name="org.eclipse.jst.ws.internal.axis.consumption.core.wsfinder.WSFinderAxis"
