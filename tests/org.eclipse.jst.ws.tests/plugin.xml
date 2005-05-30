@@ -38,15 +38,5 @@
      <import plugin="org.eclipse.debug.core"/>
      <import plugin="org.eclipse.wst.server.core"/>
    </requires>  
-   
-   <extension
-         id="WebServiceUnitTests"
-         point="org.eclipse.core.runtime.applications">
-      <application>
-         <run
-               class="org.eclipse.jst.ws.tests.unittest.LaunchTest">
-         </run>
-      </application>
-   </extension>   
 
 </plugin>
