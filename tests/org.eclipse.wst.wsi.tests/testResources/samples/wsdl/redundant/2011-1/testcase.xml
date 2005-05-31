@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<testcase name="2011-1">
-  <description>
-    This is an example of a onformant wsdl.
-  </description>
-  <expectedFailures/>
-</testcase>
