@@ -1,1 +1,5 @@
 bin
+temp.folder
+build.xml
+wsicore.jar
+wsivalidate.jar
