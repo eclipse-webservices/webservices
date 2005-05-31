@@ -113,6 +113,8 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
           objectSelectionWidgetId = wsimpl.getObjectSelectionWidget();
         }        
         
+		objectSelectionWidgetId_ = objectSelectionWidgetId;
+		
         if (objectSelectionWidgetId_ != null && objectSelectionWidgetId_.length() > 0)
         {
           IConfigurationElement[] elements = ObjectSelectionRegistry.getInstance().getConfigurationElements();
