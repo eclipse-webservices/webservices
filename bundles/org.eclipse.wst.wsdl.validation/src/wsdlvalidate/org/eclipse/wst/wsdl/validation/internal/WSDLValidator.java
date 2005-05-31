@@ -17,6 +17,15 @@ import java.util.ResourceBundle;
 
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11BasicValidator;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorController;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.http.HTTPValidator;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.mime.MIMEValidator;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.soap.SOAPValidator;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.InlineSchemaValidator;
+
+import com.ibm.wsdl.Constants;
 
 /**
  * An main WSDL validator class. The WSDL validator validates WSDL documents.
@@ -24,6 +33,9 @@ import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 public class WSDLValidator
 {
   private static String VALIDATOR_RESOURCE_BUNDLE = "validatewsdl";
+  private static String VALIDATOR_HTTP_RESOURCE_BUNDLE = "validatewsdlhttp";
+  private static String VALIDATOR_SOAP_RESOURCE_BUNDLE = "validatewsdlsoap";
+  private static String VALIDATOR_MIME_RESOURCE_BUNDLE = "validatewsdlmime";
   private ValidationController validationController;
   private URIResolver uriResolver;
   private Hashtable attributes = new Hashtable();
@@ -36,6 +48,26 @@ public class WSDLValidator
     ResourceBundle rb = ResourceBundle.getBundle(VALIDATOR_RESOURCE_BUNDLE);
     uriResolver = new URIResolver();
     validationController = new ValidationController(rb, uriResolver);
+    
+    //Register the default validators.
+    ValidatorRegistry registry = ValidatorRegistry.getInstance();
+    // Register the WSDL 1.1 validator controller and validators.
+    WSDLValidatorDelegate delegate = new WSDLValidatorDelegate(WSDL11ValidatorController.class.getName(), VALIDATOR_RESOURCE_BUNDLE, getClass().getClassLoader());
+    registry.registerValidator(Constants.NS_URI_WSDL, delegate, ValidatorRegistry.WSDL_VALIDATOR);
+    WSDL11ValidatorDelegate delegate1 = new WSDL11ValidatorDelegate(WSDL11BasicValidator.class.getName(), VALIDATOR_RESOURCE_BUNDLE, getClass().getClassLoader());
+    
+    delegate1 = new WSDL11ValidatorDelegate(HTTPValidator.class.getName(), VALIDATOR_HTTP_RESOURCE_BUNDLE, getClass().getClassLoader());
+    registerWSDL11Validator(org.eclipse.wst.wsdl.validation.internal.Constants.NS_HTTP, delegate1);
+    delegate1 = new WSDL11ValidatorDelegate(SOAPValidator.class.getName(), VALIDATOR_SOAP_RESOURCE_BUNDLE, getClass().getClassLoader());
+    registerWSDL11Validator(org.eclipse.wst.wsdl.validation.internal.Constants.NS_SOAP11, delegate1);
+    delegate1 = new WSDL11ValidatorDelegate(MIMEValidator.class.getName(), VALIDATOR_MIME_RESOURCE_BUNDLE, getClass().getClassLoader());
+    registerWSDL11Validator(org.eclipse.wst.wsdl.validation.internal.Constants.NS_MIME, delegate1);
+   
+    // The WSDL 1.1 schema validator is a special case as it is registered for three namespaces.
+    delegate1 = new WSDL11ValidatorDelegate(InlineSchemaValidator.class.getName(), VALIDATOR_RESOURCE_BUNDLE, getClass().getClassLoader());
+    registerWSDL11Validator(Constants.NS_URI_XSD_1999, delegate1);
+    registerWSDL11Validator(Constants.NS_URI_XSD_2000, delegate1);
+    registerWSDL11Validator(Constants.NS_URI_XSD_2001, delegate1);
   }
   
   /**
@@ -61,7 +93,7 @@ public class WSDLValidator
     if(uri == null) 
       return null;
     validationController.setAttributes(attributes);
-    return validationController.validate(formatURI(uri), inputStream);
+    return validationController.validate(uri, inputStream);
   }
   
   /**
@@ -89,18 +121,26 @@ public class WSDLValidator
   {
   	attributes.put(name, value);
   }
-  protected String formatURI(String uri)
+  
+  /**
+   * Register an extension WSDL validator delegate with this validator.
+   * 
+   * @param namespace The namespace the validator validates for. This is the WSDL namespace.
+   * @param delegate The delegate that holds the validator.
+   */
+  public void registerWSDLExtensionValidator(String namespace, WSDLValidatorDelegate delegate)
   {
-    uri = uri.replace('\\','/');
-    if(uri.startsWith("file:"))
-  	{
-  	  uri = uri.substring(6);
-  	  while(uri.startsWith("\\") || uri.startsWith("/"))
-  	  {
-  	  	uri = uri.substring(1);
-  	  }
-  	  uri = "file:///" + uri;
-  	}
-    return uri;
+    ValidatorRegistry.getInstance().registerValidator(namespace, delegate, ValidatorRegistry.EXT_VALIDATOR);
+  }
+  
+  /**
+   * Register a WSDL 1.1 validator delegate with this validator.
+   * 
+   * @param namespace The namespace the validator validates for.
+   * @param delegate The delegate that holds the validator.
+   */
+  public void registerWSDL11Validator(String namespace, WSDL11ValidatorDelegate delegate)
+  {
+    org.eclipse.wst.wsdl.validation.internal.wsdl11.ValidatorRegistry.getInstance().registerValidator(namespace, delegate);
   }
 }

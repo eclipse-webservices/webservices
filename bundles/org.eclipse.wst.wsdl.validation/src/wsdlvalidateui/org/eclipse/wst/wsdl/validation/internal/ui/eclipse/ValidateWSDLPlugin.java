@@ -18,11 +18,11 @@ import java.util.ResourceBundle;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.wsdl.validation.internal.Constants;
-import org.eclipse.wst.wsdl.validation.internal.ui.WSDLConfigurator;
+import org.eclipse.wst.wsdl.validation.internal.WSDLValidatorDelegate;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalogEntityHolder;
 import org.osgi.framework.Bundle;
@@ -41,25 +41,9 @@ public class ValidateWSDLPlugin extends AbstractUIPlugin
   /**
    * Constructor.
    */
-  public ValidateWSDLPlugin(IPluginDescriptor descriptor)
+  public ValidateWSDLPlugin()
   {
-    super(descriptor);
-//    instance = this;
-//    wsdlValidatorResourceBundle = ResourceBundle.getBundle(Constants.WSDL_VALIDATOR_PROPERTIES_FILE);
-//    resourcebundle = ResourceBundle.getBundle(PROPERTIES_FILE);
-//
-//    // Configure the XML catalog.
-//    new ExtXMLCatalogPluginRegistryReader().readRegistry();
-//    new WSDLValidatorPluginRegistryReader(
-//      "extvalidator",
-//      "extvalidator",
-//      WSDLValidatorPluginRegistryReader.EXT_VALIDATOR)
-//      .readRegistry();
-//
-//    // register any WSDL 1.1 validators defined
-//    new WSDL11ValidatorPluginRegistryReader("wsdl11validator", "validator").readRegistry();
-//
-//    WSDLConfigurator.registerDefaultValidators(wsdlValidatorResourceBundle);
+    super();
   }
 
   /* (non-Javadoc)
@@ -82,8 +66,6 @@ public class ValidateWSDLPlugin extends AbstractUIPlugin
 
     // register any WSDL 1.1 validators defined
     new WSDL11ValidatorPluginRegistryReader("wsdl11validator", "validator").readRegistry();
-
-    WSDLConfigurator.registerDefaultValidators(wsdlValidatorResourceBundle);
   }
   /* (non-Javadoc)
    * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
@@ -230,13 +212,15 @@ class WSDLValidatorPluginRegistryReader
           ClassLoader pluginLoader =
             element.getDeclaringExtension().getDeclaringPluginDescriptor().getPluginClassLoader();
           
-          if (validatorType == WSDL_VALIDATOR)
+//          if (validatorType == WSDL_VALIDATOR)
+//           {
+//            WSDL11ValidatorDelegate delegate = new WSDL11ValidatorDelegate(validatorClass, resourceBundle, pluginLoader);
+//            WSDLValidator.getInstance().registerWSDL11Validator(namespace, delegate);
+//          }
+          if (validatorType == EXT_VALIDATOR)
            {
-            WSDLConfigurator.registerWSDLValidator(namespace, validatorClass, resourceBundle, pluginLoader);
-          }
-          else if (validatorType == EXT_VALIDATOR)
-           {
-            WSDLConfigurator.registerExtensionValidator(namespace, validatorClass, resourceBundle, pluginLoader);
+            WSDLValidatorDelegate delegate = new WSDLValidatorDelegate(validatorClass, resourceBundle, pluginLoader);
+            WSDLValidator.getInstance().registerWSDLExtensionValidator(namespace, delegate);
           }
 //          registerWSDLValidatorPluginExtensionWithClassName(
 //            pluginLoader,
@@ -371,8 +355,8 @@ class WSDL11ValidatorPluginRegistryReader
         {
           ClassLoader pluginLoader =
             element.getDeclaringExtension().getDeclaringPluginDescriptor().getPluginClassLoader();
-            
-          WSDLConfigurator.registerWSDL11Validator(namespace, validatorClass, resourceBundle, pluginLoader);
+          WSDL11ValidatorDelegate delegate = new WSDL11ValidatorDelegate(validatorClass, resourceBundle, pluginLoader);
+          WSDLValidator.getInstance().registerWSDL11Validator(namespace, delegate);
         }
         catch (Exception e)
         {

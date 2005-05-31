@@ -11,11 +11,9 @@
 
 package org.eclipse.wst.wsdl.validation.internal.ui.eclipse;
 
-import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
 
 /**
@@ -24,11 +22,10 @@ import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
  * this validator. When created, this validator registers all extension
  * URI resolvers.
  */
-public class WSDLValidator 
+public class WSDLValidator extends org.eclipse.wst.wsdl.validation.internal.WSDLValidator
 {
 	private static WSDLValidator instance = null;
-	
-	private org.eclipse.wst.wsdl.validation.internal.WSDLValidator wsdlValidator;
+
 	/**
 	 * The constructor registers all of the URI resolvers defined via the
 	 * WSDL URI resolver extension point with the WSDL validator. 
@@ -36,14 +33,14 @@ public class WSDLValidator
 	 */
 	private WSDLValidator()
 	{
-	  this.wsdlValidator = new org.eclipse.wst.wsdl.validation.internal.WSDLValidator();
+    super();
 	  URIResolverRegistryReader uriRR = new URIResolverRegistryReader();
 	  List resolvers = uriRR.readRegistry();
 	  Iterator resolverIter = resolvers.iterator();
 	  while(resolverIter.hasNext())
 	  {
 	  	IURIResolver resolver = (IURIResolver)resolverIter.next();
-	  	wsdlValidator.addURIResolver(resolver);
+	  	addURIResolver(resolver);
 	  }
 	}
 	
@@ -61,26 +58,26 @@ public class WSDLValidator
 		return instance;
 	}
 	
-	/**
-	 * Validate the specified WSDL file.
-	 * 
-	 * @param fileURI The URI of the WSDL file.
-	 * @return A validation report with the validation results.
-	 */
-	public IValidationReport validate(String fileURI)
-	{
-		return wsdlValidator.validate(fileURI);
-	}
-  /**
-	 * Validate the given WSDL InputStream
-	 * 
-	 * @param fileURI The URI of the WSDL file.
-	 * @param inputStream the InputStream to validate
-	 * @return A validation report with the validation results.
-	 */
-	public IValidationReport validate(String fileURI, InputStream inputStream)
-  {
-    return wsdlValidator.validate(fileURI, inputStream);
-  }
+//	/**
+//	 * Validate the specified WSDL file.
+//	 * 
+//	 * @param fileURI The URI of the WSDL file.
+//	 * @return A validation report with the validation results.
+//	 */
+//	public IValidationReport validate(String fileURI)
+//	{
+//		return wsdlValidator.validate(fileURI);
+//	}
+//  /**
+//	 * Validate the given WSDL InputStream
+//	 * 
+//	 * @param fileURI The URI of the WSDL file.
+//	 * @param inputStream the InputStream to validate
+//	 * @return A validation report with the validation results.
+//	 */
+//	public IValidationReport validate(String fileURI, InputStream inputStream)
+//  {
+//    return wsdlValidator.validate(fileURI, inputStream);
+//  }
 
 }

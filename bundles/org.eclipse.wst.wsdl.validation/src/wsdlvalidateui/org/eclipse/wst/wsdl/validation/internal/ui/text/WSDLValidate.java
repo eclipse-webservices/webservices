@@ -22,10 +22,11 @@ import java.util.Vector;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
+import org.eclipse.wst.wsdl.validation.internal.WSDLValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
-import org.eclipse.wst.wsdl.validation.internal.ui.WSDLConfigurator;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalogEntityHolder;
 
@@ -192,9 +193,6 @@ public class WSDLValidate
 
     int argslength = args.length;
 
-    // register the default validators
-    WSDLConfigurator.registerDefaultValidators(validatorRB);
-
     WSDLValidate wsdlValidator = new WSDLValidate();
     // go through the parameters
     for (int i = 0; i < argslength; i++)
@@ -220,11 +218,13 @@ public class WSDLValidate
             }
             if(param.equalsIgnoreCase(WSDLValidate.PARAM_WSDL11VAL))
             {  
-              WSDLConfigurator.registerWSDL11Validator(namespace, validatorClass, propertiesFile, null);
+              WSDL11ValidatorDelegate delegate = new WSDL11ValidatorDelegate(validatorClass, propertiesFile);
+              wsdlValidator.wsdlValidator.registerWSDL11Validator(namespace, delegate);
             }
             else if(param.equalsIgnoreCase(WSDLValidate.PARAM_EXTVAL))
             {
-              WSDLConfigurator.registerExtensionValidator(namespace, validatorClass, propertiesFile, null);
+              WSDLValidatorDelegate delegate = new WSDLValidatorDelegate(validatorClass, propertiesFile);
+              wsdlValidator.wsdlValidator.registerWSDLExtensionValidator(namespace, delegate);
             }
           }
           else

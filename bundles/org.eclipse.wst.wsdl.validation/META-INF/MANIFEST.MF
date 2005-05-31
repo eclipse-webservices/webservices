@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.wst.wsdl.validation; singleton:=true
 Bundle-Version: 1.0.0
 Bundle-ClassPath: wsdlvalidateui.jar,
  wsdlvalidate.jar
-Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator
+Bundle-Activator: org.eclipse.wst.wsdl.validation.internal.ui.eclipse.ValidateWSDLPlugin
 Bundle-Vendor: %_PROVIDER_NAME
 Bundle-Localization: plugin
 Export-Package: .,
@@ -27,11 +27,11 @@ Export-Package: .,
 Require-Bundle: org.eclipse.core.resources,
  org.eclipse.ui,
  org.apache.ant,
- org.eclipse.core.runtime.compatibility,
  org.eclipse.wst.common.uriresolver,
  org.eclipse.wst.validation,
  org.eclipse.wst.xml.validation;visibility:=reexport,
  org.wsdl4j,
- org.apache.xerces;visibility:=reexport
+ org.apache.xerces;visibility:=reexport,
+ org.eclipse.core.runtime
 Eclipse-AutoStart: true
 Plugin-Class: org.eclipse.wst.wsdl.validation.internal.ui.eclipse.ValidateWSDLPlugin

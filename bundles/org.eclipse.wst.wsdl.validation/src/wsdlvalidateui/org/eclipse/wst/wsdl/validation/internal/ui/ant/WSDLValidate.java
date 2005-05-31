@@ -28,8 +28,8 @@ import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
-import org.eclipse.wst.wsdl.validation.internal.ui.WSDLConfigurator;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
 
 /**
  * An Ant task to run WSDL validation on a file or a set of files.
@@ -279,7 +279,8 @@ public class WSDLValidate extends Task
     while(wsdl11extIter.hasNext())
     {
       ExtensionValidator extVal = (ExtensionValidator)wsdl11extIter.next();
-      WSDLConfigurator.registerWSDL11Validator(extVal.getNamespace(), extVal.getClassName(), extVal.getResourceBundle(), null);
+      WSDL11ValidatorDelegate delegate = new WSDL11ValidatorDelegate(extVal.getClassName(), extVal.getResourceBundle());
+      wsdlValidator.registerWSDL11Validator(extVal.getNamespace(), delegate);
     }
 
     // The user didn't specify any files to validate.
@@ -289,8 +290,6 @@ public class WSDLValidate extends Task
       return;
     }
 
-    // Register the default validators and schemas.
-    WSDLConfigurator.registerDefaultValidators(validatorRB);
     if (xsdDirectory != null)
     {
       org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog.addSchemaDir(xsdDirectory);
@@ -305,22 +304,6 @@ public class WSDLValidate extends Task
     String invalid = messGen.getString(_UI_INVALID);
     String errormarker = messGen.getString(_UI_ERROR_MARKER);
     String warningmarker = messGen.getString(_UI_WARNING_MARKER);
-
-    int wsiConformanceLevel;
-    
-    // Set the WS-I compliance level.
-    if (wsiLevel.equals(WSI_SUGGEST))
-    {
-      //wsiConformanceLevel = ValidationController.WSI_SUGGEST;
-    }
-    else if (wsiLevel.equals(WSI_IGNORE))
-    {
-      //wsiConformanceLevel = ValidationController.WSI_IGNORE;
-    }
-    else
-    {
-      //wsiConformanceLevel = ValidationController.WSI_REQUIRE;
-    }
 
     StringBuffer result = null;
     boolean notvalid = true;
