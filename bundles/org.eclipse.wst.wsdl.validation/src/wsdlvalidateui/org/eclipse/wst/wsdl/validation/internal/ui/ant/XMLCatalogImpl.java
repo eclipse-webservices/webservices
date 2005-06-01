@@ -11,12 +11,9 @@
 
 package org.eclipse.wst.wsdl.validation.internal.ui.ant;
 
-import java.io.IOException;
-
 import org.apache.tools.ant.types.DTDLocation;
 import org.apache.tools.ant.types.XMLCatalog;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * An implementation of the WSDL Validator's XML Catalog that uses the XML Catalog
@@ -52,11 +49,10 @@ public class XMLCatalogImpl extends org.eclipse.wst.wsdl.validation.internal.xml
         resolvedId = is.getSystemId();
       }
     }
-    catch (IOException e)
+    // 
+    catch (Exception e)
     {
-    }
-    catch (SAXException e)
-    {
+      // Do nothing if the resource can't be resolved.
     }
     // needs to return null if it can't resolve the id
     if (resolvedId != null && resolvedId.equals(""))
