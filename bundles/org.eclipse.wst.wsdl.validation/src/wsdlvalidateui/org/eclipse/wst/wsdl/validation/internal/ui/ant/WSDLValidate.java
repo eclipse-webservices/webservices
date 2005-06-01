@@ -257,8 +257,8 @@ public class WSDLValidate extends Task
     }
 
     // Set the XML catalog.
-    org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog.setExtensionXMLCatalog("org.eclipse.wsdl.validate.ui.ant.XMLCatalogImpl", getClass().getClassLoader());
-    XMLCatalogImpl xmlCatalog = (XMLCatalogImpl)org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog.getInstance();
+    org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog.setExtensionXMLCatalog(XMLCatalogImpl.class.getName(), getClass().getClassLoader());
+    XMLCatalogImpl xmlCatalog = (XMLCatalogImpl)org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog.getExtensionCatalogInstance();
     xmlCatalog.addXMLCatalog(globalXMLCatalog);
     
     WSDLValidator wsdlValidator = new WSDLValidator();
