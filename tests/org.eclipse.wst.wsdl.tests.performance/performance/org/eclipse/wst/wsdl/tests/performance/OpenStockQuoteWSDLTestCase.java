@@ -28,7 +28,7 @@ import org.eclipse.ui.part.FileEditorInput;
 
 public class OpenStockQuoteWSDLTestCase extends PerformanceTestCase
 {
-  private final String EDITOR_ID = "org.eclipse.wst.wsdl.editor.internal.WSDLEditor";
+  private final String EDITOR_ID = "org.eclipse.wst.wsdl.ui.internal.WSDLEditor";
 
   public static Test suite()
   {

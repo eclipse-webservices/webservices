@@ -21,6 +21,8 @@ public class AllTests
     TestSuite suite = new TestSuite("Test for org.eclipse.wst.wsdl.tests.performance");
     //$JUnit-BEGIN$
     suite.addTestSuite(ReadStockQuoteWSDLTestCase.class);
+	suite.addTestSuite(ReadStockQuoteWSDLEMFTestCase.class);
+	//suite.addTestSuite(ValidateStockQuoteWSDLTestCase.class);
     suite.addTestSuite(OpenStockQuoteWSDLSetup.class);
     suite.addTestSuite(OpenStockQuoteWSDLTestCase.class);
     //$JUnit-END$

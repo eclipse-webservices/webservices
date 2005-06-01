@@ -17,10 +17,12 @@
       <import plugin="org.junit"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.test.performance"/>
       <import plugin="org.eclipse.wst.wsdl"/>
+      <import plugin="org.eclipse.wst.wsdl.validation"/>
       <import plugin="org.wsdl4j"/>
    </requires>
 
