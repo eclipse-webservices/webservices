@@ -53,13 +53,20 @@ public class PreClientDevelopCommand extends SimpleCommand
   {
     
     // Split up the project and module
-    project_ = module_.substring(0,module_.indexOf("/"));
-    module_ = module_.substring(module_.indexOf("/")+1);
+    int index = module_.indexOf("/");
+    if (index!=-1){
+      project_ = module_.substring(0,index);
+      module_ = module_.substring(index+1);
+    }
+
     if (ear_!=null && ear_.length()>0)
     {
-      earProject_ = ear_.substring(0,ear_.indexOf("/"));
-      ear_ = ear_.substring(ear_.indexOf("/")+1);
-    }
+      int earIndex = ear_.indexOf("/");
+      if (earIndex!=-1) {
+        earProject_ = ear_.substring(0,earIndex);
+        ear_ = ear_.substring(earIndex+1);
+      }
+    }    
     
     IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils
         .getWebServiceRuntime(typeRuntimeServer_.getRuntimeId());
