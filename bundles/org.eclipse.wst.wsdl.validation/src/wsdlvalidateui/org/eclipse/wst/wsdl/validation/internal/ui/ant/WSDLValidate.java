@@ -11,6 +11,7 @@
 
 package org.eclipse.wst.wsdl.validation.internal.ui.ant;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -93,27 +94,6 @@ public class WSDLValidate extends Task
   public void setFailOnError(boolean failOnError)
   {
     this.failOnError = failOnError;
-  }
-
-  /**
-   * Set the WS-I compliance level of the validator.
-   * 
-   * @param compliancelevel - the compliance level to set
-   */
-  public void setWSICompliance(String compliancelevel)
-  {
-    if (compliancelevel.equalsIgnoreCase(WSI_SUGGEST))
-    {
-      wsiLevel = WSI_SUGGEST;
-    }
-    else if (compliancelevel.equalsIgnoreCase(WSI_IGNORE))
-    {
-      wsiLevel = WSI_IGNORE;
-    }
-    else
-    {
-      wsiLevel = WSI_REQUIRE;
-    }
   }
 
   /**
@@ -213,7 +193,12 @@ public class WSDLValidate extends Task
     // if a specific file was specified add it to the list
     if (file != null)
     {
-      files.add(file);
+      File theFile = new File(file);
+      if(!theFile.isAbsolute())
+      {
+        theFile = new File(getProject().getBaseDir(), file);
+      }
+      files.add(theFile.toString());
     }
 
     // go through all filesets specified and add all the files to the list
@@ -222,6 +207,7 @@ public class WSDLValidate extends Task
     {
       FileSet fileset = (FileSet)fsIter.next();
       DirectoryScanner ds = fileset.getDirectoryScanner(fileset.getProject());
+      String basedir = ds.getBasedir().toString() + File.separator;
 
       String[] filelist = ds.getIncludedFiles();
       int numFiles = filelist.length;
@@ -229,7 +215,7 @@ public class WSDLValidate extends Task
       {
         for (int i = 0; i < numFiles; i++)
         {
-          files.add(filelist[i]);
+          files.add(basedir + filelist[i]);
         }
       }
     }
