@@ -15,5 +15,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.wsdl.validation,
  org.eclipse.wst.ws.ui,
  org.eclipse.wst.command.env.core,
- org.eclipse.wst.command.env
+ org.eclipse.wst.command.env,
+ org.apache.ant
 Eclipse-AutoStart: true
