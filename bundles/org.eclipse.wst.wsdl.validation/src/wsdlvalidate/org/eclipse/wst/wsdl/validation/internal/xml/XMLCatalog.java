@@ -190,7 +190,7 @@ public class XMLCatalog implements IXMLCatalog
    * @return The instance of the extension XML catalog if one is registered,
    *         null otherwise.
    */
-  private static IXMLCatalog getExtensionCatalogInstance()
+  public static IXMLCatalog getExtensionCatalogInstance()
   {
     if (extXMLCatalogInstance == null)
     {
@@ -204,6 +204,7 @@ public class XMLCatalog implements IXMLCatalog
         }
         catch (Exception e)
         {
+          //TODO: Log error
         }
       }
     }
