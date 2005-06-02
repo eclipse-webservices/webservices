@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime.internal.impl;
 
+import org.eclipse.wst.wsdl.binding.mime.internal.util.MIMEConstants;
+import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,7 +20,6 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -87,12 +88,10 @@ public class MIMEMultipartRelatedImpl extends ExtensibilityElementImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public void addMIMEPart(javax.wsdl.extensions.mime.MIMEPart mimePart) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		getEMIMEPart().add(mimePart);
 	}
 
 	/**
@@ -218,20 +217,14 @@ public class MIMEMultipartRelatedImpl extends ExtensibilityElementImpl implement
 		return eDynamicIsSet(eFeature);
 	}
 	
-  //
-  // Reconcile methods: DOM -> Model
-  //
-
-  public void reconcileAttributes(Element changedElement)
-  {
-  }
-  
-  //
-  // For reconciliation: Model -> DOM
-  //
-
-  protected void changeAttribute(EAttribute eAttribute)
-  {
-  }
-
+    public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
+    {
+      if (MIMEConstants.PART_ELEMENT_TAG.equals(child.getLocalName()))
+      {
+        MIMEPart mimePart = MIMEFactory.eINSTANCE.createMIMEPart();
+	    mimePart.setEnclosingDefinition(getEnclosingDefinition());
+	    mimePart.setElement(child);
+        addMIMEPart(mimePart);
+      }
+    }
 } //MIMEMultipartRelatedImpl

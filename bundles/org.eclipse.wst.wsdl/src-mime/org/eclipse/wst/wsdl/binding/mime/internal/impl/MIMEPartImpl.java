@@ -10,17 +10,23 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime.internal.impl;
 
-
 import java.util.List;
+import java.util.Collection;
 
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.xml.namespace.QName;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
+
 import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
 import org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl;
+import org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl;
+import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
+import org.eclipse.wst.wsdl.WSDLFactory;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
+
 import org.w3c.dom.Element;
 
 /**
@@ -33,6 +39,9 @@ import org.w3c.dom.Element;
  * @generated
  */
 public class MIMEPartImpl extends ExtensibilityElementImpl implements MIMEPart {
+	
+    private List extensibilityElements = new java.util.Vector();
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -54,23 +63,19 @@ public class MIMEPartImpl extends ExtensibilityElementImpl implements MIMEPart {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public void addExtensibilityElement(ExtensibilityElement extensibilityElement) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+      getExtensibilityElements().add(extensibilityElement);
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public List getExtensibilityElements() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+      return extensibilityElements;
 	}
 
 	/**
@@ -156,5 +161,29 @@ public class MIMEPartImpl extends ExtensibilityElementImpl implements MIMEPart {
 		}
 		return eDynamicIsSet(eFeature);
 	}
+	
+  //
+  // Reconciliation: DOM -> MODEL
+  //
+  public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
+  {
+    if (!WSDLConstants.isMatchingNamespace(child.getNamespaceURI(), WSDLConstants.WSDL_NAMESPACE_URI))
+    {  
+      org.eclipse.wst.wsdl.ExtensibilityElement extensibilityElement = useExtensionFactories() ? 
+        ((WSDLFactoryImpl)WSDLFactory.eINSTANCE).createExtensibilityElement(getNamespace(child),getLocalName(child)) :
+            ((WSDLFactoryImpl)WSDLFactory.eINSTANCE).createUnknownExtensibilityElement();
+	          
+      extensibilityElement.setEnclosingDefinition(getEnclosingDefinition());
+      extensibilityElement.setElement(child);
+      addExtensibilityElement(extensibilityElement);
+    }
+  }
+	  
+  private boolean useExtensionFactories()
+  {
+  	// Use extension factories by default.
+    return getEnclosingDefinition() == null ? 
+      true : ((DefinitionImpl)getEnclosingDefinition()).getUseExtensionFactories();
+  }
 
 } //MIMEPartImpl
