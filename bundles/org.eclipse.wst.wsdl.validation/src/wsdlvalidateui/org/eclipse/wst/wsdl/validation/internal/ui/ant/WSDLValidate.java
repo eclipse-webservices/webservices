@@ -12,6 +12,8 @@
 package org.eclipse.wst.wsdl.validation.internal.ui.ant;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +30,7 @@ import org.apache.tools.ant.types.XMLCatalog;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
+import org.eclipse.wst.wsdl.validation.internal.WSDLValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
@@ -64,9 +67,7 @@ public class WSDLValidate extends Task
   protected final String _EXC_UNABLE_TO_VALIDATE_FILE = "_EXC_UNABLE_TO_VALIDATE_FILE";
   protected final String _EXC_WSDL_FAIL_ON_ERROR = "_EXC_WSDL_FAIL_ON_ERROR";
   
-  protected final String WSI_REQUIRE = "require";
-  protected final String WSI_SUGGEST = "suggest";
-  protected final String WSI_IGNORE = "ignore";
+  protected final String FILE_PROTOCOL = "file:///";
 
   // Global Vars
   protected List filesets = new ArrayList();
@@ -75,8 +76,8 @@ public class WSDLValidate extends Task
   protected String xsdDirectory = null;
   protected boolean failOnError = false;
   protected XMLCatalog globalXMLCatalog = new XMLCatalog();
-  protected String wsiLevel = WSI_REQUIRE;
   protected List wsdl11validators = new ArrayList();
+  protected List extvalidators = new ArrayList();
   protected List extURIResolvers = new ArrayList();
 
   /**
@@ -137,7 +138,20 @@ public class WSDLValidate extends Task
   {
     globalXMLCatalog.addConfiguredXMLCatalog(catalog);
   }
-  
+  /**
+   * Add an extension validator.
+   * 
+   * @param extVal The extension validator to add.
+   */
+  public void addConfiguredExtensionValidator(ExtensionValidator extVal)
+  {
+    extvalidators.add(extVal);
+  }
+  /**
+   * Add an extension WSDL 1.1 validator.
+   * 
+   * @param extVal The extension WSDL 1.1 validator to add.
+   */
   public void addConfiguredWSDL11Validator(ExtensionValidator extVal)
   {
     wsdl11validators.add(extVal);
@@ -193,12 +207,26 @@ public class WSDLValidate extends Task
     // if a specific file was specified add it to the list
     if (file != null)
     {
-      File theFile = new File(file);
-      if(!theFile.isAbsolute())
+      try
       {
-        theFile = new File(getProject().getBaseDir(), file);
+        URL url = new URL(file);
+        files.add(url.toExternalForm());
       }
-      files.add(theFile.toString());
+      catch(Exception e)
+      {
+        File theFile = new File(file);
+        if(!theFile.isAbsolute())
+        {
+          theFile = new File(getProject().getBaseDir(), file);
+        }
+        String absFile = theFile.toString(); 
+        if(!absFile.startsWith("file:"))
+        {
+          absFile = FILE_PROTOCOL + absFile;
+        }
+        absFile = absFile.replace('\\','/');
+        files.add(absFile);
+      }
     }
 
     // go through all filesets specified and add all the files to the list
@@ -215,7 +243,9 @@ public class WSDLValidate extends Task
       {
         for (int i = 0; i < numFiles; i++)
         {
-          files.add(basedir + filelist[i]);
+          String absFile = FILE_PROTOCOL + basedir + filelist[i];
+          absFile = absFile.replace('\\','/');
+          files.add(absFile);
         }
       }
     }
@@ -267,6 +297,15 @@ public class WSDLValidate extends Task
       ExtensionValidator extVal = (ExtensionValidator)wsdl11extIter.next();
       WSDL11ValidatorDelegate delegate = new WSDL11ValidatorDelegate(extVal.getClassName(), extVal.getResourceBundle());
       wsdlValidator.registerWSDL11Validator(extVal.getNamespace(), delegate);
+    }
+    
+    // Register the extension validators.
+    Iterator extIter = extvalidators.iterator();
+    while(extIter.hasNext())
+    {
+      ExtensionValidator extVal = (ExtensionValidator)extIter.next();
+      WSDLValidatorDelegate delegate = new WSDLValidatorDelegate(extVal.getClassName(), extVal.getResourceBundle());
+      wsdlValidator.registerWSDLExtensionValidator(extVal.getNamespace(), delegate);
     }
 
     // The user didn't specify any files to validate.
