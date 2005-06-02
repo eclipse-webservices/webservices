@@ -68,28 +68,46 @@ public class WSDLValidateTest extends BaseTestCase
   public void testRelativeSingleFileLocation()
   {
     String fileLoc = "file.wsdl";
+    String resolvedLocation = ("file:///" + BASE_DIR + fileLoc).replace('\\','/');
     WSDLValidateTask wsdlValidateTask = new WSDLValidateTask();
     wsdlValidateTask.setProject(project);
     wsdlValidateTask.setFile(fileLoc);
     List fileList = wsdlValidateTask.getFileList();
     assertEquals("The file list does not contain only one file.", 1, fileList.size());
     // The file locations are converted to lower case to avoid drive letter case differences on windows. ie. C vs c.
-    assertEquals("The file location '" + fileList.get(0) + "' is not correctly resolved to the base location.", (BASE_DIR + fileLoc).toLowerCase(), ((String)fileList.get(0)).toLowerCase());
+    assertEquals("The file location '" + fileList.get(0) + "' is not correctly resolved to the base location.", resolvedLocation.toLowerCase(), ((String)fileList.get(0)).toLowerCase());
     
   }
   
-/**
+  /**
    * Test that a single file with an absolute location is resolved properly.
    */
   public void testAbsoluteSingleFileLocation()
   {
-    String fileLoc = "C:" + File.separator + "file.wsdl";
+    String fileLoc = BASE_DIR + "file.wsdl";
+    String resolvedLocation = (FILE_PROTOCOL + fileLoc).replace('\\','/');
     WSDLValidateTask wsdlValidateTask = new WSDLValidateTask();
     wsdlValidateTask.setProject(project);
     wsdlValidateTask.setFile(fileLoc);
     List fileList = wsdlValidateTask.getFileList();
     assertEquals("The file list does not contain only one file.", 1, fileList.size());
-    assertEquals("The file location '" + fileLoc + "' is modified.", fileLoc, fileList.get(0));
+    assertEquals("The file location '" + fileLoc + "' is modified.", resolvedLocation.toLowerCase(), ((String)fileList.get(0)).toLowerCase());
+    
+  }
+  
+  /**
+   * Test that a single file with an absolute, remote location is resolved properly.
+   */
+  public void testAbsoluteSingleFileRemoteLocation()
+  {
+    String resolvedLocation = "http://www.ws-i.org/SampleApplications/SupplyChainManagement/2003-07/Catalog.wsdl";
+    String fileLoc = "http://www.ws-i.org/SampleApplications/SupplyChainManagement/2003-07/Catalog.wsdl";
+    WSDLValidateTask wsdlValidateTask = new WSDLValidateTask();
+    wsdlValidateTask.setProject(project);
+    wsdlValidateTask.setFile(fileLoc);
+    List fileList = wsdlValidateTask.getFileList();
+    assertEquals("The file list does not contain only one file.", 1, fileList.size());
+    assertEquals("The file location '" + fileLoc + "' is modified.", resolvedLocation.toLowerCase(), ((String)fileList.get(0)).toLowerCase());
     
   }
   
@@ -99,9 +117,10 @@ public class WSDLValidateTest extends BaseTestCase
    */
   public void testRelativeSingleFileInFilesetNoDirSpecified()
   {
-    String base_dir = BASE_DIR + SAMPLES_DIR + "WSDL" + File.separator + "SelfContained";
-    base_dir = base_dir.replace('/', File.separatorChar);
     String fileLoc = "Empty.wsdl";
+    String base_dir = BASE_DIR + SAMPLES_DIR + "WSDL" + File.separator + "SelfContained";
+    String resolvedLocation = ("file:///" + base_dir + "/" + fileLoc).replace('\\','/');
+    base_dir = base_dir.replace('/', File.separatorChar);
     
     WSDLValidateTask wsdlValidateTask = new WSDLValidateTask();
     wsdlValidateTask.setProject(project);
@@ -118,7 +137,7 @@ public class WSDLValidateTest extends BaseTestCase
     List fileList = wsdlValidateTask.getFileList();
     assertEquals("The file list does not contain only one file.", 1, fileList.size());
     // The file locations are converted to lower case to avoid drive letter case differences on windows. ie. C vs c.
-    assertEquals("The file location '" + fileList.get(0) + "' is not correctly resolved to the base location.", (base_dir + File.separator + fileLoc).toLowerCase(), ((String)fileList.get(0)).toLowerCase());
+    assertEquals("The file location '" + fileList.get(0) + "' is not correctly resolved to the base location.", resolvedLocation.toLowerCase(), ((String)fileList.get(0)).toLowerCase());
     
   }
 }
