@@ -18,7 +18,7 @@ import java.util.Vector;
 
 import org.eclipse.wst.wsi.internal.URIEncoder;
 import org.eclipse.wst.wsi.internal.WSIPreferences;
-import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
+import org.eclipse.wst.wsi.internal.WSITestToolsEclipseProperties;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AnalyzerConfig;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AssertionResultType;
@@ -84,7 +84,7 @@ public class MessageAnalyzer
 
     assertionwarnings = new Vector();
     assertionerrors = new Vector();
-  	this.wsiPreferences = WSITestToolsProperties.checkWSIPreferences(filename);
+  	this.wsiPreferences = WSITestToolsEclipseProperties.checkWSIPreferences(filename);
   }
   
   /**
@@ -136,9 +136,9 @@ public class MessageAnalyzer
   {
     try
     {
-	  WSITestToolsProperties.setLocal();
+	  WSITestToolsEclipseProperties.setLocal();
 	  
-	  if (wsiPreferences.getComplianceLevel() != WSITestToolsProperties.IGNORE_NON_WSI)
+	  if (wsiPreferences.getComplianceLevel() != WSITestToolsEclipseProperties.IGNORE_NON_WSI)
 	  {
         DocumentFactory documentFactory = DocumentFactory.newInstance();
         // Initialize the BasicProfileAnalyzer using an analyzerconfig object
@@ -219,7 +219,7 @@ public class MessageAnalyzer
                 AssertionResult ar = (AssertionResult) iassertionResults.next();
 
                 if (ar.getResult().equalsIgnoreCase(FAILED) && 
-                	wsiPreferences.getComplianceLevel().equals(WSITestToolsProperties.STOP_NON_WSI))
+                	wsiPreferences.getComplianceLevel().equals(WSITestToolsEclipseProperties.STOP_NON_WSI))
                 {
                   TestAssertion ta = ar.getAssertion();
                   if (ta.isEnabled())
@@ -253,7 +253,7 @@ public class MessageAnalyzer
                   }
                 }
                 else if (ar.getResult().equalsIgnoreCase(FAILED) && 
-                         wsiPreferences.getComplianceLevel().equals(WSITestToolsProperties.WARN_NON_WSI))
+                         wsiPreferences.getComplianceLevel().equals(WSITestToolsEclipseProperties.WARN_NON_WSI))
                 {
                   TestAssertion ta = ar.getAssertion();
                   if (ta.isEnabled())

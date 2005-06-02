@@ -40,6 +40,7 @@ public class WSITestToolsPlugin extends AbstractUIPlugin
 
     // set the current directory
    WSITestToolsProperties.setInstallDir(getInstallURL());
+   WSITestToolsProperties.setEclipseContext(true);
    resourcebundle = ResourceBundle.getBundle(PLUGIN_PROPERTIES);
   }
 

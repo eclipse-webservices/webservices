@@ -13,21 +13,11 @@ package org.eclipse.wst.wsi.internal;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsi.internal.core.util.WSIProperties;
 
 /**
  * WS-I test tools property.
- * 
- * @author Lawrence Mandel, IBM
- *
  */
-
 public class WSITestToolsProperties
 {
   protected static String installURL = "";
@@ -41,6 +31,8 @@ public class WSITestToolsProperties
   public static final String STOP_NON_WSI = "0";
   public static final String WARN_NON_WSI = "1";
   public static final String IGNORE_NON_WSI = "2";
+  
+  protected static boolean eclipseContext = false;
 
   /**
    *  Constructor.
@@ -48,7 +40,16 @@ public class WSITestToolsProperties
   protected WSITestToolsProperties()
   {
     super();
-    // TODO Auto-generated constructor stub
+  }
+  
+  public static void setEclipseContext(boolean eclipseActive)
+  {
+    eclipseContext = eclipseActive;
+  }
+  
+  public static boolean getEclipseContext()
+  {
+    return eclipseContext;
   }
   
   /**
@@ -100,95 +101,23 @@ public class WSITestToolsProperties
     WSIProperties.setThreadLocalProperties(schemaLocationProperties);
   }
 
- 
-  /*
-   * (non-Javadoc)
+  /**
+   * Checks the WS-I preferences for the given file and return them in a
+   * WSIPreferences object.
    * 
-   * @see org.eclipse.wsdl.validate.wsi.CheckWSI#checkWSI(java.lang.String)
+   * @param fileuri The file URI to check the WS-I preferences for.
+   * @return A WSIPreferences object containing the preference for this file URI.
    */
   public static WSIPreferences checkWSIPreferences(String fileuri)
   {
-  	WSIPreferences preferences = new WSIPreferences();
-  	
-    // Remove file: and any slashes from the fileuri. 
-  	// Eclipse's resolution mechanism needs to start with the drive.
-    String uriStr = trimURI(fileuri);
-
-    WSUIPlugin wsui = WSUIPlugin.getInstance();
-    PersistentWSIContext APcontext = wsui.getWSIAPContext();
-    PersistentWSIContext SSBPcontext = wsui.getWSISSBPContext();
-    
-    IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(new Path(uriStr));
-    if (files != null && files.length == 1)
-    {
-      //check project level conpliance
-      IProject project = files[0].getProject();
-      
-      if (APcontext.projectStopNonWSICompliances(project))
-      {
-      	preferences.setTADFile(AP_ASSERTION_FILE);
-        preferences.setComplianceLevel(PersistentWSIContext.STOP_NON_WSI);
-      } 
-      else if (APcontext.projectWarnNonWSICompliances(project))
-      {
-      	preferences.setTADFile(AP_ASSERTION_FILE);
-        preferences.setComplianceLevel(PersistentWSIContext.WARN_NON_WSI);
-      }
-      else if (SSBPcontext.projectStopNonWSICompliances(project))
-      {
-      	preferences.setTADFile(SSBP_ASSERTION_FILE);
-        preferences.setComplianceLevel(PersistentWSIContext.STOP_NON_WSI);
-      }
-      else if (SSBPcontext.projectWarnNonWSICompliances(project))
-      {
-      	preferences.setTADFile(SSBP_ASSERTION_FILE);
-        preferences.setComplianceLevel(PersistentWSIContext.WARN_NON_WSI);
-      }
-      else
-      {
-      	preferences.setTADFile(DEFAULT_ASSERTION_FILE);
-        preferences.setComplianceLevel(PersistentWSIContext.IGNORE_NON_WSI);
-      }
-    }
-    else
-    {
-      // If we can't obtain the project preference use the global preference.
-      String APlevel = APcontext.getPersistentWSICompliance();
-      String SSBPlevel = SSBPcontext.getPersistentWSICompliance();
-      if(APlevel.equals(PersistentWSIContext.STOP_NON_WSI))
-      {
-      	preferences.setTADFile(AP_ASSERTION_FILE);
-        preferences.setComplianceLevel(PersistentWSIContext.STOP_NON_WSI);
-      }
-      else if(APlevel.equals(PersistentWSIContext.WARN_NON_WSI))
-      {
-      	preferences.setTADFile(AP_ASSERTION_FILE);
-        preferences.setComplianceLevel(PersistentWSIContext.WARN_NON_WSI);
-     }
-     if(SSBPlevel.equals(PersistentWSIContext.STOP_NON_WSI))
-     {
-   	   preferences.setTADFile(SSBP_ASSERTION_FILE);
-       preferences.setComplianceLevel(PersistentWSIContext.STOP_NON_WSI);
-     }
-     else if(SSBPlevel.equals(PersistentWSIContext.WARN_NON_WSI))
-     {
-    	preferences.setTADFile(SSBP_ASSERTION_FILE);
-        preferences.setComplianceLevel(PersistentWSIContext.WARN_NON_WSI);
-     }
-     else
-     {
-      	preferences.setTADFile(DEFAULT_ASSERTION_FILE);
-        preferences.setComplianceLevel(PersistentWSIContext.IGNORE_NON_WSI);
-      }
-    }
-    return preferences;
+  	return new WSIPreferences();
   }
   
   /**
    * Remove file: and any slashes from the fileuri. 
    * Eclipse's resolution mechanism needs to start with the drive.
    */
-  private static String trimURI(String fileuri)
+  protected static String trimURI(String fileuri)
   {
   	String uriStr = fileuri;
   	

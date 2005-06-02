@@ -18,6 +18,7 @@ import java.util.Vector;
 
 import org.eclipse.wst.wsi.internal.URIEncoder;
 import org.eclipse.wst.wsi.internal.WSIPreferences;
+import org.eclipse.wst.wsi.internal.WSITestToolsEclipseProperties;
 import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AnalyzerConfig;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AssertionResultType;
@@ -127,7 +128,14 @@ public class WSDLAnalyzer
   public WSDLAnalyzer(String fileName)
   {
     reset(fileName);
-  	this.wsiPreferences = WSITestToolsProperties.checkWSIPreferences(fileName);
+    if(WSITestToolsProperties.getEclipseContext())
+    {
+      this.wsiPreferences = WSITestToolsEclipseProperties.checkWSIPreferences(fileName);
+    }
+    else
+    {
+  	  this.wsiPreferences = WSITestToolsProperties.checkWSIPreferences(fileName);
+    }
   }
 
   public WSIPreferences getWSIPreferences()
