@@ -259,7 +259,6 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   protected EList eImports = null;
 
   private ExtensionRegistry extensionRegistry;
-  private String documentBaseURI;
   private Document document;
   private HashMap namespaces = new HashMap();
 

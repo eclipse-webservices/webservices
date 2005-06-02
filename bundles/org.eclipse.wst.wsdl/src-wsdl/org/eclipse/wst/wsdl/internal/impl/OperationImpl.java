@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.internal.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -934,6 +935,15 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     {
       setName(name);
     }
+    
+    String parameterOrder = changedElement.getAttribute("parameterOrder");
+    if (parameterOrder != null)
+    {
+      String[] array = parameterOrder.split(" ");
+	  List l = Arrays.asList(array);
+      setParameterOrdering(l);
+    }
+
   }
 
   public void elementChanged(Element changedElement)
@@ -1054,34 +1064,36 @@ public class OperationImpl extends WSDLElementImpl implements Operation
   // Switch <input> and <output>
   private void reorderChildren()
   {
-    NodeList nodeList = getElement().getChildNodes(); // There are children.
-    
     // Find out the positions of <input> and <output>
-    Node current = null;
     Node input = null;
     Node output = null;
     Node reference = null;
-    for (int i=0; i<nodeList.getLength(); i++)
+    for (Node current=getElement().getFirstChild(); current!= null;current=current.getNextSibling())
     {
-      current = nodeList.item(i);
       if (current.getNodeType() == Node.ELEMENT_NODE)
       {
       	if (WSDLConstants.INPUT == WSDLUtil.getInstance().getWSDLType((Element)current))
         {
           input = current;
           if (output != null)
-            reference = nodeList.item(i+1);
+          { 
+            // cs.. for safety use current.getNextSibling() instead of nodeList.item(i+1)            
+            reference = current.getNextSibling();
+          }  
         }
         else if (WSDLConstants.OUTPUT == WSDLUtil.getInstance().getWSDLType((Element)current))
         {
           output = current;
           if (input != null)
-            reference = nodeList.item(i+1);
+          {
+            // cs.. for safety use current.getNextSibling() instead of nodeList.item(i+1)            
+            reference = current.getNextSibling();
+          }  
         }
       }
     } // end for
     
-    if (input != null && output != null && reference != null)
+    if (input != null && output != null)
     {
       Element parent = getElement();
       if (getStyle().equals(OperationType.REQUEST_RESPONSE))
