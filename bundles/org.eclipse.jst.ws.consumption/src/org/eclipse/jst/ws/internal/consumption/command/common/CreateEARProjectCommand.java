@@ -11,18 +11,22 @@
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jst.j2ee.application.internal.operations.EARComponentCreationOperation;
+import org.eclipse.jst.j2ee.datamodel.properties.IEarComponentCreationDataModelProperties;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.j2ee.internal.earcreation.EARComponentCreationDataModel;
+import org.eclipse.jst.j2ee.internal.earcreation.EarComponentCreationDataModelProvider;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 
 
 public class CreateEARProjectCommand extends SimpleCommand
@@ -49,19 +53,19 @@ public class CreateEARProjectCommand extends SimpleCommand
       IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(earProjectName_);
       if (project != null && !project.exists())
       {
-        EARComponentCreationDataModel info = new EARComponentCreationDataModel();
-        info.setProperty(EARComponentCreationDataModel.PROJECT_NAME, project.getName());
+        IDataModel info = DataModelFactory.createDataModel(new EarComponentCreationDataModelProvider());
+        info.setProperty(IEarComponentCreationDataModelProperties.PROJECT_NAME, project.getName());
         
         //Set the J2EE version
         String finalJ2EEVersion = null;
         if (j2eeVersion_ != null && j2eeVersion_.length()>0)
         {
-          info.setProperty(EARComponentCreationDataModel.COMPONENT_VERSION, new Integer(j2eeVersion_));
+          info.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(j2eeVersion_));
           finalJ2EEVersion = j2eeVersion_;
         }
         else
         {
-          info.setProperty(EARComponentCreationDataModel.COMPONENT_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+          info.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
           finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
         }
         
@@ -75,19 +79,13 @@ public class CreateEARProjectCommand extends SimpleCommand
         }
 
         //Create the EAR
-        EARComponentCreationOperation operation = new EARComponentCreationOperation(info);
-        operation.run(new NullProgressMonitor());
+        IDataModelOperation operation = info.getDefaultOperation();
+        operation.execute(new NullProgressMonitor(), null);
       }
     }
-    catch (java.lang.reflect.InvocationTargetException ite)
+    catch (ExecutionException ite)
     {
       Status status = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils_.getMessage("MSG_ERROR_CANNOT_CREATE_EAR_PROJECT", new String[] {earProjectName_}), Status.ERROR, ite);
-      env.getStatusHandler().reportError(status);
-      return status;
-    }
-    catch (InterruptedException ie)
-    {
-      Status status = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils_.getMessage("MSG_ERROR_CANNOT_CREATE_EAR_PROJECT", new String[] {earProjectName_}), Status.ERROR, ie);
       env.getStatusHandler().reportError(status);
       return status;
     }

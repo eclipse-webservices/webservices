@@ -11,12 +11,13 @@
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientComponentCreationDataModel;
-import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientComponentCreationOperation;
+import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientComponentCreationDataModelProvider;
+import org.eclipse.jst.j2ee.datamodel.properties.IAppClientComponentCreationDataModelProperties;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
@@ -25,6 +26,9 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 
 public class CreateAppClientProjectCommand extends SimpleCommand
 {
@@ -63,16 +67,16 @@ public class CreateAppClientProjectCommand extends SimpleCommand
       IProject appClientProject = root.getProject(appClientProjectName_);
       if (appClientProject != null && !appClientProject.exists())
       {
-        AppClientComponentCreationDataModel info = new AppClientComponentCreationDataModel();
-        info.setProperty(AppClientComponentCreationDataModel.COMPONENT_NAME, appClientProjectName_);
-        info.setProperty(AppClientComponentCreationDataModel.EAR_MODULE_NAME, earProjectName_);
-        info.setProperty(AppClientComponentCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
+        IDataModel info = DataModelFactory.createDataModel(new AppClientComponentCreationDataModelProvider());
+        info.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_NAME, appClientProjectName_);
+        info.setProperty(IAppClientComponentCreationDataModelProperties.EAR_COMPONENT_NAME, earProjectName_);
+        info.setProperty(IAppClientComponentCreationDataModelProperties.ADD_TO_EAR, Boolean.TRUE);
         
         //Set the J2EE version
         String finalJ2EEVersion = null;
         if (j2eeVersion_ != null && j2eeVersion_.length()>0)
         {
-          info.setProperty(AppClientComponentCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
+          info.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(j2eeVersion_));
           finalJ2EEVersion = j2eeVersion_;
         }                        
         else
@@ -81,12 +85,12 @@ public class CreateAppClientProjectCommand extends SimpleCommand
           {
             EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
             int earVersion = ear.getJ2EEVersion();
-            info.setProperty(AppClientComponentCreationDataModel.J2EE_VERSION, new Integer(earVersion));
+            info.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(earVersion));
             finalJ2EEVersion = String.valueOf(earVersion);
           }
           else
           {
-            info.setProperty(AppClientComponentCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+            info.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
             finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
           }            
         }        
@@ -102,19 +106,13 @@ public class CreateAppClientProjectCommand extends SimpleCommand
         }
 
         //Create the AppClient project
-        AppClientComponentCreationOperation operation = new AppClientComponentCreationOperation(info);
-        operation.run(new NullProgressMonitor());
+        IDataModelOperation operation = info.getDefaultOperation();
+        operation.execute(new NullProgressMonitor(), null);
       }
     }
-    catch (java.lang.reflect.InvocationTargetException ite)
+    catch (ExecutionException ite)
     {
       Status status = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils_.getMessage("MSG_ERROR_CANNOT_CREATE_APP_CLIENT_PROJECT", new String[] {appClientProjectName_}), Status.ERROR, ite);
-      env.getStatusHandler().reportError(status);
-      return status;
-    }
-    catch (InterruptedException ie)
-    {
-      Status status = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils_.getMessage("MSG_ERROR_CANNOT_CREATE_APP_CLIENT_PROJECT", new String[] {appClientProjectName_}), Status.ERROR, ie);
       env.getStatusHandler().reportError(status);
       return status;
     }

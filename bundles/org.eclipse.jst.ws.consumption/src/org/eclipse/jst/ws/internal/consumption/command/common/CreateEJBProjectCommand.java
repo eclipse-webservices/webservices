@@ -10,15 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jst.j2ee.ejb.datamodel.properties.IEjbComponentCreationDataModelProperties;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
-import org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationDataModel;
-import org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationOperation;
+import org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationDataModelProvider;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEPlugin;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
@@ -28,6 +29,9 @@ import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
 
@@ -90,9 +94,9 @@ public class CreateEJBProjectCommand extends SimpleCommand
     }
 
     // Create EJBProjectInfo
-    EjbComponentCreationDataModel projectInfo = new EjbComponentCreationDataModel();
-    projectInfo.setProperty( EjbComponentCreationDataModel.PROJECT_NAME, ejbProjectName_ );
-    projectInfo.setProperty(EjbComponentCreationDataModel.CREATE_DEFAULT_SESSION_BEAN,Boolean.TRUE);
+    IDataModel projectInfo = DataModelFactory.createDataModel(new EjbComponentCreationDataModelProvider());
+    projectInfo.setProperty(IEjbComponentCreationDataModelProperties.PROJECT_NAME, ejbProjectName_ );
+    projectInfo.setProperty(IEjbComponentCreationDataModelProperties.CREATE_DEFAULT_SESSION_BEAN,Boolean.TRUE);
 
     Status status;
     if (earProjectName_ != null)
@@ -110,7 +114,7 @@ public class CreateEJBProjectCommand extends SimpleCommand
    return new SimpleStatus("");
   }
 
-  private Status addEARToProject(String earProjectName, EjbComponentCreationDataModel projectInfo)
+  private Status addEARToProject(String earProjectName, IDataModel projectInfo)
   {
     IProject earProject = null;
     // IProject earProject = ResourcesPlugin.getWorkspace().getRoot().getProject(earProjectName);
@@ -135,14 +139,14 @@ public class CreateEJBProjectCommand extends SimpleCommand
       }
     }
 
-    projectInfo.setProperty(EjbComponentCreationDataModel.EAR_MODULE_NAME, earProject.getName());
-    projectInfo.setProperty(EjbComponentCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
+    projectInfo.setProperty(IEjbComponentCreationDataModelProperties.EAR_COMPONENT_NAME, earProject.getName());
+    projectInfo.setProperty(IEjbComponentCreationDataModelProperties.ADD_TO_EAR, Boolean.TRUE);
     
     //Set the J2EE version
     String finalJ2EEVersion = null;    
     if (j2eeVersion_ != null && j2eeVersion_.length()>0)
     {
-      projectInfo.setProperty(EjbComponentCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
+      projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(j2eeVersion_));
       finalJ2EEVersion = j2eeVersion_;
     }    
     else
@@ -151,12 +155,12 @@ public class CreateEJBProjectCommand extends SimpleCommand
       {
         EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
         int earVersion = ear.getJ2EEVersion();
-        projectInfo.setProperty(EjbComponentCreationDataModel.J2EE_VERSION, new Integer(earVersion));
+        projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(earVersion));
         finalJ2EEVersion = String.valueOf(earVersion);
       }
       else
       {
-        projectInfo.setProperty(EjbComponentCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+        projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
         finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
       }            
     }
@@ -169,25 +173,21 @@ public class CreateEJBProjectCommand extends SimpleCommand
 //      projectInfo.setProperty(EjbComponentCreationDataModel.ADD_SERVER_TARGET, Boolean.TRUE);
     }
 
-    EjbComponentCreationOperation ejbProjectCreationOperation = new EjbComponentCreationOperation(projectInfo);    	
+    IDataModelOperation ejbProjectCreationOperation = projectInfo.getDefaultOperation();    	
 
     try
     {
-      ejbProjectCreationOperation.run(new NullProgressMonitor());
+      ejbProjectCreationOperation.execute(new NullProgressMonitor(), null);
 	  
     }
-    catch (java.lang.reflect.InvocationTargetException e)
+    catch (ExecutionException e)
     {
       return new SimpleStatus(WebServiceConsumptionPlugin.ID, WebServiceConsumptionPlugin.getMessage("%MSG_ERROR_CANNOT_CREATE_EJB_PROJECT"), Status.ERROR, e);
-    }
-    catch (InterruptedException ex)
-    {
-      return new SimpleStatus(WebServiceConsumptionPlugin.ID, WebServiceConsumptionPlugin.getMessage("%MSG_ERROR_CANNOT_CREATE_EJB_PROJECT"), Status.ERROR, ex);
     }
     return new SimpleStatus("");
   }
 
-  private Status addEARToProject(IProject serviceProject, EjbComponentCreationDataModel projectInfo, Environment env)
+  private Status addEARToProject(IProject serviceProject, IDataModel projectInfo, Environment env)
   {
         EARNatureRuntime ear = null;
         IProject earProject = null;
@@ -242,22 +242,17 @@ public class CreateEJBProjectCommand extends SimpleCommand
 	      
       IProject ejbProject = null;
       //Add the project back to the Server config
-      projectInfo.setProperty(EjbComponentCreationDataModel.EAR_MODULE_NAME, earProject.getName());
-      projectInfo.setProperty(EjbComponentCreationDataModel.ADD_TO_EAR, Boolean.TRUE);	
-      EjbComponentCreationOperation ejbProjectCreationOperation = new EjbComponentCreationOperation(projectInfo);    	
+      projectInfo.setProperty(IEjbComponentCreationDataModelProperties.EAR_COMPONENT_NAME, earProject.getName());
+      projectInfo.setProperty(IEjbComponentCreationDataModelProperties.ADD_TO_EAR, Boolean.TRUE);	
+      IDataModelOperation ejbProjectCreationOperation = projectInfo.getDefaultOperation();    	
 
       try {
-        ejbProjectCreationOperation.run(new NullProgressMonitor());
+        ejbProjectCreationOperation.execute(new NullProgressMonitor(), null);
       }
-      catch (java.lang.reflect.InvocationTargetException e)
+      catch (ExecutionException e)
       {
         return new SimpleStatus(WebServiceConsumptionPlugin.ID, WebServiceConsumptionPlugin.getMessage("%MSG_ERROR_CANNOT_CREATE_EJB_PROJECT"), Status.ERROR, e);
       }
-      catch (InterruptedException ex)
-      {
-        return new SimpleStatus(WebServiceConsumptionPlugin.ID, WebServiceConsumptionPlugin.getMessage("%MSG_ERROR_CANNOT_CREATE_EJB_PROJECT"), Status.ERROR, ex);    
-      } 
-
       //ejbProject = projectInfo.primGetProject();
 
       //Add the project back to the Server config
@@ -294,18 +289,18 @@ public class CreateEJBProjectCommand extends SimpleCommand
       IProject ejbProject = root.getProject(ejbProjectName);
       if (ejbProject != null && !ejbProject.exists())
       {
-        EjbComponentCreationDataModel info = new EjbComponentCreationDataModel();
-        info.setProperty(EjbComponentCreationDataModel.PROJECT_NAME, ejbProjectName);
-        info.setProperty(EjbComponentCreationDataModel.EAR_MODULE_NAME, earProjectName);
-        info.setProperty(EjbComponentCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
+        IDataModel info = DataModelFactory.createDataModel(new EjbComponentCreationDataModelProvider());
+        info.setProperty(IEjbComponentCreationDataModelProperties.PROJECT_NAME, ejbProjectName);
+        info.setProperty(IEjbComponentCreationDataModelProperties.EAR_COMPONENT_NAME, earProjectName);
+        info.setProperty(IEjbComponentCreationDataModelProperties.ADD_TO_EAR, Boolean.TRUE);
         
-        info.setProperty(EjbComponentCreationDataModel.CREATE_DEFAULT_SESSION_BEAN,Boolean.TRUE);        
+        info.setProperty(IEjbComponentCreationDataModelProperties.CREATE_DEFAULT_SESSION_BEAN,Boolean.TRUE);        
         
         //Set the J2EE version
         String finalJ2EEVersion = null;
         if (j2eeVersion_ != null && j2eeVersion_.length()>0)
         {
-          info.setProperty(EjbComponentCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
+          info.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(j2eeVersion_));
           finalJ2EEVersion = j2eeVersion_;
         }                                
         else
@@ -314,12 +309,12 @@ public class CreateEJBProjectCommand extends SimpleCommand
           {
             EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
             int earVersion = ear.getJ2EEVersion();
-            info.setProperty(EjbComponentCreationDataModel.J2EE_VERSION, new Integer(earVersion));
+            info.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(earVersion));
             finalJ2EEVersion = String.valueOf(earVersion);
           }
           else
           {
-            info.setProperty(EjbComponentCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+            info.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
             finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
           }            
         }
@@ -334,8 +329,8 @@ public class CreateEJBProjectCommand extends SimpleCommand
         }
 
         //Create the EJB Project
-        EjbComponentCreationOperation operation = new EjbComponentCreationOperation(info);
-        operation.run(new NullProgressMonitor());
+        IDataModelOperation operation = info.getDefaultOperation();
+        operation.execute(new NullProgressMonitor(), null);
       }
       
       // add EAR to Server
@@ -351,13 +346,9 @@ public class CreateEJBProjectCommand extends SimpleCommand
       
       
     }
-    catch (java.lang.reflect.InvocationTargetException ite)
+    catch (ExecutionException ite)
     {
       return new SimpleStatus(WebServiceConsumptionPlugin.ID, WebServiceConsumptionPlugin.getMessage("%MSG_ERROR_CANNOT_CREATE_EJB_PROJECT"), Status.ERROR, ite);
-    }
-    catch (InterruptedException ie)
-    {
-      return new SimpleStatus(WebServiceConsumptionPlugin.ID, WebServiceConsumptionPlugin.getMessage("%MSG_ERROR_CANNOT_CREATE_EJB_PROJECT"), Status.ERROR, ie);
     }
     return new SimpleStatus("");
   }

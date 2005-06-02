@@ -19,8 +19,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
-import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationDataModel;
-import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationOperation;
+import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationDataModelProvider;
+import org.eclipse.jst.j2ee.web.datamodel.properties.IWebComponentCreationDataModelProperties;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
@@ -33,6 +33,9 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
 
@@ -283,12 +286,12 @@ public class CreateWebProjectCommand extends SimpleCommand {
     try
     {
     	
-    WebComponentCreationDataModel projectInfo = new WebComponentCreationDataModel();
-    projectInfo.setProperty(WebComponentCreationDataModel.PROJECT_NAME, projectName_);
+    IDataModel projectInfo = DataModelFactory.createDataModel(new WebComponentCreationDataModelProvider());
+    projectInfo.setProperty(IWebComponentCreationDataModelProperties.PROJECT_NAME, projectName_);
     String finalJ2EEVersion = null;
     if (j2eeVersion_ != null && j2eeVersion_.length()>0)
     {
-      projectInfo.setProperty(WebComponentCreationDataModel.J2EE_VERSION, new Integer(j2eeVersion_));
+      projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(j2eeVersion_));
       finalJ2EEVersion = j2eeVersion_;
     }        
     else        
@@ -301,18 +304,18 @@ public class CreateWebProjectCommand extends SimpleCommand {
         {
           EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
           int earVersion = ear.getJ2EEVersion();
-          projectInfo.setProperty(WebComponentCreationDataModel.J2EE_VERSION, new Integer(earVersion));
+          projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(earVersion));
           finalJ2EEVersion = String.valueOf(earVersion);
         }
         else
         {          
-          projectInfo.setProperty(WebComponentCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+          projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
           finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
         }
       }
       else
       {
-        projectInfo.setProperty(WebComponentCreationDataModel.J2EE_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
+        projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
         finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);        
       }
       
@@ -328,19 +331,19 @@ public class CreateWebProjectCommand extends SimpleCommand {
     
     if (earProjectName_ !=null && earProjectName_.length()>0)
     {
-      projectInfo.setProperty(WebComponentCreationDataModel.EAR_MODULE_NAME, earProjectName_);
-      projectInfo.setProperty(WebComponentCreationDataModel.ADD_TO_EAR, Boolean.TRUE);
+      projectInfo.setProperty(IWebComponentCreationDataModelProperties.EAR_COMPONENT_NAME, earProjectName_);
+      projectInfo.setProperty(IWebComponentCreationDataModelProperties.ADD_TO_EAR, Boolean.TRUE);
     }
     else
     {
-      projectInfo.setProperty(WebComponentCreationDataModel.ADD_TO_EAR, Boolean.FALSE);
+      projectInfo.setProperty(IWebComponentCreationDataModelProperties.ADD_TO_EAR, Boolean.FALSE);
     }
     	
     
 
     //Create and run the operation
-    WebComponentCreationOperation op = new WebComponentCreationOperation(projectInfo);
-      op.run(new NullProgressMonitor());    
+    IDataModelOperation op = projectInfo.getDefaultOperation();
+      op.execute(new NullProgressMonitor(), null);    
     return new SimpleStatus("");
     } catch (Exception e)
     {

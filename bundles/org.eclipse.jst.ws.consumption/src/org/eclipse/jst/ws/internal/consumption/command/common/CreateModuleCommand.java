@@ -3,15 +3,16 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.application.internal.operations.EARComponentCreationOperation;
-import org.eclipse.jst.j2ee.application.internal.operations.FlexibleJavaProjectCreationDataModel;
-import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientComponentCreationDataModel;
-import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientComponentCreationOperation;
-import org.eclipse.jst.j2ee.internal.earcreation.EARComponentCreationDataModel;
-import org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationDataModel;
-import org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationOperation;
-import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationDataModel;
-import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationOperation;
+import org.eclipse.jst.j2ee.application.internal.operations.FlexibleJavaProjectCreationDataModelProvider;
+import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientComponentCreationDataModelProvider;
+import org.eclipse.jst.j2ee.datamodel.properties.IAppClientComponentCreationDataModelProperties;
+import org.eclipse.jst.j2ee.datamodel.properties.IEarComponentCreationDataModelProperties;
+import org.eclipse.jst.j2ee.ejb.datamodel.properties.IEjbComponentCreationDataModelProperties;
+import org.eclipse.jst.j2ee.internal.earcreation.EarComponentCreationDataModelProvider;
+import org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationDataModelProvider;
+import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationDataModelProvider;
+import org.eclipse.jst.j2ee.project.datamodel.properties.IFlexibleJavaProjectCreationDataModelProperties;
+import org.eclipse.jst.j2ee.web.datamodel.properties.IWebComponentCreationDataModelProperties;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -21,7 +22,9 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.wst.common.frameworks.internal.operations.WTPOperation;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 
 public class CreateModuleCommand extends SimpleCommand
 {
@@ -115,16 +118,16 @@ public class CreateModuleCommand extends SimpleCommand
 		Status status = new SimpleStatus("");
 		try
 		{
-		  WebComponentCreationDataModel projectInfo = new WebComponentCreationDataModel();
-		  projectInfo.setProperty(WebComponentCreationDataModel.PROJECT_NAME,projectName);
-		  projectInfo.setProperty(WebComponentCreationDataModel.COMPONENT_NAME, moduleName);
+		  IDataModel projectInfo = DataModelFactory.createDataModel(new WebComponentCreationDataModelProvider());
+		  projectInfo.setProperty(IWebComponentCreationDataModelProperties.PROJECT_NAME,projectName);
+		  projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
 		  if (j2eeLevel!=null)
-			  projectInfo.setProperty(WebComponentCreationDataModel.J2EE_VERSION, Integer.valueOf(j2eeLevel));
-		  WebComponentCreationOperation op = new WebComponentCreationOperation(projectInfo);
+			  projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
+		  IDataModelOperation op = projectInfo.getDefaultOperation();
 		  if (env!=null)
-			  op.run(EnvironmentUtils.getIProgressMonitor(env));
+			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
 		  else 
-			  op.run(new NullProgressMonitor());
+			  op.execute(new NullProgressMonitor(), null);
 		}
 		catch (Exception e)
 		{
@@ -141,16 +144,16 @@ public class CreateModuleCommand extends SimpleCommand
 		Status status = new SimpleStatus("");
 		try
 		{
-		  EARComponentCreationDataModel projectInfo = new EARComponentCreationDataModel();
-		  projectInfo.setProperty(EARComponentCreationDataModel.PROJECT_NAME,projectName);
-		  projectInfo.setProperty(EARComponentCreationDataModel.COMPONENT_NAME, moduleName);
+		  IDataModel projectInfo = DataModelFactory.createDataModel(new EarComponentCreationDataModelProvider());
+		  projectInfo.setProperty(IEarComponentCreationDataModelProperties.PROJECT_NAME,projectName);
+		  projectInfo.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
 		  if (j2eeLevel!=null)
-			  projectInfo.setProperty(EARComponentCreationDataModel.J2EE_VERSION, Integer.valueOf(j2eeLevel));
-		  EARComponentCreationOperation op = new EARComponentCreationOperation(projectInfo);
+			  projectInfo.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
+		  IDataModelOperation op =projectInfo.getDefaultOperation();
 		  if (env!=null)
-			  op.run(EnvironmentUtils.getIProgressMonitor(env));
+			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
 		  else 
-			  op.run(new NullProgressMonitor());
+			  op.execute(new NullProgressMonitor(), null);
 		}
 		catch (Exception e)
 		{
@@ -167,16 +170,16 @@ public class CreateModuleCommand extends SimpleCommand
 		Status status = new SimpleStatus("");
 		try
 		{
-		  EjbComponentCreationDataModel projectInfo = new EjbComponentCreationDataModel();
-		  projectInfo.setProperty(EjbComponentCreationDataModel.PROJECT_NAME,projectName);
-		  projectInfo.setProperty(EjbComponentCreationDataModel.COMPONENT_NAME, moduleName);
+		  IDataModel projectInfo = DataModelFactory.createDataModel(new EjbComponentCreationDataModelProvider());
+		  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.PROJECT_NAME,projectName);
+		  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
 		  if (j2eeLevel!=null)
-			  projectInfo.setProperty(EjbComponentCreationDataModel.J2EE_VERSION, Integer.valueOf(j2eeLevel));
-		  EjbComponentCreationOperation op = new EjbComponentCreationOperation(projectInfo);
+			  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
+		  IDataModelOperation op = projectInfo.getDefaultOperation();
 		  if (env!=null)
-			  op.run(EnvironmentUtils.getIProgressMonitor(env));
+			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
 		  else 
-			  op.run(new NullProgressMonitor());
+			  op.execute(new NullProgressMonitor(), null);
 		}
 		catch (Exception e)
 		{
@@ -193,16 +196,16 @@ public class CreateModuleCommand extends SimpleCommand
 		Status status = new SimpleStatus("");
 		try
 		{
-		  AppClientComponentCreationDataModel projectInfo = new AppClientComponentCreationDataModel();
-		  projectInfo.setProperty(AppClientComponentCreationDataModel.PROJECT_NAME,projectName);
-		  projectInfo.setProperty(AppClientComponentCreationDataModel.COMPONENT_NAME, moduleName);
+		  IDataModel projectInfo = DataModelFactory.createDataModel(new AppClientComponentCreationDataModelProvider());
+		  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.PROJECT_NAME,projectName);
+		  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
 		  if (j2eeLevel!=null)		  
-			  projectInfo.setProperty(AppClientComponentCreationDataModel.J2EE_VERSION, Integer.valueOf(j2eeLevel));
-		  AppClientComponentCreationOperation op = new AppClientComponentCreationOperation(projectInfo);
+			  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
+		  IDataModelOperation op = projectInfo.getDefaultOperation();
 		  if (env!=null)
-			  op.run(EnvironmentUtils.getIProgressMonitor(env));
+			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
 		  else 
-			  op.run(new NullProgressMonitor());
+			  op.execute(new NullProgressMonitor(), null);
 		}
 		catch (Exception e)
 		{
@@ -223,16 +226,16 @@ public class CreateModuleCommand extends SimpleCommand
 		Status status = new SimpleStatus("");
 		try
 		{
-		  FlexibleJavaProjectCreationDataModel projectInfo = new FlexibleJavaProjectCreationDataModel();
-		  projectInfo.setProperty(FlexibleJavaProjectCreationDataModel.PROJECT_NAME,projectName);
-      String runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId, ServerUtils.getServerTargetModuleType(moduleType), j2eeLevel);
-		  projectInfo.setProperty(FlexibleJavaProjectCreationDataModel.SERVER_TARGET_ID,runtimeTargetId);
-		  projectInfo.setProperty(FlexibleJavaProjectCreationDataModel.ADD_SERVER_TARGET,Boolean.TRUE);
-		  WTPOperation op = projectInfo.getDefaultOperation();
+		  IDataModel projectInfo = DataModelFactory.createDataModel(new FlexibleJavaProjectCreationDataModelProvider());
+		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.PROJECT_NAME,projectName);
+		  String runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId, ServerUtils.getServerTargetModuleType(moduleType), j2eeLevel);
+		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.SERVER_TARGET_ID,runtimeTargetId);
+		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.ADD_SERVER_TARGET,Boolean.TRUE);
+		  IDataModelOperation op = projectInfo.getDefaultOperation();
 		  if (env!=null)
-			  op.run(EnvironmentUtils.getIProgressMonitor(env));
+			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
 		  else 
-			  op.run(new NullProgressMonitor());
+			  op.execute(new NullProgressMonitor(), null);
 
 		}
 		catch (Exception e)
