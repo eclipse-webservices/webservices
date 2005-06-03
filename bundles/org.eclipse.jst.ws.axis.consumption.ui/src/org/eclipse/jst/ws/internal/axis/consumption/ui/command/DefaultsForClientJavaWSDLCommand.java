@@ -11,7 +11,7 @@
 package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 
 
-import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
@@ -85,7 +85,7 @@ public class DefaultsForClientJavaWSDLCommand extends SimpleCommand {
 		javaWSDLParam_.setJavaOutput(output);
 
 
-		IContainer webModuleContainer = ResourceUtils.getWebComponentServerRoot(proxyProject_, moduleName_);
+		IFolder webModuleContainer = ResourceUtils.getWebComponentServerRoot(proxyProject_, moduleName_);
 		if (webModuleContainer !=null)
 		{
 		  IPath webModulePath = webModuleContainer.getFullPath();

@@ -56,7 +56,6 @@ import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
-import org.eclipse.wst.common.componentcore.resources.ComponentHandle;
 import org.eclipse.wst.common.componentcore.resources.IFlexibleProject;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
@@ -126,11 +125,10 @@ public final class J2EEUtils {
 	public static int getJ2EEVersion(IProject p, String componentName){
 		int j2eeVer = -1;
 		try {
-      ComponentHandle ch = ComponentHandle.create(p, componentName);
-      
-			if (ch!=null) {
-			  j2eeVer = getComponentJ2EEVersion(p, ch);
-			}
+          IVirtualComponent vc = ComponentCore.createComponent(p, componentName);
+          if (vc!=null){
+            j2eeVer = getJ2EEVersion(vc);
+          }
 		}
 		catch (Exception e){
 			//handle exception
@@ -139,41 +137,29 @@ public final class J2EEUtils {
 		return j2eeVer;	
 	}
 	
-	public static int getJ2EEVersion(IVirtualComponent component){
-  
-		return getJ2EEVersion(component.getProject(), component.getName()); 
+	public static int getJ2EEVersion(IVirtualComponent ch){
+      int j2eeVer = -1;
+      //check type
+      if (ch!=null) {
+        if (isWebComponent(ch))
+          j2eeVer = getWebComponentJ2EEVersion(ch);
+        if (isAppClientComponent(ch))
+          j2eeVer = getAppClientComponentJ2EEVersion(ch);
+        if (isEJBComponent(ch))
+          j2eeVer = getEJBComponentJ2EEVersion(ch);
+        if (isEARComponent(ch))
+          j2eeVer = getEARComponentJ2EEVersion(ch);
+        
+      }
+      return j2eeVer; 
 	}
-	
-	/**
-	 * Returns the J2EEVersion of the component identified by project and component name
-	 * @param project
-	 * @param ch
-	 * @return int version if applicable, otherwise returns -1
-	 */
-	private static int getComponentJ2EEVersion(IProject project, ComponentHandle ch){
-		int j2eeVer = -1;
-		//check type
-		if (ch!=null) {
-			if (isWebComponent(project, ch.getName()))
-				j2eeVer = getWebComponentJ2EEVersion(ch);
-			if (isAppClientComponent(project, ch.getName()))
-				j2eeVer = getAppClientComponentJ2EEVersion(ch);
-			if (isEJBComponent(project, ch.getName()))
-				j2eeVer = getEJBComponentJ2EEVersion(ch);
-			if (isEARComponent(project, ch.getName()))
-				j2eeVer = getEARComponentJ2EEVersion(ch);
-			
-		}
-		return j2eeVer;
-	}
-	
 	
 	/**
 	 * Return's the EAR module's J2EEVersion
 	 * @param wbc
 	 * @return
 	 */
-	private static int getEARComponentJ2EEVersion(ComponentHandle ch){
+	private static int getEARComponentJ2EEVersion(IVirtualComponent ch){
 		EARArtifactEdit edit = null;
 		int nVersion = 12;
 		try {
@@ -226,14 +212,14 @@ public final class J2EEUtils {
 	 * @param wbModule
 	 * @return the J2EE version id
 	 */
-	private static int getWebComponentJ2EEVersion(ComponentHandle ch) {
+	private static int getWebComponentJ2EEVersion(IVirtualComponent ch) {
 		WebArtifactEdit webEdit = null;
 		int nVersion = 12;
 		try {
-      webEdit = WebArtifactEdit.getWebArtifactEditForRead(ch);
-			if (webEdit != null) {
-				nVersion = webEdit.getJ2EEVersion();
-			}
+          webEdit = WebArtifactEdit.getWebArtifactEditForRead(ch);
+          if (webEdit != null) {
+			nVersion = webEdit.getJ2EEVersion();
+          }
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -248,7 +234,7 @@ public final class J2EEUtils {
 	 * @param wbc
 	 * @return
 	 */
-	private static int getAppClientComponentJ2EEVersion(ComponentHandle ch){
+	private static int getAppClientComponentJ2EEVersion(IVirtualComponent ch){
 		AppClientArtifactEdit edit = null;
 		int nVersion = 12;
 		try {
@@ -270,7 +256,7 @@ public final class J2EEUtils {
 	 * @param wbc
 	 * @return
 	 */
-	private static int getEJBComponentJ2EEVersion(ComponentHandle ch){
+	private static int getEJBComponentJ2EEVersion(IVirtualComponent ch){
 		EJBArtifactEdit edit = null;
 		int nVersion = 12;
 		try {
@@ -301,28 +287,13 @@ public final class J2EEUtils {
 	
 	public static IVirtualComponent[] getAllComponents(){
 		List v = new ArrayList();
-		StructureEdit mc = null;
 		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
 		for (int i = 0; i < projects.length; i++) {
-			try {
-        
-        
-				mc = StructureEdit.getStructureEditForRead(projects[i]);
-				if (mc!=null){
-					WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-					for (int j=0;j<wbcs.length;j++){
-						v.add(ComponentCore.createComponent(projects[i], wbcs[j].getName()));
-					}
-				}
-			}
-			catch (Exception e){
-				//handle exception
-				e.printStackTrace();				
-			}
-			finally{
-				if (mc!=null)
-					mc.dispose();
-			}			
+		  IFlexibleProject fp = ComponentCore.createFlexibleProject(projects[i]);
+          IVirtualComponent[] vcs = fp.getComponents();
+          for (int j=0;j<vcs.length;j++){
+             v.add(vcs[j]);
+          }
 		}
 
 		return (IVirtualComponent[])v.toArray(new IVirtualComponent[0]);
@@ -960,20 +931,20 @@ public final class J2EEUtils {
 	 * @return
 	 * @deprecated // use getEARComponentofJ2EEVersion
 	 */
-	public static IProject getEARProjectOfVersion(int versionId){
-		try {
-			IProject[] allEARs = getEARProjects();
-			for (int i = 0; i < allEARs.length; i++) {
-				IProject ear = allEARs[i];
-				if (getJ2EEVersion(ear) == versionId) {
-					return ear;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;		
-	}
+//	public static IProject getEARProjectOfVersion(int versionId){
+//		try {
+//			IProject[] allEARs = getEARProjects();
+//			for (int i = 0; i < allEARs.length; i++) {
+//				IProject ear = allEARs[i];
+//				if (getJ2EEVersion(ear) == versionId) {
+//					return ear;
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return null;		
+//	}
 
 
 	/**
@@ -994,7 +965,6 @@ public final class J2EEUtils {
 			case J2EEVersionConstants.J2EE_1_4_ID :
 				return J2EEVersionConstants.VERSION_1_4_TEXT;
 			default :
-				System.out.println("This is not a J2EE version!!");
 				return "";
 		}
 	}
@@ -1584,9 +1554,10 @@ public final class J2EEUtils {
         StructureEdit core = null;
         try {
             core = StructureEdit.getStructureEditForRead(project);
-			      if (core!=null){
+			if (core!=null){
 	            WorkbenchComponent wc = core.findComponentByName(componentName);
 	            
+                //IDataModel addComponentToEARDataModel = DataModelFactory.createDataModel(new AddComponentToEnterpriseApplicationDataModelProvider());
 	            AddComponentToEnterpriseApplicationDataModel addComponentToEARDataModel = new AddComponentToEnterpriseApplicationDataModel();;
 	            
 	            addComponentToEARDataModel.setProperty(AddComponentToEnterpriseApplicationDataModel.EAR_PROJECT_NAME, earProject.getName());
@@ -1715,25 +1686,18 @@ public final class J2EEUtils {
 	 * @param project
 	 * @return
 	 * 
-	 * @deprecated use getWebContentPath(IProject, String)
 	 */
 	public static IPath getFirstWebContentPath(IProject project){
 		
 		IPath modulePath = null;
-		StructureEdit mc = null;
 		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-		  if (wbcs.length!=0) {
-        IVirtualComponent component = ComponentCore.createComponent(project, wbcs[0].getName());
-        modulePath = component.getWorkspaceRelativePath();
+          IFlexibleProject fp = ComponentCore.createFlexibleProject(project);
+          IVirtualComponent[] vcs = fp.getComponents();
+		  if (vcs.length!=0) {
+            modulePath = vcs[0].getWorkspaceRelativePath();
 		  }
 		}
 		catch(Exception ex){}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
 
 		return modulePath;			
 	}
@@ -1754,7 +1718,6 @@ public final class J2EEUtils {
 	 * @param project
 	 * @return
 	 * 
-	 * @deprecated use getWebContentContainer(IProject, String)
 	 */
 	public static IContainer getFirstWebContentContainer(IProject project){
 		IContainer container = null;
@@ -1788,26 +1751,18 @@ public final class J2EEUtils {
 	 * @param project
 	 * @return
 	 * 
-	 * @deprecated  not necessary; to be deleted
 	 */
 	public static String getFirstWebModuleName(IProject project){
-		String moduleName = null;
-		StructureEdit mc = null;
-		try {
-		  mc = StructureEdit.getStructureEditForRead(project);
-		  WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-		  if (wbcs.length!=0) {
-			  moduleName = wbcs[0].getName();
-			  System.out.println("First Module name = "+moduleName);
-		  }
-		}
-		catch(Exception ex){}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
-
-		return moduleName;				
+      String moduleName = null;
+      try {
+        IFlexibleProject fp = ComponentCore.createFlexibleProject(project);
+        IVirtualComponent[] vcs = fp.getComponents();
+        if (vcs.length!=0)
+          moduleName = vcs[0].getName();
+      }
+      catch(Exception ex){}
+  
+      return moduleName;  			
 	}
 	
 

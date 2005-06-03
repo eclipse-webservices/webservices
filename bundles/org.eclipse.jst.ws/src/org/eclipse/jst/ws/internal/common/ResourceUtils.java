@@ -20,7 +20,7 @@ import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -287,10 +287,8 @@ public final class ResourceUtils {
 	public static IVirtualComponent getComponentOf(IPath absolutePath){
 		if (absolutePath.isAbsolute()) {
 			String componentName = absolutePath.segment(1);
-			System.out.println("Testing >> ComponentName ? = "+componentName);
 			if (componentName != null) {
 				String projectName = absolutePath.segment(0);
-				System.out.println("Testing >> ProjectName ? = "+projectName);
 				IProject project = getWorkspaceRoot().getProject(projectName);
 				if (projectName != null) {
 					return ComponentCore.createComponent(project, componentName);
@@ -625,7 +623,6 @@ public final class ResourceUtils {
 		log.log(Log.INFO, 5030, ResourceUtils.class, "getJavaSourceLocation",
 				"project=" + project + ",sourceLocation=" + sourceLocation);
 		
-		System.out.println("Java sourceLocation = "+sourceLocation);
 		return sourceLocation;
 	}
 
@@ -760,26 +757,14 @@ public final class ResourceUtils {
 	 * @param componentName
 	 * @return
 	 */
-	public static IContainer getWebComponentServerRoot(IProject project, String componentName){
-		IContainer webModuleServerRoot = null;
-		StructureEdit mc = null;
-		try {
-			mc = StructureEdit.getStructureEditForRead(project);
-			if (mc!=null) {
-				WorkbenchComponent wbc = mc.findComponentByName(componentName);
-				if (wbc!=null) {
-					webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbc);
-				}
-				System.out.println("webModuleServerRoot = "+webModuleServerRoot);				
-			}
-		} catch (Exception e) {
-		}
-		finally{
-			if (mc!=null)
-				mc.dispose();
-		}
+	public static IFolder getWebComponentServerRoot(IProject project, String componentName){
+		
+      IFolder webModuleServerRoot = null;
+      IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+      if (vc.exists())
+        webModuleServerRoot = StructureEdit.getOutputContainerRoot(vc);
 
-		return webModuleServerRoot;
+	  return webModuleServerRoot;
 	}
 
 	/**
@@ -1271,7 +1256,6 @@ public final class ResourceUtils {
 			throws CoreException {
 		IResource res = null;
 		if (obj != null) {
-			System.out.println("Object = "+ obj.getClass().getName());
 			if (obj instanceof IResource) {
 				res = (IResource) obj;
 			} else if (obj instanceof ICompilationUnit) {
