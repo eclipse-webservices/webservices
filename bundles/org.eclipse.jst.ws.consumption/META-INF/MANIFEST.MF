@@ -3,7 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.consumption; singleton:=true
 Bundle-Version: 1.0.0
-Bundle-ClassPath: wsc.jar
+Bundle-ClassPath: wsc.jar,
+ webserviceutils.jar
 Bundle-Activator: org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
