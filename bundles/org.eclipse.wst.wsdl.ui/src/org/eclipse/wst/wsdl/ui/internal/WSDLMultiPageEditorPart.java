@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -28,7 +27,6 @@ import org.eclipse.jface.text.ITextInputListener;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorActionBarContributor;
@@ -54,8 +52,6 @@ import org.eclipse.wst.xml.core.internal.provisional.IXMLPreferenceNames;
 import org.eclipse.wst.xml.ui.internal.Logger;
 import org.eclipse.wst.xml.ui.internal.provisional.StructuredTextEditorXML;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLEditorMessages;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPropertyListener
 {
@@ -410,53 +406,10 @@ public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPro
 	    return result;
 	  }
 
-	  /**
-	   * IExtendedMarkupEditor method
-	   */
-	  public Node getCaretNode() {
-	    if (getTextEditor() == null)
-	      return null;
-
-	    return getTextEditor().getCaretNode();
-	  }
-
-	  /**
-	   * IExtendedSimpleEditor method
-	   */
-	  public int getCaretPosition() {
-	    if (getTextEditor() == null)
-	      return -1;
-
-	    return getTextEditor().getCaretPosition();
-	  }
-
-	  /**
-	   * IExtendedSimpleEditor method
-	   */
-	  public IDocument getDocument() {
-	    if (getTextEditor() == null)
-	      return null;
-
-	    return getTextEditor().getDocument();
-	  }
-
-	  /**
-	   * IExtendedMarkupEditor method
-	   */
-	  public Document getDOMDocument() {
-	    if (getTextEditor() == null)
-	      return null;
-
-	    return getTextEditor().getDOMDocument();
-	  }
-
-	  /**
-	   * IExtendedSimpleEditor method
-	   */
-	  public IEditorPart getEditorPart() {
-	    return this;
-	  }
-
+	public IEditorPart getEditorPart() {
+		return this;
+	}
+	  
 	  protected IStructuredModel getModel() {
 	    IStructuredModel model = null;
 	    if (fTextEditor != null)
@@ -466,25 +419,6 @@ public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPro
 
 	  protected IPreferenceStore getPreferenceStore() {
 	    return WSDLEditorPlugin.getInstance().getPreferenceStore();
-	  }
-
-	  /**
-	   * IExtendedMarkupEditor method
-	   */
-	  public List getSelectedNodes() {
-	    if (getTextEditor() == null)
-	      return null;
-	    return getTextEditor().getSelectedNodes();
-	  }
-
-	  /**
-	   * IExtendedSimpleEditor method
-	   */
-	  public Point getSelectionRange() {
-	    if (getTextEditor() == null)
-	      return new Point(-1, -1);
-
-	    return getTextEditor().getSelectionRange();
 	  }
 
 	  public StructuredTextEditor getTextEditor() {
