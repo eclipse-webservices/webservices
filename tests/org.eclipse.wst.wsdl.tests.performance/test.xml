@@ -71,6 +71,15 @@
   	<antcall target="ValidateStockQuoteWSDLTestCase"/>
   	<antcall target="ValidateStockQuoteWSDLTestCase"/>
 
+  	<antcall target="ValidateStockQuoteWSITestCase"/>
+  	<antcall target="ValidateStockQuoteWSITestCase"/>
+  	<antcall target="ValidateStockQuoteWSITestCase"/>
+  	<antcall target="ValidateStockQuoteWSITestCase"/>
+  	<antcall target="ValidateStockQuoteWSITestCase"/>
+  	<antcall target="ValidateStockQuoteWSITestCase"/>
+  	<antcall target="ValidateStockQuoteWSITestCase"/>
+  	<antcall target="ValidateStockQuoteWSITestCase"/>
+
   	<antcall target="OpenStockQuoteWSDLSetup"/>
   	<antcall target="OpenStockQuoteWSDLSetup"/>
   	<antcall target="OpenStockQuoteWSDLSetup"/>
@@ -122,10 +131,19 @@
 
   <target name="ValidateStockQuoteWSDLTestCase">
     <delete dir="${workspace}" quiet="true"/>
-    <ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
+    <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
       <property name="data-dir" value="${workspace}"/>
       <property name="plugin-name" value="${plugin-name}"/>
       <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.ValidateStockQuoteWSDLTestCase"/>
+    </ant>
+  </target>
+
+  <target name="ValidateStockQuoteWSITestCase">
+    <delete dir="${workspace}" quiet="true"/>
+    <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+      <property name="data-dir" value="${workspace}"/>
+      <property name="plugin-name" value="${plugin-name}"/>
+      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.ValidateStockQuoteWSITestCase"/>
     </ant>
   </target>
 

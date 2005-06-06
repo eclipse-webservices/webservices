@@ -24,6 +24,9 @@
       <import plugin="org.eclipse.wst.wsdl"/>
       <import plugin="org.eclipse.wst.wsdl.validation"/>
       <import plugin="org.wsdl4j"/>
+      <import plugin="org.eclipse.wst.ws.ui"/>
+      <import plugin="org.eclipse.wst.command.env"/>
+      <import plugin="org.eclipse.wst.command.env.core"/>
    </requires>
 
 </plugin>

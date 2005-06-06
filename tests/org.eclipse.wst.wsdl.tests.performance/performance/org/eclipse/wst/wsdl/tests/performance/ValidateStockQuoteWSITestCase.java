@@ -22,7 +22,7 @@ import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.ui.eclipse.WSDLValidator;
 
-public class ValidateStockQuoteWSDLTestCase extends PerformanceTestCase
+public class ValidateStockQuoteWSITestCase extends PerformanceTestCase
 {
   private WSDLValidator validator;
   
@@ -35,23 +35,23 @@ public class ValidateStockQuoteWSDLTestCase extends PerformanceTestCase
     // Set the WS-I preference to ignore so only WSDL errors will be tested.
     WSUIPlugin wsui = WSUIPlugin.getInstance();
     PersistentWSIContext wsicontext = wsui.getWSISSBPContext();
-    wsicontext.updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
+    wsicontext.updateWSICompliances(PersistentWSIContext.STOP_NON_WSI);
     wsicontext = wsui.getWSIAPContext();
-    wsicontext.updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
+    wsicontext.updateWSICompliances(PersistentWSIContext.STOP_NON_WSI);
   }  
   
   public static Test suite()
   {
-    return new TestSuite(ValidateStockQuoteWSDLTestCase.class, "ValidateStockQuoteWSDLTestCase");
+    return new TestSuite(ValidateStockQuoteWSITestCase.class, "ValidateStockQuoteWSITestCase");
   }
   
-  public void testValidateStockQuoteWSDL() throws Exception
+  public void testValidateStockQuoteWSI() throws Exception
   {
 	validator = WSDLValidator.getInstance();
     URL wsdl = PerformancePlugin.getDefault().getBundle().getEntry("data/StockQuote/StockQuote.wsdl");
     String path = wsdl.toString();
 	
-    startMeasuring();
+    startMeasuring();	
     IValidationReport valreport = validator.validate(path);
 	stopMeasuring();
 	commitMeasurements();

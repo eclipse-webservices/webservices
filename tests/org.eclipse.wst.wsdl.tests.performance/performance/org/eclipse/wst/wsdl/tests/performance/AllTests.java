@@ -22,7 +22,8 @@ public class AllTests
     //$JUnit-BEGIN$
     suite.addTestSuite(ReadStockQuoteWSDLTestCase.class);
 	suite.addTestSuite(ReadStockQuoteWSDLEMFTestCase.class);
-	//suite.addTestSuite(ValidateStockQuoteWSDLTestCase.class);
+	suite.addTestSuite(ValidateStockQuoteWSDLTestCase.class);
+    suite.addTestSuite(ValidateStockQuoteWSITestCase.class);
     suite.addTestSuite(OpenStockQuoteWSDLSetup.class);
     suite.addTestSuite(OpenStockQuoteWSDLTestCase.class);
     //$JUnit-END$
