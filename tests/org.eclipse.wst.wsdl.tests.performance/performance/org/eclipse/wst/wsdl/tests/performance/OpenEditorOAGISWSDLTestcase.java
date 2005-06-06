@@ -62,7 +62,7 @@ public class OpenEditorOAGISWSDLTestcase extends PerformanceTestCase
         },
         IContainer.INCLUDE_PHANTOMS
       );
-      tagAsSummary("Open WSDL Editor", new Dimension[] {Dimension.ELAPSED_PROCESS, Dimension.WORKING_SET});
+      tagAsSummary("Open OAGIS WSDL", new Dimension[] {Dimension.ELAPSED_PROCESS, Dimension.WORKING_SET});
       startMeasuring();
       for (Iterator it = wsdls.iterator(); it.hasNext();)
         openWSDL((IFile)it.next());

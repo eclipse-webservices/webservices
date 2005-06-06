@@ -35,6 +35,24 @@
     <antcall target="readOAGISWSDLTestcase"/>
     <antcall target="readOAGISWSDLTestcase"/>
 
+  	<antcall target="ValidateOAGISWSDLTestcase"/>
+  	<antcall target="ValidateOAGISWSDLTestcase"/>
+	<antcall target="ValidateOAGISWSDLTestcase"/>
+  	<antcall target="ValidateOAGISWSDLTestcase"/>
+  	<antcall target="ValidateOAGISWSDLTestcase"/>
+  	<antcall target="ValidateOAGISWSDLTestcase"/>
+  	<antcall target="ValidateOAGISWSDLTestcase"/>
+  	<antcall target="ValidateOAGISWSDLTestcase"/>
+
+  	<antcall target="ValidateOAGISWSITestcase"/>
+  	<antcall target="ValidateOAGISWSITestcase"/>
+  	<antcall target="ValidateOAGISWSITestcase"/>
+  	<antcall target="ValidateOAGISWSITestcase"/>
+  	<antcall target="ValidateOAGISWSITestcase"/>
+  	<antcall target="ValidateOAGISWSITestcase"/>
+  	<antcall target="ValidateOAGISWSITestcase"/>
+  	<antcall target="ValidateOAGISWSITestcase"/>
+
     <antcall target="openEditorOAGISWSDLTestcase"/>
     <antcall target="openEditorOAGISWSDLTestcase"/>
     <antcall target="openEditorOAGISWSDLTestcase"/>
@@ -97,6 +115,26 @@
       <property name="data-dir" value="${workspace}"/>
       <property name="plugin-name" value="${plugin-name}"/>
       <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.ReadOAGISWSDLTestcase"/>
+      <property name="extraVMargs" value="${extraVMargs}"/>
+    </ant>
+  </target>
+
+  <target name="ValidateOAGISWSDLTestcase">
+    <delete dir="${workspace}" quiet="true"/>
+    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+      <property name="data-dir" value="${workspace}"/>
+      <property name="plugin-name" value="${plugin-name}"/>
+      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.ValidateOAGISWSDLTestcase"/>
+      <property name="extraVMargs" value="${extraVMargs}"/>
+    </ant>
+  </target>
+
+  <target name="ValidateOAGISWSITestcase">
+    <delete dir="${workspace}" quiet="true"/>
+    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+      <property name="data-dir" value="${workspace}"/>
+      <property name="plugin-name" value="${plugin-name}"/>
+      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.ValidateOAGISWSITestcase"/>
       <property name="extraVMargs" value="${extraVMargs}"/>
     </ant>
   </target>

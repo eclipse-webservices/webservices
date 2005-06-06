@@ -34,7 +34,7 @@ public class ReadOAGISWSDLTestcase extends PerformanceTestCase
           }
         }
       );
-      tagAsSummary("Read WSDL", new Dimension[] {Dimension.ELAPSED_PROCESS, Dimension.WORKING_SET});
+      tagAsSummary("Read OAGIS WSDL", new Dimension[] {Dimension.ELAPSED_PROCESS, Dimension.WORKING_SET});
       startMeasuring();
       for (int i = 0; i < wsdls.length; i++)
         readWSDL(wsdls[i].toURL().toString());
