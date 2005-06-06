@@ -36,7 +36,7 @@ public class DynamicPopupJUnitWizard extends DynamicPopupWizard {
 		    
 		DataMappingRegistryImpl    dataRegistry_   = new DataMappingRegistryImpl();	    
 		DataFlowManager            dataManager     = new DataFlowManager( dataRegistry_, environment );
-		SimpleCommandEngineManager manager         = new SimpleCommandEngineManager(environment, dataManager );
+		SimpleCommandEngineManager manager         = new SimpleCommandEngineManager(environment, dataManager);
 		  
 		commandWidgetBinding_.registerDataMappings( dataRegistry_ );
 		manager.setRootFragment( rootFragment );

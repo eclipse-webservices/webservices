@@ -123,9 +123,9 @@ public abstract class WSWizardTest extends TestCase
 	protected void tearDown() throws Exception
 	{
 		stopServer();
-		deleteServer();
-    deleteInputData();
-		deleteServerRuntime();
+//		deleteServer();
+//      deleteInputData();
+//		deleteServerRuntime();
 	}
 	
 	/**
@@ -141,7 +141,7 @@ public abstract class WSWizardTest extends TestCase
 	protected void stopServer() throws Exception
 	{
 		if (server_ != null && server_.getServerState() == IServer.STATE_STARTED)
-			server_.synchronousStop(true);
+			server_.stop(true);
 		assertTrue(server_.getServerState() == IServer.STATE_STOPPED);
 	}
 	
@@ -151,10 +151,8 @@ public abstract class WSWizardTest extends TestCase
 	 */
 	protected void deleteServer() throws Exception
 	{
-		if (server_ != null) {
-      server_.getServerConfiguration().delete(true, null);
+		if (server_ != null)
 			server_.delete();
-    }
 	}
 	
 	/**
@@ -164,7 +162,7 @@ public abstract class WSWizardTest extends TestCase
 	protected void deleteServerRuntime() throws Exception
 	{
 		if (serverRuntime_ != null)
-	  	serverRuntime_.delete();
+			serverRuntime_.delete();
 	}
 	
 	/**

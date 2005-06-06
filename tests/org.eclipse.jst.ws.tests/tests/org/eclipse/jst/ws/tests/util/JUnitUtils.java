@@ -30,7 +30,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.internal.web.operations.WebNatureRuntimeUtilities;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.consumption.command.common.CreateEARProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
@@ -72,22 +71,19 @@ public class JUnitUtils {
 
 	public static IServer createServer(String name,String serverTypeId,IRuntime runtime,Environment env) throws Exception
 	{
-		IServerType serverType = ServerCore.findServerType(serverTypeId);
-    IServer[] servers = ServerCore.getServers(); 
-    for (int i=0;i<servers.length;i++){
-      if(servers[i].getServerType().getId().equals(serverType.getId())){
-        return servers[i];  
+	  IServerType serverType = ServerCore.findServerType(serverTypeId);
+      IServer[] servers = ServerCore.getServers(); 
+      for (int i=0;i<servers.length;i++){
+        if(servers[i].getServerType().getId().equals(serverType.getId())){
+          return servers[i];  
+        }
       }
-    }
 
-
-		IServerWorkingCopy serverWc = serverType.createServer(serverTypeId,null,EnvironmentUtils.getIProgressMonitor(env));
-		serverWc.setName(name);
-		serverWc.setRuntime(runtime);
-		
-		IServer server = serverWc.saveAll(true, EnvironmentUtils.getIProgressMonitor(env));
-		
-		return server;
+      IServerWorkingCopy serverWc = serverType.createServer(serverTypeId,null,EnvironmentUtils.getIProgressMonitor(env));
+	  serverWc.setName(name);
+	  serverWc.setRuntime(runtime);
+      IServer server = serverWc.saveAll(true, EnvironmentUtils.getIProgressMonitor(env));
+      return server;
 	}	
 	
 	/**
@@ -100,6 +96,8 @@ public class JUnitUtils {
 	 * @param env Environment
 	 * @return  server IServer
 	 * @throws Exception
+	 * 
+	 * @deprecated
 	 */
 	public static IServer createServer(String javaRuntimePath, String jreID, String name,String serverTypeId,IRuntime runtime,Environment env) throws Exception
 	{
@@ -130,7 +128,7 @@ public class JUnitUtils {
 			{
 				try
 				{
-				  currentServer.synchronousStart(ILaunchManager.RUN_MODE,EnvironmentUtils.getIProgressMonitor(currentEnv));
+				  currentServer.start(ILaunchManager.RUN_MODE,EnvironmentUtils.getIProgressMonitor(currentEnv));
 				}
 				catch (CoreException e)
 				{
@@ -141,55 +139,6 @@ public class JUnitUtils {
 			}
 		};
 		PlatformUI.getWorkbench().getProgressService().run(true,false,runnable);
-	}
-	
-	public static IServer getDefaultServer()
-	{
-    IServer[] serverList = ServerCore.getServers();
-		if (serverList.length > 0){
-			return serverList[0];
-    }
- 		return null;
-	}
-	
-	public static boolean addEARToDefaultServer(IProject earProject,Environment env) throws Exception
-	{
-		return addEARToServer(getDefaultServer(),earProject,env);
-	}	
-	
-	public static boolean addEARToServer(IServer server,IProject earProject,Environment env) throws Exception
-	{
-		int numberOfModules = server.getModules().length;
-		if (server != null)
-		{
-      final IModule[] modules = ServerUtil.getModules(earProject);
-			final IModule earProjectModule = modules[0];
-			new ServerUtils().modifyModules(env,server,earProjectModule,true,EnvironmentUtils.getIProgressMonitor(env));
-		  	final IServer currentServer = server;
-		  	IRunnableWithProgress runnable = new IRunnableWithProgress() {
-		  		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-		  			for (int i=0;i<1000;i++)
-		  			{
-		  				if (currentServer.getModuleState(modules) != IServer.STATE_STARTED)	{
-		  					try	{
-		  						Thread.sleep(300);
-                }
-		  					catch (InterruptedException e){		  						
-                }
-		  				}	else
-		  				  break;
-		  			}
-				}
-			};
-			PlatformUI.getWorkbench().getProgressService().run(true,false,runnable);
-			return (server.getModules().length == (numberOfModules+1));
-		}
-		return false;
-	}
-	
-	public static boolean removeEARFromDefaultServer(IProject earProject,Environment env) throws Exception
-	{
-		return removeEARFromServer(getDefaultServer(),earProject,env);
 	}
 	
 	public static boolean removeEARFromServer(IServer server,IProject earProject,Environment env) throws Exception
@@ -231,7 +180,8 @@ public class JUnitUtils {
 	}
 	
 	public static boolean removeModuleFromServer(IServer server, IProject webProject, Environment env) throws Exception {
-
+	  
+	  int numberOfModules = server.getModules().length;
 		if (server != null)
 		{
       final IModule[] modules = ServerUtil.getModules(webProject);
@@ -262,22 +212,11 @@ public class JUnitUtils {
 		  		  	}  			  			
 				}  		
 			};
-      int numberOfModules = server.getModules().length;      
 			PlatformUI.getWorkbench().getProgressService().run(true,false,runnable);
-			Thread.sleep(6000);
+			//Thread.sleep(6000);
 			return (server.getModules().length == (numberOfModules-1));
 		}
 		return false;
-	}
-	
-	public static void stopDefaultServer() throws Exception
-	{
-		getDefaultServer().synchronousStop(true);
-	}
-	
-	public static void deleteDefaultServer() throws Exception
-	{
-		getDefaultServer().delete();
 	}
 	
 	// Begin: General Eclipse Utilities
@@ -398,24 +337,14 @@ public class JUnitUtils {
 		return launchWizard("org.eclipse.jst.ws.internal.consumption.ui",wizardId,objectClassId,initialSelection);
 	}
 	
-	// Begin: EAR Utilities
-	public static Status createEARProject(String earProjectName,String serverTypeId,String j2eeVersion,Environment env)
-	{
-	    CreateEARProjectCommand t = new CreateEARProjectCommand();
-	    t.setEarProjectName(earProjectName);
-	    t.setServerFactoryId(serverTypeId);
-	    t.setJ2EEVersion(j2eeVersion);
-	    return t.execute(env);		
-	}
-	
-	public static Status createWebProject(String webProjectName, String moduleName, String serverFactoryId, String j2eeVersion, Environment env){
+	public static Status createWebModule(String webProjectName, String moduleName, String serverFactoryId, String j2eeVersion, Environment env){
 
 	  Status status = new SimpleStatus("");
 	  try{
 	    CreateModuleCommand createWeb = new CreateModuleCommand();
 	    createWeb.setProjectName(webProjectName);
-      createWeb.setModuleName(moduleName);
-      createWeb.setModuleType(CreateModuleCommand.WEB);
+        createWeb.setModuleName(moduleName);
+        createWeb.setModuleType(CreateModuleCommand.WEB);
 	    createWeb.setJ2eeLevel(j2eeVersion);
 	    createWeb.setServerFactoryId(serverFactoryId);
 	    return createWeb.execute(env);
@@ -427,6 +356,13 @@ public class JUnitUtils {
 	  
 	}
 	
+	/**
+	 * 
+	 * @param projectName
+	 * @return
+	 * 
+	 * @deprecated
+	 */
 	public static IFolder getSourceFolderForWebProject(String projectName)
 	{
 		IProject project = ProjectUtilities.getProject(projectName);
@@ -435,6 +371,13 @@ public class JUnitUtils {
 		return srcFolder;
 	}
 	
+	/**
+	 * 
+	 * @param projectName
+	 * @return
+	 * 
+	 * @deprecated
+	 */
 	public static IFolder getWebContentFolder(String projectName)
 	{
 		IProject project = ProjectUtilities.getProject(projectName);
@@ -442,12 +385,26 @@ public class JUnitUtils {
 		return webContentFolder;
 	}
 	
+	/**
+	 * 
+	 * @param projectName
+	 * @return
+	 * 
+	 * @deprecated
+	 */
 	public static IFolder getWebInfFolderForWebProject(String projectName)
 	{
 		IProject project = ProjectUtilities.getProject(projectName);
 		return project.getFolder(WebNatureRuntimeUtilities.getDefaultWEBINFPath());
 	}	
 	
+	/**
+	 * 
+	 * @param projectName
+	 * @return
+	 * 
+	 * @deprecated
+	 */
 	public static IFolder getClassesFolderForWebProject(String projectName)
 	{
 		IProject project = ProjectUtilities.getProject(projectName);
