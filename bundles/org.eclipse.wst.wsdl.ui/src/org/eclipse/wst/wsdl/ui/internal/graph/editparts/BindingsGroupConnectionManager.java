@@ -139,7 +139,7 @@ public class BindingsGroupConnectionManager extends AbstractConnectionManager
       if (previousContext instanceof EObject) 
       {
         Binding binding = getEnclosingBinding((EObject)previousContext);
-        if (binding.getEPortType() == portType)
+        if (binding != null && binding.getEPortType() == portType)
         {
           result = binding;  
         }        
