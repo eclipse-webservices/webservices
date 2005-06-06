@@ -1,30 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 
-<plugin
-   id="org.eclipse.jst.ws.creation.ejb.ui"
-   version="1.0.0"
-   name="%PLUGIN_NAME"
-   provider-name="%PLUGIN_PROVIDER">
+<plugin>
 
-   <requires>
-      <import plugin="org.eclipse.wst.command.env"/>
-      <import plugin="org.eclipse.wst.command.env.ui"/>
-      <import plugin="org.eclipse.wst.command.env.core"/>
-      <import plugin="org.eclipse.jst.ws"/>
-      <import plugin="org.eclipse.jst.ws.consumption"/>
-      <import plugin="org.eclipse.jst.ws.ui"/>
-      <import plugin="org.eclipse.jst.ws.consumption.ui"/>
-      <import plugin="org.eclipse.jst.ws.creation.ui"/>
-      <import plugin="org.eclipse.jdt.core"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.emf.common"/>
-      <import plugin="org.eclipse.jem.workbench"/>
-    </requires>
-
-   <!-- EJB Web Service Types -->
+    <!-- EJB Web Service Types -->
    
    <extension
          point="org.eclipse.jst.ws.consumption.ui.webServiceServerRuntimeType">
