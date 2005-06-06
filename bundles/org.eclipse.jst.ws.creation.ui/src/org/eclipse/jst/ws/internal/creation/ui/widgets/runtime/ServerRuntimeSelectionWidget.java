@@ -337,6 +337,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
         //WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
         //String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceServerFactoryId).getId();
 		//String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceServerFactoryId).getId();
+        /* rskejb
         boolean isEJBRequired = WebServiceRuntimeExtensionUtils.requiresEJBModuleFor(serviceServerFactoryId, webServiceRuntimeId, webServiceTypeId);
         if (!isEJBRequired)
         {
@@ -344,7 +345,8 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
           //isEJBRequired = wssrtRegistry.requiresEJBProject(webServiceTypeId);
 			isEJBRequired = WebServiceRuntimeExtensionUtils.requiresEJBProject(webServiceTypeId);
         }
-        
+        rskejb */
+        boolean isEJBRequired = WebServiceRuntimeExtensionUtils.requiresEJBProject(webServiceRuntimeId, webServiceTypeId);
         if (isEJBRequired && !J2EEUtils.isEJBComponent(serviceProj, serviceComponentName))
         {
           finalStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_INVALID_EJB_PROJECT",new String[]{serviceProjName}),Status.ERROR);          

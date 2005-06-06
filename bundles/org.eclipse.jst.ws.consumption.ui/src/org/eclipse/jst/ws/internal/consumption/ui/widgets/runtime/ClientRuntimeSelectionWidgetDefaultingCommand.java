@@ -860,9 +860,12 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   }  
   */
   
-  protected void updateClientProject(String projectName, String componentName)
+  protected void updateClientProject(String projectName, String componentName, String serviceTypeId)
   {
-    String[] updatedNames = ResourceUtils.getClientProjectComponentName(projectName, componentName);
+    boolean isEJB = false;
+    String implId = WebServiceRuntimeExtensionUtils.getImplIdFromTypeId(serviceTypeId);
+    isEJB = (implId.equals("org.eclipse.jst.ws.wsImpl.ejb"));
+    String[] updatedNames = ResourceUtils.getClientProjectComponentName(projectName, componentName, isEJB);
     getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(updatedNames[0]);
     clientComponentName_ = updatedNames[1];
     
@@ -909,26 +912,28 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   
   private void setDefaultsForExtension(Environment env)
   {
-    IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntime(clientIds_.getRuntimeId());  
-    WebServiceClientInfo wsInfo = new WebServiceClientInfo();
-
-    wsInfo.setJ2eeLevel(clientJ2EEVersion_);
-    wsInfo.setServerFactoryId(clientIds_.getServerId());
-    wsInfo.setServerInstanceId(clientIds_.getServerInstanceId());
-    wsInfo.setState(WebServiceState.UNKNOWN_LITERAL);
-    wsInfo.setWebServiceRuntimeId(clientIds_.getRuntimeId());
-    wsInfo.setWsdlURL(wsdlURI_);
-
-    environment_ = env;
-    webServiceClient_ = wsrt.getWebServiceClient(wsInfo);
-    WebServiceScenario scenario = WebServiceScenario.CLIENT_LITERAL;
-    if (resourceContext_!=null)
+    IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntime(clientIds_.getRuntimeId());
+    if (wsrt != null)
     {
-      context_ = new SimpleContext(true, true, true, true, true, true, test_,
-        false, scenario, resourceContext_.isOverwriteFilesEnabled(),
-        resourceContext_.isCreateFoldersEnabled(), resourceContext_
-            .isCheckoutFilesEnabled());
+      WebServiceClientInfo wsInfo = new WebServiceClientInfo();
+
+      wsInfo.setJ2eeLevel(clientJ2EEVersion_);
+      wsInfo.setServerFactoryId(clientIds_.getServerId());
+      wsInfo.setServerInstanceId(clientIds_.getServerInstanceId());
+      wsInfo.setState(WebServiceState.UNKNOWN_LITERAL);
+      wsInfo.setWebServiceRuntimeId(clientIds_.getRuntimeId());
+      wsInfo.setWsdlURL(wsdlURI_);
+
+      environment_ = env;
+      webServiceClient_ = wsrt.getWebServiceClient(wsInfo);
+      WebServiceScenario scenario = WebServiceScenario.CLIENT_LITERAL;
+      if (resourceContext_ != null)
+      {
+        context_ = new SimpleContext(true, true, true, true, true, true, test_, false, scenario, resourceContext_.isOverwriteFilesEnabled(), resourceContext_
+            .isCreateFoldersEnabled(), resourceContext_.isCheckoutFilesEnabled());
+      }
     }
+  
   }
   
   public void setClientInitialSelection(IStructuredSelection selection)

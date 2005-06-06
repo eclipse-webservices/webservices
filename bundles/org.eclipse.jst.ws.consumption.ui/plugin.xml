@@ -686,6 +686,7 @@
          point="org.eclipse.jst.ws.consumption.ui.objectSelectionWidget">
       <objectSelectionWidget
             class="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.EJBSelectionWidget"
+            transformer="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.EJBSelectionTransformer"            
             id="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.EJBSelectionWidget">
       </objectSelectionWidget>
    </extension>
@@ -784,5 +785,7 @@
 			moduleTypesExclude="">
   </clientType>
 </extension>
-  
+
+       
+	
 </plugin>

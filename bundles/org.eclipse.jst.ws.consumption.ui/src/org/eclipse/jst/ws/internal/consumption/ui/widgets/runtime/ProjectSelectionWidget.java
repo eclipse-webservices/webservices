@@ -178,7 +178,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	String   projectName = moduleProject_.getText(); 
 	IProject project     = ProjectUtilities.getProject( projectName );
 	
-	componentType_ = J2EEUtils.WEB;
+	componentType_ = J2EEUtils.WEB | J2EEUtils.EJB;
 	
 	IVirtualComponent[] components = J2EEUtils.getComponentsByType( project, componentType_ );
 	String[] modules = new String[components.length];

@@ -109,6 +109,7 @@ public final class ResourceUtils {
 	public static String SERVLET_EXT = "/servlet/rpcrouter";
 
 	private static final String DEFAULT_CLIENT_WEB_PROJECT_EXT = "Client";
+  private static final String DEFAULT_CLIENT_EJB_PROJECT_EXT = "EJBClient";
 	private static final String DEFAULT_EJB_PROJECT_NAME = "WebServiceEJBProject";
   private static final String DEFAULT_EJB_COMPONENT_NAME = "WebServiceEJB";
 	private static final String DEFAULT_WEB_PROJECT_NAME = "WebServiceProject";
@@ -1717,12 +1718,22 @@ public final class ResourceUtils {
 		return clientWebProjectName;
 	}
 
-  public static String[] getClientProjectComponentName(String projectName, String componentName)
+  public static String[] getClientProjectComponentName(String projectName, String componentName, boolean isEJB)
   {
-    String clientProjectName = projectName + DEFAULT_CLIENT_WEB_PROJECT_EXT;
-    String baseName = clientProjectName;
-    String clientComponentName = componentName + DEFAULT_CLIENT_WEB_PROJECT_EXT;
-    String baseCompName = clientComponentName;
+    String clientProjectName = null;
+    String clientComponentName = null;
+    if (isEJB)
+    {
+      clientProjectName = projectName + DEFAULT_CLIENT_EJB_PROJECT_EXT;
+      clientComponentName = componentName + DEFAULT_CLIENT_EJB_PROJECT_EXT;
+    }
+    else
+    {
+      clientProjectName = projectName + DEFAULT_CLIENT_WEB_PROJECT_EXT;
+      String baseName = clientProjectName;
+      clientComponentName = componentName + DEFAULT_CLIENT_WEB_PROJECT_EXT;
+      String baseCompName = clientComponentName;
+    }
     
 //    boolean  foundWebProject     = false;
 //    int      i                   = 1;

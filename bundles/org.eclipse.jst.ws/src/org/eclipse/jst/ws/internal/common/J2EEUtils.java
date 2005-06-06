@@ -414,7 +414,7 @@ public final class J2EEUtils {
 			IVirtualComponent[] webVC = getWebComponents(project);
 			addToArrayListHelper(webVC, v);
 		}
-		if ( (EJB & componentType)==WEB ){
+		if ( (EJB & componentType)==EJB ){
 			IVirtualComponent[] ejbVC = getEJBComponents(project);
 			addToArrayListHelper(ejbVC, v);
 		}

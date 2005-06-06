@@ -16,15 +16,12 @@ import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
+import org.eclipse.jst.j2ee.ejb.EJBResource;
 import org.eclipse.jst.j2ee.ejb.Session;
-import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
-import org.eclipse.jst.j2ee.internal.earcreation.IEARNatureConstants;
-import org.eclipse.jst.j2ee.internal.ejb.project.EJBNatureRuntime;
-import org.eclipse.jst.j2ee.internal.ejb.project.EJBProjectResources;
+import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -42,16 +39,20 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
 public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget
 {
   private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
   private Combo earList;
   private EJBTableViewer beanList;
-  private EARNatureRuntime[] earProjects;
+  private IVirtualComponent[] earComponents;
+  //rskejb private EARNatureRuntime[] earProjects;
   private Integer selectedBeanIndex = null;
   private Vector ejbBeanNames;
-  private Vector ejbProjectNames;
+  private Vector ejbComponentNames;
+  private Vector ejbComponentProjectNames;
+  //rskejb private Vector ejbProjectNames;
   private Listener  statusListener_;
   /* CONTEXT_ID PEBD0001 for the EAR Projects drop-down box */
   private String INFOPOP_PEBD_EAR_PROJECTS = "org.eclipse.jst.ws.consumption.ui.PEBD0001";
@@ -60,7 +61,11 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
 
   public EJBSelectionWidget()
   {
+	earComponents = J2EEUtils.getAllEARComponents();
+    /* rskejb 
     IProject[] projects = J2EEUtils.getEARProjects();
+	
+	
     Vector earVector = new Vector();
     for (int i = 0; i < projects.length; i++)
     {
@@ -73,6 +78,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
       }
     }
     earProjects = (EARNatureRuntime[]) earVector.toArray(new EARNatureRuntime[0]);
+	rskejb */
   }
 
   public String getSelectedBean()
@@ -88,7 +94,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
   {
     if (selectedBeanIndex != null)
     {
-      return (String) (ejbProjectNames.elementAt(selectedBeanIndex.intValue()));
+      return (String) (ejbComponentProjectNames.elementAt(selectedBeanIndex.intValue()));
     }
     return null;
   }
@@ -117,7 +123,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
       public void widgetSelected(SelectionEvent evt)
       {
         Combo widget = (Combo) (evt.widget);
-        setBeanList(earProjects[widget.getSelectionIndex()]);
+        setBeanList(earComponents[widget.getSelectionIndex()]);
         selectedBeanIndex = null;
         statusListener_.handleEvent(null);
       }
@@ -146,9 +152,9 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
     });
     beanTable.setToolTipText(msgUtils.getMessage("TOOLTIP_TABLE_BEAN_NAMES"));
     PlatformUI.getWorkbench().getHelpSystem().setHelp(beanTable, INFOPOP_PEBD_TABLE_BEAN_NAMES);
-    if (earProjects != null && earProjects.length > 0)
+    if (earComponents != null && earComponents.length > 0)
     {
-      setBeanList(earProjects[0]);
+      setBeanList(earComponents[0]);
     }
     beanTable.getColumn(0).pack();
     beanTable.getColumn(1).pack();
@@ -160,23 +166,61 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
 
   private void addEARNamesToList()
   {
-    if (earProjects != null && earProjects.length > 0)
+    if (earComponents != null && earComponents.length > 0)
     {
-      for (int index = 0; index < earProjects.length; index++)
+      for (int index = 0; index < earComponents.length; index++)
       {
-        earList.add(earProjects[index].getProject().getName());
+        earList.add(earComponents[index].getName());
       }
       earList.setText(earList.getItem(0));
     }
   }
 
+  private void setBeanList(IVirtualComponent earComponent)
+  {
+    IVirtualComponent[] ejbComponentsArray = J2EEUtils.getReferencingEJBComponentsFromEAR(earComponent.getProject(), earComponent.getName());
+    Table beanTable = beanList.getTable();
+    beanTable.removeAll();
+    ejbBeanNames = new Vector();
+    ejbComponentNames = new Vector();
+    ejbComponentProjectNames = new Vector();
+    for (int index = 0; index < ejbComponentsArray.length; index++)
+    {
+      EJBArtifactEdit  ejbEdit = null;
+      try {
+        ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(ejbComponentsArray[index]);
+        EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
+        EJBJar jar = ejbRes.getEJBJar();
+        Vector beans = J2EEUtils.getBeanNames(jar);
+        String componentName = ejbComponentsArray[index].getName();
+        String projectName = ejbComponentsArray[index].getProject().getName();
+        ejbBeanNames.addAll(beans);
+        ejbComponentNames.addAll(Collections.nCopies(beans.size(), componentName));
+        ejbComponentProjectNames.addAll(Collections.nCopies(beans.size(), projectName));                
+      }
+      finally {
+        if (ejbEdit!=null)
+          ejbEdit.dispose();
+      }      
+    }
+    beanList.setData(ejbBeanNames, ejbComponentNames);
+    beanList.setInput(ejbBeanNames);    
+    
+  }
+  
+  /*
+   * @deprecated
+   */
+  /*
   private void setBeanList(EARNatureRuntime earProject)
   {
     Vector ejbProjects = J2EEUtils.getEJBProjects(earProject);
     Table beanTable = beanList.getTable();
     beanTable.removeAll();
     ejbBeanNames = new Vector();
-    ejbProjectNames = new Vector();
+    //rskejb ejbProjectNames = new Vector();
+    ejbComponentNames = new Vector();
+    ejbComponents = new Vector();
     for (int index = 0; index < ejbProjects.size(); index++)
     {
       EJBNatureRuntime ejbNature = (EJBNatureRuntime) (ejbProjects.elementAt(index));
@@ -191,7 +235,8 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
     beanList.setData(ejbBeanNames, ejbProjectNames);
     beanList.setInput(ejbBeanNames);
   }
-
+  */
+  
   public void setInitialSelection(IStructuredSelection initialSelection)
   {
     if (initialSelection != null && !initialSelection.isEmpty())
@@ -203,8 +248,32 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
         EJBJar jar = session.getEjbJar();
         if (jar != null)
         {
-          for (int i = 0; i < earProjects.length; i++)
+          for (int i = 0; i < earComponents.length; i++)
           {
+			      IVirtualComponent[] ejbComponents = J2EEUtils.getReferencingEJBComponentsFromEAR(earComponents[i].getProject(), earComponents[i].getName());
+			      for (int j=0; j <ejbComponents.length; j++)
+			      {
+              EJBArtifactEdit  ejbEdit = null;
+              try {
+                ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(ejbComponents[j]);
+                EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
+                if (ejbRes.getEJBJar() == jar)
+                {
+                  earList.setText(earComponents[i].getName());
+                  setBeanList(earComponents[i]);
+                  beanList.setSelection(new StructuredSelection(new Integer[]{new Integer(ejbBeanNames.indexOf(session.getName()))}));
+                  selectedBeanIndex = new Integer(ejbBeanNames.indexOf(session.getName()));
+                  return;
+                }                
+
+              }
+              finally {
+                if (ejbEdit!=null)
+                  ejbEdit.dispose();
+              }
+				
+			      }
+			      /* rskejb
             Vector ejbProjects = J2EEUtils.getEJBProjects(earProjects[i]);
             for (Iterator it = ejbProjects.iterator(); it.hasNext();)
             {
@@ -220,6 +289,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
               }
               ejbResource.cleanup();
             }
+			      rskejb */
           }
         }
       }
@@ -237,6 +307,33 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
         String selEJBName = (String) ejbBeanNames.get(((Integer) object).intValue());
         if (selEJBName != null)
         {
+          IProject project = earComponents[earList.getSelectionIndex()].getProject();
+          String name = earComponents[earList.getSelectionIndex()].getName();
+          IVirtualComponent[] ejbComponents = J2EEUtils.getReferencingEJBComponentsFromEAR(project, name);
+          for (int i=0; i<ejbComponents.length; i++)
+          {
+            EJBArtifactEdit  ejbEdit = null;
+            try 
+            {
+              ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(ejbComponents[i]);
+              EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
+              EJBJar jar = ejbRes.getEJBJar();
+              java.util.List sessions = jar.getSessionBeans();
+              for (Iterator it2 = sessions.iterator(); it2.hasNext();)
+              {
+                Session session = (Session) it2.next();
+                if (selEJBName.equals(session.getName()))
+                {
+                  return new StructuredSelection(new Session[]{session});
+                }
+              }
+            }
+            finally {
+              if (ejbEdit!=null)
+                ejbEdit.dispose();
+            }            
+          }
+          /* rskejb
           Vector ejbProjects = J2EEUtils.getEJBProjects(earProjects[earList.getSelectionIndex()]);
           for (Iterator it = ejbProjects.iterator(); it.hasNext();)
           {
@@ -254,6 +351,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
             }
             ejbResource.cleanup();
           }
+          rskejb */
         }
       }
     }
@@ -271,16 +369,12 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
   
   public String getComponentName()
   {
-    String projectName = getSelectedProject();
-    if (projectName != null && projectName.length() > 0)
+    if (selectedBeanIndex != null)
     {
-      IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-      String comp = J2EEUtils.getFirstWebModuleName(p);
-      return comp;
+      return (String) (ejbComponentNames.elementAt(selectedBeanIndex.intValue()));
     }
-    else
-      return null;    
-  }
+    return null;
+  }    
   
   public Status validateSelection(IStructuredSelection objectSelection)
   {
