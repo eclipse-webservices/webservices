@@ -386,30 +386,35 @@ public class DefaultXMLValidator implements IXMLValidator
 	  {
 	    return new InputSource();
 	  }
-      String uri = uriResolver.resolve(null, publicId, systemId);
-      if (uri != null && !uri.equals(""))
-      {
-		try
-		{
-	      String entity;
-		  entity = systemId;
-		  if(publicId != null)
+    if(publicId == null)
+    {
+      publicId = systemId;
+    }
+      
+    String uri = uriResolver.resolve(null, publicId, systemId);
+    if (uri != null && !uri.equals(""))
+    {
+		  try
 		  {
-			entity = publicId;
+	      String entity;
+		    entity = systemId;
+		    if(publicId != null)
+		    {
+			    entity = publicId;
+		    }
+		    URL entityURL = new URL(uri);
+        InputSource is = new InputSource(entity);
+		    is.setByteStream(entityURL.openStream());
+        if (is != null)
+        {
+          return is;
+        }
 		  }
-		  URL entityURL = new URL(uri);
-          InputSource is = new InputSource(entity);
-		  is.setByteStream(entityURL.openStream());
-          if (is != null)
-          {
-            return is;
-          }
-		}
-		catch(Exception e)
-		{
-		  // Do nothing.
-		}
-      }
+		  catch(Exception e)
+		  {
+		    // Do nothing.
+		  }
+    }
       // This try/catch block with the IOException is here to handle a difference
       // between different versions of the EntityResolver interface.
       try
@@ -426,20 +431,6 @@ public class DefaultXMLValidator implements IXMLValidator
       }
       return null;
     }
-
-//    /**
-//     * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-//     *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-//     */
-//    public void startElement(String uri, String localname, String arg2, Attributes attributes) throws SAXException
-//    {
-//      if (localname.equals(DEFINITIONS))
-//      {
-//        wsdlURI = uri;
-//      }
-//      super.startElement(uri, localname, arg2, attributes);
-//
-//    }
 
   }
 
@@ -497,7 +488,7 @@ public class DefaultXMLValidator implements IXMLValidator
   protected class SchemaStringHandler extends DefaultHandler
   {
     private final String XMLNS = "xmlns";
-	private final String TARGETNAMESPACE = "targetNamespace";
+	  private final String TARGETNAMESPACE = "targetNamespace";
     private String baselocation = null;
 
     public SchemaStringHandler(String baselocation)
@@ -535,13 +526,6 @@ public class DefaultXMLValidator implements IXMLValidator
     }
   }
 
-//  /**
-//   * @see org.eclipse.wsdl.validate.internal.xml.IXMLValidator#getWSDLNamespace()
-//   */
-//  public String getWSDLNamespace()
-//  {
-//    return wsdlNamespace;
-//  }
   
   protected class MyStandardParserConfiguration extends StandardParserConfiguration
   {
