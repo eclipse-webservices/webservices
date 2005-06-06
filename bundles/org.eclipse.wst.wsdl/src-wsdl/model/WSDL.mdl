@@ -117,13 +117,7 @@
 				type       	"QName")
 			    (object ClassAttribute "undefined"
 				quid       	"3BDDF1E301E5"
-				type       	"boolean")
-			    (object ClassAttribute "proxy"
-				quid       	"3D18CDEB0316"
-				type       	"boolean")
-			    (object ClassAttribute "resourceURI"
-				quid       	"3D18D4FD01BA"
-				type       	"String"))
+				type       	"boolean"))
 			language   	"Java")
 		    (object Class "Operation"
 			quid       	"3AD5C80D03CE"
@@ -146,13 +140,7 @@
 				type       	"String")
 			    (object ClassAttribute "undefined"
 				quid       	"3BDDF235003E"
-				type       	"boolean")
-			    (object ClassAttribute "proxy"
-				quid       	"3D18CE2201AD"
-				type       	"boolean")
-			    (object ClassAttribute "resourceURI"
-				quid       	"3D18D520011B"
-				type       	"String"))
+				type       	"boolean"))
 			language   	"Java")
 		    (object Class "Message"
 			quid       	"3AD5C9590078"
@@ -172,13 +160,7 @@
 				type       	"QName")
 			    (object ClassAttribute "undefined"
 				quid       	"3BDDF1D20226"
-				type       	"boolean")
-			    (object ClassAttribute "proxy"
-				quid       	"3D18CE4B02B0"
-				type       	"boolean")
-			    (object ClassAttribute "resourceURI"
-				quid       	"3D18D54200F1"
-				type       	"String"))
+				type       	"boolean"))
 			language   	"Java")
 		    (object Class "Part"
 			quid       	"3AD5CE1C032E"
@@ -221,13 +203,7 @@
 				type       	"QName")
 			    (object ClassAttribute "undefined"
 				quid       	"3BDDF1F401A3"
-				type       	"boolean")
-			    (object ClassAttribute "proxy"
-				quid       	"3D18CE6D0151"
-				type       	"boolean")
-			    (object ClassAttribute "resourceURI"
-				quid       	"3D18D4DF035C"
-				type       	"String"))
+				type       	"boolean"))
 			language   	"Java")
 		    (object Class "BindingOperation"
 			quid       	"3AD5D3CB0145"
@@ -264,13 +240,7 @@
 				type       	"QName")
 			    (object ClassAttribute "undefined"
 				quid       	"3BDDF20D0203"
-				type       	"boolean")
-			    (object ClassAttribute "proxy"
-				quid       	"3D18D4810220"
-				type       	"boolean")
-			    (object ClassAttribute "resourceURI"
-				quid       	"3D18D4C501E2"
-				type       	"String"))
+				type       	"boolean"))
 			language   	"Java")
 		    (object Class "Port"
 			quid       	"3AD5D9170286"
@@ -2105,6 +2075,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3B84ABC60219"
+				compartment 	(object Compartment
+				    Parent_View 	@1
+				    location   	(1173, 715)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	5
+				    max_width  	471)
 				width      	520
 				height     	404
 				annotation 	8
@@ -2136,6 +2114,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3B84AB800326"
+				compartment 	(object Compartment
+				    Parent_View 	@2
+				    location   	(686, 536)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	2
+				    max_width  	275)
 				width      	278
 				height     	218
 				annotation 	8
@@ -2168,6 +2154,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3B84AB490287"
+				compartment 	(object Compartment
+				    Parent_View 	@3
+				    location   	(126, 145)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	237)
 				width      	246
 				height     	264
 				annotation 	8
@@ -2179,7 +2173,7 @@
 				location   	(240, 528)
 				label      	(object ItemLabel
 				    Parent_View 	@4
-				    location   	(44, 389)
+				    location   	(44, 432)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	392
@@ -2189,8 +2183,16 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5D8F002F8"
+				compartment 	(object Compartment
+				    Parent_View 	@4
+				    location   	(44, 487)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	389)
 				width      	410
-				height     	302
+				height     	214
 				annotation 	8
 				autoResize 	TRUE)
 			    (object InheritView "" @5
@@ -2200,7 +2202,7 @@
 				client     	@4
 				supplier   	@3
 				line_style 	3
-				origin_attachment 	(240, 377)
+				origin_attachment 	(240, 421)
 				terminal_attachment 	(240, 292))
 			    (object ClassView "Class" "Logical View::wsdl::Binding" @6
 				ShowCompartmentStereotypes 	TRUE
@@ -2209,7 +2211,7 @@
 				location   	(1440, 1264)
 				label      	(object ItemLabel
 				    Parent_View 	@6
-				    location   	(1244, 1125)
+				    location   	(1244, 1168)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	392
@@ -2219,8 +2221,16 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5D2860261"
+				compartment 	(object Compartment
+				    Parent_View 	@6
+				    location   	(1244, 1223)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	389)
 				width      	410
-				height     	302
+				height     	214
 				annotation 	8
 				autoResize 	TRUE)
 			    (object InheritView "" @7
@@ -2230,7 +2240,7 @@
 				client     	@6
 				supplier   	@1
 				line_style 	3
-				origin_attachment 	(1430, 1113)
+				origin_attachment 	(1430, 1157)
 				terminal_attachment 	(1430, 1002))
 			    (object ClassView "Class" "Logical View::wsdl::Port" @8
 				ShowCompartmentStereotypes 	TRUE
@@ -2249,6 +2259,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5D9170286"
+				compartment 	(object Compartment
+				    Parent_View 	@8
+				    location   	(675, 895)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	2
+				    max_width  	303)
 				width      	300
 				height     	168
 				annotation 	8
@@ -2263,17 +2281,17 @@
 				origin_attachment 	(809, 828)
 				terminal_attachment 	(809, 637))
 			    (object AssociationViewNew "$UNNAMED$9" @10
-				location   	(343, 916)
+				location   	(321, 916)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"3AD5D9400393"
 				roleview_list 	(list RoleViews
 				    (object RoleView "ePorts" @11
 					Parent_View 	@10
-					location   	(-121, 644)
+					location   	(-143, 644)
 					label      	(object SegLabel @12
 					    Parent_View 	@11
-					    location   	(413, 945)
+					    location   	(397, 945)
 					    anchor     	1
 					    anchor_loc 	1
 					    nlines     	1
@@ -2289,11 +2307,11 @@
 					client     	@10
 					supplier   	@8
 					line_style 	3
-					origin_attachment 	(343, 916)
+					origin_attachment 	(321, 916)
 					terminal_attachment 	(666, 916)
 					label      	(object SegLabel @13
 					    Parent_View 	@11
-					    location   	(539, 880)
+					    location   	(530, 880)
 					    anchor     	2
 					    anchor_loc 	1
 					    nlines     	1
@@ -2305,7 +2323,7 @@
 					    orientation 	0)
 					label      	(object SegLabel @14
 					    Parent_View 	@11
-					    location   	(448, 990)
+					    location   	(433, 990)
 					    anchor     	3
 					    anchor_loc 	1
 					    nlines     	1
@@ -2317,10 +2335,10 @@
 					    orientation 	1))
 				    (object RoleView "$UNNAMED$10" @15
 					Parent_View 	@10
-					location   	(-121, 644)
+					location   	(-143, 644)
 					label      	(object SegLabel @16
 					    Parent_View 	@15
-					    location   	(216, 744)
+					    location   	(216, 704)
 					    hidden     	TRUE
 					    anchor     	1
 					    anchor_loc 	1
@@ -2337,15 +2355,15 @@
 					client     	@10
 					supplier   	@4
 					vertices   	(list Points
-					    (343, 916)
+					    (321, 916)
 					    (257, 916)
-					    (257, 679))
+					    (257, 635))
 					line_style 	3
-					origin_attachment 	(343, 916)
-					terminal_attachment 	(257, 679)
+					origin_attachment 	(321, 916)
+					terminal_attachment 	(257, 635)
 					label      	(object SegLabel @17
 					    Parent_View 	@15
-					    location   	(301, 796)
+					    location   	(301, 760)
 					    anchor     	2
 					    anchor_loc 	1
 					    nlines     	1
@@ -2461,6 +2479,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3B84ABC60219"
+				compartment 	(object Compartment
+				    Parent_View 	@24
+				    location   	(73, 172)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	5
+				    max_width  	471)
 				width      	480
 				height     	376
 				annotation 	8
@@ -2493,6 +2519,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3B84ADC00072"
+				compartment 	(object Compartment
+				    Parent_View 	@25
+				    location   	(780, 188)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	9
+				    max_width  	396)
 				width      	410
 				height     	568
 				annotation 	8
@@ -2598,18 +2632,26 @@
 				location   	(1904, 624)
 				label      	(object ItemLabel
 				    Parent_View 	@29
-				    location   	(1568, 486)
+				    location   	(1697, 522)
 				    fill_color 	13434879
 				    nlines     	1
-				    max_width  	673
+				    max_width  	414
 				    justify    	0
 				    label      	"PortType")
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5C7F001A5"
-				width      	691
-				height     	301
+				compartment 	(object Compartment
+				    Parent_View 	@29
+				    location   	(1697, 580)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	411)
+				width      	432
+				height     	228
 				annotation 	8
 				autoResize 	TRUE)
 			    (object ClassView "Class" "Logical View::wsdl::Input" @30
@@ -2661,7 +2703,7 @@
 				location   	(304, 688)
 				label      	(object ItemLabel
 				    Parent_View 	@32
-				    location   	(97, 539)
+				    location   	(97, 586)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	414
@@ -2671,8 +2713,16 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5D2860261"
+				compartment 	(object Compartment
+				    Parent_View 	@32
+				    location   	(97, 644)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	411)
 				width      	432
-				height     	322
+				height     	228
 				annotation 	8
 				autoResize 	TRUE)
 			    (object InheritView "" @33
@@ -2682,20 +2732,20 @@
 				client     	@32
 				supplier   	@24
 				line_style 	3
-				origin_attachment 	(279, 527)
+				origin_attachment 	(279, 574)
 				terminal_attachment 	(279, 428))
 			    (object AssociationViewNew "$UNNAMED$3" @34
-				location   	(1039, 742)
+				location   	(1104, 742)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"3AD5D352010F"
 				roleview_list 	(list RoleViews
 				    (object RoleView "ePortType" @35
 					Parent_View 	@34
-					location   	(575, 598)
+					location   	(640, 598)
 					label      	(object SegLabel @36
 					    Parent_View 	@35
-					    location   	(1449, 781)
+					    location   	(1565, 781)
 					    anchor     	1
 					    anchor_loc 	1
 					    nlines     	1
@@ -2711,11 +2761,11 @@
 					client     	@34
 					supplier   	@29
 					line_style 	3
-					origin_attachment 	(1039, 742)
-					terminal_attachment 	(1559, 742)
+					origin_attachment 	(1104, 742)
+					terminal_attachment 	(1688, 742)
 					label      	(object SegLabel @37
 					    Parent_View 	@35
-					    location   	(1492, 716)
+					    location   	(1613, 716)
 					    anchor     	2
 					    anchor_loc 	1
 					    nlines     	1
@@ -2727,10 +2777,10 @@
 					    orientation 	0))
 				    (object RoleView "$UNNAMED$4" @38
 					Parent_View 	@34
-					location   	(575, 598)
+					location   	(640, 598)
 					label      	(object SegLabel @39
 					    Parent_View 	@38
-					    location   	(776, 697)
+					    location   	(806, 697)
 					    hidden     	TRUE
 					    anchor     	1
 					    anchor_loc 	1
@@ -2747,7 +2797,7 @@
 					client     	@34
 					supplier   	@32
 					line_style 	3
-					origin_attachment 	(1039, 742)
+					origin_attachment 	(1104, 742)
 					terminal_attachment 	(520, 742))))
 			    (object ClassView "Class" "Logical View::wsdl::Operation" @40
 				ShowCompartmentStereotypes 	TRUE
@@ -2756,7 +2806,7 @@
 				location   	(1888, 1024)
 				label      	(object ItemLabel
 				    Parent_View 	@40
-				    location   	(1672, 851)
+				    location   	(1672, 898)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	432
@@ -2766,8 +2816,16 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5C80D03CE"
+				compartment 	(object Compartment
+				    Parent_View 	@40
+				    location   	(1672, 956)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	4
+				    max_width  	430)
 				width      	450
-				height     	370
+				height     	276
 				annotation 	8
 				autoResize 	TRUE)
 			    (object ClassView "Class" "Logical View::wsdl::BindingInput" @41
@@ -2787,6 +2845,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AE08A8202D4"
+				compartment 	(object Compartment
+				    Parent_View 	@41
+				    location   	(476, 1341)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	4
+				    max_width  	303)
 				width      	314
 				height     	274
 				annotation 	8
@@ -2860,6 +2926,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AE08A8F028C"
+				compartment 	(object Compartment
+				    Parent_View 	@47
+				    location   	(812, 1597)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	4
+				    max_width  	303)
 				width      	314
 				height     	274
 				annotation 	8
@@ -2933,6 +3007,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5D3CB0145"
+				compartment 	(object Compartment
+				    Parent_View 	@53
+				    location   	(819, 989)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	2
+				    max_width  	303)
 				width      	364
 				height     	178
 				annotation 	8
@@ -2947,17 +3029,17 @@
 				origin_attachment 	(966, 919)
 				terminal_attachment 	(966, 636))
 			    (object AssociationViewNew "$UNNAMED$5" @55
-				location   	(457, 1022)
+				location   	(433, 1022)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"3AD5D3E10179"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$6" @56
 					Parent_View 	@55
-					location   	(-1319, 494)
+					location   	(-1343, 494)
 					label      	(object SegLabel @57
 					    Parent_View 	@56
-					    location   	(235, 920)
+					    location   	(235, 877)
 					    hidden     	TRUE
 					    anchor     	1
 					    anchor_loc 	1
@@ -2974,15 +3056,15 @@
 					client     	@55
 					supplier   	@32
 					vertices   	(list Points
-					    (457, 1022)
+					    (433, 1022)
 					    (276, 1022)
-					    (276, 849))
+					    (276, 802))
 					line_style 	3
-					origin_attachment 	(457, 1022)
-					terminal_attachment 	(276, 849)
+					origin_attachment 	(433, 1022)
+					terminal_attachment 	(276, 802)
 					label      	(object SegLabel @58
 					    Parent_View 	@56
-					    location   	(330, 884)
+					    location   	(330, 841)
 					    anchor     	2
 					    anchor_loc 	1
 					    nlines     	1
@@ -2994,10 +3076,10 @@
 					    orientation 	1))
 				    (object RoleView "eBindingOperations" @59
 					Parent_View 	@55
-					location   	(-1319, 494)
+					location   	(-1343, 494)
 					label      	(object SegLabel @60
 					    Parent_View 	@59
-					    location   	(531, 977)
+					    location   	(513, 977)
 					    anchor     	1
 					    anchor_loc 	1
 					    nlines     	1
@@ -3013,11 +3095,11 @@
 					client     	@55
 					supplier   	@53
 					line_style 	3
-					origin_attachment 	(457, 1022)
+					origin_attachment 	(433, 1022)
 					terminal_attachment 	(810, 1022)
 					label      	(object SegLabel @61
 					    Parent_View 	@59
-					    location   	(769, 980)
+					    location   	(766, 980)
 					    anchor     	2
 					    anchor_loc 	1
 					    nlines     	1
@@ -3029,7 +3111,7 @@
 					    orientation 	0)
 					label      	(object SegLabel @62
 					    Parent_View 	@59
-					    location   	(714, 1067)
+					    location   	(706, 1067)
 					    anchor     	3
 					    anchor_loc 	1
 					    nlines     	1
@@ -3304,6 +3386,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AE08A9E03A6"
+				compartment 	(object Compartment
+				    Parent_View 	@84
+				    location   	(1212, 1917)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	4
+				    max_width  	303)
 				width      	314
 				height     	274
 				annotation 	8
@@ -3519,6 +3609,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3B84A5BE0331"
+				compartment 	(object Compartment
+				    Parent_View 	@101
+				    location   	(146, 233)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	1
+				    max_width  	696)
 				width      	718
 				height     	196
 				annotation 	8)
@@ -3550,6 +3648,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3B84A77600D1"
+				compartment 	(object Compartment
+				    Parent_View 	@102
+				    location   	(1116, 237)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	1
+				    max_width  	709)
 				width      	891
 				height     	188
 				annotation 	8
@@ -3582,6 +3688,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3B84A7EE0015"
+				compartment 	(object Compartment
+				    Parent_View 	@103
+				    location   	(55, 1498)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	1
+				    max_width  	621)
 				width      	644
 				height     	194
 				annotation 	8
@@ -3614,6 +3728,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3B84A829027D"
+				compartment 	(object Compartment
+				    Parent_View 	@104
+				    location   	(56, 1818)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	1
+				    max_width  	656)
 				width      	674
 				height     	194
 				annotation 	8
@@ -3646,6 +3768,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3B84A861031D"
+				compartment 	(object Compartment
+				    Parent_View 	@105
+				    location   	(55, 2137)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	1
+				    max_width  	625)
 				width      	644
 				height     	196
 				annotation 	8
@@ -3668,6 +3798,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5C7F001A5"
+				compartment 	(object Compartment
+				    Parent_View 	@106
+				    location   	(158, 733)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	2
+				    max_width  	409)
 				width      	695
 				height     	281
 				annotation 	8)
@@ -3689,6 +3827,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5CE1C032E"
+				compartment 	(object Compartment
+				    Parent_View 	@107
+				    location   	(2325, 753)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	484)
 				width      	520
 				height     	240
 				annotation 	8
@@ -3775,6 +3921,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5C80D03CE"
+				compartment 	(object Compartment
+				    Parent_View 	@111
+				    location   	(1214, 681)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	446)
 				width      	695
 				height     	352
 				annotation 	8)
@@ -4222,6 +4376,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5C9590078"
+				compartment 	(object Compartment
+				    Parent_View 	@152
+				    location   	(1937, 1371)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	2
+				    max_width  	425)
 				width      	593
 				height     	312
 				annotation 	8)
@@ -4245,6 +4407,16 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3F6771DB02DC"
+				compartment 	(object Compartment
+				    Parent_View 	@153
+				    location   	(1193, 2527)
+				    font       	(object Font
+					italics    	TRUE)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	1
+				    max_width  	303)
 				width      	672
 				height     	180
 				annotation 	8)
@@ -4379,6 +4551,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3B84B1D90142"
+				compartment 	(object Compartment
+				    Parent_View 	@163
+				    location   	(88, 220)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	1
+				    max_width  	700)
 				width      	706
 				height     	186
 				annotation 	8
@@ -4423,6 +4603,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5E4F903DE"
+				compartment 	(object Compartment
+				    Parent_View 	@165
+				    location   	(1910, 604)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	2
+				    max_width  	478)
 				width      	486
 				height     	182
 				annotation 	8
@@ -4434,7 +4622,7 @@
 				location   	(2112, 1184)
 				label      	(object ItemLabel
 				    Parent_View 	@166
-				    location   	(1900, 1056)
+				    location   	(1900, 1105)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	424
@@ -4444,8 +4632,16 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5C9590078"
+				compartment 	(object Compartment
+				    Parent_View 	@166
+				    location   	(1900, 1164)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	2
+				    max_width  	422)
 				width      	442
-				height     	280
+				height     	182
 				annotation 	8
 				autoResize 	TRUE)
 			    (object ClassView "Class" "Logical View::wsdl::PortType" @167
@@ -4455,7 +4651,7 @@
 				location   	(1808, 1488)
 				label      	(object ItemLabel
 				    Parent_View 	@167
-				    location   	(1596, 1360)
+				    location   	(1596, 1409)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	424
@@ -4465,8 +4661,16 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5C7F001A5"
+				compartment 	(object Compartment
+				    Parent_View 	@167
+				    location   	(1596, 1468)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	2
+				    max_width  	422)
 				width      	442
-				height     	280
+				height     	182
 				annotation 	8
 				autoResize 	TRUE)
 			    (object ClassView "Class" "Logical View::wsdl::Binding" @168
@@ -4476,7 +4680,7 @@
 				location   	(2336, 1728)
 				label      	(object ItemLabel
 				    Parent_View 	@168
-				    location   	(2124, 1600)
+				    location   	(2124, 1649)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	424
@@ -4486,8 +4690,16 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5D2860261"
+				compartment 	(object Compartment
+				    Parent_View 	@168
+				    location   	(2124, 1708)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	2
+				    max_width  	422)
 				width      	442
-				height     	280
+				height     	182
 				annotation 	8
 				autoResize 	TRUE)
 			    (object ClassView "Class" "Logical View::wsdl::Definition" @169
@@ -4507,6 +4719,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5E43F008E"
+				compartment 	(object Compartment
+				    Parent_View 	@169
+				    location   	(1073, 98)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	7
+				    max_width  	521)
 				width      	528
 				height     	426
 				annotation 	8
@@ -4686,14 +4906,14 @@
 					    height     	51
 					    orientation 	1))))
 			    (object AssociationViewNew "$UNNAMED$13" @185
-				location   	(1279, 1137)
+				location   	(1279, 1136)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"3AD5E60301E2"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$14" @186
 					Parent_View 	@185
-					location   	(271, 273)
+					location   	(271, 272)
 					label      	(object SegLabel @187
 					    Parent_View 	@186
 					    location   	(1238, 591)
@@ -4713,11 +4933,11 @@
 					client     	@185
 					supplier   	@169
 					line_style 	3
-					origin_attachment 	(1279, 1137)
+					origin_attachment 	(1279, 1136)
 					terminal_attachment 	(1279, 453)
 					label      	(object SegLabel @188
 					    Parent_View 	@186
-					    location   	(1320, 586)
+					    location   	(1320, 587)
 					    anchor     	2
 					    anchor_loc 	1
 					    nlines     	1
@@ -4729,7 +4949,7 @@
 					    orientation 	1))
 				    (object RoleView "eMessages" @189
 					Parent_View 	@185
-					location   	(271, 273)
+					location   	(271, 272)
 					label      	(object SegLabel @190
 					    Parent_View 	@189
 					    location   	(1647, 1171)
@@ -4748,11 +4968,11 @@
 					client     	@185
 					supplier   	@166
 					vertices   	(list Points
-					    (1279, 1137)
+					    (1279, 1136)
 					    (1279, 1208)
 					    (1891, 1208))
 					line_style 	3
-					origin_attachment 	(1279, 1137)
+					origin_attachment 	(1279, 1136)
 					terminal_attachment 	(1891, 1208)
 					label      	(object SegLabel @191
 					    Parent_View 	@189
@@ -4971,7 +5191,7 @@
 				location   	(1840, 2048)
 				label      	(object ItemLabel
 				    Parent_View 	@209
-				    location   	(1628, 1920)
+				    location   	(1628, 1969)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	424
@@ -4981,22 +5201,30 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5D8F002F8"
+				compartment 	(object Compartment
+				    Parent_View 	@209
+				    location   	(1628, 2028)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	2
+				    max_width  	422)
 				width      	442
-				height     	280
+				height     	182
 				annotation 	8
 				autoResize 	TRUE)
 			    (object AssociationViewNew "$UNNAMED$19" @210
-				location   	(1066, 1533)
+				location   	(1066, 1532)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"3AD5E67B0311"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$20" @211
 					Parent_View 	@210
-					location   	(-521, -111)
+					location   	(-521, -112)
 					label      	(object SegLabel @212
 					    Parent_View 	@211
-					    location   	(1025, 669)
+					    location   	(1025, 670)
 					    hidden     	TRUE
 					    anchor     	1
 					    anchor_loc 	1
@@ -5013,7 +5241,7 @@
 					client     	@210
 					supplier   	@169
 					line_style 	3
-					origin_attachment 	(1066, 1533)
+					origin_attachment 	(1066, 1532)
 					terminal_attachment 	(1066, 453)
 					label      	(object SegLabel @213
 					    Parent_View 	@211
@@ -5029,7 +5257,7 @@
 					    orientation 	1))
 				    (object RoleView "eServices" @214
 					Parent_View 	@210
-					location   	(-521, -111)
+					location   	(-521, -112)
 					label      	(object SegLabel @215
 					    Parent_View 	@214
 					    location   	(1393, 2028)
@@ -5048,11 +5276,11 @@
 					client     	@210
 					supplier   	@209
 					vertices   	(list Points
-					    (1066, 1533)
+					    (1066, 1532)
 					    (1066, 2059)
 					    (1619, 2059))
 					line_style 	3
-					origin_attachment 	(1066, 1533)
+					origin_attachment 	(1066, 1532)
 					terminal_attachment 	(1619, 2059)
 					label      	(object SegLabel @216
 					    Parent_View 	@214
@@ -5138,17 +5366,16 @@
 				location   	(1424, 1728)
 				label      	(object ItemLabel
 				    Parent_View 	@221
-				    location   	(1342, 1675)
+				    location   	(1343, 1675)
 				    fill_color 	13434879
 				    nlines     	1
-				    max_width  	164
+				    max_width  	162
 				    justify    	0
 				    label      	"Service")
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5D8F002F8"
-				width      	182
 				height     	130
 				annotation 	8
 				autoResize 	TRUE)
@@ -5767,6 +5994,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3B84B2020119"
+				compartment 	(object Compartment
+				    Parent_View 	@263
+				    location   	(1422, 232)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	2
+				    max_width  	646)
 				width      	598
 				height     	218
 				annotation 	8
@@ -5788,6 +6023,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AEA3CD30030"
+				compartment 	(object Compartment
+				    Parent_View 	@264
+				    location   	(202, 1096)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	300)
 				width      	479
 				height     	215
 				annotation 	8
@@ -5828,6 +6071,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5E43F008E"
+				compartment 	(object Compartment
+				    Parent_View 	@266
+				    location   	(164, 291)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	5
+				    max_width  	521)
 				width      	490
 				height     	320
 				annotation 	8
@@ -5938,6 +6189,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5E4F903DE"
+				compartment 	(object Compartment
+				    Parent_View 	@275
+				    location   	(1255, 635)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	5
+				    max_width  	478)
 				width      	452
 				height     	304
 				annotation 	8
@@ -5996,7 +6255,7 @@
 					client     	@276
 					supplier   	@275
 					line_style 	3
-					origin_attachment 	(1486, 1000)
+					origin_attachment 	(1486, 872)
 					terminal_attachment 	(1486, 872))))
 			    (object AssociationViewNew "$UNNAMED$39" @281
 				location   	(1087, 403)
@@ -6238,6 +6497,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5C9590078"
+				compartment 	(object Compartment
+				    Parent_View 	@298
+				    location   	(1022, 1900)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	30)
 				width      	535
 				height     	305
 				annotation 	8
@@ -6964,6 +7231,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AD5C9590078"
+				compartment 	(object Compartment
+				    Parent_View 	@350
+				    location   	(241, 579)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	30)
 				width      	432
 				height     	322
 				annotation 	8
@@ -14347,7 +14622,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	2
-				    max_width  	482
+				    max_width  	524
 				    compartmentItems 	(list Compartment
 					"+ name : String"
 					"+ targetNamespace : String"))
@@ -14401,7 +14676,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	5
-				    max_width  	1139
+				    max_width  	1177
 				    compartmentItems 	(list Compartment
 					"+ derivationMethod : XSDDerivationMethod = restriction"
 					"<<0..*>> + final : XSDComplexFinal"
@@ -14444,7 +14719,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	2
-				    max_width  	592
+				    max_width  	628
 				    compartmentItems 	(list Compartment
 					"+ variety : XSDVariety"
 					"<<0..*>> + final : XSDSimpleFinal"))
@@ -14476,7 +14751,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	3
-				    max_width  	502
+				    max_width  	538
 				    compartmentItems 	(list Compartment
 					"+ required : boolean"
 					"+ value : Value"
@@ -14509,7 +14784,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	3
-				    max_width  	1260
+				    max_width  	1294
 				    compartmentItems 	(list Compartment
 					"+ namespaceConstraintCategory : XSDNamespaceConstraintCategory"
 					"<<0..*>> + namespaceConstraint : String"
@@ -14568,7 +14843,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	2
-				    max_width  	506
+				    max_width  	548
 				    compartmentItems 	(list Compartment
 					"+ value : Value"
 					"+ constraint : XSDConstraint"))
@@ -14918,7 +15193,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	3
-				    max_width  	199
+				    max_width  	241
 				    compartmentItems 	(list Compartment
 					"+ list"
 					"+ restriction"
@@ -14960,7 +15235,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	2
-				    max_width  	202
+				    max_width  	238
 				    compartmentItems 	(list Compartment
 					"+ extension"
 					"+ restriction"))
@@ -15032,7 +15307,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	3
-				    max_width  	236
+				    max_width  	264
 				    compartmentItems 	(list Compartment
 					"+ substitution"
 					"+ extension"
@@ -15074,7 +15349,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	2
-				    max_width  	202
+				    max_width  	238
 				    compartmentItems 	(list Compartment
 					"+ extension"
 					"+ restriction"))
@@ -15137,7 +15412,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	4
-				    max_width  	1357
+				    max_width  	1396
 				    compartmentItems 	(list Compartment
 					"+ nillable : boolean"
 					"<<0..*>> + disallowedSubstitutions : XSDDisallowedSubstitutions"
@@ -16068,7 +16343,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	1
-				    max_width  	254
+				    max_width  	290
 				    compartmentItems 	(list Compartment
 					"+ value : Value"))
 				width      	304
@@ -16103,7 +16378,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	1
-				    max_width  	258
+				    max_width  	294
 				    compartmentItems 	(list Compartment
 					"+ value : Value"))
 				width      	306
@@ -16356,7 +16631,7 @@
 				    fill_color 	13434879
 				    anchor     	2
 				    nlines     	2
-				    max_width  	598
+				    max_width  	628
 				    compartmentItems 	(list Compartment
 					"+ variety : XSDVariety"
 					"<<0..*>> + final : XSDSimpleFinal"))
@@ -16911,7 +17186,7 @@
 				    fill_color 	13434879
 				    anchor     	2
 				    nlines     	3
-				    max_width  	202
+				    max_width  	238
 				    compartmentItems 	(list Compartment
 					"+ list"
 					"+ restriction"
@@ -19540,7 +19815,7 @@
 				    fill_color 	13434879
 				    anchor     	2
 				    nlines     	2
-				    max_width  	382
+				    max_width  	412
 				    compartmentItems 	(list Compartment
 					"+ form : XSDForm"
 					"+ lexicalValue : String"))
@@ -19607,7 +19882,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	1
-				    max_width  	446
+				    max_width  	482
 				    compartmentItems 	(list Compartment
 					"+ element : DOMElement"))
 				width      	675
@@ -19834,7 +20109,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	4
-				    max_width  	225
+				    max_width  	264
 				    compartmentItems 	(list Compartment
 					"+ substitution"
 					"+ extension"
@@ -19877,7 +20152,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	3
-				    max_width  	198
+				    max_width  	234
 				    compartmentItems 	(list Compartment
 					"+ extension"
 					"+ restriction"
@@ -19910,7 +20185,7 @@
 				    fill_color 	13434879
 				    anchor     	2
 				    nlines     	1
-				    max_width  	723
+				    max_width  	764
 				    compartmentItems 	(list Compartment
 					"<<0..*>> + lexicalFinal : XSDSimpleFinal"))
 				width      	778
@@ -20003,7 +20278,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	2
-				    max_width  	588
+				    max_width  	630
 				    compartmentItems 	(list Compartment
 					"+ use : XSDAttributeUseCategory"
 					"+ lexicalValue : String"))
@@ -20089,7 +20364,7 @@
 				    fill_color 	13434879
 				    anchor     	2
 				    nlines     	2
-				    max_width  	934
+				    max_width  	973
 				    compartmentItems 	(list Compartment
 					"<<0..*>> + lexicalFinal : XSDProhibitedSubstitutions"
 					"<<0..*>> + block : XSDDisallowedSubstitutions"))
@@ -20121,7 +20396,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	1
-				    max_width  	852
+				    max_width  	888
 				    compartmentItems 	(list Compartment
 					"<<0..*>> + lexicalNamespaceConstraint : String"))
 				width      	906
@@ -20199,7 +20474,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	1
-				    max_width  	378
+				    max_width  	414
 				    compartmentItems 	(list Compartment
 					"+ lexicalValue : String"))
 				width      	430
@@ -20230,7 +20505,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	3
-				    max_width  	822
+				    max_width  	870
 				    compartmentItems 	(list Compartment
 					"<<0..*>> + lexicalFinal : XSDComplexFinal"
 					"<<0..*>> + block : XSDProhibitedSubstitutions"
@@ -24446,7 +24721,7 @@
 				    fill_color 	13434879
 				    anchor     	2
 				    nlines     	2
-				    max_width  	722
+				    max_width  	764
 				    compartmentItems 	(list Compartment
 					"+ elementDeclarationReference : boolean"
 					"+ circular : boolean"))
@@ -24482,7 +24757,7 @@
 				    fill_color 	13434879
 				    anchor     	2
 				    nlines     	2
-				    max_width  	423
+				    max_width  	459
 				    compartmentItems 	(list Compartment
 					"+ facetName : String"
 					"+ effectiveValue : Value"))
@@ -24514,7 +24789,7 @@
 				    fill_color 	13434879
 				    anchor     	2
 				    nlines     	1
-				    max_width  	769
+				    max_width  	805
 				    compartmentItems 	(list Compartment
 					"+ modelGroupDefinitionReference : boolean"))
 				width      	820
@@ -24549,7 +24824,7 @@
 				    fill_color 	13434879
 				    anchor     	2
 				    nlines     	4
-				    max_width  	356
+				    max_width  	392
 				    compartmentItems 	(list Compartment
 					"+ aliasName : String"
 					"+ uRI : String"
@@ -24807,7 +25082,7 @@
 				    fill_color 	13434879
 				    anchor     	2
 				    nlines     	2
-				    max_width  	363
+				    max_width  	405
 				    compartmentItems 	(list Compartment
 					"+ inclusive : boolean"
 					"+ exclusive : boolean"))
@@ -24948,7 +25223,7 @@
 				    fill_color 	13434879
 				    anchor     	2
 				    nlines     	2
-				    max_width  	363
+				    max_width  	405
 				    compartmentItems 	(list Compartment
 					"+ inclusive : boolean"
 					"+ exclusive : boolean"))
@@ -25085,7 +25360,7 @@
 				    fill_color 	16777215
 				    anchor     	2
 				    nlines     	1
-				    max_width  	538
+				    max_width  	575
 				    compartmentItems 	(list Compartment
 					"<<0..*>> + validFacets : String"))
 				width      	594
@@ -27064,7 +27339,7 @@
 				    fill_color 	13434879
 				    anchor     	2
 				    nlines     	2
-				    max_width  	508
+				    max_width  	550
 				    compartmentItems 	(list Compartment
 					"+ global : boolean"
 					"+ featureReference : boolean"))
