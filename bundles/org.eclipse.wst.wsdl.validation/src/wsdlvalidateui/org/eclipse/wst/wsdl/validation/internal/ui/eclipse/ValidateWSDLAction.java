@@ -89,7 +89,7 @@ public class ValidateWSDLAction extends ValidateAction
         }
         if (location.startsWith("/"))
         {
-          valReport = wsdlValidator.validate(location, inputStream);
+          valReport = wsdlValidator.validate(FILE_PROTOCOL + location.substring(1), inputStream);
         }
         else
         {
