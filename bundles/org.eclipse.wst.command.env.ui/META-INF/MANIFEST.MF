@@ -20,8 +20,6 @@ Export-Package: org.eclipse.wst.command.env.ui,
 Require-Bundle: org.eclipse.wst.command.env.core,
  org.eclipse.wst.command.env,
  org.eclipse.core.runtime,
- org.eclipse.core.resources,
  org.eclipse.ui,
- org.eclipse.ui.ide,
  org.eclipse.osgi
 Eclipse-AutoStart: true
