@@ -58,5 +58,6 @@ Require-Bundle: org.eclipse.jem,
  org.eclipse.wst.web,
  org.eclipse.wst.common.modulecore,
  org.wsdl4j,
- org.apache.wsil4j
+ org.apache.wsil4j,
+ org.eclipse.jem.util
 Eclipse-AutoStart: true

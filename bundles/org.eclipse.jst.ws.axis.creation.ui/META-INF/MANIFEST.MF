@@ -48,6 +48,7 @@ Require-Bundle: org.eclipse.jdt.launching,
  org.eclipse.wst.common.emfworkbench.integration,
  org.eclipse.wst.common.frameworks,
  org.wsdl4j,
- org.eclipse.jst.common.frameworks
+ org.eclipse.jst.common.frameworks,
+ org.eclipse.jem.util
 Eclipse-AutoStart: true
 Plugin-Class: org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin

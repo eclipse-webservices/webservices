@@ -34,5 +34,7 @@ Require-Bundle: org.eclipse.jst.ws.consumption.ui,
  org.eclipse.wst.ws.ui,
  org.eclipse.ui,
  org.eclipse.debug.core,
- org.eclipse.wst.server.core
+ org.eclipse.wst.server.core,
+ org.eclipse.jem.util,
+ org.eclipse.jem.workbench
 Eclipse-AutoStart: true
