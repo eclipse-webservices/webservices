@@ -13,9 +13,9 @@ Export-Package: org.eclipse.wst.ws.internal.parser.disco,
  org.eclipse.wst.ws.internal.parser.plugin,
  org.eclipse.wst.ws.internal.parser.wsil
 Require-Bundle: org.eclipse.wst.wsdl,
+ org.wsdl4j,
  org.eclipse.core.runtime,
  org.apache.wsil4j,
  org.uddi4j,
- org.apache.axis11,
- org.wsdl4j
+ org.apache.axis11
 Eclipse-AutoStart: true
