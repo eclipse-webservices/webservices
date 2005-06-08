@@ -10,18 +10,20 @@ public interface WSJUnitConstants {
   
   public final String SERVERTYPEID_TC50 = "org.eclipse.jst.server.tomcat.50";
   
-  public final String webProjectName = "WP";
-  public final String webProject2Name = "WP2";
+  public final String webProjectName = "WebProject";
+  
+  public final String projectName = "FlexProject";
+  public final String project2Name = "FlexProject2";
   public final String webComponentName = "webComponent";
   public final String webComponent2Name = "webComp2";
   public final String webComp3Name = "webComp3";
   public final String webComp4Name = "webComp4";
   
   
-  public final String ejbProjectName = "EJBProject";
+  public final String ejbProjectName = "FlexEJBProject";
   public final String ejbComponentName = "ejbComponent";
 
-  public final String appClientProjectName = "AppClientProject";
+  public final String appClientProjectName = "FlexAppClientProject";
   public final String appClientCompName = "appClientComponent";  
   
   public final String earCompName = "EARComponent";

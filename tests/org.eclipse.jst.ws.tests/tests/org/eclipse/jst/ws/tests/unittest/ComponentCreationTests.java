@@ -28,11 +28,11 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
 
         enableFlexProjectPreference();
         createServerRuntime();
-        createWebModule(webProjectName, webComponentName, J2EEVersionConstants.J2EE_1_4_ID);
-        createWebModule(webProjectName, webComponent2Name, J2EEVersionConstants.J2EE_1_3_ID);
+        createWebModule(projectName, webComponentName, J2EEVersionConstants.J2EE_1_4_ID);
+        createWebModule(projectName, webComponent2Name, J2EEVersionConstants.J2EE_1_3_ID);
         
-        createWebModule(webProject2Name, webComp3Name, J2EEVersionConstants.J2EE_1_3_ID);
-        createWebModule(webProject2Name, webComp4Name, J2EEVersionConstants.J2EE_1_3_ID);
+        createWebModule(project2Name, webComp3Name, J2EEVersionConstants.J2EE_1_3_ID);
+        createWebModule(project2Name, webComp4Name, J2EEVersionConstants.J2EE_1_3_ID);
         
 	}
   
@@ -104,12 +104,12 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       cmc.setJ2eeLevel(new Integer(J2EEVersionConstants.J2EE_1_3_ID).toString());
       cmc.setModuleName(earCompName);
       cmc.setModuleType(CreateModuleCommand.EAR);
-      cmc.setProjectName(webProjectName);
+      cmc.setProjectName(projectName);
       cmc.setServerFactoryId(SERVERTYPEID_TC50);
       cmc.execute(null);
       
       System.out.println("Done creating EAR component.");
-      IProject p = ResourceUtils.getWorkspaceRoot().getProject(webProjectName);
+      IProject p = ResourceUtils.getWorkspaceRoot().getProject(projectName);
       IVirtualComponent vc = ComponentCore.createComponent(p, earCompName);
       assertTrue(vc.exists());       
     }

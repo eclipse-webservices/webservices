@@ -37,10 +37,10 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 		super.setUp();
 		
 		// Project and component names initialized here!
-		project1 = ProjectUtilities.getProject(webProjectName);
+		project1 = ProjectUtilities.getProject(projectName);
 		assertNotNull(project1);
 		
-		project2 = ProjectUtilities.getProject(webProject2Name);
+		project2 = ProjectUtilities.getProject(project2Name);
 		assertNotNull(project2);
     
         ejbProject = ProjectUtilities.getProject(ejbProjectName);
@@ -173,9 +173,9 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
         
         AssociateModuleWithEARCommand amwe = new AssociateModuleWithEARCommand();
         amwe.setEar(earCompName);
-        amwe.setEARProject(webProjectName);
+        amwe.setEARProject(projectName);
         amwe.setModule(comp1);
-        amwe.setProject(webProjectName);
+        amwe.setProject(projectName);
         amwe.execute(null);
         
         System.out.println("< END: testAssociateComponentCommand ...");     

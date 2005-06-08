@@ -22,13 +22,34 @@
 
   <!-- This target defines the tests that need to be run. -->
   <target name="performance_suite">
+  	
+    <delete dir="${workspace}" quiet="true"/>    	
     <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
       <property name="data-dir" value="${workspace}"/>
       <property name="plugin-name" value="${plugin-name}"/>
-      <property name="classname" value="org.eclipse.jst.ws.tests.performance.AllPerformanceTests" />
+      <property name="classname" value="org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr.PerfmsrBUJavaAxisTC50" />
       <property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>
       <property name="extraVMargs" value="${extraVMargs}"/>      
     </ant>
+  	
+    <delete dir="${workspace}" quiet="true"/>    	
+    <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+      <property name="data-dir" value="${workspace}"/>
+      <property name="plugin-name" value="${plugin-name}"/>
+      <property name="classname" value="org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr.PerfmsrClientAxisTC50" />
+      <property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>
+      <property name="extraVMargs" value="${extraVMargs}"/>      
+    </ant>
+  	
+    <delete dir="${workspace}" quiet="true"/>    	
+    <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+      <property name="data-dir" value="${workspace}"/>
+      <property name="plugin-name" value="${plugin-name}"/>
+      <property name="classname" value="org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr.PerfmsrTDJavaAxisTC50" />
+      <property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>
+      <property name="extraVMargs" value="${extraVMargs}"/>      
+    </ant>  	
+  	
   </target>
 
   <!-- This target holds code to cleanup the testing environment after -->

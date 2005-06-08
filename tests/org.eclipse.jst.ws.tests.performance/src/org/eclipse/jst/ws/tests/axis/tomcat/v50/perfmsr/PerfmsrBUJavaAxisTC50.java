@@ -24,11 +24,10 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
  */
 public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 	// Constants
-  private final String WS_RUNTIMEID_AXIS = "org.eclipse.jst.ws.runtime.axis11";
-  
+    private final String WS_RUNTIMEID_AXIS = "org.eclipse.jst.ws.runtime.axis11";
 	private final String PROJECT_NAME = "TestBUWeb";
-  private final String WEB_MODULE_NAME = "TestBUWebModule";
-	
+    private final String WEB_MODULE_NAME = "TestBUWebModule";
+
 	private IFile sourceFile_;
 	
   /**
@@ -38,10 +37,8 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
    */
 	protected void installInputData() throws Exception
 	{
-//		JUnitUtils.startServer(server_, env_);
-
 		// Create a Web project (TestWeb) targetted to Tomcat 5.0
-		Status s = JUnitUtils.createWebProject(PROJECT_NAME, WEB_MODULE_NAME, SERVERTYPEID_TC50, String.valueOf(J2EEVersionConstants.J2EE_1_3_ID), env_);
+		Status s = JUnitUtils.createWebModule(PROJECT_NAME, WEB_MODULE_NAME, SERVERTYPEID_TC50, String.valueOf(J2EEVersionConstants.J2EE_1_3_ID), env_);
 		if (s.getSeverity() != Status.OK) {
 		  System.out.println("Error: "+s.getMessage());
 			throw new Exception(s.getThrowable());
@@ -53,8 +50,8 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 		// Copy the contents of data/<test name> to the Web project's source folder.
 		// <Web Project>/JavaSource/foo/Echo.java
 		//IFolder destFolder = JUnitUtils.getSourceFolderForWebProject(WEB_PROJECT_NAME);
-    IPath destPath = ResourceUtils.getJavaSourceLocation(webProject, WEB_MODULE_NAME);
-    IFolder folder = (IFolder)ResourceUtils.findResource(destPath);
+        IPath destPath = ResourceUtils.getJavaSourceLocation(webProject, WEB_MODULE_NAME);
+        IFolder folder = (IFolder)ResourceUtils.findResource(destPath);
 		JUnitUtils.copyTestData("BUJava/src",folder,env_);
 		sourceFile_ = folder.getFile(new Path("foo/Echo.java"));
 		assertTrue(sourceFile_.exists());
@@ -122,19 +119,19 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
    */
 	private final void verifyOutput() throws Exception
 	{
-    IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
+        IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
 		IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject, WEB_MODULE_NAME);
     
-    IPath webInfPath = J2EEUtils.getWebInfPath(webProject, WEB_MODULE_NAME);
+        IPath webInfPath = J2EEUtils.getWebInfPath(webProject, WEB_MODULE_NAME);
 		IFolder webInfFolder = (IFolder)ResourceUtils.findResource(webInfPath);
 
-    IFolder wsdlFolder = webContentFolder.getFolder("wsdl");
+        IFolder wsdlFolder = webContentFolder.getFolder("wsdl");
 		assertTrue(wsdlFolder.exists());
 		assertTrue(wsdlFolder.members().length > 0);
 		assertTrue(webContentFolder.getFolder("wsdl").members().length > 0);
     
-    //TODO Check if wsdd contains new Web service
-    //TODO Check if Web serivce can be invoked by a client
+        //TODO Check if wsdd contains new Web service
+        //TODO Check if Web serivce can be invoked by a client
 	}
 	
   /**
@@ -148,8 +145,7 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 		
 		// Delete the Web project.
 		webProject.delete(true,true,EnvironmentUtils.getIProgressMonitor(env_));
-    assertFalse(webProject.exists());
-		
+        assertFalse(webProject.exists());
 		
 	}
 }

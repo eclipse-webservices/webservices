@@ -39,7 +39,7 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 	protected void installInputData() throws Exception {
 		
 		// Create an associated Web project (TestWeb) targetted to Tomcat v5.0 
-		Status s = JUnitUtils.createWebProject(CLIENT_PROJECT_NAME, CLIENT_WEB_MODULE_NAME, SERVERTYPEID_TC50, String.valueOf(J2EEVersionConstants.J2EE_1_4_ID), env_);
+		Status s = JUnitUtils.createWebModule(CLIENT_PROJECT_NAME, CLIENT_WEB_MODULE_NAME, SERVERTYPEID_TC50, String.valueOf(J2EEVersionConstants.J2EE_1_4_ID), env_);
 		if (s.getSeverity() != Status.OK)
 			throw new Exception(s.getThrowable());
     
