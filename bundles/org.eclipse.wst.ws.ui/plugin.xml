@@ -29,22 +29,6 @@
             name="%PREFERENCE_CATEGORY_WSI"
             class="org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage"
             id="org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage">
-         <filter
-               name="nature"
-               value="org.eclipse.jdt.core.javanature">
-         </filter>
-      </page>
-      
-      <page
-            objectClass="org.eclipse.jdt.core.IJavaProject"
-            adaptable="true"
-            name="%PREFERENCE_CATEGORY_WSI"
-            class="org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage"
-            id="org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage">
-         <filter
-               name="nature"
-               value="org.eclipse.jdt.core.javanature">
-         </filter>
       </page>
 
    </extension>
