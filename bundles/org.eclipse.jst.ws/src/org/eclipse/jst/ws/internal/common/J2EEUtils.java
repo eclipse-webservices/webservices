@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -27,8 +28,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationDataModel;
-import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationOperation;
+import org.eclipse.jem.util.logger.proxy.Logger;
+import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationDataModelProvider;
 import org.eclipse.jst.j2ee.applicationclient.componentcore.util.AppClientArtifactEdit;
 import org.eclipse.jst.j2ee.componentcore.util.EARArtifactEdit;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
@@ -53,13 +54,15 @@ import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
-import org.eclipse.wst.common.componentcore.internal.StructureEdit;
-import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
+import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.componentcore.resources.ComponentHandle;
 import org.eclipse.wst.common.componentcore.resources.IFlexibleProject;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -1551,35 +1554,23 @@ public final class J2EEUtils {
 	public static void associateComponentToEAR(IProject project, String componentName,
 							IProject earProject, String earComponentName) {
 		
-        StructureEdit core = null;
-        try {
-            core = StructureEdit.getStructureEditForRead(project);
-			if (core!=null){
-	            WorkbenchComponent wc = core.findComponentByName(componentName);
-	            
-                //IDataModel addComponentToEARDataModel = DataModelFactory.createDataModel(new AddComponentToEnterpriseApplicationDataModelProvider());
-	            AddComponentToEnterpriseApplicationDataModel addComponentToEARDataModel = new AddComponentToEnterpriseApplicationDataModel();;
-	            
-	            addComponentToEARDataModel.setProperty(AddComponentToEnterpriseApplicationDataModel.EAR_PROJECT_NAME, earProject.getName());
-	            addComponentToEARDataModel.setProperty(AddComponentToEnterpriseApplicationDataModel.PROJECT_NAME, project.getName());               
-	            addComponentToEARDataModel.setProperty(AddComponentToEnterpriseApplicationDataModel.MODULE_NAME, componentName);
-	            addComponentToEARDataModel.setProperty(AddComponentToEnterpriseApplicationDataModel.EAR_MODULE_NAME, earComponentName);
-	            
-	            List modulesList = new ArrayList();
-	            modulesList.add(wc);
-	            //String ejbComponentDeployName = model.getStringProperty(EJB_COMPONENT_DEPLOY_NAME);
-	            
-	            addComponentToEARDataModel.setProperty(AddComponentToEnterpriseApplicationDataModel.MODULE_LIST,modulesList);
-	            
-	            AddComponentToEnterpriseApplicationOperation addModuleOp = new AddComponentToEnterpriseApplicationOperation(addComponentToEARDataModel);
-	            addModuleOp.run(null);
-            }
-        } catch (Exception e) {
-			  //handle InvocationTargetException
-        }finally {
-            if(core != null)
-                core.dispose();
-        }		
+        IFlexibleProject flexearProj = ComponentCore.createFlexibleProject(earProject);
+		ComponentHandle earHandle = flexearProj.getComponent(componentName).getComponentHandle();
+		IFlexibleProject flexcompProj = ComponentCore.createFlexibleProject(project);
+		ComponentHandle compHandle = flexcompProj.getComponent(componentName).getComponentHandle();
+        IDataModel addComponentToEARDataModel = DataModelFactory.createDataModel(new AddComponentToEnterpriseApplicationDataModelProvider());
+		addComponentToEARDataModel.setProperty(ICreateReferenceComponentsDataModelProperties.SOURCE_COMPONENT_HANDLE, earHandle);
+		
+        List modList = (List) addComponentToEARDataModel.getProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENTS_HANDLE_LIST);
+        modList.add(compHandle);
+		addComponentToEARDataModel.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENTS_HANDLE_LIST, modList);
+        
+		try {
+			addComponentToEARDataModel.getDefaultOperation().execute(null, null);
+		} catch (ExecutionException e) {
+			Logger.getLogger().log(e);
+		}
+            
 	}
 	
 	
