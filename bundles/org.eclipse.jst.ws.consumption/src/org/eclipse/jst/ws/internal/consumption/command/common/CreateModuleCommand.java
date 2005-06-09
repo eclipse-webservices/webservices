@@ -3,7 +3,6 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.application.internal.operations.FlexibleJavaProjectCreationDataModelProvider;
 import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientComponentCreationDataModelProvider;
 import org.eclipse.jst.j2ee.datamodel.properties.IAppClientComponentCreationDataModelProperties;
 import org.eclipse.jst.j2ee.datamodel.properties.IEarComponentCreationDataModelProperties;
@@ -11,11 +10,9 @@ import org.eclipse.jst.j2ee.ejb.datamodel.properties.IEjbComponentCreationDataMo
 import org.eclipse.jst.j2ee.internal.earcreation.EarComponentCreationDataModelProvider;
 import org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationDataModelProvider;
 import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationDataModelProvider;
-import org.eclipse.jst.j2ee.project.datamodel.properties.IFlexibleJavaProjectCreationDataModelProperties;
 import org.eclipse.jst.j2ee.web.datamodel.properties.IWebComponentCreationDataModelProperties;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -35,7 +32,7 @@ public class CreateModuleCommand extends SimpleCommand
 	public final static int EAR = J2EEUtils.EAR;
 	
 	private String   projectName;
-	private String   moduleName;
+	private String   moduleName;  // may be null for non-flexible project
 	private int      moduleType;;
 	private String   j2eeLevel;
 	private String   serverFactoryId;
@@ -57,21 +54,19 @@ public class CreateModuleCommand extends SimpleCommand
 		if (status.getSeverity()==Status.ERROR){
 			return status;
 		}	
-		
-		// check if flexible project exists
-		IProject project = ProjectUtilities.getProject(projectName);
-		if (project==null || !project.exists()){
-			status = createFlexibleJavaProject();
-			if (status.getSeverity()==Status.ERROR){
-				return status;
-			}			
-		}
 
-		// check if component exists
-		if (projectName!=null && moduleName!=null){
+		// check if project and/or component exists
+        if (projectName!=null) {
+          if (moduleName==null){
+            IProject project = ProjectUtilities.getProject(projectName);
+            if (project.exists())
+              return status;
+          }
+          else {
 			if (J2EEUtils.exists(projectName, moduleName))
 				return status;
-		}
+          }
+        }
 		else {
 			return new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{projectName, moduleName}),Status.ERROR, null);
 		}
@@ -101,8 +96,7 @@ public class CreateModuleCommand extends SimpleCommand
 
 	private Status checkDataReady(){
 		
-		if (projectName==null || moduleName==null ||
-				serverFactoryId==null){
+		if (projectName==null || serverFactoryId==null){
 			return new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{projectName, moduleName}),Status.ERROR,null);
 		}
 		
@@ -120,7 +114,8 @@ public class CreateModuleCommand extends SimpleCommand
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new WebComponentCreationDataModelProvider());
 		  projectInfo.setProperty(IWebComponentCreationDataModelProperties.PROJECT_NAME,projectName);
-		  projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
+          if (moduleName!=null)
+            projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
 		  if (j2eeLevel!=null)
 			  projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
 		  IDataModelOperation op = projectInfo.getDefaultOperation();
@@ -146,7 +141,8 @@ public class CreateModuleCommand extends SimpleCommand
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new EarComponentCreationDataModelProvider());
 		  projectInfo.setProperty(IEarComponentCreationDataModelProperties.PROJECT_NAME,projectName);
-		  projectInfo.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
+          if (moduleName!=null)
+              projectInfo.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
 		  if (j2eeLevel!=null)
 			  projectInfo.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
 		  IDataModelOperation op =projectInfo.getDefaultOperation();
@@ -172,7 +168,8 @@ public class CreateModuleCommand extends SimpleCommand
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new EjbComponentCreationDataModelProvider());
 		  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.PROJECT_NAME,projectName);
-		  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
+          if (moduleName!=null)  
+              projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
 		  if (j2eeLevel!=null)
 			  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
 		  IDataModelOperation op = projectInfo.getDefaultOperation();
@@ -198,10 +195,12 @@ public class CreateModuleCommand extends SimpleCommand
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new AppClientComponentCreationDataModelProvider());
 		  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.PROJECT_NAME,projectName);
-		  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
+          if (moduleName!=null)      
+		      projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
 		  if (j2eeLevel!=null)		  
 			  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
 		  IDataModelOperation op = projectInfo.getDefaultOperation();
+
 		  if (env!=null)
 			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
 		  else 
@@ -213,38 +212,6 @@ public class CreateModuleCommand extends SimpleCommand
 		}
 		return status;		
 	}
-	
-	/**
-	 * Creates Flexible Java Project structure
-	 * This project is required if it doesn't already exist in order to create the component 
-	 * @return
-	 * 
-	 * Note: This call may not be necessary once J2EE implements creating a flex project automatically
-	 * 		with the creation of components.
-	 */
-	public Status createFlexibleJavaProject(){
-		Status status = new SimpleStatus("");
-		try
-		{
-		  IDataModel projectInfo = DataModelFactory.createDataModel(new FlexibleJavaProjectCreationDataModelProvider());
-		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.PROJECT_NAME,projectName);
-		  String runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId, ServerUtils.getServerTargetModuleType(moduleType), j2eeLevel);
-		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.SERVER_TARGET_ID,runtimeTargetId);
-		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.ADD_SERVER_TARGET,Boolean.TRUE);
-		  IDataModelOperation op = projectInfo.getDefaultOperation();
-		  if (env!=null)
-			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
-		  else 
-			  op.execute(new NullProgressMonitor(), null);
-
-		}
-		catch (Exception e)
-		{
-			status = new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_CREATE_FLEX_PROJET", new String[]{projectName}),Status.ERROR,e);
-		}
-		return status;		
-	}
-	
 	
 	public void setModuleName(String moduleName)
 	{

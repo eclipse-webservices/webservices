@@ -49,7 +49,6 @@ import org.eclipse.jst.j2ee.internal.project.J2EENature;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
-import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.common.componentcore.ComponentCore;
@@ -146,11 +145,11 @@ public final class J2EEUtils {
       if (ch!=null) {
         if (isWebComponent(ch))
           j2eeVer = getWebComponentJ2EEVersion(ch);
-        if (isAppClientComponent(ch))
+        else if (isAppClientComponent(ch))
           j2eeVer = getAppClientComponentJ2EEVersion(ch);
-        if (isEJBComponent(ch))
+        else if (isEJBComponent(ch))
           j2eeVer = getEJBComponentJ2EEVersion(ch);
-        if (isEARComponent(ch))
+        else if (isEARComponent(ch))
           j2eeVer = getEARComponentJ2EEVersion(ch);
         
       }
@@ -475,10 +474,11 @@ public final class J2EEUtils {
 	 */
 	public static boolean exists(String projectName, String componentName){
 		IProject project = null;
-		if (projectName!=null && projectName.length() > 0 )
-		  project = FileResourceUtils.getWorkspaceRoot().getProject(projectName);
-		else 
-			return false;
+		if (projectName!=null && projectName.length() > 0 ) {
+		  project = ProjectUtilities.getProject(projectName);
+        }
+        else
+          return false;
 		
 		return exists(project, componentName);
 	}
@@ -490,9 +490,10 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean exists(IProject project, String componentName){
-		if (project!=null && 
-				componentName!=null && 
-				componentName.length() > 0) {
+		if (project!=null && componentName!=null &&	componentName.length() > 0) {
+            if (!project.exists())
+              return false;
+            
 			IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
 			return vc.exists();
 		}

@@ -221,11 +221,9 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
         try
         { 
           IResource resource = ResourceUtils.getResourceFromSelection(obj);
-		  System.out.println("getProjectFromObjectSelection - resource = "+resource);
           if (resource==null) 
             return null;
           IProject p = ResourceUtils.getProjectOf(resource.getFullPath());
-		  System.out.println("ObjectSelection project = "+p);
           return p;
         } catch(CoreException e)
         {
@@ -247,7 +245,6 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
         try
         { 
           IResource resource = ResourceUtils.getResourceFromSelection(obj);
-          System.out.println("getProjectFromObjectSelection - resource = "+resource);
           if (resource==null) 
             return null;
      
@@ -256,7 +253,6 @@ public class ObjectSelectionOutputCommand extends SimpleCommand
           {
             return comp.getName();
           }
-          System.out.println("ObjectSelection component = "+comp.getName());
         } catch(CoreException e)
         {
       e.printStackTrace();

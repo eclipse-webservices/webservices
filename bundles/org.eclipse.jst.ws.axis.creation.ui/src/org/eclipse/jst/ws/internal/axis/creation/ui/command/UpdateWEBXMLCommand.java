@@ -119,7 +119,6 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 			// 
 			WebApp webapp = null;
       IVirtualComponent vc = ComponentCore.createComponent(webProject, moduleName);
-      System.out.println("WebProject: "+webProject+"  moduleName: "+moduleName);
       webEdit = WebArtifactEdit.getWebArtifactEditForWrite(vc);
 			if (webEdit != null)
 			{
