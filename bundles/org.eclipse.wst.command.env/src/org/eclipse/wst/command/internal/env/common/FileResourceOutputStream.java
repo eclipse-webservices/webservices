@@ -15,7 +15,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
@@ -89,12 +88,6 @@ public class FileResourceOutputStream extends OutputStream
     {
       FileResourceUtils.createFile(fResourceContext, fFilePath, tempInputStream, fMonitor, fStatusHandler);
     }
-
-    catch (ResourceException e )
-    	{
-    		throw new IOException(e.getMessage());
-    	}
-
     catch (CoreException e)
     {
       throw new IOException(e.getMessage());
