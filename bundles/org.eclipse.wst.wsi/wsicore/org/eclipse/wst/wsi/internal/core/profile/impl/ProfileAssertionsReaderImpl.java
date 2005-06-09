@@ -23,6 +23,7 @@ import org.eclipse.wst.wsi.internal.core.profile.ProfileArtifact;
 import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertions;
 import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertionsReader;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
+import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
 import org.eclipse.wst.wsi.internal.core.util.ArtifactType;
 import org.eclipse.wst.wsi.internal.core.util.Utils;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
@@ -254,14 +255,17 @@ public class ProfileAssertionsReaderImpl implements ProfileAssertionsReader
           testAssertion = new TestAssertionImpl();
 
           // Get attribute values
-          testAssertion.setId(atts.getValue("", WSIConstants.ATTR_ID));
+          String id = atts.getValue("", WSIConstants.ATTR_ID);
+          testAssertion.setId(id);
           testAssertion.setType(atts.getValue("", WSIConstants.ATTR_TYPE));
           testAssertion.setEntryTypeName(
             atts.getValue("", WSIConstants.ATTR_ENTRY_TYPE));
-          testAssertion.setEnabled(
-            Boolean
-              .valueOf(atts.getValue("", WSIConstants.ATTR_ENABLED))
-              .booleanValue());
+          
+          // if assertion already checked then disable it
+          if (alreadyChecked(id))
+        	  testAssertion.setEnabled(false);
+          else
+        	  testAssertion.setEnabled(Boolean.valueOf(atts.getValue("", WSIConstants.ATTR_ENABLED)).booleanValue());
 
           // Add test assertion to artifact
           artifact.addTestAssertion(testAssertion);
@@ -512,4 +516,33 @@ public class ProfileAssertionsReaderImpl implements ProfileAssertionsReader
       */
     }
   }
+
+  /**
+   * NOTE that this api assumes that base wsdl validator has already validated
+   * the wsdl document and corresponding schemas against the wsdl 1.1 specification.
+   * Note also that there are a number of duplicate checks between the base validator
+   * and the ws-i validator. Since some of these checks are cpu intensive, we disable 
+   * those assertions here. 
+   *
+   * Returns true if the assertion has already been checked by the base validator. 
+   * @param testAssertion
+   * @return true if the assertion has already been checked by the base validator. 
+   */
+  protected boolean alreadyChecked(String id)
+  {
+	 boolean result = false;
+	 if (id != null)
+	 {
+       result = (id.equals("BP2110") ||
+    		   	 id.equals("BP2115") ||
+		         id.equals("BP2417") ||
+		         id.equals("BP2114") ||
+		         id.equals("BP2123") ||
+		         id.equals("SSBP2209") ||
+		         id.equals("AP2209"));
+	 }
+	 return result;
+}
+
+
 }
