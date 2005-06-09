@@ -173,7 +173,7 @@ public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPro
 	      // dispose editor
 	      dispose();
 
-	      throw new SourceEditingRuntimeException(WSDLEditorPlugin.getWSDLString("An_error_has_occurred_when1_ERROR_")); //$NON-NLS-1$
+	      throw new SourceEditingRuntimeException(exception, WSDLEditorPlugin.getWSDLString("An_error_has_occurred_when1_ERROR_")); //$NON-NLS-1$
 	    }
 	  }
 
