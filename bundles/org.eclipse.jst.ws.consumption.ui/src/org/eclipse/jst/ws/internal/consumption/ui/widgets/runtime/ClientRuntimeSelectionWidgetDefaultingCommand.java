@@ -745,13 +745,13 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
         for (int i=0; i<servers.length; i++)
         {
           String thisFactoryId = servers[0].getServerType().getId();
-          if (WebServiceRuntimeExtensionUtils.doesRuntimeSupportServer(clientIds_.getRuntimeId(), thisFactoryId))
-          {
+          //if (WebServiceRuntimeExtensionUtils.doesRuntimeSupportServer(clientIds_.getRuntimeId(), thisFactoryId))
+          //{
             //Pick this server and return.
             clientIds_.setServerId(thisFactoryId);
             clientIds_.setServerInstanceId(servers[0].getId());
             return;
-          }
+          //}
         }
       }
       
