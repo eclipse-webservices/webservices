@@ -512,27 +512,26 @@ public final class ServerUtils {
 		}
 		return url;
 	}	
-	
+
 	public static IServer getDefaultExistingServer(IVirtualComponent component) {
 		IProject project = component.getProject();
-		IProjectProperties props = ServerCore.getProjectProperties(project);
-		IServer preferredServer = props.getDefaultServer();
+		IModule module = getModule(project, component.getName());
+		IServer preferredServer = ServerCore.getDefaultServer(module);
+		if (preferredServer != null)
+			return preferredServer;
+		
+		IServer[] configuredServers = ServerUtil.getServersByModule(module,
+				null);
 
-		if (preferredServer == null) {
-			IModule module = getModule(project, component.getName());
-			IServer[] configuredServers = ServerUtil.getServersByModule(module,
-					null);
+		if (configuredServers != null && configuredServers.length > 0) {
+			preferredServer = configuredServers[0];
+		} else {
+			IServer[] nonConfiguredServers = ServerUtil
+					.getAvailableServersForModule(module, false, null);
 
-			if (configuredServers != null && configuredServers.length > 0) {
-				preferredServer = configuredServers[0];
-			} else {
-				IServer[] nonConfiguredServers = ServerUtil
-						.getAvailableServersForModule(module, false, null);
-
-				if (nonConfiguredServers != null
-						&& nonConfiguredServers.length > 0) {
-					preferredServer = nonConfiguredServers[0];
-				}
+			if (nonConfiguredServers != null
+					&& nonConfiguredServers.length > 0) {
+				preferredServer = nonConfiguredServers[0];
 			}
 		}
 
