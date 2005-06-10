@@ -334,7 +334,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	{	  
 	  INamedWidgetContributor newWidget = null;
 		  
-	  if( widgetStack_.size() == 0 )
+	  if( widgetStack_ == null || widgetStack_.size() == 0 )
 	  {
 		newWidget = factory.getFirstNamedWidget();   
 	  }
