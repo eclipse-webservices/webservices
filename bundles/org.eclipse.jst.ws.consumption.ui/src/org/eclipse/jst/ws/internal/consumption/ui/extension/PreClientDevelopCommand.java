@@ -100,6 +100,7 @@ public class PreClientDevelopCommand extends SimpleCommand
     if (moduleType_.equals(ID_APP_CLIENT)) command.setModuleType(CreateModuleCommand.APPCLIENT);
     
     command.setServerFactoryId(typeRuntimeServer_.getServerId());
+    command.setServerInstanceId( typeRuntimeServer_.getServerInstanceId() );
     command.setJ2eeLevel(j2eeLevel_);
     Status status = command.execute(environment);
 

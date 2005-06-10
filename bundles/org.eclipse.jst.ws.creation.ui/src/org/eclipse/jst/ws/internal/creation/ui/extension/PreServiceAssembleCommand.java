@@ -43,6 +43,7 @@ public class PreServiceAssembleCommand extends SimpleCommand
 		command.setModuleName(ear_);
 		command.setModuleType(CreateModuleCommand.EAR);
 		command.setServerFactoryId(webService_.getWebServiceInfo().getServerFactoryId());
+		command.setServerInstanceId( webService_.getWebServiceInfo().getServerInstanceId() );
 		command.setJ2eeLevel(j2eeLevel_);
 		Status status = command.execute(environment);
 		if (status.getSeverity()==Status.ERROR)

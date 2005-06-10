@@ -72,10 +72,10 @@ public class PreServiceDevelopCommand extends SimpleCommand
 	  System.out.println( "In Pre service develop command." );
 	
 	  wsInfo.setJ2eeLevel( j2eeLevel_ );
-		wsInfo.setServerFactoryId( typeRuntimeServer_.getServerId() );
-    wsInfo.setServerInstanceId( typeRuntimeServer_.getServerInstanceId());
-		wsInfo.setState( WebServiceState.UNKNOWN_LITERAL );
-		wsInfo.setWebServiceRuntimeId( typeRuntimeServer_.getRuntimeId() );
+	  wsInfo.setServerFactoryId( typeRuntimeServer_.getServerId() );
+      wsInfo.setServerInstanceId( typeRuntimeServer_.getServerInstanceId());
+	  wsInfo.setState( WebServiceState.UNKNOWN_LITERAL );
+	  wsInfo.setWebServiceRuntimeId( typeRuntimeServer_.getRuntimeId() );
     
 
 		environment_ = environment;
@@ -110,6 +110,7 @@ public class PreServiceDevelopCommand extends SimpleCommand
 		//rsk todo -- pick the correct module type based on the Web service type, it's hard coded to WEB for now.
 		command.setModuleType(CreateModuleCommand.WEB);
 		command.setServerFactoryId(typeRuntimeServer_.getServerId());
+		command.setServerInstanceId( typeRuntimeServer_.getServerInstanceId() );
 		command.setJ2eeLevel(j2eeLevel_);
 		Status status = command.execute(environment);
 		

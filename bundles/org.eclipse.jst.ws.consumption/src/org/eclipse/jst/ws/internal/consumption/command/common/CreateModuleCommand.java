@@ -3,6 +3,7 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.j2ee.application.internal.operations.FlexibleJavaProjectCreationDataModelProvider;
 import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientComponentCreationDataModelProvider;
 import org.eclipse.jst.j2ee.datamodel.properties.IAppClientComponentCreationDataModelProperties;
 import org.eclipse.jst.j2ee.datamodel.properties.IEarComponentCreationDataModelProperties;
@@ -10,9 +11,11 @@ import org.eclipse.jst.j2ee.ejb.datamodel.properties.IEjbComponentCreationDataMo
 import org.eclipse.jst.j2ee.internal.earcreation.EarComponentCreationDataModelProvider;
 import org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationDataModelProvider;
 import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationDataModelProvider;
+import org.eclipse.jst.j2ee.project.datamodel.properties.IFlexibleJavaProjectCreationDataModelProperties;
 import org.eclipse.jst.j2ee.web.datamodel.properties.IWebComponentCreationDataModelProperties;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -22,6 +25,8 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
 
 public class CreateModuleCommand extends SimpleCommand
 {
@@ -36,6 +41,7 @@ public class CreateModuleCommand extends SimpleCommand
 	private int      moduleType;;
 	private String   j2eeLevel;
 	private String   serverFactoryId;
+	private String   serverInstanceId_;
 	private Environment env;
 	
 	private MessageUtils msgUtils;
@@ -54,11 +60,19 @@ public class CreateModuleCommand extends SimpleCommand
 		if (status.getSeverity()==Status.ERROR){
 			return status;
 		}	
+		
+		// check if flexible project exists
+		IProject project = ProjectUtilities.getProject(projectName);
+		if (project==null || !project.exists()){
+			status = createFlexibleJavaProject();
+			if (status.getSeverity()==Status.ERROR){
+				return status;
+			}			
+		}
 
 		// check if project and/or component exists
         if (projectName!=null) {
           if (moduleName==null){
-            IProject project = ProjectUtilities.getProject(projectName);
             if (project.exists())
               return status;
           }
@@ -69,8 +83,8 @@ public class CreateModuleCommand extends SimpleCommand
         }
 		else {
 			return new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{projectName, moduleName}),Status.ERROR, null);
-		}
-		
+		}        
+        
 		// create the component according to the component type specified
 		int type = getModuleType();
 		switch (type) {
@@ -91,6 +105,7 @@ public class CreateModuleCommand extends SimpleCommand
 			// determine an error status message?
 			break;
 		}
+		
 		return status;
 	}
 
@@ -213,6 +228,51 @@ public class CreateModuleCommand extends SimpleCommand
 		return status;		
 	}
 	
+	/**
+	 * Creates Flexible Java Project structure
+	 * This project is required if it doesn't already exist in order to create the component 
+	 * @return
+	 * 
+	 * Note: This call may not be necessary once J2EE implements creating a flex project automatically
+	 * 		with the creation of components.
+	 */
+	public Status createFlexibleJavaProject(){
+		Status status = new SimpleStatus("");
+		try
+		{
+		  IDataModel projectInfo = DataModelFactory.createDataModel(new FlexibleJavaProjectCreationDataModelProvider());
+		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.PROJECT_NAME,projectName);
+		  
+		  String runtimeTargetId = null;
+		  
+		  if( serverInstanceId_ == null )
+		  {
+			// We don't have a server instance so we will get the first runtimeTarget from the factory ID.
+			runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId, ServerUtils.getServerTargetModuleType(moduleType), j2eeLevel);		
+		  }
+		  else
+		  {
+			// We have a server instance so we will just get it's runtimeTargetId.
+			IServer server = ServerCore.findServer( serverInstanceId_ );
+			runtimeTargetId = server.getRuntime().getId();  
+		  }
+		  
+		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.SERVER_TARGET_ID,runtimeTargetId);
+		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.ADD_SERVER_TARGET,Boolean.TRUE);
+		  IDataModelOperation op = projectInfo.getDefaultOperation();
+		  if (env!=null)
+			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
+		  else 
+			  op.execute(new NullProgressMonitor(), null);
+
+		}
+		catch (Exception e)
+		{
+			status = new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_CREATE_FLEX_PROJET", new String[]{projectName}),Status.ERROR,e);
+		}
+		return status;		
+	}
+	
 	public void setModuleName(String moduleName)
 	{
 		this.moduleName = moduleName;
@@ -248,6 +308,11 @@ public class CreateModuleCommand extends SimpleCommand
 	public void setServerFactoryId(String serverFactoryId)
 	{
 		this.serverFactoryId = serverFactoryId;
+	}
+	
+	public void setServerInstanceId( String serverInstanceId )
+	{
+	  serverInstanceId_ = serverInstanceId;
 	}
 
 }
