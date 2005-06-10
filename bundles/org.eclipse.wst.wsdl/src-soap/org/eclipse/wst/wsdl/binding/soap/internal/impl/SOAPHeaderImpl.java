@@ -267,7 +267,7 @@ public class SOAPHeaderImpl extends SOAPHeaderBaseImpl implements SOAPHeader {
 
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
   {
-    if (SOAPConstants.HEADER_FAULT_ELEMENT_TAG.equals(element.getLocalName()))
+    if (SOAPConstants.HEADER_FAULT_ELEMENT_TAG.equals(child.getLocalName()))
     {
       SOAPHeaderFault fault = SOAPFactory.eINSTANCE.createSOAPHeaderFault();
       fault.setEnclosingDefinition(getEnclosingDefinition());
