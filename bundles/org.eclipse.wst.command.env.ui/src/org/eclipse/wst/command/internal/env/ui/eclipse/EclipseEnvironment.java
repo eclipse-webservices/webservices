@@ -37,6 +37,7 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
   private ResourceContext  resourceContext_ = null;
   private ProgressMonitor  monitor_         = null;
   private StatusHandler    statusHandler_   = null;
+  private Log              logger_          = null;
   
   public EclipseEnvironment( CommandManager  commandManager, 
 		                     ResourceContext resourceContext,
@@ -74,9 +75,20 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
    */
   public Log getLog()
   {
-    return new EclipseLog();
+	if( logger_ == null ) logger_ = new EclipseLog();
+	
+    return logger_;
   }
 
+  /**
+   * 
+   * @param logger the new logger for this environment.
+   */
+  public void setLog( Log logger )
+  {
+	logger_ = logger;  
+  }
+  
   /**
    * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getProgressMonitor()
    */
