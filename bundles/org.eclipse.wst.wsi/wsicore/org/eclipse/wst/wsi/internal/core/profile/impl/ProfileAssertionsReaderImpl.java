@@ -23,7 +23,6 @@ import org.eclipse.wst.wsi.internal.core.profile.ProfileArtifact;
 import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertions;
 import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertionsReader;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
-import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
 import org.eclipse.wst.wsi.internal.core.util.ArtifactType;
 import org.eclipse.wst.wsi.internal.core.util.Utils;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;

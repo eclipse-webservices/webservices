@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.util.TestUtils;
-import org.eclipse.wst.wsi.internal.core.xml.XMLDocumentCache;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -39,11 +38,9 @@ public class TargetNamespaceProcessor extends XMLSchemaProcessor
    * @param documentList
    *            cache of previously parsed documents
    */
-  public TargetNamespaceProcessor(
-    String context,
-    XMLDocumentCache documentList)
+  public TargetNamespaceProcessor(String context)
   {
-    super(context, documentList, false);
+    super(context, false);
   }
 
   protected void processSchema(Element element)

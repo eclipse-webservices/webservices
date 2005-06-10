@@ -23,7 +23,6 @@ import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
 import org.eclipse.wst.wsi.internal.core.util.ErrorList;
 import org.eclipse.wst.wsi.internal.core.wsdl.traversal.WSDLTraversal;
 import org.eclipse.wst.wsi.internal.core.wsdl.traversal.WSDLTraversalContext;
-import org.eclipse.wst.wsi.internal.core.xml.XMLDocumentCache;
 import org.eclipse.wst.wsi.internal.core.xml.schema.XMLSchemaProcessor;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -83,8 +82,7 @@ import org.w3c.dom.Node;
        (Types) entryContext.getEntry().getEntryDetail();
      
      processor = new AnnotationProcessor(
-           entryContext.getWSDLDocument().getDefinitions().getDocumentBaseURI(), 
-           validator.getDocumentList());
+           entryContext.getWSDLDocument().getDefinitions().getDocumentBaseURI());
      
      WSDLTraversal traversal = new WSDLTraversal();
      traversal.setVisitor(this);
@@ -109,11 +107,9 @@ import org.w3c.dom.Node;
     */
    class AnnotationProcessor extends XMLSchemaProcessor
    {
-     public AnnotationProcessor(
-       String context,
-       XMLDocumentCache documentList)
+     public AnnotationProcessor(String context)
      {
-       super(context, documentList, false);
+       super(context, false);
      }
 
      protected void processSchema(Element element)

@@ -15,7 +15,6 @@ import java.util.Vector;
 
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.util.TestUtils;
-import org.eclipse.wst.wsi.internal.core.xml.XMLDocumentCache;
 import org.eclipse.wst.wsi.internal.core.xml.XMLDocumentCacheUser;
 import org.eclipse.wst.wsi.internal.core.xml.XMLTags;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
@@ -44,9 +43,9 @@ public abstract class XMLSchemaProcessor
    * @param context       document context. 
    * @param documentList  cache of previously parsed documents.
    */
-  public XMLSchemaProcessor(String context, XMLDocumentCache documentList)
+  public XMLSchemaProcessor(String context)
   {
-    this(context, documentList, true);
+    this(context, true);
   }
 
   /**
@@ -57,13 +56,11 @@ public abstract class XMLSchemaProcessor
    */
   public XMLSchemaProcessor(
     String context,
-    XMLDocumentCache documentList,
     boolean throwException)
   {
     super();
 
     this.context = context;
-    this.documentList = documentList;
     this.throwException = throwException;
   }
 

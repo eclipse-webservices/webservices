@@ -16,7 +16,6 @@ import java.util.Map;
 
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.util.TestUtils;
-import org.eclipse.wst.wsi.internal.core.xml.XMLDocumentCache;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -40,9 +39,9 @@ public class XMLSchemaValidator extends XMLSchemaProcessor
    * @param context       document context. 
    * @param documentList  cache of previously parsed documents.
    */
-  public XMLSchemaValidator(String context, XMLDocumentCache documentList)
+  public XMLSchemaValidator(String context)
   {
-    super(context, documentList);
+    super(context);
   }
 
   protected void processSchema(Element element)

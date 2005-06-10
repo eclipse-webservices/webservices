@@ -20,6 +20,7 @@ import java.util.Map;
  */
 public class XMLDocumentCache extends HashMap
 {
+	static XMLDocumentCache instance;
 
   /**
 	 * Comment for <code>serialVersionUID</code>
@@ -34,6 +35,7 @@ public class XMLDocumentCache extends HashMap
   public XMLDocumentCache(int initialCapacity, float loadFactor)
   {
     super(initialCapacity, loadFactor);
+    instance = this;
   }
 
   /**
@@ -43,6 +45,7 @@ public class XMLDocumentCache extends HashMap
   public XMLDocumentCache(int initialCapacity)
   {
     super(initialCapacity);
+    instance = this;
   }
 
   /**
@@ -51,6 +54,7 @@ public class XMLDocumentCache extends HashMap
   public XMLDocumentCache()
   {
     super();
+    instance = this;
   }
 
   /**
@@ -60,6 +64,14 @@ public class XMLDocumentCache extends HashMap
   public XMLDocumentCache(Map t)
   {
     super(t);
+    instance = this;
   }
 
+  public static XMLDocumentCache instance()
+  {
+	  if (instance == null) 
+		  instance = new XMLDocumentCache();
+	  
+	  return instance;
+  }
 }

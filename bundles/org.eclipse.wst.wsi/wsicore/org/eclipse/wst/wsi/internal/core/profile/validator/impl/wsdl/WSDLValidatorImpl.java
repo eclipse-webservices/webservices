@@ -114,7 +114,6 @@ public class WSDLValidatorImpl
   {
     // BaseValidatorImpl
     super.init(analyzerContext, profileArtifact, reportArtifact, reporter);
-
     this.wsdlDocument = wsdlDocument;
     if (wsdlDocument != null)
       this.wsdlURL = wsdlDocument.getLocation();
@@ -1590,7 +1589,7 @@ public class WSDLValidatorImpl
   protected XMLSchemaValidator createXMLSchemaValidator(String documentBaseURI)
   {
     // Create XML schema validator
-    return new XMLSchemaValidator(documentBaseURI, documentList);
+    return new XMLSchemaValidator(documentBaseURI);
   }
 
   /**
@@ -1619,10 +1618,8 @@ public class WSDLValidatorImpl
         TargetNamespaceProcessor tnsProcessor = null;
         if (extElement instanceof UnknownExtensibilityElement)
         {
-          tnsProcessor =
-            new TargetNamespaceProcessor(
-              definition.getDocumentBaseURI(),
-              documentList);
+          tnsProcessor = new TargetNamespaceProcessor(definition.getDocumentBaseURI());
+
 
           if ((nextList =
             tnsProcessor.processAllSchema(

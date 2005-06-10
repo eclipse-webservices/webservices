@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -64,6 +65,8 @@ import org.w3c.dom.Node;
  */
 public final class TypesRegistry implements WSITag, WSDLVisitor
 {
+  List schemaProcessedList = new ArrayList();
+  
   /* (non-Javadoc)
    * @see org.wsi.wsdl.traversal.WSDLVisitor#visit(javax.wsdl.Part, java.lang.Object, org.wsi.wsdl.traversal.WSDLTraversalContext)
    */
@@ -268,7 +271,7 @@ public final class TypesRegistry implements WSITag, WSDLVisitor
   private Set usesWsdlArrayType = new HashSet();
 
   protected BaseValidator baseValidator = null;
-
+ 
   /**
    * Constructor creates the types registry. by the given WSDL definition
    * object.
@@ -286,7 +289,7 @@ public final class TypesRegistry implements WSITag, WSDLVisitor
     //VisitorAdaptor.adapt(this);
     traversal.setVisitor(this);
     traversal.visitImport(true);
-
+    
     processTypes(def.getTypes(), def.getDocumentBaseURI());
     traversal.traverse(def);
   }
@@ -419,16 +422,6 @@ public final class TypesRegistry implements WSITag, WSDLVisitor
         // if xsd:schema element is found -> process schema
         if (XMLUtils.equals(n, ELEM_XSD_SCHEMA))
           processSchema(n, context);
-        else
-          // if xsd:import element is found -> load schema and process schema
-          if (XMLUtils.equals(n, ELEM_XSD_IMPORT))
-            loadSchema(n, context);
-          // if xsd:include element is found -> load schema and process schema
-          else if (XMLUtils.equals(n, ELEM_XSD_INCLUDE))
-            loadSchema(n, context);
-          else
-            // else iterate element recursively
-            searchForSchema(n.getFirstChild(), context);
       }
       n = n.getNextSibling();
     }
@@ -444,20 +437,26 @@ public final class TypesRegistry implements WSITag, WSDLVisitor
   {
     Element im = (Element) importNode;
     Attr schemaLocation = XMLUtils.getAttribute(im, ATTR_XSD_SCHEMALOCATION);
+	
     // try to parse imported XSD
     if (schemaLocation != null && schemaLocation.getValue() != null)
       try
       {
-        // if any error or root element is not XSD schema -> error
-        Document schema =
-          baseValidator.parseXMLDocumentURL(
-            schemaLocation.getValue(),
-            context,
-            null);
-        if (XMLUtils.equals(schema.getDocumentElement(), ELEM_XSD_SCHEMA))
-          processSchema(
-            schema.getDocumentElement(),
-            XMLUtils.createURLString(schemaLocation.getValue(), context));
+    	String urlString = XMLUtils.createURLString(schemaLocation.getValue(), context);
+    	if (!schemaProcessedList.contains(urlString))
+    	{
+          // if any error or root element is not XSD schema -> error
+          Document schema =
+            baseValidator.parseXMLDocumentURL(
+              schemaLocation.getValue(),
+              context,
+              null);
+          schemaProcessedList.add(urlString);
+          if (XMLUtils.equals(schema.getDocumentElement(), ELEM_XSD_SCHEMA))
+            processSchema(
+              schema.getDocumentElement(),
+              urlString);
+    	}
       }
       catch (Throwable t)
       {

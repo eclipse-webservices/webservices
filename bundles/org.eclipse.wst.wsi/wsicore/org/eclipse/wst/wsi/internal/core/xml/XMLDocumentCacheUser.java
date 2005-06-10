@@ -24,11 +24,6 @@ import org.w3c.dom.Document;
 public abstract class XMLDocumentCacheUser
 {
   /**
-   * Cache of parsed documents.
-   */
-  protected XMLDocumentCache documentList = null;
-
-  /**
    * Get document from cache.
    * @see #setDocument
    *
@@ -37,7 +32,7 @@ public abstract class XMLDocumentCacheUser
    */
   protected Document getDocument(String key)
   {
-    return (Document) documentList.get(key);
+    return (Document) XMLDocumentCache.instance().get(key);
   }
 
   /**
@@ -49,7 +44,7 @@ public abstract class XMLDocumentCacheUser
    */
   protected void setDocument(String key, Object document)
   {
-    documentList.put(key, document);
+	  XMLDocumentCache.instance().put(key, document);
   }
 
   /**
@@ -58,7 +53,7 @@ public abstract class XMLDocumentCacheUser
    */
   public XMLDocumentCache getDocumentList()
   {
-    return documentList;
+    return XMLDocumentCache.instance();
   }
 
   /**

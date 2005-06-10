@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.analyzer;
 
-import org.eclipse.wst.wsi.internal.core.xml.XMLDocumentCache;
-
 /**
  * This class contains contextual information which is required by test assertions across all artifacts.
  * 
@@ -22,7 +20,6 @@ public class AnalyzerContext
 {
   protected ServiceReference serviceReference = null;
   protected CandidateInfo candidateInfo = null;
-  protected XMLDocumentCache documentList = new XMLDocumentCache();
 
   /**
    * Do not allow the usage of the null constructor.
@@ -79,35 +76,4 @@ public class AnalyzerContext
   {
     this.candidateInfo = candidateInfo;
   }
-
-  /**
-   * Get the list of cached documents.
-   * @return the list of cached documents.
-   * @see #setDocumentList
-   */
-  public XMLDocumentCache getDocumentList()
-  {
-    return documentList;
-  }
-
-  /**
-   * Set the list of cached documents.
-   * @param documentList a list of cached documents.
-   * @see #getDocumentList
-   */
-  public void setDocumentList(XMLDocumentCache documentList)
-  {
-    this.documentList = documentList;
-  }
-
-  /**
-   * Add a document to the list of cached documents.
-   * @param key a key to associate with the given document.
-   * @param document a document to be identified with the given key.
-   */
-  public void addDocument(Object key, Object document)
-  {
-    this.documentList.put(key, document);
-  }
-
 }

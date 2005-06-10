@@ -128,9 +128,6 @@ public abstract class BaseValidatorImpl
     this.reportArtifact = reportArtifact;
     this.reporter = reporter;
 
-    // Make sure that the XML document cache is updated in the analyzer context
-    this.documentList = this.analyzerContext.getDocumentList();
-
     // Get verbose option    
     verboseOption =
       reporter
@@ -313,9 +310,6 @@ public abstract class BaseValidatorImpl
                 assertionResult =
                   assertionProcess.validate(testAssertion, entryContext);
 
-                // Make sure that the XML document cache is updated in the analyzer context
-                this.analyzerContext.setDocumentList(documentList);
-
                 //  VERBOSE
                 if (verboseOption)
                 {
@@ -417,9 +411,6 @@ public abstract class BaseValidatorImpl
     // If no assertions were processed, then set all missingInput
     if (assertionCount == 0)
       setAllMissingInput();
-
-    // Set cached document list in case it was updated
-    this.analyzerContext.setDocumentList(this.documentList);
   }
 
   /**

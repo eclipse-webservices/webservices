@@ -41,6 +41,7 @@ import org.eclipse.wst.wsi.internal.core.report.impl.DefaultReporter;
 import org.eclipse.wst.wsi.internal.core.util.ArtifactType;
 import org.eclipse.wst.wsi.internal.core.util.WSIProperties;
 import org.eclipse.wst.wsi.internal.core.wsdl.WSDLDocument;
+import org.eclipse.wst.wsi.internal.core.xml.XMLDocumentCache;
 import org.uddi4j.transport.TransportFactory;
 
 
@@ -72,6 +73,7 @@ public class BasicProfileAnalyzer extends Analyzer
   public BasicProfileAnalyzer(String[] args) throws WSIException
   {
     super(args, new ToolInfo(TOOL_NAME));
+    new XMLDocumentCache();
   }
 
   /**
@@ -83,6 +85,7 @@ public class BasicProfileAnalyzer extends Analyzer
   public BasicProfileAnalyzer(String[] args, boolean validate) throws WSIException
   {
     super(args, new ToolInfo(TOOL_NAME), validate);
+    new XMLDocumentCache();
   }
 
   /**
@@ -93,6 +96,7 @@ public class BasicProfileAnalyzer extends Analyzer
   public BasicProfileAnalyzer(List analyzerConfigList) throws WSIException
   {
     super(analyzerConfigList, new ToolInfo(TOOL_NAME));
+    new XMLDocumentCache();
   }
 
   /**
@@ -105,7 +109,8 @@ public class BasicProfileAnalyzer extends Analyzer
     throws WSIException
   {
     super(analyzerConfigList, new ToolInfo(TOOL_NAME));
-
+    new XMLDocumentCache();
+    
     try
     {
       // Get the WSDL document
