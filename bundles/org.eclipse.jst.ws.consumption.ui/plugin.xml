@@ -758,34 +758,29 @@
   <serviceType
             id="org.eclipse.jst.ws.serviceType.java"
             implId="org.eclipse.jst.ws.wsImpl.java"
-            buModuleTypesInclude="org.eclipse.jst.j2ee.web.WebNature"
+            buModuleTypesInclude="jst.web"
             buModuleTypesExclude=""
-            tdModuleTypesInclude="org.eclipse.jst.j2ee.web.WebNature"
+            tdModuleTypesInclude="jst.web"
             tdModuleTypesExclude="">
   </serviceType>
 </extension>   
-<!--
-<extension point="org.eclipse.jst.ws.consumption.ui.serviceType">
-  <serviceType
-            id="org.eclipse.jst.ws.serviceType.wsdl"
-            implId="org.eclipse.jst.ws.wsImpl.java"
-            buModuleTypesInclude="org.eclipse.jst.j2ee.web.WebNature"
-            buModuleTypesExclude=""
-            tdModuleTypesInclude="org.eclipse.jst.j2ee.web.WebNature"
-            tdModuleTypesExclude=""
-            webServiceTypeId="org.eclipse.jst.ws.type.wsdl">
-  </serviceType>
-</extension>
--->
+
 <extension point="org.eclipse.jst.ws.consumption.ui.clientType">
   <clientType
             id="org.eclipse.jst.ws.clientType.java.webOnly"
             implId="org.eclipse.jst.ws.client.type.java"
-            moduleTypesInclude="org.eclipse.jst.ws.consumption.ui.clientProjectType.Web"
+            moduleTypesInclude="jst.web"
 			moduleTypesExclude="">
   </clientType>
 </extension>
 
-       
-	
+<extension point="org.eclipse.jst.ws.consumption.ui.clientType">
+  <clientType
+            id="org.eclipse.jst.ws.clientType.java.j2ee"
+            implId="org.eclipse.jst.ws.client.type.java"
+            moduleTypesInclude="jst.web jst.ejb jst.appclient jst.utility"
+			moduleTypesExclude="">
+  </clientType>
+</extension>
+    	
 </plugin>

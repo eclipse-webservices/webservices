@@ -16,8 +16,11 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensio
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
@@ -35,6 +38,7 @@ public class PreServiceDevelopCommand extends SimpleCommand
   private ISelection        selection_;
 	private String						project_;
   private String            module_;
+  private String			moduleType_;
 	private String						earProject_;
   private String            ear_;
 	
@@ -46,9 +50,11 @@ public class PreServiceDevelopCommand extends SimpleCommand
   private boolean client_;
   private boolean test_;
   private boolean publish_;
+  
 
   public Status execute(Environment environment) 
   {
+	  
     // Split up the project and module
     int index = module_.indexOf("/");
     if (index!=-1){
@@ -104,21 +110,50 @@ public class PreServiceDevelopCommand extends SimpleCommand
 																		resourceContext_.isCheckoutFilesEnabled());
 
     //Create the service module
-		CreateModuleCommand command = new CreateModuleCommand();
-		command.setProjectName(project_);
-		command.setModuleName(module_);
+
 		//rsk todo -- pick the correct module type based on the Web service type, it's hard coded to WEB for now.
-		command.setModuleType(CreateModuleCommand.WEB);
-		command.setServerFactoryId(typeRuntimeServer_.getServerId());
-		command.setServerInstanceId( typeRuntimeServer_.getServerInstanceId() );
-		command.setJ2eeLevel(j2eeLevel_);
-		Status status = command.execute(environment);
+		int intModuleType = convertModuleType(moduleType_);
+		
+
+	      CreateModuleCommand command = new CreateModuleCommand();
+		  command.setProjectName(project_);
+		  command.setModuleName(module_);			
+		  command.setModuleType(intModuleType);
+		  command.setServerFactoryId(typeRuntimeServer_.getServerId());
+		  command.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
+		  command.setJ2eeLevel(j2eeLevel_);
+		  Status status = command.execute(environment);
+
 		
 		if (status.getSeverity()==Status.ERROR)
 		{
 			environment.getStatusHandler().reportError(status);
 		}			
 	  return status;				
+  }
+  
+  private int convertModuleType(String type)
+  {
+	  if (type.equals(IModuleConstants.JST_WEB_MODULE))
+	  {
+		  return CreateModuleCommand.WEB;
+	  }
+	  else if (type.equals(IModuleConstants.JST_EJB_MODULE))
+	  {
+		  return CreateModuleCommand.EJB;
+	  }
+	  else if (type.equals(IModuleConstants.JST_APPCLIENT_MODULE))
+	  {
+		  return CreateModuleCommand.APPCLIENT;
+	  }
+	  else if (type.equals(IModuleConstants.JST_EAR_MODULE))
+	  {
+		  return CreateModuleCommand.EAR;
+	  }	  
+	  else
+	  {
+		  return -1;
+	  }
   }
   
   public void setServiceTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )
@@ -179,6 +214,11 @@ public class PreServiceDevelopCommand extends SimpleCommand
   public void setModule( String module )
   {
 	  module_ = module;
+  }
+  
+  public void setModuleType(String type)
+  {
+	  moduleType_ = type;
   }
 	
   public String getEarProject()

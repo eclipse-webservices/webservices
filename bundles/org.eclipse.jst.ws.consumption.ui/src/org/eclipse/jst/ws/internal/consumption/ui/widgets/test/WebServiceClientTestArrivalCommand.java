@@ -33,6 +33,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandle
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.server.core.IServer;
 
 
@@ -184,7 +185,7 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
   	//move to the web level
   	SelectionListChoices slc = runtime2ClientTypes.getChoice();
   	String projectType = slc.getList().getSelection();
-  	if(projectType.equals(WEBID)){
+  	if(projectType.equals(IModuleConstants.JST_WEB_MODULE)){
       sampleProject = clientProject;
   	}  	
   	else{ 

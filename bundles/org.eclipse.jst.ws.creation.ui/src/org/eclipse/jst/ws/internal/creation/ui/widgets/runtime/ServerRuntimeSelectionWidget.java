@@ -207,7 +207,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 	projectWidget_.setEarComponentName( name );  
   }
   
-  public void setServiceComponentType( int type )
+  public void setServiceComponentType( String type )
   {
 	projectWidget_.setComponentType( type );  
   }
@@ -237,7 +237,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     return clientWidget_.getClientComponentType();
   }  
   
-  public void setComponentType( int type )
+  public void setComponentType( String type )
   {
 	clientWidget_.setClientComponentType( type );  
   }
@@ -347,11 +347,11 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
         }
         rskejb */
         boolean isEJBRequired = WebServiceRuntimeExtensionUtils.requiresEJBProject(webServiceRuntimeId, webServiceTypeId);
-        if (isEJBRequired && !J2EEUtils.isEJBComponent(serviceProj, serviceComponentName))
+        if (isEJBRequired && serviceComponentName!=null && serviceComponentName.length()>0 && !J2EEUtils.isEJBComponent(serviceProj, serviceComponentName))
         {
           finalStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_INVALID_EJB_PROJECT",new String[]{serviceProjName}),Status.ERROR);          
         }
-        if (!isEJBRequired && !J2EEUtils.isWebComponent(serviceProj, serviceComponentName))
+        if (!isEJBRequired && serviceComponentName!=null && serviceComponentName.length()>0 && !J2EEUtils.isWebComponent(serviceProj, serviceComponentName))
         {
           finalStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_INVALID_WEB_PROJECT",new String[]{serviceProjName}),Status.ERROR);
         }

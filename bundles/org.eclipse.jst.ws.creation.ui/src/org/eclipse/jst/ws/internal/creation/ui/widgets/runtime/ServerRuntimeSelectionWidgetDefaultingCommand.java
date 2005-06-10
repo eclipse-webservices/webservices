@@ -30,6 +30,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
@@ -51,7 +52,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   private SelectionListChoices serviceProject2EARProject_;
   private String serviceComponentName_;
   private String serviceEarComponentName_;
-  private int serviceComponentType_;
+  private String serviceComponentType_;
   private IStructuredSelection initialSelection_;
   private IProject initialProject_;
   private String initialComponentName_;
@@ -89,7 +90,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 
 	 
      // Set the default client type to a web client type.
-     setWebClientType();
+     // setWebClientType();
      
      setServiceComponentType();
      // Default projects EARs and servers.
@@ -116,49 +117,27 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   {
     ServiceType st = WebServiceRuntimeExtensionUtils.getServiceType(serviceIds_.getRuntimeId(), serviceIds_.getTypeId());
     int scenario = WebServiceRuntimeExtensionUtils.getScenarioFromTypeId(serviceIds_.getTypeId());
-    String[] includeNatures = null;
+    String[] includeComponentTypes = null;
     switch (scenario)
     {
     case WebServiceScenario.BOTTOMUP:
-      includeNatures = st.getBottomUpModuleTypesInclude();
+		includeComponentTypes = st.getBottomUpModuleTypesInclude();
       break;
     case WebServiceScenario.TOPDOWN:
-      includeNatures = st.getTopDownModuleTypesInclude();
+		includeComponentTypes = st.getTopDownModuleTypesInclude();
     }
-    //IWebServiceType wst = WebServiceRuntimeExtensionUtils.getWebServiceTypeById(serviceIds_.getTypeId());
-    //String includeNatures = wst.getConfigurationElement().getAttribute("includeNatures");
     
-    if (includeNatures == null || includeNatures.length==0)
+    if (includeComponentTypes == null || includeComponentTypes.length==0)
     {
-      serviceComponentType_ = J2EEUtils.WEB | J2EEUtils.EJB;
+      serviceComponentType_ = IModuleConstants.JST_WEB_MODULE;
     }
     else
     {
-      //StringTokenizer st = new StringTokenizer(includeNatures, " ");
-      //int size = st.countTokens();
-      ArrayList natureList = new ArrayList();
-      for (int i = 0; i < includeNatures.length; i++)
-      {
-        natureList.add(includeNatures[i]);
-      }
-      
-      boolean containsWeb = natureList.contains("org.eclipse.jst.j2ee.web.WebNature");
-      boolean containsEJB = natureList.contains("org.eclipse.jst.j2ee.ejb.EJBNature");
-      
-      serviceComponentType_ = 0;
-      if (containsWeb)
-      {
-        serviceComponentType_ = J2EEUtils.WEB;
-      }
-      
-      if (containsEJB)
-      {
-        serviceComponentType_ = serviceComponentType_ | J2EEUtils.EJB;
-      }
-
+	  serviceComponentType_ = includeComponentTypes[0];
     }
   }
   
+  /*
   private void setWebClientType()
   {
     SelectionListChoices choices = getRuntime2ClientTypes();
@@ -169,6 +148,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       choices.getChoice().getList().setSelectionValue( webId );   
     }
   }
+  */
   
   /**
    * Returns an object with target Runtime and J2EE value
@@ -360,7 +340,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       {
         //there are no projects in the workspace. Pass the default names for new projects.
         
-        if ((serviceComponentType_ & J2EEUtils.EJB) == J2EEUtils.EJB )
+        if (serviceComponentType_.equals(IModuleConstants.JST_EJB_MODULE))
         {
           getServiceProject2EARProject().getList().setSelectionValue(ResourceUtils.getDefaultEJBProjectName());
           serviceComponentName_ = ResourceUtils.getDefaultEJBComponentName();
@@ -808,7 +788,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     return serviceEarComponentName_;
   }
   
-  public int getServiceComponentType()
+  public String getServiceComponentType()
   {
     return serviceComponentType_;
   }

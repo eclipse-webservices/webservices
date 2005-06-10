@@ -31,13 +31,14 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IRuntime;
 
 public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 
   private final String EAR_PERMITTED_PROJECT_TYPE = "EAR_PERMITTED_PROJECT_TYPE";
-  private final String JAVA_PROJECT_TYPE_ID = "org.eclipse.jst.ws.consumption.ui.clientProjectType.Containerless";
+  //private final String JAVA_PROJECT_TYPE_ID = "org.eclipse.jst.ws.consumption.ui.clientProjectType.Containerless";
   
   private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
 
@@ -67,7 +68,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   private Combo moduleProject_;
   private Combo earProject_;
-  private int   componentType_;
+  private String   componentType_;
   
   private ModifyListener moduleProjectListener_;
   private ModifyListener moduleListener_;
@@ -178,7 +179,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	String   projectName = moduleProject_.getText(); 
 	IProject project     = ProjectUtilities.getProject( projectName );
 	
-	componentType_ = J2EEUtils.WEB | J2EEUtils.EJB;
 	
 	IVirtualComponent[] components = J2EEUtils.getComponentsByType( project, componentType_ );
 	String[] modules = new String[components.length];
@@ -321,7 +321,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	earModule_.setText( name );  
   }
   
-  public void setComponentType( int type )
+  public void setComponentType( String type )
   {
 	componentType_ = type;  
   }
@@ -403,7 +403,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 
   private boolean projectNeedsEAR(String projectName)
   {
-    if (projectTypeId_.equals(JAVA_PROJECT_TYPE_ID))
+    if (projectTypeId_.equals(IModuleConstants.JST_UTILITY_MODULE))
       return false;
     
     if (projectName == null || projectName.length()==0)

@@ -102,8 +102,7 @@ public class CreateModuleCommand extends SimpleCommand
 			break;
 
 		default:
-			// determine an error status message?
-			break;
+			return new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{moduleName}),Status.ERROR,null);			
 		}
 		
 		return status;

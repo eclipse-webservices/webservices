@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
@@ -171,12 +172,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   {
     try
     {
-	  // rskreg		
-      //WebServiceClientTypeRegistry reg = WebServiceClientTypeRegistry.getInstance();
 
-      //String[] runtimeIds = gatherAttributeValues(reg.getConfigurationElement(clientIds_.getTypeId()), "runtime");
 	  String[] runtimeIds = WebServiceRuntimeExtensionUtils.getRuntimesByClientType(clientIds_.getTypeId()); 
-	  // rskreg
       SelectionList list = new SelectionList(runtimeIds, 0);
       Vector choices = new Vector();
       for (int i = 0; i < runtimeIds.length; i++) {
@@ -193,7 +190,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
         //setClientProjectType(clientRuntimeJ2EEType_.getClientProjectTypeId());
       //}
 	  setClientRuntimeId((WebServiceRuntimeExtensionUtils.getRuntimesByClientType(clientIds_.getTypeId()))[0]);
+	  setClientComponentType();
 	  clientJ2EEVersion_ = (WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getJ2eeLevels())[0];
+	  
 	  
       //If clientInitialProject is the service project, check the initialInitialProject
       //to see if it is valid.
@@ -240,29 +239,12 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
    */
   private SelectionListChoices getClientTypesChoice(String runtimeId)
   {
-    //WebServiceClientTypeRegistry reg = WebServiceClientTypeRegistry.getInstance();
-    ClientProjectTypeRegistry cptr = ClientProjectTypeRegistry.getInstance();
-    String[] clientTypes;
-	// rskreg
-    //String[] clientProjectTypes = gatherAttributeValues(reg.getConfigurationElement(clientIds_.getTypeId(), runtimeId), "clientProjectType");
-	clientTypes = WebServiceRuntimeExtensionUtils.getClientProjectTypes(clientIds_.getTypeId(), runtimeId);
-	/*
-    if (clientProjectTypes!=null && clientProjectTypes.length > 0)
-    {
-      StringTokenizer st = new StringTokenizer(clientProjectTypes[0]);
-      clientTypes = new String[st.countTokens()];
-      for (int i = 0; i < clientTypes.length; i++)
-        clientTypes[i] = st.nextToken();
-    }
-    else
-      clientTypes = new String[] {cptr.getDefaultElement().getAttribute("id")};
-    */
-    // rskreg
-	// Seng's Note: Check flexible project structure non-support here!!!
-    SelectionList list = new SelectionList(clientTypes, 0);
+    String[] clientComponentTypes;
+	clientComponentTypes = WebServiceRuntimeExtensionUtils.getClientProjectTypes(clientIds_.getTypeId(), runtimeId);
+    SelectionList list = new SelectionList(clientComponentTypes, 0);
     Vector choices = new Vector();
-    for (int i = 0; i < clientTypes.length; i++) {
-      choices.add(getProjectChoice(clientTypes[i]));
+    for (int i = 0; i < clientComponentTypes.length; i++) {
+      choices.add(getProjectChoice(clientComponentTypes[i]));
     }
     return new SelectionListChoices(list, choices);
   }
@@ -275,14 +257,18 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
    */
   private SelectionListChoices getProjectChoice(String clientType)
   {
-    IProject[] projects = ClientProjectTypeRegistry.getInstance().getProjects(clientType);
-    String[] projectNames = new String[projects.length];
-    for (int i = 0; i < projects.length; i++)
-      projectNames[i] = projects[i].getName();
+    //IProject[] projects = ClientProjectTypeRegistry.getInstance().getProjects(clientType);	  
+    //String[] projectNames = new String[projects.length];
+	    //for (int i = 0; i < projectNames.length; i++)
+		  //    projectNames[i] = projects[i].getName();	  
+	String[] projectNames = J2EEUtils.getProjectsContainingComponentOfType(clientType);
     SelectionList list = new SelectionList(projectNames, 0);
     Vector choices = new Vector();
-    for (int i = 0; i < projects.length; i++)
-      choices.add(getProjectEARChoice(projects[i]));
+    for (int i = 0; i < projectNames.length; i++)
+	{
+	  IProject project = ProjectUtilities.getProject(projectNames[i]);
+      choices.add(getProjectEARChoice(project));
+	}
     return new SelectionListChoices(list, choices, getEARProjects());
   }
   
@@ -294,26 +280,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   protected SelectionListChoices getProjectEARChoice(IProject project)
   {
     Vector v = new Vector();
-    /*
-	// TODO used to be J2EEUtils.getEARProjects(project) -- referenced EARs
-    IProject[] earNatures = J2EEUtils.getEARProjects();
-    if (earNatures != null){
-      for(int i = 0; i < earNatures.length; i++){
-        v.add(earNatures[i].getName());
-      }
-    }
-    IProject[] earProjects = J2EEUtils.getEARProjects();
-    if (earProjects != null)
-    {
-    	for (int i = 0; i < earProjects.length; i++)
-    	{
-    	  String earProjectName = earProjects[i].getName();
-    	  if (!v.contains(earProjectName))
-    	  	v.add(earProjectName);
-    	}
-    }
-    */
-
     String[] flexProjects = getAllFlexibleProjects();
     SelectionList list = new SelectionList(flexProjects, 0);
     return new SelectionListChoices(list, null);
@@ -500,6 +466,12 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   }
   */
   // rskreg
+  
+  private void setClientComponentType()
+  {
+	  getRuntime2ClientTypes().getChoice().getList().setIndex(0);	  
+  }
+
   private void setClientDefaultProject()
   {
     if (clientInitialProject_ != null)

@@ -30,6 +30,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 
 
 public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
@@ -172,7 +173,7 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
     return projTypeList.getSelection();
   }
   
-  public void setClientComponentType( int type )
+  public void setClientComponentType( String type )
   {
 	projectWidget_.setComponentType( type );  
   }
@@ -276,18 +277,41 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
       clientType2Projects.getChoice().getChoice().getList().setSelectionValue( earName );
     }
 	
-    projectWidget_.setProjectTypeId(clientType2Projects.getList().getSelection());
+    //projectWidget_.setProjectTypeId(clientType2Projects.getList().getSelection());
+	projectWidget_.setComponentType(clientType2Projects.getList().getSelection());
     projectWidget_.setProjectChoices( clientType2Projects.getChoice() );    
   }
   
   private String[] getClientTypeLabels( String[] types )
   {
-    ClientProjectTypeRegistry registry         = ClientProjectTypeRegistry.getInstance();
+	MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );	  
+    //ClientProjectTypeRegistry registry         = ClientProjectTypeRegistry.getInstance();
     String[]                  clientTypeLabels = new String[types.length];
     
     for( int index = 0; index < types.length; index++ )
     {
-      clientTypeLabels[index] = registry.getElementById(types[index]).getAttribute("label");
+      //clientTypeLabels[index] = registry.getElementById(types[index]).getAttribute("label");
+	  String type = types[index];
+	  if (type.equals(IModuleConstants.JST_WEB_MODULE))
+	  {
+		  clientTypeLabels[index] = msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_WEB");
+	  }
+	  else if (type.equals(IModuleConstants.JST_EJB_MODULE))
+	  {
+		  clientTypeLabels[index] = msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_EJB");
+	  }
+	  else if (type.equals(IModuleConstants.JST_APPCLIENT_MODULE))
+	  {
+		  clientTypeLabels[index] = msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_APP_CLIENT");
+	  }
+	  else if (type.equals(IModuleConstants.JST_UTILITY_MODULE))
+	  {
+		  clientTypeLabels[index] = msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_CONTAINERLESS");
+	  }
+	  else
+	  {
+		  clientTypeLabels[index] = type;
+	  }
     }
     
     return clientTypeLabels;

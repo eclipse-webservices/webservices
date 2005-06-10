@@ -433,6 +433,58 @@ public final class J2EEUtils {
 	}
 	
 	/**
+	 * Returns all components of type, componentType in the project.
+	 * @param project
+	 * @param componentTypeId as defined in IModuleConstants.
+	 * @return
+	 */
+	public static IVirtualComponent[] getComponentsByType(IProject project, String componentTypeId){
+		
+		//get all components in the project of type componentTypeId
+		List v = new ArrayList();
+		try {
+			IFlexibleProject flex = ComponentCore.createFlexibleProject(project);
+			IVirtualComponent[] components = flex.getComponents();
+			for (int i=0;i<components.length;i++){
+				IVirtualComponent vc = ComponentCore.createComponent(project, components[i].getName());
+				if ( vc.getComponentTypeId().equals(componentTypeId))
+				{
+					v.add(components[i]);
+				}
+				//if (isWebComponent(project, components[i].getName())){
+					//v.add(components[i]);
+				//}
+			}			
+
+		}
+		catch (Exception e){
+			//handle exception
+		}
+		
+		return (IVirtualComponent[])v.toArray(new IVirtualComponent[0]);
+	}
+	
+	public static String[] getProjectsContainingComponentOfType(String componentTypeId)
+	{
+	    Vector v = new Vector(); 
+	    IVirtualComponent[] comps = getAllComponents();
+	    for (int i = 0; i < comps.length; i++) {
+			if (comps[i].getComponentTypeId().equals(componentTypeId))
+			{
+				//Add the project name to the vector if it has not been added already
+				String name = comps[i].getProject().getName();
+				if (!v.contains(name))
+				{
+					v.add(name);	
+				}		        			
+			}
+
+        }
+
+        return (String[])v.toArray(new String[0]);
+	}
+   
+	/**
 	 * Helper method for getComponentsByType
 	 * @param vcs
 	 * @param vect

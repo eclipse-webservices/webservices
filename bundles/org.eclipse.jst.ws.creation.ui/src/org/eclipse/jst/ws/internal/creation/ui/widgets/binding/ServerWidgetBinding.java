@@ -527,6 +527,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "GenerateProxy", PreServiceDevelopCommand.class);      
       dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "ResourceContext", PreServiceDevelopCommand.class);			
 			//
+	  dataRegistry.addMapping( ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceComponentType", PreServiceDevelopCommand.class, "ModuleType", null);
 	    dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", PreServiceDevelopCommand.class );
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceJ2EEVersion", PreServiceDevelopCommand.class);
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServerProject", PreServiceDevelopCommand.class, "Module", null );

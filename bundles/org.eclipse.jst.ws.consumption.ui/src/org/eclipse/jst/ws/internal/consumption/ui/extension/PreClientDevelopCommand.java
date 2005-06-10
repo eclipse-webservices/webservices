@@ -16,8 +16,11 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensio
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
@@ -29,10 +32,12 @@ import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
 
 public class PreClientDevelopCommand extends SimpleCommand 
 {
+  /*	
   private String ID_WEB = "org.eclipse.jst.ws.consumption.ui.clientProjectType.Web";
   private String ID_EJB = "org.eclipse.jst.ws.consumption.ui.clientProjectType.EJB";
   private String ID_APP_CLIENT = "org.eclipse.jst.ws.consumption.ui.clientProjectType.AppClient";
   private String ID_JAVA = "org.eclipse.jst.ws.consumption.ui.clientProjectType.Containerless";
+  */
   
   private TypeRuntimeServer typeRuntimeServer_;
   private Environment       environment_;
@@ -51,7 +56,6 @@ public class PreClientDevelopCommand extends SimpleCommand
 
   public Status execute(Environment environment)
   {
-    
     // Split up the project and module
     int index = module_.indexOf("/");
     if (index!=-1){
@@ -90,25 +94,55 @@ public class PreClientDevelopCommand extends SimpleCommand
             .isCheckoutFilesEnabled());
 
     // Create the client module
-    CreateModuleCommand command = new CreateModuleCommand();
-    command.setProjectName(project_);
-    command.setModuleName(module_);
+
+	int intModuleType = convertModuleType(moduleType_);
+
+	CreateModuleCommand command = new CreateModuleCommand();
+	command.setProjectName(project_);
+	command.setModuleName(module_);
+	command.setModuleType(intModuleType);
+	command.setServerFactoryId(typeRuntimeServer_.getServerId());
+	command.setJ2eeLevel(j2eeLevel_);
+	Status status = command.execute(environment);		
+
     // rsk todo -- once the clientProjectType extension is gone, determination
     // of what type of module to create will have to be done.
-    if (moduleType_.equals(ID_WEB)) command.setModuleType(CreateModuleCommand.WEB);
-    if (moduleType_.equals(ID_EJB)) command.setModuleType(CreateModuleCommand.EJB);
-    if (moduleType_.equals(ID_APP_CLIENT)) command.setModuleType(CreateModuleCommand.APPCLIENT);
+    //if (moduleType_.equals(ID_WEB)) command.setModuleType(CreateModuleCommand.WEB);
+    //if (moduleType_.equals(ID_EJB)) command.setModuleType(CreateModuleCommand.EJB);
+    //if (moduleType_.equals(ID_APP_CLIENT)) command.setModuleType(CreateModuleCommand.APPCLIENT);
     
-    command.setServerFactoryId(typeRuntimeServer_.getServerId());
     command.setServerInstanceId( typeRuntimeServer_.getServerInstanceId() );
-    command.setJ2eeLevel(j2eeLevel_);
-    Status status = command.execute(environment);
+
 
     if (status.getSeverity() == Status.ERROR)
     {
       environment.getStatusHandler().reportError(status);
     }
     return status;
+  }
+  
+  private int convertModuleType(String type)
+  {
+	  if (type.equals(IModuleConstants.JST_WEB_MODULE))
+	  {
+		  return CreateModuleCommand.WEB;
+	  }
+	  else if (type.equals(IModuleConstants.JST_EJB_MODULE))
+	  {
+		  return CreateModuleCommand.EJB;
+	  }
+	  else if (type.equals(IModuleConstants.JST_APPCLIENT_MODULE))
+	  {
+		  return CreateModuleCommand.APPCLIENT;
+	  }
+	  else if (type.equals(IModuleConstants.JST_EAR_MODULE))
+	  {
+		  return CreateModuleCommand.EAR;
+	  }	  
+	  else
+	  {
+		  return -1;
+	  }
   }
   
   public void setClientTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )

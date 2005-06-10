@@ -62,9 +62,9 @@
   <serviceType
             id="org.eclipse.jst.ws.serviceType.ejb"
             implId="org.eclipse.jst.ws.wsImpl.ejb"
-            buModuleTypesInclude="org.eclipse.jst.j2ee.ejb.EJBNature"
+            buModuleTypesInclude="jst.ejb"
             buModuleTypesExclude=""
-            tdModuleTypesInclude="org.eclipse.jst.j2ee.ejb.EJBNature"
+            tdModuleTypesInclude="jst.ejb"
             tdModuleTypesExclude="">
   </serviceType>
 </extension>   
