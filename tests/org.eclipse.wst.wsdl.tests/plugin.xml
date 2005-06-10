@@ -3,7 +3,8 @@
 <plugin
    id="org.eclipse.wst.wsdl.tests"
    name="WSDL JUnit Test"
-   version="1.0.0">
+   version="1.0.0"
+   class="org.eclipse.wst.wsdl.tests.WSDLTestsPlugin">
 
    <runtime>
       <library name="wsdl.tests.jar">
@@ -12,7 +13,7 @@
    </runtime>
 
    <requires>
-      <import plugin="org.eclipse.core.runtime.compatibility"/>
+      <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.wst.wsdl"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.xsd"/>

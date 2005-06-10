@@ -49,6 +49,8 @@ import org.xml.sax.InputSource;
  */
 public class InlineSchemaTest extends TestCase 
 {
+  private String PLUGIN_ABSOLUTE_PATH = WSDLTestsPlugin.getInstallURL();
+	  
   public InlineSchemaTest(String name) 
   {
     super(name);
@@ -108,8 +110,7 @@ public class InlineSchemaTest extends TestCase
   {
     try
     {
-      Definition definition = DefinitionLoader.load("./samples/LoadAndPrintTest.wsdl");
-      //Definition definition = DefinitionLoader.load("./samples/getBalanceBinding.wsdl");
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH +"samples/LoadAndPrintTest.wsdl");
       traverseDefinition(definition);
     }
     catch (Exception e)

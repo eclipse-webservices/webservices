@@ -38,7 +38,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class UtilTest extends TestCase {
-
+	  private String PLUGIN_ABSOLUTE_PATH = WSDLTestsPlugin.getInstallURL();
+	  
 	  public UtilTest(String name) 
 	  {
 	    super(name);
@@ -133,7 +134,7 @@ public class UtilTest extends TestCase {
 		  int type = WSDLConstants.nodeType(WSDLConstants.PORT_ELEMENT_TAG);
 		  Assert.assertTrue("Node type is not that of port", type == 10);
 		  
-	      definition = DefinitionLoader.load("./samples/LoadAndPrintTest.wsdl");
+	      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/LoadAndPrintTest.wsdl");
 	      Assert.assertTrue(definition.eResource() instanceof WSDLResourceImpl);
 
 		  int definitionNodeType = WSDLConstants.nodeType(definition.getElement());
@@ -175,7 +176,7 @@ public class UtilTest extends TestCase {
 		  WSDLResourceImpl resourceImpl = new WSDLResourceImpl(URI.createFileURI("./samples/createResourceTest.wsdl"));
           Assert.assertTrue("Resource is not of type WSDLResourceImpl", resourceImpl instanceof WSDLResourceImpl);
 		  
-	      definition = DefinitionLoader.load("./samples/LoadAndPrintTest.wsdl");
+	      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/LoadAndPrintTest.wsdl");
 	      Assert.assertTrue(definition.eResource() instanceof WSDLResourceImpl);
 		  Element element = definition.getElement();
 		  Document document = definition.getDocument();

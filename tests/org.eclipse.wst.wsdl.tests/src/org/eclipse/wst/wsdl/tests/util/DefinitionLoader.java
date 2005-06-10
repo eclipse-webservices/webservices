@@ -16,8 +16,8 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.Platform;
+//import org.eclipse.core.runtime.IPluginDescriptor;
+//import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -63,19 +63,10 @@ public final class DefinitionLoader
 
   static public Definition load(String filename, boolean useExtensionFactories) throws IOException
   {
-    URI uri;
-    File file = new File(filename);
-    if (file.isFile())
-      uri = URI.createFileURI(file.getCanonicalFile().toString());
-    else
-    { // Assume that this is run as a JUnit Plug-in test.
-      //uri = URI.createURI(filename);
-      IPluginDescriptor pd = Platform.getPluginRegistry().getPluginDescriptor("org.eclipse.wst.wsdl.tests");
-      URL url = pd.getInstallURL();
-      url = new URL(url,filename);
-      String s = Platform.resolve(url).getFile();
-      uri = URI.createFileURI(s);
-    }
+    // filename is an absolute path
+
+    URI uri = null;
+    uri = URI.createFileURI(filename);
   
     ResourceSet resourceSet = new ResourceSetImpl();
     resourceSet.getAdapterFactories().add(new WSDLModelLocatorAdapterFactory());
@@ -105,6 +96,8 @@ public final class DefinitionLoader
 
   static public void store(Definition definition, String filename) throws IOException
   {
+    // filename is an absolute path
+	  
     Resource resource = definition.eResource();
     resource.setURI(URI.createFileURI(filename));
     resource.save(null);

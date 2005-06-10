@@ -74,6 +74,7 @@ import org.w3c.dom.Element;
  */
 public class WSDLEMFAPITest extends DefinitionVisitor
 {
+  private String PLUGIN_ABSOLUTE_PATH = WSDLTestsPlugin.getInstallURL();
   private WSDLFactory factory = WSDLFactory.eINSTANCE;
   
   Definition newDefinition;
@@ -575,7 +576,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
   {
     try
     {
-      Definition def = DefinitionLoader.load("./samples/LoadAndPrintTest.wsdl",true);
+      Definition def = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH +"samples/LoadAndPrintTest.wsdl",true);
       WSDLEMFAPITest test = new WSDLEMFAPITest(def);
       test.visit();      
       serialize(test.newDefinition);

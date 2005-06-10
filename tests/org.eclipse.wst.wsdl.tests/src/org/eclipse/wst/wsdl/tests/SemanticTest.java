@@ -58,7 +58,7 @@ import org.w3c.dom.Element;
  */
 public class SemanticTest extends DefinitionVisitor
 {
-  
+  private String PLUGIN_ABSOLUTE_PATH = WSDLTestsPlugin.getInstallURL(); 
   //private String wsdlNamespacePrefix;
   //private String xsdNamespacePrefix;
   
@@ -496,7 +496,7 @@ public class SemanticTest extends DefinitionVisitor
   {
     try
     {
-      Definition def = DefinitionLoader.load("./samples/LoadAndPrintTest.wsdl",true);
+      Definition def = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/LoadAndPrintTest.wsdl",true);
       SemanticTest test = new SemanticTest(def);
       test.visit();
     }

@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests;
 
+import java.io.File;
+import java.io.FileFilter;
+
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -20,8 +23,11 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
-import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
+
+import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
+import org.eclipse.wst.wsdl.tests.util.XMLDiff;
+
 import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Element;
@@ -30,7 +36,20 @@ import org.w3c.dom.Element;
  * @author Kihup Boo
  */
 public class LoadAndSerializationTest extends TestCase
-{    
+{ 
+  {	    
+    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
+    WSDLPackage pkg = WSDLPackage.eINSTANCE;
+	    
+    // We need this for XSD <import>.
+    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
+    XSDPackage xsdpkg = XSDPackage.eINSTANCE; 
+  }
+  
+  private String PLUGIN_ABSOLUTE_PATH = WSDLTestsPlugin.getInstallURL();
+  static private File[] wsdls;
+  static private Definition definition = null;
+	
   /**
    * Executes a stand-alone test.
    * @param objects an array of Strings from the command line.
@@ -41,9 +60,6 @@ public class LoadAndSerializationTest extends TestCase
     junit.textui.TestRunner.run(suite());
   }
   
-  /**
-   * Creates an instance.
-   */
   public LoadAndSerializationTest(String name) 
   {
     super(name);
@@ -52,69 +68,83 @@ public class LoadAndSerializationTest extends TestCase
   public static Test suite() 
   {
     TestSuite suite = new TestSuite();
-    
     suite.addTest
-      (new LoadAndSerializationTest("Load") 
-         {
-           protected void runTest() 
-           {
-             testLoad();
-           }
-         }
-       );
-    
-    suite.addTest
-      (new LoadAndSerializationTest("Print") 
+    (new LoadAndSerializationTest("LoadAndStore") 
+      {
+        protected void runTest() 
         {
-          protected void runTest() 
+          testLoadAndStore();
+        }
+      }
+    );
+    /* suite.addTest // wtp bug 79326
+    (new LoadAndSerializationTest("Compare") 
+      {
+        protected void runTest() 
+        {
+          testCompare();
+        }
+      }
+    ); */
+    return suite;
+  } 
+
+  /**
+   * Load from the WSDL definitions file and store back to a different file.
+   */
+  public void testLoadAndStore()
+  {
+    File dir = new File(PLUGIN_ABSOLUTE_PATH + "samples");
+    if (dir.exists() && dir.isDirectory())
+    {
+      wsdls = dir.listFiles
+      (
+        new FileFilter()
+        {
+          public boolean accept(File pathname)
           {
-            testPrint();
+            return pathname.getName().endsWith(".wsdl");
           }
         }
       );
-    return suite;
-  }
-  
-  protected void setUp() throws Exception 
-  {
-    super.setUp();
-    
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
-    WSDLPackage pkg = WSDLPackage.eINSTANCE;
-    
-    // We need this for XSD <import>.
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
-    XSDPackage xsdpkg = XSDPackage.eINSTANCE; 
-  }
 
-  protected void tearDown() throws Exception 
-  {
-    super.tearDown();
-  }  
+      try 
+      {
+        for (int i = 0; i < wsdls.length; i++)
+        {
+          System.out.println(wsdls[i].toURL().toString());
+          load(wsdls[i].toString());
+          print(wsdls[i].toString() + ".out");
+        }
+      }
+      catch (Exception e)
+      {
+        Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
+      }
+    }
+    else
+      fail(dir.toString());
+
+  }
   
-  static private Definition definition = null;
-  
-  /**
-   * Load the WSDL definitions file and print information about it.
+  /*
+   * Load from the WSDL definitions file.
    */
-  public void testLoad()
-  {
+  private void load(String filename)
+  {	
     try
     {
-      definition = DefinitionLoader.load("./samples/LoadAndPrintTest.wsdl");
+      definition = DefinitionLoader.load(filename);
+	  Assert.assertNotNull(definition);
       Assert.assertTrue(definition.eResource() instanceof WSDLResourceImpl);
+	  
       WSDLResourceImpl wsdlResource = (WSDLResourceImpl)definition.eResource();
-      System.out.println("<!-- ===== Definition Composition =====");
-      printDefinitionStart(definition);
-      System.out.println("-->");
-      Element element = definition.getElement();
+	  Assert.assertNotNull(wsdlResource);
+
+	  Element element = definition.getElement();
       Assert.assertNotNull(definition.getElement());
-      if (element != null)
-      {
-        // Print the serialization of the model.
-        //
-        WSDLResourceImpl.serialize(System.out, element);
-      }
+	  
+      WSDLResourceImpl.serialize(System.out, element);
     }
     catch (Exception e)
     {
@@ -122,7 +152,10 @@ public class LoadAndSerializationTest extends TestCase
     }  
   }
   
-  public void testPrint()
+  /*
+   * Store the WSDL definitions to a file.
+   */  
+  private void print(String filename)
   {
     try
     {
@@ -132,8 +165,8 @@ public class LoadAndSerializationTest extends TestCase
       definition.setDocument(null);
       definition.setElement(null);
       ((DefinitionImpl)definition).updateElement();
-      System.out.println("<!-- [ definitions: " + definition.getQName() + " ] -->");
-      WSDLResourceImpl.serialize(System.out, definition.getDocument());
+
+	  DefinitionLoader.store(definition,filename);
     }
     catch (Exception e)
     {
@@ -142,23 +175,19 @@ public class LoadAndSerializationTest extends TestCase
   }
   
   /**
-   * Prints a header tag for the given WSDL definitions.
-   * @param definition a WSDL definition.
-   */
-  protected void printDefinitionStart(Definition definition)
+   * Compare the output WSDL file to the original.
+   */  
+  public void testCompare()
   {
-    System.out.print("<definitions name=\"");
-    if (definition.getQName() != null)
+    XMLDiff xmldiff = new XMLDiff();
+    try
     {
-      System.out.print(definition.getQName().getLocalPart());
+      for (int i = 0; i < wsdls.length; i++)
+        Assert.assertTrue(xmldiff.diff(wsdls[i].toString(),wsdls[i].toString() + ".out")); 
     }
-    
-    System.out.print("\" targetNamespace=\"");
-    if (definition.getTargetNamespace() != null)
+    catch (Exception e)
     {
-      System.out.print(definition.getTargetNamespace());
-    }       
-    System.out.println("\">");
-  }
-    
+      Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
+    }
+  }      
 }
