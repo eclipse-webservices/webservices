@@ -10,14 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests.util;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-//import org.eclipse.core.runtime.IPluginDescriptor;
-//import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
