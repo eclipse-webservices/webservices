@@ -51,7 +51,7 @@ public class DocumentationSectionDescriptor extends AbstractSectionDescriptor im
   public String getTargetTab()
   {
     // TODO Auto-generated method stub
-    return "com.ibm.xmlwebservices.documentation";
+    return "org.eclipse.wst.xmlwebservices.documentation";
   }
 
   /* (non-Javadoc)
@@ -77,6 +77,6 @@ public class DocumentationSectionDescriptor extends AbstractSectionDescriptor im
    */
   public String getAfterSection()
   {
-    return "com.ibm.xmlwebservices.general";
+    return "org.eclipse.wst.xmlwebservices.general";
   }
 }

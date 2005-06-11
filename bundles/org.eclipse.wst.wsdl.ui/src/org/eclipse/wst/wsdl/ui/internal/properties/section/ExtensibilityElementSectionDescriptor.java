@@ -50,7 +50,7 @@ public class ExtensibilityElementSectionDescriptor extends AbstractSectionDescri
   public String getTargetTab()
   {
     // TODO Auto-generated method stub
-    return "com.ibm.xmlwebservices.general";
+    return "org.eclipse.wst.xmlwebservices.general";
   }
 
   /* (non-Javadoc)

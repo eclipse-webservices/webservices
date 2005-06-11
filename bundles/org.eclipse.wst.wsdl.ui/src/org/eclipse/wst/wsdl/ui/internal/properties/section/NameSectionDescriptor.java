@@ -65,7 +65,7 @@ public class NameSectionDescriptor extends AbstractSectionDescriptor implements 
    */
   public String getTargetTab()
   {
-    return "com.ibm.xmlwebservices.general";
+    return "org.eclipse.wst.xmlwebservices.general";
   }
 
   /* (non-Javadoc)

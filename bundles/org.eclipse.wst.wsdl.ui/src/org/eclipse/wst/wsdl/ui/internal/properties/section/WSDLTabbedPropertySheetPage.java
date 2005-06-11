@@ -153,7 +153,7 @@ public class WSDLTabbedPropertySheetPage extends TabbedPropertySheetPage impleme
 
   
   /* (non-Javadoc)
-   * @see com.ibm.sse.editor.view.events.INodeSelectionListener#nodeSelectionChanged(com.ibm.sse.editor.view.events.NodeSelectionChangedEvent)
+   * @see org.eclipse.wst.sse.editor.view.events.INodeSelectionListener#nodeSelectionChanged(org.eclipse.wst.sse.editor.view.events.NodeSelectionChangedEvent)
    */
   public void nodeSelectionChanged(NodeSelectionChangedEvent event)
   {

@@ -74,7 +74,7 @@ public class ReferenceSectionDescriptor extends AbstractSectionDescriptor implem
    */
   public String getTargetTab()
   {
-    return "com.ibm.xmlwebservices.general";
+    return "org.eclipse.wst.xmlwebservices.general";
   }
 
   /* (non-Javadoc)
