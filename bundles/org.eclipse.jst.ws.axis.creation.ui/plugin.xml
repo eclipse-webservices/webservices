@@ -128,7 +128,7 @@
     clientTypes="org.eclipse.jst.ws.clientType.java.webOnly"
     servletLevels="23 24"
     j2eeLevels="13 14"
-    servers="org.eclipse.jst.server.tomcat.40 org.eclipse.jst.server.tomcat.41 org.eclipse.jst.server.tomcat.50"
+    servers="org.eclipse.jst.server.tomcat.40 org.eclipse.jst.server.tomcat.41 org.eclipse.jst.server.tomcat.50 org.eclipse.jst.server.tomcat.55 org.eclipse.jst.server.geronimo.10"
     class="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebServiceRuntime">
   	</webServiceRuntime>
 	</extension> 
