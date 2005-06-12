@@ -23,16 +23,15 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
-import org.eclipse.jst.j2ee.internal.servertarget.ServerTargetHelper;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
-import org.eclipse.wst.server.core.IProjectProperties;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
@@ -400,7 +399,7 @@ public final class ServerUtils {
 
 		return moduleFound;
 	}
-
+  
 	/**
 	 * Returns the URL string corresponding to the web server module root of the
 	 * component in a server instance or null if the project has no Web nature
@@ -440,10 +439,7 @@ public final class ServerUtils {
 							}				
 						}
 					} catch(CoreException ce){
-						ce.printStackTrace();
-					}
-					finally{
-						
+                        Logger.getLogger().log(ce);
 					}
 					
 				}
@@ -546,10 +542,18 @@ public final class ServerUtils {
 	public static IServer getDefaultExistingServer(IProject project) {
 		String defaultServerName;
 
-		// IServerPreferences serverPreferences =
-		// ServerCore.getServerPreferences();
-		IProjectProperties props = ServerCore.getProjectProperties(project);
-		IServer preferredServer = props.getDefaultServer();
+		 //IServerPreferences serverPreferences =
+		 //ServerCore.getServerPreferences();
+		
+        //IProjectProperties props = ServerCore.getProjectProperties(project);
+        //IServer preferredServer = props.getDefaultServer();
+    
+        IModule[] modules = ServerUtil.getModules(project);
+        IServer preferredServer = null;
+        if (modules.length > 0){
+          preferredServer = ServerCore.getDefaultServer(modules[0]);
+        }
+  
 		// IServer preferredServer =
 		// serverPreferences.getDeployableServerPreference(ResourceUtils.getModule(project));
 		if (preferredServer != null)
@@ -584,10 +588,9 @@ public final class ServerUtils {
 
 		String serverRuntimeTypeId = serverType.getRuntimeType().getId();
 
-		String stJ2EEVersion = ServerUtils
-				.getServerTargetJ2EEVersion(j2eeVersion);
-		List runtimes = ServerTargetHelper.getServerTargets(moduleType,
-				stJ2EEVersion);
+		String stJ2EEVersion = ServerUtils.getServerTargetJ2EEVersion(j2eeVersion);
+        List runtimes = Arrays.asList(ServerUtil.getRuntimes(moduleType, stJ2EEVersion));    
+		//List runtimes = ServerTargetHelper.getServerTargets(moduleType,	stJ2EEVersion);
 		for (int i = 0; i < runtimes.size(); i++) {
 			IRuntime runtime = (IRuntime) runtimes.get(i);
 			String thisRuntimeTypeId = runtime.getRuntimeType().getId();
@@ -648,10 +651,9 @@ public final class ServerUtils {
 			return false;
 
 		String earModuleType = IServerTargetConstants.EAR_TYPE;
-		String stJ2EEVersion = ServerUtils
-				.getServerTargetJ2EEVersion(j2eeVersion);
-		List runtimes = ServerTargetHelper.getServerTargets(earModuleType,
-				stJ2EEVersion);
+		String stJ2EEVersion = ServerUtils.getServerTargetJ2EEVersion(j2eeVersion);
+        List runtimes = Arrays.asList(ServerUtil.getRuntimes(earModuleType, stJ2EEVersion));
+		//List runtimes = ServerTargetHelper.getServerTargets(earModuleType, stJ2EEVersion);
 		for (int i = 0; i < runtimes.size(); i++) {
 			IRuntime runtime = (IRuntime) runtimes.get(i);
 			String thisId = runtime.getRuntimeType().getId();
@@ -675,10 +677,9 @@ public final class ServerUtils {
 		if (projectType == null || projectType.length() == 0)
 			return false;
 
-		String stJ2EEVersion = ServerUtils
-				.getServerTargetJ2EEVersion(j2eeVersion);
-		List runtimes = ServerTargetHelper.getServerTargets(projectType,
-				stJ2EEVersion);
+		String stJ2EEVersion = ServerUtils.getServerTargetJ2EEVersion(j2eeVersion);
+        List runtimes = Arrays.asList(ServerUtil.getRuntimes(projectType, stJ2EEVersion));    
+		//List runtimes = ServerTargetHelper.getServerTargets(projectType, stJ2EEVersion);
 		for (int i = 0; i < runtimes.size(); i++) {
 			IRuntime runtime = (IRuntime) runtimes.get(i);
 			String thisId = runtime.getRuntimeType().getId();
