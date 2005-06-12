@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -94,7 +94,8 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	private void initializeValues()
 	{
 		PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
-		serverToRuntimeToJ2EE_ = WebServiceServerRuntimeTypeRegistry.getInstance().getServerToRuntimeToJ2EE();
+		//serverToRuntimeToJ2EE_ = WebServiceServerRuntimeTypeRegistry.getInstance().getServerToRuntimeToJ2EE();
+    serverToRuntimeToJ2EE_ = WebServiceRuntimeExtensionUtils.getServerToRuntimeToJ2EE();
 
 
 		setServerItems(serverToRuntimeToJ2EE_.getList().getList());
@@ -264,20 +265,20 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	  
 	  if (factoryIds != null)
 	  {
-		//String[] serverLabels = new String[factoryIds.length];
 	    ArrayList serverLabelsList = new ArrayList();
-		for (int i=0;i<factoryIds.length;i++)
-		{
-			String thisFactoryId = factoryIds[i];
-			String thisServerLabel = WebServiceServerRuntimeTypeRegistry.getInstance().getServerLabel(factoryIds[i]);
-			if (thisServerLabel!=null && thisServerLabel.length()>0)
-			{
-			  serverLabelsList.add(thisServerLabel);
-			}
+		  for (int i=0;i<factoryIds.length;i++)
+		  {
+			  String thisFactoryId = factoryIds[i];
+			  //String thisServerLabel = WebServiceServerRuntimeTypeRegistry.getInstance().getServerLabel(factoryIds[i]);
+        String thisServerLabel = WebServiceRuntimeExtensionUtils.getServerLabelById(factoryIds[i]);
+			  if (thisServerLabel!=null && thisServerLabel.length()>0)
+			  {
+			    serverLabelsList.add(thisServerLabel);
+			  }
 			
-		}
-		String[] serverLabels = convertToStringArray(serverLabelsList.toArray()); 
-		server_.setItems(serverLabels);
+		  }
+		  String[] serverLabels = convertToStringArray(serverLabelsList.toArray()); 
+		  server_.setItems(serverLabels);
 	  }
 		
 	}
@@ -289,7 +290,8 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		String[] runtimeLabels = new String[ids.length];
 		for (int i=0;i<ids.length;i++)
 		{
-		  runtimeLabels[i] = WebServiceServerRuntimeTypeRegistry.getInstance().getRuntimeLabel(ids[i]);
+		  //runtimeLabels[i] = WebServiceServerRuntimeTypeRegistry.getInstance().getRuntimeLabel(ids[i]);
+      runtimeLabels[i] = WebServiceRuntimeExtensionUtils.getRuntimeLabelById(ids[i]);
 		}
 		runtime_.setItems(runtimeLabels);
 	  }
@@ -323,13 +325,15 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	private String getServerSelection()
 	{
 	  String serverLabel = server_.getText();
-	  return WebServiceServerRuntimeTypeRegistry.getInstance().getServerFactoryId(serverLabel);		
+	  //return WebServiceServerRuntimeTypeRegistry.getInstance().getServerFactoryId(serverLabel);
+    return WebServiceRuntimeExtensionUtils.getServerFactoryId(serverLabel);
 	}
 	
 	private String getRuntimeSelection()
 	{
       String runtimeLabel = runtime_.getText();
-	  return WebServiceServerRuntimeTypeRegistry.getInstance().getRuntimeId(runtimeLabel);				
+	  //return WebServiceServerRuntimeTypeRegistry.getInstance().getRuntimeId(runtimeLabel);
+      return WebServiceRuntimeExtensionUtils.getRuntimeId(runtimeLabel);
 	}
 	
 	private String getJ2EESelection()
@@ -340,13 +344,15 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	
 	private void setServerSelection(String factoryId)
 	{
-		String label = WebServiceServerRuntimeTypeRegistry.getInstance().getServerLabel(factoryId);
+		//String label = WebServiceServerRuntimeTypeRegistry.getInstance().getServerLabel(factoryId);
+    String label = WebServiceRuntimeExtensionUtils.getServerLabelById(factoryId);
 		setSelection(server_,label);
 	}
 	
 	private void setRuntimeSelection(String id)
 	{
-		String label = WebServiceServerRuntimeTypeRegistry.getInstance().getRuntimeLabel(id);
+		//String label = WebServiceServerRuntimeTypeRegistry.getInstance().getRuntimeLabel(id);
+    String label = WebServiceRuntimeExtensionUtils.getRuntimeLabelById(id);
 		setSelection(runtime_,label);		
 	}
 	

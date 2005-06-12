@@ -24,9 +24,9 @@ public class PersistentServerRuntimeContext extends PersistentContext {
 	private String PREFERENCE_RUNTIME = "PREFERENCE_RUNTIME";
 	private String PREFERENCE_J2EE_VERSION = "PREFERENCE_J2EE_VERSION";
 	
-	private String SERVER_FACTORY_ID_DEFAULT = "org.eclipse.jst.server.tomcat.40";
-	private String RUNTIME_ID_DEFAULT = "org.eclipse.jst.ws.runtime.axis11";
-	private String J2EE_VERSION_DEFAULT = "13";
+	private String SERVER_FACTORY_ID_DEFAULT = "org.eclipse.jst.server.tomcat.50";
+	private String RUNTIME_ID_DEFAULT = "org.eclipse.jst.ws.axis.creation.axisWebServiceRT";
+	private String J2EE_VERSION_DEFAULT = "14";
 	
 	public PersistentServerRuntimeContext()
 	{

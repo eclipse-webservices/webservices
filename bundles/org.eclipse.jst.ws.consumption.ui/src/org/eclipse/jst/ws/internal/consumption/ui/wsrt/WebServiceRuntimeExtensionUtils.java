@@ -1,8 +1,10 @@
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -12,9 +14,13 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.TypeSelectionFilter;
+import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceClientTypeRegistry;
+import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServer;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceTypeImpl;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
+import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
@@ -25,6 +31,9 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 public class WebServiceRuntimeExtensionUtils
 {
   private static WebServiceRuntimeExtensionRegistry registry = WebServiceRuntimeExtensionRegistry.getInstance();
+  private static SelectionListChoices serverToRuntimeToJ2EE_;
+  private static Hashtable serverFactoryIdByLabel_;
+  private static Hashtable runtimeIdByLabel_;
   
   public static IWebServiceRuntime getWebServiceRuntime( String runtimeId )
   {
@@ -783,4 +792,162 @@ public class WebServiceRuntimeExtensionUtils
     return labelIds;
 
   }  
+  
+  //Utilities used by the ServerRuntimePreferencePage
+  
+  public static SelectionListChoices getServerToRuntimeToJ2EE()
+  {
+    if (serverToRuntimeToJ2EE_!=null)
+    {
+      return serverToRuntimeToJ2EE_;
+    }
+    
+    //String[] servers = getStringArrayIntersection(getAllServerFactoryIds(), WebServiceClientTypeRegistry.getInstance().getAllClientServerFactoryIds());
+    String[] servers = getAllServerFactoryIds();
+    SelectionList serversList = new SelectionList(servers, 0);
+    Vector choices = new Vector();
+    for (int i=0; i<servers.length; i++)
+    {
+      choices.add(getRuntimeChoices(servers[i]));
+    }
+    serverToRuntimeToJ2EE_ = new SelectionListChoices(serversList, choices);
+    return serverToRuntimeToJ2EE_;
+    
+  }
+
+  private static SelectionListChoices getRuntimeChoices(String serverFactoryId)
+  {
+    
+    String[] runtimes = getRuntimeIDsByServerFactoryID(serverFactoryId);
+    SelectionList runtimesList = new SelectionList(runtimes, 0);
+    Vector choices = new Vector();
+    for (int i=0; i<runtimes.length; i++)
+    {
+      choices.add(getJ2EEChoices(runtimes[i]));
+    }
+    return new SelectionListChoices(runtimesList, choices);    
+  }  
+  
+  private static SelectionListChoices getJ2EEChoices(String runtimeId)
+  {
+    //String[] serviceJ2EEVersions = getWebServiceRuntimeById(runtimeId).getJ2EEVersions();
+    //String[] clientJ2EEVersions = WebServiceClientTypeRegistry.getInstance().getWebServiceRuntimeById(runtimeId).getJ2EEVersions();
+    //String[] j2eeVersions = getStringArrayIntersection(serviceJ2EEVersions, clientJ2EEVersions);
+    WebServiceRuntimeInfo wsr = getWebServiceRuntimeById(runtimeId);
+    if (wsr==null)
+    {
+      return null;
+    }
+    
+    String[] j2eeVersions = wsr.getJ2eeLevels();
+    SelectionList j2eeVersionsList = new SelectionList(j2eeVersions, 0);
+    return new SelectionListChoices(j2eeVersionsList, null);
+  }  
+  
+  private static String[] getAllServerFactoryIds()
+  {
+    ArrayList ids = new ArrayList();
+    if (serverFactoryIdByLabel_ == null)
+    {
+      serverFactoryIdByLabel_ = new Hashtable();
+      Iterator iter = registry.webServiceRuntimes_.values().iterator();
+      while (iter.hasNext())
+      {
+        WebServiceRuntimeInfo wsr = (WebServiceRuntimeInfo) iter.next();
+        String[] sfids = wsr.getServerFactoryIds();
+        for (int i = 0; i < sfids.length; i++)
+        {
+          if (!ids.contains(sfids[i]))
+          {
+            ids.add(sfids[i]);
+            String label = getServerLabelById(sfids[i]);
+            serverFactoryIdByLabel_.put(label, sfids[i]);
+          }
+        }
+      }
+    }
+    else
+    {
+      Iterator fids =  serverFactoryIdByLabel_.values().iterator();
+      while (fids.hasNext())
+      {
+        String fid = (String)fids.next();
+        ids.add(fid);
+      }           
+    }
+    
+    if (ids.size() > 0)
+    {
+      String[] serverFactoryIds = (String[])ids.toArray(new String[0]);
+      return serverFactoryIds;
+    }
+    
+    return null;
+  }  
+  
+  private static String[] getRuntimeIDsByServerFactoryID(String serverFactoryID) 
+  {
+    ArrayList ids = new ArrayList();
+    Iterator iter = registry.webServiceRuntimes_.values().iterator();
+    while (iter.hasNext())
+    {
+      WebServiceRuntimeInfo wsr = (WebServiceRuntimeInfo)iter.next();
+      if (doesRuntimeSupportServer(wsr.getId(), serverFactoryID))
+      {
+        ids.add(wsr.getId());
+      }
+      
+    }
+    
+    if (ids.size() > 0)
+    {
+      String[] runtimeIds = (String[])ids.toArray(new String[0]);
+      return runtimeIds;
+    }
+    
+    return null;    
+    
+    
+  }
+  
+  public static String getServerFactoryId(String label)
+  {
+    if (label==null || label.length()==0)
+      return null;
+    
+    if (serverFactoryIdByLabel_ == null)
+    {
+      getAllServerFactoryIds();
+    }
+    
+    if (serverFactoryIdByLabel_.containsKey(label))
+    {
+      return (String)serverFactoryIdByLabel_.get(label);  
+    }
+    else
+    {
+      return null;
+    }       
+  }  
+  
+  public static String getRuntimeId(String label)
+  {
+    
+    if (label==null || label.length()==0)
+      return null;
+    
+    if (runtimeIdByLabel_ == null)
+    {
+      runtimeIdByLabel_ = new Hashtable();
+      Iterator iter = registry.webServiceRuntimes_.values().iterator();
+      while (iter.hasNext())
+      {
+        WebServiceRuntimeInfo wsr = (WebServiceRuntimeInfo)iter.next();
+        runtimeIdByLabel_.put(wsr.getLabel(), wsr.getId());        
+      }      
+    }
+    
+    return (String)runtimeIdByLabel_.get(label);    
+  }    
+
 }
