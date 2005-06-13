@@ -153,7 +153,7 @@ public abstract class CommandFactoryFragment implements CommandFragment
 	
 	public ChildFragment( Command command, int index )
 	{
-	  super( command, command.getClass().getName() );
+	  super( command, command.getId() );
 	  index_ = index;
 	}
   }

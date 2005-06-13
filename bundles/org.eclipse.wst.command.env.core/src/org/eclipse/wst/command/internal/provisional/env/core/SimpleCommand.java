@@ -35,6 +35,15 @@ public class SimpleCommand implements Command
     name_        = "";
     description_ = "";
   }
+  
+  /**
+   * 
+   * @return Returns a unique ID for this Command.
+   */  
+  public String getId() 
+  {
+	return getClass().getName();
+  }
     
   /**
    * Sets the name of the command.

@@ -20,6 +20,12 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 public interface Command
 {
   /**
+   * 
+   * @return Returns a unique ID for this Command.
+   */
+  public String getId();
+  
+  /**
    * Returns the name of the Command, a short translatable string
    * indicating what the Command does. Can be null.
    * @return The name of the Command. Can be null.
