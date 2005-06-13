@@ -16,13 +16,12 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensio
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
+import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceRuntime;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceClientInfo;
@@ -53,6 +52,7 @@ public class PreClientDevelopCommand extends SimpleCommand
   private ResourceContext   resourceContext_;
 	private boolean						test_;
   private String            wsdlURI_;
+  private Object            dataObject_;
 
   public Status execute(Environment environment)
   {
@@ -225,14 +225,36 @@ public class PreClientDevelopCommand extends SimpleCommand
 	ear_ = ear;  
   }
 	
-	public void setTestService(boolean testService)
-	{
-		test_ = testService;
-	}		
+  public void setTestService(boolean testService)
+  {
+	test_ = testService;
+  }		
   
   public void setWsdlURI(String uri)
   {
     wsdlURI_ = uri;
   }
-
+  
+  public void setDataObject( Object object )
+  {
+    dataObject_ = object;	  
+  }
+  
+  public Object getDataObject()
+  {
+	Object result = null;
+	
+    if( dataObject_ != null && dataObject_ instanceof IWebService )
+	{
+	  // The data object has already been set with an IWebService
+	  // so we will keep this value.
+	  result = dataObject_;
+	}
+    else
+	{
+	  result = webServiceClient_;	
+	}
+	
+	return result;
+  }
 }

@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.extension;
 
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.env.ui.widgets.DataObjectCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.ws.internal.extensions.AssembleClientFragment;
 import org.eclipse.wst.ws.internal.extensions.DeployClientFragment;
@@ -46,7 +47,10 @@ public class ClientRootFragment extends SequenceFragment
   	registry.addMapping( PreClientDevelopCommand.class, "Module", DevelopClientFragment.class );  
     registry.addMapping( PreClientDevelopCommand.class, "EarProject", DevelopClientFragment.class );
   	registry.addMapping( PreClientDevelopCommand.class, "Ear", DevelopClientFragment.class );
-	
+  	
+	// Map the PreClientDevelopCommand into the dataObject.
+	registry.addMapping( PreClientDevelopCommand.class, "DataObject", DataObjectCommand.class );
+		
   	registry.addMapping( PreClientDevelopCommand.class, "WebService", AssembleClientFragment.class );  
   	registry.addMapping( PreClientDevelopCommand.class, "Environment", AssembleClientFragment.class );  
   	registry.addMapping( PreClientDevelopCommand.class, "Context", AssembleClientFragment.class );  

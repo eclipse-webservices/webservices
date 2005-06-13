@@ -11,8 +11,10 @@
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
+import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.env.ui.widgets.DataObjectCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.ws.internal.extensions.AssembleServiceFragment;
 import org.eclipse.wst.ws.internal.extensions.DeployServiceFragment;
@@ -47,6 +49,10 @@ public class ServiceRootFragment extends SequenceFragment
   	registry.addMapping( PreServiceDevelopCommand.class, "Module", DevelopServiceFragment.class );
 		registry.addMapping( PreServiceDevelopCommand.class, "EarProject", DevelopServiceFragment.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Ear", DevelopServiceFragment.class );
+	
+	// Map the PreServiceDevelopCommand into the dataObject and the PreClientDevelopCommand.
+	registry.addMapping( PreServiceDevelopCommand.class, "WebService", DataObjectCommand.class, "DataObject", null );
+	registry.addMapping( PreServiceDevelopCommand.class, "WebService", PreClientDevelopCommand.class, "DataObject", null );
 		
   	registry.addMapping( PreServiceDevelopCommand.class, "WebService", AssembleServiceFragment.class );  
   	registry.addMapping( PreServiceDevelopCommand.class, "Environment", AssembleServiceFragment.class );  

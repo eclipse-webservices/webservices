@@ -96,6 +96,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   private   WizardPageManager       pageManager_;
   private   String                  wizardTitle_;
   private   IWizardPage             startPage_ = null;
+  private   DataObjectCommand       dataObjectCommand_ = null;
   
   protected IConfigurationElement   wizardElement_;
   protected IConfigurationElement   originalElement_;
@@ -104,6 +105,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   public DynamicWizard()
   {
 	setNeedsProgressMonitor(true);
+	dataObjectCommand_ = new DataObjectCommand();
   }
   
   /**
@@ -341,6 +343,11 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   	return pageManager_.performCancel();
   }  
       
+  public Object getDataObject()
+  {
+    return dataObjectCommand_.getDataObject();  
+  }
+  
   protected CommandFragment getRootFragment( IStructuredSelection selection, WizardPageManager pageManager )
   {
     SequenceFragment root = new SequenceFragment();
@@ -348,6 +355,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
     root.add( new SimpleFragment( new SelectionCommand( selection ), "" ) );
     root.add( new SimpleFragment( new CurrentPageCommand( pageManager ), "" ) );
     root.add( commandWidgetBinding_.create().create() );
+	root.add( new SimpleFragment( dataObjectCommand_, "" ));
     
     return root;
   }
