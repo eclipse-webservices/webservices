@@ -63,6 +63,17 @@
       </objectContribution>
 -->      
 
+      <objectContribution
+            objectClass="org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef"
+            nameFilter="*"
+            id="org.eclipse.jst.ws.internal.consumption.ui.action.WSDLFileMenu">
+         <action
+               label="%POPUP_TEST_WSDL"
+               class="org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSDL"
+               menubarPath="additions"
+               id="org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSDL">
+         </action>
+      </objectContribution>
    </extension>
    
 </plugin>
