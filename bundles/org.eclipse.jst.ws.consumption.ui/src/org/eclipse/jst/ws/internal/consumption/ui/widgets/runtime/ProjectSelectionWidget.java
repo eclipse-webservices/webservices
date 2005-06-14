@@ -21,10 +21,14 @@ import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -33,6 +37,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.frameworks.internal.FlexibleJavaProjectPreferenceUtil;
 import org.eclipse.wst.server.core.IRuntime;
 
 public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
@@ -105,22 +110,23 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   public WidgetDataEvents addControls(Composite parent, Listener statusListener) {
     msgUtils = new MessageUtils(pluginId_ + ".plugin", this);
     UIUtils uiUtils = new UIUtils(msgUtils, pluginId_);
+    boolean displayModules = FlexibleJavaProjectPreferenceUtil.getMultipleModulesPerProjectProp();
 
     statusListener_ = statusListener;
 		
     if (isClient_)
 	{
 	  moduleProject_ = uiUtils.createCombo(parent, "LABEL_CLIENT_PROJECT", "LABEL_CLIENT_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
-      module_ = uiUtils.createCombo(parent, "LABEL_CLIENT_MODULE", "LABEL_CLIENT_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER);
+      module_ = createCombo(parent, "LABEL_CLIENT_MODULE", "LABEL_CLIENT_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER, displayModules );
 	  earProject_ = uiUtils.createCombo(parent, "LABEL_CLIENT_EAR_PROJECT", "LABEL_CLIENT_EAR_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
-	  earModule_ = uiUtils.createCombo(parent, "LABEL_CLIENT_EAR_MODULE", "LABEL_CLIENT_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER);
+	  earModule_ = createCombo(parent, "LABEL_CLIENT_EAR_MODULE", "LABEL_CLIENT_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER, displayModules );
     }
     else 
 	{
 	  moduleProject_ = uiUtils.createCombo(parent, "LABEL_SERVICE_PROJECT", "LABEL_SERVICE_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
-      module_ = uiUtils.createCombo(parent, "LABEL_SERVICE_MODULE", "LABEL_SERVICE_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER);
+      module_ = createCombo(parent, "LABEL_SERVICE_MODULE", "LABEL_SERVICE_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER, displayModules );
 	  earProject_ = uiUtils.createCombo(parent, "LABEL_SERVICE_EAR_PROJECT", "LABEL_SERVICE_EAR_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
-	  earModule_ = uiUtils.createCombo(parent, "LABEL_SERVICE_EAR_MODULE", "LABEL_SERVICE_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER);
+	  earModule_ = createCombo(parent, "LABEL_SERVICE_EAR_MODULE", "LABEL_SERVICE_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER, displayModules );
     }
 	
     //module_.addModifyListener(projectListener_);
@@ -157,6 +163,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 							  
     // message area
     messageText_ = uiUtils.createText(parent, "LABEL_NO_LABEL", "LABEL_NO_LABEL", null, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY);
+  
     return this;
   }
   
@@ -300,7 +307,14 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   public String getComponentName()
   {
-	return module_.getText();  
+	if( FlexibleJavaProjectPreferenceUtil.getMultipleModulesPerProjectProp() )
+	{
+	  return module_.getText();
+	}
+	else
+	{
+	  return moduleProject_.getText();
+	}
   }
   
   public void setComponentName( String name )
@@ -313,7 +327,14 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   public String getEarComponentName()
   {
-    return earModule_.getText();	  
+	if( FlexibleJavaProjectPreferenceUtil.getMultipleModulesPerProjectProp() )
+	{
+      return earModule_.getText();
+	}
+	else
+	{
+	  return earProject_.getText();
+	}
   }
   
   public void setEarComponentName( String name )
@@ -449,8 +470,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     try {
       byte result = (byte) 0;
       if (module_.getText().length() != 0 && earModule_.getText().length() != 0) {
-        String projectText = module_.getText();
-        String earText = earModule_.getText();
+        String projectText = moduleProject_.getText();
+        String earText = earProject_.getText();
         IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectText);
         IProject ear = ResourceUtils.getWorkspaceRoot().getProject(earText);
         if (project != null) {
@@ -505,8 +526,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   public Status getStatus() {
     Status finalStatus = new SimpleStatus("");
     handleSetMessageText();
-    String projectText = module_.getText();
-    String earText = earModule_.getText();
+    String projectText = moduleProject_.getText();
+    String earText = earProject_.getText();
     if (projectText==null || projectText.length()==0)
     {
       if (isClient_)
@@ -525,5 +546,52 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     
     return finalStatus;
   }
+  
+  private Combo createCombo( Composite parent, String labelName, String tooltip, String infopop, int style, boolean displayControl )
+  {    
+    tooltip = tooltip == null ? labelName : tooltip;
+    
+    if( !displayControl )
+    {
+      Composite dummy1 = new ZeroComposite( parent );
+      Composite dummy2 = new ZeroComposite( parent );
+      
+      dummy1.setVisible( false );
+      dummy2.setVisible( false );
+            
+      parent = dummy2;
+    }
+    
+    if( labelName != null )
+    {
+      Label label = new Label( parent, SWT.WRAP);
+      label.setText( msgUtils.getMessage( labelName ) );
+      label.setToolTipText( msgUtils.getMessage( tooltip ) );
+      label.setVisible( displayControl );
+    }
+    
+    Combo combo = new Combo( parent, style );
+    GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+     
+    combo.setLayoutData( griddata );
+    combo.setToolTipText( msgUtils.getMessage(tooltip));
+    combo.setVisible( displayControl );
+    
+    if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( combo, pluginId_ + "." + infopop );
+    
+    return combo;      
+  }
 
+  private class ZeroComposite extends Composite
+  {
+    public ZeroComposite( Composite parent )
+    {
+       super( parent, SWT.NONE ); 	
+    }
+
+	public Point computeSize(int wHint, int hHint, boolean changed) 
+	{
+	  return new Point( 0, 0);
+	}
+  }
 }
