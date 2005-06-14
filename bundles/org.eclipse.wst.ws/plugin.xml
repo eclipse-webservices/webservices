@@ -2,6 +2,16 @@
 <?eclipse version="3.0"?>
 
 <plugin>
+   <extension-point id="locator" name="%XP_WEB_SERVICE_LOCATOR" schema="schema/webServiceLocator.exsd"/>
+   <extension
+         point="org.eclipse.wst.ws.locator">
+      <webServiceLocator
+            class="org.eclipse.wst.ws.internal.wsfinder.WSDLLocator"
+            id="org.eclipse.wst.ws.internal.wsfinder.WSDLLocator"
+            label="wsdllocator">
+         org.eclipse.wst.ws.internal.wsfinder
+      </webServiceLocator>
+   </extension>
 
     
 </plugin>
