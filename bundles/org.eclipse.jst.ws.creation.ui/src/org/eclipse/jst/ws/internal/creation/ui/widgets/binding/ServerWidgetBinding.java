@@ -18,6 +18,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorComma
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateServiceProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.ManageServerStartUpCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.ServerDeployableConfigurationCommand;
+import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerInstToIServerTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
@@ -415,6 +416,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
   {
     public ServiceRootCommandFragment()
     {
+      add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
+      
       add( new SimpleFragment( new InitRegistries(), "" ) );
       add( new SimpleFragment( new ServerWizardWidgetDefaultingCommand(), ""));
       add( new SimpleFragment( "ServerWizardWidget" ) );
@@ -439,6 +442,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       add(publishToPrivateUDDICmdFrag);
       add(new LaunchFragment());
       add(new FinishFragment());
+      
+      add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
     }
     
     /* (non-Javadoc)

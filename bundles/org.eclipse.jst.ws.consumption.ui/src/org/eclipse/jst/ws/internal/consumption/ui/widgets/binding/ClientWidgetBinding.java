@@ -14,6 +14,7 @@ import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.ClientServerDeployableConfigCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateClientProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand;
+import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForServiceProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerInstToIServerTransformer;
@@ -246,6 +247,8 @@ public class ClientWidgetBinding implements CommandWidgetBinding
   {
     public ClientRootCommandFragment()
     {
+      add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
+      
       //add( new SimpleFragment( new CheckForMissingFiles(), "" ) );
       add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(), "" ) );
       add( new SimpleFragment( new InitClientRegistry(), "" ));
@@ -269,6 +272,8 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       add( new SimpleFragment(new TestDefaultingFragment(),""));
       add( new ClientTestFragment( "ClientTestWidget") ); 
       add(new FinishFragment());
+      
+      add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
     }
     
     /* (non-Javadoc)

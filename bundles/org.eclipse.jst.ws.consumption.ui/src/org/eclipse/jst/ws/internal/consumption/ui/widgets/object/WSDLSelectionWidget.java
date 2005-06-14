@@ -24,6 +24,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionConditionCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionTreeWidget;
 import org.eclipse.jst.ws.internal.ui.common.DialogResourceBrowser;
@@ -47,7 +48,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
@@ -80,7 +80,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     pluginId_ = "org.eclipse.jst.ws.consumption.ui";
     msgUtils_ = new MessageUtils( pluginId_ + ".plugin", this );
     wsFilter_ = new FileExtensionFilter(new String[] {"wsdl", "wsil", "html"});
-    webServicesParser = new WebServicesParserExt();
+    webServicesParser = WSDLParserFactory.getWSDLParser();
   }
   
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )

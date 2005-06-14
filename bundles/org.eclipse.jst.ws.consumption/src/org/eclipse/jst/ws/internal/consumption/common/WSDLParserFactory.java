@@ -21,6 +21,9 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
  * up with a better method of handling passing around the parser.
  *
  */
+//TODO We need to find a better way to pass around the parser than
+//     using this singleton factory.  Hopefully, we can then delete
+//     this class.
 public class WSDLParserFactory 
 {
   private static WebServicesParserExt parser_;
@@ -37,5 +40,10 @@ public class WSDLParserFactory
 	}
 	
 	return parser_;
+  }
+  
+  public static void killParser()
+  {
+    parser_ = null;
   }
 }
