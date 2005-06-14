@@ -39,7 +39,7 @@ import org.eclipse.jst.j2ee.ejb.Session;
 import org.eclipse.jst.j2ee.ejb.SessionType;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.j2ee.internal.J2EEVersionUtil;
+import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
 import org.eclipse.jst.j2ee.internal.earcreation.AddModuleToEARProjectCommand;
 import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
 import org.eclipse.jst.j2ee.internal.earcreation.IEARNatureConstants;
