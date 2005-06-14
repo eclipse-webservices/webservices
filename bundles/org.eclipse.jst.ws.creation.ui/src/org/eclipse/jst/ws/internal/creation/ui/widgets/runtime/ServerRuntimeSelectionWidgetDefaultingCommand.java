@@ -20,16 +20,22 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ServerSelectionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceType;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeInfo;
+import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IRuntime;
@@ -75,18 +81,18 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      }
      Status status = new SimpleStatus("");
 
-	 // rskreg Remove all the intelligent defaulting for M4
-     //setDefaultServiceRuntimeFromPreference();
-     //setDefaultServiceJ2EEVersionFromPreference();      
-     //webServiceRuntimeJ2EEType = getWSRuntimeAndJ2EEFromProject(initialProject_);
-     //if (webServiceRuntimeJ2EEType != null)
-     //{
-       //serviceJ2EEVersion_ = webServiceRuntimeJ2EEType.getJ2eeVersionId();
-       //serviceIds_.setRuntimeId(webServiceRuntimeJ2EEType.getWsrId()); 
-     //}
+
+    setDefaultServiceRuntimeFromPreference();
+    setDefaultServiceJ2EEVersionFromPreference();      
+    webServiceRuntimeJ2EEType = getWSRuntimeAndJ2EEFromProject(initialProject_, initialComponentName_);
+    if (webServiceRuntimeJ2EEType != null)
+    {
+      serviceJ2EEVersion_ = webServiceRuntimeJ2EEType.getJ2eeVersionId();
+      serviceIds_.setRuntimeId(webServiceRuntimeJ2EEType.getWsrId()); 
+    }
 	 
-	 serviceIds_.setRuntimeId(WebServiceRuntimeExtensionUtils.getDefaultRuntimeValueFor(serviceIds_.getTypeId()));
-	 serviceJ2EEVersion_ = (WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(serviceIds_.getRuntimeId()).getJ2eeLevels())[0]; 
+	 //serviceIds_.setRuntimeId(WebServiceRuntimeExtensionUtils.getDefaultRuntimeValueFor(serviceIds_.getTypeId()));
+	 //serviceJ2EEVersion_ = (WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(serviceIds_.getRuntimeId()).getJ2eeLevels())[0]; 
 
 	 
      // Set the default client type to a web client type.
@@ -98,10 +104,9 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      setDefaultEARs();
      setDefaultServer();
      updateServiceEARs();
-     updateClientProject(getServiceProject2EARProject().getList().getSelection(), serviceComponentName_, serviceIds_.getTypeId());
+     //updateClientProject(getServiceProject2EARProject().getList().getSelection(), serviceComponentName_, serviceIds_.getTypeId());
      updateClientEARs();
-	 
-     // rskreg	 
+	 	 
      return status;
     } catch (Exception e)
     {
@@ -155,9 +160,8 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
    * @param project
    * @return
    */
-  // rskreg
-  /*
-  private WSRuntimeJ2EEType getWSRuntimeAndJ2EEFromProject(IProject project)
+
+  private WSRuntimeJ2EEType getWSRuntimeAndJ2EEFromProject(IProject project, String componentName)
   {
     WSRuntimeJ2EEType wsrJ2EE = null;
     //If there is a valid initial selection, use it to determine
@@ -165,12 +169,12 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 
     if (project != null && project.exists())
     {
-      if (ResourceUtils.isWebProject(project) || ResourceUtils.isEJBProject(project))
+      if (J2EEUtils.isWebComponent(project, componentName ) || J2EEUtils.isEJBComponent(project, componentName))
       {
-        WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
+        //WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
         
         //Get the J2EE level
-        int versionId = J2EEUtils.getJ2EEVersion(project);
+        int versionId = J2EEUtils.getJ2EEVersion(project, componentName);
         String versionString = String.valueOf(versionId);
         
         //Get the runtime target of the project
@@ -180,9 +184,9 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
           runtimeTargetId = runtimeTarget.getRuntimeType().getId();
         
         //If the preferred Web service runtime supports this J2EE level and this server target, keep it
-        if (wssrtReg.doesRuntimeSupportJ2EELevel(versionString, serviceIds_.getRuntimeId()) &&
+        if (WebServiceRuntimeExtensionUtils.doesRuntimeSupportJ2EELevel(versionString, serviceIds_.getRuntimeId()) &&
             ((runtimeTarget == null) || 
-             (runtimeTarget != null && wssrtReg.doesRuntimeSupportServerTarget(runtimeTargetId, serviceIds_.getRuntimeId()))
+             (runtimeTarget != null && WebServiceRuntimeExtensionUtils.doesRuntimeSupportServerTarget(runtimeTargetId, serviceIds_.getRuntimeId()))
             )
            )
           
@@ -196,12 +200,12 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
         } else
         {
           //Look for a runtime that matches both the J2EE level and the server target.
-          String[] validRuntimes = wssrtReg.getRuntimesByType(serviceIds_.getTypeId());
+          String[] validRuntimes = WebServiceRuntimeExtensionUtils.getRuntimesByType(serviceIds_.getTypeId());
           for (int i = 0; i < validRuntimes.length; i++)
           {
-            if (wssrtReg.doesRuntimeSupportJ2EELevel(versionString, validRuntimes[i]) &&
+            if (WebServiceRuntimeExtensionUtils.doesRuntimeSupportJ2EELevel(versionString, validRuntimes[i]) &&
                 ((runtimeTarget == null) ||
-                 (runtimeTarget!=null && wssrtReg.doesRuntimeSupportServerTarget(runtimeTargetId, validRuntimes[i]))
+                 (runtimeTarget!=null && WebServiceRuntimeExtensionUtils.doesRuntimeSupportServerTarget(runtimeTargetId, validRuntimes[i]))
                 )
                 )
             {
@@ -216,37 +220,31 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     }    
     return wsrJ2EE;
   }
-  */
-  // rskreg
   
-  // rskreg
-  /*
   private void setDefaultServiceRuntimeFromPreference()
   {
   	
     PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
     String pRuntimeId = context.getRuntimeId();
-    WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
+    //WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
     //if the preferred runtime in compatible with the type, select it.
-    if (wssrtReg.isRuntimeSupportedForType(serviceIds_.getTypeId(), pRuntimeId))
+    if (WebServiceRuntimeExtensionUtils.isRuntimeSupportedForType(serviceIds_.getTypeId(), pRuntimeId))
     {
       serviceIds_.setRuntimeId(pRuntimeId);
     }
     else
     {
       //Set the Web service runtime to one that is supported by the selected type.
-      String[] validRuntimes = wssrtReg.getRuntimesByType(serviceIds_.getTypeId());
+      String[] validRuntimes = WebServiceRuntimeExtensionUtils.getRuntimesByType(serviceIds_.getTypeId());
       if (validRuntimes != null && validRuntimes.length>0)
       {
         serviceIds_.setRuntimeId(validRuntimes[0]);
       }
     }
   }
-  */
-  // rskreg
+
   
-  // rskreg
-  /*
+
   private void setDefaultServiceJ2EEVersionFromPreference()
   {
     if (serviceIds_ != null)
@@ -254,10 +252,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       String runtimeId = serviceIds_.getRuntimeId();
       if (runtimeId != null)
       {
-        IWebServiceRuntime wsr = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceRuntimeById(runtimeId);
-        if (wsr != null)
+        //IWebServiceRuntime wsr = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceRuntimeById(runtimeId);
+        WebServiceRuntimeInfo wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(runtimeId);
+        if (wsrt != null)
         {
-          String[] versions = wsr.getJ2EEVersions();          
+          String[] versions = wsrt.getJ2eeLevels();          
           //If the preferred J2EE version is in versions, pick the preferred one. 
           //Otherwise, pick the first one.
           if (versions != null && versions.length > 0)
@@ -268,11 +267,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
           	{
               for (int i=0;i<versions.length;i++)
           	  {
-          		if (versions[i].equals(pJ2EE))
-          		{
-          			serviceJ2EEVersion_ = versions[i];
+          		  if (versions[i].equals(pJ2EE))
+          		  {
+          			  serviceJ2EEVersion_ = versions[i];
           		    return;
-          		}
+          		  }
           	  }
           	}
           	serviceJ2EEVersion_ = versions[0];
@@ -283,14 +282,15 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       }
     }
   } 
-  */ 
-  // rskreg
+
   
   /**
    * This method needs a lot of work. It does not take into account the component types supported by the
    * selected Web service type or the fact that there are multiple components in a project.
    */
-  private void setDefaultProjects()
+  //rskrem93309
+  /*
+  private void setDefaultProjectsNew()
   {
     if (initialProject_ != null)
     {
@@ -355,9 +355,9 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       
     }
   }
+  */
+  //
 
-  // rskreg
-  /*
   private void setDefaultProjects()
   {
 	
@@ -369,140 +369,189 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       String serviceProjectName = getServiceProject2EARProject().getList().getSelection();
      
       //Select a client project with "client" added to the above project name.
-      String clientProjectName = ResourceUtils.getClientWebProjectName(serviceProjectName, serviceIds_.getTypeId() );
-      getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(clientProjectName);
+      updateClientProject(serviceProjectName, serviceComponentName_, serviceIds_.getTypeId());
+      //String clientProjectName = ResourceUtils.getClientWebProjectName(serviceProjectName, serviceIds_.getTypeId() );
+      //getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(clientProjectName);
+      
       return;
     }    
 	    
 
 	//Set the service project selection to this initialProject
 	getServiceProject2EARProject().getList().setSelectionValue(initialProject_.getName());
-	String clientProjectName = ResourceUtils.getClientWebProjectName(initialProject_.getName(), serviceIds_.getTypeId() ); 
+  serviceComponentName_ = initialComponentName_;
+  updateClientProject(initialProject_.getName(), serviceComponentName_, serviceIds_.getTypeId());
+	//String clientProjectName = ResourceUtils.getClientWebProjectName(initialProject_.getName(), serviceIds_.getTypeId() ); 
 	//Set the client project selection to clientProject
-	getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(clientProjectName);
+	//getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(clientProjectName);
 		      	    
   }
   
 
   private void setServiceProjectToFirstValid()
   {
-    WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
+    //WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
     String[] projectNames = getServiceProject2EARProject().getList().getList();
     for (int i=0;i<projectNames.length; i++)
     {
       IProject project = (IProject)((new StringToIProjectTransformer().transform(projectNames[i])));
-      if (project.isOpen() && (ResourceUtils.isWebProject(project) || ResourceUtils.isEJBProject(project)))
+      IVirtualComponent[] vcs = J2EEUtils.getComponentsByType(project, serviceComponentType_);
+      if (project.isOpen() && vcs!=null && vcs.length>0)
       {
-        //Get the J2EE level
-        int versionId = J2EEUtils.getJ2EEVersion(project);
-        String versionString = String.valueOf(versionId);
-        
         //Get the runtime target of the project
         IRuntime runtimeTarget = ServerSelectionUtils.getRuntimeTarget(project.getName());
         String runtimeTargetId = null;
         if (runtimeTarget != null) 
           runtimeTargetId = runtimeTarget.getRuntimeType().getId();
         
-        if (serviceJ2EEVersion_!=null && serviceJ2EEVersion_.length()>0 && serviceJ2EEVersion_.equals(versionString))
-        {
-          if (wssrtReg.doesRuntimeSupportJ2EELevel(versionString, serviceIds_.getRuntimeId()) &&
-             ((runtimeTarget == null) || 
-             ((runtimeTarget!=null) && wssrtReg.doesRuntimeSupportServerTarget(runtimeTargetId, serviceIds_.getRuntimeId()))) 
-             )
+        for (int j=0; j < vcs.length; j++)
+        {  
+          //Get the J2EE level
+          int versionId = J2EEUtils.getJ2EEVersion(vcs[j]);
+          String versionString = String.valueOf(versionId);
+        
+        
+          if (serviceJ2EEVersion_!=null && serviceJ2EEVersion_.length()>0 && serviceJ2EEVersion_.equals(versionString))
           {
-            getServiceProject2EARProject().getList().setSelectionValue(projectNames[i]);
-            return;
+            if (WebServiceRuntimeExtensionUtils.doesRuntimeSupportJ2EELevel(versionString, serviceIds_.getRuntimeId()) &&
+               ((runtimeTarget == null) || 
+               ((runtimeTarget!=null) && WebServiceRuntimeExtensionUtils.doesRuntimeSupportServerTarget(runtimeTargetId, serviceIds_.getRuntimeId()))) 
+               )
+            {
+              getServiceProject2EARProject().getList().setSelectionValue(projectNames[i]);
+              serviceComponentName_ = vcs[j].getName();
+              
+              return;
+            }
           }
         }
       }
     }
     
-    //Didn't find a single project that worked. Default to a new project name.
-    getServiceProject2EARProject().getList().setSelectionValue(ResourceUtils.getDefaultWebProjectName());
-  }
-  */
-  // rskreg
-
-  private void setDefaultEARs()
-  {
-    String initialProjectName = getServiceProject2EARProject().getList().getSelection();
-    IProject initialProject =   FileResourceUtils.getWorkspaceRoot().getProject(initialProjectName);
-    IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(initialProject, serviceComponentName_);
-    if (earComps.length>0)
+    //Didn't find a single project that worked. Default to a new project name.    
+    //getServiceProject2EARProject().getList().setSelectionValue(ResourceUtils.getDefaultWebProjectName());
+    //serviceComponentName_ = ResourceUtils.getDefaultWebProjectName();
+    if (serviceComponentType_.equals(IModuleConstants.JST_EJB_MODULE))
     {
-      //Pick the first one
-      IVirtualComponent earComp = earComps[0];
-      String earProjectName = earComp.getProject().getName();
-      String earComponentName = earComp.getName();
-      getServiceProject2EARProject().getChoice().getList().setSelectionValue(earProjectName);
-      serviceEarComponentName_ = earComponentName;      
+      getServiceProject2EARProject().getList().setSelectionValue(ResourceUtils.getDefaultEJBProjectName());
+      serviceComponentName_ = ResourceUtils.getDefaultEJBComponentName();
     }
     else
     {
-      //Component is not associated with any EARs, so pick the first EAR you see with the correct J2EE version.
-      IVirtualComponent[] allEarComps = J2EEUtils.getAllEARComponents();
-      if (allEarComps.length>0)
+      getServiceProject2EARProject().getList().setSelectionValue(ResourceUtils.getDefaultWebProjectName());
+      serviceComponentName_ = ResourceUtils.getDefaultWebComponentName();
+    }    
+  }
+
+
+  private void setDefaultEARs()
+  { 
+    //Service side
+    String initialProjectName = getServiceProject2EARProject().getList().getSelection();
+    IProject initialProject =   FileResourceUtils.getWorkspaceRoot().getProject(initialProjectName);
+    boolean earIsSet = false;
+    if (initialProject != null && initialProject.exists())
+    {
+      IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(initialProject, serviceComponentName_);
+      if (earComps.length > 0)
       {
-        for (int i=0; i<allEarComps.length; i++)
+        // Pick the first one
+        IVirtualComponent earComp = earComps[0];
+        String earProjectName = earComp.getProject().getName();
+        String earComponentName = earComp.getName();
+        getServiceProject2EARProject().getChoice().getList().setSelectionValue(earProjectName);
+        serviceEarComponentName_ = earComponentName;
+        earIsSet = true;
+        
+      }
+    }
+     
+    if (!earIsSet)
+    {
+      // Either the component is not associated with any EARs or the project
+      // does not exist,
+      // so pick the first EAR yousee with the correct J2EE version.
+      IVirtualComponent[] allEarComps = J2EEUtils.getAllEARComponents();
+      if (allEarComps.length > 0)
+      {
+        for (int i = 0; i < allEarComps.length; i++)
         {
           if (serviceJ2EEVersion_.equals(String.valueOf(J2EEUtils.getJ2EEVersion(allEarComps[i]))))
           {
             String earProjectName = allEarComps[i].getProject().getName();
             getServiceProject2EARProject().getChoice().getList().setSelectionValue(earProjectName);
             serviceEarComponentName_ = allEarComps[i].getName();
-            
+            earIsSet = true;
           }
-            
+
         }
       }
-      else
-      {
-        //there are no Ears.
+    }
+      
+    if (!earIsSet)
+    {
+        // there are no suitable existing EARs
         getServiceProject2EARProject().getChoice().getList().setSelectionValue(ResourceUtils.getDefaultServiceEARProjectName());
         serviceEarComponentName_ = ResourceUtils.getDefaultServiceEARComponentName();
-      }
-      
-      
     }
+  
     
-  }
-
-  //
-  /*
-  private void setDefaultEARs()
-  {
-
-  	//Service-side
-    String initialProjectName = getServiceProject2EARProject().getList().getSelection(); 
-    IProject initialProject =   FileResourceUtils.getWorkspaceRoot().getProject(initialProjectName);  	
-  	IProject defaultServiceEAR = getDefaultEARFromServiceProject(initialProject);
-  	getServiceProject2EARProject().getChoice().getList().setSelectionValue(defaultServiceEAR.getName());
-  	
-  	//Client-side
+    
+    //Client side    
     String initialClientProjectName = getRuntime2ClientTypes().getChoice().getChoice().getList().getSelection(); 
-    IProject initialClientProject = (IProject)((new StringToIProjectTransformer()).transform(initialClientProjectName));  	
-  	IProject defaultClientEAR = getDefaultEARFromClientProject(initialClientProject);
-  	
-  	//If the client project exists and the default EAR is the same as that of the service project, 
-  	//pick the defaultClientEAR
-  	if(initialClientProject!=null && initialClientProject.exists() 
-  	   && defaultClientEAR.getName().equalsIgnoreCase(defaultServiceEAR.getName()))
-  	{
-  		getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(defaultClientEAR.getName());
-  	}
-  	else
-  	{
+    IProject initialClientProject = (IProject)((new StringToIProjectTransformer()).transform(initialClientProjectName));
+    String[] clientEARInfo = getDefaultEARFromClientProject(initialClientProject, getClientComponentName());
+
+    //If the client project exists and the default EAR is the same as that of the service project, 
+    //pick the defaultClientEAR
+    if(initialClientProject!=null && initialClientProject.exists() 
+       && clientEARInfo[1].equalsIgnoreCase(serviceEarComponentName_))
+    {
+      getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(clientEARInfo[0]);
+      setClientEARComponentName(clientEARInfo[1]);
+    }
+    else
+    { 
       ProjectTopologyContext ptc= WebServicePlugin.getInstance().getProjectTopologyContext();
-      if (!ptc.isUseTwoEARs()) {
-      	getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(defaultServiceEAR.getName());
+      String serviceEARName = getServiceProject2EARProject().getChoice().getList().getSelection();
+      if (!ptc.isUseTwoEARs()) {        
+        getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(serviceEARName);
+        setClientEARComponentName(serviceEarComponentName_);
       }
       else {
-        IProject proxyEARProject = getUniqueClientEAR(defaultClientEAR.getName(), defaultServiceEAR.getName(), initialClientProjectName);
+        //I am here
+        IProject proxyEARProject = getUniqueClientEAR(clientEARInfo[0], serviceEARName, initialClientProjectName);
         getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(proxyEARProject.getName());
-      }  		
-  	}
+        setClientEARComponentName(proxyEARProject.getName());
+      }     
+    }    
+  
   }
-  */
+
+  
+/*  
+    private void setDefaultEARs() { 
+      // Service-side 
+      String initialProjectName = getServiceProject2EARProject().getList().getSelection(); 
+      IProject initialProject = FileResourceUtils.getWorkspaceRoot().getProject(initialProjectName);
+    IProject defaultServiceEAR = getDefaultEARFromServiceProject(initialProject);
+    getServiceProject2EARProject().getChoice().getList().setSelectionValue(defaultServiceEAR.getName());
+    // Client-side 
+    String initialClientProjectName = getRuntime2ClientTypes().getChoice().getChoice().getList().getSelection();
+   IProject initialClientProject = (IProject)((new StringToIProjectTransformer()).transform(initialClientProjectName));
+    IProject defaultClientEAR = getDefaultEARFromClientProject(initialClientProject); // If the client project exists and the default EAR is the same as that of the service
+    project, // pick the defaultClientEAR 
+    if(initialClientProject!=null && initialClientProject.exists() && defaultClientEAR.getName().equalsIgnoreCase(defaultServiceEAR.getName())) {
+    getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(defaultClientEAR.getName()); }
+    else { ProjectTopologyContext ptc=
+    WebServicePlugin.getInstance().getProjectTopologyContext(); if
+    (!ptc.isUseTwoEARs()) {
+    getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(defaultServiceEAR.getName()); }
+    else { IProject proxyEARProject =
+    getUniqueClientEAR(defaultClientEAR.getName(), defaultServiceEAR.getName(),
+    initialClientProjectName);
+    getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(proxyEARProject.getName()); } } }
+  */ 
   
   private IProject getUniqueClientEAR(String earProject, String serviceProject, String clientProjectName) {
 
@@ -522,6 +571,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     
   }
   
+  /*
   private void setDefaultServer()
   {
     String initialProjectName = getServiceProject2EARProject().getList().getSelection();
@@ -591,8 +641,8 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
             
     }        
   }
-  // rskreg
-  /*
+  */
+
   private void setDefaultServer()
   {
     //Calculate reasonable default server based on the default project selection. 
@@ -601,7 +651,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     IProject initialProject = (IProject)((new StringToIProjectTransformer()).transform(initialProjectName));
     if (initialProject.exists())
     {
-      String[] serverInfo = ServerSelectionUtils.getServerInfoFromExistingProject(initialProject, serviceIds_.getTypeId(), serviceIds_.getRuntimeId(), true);
+      String[] serverInfo = ServerSelectionUtils.getServerInfoFromExistingProject(initialProject, serviceComponentName_, serviceIds_.getRuntimeId(), true);
       if (serverInfo!=null)
       {
         if (serverInfo[0]!=null && serverInfo[0].length()>0)
@@ -621,7 +671,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       IProject initialEARProject = (IProject)((new StringToIProjectTransformer()).transform(initialEARProjectName));
       if (initialEARProject.exists())
       {
-        String[] serverInfo = ServerSelectionUtils.getServerInfoFromExistingProject(initialEARProject, serviceIds_.getTypeId(), serviceIds_.getRuntimeId(), false);
+        String[] serverInfo = ServerSelectionUtils.getServerInfoFromExistingProject(initialEARProject, serviceEarComponentName_, serviceIds_.getRuntimeId(), false);
         if (serverInfo!=null)
         {
           if (serverInfo[0]!=null && serverInfo[0].length()>0)
@@ -655,13 +705,9 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
         }
       }
       
-    }
-    
-    
-    //Default the client server    
+    }    
   }
-  */
-  // rskreg
+
   
   private void updateServiceEARs()
   {

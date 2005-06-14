@@ -1900,6 +1900,12 @@ public final class J2EEUtils {
     return false;
 	}	
 	
+  public static String getComponentTypeId(IProject project, String componentName)
+  {
+    IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+    return vc.getComponentTypeId();
+  }
+  
 	public static String[] toComponentNamesArray(IVirtualComponent[] components){
 		String[] ecNames = new String[components.length];
 		for(int i=0; i<components.length; i++){

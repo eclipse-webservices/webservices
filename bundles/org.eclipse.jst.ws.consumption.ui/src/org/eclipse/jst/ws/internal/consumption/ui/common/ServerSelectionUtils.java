@@ -29,6 +29,8 @@ import org.eclipse.jst.ws.internal.consumption.common.ServerInfo;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeInfo;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
@@ -44,13 +46,14 @@ public class ServerSelectionUtils
    * index [0] contains factoryId, index[1] contains instance Id.
    * @deprecated
    */
-  public static String[] getServerInfoFromExistingProject(IProject project, String typeId, boolean askExtenders)
+  public static String[] getServerInfoFromExistingProject(IProject project, String componentName, String runtimeId, boolean askExtenders)
   {
     String[] serverInfo = new String[2]; //serverInfp[0] contains factoryId, serverInfo[1] contains instance Id
 
     // If the project has been added to an existing server, pick that server
-    IServer[] configuredServers = ServerUtil.getServersByModule(ResourceUtils.getModule(project), null);
-    IServer firstSupportedServer = getFirstSupportedServer(configuredServers, typeId );
+    //IServer[] configuredServers = ServerUtil.getServersByModule(ResourceUtils.getModule(project), null);
+    IServer[] configuredServers = ServerUtil.getServersByModule(ServerUtils.getModule(project, componentName), null);
+    IServer firstSupportedServer = getFirstSupportedServer(configuredServers, runtimeId );
     if (firstSupportedServer != null)
     {
       serverInfo[0] = firstSupportedServer.getServerType().getId();
@@ -68,7 +71,7 @@ public class ServerSelectionUtils
       IServer[] compatibleServers = getCompatibleExistingServers(runtimeTarget);
       if (compatibleServers!=null && compatibleServers.length > 0)
       {
-        IServer firstSupportedCompatServer = getFirstSupportedServer(compatibleServers, typeId);
+        IServer firstSupportedCompatServer = getFirstSupportedServer(compatibleServers, runtimeId);
         if (firstSupportedCompatServer != null)
         {
           serverInfo[0] = firstSupportedCompatServer.getServerType().getId();
@@ -94,7 +97,7 @@ public class ServerSelectionUtils
       }     
       
       //The preferred server was not compatible. Pick the first valid compatible server type.
-      String factoryId = getFirstSupportedServerType(runtimeTarget, typeId);
+      String factoryId = getFirstSupportedServerType(runtimeTarget, runtimeId);
       if (factoryId != null) serverInfo[0] = factoryId;
       return serverInfo;
 
@@ -119,14 +122,14 @@ public class ServerSelectionUtils
     //Use ServerTargetHelper to get a list of valid runtime-targets and use these to determine a default server type.
     String[] projectAttrs = ServerTargetHelper.getProjectTypeAndJ2EELevel(project);
     List runtimes = ServerTargetHelper.getServerTargets(projectAttrs[0], projectAttrs[1]);
-    String[] compatServerInfo = getCompatibleExistingServer(runtimes,typeId); 
+    String[] compatServerInfo = getCompatibleExistingServer(runtimes,runtimeId); 
     if ( compatServerInfo != null)
     {
       return compatServerInfo;
     }
     
     //No existing compatible server, pick a type.
-    String factoryId = getFirstSupportedServerType(runtimes, typeId);
+    String factoryId = getFirstSupportedServerType(runtimes, runtimeId);
     if (factoryId != null) serverInfo[0] = factoryId; 
     return serverInfo;   
     
@@ -137,13 +140,14 @@ public class ServerSelectionUtils
    * an existing project
    * index [0] contains factoryId, index[1] contains instance Id.
    */
-  public static String[] getServerInfoFromExistingProject(IProject project, String typeId, String runtimeId, boolean askExtenders)
+  /*
+  public static String[] getServerInfoFromExistingProject(IProject project, String runtimeId, boolean askExtenders)
   {
     String[] serverInfo = new String[2]; //serverInfp[0] contains factoryId, serverInfo[1] contains instance Id
 
     // If the project has been added to an existing server, pick that server
     IServer[] configuredServers = ServerUtil.getServersByModule(ResourceUtils.getModule(project), null);
-    IServer firstSupportedServer = getFirstSupportedServer(configuredServers, typeId );
+    IServer firstSupportedServer = getFirstSupportedServer(configuredServers, runtimeId );
     if (firstSupportedServer != null)
     {
       serverInfo[0] = firstSupportedServer.getServerType().getId();
@@ -161,7 +165,7 @@ public class ServerSelectionUtils
       IServer[] compatibleServers = getCompatibleExistingServers(runtimeTarget);
       if (compatibleServers!=null && compatibleServers.length > 0)
       {
-        IServer firstSupportedCompatServer = getFirstSupportedServer(compatibleServers, typeId);
+        IServer firstSupportedCompatServer = getFirstSupportedServer(compatibleServers, runtimeId);
         if (firstSupportedCompatServer != null)
         {
           serverInfo[0] = firstSupportedCompatServer.getServerType().getId();
@@ -225,6 +229,28 @@ public class ServerSelectionUtils
     return serverInfo;   
     
   }
+  */
+  
+  /*
+   * Given a list of existing servers, this returns the first one that is supported
+   * by the given Web service runtime id. 
+   * Returns null of there are no supported servers in the array.
+   */
+  public static IServer getFirstSupportedServer(IServer[] servers, String webServiceRuntimeId)
+  {
+    //WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
+    if (servers != null && servers.length > 0) {
+      for (int i = 0; i < servers.length; i++)
+      {
+        String serverFactoryId = servers[i].getServerType().getId();
+        if (WebServiceRuntimeExtensionUtils.doesRuntimeSupportServer(webServiceRuntimeId, serverFactoryId))
+        {
+          return servers[i];
+        }
+      }
+    }
+    return null;
+  }
   
   /*
    * Given a list of existing servers, this returns the first one that is supported
@@ -232,6 +258,7 @@ public class ServerSelectionUtils
    * Returns null of there are no supported servers in the array.
    * @deprecated
    */
+  /*
   public static IServer getFirstSupportedServer(IServer[] servers, String typeId)
   {
     WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
@@ -247,12 +274,39 @@ public class ServerSelectionUtils
     }
     return null;
   }  
+  */
+  
+  /*
+   * Returns the factory id of a server type compatible with the Web service type and the runtime target.
+   * Returns null if there are none.
+   */
+  public static String getFirstSupportedServerType(IRuntime runtimeTarget, String webServiceRuntimeId)
+  {
+    String runtimeId = runtimeTarget.getRuntimeType().getId();
+    //WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
+    //String[] serverFactoryIds = wssrtRegistry.getServerFactoryIdsByType(typeId);
+    WebServiceRuntimeInfo wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(webServiceRuntimeId);
+    String[] serverFactoryIds = wsrt.getServerFactoryIds();
+    for (int i=0; i<serverFactoryIds.length; i++)
+    {
+      IServerType serverType = ServerCore.findServerType(serverFactoryIds[i]);
+      if (serverType!=null){
+        String serverRuntimeId = serverType.getRuntimeType().getId();
+        if (serverRuntimeId.equals(runtimeId))
+        {
+          return serverFactoryIds[i];
+        }
+      }
+    }
+    return null;
+  }
   
   /*
    * Returns the factory id of a server type compatible with the Web service type and the runtime target.
    * Returns null if there are none.
    * @deprecated
    */
+  /*
   public static String getFirstSupportedServerType(IRuntime runtimeTarget, String typeId)
   {
     String runtimeId = runtimeTarget.getRuntimeType().getId();
@@ -271,12 +325,30 @@ public class ServerSelectionUtils
     }
     return null;
   }
-  
+  */
+
+  /*
+   * Return the factory id of the first server type compatible with the runtimeTargets and webServiceRuntimeId.
+   * Returns null if there are none.
+   */
+  public static String getFirstSupportedServerType(List runtimeTargets, String webServiceRuntimeId)
+  {
+    for (int i=0; i<runtimeTargets.size(); i++ )
+    {
+      IRuntime runtimeTarget = (IRuntime)runtimeTargets.get(i);
+      String factoryId = getFirstSupportedServerType(runtimeTarget, webServiceRuntimeId);
+      if (factoryId != null && factoryId.length()>0)
+        return factoryId;
+    }
+    
+    return null;
+  }  
   /*
    * Return the factory id of the first server type compatible with the runtimeTargets and typeId.
    * Returns null if there are none.
    * @deprecated
    */
+  /*
   public static String getFirstSupportedServerType(List runtimeTargets, String typeId)
   {
     for (int i=0; i<runtimeTargets.size(); i++ )
@@ -289,7 +361,7 @@ public class ServerSelectionUtils
     
     return null;
   }
-
+  */
   public static IRuntime getRuntimeTarget(String projectName)
   {
   	if( projectName != null && projectName.length() > 0 ){ //$NON-NLS-1$
@@ -353,6 +425,32 @@ public class ServerSelectionUtils
     return compatibleServers;
   }
   
+
+  /*
+   * Returns the factory Id and instance id of the first exiting server compatible
+   * with the runtime targets and typeId
+   * Returns null if there are none.
+   * The item at [0] is the factory id.
+   * The item at [1] is the instance id.
+   * @deprecated
+   */
+  public static String[] getCompatibleExistingServer(List runtimeTargets, String webServiceRuntimeId)
+  {
+    String[] serverInfo = new String[2];
+    for (int i=0; i<runtimeTargets.size(); i++ )
+    {
+      IRuntime runtimeTarget = (IRuntime)runtimeTargets.get(i);
+      IServer[] existingCompatServers = getCompatibleExistingServers(runtimeTarget);
+      IServer compatServer = getFirstSupportedServer(existingCompatServers, webServiceRuntimeId);
+      if (compatServer != null)
+      {
+        serverInfo[0] = compatServer.getServerType().getId();
+        serverInfo[1] = compatServer.getId();
+        return serverInfo;
+      }
+    }
+    return null;
+  }
   
   /*
    * Returns the factory Id and instance id of the first exiting server compatible
@@ -362,6 +460,7 @@ public class ServerSelectionUtils
    * The item at [1] is the instance id.
    * @deprecated
    */
+  /*
   public static String[] getCompatibleExistingServer(List runtimeTargets, String typeId)
   {
     String[] serverInfo = new String[2];
@@ -379,6 +478,7 @@ public class ServerSelectionUtils
     }
     return null;
   }
+  */
   
   public static ServerInfo getExtenderRecommendation(IProject project)
   {
@@ -435,15 +535,16 @@ public class ServerSelectionUtils
    * @param webServiceRuntimeId
    * @param j2eeVersion String representation of the int values in J2EEVersionConstants i.e. "12", "13", "14"
    * @return String[] index [0] contains factoryId, index[1] contains instance Id.
-   * @deprecated
    */
   public static String[] getServerFromWebServceRuntimeAndJ2EE(String webServiceRuntimeId, String j2eeVersion)
   {
     String[] serverInfo = new String[2];
-    WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
+    //WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
     
     //Get all possible valid servers. If there are none, we can't default intelligently, return null.
-    String[] validServerFactoryIds = wssrtReg.getServerFactoryIDByRuntimeID(webServiceRuntimeId);
+    //String[] validServerFactoryIds = wssrtReg.getServerFactoryIDByRuntimeID(webServiceRuntimeId);
+    WebServiceRuntimeInfo wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(webServiceRuntimeId);
+    String[] validServerFactoryIds = wsrt.getServerFactoryIds();
     if (validServerFactoryIds==null || validServerFactoryIds.length<1)
       return null;
     

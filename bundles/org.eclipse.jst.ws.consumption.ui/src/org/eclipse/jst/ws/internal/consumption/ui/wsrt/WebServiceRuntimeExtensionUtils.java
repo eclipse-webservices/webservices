@@ -173,7 +173,28 @@ public class WebServiceRuntimeExtensionUtils
     return null;
   }
   
-
+  /*
+   * @param typeId will be a String of the format "0/implId"
+   * where the digit before the "/" represents the scenario
+   * (e.g. WebServiceScenario.BOTTOM_UP) and the implId is the id
+   * of the WebServiceImpl
+   */  
+  public static boolean isRuntimeSupportedForType(String typeId, String runtimeId)
+  {
+    String[] runtimeIds = getRuntimesByType(typeId);
+    if (runtimeIds!=null)
+    {
+      for (int i=0; i < runtimeIds.length; i++)
+      {
+        if (runtimeIds[i].equals(runtimeId))
+        {
+          return true;
+        }
+      }
+    }
+    
+    return false;
+  }
   
   public static String[] getServerFactoryIdsByType(String typeId) 
   {
@@ -289,7 +310,7 @@ public class WebServiceRuntimeExtensionUtils
     return false;        
   }
   
-  public boolean doesRuntimeSupportServerTarget(String serverTargetId, String runtimeId)
+  public static boolean doesRuntimeSupportServerTarget(String serverTargetId, String runtimeId)
   {
     WebServiceRuntimeInfo wsrt = getWebServiceRuntimeById(runtimeId);
     if (wsrt==null)
@@ -743,6 +764,23 @@ public class WebServiceRuntimeExtensionUtils
     }  
     
     return null;    
+  }
+  
+  public static boolean doesRuntimeSupportComponentType(String clientImplId, String runtimeId, String componentTypeId)
+  {
+    String[] compTypeIds = getClientProjectTypes(clientImplId, runtimeId);
+    if (compTypeIds!=null)
+    {
+      for (int i=0; i<compTypeIds.length; i++)
+      {
+       if (compTypeIds[i].equals(componentTypeId))
+       {
+         return true;
+       }
+      }
+    }
+    
+    return false;
   }
   
   public static LabelsAndIds getClientTypeLabels()
