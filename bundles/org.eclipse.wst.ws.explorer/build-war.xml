@@ -24,6 +24,9 @@
 				<fileset dir="${buildDirectory}/plugins">
 					<include name="*.jar" />
 				</fileset>
+				<dirset dir="${buildDirectory}/plugins">
+					<include name="**/@dot"/>
+				</dirset>
 				<fileset dir="${baseLocation}/plugins">
 					<include name="**/*.jar" />
 				</fileset>
