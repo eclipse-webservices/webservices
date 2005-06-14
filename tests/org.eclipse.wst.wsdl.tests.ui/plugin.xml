@@ -2,7 +2,7 @@
 <plugin
    id="org.eclipse.wst.wsdl.tests.ui"
    name="WSDL Model UI Samples"
-   version="1.0.0">
+   version="0.7.0">
 
    <runtime>
       <library name="wsdl.tests.ui.jar"/>
