@@ -12,6 +12,7 @@ import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
+import org.eclipse.jst.ws.tests.performance.util.PerformanceJUnitUtils;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.jst.ws.tests.util.ScenarioConstants;
 import org.eclipse.test.performance.Performance;
@@ -46,8 +47,8 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 		IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
 		assertTrue(webProject.exists());
 
-    // Copy Echo.wsdl file to WebContent folder
-    IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject, CLIENT_WEB_MODULE_NAME);
+        // Copy Echo.wsdl file to WebContent folder
+        IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject, CLIENT_WEB_MODULE_NAME);
 		JUnitUtils.copyTestData("TDJava",destFolder,env_);
 		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));
 		assertTrue(sourceFile_.exists());
@@ -59,7 +60,7 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
    * Set the persistent server runtime context preferences
    */
 	protected void initJ2EEWSRuntimeServerDefaults() throws Exception {
-    // Set default preferences for J2EE 1.4 Axis and Tomcat 5.0    
+        // Set default preferences for J2EE 1.4 Axis and Tomcat 5.0    
 		JUnitUtils.setJ2EEWSRuntimeServer(String.valueOf(J2EEVersionConstants.J2EE_1_4_ID), WS_RUNTIMEID_AXIS, SERVERTYPEID_TC50);
 	}
 
@@ -78,14 +79,14 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 	{	
 	  	Status status = new SimpleStatus("");
 	  	
-		  JUnitUtils.enableProxyGeneration(true);
-		  JUnitUtils.enableOverwrite(true);
+		JUnitUtils.enableProxyGeneration(true);
+		JUnitUtils.enableOverwrite(true);
 		Performance perf= Performance.getDefault();
 		PerformanceMeter performanceMeter= perf.createPerformanceMeter(perf.getDefaultScenarioId(this));	    
 	    try {
     
 	      performanceMeter.start();
-	      status = JUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_CLIENT,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
+	      status = PerformanceJUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_CLIENT,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
 	      performanceMeter.stop();
 	      performanceMeter.commit();
 	      perf.assertPerformance(performanceMeter);
@@ -107,10 +108,10 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
    * @throws Exception
    */
 	private final void verifyOutput() throws Exception {
-    IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
+        IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
     
-    IPath destPath = ResourceUtils.getJavaSourceLocation(webProject, CLIENT_WEB_MODULE_NAME);
-    IFolder srcFolder = (IFolder)ResourceUtils.findResource(destPath);
+        IPath destPath = ResourceUtils.getJavaSourceLocation(webProject, CLIENT_WEB_MODULE_NAME);
+        IFolder srcFolder = (IFolder)ResourceUtils.findResource(destPath);
     
 		//IFolder srcFolder = JUnitUtils.getSourceFolderForWebProject(CLIENT_PROJECT_NAME);
 		IFolder folder = srcFolder.getFolder("foo");

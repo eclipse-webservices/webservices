@@ -12,6 +12,7 @@ import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
+import org.eclipse.jst.ws.tests.performance.util.PerformanceJUnitUtils;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.jst.ws.tests.util.ScenarioConstants;
 import org.eclipse.test.performance.Performance;
@@ -27,8 +28,8 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
   private final String WS_RUNTIMEID_AXIS = "org.eclipse.jst.ws.runtime.axis11";
   
   private final String WEB_MODULE_NAME = "TestTDWebModule";  
-	private final String PROJECT_NAME = "TestTDProject";
-	private IFile sourceFile_;
+  private final String PROJECT_NAME = "TestTDProject";
+  private IFile sourceFile_;
 	
 
   /**
@@ -46,8 +47,7 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
 		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
 		assertTrue(webProject.exists());
 
-//		JUnitUtils.startServer(server_, env_);
-    IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject, WEB_MODULE_NAME);		
+		IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject, WEB_MODULE_NAME);		
 		JUnitUtils.copyTestData("TDJava",destFolder,env_);
 		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));
 		assertTrue(sourceFile_.exists());
@@ -82,7 +82,7 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
 	    try {
     
 	      performanceMeter.start();
-	      status = JUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_TOP_DOWN,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
+	      status = PerformanceJUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_TOP_DOWN,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
 	      performanceMeter.stop();
 	      performanceMeter.commit();
 	      perf.assertPerformance(performanceMeter);
@@ -103,18 +103,18 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
    */
 	private final void verifyOutput() throws Exception
 	{
-    IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
-    IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject, WEB_MODULE_NAME);    
+        IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
+        IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject, WEB_MODULE_NAME);    
     
-    IPath webInfPath = J2EEUtils.getWebInfPath(webProject, WEB_MODULE_NAME);
-    IFolder webInfFolder = (IFolder)ResourceUtils.findResource(webInfPath);
+        IPath webInfPath = J2EEUtils.getWebInfPath(webProject, WEB_MODULE_NAME);
+        IFolder webInfFolder = (IFolder)ResourceUtils.findResource(webInfPath);
 		
 		IFolder wsdlFolder = webContentFolder.getFolder("wsdl");
 		assertTrue(wsdlFolder.exists());
 		assertTrue(wsdlFolder.members().length > 0);
 
-    //TODO Verify that wsdd contains this Web service
-    //TODO Verify that the service can be invoked by a client
+        //TODO Verify that wsdd contains this Web service
+        //TODO Verify that the service can be invoked by a client
 	}
 	
   /**

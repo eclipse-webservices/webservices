@@ -11,7 +11,6 @@ Export-Package: org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr,
  org.eclipse.jst.ws.tests.performance,
  org.eclipse.jst.ws.tests.performance.plugin
 Require-Bundle: org.eclipse.jst.ws,
- org.eclipse.wst.command.env.core,
  org.eclipse.jst.j2ee.core,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -20,5 +19,7 @@ Require-Bundle: org.eclipse.jst.ws,
  org.junit,
  org.eclipse.jst.ws.tests,
  org.eclipse.jem.util,
- org.eclipse.test.performance
+ org.eclipse.test.performance,
+ org.eclipse.wst.command.env.ui,
+ org.eclipse.wst.command.env.core
 Eclipse-AutoStart: true
