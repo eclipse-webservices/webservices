@@ -349,7 +349,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       IResource wsRes = ResourceUtils.findResource(wsRelPath);
       if (wsRes!=null && wsRes instanceof IFile)
       {
-        IVirtualComponent comp = ResourceUtils.getComponentOf(wsRes.getFullPath());
+        IVirtualComponent comp = ResourceUtils.getComponentOf(wsRes);
         if (comp!=null)
         {
           return comp.getName();
@@ -389,7 +389,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       IResource res = root.findMember(new Path(relPath));
       if (res instanceof IFile)
       {
-        IVirtualComponent comp = ResourceUtils.getComponentOf(res.getFullPath());
+        IVirtualComponent comp = ResourceUtils.getComponentOf(res);
         if (comp!=null)
         {
           return comp.getName();

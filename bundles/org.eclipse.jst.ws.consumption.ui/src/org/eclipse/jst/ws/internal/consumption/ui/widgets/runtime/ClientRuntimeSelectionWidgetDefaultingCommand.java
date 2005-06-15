@@ -182,7 +182,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   {
     try
     {
-
+        	
 	  String[] runtimeIds = WebServiceRuntimeExtensionUtils.getRuntimesByClientType(clientIds_.getTypeId()); 
       SelectionList list = new SelectionList(runtimeIds, 0);
       Vector choices = new Vector();
@@ -1051,7 +1051,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
           if (resource==null) 
             return null;
           
-          IVirtualComponent comp = ResourceUtils.getComponentOf(resource.getFullPath());
+          IVirtualComponent comp = ResourceUtils.getComponentOf(resource);
           if (comp!=null)
           {
             return comp.getName();

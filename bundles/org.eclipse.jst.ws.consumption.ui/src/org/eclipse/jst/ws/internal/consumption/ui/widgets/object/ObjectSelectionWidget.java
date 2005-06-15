@@ -221,7 +221,7 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
           if (resource==null) 
             return null;
           IProject p = ResourceUtils.getProjectOf(resource.getFullPath());
-          IVirtualComponent comp = ResourceUtils.getComponentOf(resource.getFullPath());
+          IVirtualComponent comp = ResourceUtils.getComponentOf(resource);
           if (comp != null)
           {
             return comp.getName();  

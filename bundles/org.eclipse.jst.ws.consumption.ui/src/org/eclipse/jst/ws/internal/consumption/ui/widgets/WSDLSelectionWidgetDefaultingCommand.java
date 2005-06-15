@@ -132,7 +132,7 @@ public class WSDLSelectionWidgetDefaultingCommand extends SimpleCommand
           if (resource==null) 
             return null;
           
-          IVirtualComponent comp = ResourceUtils.getComponentOf(resource.getFullPath());
+          IVirtualComponent comp = ResourceUtils.getComponentOf(resource);
           if (comp!=null)
           {
             return comp.getName();

@@ -55,6 +55,7 @@ import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
+import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerPort;
@@ -297,6 +298,18 @@ public final class ResourceUtils {
 			}
 		}
 		return null;
+	}
+	
+	public static IVirtualComponent getComponentOf(IResource res)
+	{
+		IVirtualResource[] vresources = ComponentCore.createResources(res);
+		IVirtualComponent vcomp = null;
+		if (vresources != null && vresources.length>0)
+		{
+			IVirtualResource vres = vresources[0];
+			vcomp = vres.getComponent();
+		}
+		return vcomp;
 	}
 	
 	

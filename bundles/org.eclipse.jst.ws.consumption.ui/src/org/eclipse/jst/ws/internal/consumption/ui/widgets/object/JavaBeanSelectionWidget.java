@@ -23,6 +23,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardContainer;
+import org.eclipse.jst.common.componentcore.util.ComponentUtilities;
 import org.eclipse.jst.j2ee.webservice.internal.wsdd.impl.PortComponentImpl;
 import org.eclipse.jst.j2ee.webservice.internal.wsdd.impl.ServiceImplBeanImpl;
 import org.eclipse.jst.j2ee.webservice.wsdd.BeanLink;
@@ -144,7 +145,7 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
         if (res != null)
         {
           serverProject_ = res.getProject();
-          IVirtualComponent comp = ResourceUtils.getComponentOf(res.getFullPath());
+          IVirtualComponent comp = ResourceUtils.getComponentOf(res);
           if (comp!=null)
           {
             serverComponentName_ = comp.getName();
@@ -190,9 +191,10 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
         
         beanClassText_.setText(beanClass);
         serverProject_ =  ResourceUtils.getProjectOf(path);
-        IVirtualComponent comp = ResourceUtils.getComponentOf(path);
+        IVirtualComponent comp = ResourceUtils.getComponentOf(resource);
+        
         if (comp!=null)
-        {
+        {	
           serverComponentName_ = comp.getName();
         }        
         
