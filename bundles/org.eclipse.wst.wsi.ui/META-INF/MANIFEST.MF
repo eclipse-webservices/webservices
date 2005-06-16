@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %_PLUGIN_NAME
-Bundle-SymbolicName: org.eclipse.wst.wsi.ui
+Bundle-SymbolicName: org.eclipse.wst.wsi.ui; singleton:=true
 Bundle-Version: 0.7.0
 Bundle-ClassPath: wsiui.jar
 Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator
@@ -11,7 +11,6 @@ Export-Package: org.eclipse.wst.wsi.ui.internal,
  org.eclipse.wst.wsi.ui.internal.actions,
  org.eclipse.wst.wsi.ui.internal.actions.actionDelegates,
  org.eclipse.wst.wsi.ui.internal.actions.icons,
- org.eclipse.wst.wsi.ui.internal.dialogs,
  org.eclipse.wst.wsi.ui.internal.wizards
 Require-Bundle: org.eclipse.jface.text,
  org.eclipse.core.resources,

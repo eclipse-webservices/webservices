@@ -14,8 +14,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.wst.common.ui.internal.dialogs.SelectSingleFileDialog;
+import org.eclipse.wst.wsi.ui.internal.Resource;
 import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
-import org.eclipse.wst.wsi.ui.internal.dialogs.SelectSingleFileDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -291,6 +292,12 @@ public class ValidationWizardWSDLPage extends WizardPage implements SelectionLis
     {
       SelectSingleFileDialog dialog = new SelectSingleFileDialog(getShell(), selection, false);
       dialog.addFilterExtensions(new String[] { ".wsdl" });
+      dialog.create();
+      dialog.getShell().setText(WSIUIPlugin.getResourceString("_UI_DIALOG_SS_FILE_SHELL_TEXT"));
+      dialog.setTitle(WSIUIPlugin.getResourceString("_UI_DIALOG_SS_FILE_TITLE"));
+      dialog.setMessage(WSIUIPlugin.getResourceString("_UI_DIALOG_SS_FILE_DESCRIPTION"));
+      dialog.setTitleImage(WSIUIPlugin.getResourceImage(Resource.VALIDATE_WSI_LOGFILE_WIZ));
+      
       int result = dialog.open();
 
       if (result == Window.OK)

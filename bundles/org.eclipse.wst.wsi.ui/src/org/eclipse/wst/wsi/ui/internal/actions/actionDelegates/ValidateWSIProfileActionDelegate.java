@@ -23,6 +23,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.Request;
+import org.eclipse.wst.internet.monitor.ui.internal.provisional.MonitorUICore;
 import org.eclipse.wst.wsi.ui.internal.LogBuilder;
 import org.eclipse.wst.wsi.ui.internal.wizards.ValidationWizard;
 import org.eclipse.wst.wsi.ui.internal.WSIValidator;
@@ -123,7 +124,7 @@ public class ValidateWSIProfileActionDelegate implements IViewActionDelegate
     {
       ValidationWizard validateWizard = new ValidationWizard(DEFAULT_LOG_FILENAME);
 
-      //TODO requestResponses = MonitorCore.getRequests();
+      requestResponses = MonitorUICore.getRequests();
       List wsdllocs = new Vector();
       if(requestResponses != null)
       {
@@ -153,9 +154,6 @@ public class ValidateWSIProfileActionDelegate implements IViewActionDelegate
         checkAndCreateContainer(validateWizard.getContainerFullPath());
 
         IFile file = validateWizard.getFile();
-        //String filename = file.getLocation().toOSString();
-        //IMonitor monitor = MonitorCore.getRequests();
-        //monitor.getElements();
         LogBuilder builder = new LogBuilder(file);
         Log log = builder.buildLog(requestResponses);
 
@@ -176,11 +174,6 @@ public class ValidateWSIProfileActionDelegate implements IViewActionDelegate
         {	
         	messageValidator.validate(file);
         }
-        //WSIValidateAction validateAction = new WSIValidateAction(file, true);
-//        validateAction.setValidator(messageValidator);
-        //validateAction.run();
-//        WSIValidator wsiValidator = new WSIValidator();
-//        wsiValidator.validate(file);
       }
     }
     catch (Exception e)

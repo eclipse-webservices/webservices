@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.ui.internal;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.IPluginDescriptor;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -31,11 +35,6 @@ public class WSIUIPlugin extends AbstractUIPlugin
    */
   protected static WSIUIPlugin instance;                
 
-//  /**
-//   * Message Logger associated with this plugin.
-//   */
-//  private static MsgLogger myMsgLogger;
-
   /**
    * Constructor.
    */
@@ -53,6 +52,29 @@ public class WSIUIPlugin extends AbstractUIPlugin
   {
     return instance;
   }
+
+  protected ImageRegistry createImageRegistry() 
+  {
+		ImageRegistry registry = super.createImageRegistry();
+		registerImage(registry, Resource.VALIDATE_WSI_LOGFILE_WIZ);
+		return registry;
+  }
+
+	/**
+	 * Register an image with the registry.
+	 * 
+	 * @param key the key
+	 */
+	private void registerImage(ImageRegistry registry, String key)
+	{
+  	  try 
+  	  {
+		ImageDescriptor id = ImageDescriptor.createFromFile(WSIUIPlugin.class, key);
+		registry.put(key, id);
+	  } catch (Exception e) 
+	  {
+      }
+	}
 
   /**
    * Convience API.  

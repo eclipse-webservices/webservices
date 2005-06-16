@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.eclipse.core.internal.preferences.Base64;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.Request;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
@@ -28,6 +27,7 @@ import org.eclipse.wst.wsi.internal.core.document.DocumentFactory;
 import org.eclipse.wst.wsi.internal.core.log.Log;
 import org.eclipse.wst.wsi.internal.core.log.LogWriter;
 import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
+import org.eclipse.wst.wsi.internal.core.log.MimeParts;
 import org.eclipse.wst.wsi.internal.core.log.impl.LogImpl;
 import org.eclipse.wst.wsi.internal.core.log.impl.LogWriterImpl;
 import org.eclipse.wst.wsi.internal.core.log.impl.MessageEntryImpl;
@@ -36,6 +36,7 @@ import org.eclipse.wst.wsi.internal.core.monitor.config.ManInTheMiddle;
 import org.eclipse.wst.wsi.internal.core.monitor.config.MonitorConfig;
 import org.eclipse.wst.wsi.internal.core.monitor.config.impl.CommentImpl;
 import org.eclipse.wst.wsi.internal.core.monitor.config.impl.ManInTheMiddleImpl;
+import org.eclipse.wst.wsi.internal.core.util.Utils;
 
 /**
  * Given a list of RequestResponses from a TCPIP Monitor, 
@@ -147,21 +148,10 @@ public class LogBuilder
         
       String requestHeader = new String(rr.getRequest(Request.TRANSPORT));
       String responseHeader = new String(rr.getResponse(Request.TRANSPORT));
+      
       byte[] unchunkedRequestBody = rr.getRequest(Request.CONTENT);
       byte[] unchunkedResponseBody = rr.getResponse(Request.CONTENT);
-      String requestBody = null;
-      String responseBody = null;
-
-      if (unchunkedRequestBody != null)
-      {
-        requestBody = new String(Base64.encode(unchunkedRequestBody)); 
-      }
-
-      if (unchunkedResponseBody != null)
-      {
-        responseBody = new String(Base64.encode(unchunkedResponseBody)); 
-      }
-
+ 
       long timestamp = rr.getDate().getTime();
       String localHostAndPort = "localhost:" + rr.getLocalPort();
       String remoteHostAndPort = rr.getRemoteHost() + ":" + rr.getRemotePort();
@@ -172,20 +162,20 @@ public class LogBuilder
 
       MessageEntry messageEntryRequest = createMessageEntry(requestId, conversationId, 
                 MessageEntry.TYPE_REQUEST, timestamp, localHostAndPort,
-                remoteHostAndPort, requestBody, requestHeader);
+                remoteHostAndPort, unchunkedRequestBody, requestHeader);
 
       MessageEntry messageEntryResponse = createMessageEntry(responseId, conversationId, 
                 MessageEntry.TYPE_RESPONSE, timestamp + rr.getResponseTime(), remoteHostAndPort,
-                localHostAndPort, responseBody, responseHeader);
+                localHostAndPort, unchunkedResponseBody, responseHeader);
       try
       {
-        if ((messageEntryRequest != null) && isMessageWithBrackets(requestBody))
+        if ((messageEntryRequest != null) &&
+            (messageEntryResponse != null) &&
+            ((messageEntryRequest.isMimeContent()) ||
+			 (isMessageWithBrackets(messageEntryRequest.getMessage()))))
         {
-           if (messageEntryResponse != null)
-           {
-             log.addLogEntry(messageEntryRequest);
-             log.addLogEntry(messageEntryResponse);
-           }
+                log.addLogEntry(messageEntryRequest);
+               log.addLogEntry(messageEntryResponse);
         }
       }
       catch (Exception e)
@@ -208,6 +198,48 @@ public class LogBuilder
             (message.indexOf("<")!= -1) && 
             (message.indexOf(">") != -1));
   }
+  /**
+   * Returns the header of a message.
+   * @param requestOrResponse: a message.
+   * @param headerLength: the length of the header in the message.
+   * @return the header of a message.
+   */ 
+  protected String getHeader(byte[] requestOrResponse,  int headerLength)
+  {
+    String result = null;
+    
+    if ((requestOrResponse != null) && 
+        (headerLength > 0) && 
+        (requestOrResponse.length >= headerLength))
+    {
+      byte[] header = new byte[headerLength];
+      System.arraycopy(requestOrResponse, 0, header, 0, headerLength);
+      result = new String(header);
+    }
+    return result;
+  }
+
+  /**
+   * Returns the body of a message.
+   * @param requestOrResponse: a message.
+   * @param headerLength: the length of the header in the message.
+   * @return the body of a message.
+   */ 
+  protected String getBody(byte[] requestOrResponse,  int headerLength)
+  {
+    String result = null;
+    
+    if ((requestOrResponse != null) && 
+        (headerLength > 0) && 
+        (requestOrResponse.length > headerLength))
+    {
+      int bodyLength = requestOrResponse.length - headerLength;
+      byte[] body = new byte[bodyLength];
+      System.arraycopy(requestOrResponse, headerLength, body, 0, bodyLength);
+      result = new String(body);
+    }
+    return result;
+  }
       
   /**
    * Create a log entry.
@@ -222,19 +254,41 @@ public class LogBuilder
    * @return a log entry.
    */
   protected MessageEntry createMessageEntry(int id, int conversationId, String type, long timestamp, 
-        String senderHostAndPort, String receiverHostAndPort, String messageContent, String header) 
+        String senderHostAndPort, String receiverHostAndPort, byte[] messageContent, String header) 
   {
  	// Create log entry
     MessageEntry messageEntry = new MessageEntryImpl();
-	messageEntry.setHTTPHeaders(header);
-	messageEntry.setMessage(messageContent);
     messageEntry.setId(String.valueOf(id));
     messageEntry.setConversationId(String.valueOf(conversationId));
     messageEntry.setType(type);
     messageEntry.setTimestamp(getTimestamp(new Date(timestamp)));
     messageEntry.setSenderHostAndPort(senderHostAndPort);
     messageEntry.setReceiverHostAndPort(receiverHostAndPort);
-            
+    messageEntry.setEncoding(WSIConstants.DEFAULT_XML_ENCODING);
+    
+    messageEntry.setHTTPHeaders(header);
+
+    if (Utils.isMultipartRelatedMessage(header))
+    {
+    	MimeParts mimeParts = Utils.parseMultipartRelatedMessage(messageContent, header, WSIConstants.DEFAULT_XML_ENCODING);
+    	if (mimeParts == null)
+    	{
+    	  // problem creating Mimeparts -- treat it as simple SOAP message
+    	  messageEntry.setMessage(new String(messageContent));
+    	  messageEntry.setMimeContent(false);
+    	}
+    	else
+    	{
+          messageEntry.setMimeParts(mimeParts);
+          messageEntry.setMimeContent(true);
+    	}
+    }
+    else
+    {
+      // Get the message content
+      messageEntry.setMessage(new String(messageContent));
+      messageEntry.setMimeContent(false);
+    }
     return messageEntry;
   }
 
@@ -255,6 +309,16 @@ public class LogBuilder
   protected int getNextAvailableConversationId()
   {
     return conversationId++;
+  }
+
+  public int getHeaderLength(Integer obj)
+  {
+    int result = 0;
+    if (obj != null)
+    {
+      result = obj.intValue();
+    }
+    return result;
   }
 
   /**
