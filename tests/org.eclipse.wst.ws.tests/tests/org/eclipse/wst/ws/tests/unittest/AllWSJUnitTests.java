@@ -1,5 +1,7 @@
 package org.eclipse.wst.ws.tests.unittest;
 
+import org.eclipse.wst.ws.tests.data.LocatorWorkspaceSetup;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
@@ -55,6 +57,7 @@ public class AllWSJUnitTests extends TestCase
   {
     TestSuite testSuite = new TestSuite();
  //add unit tests to suite here...
+    testSuite.addTest( LocatorWorkspaceSetup.suite());
     testSuite.addTest( WebServiceFinderTests.suite());
     return testSuite;
   }

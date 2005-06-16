@@ -1,8 +1,9 @@
 package org.eclipse.wst.ws.tests.unittest;
 
-import org.eclipse.wst.ws.internal.wsfinder.WebServiceFinder;
-import org.eclipse.wst.ws.tests.data.TestWorkspace;
+import java.util.Iterator;
 
+import org.eclipse.wst.ws.internal.wsfinder.WebServiceFinder;
+import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceInfo;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -22,16 +23,12 @@ public class WebServiceFinderTests extends TestCase implements WSJUnitConstants 
 		System.out.println("creating web service finder");
 		WebServiceFinder wsf = WebServiceFinder.instance();
 		
-		TestWorkspace wspace = new TestWorkspace();
-		try {
-			wspace.installData();	
-		}
-		catch (Exception e){
-			System.out.println("exception thrown " + e.toString());
-		}
-		
 		System.out.println("attempting to locate all web services in workspace");
-		wsf.getWebServices();	
+		Iterator wsIterator = wsf.getWebServices();
+		while (wsIterator.hasNext()) {
+			WebServiceInfo wsInfo = (WebServiceInfo) wsIterator.next();
+			System.out.println("webService URL: " + wsInfo.getWsdlURL());
+		}
 		
 		System.out.println("finished finding all webservices");
 		 

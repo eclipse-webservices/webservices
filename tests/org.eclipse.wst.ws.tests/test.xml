@@ -31,7 +31,7 @@
       <property name="plugin-name" value="${plugin-name}"/>
       <property name="classname" value="org.eclipse.wst.ws.tests.unittest.AllWSJUnitTests" />
    	  <property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>
-   	  <property name="extraVMargs" value="${extraVMargs}"/>    	
+<!--   	  <property name="extraVMargs" value="${extraVMargs}"/>    	-->
     </ant>
   </target>
 
