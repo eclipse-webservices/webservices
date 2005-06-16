@@ -30,7 +30,7 @@ import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLMessageInfoHelper;
-import org.eclipse.wst.xml.validation.internal.core.ValidateAction;
+import org.eclipse.wst.xml.ui.internal.validation.core.ValidateAction;
 
 /**
  * Eclipse action for running the WSDL validator. 
@@ -110,7 +110,7 @@ public class ValidateWSDLAction extends ValidateAction
         //createMarkers(file, validatormanager.getWarningList(), WARNING_MARKER);
         
         //file.setSessionProperty(ValidationMessage.ERROR_MESSAGE_MAP_QUALIFIED_NAME, valReport.getNestedMessages());
-        file.setSessionProperty(org.eclipse.wst.xml.validation.internal.core.ValidationMessage.ERROR_MESSAGE_MAP_QUALIFIED_NAME, convertNestedValidationMessages(valReport.getNestedMessages()));
+        file.setSessionProperty(org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage.ERROR_MESSAGE_MAP_QUALIFIED_NAME, convertNestedValidationMessages(valReport.getNestedMessages()));
       }
     };
 
@@ -135,32 +135,32 @@ public class ValidateWSDLAction extends ValidateAction
    * @param messages The WSDL validation messages to convert.
    * @return The converted validation messages.
    */
-  private org.eclipse.wst.xml.validation.internal.core.ValidationMessage[] convertValidationMessages(IValidationMessage[] messages)
+  private org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage[] convertValidationMessages(IValidationMessage[] messages)
   {
   	int numMessages = messages.length;
-  	org.eclipse.wst.xml.validation.internal.core.ValidationMessage[] convertedMessages = new org.eclipse.wst.xml.validation.internal.core.ValidationMessage[numMessages];
+  	org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage[] convertedMessages = new org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage[numMessages];
   	
   	for(int i = 0; i < numMessages; i++)
   	{
   	  IValidationMessage mess = messages[i];
       
-      org.eclipse.wst.xml.validation.internal.core.ValidationMessage convertMess = null;
+      org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage convertMess = null;
       if (mess instanceof ValidationMessageImpl)
       {   String errorKey = ((ValidationMessageImpl)mess).getErrorKey();
           Object[] messageArgs = ((ValidationMessageImpl)mess).getMessageArguments();
-          convertMess = new org.eclipse.wst.xml.validation.internal.core.ValidationMessage(mess.getMessage(), mess.getLine(), mess.getColumn(), mess.getURI(), errorKey, messageArgs);
+          convertMess = new org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage(mess.getMessage(), mess.getLine(), mess.getColumn(), mess.getURI(), errorKey, messageArgs);
       }
       else
       {
-         convertMess = new org.eclipse.wst.xml.validation.internal.core.ValidationMessage(mess.getMessage(),mess.getLine(),mess.getColumn(), mess.getURI());
+         convertMess = new org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage(mess.getMessage(),mess.getLine(),mess.getColumn(), mess.getURI());
       }
   	  if(mess.getSeverity() == IValidationMessage.SEV_WARNING)
 	  {
-	  	convertMess.setSeverity(org.eclipse.wst.xml.validation.internal.core.ValidationMessage.SEV_LOW);
+	  	convertMess.setSeverity(org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage.SEV_LOW);
 	  }
 	  else
 	  {
-	  	convertMess.setSeverity(org.eclipse.wst.xml.validation.internal.core.ValidationMessage.SEV_HIGH);
+	  	convertMess.setSeverity(org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage.SEV_HIGH);
 	  }
   	  
   	  // Convert any nested messages.
@@ -171,14 +171,14 @@ public class ValidateWSDLAction extends ValidateAction
   	    while(nestedIter.hasNext())
         {
           IValidationMessage nestedMess = (IValidationMessage)nestedIter.next();
-    	  org.eclipse.wst.xml.validation.internal.core.ValidationMessage convertNestedMess = new org.eclipse.wst.xml.validation.internal.core.ValidationMessage(nestedMess.getMessage(),nestedMess.getLine(),nestedMess.getColumn(), nestedMess.getURI());
+    	  org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage convertNestedMess = new org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage(nestedMess.getMessage(),nestedMess.getLine(),nestedMess.getColumn(), nestedMess.getURI());
     	  if(nestedMess.getSeverity() == IValidationMessage.SEV_WARNING)
     	  {
-    	  	convertNestedMess.setSeverity(org.eclipse.wst.xml.validation.internal.core.ValidationMessage.SEV_LOW);
+    	  	convertNestedMess.setSeverity(org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage.SEV_LOW);
     	  }
     	  else
     	  {
-    	  	convertNestedMess.setSeverity(org.eclipse.wst.xml.validation.internal.core.ValidationMessage.SEV_HIGH);
+    	  	convertNestedMess.setSeverity(org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage.SEV_HIGH);
     	  }
     	  convertMess.addNestedMessage(convertNestedMess);
         }
@@ -204,7 +204,7 @@ public class ValidateWSDLAction extends ValidateAction
   	{
   	  String key = (String)keysIter.next();
   	  IValidationMessage message = (IValidationMessage)nestedMessages.get(key);
-  	  org.eclipse.wst.xml.validation.internal.core.ValidationMessage[] convertedMessage = convertValidationMessages(new IValidationMessage[]{message});
+  	  org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage[] convertedMessage = convertValidationMessages(new IValidationMessage[]{message});
   	  
   	  convertedMap.put(key, convertedMessage[0]);
   	}
@@ -450,7 +450,7 @@ public class ValidateWSDLAction extends ValidateAction
    * @param valMess the ValidationMessage corresponding to this error
    * @param message the IMessage to set the attributes for
    */
-  protected void addInfoToMessage(org.eclipse.wst.xml.validation.internal.core.ValidationMessage valMess, IMessage message)
+  protected void addInfoToMessage(org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage valMess, IMessage message)
   {   if (valMess.getKey() != null)
       {
           XMLMessageInfoHelper helper = new XMLMessageInfoHelper();

@@ -23,17 +23,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 import org.eclipse.wst.wsi.internal.analyzer.MessageAnalyzer;
 import org.eclipse.wst.wsi.internal.analyzer.WSIAnalyzerException;
-import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
 import org.eclipse.wst.wsi.internal.report.AssertionError;
-import org.eclipse.wst.xml.validation.internal.core.ValidateAction;
-import org.eclipse.wst.xml.validation.internal.core.ValidationMessage;
+import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
+import org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage;
+import org.eclipse.wst.xml.ui.internal.validation.core.ValidateAction;
 import org.xml.sax.SAXParseException;
 
 /**
  * Action for running the validator.
- * 
- * @author David Lauzon, IBM
- * @author Lawrence Mandel, IBM
  */
 public class WSIValidateAction extends ValidateAction
 {

@@ -23,7 +23,7 @@ import org.eclipse.wst.validation.internal.operations.ValidatorManager;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
 import org.eclipse.wst.validation.internal.provisional.core.IValidator;
-import org.eclipse.wst.xml.validation.internal.core.Helper;
+import org.eclipse.wst.xml.core.internal.validation.core.Helper;
 
 
 /**
