@@ -658,7 +658,7 @@ public final class ResourceUtils {
 	 */
 	public static IPath getJavaSourceLocation(IVirtualComponent comp){
 		if (comp!=null){
-		   IVirtualFolder folder = comp.getFolder(new Path("/WEB-INF/classes"));
+		   IVirtualFolder folder = comp.getRootFolder().getFolder(new Path("/WEB-INF/classes"));
 		   return folder.getWorkspaceRelativePath();
 		}
 		return null;

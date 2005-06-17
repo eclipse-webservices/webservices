@@ -136,7 +136,7 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 				IVirtualComponent component = ComponentCore.createComponent(project, module_);
 				if (component != null) {
 					
-					IVirtualFolder webInfLib = component.getFolder(new Path(
+					IVirtualFolder webInfLib = component.getRootFolder().getFolder(new Path(
 							"/WEB-INF/lib"));
 					if (webInfLib != null) {
 						IVirtualResource[] resources = webInfLib.members();

@@ -198,7 +198,7 @@ public class ClasspathUtils {
 					IVirtualComponent component = ComponentCore.createComponent(project, module);
 					if (component != null) {
 						
-						IVirtualFolder webInfLib = component.getFolder(new Path(
+						IVirtualFolder webInfLib = component.getRootFolder().getFolder(new Path(
 								WEBINF_LIB));
 						if (webInfLib != null) {
 							IVirtualResource[] resources = webInfLib.members();

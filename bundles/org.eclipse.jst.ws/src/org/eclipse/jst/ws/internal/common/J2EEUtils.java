@@ -1718,7 +1718,7 @@ public final class J2EEUtils {
 	public static IPath getWebInfPath(IProject project, String componentName){
 		
 		IVirtualComponent component = ComponentCore.createComponent(project, componentName);
-		IVirtualFolder webInfDir = component.getFolder(new Path("/WEB-INF"));
+		IVirtualFolder webInfDir = component.getRootFolder().getFolder(new Path("/WEB-INF"));
 		IPath modulePath = webInfDir.getWorkspaceRelativePath();
 	
 		return modulePath;
@@ -1738,7 +1738,7 @@ public final class J2EEUtils {
           IFlexibleProject fp = ComponentCore.createFlexibleProject(project);
           IVirtualComponent[] vcs = fp.getComponents();
 		  if (vcs.length!=0) {
-            modulePath = vcs[0].getWorkspaceRelativePath();
+            modulePath = vcs[0].getRootFolder().getWorkspaceRelativePath();
 		  }
 		}
 		catch(Exception ex){}
@@ -1753,7 +1753,7 @@ public final class J2EEUtils {
 	 */
 	public static IPath getWebContentPath(IProject project, String componentName){
 		IVirtualComponent component = ComponentCore.createComponent(project, componentName);
-		IPath modulePath = component.getWorkspaceRelativePath();
+		IPath modulePath = component.getRootFolder().getWorkspaceRelativePath();
 		return modulePath;
 	}
 	
