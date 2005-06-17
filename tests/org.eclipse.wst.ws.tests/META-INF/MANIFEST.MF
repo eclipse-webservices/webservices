@@ -23,3 +23,4 @@ Eclipse-AutoStart: true
 Export-Package: org.eclipse.wst.ws.tests.plugin,
  org.eclipse.wst.ws.tests.unittest,
  org.eclipse.wst.ws.tests.util
+Bundle-ClassPath: tests.jar
