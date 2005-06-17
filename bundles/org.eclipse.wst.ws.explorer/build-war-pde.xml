@@ -8,9 +8,10 @@
 	   you should first:
 	   a. Replace wsexplorer/WEB-INF/web.xml from HEAD
 	   b. Delete wsexplorer/WEB-INF/lib/wsexplorer.jar
-       c. Delete wsexplorer/**/*.java
-	   d. Delete wsexplorer/**/*.class
-	   e. Refresh the project.
+	   c. Delete wsexplorer.war
+       d. Delete wsexplorer/**/*.java
+	   e. Delete wsexplorer/**/*.class
+	   f. Refresh the project.
 	   TODO: Update this script's "clean" rules to do this stuff automagically.
 	2. Generate and run build.xml to create
 	   wsexplorer/WEB-INF/lib/wsexplorer.jar:
