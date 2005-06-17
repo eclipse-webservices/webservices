@@ -42,7 +42,7 @@
 			basedir="${wsexplorerDir}"
 			destfile="${wsexplorerDir}/../wsexplorer.war"
 			whenempty="skip" update="false"
-			excludes="**/*.java **/*.jsp **/*.inc **/*.txt"
+			excludes="**/*.java **/*.jsp **/*.inc"
 		/>
 	</target>	
 	
