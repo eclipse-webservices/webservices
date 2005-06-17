@@ -177,6 +177,7 @@ public class ExplorerPlugin extends AbstractUIPlugin
 
   public String getDefaultFavoritesLocation()
   {
+	// TODO: getPluginInstallLocation can return null and cause trouble for the WSE's favourites mechanism. 89101 should correct this.
 	return getPluginInstallLocation()+FavoritesRegistryTypeDefault.FAVORITES_DEFAULT;
   }
   

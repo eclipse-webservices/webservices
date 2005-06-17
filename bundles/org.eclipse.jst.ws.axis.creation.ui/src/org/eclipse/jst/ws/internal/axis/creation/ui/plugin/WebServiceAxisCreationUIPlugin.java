@@ -17,7 +17,6 @@ import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -166,17 +165,5 @@ public class WebServiceAxisCreationUIPlugin extends AbstractUIPlugin
       return null;
     }
   }
-  
-  public String getPluginStateLocation() {
-    return Platform.getPluginStateLocation(this).addTrailingSeparator().toOSString();
-  }
 
-  public String getPluginInstallLocation() {
-    try {
-      return Platform.resolve(getDescriptor().getInstallURL()).getFile();
-    }
-    catch (Exception e) {
-      return null;
-    }
-  }
-  }
+}

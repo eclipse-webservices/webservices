@@ -14,11 +14,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jst.ws.internal.ui.preferences.PersistentActionDialogsContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 
 
@@ -45,7 +43,6 @@ public class WebServiceUIPlugin extends AbstractUIPlugin
   private static WebServiceUIPlugin instance_;
 
   private PersistentActionDialogsContext actionDialogsContext_;
-  private Log log_;
   
   /**
    * Constructs a runtime plugin object for this plugin.
@@ -130,17 +127,5 @@ public class WebServiceUIPlugin extends AbstractUIPlugin
       return null;
     }
   }
-
-  public String getPluginStateLocation() {
-    return Platform.getPluginStateLocation(this).toOSString();
-  }
-
-  public String getPluginInstallLocation() {
-    try {
-      return Platform.resolve(getBundle().getEntry("/")).getFile();
-		} catch (Exception e) {
-			return null;
-		}
-	}
 
 }

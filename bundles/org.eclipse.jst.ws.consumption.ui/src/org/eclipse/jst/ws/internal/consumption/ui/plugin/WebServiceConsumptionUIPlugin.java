@@ -15,11 +15,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 
 
@@ -45,7 +43,6 @@ public class WebServiceConsumptionUIPlugin extends AbstractUIPlugin
   private static WebServiceConsumptionUIPlugin instance_;
 
   private PersistentServerRuntimeContext serverRuntimeContext_;
-  private Log log_;
   
   /**
   * Constructs a runtime plugin object for this plugin.
@@ -127,20 +124,6 @@ public class WebServiceConsumptionUIPlugin extends AbstractUIPlugin
     }
   }
 
-  public String getPluginStateLocation() {
-    return Platform.getPluginStateLocation(this).toOSString();
-  }
-
-  public String getPluginInstallLocation() {
-    try {
-      return Platform.resolve(getBundle().getEntry("/")).getFile();
-    }
-    catch (Exception e) {
-      return null;
-    }
-  }
-
-  
   public PersistentServerRuntimeContext getServerRuntimeContext() 
 	{
 	  if (serverRuntimeContext_ == null)
