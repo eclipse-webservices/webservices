@@ -256,7 +256,7 @@ public class CreateModuleCommand extends SimpleCommand
 			runtimeTargetId = server.getRuntime().getId();  
 		  }
 		  
-		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.SERVER_TARGET_ID,runtimeTargetId);
+		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.RUNTIME_TARGET_ID,runtimeTargetId);
 		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.ADD_SERVER_TARGET,Boolean.TRUE);
 		  IDataModelOperation op = projectInfo.getDefaultOperation();
 		  if (env!=null)
