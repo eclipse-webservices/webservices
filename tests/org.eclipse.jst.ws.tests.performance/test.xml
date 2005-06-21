@@ -10,6 +10,7 @@
   <!-- sets the properties plugin-name, and library-file -->
   <property name="plugin-name" value="org.eclipse.jst.ws.tests.performance"/>
   <property name="library-file" value="${eclipse-home}/plugins/org.eclipse.test_3.1.0/library.xml"/>
+  <property name="perf-tests-file" value="${testDir}/performance-tests.xml"/>
   <property name="workspace" value="${eclipse-home}/workspace_ws_performance"/>
   <property name="extraVMargs" value="-Dorg.eclipse.jst.server.tomcat.50=${testDir}/${tomcat50Dir}"/>
       
@@ -24,7 +25,7 @@
   <target name="performance_suite">
   	
     <delete dir="${workspace}" quiet="true"/>    	
-    <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
       <property name="data-dir" value="${workspace}"/>
       <property name="plugin-name" value="${plugin-name}"/>
       <property name="classname" value="org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr.PerfmsrBUJavaAxisTC50" />
@@ -33,7 +34,7 @@
     </ant>
   	
     <delete dir="${workspace}" quiet="true"/>    	
-    <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
       <property name="data-dir" value="${workspace}"/>
       <property name="plugin-name" value="${plugin-name}"/>
       <property name="classname" value="org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr.PerfmsrClientAxisTC50" />
@@ -42,7 +43,7 @@
     </ant>
   	
     <delete dir="${workspace}" quiet="true"/>    	
-    <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
       <property name="data-dir" value="${workspace}"/>
       <property name="plugin-name" value="${plugin-name}"/>
       <property name="classname" value="org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr.PerfmsrTDJavaAxisTC50" />
