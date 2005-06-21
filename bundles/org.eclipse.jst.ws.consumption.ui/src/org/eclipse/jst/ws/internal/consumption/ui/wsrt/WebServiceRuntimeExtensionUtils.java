@@ -14,13 +14,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.TypeSelectionFilter;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceClientTypeRegistry;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServer;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceTypeImpl;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
@@ -539,7 +538,7 @@ public class WebServiceRuntimeExtensionUtils
       String[] includedNatures = st.getModuleTypesInclude(getScenarioFromTypeId(typeId));
       if (includedNatures!=null && includedNatures.length>0)
       {
-        if (includedNatures[0].equals(IEJBNatureConstants.NATURE_ID))
+        if (includedNatures[0].equals(IModuleConstants.JST_EJB_MODULE))
         {
           return true;
         }
