@@ -95,9 +95,9 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   private   SimpleCanFinishRegistry canFinishRegistry_; 
   private   WizardPageManager       pageManager_;
   private   String                  wizardTitle_;
-  private   IWizardPage             startPage_ = null;
   private   DataObjectCommand       dataObjectCommand_ = null;
-  
+
+  protected IWizardPage             startPage_ = null;
   protected IConfigurationElement   wizardElement_;
   protected IConfigurationElement   originalElement_;
   protected CommandWidgetBinding    commandWidgetBinding_;

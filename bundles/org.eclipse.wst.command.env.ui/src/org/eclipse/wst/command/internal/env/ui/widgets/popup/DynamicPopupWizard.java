@@ -120,7 +120,11 @@ public class DynamicPopupWizard extends DynamicWizard implements IActionDelegate
 	  WizardDialog dialog= new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), this);
 	  dialog.setPageSize( 400, 500 );
 	  dialog.create();
-	  dialog.open();
+    
+    if( startPage_ != null )
+    {
+	    dialog.open();
+    }
 	}
 	else
 	{
