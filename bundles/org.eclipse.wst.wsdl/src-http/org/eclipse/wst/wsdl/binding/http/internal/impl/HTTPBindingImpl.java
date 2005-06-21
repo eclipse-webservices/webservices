@@ -39,6 +39,13 @@ import org.w3c.dom.Element;
  */
 public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBinding {
 	/**
+   * This class is not intended to be serialized.
+   * serialVersionUID is assigned with 1L to avoid
+   * compiler warning messages.
+   */
+  private static final long serialVersionUID = 1L;
+
+  /**
 	 * The default value of the '{@link #getVerb() <em>Verb</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

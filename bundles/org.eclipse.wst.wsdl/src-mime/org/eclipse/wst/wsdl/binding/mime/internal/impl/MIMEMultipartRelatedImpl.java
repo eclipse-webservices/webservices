@@ -46,6 +46,12 @@ import org.w3c.dom.Element;
  */
 public class MIMEMultipartRelatedImpl extends ExtensibilityElementImpl implements MIMEMultipartRelated {
 	/**
+   * This class is not intended to be serialized.
+   * serialVersionUID is assigned with 1L to avoid
+   * compiler warning messages.
+   */
+  private static final long serialVersionUID = 1L;
+  /**
 	 * The cached value of the '{@link #getEMIMEPart() <em>EMIME Part</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -50,6 +50,13 @@ import org.w3c.dom.Element;
 public class BindingInputImpl extends ExtensibleElementImpl implements BindingInput
 {
   /**
+   * This class is not intended to be serialized.
+   * serialVersionUID is assigned with 1L to avoid
+   * compiler warning messages.
+   */
+  private static final long serialVersionUID = 1L;
+
+  /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

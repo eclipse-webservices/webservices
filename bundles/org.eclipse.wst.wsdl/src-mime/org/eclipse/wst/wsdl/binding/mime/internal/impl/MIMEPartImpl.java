@@ -40,6 +40,12 @@ import org.w3c.dom.Element;
  */
 public class MIMEPartImpl extends ExtensibilityElementImpl implements MIMEPart {
 	
+    /**
+   * This class is not intended to be serialized.
+   * serialVersionUID is assigned with 1L to avoid
+   * compiler warning messages.
+   */
+  private static final long serialVersionUID = 1L;
     private List extensibilityElements = new java.util.Vector();
 	
 	/**
