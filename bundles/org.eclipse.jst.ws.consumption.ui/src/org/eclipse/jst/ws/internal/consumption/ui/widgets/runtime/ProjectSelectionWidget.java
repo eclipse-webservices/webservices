@@ -78,6 +78,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   private ModifyListener moduleProjectListener_;
   private ModifyListener moduleListener_;
   private ModifyListener earProjectListener_;
+  private ModifyListener earModuleListener_;
 
   private String initialModuleName_;
   
@@ -160,6 +161,14 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 				              statusListener_.handleEvent( null );
 	                        }
                           };
+                          
+    earModuleListener_ = new ModifyListener()
+                             {
+                               public void modifyText(ModifyEvent evt) 
+				               {
+				                 statusListener_.handleEvent( null );
+	                           }
+                             };
 							  
     // message area
     messageText_ = uiUtils.createText(parent, "LABEL_NO_LABEL", "LABEL_NO_LABEL", null, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY);
@@ -172,6 +181,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	module_.addModifyListener( moduleListener_ );
 	moduleProject_.addModifyListener( moduleProjectListener_ );
 	earProject_.addModifyListener( earProjectListener_ );
+	earModule_.addModifyListener( earModuleListener_ );
   }
   
   private void listenersOff()
@@ -179,12 +189,22 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     module_.removeModifyListener( moduleListener_ );
 	moduleProject_.removeModifyListener( moduleProjectListener_ );
 	earProject_.removeModifyListener( earProjectListener_ );
+	earModule_.removeModifyListener( earModuleListener_ );
   }
   
   private void handleModuleProjectChanged(String moduleName)
   {
 	String   projectName = moduleProject_.getText(); 
-	IProject project     = ProjectUtilities.getProject( projectName );
+	IProject project     = null;
+	
+	if( projectName.equals( "" ) ) 
+	{
+	  module_.setItems( new String[0] );
+	  
+	  return;
+	}
+			
+	project = ProjectUtilities.getProject( projectName );
 	
 	
 	IVirtualComponent[] components = J2EEUtils.getComponentsByType( project, componentType_ );
@@ -211,7 +231,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	  }
 	  else
 	  {
-	    module_.setText("");
+	    module_.setText( projectName );
 	  }
   
   }
@@ -263,14 +283,24 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	  }
 	  else
 	  {
-	    earModule_.setText( "" );	
+	    earModule_.setText( projectName );	
 	  }
+	}
+	else
+	{
+	  earModule_.setItems( new String[0] );	
 	}
   }
   
   private IVirtualComponent getEarModuleForModule()
   {
 	String   projectName = moduleProject_.getText(); 
+	
+	if( projectName.equals( "" ) )
+	{
+	  return null;	
+	}
+	
 	IProject project     = ProjectUtilities.getProject( projectName );
 	String   compName    = module_.getText();
 	
@@ -338,8 +368,10 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   }
   
   public void setEarComponentName( String name )
-  {
-	earModule_.setText( name );  
+  { 
+	listenersOff();
+	earModule_.setText( name );
+	listenersOn();
   }
   
   public void setComponentType( String type )
@@ -528,20 +560,50 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     handleSetMessageText();
     String projectText = moduleProject_.getText();
     String earText = earProject_.getText();
+    String moduleText = msgUtils.getMessage( "MSG_MODULE" );
+    
     if (projectText==null || projectText.length()==0)
     {
       if (isClient_)
-        return new SimpleStatus("",msgUtils.getMessage("MSG_CLIENT_PROJECT_EMPTY"),Status.ERROR);
+        return new SimpleStatus("",msgUtils.getMessage("MSG_CLIENT_PROJECT_EMPTY", new String[]{""} ),Status.ERROR);
       else
-        return new SimpleStatus("",msgUtils.getMessage("MSG_SERVICE_PROJECT_EMPTY"),Status.ERROR);
+        return new SimpleStatus("",msgUtils.getMessage("MSG_SERVICE_PROJECT_EMPTY", new String[]{""} ),Status.ERROR);
     }
     
     if (needEAR_ && (earText==null || earText.length()==0))
     {
       if (isClient_)
-        return new SimpleStatus("",msgUtils.getMessage("MSG_CLIENT_EAR_EMPTY"),Status.ERROR);
+        return new SimpleStatus("",msgUtils.getMessage("MSG_CLIENT_EAR_EMPTY", new String[]{""} ),Status.ERROR);
       else
-        return new SimpleStatus("",msgUtils.getMessage("MSG_SERVICE_EAR_EMPTY"),Status.ERROR);      
+        return new SimpleStatus("",msgUtils.getMessage("MSG_SERVICE_EAR_EMPTY", new String[]{""} ),Status.ERROR);      
+    }
+    
+    // Check for empty module names
+    if( FlexibleJavaProjectPreferenceUtil.getMultipleModulesPerProjectProp() )
+    {
+      if( module_ == null || module_.getText().length() == 0 ) 
+      {
+        if( isClient_ )
+        {
+          return new SimpleStatus("",msgUtils.getMessage("MSG_CLIENT_PROJECT_EMPTY", new String[]{moduleText} ),Status.ERROR);
+        }
+        else
+        {
+          return new SimpleStatus("",msgUtils.getMessage("MSG_CLIENT_EAR_EMPTY", new String[]{moduleText} ),Status.ERROR);        	
+        }
+      }
+      
+      if( needEAR_ && ( earModule_ == null || earModule_.getText().length() == 0 ) )
+      {
+        if( isClient_ )
+        {
+          return new SimpleStatus("",msgUtils.getMessage("MSG_CLIENT_EAR_EMPTY", new String[]{moduleText} ),Status.ERROR);
+        }
+        else
+        {
+          return new SimpleStatus("",msgUtils.getMessage("MSG_SERVICE_EAR_EMPTY", new String[]{moduleText} ),Status.ERROR);        	
+        }  
+      }
     }
     
     return finalStatus;
