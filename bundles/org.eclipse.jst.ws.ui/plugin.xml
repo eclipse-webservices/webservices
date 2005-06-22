@@ -47,7 +47,7 @@
          </menu>
       </objectContribution>
 
-<!--
+
       <objectContribution
             objectClass="org.eclipse.jst.j2ee.ejb.EnterpriseBean"
             adaptable="true"
@@ -61,7 +61,7 @@
             </separator>
          </menu>
       </objectContribution>
--->      
+      
 
       <objectContribution
             objectClass="org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef"

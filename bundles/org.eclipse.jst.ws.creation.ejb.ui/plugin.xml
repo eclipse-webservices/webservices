@@ -39,13 +39,13 @@
             id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java">
          <action
                label="%ACTION_DEPLOY_WEBSERVICE"
-               class="org.eclipse.wst.env.ui.widgets.popup.DynamicPopupWizard"
+               class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
                menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.ejb.popupMenu/popupActions"
                id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard">
          </action>
       </objectContribution>
    </extension>
-   
+
 
 <!-- EJB stuff -->
      <extension point="org.eclipse.jst.ws.consumption.ui.wsImpl">

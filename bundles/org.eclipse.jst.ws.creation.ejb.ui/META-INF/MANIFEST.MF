@@ -6,4 +6,5 @@ Bundle-Version: 0.7.0
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.jst.ws.consumption.ui,
- org.eclipse.ui
+ org.eclipse.ui,
+ org.eclipse.wst.command.env.ui
