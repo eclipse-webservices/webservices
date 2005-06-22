@@ -171,58 +171,64 @@ public class WebServiceRuntimeExtensionRegistry
   private void updateWebServiceTypeList(WebServiceRuntimeInfo wsrtInfo)
   {
     ServiceType[] sts = wsrtInfo.getServiceTypes();
-    for (int j=0; j<sts.length; j++)
+    if (sts != null)
     {
-      String implId = sts[j].getWebServiceImpl().getId();
-      String[] bus = sts[j].getBottomUpModuleTypesInclude();
-      String[] tds = sts[j].getTopDownModuleTypesInclude();
-      if (bus != null)
+      for (int j = 0; j < sts.length; j++)
       {
-        StringBuffer entrybuff = new StringBuffer();
-        entrybuff.append(String.valueOf(WebServiceScenario.BOTTOMUP));
-        entrybuff.append("/");
-        entrybuff.append(implId);
-        String entry = entrybuff.toString();
-        if (!webServiceTypesList_.contains(entry))
+        String implId = sts[j].getWebServiceImpl().getId();
+        String[] bus = sts[j].getBottomUpModuleTypesInclude();
+        String[] tds = sts[j].getTopDownModuleTypesInclude();
+        if (bus != null)
         {
-          webServiceTypesList_.add(entry);
+          StringBuffer entrybuff = new StringBuffer();
+          entrybuff.append(String.valueOf(WebServiceScenario.BOTTOMUP));
+          entrybuff.append("/");
+          entrybuff.append(implId);
+          String entry = entrybuff.toString();
+          if (!webServiceTypesList_.contains(entry))
+          {
+            webServiceTypesList_.add(entry);
+          }
+        }
+        if (tds != null)
+        {
+          StringBuffer entrybuff = new StringBuffer();
+          entrybuff.append(String.valueOf(WebServiceScenario.TOPDOWN));
+          entrybuff.append("/");
+          entrybuff.append(implId);
+          String entry = entrybuff.toString();
+          if (!webServiceTypesList_.contains(entry))
+          {
+            webServiceTypesList_.add(entry);
+          }
         }
       }
-      if (tds != null)
-      {
-        StringBuffer entrybuff = new StringBuffer();
-        entrybuff.append(String.valueOf(WebServiceScenario.TOPDOWN));
-        entrybuff.append("/");
-        entrybuff.append(implId);
-        String entry = entrybuff.toString();
-        if (!webServiceTypesList_.contains(entry))
-        {
-          webServiceTypesList_.add(entry);
-        }
-      }      
-    }    
+    }
   }
   
   private void updateWebServiceClientTypeList(WebServiceRuntimeInfo wsrtInfo)
   {
     ClientType[] cts = wsrtInfo.getClientTypes();
-    for (int j=0; j<cts.length; j++)
+    if (cts != null)
     {
-      String implId = cts[j].getWebServiceClientImpl().getId();
-      String[] mods = cts[j].getModuleTypesInclude();
-      if (mods != null)
+      for (int j = 0; j < cts.length; j++)
       {
-        StringBuffer entrybuff = new StringBuffer();
-        entrybuff.append(String.valueOf(WebServiceScenario.CLIENT));
-        entrybuff.append("/");
-        entrybuff.append(implId);
-        String entry = entrybuff.toString();
-        if (!webServiceClientTypesList_.contains(entry))
+        String implId = cts[j].getWebServiceClientImpl().getId();
+        String[] mods = cts[j].getModuleTypesInclude();
+        if (mods != null)
         {
-          webServiceClientTypesList_.add(entry);
+          StringBuffer entrybuff = new StringBuffer();
+          entrybuff.append(String.valueOf(WebServiceScenario.CLIENT));
+          entrybuff.append("/");
+          entrybuff.append(implId);
+          String entry = entrybuff.toString();
+          if (!webServiceClientTypesList_.contains(entry))
+          {
+            webServiceClientTypesList_.add(entry);
+          }
         }
       }
-    }    
+    }
   }
   
 }

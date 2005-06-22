@@ -91,18 +91,21 @@ public class WebServiceRuntimeExtensionUtils
       String implId = getImplIdFromTypeId(typeId);
       //Return the first service type that supports the impl and scenario
       ServiceType[] sts = wsrt.getServiceTypes();
-      for (int i=0; i<sts.length; i++)
+      if (sts != null)
       {
-        String thisImplId = sts[i].getWebServiceImpl().getId();
-        if (implId.equals(thisImplId))
+        for (int i = 0; i < sts.length; i++)
         {
-          //Check if scenario is supported
-          if (sts[i].supportsScenario(scenario))
+          String thisImplId = sts[i].getWebServiceImpl().getId();
+          if (implId.equals(thisImplId))
           {
-            return sts[i];
-          }          
+            // Check if scenario is supported
+            if (sts[i].supportsScenario(scenario))
+            {
+              return sts[i];
+            }
+          }
         }
-      }            
+      }
     }
     
     return null;
@@ -148,18 +151,21 @@ public class WebServiceRuntimeExtensionUtils
     {
       WebServiceRuntimeInfo wsr = (WebServiceRuntimeInfo)iter.next();
       ServiceType[] sts = wsr.getServiceTypes();
-      for (int i=0; i<sts.length; i++)
+      if (sts != null)
       {
-        String thisImplId = sts[i].getWebServiceImpl().getId();
-        if (implId.equals(thisImplId))
+        for (int i = 0; i < sts.length; i++)
         {
-          //Check if scenario is supported
-          if (sts[i].supportsScenario(scenario))
+          String thisImplId = sts[i].getWebServiceImpl().getId();
+          if (implId.equals(thisImplId))
           {
-            ids.add(wsr.getId());
-            break;
-          }          
-        }        
+            // Check if scenario is supported
+            if (sts[i].supportsScenario(scenario))
+            {
+              ids.add(wsr.getId());
+              break;
+            }
+          }
+        }
       }
     }
     
@@ -626,14 +632,17 @@ public class WebServiceRuntimeExtensionUtils
     {
       WebServiceRuntimeInfo wsr = (WebServiceRuntimeInfo)iter.next();
       ClientType[] cts = wsr.getClientTypes();
-      for (int i=0; i<cts.length; i++)
+      if (cts != null)
       {
-        String wsClientImplId = cts[i].getWebServiceClientImpl().getId();
-        if (wsClientImplId.equals(clientImplId))
+        for (int i = 0; i < cts.length; i++)
         {
-          ids.add(wsr.getId());
-          break;
-        }        
+          String wsClientImplId = cts[i].getWebServiceClientImpl().getId();
+          if (wsClientImplId.equals(clientImplId))
+          {
+            ids.add(wsr.getId());
+            break;
+          }
+        }
       }
     }
     
@@ -749,15 +758,18 @@ public class WebServiceRuntimeExtensionUtils
       if (runtimeId.equals(rIds[i]))
       {
         ClientType[] cts = getWebServiceRuntimeById(rIds[i]).getClientTypes();
-        for (int j=0; j<cts.length; j++)
+        if (cts != null)
         {
-          String thisClientImplId = cts[j].getWebServiceClientImpl().getId();
-          if (clientImplId.equals(thisClientImplId))
+          for (int j = 0; j < cts.length; j++)
           {
-            //Found the one!
-            String[] projectTypes = cts[j].getModuleTypesInclude();
-            return projectTypes;
-          }            
+            String thisClientImplId = cts[j].getWebServiceClientImpl().getId();
+            if (clientImplId.equals(thisClientImplId))
+            {
+              // Found the one!
+              String[] projectTypes = cts[j].getModuleTypesInclude();
+              return projectTypes;
+            }
+          }
         }
       }
     }  
@@ -804,15 +816,18 @@ public class WebServiceRuntimeExtensionUtils
     {
       WebServiceRuntimeInfo wsrt = getWebServiceRuntimeById(rIds[i]);
       ClientType[] cts = wsrt.getClientTypes();
-      for (int j = 0; j < cts.length; j++)
+      if (cts != null)
       {
-        ClientType ct = cts[j];
-        //String id = ct.getWebServiceClientTypeId();
-        String id = ct.getWebServiceClientImpl().getId();
-        if (!ids.contains(id))
+        for (int j = 0; j < cts.length; j++)
         {
-          ids.add(id);
-          labels.add(ct.getWebServiceClientImpl().getLabel());
+          ClientType ct = cts[j];
+          // String id = ct.getWebServiceClientTypeId();
+          String id = ct.getWebServiceClientImpl().getId();
+          if (!ids.contains(id))
+          {
+            ids.add(id);
+            labels.add(ct.getWebServiceClientImpl().getLabel());
+          }
         }
       }
 
