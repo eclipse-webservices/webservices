@@ -17,7 +17,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IFolder;
@@ -58,7 +60,6 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.core.model.IURLProvider;
 
@@ -110,17 +111,17 @@ public final class ResourceUtils {
 	public static String SERVLET_EXT = "/servlet/rpcrouter";
 
 	private static final String DEFAULT_CLIENT_WEB_PROJECT_EXT = "Client";
-  private static final String DEFAULT_CLIENT_EJB_PROJECT_EXT = "EJBClient";
+    private static final String DEFAULT_CLIENT_EJB_PROJECT_EXT = "EJBClient";
 	private static final String DEFAULT_EJB_PROJECT_NAME = "WebServiceEJBProject";
-  private static final String DEFAULT_EJB_COMPONENT_NAME = "WebServiceEJB";
+    private static final String DEFAULT_EJB_COMPONENT_NAME = "WebServiceEJB";
 	private static final String DEFAULT_WEB_PROJECT_NAME = "WebServiceProject";
-  private static final String DEFAULT_WEB_COMPONENT_NAME = "WebServiceWeb";
+    private static final String DEFAULT_WEB_COMPONENT_NAME = "WebServiceWeb";
 	private static final String DEFAULT_ROUTER_PROJECT_EXT = "Router";
 
 	private static final String DEFAULT_SERVICE_EAR_PROJECT_NAME = "WebServiceEARProject";
-  private static final String DEFAULT_SERVICE_EAR_COMPONENT_NAME = "WebServiceEAR";
+    private static final String DEFAULT_SERVICE_EAR_COMPONENT_NAME = "WebServiceEAR";
 	private static final String DEFAULT_CLIENT_EAR_PROJECT_NAME = "WebServiceClientEARProject";
-  private static final String DEFAULT_CLIENT_EAR_COMPONENT_NAME = "WebServiceClientEAR";
+    private static final String DEFAULT_CLIENT_EAR_COMPONENT_NAME = "WebServiceClientEAR";
 
 	/**
 	 * Returns the IWorkspaceRoot object.
@@ -687,7 +688,15 @@ public final class ResourceUtils {
 	}
 
 	public static IPath[] getAllJavaSourceLocations(IVirtualComponent[] components) {
-		//TODO
+
+		if (components!=null){
+			List javaSourcePaths = new ArrayList();
+			for (int i=0;i<components.length;i++){
+				IPath path = getJavaSourceLocation(components[i]);
+				javaSourcePaths.add(path);
+			}
+			return (IPath[])javaSourcePaths.toArray(new IPath[0]);
+		}
 		return null;
 	}
 	
@@ -828,60 +837,60 @@ public final class ResourceUtils {
 	 *         nature or has no association to a server instance.
 	 * @deprecated  not used
 	 */
-	public static String getForgedWebProjectURL(IProject project, String serverFactoryId, IServer server){
-  	
-  	String webProjectURL = null;
-  	IModule module = getModule(project);
-  	if (module != null)
-  	{
-  		//IServer serverInstance = ServerUtils.getServerForModule(module,
-		  // serverFactoryId, server, true, new NullProgressMonitor());
-  		if (server != null)
-  		{
-  			String hostname = server.getHost();
-
-  			// get ServerPort
-  			int portNumber = 0;
-
-  	          ServerPort[] ports = server.getServerPorts(null);
-  	          ServerPort port = null;
-  	          for (int it = 0; it<ports.length; it++)
-  	          {
-  	            ServerPort p = ports[it];
-  	            String protocol = p.getProtocol();
-  	            if (protocol != null && protocol.trim().toLowerCase().equals("http"))
-  	            {
-  	              port = p;
-  	              portNumber = p.getPort();
-  	              break;
-  	            }
-  	          }
-  	          
-  	        
-  	        
-  	        URL url = null;
-  	        try {
-  	        	url = new URL("http", hostname, portNumber, "");
-  	        }
-  	        catch(Exception e){
-  	        	e.printStackTrace();
-  	        }
-
-  	        
-  			//URL url = ((IURLProvider) serverInstance.getDelegate()).getModuleRootURL(module);
-  			
-  			if (url != null)
-  			{
-  				String s = url.toString();
-  				webProjectURL = s + "/"+project.getName();
-  				//webProjectURL = (s.endsWith("/") ? s.substring(0,s.length()-1) : s);
-  			}
-  		}
-  	}
- 	Log log = new EclipseLog();
-    log.log(Log.INFO, 5036, ResourceUtils.class, "getWebProjectURL", "project="+project+",webProjectURL="+webProjectURL);
-  	return webProjectURL;  	
-  }
+//	public static String getForgedWebProjectURL(IProject project, String serverFactoryId, IServer server){
+//  	
+//  	String webProjectURL = null;
+//  	IModule module = getModule(project);
+//  	if (module != null)
+//  	{
+//  		//IServer serverInstance = ServerUtils.getServerForModule(module,
+//		  // serverFactoryId, server, true, new NullProgressMonitor());
+//  		if (server != null)
+//  		{
+//  			String hostname = server.getHost();
+//
+//  			// get ServerPort
+//  			int portNumber = 0;
+//
+//  	          ServerPort[] ports = server.getServerPorts(null);
+//  	          ServerPort port = null;
+//  	          for (int it = 0; it<ports.length; it++)
+//  	          {
+//  	            ServerPort p = ports[it];
+//  	            String protocol = p.getProtocol();
+//  	            if (protocol != null && protocol.trim().toLowerCase().equals("http"))
+//  	            {
+//  	              port = p;
+//  	              portNumber = p.getPort();
+//  	              break;
+//  	            }
+//  	          }
+//  	          
+//  	        
+//  	        
+//  	        URL url = null;
+//  	        try {
+//  	        	url = new URL("http", hostname, portNumber, "");
+//  	        }
+//  	        catch(Exception e){
+//  	        	e.printStackTrace();
+//  	        }
+//
+//  	        
+//  			//URL url = ((IURLProvider) serverInstance.getDelegate()).getModuleRootURL(module);
+//  			
+//  			if (url != null)
+//  			{
+//  				String s = url.toString();
+//  				webProjectURL = s + "/"+project.getName();
+//  				//webProjectURL = (s.endsWith("/") ? s.substring(0,s.length()-1) : s);
+//  			}
+//  		}
+//  	}
+// 	Log log = new EclipseLog();
+//    log.log(Log.INFO, 5036, ResourceUtils.class, "getWebProjectURL", "project="+project+",webProjectURL="+webProjectURL);
+//  	return webProjectURL;  	
+//  }
 	/**
 	 * Returns the URL string corresponding to the web server module root of the
 	 * project in a server instance or null if the project has no Web nature or
@@ -1691,6 +1700,8 @@ public final class ResourceUtils {
 	 *            The project name to base on.
 	 * @param typeId the webservice type id.
 	 * @return The client Web project name.
+	 * 
+	 * @deprecated
 	 */
 	public static String getClientWebProjectName(String projectName, String typeId) 
 	{
@@ -1743,9 +1754,9 @@ public final class ResourceUtils {
     else
     {
       clientProjectName = projectName + DEFAULT_CLIENT_WEB_PROJECT_EXT;
-      String baseName = clientProjectName;
+//      String baseName = clientProjectName;
       clientComponentName = componentName + DEFAULT_CLIENT_WEB_PROJECT_EXT;
-      String baseCompName = clientComponentName;
+//      String baseCompName = clientComponentName;
     }
     
 //    boolean  foundWebProject     = false;
@@ -1771,6 +1782,13 @@ public final class ResourceUtils {
     return new String[]{clientProjectName, clientComponentName};
   }
   
+    /**
+     * 
+     * @param typeID
+     * @return
+     * 
+     * @deprecated
+     */
 	public static boolean isSkeletonEJBType( String typeID )
 	{
 	  return typeID.equals( "org.eclipse.jst.ws.type.wsdl.ejb" );    

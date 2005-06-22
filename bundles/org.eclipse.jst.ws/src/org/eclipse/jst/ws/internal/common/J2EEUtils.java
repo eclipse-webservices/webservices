@@ -1048,12 +1048,12 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static String getJ2EEIntVersionAsString(String aVersion) {
-		if (aVersion.equals(J2EEVersionConstants.VERSION_1_2_TEXT))
-			return new Integer(J2EEVersionConstants.J2EE_1_2_ID).toString();
-		if (aVersion.equals(J2EEVersionConstants.VERSION_1_3_TEXT))
-			return new Integer(J2EEVersionConstants.J2EE_1_3_ID).toString();
 		if (aVersion.equals(J2EEVersionConstants.VERSION_1_4_TEXT))
 			return new Integer(J2EEVersionConstants.J2EE_1_4_ID).toString();
+		if (aVersion.equals(J2EEVersionConstants.VERSION_1_3_TEXT))
+			return new Integer(J2EEVersionConstants.J2EE_1_3_ID).toString();
+		if (aVersion.equals(J2EEVersionConstants.VERSION_1_2_TEXT))
+			return new Integer(J2EEVersionConstants.J2EE_1_2_ID).toString();		
 		// default
 		return new Integer(J2EEVersionConstants.J2EE_1_4_ID).toString();
 	}	
@@ -1545,7 +1545,7 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated   use isComponentAssociated
 	 */
-	public static boolean isEARAssociated(IProject module, IProject EAR) {
+	public static boolean isEARAssociated(IProject module, IProject earProject) {
 
 		EARNatureRuntime[] ears = getEARProjects(module);
 		if (ears != null && ears.length != 0) {
@@ -1554,7 +1554,7 @@ public final class J2EEUtils {
 				EARNames.add(ears[i].getProject().getName());
 			}
 			String[] earNames = (String[]) EARNames.toArray(new String[0]);
-			if (Arrays.binarySearch(earNames, EAR.getName()) >= 0) {
+			if (Arrays.binarySearch(earNames, earProject.getName()) >= 0) {
 				return true;
 			}
 		}
@@ -1921,4 +1921,49 @@ public final class J2EEUtils {
 		}
 		return projects;
 	}
+	
+	/**
+	 * Given a J2EE level, this method returns the highest supported servlet level
+	 * @param j2eeLevel
+	 * @return web app version
+	 */
+	public static Integer getServletVersionForJ2EEVersion(String j2eeLevel){
+		int aVersion = Integer.valueOf(j2eeLevel).intValue();
+		switch (aVersion) {
+		case J2EEVersionConstants.J2EE_1_2_ID:
+			return new Integer(J2EEVersionConstants.WEB_2_2_ID);
+
+		case J2EEVersionConstants.J2EE_1_3_ID:
+			return new Integer(J2EEVersionConstants.WEB_2_3_ID);
+
+		case J2EEVersionConstants.J2EE_1_4_ID:
+			return new Integer(J2EEVersionConstants.WEB_2_4_ID);
+			
+		default:
+			return new Integer(J2EEVersionConstants.WEB_2_3_ID);
+		}		
+	}
+	
+	/**
+	 * Given a J2EE level, this method returns the highest supported EJB version
+	 * @param j2eeLevel
+	 * @return ejb spec version
+	 */
+	public static Integer getEJBVersionForJ2EEVersion(String j2eeLevel){
+		int aVersion = Integer.valueOf(j2eeLevel).intValue();
+		switch (aVersion) {
+		case J2EEVersionConstants.J2EE_1_2_ID:
+			return new Integer(J2EEVersionConstants.EJB_1_1_ID);
+
+		case J2EEVersionConstants.J2EE_1_3_ID:
+			return new Integer(J2EEVersionConstants.EJB_2_0_ID);
+
+		case J2EEVersionConstants.J2EE_1_4_ID:
+			return new Integer(J2EEVersionConstants.EJB_2_1_ID);
+			
+		default:
+			return new Integer(J2EEVersionConstants.EJB_2_0_ID);
+		}			
+	}
+	
 }

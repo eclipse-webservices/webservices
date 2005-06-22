@@ -50,9 +50,9 @@ public class CreateModuleCommand extends SimpleCommand
 		msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
 	}
 	
-	public Status execute(Environment env)
+	public Status execute(Environment environment)
 	{
-		this.env = env;
+		this.env = environment;
 		Status status = new SimpleStatus("");
 		
 		// check if data ready
@@ -105,6 +105,7 @@ public class CreateModuleCommand extends SimpleCommand
 			return new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{moduleName}),Status.ERROR,null);			
 		}
 		
+	
 		return status;
 	}
 
@@ -130,8 +131,12 @@ public class CreateModuleCommand extends SimpleCommand
 		  projectInfo.setProperty(IWebComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)
             projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
+          
+          // get the Web servlet level
+          Integer servletLevel = J2EEUtils.getServletVersionForJ2EEVersion(j2eeLevel);
+          
 		  if (j2eeLevel!=null)
-			  projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
+			  projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_VERSION, servletLevel);
 		  IDataModelOperation op = projectInfo.getDefaultOperation();
 		  if (env!=null)
 			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
@@ -184,8 +189,12 @@ public class CreateModuleCommand extends SimpleCommand
 		  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)  
               projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
+          
+          // get the EJB spec level
+          Integer ejbLevel = J2EEUtils.getEJBVersionForJ2EEVersion(j2eeLevel);
+         
 		  if (j2eeLevel!=null)
-			  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
+			  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, ejbLevel);
 		  IDataModelOperation op = projectInfo.getDefaultOperation();
 		  if (env!=null)
 			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
