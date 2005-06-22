@@ -8,11 +8,10 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateServerCommand;
+import org.eclipse.jst.ws.tests.util.JUnitUtils;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
 
-/**
- * @author sengpl
- *
- */
 public class ServerCreationTests extends TestCase implements WSJUnitConstants{
 
 
@@ -20,11 +19,30 @@ public class ServerCreationTests extends TestCase implements WSJUnitConstants{
 		return new TestSuite(ServerCreationTests.class);
 	}
 	
+	public void init(){
+	    try {
+	      JUnitUtils.createServerRuntime(RUNTIMETYPEID_TC50, SERVER_INSTALL_PATH);
+	    }
+	    catch(Exception e){
+	      e.printStackTrace();
+	    } 
+	}
+	
 	public void testCreateTomcatv5Server(){
+		init();
+		
 		System.out.println("Creating Tomcat v5 server.");
 		CreateServerCommand csc = new CreateServerCommand();
 		csc.setServerFactoryid(SERVERTYPEID_TC50);
 		csc.execute(null);
+		
+		IServer server = null;
+		String instId = csc.getServerInstanceId();
+		System.out.println("Server instance Id = "+instId);
+		if (instId!=null){
+		  server = ServerCore.findServer(instId);
+		}
+		assertNotNull(server);
 		
 		System.out.println("Done creating Tomcat v5 server.");
 	}
@@ -34,6 +52,13 @@ public class ServerCreationTests extends TestCase implements WSJUnitConstants{
 		CreateServerCommand csc = new CreateServerCommand();
 		csc.setServerFactoryid(SERVERTYPEID_TC50);
 		csc.execute(null);
+		
+		IServer server = null;
+		String instId = csc.getServerInstanceId();
+		if (instId!=null) {
+		  server = ServerCore.findServer(instId);
+		}
+		assertNotNull(server);
 		
 		System.out.println("Done attempting 2nd Tomcat v5 server creation.");		
 	}

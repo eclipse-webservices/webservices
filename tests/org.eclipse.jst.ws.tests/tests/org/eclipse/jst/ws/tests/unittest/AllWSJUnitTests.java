@@ -57,7 +57,7 @@ public class AllWSJUnitTests extends TestCase
     testSuite.addTest( ComponentCreationTests.suite() );
     testSuite.addTest( J2EEUtilsTests.suite() );
     testSuite.addTest( ServerCreationTests.suite());
-    //	testSuite.addTest( ResourceUtilsTests.suite() );
+    testSuite.addTest( ResourceUtilsTests.suite() );
 
 
     return testSuite;

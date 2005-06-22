@@ -12,14 +12,16 @@ public interface WSJUnitConstants {
   
   public final String webProjectName = "WebProject";
   
+  // flexible project structure 1
   public final String projectName = "FlexProject";
-  public final String project2Name = "FlexProject2";
   public final String webComponentName = "webComponent";
   public final String webComponent2Name = "webComp2";
+
+  // flexible project structure 2
+  public final String project2Name = "FlexProject2";
   public final String webComp3Name = "webComp3";
   public final String webComp4Name = "webComp4";
-  
-  
+    
   public final String ejbProjectName = "FlexEJBProject";
   public final String ejbComponentName = "ejbComponent";
 
