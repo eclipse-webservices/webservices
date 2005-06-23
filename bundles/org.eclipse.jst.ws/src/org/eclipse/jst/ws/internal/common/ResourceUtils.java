@@ -37,7 +37,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -1281,9 +1281,9 @@ public final class ResourceUtils {
 		if (obj != null) {
 			if (obj instanceof IResource) {
 				res = (IResource) obj;
-			} else if (obj instanceof ICompilationUnit) {
-				ICompilationUnit compUnit = (ICompilationUnit) obj;
-				res = compUnit.getCorrespondingResource();
+			} else if (obj instanceof IJavaElement) {
+				IJavaElement javaElement = (IJavaElement) obj;
+				res = javaElement.getCorrespondingResource();
 			} else if (obj instanceof EnterpriseBean) {
 				EnterpriseBean ejbBean = (EnterpriseBean) obj;
 				IProject ejbProject = ProjectUtilities.getProject(ejbBean);
