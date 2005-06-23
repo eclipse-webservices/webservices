@@ -416,10 +416,13 @@ public final class ServerUtils {
 		if (module != null) {
 			IServer serverInstance = getServerForModule(module);
 			if (serverInstance != null) {
-				URL url = ((IURLProvider) serverInstance.getAdapter(IURLProvider.class)).getModuleRootURL(module);
-				if (url != null) {
-					String s = url.toString();
-					webProjectURL = (s.endsWith("/") ? s.substring(0, s.length() - 1) : s);
+				IURLProvider urlProvider = (IURLProvider) serverInstance.loadAdapter(IURLProvider.class, null);
+				if (urlProvider!=null) {
+					URL url = urlProvider.getModuleRootURL(module);
+					if (url != null) {
+						String s = url.toString();
+						webProjectURL = (s.endsWith("/") ? s.substring(0, s.length() - 1) : s);
+					}
 				}
 			}
 			else {
@@ -432,11 +435,14 @@ public final class ServerUtils {
 					try {
 						if (serverType!=null) {
 							IServerWorkingCopy serverWC = serverType.createServer(null, null, projectTarget, null);
-							URL url = ((IURLProvider)serverWC.getAdapter(IURLProvider.class)).getModuleRootURL(module);
-							if (url != null) {
-								String s = url.toString();
-								webProjectURL = (s.endsWith("/") ? s.substring(0, s.length() - 1) : s);
-							}				
+							IURLProvider urlProvider = (IURLProvider) serverWC.loadAdapter(IURLProvider.class, null);
+							if (urlProvider!=null) {
+								URL url = urlProvider.getModuleRootURL(module);							
+								if (url != null) {
+									String s = url.toString();
+									webProjectURL = (s.endsWith("/") ? s.substring(0, s.length() - 1) : s);
+								}				
+							}
 						}
 					} catch(CoreException ce){
                         Logger.getLogger().log(ce);
@@ -464,16 +470,15 @@ public final class ServerUtils {
 		String webProjectURL = null;
 		IModule module = getModule(project, componentName);
 		if (module != null) {
-			IServer serverInstance = ServerUtils.getServerForModule(module,
-					serverFactoryId, server, true, new NullProgressMonitor());
+			IServer serverInstance = ServerUtils.getServerForModule(module, serverFactoryId, server, true, new NullProgressMonitor());
 			if (serverInstance != null) {
-				URL url = ((IURLProvider) serverInstance
-						.getAdapter(IURLProvider.class))
-						.getModuleRootURL(module);
-				if (url != null) {
-					String s = url.toString();
-					webProjectURL = (s.endsWith("/") ? s.substring(0, s
-							.length() - 1) : s);
+                IURLProvider urlProvider = (IURLProvider) serverInstance.loadAdapter(IURLProvider.class, null);
+                if (urlProvider!=null) {
+                    URL url = urlProvider.getModuleRootURL(module);              
+					if (url != null) {
+					  String s = url.toString();
+					  webProjectURL = (s.endsWith("/") ? s.substring(0, s.length() - 1) : s);
+                    }
 				}
 			}
 		}
@@ -540,13 +545,6 @@ public final class ServerUtils {
 	 * @deprecated should be using getDefaultExistingServer( IVirtualComponent )
 	 */
 	public static IServer getDefaultExistingServer(IProject project) {
-		String defaultServerName;
-
-		 //IServerPreferences serverPreferences =
-		 //ServerCore.getServerPreferences();
-		
-        //IProjectProperties props = ServerCore.getProjectProperties(project);
-        //IServer preferredServer = props.getDefaultServer();
     
         IModule[] modules = ServerUtil.getModules(project);
         IServer preferredServer = null;
@@ -554,8 +552,6 @@ public final class ServerUtils {
           preferredServer = ServerCore.getDefaultServer(modules[0]);
         }
   
-		// IServer preferredServer =
-		// serverPreferences.getDeployableServerPreference(ResourceUtils.getModule(project));
 		if (preferredServer != null)
 			return preferredServer;
 
@@ -590,7 +586,6 @@ public final class ServerUtils {
 
 		String stJ2EEVersion = ServerUtils.getServerTargetJ2EEVersion(j2eeVersion);
         List runtimes = Arrays.asList(ServerUtil.getRuntimes(moduleType, stJ2EEVersion));    
-		//List runtimes = ServerTargetHelper.getServerTargets(moduleType,	stJ2EEVersion);
 		for (int i = 0; i < runtimes.size(); i++) {
 			IRuntime runtime = (IRuntime) runtimes.get(i);
 			String thisRuntimeTypeId = runtime.getRuntimeType().getId();
@@ -653,7 +648,6 @@ public final class ServerUtils {
 		String earModuleType = IServerTargetConstants.EAR_TYPE;
 		String stJ2EEVersion = ServerUtils.getServerTargetJ2EEVersion(j2eeVersion);
         List runtimes = Arrays.asList(ServerUtil.getRuntimes(earModuleType, stJ2EEVersion));
-		//List runtimes = ServerTargetHelper.getServerTargets(earModuleType, stJ2EEVersion);
 		for (int i = 0; i < runtimes.size(); i++) {
 			IRuntime runtime = (IRuntime) runtimes.get(i);
 			String thisId = runtime.getRuntimeType().getId();
@@ -679,7 +673,6 @@ public final class ServerUtils {
 
 		String stJ2EEVersion = ServerUtils.getServerTargetJ2EEVersion(j2eeVersion);
         List runtimes = Arrays.asList(ServerUtil.getRuntimes(projectType, stJ2EEVersion));    
-		//List runtimes = ServerTargetHelper.getServerTargets(projectType, stJ2EEVersion);
 		for (int i = 0; i < runtimes.size(); i++) {
 			IRuntime runtime = (IRuntime) runtimes.get(i);
 			String thisId = runtime.getRuntimeType().getId();
@@ -691,7 +684,7 @@ public final class ServerUtils {
 	}
 
 	public static String getServerTargetJ2EEVersion(String j2eeVersion) {
-		String stJ2EEVersion = null;
+
 		if (j2eeVersion == null || j2eeVersion.length() == 0)
 			return null;
 
