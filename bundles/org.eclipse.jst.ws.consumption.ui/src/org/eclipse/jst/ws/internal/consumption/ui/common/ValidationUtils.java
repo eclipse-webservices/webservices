@@ -30,7 +30,6 @@ import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.ClientProjectTypeRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -101,7 +100,6 @@ public class ValidationUtils
   {
     if (p!=null && p.exists())
     {
-		System.out.println("P.getName = "+p.getName());
       IRuntime projectTarget = ServerSelectionUtils.getRuntimeTarget(p.getName());
       if (projectTarget!=null)
       {
@@ -148,7 +146,7 @@ public class ValidationUtils
   public Status validateProjectType(String projectName, SelectionListChoices runtime2ClientTypes)
   {
     Status status = new SimpleStatus("");
-    IProject p = (IProject)((new StringToIProjectTransformer()).transform(projectName));
+    IProject p = ProjectUtilities.getProject(projectName);
     if (p==null || !p.exists())
     {
       //Project does not exist which means a new project of the correct type will be created

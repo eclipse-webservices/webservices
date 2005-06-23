@@ -21,13 +21,11 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ClientServerSelectionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ServerSelectionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.ClientProjectTypeRegistry;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeInfo;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -293,7 +291,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
  */
   protected SelectionListChoices getProjectEARChoice(IProject project)
   {
-    Vector v = new Vector();
     String[] flexProjects = getAllFlexibleProjects();
     SelectionList list = new SelectionList(flexProjects, 0);
     return new SelectionListChoices(list, null);
@@ -574,7 +571,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
  
     for (int i=0;i<projectNames.length; i++)
     {
-      IProject project = (IProject)((new StringToIProjectTransformer().transform(projectNames[i])));
+      IProject project = ProjectUtilities.getProject(projectNames[i]);
       IVirtualComponent[] vcs = J2EEUtils.getComponentsByType(project, getClientComponentType());
       if (project.isOpen() && vcs!=null && vcs.length>0)
       {
@@ -643,7 +640,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   {
     //Client-side
     String initialClientProjectName = getRuntime2ClientTypes().getChoice().getChoice().getList().getSelection(); 
-    IProject initialClientProject = (IProject)((new StringToIProjectTransformer()).transform(initialClientProjectName));    
+    IProject initialClientProject = ProjectUtilities.getProject(initialClientProjectName);    
     //IProject defaultClientEAR = getDefaultEARFromClientProject(initialClientProject);
     String[] clientEARInfo = getDefaultEARFromClientProject(initialClientProject, clientComponentName_);
     
@@ -826,7 +823,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   {
     //Calculate reasonable default server based on initial project selection. 
     String initialClientProjectName = runtimeClientTypes_.getChoice().getChoice().getList().getSelection(); 
-    IProject initialClientProject = (IProject)((new StringToIProjectTransformer()).transform(initialClientProjectName));
+    IProject initialClientProject = ProjectUtilities.getProject(initialClientProjectName);
     if (initialClientProject.exists())
     {
       String[] serverInfo = ServerSelectionUtils.getServerInfoFromExistingProject(initialClientProject, clientComponentName_, clientIds_.getRuntimeId(), true);
@@ -846,7 +843,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     {
       //Does the EAR exist?
       String initialClientEARProjectName = runtimeClientTypes_.getChoice().getChoice().getChoice().getList().getSelection();
-      IProject initialClientEARProject = (IProject)((new StringToIProjectTransformer()).transform(initialClientEARProjectName));
+      IProject initialClientEARProject = ProjectUtilities.getProject(initialClientEARProjectName);
       if (initialClientEARProject.exists())
       {
         String[] serverInfo = ServerSelectionUtils.getServerInfoFromExistingProject(initialClientEARProject, clientEarComponentName_, clientIds_.getRuntimeId(), false);
@@ -897,7 +894,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   {
   	//Set EAR selection to null if the project/server defaults imply an EAR should not be created
     String clientProjectName = getRuntime2ClientTypes().getChoice().getChoice().getList().getSelection();
-  	IProject clientProject = (IProject)((new StringToIProjectTransformer()).transform(clientProjectName));
+  	IProject clientProject = ProjectUtilities.getProject(clientProjectName);
   	if (clientProject != null && clientProject.exists())
   	{
   	  //Get the runtime target on the serviceProject

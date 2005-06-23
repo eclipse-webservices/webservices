@@ -44,14 +44,12 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
   private String componentName;
   private IObjectSelectionWidget child;
   
-  public WidgetDataEvents addControls(Composite parent, Listener statusListener)
+  public WidgetDataEvents addControls(Composite parentComposite, Listener statListener)
   {
-	  System.out.println("ObjectSelectionWidget - - 1");	  
     elements = ObjectSelectionRegistry.getInstance().getConfigurationElements();
-    this.parent = parent;
-    this.statusListener = statusListener;
+    this.parent = parentComposite;
+    this.statusListener = statListener;
     composite = null;
-	System.out.println("ObjectSelectionWidget - - 2");		
     return this;
   }
   
@@ -220,7 +218,7 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
           IResource resource = ResourceUtils.getResourceFromSelection(obj);
           if (resource==null) 
             return null;
-          IProject p = ResourceUtils.getProjectOf(resource.getFullPath());
+          
           IVirtualComponent comp = ResourceUtils.getComponentOf(resource);
           if (comp != null)
           {
