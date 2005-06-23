@@ -150,9 +150,6 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 	  }
 	  
 	  private void checkVirtualComponentsExists(IVirtualComponent[] vcs){
-		  if (vcs.length == 0)
-			  System.out.println("Empty....");
-		  
 		  for (int i=0; i<vcs.length;i++){
 			  IVirtualComponent vc = vcs[i];
 			  System.out.println("VC: Project = "+vc.getProject()+" Name = "+vc.getName());
@@ -167,7 +164,7 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 		  }
 	  }
 	  
-      public void testAssociateComponentCommand(){
+      public void dtestAssociateComponentCommand(){
         
         System.out.println("< BEGIN: testAssociateComponentCommand ...");
         
@@ -181,7 +178,7 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
         System.out.println("< END: testAssociateComponentCommand ...");     
       }
     
-	  public void testReferencingGetterMethods(){
+	  public void dtestReferencingGetterMethods(){
 		  
 		  System.out.println("< BEGIN: testReferencingGetterMethods ...");
 		  
@@ -199,7 +196,7 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 		  System.out.println("< END: testReferencingGetterMethods ...");
 	  }
 	  
-	  public void testIsComponentMethods(){
+	  public void dtestIsComponentMethods(){
 		
 		  System.out.println("< BEGIN: testIsComponentMethods ...");
 		  

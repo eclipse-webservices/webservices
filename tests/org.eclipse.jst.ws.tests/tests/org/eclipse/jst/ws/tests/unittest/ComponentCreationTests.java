@@ -51,24 +51,24 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       
     }
   
-    private void createWebModule(String projectName, String componentName, int j2eeVersion){
+    private void createWebModule(String projectNm, String componentName, int j2eeVersion){
 
       CreateModuleCommand cmc = new CreateModuleCommand();
       cmc.setJ2eeLevel(new Integer(j2eeVersion).toString());
       cmc.setModuleName(componentName);
       cmc.setModuleType(CreateModuleCommand.WEB);
-      cmc.setProjectName(projectName);
+      cmc.setProjectName(projectNm);
       cmc.setServerFactoryId(SERVERTYPEID_TC50);
       cmc.execute(null);
       
-      System.out.println("Done creating Web component..."+projectName+"\""+componentName);      
-      IProject p = ResourceUtils.getWorkspaceRoot().getProject(projectName);
+      System.out.println("Done creating Web component..."+projectNm+"\""+componentName);      
+      IProject p = ResourceUtils.getWorkspaceRoot().getProject(projectNm);
       IVirtualComponent vc = ComponentCore.createComponent(p, componentName);
       assertTrue(vc.exists());      
       
     }
     
-    public void testCreateEJBModule(){
+    public void dtestCreateEJBModule(){
      
       CreateModuleCommand cmc = new CreateModuleCommand();
       cmc.setJ2eeLevel(new Integer(J2EEVersionConstants.J2EE_1_3_ID).toString());
@@ -84,7 +84,7 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       assertTrue(vc.exists());      
     }
     
-    public void testCreateAppClientModule(){
+    public void dtestCreateAppClientModule(){
       CreateModuleCommand cmc = new CreateModuleCommand();
       cmc.setJ2eeLevel(new Integer(J2EEVersionConstants.J2EE_1_3_ID).toString());
       cmc.setModuleName(appClientCompName);
@@ -99,7 +99,7 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       assertTrue(vc.exists());       
     }
 
-    public void testCreateEARModule(){
+    public void dtestCreateEARModule(){
       CreateModuleCommand cmc = new CreateModuleCommand();
       cmc.setJ2eeLevel(new Integer(J2EEVersionConstants.J2EE_1_3_ID).toString());
       cmc.setModuleName(earCompName);

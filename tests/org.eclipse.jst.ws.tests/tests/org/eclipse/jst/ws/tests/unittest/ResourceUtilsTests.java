@@ -12,6 +12,10 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
+import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -39,7 +43,12 @@ public class ResourceUtilsTests extends TestCase implements WSJUnitConstants{
         IPath destPath = ResourceUtils.getJavaSourceLocation(project, webComponentName);
         IFolder folder = (IFolder)ResourceUtils.findResource(destPath);
         try {
-        	JUnitUtils.copyTestData("BUJava/src",folder,null);
+            PersistentResourceContext  resourceContext = PersistentResourceContext.getInstance();
+            EclipseStatusHandler       handler         = new EclipseStatusHandler();
+            EclipseProgressMonitor     monitor         = new EclipseProgressMonitor();
+            EclipseEnvironment         env     = new EclipseEnvironment( null, resourceContext, monitor, handler );
+
+            JUnitUtils.copyTestData("BUJava/src", folder, env);          
         }
         catch (Exception ex){
         	ex.printStackTrace();
