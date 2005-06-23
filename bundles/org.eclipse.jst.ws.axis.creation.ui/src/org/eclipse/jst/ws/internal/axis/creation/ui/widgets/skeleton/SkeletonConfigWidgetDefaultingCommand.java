@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton;
 
+import java.io.File;
+import java.net.MalformedURLException;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -33,10 +36,11 @@ public class SkeletonConfigWidgetDefaultingCommand extends SimpleCommand
     moduleName_ = moduleName;
   }
   
-  public Status execute(Environment env) {
-    
-    javaWSDLParam.setOutput(getOutputWSDLFolder());
-    javaWSDLParam.setJavaOutput(getOutputJavaFolder());  
+  public Status execute(Environment env) 
+  {
+    String root = getRootURL();
+    javaWSDLParam.setOutput( root + getOutputWSDLFolder());
+    javaWSDLParam.setJavaOutput(root + getOutputJavaFolder());  
     return new SimpleStatus("");
     
   }
@@ -96,5 +100,28 @@ public class SkeletonConfigWidgetDefaultingCommand extends SimpleCommand
   public JavaWSDLParameter getJavaWSDLParam()
   {
     return javaWSDLParam;
+  }
+  
+  private String getRootURL()
+  {
+    String rootURL = ResourcesPlugin.getWorkspace().getRoot().getLocation().removeTrailingSeparator().toString(); 
+    File   file    = new File( rootURL );
+    
+    try
+    {
+      rootURL = file.toURL().toString();
+      
+      char lastChar = rootURL.charAt(rootURL.length()-1);
+      
+      if (lastChar == '/' || lastChar == '\\')
+      {
+        rootURL = rootURL.substring(0, rootURL.length()-1);
+      }
+    }
+    catch (MalformedURLException murle)
+    {
+    }
+    
+    return rootURL;
   }
 }
