@@ -16,9 +16,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.impl.JavaClassImpl;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -82,7 +82,7 @@ public class ValidateObjectSelectionCommand extends SimpleCommand
     }
     
     //Make sure a project is selected
-    IProject serviceProject = (IProject)((new StringToIProjectTransformer()).transform(serviceProjectName));
+    IProject serviceProject = ProjectUtilities.getProject(serviceProjectName);
     if (serviceProject==null)
     {
       Status errorStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_NO_PROJECT"),Status.ERROR);

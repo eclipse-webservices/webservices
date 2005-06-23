@@ -22,8 +22,8 @@ import javax.wsdl.Service;
 import javax.wsdl.extensions.soap.SOAPAddress;
 import javax.xml.namespace.QName;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.internal.webservices.WebServiceClientGenerator;
 import org.eclipse.jst.j2ee.internal.webservices.WebServicesClientDataHelper;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
@@ -37,7 +37,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
@@ -67,7 +66,7 @@ public class AxisClientGenerator extends WebServiceClientGenerator
     AxisClientDefaultingCommand axisClientDefaultingCommand = new AxisClientDefaultingCommand("");
     axisClientDefaultingCommand.setWsdlURL(wsdlURL);
     axisClientDefaultingCommand.setWebServicesParser(new WebServicesParserExt());
-    axisClientDefaultingCommand.setClientProject((IProject)(new StringToIProjectTransformer().transform(project)));
+    axisClientDefaultingCommand.setClientProject(ProjectUtilities.getProject(project));
     axisClientDefaultingCommand.setTestProxySelected(false);
     axisClientDefaultingCommand.setIsClientScenario(true);
     axisClientDefaultingCommand.setGenerateProxy(true);

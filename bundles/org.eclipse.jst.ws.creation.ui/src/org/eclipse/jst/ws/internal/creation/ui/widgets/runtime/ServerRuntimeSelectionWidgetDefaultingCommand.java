@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ServerSelectionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
@@ -35,13 +34,9 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
-import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IRuntime;
-import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.IServerType;
-import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntimeSelectionWidgetDefaultingCommand
@@ -394,7 +389,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     String[] projectNames = getServiceProject2EARProject().getList().getList();
     for (int i=0;i<projectNames.length; i++)
     {
-      IProject project = (IProject)((new StringToIProjectTransformer().transform(projectNames[i])));
+      IProject project = ProjectUtilities.getProject(projectNames[i]);
       IVirtualComponent[] vcs = J2EEUtils.getComponentsByType(project, serviceComponentType_);
       if (project.isOpen() && vcs!=null && vcs.length>0)
       {
@@ -499,7 +494,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     
     //Client side    
     String initialClientProjectName = getRuntime2ClientTypes().getChoice().getChoice().getList().getSelection(); 
-    IProject initialClientProject = (IProject)((new StringToIProjectTransformer()).transform(initialClientProjectName));
+    IProject initialClientProject = ProjectUtilities.getProject(initialClientProjectName);
     String[] clientEARInfo = getDefaultEARFromClientProject(initialClientProject, getClientComponentName());
 
     //If the client project exists and the default EAR is the same as that of the service project, 
@@ -648,7 +643,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     //Calculate reasonable default server based on the default project selection. 
 
     String initialProjectName = getServiceProject2EARProject().getList().getSelection(); 
-    IProject initialProject = (IProject)((new StringToIProjectTransformer()).transform(initialProjectName));
+    IProject initialProject = ProjectUtilities.getProject(initialProjectName);
     if (initialProject.exists())
     {
       String[] serverInfo = ServerSelectionUtils.getServerInfoFromExistingProject(initialProject, serviceComponentName_, serviceIds_.getRuntimeId(), true);
@@ -668,7 +663,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     {
       //Does the EAR exist?
       String initialEARProjectName = getServiceProject2EARProject().getChoice().getList().getSelection();
-      IProject initialEARProject = (IProject)((new StringToIProjectTransformer()).transform(initialEARProjectName));
+      IProject initialEARProject = ProjectUtilities.getProject(initialEARProjectName);
       if (initialEARProject.exists())
       {
         String[] serverInfo = ServerSelectionUtils.getServerInfoFromExistingProject(initialEARProject, serviceEarComponentName_, serviceIds_.getRuntimeId(), false);
@@ -786,7 +781,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 	  SelectionList list = new SelectionList(projectNames, 0);
 	  Vector choices = new Vector();
 	  for (int i = 0; i < projectNames.length; i++) {
-      IProject project = (IProject)(new StringToIProjectTransformer()).transform(projectNames[i]);
+      IProject project = ProjectUtilities.getProject(projectNames[i]);
 	    choices.add(getProjectEARChoice(project));
 	  }
 	  serviceProject2EARProject_ = new SelectionListChoices(list, choices, getEARProjects());

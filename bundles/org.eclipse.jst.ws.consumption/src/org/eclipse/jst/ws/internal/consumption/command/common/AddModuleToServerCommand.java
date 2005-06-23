@@ -2,9 +2,9 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -51,7 +51,7 @@ public class AddModuleToServerCommand extends SimpleCommand
 	    try
 	    {
 	    //Ensure the module is not a Java utility
-	    IProject iproject = (IProject)(new StringToIProjectTransformer()).transform(project);
+	    IProject iproject = ProjectUtilities.getProject(project);
 	    if (!J2EEUtils.isJavaComponent(iproject, module))
 	    {      
 	      IModule imodule = ServerUtils.getModule(iproject, module);
