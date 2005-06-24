@@ -16,11 +16,11 @@ import java.util.List;
 
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.TableViewerWidget;
-import org.eclipse.jst.ws.internal.ui.common.UIUtils;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -57,14 +57,13 @@ public class AxisMappingsWidget extends SimpleWidgetDataContributor
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
     MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    UIUtils      uiUtils  = new UIUtils(msgUtils, pluginId_ );
         
     // TODO The TOOLTIP_PWJM_PAGE key doesn't seem to exist anywhere???
 	//parent.setToolTipText( msgUtils.getMessage( "TOOLTIP_PWJM_PAGE" ) );
     PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId_ + "." + INFOPOP_PWJM_PAGE );
     
-    // TODO No tooltip or infopop for this group.
-    Group mappingGroup = uiUtils.createGroup( parent, "LABEL_MAPPING_PAIRS", null, null );
+    Text mappingLabel = new Text( parent, SWT.READ_ONLY | SWT.WRAP );
+    mappingLabel.setText( msgUtils.getMessage( "LABEL_MAPPING_PAIRS" ) );
                                                
     List initValues = new ArrayList();
     
@@ -81,7 +80,7 @@ public class AxisMappingsWidget extends SimpleWidgetDataContributor
 		mappings_ = new TableViewerWidget( columns, initValues, new String[] {DEFAULT_NAMESPACE, DEFAULT_PACKAGE }, TableViewerWidget.MAP_MANY_TO_ONE); //$NON-NLS-1$
 	}
     
-	mappings_.addControls( mappingGroup, statusListener );
+	mappings_.addControls( parent, statusListener );
    
     return this;
   }
