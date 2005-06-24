@@ -105,7 +105,6 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   public DynamicWizard()
   {
 	setNeedsProgressMonitor(true);
-	dataObjectCommand_ = new DataObjectCommand();
   }
   
   /**
@@ -162,7 +161,6 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
     IExtensionRegistry    registry      = Platform.getExtensionRegistry();
     IExtensionPoint       point         = registry.getExtensionPoint("org.eclipse.wst.command.env.dynamicWizard");
     IExtension[]          extensions    = point.getExtensions();
-    int                   wizardIndex   = -1;
     
     for( int index = 0; index < extensions.length; index++) 
     {
@@ -175,21 +173,12 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
         if( id != null && id.equals( wizardId ) )
         {
           wizardElement_ = elements[0];
-          wizardIndex   = index;
           break;
         }
       }
     }
-    
-    if( wizardElement_ != null )
-    {
-      commandWidgetBinding_ = (CommandWidgetBinding)wizardElement_.createExecutableExtension( "class" );
-      bundle_               = Platform.getBundle(extensions[wizardIndex].getNamespace());
-      iconBannerName_       = wizardElement_.getAttribute( "iconbanner" );
-      wizardTitle_          = wizardElement_.getAttribute( "title" );
-    }
-    
-    if( commandWidgetBinding_ == null )
+        
+    if( wizardElement_ == null )
     {
       MessageUtils msg = new MessageUtils( "org.eclipse.wst.command.env.ui.widgets.environment", this );
       Status status = new Status( Status.ERROR, "id", 0, msg.getMessage( "MSG_ERROR_WIZARD_ID_NOT_FOUND", new String[]{ wizardId}) , null );
@@ -213,10 +202,22 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
     EclipseEnvironment        environment    = new EclipseEnvironment( null, context, monitor, handler );
     
     DataMappingRegistryImpl dataRegistry_   = new DataMappingRegistryImpl();
-    SimpleWidgetRegistry    widgetRegistry_ = new SimpleWidgetRegistry();
+    SimpleWidgetRegistry    widgetRegistry_ = new SimpleWidgetRegistry();  
+    DataFlowManager         dataManager     = new DataFlowManager( dataRegistry_, environment );
     
-    DataFlowManager    dataManager    = new DataFlowManager( dataRegistry_, environment );
+    try
+    {
+      commandWidgetBinding_ = (CommandWidgetBinding)wizardElement_.createExecutableExtension( "class" );
+      bundle_               = Platform.getBundle( wizardElement_.getNamespace() );
+      iconBannerName_       = wizardElement_.getAttribute( "iconbanner" );
+      wizardTitle_          = wizardElement_.getAttribute( "title" );
+    }
+    catch( CoreException exc )
+    {
+      exc.printStackTrace();
+    }
     
+	dataObjectCommand_ = new DataObjectCommand();
     startPage_         = null;
     canFinishRegistry_ = new SimpleCanFinishRegistry(); 
     pageManager_       = new WizardPageManager( widgetRegistry_, 
@@ -332,7 +333,11 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   */
   public boolean performFinish ()
   { 
-  	return pageManager_.performFinish();
+    boolean result = pageManager_.performFinish();
+    
+    if( result ) cleanup();
+    
+    return result;
   }
 
   /**
@@ -340,7 +345,11 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   */
   public boolean performCancel ()
   {
-  	return pageManager_.performCancel();
+  	boolean result = pageManager_.performCancel();
+  	
+  	if( result ) cleanup();
+  	
+  	return result;
   }  
       
   public Object getDataObject()
@@ -363,5 +372,21 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   protected IConfigurationElement getConfigElement()
   {
     return wizardElement_;
+  }
+  
+  /**
+   * This method frees up the memory held by this object.
+   *
+   */
+  private void cleanup()
+  {
+	iconBannerName_       = null;;
+	bundle_               = null;;
+	canFinishRegistry_    = null; 
+	pageManager_          = null;
+	wizardTitle_          = null;
+	dataObjectCommand_    = null;
+	startPage_            = null;
+	commandWidgetBinding_ = null;  
   }
 }
