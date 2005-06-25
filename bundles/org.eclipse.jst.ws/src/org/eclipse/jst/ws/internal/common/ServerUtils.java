@@ -33,6 +33,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
+import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
@@ -167,9 +168,8 @@ public final class ServerUtils {
 		return status;
 	}
 
-	public static IServer getServerForModule(IModule module,
-			String serverTypeId, IServer server, boolean create,
-			IProgressMonitor monitor) {
+	public static IServer getServerForModule(IModule module, String serverTypeId, 
+								IServer server, boolean create, IProgressMonitor monitor) {
 		if (server != null)
 			return server;
 		else
@@ -614,8 +614,11 @@ public final class ServerUtils {
 	public static String getFactoryIdFromRuntimeTargetId(String runtimeTargetId){
 		IServerType[] serverTypes = ServerCore.getServerTypes();
 		for (int i=0;i<serverTypes.length;i++) {
-			if (serverTypes[i].getRuntimeType().getId().equals(runtimeTargetId))
-				return serverTypes[i].getId();
+			IRuntimeType runtimeTyp = serverTypes[i].getRuntimeType();
+			if (runtimeTyp!=null){
+				if (runtimeTyp.getId().equals(runtimeTargetId))
+					return serverTypes[i].getId();
+			}
 		}
 		return "";
 		
