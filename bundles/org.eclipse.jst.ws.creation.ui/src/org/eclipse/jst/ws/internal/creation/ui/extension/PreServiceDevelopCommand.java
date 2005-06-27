@@ -160,8 +160,8 @@ public class PreServiceDevelopCommand extends SimpleCommand
   {
 	  typeRuntimeServer_ = typeRuntimeServer;  
   }
-	
-  public void setJ2eeLevel( String j2eeLevel )
+	  
+  public void setServiceJ2EEVersion( String j2eeLevel )
   {
 	j2eeLevel_ = j2eeLevel;  
   }
