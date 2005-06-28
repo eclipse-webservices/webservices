@@ -20,6 +20,8 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.constants.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.datamodel.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.util.*,
+                                                        org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceInfo,
+                                                        org.eclipse.wst.ws.internal.wsfinder.WebServiceFinder,
                                                         javax.wsdl.extensions.soap.*,
                                                         javax.wsdl.extensions.http.*,
                                                         javax.wsdl.extensions.*,
@@ -53,15 +55,11 @@
      {
        if (!projects[i].isOpen())
          continue;
-// TODO: Stubbed out following line to remove unwanted dependency
-// on org.eclipse.jst.ws.internal.common.ResourceUtils.
-// This entire JSP will be rewritten in M5 to use the new WSFinder F/w.
-//     if (ResourceUtils.isWebProject(projects[i]))
-       {
+       
 %>
     document.forms[0].<%=ActionInputs.PROJECT%>.options[x++] = new Option("<%=HTMLUtils.JSMangle(projects[i].getName())%>","<%=HTMLUtils.JSMangle(projects[i].getName())%>");
 <%
-       }
+       
      }
    }
 %>
@@ -81,87 +79,52 @@
       document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[0] = null;
 <%
    {
-// TODO: Stubbed out following line to remove unwanted dependency
-// on org.eclipse.jst.ws.internal.consumption.wsfinder.WSFinderRegistry.
-// This entire JSP will be rewritten in M5 to use the new WSFinder F/w.
-//   List ws = WSFinderRegistry.getInstance().getWebServices();
-     List ws = new java.util.ArrayList();
+
      IWorkspaceRoot iWorkspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
      IProject[] projects = iWorkspaceRoot.getProjects();
+       
      for (int i=0;i<projects.length;i++)
      {
        if (!projects[i].isOpen())
          continue;
-// TODO: Stubbed out following line to remove unwanted dependency
-// on org.eclipse.jst.ws.internal.common.ResourceUtils.
-// This entire JSP will be rewritten in M5 to use the new WSFinder F/w.
-//     if (ResourceUtils.isWebProject(projects[i]))
        {
 %>
     if (selectedWebProjectName == "<%=HTMLUtils.JSMangle(projects[i].getName())%>")
     {
       var x=0;
 <%
-         try
+         wsdlURLs_.removeAllElements();
+         
+         Iterator ws = WebServiceFinder.instance().getWebServices();  
+         while (ws.hasNext())
          {
-           //IBaseWebNature webNature = (IBaseWebNature)projects[i].getNature(IWebNatureConstants.J2EE_NATURE_ID);
-           String contextRoot = null;//webNature.getContextRoot();
-           wsdlURLs_.removeAllElements();
-           for (Iterator it = ws.iterator(); it.hasNext();)
-           {
-             String wsdl = it.next().toString();
-             String file = (new URL(wsdl)).getFile();
-             int contextRootLen = contextRoot.length();
-             if (file.length() > contextRootLen && contextRoot.equals(file.substring(1, contextRootLen+1)) && (file.length() < contextRootLen+2 || file.charAt(contextRootLen+1) == '/'))
-             {
-               wsdlURLs_.add(wsdl);
-             }
-           }
-           if (wsdlType == ActionInputs.WSDL_TYPE_SERVICE_INTERFACE)
-           {
-             final String wsdlFolder = null;//webNature.getRootPublishableFolder().getFullPath().append("wsdl").toString();
-             projects[i].accept(new IResourceVisitor()
-             {
-               public boolean visit(IResource resource)
-               {
-                 if (resource.getType() == IResource.FILE)
-                 {
-                   IPath resourceFullPath = resource.getFullPath();
-                   String ext = resourceFullPath.getFileExtension();
-                   if (ext != null && ext.equalsIgnoreCase("wsdl") && resourceFullPath.toString().startsWith(wsdlFolder))
-                   {
-// TODO: Stubbed out following lines to remove unwanted dependency
-// on org.eclipse.jst.ws.internal.common.ResourceUtils.
-// This entire JSP will be rewritten in M5 to use the new WSFinder F/w.
-//                   String wsdl = ResourceUtils.getURLFromPath(resourceFullPath, null, null);
-//                   if (!wsdlURLs_.contains(wsdl))
-//                     wsdlURLs_.add(wsdl);
-                   }
-                 }
-                 return true;
-               }
-             });
-             Uddi4jHelper uddi4jHelper = new Uddi4jHelper();
-             for (int index = 0; index < wsdlURLs_.size(); index++)
-             {
-               Definition wsdlDocument = uddi4jHelper.getWSDLDefinition(wsdlURLs_.get(index).toString());
-               if (!uddi4jHelper.isServiceInterface(wsdlDocument) && !uddi4jHelper.isServiceInterfaceWithBindingsOnly(wsdlDocument))
-               {
-                 wsdlURLs_.remove(index);
-                 index--;
-               }
-             }
-           }
-           for (Iterator it = wsdlURLs_.iterator(); it.hasNext();)
-           {
-             String wsdl = HTMLUtils.JSMangle(it.next().toString());
-             %>
-             document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[x++] = new Option("<%=wsdl%>","<%=wsdl%>");
-             <%
-           }
+            WebServiceInfo wsInfo = (WebServiceInfo)ws.next();
+            String url = wsInfo.getWsdlURL();
+          
+            if (url.indexOf(projects[i].getName()) == 1)
+            {
+               wsdlURLs_.add(url);
+            }
          }
-         catch (CoreException ce)
+         if (wsdlType == ActionInputs.WSDL_TYPE_SERVICE_INTERFACE)
          {
+         
+         }
+         for (Iterator it = wsdlURLs_.iterator(); it.hasNext();)
+         {
+             String wsdl = HTMLUtils.JSMangle(it.next().toString());
+             String platformURL = "";             
+             if (wsdl.indexOf(":") == -1)
+             {
+                platformURL = "platform:/resource" + wsdl;
+              }
+              else
+              {
+                 platformURL = wsdl;
+              }             
+             %>
+              document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[x++] = new Option("<%=wsdl%>", "<%=platformURL%>"); 
+             <%
          }
 %>
     }
@@ -200,7 +163,7 @@
         document.getElementById(sectionIds[i]).style.display = "";
       else
         document.getElementById(sectionIds[i]).style.display = "none";
-    }
+    }  
   }
   
   function setDefaults()
