@@ -14,10 +14,12 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
@@ -75,6 +77,8 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
   private String proxyBean;
   private SelectionListChoices runtime2ClientTypes;
   private String sampleProject;
+  private String sampleP;
+  private String sampleC;
   private String sampleEAR;
   private TypeRuntimeServer clientIds;
   private String j2eeVersion;
@@ -105,7 +109,11 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
   	
     //Get the sample Folder ready
     StringBuffer sb = new StringBuffer();
-    sb.append("/").append(sampleProject).append("/").append(DEFAULT_WEB_MODULE_ROOT).append("/");
+	IProject project = ProjectUtilities.getProject(sampleP);
+	IPath path = J2EEUtils.getWebContentPath(project,sampleC);
+	
+	
+	sb.append("/").append(path.toString()).append("/");
     folder = SAMPLE_DIR + getBean(); 
         
     sb.append(folder);
@@ -187,10 +195,14 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
   	String projectType = slc.getList().getSelection();
   	if(projectType.equals(IModuleConstants.JST_WEB_MODULE)){
       sampleProject = clientProject;
+	  sampleP = clientP;
+	  sampleC = clientComponent;
   	}  	
   	else{ 
-  	  sampleProject = (new StringBuffer(clientIProject.getName())).append(DEFAULT_SAMPLE_WEB_PROJECT_EXT).toString();	
-  	}
+  	  sampleProject = clientProject + DEFAULT_SAMPLE_WEB_PROJECT_EXT;	
+  	  sampleP = clientP;
+	  sampleC = clientComponent + DEFAULT_SAMPLE_WEB_PROJECT_EXT;
+	}
   	sampleEAR = slc.getChoice().getChoice().getList().getSelection();
   	if (sampleEAR == null || sampleEAR.length()==0)
   	{
