@@ -145,10 +145,10 @@ public class ClientTestDelegateCommand extends SimpleCommand
   
 	if(sampleProject != null){
 	  int index = sampleProject.indexOf("/");
-    if (index!=-1){
-      sampleP = sampleProject.substring(0,index);
-      sampleC = sampleProject.substring(index + 1);
-    }
+      if (index!=-1){
+        sampleP = sampleProject.substring(0,index);
+        sampleC = sampleProject.substring(index + 1);
+      }
 	}
 	
     

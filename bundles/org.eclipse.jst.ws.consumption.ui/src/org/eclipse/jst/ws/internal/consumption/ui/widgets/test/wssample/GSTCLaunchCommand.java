@@ -7,7 +7,10 @@ import java.net.URL;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.PublishProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
@@ -63,9 +66,12 @@ public class GSTCLaunchCommand extends SimpleCommand {
 	    
 	status = spc.execute(env);
 	if (status.getSeverity() == Status.ERROR) return status;
-	    
-	IPath newPath = new Path(ResourceUtils.getWebProjectURL(ResourceUtils.getProjectOf(fDestinationFolderPath),testInfo.getClientServerTypeID(),testInfo.getClientExistingServer()));
-	newPath = newPath.append(fDestinationFolderPath.removeFirstSegments(3).makeAbsolute());
+	
+	IProject sampleProject = ProjectUtilities.getProject(testInfo.getGenerationProject());
+	IPath newPath = new Path(ServerUtils.getWebComponentURL(sampleProject,testInfo.getGenerationModule(),testInfo.getClientServerTypeID(),testInfo.getClientExistingServer()));
+	int count = J2EEUtils.getWebContentPath(sampleProject,testInfo.getGenerationModule()).segmentCount();
+	
+	newPath = newPath.append(fDestinationFolderPath.removeFirstSegments(count).makeAbsolute());
 	StringBuffer urlString = new StringBuffer(newPath.append(TEST_CLIENT).toString());
 	if (testInfo.getEndpoint() != null && !testInfo.getEndpoint().isEmpty())
 	{
