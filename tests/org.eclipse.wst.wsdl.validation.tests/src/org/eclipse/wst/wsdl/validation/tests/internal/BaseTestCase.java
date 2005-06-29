@@ -13,29 +13,16 @@ package org.eclipse.wst.wsdl.validation.tests.internal;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.eclipse.core.internal.resources.ProjectDescription;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
@@ -266,92 +253,5 @@ public class BaseTestCase extends TestCase
     {
       return "";
     }
-  }
-  
-  protected IProject createProject(String projectName, String[] files, String[] projectNatures, IProject[] referencedProjects)
-  {
-    final IWorkspace workspace = ResourcesPlugin.getWorkspace();
-    final IProject project = workspace.getRoot().getProject(projectName);
-    if(!project.exists())
-    {
-      try
-	  {
-        project.create(null);
-      }
-      catch(CoreException e)
-	  {
-        fail("Could not create project " + projectName + e);
-      } 
-    }
-    if(!project.isOpen())
-    {
-      try
-	  {
-        project.open(null);
-	  }
-      catch(CoreException e)
-      {
-        fail("Could not open project " + projectName + e);
-	  }
-    }
-    try
-    {
-      IProjectDescription projectDescription = new ProjectDescription();
-      projectDescription.setName(projectName);
-      projectDescription.setNatureIds(projectNatures);
-      if(referencedProjects!=null)
-      {
-        projectDescription.setReferencedProjects(referencedProjects);
-      }
-      project.setDescription(projectDescription, null);
-    }
-    catch(Exception e)
-    {
-      fail("Unable to set project properties for project " + projectName + ". " + e);
-    }
-   IJavaProject javaProject = JavaCore.create(project);
-   try
-   {
-     javaProject.open(null);
-     List entries = new ArrayList();
-     entries.add(JavaCore.newSourceEntry(new Path("default")));
-     
-     if(referencedProjects != null)
-     {
-       for(int i = 0; i < referencedProjects.length; i++)
-       {
-         entries.add(JavaCore.newProjectEntry(referencedProjects[i].getLocation()));
-       }
-     }
-     javaProject.setRawClasspath((IClasspathEntry[])entries.toArray(new IClasspathEntry[entries.size()]), null);
-   }
-   catch(Exception e)
-   {
-     fail("Can't open Java project: " + e);
-   }
-
-    if(files != null)
-    {
-      int numfiles = files.length;
-      for(int i = 0; i < numfiles; i++)
-      {
-        try
-		{
-          File file = new File(files[i]);
-          FileInputStream in = new FileInputStream(file);
-          IFile iFile = project.getFile(file.getName());
-          if(!iFile.exists())
-          {
-            iFile.create(in, true, null);
-            in.close();
-          }
-		}
-        catch(Exception e)
-		{
-		  fail("Unable to locate file " + files[i]);
-		} 
-      }
-    }
-    return project;
   }
 }

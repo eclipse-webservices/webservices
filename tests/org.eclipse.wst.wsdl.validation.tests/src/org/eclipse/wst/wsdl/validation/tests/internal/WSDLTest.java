@@ -194,42 +194,6 @@ public class WSDLTest extends BaseTestCase
     runTest(testfile, loglocation, idealloglocation);
   }
   
-
-  /**
-   * Test /WSDL/Import/ImportingUsingClasspath.wsdl
-   */
-//  public void testImportingUsingClasspath()
-//  {
-//    final IWorkspace workspace = ResourcesPlugin.getWorkspace();
-//    String testname = "ImportingUsingClasspath";
-//    String importingfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + "ImportingUsingClasspath.wsdl";
-//    importingfile = importingfile.replace('/','\\');
-//    importingfile = importingfile.substring(5);
-//    String importedfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/" + "ImportedUsingClasspath.wsdl";
-//    importedfile = importedfile.replace('/','\\');
-//    importedfile = importedfile.substring(5);
-//    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
-//    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/" + testname + ".wsdl-log";
-//    
-//    String projectName = "Project1";
-//    String projectName2 = "Project2";
-//    // Create a simple project for ImportedSchemaWithSchemaImport test.
-//    IProject project2 = createProject(projectName2, new String[]{importedfile},new String[]{"org.eclipse.jdt.core.javanature", "com.ibm.wtp.jca.ConnectorNature"}, null);
-//    IProject project1 = createProject(projectName, new String[]{importingfile},new String[]{"org.eclipse.jdt.core.javanature", "com.ibm.wtp.jca.ConnectorNature"}, new IProject[]{project2});
-//    
-//    String testfile = "file:/" + project1.getFile("ImportingUsingClasspath.wsdl").getLocation().toString();
-//    runTest(testfile, loglocation, idealloglocation);
-//    
-//    try
-//    {
-//      project1.delete(true, true, null);
-//      project2.delete(true, true, null);
-//    }
-//    catch(Exception e)
-//    {
-//    }
-//  }
-  
   /**
    * Test /WSDL/Import/AlphabeticalOrderOfImports/ImportOneAndTwo.wsdl
    */
