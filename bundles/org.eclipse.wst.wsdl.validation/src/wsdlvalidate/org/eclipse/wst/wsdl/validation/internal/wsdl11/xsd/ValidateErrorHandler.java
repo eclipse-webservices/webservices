@@ -14,7 +14,6 @@ package org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.xerces.dom3.DOMError;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLErrorHandler;
 import org.apache.xerces.xni.parser.XMLParseException;
@@ -27,6 +26,8 @@ public class ValidateErrorHandler implements XMLErrorHandler
 {
   ArrayList errorList = new ArrayList();
 
+  
+  
   /**
    * Get the error messages created by Xerces.
    * 
