@@ -21,6 +21,11 @@ public class WSIFileNotFoundException extends WSIException
 {
 
   /**
+   * Static needed for serializable class
+   */
+  private static final long serialVersionUID = -1916010444601666401L;
+
+/**
    * Constructor for WSIFileNotFoundException.
    */
   public WSIFileNotFoundException()

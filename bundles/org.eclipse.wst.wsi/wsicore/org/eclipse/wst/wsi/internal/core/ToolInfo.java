@@ -380,24 +380,6 @@ public class ToolInfo
   }
 
   /**
-   * Format tool location.
-   * @param location  tool location.
-   * @return formatted tool location.
-   */
-  private String formatToolLocation(String location)
-  {
-    // Start with specified location
-    String returnLocation = location;
-
-    // Make sure string ends the "/"
-    if (!returnLocation.endsWith("/"))
-      returnLocation += "/";
-
-    // Add tool name and .html
-    return returnLocation + getName() + ".html";
-  }
-
-  /**
    * Create the tools.properties file from the command line.
    * The input arguements are:
    * <ol>

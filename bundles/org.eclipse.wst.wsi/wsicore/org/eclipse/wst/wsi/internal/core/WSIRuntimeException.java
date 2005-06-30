@@ -20,6 +20,11 @@ public class WSIRuntimeException extends WSIException
 {
 
   /**
+   * Static needed for serializable class
+   */
+  private static final long serialVersionUID = 4309320981515513171L;
+
+  /**
    * Constructor for WSIRuntimeException.
    */
   public WSIRuntimeException()

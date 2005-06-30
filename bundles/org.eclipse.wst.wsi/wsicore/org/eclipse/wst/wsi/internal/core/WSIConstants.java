@@ -477,9 +477,12 @@ public interface WSIConstants {
 	 * File which contains the copyright, license and feedback comments.
 	 */
 	public static final String COMMENTS_FILE = "comments.xml";
-
 	public static final String CONTENT_TYPE_TEXT_XML = "text/xml";
-
 	public static final String CONTENT_TYPE_MULTIPART = "multipart/related";
+
+	public static final String FILE_PREFIX = "file:";
+	public static final String HTTP_PREFIX = "http:";
+	public static final String FILE_PROTOCOL = "file:///";
+	public static final String WSI_PREFIX = "WS-I: ";
 
 }

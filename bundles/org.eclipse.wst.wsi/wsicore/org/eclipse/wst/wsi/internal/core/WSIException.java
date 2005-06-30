@@ -21,6 +21,12 @@ import java.util.MissingResourceException;
  */
 public class WSIException extends Exception
 {
+
+  /**
+   * Static needed for serializable class
+   */
+  private static final long serialVersionUID = 5446823222767299308L;
+
   /**
    * Throwable.
    */

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.eclipse.wst.wsi.internal.URIEncoder;
+import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
 import org.eclipse.wst.wsi.internal.WSIPreferences;
 import org.eclipse.wst.wsi.internal.WSITestToolsEclipseProperties;
 import org.eclipse.wst.wsi.internal.core.WSIException;
@@ -61,8 +61,6 @@ public class MessageAnalyzer
   protected final String WARNING = "warning";
   protected final String FAILED = "failed";
   
-  protected final String FILE = "file:";
-
   protected String filename;
   protected String wsdlfile = null;
   protected String elementname = null;
@@ -80,7 +78,7 @@ public class MessageAnalyzer
    */
   public MessageAnalyzer(String filename)
   {
-    this.filename = filename;
+    this.filename = filename.replace('\\', '/');
 
     assertionwarnings = new Vector();
     assertionerrors = new Vector();
@@ -93,7 +91,7 @@ public class MessageAnalyzer
    */
   public MessageAnalyzer(String filename, WSIPreferences wsiPreferences)
   {
-    this.filename = filename;
+    this.filename = filename.replace('\\', '/');
 
     assertionwarnings = new Vector();
     assertionerrors = new Vector();
@@ -102,10 +100,10 @@ public class MessageAnalyzer
 
   public MessageAnalyzer(String filename, String wsdlfile, String elementname, String namespace, String parentname, String type)
   {
-  	this(filename);
+  	this(filename.replace('\\', '/'));
   	wsdlspecified = true;
   	
-  	this.wsdlfile = wsdlfile;
+  	this.wsdlfile = wsdlfile.replace('\\', '/');
   	this.elementname = elementname;
   	this.namespace = namespace;
   	this.parentname = parentname;
@@ -117,7 +115,7 @@ public class MessageAnalyzer
   	this(filename, wsiPreferences);
   	wsdlspecified = true;
   	
-  	this.wsdlfile = wsdlfile;
+  	this.wsdlfile = wsdlfile.replace('\\', '/');
   	this.elementname = elementname;
   	this.namespace = namespace;
   	this.parentname = parentname;
@@ -246,7 +244,7 @@ public class MessageAnalyzer
                       assertionerrors.add(
                         new AssertionError(
                         ta.getId(),
-                        "WS-I Message ID " + entry.getReferenceID() + ":" + ta.getFailureMessage(),
+                        "Message ID " + entry.getReferenceID() + ":" + ta.getFailureMessage(),
                         lineNumber,
                         columnNumber));
                     }

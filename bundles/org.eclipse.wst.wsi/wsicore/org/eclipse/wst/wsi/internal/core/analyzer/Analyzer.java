@@ -167,9 +167,9 @@ public abstract class Analyzer
    * @param toolInfo  analyzer tool information.
    * @throws WSIException if problems occur during common initialization.
    */
-  protected void init(ToolInfo toolInfo) throws WSIException
+  protected void init(ToolInfo info) throws WSIException
   {
-    this.toolInfo = toolInfo;
+    this.toolInfo = info;
 
     // Create message list
     messageList = new MessageList(RESOURCE_BUNDLE_NAME);

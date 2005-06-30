@@ -356,7 +356,7 @@ public class BasicProfileAnalyzer extends Analyzer
     ReportArtifact reportArtifact,
     WSDLValidator wsdlValidator,
     String wsdlURI,
-    WSDLDocument wsdlDocument)
+    WSDLDocument document)
     throws WSIException
   {
     WSDLDocument returnWSDLDocument = null;
@@ -367,11 +367,11 @@ public class BasicProfileAnalyzer extends Analyzer
       this.profileAssertions.getArtifact(ArtifactType.TYPE_DESCRIPTION),
       reportArtifact,
       wsdlURI,
-      wsdlDocument,
+      document,
       this.reporter);
 
     // If a WSDL URI was specified or located in a UDDI registry, then process the WSDL tests
-    if (wsdlURI != null || wsdlDocument != null)
+    if (wsdlURI != null || document != null)
     {
       // Call WSDLValidator 
       returnWSDLDocument = wsdlValidator.validate();
@@ -395,7 +395,7 @@ public class BasicProfileAnalyzer extends Analyzer
   private void validateMessages(
     ReportArtifact reportArtifact,
     MessageValidator messageValidator,
-    WSDLDocument wsdlDocument)
+    WSDLDocument document)
     throws WSIException
   {
     //Log log = null;
@@ -406,7 +406,7 @@ public class BasicProfileAnalyzer extends Analyzer
       this.analyzerContext,
       this.profileAssertions.getArtifact(ArtifactType.TYPE_MESSAGE),
       reportArtifact,
-      wsdlDocument,
+      document,
       this.reporter);
 
     // If the log file location was specified, then process test assertions for the messages
@@ -440,7 +440,7 @@ public class BasicProfileAnalyzer extends Analyzer
   private void validateEnvelopes(
     ReportArtifact reportArtifact,
     EnvelopeValidator envelopeValidator,
-    WSDLDocument wsdlDocument)
+    WSDLDocument document)
     throws WSIException
   {
     // Init envelopeValidator
@@ -448,7 +448,7 @@ public class BasicProfileAnalyzer extends Analyzer
       this.analyzerContext,
       this.profileAssertions.getArtifact(ArtifactType.TYPE_ENVELOPE),
       reportArtifact,
-      wsdlDocument,
+      document,
       this.reporter);
 
     // If the log file location was specified, then process test assertions for the messages
@@ -515,7 +515,6 @@ public class BasicProfileAnalyzer extends Analyzer
     {
       statusCode = 1;
 
-      boolean printStackTrace = true;
       String messageID;
       String defaultMessage;
       String messageData;

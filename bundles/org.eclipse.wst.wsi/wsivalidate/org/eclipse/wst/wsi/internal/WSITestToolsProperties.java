@@ -13,6 +13,7 @@ package org.eclipse.wst.wsi.internal;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
+import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
 import org.eclipse.wst.wsi.internal.core.util.WSIProperties;
 
 /**
@@ -58,7 +59,7 @@ public class WSITestToolsProperties
    */
   public static void setInstallDir(String dir)
   {
-    installURL = dir;
+    installURL = dir.replace('\\', '/');
   }
   
   /**

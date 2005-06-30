@@ -32,7 +32,6 @@ import com.ibm.wsdl.Constants;
 public class InlineSchemaGenerator
 {
   protected final String SOAP_ENCODING_URI = "http://schemas.xmlsoap.org/soap/encoding/";
-  protected final String FILE_PREFIX = "file:///";
   protected final String XMLNS = "xmlns";
   protected final String TARGETNAMESPACE = "targetNamespace";
   protected final String NAMESPACE = "namespace";

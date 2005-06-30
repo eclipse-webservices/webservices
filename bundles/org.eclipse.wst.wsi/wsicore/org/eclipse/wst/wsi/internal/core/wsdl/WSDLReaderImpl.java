@@ -218,12 +218,12 @@ catch (Exception e)
             Element element2 = document.getDocumentElement();
             if (QNameUtils.matches(Constants.Q_ELEM_DEFINITIONS, element2))
             {
-              if (verbose)
-                System.out.println(
-                  "Retrieving document at '"
-                    + s1
-                    + "'"
-                    + (s2 != null ? ", relative to '" + s2 + "'." : "."));
+              //if (verbose)
+              //  System.out.println(
+              //    "Retrieving document at '"
+              //      + s1
+              //      + "'"
+              //      + (s2 != null ? ", relative to '" + s2 + "'." : "."));
               String s4 =
                 loc == null
                   ? url == null

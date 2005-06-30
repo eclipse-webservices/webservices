@@ -32,9 +32,11 @@ import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfoImpl;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDLDocument;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDLReaderImpl;
 import org.eclipse.wst.wsi.internal.WSIPreferences;
+import org.eclipse.wst.wsi.internal.WSITestToolsEclipseProperties;
 import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
 import org.eclipse.wst.wsi.internal.analyzer.WSDLAnalyzer;
 import org.eclipse.wst.wsi.internal.analyzer.WSIAnalyzerException;
+import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.report.AssertionError;
 import org.w3c.dom.Document;
 
@@ -48,7 +50,6 @@ import org.w3c.dom.Document;
  */
 public class WSDLValidator implements IWSDLValidator
 {
-  protected final String WSI_PREFIX = "WS-I: ";
   protected final String _EXC_UNABLE_TO_VALIDATE_WSI = "_EXC_UNABLE_TO_VALIDATE_WSI";
 
   // indications for types of errors
@@ -333,7 +334,7 @@ public class WSDLValidator implements IWSDLValidator
       {
 		wsiValid = false;
         valInfo.addError(
-          WSI_PREFIX + assertionerror.getErrorMessage(),
+        		WSIConstants.WSI_PREFIX + "(" + assertionerror.getAssertionID()+ ") " + assertionerror.getErrorMessage(),
           assertionerror.getLine(),
           assertionerror.getColumn(),
           valInfo.getFileURI());
@@ -342,7 +343,7 @@ public class WSDLValidator implements IWSDLValidator
       else if (type == WARNING)
       {
         valInfo.addWarning(
-          WSI_PREFIX + assertionerror.getErrorMessage(),
+        		WSIConstants.WSI_PREFIX + "(" + assertionerror.getAssertionID()+ ") " + assertionerror.getErrorMessage(),
           assertionerror.getLine(),
           assertionerror.getColumn(),
           valInfo.getFileURI());

@@ -16,10 +16,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.eclipse.wst.wsi.internal.URIEncoder;
+import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
 import org.eclipse.wst.wsi.internal.WSIPreferences;
 import org.eclipse.wst.wsi.internal.WSITestToolsEclipseProperties;
 import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
+import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AnalyzerConfig;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AssertionResultType;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AssertionResultsOption;
@@ -64,8 +65,6 @@ public class WSDLAnalyzer
   protected final String WARNING = "warning";
   protected final String FAILED = "failed";
   
-  protected final String FILE = "file://";
-
   protected List analyzerConfigs;
   protected String wsdlURI;
   // assertions to ignore - used for assertions that the tools have not implemented properly yet
@@ -312,7 +311,7 @@ public class WSDLAnalyzer
       wsdlElement.setName(elementName);
       wsdlReference.setWSDLElement(wsdlElement);
 
-      wsdlReference.setWSDLLocation(FILE + wsdlURI);
+      wsdlReference.setWSDLLocation(wsdlURI);
       DocumentFactory documentFactory = DocumentFactory.newInstance();
       // Initialize the BasicProfileAnalyzer using an analyzerconfig object
       AnalyzerConfig analyzerconfig = documentFactory.newAnalyzerConfig();
@@ -379,13 +378,21 @@ public class WSDLAnalyzer
    */
   public void reset(String filename)
   {
-	try
+	if (filename != null)
 	{
-	  wsdlURI = URIEncoder.encode(filename, "UTF8");
-	}
-	catch (UnsupportedEncodingException uee)
-	{
-	  wsdlURI = URIEncoder.encode(filename);
+	  String tmp = filename.replace('\\', '/');
+	  if (!tmp.startsWith(WSIConstants.FILE_PREFIX))
+	  {
+	    tmp = WSIConstants.FILE_PROTOCOL + tmp;
+	  }
+	  try
+	  {
+	    wsdlURI = URIEncoder.encode(tmp, "UTF8");
+	  }
+	  catch (UnsupportedEncodingException uee)
+	  {
+	    wsdlURI = URIEncoder.encode(tmp);
+	  }
 	}
   	analyzerConfigs = new Vector();
   	assertionerrors = new Vector();
