@@ -49,8 +49,8 @@
                caseSensitive="false"
                nameFilter="*.wsimsg">
          </filter>
-         <helper
-               class="org.eclipse.wst.xml.validation.internal.core.Helper">
+         <helper      
+               class="org.eclipse.wst.xml.core.internal.validation.core.Helper">
          </helper>
          <run
                class="org.eclipse.wst.wsi.ui.internal.WSIMessageValidator">
