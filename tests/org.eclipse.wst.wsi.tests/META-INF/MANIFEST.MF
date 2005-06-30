@@ -12,7 +12,6 @@ Require-Bundle: org.eclipse.wst.wsi,
  org.junit,
  org.wsdl4j,
  org.eclipse.osgi,
- org.eclipse.jdt.core,
  org.eclipse.core.runtime,
  org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.core
