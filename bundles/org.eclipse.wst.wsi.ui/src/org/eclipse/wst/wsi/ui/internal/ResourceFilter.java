@@ -59,7 +59,7 @@ public class ResourceFilter extends ViewerFilter
         for (int j= 0; j < fExcludedFiles.length; j++) 
         {
           if ( ((IFile)element).getLocation().
-               toOSString().compareTo(((IFile)fExcludedFiles[j]).getLocation().toOSString()) == 0 )
+               toString().compareTo(((IFile)fExcludedFiles[j]).getLocation().toString()) == 0 )
            return false;             
         }            
       }

@@ -10,31 +10,40 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.ui.internal.actions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.wst.validation.internal.core.IMessageAccess;
+import org.eclipse.wst.validation.internal.operations.WorkbenchReporter;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidator;
+import org.eclipse.wst.validation.internal.provisional.core.MessageLimitException;
 import org.eclipse.wst.wsi.internal.analyzer.MessageAnalyzer;
 import org.eclipse.wst.wsi.internal.analyzer.WSIAnalyzerException;
-import org.eclipse.wst.wsi.internal.report.AssertionError;
+import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
+import org.eclipse.wst.wsi.internal.report.AssertionError;
 import org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage;
-import org.eclipse.wst.xml.ui.internal.validation.core.ValidateAction;
+import org.eclipse.wst.xml.ui.internal.validation.ValidateAction;
 import org.xml.sax.SAXParseException;
 
 /**
  * Action for running the validator.
+ * 
+ * @author David Lauzon, IBM
+ * @author Lawrence Mandel, IBM
  */
 public class WSIValidateAction extends ValidateAction
 {
-  protected static final String FILE_PROTOCOL = "file:";
   protected IValidator validator;
   
   protected String wsdlfile = null;
@@ -61,16 +70,24 @@ public class WSIValidateAction extends ValidateAction
    * 
    * @param f The file to validate.
    * @param showDialog Whether or not to show a status dialog after validation.
-   * @param wsdlfile The WSDL file to use for validation.
+   * @param file The WSDL file to use for validation.
    * @param elementname The name of the WSDL element to validate.
    * @param namespace The namespace of the WSDL element to validate
    * @param parentname The parent name of the WSDL element to validate.
    * @param type The type of element to validate.
    */
-  public WSIValidateAction(IFile f, boolean showDialog, String wsdlfile, String elementname, String namespace, String parentname, String type)
+  public WSIValidateAction(IFile f, boolean showDialog, String file, String elementname, String namespace, String parentname, String type)
   {
   	this(f, showDialog);
-  	this.wsdlfile = wsdlfile;
+  	if (file != null)
+  	{
+  	  wsdlfile = file.replace('\\', '/');
+  	  if ((!wsdlfile.startsWith(WSIConstants.FILE_PREFIX)) && 
+  		  (!wsdlfile.startsWith(WSIConstants.HTTP_PREFIX)))
+      {
+  	    wsdlfile = WSIConstants.FILE_PROTOCOL + wsdlfile;  
+  	  }
+  	}
   	this.elementname = elementname;
   	this.namespace = namespace;
   	this.parentname = parentname;
@@ -81,47 +98,47 @@ public class WSIValidateAction extends ValidateAction
   /* (non-Javadoc)
    * @see org.eclipse.validate.ValidateAction#validate(org.eclipse.core.resources.IFile)
    */
-  protected void validate(final IFile file)
+  protected void validate(final IFile file1)
   {
   	final MessageAnalyzer messageanalyzer;
   	
   	if(wsdlspecified)
   	{
-  	  messageanalyzer = new MessageAnalyzer(FILE_PROTOCOL + file.getLocation().toOSString(), wsdlfile, elementname, namespace, parentname, type);	
+  	  messageanalyzer = new MessageAnalyzer(WSIConstants.FILE_PROTOCOL + file1.getLocation().toString(), wsdlfile, elementname, namespace, parentname, type);	
   	}
   	else
   	{	
-  	  messageanalyzer = new MessageAnalyzer(FILE_PROTOCOL + file.getLocation().toOSString());
+  	  messageanalyzer = new MessageAnalyzer(WSIConstants.FILE_PROTOCOL + file1.getLocation().toString());
   	}
   	
   	IWorkspaceRunnable op = new IWorkspaceRunnable() 
     {
       public void run(IProgressMonitor progressMonitor) throws CoreException 
       {        
-        clearMarkers(file);
+        clearMarkers(file1);
         try
         {
           messageanalyzer.validateConformance();
         }
         catch (WSIAnalyzerException ae)
         {
+        	exceptionCaught = true;
         	if (ae.getTargetException() instanceof SAXParseException)
         	{
-        	  exceptionCaught = true;
-        	  createMarkers(file, new ValidationMessage[]{createValidationMessageForException((SAXParseException)ae.getTargetException(), IMarker.SEVERITY_ERROR)});
+        	  createMarkers(file1, new ValidationMessage[]{createValidationMessageForException((SAXParseException)ae.getTargetException(), ValidationMessage.SEV_NORMAL)});
         	}
         	else
         	{
-        		createMarkers(file, new ValidationMessage[]{createValidationMessageForException(ae, IMarker.SEVERITY_ERROR)});
+         	  createMarkers(file1, new ValidationMessage[]{createValidationMessageForException(ae, ValidationMessage.SEV_NORMAL)});
         	}
         }
         catch (Exception e)
         {
         }
 
-        createMarkers(file, convertValidationMessages(messageanalyzer.getAssertionWarnings(), IMarker.SEVERITY_WARNING));
-        createMarkers(file, convertValidationMessages(messageanalyzer.getAssertionErrors(), IMarker.SEVERITY_ERROR));
-
+        createMarkers(file1, convertValidationMessages(messageanalyzer.getAssertionWarnings(), ValidationMessage.SEV_LOW));
+        createMarkers(file1, convertValidationMessages(messageanalyzer.getAssertionErrors(), ValidationMessage.SEV_NORMAL));
+        file.setSessionProperty(ValidationMessage.ERROR_MESSAGE_MAP_QUALIFIED_NAME, getOrCreateReporter().getMessages());
 		}
     };
    
@@ -207,7 +224,7 @@ public class WSIValidateAction extends ValidateAction
 
         int n = assertionError.getLine();
         int c = assertionError.getColumn();
-        String m = assertionError.getErrorMessage();
+        String m = WSIConstants.WSI_PREFIX + "(" + assertionError.getAssertionID()+ ") " + assertionError.getErrorMessage();
       
         ValidationMessage message = new ValidationMessage(m,n, c);
         message.setSeverity(marker);
@@ -216,5 +233,66 @@ public class WSIValidateAction extends ValidateAction
       return messages;
     }
 	return new ValidationMessage[0];
+  }
+
+ /**
+  protected IReporter getOrCreateReporter()
+  {
+    if (reporter == null)
+    { 
+      reporter = new Reporter();
+    }
+    return reporter;
+  }
+  */
+  // My Implementation of IReporter
+  class Reporter implements IReporter 
+  {
+	List list = new ArrayList();
+
+	public Reporter() {
+		super();
+	}
+
+	public IMessageAccess getMessageAccess() {
+		return null; // do not need to implement
+	}
+
+	public boolean isCancelled() {
+		return false; // do not need to implement
+	}
+
+	public void removeAllMessages(IValidator origin, Object object) { // do
+																		// not
+																		// need
+																		// to
+																		// implement
+	}
+
+	public void removeAllMessages(IValidator origin) {// do not need to
+														// implement
+	}
+
+	public void removeMessageSubset(IValidator validator, Object obj, String groupName) {// do
+																							// not
+																							// need
+																							// to
+																							// implement
+	}
+
+	public List getMessages() {
+		return list;
+	}
+
+	public void addMessage(IValidator origin, IMessage message) throws MessageLimitException 
+	{
+		list.add(message);
+	}
+
+	public void displaySubtask(IValidator validator, IMessage message) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
   }
 }

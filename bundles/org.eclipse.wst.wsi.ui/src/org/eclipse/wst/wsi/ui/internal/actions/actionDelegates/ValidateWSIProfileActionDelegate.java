@@ -20,11 +20,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.Request;
 import org.eclipse.wst.internet.monitor.ui.internal.provisional.MonitorUICore;
 import org.eclipse.wst.wsi.ui.internal.LogBuilder;
+import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
 import org.eclipse.wst.wsi.ui.internal.wizards.ValidationWizard;
 import org.eclipse.wst.wsi.ui.internal.WSIValidator;
 import org.eclipse.swt.widgets.Display;
@@ -122,12 +124,13 @@ public class ValidateWSIProfileActionDelegate implements IViewActionDelegate
   {
     try
     {
-      ValidationWizard validateWizard = new ValidationWizard(DEFAULT_LOG_FILENAME);
-
       requestResponses = MonitorUICore.getRequests();
-      List wsdllocs = new Vector();
-      if(requestResponses != null)
+      Shell shell = Display.getCurrent().getActiveShell();
+      if ((requestResponses != null) && (requestResponses.length > 0))
       {
+        ValidationWizard validateWizard = new ValidationWizard(DEFAULT_LOG_FILENAME);
+        List wsdllocs = new Vector();
+
        	for (int i=0; i<requestResponses.length; i++)
       	{
       	  Request reqresp = requestResponses[i];
@@ -140,40 +143,47 @@ public class ValidateWSIProfileActionDelegate implements IViewActionDelegate
       	    wsdllocs.add(location);
       	  }
       	}
-      }
-      validateWizard.setWSDLLocations((String[])wsdllocs.toArray(new String[wsdllocs.size()]));
-      Shell shell = Display.getCurrent().getActiveShell();
-      WizardDialog wizardDialog = new WizardDialog(shell, validateWizard);
-      wizardDialog.create();
+      
+        validateWizard.setWSDLLocations((String[])wsdllocs.toArray(new String[wsdllocs.size()]));
+        WizardDialog wizardDialog = new WizardDialog(shell, validateWizard);
+        wizardDialog.create();
 
-      int result = wizardDialog.open();
+        int result = wizardDialog.open();
 
-      if (validateWizard.isValid() && (result != org.eclipse.jface.window.Window.CANCEL))
-      {
-        // If the container doesn't exist, create it now
-        checkAndCreateContainer(validateWizard.getContainerFullPath());
+        if (validateWizard.isValid() && (result != org.eclipse.jface.window.Window.CANCEL))
+        {
+          // If the container doesn't exist, create it now
+          checkAndCreateContainer(validateWizard.getContainerFullPath());
 
-        IFile file = validateWizard.getFile();
-        LogBuilder builder = new LogBuilder(file);
-        Log log = builder.buildLog(requestResponses);
+          IFile file = validateWizard.getFile();
+          LogBuilder builder = new LogBuilder(file);
+          Log log = builder.buildLog(requestResponses);
 
-        builder.writeLog(log);
-        file.refreshLocal(1, progressMonitor);
+          builder.writeLog(log);
+          file.refreshLocal(1, progressMonitor);
         
-        WSIValidator messageValidator = new WSIValidator();
-        if(validateWizard.includeWSDLFile())
-        {	
+          WSIValidator messageValidator = new WSIValidator();
+          if(validateWizard.includeWSDLFile())
+          {	
         	String wsdlfile = validateWizard.getWSDLFile();
         	String name = validateWizard.getElementName();
         	String namespace = validateWizard.getNamespace();
         	String parentname = validateWizard.getParentName();
         	String type = validateWizard.getType();
         	messageValidator.validate(file, wsdlfile, name, namespace, parentname, type);
-        }
-        else
-        {	
+          }
+          else
+          {	
         	messageValidator.validate(file);
+          }
         }
+      }
+      else
+      {
+        // no available messages to validate
+    	  String title = WSIUIPlugin.getResourceString("_UI_WSI_VALIDATOR");
+          String message = WSIUIPlugin.getResourceString("_UI_NO_MESSAGES_TO_VALIDATE");
+    	MessageDialog.openInformation(shell, title, message);
       }
     }
     catch (Exception e)

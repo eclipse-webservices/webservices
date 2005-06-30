@@ -357,7 +357,7 @@ public class LogBuilder
       // Get log writer
       LogWriter logWriter = new LogWriterImpl();
     
-      logWriter.setWriter(ifile.getLocation().toOSString());
+      logWriter.setWriter(ifile.getLocation().toString());
       
       // Write start of log file
       logWriter.write(new StringReader(log.getStartXMLString("")));
