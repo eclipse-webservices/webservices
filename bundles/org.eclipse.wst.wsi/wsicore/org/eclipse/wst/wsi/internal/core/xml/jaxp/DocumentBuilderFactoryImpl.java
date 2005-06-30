@@ -17,12 +17,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
- * This class defines a factory API that enables us to obtain a parser
- * that produces DOM object trees from XML documents. Note this class 
- * specializes javax.xml.parsers.DocumentBuilderFactory.
+ * This class defines a factory API that enables us to obtain a parser that
+ * produces DOM object trees from XML documents. Note this class specializes 
+ * javax.xml.parsers.DocumentBuilderFactory.
  * 
- * @author Peter  Brittenham (peterbr@us.ibm.com)
- * @version 1.0.1
+ * @author Peter Brittenham (peterbr@us.ibm.com)
  */
 public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory
 {
@@ -61,7 +60,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory
    * 
    * @param name  the name of the attribute.
    * @return the value of the attribute. 
-   * @throws IllegalArgumentException f the underlying implementation 
+   * @throws IllegalArgumentException if the underlying implementation 
    *         doesn't recognize the attribute.
    */
   public Object getAttribute(String name) throws IllegalArgumentException
@@ -82,5 +81,20 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory
     throws IllegalArgumentException
   {
     attributes.put(name, value);
+  }
+  
+  public void setFeature(String arg0, boolean arg1) 
+    throws ParserConfigurationException
+  {
+    // currently we do not support setting any feature
+	// as per spec, we should throw an exception
+	throw new ParserConfigurationException(arg0 + " Not supported");
+  }
+
+  public boolean getFeature(String arg0) 
+    throws ParserConfigurationException
+  {
+	// as per spec, we should throw an exception
+	throw new ParserConfigurationException(arg0 + " is not supported");
   }
 }
