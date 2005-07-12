@@ -347,7 +347,9 @@ public class ValidationController
     }
     catch (Throwable t)
     {
-      //System.out.println(t);
+    	// TODO: Log error if the parser fails to read the WSDL document.
+    	// In this case the validator will fail with an unexplained error message
+    	// about a null WSDL namespace. This error should be addressed as well.
     }
     return null;
   }

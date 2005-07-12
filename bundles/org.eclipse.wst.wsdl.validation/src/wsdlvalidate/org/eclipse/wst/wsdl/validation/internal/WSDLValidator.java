@@ -55,7 +55,7 @@ public class WSDLValidator
     WSDLValidatorDelegate delegate = new WSDLValidatorDelegate(WSDL11ValidatorController.class.getName(), VALIDATOR_RESOURCE_BUNDLE, getClass().getClassLoader());
     registry.registerValidator(Constants.NS_URI_WSDL, delegate, ValidatorRegistry.WSDL_VALIDATOR);
     WSDL11ValidatorDelegate delegate1 = new WSDL11ValidatorDelegate(WSDL11BasicValidator.class.getName(), VALIDATOR_RESOURCE_BUNDLE, getClass().getClassLoader());
-    
+    registerWSDL11Validator(Constants.NS_URI_WSDL, delegate1);
     delegate1 = new WSDL11ValidatorDelegate(HTTPValidator.class.getName(), VALIDATOR_HTTP_RESOURCE_BUNDLE, getClass().getClassLoader());
     registerWSDL11Validator(org.eclipse.wst.wsdl.validation.internal.Constants.NS_HTTP, delegate1);
     delegate1 = new WSDL11ValidatorDelegate(SOAPValidator.class.getName(), VALIDATOR_SOAP_RESOURCE_BUNDLE, getClass().getClassLoader());
