@@ -261,6 +261,9 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
   {
     sourcePageIndex = addPage(textEditor, getEditorInput());
     setPageText(sourcePageIndex, WSDLEditorPlugin.getWSDLString("_UI_TAB_SOURCE"));
+    // the update's critical, to get viewer selection manager and highlighting to
+    // work
+    textEditor.update();
   }
 
   int[] weights;
