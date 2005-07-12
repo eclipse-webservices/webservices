@@ -2,8 +2,8 @@ number of errors      : 2
 number of warnings    : 0
 
 ------------error list-------------------------------------------
-cvc-enumeration-valid: Value 'InvalidUse' is not facet-valid with respect to enumeration '[literal, encoded]'. It must be a value from the enumeration. [32, 46]
-cvc-attribute.3: The value 'InvalidUse' of attribute 'use' on element 'soap:body' is not valid with respect to its type, 'useChoice'. [32, 46]
+cvc-enumeration-valid: Value 'InvalidUse' is not facet-valid with respect to enumeration '[literal, encoded]'. It must be a value from the enumeration. [29, 46]
+cvc-attribute.3: The value 'InvalidUse' of attribute 'use' on element 'soap:body' is not valid with respect to its type, 'useChoice'. [29, 46]
 ------------warning list-----------------------------------------
 (none)
 -----------------------------------------------------------------
