@@ -11,10 +11,12 @@
 
 package org.eclipse.wst.ws.internal.parser.plugin;
 
+import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -64,4 +66,46 @@ public class ParserPlugin extends Plugin {
 	public ResourceBundle getResourceBundle() {
 		return resourceBundle;
 	}
+
+	 /**
+	  * Returns the message string identified by the given key from
+	  * the plugin.properties file for the appropriate locale.
+	  * @param key The message key string prefixed by a "%" symbol.
+	  * That is, the string passed in must be of the form "%KEY"
+	  * where the plugin.properties file contains a line of the
+	  * form: "KEY = value".
+	  * @return The locale-specific message.
+	  */
+	  public static String getMessage ( String key )
+	  {
+	    MessageUtils msgUtils = new MessageUtils( "org.eclipse.wst.ws.parser.plugin", plugin );
+	    
+	    if( key.startsWith("%"))
+	    {
+	      key = key.substring( 1, key.length() );
+	    }
+	    
+	    return msgUtils.getMessage(key);
+	  }
+
+	  /**
+	  * Returns the message string identified by the given key from
+	  * the plugin.properties file for the appropriate locale.
+	  * Substitution sequences in the message string
+	  * are replaced by the given array of substitution objects (which
+	  * are most frequently strings). See java.text.MessageFormat for
+	  * further details on substitution.
+	  * @param key The message key string prefixed by a "%" symbol.
+	  * That is, the string passed in must be of the form "%KEY"
+	  * where the plugin.properties file contains a line of the
+	  * form: "KEY = value".
+	  * @param args The substitution values for the message
+	  * as required by the message in plugin.properties and
+	  * by the rules of class java.text.MessageFormat.
+	  * @return The locale-specific message.
+	  */
+	  public static String getMessage ( String key, Object[] args )
+	  {
+	    return MessageFormat.format(getMessage(key),args);
+	  }
 }

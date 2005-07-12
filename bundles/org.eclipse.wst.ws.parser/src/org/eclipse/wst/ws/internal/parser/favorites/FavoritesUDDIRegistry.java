@@ -12,6 +12,7 @@
 package org.eclipse.wst.ws.internal.parser.favorites;
 
 import org.apache.wsil.Abstract;
+import org.eclipse.wst.ws.internal.parser.plugin.ParserPlugin;
 
 public class FavoritesUDDIRegistry extends FavoritesLink implements IFavoritesUDDIRegistry
 {
@@ -22,7 +23,14 @@ public class FavoritesUDDIRegistry extends FavoritesLink implements IFavoritesUD
 
   public String getName()
   {
-    return (link_.getAbstracts())[0].getText();
+    String name = (link_.getAbstracts())[0].getText();
+    if (name.startsWith("%"))
+    {
+      String translatedName = ParserPlugin.getMessage(name);
+      if (translatedName != null)
+        name = translatedName;
+    }
+    return name;
   }
 
   public String getInquiryURL()
