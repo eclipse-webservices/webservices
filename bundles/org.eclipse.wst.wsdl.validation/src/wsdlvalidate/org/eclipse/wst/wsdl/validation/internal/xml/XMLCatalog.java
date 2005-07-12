@@ -147,7 +147,7 @@ public class XMLCatalog implements IXMLCatalog
     {
       schemadir = schemadir.substring(5);
     }
-    while(schemadir.startsWith("/"))
+    while(schemadir.startsWith("//"))
     {
       schemadir = schemadir.substring(1);
     }
