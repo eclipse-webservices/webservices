@@ -227,7 +227,12 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     
       setClientDefaultProject();
       setClientDefaultEAR();
-      setClientDefaultServer();
+      Status serverStatus = setClientDefaultServer();
+      if (serverStatus.getSeverity()== Status.ERROR)
+      {
+          environment.getStatusHandler().reportError(serverStatus);
+          return serverStatus;
+      }
       updateClientEARs();
       
       //Calculate default IWebServiceClient
@@ -411,11 +416,16 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     //reasonable J2EE version and Web service runtime values
 
     if (project != null && project.exists())
-    {
-      boolean isValidComponentType = J2EEUtils.isWebComponent(project, componentName) ||
+    {   
+      boolean isValidComponentType = false;
+      if (componentName != null && componentName.length()>0)
+      {
+        isValidComponentType = J2EEUtils.isWebComponent(project, componentName) ||
                                      J2EEUtils.isEJBComponent(project, componentName) ||
                                      J2EEUtils.isAppClientComponent(project, componentName) ||
                                      J2EEUtils.isJavaComponent(project, componentName);
+      }
+      
       if (isValidComponentType)
       {
         //WebServiceClientTypeRegistry wsctReg = WebServiceClientTypeRegistry.getInstance();
@@ -819,8 +829,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
     }        
   }
   
-  private void setClientDefaultServer()
+  private Status setClientDefaultServer()
   {
+	Status status = new SimpleStatus("");
     //Calculate reasonable default server based on initial project selection. 
     String initialClientProjectName = runtimeClientTypes_.getChoice().getChoice().getList().getSelection(); 
     IProject initialClientProject = ProjectUtilities.getProject(initialClientProjectName);
@@ -872,12 +883,76 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
           {
             clientIds_.setServerInstanceId(serverInfo[1]);
           }        
-        }        
+        }
+        else
+        {
+        	//Since the project and the EAR are both new, try changing the J2EE level
+        	boolean foundServer = false;
+        	WebServiceRuntimeInfo wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId());
+            if (wsrt != null)
+            {
+              String[] versions = wsrt.getJ2eeLevels();
+              if (versions != null && versions.length > 0)
+              {
+            	  for (int k=0; k<versions.length; k++)
+            	  {
+            		  //If this J2EE version is different from the current one, see if there is
+            		  //a server available.
+            		  if (clientJ2EEVersion_!=versions[k])
+            		  {
+            			  String[] si = ServerSelectionUtils.getServerFromWebServceRuntimeAndJ2EE(clientIds_.getRuntimeId(), versions[k]);
+             		      if (si!=null)
+            		      {
+            		        if (si[0]!=null && si[0].length()>0)
+            		        {
+            		          clientIds_.setServerId(si[0]);
+            		        }
+            		        if (si[1]!=null && si[1].length()>0)
+            		        {
+            		          clientIds_.setServerInstanceId(si[1]);
+            		        }             
+            		        clientJ2EEVersion_ = versions[k];
+            		        foundServer = true;
+            		        break;
+            		      }
+            		  
+            	      }
+                  }
+               }
+            }
+        	//No valid server runtimes appear to be configured, this is an error condition.
+            if (!foundServer)
+            {
+              String runtimeLabel = WebServiceRuntimeExtensionUtils.getRuntimeLabelById(clientIds_.getRuntimeId());
+              String serverLabels = getServerLabels(clientIds_.getRuntimeId());
+        	  status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_NO_SERVER_RUNTIME", new String[]{runtimeLabel, serverLabels}),Status.ERROR);
+            }
+        	
+        }
       }
       
-    }        
+    }    
+    
+    return status;
   }  
   
+  protected String getServerLabels(String runtimeId)
+  {
+	    WebServiceRuntimeInfo wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(runtimeId);
+	    String[] validServerFactoryIds = wsrt.getServerFactoryIds();
+	    //String[] validServerLabels = new String[validServerFactoryIds.length];
+	    StringBuffer validServerLabels = new StringBuffer(); 
+	    for (int i=0; i<validServerFactoryIds.length; i++)
+	    {
+	    	if (i>0)
+	    	{
+	    		validServerLabels.append(", ");
+	    	}
+	    	validServerLabels.append(WebServiceRuntimeExtensionUtils.getServerLabelById(validServerFactoryIds[i]));
+	    	
+	    }
+	    return validServerLabels.toString();
+  }
   
   protected void updateClientProject(String projectName, String componentName, String serviceTypeId)
   {

@@ -84,20 +84,18 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     {
       serviceJ2EEVersion_ = webServiceRuntimeJ2EEType.getJ2eeVersionId();
       serviceIds_.setRuntimeId(webServiceRuntimeJ2EEType.getWsrId()); 
-    }
-	 
-	 //serviceIds_.setRuntimeId(WebServiceRuntimeExtensionUtils.getDefaultRuntimeValueFor(serviceIds_.getTypeId()));
-	 //serviceJ2EEVersion_ = (WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(serviceIds_.getRuntimeId()).getJ2eeLevels())[0]; 
-
-	 
-     // Set the default client type to a web client type.
-     // setWebClientType();
+    }	 
      
      setServiceComponentType();
      // Default projects EARs and servers.
      setDefaultProjects();
      setDefaultEARs();
-     setDefaultServer();
+     Status serverStatus = setDefaultServer();
+     if (serverStatus.getSeverity()== Status.ERROR)
+     {
+         env.getStatusHandler().reportError(serverStatus);
+         return serverStatus;
+     }
      updateServiceEARs();
      //updateClientProject(getServiceProject2EARProject().getList().getSelection(), serviceComponentName_, serviceIds_.getTypeId());
      updateClientEARs();
@@ -164,7 +162,13 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 
     if (project != null && project.exists())
     {
-      if (J2EEUtils.isWebComponent(project, componentName ) || J2EEUtils.isEJBComponent(project, componentName))
+      boolean isValidComponentType = false;
+      if (componentName != null && componentName.length()>0)
+      {
+        isValidComponentType = J2EEUtils.isWebComponent(project, componentName) ||
+                                     J2EEUtils.isEJBComponent(project, componentName);
+      }
+      if (isValidComponentType)
       {
         //WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
         
@@ -638,8 +642,9 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   }
   */
 
-  private void setDefaultServer()
+  private Status setDefaultServer()
   {
+	Status status = new SimpleStatus("");
     //Calculate reasonable default server based on the default project selection. 
 
     String initialProjectName = getServiceProject2EARProject().getList().getSelection(); 
@@ -698,9 +703,56 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
             serviceIds_.setServerInstanceId(serverInfo[1]);
           }        
         }
+        else
+        {
+        	//Since the project and the EAR are both new, try changing the J2EE level
+        	boolean foundServer = false;
+        	WebServiceRuntimeInfo wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(serviceIds_.getRuntimeId());
+            if (wsrt != null)
+            {
+              String[] versions = wsrt.getJ2eeLevels();
+              if (versions != null && versions.length > 0)
+              {
+            	  for (int k=0; k<versions.length; k++)
+            	  {
+            		  //If this J2EE version is different from the current one, see if there is
+            		  //a server available.
+            		  if (serviceJ2EEVersion_!=versions[k])
+            		  {
+            			  String[] si = ServerSelectionUtils.getServerFromWebServceRuntimeAndJ2EE(serviceIds_.getRuntimeId(), versions[k]);
+             		      if (si!=null)
+            		      {
+            		        if (si[0]!=null && si[0].length()>0)
+            		        {
+            		          serviceIds_.setServerId(si[0]);
+            		        }
+            		        if (si[1]!=null && si[1].length()>0)
+            		        {
+            		          serviceIds_.setServerInstanceId(si[1]);
+            		        }             
+            		        serviceJ2EEVersion_ = versions[k];
+            		        foundServer = true;
+            		        break;
+            		      }
+            		  
+            	      }
+                  }
+               }
+            }
+        	//No valid server runtimes appear to be configured, this is an error condition.
+            if (!foundServer)
+            {
+              String runtimeLabel = WebServiceRuntimeExtensionUtils.getRuntimeLabelById(serviceIds_.getRuntimeId());
+              String serverLabels = getServerLabels(serviceIds_.getRuntimeId());            	
+        	  status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_NO_SERVER_RUNTIME", new String[]{runtimeLabel, serverLabels}),Status.ERROR);
+            }
+        	
+        }
       }
       
-    }    
+    }
+    
+    return status;
   }
 
   

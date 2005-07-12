@@ -604,7 +604,7 @@ public class ServerSelectionUtils
         boolean isValid = isServerValid(validServerFactoryIds[i], j2eeVersion);
         if (isValid)
         {
-          serverInfo[0] = validServerFactoryIds[0];
+          serverInfo[0] = validServerFactoryIds[i];
           return serverInfo;
         }
       }      
