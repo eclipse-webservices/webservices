@@ -379,4 +379,108 @@ public class WSDLTest extends BaseTestCase
     
     runTest(testfile, loglocation, idealloglocation);
   }
+  
+  /**
+   * Test /WSDL/BindingElement/InvalidStyle/BindingInvalidStyle.wsdl
+   */
+  public void testBindingInvalidStyle()
+  {
+    String testname = "BindingInvalidStyle";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "BindingElement/InvalidStyle/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "BindingElement/InvalidStyle/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "BindingElement/InvalidStyle/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/BindingElement/InvalidUse/BindingInvalidUse.wsdl
+   */
+  public void testBindingInvalidUse()
+  {
+    String testname = "BindingInvalidUse";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "BindingElement/InvalidUse/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "BindingElement/InvalidUse/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "BindingElement/InvalidUse/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/MessageElement/InvalidElement/MessageInvalidElement.wsdl
+   */
+  public void testMessageInvalidElement()
+  {
+    String testname = "MessageInvalidElement";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "MessageElement/InvalidElement/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "MessageElement/InvalidElement/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "MessageElement/InvalidElement/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/MessageElement/InvalidType/MessageInvalidType.wsdl
+   */
+  public void testMessageInvalidType()
+  {
+    String testname = "MessageInvalidType";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "MessageElement/InvalidType/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "MessageElement/InvalidType/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "MessageElement/InvalidType/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/PortTypeElement/InvalidInput/PortTypeInvalidInput.wsdl
+   */
+  public void testPortTypeInvalidInput()
+  {
+    String testname = "PortTypeInvalidInput";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "PortTypeElement/InvalidInput/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "PortTypeElement/InvalidInput/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "PortTypeElement/InvalidInput/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/PortTypeElement/InvalidOutput/PortTypeInvalidOutput.wsdl
+   */
+  public void testPortTypeInvalidOutput()
+  {
+    String testname = "PortTypeInvalidOutput";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "PortTypeElement/InvalidOutput/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "PortTypeElement/InvalidOutput/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "PortTypeElement/InvalidOutput/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/ServiceElement/InvalidBinding/ServiceInvalidBinding.wsdl
+   */
+  public void testServiceInvalidBinding()
+  {
+    String testname = "ServiceInvalidBinding";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "ServiceElement/InvalidBinding/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "ServiceElement/InvalidBinding/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "ServiceElement/InvalidBinding/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/ServiceElement/NoAddress/ServiceNoAddress.wsdl
+   */
+  public void testServiceNoAddress()
+  {
+    String testname = "ServiceNoAddress";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "ServiceElement/NoAddress/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "ServiceElement/NoAddress/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "ServiceElement/NoAddress/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
 }

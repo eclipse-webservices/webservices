@@ -1,0 +1,8 @@
+number of errors      : 1
+number of warnings    : 0
+
+------------error list-------------------------------------------
+The part 'NewOperationResponse' has an invalid value 'InvalidElement' defined for its element. Element declarations must refer to valid values defined in a schema. [10, 74]
+------------warning list-----------------------------------------
+(none)
+-----------------------------------------------------------------
