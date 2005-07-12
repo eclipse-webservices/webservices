@@ -13,6 +13,7 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisOutputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisRunInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.ComputeAxisSkeletonBeanCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.CopyDeploymentFileCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.UpdateWEBXMLCommand;
@@ -147,6 +148,7 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new AxisRunInputCommand(this, project, module));
 //			commands.add(new StartProjectCommand(module));
 			commands.add(new AxisDeployCommand());
+			commands.add( new CopyDeploymentFileCommand( project, module ) );
 			commands.add(new RefreshProjectCommand());
 			if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
 				commands.add(new ComputeAxisSkeletonBeanCommand());
