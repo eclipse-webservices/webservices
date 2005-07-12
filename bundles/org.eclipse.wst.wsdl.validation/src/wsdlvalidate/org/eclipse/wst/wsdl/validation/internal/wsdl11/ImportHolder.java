@@ -289,8 +289,7 @@ public class ImportHolder implements Comparable
 			{
 			  File testfile = new File(url.getFile());
 			  String testfileString = testfile.getAbsolutePath();
-			  File canonicalfile = testfile.getCanonicalFile();
-			  String canonicalfileString = canonicalfile.getAbsolutePath();
+			  String canonicalfileString = testfile.getCanonicalPath();
 
               if (!testfileString.equals(canonicalfileString))
               {

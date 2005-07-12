@@ -13,6 +13,7 @@ import junit.framework.Test;
 
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverTest;
 import org.eclipse.wst.wsdl.validation.internal.ui.ant.WSDLValidateTest;
+import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalogTest;
 /**
  * The root test suite that contains all other WSDL validator test suites.
  */
@@ -39,5 +40,6 @@ public class AllWSDLTests extends junit.framework.TestSuite
     addTest(PathsTest.suite());
     addTest(URIResolverTest.suite());
     addTest(WSDLValidateTest.suite());
+    addTest(XMLCatalogTest.suite());
   }
 }

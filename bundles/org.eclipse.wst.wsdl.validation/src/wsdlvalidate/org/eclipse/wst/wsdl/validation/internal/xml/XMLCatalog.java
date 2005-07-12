@@ -47,6 +47,8 @@ public class XMLCatalog implements IXMLCatalog
   private final static String _APACHE_FEATURE_VALIDATION = "http://xml.org/sax/features/validation";
 
   private final static String _APACHE_FEATURE_VALIDATION_SCHEMA = "http://apache.org/xml/features/validation/schema";
+  
+  private final static String FILE_PROTOCOL = "file:///";
 
   private static IXMLCatalog instance = null;
 
@@ -141,13 +143,13 @@ public class XMLCatalog implements IXMLCatalog
       SchemaNamespaceHandler handler)
   {
     // Remove file: and file:/ from beginning of file location if they are present.
-    if(schemadir.startsWith("file:/"))
-    {
-      schemadir = schemadir.substring(6);
-    }
-    else if(schemadir.startsWith("file:"))
+    if(schemadir.startsWith("file:"))
     {
       schemadir = schemadir.substring(5);
+    }
+    while(schemadir.startsWith("/"))
+    {
+      schemadir = schemadir.substring(1);
     }
     
     File dir = new File(schemadir);
@@ -159,6 +161,12 @@ public class XMLCatalog implements IXMLCatalog
       {
         File tempfile = files[i];
         String tempfilepath = tempfile.getAbsolutePath();
+        tempfilepath = tempfilepath.replace('\\','/');
+        while(tempfilepath.startsWith("/"))
+        {
+          tempfilepath = tempfilepath.substring(1);
+        }
+        tempfilepath = FILE_PROTOCOL + tempfilepath;
         if (tempfile.isDirectory())
         {
           registerSchemasForDir(catalog, tempfilepath, parser, handler);
