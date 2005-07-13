@@ -116,13 +116,13 @@ public final class ResourceUtils {
 	private static final String DEFAULT_EJB_PROJECT_NAME = "WebServiceEJBProject";
     private static final String DEFAULT_EJB_COMPONENT_NAME = "WebServiceEJB";
 	private static final String DEFAULT_WEB_PROJECT_NAME = "WebServiceProject";
-    private static final String DEFAULT_WEB_COMPONENT_NAME = "WebServiceWeb";
+    private static final String DEFAULT_WEB_COMPONENT_NAME = "WebServiceProject";
 	private static final String DEFAULT_ROUTER_PROJECT_EXT = "Router";
 
-	private static final String DEFAULT_SERVICE_EAR_PROJECT_NAME = "WebServiceEARProject";
-    private static final String DEFAULT_SERVICE_EAR_COMPONENT_NAME = "WebServiceEAR";
-	private static final String DEFAULT_CLIENT_EAR_PROJECT_NAME = "WebServiceClientEARProject";
-    private static final String DEFAULT_CLIENT_EAR_COMPONENT_NAME = "WebServiceClientEAR";
+	private static final String DEFAULT_SERVICE_EAR_PROJECT_NAME = "WebServiceProjectEAR";
+    private static final String DEFAULT_SERVICE_EAR_COMPONENT_NAME = "WebServiceProjectEAR";
+	private static final String DEFAULT_CLIENT_EAR_PROJECT_NAME = "WebServiceProjectClientEAR";
+    private static final String DEFAULT_CLIENT_EAR_COMPONENT_NAME = "WebServiceProjectClientEAR";
 
 	/**
 	 * Returns the IWorkspaceRoot object.

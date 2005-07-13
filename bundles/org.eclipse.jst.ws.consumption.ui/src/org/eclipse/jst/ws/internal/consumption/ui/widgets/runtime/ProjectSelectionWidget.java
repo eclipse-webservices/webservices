@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
@@ -431,8 +432,35 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
         needEAR_ = true;
         earModule_.setEnabled(true);
 		earProject_.setEnabled(true);
+        populateEARCombos();
       }
     }
+  }
+
+  private void populateEARCombos()
+  {
+    earModule_.removeAll();
+    earProject_.removeAll();
+    String moduleName = module_.getText();
+    IProject moduleProj = ResourcesPlugin.getWorkspace().getRoot().getProject(moduleProject_.getText());
+    if (moduleProj.exists())
+    {
+      IVirtualComponent[] ears = J2EEUtils.getReferencingEARComponents(moduleProj, moduleName);
+      if (ears != null && ears.length > 0)
+      {
+        for (int i = 0; i < ears.length; i++)
+        {
+          earModule_.add(ears[i].getName());
+          earProject_.add(ears[i].getProject().getName());
+        }
+        earModule_.select(0);
+        earProject_.select(0);
+        return;
+      }
+    }
+    String earName = moduleName + "EAR";
+    earModule_.setText(earName);
+    earProject_.setText(earName);
   }
 
   private boolean projectNeedsEAR(String projectName)
