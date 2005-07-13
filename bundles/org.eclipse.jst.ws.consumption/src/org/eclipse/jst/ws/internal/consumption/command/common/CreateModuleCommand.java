@@ -195,6 +195,10 @@ public class CreateModuleCommand extends SimpleCommand
          
 		  if (j2eeLevel!=null)
 			  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, ejbLevel);
+		  
+		  //Don't create an EAR. The ADD_TO_EAR property gets defaulted to TRUE for everything except Web projects.
+		  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.ADD_TO_EAR, Boolean.FALSE);
+		  
 		  IDataModelOperation op = projectInfo.getDefaultOperation();
 		  if (env!=null)
 			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
@@ -222,6 +226,10 @@ public class CreateModuleCommand extends SimpleCommand
 		      projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
 		  if (j2eeLevel!=null)		  
 			  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
+		  
+		  //Don't create an EAR. The ADD_TO_EAR property gets defaulted to TRUE for everything except Web projects.
+		  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.ADD_TO_EAR, Boolean.FALSE);
+		  
 		  IDataModelOperation op = projectInfo.getDefaultOperation();
 
 		  if (env!=null)
