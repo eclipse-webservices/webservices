@@ -911,9 +911,12 @@ public class WebServiceRuntimeExtensionUtils
         {
           if (!ids.contains(sfids[i]))
           {
-            ids.add(sfids[i]);
             String label = getServerLabelById(sfids[i]);
-            serverFactoryIdByLabel_.put(label, sfids[i]);
+            if (label != null)
+            {
+              ids.add(sfids[i]);
+              serverFactoryIdByLabel_.put(label, sfids[i]);
+            }
           }
         }
       }
