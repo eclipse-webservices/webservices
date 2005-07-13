@@ -13,10 +13,10 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -53,21 +53,32 @@ public class CopyDeploymentFileCommand extends SimpleCommand
   public Status execute(Environment environment)
   {
     Status            status         = new SimpleStatus("");
-    IVirtualComponent component      = J2EEUtils.getVirtualComponent( projectName_, componentName_ );
-    IFolder           root           = StructureEdit.getOutputContainerRoot( component );
-    IPath             path           = new Path( "WEB-INF" ).append( "server-config.wsdd" );
-    IFile             descriptorFile = root.getFile( path );
-    IVirtualFile      newLocation    = component.getRootFolder().getFile( path );
-    IPath             newPath        = newLocation.getWorkspaceRelativePath();
     
     try
     {
+      IVirtualComponent component      = J2EEUtils.getVirtualComponent( projectName_, componentName_ );
+      IFolder           root           = StructureEdit.getOutputContainerRoot( component );
+      IPath             path           = new Path( "WEB-INF" ).append( "server-config.wsdd" );
+      IFile             descriptorFile = root.getFile( path );
+      IVirtualFile      newLocation    = component.getRootFolder().getFile( path );
+      IPath             targetPath     = newLocation.getWorkspaceRelativePath();
+      IFile             targetFile     = (IFile)ResourceUtils.findResource( targetPath );
+        
       descriptorFile.refreshLocal( 0, null );
-      descriptorFile.copy( newPath, true, null );
+      
+      if( targetFile != null && targetFile.exists() )
+      {
+        // The target file already exists so we will just overwrite its contents.
+    	targetFile.setContents( descriptorFile.getContents(), true, false, null );
+      }
+      else
+      {
+    	// The target file doesn't exist so we will copy it.
+        descriptorFile.copy( targetPath, true, null );
+      }
     }
-    catch( CoreException exc )
+    catch( Throwable exc )
     {
-      exc.printStackTrace();	
     }
     
     return status;
