@@ -1,10 +1,14 @@
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -112,8 +116,7 @@ public class StartServerCommand extends SimpleCommand
         }
         break;
       case IServer.STATE_STARTED:
-        //Restart the server if needed
-        if (publishState != IServer.PUBLISH_STATE_NONE && server.canRestart(ILaunchManager.RUN_MODE).getSeverity()==IStatus.OK)
+    	if (publishState != IServer.PUBLISH_STATE_NONE && server.canRestart(ILaunchManager.RUN_MODE).getSeverity()==IStatus.OK)    	  
         {
           status = restart(server);
           if (status.getSeverity() == Status.ERROR)
@@ -127,16 +130,40 @@ public class StartServerCommand extends SimpleCommand
     return status;
   }
 
-  private Status publish(IServer server, int kind)
+  private Status publish(final IServer server, final int kind)
   {
     Status status = new SimpleStatus("");
+    final IStatus[] istatus = new IStatus[1]; 
     monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_PUBLISHING_SERVER"));
-    IStatus istatus = server.publish(kind, monitor);
-    if (istatus.getSeverity() != IStatus.OK)
+    IRunnableWithProgress runnable = new IRunnableWithProgress()
+	{
+  		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+		{
+  			istatus[0] = server.publish(kind, monitor);
+		}  		
+	};
+	try
+	{
+      //IStatus istatus = server.publish(kind, monitor);
+		PlatformUI.getWorkbench().getProgressService().run(true,false,runnable);
+		
+	}
+	catch(InvocationTargetException ite)
+	{
+		
+	}
+	catch(InterruptedException ie)
+	{
+		
+	}
+    
+    
+	if (istatus[0].getSeverity() != IStatus.OK)
     {
-      status = EnvironmentUtils.convertIStatusToStatus(istatus);
+      status = EnvironmentUtils.convertIStatusToStatus(istatus[0]);
       return status;
     }
+    
     log.log(Log.INFO, 5051, this, "publishProject", "IServer=" + server + ", Publish command completed");
     return status;
   }
