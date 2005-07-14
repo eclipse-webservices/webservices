@@ -943,12 +943,15 @@ public class OperationImpl extends WSDLElementImpl implements Operation
       setName(name);
     }
     
-    String parameterOrder = changedElement.getAttribute("parameterOrder");
-    if (parameterOrder != null)
+    if (changedElement.hasAttribute("parameterOrder"))
     {
-      String[] array = parameterOrder.split(" ");
-	  List l = Arrays.asList(array);
-      setParameterOrdering(l);
+      String parameterOrder = changedElement.getAttribute("parameterOrder");
+      if (parameterOrder != null)
+      {
+        String[] array = parameterOrder.split(" ");
+        List l = Arrays.asList(array);
+        setParameterOrdering(l);
+      }
     }
 
   }
