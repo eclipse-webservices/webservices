@@ -258,13 +258,11 @@ public class WSDLValidate extends Task
   public void execute() throws BuildException
   {
     // the resource bundles for the ui and validator are needed
-    ResourceBundle validatorRB = null;
     MessageGenerator messGen = null;
     try
     {
       ResourceBundle uiRB = ResourceBundle.getBundle(UI_PROPERTIES);
       messGen = new MessageGenerator(uiRB);
-      validatorRB = ResourceBundle.getBundle(VALIDATOR_PROPERTIES);
     }
     catch (MissingResourceException e)
     {
@@ -360,15 +358,18 @@ public class WSDLValidate extends Task
         result.append(reportMessages(messages, errormarker, warningmarker));
 
         System.out.println(result.toString());
-        if (notvalid && failOnError)
-        {
-          // we fail on error by throwing a build exception
-          throw new BuildException(messGen.getString(_EXC_WSDL_FAIL_ON_ERROR));
-        }
       }
       catch (Exception e)
       {
         System.err.println(messGen.getString(_EXC_UNABLE_TO_VALIDATE_FILE, filename, e));
+      }
+      finally
+      {
+        if (notvalid && failOnError)
+        {
+          // To fail on error, throw a build exception.
+          throw new BuildException(messGen.getString(_EXC_WSDL_FAIL_ON_ERROR));
+        }
       }
     }
 
