@@ -31,6 +31,7 @@ public class StartServerCommand extends SimpleCommand
   private MessageUtils msgUtils_;
   private IProgressMonitor monitor;
   private Log log;
+  private boolean forcePublish_;
   
 	private String serverInstanceId;
 	
@@ -42,6 +43,14 @@ public class StartServerCommand extends SimpleCommand
     setDescription(DESCRIPTION);
     setName(LABEL);
     log = new EclipseLog();
+    forcePublish_ = false;
+  }
+	
+  public StartServerCommand( boolean forcePublish )
+  {
+    this();
+    
+    forcePublish_ = forcePublish;
   }
 
   public Status execute(Environment env)
@@ -97,7 +106,26 @@ public class StartServerCommand extends SimpleCommand
           }
         }
         break;  
-        
+
+        //TODO: Reassess need for this, since Tomcat should know
+        // whether it needs to be published or not (or publish should
+        // simply always be driven by us.
+        case IServer.PUBLISH_STATE_NONE:
+        {
+          if( forcePublish_ )
+          {
+            status = publish(server, IServer.PUBLISH_INCREMENTAL);
+            
+            if (status.getSeverity() == Status.ERROR)
+            {
+              env.getStatusHandler().reportError(status);
+              return status;
+            }  
+          }
+          
+    	  break;  
+        }
+      
         default:
     }
 
@@ -126,7 +154,7 @@ public class StartServerCommand extends SimpleCommand
           }       
         }
     }
-        
+    
     return status;
   }
 

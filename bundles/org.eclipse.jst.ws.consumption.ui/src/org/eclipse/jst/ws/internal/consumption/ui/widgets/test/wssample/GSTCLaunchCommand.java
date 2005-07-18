@@ -9,10 +9,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.PublishProjectCommand;
-import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
+import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.browser.IWebBrowser;
@@ -42,9 +41,9 @@ public class GSTCLaunchCommand extends SimpleCommand {
 	msgUtils = new MessageUtils(pluginId + ".plugin", this);
   }
 		
-  public Status execute(Environment env){
-    Status status = new SimpleStatus( "" );
-	return status = launchSample(env);
+  public Status execute(Environment env)
+  {
+	return launchSample(env);
   }
   
   private Status launchSample (Environment env) {
@@ -57,14 +56,10 @@ public class GSTCLaunchCommand extends SimpleCommand {
     ppc.setProject(testInfo.getGenerationProject());
 	status = ppc.execute(env);
 
-	StartProjectCommand spc = new StartProjectCommand(false );
-	spc.setServiceServerTypeID(testInfo.getClientServerTypeID());
-	spc.setSampleExistingServer(testInfo.getClientExistingServer());
-	IProject project = (IProject) ResourceUtils.findResource(testInfo.getGenerationProject());
-	spc.setSampleProject(project);
-	spc.setIsWebProjectStartupRequested(true);
-	    
-	status = spc.execute(env);
+	StartServerCommand serverCommand = new StartServerCommand( true );
+	serverCommand.setServerInstanceId( testInfo.getClientExistingServer().getId() );
+	
+	status = serverCommand.execute(env);
 	if (status.getSeverity() == Status.ERROR) return status;
 	
 	IProject sampleProject = ProjectUtilities.getProject(testInfo.getGenerationProject());
