@@ -135,19 +135,24 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
       // Get the label for the general server type.
       //WebServiceServer server = registry.getWebServiceServerByFactoryId( ids_.getServerId() );
       //serverLabel = server == null ? "" : server.getLabel();
-		serverLabel = WebServiceRuntimeExtensionUtils.getServerLabelById(ids_.getServerId());
+      String serverId = ids_.getServerId();
+      if (serverId != null)
+        serverLabel = WebServiceRuntimeExtensionUtils.getServerLabelById(serverId);
     }
     else
     {
       // Get the label for the server instance.
       //serverLabel = registry.getServerInstanceLabelFromInstanceId( ids_.getServerInstanceId() );
-		serverLabel = WebServiceRuntimeExtensionUtils.getServerInstanceLabelFromInstanceId(ids_.getServerInstanceId());
+      String serverInstanceId = ids_.getServerInstanceId();
+      if (serverInstanceId != null)
+        serverLabel = WebServiceRuntimeExtensionUtils.getServerInstanceLabelFromInstanceId(serverInstanceId);
     }
     // rskreg
     runtimeLabel = runtimeLabel == null ? "" : runtimeLabel;
     
     runtime_.setText( runtimeLabel );
-    server_.setText( serverLabel );
+    if (serverLabel != null)
+      server_.setText( serverLabel );
     j2eeVersionText.setText((j2eeVersion_ != null) ? J2EEUtils.getLabelFromJ2EEVersion(j2eeVersion_) : msgUtils_.getMessage("LABEL_NA"));
   }
   
@@ -200,7 +205,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
 	String                       runtimeLabel = WebServiceRuntimeExtensionUtils.getRuntimeLabelById( ids_.getRuntimeId() );
     //WebServiceServer             server       = wsctRegistry.getWebServiceServerByFactoryId( ids_.getServerId() );
     //String                       serverLabel  = server == null ? "" : server.getLabel();
-	String                       serverLabel  = WebServiceRuntimeExtensionUtils.getServerLabelById(ids_.getServerId());
+	String                       serverLabel  = ids_.getServerId() == null ? "" : WebServiceRuntimeExtensionUtils.getServerLabelById(ids_.getServerId());
     // rskreg
 	
     if( ids_.getRuntimeId() == null || runtimeLabel == null || runtimeLabel.equals("" ))

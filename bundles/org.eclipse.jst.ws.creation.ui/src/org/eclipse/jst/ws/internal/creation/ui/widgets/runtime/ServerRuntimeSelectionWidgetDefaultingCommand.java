@@ -461,7 +461,6 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
         getServiceProject2EARProject().getChoice().getList().setSelectionValue(earProjectName);
         serviceEarComponentName_ = earComponentName;
         earIsSet = true;
-        
       }
     }
      
@@ -475,7 +474,8 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       {
         for (int i = 0; i < allEarComps.length; i++)
         {
-          if (serviceJ2EEVersion_.equals(String.valueOf(J2EEUtils.getJ2EEVersion(allEarComps[i]))))
+          IRuntime runtime = ServerSelectionUtils.getRuntimeTarget(allEarComps[i].getProject().getName());
+          if (runtime != null && serviceIds_.getRuntimeId() != null && WebServiceRuntimeExtensionUtils.doesRuntimeSupportServerTarget(runtime.getRuntimeType().getId(), serviceIds_.getRuntimeId()) && serviceJ2EEVersion_.equals(String.valueOf(J2EEUtils.getJ2EEVersion(allEarComps[i]))))
           {
             String earProjectName = allEarComps[i].getProject().getName();
             getServiceProject2EARProject().getChoice().getList().setSelectionValue(earProjectName);
@@ -780,8 +780,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   	}
   	else
   	{
+      String serverId = serviceIds_.getServerId();
+      if (serverId != null)
+      {
   		//Use the server type
-  		String serverTargetId = ServerUtils.getRuntimeTargetIdFromFactoryId(serviceIds_.getServerId());
+  		String serverTargetId = ServerUtils.getRuntimeTargetIdFromFactoryId(serverId);
   		if (serverTargetId!=null && serverTargetId.length()>0)
   		{
   		  if (!ServerUtils.isTargetValidForEAR(serverTargetId,serviceJ2EEVersion_))
@@ -792,6 +795,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   	  	    serviceNeedEAR_ = false;
   	  	  }
   		}
+      }
   	}
   	
   		

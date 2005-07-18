@@ -490,7 +490,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   	else
   	{
   		//Use the server type
-  	    if (trsIds_ != null)
+  	    if (trsIds_ != null && trsIds_.getServerId() != null)
   	    {
   		  String targetId = ServerUtils.getRuntimeTargetIdFromFactoryId(trsIds_.getServerId());
   		  if (targetId!=null && targetId.length()>0)

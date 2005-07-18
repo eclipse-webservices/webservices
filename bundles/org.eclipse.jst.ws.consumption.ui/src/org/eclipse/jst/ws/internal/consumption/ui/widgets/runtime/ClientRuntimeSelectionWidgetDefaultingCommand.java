@@ -989,8 +989,11 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   	}
   	else
   	{
+      String serverId = clientIds_.getServerId();
+      if (serverId != null)
+      {
   		//Use the server type
-  		String clientServerTargetId = ServerUtils.getRuntimeTargetIdFromFactoryId(clientIds_.getServerId());
+  		String clientServerTargetId = ServerUtils.getRuntimeTargetIdFromFactoryId(serverId);
   		if (clientServerTargetId!=null && clientServerTargetId.length()>0)
   		{
   		  if (!ServerUtils.isTargetValidForEAR(clientServerTargetId,clientJ2EEVersion_))
@@ -1001,6 +1004,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   	  	    clientNeedEAR_ = false;
   	  	  }
   		}
+      }
   	}  	
   }  
   
