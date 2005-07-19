@@ -143,8 +143,17 @@ public class StartServerCommand extends SimpleCommand
           }       
         }
         break;
-      case IServer.STATE_STARTED:
-    	if (publishState != IServer.PUBLISH_STATE_NONE && server.canRestart(ILaunchManager.RUN_MODE).getSeverity()==IStatus.OK)    	  
+      case IServer.STATE_STARTED:    	
+    	boolean shouldRestart = server.getServerRestartState();    	
+    	//TODO Ideally getServerRestartState() returning true should be a sufficient
+    	//condition for us to restart. However, getServerRestartState() seems to 
+    	//sometimes pessimistically return true when it doesn't need to for Tomcat 
+    	//servers. In order to curb the number of restarts, we will only 
+    	//restart if a publish was required earlier in this execute method AND 
+    	//getServerRestartState() returns true. 
+    	//A publish is normally required when a module is added to the server.
+    	
+    	if (publishState != IServer.PUBLISH_STATE_NONE && shouldRestart && server.canRestart(ILaunchManager.RUN_MODE).getSeverity()==IStatus.OK)    	  
         {
           status = restart(server);
           if (status.getSeverity() == Status.ERROR)
