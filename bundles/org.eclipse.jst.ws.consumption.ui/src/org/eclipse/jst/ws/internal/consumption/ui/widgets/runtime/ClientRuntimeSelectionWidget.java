@@ -344,8 +344,8 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
       ValidationUtils valUtils = new ValidationUtils();
       if (clientProjects != null)
       {
-        String clientEARName = clientProjects.getChoice().getList().getSelection();
-        String clientProjName = clientProjects.getList().getSelection();
+    	  String clientEARName = getClientEarProjectName();
+    	  String clientProjName = getClientProjectName();
         
         String clientCompName = projectWidget_.getComponentName();
         String clientEARCompName = projectWidget_.getEarComponentName();
