@@ -1643,7 +1643,13 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     if (changedElement == getElement())
     {                      
       setTargetNamespace(changedElement.getAttribute("targetNamespace"));
-      setQName(new QName(WSDLConstants.WSDL_NAMESPACE_URI, changedElement.getAttribute("name")));
+      
+      // bug 104120 
+      // ensure that the definition name is non null to avoid QName ctor exception
+      //
+      String definitionName =  WSDLConstants.getAttribute(changedElement, "name");  
+      setQName(new QName(WSDLConstants.WSDL_NAMESPACE_URI, definitionName != null ? definitionName : ""));
+      
       getENamespaces().clear();
       getNamespaces().clear();
       //getNamespaces().put("", null);
