@@ -266,6 +266,7 @@ public class WSDLTextEditor extends StructuredTextEditorXML implements INodeSele
 		  while (bindingsIt.hasNext()) {
 			  Binding binding = (Binding) bindingsIt.next();
 			  BindingGenerator generator = new BindingGenerator(binding.getEnclosingDefinition(), binding);
+			  generator.setOverwrite(false);
 			  generator.generateBinding();
 		  }
 

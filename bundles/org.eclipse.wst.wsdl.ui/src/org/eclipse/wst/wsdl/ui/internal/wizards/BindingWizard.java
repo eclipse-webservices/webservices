@@ -243,8 +243,7 @@ public class BindingWizard extends Wizard
 
     public void createControl(Composite parent)
     {
-      ProtocolComponentControl protocolComponentControl = new BindingProtocolComponentControl(parent, bindingGenerator, false);
-//      ProtocolComponentControl protocolComponentControl = new BindingProtocolComponentControl(parent, bindingGenerator, kind == KIND_REGENERATE_BINDING);	  
+      ProtocolComponentControl protocolComponentControl = new BindingProtocolComponentControl(parent, bindingGenerator, true);
       protocolComponentControl.initFields();
       setControl(protocolComponentControl);
     }
@@ -254,7 +253,7 @@ public class BindingWizard extends Wizard
   {
     public BindingProtocolComponentControl(Composite parent, BindingGenerator generator)
     {
-      this(parent, generator, false);
+      this(parent, generator, true);
     }
 
     public BindingProtocolComponentControl(Composite parent, BindingGenerator generator, boolean showOverwriteButton)
