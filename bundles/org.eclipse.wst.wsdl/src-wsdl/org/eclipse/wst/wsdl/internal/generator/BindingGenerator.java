@@ -103,6 +103,27 @@ public class BindingGenerator extends BaseGenerator {
 		return newBinding;
 	}
 	
+	/*
+	 * TODO: Scenario:
+	 * 1)overwrite == false
+	 * 2)BindingOperation with 1 input
+	 * 3)Corresponding Operation (with same name) with 1 input and 1 output
+	 * If we generate with overwrite == false, nothing is done.  Thus,  an
+	 * output is not generated on the BindingOperation.  This is because we
+	 * search for existing Elements only at the level of BindingOperations.
+	 * For example, if there is a corresponding BindingOperation with the same
+	 * name as our Operation, leave it alone.... but since there is already
+	 * a BindingOperation with the same name, we don't create a new BindingOperation.
+	 * 
+	 * The correct implementation is reduce this granularity to the MessageReference
+	 * level.  The code is almost there except for how we generate the Binding element
+	 * content.  Look at BindingGenrator.generateBindingOperation() and
+	 * SOAPContentGenerator.java and it's content generation method
+	 * for a good place to start.
+	 * 
+	 * For wtp RC1, We shall only look at the Operation level (as we do in the previous
+	 * version).
+	 */
 	public Binding generateBinding() {
 		try {
 		// If Binding is null (No Binding was passed into the constructor), we create an empty Binding first.
@@ -123,90 +144,149 @@ public class BindingGenerator extends BaseGenerator {
 		
 		List bindingOperations = binding.getEBindingOperations();		
 		PortType portType = binding.getEPortType();
-		if (portType == null) {
-			// We need to blow away everything under the Binding.  No PortType associated with this Binding
-			bindingOperations.clear();
-			return binding;
-		}
 		
-		addRequiredNamespaces(binding);
-		
-		List operations = portType.getOperations();
-		
-		/******************************************************
-		 * Compare the Operations
-		 ******************************************************/
-		// Remove any BindingOperations which are no longer used
-		for (int index = 0; index < bindingOperations.size(); index++) {
-			BindingOperation bindingOperation = (BindingOperation) bindingOperations.get(index);
-			
-			boolean foundMatch = false;
-			Iterator operationsIt = operations.iterator();
-			while (operationsIt.hasNext()) {
-				Operation operation = (Operation) operationsIt.next();
+		if (!getOverwrite()) {
+			// Don't Overwrite
+			if (portType == null) {
+				return binding;
+			}
+			else {
+				addRequiredNamespaces(binding);				
+				List operations = portType.getOperations();
 				
-				if (namesEqual(bindingOperation.getName(), operation.getName())) {
-					foundMatch = true;
-					break;
+				/*******************************************************************************
+				 * Determine which Operations require new a new corresponding BindingOperations
+				 *******************************************************************************/
+				List newBindingOpsNeeded = new ArrayList();
+				for (int index = 0; index < operations.size(); index++) {
+					Operation operation = (Operation) operations.get(index);
+					
+					boolean foundMatch = false;
+					Iterator bindingOperationsIt = bindingOperations.iterator();
+					while (bindingOperationsIt.hasNext()) {
+						BindingOperation bindingOperation = (BindingOperation) bindingOperationsIt.next();
+						
+						if (namesEqual(bindingOperation.getName(), operation.getName())) {
+							foundMatch = true;
+							break;
+						}
+					}
+					
+					if (!foundMatch){
+						newBindingOpsNeeded.add(operation);
+					}
+				}
+				// newBindingOpsNeeded is the List of Operations needing new corresponding
+				// BindingOperation's
+				List newBindingOps = createNewBindingOperations(newBindingOpsNeeded);
+				
+				// Generate the contents of the new BindingOperation's
+				Iterator newBindingOpsIt = newBindingOps.iterator();
+				while (newBindingOpsIt.hasNext()) {
+					BindingOperation newBindingOp = (BindingOperation) newBindingOpsIt.next();
+					generateBindingOperation(newBindingOp);
+					generateBindingOperationContent(newBindingOp);
 				}
 			}
-			
-			if (!foundMatch){
-				// We need to remove this BindingFault from the bindingFaults List
-				bindingOperations.remove(index);
-				index--;
+			generateBindingContent(binding);	
+		}
+		else {
+			// Overwrite
+			if (portType == null) {
+				// We need to blow away everything under the Binding.  No PortType associated with this Binding
+				bindingOperations.clear();
+				return binding;
+			}
+			else {
+				addRequiredNamespaces(binding);				
+				List operations = portType.getOperations();
+				
+				/******************************************************
+				 * Compare the Operations
+				 ******************************************************/
+				// Remove any BindingOperations which are no longer used
+				for (int index = 0; index < bindingOperations.size(); index++) {
+					BindingOperation bindingOperation = (BindingOperation) bindingOperations.get(index);
+					
+					boolean foundMatch = false;
+					Iterator operationsIt = operations.iterator();
+					while (operationsIt.hasNext()) {
+						Operation operation = (Operation) operationsIt.next();
+						
+						if (namesEqual(bindingOperation.getName(), operation.getName())) {
+							foundMatch = true;
+							break;
+						}
+					}
+					
+					if (!foundMatch){
+						// We need to remove this BindingFault from the bindingFaults List
+						bindingOperations.remove(index);
+						index--;
+					}			
+				}
+				
+				// Remove any Operations which already exists in bindingOperations.  What we
+				// have left are the Operations which needs newly created BindingOperations
+				List bindingOperationsNeeded = new ArrayList();
+				for (int index = 0; index < operations.size(); index++) {
+					Operation operation = (Operation) operations.get(index);
+					
+					boolean foundMatch = false;
+					Iterator bindingOperationsIt = bindingOperations.iterator();
+					while (bindingOperationsIt.hasNext()) {
+						BindingOperation bindingOperation = (BindingOperation) bindingOperationsIt.next();
+						
+						if (namesEqual(bindingOperation.getName(), operation.getName())) {
+							foundMatch = true;
+							break;
+						}
+					}
+					
+					if (!foundMatch){
+						// We need to remove this BindingFault from the bindingFaults List
+						bindingOperationsNeeded.add(operation); // Store the actual Operation
+					}			
+				}		
+				
+				// Create required BindingOperations
+				createNewBindingOperations(bindingOperationsNeeded);
+
+				/******************************************************
+				 * Process the contents of the Operations
+				 ******************************************************/
+				Iterator bindingOperationsIt = binding.getEBindingOperations().iterator();
+				while (bindingOperationsIt.hasNext()) {
+					generateBindingOperation((BindingOperation) bindingOperationsIt.next());
+				}
+				
+				generateBindingContent(binding);
+				
+				return binding;
 			}			
 		}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private List createNewBindingOperations(List operations) {
+		List newBindingOps = new ArrayList();
 		
-		// Remove any Operations which already exists in bindingOperations.  What we
-		// have left are the Operations which needs newly created BindingOperations
-		List bindingOperationsNeeded = new ArrayList();
-		for (int index = 0; index < operations.size(); index++) {
-			Operation operation = (Operation) operations.get(index);
-			
-			boolean foundMatch = false;
-			Iterator bindingOperationsIt = bindingOperations.iterator();
-			while (bindingOperationsIt.hasNext()) {
-				BindingOperation bindingOperation = (BindingOperation) bindingOperationsIt.next();
-				
-				if (namesEqual(bindingOperation.getName(), operation.getName())) {
-					foundMatch = true;
-					break;
-				}
-			}
-			
-			if (!foundMatch){
-				// We need to remove this BindingFault from the bindingFaults List
-				bindingOperationsNeeded.add(operation); // Store the actual Operation
-			}			
-		}		
-		
-		// bindingFaultsNeeded contains the needed BindingFault's we need to create
-		Iterator neededBindingOperationsIt = bindingOperationsNeeded.iterator();
+		Iterator neededBindingOperationsIt = operations.iterator();
 		while (neededBindingOperationsIt.hasNext()) {
 			Operation operation = (Operation) neededBindingOperationsIt.next();
 			BindingOperation newBindingOperation = factory.createBindingOperation();
 			newBindingOperation.setEOperation(operation);
 			newBindingOperation.setName(operation.getName());
 			binding.addBindingOperation(newBindingOperation);
-		}
-
-		/******************************************************
-		 * Process the contents of the Operations
-		 ******************************************************/
-		Iterator bindingOperationsIt = binding.getEBindingOperations().iterator();
-		while (bindingOperationsIt.hasNext()) {
-			generateBindingOperation((BindingOperation) bindingOperationsIt.next());
-		}
-		
-		generateBindingContent(binding);
-		
-		return binding;
-		}
-		catch (Exception e) {
 			
+			newBindingOps.add(newBindingOperation);
 		}
-		return null;
+		
+		return newBindingOps;
 	}
 	
 	private void generateBindingOperation(BindingOperation bindingOperation) {
@@ -406,7 +486,9 @@ public class BindingGenerator extends BaseGenerator {
 	}
 	
 	private void removeExtensibilityElements(ExtensibleElement ee) {
-		ee.getEExtensibilityElements().clear();
+		if (ee != null) {
+			ee.getEExtensibilityElements().clear();
+		}
 	}
 	
 	/*
