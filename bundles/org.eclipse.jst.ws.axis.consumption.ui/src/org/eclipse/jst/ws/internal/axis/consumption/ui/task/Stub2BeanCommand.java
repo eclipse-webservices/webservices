@@ -143,7 +143,7 @@ public class Stub2BeanCommand extends SimpleCommand
             stub2BeanInfo.setClass(portTypeClassName + "Proxy");
             proxyBean_ = portTypePkgName+"."+portTypeClassName+"Proxy";
             if (jndiName.equals(portTypeClassName))
-              portTypeClassName = portTypeClassName + "_Port";
+              portTypeClassName = portTypeClassName + "_PortType";
             stub2BeanInfo.addSEI(portTypePkgName, portTypeClassName, servicePkgName, serviceClassName, jndiName, port.getName());
             try
             {              

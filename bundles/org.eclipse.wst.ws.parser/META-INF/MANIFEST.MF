@@ -17,6 +17,6 @@ Require-Bundle: org.eclipse.wst.wsdl,
  org.eclipse.core.runtime,
  org.apache.wsil4j,
  org.uddi4j,
- org.apache.axis11,
- org.eclipse.wst.command.env.core
+ org.eclipse.wst.command.env.core,
+ org.apache.axis
 Eclipse-AutoStart: true

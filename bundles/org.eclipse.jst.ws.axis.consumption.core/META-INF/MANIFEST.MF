@@ -17,4 +17,4 @@ Require-Bundle: org.apache.ant,
  org.eclipse.jst.ws,
  org.eclipse.jst.ws.consumption,
  org.eclipse.jst.j2ee.web,
- org.apache.axis11
+ org.apache.axis

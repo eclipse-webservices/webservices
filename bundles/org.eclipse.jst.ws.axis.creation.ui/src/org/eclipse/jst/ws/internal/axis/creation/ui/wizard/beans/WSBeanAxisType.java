@@ -19,7 +19,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidge
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.task.LiteralSupportMessageTask;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.AxisBeanFragment;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BeanConfigWidget;
 import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
@@ -178,7 +177,7 @@ public class WSBeanAxisType implements WebServiceServerRuntimeType, CommandWidge
     //BeanConfigWidget - as target
     dataRegistry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", BeanConfigWidget.class, "JavaParameter", null );
     //BeanConfigWidget - as source
-    dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", LiteralSupportMessageTask.class, "JavaWSDLParam", null);
+
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", CheckAxisDeploymentDescriptorsTask.class, "JavaWSDLParam", null);
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", AddJarsToProjectBuildPathTask.class, "JavaWSDLParam", null);
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", Java2WSDLCommand.class, "JavaWSDLParam", null);       
@@ -191,7 +190,7 @@ public class WSBeanAxisType implements WebServiceServerRuntimeType, CommandWidge
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", AxisMappingsWidget.class);
     
     //AxisMappingsWidget - as source
-    dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", LiteralSupportMessageTask.class, "JavaWSDLParam", null);
+
     dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", CheckAxisDeploymentDescriptorsTask.class, "JavaWSDLParam", null);
     dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", AddJarsToProjectBuildPathTask.class, "JavaWSDLParam", null);
     dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", Java2WSDLCommand.class, "JavaWSDLParam", null);       

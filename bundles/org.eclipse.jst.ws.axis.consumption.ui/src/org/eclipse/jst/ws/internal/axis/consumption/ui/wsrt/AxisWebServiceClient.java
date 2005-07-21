@@ -7,7 +7,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefault
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientInputCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientOutputCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.DefaultsForClientJavaWSDLCommand;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.task.AddJarsToProjectBuildPathTask;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
@@ -59,7 +58,6 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 //		commands.add(new SimpleFragment("AxisClientBeanMapping"));
 		commands.add(new DefaultsForHTTPBasicAuthCommand());
 		commands.add(new CopyAxisJarCommand(module));
-		commands.add(new AddJarsToProjectBuildPathTask(module));
 		commands.add(new DefaultsForClientJavaWSDLCommand(module));
 		commands.add(new ValidateWSDLCommand());
 		commands.add(new WSDL2JavaCommand());
@@ -115,8 +113,7 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		// CreateWebProjectCommand.class);
 		// CopyAxisJarCommand()
 		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", CopyAxisJarCommand.class, "Project", null);
-		// AddJarsToProjectBuildPathTask()
-		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", AddJarsToProjectBuildPathTask.class, "Project", null);
+
 		// DefaultsForClientJavaWSDLCommand() // javaParam_, model_
 		registry.addMapping(AxisClientDefaultingCommand.class, "JavaWSDLParam", DefaultsForClientJavaWSDLCommand.class);
 		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", DefaultsForClientJavaWSDLCommand.class, "ProxyProject",

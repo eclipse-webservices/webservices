@@ -19,7 +19,6 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.UpdateWEBXMLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.BUCheckAxisDeploymentDescriptors;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.task.LiteralSupportMessageTask;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.MoveDeploymentFilesTask;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.MoveJavaFilesTask;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.Skeleton2WSDLCommand;
@@ -85,9 +84,7 @@ public class AxisWebService extends AbstractWebService
 			// commands.add(new SimpleFragment( "BeanConfig" ));
 			// commands.add(new SimpleFragment( "AxisServiceBeanMapping" ));
 			commands.add(new BUCheckAxisDeploymentDescriptors(module));
-			commands.add(new LiteralSupportMessageTask());
 			commands.add(new CopyAxisJarCommand(module));
-			commands.add(new AddJarsToProjectBuildPathTask(module));
 			commands.add(new WaitForAutoBuildCommand());
 			commands.add(new Java2WSDLCommand());
 			commands.add(new RefreshProjectCommand());
@@ -111,7 +108,6 @@ public class AxisWebService extends AbstractWebService
 //			commands.add(new SimpleFragment( "AxisMappingsWidget" ));
 		    commands.add(new TDCheckAxisDeploymentDescriptors(module));
 			commands.add(new CopyAxisJarCommand(module));
-		    commands.add(new AddJarsToProjectBuildPathTask(module));
 		    commands.add(new WSDL2JavaCommand());
 		    commands.add(new MoveDeploymentFilesTask(module));
 		    commands.add(new Skeleton2WSDLCommand(module));
@@ -188,19 +184,14 @@ public class AxisWebService extends AbstractWebService
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", JavaToWSDLMethodCommand.class, "ServiceProject", new StringToIProjectTransformer());
 
 	    // BUAxisCommands3 - these run after BeanConfigWidget
-	    //LiteralSupportMessageTask
-	    registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", LiteralSupportMessageTask.class);
-	    
+    
 	    //CheckAxisDeploymentDescriptorsTask
 	    //registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", CheckAxisDeploymentDescriptorsTask.class);
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", BUCheckAxisDeploymentDescriptors.class, "ServerProject", new StringToIProjectTransformer());
 	    
 	    //CopyAxisJarCommand
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", new StringToIProjectTransformer());
-	    
-	    //AddJarsToProjectBuildPathTask
-	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", AddJarsToProjectBuildPathTask.class, "Project", new StringToIProjectTransformer());
-	    
+	    	    
 	    //Java2WSDLCommand
 	    registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", Java2WSDLCommand.class);
 	    
@@ -274,10 +265,7 @@ public class AxisWebService extends AbstractWebService
 	    
 	    // CheckAxisDeploymentDescriptorsTask
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", TDCheckAxisDeploymentDescriptors.class, "ServerProject", projectTransformer);
-
-	    // AddJarsToProjectBuildPathTask
-	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", AddJarsToProjectBuildPathTask.class, "Project", projectTransformer);
-	    
+    
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WsdlURI", WSDL2JavaCommand.class);
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "HttpBasicAuthUsername", WSDL2JavaCommand.class);
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "HttpBasicAuthPassword", WSDL2JavaCommand.class);

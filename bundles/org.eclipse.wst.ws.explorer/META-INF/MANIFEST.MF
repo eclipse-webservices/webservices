@@ -61,7 +61,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.ws.parser,
  org.eclipse.wst.wsdl,
  org.wsdl4j,
- org.apache.axis11,
  org.apache.wsil4j,
- org.uddi4j
+ org.uddi4j,
+ org.apache.axis
 Eclipse-AutoStart: true

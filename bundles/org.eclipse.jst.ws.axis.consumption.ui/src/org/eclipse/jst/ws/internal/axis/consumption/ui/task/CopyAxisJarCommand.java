@@ -33,17 +33,16 @@ import org.eclipse.wst.command.internal.provisional.env.core.context.TransientRe
 
 public class CopyAxisJarCommand extends SimpleCommand {
 
-  public static String AXIS_RUNTIME_PLUGIN_ID = "org.apache.axis11"; //$NON-NLS-1$
+  public static String AXIS_RUNTIME_PLUGIN_ID = "org.apache.axis"; //$NON-NLS-1$
   public static String[] JARLIST = new String[] {
 	  "axis-ant.jar",
 	  "axis.jar",
-	  "commons-discovery.jar",
-	  "commons-logging.jar",
+	  "commons-discovery-0.2.jar",
+	  "commons-logging-1.0.4.jar",
 	  "jaxrpc.jar",
 	  "log4j-1.2.8.jar",
 	  "saaj.jar",
-	  "wsdl4j.jar"
-	  
+	  "wsdl4j-1.5.1.jar"
   };
 
   private String DESCRIPTION = "TASK_DESC_COPY_JARS_TO_PROJECT";
