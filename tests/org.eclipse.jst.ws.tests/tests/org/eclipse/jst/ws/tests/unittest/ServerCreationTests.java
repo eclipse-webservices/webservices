@@ -21,6 +21,7 @@ public class ServerCreationTests extends TestCase implements WSJUnitConstants{
 	
 	public void init(){
 	    try {
+          assertNotNull(SERVER_INSTALL_PATH);          
 	      JUnitUtils.createServerRuntime(RUNTIMETYPEID_TC50, SERVER_INSTALL_PATH);
 	    }
 	    catch(Exception e){
