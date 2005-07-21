@@ -102,7 +102,7 @@ public class BindingGenerator extends BaseGenerator {
 		
 		return newBinding;
 	}
-	
+
 	/*
 	 * TODO: Scenario:
 	 * 1)overwrite == false
@@ -130,7 +130,7 @@ public class BindingGenerator extends BaseGenerator {
 		if (binding == null) {
 			binding = createEmptyBinding(getName());
 		}
-		if (getName() != null) {
+		if (getName() != null && !binding.getQName().getLocalPart().equals(getName())) {
 			binding.setQName(new QName(binding.getQName().getNamespaceURI(), getName()));
 		}
 		if (getRefName() != null) {
@@ -141,7 +141,7 @@ public class BindingGenerator extends BaseGenerator {
 				binding.getElement().setAttribute("type", "");
 			}
 		}
-		
+
 		List bindingOperations = binding.getEBindingOperations();		
 		PortType portType = binding.getEPortType();
 		
@@ -188,6 +188,7 @@ public class BindingGenerator extends BaseGenerator {
 					generateBindingOperationContent(newBindingOp);
 				}
 			}
+			
 			generateBindingContent(binding);	
 		}
 		else {
@@ -330,7 +331,6 @@ public class BindingGenerator extends BaseGenerator {
 		}
 		generateBindingOutputContent(bindingOperation.getEBindingOutput());
 		
-		
 		/******************************************************
 		 * Compare the Input
 		 ******************************************************/
@@ -442,7 +442,9 @@ public class BindingGenerator extends BaseGenerator {
 
 	protected void generateBindingContent(Binding binding) {
 		if (contentGenerator != null) {
-			contentGenerator.generateBindingContent(binding, (PortType) binding.getEPortType());
+			if (binding.getEExtensibilityElements().size() == 0) {
+				contentGenerator.generateBindingContent(binding, (PortType) binding.getEPortType());
+			}
 		}
 		else {
 			removeExtensibilityElements(binding);
