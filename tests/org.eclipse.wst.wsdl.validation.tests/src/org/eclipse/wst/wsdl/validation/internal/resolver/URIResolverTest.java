@@ -43,7 +43,7 @@ public class URIResolverTest extends TestCase
   	// System id is absolute and should not be modified.
   	String baseLocation = "file:/c:/somepath/somepath/file.txt";
   	String systemId = "file:/c:/somepath/myfile.txt";
-  	assertEquals("systemId is absolute and should not be modified.", uriResolver.resolve(baseLocation, null, systemId), systemId);
+  	assertEquals("systemId is absolute and should not be modified.", systemId, uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   	
   }
   
@@ -52,7 +52,7 @@ public class URIResolverTest extends TestCase
   	// System id is relative 
   	String baseLocation = "file:/c:/somepath/somepath/file.txt";
   	String systemId = "myfile.txt";
-  	assertEquals("systemId is simple relative and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/c:/somepath/somepath/myfile.txt");
+  	assertEquals("systemId is simple relative and is not modified correctly.", "file:/c:/somepath/somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileStartsWithDotDot()
@@ -60,7 +60,7 @@ public class URIResolverTest extends TestCase
     // System id is relative with ../
   	String baseLocation = "file:/c:/somepath/somepath/file.txt";
   	String systemId = "../myfile.txt";
-  	assertEquals("systemId is relative with ../ and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/c:/somepath/myfile.txt");
+  	assertEquals("systemId is relative with ../ and is not modified correctly.", "file:/c:/somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileStartsWithDotDotTwice()
@@ -68,7 +68,7 @@ public class URIResolverTest extends TestCase
     // System id is relative with ../../
   	String baseLocation = "file:/c:/somepath/somepath/file.txt";
   	String systemId = "../../myfile.txt";
-  	assertEquals("systemId is relative with ../../ and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/c:/myfile.txt");
+  	assertEquals("systemId is relative with ../../ and is not modified correctly.", "file:/c:/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileStartsWithDot()
@@ -76,7 +76,7 @@ public class URIResolverTest extends TestCase
     // System id is relative with ./
   	String baseLocation = "file:/c:/somepath/somepath/file.txt";
   	String systemId = "./myfile.txt";
-  	assertEquals("systemId is relative with ./ and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/c:/somepath/somepath/myfile.txt");
+  	assertEquals("systemId is relative with ./ and is not modified correctly.", "file:/c:/somepath/somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileStartsWithDotTwice()
@@ -84,7 +84,7 @@ public class URIResolverTest extends TestCase
     // System id is relative with ././
   	String baseLocation = "file:/c:/somepath/somepath/file.txt";
   	String systemId = "././myfile.txt";
-  	assertEquals("systemId is relative with ././ and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/c:/somepath/somepath/myfile.txt");
+  	assertEquals("systemId is relative with ././ and is not modified correctly.", "file:/c:/somepath/somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileStartsWithSlash()
@@ -92,7 +92,7 @@ public class URIResolverTest extends TestCase
     // System id is relative beginning with /
   	String baseLocation = "file:/c:/somepath/somepath/file.txt";
   	String systemId = "/myfile.txt";
-  	assertEquals("systemId is relative beginning with / and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/c:/somepath/somepath/myfile.txt");
+  	assertEquals("systemId is relative beginning with / and is not modified correctly.", "file:/c:/somepath/somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileDotDotInMiddle()
@@ -100,7 +100,7 @@ public class URIResolverTest extends TestCase
     // System id contains ../ in the middle
   	String baseLocation = "file:/c:/somepath/somepath/file.txt";
   	String systemId = "somepath/../myfile.txt";
-  	assertEquals("systemId is relative and contains ../ in the middle and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/c:/somepath/somepath/myfile.txt");
+  	assertEquals("systemId is relative and contains ../ in the middle and is not modified correctly.", "file:/c:/somepath/somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileFotInMiddle()
@@ -108,7 +108,7 @@ public class URIResolverTest extends TestCase
     // System id contains ./ in the middle
   	String baseLocation = "file:/c:/somepath/somepath/file.txt";
   	String systemId = "somepath/./myfile.txt";
-  	assertEquals("systemId is relative and contains ./ in the middle and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/c:/somepath/somepath/somepath/myfile.txt");
+  	assertEquals("systemId is relative and contains ./ in the middle and is not modified correctly.", "file:/c:/somepath/somepath/somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormlizeRelativeFileDotDotInMiddleOfBase()
@@ -116,7 +116,7 @@ public class URIResolverTest extends TestCase
     // Base location contains ../ in the middle
   	String baseLocation = "file:/c:/somepath/../somepath/file.txt";
   	String systemId = "myfile.txt";
-  	assertEquals("baseLocation contains ../ in the middle and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/c:/somepath/myfile.txt");
+  	assertEquals("baseLocation contains ../ in the middle and is not modified correctly.", "file:/c:/somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileDotInMiddleOfBase()
@@ -124,7 +124,7 @@ public class URIResolverTest extends TestCase
     // Base location contains ./ in the middle
   	String baseLocation = "file:/c:/somepath/./somepath/file.txt";
   	String systemId = "myfile.txt";
-  	assertEquals("baseLocation contains ./ in the middle and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/c:/somepath/somepath/myfile.txt");
+  	assertEquals("baseLocation contains ./ in the middle and is not modified correctly.", "file:/c:/somepath/somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileBaseStartsWithSlashDotDot()
@@ -132,7 +132,7 @@ public class URIResolverTest extends TestCase
     // Base location starts with /../ 
   	String baseLocation = "file:/../somepath/file.txt";
   	String systemId = "myfile.txt";
-  	assertEquals("baseLocation starts with ../ and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/../somepath/myfile.txt");
+  	assertEquals("baseLocation starts with ../ and is not modified correctly.", "file:/../somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileBaseStartsWithSlashDot()
@@ -140,7 +140,7 @@ public class URIResolverTest extends TestCase
     // Base location starts with /./
   	String baseLocation = "file:/./somepath/file.txt";
   	String systemId = "myfile.txt";
-  	assertEquals("baseLocation starts with ./ and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/somepath/myfile.txt");
+  	assertEquals("baseLocation starts with ./ and is not modified correctly.", "file:/somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileBaseStartsWithDotDot()
@@ -148,7 +148,7 @@ public class URIResolverTest extends TestCase
     // Base location starts with ../ 
   	String baseLocation = "file:../somepath/file.txt";
   	String systemId = "myfile.txt";
-  	assertEquals("baseLocation starts with ../ and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:../somepath/myfile.txt");
+  	assertEquals("baseLocation starts with ../ and is not modified correctly.", "file:../somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileBaseStartsWithDot()
@@ -156,7 +156,7 @@ public class URIResolverTest extends TestCase
     // Base location starts with ./ 
   	String baseLocation = "file:./somepath/file.txt";
   	String systemId = "myfile.txt";
-  	assertEquals("baseLocation starts with ./ and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:somepath/myfile.txt");
+  	assertEquals("baseLocation starts with ./ and is not modified correctly.", "file:somepath/myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileSomedirDotDot()
@@ -164,7 +164,7 @@ public class URIResolverTest extends TestCase
     // System id contains somedir../ in the middle
   	String baseLocation = "file:/somepath/file.txt";
   	String systemId = "somedir../myfile.txt";
-  	assertEquals("systemId has somedir../ and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/somepath/somedir../myfile.txt");
+  	assertEquals("systemId has somedir../ and is not modified correctly.", "file:/somepath/somedir../myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeRelativeFileSomedirDot()
@@ -172,7 +172,7 @@ public class URIResolverTest extends TestCase
     // System id contains somedir./ in the middle
   	String baseLocation = "file:/somepath/file.txt";
   	String systemId = "somedir./myfile.txt";
-  	assertEquals("systemId has somedir./ and is not modified correctly.", uriResolver.resolve(baseLocation, null, systemId), "file:/somepath/somedir./myfile.txt");
+  	assertEquals("systemId has somedir./ and is not modified correctly.", "file:/somepath/somedir./myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeNullSystemId()
@@ -180,7 +180,7 @@ public class URIResolverTest extends TestCase
     // System id is null
   	String baseLocation = "file:/somepath/file.txt";
   	String systemId = null;
-  	assertEquals("systemId is null.", uriResolver.resolve(baseLocation, null, systemId), null);
+  	assertEquals("systemId is null.", null, uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeNullBaseLocation()
@@ -188,7 +188,7 @@ public class URIResolverTest extends TestCase
     // Base location is null
   	String baseLocation = null;
   	String systemId = "somedir./myfile.txt";
-  	assertEquals("systemId is null.", uriResolver.resolve(baseLocation, null, systemId), null);
+  	assertEquals("systemId is null.", null, uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
   
   public void testNormalizeSystemIdAbsoluteNullBaseLocation()
@@ -196,7 +196,7 @@ public class URIResolverTest extends TestCase
     // Base location is null
   	String baseLocation = "null";
   	String systemId = "file:/somedir./myfile.txt";
-  	assertEquals("systemId is null.", uriResolver.resolve(baseLocation, null, systemId), "file:/somedir./myfile.txt");
+  	assertEquals("systemId is null.", "file:/somedir./myfile.txt", uriResolver.resolve(baseLocation, null, systemId).getLogicalLocation());
   }
 
 	

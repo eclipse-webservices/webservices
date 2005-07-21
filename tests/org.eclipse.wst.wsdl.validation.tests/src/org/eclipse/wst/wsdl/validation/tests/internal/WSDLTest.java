@@ -286,6 +286,19 @@ public class WSDLTest extends BaseTestCase
   }
   
   /**
+   * Test /WSDL/Import/SimpleImport/test-1.0.wsdl
+   */
+  public void testSimpleImport()
+  {
+    String testname = "test-1.0";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/SimpleImport/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/SimpleImport/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/SimpleImport/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
    * CYCLIC TESTS
    */
   
