@@ -6,7 +6,7 @@
    <plugin id="org.eclipse.wst.ws.parser" fragment="false"/>
    <plugin id="org.eclipse.wst.ws.ui" fragment="false"/>
    <plugin id="org.eclipse.wst.ws.explorer" fragment="false"/>
-   <plugin id="org.apache.axis11" fragment="false"/>
+   <plugin id="org.apache.axis" fragment="false"/>
    <plugin id="org.apache.wsil4j" fragment="false"/>
    <plugin id="org.uddi4j" fragment="false"/>
 </component>
