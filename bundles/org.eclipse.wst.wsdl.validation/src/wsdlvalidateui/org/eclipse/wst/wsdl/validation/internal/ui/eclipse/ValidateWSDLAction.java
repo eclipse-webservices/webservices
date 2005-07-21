@@ -87,6 +87,7 @@ public class ValidateWSDLAction extends ValidateAction
         {
           location = file.getLocation().toString();
         }
+        location = location.replace('\\','/');
         if (location.startsWith("/"))
         {
           valReport = wsdlValidator.validate(FILE_PROTOCOL + location.substring(1), inputStream);
