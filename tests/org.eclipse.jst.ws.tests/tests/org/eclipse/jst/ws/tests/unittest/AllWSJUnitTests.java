@@ -9,7 +9,7 @@ import junit.textui.TestRunner;
 /**
  * This class is to run all the unittest tests.
  */
-public class AllWSJUnitTests extends TestCase
+public class AllWSJUnitTests extends TestCase implements WSJUnitConstants
 {
   /**
    * Method parseArgs.
@@ -56,7 +56,11 @@ public class AllWSJUnitTests extends TestCase
     TestSuite testSuite = new TestSuite();
     testSuite.addTest( ComponentCreationTests.suite() );
     testSuite.addTest( J2EEUtilsTests.suite() );
-    testSuite.addTest( ServerCreationTests.suite());
+   
+    String s = System.getProperty("org.eclipse.jst.server.tomcat.50");
+    if (s != null && s.length() > 0) {
+      testSuite.addTest( ServerCreationTests.suite());
+    }
     testSuite.addTest( ResourceUtilsTests.suite() );
 
 
