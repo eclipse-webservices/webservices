@@ -31,7 +31,7 @@ import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog;
  * can locate the entity the resolver will ask the internal WSDL validator XML
  * catalog to resolve the location.
  */
-public class URIResolver implements IURIResolver, XMLEntityResolver
+public class URIResolver implements IExtensibleURIResolver, XMLEntityResolver
 {
   private List extURIResolversList = new ArrayList();
 
@@ -49,30 +49,27 @@ public class URIResolver implements IURIResolver, XMLEntityResolver
    * @param uriResolver
    *          The extension URI resolver.
    */
-  public void addURIResolver(IURIResolver uriResolver)
+  public void addURIResolver(IExtensibleURIResolver uriResolver)
   {
     extURIResolversList.add(uriResolver);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.eclipse.wsdl.validate.internal.resolver.IURIResolver#resolve(java.lang.String,
-   *      java.lang.String, java.lang.String)
+  
+  /**
+   * @see org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver#resolve(java.lang.String, java.lang.String, java.lang.String, org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult)
    */
-  public String resolve(String baseLocation, String publicId, String systemId)
+  public void resolve(String baseLocation, String publicId, String systemId, IURIResolutionResult result)
   {
-    String result = null;
     Iterator resolverIter = extURIResolversList.iterator();
     while(resolverIter.hasNext())
     {
-      IURIResolver resolver = (IURIResolver)resolverIter.next();
+      IExtensibleURIResolver resolver = (IExtensibleURIResolver)resolverIter.next();
       if (resolver == null)
       {
         continue;
       }
-      result = resolver.resolve(baseLocation, publicId, systemId);
-      if (result != null && !result.equals(systemId))
+      resolver.resolve(baseLocation, publicId, systemId, result);
+      if (result.getLogicalLocation() != null && !result.getPhysicalLocation().equals(systemId))
       {
         break;
       }
@@ -80,15 +77,27 @@ public class URIResolver implements IURIResolver, XMLEntityResolver
 
     // If we haven't been able to locate the result yet ask the internal XML
     // catalog.
-    if (result == null && (publicId != null || systemId != null))
+    if (result.getLogicalLocation() == null && (publicId != null || systemId != null))
     {
-      result = XMLCatalog.getInstance().resolveEntityLocation(publicId, systemId);
+      String tempresult = XMLCatalog.getInstance().resolveEntityLocation(publicId, systemId);
+      if(tempresult != null)
+      {
+    	result.setLogicalLocation(tempresult);
+    	result.setPhysicalLocation(tempresult);
+      }
     }
-    if(result == null)
+    if(result.getLogicalLocation() == null)
     {
-      result =  normalize(baseLocation, systemId);
+      result.setLogicalLocation(normalize(baseLocation, systemId));
+      result.setPhysicalLocation(result.getLogicalLocation());
     }
-    return result;
+  }
+  
+  public IURIResolutionResult resolve(String baseLocation, String publicId, String systemId)
+  {
+	IURIResolutionResult result= new URIResolutionResult();
+	resolve(baseLocation, publicId, systemId, result);
+	return result;
   }
 
   /*
@@ -104,15 +113,15 @@ public class URIResolver implements IURIResolver, XMLEntityResolver
     {
       publicId = resourceIdentifier.getNamespace();
     }
-    String result = resolve(resourceIdentifier.getBaseSystemId(), publicId, systemId);
+    IURIResolutionResult result = resolve(resourceIdentifier.getBaseSystemId(), publicId, systemId);
     XMLInputSource xmlInputSource = null;
     if (result != null)
     {
       try
       {
-        URL url = new URL(result);
+        URL url = new URL(result.getPhysicalLocation());
         InputStream is = url.openStream();
-        xmlInputSource = new XMLInputSource(publicId, result, result, is, null);
+        xmlInputSource = new XMLInputSource(publicId, result.getLogicalLocation(), result.getLogicalLocation(), is, null);
       }
       catch (FileNotFoundException e)
       {

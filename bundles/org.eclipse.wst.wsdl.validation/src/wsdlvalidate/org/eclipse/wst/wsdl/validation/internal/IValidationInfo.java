@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.wsdl.validation.internal;
 
-import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
+import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 
 
 /**
@@ -68,7 +68,7 @@ public interface IValidationInfo extends IValidationReport
    * 
    * @return The URI resolver handler.
    */
-  public IURIResolver getURIResolver();
+  public URIResolver getURIResolver();
   
   /**
    * Get the attribute with the given name. If the attribute

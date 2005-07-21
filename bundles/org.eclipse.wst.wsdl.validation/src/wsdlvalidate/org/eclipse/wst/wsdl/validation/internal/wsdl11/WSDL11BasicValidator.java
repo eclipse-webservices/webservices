@@ -658,7 +658,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
       try
       {
         XSDValidator xsdVal = new XSDValidator();
-        String soapEnc = valInfo.getURIResolver().resolve(null, SOAP_ENCODING_URI, null);
+        String soapEnc = valInfo.getURIResolver().resolve(null, SOAP_ENCODING_URI, null).getPhysicalLocation();
         if(soapEnc != null)
         {
           xsdVal.validate(soapEnc, null);

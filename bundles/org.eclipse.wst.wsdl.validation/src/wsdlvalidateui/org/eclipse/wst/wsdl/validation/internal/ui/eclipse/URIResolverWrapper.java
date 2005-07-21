@@ -11,18 +11,16 @@
 
 package org.eclipse.wst.wsdl.validation.internal.ui.eclipse;
 
-import java.net.URL;
-
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
-import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
+import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
+import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult;
 
 /**
  * An wrapper URI resolver that wraps the Web Standard Tools URI resolver
  * in a WSDL validator URI resolver.
  */
-public class URIResolverWrapper implements IURIResolver
+public class URIResolverWrapper implements IExtensibleURIResolver
 {
   /**
    * Constructor.
@@ -31,29 +29,30 @@ public class URIResolverWrapper implements IURIResolver
   {
   }
 
-  /* (non-Javadoc)
-   * @see org.eclipse.wsdl.validate.internal.resolver.IURIResolver#resolve(java.lang.String, java.lang.String, java.lang.String)
+  /**
+   * @see org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver#resolve(java.lang.String, java.lang.String, java.lang.String, org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult)
    */
-  public String resolve(String baseLocation, String publicId, String systemId)
+  public void resolve(String baseLocation, String publicId, String systemId, IURIResolutionResult result)
   {
     URIResolver resolver = URIResolverPlugin.createResolver();
-    String result = resolver.resolve(baseLocation, publicId, systemId);
-    try
-    {
-      URL tempURL = new URL(result);
-      tempURL = Platform.resolve(tempURL);
-      result = tempURL.toString();
+    String location = null;
+    if (publicId != null || systemId != null)
+    {  
+      location = resolver.resolve(baseLocation, publicId, systemId);
+    }  
+    
+    if (location != null)
+    {       
+      result.setLogicalLocation(location);
+      String physical = resolver.resolvePhysicalLocation(baseLocation, publicId, location);
+      if(physical != null)
+      {
+        result.setPhysicalLocation(physical);
+      }
+      else
+      {
+        result.setPhysicalLocation(location);
+      }
     }
-    catch(Exception e)
-    {
-      result = null;
-    }
-    // If the result is the same as the request return null.
-    if (result != null && (result.equals(systemId)))
-    {
-      result = null;
-    }
-
-    return result;
   }
 }

@@ -18,7 +18,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
-import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
+import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 
@@ -280,7 +280,7 @@ public class ValidationInfoImpl implements IValidationReport, ControllerValidati
   	this.uriResolver = uriResolver;
   }
   
-  public IURIResolver getURIResolver()
+  public URIResolver getURIResolver()
   {
   	return uriResolver;
   }

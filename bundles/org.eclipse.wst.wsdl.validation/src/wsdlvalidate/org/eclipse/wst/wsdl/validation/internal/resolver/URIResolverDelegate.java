@@ -19,7 +19,7 @@ public class URIResolverDelegate
 {
   private String classname;
   private ClassLoader classloader;
-  private IURIResolver resolver = null;
+  private IExtensibleURIResolver resolver = null;
   
   
   /**
@@ -39,19 +39,19 @@ public class URIResolverDelegate
    * 
    * @return The URI resolver described by this delegate.
    */
-  public IURIResolver getURIResolver()
+  public IExtensibleURIResolver getURIResolver()
   {
     if(resolver == null)
     {
       try
       {
-        resolver = (IURIResolver)classloader.loadClass(classname).newInstance();
+        resolver = (IExtensibleURIResolver)classloader.loadClass(classname).newInstance();
       }
       catch(Exception e)
       {
         try
         {
-          resolver = (IURIResolver)getClass().getClassLoader().loadClass(classname).newInstance();
+          resolver = (IExtensibleURIResolver)getClass().getClassLoader().loadClass(classname).newInstance();
         }
         catch(Exception e2)
         {

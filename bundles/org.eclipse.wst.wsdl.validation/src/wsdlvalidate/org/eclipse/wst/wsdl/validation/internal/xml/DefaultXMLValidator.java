@@ -31,7 +31,10 @@ import org.apache.xerces.jaxp.SAXParserFactoryImpl;
 import org.apache.xerces.parsers.SAXParser;
 import org.apache.xerces.parsers.StandardParserConfiguration;
 import org.apache.xerces.xni.XNIException;
+import org.apache.xerces.xni.parser.XMLInputSource;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
+import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -391,29 +394,29 @@ public class DefaultXMLValidator implements IXMLValidator
       publicId = systemId;
     }
       
-    String uri = uriResolver.resolve(null, publicId, systemId);
+    IURIResolutionResult result = uriResolver.resolve(null, publicId, systemId);
+    String uri = result.getPhysicalLocation();
     if (uri != null && !uri.equals(""))
     {
-		  try
-		  {
-	      String entity;
-		    entity = systemId;
-		    if(publicId != null)
-		    {
-			    entity = publicId;
-		    }
-		    URL entityURL = new URL(uri);
-        InputSource is = new InputSource(entity);
-		    is.setByteStream(entityURL.openStream());
+	  try
+	  {
+//	    String entity = systemId;
+//		if(publicId != null)
+//		{
+//		  entity = publicId;
+//		 }
+		URL entityURL = new URL(uri);
+        InputSource is = new InputSource(result.getLogicalLocation());
+		is.setByteStream(entityURL.openStream());
         if (is != null)
         {
           return is;
         }
-		  }
-		  catch(Exception e)
-		  {
-		    // Do nothing.
-		  }
+	  }
+	  catch(Exception e)
+	  {
+		 // Do nothing.
+	  }
     }
       // This try/catch block with the IOException is here to handle a difference
       // between different versions of the EntityResolver interface.

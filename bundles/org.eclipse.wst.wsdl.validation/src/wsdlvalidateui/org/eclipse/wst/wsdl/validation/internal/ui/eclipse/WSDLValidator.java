@@ -14,7 +14,7 @@ package org.eclipse.wst.wsdl.validation.internal.ui.eclipse;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
+import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
 
 /**
  * An Eclipse WSDL validator. This validator is the default validator
@@ -39,7 +39,7 @@ public class WSDLValidator extends org.eclipse.wst.wsdl.validation.internal.WSDL
 	  Iterator resolverIter = resolvers.iterator();
 	  while(resolverIter.hasNext())
 	  {
-	  	IURIResolver resolver = (IURIResolver)resolverIter.next();
+	  	IExtensibleURIResolver resolver = (IExtensibleURIResolver)resolverIter.next();
 	  	addURIResolver(resolver);
 	  }
 	}

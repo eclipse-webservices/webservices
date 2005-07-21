@@ -14,7 +14,7 @@ package org.eclipse.wst.wsdl.validation.internal.wsdl11;
 import java.util.Hashtable;
 
 import org.apache.xerces.xs.XSModel;
-import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
+import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 
 /**
  * An interface for WSDL 1.1 validation information. Uses an existing
@@ -109,6 +109,6 @@ public interface IWSDL11ValidationInfo
    * 
    * @return The URI resolver handler.
    */
-  public IURIResolver getURIResolver();
+  public URIResolver getURIResolver();
 }
 

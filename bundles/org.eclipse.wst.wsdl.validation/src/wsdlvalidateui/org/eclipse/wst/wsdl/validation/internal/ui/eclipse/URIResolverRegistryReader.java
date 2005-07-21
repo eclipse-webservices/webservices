@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
+import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
 
 /**
@@ -59,7 +59,7 @@ class URIResolverRegistryReader
       IConfigurationElement[] elements = point.getConfigurationElements();
       for (int i = 0; i < elements.length; i++)
       {
-        IURIResolver resolver = readElement(elements[i]);
+        IExtensibleURIResolver resolver = readElement(elements[i]);
         if(resolver != null)
         {
           resolverList.add(resolver);
@@ -74,7 +74,7 @@ class URIResolverRegistryReader
    * 
    * @param element The extension point element.
    */
-  protected IURIResolver readElement(IConfigurationElement element)
+  protected IExtensibleURIResolver readElement(IConfigurationElement element)
   {
     if (element.getName().equals(EXTENSION_POINT_ID))
     {

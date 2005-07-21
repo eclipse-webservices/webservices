@@ -23,7 +23,7 @@ import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidatorDelegate;
-import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
+import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
@@ -82,7 +82,7 @@ public class WSDLValidate
   	wsdlValidator = new WSDLValidator();
   }
   
-  public void addURIResolver(IURIResolver uriResolver)
+  public void addURIResolver(IExtensibleURIResolver uriResolver)
   {
   	wsdlValidator.addURIResolver(uriResolver);
   }

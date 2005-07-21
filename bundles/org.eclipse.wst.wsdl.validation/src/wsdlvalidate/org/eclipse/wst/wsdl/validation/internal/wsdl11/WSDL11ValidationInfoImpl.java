@@ -18,7 +18,7 @@ import java.util.Vector;
 import org.apache.xerces.xs.XSModel;
 import org.eclipse.wst.wsdl.validation.internal.IValidationInfo;
 import org.eclipse.wst.wsdl.validation.internal.ValidationInfoImpl;
-import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
+import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 
 /**
  * An implemenation of WSDL11ValidationInfo.
@@ -162,7 +162,7 @@ public class WSDL11ValidationInfoImpl implements IWSDL11ValidationInfo
   /* (non-Javadoc)
    * @see org.eclipse.wsdl.validate.wsdl11.WSDL11ValidationInfo#getURIResolver()
    */
-  public IURIResolver getURIResolver() 
+  public URIResolver getURIResolver() 
   {
 	return valinfo.getURIResolver();
   }

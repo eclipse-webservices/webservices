@@ -25,6 +25,7 @@ import javax.wsdl.WSDLException;
 
 import org.apache.xerces.xs.XSModel;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
+import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult;
 import org.eclipse.wst.wsdl.validation.internal.util.ErrorMessage;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.XSDValidator;
@@ -53,6 +54,7 @@ public class ImportHolder implements Comparable
   private Element importingDocImportElement = null;
   private String namespace = null;
   private String location = null;
+  private String classpathURI = null;
   private String contextURI = null;
   private int depth;
   private Element element = null;
@@ -98,10 +100,14 @@ public class ImportHolder implements Comparable
     this.contextURI = contextURI;
     
     this.location = this.location.replace('\\','/');
-    String classpathURI = valinfo.getURIResolver().resolve(this.contextURI, this.namespace, this.location);
-    if(classpathURI != null)
+    IURIResolutionResult classpathURI = valinfo.getURIResolver().resolve(this.contextURI, this.namespace, this.location);
+    if(classpathURI.getLogicalLocation() != null)
     {
-      this.location = classpathURI;
+      this.location = classpathURI.getLogicalLocation();
+    }
+    if(classpathURI.getPhysicalLocation() != null)
+    {
+      this.classpathURI = classpathURI.getPhysicalLocation();
       this.contextURI = null;
     } 
   }
@@ -121,7 +127,7 @@ public class ImportHolder implements Comparable
   	  // Handle WSDL imports.
       if (QNameUtils.matches(Constants.Q_ELEM_DEFINITIONS, documentElement))
       {
-        if(isXMLValid(this.location))
+        if(isXMLValid(this.classpathURI))
         {
           try
           {
@@ -303,7 +309,6 @@ public class ImportHolder implements Comparable
 				}
               }
 			}
-			
 			if(url != null)
 			{
 			  try
@@ -318,6 +323,10 @@ public class ImportHolder implements Comparable
             if (reader != null)
             {
               inputSource = new InputSource(reader);
+              if(classpathURI != null && !classpathURI.equals(location))
+  			  {
+  			    inputSource.setByteStream(new URL(classpathURI).openStream());
+  			  }
             }
 
             if (inputSource == null)

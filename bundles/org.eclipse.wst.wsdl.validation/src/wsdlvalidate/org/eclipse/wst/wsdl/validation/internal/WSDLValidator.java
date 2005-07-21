@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.util.Hashtable;
 import java.util.ResourceBundle;
 
-import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolver;
+import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11BasicValidator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorController;
@@ -101,7 +101,7 @@ public class WSDLValidator
    * 
    * @param uriResolver The URI resolver to add to the WSDL validator.
    */
-  public void addURIResolver(IURIResolver uriResolver)
+  public void addURIResolver(IExtensibleURIResolver uriResolver)
   {
   	this.uriResolver.addURIResolver(uriResolver);
   }

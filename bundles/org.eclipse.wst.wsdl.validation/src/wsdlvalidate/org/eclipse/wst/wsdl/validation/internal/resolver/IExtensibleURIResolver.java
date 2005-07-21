@@ -15,7 +15,7 @@ package org.eclipse.wst.wsdl.validation.internal.resolver;
  * An interface for the WSDL validator's URI resolver mechanism. The URI resolver
  * is used to find the location of an entity.
  */
-public interface IURIResolver
+public interface IExtensibleURIResolver
 {
  /**
   * Resolve the location of the entity described by the publicId and systemId.
@@ -23,7 +23,7 @@ public interface IURIResolver
   * @param baseLocation The location of the resource that contains the uri.
   * @param publicId An optional public identifier (i.e. namespace name), or null if none.
   * @param systemId An absolute or relative URI, or null if none.
-  * @return An absolute URI for the resource.
+  * @param result The result of the resolution.
   */
-  public String resolve(String baseLocation, String publicId, String systemId);
+  public void resolve(String baseLocation, String publicId, String systemId, IURIResolutionResult result);
 }
