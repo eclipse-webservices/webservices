@@ -1608,7 +1608,7 @@ public final class J2EEUtils {
 							IProject earProject, String earComponentName) {
 		
         IFlexibleProject flexearProj = ComponentCore.createFlexibleProject(earProject);
-		ComponentHandle earHandle = flexearProj.getComponent(componentName).getComponentHandle();
+		ComponentHandle earHandle = flexearProj.getComponent(earComponentName).getComponentHandle();
 		IFlexibleProject flexcompProj = ComponentCore.createFlexibleProject(project);
 		ComponentHandle compHandle = flexcompProj.getComponent(componentName).getComponentHandle();
         IDataModel addComponentToEARDataModel = DataModelFactory.createDataModel(new AddComponentToEnterpriseApplicationDataModelProvider());
