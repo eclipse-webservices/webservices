@@ -228,7 +228,8 @@ public class ClasspathUtils {
 						buildPath[i],
 						javaProject.getProject());
 				for (int j = 0; j < buildPathString.length; j++) {
-					projectClasspath.add(buildPathString[j]);
+					if (!buildPathString[j].endsWith("activation.jar") && !buildPathString[j].endsWith("mail.jar"))
+						projectClasspath.add(buildPathString[j]);
 				}
 			}
 		} catch (JavaModelException jme) {
