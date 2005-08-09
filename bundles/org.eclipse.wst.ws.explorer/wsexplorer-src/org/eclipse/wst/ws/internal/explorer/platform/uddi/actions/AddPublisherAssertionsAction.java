@@ -163,7 +163,7 @@ public class AddPublisherAssertionsAction extends CommonPublisherAssertionsActio
     // determine whether this is a owned business
     // if not, the AddPublisherAssertionsAction cannot be performed
     if (!isBusinessOwned(busElement)) {
-        messageQueue.addMessage(controller_.getMessage("MSG_ERROR_NOT_OWNED_BUSINESS"));
+        messageQueue.addMessage(uddiPerspective.getMessage("MSG_ERROR_NOT_OWNED_BUSINESS"));
         return false;
     }
 
