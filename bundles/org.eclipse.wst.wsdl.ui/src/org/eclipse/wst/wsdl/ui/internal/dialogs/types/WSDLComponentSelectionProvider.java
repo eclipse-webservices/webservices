@@ -553,28 +553,27 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
 	}
 
 	public String getNameFieldTitle() {
-		String nameString = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAME") + ":";
 		switch (kind)
 		{
 		case WSDLConstants.BINDING :
 		{
-			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_BINDING") + " " + nameString;
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_BINDING_NAME");
 		}
 		case WSDLConstants.PORT_TYPE :
 		{
-			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_PORTTYPE") + " " + nameString;
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_PORTTYPE_NAME");
 		}	
 		case WSDLConstants.MESSAGE :
 		{
-			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_MESSAGE") + " " + nameString;
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_MESSAGE_NAME");
 		}   
 		case WSDLConstants.TYPE :
 		{
-			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_TYPE") + " " + nameString;
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_TYPE_NAME");
 		}
 		case WSDLConstants.ELEMENT :
 		{
-			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_ELEMENT") + " " + nameString;
+			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_ELEMENT_NAME");
 		}
 		}    	
 		return null;	   
