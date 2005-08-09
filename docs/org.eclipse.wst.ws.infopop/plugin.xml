@@ -1,11 +1,8 @@
 <?xml version="1.0" ?>
 <?eclipse version="3.0"?>
 <?NLS TYPE="org.eclipse.help.toc"?> 
-<plugin name = "Web services UI"
-id = "org.eclipse.wst.ws.infopop"
-version = "0.7.0">
+<plugin>
 	<extension point="org.eclipse.help.contexts">
-		<contexts name="webserviceui-f1Contexts.xml" plugin="org.eclipse.wst.ws.ui"/>
-		
+		<contexts file="webserviceui-f1Contexts.xml" plugin="org.eclipse.wst.ws.ui"/>
 	</extension>
 </plugin>

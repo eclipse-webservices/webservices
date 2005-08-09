@@ -11,14 +11,10 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/ -->
-<plugin
-   id="org.eclipse.jst.ws.axis.infopop"
-   name="Web services Axis UI"
-   version="0.7.0"
-   provider-name="Eclipse.org">
+<plugin>
 
 	<extension point="org.eclipse.help.contexts">
-		<contexts name="axisconsumptionui-f1Contexts.xml" plugin="org.eclipse.jst.ws.axis.consumption.ui"/>
-		<contexts name="axiscreationui-f1Contexts.xml" plugin="org.eclipse.jst.ws.axis.creation.ui"/>
+		<contexts file="axisconsumptionui-f1Contexts.xml" plugin="org.eclipse.jst.ws.axis.consumption.ui"/>
+		<contexts file="axiscreationui-f1Contexts.xml" plugin="org.eclipse.jst.ws.axis.creation.ui"/>
 	</extension>
 </plugin>

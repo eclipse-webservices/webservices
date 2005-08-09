@@ -11,14 +11,10 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/ -->
-<plugin
-   id="org.eclipse.jst.ws.consumption.infopop"
-   name="Web services UI"
-   version="0.7.0"
-   provider-name="Eclipse.org">
+<plugin>
   
 	<extension point="org.eclipse.help.contexts">
-		<contexts name="wsconsumptionui-f1Contexts.xml" plugin="org.eclipse.jst.ws.consumption.ui"/>
-		<contexts name="wscreationui-f1Contexts.xml" plugin="org.eclipse.jst.ws.creation.ui"/>
+		<contexts file="wsconsumptionui-f1Contexts.xml" plugin="org.eclipse.jst.ws.consumption.ui"/>
+		<contexts file="wscreationui-f1Contexts.xml" plugin="org.eclipse.jst.ws.creation.ui"/>
 	</extension>
 </plugin>
