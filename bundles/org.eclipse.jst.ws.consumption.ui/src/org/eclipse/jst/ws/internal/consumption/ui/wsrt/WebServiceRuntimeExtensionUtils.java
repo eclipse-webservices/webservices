@@ -8,7 +8,6 @@ import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
@@ -388,40 +387,6 @@ public class WebServiceRuntimeExtensionUtils
     // rsktodo
   }
   
-  private static boolean include(IProject project, String include)
-  {
-    StringTokenizer st = new StringTokenizer(include);
-    while(st.hasMoreTokens())
-    {
-      try
-      {
-        if (project.hasNature(st.nextToken()))
-          return true;
-      }
-      catch (CoreException ce)
-      {
-      }
-    }
-    return false;
-  }
-
-  private static boolean exclude(IProject project, String exclude)
-  {
-    StringTokenizer st = new StringTokenizer(exclude);
-    while(st.hasMoreTokens())
-    {
-      try
-      {
-        if (project.hasNature(st.nextToken()))
-          return false;
-      }
-      catch (CoreException ce)
-      {
-      }
-    }
-    return true;
-  }  
-  
   public static LabelsAndIds getServiceTypeLabels()
   {
     String       pluginId = "org.eclipse.jst.ws.consumption.ui";
@@ -456,7 +421,7 @@ public class WebServiceRuntimeExtensionUtils
         break; 
       default:
       }
-      labels[index] = scenLabel +" "+impllabel;
+      labels[index] = msgUtils.getMessage( "COMBINED_TYPE_AND_RUNTIME_LABEL", new String[]{ scenLabel, impllabel } );
       index++;
     }    
     
