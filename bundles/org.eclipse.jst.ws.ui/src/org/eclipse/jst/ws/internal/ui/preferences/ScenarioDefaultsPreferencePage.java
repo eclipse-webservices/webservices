@@ -92,6 +92,7 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
     
     Text testServiceTypeLabel = new Text(parent, SWT.READ_ONLY | SWT.WRAP);
     testServiceTypeLabel.setText(getMessage("%LABEL_SAMPLE_TYPES"));
+    testServiceTypeLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
     Composite webServiceTestTypeComposite = new Composite(parent, SWT.NONE);
     GridLayout gl = new GridLayout();
@@ -99,6 +100,7 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
     gl.marginHeight = 0;
     gl.marginWidth = 0;
     webServiceTestTypeComposite.setLayout(gl);
+    webServiceTestTypeComposite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
     Table table= new Table(webServiceTestTypeComposite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
     GridData gd = new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
@@ -122,7 +124,7 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
     Composite c = new Composite(webServiceTestTypeComposite, SWT.NONE);
     gl = new GridLayout();
     gl.numColumns = 1;
-    gl.marginHeight = 0;
+    gl.marginHeight = 10;
     gl.marginWidth = 0;
     c.setLayout(gl);
 

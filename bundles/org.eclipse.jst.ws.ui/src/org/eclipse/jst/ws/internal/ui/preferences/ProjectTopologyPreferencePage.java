@@ -81,6 +81,7 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
 
     Text clientTypeLabel = new Text(parent, SWT.READ_ONLY | SWT.WRAP);
     clientTypeLabel.setText(getMessage("%LABEL_CLIENT_TYPE_NAME"));
+    clientTypeLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL));
 
     Composite clientTypeComposite = new Composite(parent, SWT.NONE);
     GridLayout gl = new GridLayout();
@@ -88,6 +89,7 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     gl.marginHeight = 0;
     gl.marginWidth = 0;
     clientTypeComposite.setLayout(gl);
+    clientTypeComposite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ));
 
     Table table= new Table(clientTypeComposite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
     GridData gd = new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
@@ -111,7 +113,7 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     Composite c = new Composite(clientTypeComposite, SWT.NONE);
     gl = new GridLayout();
     gl.numColumns = 1;
-    gl.marginHeight = 0;
+    gl.marginHeight = 10;
     gl.marginWidth = 0;
     c.setLayout(gl);
 
@@ -127,7 +129,7 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     moveDown_.addSelectionListener(this);
     moveDown_.setToolTipText(getMessage("%TOOLTIP_MOVE_DOWN"));
 
-    twoEAR_ = new Button(parent, SWT.CHECK);
+    twoEAR_ = new Button(parent, SWT.CHECK | SWT.WRAP );
     twoEAR_.setText(getMessage("%LABEL_ENABLE_TWO_EARS"));
     twoEAR_.setToolTipText(getMessage("%TOOLTIP_ENABLE_TWO_EARS"));
 
