@@ -129,7 +129,7 @@ public class XSDMenuActionContributor implements IMenuActionContributor
       
       if (object instanceof XSDSchema || focusEditPart instanceof TopLevelComponentEditPart || object instanceof Category)
       {
-        backAction = new BackAction(WSDLEditorPlugin.getWSDLString("_UI_BACK_TO", "Definition"));
+        backAction = new BackAction(WSDLEditorPlugin.getWSDLString("_UI_BACK_TO_DEFINITION"));
         backAction.setDefinition(wsdlEditor.getDefinition());
         backAction.setSelectionProvider(selectionProvider);
         backAction.setRootEditPart(editPart);
