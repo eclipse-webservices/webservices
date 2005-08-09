@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.TableViewerWidget;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableItem;
@@ -64,6 +65,7 @@ public class AxisMappingsWidget extends SimpleWidgetDataContributor
     
     Text mappingLabel = new Text( parent, SWT.READ_ONLY | SWT.WRAP );
     mappingLabel.setText( msgUtils.getMessage( "LABEL_MAPPING_PAIRS" ) );
+    mappingLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                                                
     List initValues = new ArrayList();
     
