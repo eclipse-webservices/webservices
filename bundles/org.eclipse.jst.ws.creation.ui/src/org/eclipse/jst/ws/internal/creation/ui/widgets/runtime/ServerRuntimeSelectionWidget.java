@@ -21,8 +21,10 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensio
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -52,7 +54,6 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   private RuntimeServerSelectionWidget runtimeWidget_;
   private ProjectSelectionWidget       projectWidget_;
   private ClientRuntimeSelectionWidget clientWidget_;
-  private SelectionListChoices         serviceChoices_;
   private TextModifyListener           textListener_;
   private MessageUtils msgUtils_;
   
@@ -63,18 +64,16 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     msgUtils_ = new MessageUtils( pluginId_ + ".plugin", this );
     UIUtils      uiUtils  = new UIUtils(msgUtils_, createPluginId_ ); 
     
-    Composite root = uiUtils.createComposite( parent, 1 );
+    ScrolledComposite scroller = new ScrolledComposite( parent, SWT.H_SCROLL | SWT.V_SCROLL );
+    scroller.setExpandHorizontal(true);
+    scroller.setExpandVertical(true);
     
-    Text messageText = new Text( root, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY );
+    Composite root = uiUtils.createComposite( scroller, 1 );
+    scroller.setContent( root );
     
-    GridData gd = new GridData(); 
-    gd.horizontalIndent = 10;
-    
-    messageText.setLayoutData(gd);
-    messageText.setText(
-        msgUtils_.getMessage("MSG_GENERAL_PROJECT_AND_EAR", new String[] { msgUtils_.getMessage("MSG_SERVICE_SUB")})
-        + "\n"
-        + msgUtils_.getMessage("MSG_EAR_PROJECT_WILL_BE_CREATED"));
+    Composite textComposite = uiUtils.createComposite( root, 1, 0, 0 );
+    createMessageText( textComposite, msgUtils_.getMessage("MSG_GENERAL_PROJECT_AND_EAR", new String[] { msgUtils_.getMessage("MSG_SERVICE_SUB")}));
+    createMessageText( textComposite, msgUtils_.getMessage("MSG_EAR_PROJECT_WILL_BE_CREATED") );
     
     Composite serverComp = uiUtils.createComposite( root, 1, 5, 0 );
     
@@ -92,7 +91,13 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     
     clientWidget_ = new ClientRuntimeSelectionWidget();
     clientWidget_.addControls( root, statusListener );
-
+    
+    Point size = root.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+    scroller.setMinSize( size ); 
+    root.setSize( size );
+     
+    scroller.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+    
     return this;
   }
   
@@ -389,6 +394,16 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     }
     
     return finalStatus;
+  }
+  
+  private void createMessageText( Composite parent, String value )
+  {
+    Text     messageText = new Text( parent, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY );    
+	GridData gridData    = new GridData( GridData.FILL_BOTH );
+	
+	gridData.horizontalIndent = 10;    
+	messageText.setLayoutData( gridData );
+	messageText.setText( value );
   }
   
   private String getEARProjectWarningMessage(String serviceEARName, String clientEARName ) {
