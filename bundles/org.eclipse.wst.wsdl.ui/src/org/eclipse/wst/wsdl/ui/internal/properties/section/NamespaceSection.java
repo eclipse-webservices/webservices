@@ -17,6 +17,7 @@ import javax.xml.namespace.QName;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Button;
@@ -54,16 +55,25 @@ public class NamespaceSection extends AbstractSection
 		super.createControls(parent, factory);
 		composite =	getWidgetFactory().createFlatFormComposite(parent);
 		
+		String nameString = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAME") + ":";
+		String prefixString = WSDLEditorPlugin.getWSDLString("_UI_LABEL_PREFIX") + ":";
+		String namespaceString = WSDLEditorPlugin.getWSDLString("_UI_LABEL_TARGET_NAMESPACE");
+		GC gc = new GC(parent);
+		int xoffset = Math.max(115, gc.textExtent(nameString).x + 20); // adds 20 due to borders
+		xoffset = Math.max(xoffset, gc.textExtent(prefixString).x + 20); // adds 20 due to borders
+		xoffset = Math.max(xoffset, gc.textExtent(namespaceString).x + 20); // adds 20 due to borders
+		gc.dispose();
+
 		// name
-		CLabel nameLabel = getWidgetFactory().createCLabel(composite, WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAME") + ":"); //$NON-NLS-1$
+		CLabel nameLabel = getWidgetFactory().createCLabel(composite, nameString); //$NON-NLS-1$
 		nameText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
 		
 		// prefix
-		CLabel prefixLabel = getWidgetFactory().createCLabel(composite, WSDLEditorPlugin.getWSDLString("_UI_LABEL_PREFIX") + ":"); //$NON-NLS-1$
+		CLabel prefixLabel = getWidgetFactory().createCLabel(composite, prefixString); //$NON-NLS-1$
 		prefixText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
 
 		// targetnamespace
-		CLabel targetNamespaceLabel = getWidgetFactory().createCLabel(composite, WSDLEditorPlugin.getWSDLString("_UI_LABEL_TARGET_NAMESPACE")); //$NON-NLS-1$
+		CLabel targetNamespaceLabel = getWidgetFactory().createCLabel(composite, namespaceString); //$NON-NLS-1$
 		targetNamespaceText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
 
 		// Advanced button
@@ -93,7 +103,7 @@ public class NamespaceSection extends AbstractSection
 		///////////////////// Text Fields
 		// name text field
 		FormData dataNameText = new FormData();
-		dataNameText.left = new FormAttachment(0, 115);
+		dataNameText.left = new FormAttachment(0, xoffset);
 		dataNameText.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
 		dataNameText.top = new FormAttachment(0, 0);
 		nameText.setLayoutData(dataNameText);
@@ -101,7 +111,7 @@ public class NamespaceSection extends AbstractSection
 
 		// prefix text field
 		FormData dataPrefixText = new FormData();
-		dataPrefixText.left = new FormAttachment(0, 115);
+		dataPrefixText.left = new FormAttachment(0, xoffset);
 		dataPrefixText.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
 		dataPrefixText.top = new FormAttachment(nameText, +ITabbedPropertyConstants.VSPACE);
 		prefixText.setLayoutData(dataPrefixText);
@@ -109,7 +119,7 @@ public class NamespaceSection extends AbstractSection
 
 		// targetnamespace text field
 		FormData data = new FormData();
-		data.left = new FormAttachment(0, 115);
+		data.left = new FormAttachment(0, xoffset);
 		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
 		data.top = new FormAttachment(prefixText, +ITabbedPropertyConstants.VSPACE);
 		targetNamespaceText.setLayoutData(data);
