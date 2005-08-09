@@ -23,14 +23,16 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.wst.common.ui.properties.internal.provisional.ITabbedPropertySheetPageContributor;
-import org.eclipse.wst.sse.ui.internal.StructuredTextEditor;
 import org.eclipse.wst.sse.ui.internal.view.events.INodeSelectionListener;
 import org.eclipse.wst.sse.ui.internal.view.events.NodeSelectionChangedEvent;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
+import org.eclipse.wst.wsdl.ui.internal.dialogs.GenerateBindingOnSaveDialog;
 import org.eclipse.wst.wsdl.ui.internal.outline.WSDLContentOutlinePage;
 import org.eclipse.wst.wsdl.ui.internal.properties.section.WSDLTabbedPropertySheetPage;
 import org.eclipse.wst.wsdl.ui.internal.util.OpenOnSelectionHelper;
@@ -261,23 +263,45 @@ public class WSDLTextEditor extends StructuredTextEditorXML implements INodeSele
    */
   public void doSave(IProgressMonitor monitor) {
       try{
-	  if (WSDLEditorPlugin.getInstance().getPluginPreferences().getBoolean(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING"))) {
-		  Iterator bindingsIt = wsdlEditor.getDefinition().getEBindings().iterator();
-		  while (bindingsIt.hasNext()) {
-			  Binding binding = (Binding) bindingsIt.next();
-			  BindingGenerator generator = new BindingGenerator(binding.getEnclosingDefinition(), binding);
-			  generator.setOverwrite(false);
-			  generator.generateBinding();
+		  // Display prompt message
+		  boolean continueRegeneration = true;
+		  if (WSDLEditorPlugin.getInstance().getPluginPreferences().getBoolean("Prompt Regenerate Binding on save")) {
+			  Shell shell = Display.getCurrent().getActiveShell();
+			  GenerateBindingOnSaveDialog dialog = new GenerateBindingOnSaveDialog(shell);
+	
+			  int rValue = dialog.open();
+			  if (rValue == SWT.YES) {
+				  continueRegeneration = true;
+			  }
+			  else if (rValue == SWT.NO) {
+				  continueRegeneration = false;
+			  }
+			  else if (rValue == SWT.CANCEL) {
+				  return;
+			  }
+			  else {
+				  System.out.println("\nNothing: " + rValue);
+			  }
+		  }	    	  
+    	  
+		  if (continueRegeneration || WSDLEditorPlugin.getInstance().getPluginPreferences().getBoolean(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING"))) {
+			  Iterator bindingsIt = wsdlEditor.getDefinition().getEBindings().iterator();
+			  while (bindingsIt.hasNext()) {
+				  Binding binding = (Binding) bindingsIt.next();
+				  BindingGenerator generator = new BindingGenerator(binding.getEnclosingDefinition(), binding);
+				  generator.setOverwrite(false);
+				  generator.generateBinding();
+			  }
+			  
+			  // Little hack to 'redraw' connecting lines in the graph viewer
+			  String localPart = wsdlEditor.getDefinition().getQName().getLocalPart();
+			  String namespace = wsdlEditor.getDefinition().getQName().getNamespaceURI();
+			  wsdlEditor.getDefinition().setQName(new QName(namespace, localPart));
 		  }
-
-		  // Little hack to 'redraw' connecting lines in the graph viewer
-		  String localPart = wsdlEditor.getDefinition().getQName().getLocalPart();
-		  String namespace = wsdlEditor.getDefinition().getQName().getNamespaceURI();
-		  wsdlEditor.getDefinition().setQName(new QName(namespace, localPart));
-	  }
       }
       catch (Exception e)
       {
+//    	  e.printStackTrace();
       }
 	  super.doSave(monitor);
   }

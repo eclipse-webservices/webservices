@@ -74,6 +74,10 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
 	String generateLabel = WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING");
 	BooleanFieldEditor generateBindingOnSave = new BooleanFieldEditor(generateLabel, generateLabel, parent);
 	addField(generateBindingOnSave);
+	
+	String showGenerateDialogLabel = "Prompt Regenerate Binding on save";   // TODO: Externalize
+	BooleanFieldEditor showGenerateDialog = new BooleanFieldEditor(showGenerateDialogLabel, showGenerateDialogLabel, parent);
+	addField(showGenerateDialog);
 
     /* Do we need this preference below?  If so, change WSDLEditorPlugin.java and use this preference in:
        HttpContentGenerator.java
