@@ -36,7 +36,10 @@ public final class HTMLUtils
     StringBuffer tag = new StringBuffer("<img src=\"");
     tag.append(response.encodeURL(src)).append('\"');
     if (alt != null)
+    {
       tag.append(" alt=\"").append(alt).append('\"');
+      tag.append(" title=\"").append(alt).append('\"');
+    }
     if (width != null)
       tag.append(" width=").append(width);
     if (height != null)
