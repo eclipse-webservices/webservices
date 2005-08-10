@@ -164,7 +164,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
 
   public String getComponentNameLabelText()
   {
-    return "Name";
+    return WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAME");
   }
 
   private GridData createGridData(boolean both, int span)
