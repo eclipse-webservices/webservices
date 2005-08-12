@@ -53,7 +53,7 @@
     <link rel="stylesheet" type="text/css" href="<%=response.encodeURL(controller.getPathWithContext("css/windows.css"))%>">
     <jsp:include page="/wsil/scripts/wsilFormSubmit.jsp" flush="true"/>
 </head>
-<body class="contentbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin">
 <div id="contentborder">
     <form action="<%=response.encodeURL(controller.getPathWithContext(AddToFavoritesAction.getBaseActionLink()))%>" method="post" target="<%=FrameNames.PERSPECTIVE_WORKAREA%>">
 

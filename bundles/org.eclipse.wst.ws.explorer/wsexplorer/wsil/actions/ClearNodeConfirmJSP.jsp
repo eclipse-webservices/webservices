@@ -20,7 +20,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
     <script language="javascript">
         if (confirm("<%=controller.getWSILPerspective().getMessage("MSG_CONFIRM_REMOVE_NODE", controller.getWSILPerspective().getNodeManager().getSelectedNode().getNodeName())%>")) {
             perspectiveWorkArea.location = "<%=response.encodeURL(controller.getPathWithContext(ClearWSILAction.getActionLink(controller.getWSILPerspective().getNodeManager().getSelectedNode().getNodeId())))%>";

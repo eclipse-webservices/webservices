@@ -39,7 +39,7 @@
     <jsp:include page="/favorites/scripts/favoritesFormSubmit.jsp" flush="true"/>
     <jsp:include page="/favorites/scripts/favoritesTable.jsp" flush="true"/>
 </head>
-<body class="contentbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin">
 <div id="contentborder">
     <%
     String titleImagePath = "wsil/images/list_UDDI_service_highlighted.gif";

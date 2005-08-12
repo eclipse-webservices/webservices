@@ -41,7 +41,7 @@
     <jsp:include page="/wsil/scripts/wsilTable.jsp" flush="true"/>
     <jsp:include page="/wsil/scripts/wsilFormSubmit.jsp" flush="true"/>
 </head>
-<body class="contentbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin">
 <div id="contentborder">
     <%
     String titleImagePath = "wsil/images/list_WSDL_service_highlighted.gif";

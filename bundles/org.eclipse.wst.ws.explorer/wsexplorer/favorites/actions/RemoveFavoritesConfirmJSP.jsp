@@ -21,7 +21,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
     <script language="javascript">
         if (confirm("<%=controller.getFavoritesPerspective().getMessage("MSG_CONFIRM_REMOVE_NODE", controller.getFavoritesPerspective().getNodeManager().getSelectedNode().getNodeName())%>")) {
             <%

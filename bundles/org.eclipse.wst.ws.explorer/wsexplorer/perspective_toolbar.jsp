@@ -41,7 +41,7 @@ hrefActionEngine.append(session.getId());
     }
   </script>
 </head>
-<body class="gtoolbarbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="gtoolbarbodymargin">
 <div id="globaltoolbar">
 <table width="100%" cellpadding=3 cellspacing=0 border=0>
   <tr>

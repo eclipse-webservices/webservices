@@ -18,7 +18,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
     <script language="javascript">
         if (confirm("<%=controller.getFavoritesPerspective().getMessage("MSG_CONFIRM_RESTORE_DEFAULT_FAVORITES")%>"))
             perspectiveWorkArea.location = "<%=response.encodeURL(controller.getPathWithContext("favorites/actions/RestoreDefaultFavoritesActionJSP.jsp"))%>";

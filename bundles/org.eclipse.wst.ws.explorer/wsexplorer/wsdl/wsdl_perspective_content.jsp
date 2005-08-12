@@ -22,7 +22,21 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <frameset cols="<%=wsdlPerspective.getPerspectiveContentFramesetCols()%>" bgcolor="#ECE9D8">
+  <%
+  if (org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.isRTL())
+  {
+  %>
+  <frame name="<%=WSDLFrameNames.WSDL_ACTIONS_CONTAINER%>" title="<%=wsdlPerspective.getMessage("FRAME_TITLE_ACTIONS_CONTAINER")%>" src="<%=response.encodeURL("wsdl_actions_container.jsp")%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=1>
+  <frame name="<%=WSDLFrameNames.WSDL_NAVIGATOR_CONTAINER%>" title="<%=wsdlPerspective.getMessage("FRAME_TITLE_NAVIGATOR_CONTAINER")%>" src="<%=response.encodeURL("wsdl_navigator_container.jsp")%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=1>
+  <%
+  }
+  else
+  {
+  %>
   <frame name="<%=WSDLFrameNames.WSDL_NAVIGATOR_CONTAINER%>" title="<%=wsdlPerspective.getMessage("FRAME_TITLE_NAVIGATOR_CONTAINER")%>" src="<%=response.encodeURL("wsdl_navigator_container.jsp")%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=1>
   <frame name="<%=WSDLFrameNames.WSDL_ACTIONS_CONTAINER%>" title="<%=wsdlPerspective.getMessage("FRAME_TITLE_ACTIONS_CONTAINER")%>" src="<%=response.encodeURL("wsdl_actions_container.jsp")%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=1>
+  <%
+  }
+  %>
 </frameset>
 </html>

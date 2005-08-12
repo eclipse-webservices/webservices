@@ -26,7 +26,7 @@
 <jsp:include page="/scripts/formsubmit.jsp" flush="true"/>
 <jsp:include page="/scripts/formutils.jsp" flush="true"/>    
 </head>
-<body class="contentbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin">
 <div id="contentborder">
 
     <form action="<%=response.encodeURL(controller.getPathWithContext((String)formProperties.get("formActionLink")))%>" method="post" target="<%=FrameNames.PERSPECTIVE_WORKAREA%>" enctype="multipart/form-data">

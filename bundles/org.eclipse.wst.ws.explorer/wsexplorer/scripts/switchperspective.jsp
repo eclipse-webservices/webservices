@@ -20,7 +20,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <jsp:include page="/scripts/panes.jsp" flush="true"/>
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
 <script language="javascript">
   perspectiveContent.location = "<%=response.encodeURL(controller.getPathWithContext(controller.getCurrentPerspective().getPerspectiveContentPage()))%>";
 </script>

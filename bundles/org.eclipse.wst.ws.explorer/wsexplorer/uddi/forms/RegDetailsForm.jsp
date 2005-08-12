@@ -124,7 +124,7 @@
   }
 </script>
 </head>
-<body class="contentbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin">
   <div id="contentborder">
     <form action="<%=response.encodeURL(controller.getPathWithContext("uddi/actions/UpdateRegistryActionJSP.jsp"))%>" method="post" target="<%=FrameNames.PERSPECTIVE_WORKAREA%>" enctype="multipart/form-data" onSubmit="return processForm(this)">
       <table id="loadScreen">

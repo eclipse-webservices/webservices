@@ -22,7 +22,7 @@
   <jsp:include page="/scripts/panes.jsp" flush="true"/>
   <jsp:include page="/wsil/scripts/wsilPanes.jsp" flush="true"/>
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
   <%
   // Prepare the action.
   Action action = AddToUDDIPerspectiveAction.newAction(request, controller);

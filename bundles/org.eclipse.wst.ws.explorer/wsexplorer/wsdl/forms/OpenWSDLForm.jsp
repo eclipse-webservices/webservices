@@ -30,7 +30,7 @@
 <jsp:include page="/scripts/formutils.jsp" flush="true"/>
 <jsp:include page="/scripts/wsdlbrowser.jsp" flush="true"/>
 </head>
-<body class="contentbodymargin" onUnload="closeWSDLBrowser()">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin" onUnload="closeWSDLBrowser()">
 <div id="contentborder">
   <form action="<%=response.encodeURL(controller.getPathWithContext("wsdl/actions/OpenWSDLActionJSP.jsp"))%>" method="post" target="<%=FrameNames.PERSPECTIVE_WORKAREA%>" enctype="multipart/form-data" onSubmit="return handleSubmit(this)">
     <%

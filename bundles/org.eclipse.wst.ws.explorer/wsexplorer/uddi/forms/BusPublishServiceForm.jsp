@@ -218,7 +218,7 @@
   }
 </script>
 </head>
-<body class="contentbodymargin" onUnload="closeAllUddiChildWindows()">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin" onUnload="closeAllUddiChildWindows()">
   <div id="contentborder">
     <table id="loadScreen">
       <tr>

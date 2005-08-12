@@ -24,7 +24,7 @@
 <script language="javascript" src="<%=response.encodeURL(controller.getPathWithContext("scripts/browserdetect.js"))%>">
 </script>
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
 <script language="javascript">
   if (isMicrosoftInternetExplorer())
   {    

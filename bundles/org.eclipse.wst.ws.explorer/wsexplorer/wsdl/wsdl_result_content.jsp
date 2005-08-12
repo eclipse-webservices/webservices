@@ -31,7 +31,7 @@
   }
 </script>
 </head>
-<body class="contentbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin">
 <div id="contentborder">
   <table width="95%" border=0 cellpadding=3 cellspacing=0>
     <tr>

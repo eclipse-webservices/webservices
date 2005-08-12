@@ -24,7 +24,7 @@
 </script>
 <jsp:include page="/uddi/scripts/uddipanes.jsp" flush="true"/>
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
 <%
    // Prepare the action
    BusPublishServiceAdvancedAction action = new BusPublishServiceAdvancedAction(controller);

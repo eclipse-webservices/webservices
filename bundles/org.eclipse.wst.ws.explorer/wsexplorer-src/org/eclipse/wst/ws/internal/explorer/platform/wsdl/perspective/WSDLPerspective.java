@@ -26,6 +26,7 @@ import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Perspective;
+import org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils;
 import org.eclipse.wst.ws.internal.explorer.platform.util.URLUtils;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.OpenWSDLAction;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.SwitchPerspectiveFromWSDLAction;
@@ -80,7 +81,10 @@ public class WSDLPerspective extends Perspective
     nodeManager_.setRootNode(wsdlMainNode);
 
     // Starting frameset sizes.
-    perspectiveContentFramesetCols_ = "30%,*";
+    if (!DirUtils.isRTL())
+      perspectiveContentFramesetCols_ = "30%,*";
+    else
+      perspectiveContentFramesetCols_ = "*,30%";
     savedPerspectiveContentFramesetCols_ = perspectiveContentFramesetCols_;
     actionsContainerFramesetRows_ = "75%,*";
     savedActionsContainerFramesetRows_ = actionsContainerFramesetRows_;

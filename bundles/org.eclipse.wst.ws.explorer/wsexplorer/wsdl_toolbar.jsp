@@ -24,7 +24,7 @@
   <title><%=controller.getMessage("FRAME_TITLE_WSDL_TOOLBAR")%></title>
   <link rel="stylesheet" type="text/css" href="<%=response.encodeURL(controller.getPathWithContext("css/toolbar.css"))%>">
 </head>
-<body onUnload="top.opener.wsdlWindowClosed=true" class="toolbarbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" onUnload="top.opener.wsdlWindowClosed=true" class="toolbarbodymargin">
 <div id="toolbarborder">
   <div id="toolbar">
     <table width="100%" height=25 cellpadding=0 cellspacing=0 border=0>

@@ -42,7 +42,7 @@
   }  
 </script>
 </head>
-<body class="contentbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin">
 <%   
    // Check if the category is a common category.
    CategoryModel categoryModel = (CategoryModel)commonCategoryModels.get(categoryTModelKey);

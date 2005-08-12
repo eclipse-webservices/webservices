@@ -39,7 +39,7 @@
 %>
 <jsp:include page="<%=panesFile.toString()%>" flush="true"/>
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
 <%
       if (action.getStatusContentVar() != null)
       {

@@ -23,6 +23,20 @@
   <title><%=favPerspective.getMessage("FRAME_TITLE_PERSPECTIVE_CONTENT")%></title>
 </head>
 <frameset cols="<%=favPerspective.getPerspectiveContentFramesetCols()%>" bgcolor=#ECE9D8>
+  <%
+  if (org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.isRTL())
+  {
+  %>
+  <frame name="<%=FavoritesFrameNames.ACTIONS_CONTAINER%>" title="<%=favPerspective.getMessage("FRAME_TITLE_ACTIONS_CONTAINER")%>" src="<%=response.encodeURL(controller.getPathWithContext("favorites/fav_actions_container.jsp"))%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=1>
+  <frame name="<%=FavoritesFrameNames.NAVIGATOR_CONTAINER%>" title="<%=favPerspective.getMessage("FRAME_TITLE_NAVIGATOR_CONTAINER")%>" src="<%=response.encodeURL(controller.getPathWithContext("favorites/fav_navigator_container.jsp"))%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=1>
+  <%
+  }
+  else
+  {
+  %>
   <frame name="<%=FavoritesFrameNames.NAVIGATOR_CONTAINER%>" title="<%=favPerspective.getMessage("FRAME_TITLE_NAVIGATOR_CONTAINER")%>" src="<%=response.encodeURL(controller.getPathWithContext("favorites/fav_navigator_container.jsp"))%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=1>
   <frame name="<%=FavoritesFrameNames.ACTIONS_CONTAINER%>" title="<%=favPerspective.getMessage("FRAME_TITLE_ACTIONS_CONTAINER")%>" src="<%=response.encodeURL(controller.getPathWithContext("favorites/fav_actions_container.jsp"))%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=1>
+  <%
+  }
+  %>
 </frameset>

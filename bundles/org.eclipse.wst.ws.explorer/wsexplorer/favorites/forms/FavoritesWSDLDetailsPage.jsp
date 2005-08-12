@@ -31,7 +31,7 @@
     <title><%=favPerspective.getMessage("FORM_TITLE_WSDL_DETAILS")%></title>
     <link rel="stylesheet" type="text/css" href="<%=response.encodeURL(controller.getPathWithContext("css/windows.css"))%>">
 </head>
-<body class="contentbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin">
 <div id="contentborder">
 
     <%

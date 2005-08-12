@@ -26,7 +26,7 @@
   <title><%=uddiPerspective.getMessage("FRAME_TITLE_CATEGORIES_TOOLBAR")%></title>
   <link rel="stylesheet" type="text/css" href="<%=response.encodeURL(controller.getPathWithContext("css/toolbar.css"))%>">
 </head>
-<body class="toolbarbodymargin" onUnload="top.opener.categoryWindowClosed=true">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="toolbarbodymargin" onUnload="top.opener.categoryWindowClosed=true">
 <div id="toolbarborder">
   <div id="toolbar">
     <table width="100%" height=25 cellpadding=0 cellspacing=0 border=0>

@@ -32,7 +32,7 @@
   <title><%=wsdlPerspective.getMessage("FRAME_TITLE_XSD_INFORMATION_TOOLBAR")%></title>
   <link rel="stylesheet" type="text/css" href="<%=response.encodeURL(controller.getPathWithContext("css/toolbar.css"))%>">
 </head>
-<body onUnload="top.opener.xsdInfoDialogClosed=true" class="toolbarbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" onUnload="top.opener.xsdInfoDialogClosed=true" class="toolbarbodymargin">
 <div id="toolbarborder">
   <div id="toolbar">
     <table width="100%" height=25 cellpadding=0 cellspacing=0 border=0>

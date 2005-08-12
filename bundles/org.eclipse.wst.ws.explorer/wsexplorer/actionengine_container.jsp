@@ -83,7 +83,7 @@ String playFileId = "playFileId";
     }
   </script>
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
   <form method="post">
     <%
     String labelModePlay = controller.getMessage("FORM_LABEL_MODE_PLAY");

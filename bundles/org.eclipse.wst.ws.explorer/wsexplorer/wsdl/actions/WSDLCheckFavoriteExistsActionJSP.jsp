@@ -24,7 +24,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
 <form action="<%=response.encodeURL(controller.getPathWithContext("wsdl/actions/WSDLAddToFavoritesActionJSP.jsp"))%>" method="post" target="<%=FrameNames.PERSPECTIVE_WORKAREA%>">
 <%
 Enumeration paramNames = request.getParameterNames();

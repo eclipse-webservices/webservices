@@ -16,6 +16,7 @@ import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.actions.*;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesMainElement;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils;
 
 import javax.servlet.*;
 
@@ -43,7 +44,10 @@ public class FavoritesPerspective extends Perspective
         nodeManager_.setRootNode(favMainNode);
         
         // Starting frameset sizes.
-        perspectiveContentFramesetCols_ = "30%,*";
+        if (!DirUtils.isRTL())
+          perspectiveContentFramesetCols_ = "30%,*";
+        else
+          perspectiveContentFramesetCols_ = "*,30%";
         savedPerspectiveContentFramesetCols_ = perspectiveContentFramesetCols_;
         actionsContainerFramesetRows_ = "75%,*";
         savedActionsContainerFramesetRows_ = actionsContainerFramesetRows_;        

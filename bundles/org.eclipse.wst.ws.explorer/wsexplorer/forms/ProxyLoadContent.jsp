@@ -56,7 +56,7 @@
   }
 </script>  
 </head>
-<body class="contentbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin">
   <div id="contentborder">
     <table>
       <tr>

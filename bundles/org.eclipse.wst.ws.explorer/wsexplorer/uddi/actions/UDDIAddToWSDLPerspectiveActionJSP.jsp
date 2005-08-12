@@ -49,6 +49,6 @@ if (paramValid) {
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
 </body>
 </html>

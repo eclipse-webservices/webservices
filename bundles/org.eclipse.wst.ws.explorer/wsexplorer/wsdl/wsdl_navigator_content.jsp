@@ -41,7 +41,7 @@
             focusedAnchorName = selectedAnchorName;
     }
 %>
-<body onLoad="self.location.hash='#<%=focusedAnchorName%>';setSelectedAnchorName('<%=selectedAnchorName%>')" class="contentbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" onLoad="self.location.hash='#<%=focusedAnchorName%>';setSelectedAnchorName('<%=selectedAnchorName%>')" class="contentbodymargin">
     <div id="treecontentborder">
         <%=nodeManager.renderTreeView(response)%>
     </div>

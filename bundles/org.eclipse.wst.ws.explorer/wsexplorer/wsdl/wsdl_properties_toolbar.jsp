@@ -28,7 +28,7 @@
 <script language="javascript" src="<%=response.encodeURL(controller.getPathWithContext("scripts/toolbar.js"))%>">
 </script>
 </head>
-<body class="toolbarbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="toolbarbodymargin">
 <div id="toolbarborder">
   <div id="toolbar" ondblclick="processFramesetSizes(document.forms[0])">
 <jsp:useBean id="formAction" class="java.lang.StringBuffer" scope="request">

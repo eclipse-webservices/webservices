@@ -19,7 +19,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title><%=controller.getMessage("FRAME_TITLE_PERSPECTIVE_CONTENT")%></title>
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
 <jsp:include page="/scripts/panes.jsp" flush="true"/>
 <script language="javascript">
   perspectiveWorkArea.location="<%=response.encodeURL(controller.getPathWithContext(ShowPerspectiveAction.getActionLink(controller.getCurrentPerspective().getPerspectiveId(),false)))%>";

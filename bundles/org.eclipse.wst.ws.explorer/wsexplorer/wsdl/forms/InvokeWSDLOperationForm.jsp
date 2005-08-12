@@ -59,7 +59,7 @@
   }
 </script>
 </head>
-<body class="contentbodymargin" onUnload="closeChildWindows()">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin" onUnload="closeChildWindows()">
 <div id="contentborder">
   <form action="<%=invokeWSDLOperationURL%>" method="post" target="<%=FrameNames.PERSPECTIVE_WORKAREA%>" enctype="multipart/form-data">
     <input type="hidden" name="<%=WSDLActionInputs.SUBMISSION_ACTION%>" value="<%=WSDLActionInputs.SUBMISSION_ACTION_FORM%>">

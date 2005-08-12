@@ -53,6 +53,6 @@
 %>
 </script>
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
 </body>
 </html>

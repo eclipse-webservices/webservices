@@ -40,6 +40,7 @@ import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIActionIn
 import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.CategoryModel;
 import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.RegistryElement;
 import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.UDDIMainElement;
+import org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils;
 import org.eclipse.wst.ws.internal.explorer.platform.util.URLUtils;
 import org.eclipse.wst.ws.internal.explorer.platform.util.Validator;
 import org.eclipse.wst.ws.internal.parser.favorites.IFavoritesUDDIRegistry;
@@ -138,7 +139,10 @@ public class UDDIPerspective extends Perspective
     categoryTModelKey_ = null;
     
     // Starting frameset sizes.
-    perspectiveContentFramesetCols_ = "30%,*";
+    if (!DirUtils.isRTL())
+      perspectiveContentFramesetCols_ = "30%,*";
+    else
+      perspectiveContentFramesetCols_ = "*,30%";
     savedPerspectiveContentFramesetCols_ = perspectiveContentFramesetCols_;
     actionsContainerFramesetRows_ = "75%,*";
     savedActionsContainerFramesetRows_ = actionsContainerFramesetRows_;

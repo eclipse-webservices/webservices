@@ -55,7 +55,7 @@
   }         
 </script>
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
 <form action="<%=response.encodeURL(controller.getPathWithContext("uddi/actions/ClearNavigatorNodesActionJSP.jsp"))%>" target="<%=FrameNames.PERSPECTIVE_WORKAREA%>" method="post" enctype="multipart/form-data">
 </form>
 <script language="javascript">

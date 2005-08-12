@@ -31,7 +31,7 @@
   <meta http-equiv="Content-Type" content="text/html; UTF-8">
 <jsp:include page="/scripts/panes.jsp" flush="true"/>  
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
 <script language="javascript">
   if (confirm("<%=HTMLUtils.JSMangle(uddiPerspective.getMessage("MSG_QUESTION_ITEM_VALIDATION_FAILED",action.getItemName()))%>"))
     perspectiveWorkArea.location = "<%=response.encodeURL(controller.getPathWithContext(RemoveSubQueryItemAction.getActionLink(subQueryKey,subQueryListKey,subQueryListItemId)))%>";

@@ -24,7 +24,7 @@
   <title><%=uddiPerspective.getMessage("FRAME_TITLE_PROPERTIES_CONTENT")%></title>
   <link rel="stylesheet" type="text/css" href="<%=response.encodeURL(controller.getPathWithContext("css/windows.css"))%>">
 </head>
-<body class="contentbodymargin">
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin">
 <div id="contentborder">
 <%
    NodeManager navigatorManager = uddiPerspective.getNavigatorManager();

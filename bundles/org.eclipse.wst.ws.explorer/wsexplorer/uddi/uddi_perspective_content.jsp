@@ -23,6 +23,20 @@
   <title><%=uddiPerspective.getMessage("FRAME_TITLE_UDDI_PERSPECTIVE_CONTENT")%></title>
 </head>
 <frameset cols="<%=uddiPerspective.getPerspectiveContentFramesetCols()%>" bgcolor=#ECE9D8>
+  <%
+  if (org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.isRTL())
+  {
+  %>
+  <frame name="<%=UDDIFrameNames.ACTIONS_CONTAINER%>" title="<%=uddiPerspective.getMessage("FRAME_TITLE_ACTIONS_CONTAINER")%>" src="<%=response.encodeURL(controller.getPathWithContext("uddi/actions_container.jsp"))%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=1>
+  <frame name="<%=UDDIFrameNames.NAVIGATOR_CONTAINER%>" title="<%=uddiPerspective.getMessage("FRAME_TITLE_NAVIGATOR_CONTAINER")%>" src="<%=response.encodeURL(controller.getPathWithContext("uddi/navigator_container.jsp"))%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=1>
+  <%
+  }
+  else
+  {
+  %>
   <frame name="<%=UDDIFrameNames.NAVIGATOR_CONTAINER%>" title="<%=uddiPerspective.getMessage("FRAME_TITLE_NAVIGATOR_CONTAINER")%>" src="<%=response.encodeURL(controller.getPathWithContext("uddi/navigator_container.jsp"))%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=1>
   <frame name="<%=UDDIFrameNames.ACTIONS_CONTAINER%>" title="<%=uddiPerspective.getMessage("FRAME_TITLE_ACTIONS_CONTAINER")%>" src="<%=response.encodeURL(controller.getPathWithContext("uddi/actions_container.jsp"))%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=1>
+  <%
+  }
+  %>
 </frameset>

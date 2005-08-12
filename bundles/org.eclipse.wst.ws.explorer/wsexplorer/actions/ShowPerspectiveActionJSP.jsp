@@ -52,7 +52,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <jsp:include page="<%=framesetsFile.toString()%>" flush="true"/>
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
 <jsp:useBean id="formAction" class="java.lang.StringBuffer" scope="request">
 <%
    formAction.append(currentPerspective.getSwitchPerspectiveFormActionLink(targetPerspectiveId,isHistory));

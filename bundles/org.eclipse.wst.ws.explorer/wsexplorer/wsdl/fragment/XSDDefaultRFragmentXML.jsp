@@ -74,7 +74,7 @@ if (sb == null)
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title><%=frag.getName()%></title>
 </head>
-<body>
+<body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>">
 <%
   sb = new StringBuffer();
   response.setContentType("text/html; charset=UTF-8");
