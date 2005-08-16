@@ -5,7 +5,7 @@
 .toolbarbodymargin { margin: 5 5 0 5; background: #ECE9D8; }
 
 /* Toolbar Styles */
-.text {font-size:12px; font-family: Tahoma;}
+.text {font-size:12px; font: icon;}
 a:link {color: black;}
 
 /* JS Rollover Style */
