@@ -12,11 +12,9 @@
 package org.eclipse.jst.ws.internal.common;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -40,14 +38,8 @@ import org.eclipse.jst.j2ee.ejb.SessionType;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
-import org.eclipse.jst.j2ee.internal.earcreation.AddModuleToEARProjectCommand;
-import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
 import org.eclipse.jst.j2ee.internal.earcreation.IEARNatureConstants;
-import org.eclipse.jst.j2ee.internal.ejb.project.EJBNatureRuntime;
-import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
 import org.eclipse.jst.j2ee.internal.project.J2EENature;
-import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
-import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
@@ -281,11 +273,12 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated
 	 */
-	public static EARNatureRuntime[] getEARProjects(IProject project) {
-		
-		EARNatureRuntime[] ears = J2EEProjectUtilities.getReferencingEARProjects(project);
-		return ears;
-	}
+	//TODO Remove old Nature references
+//	public static EARNatureRuntime[] getEARProjects(IProject project) {
+//		
+//		EARNatureRuntime[] ears = J2EEProjectUtilities.getReferencingEARProjects(project);
+//		return ears;
+//	}
 	
 	public static IVirtualComponent[] getAllComponents(){
 		List v = new ArrayList();
@@ -561,17 +554,18 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated  --  use getEARComponentNames(IProject)
 	 */
-	public static String[] getEARProjectNamesForWebProject(IProject project) {
-		List EARNames = new ArrayList();
-		if (project != null) {
-			EARNatureRuntime[] ears = getEARProjects(project);
-			for (int i = 0; i < ears.length; i++) {
-				EARNames.add(ears[i].getProject().getName());
-			}
-		}
-		return EARNames.isEmpty() ? null : (String[]) EARNames
-				.toArray(new String[0]);
-	}
+//	TODO Remove old Nature references
+//	public static String[] getEARProjectNamesForWebProject(IProject project) {
+//		List EARNames = new ArrayList();
+//		if (project != null) {
+//			EARNatureRuntime[] ears = getEARProjects(project);
+//			for (int i = 0; i < ears.length; i++) {
+//				EARNames.add(ears[i].getProject().getName());
+//			}
+//		}
+//		return EARNames.isEmpty() ? null : (String[]) EARNames
+//				.toArray(new String[0]);
+//	}
 
 	/**
 	 * Returns an array of EAR components which are referenced by the component
@@ -608,10 +602,11 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated  - use getEARProjects(IProject)
 	 */
-	public static EARNatureRuntime[] getEJBEARProjects(IProject project) {
-		EARNatureRuntime[] ears = J2EEProjectUtilities.getReferencingEARProjects(project);
-		return ears;
-	}
+//	TODO Remove old Nature references
+//	public static EARNatureRuntime[] getEJBEARProjects(IProject project) {
+//		EARNatureRuntime[] ears = J2EEProjectUtilities.getReferencingEARProjects(project);
+//		return ears;
+//	}
 
 	/**
 	 * 
@@ -619,17 +614,18 @@ public final class J2EEUtils {
 	 * @return
 	 * @deprecated use getEARProjectNames (not used; to be deleted)
 	 */
-	public static String[] getEARProjectNamesForEJBProject(IProject project) {
-		List EARNames = new ArrayList();
-		if (project != null) {
-			EARNatureRuntime[] ears = getEJBEARProjects(project);
-			for (int i = 0; i < ears.length; i++) {
-				EARNames.add(ears[i].getProject().getName());
-			}
-		}
-		return EARNames.isEmpty() ? null : (String[]) EARNames
-				.toArray(new String[0]);
-	}
+//	TODO Remove old Nature references
+//	public static String[] getEARProjectNamesForEJBProject(IProject project) {
+//		List EARNames = new ArrayList();
+//		if (project != null) {
+//			EARNatureRuntime[] ears = getEJBEARProjects(project);
+//			for (int i = 0; i < ears.length; i++) {
+//				EARNames.add(ears[i].getProject().getName());
+//			}
+//		}
+//		return EARNames.isEmpty() ? null : (String[]) EARNames
+//				.toArray(new String[0]);
+//	}
 
 	/**
 	 * 
@@ -637,10 +633,11 @@ public final class J2EEUtils {
 	 * @return
 	 * @deprecated not used; to be deleted
 	 */
-	public static EARNatureRuntime[] getAppClientEARProjects(IProject project) {
-		EARNatureRuntime[] ears = J2EEProjectUtilities.getReferencingEARProjects(project);
-		return ears;
-	}
+//	TODO Remove old Nature references
+//	public static EARNatureRuntime[] getAppClientEARProjects(IProject project) {
+//		EARNatureRuntime[] ears = J2EEProjectUtilities.getReferencingEARProjects(project);
+//		return ears;
+//	}
 
 	/**
 	 * Returns the EAR nature runtime from an EAR project
@@ -651,10 +648,11 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated not used; to be deleted
 	 */
-	public static EARNatureRuntime getEARNatureRuntimeFromProject(
-			IProject project) {
-		return EARNatureRuntime.getRuntime(project);
-	}
+//	TODO Remove old Nature references
+//	public static EARNatureRuntime getEARNatureRuntimeFromProject(
+//			IProject project) {
+//		return EARNatureRuntime.getRuntime(project);
+//	}
 
 	/**
 	 * This method returns a list of EAR names that are referenced by the
@@ -662,16 +660,17 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated not used; to be deleted
 	 */
-	public static String[] getEARNames(IProject project) {
-		EARNatureRuntime[] ears = getEARProjects(project);
-		String[] earNames = new String[ears == null ? 0 : ears.length];
-
-		for (int index = 0; index < earNames.length; index++) {
-			earNames[index] = ears[index].getProject().getName();
-		}
-
-		return earNames;
-	}
+//	TODO Remove old Nature references
+//	public static String[] getEARNames(IProject project) {
+//		EARNatureRuntime[] ears = getEARProjects(project);
+//		String[] earNames = new String[ears == null ? 0 : ears.length];
+//
+//		for (int index = 0; index < earNames.length; index++) {
+//			earNames[index] = ears[index].getProject().getName();
+//		}
+//
+//		return earNames;
+//	}
 
 	/**
 	 * Find all EJB projects for a particular EAR Nature.
@@ -679,24 +678,25 @@ public final class J2EEUtils {
 	 * @return a Vector of EJBNatureRuntimes.
 	 * @deprecated use getReferencingEJBComponents(IProject, String)
 	 */
-	public static Vector getEJBProjects(EARNatureRuntime ear) {
-		Vector ejbs = new Vector();
-		Iterator earProjects = ear.getModuleProjects().values().iterator();
-
-		while (earProjects.hasNext()) {
-			Object object = earProjects.next();
-
-			if (object != null) {
-				J2EENature j2eeNature = (J2EENature) object;
-
-				if (j2eeNature instanceof EJBNatureRuntime) {
-					ejbs.add(j2eeNature);
-				}
-			}
-		}
-
-		return ejbs;
-	}
+//	TODO Remove old Nature references
+//	public static Vector getEJBProjects(EARNatureRuntime ear) {
+//		Vector ejbs = new Vector();
+//		Iterator earProjects = ear.getModuleProjects().values().iterator();
+//
+//		while (earProjects.hasNext()) {
+//			Object object = earProjects.next();
+//
+//			if (object != null) {
+//				J2EENature j2eeNature = (J2EENature) object;
+//
+//				if (j2eeNature instanceof EJBNatureRuntime) {
+//					ejbs.add(j2eeNature);
+//				}
+//			}
+//		}
+//
+//		return ejbs;
+//	}
 	
 	/**
 	 * Returns the EJB Components referenced by the ear
@@ -730,24 +730,25 @@ public final class J2EEUtils {
 	 * @deprecated use getWebProjectsFromEAR(IProject, String)
 	 * 			!! not used; to be deleted
 	 */
-	public static Vector getWebProjects(EARNatureRuntime ear) {
-		Vector webProjects = new Vector();
-		Iterator earProjects = ear.getModuleProjects().values().iterator();
-
-		while (earProjects.hasNext()) {
-			Object object = earProjects.next();
-
-			if (object != null) {
-				J2EENature j2eeNature = (J2EENature) object;
-
-				if (j2eeNature instanceof J2EEWebNatureRuntime) {
-					webProjects.add(j2eeNature);
-				}
-			}
-		}
-
-		return webProjects;
-	}
+//	TODO Remove old Nature references
+//	public static Vector getWebProjects(EARNatureRuntime ear) {
+//		Vector webProjects = new Vector();
+//		Iterator earProjects = ear.getModuleProjects().values().iterator();
+//
+//		while (earProjects.hasNext()) {
+//			Object object = earProjects.next();
+//
+//			if (object != null) {
+//				J2EENature j2eeNature = (J2EENature) object;
+//
+//				if (j2eeNature instanceof J2EEWebNatureRuntime) {
+//					webProjects.add(j2eeNature);
+//				}
+//			}
+//		}
+//
+//		return webProjects;
+//	}
 
 
 	/**
@@ -755,17 +756,18 @@ public final class J2EEUtils {
 	 * @deprecated use getEJBProjectFromEAR(IProject, String)
 	 * 	!! not used; to be deleted
 	 */
-	public static String[] getEJBProjectNames(EARNatureRuntime ear) {
-		Vector ejbNatures = getEJBProjects(ear);
-		String[] ejbProjectNames = new String[ejbNatures.size()];
-
-		for (int index = 0; index < ejbProjectNames.length; index++) {
-			ejbProjectNames[index] = ((EJBNatureRuntime) (ejbNatures
-					.elementAt(index))).getProject().getName();
-		}
-
-		return ejbProjectNames;
-	}
+//	TODO Remove old Nature references
+//	public static String[] getEJBProjectNames(EARNatureRuntime ear) {
+//		Vector ejbNatures = getEJBProjects(ear);
+//		String[] ejbProjectNames = new String[ejbNatures.size()];
+//
+//		for (int index = 0; index < ejbProjectNames.length; index++) {
+//			ejbProjectNames[index] = ((EJBNatureRuntime) (ejbNatures
+//					.elementAt(index))).getProject().getName();
+//		}
+//
+//		return ejbProjectNames;
+//	}
 
 
 	
@@ -848,23 +850,24 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated  use getDefault12EARProject()
 	 */
-	public static EARNatureRuntime get12EAR() {
-		try {
-			IProject[] allEARs = getEARProjects();
-			for (int i = 0; i < allEARs.length; i++) {
-				// return the first 1.2 EAR encountered
-				EARNatureRuntime thisEAR = (EARNatureRuntime) (allEARs[i]
-						.getNature(IEARNatureConstants.NATURE_ID));
-				if (thisEAR.getJ2EEVersion() == J2EEVersionConstants.J2EE_1_2_ID) {
-					return thisEAR;
-				}
-			}
-		} catch (CoreException ce) {
-			// handle exception
-		}
-		return null;
-
-	}
+//	TODO Remove old Nature references
+//	public static EARNatureRuntime get12EAR() {
+//		try {
+//			IProject[] allEARs = getEARProjects();
+//			for (int i = 0; i < allEARs.length; i++) {
+//				// return the first 1.2 EAR encountered
+//				EARNatureRuntime thisEAR = (EARNatureRuntime) (allEARs[i]
+//						.getNature(IEARNatureConstants.NATURE_ID));
+//				if (thisEAR.getJ2EEVersion() == J2EEVersionConstants.J2EE_1_2_ID) {
+//					return thisEAR;
+//				}
+//			}
+//		} catch (CoreException ce) {
+//			// handle exception
+//		}
+//		return null;
+//
+//	}
 	
 	/**
 	 *  Returns the first j2ee 1.2 EAR project in the workspace
@@ -872,23 +875,24 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated -  if not used; to be deleted
 	 */
-	public static IProject getDefault12EARProject(){
-		try{
-			IProject[] allEARs = ResourceUtils.getWorkspaceRoot().getProjects(); // getEARProjects();
-			for (int i=0;i<allEARs.length;i++){
-				// return the first 1.2 EAR project
-				IProject ear = allEARs[i];
-				if (getJ2EEVersionAsString(ear).equals(IModuleConstants.J2EE_VERSION_1_2)){
-					return ear;
-				}
-			}
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			//handle exception
-		}
-		return null;
-	}
+//	TODO Remove old Nature references
+//	public static IProject getDefault12EARProject(){
+//		try{
+//			IProject[] allEARs = ResourceUtils.getWorkspaceRoot().getProjects(); // getEARProjects();
+//			for (int i=0;i<allEARs.length;i++){
+//				// return the first 1.2 EAR project
+//				IProject ear = allEARs[i];
+//				if (getJ2EEVersionAsString(ear).equals(IModuleConstants.J2EE_VERSION_1_2)){
+//					return ear;
+//				}
+//			}
+//		}
+//		catch(Exception e){
+//			e.printStackTrace();
+//			//handle exception
+//		}
+//		return null;
+//	}
 	
 		
 	/**
@@ -898,23 +902,24 @@ public final class J2EEUtils {
 	 * @deprecated use getDefault13EARComponent()
 	 * 
 	 */
-	public static EARNatureRuntime get13EAR() {
-		try {
-			IProject[] allEARs = getEARProjects();
-			for (int i = 0; i < allEARs.length; i++) {
-				// return the first 1.3 EAR encountered
-				EARNatureRuntime thisEAR = (EARNatureRuntime) (allEARs[i]
-						.getNature(IEARNatureConstants.NATURE_ID));
-				if (thisEAR.getJ2EEVersion() == J2EEVersionConstants.J2EE_1_3_ID) {
-					return thisEAR;
-				}
-			}
-		} catch (CoreException ce) {
-			return null;
-		}
-		return null;
-
-	}
+//	TODO Remove old Nature references
+//	public static EARNatureRuntime get13EAR() {
+//		try {
+//			IProject[] allEARs = getEARProjects();
+//			for (int i = 0; i < allEARs.length; i++) {
+//				// return the first 1.3 EAR encountered
+//				EARNatureRuntime thisEAR = (EARNatureRuntime) (allEARs[i]
+//						.getNature(IEARNatureConstants.NATURE_ID));
+//				if (thisEAR.getJ2EEVersion() == J2EEVersionConstants.J2EE_1_3_ID) {
+//					return thisEAR;
+//				}
+//			}
+//		} catch (CoreException ce) {
+//			return null;
+//		}
+//		return null;
+//
+//	}
 
 	/**
 	 * Returns a default J2EE 1.3 EAR component in the workspace
@@ -951,21 +956,22 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated use getEARProjectOfVersion(int)
 	 */
-	public static EARNatureRuntime getEAR(int versionId) {
-		try {
-			IProject[] allEARs = getEARProjects();
-			for (int i = 0; i < allEARs.length; i++) {
-				EARNatureRuntime thisEAR = (EARNatureRuntime) (allEARs[i]
-						.getNature(IEARNatureConstants.NATURE_ID));
-				if (thisEAR.getJ2EEVersion() == versionId) {
-					return thisEAR;
-				}
-			}
-		} catch (CoreException ce) {
-			// handle exception
-		}
-		return null;
-	}
+//	TODO Remove old Nature references
+//	public static EARNatureRuntime getEAR(int versionId) {
+//		try {
+//			IProject[] allEARs = getEARProjects();
+//			for (int i = 0; i < allEARs.length; i++) {
+//				EARNatureRuntime thisEAR = (EARNatureRuntime) (allEARs[i]
+//						.getNature(IEARNatureConstants.NATURE_ID));
+//				if (thisEAR.getJ2EEVersion() == versionId) {
+//					return thisEAR;
+//				}
+//			}
+//		} catch (CoreException ce) {
+//			// handle exception
+//		}
+//		return null;
+//	}
 	
 	/**
 	 * Returns the first EAR component of the J2EE version
@@ -1070,64 +1076,65 @@ public final class J2EEUtils {
 	 * @deprecated
 	 *   This method has too much complexity; to be simplified
 	 */
-	public static EARNatureRuntime[] getEARProjects(IProject serviceProject,
-			IServer server) {
-
-	
-		EARNatureRuntime[] earProjects = null;
-		EARNatureRuntime ear = null;
-		IProject earProject = null;
-
-		if (serviceProject != null && serviceProject.exists()) {
-			try {
-
-				EARNatureRuntime[] ears = null;
-				boolean isWebEJBOrAppClient = ResourceUtils.isWebProject(serviceProject) //serviceProject.hasNature(IWebNatureConstants.J2EE_NATURE_ID)
-						||  ResourceUtils.isEJBProject(serviceProject) //serviceProject.hasNature(IEJBNatureConstants.NATURE_ID)
-						||  ResourceUtils.isAppClientProject(serviceProject);//serviceProject.hasNature(IApplicationClientNatureConstants.NATURE_ID);
-				if (!isWebEJBOrAppClient) {
-					return null;
-				}
-
-				ears = J2EEProjectUtilities.getReferencingEARProjects(serviceProject);
-
-				// separate EARs which are already deployed to the existing
-				// server
-				if (ears != null && ears.length >= 1) {
-					ArrayList preferredEARList = new ArrayList();
-					ArrayList secondaryEARList = new ArrayList();
-					for (int i = 0; i < ears.length; i++) {
-						ear = ears[i];
-						earProject = ear.getProject();
-						IModule module = ResourceUtils.getModule(earProject);
-						if (module != null) {
-							if (server != null
-									|| ServerUtil.containsModule(server,
-											module, new NullProgressMonitor())) {
-								preferredEARList.add(ear);
-							} else {
-								secondaryEARList.add(ear);
-							}
-						}
-					}
-					// add secondaryEARList items to end of primary list
-					for (int j = 0; j < secondaryEARList.size(); j++) {
-						preferredEARList.add(secondaryEARList.get(j));
-					}
-					// toArray
-					if (preferredEARList != null) {
-						earProjects = (EARNatureRuntime[]) preferredEARList
-								.toArray(new EARNatureRuntime[0]);
-					}
-				}
-			} catch (Exception ce) {
-				Log log = new EclipseLog();
-				log.log(Log.ERROR, 5039, J2EEUtils.class, "getEARProjects", ce);
-
-			}
-		}
-		return earProjects;
-	}
+//	TODO Remove old Nature references
+//	public static EARNatureRuntime[] getEARProjects(IProject serviceProject,
+//			IServer server) {
+//
+//	
+//		EARNatureRuntime[] earProjects = null;
+//		EARNatureRuntime ear = null;
+//		IProject earProject = null;
+//
+//		if (serviceProject != null && serviceProject.exists()) {
+//			try {
+//
+//				EARNatureRuntime[] ears = null;
+//				boolean isWebEJBOrAppClient = ResourceUtils.isWebProject(serviceProject) //serviceProject.hasNature(IWebNatureConstants.J2EE_NATURE_ID)
+//						||  ResourceUtils.isEJBProject(serviceProject) //serviceProject.hasNature(IEJBNatureConstants.NATURE_ID)
+//						||  ResourceUtils.isAppClientProject(serviceProject);//serviceProject.hasNature(IApplicationClientNatureConstants.NATURE_ID);
+//				if (!isWebEJBOrAppClient) {
+//					return null;
+//				}
+//
+//				ears = J2EEProjectUtilities.getReferencingEARProjects(serviceProject);
+//
+//				// separate EARs which are already deployed to the existing
+//				// server
+//				if (ears != null && ears.length >= 1) {
+//					ArrayList preferredEARList = new ArrayList();
+//					ArrayList secondaryEARList = new ArrayList();
+//					for (int i = 0; i < ears.length; i++) {
+//						ear = ears[i];
+//						earProject = ear.getProject();
+//						IModule module = ResourceUtils.getModule(earProject);
+//						if (module != null) {
+//							if (server != null
+//									|| ServerUtil.containsModule(server,
+//											module, new NullProgressMonitor())) {
+//								preferredEARList.add(ear);
+//							} else {
+//								secondaryEARList.add(ear);
+//							}
+//						}
+//					}
+//					// add secondaryEARList items to end of primary list
+//					for (int j = 0; j < secondaryEARList.size(); j++) {
+//						preferredEARList.add(secondaryEARList.get(j));
+//					}
+//					// toArray
+//					if (preferredEARList != null) {
+//						earProjects = (EARNatureRuntime[]) preferredEARList
+//								.toArray(new EARNatureRuntime[0]);
+//					}
+//				}
+//			} catch (Exception ce) {
+//				Log log = new EclipseLog();
+//				log.log(Log.ERROR, 5039, J2EEUtils.class, "getEARProjects", ce);
+//
+//			}
+//		}
+//		return earProjects;
+//	}
 
 	/**
 	 * 
@@ -1224,36 +1231,37 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated use getEJB20ComponentsFromEars
 	 */
-	public static IProject[] getEJB2_0ProjectsFromEARS(EARNatureRuntime[] earProjects) {
-		if (earProjects == null)
-			return null;
-
-		ArrayList ejbProjects = new ArrayList();
-		for (int i = 0; i < earProjects.length; i++) {
-			if (earProjects[i] instanceof EARNatureRuntime) {
-				EARNatureRuntime ear = (EARNatureRuntime) earProjects[i];
-				Map projectsInEAR = ear.getModuleProjects();
-				if (projectsInEAR != null && !projectsInEAR.isEmpty()) {
-					Iterator iter = projectsInEAR.values().iterator();
-					while (iter.hasNext()) {
-						Object MOFObject = iter.next();
-						if (MOFObject instanceof EJBNatureRuntime) {
-							if (((EJBNatureRuntime) MOFObject)
-									.getModuleVersion() >= J2EEVersionConstants.EJB_2_0_ID) {
-								IProject project = ((EJBNatureRuntime) MOFObject)
-										.getProject();
-								if (project != null) {
-									ejbProjects.add(project);
-								}
-							}
-						}
-					}
-				}
-			}
-		} // end for earProjects loop
-
-		return (IProject[]) ejbProjects.toArray(new IProject[0]);
-	}
+//	TODO Remove old Nature references
+//	public static IProject[] getEJB2_0ProjectsFromEARS(EARNatureRuntime[] earProjects) {
+//		if (earProjects == null)
+//			return null;
+//
+//		ArrayList ejbProjects = new ArrayList();
+//		for (int i = 0; i < earProjects.length; i++) {
+//			if (earProjects[i] instanceof EARNatureRuntime) {
+//				EARNatureRuntime ear = (EARNatureRuntime) earProjects[i];
+//				Map projectsInEAR = ear.getModuleProjects();
+//				if (projectsInEAR != null && !projectsInEAR.isEmpty()) {
+//					Iterator iter = projectsInEAR.values().iterator();
+//					while (iter.hasNext()) {
+//						Object MOFObject = iter.next();
+//						if (MOFObject instanceof EJBNatureRuntime) {
+//							if (((EJBNatureRuntime) MOFObject)
+//									.getModuleVersion() >= J2EEVersionConstants.EJB_2_0_ID) {
+//								IProject project = ((EJBNatureRuntime) MOFObject)
+//										.getProject();
+//								if (project != null) {
+//									ejbProjects.add(project);
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		} // end for earProjects loop
+//
+//		return (IProject[]) ejbProjects.toArray(new IProject[0]);
+//	}
 	
 	/**
 	 * Returns EJB projects in the ears
@@ -1263,36 +1271,37 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated
 	 */
-	public static IProject[] getEJBProjectsFromEARS(
-			EARNatureRuntime[] earProjects) {
-		if (earProjects == null)
-			return null;
-
-		ArrayList ejbProjects = new ArrayList();
-		for (int i = 0; i < earProjects.length; i++) {
-			if (earProjects[i] instanceof EARNatureRuntime) {
-				EARNatureRuntime ear = (EARNatureRuntime) earProjects[i];
-				Map projectsInEAR = ear.getModuleProjects();
-				if (projectsInEAR != null && !projectsInEAR.isEmpty()) {
-					Iterator iter = projectsInEAR.values().iterator();
-					while (iter.hasNext()) {
-						Object MOFObject = iter.next();
-						if (MOFObject instanceof EJBNatureRuntime) {
-
-							IProject project = ((EJBNatureRuntime) MOFObject)
-									.getProject();
-							if (project != null) {
-								ejbProjects.add(project);
-							}
-
-						}
-					}
-				}
-			}
-		} // end for earProjects loop
-
-		return (IProject[]) ejbProjects.toArray(new IProject[0]);
-	}
+//	TODO Remove old Nature references
+//	public static IProject[] getEJBProjectsFromEARS(
+//			EARNatureRuntime[] earProjects) {
+//		if (earProjects == null)
+//			return null;
+//
+//		ArrayList ejbProjects = new ArrayList();
+//		for (int i = 0; i < earProjects.length; i++) {
+//			if (earProjects[i] instanceof EARNatureRuntime) {
+//				EARNatureRuntime ear = (EARNatureRuntime) earProjects[i];
+//				Map projectsInEAR = ear.getModuleProjects();
+//				if (projectsInEAR != null && !projectsInEAR.isEmpty()) {
+//					Iterator iter = projectsInEAR.values().iterator();
+//					while (iter.hasNext()) {
+//						Object MOFObject = iter.next();
+//						if (MOFObject instanceof EJBNatureRuntime) {
+//
+//							IProject project = ((EJBNatureRuntime) MOFObject)
+//									.getProject();
+//							if (project != null) {
+//								ejbProjects.add(project);
+//							}
+//
+//						}
+//					}
+//				}
+//			}
+//		} // end for earProjects loop
+//
+//		return (IProject[]) ejbProjects.toArray(new IProject[0]);
+//	}
 
 	/**
 	 * Gets the EJB Components in the project
@@ -1403,37 +1412,38 @@ public final class J2EEUtils {
 	 * @return projects Web projects
 	 * @deprecated  use getReferencingWebComponentsForEar
 	 */
-	public static IProject[] getWebProjectsFromEARS(
-			EARNatureRuntime[] earProjects) {
-		if (earProjects == null)
-			return null;
-
-		ArrayList webProjects = new ArrayList();
-		for (int i = 0; i < earProjects.length; i++) {
-			if (earProjects[i] instanceof EARNatureRuntime) {
-				EARNatureRuntime ear = (EARNatureRuntime) earProjects[i];
-				Map projectsInEAR = ear.getModuleProjects();
-				if (projectsInEAR != null && !projectsInEAR.isEmpty()) {
-					Iterator iter = projectsInEAR.values().iterator();
-					while (iter.hasNext()) {
-						// IProjectNature nature =
-						// iter.next().getNature(IWebNatureConstants.J2EE_NATURE_ID);
-						Object MOFObject = iter.next();
-						if (MOFObject instanceof J2EEWebNatureRuntime) {
-							IProject project = ((J2EEWebNatureRuntime) MOFObject)
-									.getProject();
-							if (project != null) {
-								webProjects.add(project);
-							}
-
-						}
-					}
-				}
-			}
-		} // end for earProjects loop
-
-		return (IProject[]) webProjects.toArray(new IProject[0]);
-	}
+//	TODO Remove old Nature references
+//	public static IProject[] getWebProjectsFromEARS(
+//			EARNatureRuntime[] earProjects) {
+//		if (earProjects == null)
+//			return null;
+//
+//		ArrayList webProjects = new ArrayList();
+//		for (int i = 0; i < earProjects.length; i++) {
+//			if (earProjects[i] instanceof EARNatureRuntime) {
+//				EARNatureRuntime ear = (EARNatureRuntime) earProjects[i];
+//				Map projectsInEAR = ear.getModuleProjects();
+//				if (projectsInEAR != null && !projectsInEAR.isEmpty()) {
+//					Iterator iter = projectsInEAR.values().iterator();
+//					while (iter.hasNext()) {
+//						// IProjectNature nature =
+//						// iter.next().getNature(IWebNatureConstants.J2EE_NATURE_ID);
+//						Object MOFObject = iter.next();
+//						if (MOFObject instanceof J2EEWebNatureRuntime) {
+//							IProject project = ((J2EEWebNatureRuntime) MOFObject)
+//									.getProject();
+//							if (project != null) {
+//								webProjects.add(project);
+//							}
+//
+//						}
+//					}
+//				}
+//			}
+//		} // end for earProjects loop
+//
+//		return (IProject[]) webProjects.toArray(new IProject[0]);
+//	}
 
 	/**
 	 * 
@@ -1463,21 +1473,22 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated // use isEJB20Component
 	 */
-	public static boolean isEJB2_0Project(IProject project) {
-
-		if (ResourceUtils.isEJBProject(project)) {
-			try {
-
-				if (project.hasNature(IEJBNatureConstants.NATURE_ID)
-						&& EJBNatureRuntime.getRuntime(project)
-								.getModuleVersion() >= J2EEVersionConstants.EJB_2_0_ID) {
-					return true;
-				}
-			} catch (CoreException e) {
-			}
-		}
-		return false;
-	}
+//	TODO Remove old Nature references
+//	public static boolean isEJB2_0Project(IProject project) {
+//
+//		if (ResourceUtils.isEJBProject(project)) {
+//			try {
+//
+//				if (project.hasNature(IEJBNatureConstants.NATURE_ID)
+//						&& EJBNatureRuntime.getRuntime(project)
+//								.getModuleVersion() >= J2EEVersionConstants.EJB_2_0_ID) {
+//					return true;
+//				}
+//			} catch (CoreException e) {
+//			}
+//		}
+//		return false;
+//	}
 	
 	/**
 	 * 
@@ -1545,21 +1556,22 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated   use isComponentAssociated
 	 */
-	public static boolean isEARAssociated(IProject module, IProject earProject) {
-
-		EARNatureRuntime[] ears = getEARProjects(module);
-		if (ears != null && ears.length != 0) {
-			Vector EARNames = new Vector();
-			for (int i = 0; i < ears.length; i++) {
-				EARNames.add(ears[i].getProject().getName());
-			}
-			String[] earNames = (String[]) EARNames.toArray(new String[0]);
-			if (Arrays.binarySearch(earNames, earProject.getName()) >= 0) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	TODO Remove old Nature references
+//	public static boolean isEARAssociated(IProject module, IProject earProject) {
+//
+//		EARNatureRuntime[] ears = getEARProjects(module);
+//		if (ears != null && ears.length != 0) {
+//			Vector EARNames = new Vector();
+//			for (int i = 0; i < ears.length; i++) {
+//				EARNames.add(ears[i].getProject().getName());
+//			}
+//			String[] earNames = (String[]) EARNames.toArray(new String[0]);
+//			if (Arrays.binarySearch(earNames, earProject.getName()) >= 0) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 	
 	/**
 	 * Checks if the component at compName is referenced by the ear at earCompName
@@ -1635,14 +1647,15 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated 
 	 */
-	public static void associateWebProject(IProject module, IProject EARProject) {
-			String uri = module.getName() + ".war";
-			String contextRoot = module.getName();
-			AddModuleToEARProjectCommand amiec = new AddModuleToEARProjectCommand(
-					module, EARProject, uri, contextRoot, null);
-			if (amiec.canExecute())
-				amiec.execute();
-	}
+//	TODO Remove old Nature references
+//	public static void associateWebProject(IProject module, IProject EARProject) {
+//			String uri = module.getName() + ".war";
+//			String contextRoot = module.getName();
+//			AddModuleToEARProjectCommand amiec = new AddModuleToEARProjectCommand(
+//					module, EARProject, uri, contextRoot, null);
+//			if (amiec.canExecute())
+//				amiec.execute();
+//	}
 
 	/**
 	 * 

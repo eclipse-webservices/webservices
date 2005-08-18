@@ -14,14 +14,6 @@ package org.eclipse.jst.ws.internal.axis.consumption.core.wsfinder;
 import java.util.List;
 import java.util.Vector;
 
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceVisitor;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.consumption.wsfinder.LiveWSDLFilter;
 import org.eclipse.jst.ws.internal.consumption.wsfinder.WSFinderCommon;
 
 public class WSFinderAxis extends WSFinderCommon
@@ -34,69 +26,70 @@ public class WSFinderAxis extends WSFinderCommon
   public List find()
   {
     final Vector wsdlURLs = new Vector();
-    IProject[] projects = getWorkspaceProjects();
-    for (int i = 0; i < projects.length; i++)
-    {
-      J2EEWebNatureRuntime webNature = getWebNature(projects[i]);
-      if (webNature != null)
-      {
-        final String webProjectURL = ResourceUtils.getWebProjectURL(projects[i]);
-        if (webProjectURL != null && webProjectURL.length() > 0)
-        {
-          final IFolder folderWSDL = getFolderRootPublishable(webNature).getFolder("wsdl");
-          try
-          {
-            folderWSDL.accept(
-              new IResourceVisitor()
-              {
-                public boolean visit(IResource resource)
-                {
-                  if (resource.getType() == IResource.FILE)
-                  {
-                    String ext = resource.getFileExtension();
-                    if (ext != null && ext.equalsIgnoreCase("wsdl"))
-                    {
-                      String resPath = resource.getFullPath().toString();
-                      String folderPath = folderWSDL.getFullPath().toString();
-                      int index = resPath.indexOf(folderPath);
-                      if (index != -1)
-                        resPath = resPath.substring(index+folderPath.length(), resPath.length());
-                      StringBuffer sb = new StringBuffer(webProjectURL);
-                      sb.append("/wsdl");
-                      sb.append(resPath);
-                      wsdlURLs.add(sb.toString());
-                    }
-                  }
-                  return true;
-                }
-              }
-            );
-          }
-          catch (CoreException ce)
-          {
-          }
-        }
-      }
-    }
-    LiveWSDLFilter[] filters = new LiveWSDLFilter[wsdlURLs.size()];
-    for (int i = 0; i < filters.length; i++)
-    {
-      filters[i] = new LiveWSDLFilter((String)wsdlURLs.get(i));
-      filters[i].start();
-    }
-    for (int i = 0; i < filters.length; i++)
-    {
-      if (!filters[i].isFinish())
-      {
-        Thread.yield();
-        i = -1;
-      }
-    }
-    for (int i = 0; i < filters.length; i++)
-    {
-      if (!filters[i].isWSDLLive())
-        wsdlURLs.remove(filters[i].getWSDLURL());
-    }
+//  TODO Remove old Nature references
+//    IProject[] projects = getWorkspaceProjects();
+//    for (int i = 0; i < projects.length; i++)
+//    {
+//      J2EEWebNatureRuntime webNature = getWebNature(projects[i]);
+//      if (webNature != null)
+//      {
+//        final String webProjectURL = ResourceUtils.getWebProjectURL(projects[i]);
+//        if (webProjectURL != null && webProjectURL.length() > 0)
+//        {
+//          final IFolder folderWSDL = getFolderRootPublishable(webNature).getFolder("wsdl");
+//          try
+//          {
+//            folderWSDL.accept(
+//              new IResourceVisitor()
+//              {
+//                public boolean visit(IResource resource)
+//                {
+//                  if (resource.getType() == IResource.FILE)
+//                  {
+//                    String ext = resource.getFileExtension();
+//                    if (ext != null && ext.equalsIgnoreCase("wsdl"))
+//                    {
+//                      String resPath = resource.getFullPath().toString();
+//                      String folderPath = folderWSDL.getFullPath().toString();
+//                      int index = resPath.indexOf(folderPath);
+//                      if (index != -1)
+//                        resPath = resPath.substring(index+folderPath.length(), resPath.length());
+//                      StringBuffer sb = new StringBuffer(webProjectURL);
+//                      sb.append("/wsdl");
+//                      sb.append(resPath);
+//                      wsdlURLs.add(sb.toString());
+//                    }
+//                  }
+//                  return true;
+//                }
+//              }
+//            );
+//          }
+//          catch (CoreException ce)
+//          {
+//          }
+//        }
+//      }
+//    }
+//    LiveWSDLFilter[] filters = new LiveWSDLFilter[wsdlURLs.size()];
+//    for (int i = 0; i < filters.length; i++)
+//    {
+//      filters[i] = new LiveWSDLFilter((String)wsdlURLs.get(i));
+//      filters[i].start();
+//    }
+//    for (int i = 0; i < filters.length; i++)
+//    {
+//      if (!filters[i].isFinish())
+//      {
+//        Thread.yield();
+//        i = -1;
+//      }
+//    }
+//    for (int i = 0; i < filters.length; i++)
+//    {
+//      if (!filters[i].isWSDLLive())
+//        wsdlURLs.remove(filters[i].getWSDLURL());
+//    }
     return wsdlURLs;
   }
 }

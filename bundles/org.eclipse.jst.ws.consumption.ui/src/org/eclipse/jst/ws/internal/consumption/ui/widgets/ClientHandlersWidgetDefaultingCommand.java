@@ -20,10 +20,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.j2ee.applicationclient.internal.creation.ApplicationClientNatureRuntime;
-import org.eclipse.jst.j2ee.client.ApplicationClient;
-import org.eclipse.jst.j2ee.ejb.EJBJar;
-import org.eclipse.jst.j2ee.internal.ejb.project.EJBNatureRuntime;
 import org.eclipse.jst.j2ee.internal.webservice.WebServiceNavigatorGroupType;
 import org.eclipse.jst.j2ee.internal.webservice.helper.WebServicesManager;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
@@ -240,24 +236,25 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
             webEdit.dispose();
         }
       }
-      else if (J2EEUtils.isAppClientComponent(project_, componentName_)){
-        ApplicationClientNatureRuntime rt = ApplicationClientNatureRuntime.getRuntime(project_);
-        if (rt!=null) {
-          ApplicationClient appClient = rt.getApplicationClient();
-          if (appClient != null){
-            return webServicesManager_.getServiceRefs(appClient);
-          }
-        }
-      }
-      else if (J2EEUtils.isEJBComponent(project_, componentName_)){
-        EJBNatureRuntime rt = EJBNatureRuntime.getRuntime(project_);
-        if(rt!=null){
-          EJBJar ejbJar = rt.getEJBJar();
-          if (ejbJar !=null){
-            return webServicesManager_.getServiceRefs(ejbJar);
-          }
-        }
-      }
+      //TODO Remove old Nature refs
+//      else if (J2EEUtils.isAppClientComponent(project_, componentName_)){
+//        ApplicationClientNatureRuntime rt = ApplicationClientNatureRuntime.getRuntime(project_);
+//        if (rt!=null) {
+//          ApplicationClient appClient = rt.getApplicationClient();
+//          if (appClient != null){
+//            return webServicesManager_.getServiceRefs(appClient);
+//          }
+//        }
+//      }
+//      else if (J2EEUtils.isEJBComponent(project_, componentName_)){
+//        EJBNatureRuntime rt = EJBNatureRuntime.getRuntime(project_);
+//        if(rt!=null){
+//          EJBJar ejbJar = rt.getEJBJar();
+//          if (ejbJar !=null){
+//            return webServicesManager_.getServiceRefs(ejbJar);
+//          }
+//        }
+//      }
 
     
     }

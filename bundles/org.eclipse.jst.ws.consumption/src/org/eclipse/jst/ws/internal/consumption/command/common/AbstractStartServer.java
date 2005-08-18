@@ -17,15 +17,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.ServerUtil;
 
 public abstract class AbstractStartServer {
  
@@ -115,25 +111,26 @@ protected void startProject(IServer server) throws CoreException
 
 protected void restartProject(IProject project, IServer server) throws CoreException
 {
-  try
-  {
-
-    monitor.subTask( msgUtils_.getMessage( "PROGRESS_INFO_STARTING_SERVER" ) );
-    EARNatureRuntime[] ears = J2EEUtils.getEARProjects(project);
-    for (int i = 0; i < ears.length; i++)
-    {
-      IProject earProject = ears[i].getProject();
-      if (earProject != null && ServerUtil.containsModule(server,ResourceUtils.getModule(earProject), monitor))    
-      {
-        // TODO: restart project?
-        log_.log(Log.INFO, 5053, this, "restartProject", "earProject="+earProject+", Restart project command completed");
-       
-      }
-    }
-  }
-  catch (Exception e) {
-    throw new CoreException( new Status(IStatus.ERROR,WebServiceConsumptionPlugin.ID,0,msgUtils_.getMessage("MSG_ERROR_SERVER"),e));
-  }  
+//	TODO Remove old Nature references
+//  try
+//  {
+//
+//    monitor.subTask( msgUtils_.getMessage( "PROGRESS_INFO_STARTING_SERVER" ) );
+//    EARNatureRuntime[] ears = J2EEUtils.getEARProjects(project);
+//    for (int i = 0; i < ears.length; i++)
+//    {
+//      IProject earProject = ears[i].getProject();
+//      if (earProject != null && ServerUtil.containsModule(server,ResourceUtils.getModule(earProject), monitor))    
+//      {
+//        // TODO: restart project?
+//        log_.log(Log.INFO, 5053, this, "restartProject", "earProject="+earProject+", Restart project command completed");
+//       
+//      }
+//    }
+//  }
+//  catch (Exception e) {
+//    throw new CoreException( new Status(IStatus.ERROR,WebServiceConsumptionPlugin.ID,0,msgUtils_.getMessage("MSG_ERROR_SERVER"),e));
+//  }  
 }
 
 public void runPreServerConfig(IServer server, IProject EARProject){

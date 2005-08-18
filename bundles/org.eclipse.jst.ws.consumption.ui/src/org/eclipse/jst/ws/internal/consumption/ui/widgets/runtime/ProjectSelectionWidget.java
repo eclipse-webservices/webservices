@@ -522,9 +522,10 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
           if (!ear.exists()) {
             result = (byte) (result | CREATE_EAR);
           }
-          if (project.exists() && ear.exists()) {
-            if (!J2EEUtils.isEARAssociated(project, ear)) result = (byte) (result | ADD_EAR_ASSOCIATION);
-          }
+          //TODO Remove old utility methods
+//          if (project.exists() && ear.exists()) {
+//            if (!J2EEUtils.isEARAssociated(project, ear)) result = (byte) (result | ADD_EAR_ASSOCIATION);
+//          }
         }
       }
       if (isClient_) {

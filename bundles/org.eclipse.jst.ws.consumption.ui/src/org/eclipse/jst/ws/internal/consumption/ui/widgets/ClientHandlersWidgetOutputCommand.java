@@ -22,18 +22,14 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.impl.JavaClassImpl;
-import org.eclipse.jst.j2ee.applicationclient.internal.creation.ApplicationClientNatureRuntime;
 import org.eclipse.jst.j2ee.internal.J2EEEditModel;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.j2ee.internal.ejb.project.EJBNatureRuntime;
-import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 import org.eclipse.jst.j2ee.webservice.internal.wsclient.impl.Webservice_clientFactoryImpl;
 import org.eclipse.jst.j2ee.webservice.wsclient.Handler;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
 import org.eclipse.jst.j2ee.webservice.wsclient.Webservice_clientFactory;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -206,25 +202,26 @@ public class ClientHandlersWidgetOutputCommand extends SimpleCommand {
   }
 
   public void getJ2EEEditModel() {
-  	accessorKey_ = new Object();
-    if (ResourceUtils.isWebProject(project_)) {
-      J2EEWebNatureRuntime rt = J2EEWebNatureRuntime.getRuntime(project_);
-      if (rt != null) {
-        editModel_ = rt.getWebAppEditModelForWrite(accessorKey_);
-      }
-    }
-    else if (ResourceUtils.isAppClientProject(project_)){
-      ApplicationClientNatureRuntime rt = ApplicationClientNatureRuntime.getRuntime(project_);
-      if (rt!=null) {
-        editModel_ = rt.getAppClientEditModelForWrite(accessorKey_);
-      }
-    }
-    else if (ResourceUtils.isEJBProject(project_)){
-      EJBNatureRuntime rt = EJBNatureRuntime.getRuntime(project_);
-      if(rt!=null){
-        editModel_ = rt.getEJBEditModelForWrite(accessorKey_);
-      }
-    }
+	//TODO Remove old Nature refs
+//  	accessorKey_ = new Object();
+//    if (ResourceUtils.isWebProject(project_)) {
+//      J2EEWebNatureRuntime rt = J2EEWebNatureRuntime.getRuntime(project_);
+//      if (rt != null) {
+//        editModel_ = rt.getWebAppEditModelForWrite(accessorKey_);
+//      }
+//    }
+//    else if (ResourceUtils.isAppClientProject(project_)){
+//      ApplicationClientNatureRuntime rt = ApplicationClientNatureRuntime.getRuntime(project_);
+//      if (rt!=null) {
+//        editModel_ = rt.getAppClientEditModelForWrite(accessorKey_);
+//      }
+//    }
+//    else if (ResourceUtils.isEJBProject(project_)){
+//      EJBNatureRuntime rt = EJBNatureRuntime.getRuntime(project_);
+//      if(rt!=null){
+//        editModel_ = rt.getEJBEditModelForWrite(accessorKey_);
+//      }
+//    }
   }
 
 }

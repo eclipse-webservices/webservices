@@ -11,16 +11,9 @@
 
 package org.eclipse.jst.ws.internal.consumption.wsfinder;
 
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jst.j2ee.internal.ejb.project.EJBNatureRuntime;
-import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
-import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
-import org.eclipse.jst.j2ee.internal.web.operations.J2EEWebNatureRuntime;
 
 public abstract class WSFinderCommon implements IWSFinder
 {
@@ -70,47 +63,47 @@ public abstract class WSFinderCommon implements IWSFinder
     IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
     return root.getProjects();
   }
-
-  protected J2EEWebNatureRuntime getWebNature(IProject project)
-  {
-    try
-    {
-      IProjectNature nature = project.getNature(IWebNatureConstants.J2EE_NATURE_ID);
-      if (nature != null && nature instanceof J2EEWebNatureRuntime)
-        return (J2EEWebNatureRuntime)nature;
-    }
-    catch (CoreException ce)
-    {
-    }
-    return null;
-  }
-
-  protected EJBNatureRuntime getEJBNature(IProject project)
-  {
-    try
-    {
-      IProjectNature nature = project.getNature(IEJBNatureConstants.NATURE_ID);
-      if (nature != null && nature instanceof EJBNatureRuntime)
-        return (EJBNatureRuntime)nature;
-    }
-    catch (CoreException ce)
-    {
-    }
-    return null;
-  }
-
-  protected IFolder getFolderRootPublishable(J2EEWebNatureRuntime webNature)
-  {
-    return (IFolder)webNature.getRootPublishableFolder();
-  }
-
-  protected IFolder getFolderWEBINF(J2EEWebNatureRuntime webNature)
-  {
-    return webNature.getProject().getFolder(webNature.getWEBINFPath().toString());
-  }
-
-  protected IFolder getFolderMETAINF(EJBNatureRuntime ejbNature)
-  {
-    return ejbNature.getMetaFolder();
-  }
+//TODO Remove old Nature refs
+//  protected J2EEWebNatureRuntime getWebNature(IProject project)
+//  {
+//    try
+//    {
+//      IProjectNature nature = project.getNature(IWebNatureConstants.J2EE_NATURE_ID);
+//      if (nature != null && nature instanceof J2EEWebNatureRuntime)
+//        return (J2EEWebNatureRuntime)nature;
+//    }
+//    catch (CoreException ce)
+//    {
+//    }
+//    return null;
+//  }
+//
+//  protected EJBNatureRuntime getEJBNature(IProject project)
+//  {
+//    try
+//    {
+//      IProjectNature nature = project.getNature(IEJBNatureConstants.NATURE_ID);
+//      if (nature != null && nature instanceof EJBNatureRuntime)
+//        return (EJBNatureRuntime)nature;
+//    }
+//    catch (CoreException ce)
+//    {
+//    }
+//    return null;
+//  }
+//
+//  protected IFolder getFolderRootPublishable(J2EEWebNatureRuntime webNature)
+//  {
+//    return (IFolder)webNature.getRootPublishableFolder();
+//  }
+//
+//  protected IFolder getFolderWEBINF(J2EEWebNatureRuntime webNature)
+//  {
+//    return webNature.getProject().getFolder(webNature.getWEBINFPath().toString());
+//  }
+//
+//  protected IFolder getFolderMETAINF(EJBNatureRuntime ejbNature)
+//  {
+//    return ejbNature.getMetaFolder();
+//  }
 }

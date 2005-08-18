@@ -18,7 +18,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.j2ee.ejb.datamodel.properties.IEjbComponentCreationDataModelProperties;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
 import org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationDataModelProvider;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEPlugin;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
@@ -29,6 +28,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
@@ -120,19 +120,19 @@ public class CreateEJBProjectCommand extends SimpleCommand
     // IProject earProject = ResourcesPlugin.getWorkspace().getRoot().getProject(earProjectName);
     // if (!earProject.exists())
     {    	
-      EARNatureRuntime ear = null;
+      IVirtualComponent ear = null;
       if (j2eeVersion_!=null && j2eeVersion_.length()>0)
       {
-      	ear = J2EEUtils.getEAR(Integer.parseInt(j2eeVersion_));
+      	ear = J2EEUtils.getEARComponentofJ2EEVersion(Integer.parseInt(j2eeVersion_));
       }
       else
       {
-        ear = J2EEUtils.get13EAR();      
+        ear = J2EEUtils.getEARComponentofJ2EEVersion(13);      
         if (ear != null)
           earProject = ear.getProject();
         else
         {
-          ear = J2EEUtils.get12EAR();
+          ear = J2EEUtils.getEARComponentofJ2EEVersion(12);
           if (ear != null)
             earProject = ear.getProject();
         }
@@ -153,8 +153,7 @@ public class CreateEJBProjectCommand extends SimpleCommand
     {
       if (earProject != null && earProject.exists())
       {
-        EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
-        int earVersion = ear.getJ2EEVersion();
+        int earVersion = J2EEUtils.getJ2EEVersion(earProject);
         projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(earVersion));
         finalJ2EEVersion = String.valueOf(earVersion);
       }
@@ -189,12 +188,12 @@ public class CreateEJBProjectCommand extends SimpleCommand
 
   private Status addEARToProject(IProject serviceProject, IDataModel projectInfo, Environment env)
   {
-        EARNatureRuntime ear = null;
+       IVirtualComponent ear = null;
         IProject earProject = null;
         boolean addServiceEARToServer = false;
         boolean addDiscoveredEARToServer = false;
         IServer discoveredEARsServer = null;
-        EARNatureRuntime[] ears = J2EEUtils.getEARProjects(serviceProject);
+        IVirtualComponent[] ears = J2EEUtils.getEARComponentsFromProject(serviceProject);
         try {    	
       
 	    if (ears!=null && ears.length >= 1) {
@@ -213,7 +212,7 @@ public class CreateEJBProjectCommand extends SimpleCommand
 	    }
 	    else {
 	      //Check to see if any eligible EARs exist in the workspace.
-	      ear = J2EEUtils.get12EAR();
+	      ear = J2EEUtils.getEARComponentofJ2EEVersion(12);
 	      if (ear!=null)
 	      {
 	      	earProject = ear.getProject();
@@ -307,8 +306,9 @@ public class CreateEJBProjectCommand extends SimpleCommand
         {
           if (earProject != null && earProject.exists())
           {
-            EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
-            int earVersion = ear.getJ2EEVersion();
+        	//TODO Remove old Nature refs
+            //EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
+            int earVersion = J2EEUtils.getJ2EEVersion(earProject);
             info.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(earVersion));
             finalJ2EEVersion = String.valueOf(earVersion);
           }

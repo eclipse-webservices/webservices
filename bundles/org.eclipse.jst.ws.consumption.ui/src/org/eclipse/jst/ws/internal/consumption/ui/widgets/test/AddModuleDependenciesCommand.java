@@ -23,8 +23,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.applicationclient.internal.creation.IApplicationClientNatureConstants;
 import org.eclipse.jst.j2ee.commonarchivecore.internal.helpers.ArchiveManifest;
-import org.eclipse.jst.j2ee.internal.earcreation.AddUtilityJARMapCommand;
-import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
 import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
 import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
 import org.eclipse.jst.j2ee.internal.project.J2EENature;
@@ -35,6 +33,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IServer;
 
 public class AddModuleDependenciesCommand extends SimpleCommand
@@ -118,8 +117,9 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 
   private void addJavaProjectAsUtilityJar(IProject javaProject, IProject earProject, String uri)
   {
-    AddUtilityJARMapCommand cmd = new AddUtilityJARMapCommand(earProject, uri, javaProject);
-    cmd.execute();
+	//  TODO  Remove refs to old command
+//    AddUtilityJARMapCommand cmd = new AddUtilityJARMapCommand(earProject, uri, javaProject);
+//    cmd.execute();
   }
 
   private void addJAROrModuleDependency(IProject project, String compName, String uri) throws IOException, CoreException
@@ -203,9 +203,9 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 
   private IProject getEARProject(IProject sampleProject)
   {
-    EARNatureRuntime[] natures = J2EEUtils.getEARProjects(sampleProject);
-    if (natures != null && natures.length > 0)
-      return natures[0].getProject();
+    IVirtualComponent[] comps = J2EEUtils.getEARComponentsFromProject(sampleProject);
+    if (comps != null && comps.length > 0)
+      return comps[0].getProject();
     else
       return null;
   }

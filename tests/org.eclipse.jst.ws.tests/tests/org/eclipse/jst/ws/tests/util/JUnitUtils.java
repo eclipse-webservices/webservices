@@ -24,10 +24,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.j2ee.internal.web.operations.WebNatureRuntimeUtilities;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
@@ -368,13 +366,14 @@ public class JUnitUtils {
 	 * 
 	 * @deprecated
 	 */
-	public static IFolder getSourceFolderForWebProject(String projectName)
-	{
-		IProject project = ProjectUtilities.getProject(projectName);
-    
-		IFolder srcFolder = project.getFolder(WebNatureRuntimeUtilities.getDefaultJavaSourceName());
-		return srcFolder;
-	}
+//	TODO Remove old Nature refs
+//	public static IFolder getSourceFolderForWebProject(String projectName)
+//	{
+//		IProject project = ProjectUtilities.getProject(projectName);
+//    
+//		IFolder srcFolder = project.getFolder(WebNatureRuntimeUtilities.getDefaultJavaSourceName());
+//		return srcFolder;
+//	}
 	
 	/**
 	 * 
@@ -383,12 +382,13 @@ public class JUnitUtils {
 	 * 
 	 * @deprecated
 	 */
-	public static IFolder getWebContentFolder(String projectName)
-	{
-		IProject project = ProjectUtilities.getProject(projectName);
-		IFolder webContentFolder = project.getFolder(WebNatureRuntimeUtilities.getDefaultJ2EEWebContentPath());
-		return webContentFolder;
-	}
+//	TODO Remove old Nature refs
+//	public static IFolder getWebContentFolder(String projectName)
+//	{
+//		IProject project = ProjectUtilities.getProject(projectName);
+//		IFolder webContentFolder = project.getFolder(WebNatureRuntimeUtilities.getDefaultJ2EEWebContentPath());
+//		return webContentFolder;
+//	}
 	
 	/**
 	 * 
@@ -397,11 +397,12 @@ public class JUnitUtils {
 	 * 
 	 * @deprecated
 	 */
-	public static IFolder getWebInfFolderForWebProject(String projectName)
-	{
-		IProject project = ProjectUtilities.getProject(projectName);
-		return project.getFolder(WebNatureRuntimeUtilities.getDefaultWEBINFPath());
-	}	
+	//TODO Remove old Nature refs
+//	public static IFolder getWebInfFolderForWebProject(String projectName)
+//	{
+//		IProject project = ProjectUtilities.getProject(projectName);
+//		return project.getFolder(WebNatureRuntimeUtilities.getDefaultWEBINFPath());
+//	}	
 	
 	/**
 	 * 
@@ -410,10 +411,11 @@ public class JUnitUtils {
 	 * 
 	 * @deprecated
 	 */
-	public static IFolder getClassesFolderForWebProject(String projectName)
-	{
-		IProject project = ProjectUtilities.getProject(projectName);
-		return project.getFolder(WebNatureRuntimeUtilities.getDefaultWebOutputFolderPath());
-	}
+//	TODO Remove old Nature refs
+//	public static IFolder getClassesFolderForWebProject(String projectName)
+//	{
+//		IProject project = ProjectUtilities.getProject(projectName);
+//		return project.getFolder(WebNatureRuntimeUtilities.getDefaultWebOutputFolderPath());
+//	}
 	
 }

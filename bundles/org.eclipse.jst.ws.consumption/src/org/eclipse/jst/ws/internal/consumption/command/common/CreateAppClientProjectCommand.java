@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientComponentCreationDataModelProvider;
 import org.eclipse.jst.j2ee.datamodel.properties.IAppClientComponentCreationDataModelProperties;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -83,8 +83,9 @@ public class CreateAppClientProjectCommand extends SimpleCommand
         {
           if (earProject != null && earProject.exists())
           {
-            EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
-            int earVersion = ear.getJ2EEVersion();
+        	//TODO Remove old Nature references
+            //EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
+            int earVersion = J2EEUtils.getJ2EEVersion(earProject);
             info.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(earVersion));
             finalJ2EEVersion = String.valueOf(earVersion);
           }

@@ -17,8 +17,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.j2ee.internal.earcreation.EARNatureRuntime;
-import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationDataModelProvider;
 import org.eclipse.jst.j2ee.web.datamodel.properties.IWebComponentCreationDataModelProperties;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
@@ -116,10 +114,11 @@ public class CreateWebProjectCommand extends SimpleCommand {
     }
     
     boolean areAssociated = false;
-    if (projectExists && earExists)
-    {
-      areAssociated = J2EEUtils.isEARAssociated(webProject, earProject);
-    }
+//  TODO Remove old Nature refs
+//    if (projectExists && earExists)
+//    {
+//      areAssociated = J2EEUtils.isEARAssociated(webProject, earProject);
+//    }
     
     boolean serverRequiresEARRemoval = true;
     try
@@ -194,7 +193,8 @@ public class CreateWebProjectCommand extends SimpleCommand {
       earProject = root.getProject(earProjectName_);
       
       //Associate the Web project and the EAR project
-      J2EEUtils.associateWebProject(webProject, earProject);
+//    TODO Remove old Nature refs
+      //J2EEUtils.associateWebProject(webProject, earProject);
       
       //Add to server
       Status mmStatus = ServerUtils.getInstance().modifyModules(env, existingServer_, ResourceUtils.getModule(webProject) , true, new NullProgressMonitor());
@@ -266,7 +266,8 @@ public class CreateWebProjectCommand extends SimpleCommand {
       }
       
       //Associate the Web project and the EAR project
-      J2EEUtils.associateWebProject(webProject, earProject);
+//    TODO Remove old Nature refs
+      //J2EEUtils.associateWebProject(webProject, earProject);
       
       boolean earAddedToServerFinal = ServerUtil.containsModule(existingServer_,ResourceUtils.getModule(earProject), new NullProgressMonitor());      
       if (!earAddedToServerFinal)
@@ -302,8 +303,9 @@ public class CreateWebProjectCommand extends SimpleCommand {
         IProject earProject = root.getProject(earProjectName_);
         if (earProject != null && earProject.exists())
         {
-          EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
-          int earVersion = ear.getJ2EEVersion();
+        //TODO Remove old Nature refs
+          //EARNatureRuntime ear = EARNatureRuntime.getRuntime(earProject);
+          int earVersion = J2EEUtils.getJ2EEVersion(earProject);
           projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(earVersion));
           finalJ2EEVersion = String.valueOf(earVersion);
         }
@@ -442,44 +444,44 @@ public class CreateWebProjectCommand extends SimpleCommand {
     return newEARName;
   }
 
-  
-  private IProject getDefaultEARProject(IProject project) {
-
-    try {
-      EARNatureRuntime[] ears = null;
-      EARNatureRuntime ear = null;
-      ears = J2EEProjectUtilities.getReferencingEARProjects(project);
-      if (ears[0] != null && ears.length >= 1) {
-        // found an EAR containing the web project
-        return ears[0].getProject();
-      }
-
-      if (j2eeVersion_!=null && j2eeVersion_.length()>0)
-      {
-      	ear = J2EEUtils.getEAR(Integer.parseInt(j2eeVersion_));
-      }
-      else
-      {
-        ear = J2EEUtils.get12EAR();
-        if (ear == null)
-          ear = J2EEUtils.get13EAR();
-        if (ear == null)
-          ear = J2EEUtils.getEAR(J2EEVersionConstants.J2EE_1_4_ID);
-      }
-      
-      if (ear != null)
-        return ear.getProject();
-      else {
-        String earName = getNewEARName();
-        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        return root.getProject(earName);
-      }
-    }
-    catch (Exception e) {
-      return null;
-    }
-
-  }
+  //TODO Remove old Nature refs
+//  private IProject getDefaultEARProject(IProject project) {
+//
+//    try {
+//      EARNatureRuntime[] ears = null;
+//      EARNatureRuntime ear = null;
+//      ears = J2EEProjectUtilities.getReferencingEARProjects(project);
+//      if (ears[0] != null && ears.length >= 1) {
+//        // found an EAR containing the web project
+//        return ears[0].getProject();
+//      }
+//
+//      if (j2eeVersion_!=null && j2eeVersion_.length()>0)
+//      {
+//      	ear = J2EEUtils.getEAR(Integer.parseInt(j2eeVersion_));
+//      }
+//      else
+//      {
+//        ear = J2EEUtils.get12EAR();
+//        if (ear == null)
+//          ear = J2EEUtils.get13EAR();
+//        if (ear == null)
+//          ear = J2EEUtils.getEAR(J2EEVersionConstants.J2EE_1_4_ID);
+//      }
+//      
+//      if (ear != null)
+//        return ear.getProject();
+//      else {
+//        String earName = getNewEARName();
+//        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+//        return root.getProject(earName);
+//      }
+//    }
+//    catch (Exception e) {
+//      return null;
+//    }
+//
+//  }
 
   /**
    * @param earProjectName
