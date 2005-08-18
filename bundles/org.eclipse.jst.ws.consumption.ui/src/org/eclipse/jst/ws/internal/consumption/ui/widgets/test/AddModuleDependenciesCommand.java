@@ -21,12 +21,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.applicationclient.internal.creation.IApplicationClientNatureConstants;
-import org.eclipse.jst.j2ee.commonarchivecore.internal.helpers.ArchiveManifest;
-import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
-import org.eclipse.jst.j2ee.internal.project.IWebNatureConstants;
-import org.eclipse.jst.j2ee.internal.project.J2EENature;
-import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
@@ -124,19 +118,20 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 
   private void addJAROrModuleDependency(IProject project, String compName, String uri) throws IOException, CoreException
   {
-    J2EENature nature = null;
-    if (J2EEUtils.isWebComponent(project, compName))
-      nature = getWebNature(project);
-    else if (J2EEUtils.isAppClientComponent(project, compName))
-      nature = getAppClientNature(project);
-    else if (J2EEUtils.isEJBComponent(project, compName))
-      nature = getEJBNature(project);
-    if (nature != null)
-    {
-      ArchiveManifest manifest = J2EEProjectUtilities.readManifest(project);
-      manifest.mergeClassPath(new String[]{uri});
-      J2EEProjectUtilities.writeManifest(project, manifest);
-    }
+	  //TODO use components API
+//    J2EENature nature = null;
+//    if (J2EEUtils.isWebComponent(project, compName))
+//      nature = getWebNature(project);
+//    else if (J2EEUtils.isAppClientComponent(project, compName))
+//      nature = getAppClientNature(project);
+//    else if (J2EEUtils.isEJBComponent(project, compName))
+//      nature = getEJBNature(project);
+//    if (nature != null)
+//    {
+//      ArchiveManifest manifest = J2EEProjectUtilities.readManifest(project);
+//      manifest.mergeClassPath(new String[]{uri});
+//      J2EEProjectUtilities.writeManifest(project, manifest);
+//    }
   }
 
   private void addBuildPath(IProject referencingProject, IProject referencedProject) throws JavaModelException
@@ -151,54 +146,6 @@ public class AddModuleDependenciesCommand extends SimpleCommand
       newCp[newCp.length - 1] = JavaCore.newProjectEntry(referencedProject.getFullPath());
       javaProject.setRawClasspath(newCp, new NullProgressMonitor());
     }
-  }
-
-  private J2EENature getWebNature(IProject project)
-  {
-    try
-    {
-      return (J2EENature)project.getNature(IWebNatureConstants.J2EE_NATURE_ID);
-    }
-    catch (CoreException ce)
-    {
-    }
-    return null;
-  }
-
-  private J2EENature getAppClientNature(IProject project)
-  {
-    for (int i = 0; i < IApplicationClientNatureConstants.APPCLIENT_NATURE_IDS.length; i++)
-    {
-      try
-      {
-        return (J2EENature)project.getNature(IApplicationClientNatureConstants.APPCLIENT_NATURE_IDS[i]);
-      }
-      catch (CoreException ce)
-      {
-      }
-    }
-    return null;
-  }
-
-  private J2EENature getEJBNature(IProject project)
-  {
-    try
-    {
-      // ksc return
-      // (J2EENature)project.getNature(IEJBNatureConstants.EJB_20_NATURE_ID);
-      return (J2EENature)project.getNature(IEJBNatureConstants.NATURE_ID);
-    }
-    catch (CoreException ce)
-    {
-    }
-    try
-    {
-      return (J2EENature)project.getNature(IEJBNatureConstants.NATURE_ID);
-    }
-    catch (CoreException ce)
-    {
-    }
-    return null;
   }
 
   private IProject getEARProject(IProject sampleProject)

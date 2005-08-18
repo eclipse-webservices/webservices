@@ -23,7 +23,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jst.j2ee.internal.project.J2EENature;
+import org.eclipse.jst.ws.internal.ui.dialog.DialogUtils;
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -76,11 +76,8 @@ public class DialogResourceBrowser extends Dialog
     if (root instanceof IProject)
     {
       IProject p = (IProject)moduleRoot;
-      J2EENature nature = (J2EENature) J2EENature.getRegisteredRuntime(p);
-      if (nature != null)
-      {
-        moduleRoot = nature.getModuleServerRoot();
-      }
+     
+        moduleRoot = p;
     
     }
 

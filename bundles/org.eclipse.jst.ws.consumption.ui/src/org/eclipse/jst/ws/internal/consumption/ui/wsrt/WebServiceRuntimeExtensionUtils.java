@@ -3,14 +3,11 @@ package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.TypeSelectionFilter;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceTypeImpl;
@@ -470,30 +467,30 @@ public class WebServiceRuntimeExtensionUtils
    * @deprecated  
    * 	Should be refactored in future 
    */
-  public static boolean requiresEJBProject(String typeId)
-  {
-    IWebServiceType wst = getWebServiceTypeById(typeId);
-    if (wst != null)
-    {
-      IConfigurationElement elem = wst.getConfigurationElement();
-      String includedNatures = elem.getAttribute("includeNatures");
-      if (includedNatures==null || includedNatures.length()==0)
-      {
-        return false;
-      }
-      else
-      {
-        StringTokenizer st = new StringTokenizer(includedNatures);
-        if(st.hasMoreTokens())
-        {
-          String firstIncludedNature = st.nextToken();
-          if (firstIncludedNature.equals(IEJBNatureConstants.NATURE_ID))
-            return true;
-        }
-      }
-    }
-    return false;
-  }  
+//  public static boolean requiresEJBProject(String typeId)
+//  {
+//    IWebServiceType wst = getWebServiceTypeById(typeId);
+//    if (wst != null)
+//    {
+//      IConfigurationElement elem = wst.getConfigurationElement();
+//      String includedNatures = elem.getAttribute("includeNatures");
+//      if (includedNatures==null || includedNatures.length()==0)
+//      {
+//        return false;
+//      }
+//      else
+//      {
+//        StringTokenizer st = new StringTokenizer(includedNatures);
+//        if(st.hasMoreTokens())
+//        {
+//          String firstIncludedNature = st.nextToken();
+//          if (firstIncludedNature.equals(IEJBNatureConstants.NATURE_ID))
+//            return true;
+//        }
+//      }
+//    }
+//    return false;
+//  }  
   
   /*
    * @param typeId will be a String of the format "0/implId"

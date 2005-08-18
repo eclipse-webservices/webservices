@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.j2ee.internal.project.IEJBNatureConstants;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.fragments.ServicePreAssemblyFragment;
 import org.eclipse.jst.ws.internal.consumption.fragments.ServicePreDeployFragment;
@@ -465,30 +464,30 @@ public class WebServiceServerRuntimeTypeRegistry implements CommandRegistry
    * @deprecated  
    * 	Should be refactored in future 
    */
-  public boolean requiresEJBProject(String typeId)
-  {
-    IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeId);
-    if (wst != null)
-    {
-      IConfigurationElement elem = wst.getConfigurationElement();
-      String includedNatures = elem.getAttribute("includeNatures");
-      if (includedNatures==null || includedNatures.length()==0)
-      {
-        return false;
-      }
-      else
-      {
-        StringTokenizer st = new StringTokenizer(includedNatures);
-        if(st.hasMoreTokens())
-        {
-          String firstIncludedNature = st.nextToken();
-          if (firstIncludedNature.equals(IEJBNatureConstants.NATURE_ID))
-            return true;
-        }
-      }
-    }
-    return false;
-  }
+//  public boolean requiresEJBProject(String typeId)
+//  {
+//    IWebServiceType wst = WebServiceServerRuntimeTypeRegistry.getInstance().getWebServiceTypeById(typeId);
+//    if (wst != null)
+//    {
+//      IConfigurationElement elem = wst.getConfigurationElement();
+//      String includedNatures = elem.getAttribute("includeNatures");
+//      if (includedNatures==null || includedNatures.length()==0)
+//      {
+//        return false;
+//      }
+//      else
+//      {
+//        StringTokenizer st = new StringTokenizer(includedNatures);
+//        if(st.hasMoreTokens())
+//        {
+//          String firstIncludedNature = st.nextToken();
+//          if (firstIncludedNature.equals(IEJBNatureConstants.NATURE_ID))
+//            return true;
+//        }
+//      }
+//    }
+//    return false;
+//  }
   
   /**
    * Returns a list of valid projects for the Web service type with an id of typeId.

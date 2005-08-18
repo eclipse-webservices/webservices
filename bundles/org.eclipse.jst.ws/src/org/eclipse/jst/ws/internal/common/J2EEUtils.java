@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.common;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -21,7 +20,6 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -38,8 +36,6 @@ import org.eclipse.jst.j2ee.ejb.SessionType;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
-import org.eclipse.jst.j2ee.internal.earcreation.IEARNatureConstants;
-import org.eclipse.jst.j2ee.internal.project.J2EENature;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
@@ -102,11 +98,12 @@ public final class J2EEUtils {
 	 * @deprecated use getJ2EEVersion(IProject, String)
 	 */
 	public static int getJ2EEVersion(IProject p) {
-	  	J2EENature nature = J2EENature.getRegisteredRuntime(p);
-	  	if (nature != null)
-	  	{
-	  		return nature.getJ2EEVersion();
-	  	}
+		//TODO switch to use component versions
+//	  	J2EENature nature = J2EENature.getRegisteredRuntime(p);
+//	  	if (nature != null)
+//	  	{
+//	  		return nature.getJ2EEVersion();
+//	  	}
 	  	return -1;
 	}
 
@@ -828,21 +825,21 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated pls request a new method if necessary
 	 */
-	public static IProject[] getIProjectsFromJ2EENatures(Vector j2eenatureVector) {
-		IProject[] projects = new IProject[j2eenatureVector == null
-				? 0
-				: j2eenatureVector.size()];
-		Enumeration e = j2eenatureVector.elements();
-		int i = 0;
-		while (e.hasMoreElements()) {
-			J2EENature nature = (J2EENature) e.nextElement();
-			IProject project = nature.getProject();
-			projects[i] = project;
-			i++;
-		}
-
-		return projects;
-	}
+//	public static IProject[] getIProjectsFromJ2EENatures(Vector j2eenatureVector) {
+//		IProject[] projects = new IProject[j2eenatureVector == null
+//				? 0
+//				: j2eenatureVector.size()];
+//		Enumeration e = j2eenatureVector.elements();
+//		int i = 0;
+//		while (e.hasMoreElements()) {
+//			J2EENature nature = (J2EENature) e.nextElement();
+//			IProject project = nature.getProject();
+//			projects[i] = project;
+//			i++;
+//		}
+//
+//		return projects;
+//	}
 	
 	/**
 	 * Get a J2EE 1.2 EAR Project. Returns null if no J2EE 1.2 EAR Projects
@@ -1539,14 +1536,14 @@ public final class J2EEUtils {
 	 * 
 	 * @deprecated // use isEARComponent
 	 */
-	public static boolean isEARProject(IProject project) {
-		try {
-			if (project.hasNature(IEARNatureConstants.NATURE_ID))
-				return true;
-		} catch (CoreException e) {
-		}
-		return false;
-	}
+//	public static boolean isEARProject(IProject project) {
+//		try {
+//			if (project.hasNature(IEARNatureConstants.NATURE_ID))
+//				return true;
+//		} catch (CoreException e) {
+//		}
+//		return false;
+//	}
 
 	/**
 	 * 

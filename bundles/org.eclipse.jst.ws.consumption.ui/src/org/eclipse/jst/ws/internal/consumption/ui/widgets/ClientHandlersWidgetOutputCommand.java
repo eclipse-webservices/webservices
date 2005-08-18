@@ -22,7 +22,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.impl.JavaClassImpl;
-import org.eclipse.jst.j2ee.internal.J2EEEditModel;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.webservice.internal.wsclient.impl.Webservice_clientFactoryImpl;
 import org.eclipse.jst.j2ee.webservice.wsclient.Handler;
@@ -37,6 +36,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.common.internal.emf.utilities.EtoolsCopyUtility;
+import org.eclipse.wst.common.internal.emfworkbench.integration.EditModel;
 
 /*
  * Provide a way to externalize the edited fields and create new handlers
@@ -59,7 +59,7 @@ public class ClientHandlersWidgetOutputCommand extends SimpleCommand {
 
   private Collection wsServiceRefs_;
 
-  private J2EEEditModel editModel_;
+  private EditModel editModel_;
 
   private Object accessorKey_;
 
