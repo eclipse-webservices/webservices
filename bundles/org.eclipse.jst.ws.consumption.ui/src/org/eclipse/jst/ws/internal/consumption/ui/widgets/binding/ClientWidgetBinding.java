@@ -21,6 +21,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerInstToIServ
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.CheckWSDLValidationCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand;
@@ -258,6 +259,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       add( new SimpleFragment( new WSDLSelectionWidgetDefaultingCommand(), ""));
       add( new SimpleFragment( "WSDLSelectionWidgetWrapper" ) );
       add( new SimpleFragment( new WSDLSelectionOutputCommand(), ""));
+      add( new SimpleFragment( new CheckWSDLValidationCommand(), ""));
       add( new SimpleFragment( new ClientRuntimeSelectionWidgetDefaultingCommand(), ""));
 	  //add( new TestCommandFactoryFragment2() );
       add( new SimpleFragment( "ClientRuntimeSelectionWidget" ) );

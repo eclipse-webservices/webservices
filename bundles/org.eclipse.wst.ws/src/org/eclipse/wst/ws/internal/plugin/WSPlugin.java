@@ -5,6 +5,8 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSDLValidationContext;
+import org.eclipse.wst.ws.internal.preferences.PersistentWaitForWSDLValidationContext;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -17,6 +19,9 @@ public class WSPlugin extends Plugin {
 
 	// Resource bundle.
 	private ResourceBundle resourceBundle;
+	
+	private PersistentWSDLValidationContext wsdlValidationContext_;
+	private PersistentWaitForWSDLValidationContext waitForWsdlValidationContext_;
 
 	/**
 	 * The constructor.
@@ -26,6 +31,15 @@ public class WSPlugin extends Plugin {
 		plugin = this;
 	}
 
+	/**
+	 * Returns the singleton instance of this plugin. Equivalent to calling
+	 * (WSPlugin)Platform.getPlugin("org.eclipse.wst.ws");
+	 * @return The WSPlugin singleton.
+	 */
+	 static public WSPlugin getInstance() {
+	   return plugin;
+	 }
+	 
 	/**
 	 * This method is called upon plug-in activation
 	 */
@@ -82,5 +96,31 @@ public class WSPlugin extends Plugin {
 			resourceBundle = null;
 		}
 		return resourceBundle;
+	}
+	
+	 /**
+	 * Get WSDL Valiation Context
+	 * 
+	 */ 
+
+	public PersistentWSDLValidationContext getWSDLValidationContext() {
+		if (wsdlValidationContext_ == null) {
+			wsdlValidationContext_ = new PersistentWSDLValidationContext();
+			wsdlValidationContext_.load();
+		}
+		return wsdlValidationContext_;
+	}
+	
+	/**
+	 * Get Wait for WSDL Valiation Context
+	 * 
+	 */ 
+
+	public PersistentWaitForWSDLValidationContext getWaitForWSDLValidationContext() {
+		if (waitForWsdlValidationContext_ == null) {
+			waitForWsdlValidationContext_ = new PersistentWaitForWSDLValidationContext();
+			waitForWsdlValidationContext_.load();
+		}
+		return waitForWsdlValidationContext_;
 	}
 }

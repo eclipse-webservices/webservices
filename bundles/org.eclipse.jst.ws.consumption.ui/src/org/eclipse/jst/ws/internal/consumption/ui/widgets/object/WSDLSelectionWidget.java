@@ -19,6 +19,11 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.IJobManager;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
@@ -50,6 +55,8 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSDLValidationContext;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 
@@ -63,6 +70,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   private Composite parent_;
   private Listener  statusListener_;
   private WSDLSelectionTreeWidget tree;
+  private ValidationMessageViewerWidget msgViewer_;
   
   /*CONTEXT_ID PCON0001 for the WSDL Selection Page*/
   private final String INFOPOP_PCON_PAGE = "PCON0001";
@@ -75,12 +83,32 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   private final String INFOPOP_PCON_BUTTON_BROWSE_WSDL = "PCON0003";
   private Button wsBrowseButton_;
   
+  private ValidateWSDLJob validateWSDLJob_;
+  private JobChangeAdapter    jobChangeAdapter_;
+
+  
   public WSDLSelectionWidget()
   {
     pluginId_ = "org.eclipse.jst.ws.consumption.ui";
     msgUtils_ = new MessageUtils( pluginId_ + ".plugin", this );
     wsFilter_ = new FileExtensionFilter(new String[] {"wsdl", "wsil", "html"});
     webServicesParser = WSDLParserFactory.getWSDLParser();
+    
+    final Runnable handleValidationMessages = new Runnable()
+    {
+	  public void run() 
+      {
+		  msgViewer_.setInput(validateWSDLJob_.getValidationMessages());
+      }
+    };
+    
+    jobChangeAdapter_ = new JobChangeAdapter()
+    {
+      public void done(IJobChangeEvent event) 
+      {   	
+    	Display.getDefault().asyncExec( handleValidationMessages );
+      }
+    };
   }
   
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
@@ -110,7 +138,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
           handleWebServiceURIModifyEvent();
         }
       });
-    webServiceURI.addListener( SWT.Modify, statusListener );
+//    webServiceURI.addListener( SWT.Modify, statusListener );
 
     wsBrowseButton_ = uiUtils.createPushButton( wsdlGroup, "BUTTON_BROWSE", "TOOLTIP_PCON_BUTTON_BROWSE_WS", INFOPOP_PCON_BUTTON_BROWSE_WSDL );
     wsBrowseButton_.addSelectionListener(
@@ -130,6 +158,10 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     tree = new WSDLSelectionTreeWidget();
     tree.addControls(parent, statusListener);
     tree.setWebServicesParser(webServicesParser);
+    
+    msgViewer_ = new ValidationMessageViewerWidget();
+    msgViewer_.addControls(parent, statusListener);
+    
     return this;
   }
   
@@ -190,7 +222,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     if (Timer.isRunning())
       return new SimpleStatus("", msgUtils_.getMessage("PAGE_MSG_LOADING_WEB_SERVICE_URI"), Status.ERROR);
     */
-
+	
     // Validate the String representation of the Web service URI
     // For example, is it pointing to an existing resource in the workspace?
     String wsPath  = webServiceURI.getText();
@@ -199,12 +231,17 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     else if( wsPath.indexOf(':') < 0 )
     {
       IResource res = ResourceUtils.findResource(wsPath);
-      if( res == null )
+      if( res == null ) {
+    	  msgViewer_.clearInput();
         return new SimpleStatus("", msgUtils_.getMessage("PAGE_MSG_NO_SUCH_FILE", new Object[] {wsPath}), Status.ERROR);
-      else if( res.getType() != IResource.FILE )
+      }
+      else if( res.getType() != IResource.FILE ) {
+    	  msgViewer_.clearInput();
         return new SimpleStatus("", msgUtils_.getMessage("PAGE_MSG_INVALID_WEB_SERVICE_URI"), Status.ERROR);
+      }
     }
 
+    
     // Validate the content of the Web service URI
     // For example, is selection a WSDL URI?
     if (!Timer.isRunning() && tree.isEnabled())
@@ -213,22 +250,91 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       if (status != null)
       {
         int severity = status.getSeverity();
-        if (severity == Status.ERROR || severity == Status.WARNING)
+        if (severity == Status.ERROR || severity == Status.WARNING) {
+        	msgViewer_.clearInput();
           return status;
+        }
       }
     }
     else
     {
-      if( wsPath.indexOf(':') < 0 )
-      {
-        String wsdlURI = iFile2URI((IFile)ResourceUtils.findResource(wsPath));
-        if (webServicesParser.getWSDLDefinition(wsdlURI) == null)
-          return new SimpleStatus("", msgUtils_.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL"), Status.ERROR);
-      }
+    	if( wsPath.indexOf(':') < 0 )
+        {
+          String wsdlURI = iFile2URI((IFile)ResourceUtils.findResource(wsPath));
+          if (webServicesParser.getWSDLDefinition(wsdlURI) == null) {
+        	  msgViewer_.clearInput();
+            return new SimpleStatus("", msgUtils_.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL"), Status.ERROR);
+          }
+        }
     }
+    
+    
+    if (!Timer.isRunning()) {
+    	String wsdlURI1 = wsPath;
+    	 boolean isRemote = true;
+    	if (tree.isEnabled()) { // is wsil
+    		wsdlURI1 = tree.getWsdlURI();
+    		if (wsdlURI1.startsWith("file:")) {
+    			isRemote = false;
+    		}
+    	} else { // is wsil
+    	
+    		if( wsPath.indexOf(':') < 0 )
+    		{      	// not remote
+    			isRemote = false;
+    			wsdlURI1 = iFile2URI((IFile)ResourceUtils.findResource(wsPath));
+    		}
+    	}
+  	  
+  	  validateWSDL(wsdlURI1, isRemote);
+    }
+    
 
     // OK status
     return new SimpleStatus( "" );
+  }
+  
+  private void validateWSDL (String wsdlURI, boolean isRemote) {
+
+	  String validationSelection = WSPlugin.getInstance().getWSDLValidationContext().getPersistentWSDLValidation();;
+	  if ((PersistentWSDLValidationContext.VALIDATE_ALL_WSDL.equals(validationSelection)) ||
+			  (PersistentWSDLValidationContext.VALIDATE_REMOTE_WSDL.equals(validationSelection) && isRemote)) {
+
+		  IJobManager    jobManager     = Platform.getJobManager();
+		  Job[]          jobs           = jobManager.find( ValidateWSDLJob.VALIDATE_WSDL_JOB_FAMILY );
+		  ValidateWSDLJob existingValidateWSDLJob = null;
+		  
+		  boolean startWSDLValidation = true;
+		  if( jobs.length > 0 )
+		  {
+			  for (int i=0; i<jobs.length; i++) {
+				  existingValidateWSDLJob = (ValidateWSDLJob)jobs[i];
+				  
+				  if (existingValidateWSDLJob.getState() != Job.NONE) { 
+					  // Job running or to be run
+					  // If the job is validating the same wsdlURI, let it finish running and ignore this one.
+					  // It is not for the same wsdlURI, cancel the job and schedule this one.
+
+					  if (!wsdlURI.equals(existingValidateWSDLJob.getWsdlURI())) {
+						  existingValidateWSDLJob.cancel();
+					  } else {						  
+						  startWSDLValidation = false;
+					  }
+				  } 
+			  }
+		  } 
+		  
+		  if (startWSDLValidation) {
+			  startWSDLValidationJob(wsdlURI);
+		  }
+	  }
+	  return;
+  }
+  
+  private void startWSDLValidationJob (String wsdlURI) {
+	  validateWSDLJob_ = new ValidateWSDLJob(wsdlURI);
+	  validateWSDLJob_.addJobChangeListener( jobChangeAdapter_ );
+	  validateWSDLJob_.schedule();
   }
   
   private IFile uri2IFile(String uri)

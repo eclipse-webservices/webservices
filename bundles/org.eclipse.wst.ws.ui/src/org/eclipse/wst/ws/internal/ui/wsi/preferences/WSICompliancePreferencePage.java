@@ -11,7 +11,6 @@
 package org.eclipse.wst.ws.internal.ui.wsi.preferences;
 
 import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -21,16 +20,22 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSDLValidationContext;
+import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 
 
 
-public class WSICompliancePreferencePage extends PreferencePage implements IWorkbenchPreferencePage, SelectionListener
+public class WSICompliancePreferencePage extends PreferencePage implements IWorkbenchPreferencePage, SelectionListener, Listener
 
 {
   private MessageUtils msgUtils_;
@@ -64,7 +69,37 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
   private String INFOPOP_PWSI_AP_COMBO_TYPE = WSUIPlugin.ID + ".PWSI0008";
     
   private int savedSSBPSetting_ = -1;
+  
+  private Group validationSelectionGroup_;
+  
+  private Label wsdlValidationLabel_;
+  private Button validateNoWsdlButton_;
+  private Button validateRemoteWsdlButton_;
+  private Button validateAllWsdlButton_;
+  private Label waitForWsdlValidationLabel_;
+  private Button waitForWSDLValidationCheckbox_;
+  
 
+  /*
+   * CONTEXT_ID PWRS0009 for the no wsdl validation radio button of the profile validation preference page
+   */
+  private String INFOPOP_PWSI_RADIO_WSDLVAL_NONE = WSUIPlugin.ID + ".PWSI0009";
+  /*
+   * CONTEXT_ID PWRS0010 for the wsdl validation on remote document radio button of the profile validation preference page
+   */
+  private String INFOPOP_PWSI_RADIO_WSDLVAL_REMOTE = WSUIPlugin.ID + ".PWSI00010";
+  /*
+   * CONTEXT_ID PWRS0011 for the wsdl validation on all document radio button of the profile validation preference page
+   */
+  private String INFOPOP_PWSI_RADIO_WSDLVAL_ALL = WSUIPlugin.ID + ".PWSI0011";
+  /*
+   * CONTEXT_ID PWRS0012 for the wsdl validation label of the profile validation preference page
+   */
+  private String INFOPOP_PWSI_WSDLVAL_LABEL = WSUIPlugin.ID + ".PWSI0012";
+  /*
+   * CONTEXT_ID PWRS0013 for the wait for wsdl validation checkbox of the profile validation preference page
+   */
+  private String INFOPOP_PWSI_BUTTON_WAIT_FOR_WSDLVAL = WSUIPlugin.ID + ".PWSI0013";
 
  /**
    * Creates preference page controls on demand.
@@ -86,7 +121,7 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     helpSystem.setHelp(parent,INFOPOP_PWSI_PAGE);
 
     GridLayout gl = new GridLayout();
-    gl.numColumns = 2;
+    gl.numColumns = 1;
     gl.marginHeight = 0;
     gl.marginWidth = 0;
 
@@ -120,16 +155,53 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     wsi_ssbp_Types_.add(msgUtils_.getMessage("WARN_NON_WSI"));
     wsi_ssbp_Types_.add(msgUtils_.getMessage("IGNORE_NON_WSI"));
   
+    // WSDL validation preferences
+    validationSelectionGroup_ = new Group(wsi_Composite, SWT.NONE);
+    gl = new GridLayout();
+    gl.marginHeight = 0;
+    gl.marginWidth = 0;
+    validationSelectionGroup_.setLayout(gl);
+    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+    validationSelectionGroup_.setLayoutData(gd);
+    
+    wsdlValidationLabel_ = new Label(validationSelectionGroup_, SWT.NONE);
+    wsdlValidationLabel_.setText(msgUtils_.getMessage("LABEL_WSDLVAL"));
+    wsdlValidationLabel_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_WSDLVAL_LABEL"));
+    helpSystem.setHelp(wsdlValidationLabel_, INFOPOP_PWSI_WSDLVAL_LABEL);
+    
+    validateNoWsdlButton_ = new Button(validationSelectionGroup_, SWT.RADIO);
+    validateNoWsdlButton_.setText(msgUtils_.getMessage("LABEL_WSDLVAL_NONE"));
+    validateNoWsdlButton_.addListener(SWT.Selection, this);
+    validateNoWsdlButton_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_RADIO_WSDLVAL_NONE"));
+    helpSystem.setHelp(validateNoWsdlButton_, INFOPOP_PWSI_RADIO_WSDLVAL_NONE);
+    
+    validateRemoteWsdlButton_ = new Button(validationSelectionGroup_, SWT.RADIO);
+    validateRemoteWsdlButton_.setText(msgUtils_.getMessage("LABEL_WSDLVAL_REMOTE"));
+    validateRemoteWsdlButton_.addListener(SWT.Selection, this);
+    validateRemoteWsdlButton_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_RADIO_WSDLVAL_REMOTE"));
+    helpSystem.setHelp(validateRemoteWsdlButton_, INFOPOP_PWSI_RADIO_WSDLVAL_REMOTE);
+    
+    validateAllWsdlButton_ = new Button(validationSelectionGroup_, SWT.RADIO);
+    validateAllWsdlButton_.setText(msgUtils_.getMessage("LABEL_WSDLVAL_ALL"));
+    validateAllWsdlButton_.addListener(SWT.Selection, this);
+    validateAllWsdlButton_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_RADIO_WSDLVAL_ALL"));
+    helpSystem.setHelp(validateAllWsdlButton_, INFOPOP_PWSI_RADIO_WSDLVAL_ALL);
+    
+    new Label(validationSelectionGroup_, SWT.NONE);;
+    
+    waitForWsdlValidationLabel_ = new Label(validationSelectionGroup_, SWT.NONE);
+    waitForWsdlValidationLabel_.setText(msgUtils_.getMessage("LABEL_WAIT_FOR_WSDLVAL"));
+    waitForWsdlValidationLabel_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_LABEL_WAIT_FOR_WSDLVAL"));
+    
+    waitForWSDLValidationCheckbox_ = new Button(validationSelectionGroup_, SWT.CHECK);
+    waitForWSDLValidationCheckbox_.setText(msgUtils_.getMessage("BUTTON_WAIT_FOR_WSDLVAL"));            
+    waitForWSDLValidationCheckbox_.addListener(SWT.Selection, this);
+    waitForWSDLValidationCheckbox_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_BUTTON_WAIT_FOR_WSDLVAL"));
+    helpSystem.setHelp(waitForWSDLValidationCheckbox_, INFOPOP_PWSI_BUTTON_WAIT_FOR_WSDLVAL);
+    
     initializeValues();
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);    
     return parent;
-  }
-
-  private Button createRadioButton( Composite parent, String text )
-  {
-    Button button = new Button( parent, SWT.RADIO );
-    button.setText( text );
-    return button;
   }
 
   /**
@@ -175,6 +247,17 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     savedSSBPSetting_ = -1;  // do not restore saved SSBP setting
     processAPSelection(apSelection);
 
+    PersistentWSDLValidationContext wsdlValidationContext = WSPlugin.getInstance().getWSDLValidationContext();
+    String validationSelection = wsdlValidationContext.getDefault();
+    wsdlValidationContext.updateWSDLValidation(validationSelection);
+    validateNoWsdlButton_.setSelection(false);
+    validateRemoteWsdlButton_.setSelection(false);
+    validateAllWsdlButton_.setSelection(false);
+    processWSDLValidationSelection(validationSelection);
+    
+    waitForWSDLValidationCheckbox_.setSelection(WSPlugin.getInstance().getWaitForWSDLValidationContext().getDefault());
+    WSPlugin.getInstance().getWaitForWSDLValidationContext().setWaitForWSDLValidation(WSPlugin.getInstance().getWaitForWSDLValidationContext().getDefault());
+    
   }
 
   /**
@@ -190,9 +273,26 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     wsi_ap_Types_.select(apSelection);
     savedSSBPSetting_ = -1;  // do not restore saved SSBP setting
     processAPSelection(apSelection);
-   }
+    
+    String validationSelection = WSPlugin.getInstance().getWSDLValidationContext().getPersistentWSDLValidation();
+    processWSDLValidationSelection(validationSelection);
+    
+    waitForWSDLValidationCheckbox_.setSelection(WSPlugin.getInstance().getWaitForWSDLValidationContext().getPersistentWaitForWSDLValidation());
+  }
 
-  private String getWSISelection(PersistentWSIContext context)
+  private void processWSDLValidationSelection(String validationSelection) {
+
+		if (PersistentWSDLValidationContext.VALIDATE_NO_WSDL.equals(validationSelection)) {
+			validateNoWsdlButton_.setSelection(true);
+		} else if (PersistentWSDLValidationContext.VALIDATE_REMOTE_WSDL.equals(validationSelection)) {
+			validateRemoteWsdlButton_.setSelection(true);
+		} else if (PersistentWSDLValidationContext.VALIDATE_ALL_WSDL.equals(validationSelection)) {
+			validateAllWsdlButton_.setSelection(true);
+		}
+
+	}
+
+private String getWSISelection(PersistentWSIContext context)
   {
     
     String WSIvalue = context.getPersistentWSICompliance();
@@ -261,4 +361,32 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
 	
   }
   
+  /**
+   * Called when an event occurs on the page. Handles the event and revalidates the page.
+   * 
+   * @param event
+   *          The event that occured.
+   */
+  public void handleEvent(Event event) {
+	  
+	  if (waitForWSDLValidationCheckbox_ == event.widget) {		   		  
+		  WSPlugin.getInstance().getWaitForWSDLValidationContext().setWaitForWSDLValidation(waitForWSDLValidationCheckbox_.getSelection());
+	  } else {
+		  String wsdlValdationSelection = null;
+		  if (validateNoWsdlButton_ == event.widget) {
+			  wsdlValdationSelection = PersistentWSDLValidationContext.VALIDATE_NO_WSDL;
+		  }
+		  else if (validateRemoteWsdlButton_ == event.widget) {
+			  wsdlValdationSelection = PersistentWSDLValidationContext.VALIDATE_REMOTE_WSDL;
+		  }
+		  else if (validateAllWsdlButton_ == event.widget) {
+			  wsdlValdationSelection = PersistentWSDLValidationContext.VALIDATE_ALL_WSDL;
+		  }
+		  WSPlugin.getInstance().getWSDLValidationContext().updateWSDLValidation(wsdlValdationSelection);
+	  }
+	  
+	  
+  }
+
+
 }
