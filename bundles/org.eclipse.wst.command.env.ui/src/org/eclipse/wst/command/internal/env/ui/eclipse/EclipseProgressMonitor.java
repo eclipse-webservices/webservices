@@ -17,7 +17,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMoni
 
 public class EclipseProgressMonitor implements ProgressMonitor
 {
-  IProgressMonitor monitor_;
+  protected IProgressMonitor monitor_;
   
   public EclipseProgressMonitor()
   {

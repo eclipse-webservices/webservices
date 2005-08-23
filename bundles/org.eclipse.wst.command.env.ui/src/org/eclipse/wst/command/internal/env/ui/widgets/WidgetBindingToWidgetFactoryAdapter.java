@@ -45,7 +45,7 @@ public class WidgetBindingToWidgetFactoryAdapter
 	{
 	  SimpleWidgetContributor widget = new SimpleWidgetContributor();
 	  widget.setTitle( pageName );
-	  widget.setDescription( pageName );
+	  widget.setDescription( pageTitle );
 	  widget.setFactory( new MyWidgetContributorFactory( widgetFactory ) );
 	  
 	  widgetContributor_.put( fragmentId, widget );

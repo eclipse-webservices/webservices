@@ -78,7 +78,7 @@ public class GSTCLaunchCommand extends SimpleCommand {
     ppc.setProject(testInfo.getGenerationProject());
 	status = ppc.execute(env);
 
-	StartServerCommand serverCommand = new StartServerCommand( true );
+	StartServerCommand serverCommand = new StartServerCommand( true, true );
 	serverCommand.setServerInstanceId( testInfo.getClientExistingServer().getId() );
 	
 	status = serverCommand.execute(env);

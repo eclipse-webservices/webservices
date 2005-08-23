@@ -32,6 +32,7 @@ public class StartServerCommand extends SimpleCommand
   private IProgressMonitor monitor;
   private Log log;
   private boolean forcePublish_;
+  private boolean doAsyncPublish_;
   
 	private String serverInstanceId;
 	
@@ -42,15 +43,17 @@ public class StartServerCommand extends SimpleCommand
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     setDescription(DESCRIPTION);
     setName(LABEL);
-    log = new EclipseLog();
-    forcePublish_ = false;
+    log             = new EclipseLog();
+    forcePublish_   = false;
+    doAsyncPublish_ = true;
   }
-	
-  public StartServerCommand( boolean forcePublish )
+	 
+  public StartServerCommand( boolean forcePublish, boolean doAsyncPublish )
   {
     this();
     
-    forcePublish_ = forcePublish;
+    forcePublish_   = forcePublish;
+    doAsyncPublish_ = doAsyncPublish;
   }
 
   public Status execute(Environment env)
@@ -98,7 +101,7 @@ public class StartServerCommand extends SimpleCommand
       case IServer.PUBLISH_STATE_UNKNOWN:
         if (server.canPublish().getSeverity() == IStatus.OK)
         {
-          status = publish(server, IServer.PUBLISH_CLEAN);
+          status = publish(server, IServer.PUBLISH_INCREMENTAL);
           if (status.getSeverity() == Status.ERROR)
           {
             env.getStatusHandler().reportError(status);
@@ -174,24 +177,33 @@ public class StartServerCommand extends SimpleCommand
     monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_PUBLISHING_SERVER"));
     IRunnableWithProgress runnable = new IRunnableWithProgress()
 	{
-  		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+  		public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
 		{
-  			istatus[0] = server.publish(kind, monitor);
+  			istatus[0] = server.publish(kind, shellMonitor);
 		}  		
 	};
+	
 	try
 	{
-      //IStatus istatus = server.publish(kind, monitor);
-		PlatformUI.getWorkbench().getProgressService().run(true,false,runnable);
+		if( doAsyncPublish_ )
+		{	
+		  PlatformUI.getWorkbench().getProgressService().run(true,false,runnable);
+		}
+		else
+		{
+		  runnable.run( monitor );
+		}
 		
 	}
 	catch(InvocationTargetException ite)
 	{
-		
+	  istatus[0] = new org.eclipse.core.runtime.Status( IStatus.ERROR, "id", 0, ite.getMessage(), ite );
+	  ite.printStackTrace();
 	}
 	catch(InterruptedException ie)
 	{
-		
+	  istatus[0] = new org.eclipse.core.runtime.Status( IStatus.ERROR, "id", 0, ie.getMessage(), ie );
+	  ie.printStackTrace();
 	}
     
     

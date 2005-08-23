@@ -34,7 +34,8 @@ public class ServiceRootFragment extends SequenceFragment
     add( new DeployServiceFragment() );
     add( new SimpleFragment( new PreServiceInstallCommand(), "" ) );
     add( new InstallServiceFragment() );
-    add( new SimpleFragment( new PreServiceRunCommand(), "" ) );
+    add( new SimpleFragment( new PreServiceRunCommand(), 
+    	 "org.eclipse.jst.ws.internal.creation.ui.extension.PreServiceRunCommand" ) );
     add( new RunServiceFragment() );
   }
 

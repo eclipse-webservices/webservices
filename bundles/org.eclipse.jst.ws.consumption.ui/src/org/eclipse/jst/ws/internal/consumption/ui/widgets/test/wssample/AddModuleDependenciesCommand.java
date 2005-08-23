@@ -163,7 +163,7 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 	      env.getStatusHandler().reportError(status);     
 	    }     
 		
-		StartServerCommand startServer = new StartServerCommand(false);
+		StartServerCommand startServer = new StartServerCommand(false, true);
 		startServer.setServerInstanceId(testInfo.getClientExistingServer().getId());
 		status = startServer.execute(env);
 	    if (status.getSeverity()==Status.ERROR)

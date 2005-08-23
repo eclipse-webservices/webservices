@@ -46,6 +46,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
   private Stack                          widgetStackStack_;
   private Hashtable                      widgetTable_;
   private WidgetRegistry                 widgetRegistry_;
+  private Hashtable                      widgetFactoryTable_;
     
   public WizardPageManager( SimpleWidgetRegistry  registry,
                             WizardPageFactory     pageFactory,
@@ -55,14 +56,14 @@ public class WizardPageManager extends SimpleCommandEngineManager
   { 
     super( environment, dataManager );  
     
-  	pageFactory_    = pageFactory;
-  	pageTable_      = new Hashtable();  
-  	registry_       = registry;
-  	wizard_         = wizard;
-	widgetTable_    = new Hashtable();
-	widgetRegistry_ = WidgetRegistry.instance();
-	
-	widgetStackStack_ = new Stack();
+  	pageFactory_        = pageFactory;
+  	pageTable_          = new Hashtable();  
+  	registry_           = registry;
+  	wizard_             = wizard;
+	widgetTable_        = new Hashtable();
+	widgetFactoryTable_ = new Hashtable();
+	widgetRegistry_     = WidgetRegistry.instance();
+	widgetStackStack_   = new Stack();
   }
   
   public Status runForwardToNextStop()
@@ -87,24 +88,31 @@ public class WizardPageManager extends SimpleCommandEngineManager
     
   public boolean hasNextPage()
   {	
-  	nextPage_ = getNextPageInGroup( widgetFactory_, false );
+	 
+    nextPage_ = null;
+    
+	try
+	{
+  	  nextPage_ = getNextPageInGroup( widgetFactory_, false );
 		
 	  if( nextPage_ == null )
 	  {
 	    // If a page is found nextPage_ will be set to its value in the method below.
-  	  engine_.peekForwardToNextStop();
+  	    engine_.peekForwardToNextStop();
 	  }
+	}
+	catch( Throwable exc )
+	{
+	  exc.printStackTrace();
+	}
   	
     return nextPage_ != null;
-	  //return true;
   }
   
   public IWizardPage getNextPage()
   {  	
 	try
 	{
-	  System.out.println( "Start get next page" );
-	
   	  // Need to externalize the data for the current page so that
   	  // when we move forward below the data is available.
   	  if( currentPage_ != null ) currentPage_.getDataEvents().externalize();
@@ -145,7 +153,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
       // since the previous button would be greyed out.  But when the new wizard launches this wizard
       // the previous button is not greyed out and brings the user back to the list wizards to select.
       // Therefore, we must unwind the command engine and get ready for the user to invoke this wizard 
-      // again.
+      // again.  We are assuming here that the first page is never part of a widget group!
   	  undoToLastPage();	  
       currentPage_ = null;
       firstPage_   = null;
@@ -189,17 +197,19 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	    dataManager_.process( dataEvents );  // Push model data into the new page.
   	    dataEvents.internalize();
   	  
-  	    page.validatePageToStatus();
-  	  
-  	    if( currentPage_ != null ) page.setPreviousPage( currentPage_ );
-  	  
-  	    if( firstPage_ == null ) firstPage_ = page;
-  	  
-  	    currentPage_ = page;
+  	    page.validatePageToStatus();  	  
 	  }
 	  catch( Throwable exc )
 	  {
 		exc.printStackTrace();
+	  }
+	  finally
+	  {
+	  	if( currentPage_ != null ) page.setPreviousPage( currentPage_ );
+	    	  
+	  	if( firstPage_ == null ) firstPage_ = page;
+	  	  
+	  	currentPage_ = page;  
 	  }
   	}
   }
@@ -265,7 +275,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
           	
 	if( nextPage_ == null )
 	{
-	  INamedWidgetContributorFactory factory = widgetRegistry_.getFactory( fragment.getId() );
+	  INamedWidgetContributorFactory factory = getWidgetFactory( fragment.getId() );
 	  
 	  if( factory != null )
 	  {
@@ -278,8 +288,6 @@ public class WizardPageManager extends SimpleCommandEngineManager
   
   protected boolean nextFragment( CommandFragment fragment )
   {
-	//System.out.println( "Next frag=" + fragment.getClass().getName() + " stack size=" + widgetStackStack_.size() );
-	
     // If the super class nextFragment want us to stop then we will stop right away.
     if( !super.nextFragment( fragment ) ) return false;
     
@@ -292,15 +300,13 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	}
   	else
   	{
-	  widgetFactory_ = widgetRegistry_.getFactory( fragment.getId() );
+	  widgetFactory_ = getWidgetFactory( fragment.getId() );
 	  
 	  if( widgetFactory_ != null )
 	  {
 		widgetStack_ = new Stack();
 		
 		StackEntry entry = new StackEntry();
-		
-		widgetFactory_.registerDataMappings( dataManager_.getMappingRegistry() );
 		
 		entry.factory_ = widgetFactory_;
 		entry.stack_   = widgetStack_;
@@ -319,7 +325,6 @@ public class WizardPageManager extends SimpleCommandEngineManager
   
   protected boolean undoFragment( CommandFragment fragment )
   {
-	//System.out.println( "Undo frag=" + fragment.getClass().getName() + " stack size=" + widgetStackStack_.size() );
   	lastUndoFragment_ = fragment;
   	
   	return true;
@@ -360,8 +365,6 @@ public class WizardPageManager extends SimpleCommandEngineManager
   
   private void undoToLastPage()
   {
-	System.out.println( "Undo to last page" );
-	
     boolean stackEmpty  = false;
 	boolean doneUndoing = false;
     
@@ -369,28 +372,36 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	{
 	  stackEmpty = engine_.undoToLastStop();
 	  
-	  IWizardPage page = getPage( lastUndoFragment_ );
-		
-	  if( page == null && lastUndoFragment_ != null )
+	  IWizardPage page = null;
+	  
+	  if( lastUndoFragment_ != null )
 	  {
-		// Check to see if a group page fragment was found.
-		INamedWidgetContributorFactory factory = widgetRegistry_.getFactory( lastUndoFragment_.getId() );
+	    page = getPage( lastUndoFragment_ );
+		
+	    if( page == null )
+	    {
+		  // Check to see if a group page fragment was found.
+		  INamedWidgetContributorFactory factory = getWidgetFactory( lastUndoFragment_.getId() );
 		  
-		if( factory != null )
-		{
-		  StackEntry entry = (StackEntry)widgetStackStack_.peek();
+		  if( factory != null )
+		  {
+		    StackEntry entry = (StackEntry)widgetStackStack_.peek();
 			
-		  widgetFactory_ = entry.factory_;
-		  widgetStack_   = entry.stack_;	
+		    widgetFactory_ = entry.factory_;
+		    widgetStack_   = entry.stack_;	
 			
-		  INamedWidgetContributor currentWidget = (INamedWidgetContributor)widgetStack_.peek();
+		    if( widgetStack_ != null && !widgetStack_.empty() )
+		    {
+		      INamedWidgetContributor currentWidget = (INamedWidgetContributor)widgetStack_.peek();
 			
-		  page = getPage( currentWidget );
-		}
+		      page = getPage( currentWidget );
+		    }
+		  }
+	    }
 	  }
 	  
 	  doneUndoing = page != null || stackEmpty;
-	}	
+	}
   }
   
   private PageWizardDataEvents getPage( CommandFragment fragment )
@@ -427,6 +438,26 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	}
 	
 	return page;
+  }
+  
+  private INamedWidgetContributorFactory getWidgetFactory( String id )
+  {
+	INamedWidgetContributorFactory factory = (INamedWidgetContributorFactory)widgetFactoryTable_.get( id );
+	
+	if( factory == null )
+	{
+	  // The factory is not in our table so we will try the registry.
+	  factory = widgetRegistry_.getFactory( id );
+	  
+	  if( factory != null )
+	  {
+	    widgetFactoryTable_.put( id, factory );
+	    factory.registerDataMappings( dataManager_.getMappingRegistry() );
+	    dataManager_.process( factory );
+	  }
+	}
+	
+	return factory;
   }
   
   private class StackEntry
