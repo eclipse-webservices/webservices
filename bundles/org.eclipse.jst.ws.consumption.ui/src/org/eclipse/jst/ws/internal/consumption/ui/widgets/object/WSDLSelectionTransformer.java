@@ -15,7 +15,7 @@ import java.net.MalformedURLException;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jst.j2ee.webservice.internal.wsclient.impl.ServiceRefImpl;
+import org.eclipse.jst.j2ee.webservice.wsclient.internal.impl.ServiceRefImpl;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;

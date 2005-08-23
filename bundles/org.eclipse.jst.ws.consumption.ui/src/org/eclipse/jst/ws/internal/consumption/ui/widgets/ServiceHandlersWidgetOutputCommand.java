@@ -16,12 +16,12 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.eclipse.jst.j2ee.webservice.internal.wsdd.impl.WsddFactoryImpl;
 import org.eclipse.jst.j2ee.webservice.wsdd.Handler;
 import org.eclipse.jst.j2ee.webservice.wsdd.PortComponent;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
 import org.eclipse.jst.j2ee.webservice.wsdd.WsddFactory;
 import org.eclipse.jst.j2ee.webservice.wsdd.WsddResource;
+import org.eclipse.jst.j2ee.webservice.wsdd.internal.impl.WsddFactoryImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
