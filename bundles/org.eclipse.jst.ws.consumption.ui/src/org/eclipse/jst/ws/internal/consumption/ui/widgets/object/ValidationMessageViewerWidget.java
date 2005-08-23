@@ -87,8 +87,8 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 	table_.setLayoutData(gd);
 	table_.setHeaderVisible(true);
 	table_.setLinesVisible(true);
+	table_.setToolTipText(msgUtils.getMessage("TOOLTIP_TABLE_VALIDATE_MESSAGE") );
 	TableLayout tableLayout = new TableLayout();
-	int maxWidth = DEFAULT_COLUMN_WIDTH;
 	for (int i = 0; i < columns_.length; i++)
 	{
 	  TableColumn tableColumn = new TableColumn(table_, SWT.NONE);
