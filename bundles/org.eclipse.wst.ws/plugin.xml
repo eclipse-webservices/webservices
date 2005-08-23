@@ -6,9 +6,9 @@
    <extension
          point="org.eclipse.wst.ws.locator">
       <webServiceLocator
-            class="org.eclipse.wst.ws.internal.wsfinder.WSDLLocator"
-            id="org.eclipse.wst.ws.internal.wsfinder.WSDLLocator"
-            label="wsdllocator">
+            class="org.eclipse.wst.ws.internal.wsfinder.WorkspaceWSDLLocator"
+            id="org.eclipse.wst.ws.internal.wsfinder.WorkspaceWSDLLocator"
+            label="workspacewsdllocator">
          org.eclipse.wst.ws.internal.wsfinder
       </webServiceLocator>
    </extension>

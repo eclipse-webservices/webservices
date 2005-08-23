@@ -19,5 +19,4 @@ public class WebServiceLocatorExtension extends WebServiceExtensionImpl {
 	  {
 	    super(configElement);
 	  }
-
 }

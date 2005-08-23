@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.wst.ws" id="webServiceLocator" name="XP_WSLOCATOR"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         Extension point is provided to register locators that extend AbstractWebServiceLocator.  These locators are used by WebServiceFinder to locate web services for the purpose of web service discovery.
       </documentation>
    </annotation>
 
@@ -47,7 +47,12 @@
          <attribute name="id" type="string">
             <annotation>
                <documentation>
-                  
+                  &lt;p&gt;
+&lt;code&gt;id&lt;/code&gt;Unique identifier for the extension.
+&lt;p&gt;
+&lt;code&gt;class&lt;/code&gt;The fully qualified class name for the locator class which extends AbstractWebServiceLocator.
+&lt;p&gt;
+&lt;code&gt;label&lt;/code&gt;A label for this locator.  
                </documentation>
             </annotation>
          </attribute>
@@ -91,7 +96,7 @@
          <meta.section type="apiInfo"/>
       </appInfo>
       <documentation>
-         [Enter API information here.]
+         Extenders should implement AbstractWebServiceLocator.  The WebServiceLocatorRegistry uses this extension point to retrieve all locators.
       </documentation>
    </annotation>
 

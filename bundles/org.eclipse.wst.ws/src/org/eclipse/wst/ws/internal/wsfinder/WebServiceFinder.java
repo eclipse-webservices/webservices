@@ -21,6 +21,9 @@ import org.eclipse.core.runtime.IConfigurationElement;
 /**
  * @author joan
  *
+ * WebServiceFinder is a singleton which finds all extenders and returns a comprehensive list of WebServiceInfo objects.
+ * Finds web services by calling locators extending {@link org.eclipse.wst.ws.internal.wsfinder.AbstractWebServiceLocator} 
+ * which have been registered with {@link org.eclipse.wst.ws.internal.wsfinder.WebServiceLocatorRegistry}.
  */
 
 public class WebServiceFinder {
@@ -43,6 +46,17 @@ public class WebServiceFinder {
 		return instance;
 	}
 		
+	/**
+	 * Returns an iterator of WebServiceInfo objects which represent web services found by locators that
+	 * have registered using the org.eclipse.wst.ws.locator extension point.  Currently returns all web 
+	 * services found for all registered locators.  Locators must extend {@link AbstractWebServiceLocator}.
+	 * 
+	 * Callers can use the getter methods on the WebServiceInfo object to retrieve information on the 
+	 * web services found.  The WebServiceFinder cannot guarantee the level of detail contained in WebServiceInfo
+	 * objects returned.  This is left to the locator implementations.
+	 *  
+	 * @return iterator of WebServiceInfo objects
+	 */
 	public Iterator getWebServices()
 	{
 		Vector webServices = new Vector();

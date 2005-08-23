@@ -6,6 +6,15 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.ws.internal.ext.WebServiceExtension;
 import org.eclipse.wst.ws.internal.ext.WebServiceExtensionRegistryImpl;
 
+/**
+ * @author joan
+ *
+ * Retrieves locators which extend {@link org.eclipse.wst.ws.internal.wsfinder.AbstractWebServiceLocator}.
+ * Locators must create an extension for the org.eclipse.wst.ws.locator extension point in order to be retrieved by
+ * the registry.
+ */
+
+
 public class WebServiceLocatorRegistry extends WebServiceExtensionRegistryImpl {
 
 	 // Copyright
@@ -41,9 +50,10 @@ public class WebServiceLocatorRegistry extends WebServiceExtensionRegistryImpl {
 	  }
 
 	  /**
-	  * Children must implement how they get the IConfigurationElement[] 
-	  * @return IConfigurationElement[] an array of elements particular to that
-	  * extension
+	  * Contacts platform registry and gets all locators which have registered 
+	  *  using the org.eclipse.wst.ws.locator extension point.
+	  * @return IConfigurationElement[] an array of elements which contain locators 
+	  * extending AbstractWebServiceLocator.
 	  */
 	  public IConfigurationElement[] getConfigElements()
 	  {
