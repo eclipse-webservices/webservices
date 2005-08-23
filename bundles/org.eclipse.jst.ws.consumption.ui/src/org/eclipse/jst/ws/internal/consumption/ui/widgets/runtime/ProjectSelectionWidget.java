@@ -361,6 +361,11 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	componentType_ = type;  
   }
   
+  public String getComponentType( )
+  {
+	  return componentType_;
+  }
+  
   public boolean getNeedEAR()
   {
     return needEAR_;

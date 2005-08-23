@@ -36,6 +36,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 
 /*
  *
@@ -351,6 +352,18 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 			isEJBRequired = WebServiceRuntimeExtensionUtils.requiresEJBProject(webServiceTypeId);
         }
         rskejb */
+        if (serviceComponentName!=null && serviceComponentName.length()>0)
+        {
+          String compTypeId = J2EEUtils.getComponentTypeId(serviceProj, serviceComponentName);
+          if (!compTypeId.equals(projectWidget_.getComponentType()))
+          {
+        	//Construct the error message
+        	String compTypeLabel = getCompTypeLabel(projectWidget_.getComponentType()); 
+        	finalStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_INVALID_PROJECT_TYPE",new String[]{serviceProjName, compTypeLabel}),Status.ERROR);        	        	
+          }
+        }
+        // begin remove
+        /*
         boolean isEJBRequired = WebServiceRuntimeExtensionUtils.requiresEJBProject(webServiceRuntimeId, webServiceTypeId);
         if (isEJBRequired && serviceComponentName!=null && serviceComponentName.length()>0 && !J2EEUtils.isEJBComponent(serviceProj, serviceComponentName))
         {
@@ -360,6 +373,8 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
         {
           finalStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_INVALID_WEB_PROJECT",new String[]{serviceProjName}),Status.ERROR);
         }
+        */
+        // end remove
       }
     }
     
@@ -418,5 +433,33 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 
     return null;
 
-  }  
+  }
+  
+  //Returns a label corresponding to the componentTypeId. This is hard-coded for now.
+  //This is something the flexible project framework should provide. Enhancement 106785 has been
+  //opened.
+  private String getCompTypeLabel(String typeId)
+  {
+	  if (typeId.equals(IModuleConstants.JST_WEB_MODULE))
+	  {
+		  return msgUtils_.getMessage("LABEL_CLIENT_COMP_TYPE_WEB");
+	  }
+	  else if (typeId.equals(IModuleConstants.JST_EJB_MODULE))
+	  {
+		  return msgUtils_.getMessage("LABEL_CLIENT_COMP_TYPE_EJB");
+	  }
+	  else if (typeId.equals(IModuleConstants.JST_APPCLIENT_MODULE))
+	  {
+		  return msgUtils_.getMessage("LABEL_CLIENT_COMP_TYPE_APP_CLIENT");
+	  }
+	  else if (typeId.equals(IModuleConstants.JST_UTILITY_MODULE))
+	  {
+		  return msgUtils_.getMessage("LABEL_CLIENT_COMP_TYPE_CONTAINERLESS");
+	  }
+	  else
+	  {
+		  //No known label, return the typeId itself. 
+		  return typeId;
+	  }	  
+  }
 }
