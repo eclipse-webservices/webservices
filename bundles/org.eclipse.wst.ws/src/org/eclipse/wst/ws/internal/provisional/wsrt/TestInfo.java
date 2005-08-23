@@ -17,6 +17,9 @@ public class TestInfo {
   private String proxyBean;
   private String setEndpointMethod;
   private String clientProject;
+  private String clientModule;
+  private String clientEARProject;
+  private String clientEARModule;
   private BooleanSelection[] methods;
   private String serviceServerTypeID;
   private String clientServerTypeID;
@@ -24,7 +27,7 @@ public class TestInfo {
   private IServer clientExistingServer;
   private List endpoints;
   private String wsdlServiceURL;
-  
+    
 
   /**
   * This is the folder the user has chosen to generate any jsps 
@@ -100,6 +103,19 @@ public class TestInfo {
   }
 	  
   /**
+   * The clientModule contains the client artifacts including the 
+   * module   
+   * @param clientProject String
+   */
+   public void setClientModule(String clientModule){
+     this.clientModule = clientModule;	  
+   }
+   
+   public String getClientModule(){
+     return clientModule;	  
+   }
+  
+  /**
   * These are methods on the proxybean the user has checked ones 
   * they want included in the test client     
   * @param methods
@@ -150,6 +166,31 @@ public class TestInfo {
     return serviceExistingServer;   
   }
   
+  /**
+   * This is the String if required
+   * @param clientEARProject
+   */
+   public void setClientEARProject(String clientEARProject){
+ 	this.clientEARProject = clientEARProject;   
+   }
+   
+   public String getClientEARProject(){
+     return clientEARProject;   
+   }
+   
+   
+   /**
+    * This is the String if required
+    * @param clientEARProject
+    */
+    public void setClientEARModule(String clientEARModule){
+  	this.clientEARModule = clientEARModule;   
+    }
+    
+    public String getClientEARModule(){
+      return clientEARModule;   
+    }
+   
   /**
   * This is the IServer if required
   * @param sampleExistingServer

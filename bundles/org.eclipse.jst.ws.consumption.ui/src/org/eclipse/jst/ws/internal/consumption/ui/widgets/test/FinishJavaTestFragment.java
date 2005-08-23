@@ -45,7 +45,6 @@ public class FinishJavaTestFragment extends BooleanFragment
 	};
     setCondition(condition);
     javaTestRoot.add(new SimpleFragment(new TestClientDepartureInitCommand(), ""));
-    javaTestRoot.add(new SimpleFragment(new AddModuleDependenciesCommand(), ""));
     javaTestRoot.add(new SimpleFragment(new BuildProjectCommand(), ""));
     setTrueFragment(javaTestRoot);
   }

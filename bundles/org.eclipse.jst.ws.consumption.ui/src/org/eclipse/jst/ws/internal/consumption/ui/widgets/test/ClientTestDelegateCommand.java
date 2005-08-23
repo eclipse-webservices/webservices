@@ -60,6 +60,8 @@ public class ClientTestDelegateCommand extends SimpleCommand
   private String clientProject;
   private String clientP;
   private String clientC;
+  private String clientEarProjectName;
+  private String clientEarComponentName;
   private String clientServer;
   private TypeRuntimeServer clientIds;
   private TypeRuntimeServer serverIds;
@@ -163,6 +165,9 @@ public class ClientTestDelegateCommand extends SimpleCommand
 	testInfo.setProxyBean(proxyBean);
 	testInfo.setSetEndpointMethod(setEndpointMethod);
 	testInfo.setClientProject(clientP);
+	testInfo.setClientModule(clientC);
+	testInfo.setClientEARProject(clientEarProjectName);
+	testInfo.setClientEARModule(clientEarComponentName);
 	testInfo.setMethods(methods);
 	
 	//if this is a client scenario the service stuff is empty
@@ -303,6 +308,18 @@ public class ClientTestDelegateCommand extends SimpleCommand
   	return isTestWidget;
   }
 
+  public void setClientEarProjectName(String clientEarProjectName)
+  {
+     this.clientEarProjectName = clientEarProjectName;
+  }
+  
+  public void setClientEarComponentName(String clientEarComponentName)
+  {
+	this.clientEarComponentName = clientEarComponentName;
+  }
+  
+  
+  
   /**
    * @param setEndpointMethod The setEndpointMethod to set.
    */

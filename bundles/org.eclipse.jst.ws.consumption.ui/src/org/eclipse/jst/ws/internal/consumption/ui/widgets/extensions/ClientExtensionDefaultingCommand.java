@@ -389,6 +389,16 @@ public class ClientExtensionDefaultingCommand extends SimpleCommand
     this.clientEarComponentName_ = clientEarComponentName;
   }
   
+  public String getClientEarProjectName()
+  {
+    return clientEarProjectName_;
+  }
+  
+  public String getClientEarComponentName()
+  {
+    return clientEarComponentName_;
+  }
+  
   public void setServiceServerFactoryId(String id)
   {
   	serviceServerFactoryId_ = id;

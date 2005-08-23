@@ -33,12 +33,10 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExten
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.AddModuleDependenciesCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestDelegateCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishDefaultCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishJavaTestFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceClientTestArrivalCommand;
@@ -364,31 +362,28 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", CreateClientProjectCommand.class, "J2EEVersion", null);      
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientNeedEAR", CreateClientProjectCommand.class, "NeedEAR", null);
       
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProject", WebServiceClientTestArrivalCommand.class);
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProjectEAR", WebServiceClientTestArrivalCommand.class);
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "Runtime2ClientTypes", WebServiceClientTestArrivalCommand.class);
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", WebServiceClientTestArrivalCommand.class, "ClientIds", null);
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", WebServiceClientTestArrivalCommand.class, "J2eeVersion", null);
-      
+	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProjectEAR", WebServiceClientTestArrivalCommand.class);
+	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProject", WebServiceClientTestArrivalCommand.class);
+            
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", ClientTestFragment.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", ClientTestFragment.class );     
       
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProject",ClientTestDelegateCommand.class);
+	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientEarProjectName", ClientTestDelegateCommand.class);
+	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientEarComponentName", ClientTestDelegateCommand.class);
+	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProject",ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServer", ClientTestDelegateCommand.class);
-      
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProject", AddModuleDependenciesCommand.class );
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", AddModuleDependenciesCommand.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "WsdlURI", ClientTestDelegateCommand.class);
       
       // Map ClientExtensionOutputCommand command.
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", WebServiceClientTestArrivalCommand.class);      
+	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", ClientTestDelegateCommand.class);      
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestFragment.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", FinishTestFragment.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestDelegateCommand.class);
-      dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", FinishJavaTestFragment.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "SetEndpointMethod", ClientTestDelegateCommand.class);
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ServerInstanceId", FinishDefaultCommand.class);
+
 	  
       // GetMonitorCommand
       dataRegistry.addMapping(GetMonitorCommand.class, "Endpoints", ClientTestDelegateCommand.class);
@@ -406,7 +401,6 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       
       // Map WebServiceClientTestArrivalCommand command.
       dataRegistry.addMapping(TestDefaultingFragment.class, "TestFacility",ClientTestDelegateCommand.class);
-      dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "ProxyBean",ClientTestDelegateCommand.class);
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "TestFacility",ClientTestDelegateCommand.class);
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "Folder",ClientTestDelegateCommand.class);
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "JspFolder",ClientTestDelegateCommand.class);
@@ -415,9 +409,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProject",ClientTestDelegateCommand.class);
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProjectEAR",ClientTestDelegateCommand.class);
       
-      dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProject",AddModuleDependenciesCommand.class);
-      dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProjectEAR",AddModuleDependenciesCommand.class);
-      
+            
       //Mappings to enable peek-ahead for Page 3 of the client wizard
       dataRegistry.addMapping( ClientRuntimeSelectionWidgetDefaultingCommand.class, "WebService", DevelopClientFragment.class );  
       dataRegistry.addMapping( ClientRuntimeSelectionWidgetDefaultingCommand.class, "Environment", DevelopClientFragment.class );  

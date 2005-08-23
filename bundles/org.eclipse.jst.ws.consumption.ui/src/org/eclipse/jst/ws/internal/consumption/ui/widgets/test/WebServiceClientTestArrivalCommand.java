@@ -20,10 +20,8 @@ import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
-import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
@@ -33,10 +31,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
-import org.eclipse.wst.server.core.IServer;
 
 
 /**
@@ -48,43 +42,33 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
 {
   public static final String DEFAULT_WEB_MODULE_ROOT = "WebContent";
   public static final String DEFAULT_SAMPLE_WEB_PROJECT_EXT = "Sample";
-  public static final String DEFAULT_SAMPLE_EAR_PROJECT_EXT = "EAR";
+  
 
   private String LABEL = "WebServiceClientTestArrivalTask";
   private String DESCRIPTION = "default actions";
   private MessageUtils msgUtils;
   public static String SAMPLE_DIR = "sample";
-  public String SET_ENDPOINT = "setEndPoint(java.net.URL)";
-  public String GET_ENDPOINT = "getEndPoint()";
-
   private String PROXY = "Proxy";
 
   private ScenarioContext scenarioContext;
  
   
   private String clientProject;
-  private String clientP;
-  private String clientComponent;
-  private IProject clientIProject;
   private String clientProjectEAR;
-  private String sampleServerTypeID;
-  private IServer sampleExistingServer;
+  private String clientP;
+  private String clientC;
+  private IProject clientIProject;
   private WebServiceTestRegistry testRegistry;
-  private SelectionList testFacilities;
   private String folder;
   private String jspFolder;
   private BooleanSelection[] methods;
   private String proxyBean;
-  private SelectionListChoices runtime2ClientTypes;
   private String sampleProject;
   private String sampleP;
   private String sampleC;
-  private String sampleEAR;
-  private TypeRuntimeServer clientIds;
-  private String j2eeVersion;
+  private String sampleProjectEAR;
 
-  private String launchedServiceTestName;
-  private boolean runClientTest=true;
+  
   
   /**
   * Constructs a new WebServiceClientTestArrivalTask object with the given label and description.
@@ -105,15 +89,13 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
   	
 	Status status = new SimpleStatus( "" );
   	
-	sampleProjectAndEarSetup();
+	sampleProjectAndEarSetup(env);
   	
     //Get the sample Folder ready
     StringBuffer sb = new StringBuffer();
-	IProject project = ProjectUtilities.getProject(sampleP);
-	IPath path = J2EEUtils.getWebContentPath(project,sampleC);
+	IPath path= null;
 	
-	
-	sb.append("/").append(path.toString()).append("/");
+	sb.append("/").append(sampleC).append("/").append(DEFAULT_WEB_MODULE_ROOT).append("/");
     folder = SAMPLE_DIR + getBean(); 
         
     sb.append(folder);
@@ -173,50 +155,36 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
     methods = tempMethods;
     return status;
   }
- 
+  public static final String DEFAULT_SAMPLE_EAR_PROJECT_EXT = "EAR";
   
-  public static String WEBID = "org.eclipse.jst.ws.consumption.ui.clientProjectType.Web"; 
-  public static String EJBID = "org.eclipse.jst.ws.consumption.ui.clientProjectType.EJB";
-  public static String APPCLIENT = "org.eclipse.jst.ws.consumption.ui.clientProjectType.AppClient";
-  
-  
-  private void sampleProjectAndEarSetup()
+  private void sampleProjectAndEarSetup(Environment env)
   {
-  	if(clientProject == null) return;
+	if(clientProject == null) return;
   	else{
 	  int index = clientProject.indexOf("/");
 	  clientP = clientProject.substring(0,index);
-	  clientComponent = clientProject.substring(index + 1);
+	  clientC = clientProject.substring(index + 1);
   	}
 	  
 	clientIProject = (IProject)ProjectUtilities.getProject(clientP);
-  	//move to the web level
-  	SelectionListChoices slc = runtime2ClientTypes.getChoice();
-  	String projectType = slc.getList().getSelection();
-  	if(projectType.equals(IModuleConstants.JST_WEB_MODULE)){
+  	
+  	if(J2EEUtils.isWebComponent(clientIProject, clientC)){
       sampleProject = clientProject;
 	  sampleP = clientP;
-	  sampleC = clientComponent;
-  	}  	
+	  sampleC = clientC;
+ 	}  	
   	else{ 
-  	  sampleProject = clientProject + DEFAULT_SAMPLE_WEB_PROJECT_EXT;	
-  	  sampleP = clientP;
-	  sampleC = clientComponent + DEFAULT_SAMPLE_WEB_PROJECT_EXT;
+  	  sampleP = clientP + DEFAULT_SAMPLE_WEB_PROJECT_EXT;
+	  sampleC = clientC + DEFAULT_SAMPLE_WEB_PROJECT_EXT;
+	  sampleProject = sampleP + "/" + sampleC;
+	  
+	  
+	}  
+	sampleProjectEAR = clientProjectEAR;
+	if (sampleProjectEAR == null || sampleProjectEAR.length()==0){
+	  sampleProjectEAR = sampleP + DEFAULT_SAMPLE_EAR_PROJECT_EXT + "/" + sampleC + DEFAULT_SAMPLE_EAR_PROJECT_EXT;	
 	}
-  	sampleEAR = slc.getChoice().getChoice().getList().getSelection();
-  	if (sampleEAR == null || sampleEAR.length()==0)
-  	{
-  	  //Create a default name if an EAR is needed.
-		//Use the server type
-		String targetId = ServerUtils.getRuntimeTargetIdFromFactoryId(clientIds.getServerId());
-		if (targetId!=null && targetId.length()>0)
-		{
-		  if (ServerUtils.isTargetValidForEAR(targetId,j2eeVersion))
-	  	  {
-		    sampleEAR = (new StringBuffer(sampleProject)).append(DEFAULT_SAMPLE_EAR_PROJECT_EXT).toString();
-	  	  }
-		}  	  
-  	}
+	
   }
     
   //getters and setters
@@ -234,10 +202,7 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
   }
   
   
-  public boolean getRunClientTest()
-  {
-  	return runClientTest;
-  }
+ 
   
   public String getFolder()
   {
@@ -254,11 +219,6 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
     return methods;  
   }
     
-  public String getSampleProjectEAR()
-  {
-  	return sampleEAR;
-  }
-  
   public String getSampleProject()
   {
   	return sampleProject;
@@ -269,43 +229,22 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
     this.clientProject = clientProject;
   }
   
+    
+  public void setClientProjectEAR(String clientProjectEAR)
+  {
+    this.clientProjectEAR = clientProjectEAR;
+  }
+  
+  
   public void setProxyBean(String proxyBean)
   {
   	this.proxyBean = proxyBean;
   }
   
-  public String getProxyBean()
+  public String getSampleProjectEAR()
   {
-    return proxyBean;
-  }
-
-  public void setClientProjectEAR(String clientProjectEAR)
-  {
-    this.clientProjectEAR = clientProjectEAR;
-  }	
-  
-  public void setRuntime2ClientTypes( SelectionListChoices selectionList )
-  {
-    runtime2ClientTypes = selectionList;  
-  }
-
-  public void setLaunchedServiceTestName(String launchedServiceTestName)
-  {
-  	this.launchedServiceTestName = launchedServiceTestName;
-  }
-  /**
-   * @param clientIds The clientIds to set.
-   */
-  public void setClientIds(TypeRuntimeServer clientIds)
-  {
-    this.clientIds = clientIds;
+    return sampleProjectEAR;
   }
   
-  /**
-   * @param version The j2eeVersion to set.
-   */
-  public void setJ2eeVersion(String version)
-  {
-    j2eeVersion = version;
-  }  
+
 }

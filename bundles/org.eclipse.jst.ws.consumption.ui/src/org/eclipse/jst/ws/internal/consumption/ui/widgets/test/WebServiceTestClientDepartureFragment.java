@@ -17,6 +17,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample.AddModuleDependenciesCommand;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
@@ -33,8 +34,7 @@ public class WebServiceTestClientDepartureFragment extends SequenceFragment
   public WebServiceTestClientDepartureFragment()
   {
   	add(new SimpleFragment(new FinishDefaultCommand(),""));
-  	add(new FinishJavaTestFragment());
-  	add(new SimpleFragment(new ClientTestDelegateCommand(),""));
+   	add(new SimpleFragment(new ClientTestDelegateCommand(),""));
   }
 
   public void registerDataMappings(DataMappingRegistry dataRegistry)
@@ -44,8 +44,7 @@ public class WebServiceTestClientDepartureFragment extends SequenceFragment
   	dataRegistry.addMapping(FinishDefaultCommand.class, "SampleExistingServer",AddModuleDependenciesCommand.class);
   	dataRegistry.addMapping(FinishDefaultCommand.class, "SampleServerTypeID",ClientTestDelegateCommand.class);
   	dataRegistry.addMapping(FinishDefaultCommand.class, "SampleExistingServer",ClientTestDelegateCommand.class);
-  	dataRegistry.addMapping(AddModuleDependenciesCommand.class, "sampleProject",BuildProjectCommand.class);
-    
+  	    
   }
 
 }

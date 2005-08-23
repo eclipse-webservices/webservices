@@ -1,11 +1,14 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.InputFileGenerator;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.MethodFileGenerator;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.ResultFileGenerator;
@@ -29,6 +32,7 @@ public class GSTCGenerateCommand extends SimpleCommand {
 	
   private TestInfo testInfo;
   private Model proxyModel;
+  private String jspfolder;
   
   public GSTCGenerateCommand(TestInfo testInfo){
   	this.testInfo = testInfo;
@@ -39,9 +43,10 @@ public class GSTCGenerateCommand extends SimpleCommand {
     Status status = new SimpleStatus( "" );
 	CopyWebServiceUtilsJarCommand copy = new CopyWebServiceUtilsJarCommand();    
 	copy.setSampleProject(testInfo.getGenerationProject());
-  copy.setSampleComponent(testInfo.getGenerationModule());
+    copy.setSampleComponent(testInfo.getGenerationModule());
 	status = copy.execute(env);
 	if (status.getSeverity() == Status.ERROR) return status;
+	setJSPFolder();
 	status = createModel(env);
 	if (status.getSeverity() == Status.ERROR) return status;
 	status = generatePages(env);
@@ -49,6 +54,27 @@ public class GSTCGenerateCommand extends SimpleCommand {
 	return status;   
   }
 
+  private void setJSPFolder(){
+    //if the client is not a webcomponent then the 
+	//sample must have been created, we must now factor in 
+	//flexible projects  
+	  
+	IProject clientIProject = ProjectUtilities.getProject(testInfo.getClientProject());
+    if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject, testInfo.getClientModule())){   
+	  IProject project = ProjectUtilities.getProject(testInfo.getGenerationProject());
+	  IPath path = J2EEUtils.getWebContentPath(project,testInfo.getGenerationModule());
+	  int index = testInfo.getJspFolder().lastIndexOf("/");
+	  String jsp = testInfo.getJspFolder().substring(index + 1);
+	  StringBuffer sb = new StringBuffer();	
+	  sb.append("/").append(path.toString()).append("/").append(jsp);	  
+	  jspfolder = sb.toString();
+	} 
+    else
+	  jspfolder = testInfo.getJspFolder();	
+  
+  
+  }
+  
   //create the model from the resource
   private Status createModel(Environment env) {
     JavaToModelCommand jtmc = new JavaToModelCommand();
@@ -68,9 +94,10 @@ public class GSTCGenerateCommand extends SimpleCommand {
    private Status generatePages(Environment env)
    {
    	Status status = new SimpleStatus( "" );
-     IPath fDestinationFolderPath = new Path(testInfo.getJspFolder());
-     fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
-     IWorkspaceRoot fWorkspace = ResourcesPlugin.getWorkspace().getRoot();
+	IProject sampleIProject = ProjectUtilities.getProject(testInfo.getClientProject()); 
+	IPath fDestinationFolderPath = new Path(jspfolder);
+    fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
+    IWorkspaceRoot fWorkspace = ResourcesPlugin.getWorkspace().getRoot();
 
      IPath pathTest = fDestinationFolderPath.append(TEST_CLIENT);
      IFile fileTest = fWorkspace.getFile(pathTest);
@@ -97,7 +124,7 @@ public class GSTCGenerateCommand extends SimpleCommand {
      IPath pathMethod = fDestinationFolderPath.append(METHOD);
      IFile fileMethod = fWorkspace.getFile(pathMethod);
      MethodFileGenerator methodGenerator = new MethodFileGenerator(INPUT);
-     methodGenerator.setClientFolderPath(testInfo.getJspFolder());
+     methodGenerator.setClientFolderPath(jspfolder);
      GeneratePageCommand gpcMethod = new GeneratePageCommand(EnvironmentUtils.getResourceContext(env), proxyModel,
        methodGenerator,fileMethod);
      //gpcMethod.setStatusMonitor(getStatusMonitor());
@@ -110,7 +137,7 @@ public class GSTCGenerateCommand extends SimpleCommand {
      IPath pathResult = fDestinationFolderPath.append(RESULT);
      IFile fileResult = fWorkspace.getFile(pathResult);
      ResultFileGenerator rfg = new ResultFileGenerator();
-     rfg.setClientFolderPath(testInfo.getJspFolder());
+     rfg.setClientFolderPath(jspfolder);
      rfg.setSetEndpointMethod(testInfo.getSetEndpointMethod());
      GeneratePageCommand gpcResult = new GeneratePageCommand(EnvironmentUtils.getResourceContext(env), proxyModel,
        rfg,fileResult);

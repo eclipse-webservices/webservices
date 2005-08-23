@@ -34,6 +34,7 @@ public class GSTCLaunchCommand extends SimpleCommand {
 		
   private TestInfo testInfo;
   private MessageUtils msgUtils;
+  private String jspfolder;
   
   public GSTCLaunchCommand(TestInfo testInfo){
     this.testInfo = testInfo;
@@ -43,12 +44,33 @@ public class GSTCLaunchCommand extends SimpleCommand {
 		
   public Status execute(Environment env)
   {
-	return launchSample(env);
+      setJSPFolder();
+	  return launchSample(env);
   }
+  private void setJSPFolder(){
+	    //if the client is not a webcomponent then the 
+		//sample must have been created, we must now factor in 
+		//flexible projects  
+		  
+		IProject clientIProject = ProjectUtilities.getProject(testInfo.getClientProject());
+	    if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject, testInfo.getClientModule())){   
+		  IProject project = ProjectUtilities.getProject(testInfo.getGenerationProject());
+		  IPath path = J2EEUtils.getWebContentPath(project,testInfo.getGenerationModule());
+		  int index = testInfo.getJspFolder().lastIndexOf("/");
+		  String jsp = testInfo.getJspFolder().substring(index + 1);
+		  StringBuffer sb = new StringBuffer();	
+		  sb.append("/").append(path.toString()).append("/").append(jsp);	  
+		  jspfolder = sb.toString();
+		} 
+	    else
+		  jspfolder = testInfo.getJspFolder();	
+	  
+	  
+	  }
   
   private Status launchSample (Environment env) {
     Status status = new SimpleStatus( "" );
-	IPath fDestinationFolderPath = new Path(testInfo.getJspFolder());
+	IPath fDestinationFolderPath = new Path(jspfolder);
 	fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
     PublishProjectCommand ppc = new PublishProjectCommand();
     ppc.setServerTypeID(testInfo.getClientServerTypeID());

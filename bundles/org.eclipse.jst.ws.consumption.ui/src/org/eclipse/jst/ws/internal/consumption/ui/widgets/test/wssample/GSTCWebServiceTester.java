@@ -11,6 +11,7 @@ public class GSTCWebServiceTester implements IWebServiceTester  {
 
   public ICommandFactory generate(TestInfo testInfo){
     Vector commands = new Vector();
+	commands.add(new AddModuleDependenciesCommand(testInfo));
 	commands.add(new GSTCGenerateCommand(testInfo));
 	return new SimpleCommandFactory(commands);
   }

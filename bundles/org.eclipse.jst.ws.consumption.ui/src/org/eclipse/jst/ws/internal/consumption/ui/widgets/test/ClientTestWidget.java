@@ -369,6 +369,11 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     jspFolderText_.setText( folder );
   }
   
+  public String getJspFolder()
+  {
+    return jspFolderText_.getText();
+  }
+  
   public void setLaunchedServiceTestName (String launchedServiceTestName)
   {
   	this.launchedServiceTestName = launchedServiceTestName;
