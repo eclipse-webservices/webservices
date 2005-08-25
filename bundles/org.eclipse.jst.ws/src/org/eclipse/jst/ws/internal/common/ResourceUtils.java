@@ -58,7 +58,6 @@ import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
-import org.eclipse.wst.common.frameworks.internal.FlexibleJavaProjectPreferenceUtil;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -1761,10 +1760,11 @@ public final class ResourceUtils {
     }
     
     //TODO we may want to remove this if statement once defect 103366 is resolved.
-    if( !FlexibleJavaProjectPreferenceUtil.getMultipleModulesPerProjectProp() )
-    {
-      clientComponentName = clientProjectName;	
-    }
+    //TODO:  Defect 107997 - Revisit prject and module creation logic
+//    if( !FlexibleJavaProjectPreferenceUtil.getMultipleModulesPerProjectProp() )
+//    {
+//      clientComponentName = clientProjectName;	
+//    }
     
 //    boolean  foundWebProject     = false;
 //    int      i                   = 1;

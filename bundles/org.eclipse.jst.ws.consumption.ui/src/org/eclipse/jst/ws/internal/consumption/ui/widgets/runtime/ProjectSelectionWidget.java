@@ -34,7 +34,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.frameworks.internal.FlexibleJavaProjectPreferenceUtil;
 import org.eclipse.wst.server.core.IRuntime;
 
 public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
@@ -617,21 +616,22 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
       }  
     }
     
-    if( !FlexibleJavaProjectPreferenceUtil.getMultipleModulesPerProjectProp() )
-    {
-      IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectText);
-        
-      if( project != null && project.exists() )
-      {
-    	String            moduleName = module_.getText();
-        IVirtualComponent component  = J2EEUtils.getVirtualComponent( project, moduleName );  
-        
-        if( !component.exists() && !moduleName.equals( projectText ) )
-        {
-          finalStatus = new SimpleStatus("",msgUtils.getMessage("MSG_MODULE_NAME_AND_PROJECT_NAME_NOT_THE_SAME" ),Status.ERROR);   	
-        }
-      }
-    }
+//  TODO:  Defect 107997 - Revisit prject and module creation logic
+//    if( !FlexibleJavaProjectPreferenceUtil.getMultipleModulesPerProjectProp() )
+//    {
+//      IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectText);
+//        
+//      if( project != null && project.exists() )
+//      {
+//    	String            moduleName = module_.getText();
+//        IVirtualComponent component  = J2EEUtils.getVirtualComponent( project, moduleName );  
+//        
+//        if( !component.exists() && !moduleName.equals( projectText ) )
+//        {
+//          finalStatus = new SimpleStatus("",msgUtils.getMessage("MSG_MODULE_NAME_AND_PROJECT_NAME_NOT_THE_SAME" ),Status.ERROR);   	
+//        }
+//      }
+//    }
     
     return finalStatus;
   }
