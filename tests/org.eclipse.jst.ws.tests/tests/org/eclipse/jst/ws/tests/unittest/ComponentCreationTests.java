@@ -26,7 +26,6 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
 	
 	public void testWebComponentCreation(){
 
-        enableFlexProjectPreference();
         createServerRuntime();
         createWebModule(projectName, webComponentName, J2EEVersionConstants.J2EE_1_4_ID);
         createWebModule(projectName, webComponent2Name, J2EEVersionConstants.J2EE_1_3_ID);
@@ -36,9 +35,6 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
         
 	}
   
-    public void enableFlexProjectPreference(){
-      JUnitUtils.enableFlexProjectPreference();
-    }
   
     public void createServerRuntime(){
       
@@ -59,6 +55,7 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       cmc.setModuleType(CreateModuleCommand.WEB);
       cmc.setProjectName(projectNm);
       cmc.setServerFactoryId(SERVERTYPEID_TC50);
+      cmc.setSupportMultipleModules(true);
       cmc.execute(null);
       
       System.out.println("Done creating Web component..."+projectNm+"\""+componentName);      

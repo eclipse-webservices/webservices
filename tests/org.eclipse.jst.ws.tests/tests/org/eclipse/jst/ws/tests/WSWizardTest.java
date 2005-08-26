@@ -58,7 +58,6 @@ public abstract class WSWizardTest extends TestCase
 		monitor.setMonitor(npm);
 		server_ = null;
 		JUnitUtils.hideActionDialogs();
-        JUnitUtils.enableFlexProjectPreference();    
 		installServerRuntime();
 		installServer();
 		installInputData();

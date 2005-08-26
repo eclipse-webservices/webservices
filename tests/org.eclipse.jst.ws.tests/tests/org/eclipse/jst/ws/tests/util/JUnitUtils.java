@@ -43,7 +43,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
-import org.eclipse.wst.common.frameworks.internal.FlexibleJavaProjectPreferenceUtil;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
@@ -274,10 +273,6 @@ public class JUnitUtils {
 		return previousSetting;
 	}
 	
-    public static void enableFlexProjectPreference(){
-      FlexibleJavaProjectPreferenceUtil.setMultipleModulesPerProjectProp( true );     
-    }
-  
 	public static boolean enableOverwrite(boolean enable)
 	{
 		ResourceContext ctx = WebServicePlugin.getInstance().getResourceContext();
@@ -350,6 +345,7 @@ public class JUnitUtils {
         createWeb.setModuleType(CreateModuleCommand.WEB);
 	    createWeb.setJ2eeLevel(j2eeVersion);
 	    createWeb.setServerFactoryId(serverFactoryId);
+	    createWeb.setSupportMultipleModules(true);
 	    return createWeb.execute(env);
 	  }
 	  catch (Exception e){

@@ -22,6 +22,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
@@ -43,6 +44,7 @@ public class CreateModuleCommand extends SimpleCommand
 	private String   serverFactoryId;
 	private String   serverInstanceId_;
 	private Environment env;
+	private boolean supportMultipleModules;
 	
 	private MessageUtils msgUtils;
 	
@@ -128,6 +130,11 @@ public class CreateModuleCommand extends SimpleCommand
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new WebComponentCreationDataModelProvider());
+
+		  if (supportMultipleModules){
+			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
+		  }		  
+		  
 		  projectInfo.setProperty(IWebComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)
             projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
@@ -159,6 +166,9 @@ public class CreateModuleCommand extends SimpleCommand
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new EarComponentCreationDataModelProvider());
+		  if (supportMultipleModules){
+			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
+		  }
 		  projectInfo.setProperty(IEarComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)
               projectInfo.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
@@ -186,6 +196,9 @@ public class CreateModuleCommand extends SimpleCommand
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new EjbComponentCreationDataModelProvider());
+		  if (supportMultipleModules){
+			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
+		  }
 		  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)  
               projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
@@ -221,6 +234,9 @@ public class CreateModuleCommand extends SimpleCommand
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new AppClientComponentCreationDataModelProvider());
+		  if (supportMultipleModules){
+			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
+		  }
 		  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)      
 		      projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
@@ -258,9 +274,8 @@ public class CreateModuleCommand extends SimpleCommand
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new FlexibleJavaProjectCreationDataModelProvider());
 		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.PROJECT_NAME,projectName);
-		  
+  
 		  String runtimeTargetId = null;
-		  
 		  if( serverInstanceId_ == null )
 		  {
 			// We don't have a server instance so we will get the first runtimeTarget from the factory ID.
@@ -329,6 +344,14 @@ public class CreateModuleCommand extends SimpleCommand
 	public void setServerInstanceId( String serverInstanceId )
 	{
 	  serverInstanceId_ = serverInstanceId;
+	}
+
+	public boolean getSupportMultipleModules() {
+		return supportMultipleModules;
+	}
+
+	public void setSupportMultipleModules(boolean supportMultipleModules) {
+		this.supportMultipleModules = supportMultipleModules;
 	}
 
 }
