@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="copyright" content="(C) Copyright IBM Corporation 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright IBM Corporation 2005" />
+<meta name="security" content="public" />
+<meta name="Robots" content="index,follow" />
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<meta name="DC.Type" content="task" />
+<meta name="DC.Title" content="Using the TCP/IP Monitor to test Web services" />
+<meta name="abstract" content="Once you have created your Web service and Web service client, you can monitor the Web service's SOAP traffic using the TCP/IP Monitor." />
+<meta name="description" content="Once you have created your Web service and Web service client, you can monitor the Web service's SOAP traffic using the TCP/IP Monitor." />
+<meta name="DC.Relation" scheme="URI" content="../../org.eclipse.jst.ws.doc.user/concepts/csoap.html" />
+<meta name="DC.Relation" scheme="URI" content="../../org.eclipse.jst.ws.doc.user/concepts/cwsiover.html" />
+<meta name="DC.Relation" scheme="URI" content="../../org.eclipse.jst.ws.doc.user/tasks/twsicomply.html" />
+<meta name="DC.Format" content="XHTML" />
+<meta name="DC.Identifier" content="tmonitor" />
+<meta name="DC.Language" content="en-us" />
+<!-- All rights reserved. Licensed Materials Property of IBM -->
+<!-- US Government Users Restricted Rights -->
+<!-- Use, duplication or disclosure restricted by -->
+<!-- GSA ADP Schedule Contract with IBM Corp. -->
+<link rel="stylesheet" type="text/css" href="../ibmdita.css" />
+<title>Using the TCP/IP or SOAP monitor to test Web services</title>
+</head>
+<body id="tmonitor"><a name="tmonitor"><!-- --></a>
+
+<h1 class="topictitle1">Using the TCP/IP Monitor to test Web services</h1>
+<div><p>Once you have created your Web service and Web service client,
+you can monitor the Web service's SOAP traffic using the TCP/IP Monitor.</p>
+<div class="p"><p> Prerequisites: </p>
+<ul><li>Generate a Web service</li>
+<li>Generate a Proxy and a sample application</li>
+</ul>
+</div>
+<div class="section"><p>When creating a Web service using the Web service or Web service
+client wizards, you can select to set up and run the TCP/IP Monitor automatically.
+Alternately, you can set up the TCP/IP Monitor manually by completing the
+following steps:</p>
+</div>
+<ol><li class="stepexpand"><span>In the sample application, invoke the getEndPoint method. Record
+this endpoint. The default endpoint for a Web service is: </span> <ul><li>WebSphere<sup>®</sup> or
+Apache Axis run-time environment: http://localhost:&lt;port&gt;/&lt;web module
+context root&gt;/services/&lt;port&gt;</li>
+<li>IBM<sup>®</sup> SOAP
+run-time environment: http://localhost:&lt;port&gt;/&lt;web module context root&gt;/servlet/rpcrouter.</li>
+</ul>
+</li>
+<li class="stepexpand"><span>Create a server to act as the TCP/IP Monitor:</span><ol type="a"><li><span>From the Window menu, select <span class="uicontrol">Preferences</span>. </span></li>
+<li><span>In the Preferences window, expand Internet and then select <span class="uicontrol">TCP/IP
+Monitor</span>. </span></li>
+<li><span>Select the <span class="uicontrol">Show TCP/IP Monitor View when there is
+activity</span> check box. </span></li>
+<li><span>Under the TCP/IP Monitors lists, click <span class="uicontrol">Add</span>.
+A New Monitor dialog opens.</span></li>
+<li><span>Specify the following settings: </span></li>
+</ol>
+
+<table border="1" frame="hsides" rules="rows" cellpadding="4" cellspacing="0" summary="" class="choicetableborder">
+<thead><tr><th valign="bottom" align="left" id="d0e68-option">Option</th>
+<th valign="bottom" align="left" id="d0e68-desc">Description</th></tr></thead>
+<tbody><tr><td valign="top" headers="d0e68-option" id="d0e75"><strong>Local monitoring port</strong></td>
+<td valign="top" headers="d0e68-desc d0e75">Specify a unique
+port number on your local machine.</td>
+</tr>
+<tr><td valign="top" headers="d0e68-option" id="d0e80"><strong>Host name</strong></td>
+<td valign="top" headers="d0e68-desc d0e80">Specify the host name or IP address
+of the machine where the server is running.</td>
+</tr>
+<tr><td valign="top" headers="d0e68-option" id="d0e85"><strong>Port</strong></td>
+<td valign="top" headers="d0e68-desc d0e85">Specify the port number of the remote
+server.</td>
+</tr>
+<tr><td valign="top" headers="d0e68-option" id="d0e90"><strong>Type</strong></td>
+<td valign="top" headers="d0e68-desc d0e90">Specify whether the request type from
+the Web browser are sent by HTTP or TCP/IP. If the HTTP option is selected
+the requests from the Web browser are modified so that the HTTP header points
+to the remote machine and separated if multiple HTTP requests are received
+in the same connection. If the TCP/IP option is selected, all the requests
+are sent byte for byte. </td>
+</tr>
+</tbody></table>
+</li>
+<li class="stepexpand"><span>In order to route the Web service through the monitor, the endpoint
+of the Web service client needs to be changed. The TCP/IP Monitor listens
+on port 9081. In the Web browser window used in step 1, invoke the setEndPoint
+method, and change the endpoint so that it directs to port 9081. For example,
+the default would be: <samp class="codeph">http://localhost:9081/web_module_context_root/servlet/rpcrouter</samp> Invoke
+the getEndPoint method again to ensure that your change has been implemented.</span></li>
+<li class="stepexpand"><span>Select a Web service method in the Methods pane. Invoke this method.</span></li>
+<li class="stepexpand"><span>Change to the TCP/IP Monitor view by selecting the TCP/IP Monitor
+tab in the Servers view. This will display request and response pairs that
+are being routed through the TCP/IP Monitor. It will look similar to the following
+picture:  <br /><img src="../images/traffic.gif" alt="Screen capture of request and response traffic" /><br /></span></li>
+<li class="stepexpand"><span>To ensure that your Web service SOAP traffic is WS-I compliant,
+you can generate a log file by clicking the  <img src="../images/wsivalico.gif" alt="WS-I validation icon" /> icon. In the dialog box that opens,
+select a name for the log file and specify where you want it to be stored. </span></li>
+</ol>
+<div class="section">This log file will be validated for WS-I compliance. You can open
+the log file in an XML editor to examine its contents.</div>
+</div>
+<div>
+<div class="linklist"><strong>Related Concepts</strong><br />
+
+<div><a href="../../org.eclipse.jst.ws.doc.user/concepts/csoap.html">SOAP</a></div>
+<div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cwsiover.html">WS-I</a></div></div>
+
+<div class="linklist"><strong>Related Tasks</strong><br />
+
+<div><a href="../../org.eclipse.jst.ws.doc.user/tasks/twsicomply.html">Setting the level of WS-I compliance</a></div></div>
+</div>
+</body>
+</html>
