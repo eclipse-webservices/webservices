@@ -8,8 +8,7 @@ Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
 Export-Package: org.eclipse.jst.ws.axis.consumption.core,
  org.eclipse.jst.ws.internal.axis.consumption.core.command,
- org.eclipse.jst.ws.internal.axis.consumption.core.common,
- org.eclipse.jst.ws.internal.axis.consumption.core.wsfinder
+ org.eclipse.jst.ws.internal.axis.consumption.core.common
 Require-Bundle: org.apache.ant,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
