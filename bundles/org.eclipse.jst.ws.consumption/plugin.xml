@@ -16,6 +16,7 @@
       id="serverDefaulter"
       name="%XP_SERVER_DEFAULTER"/>
 
+   
    <extension
          point="org.eclipse.jst.ws.consumption.webServiceStartServerType">
       <webServiceStartServerType
@@ -39,5 +40,6 @@
             id="SERVER_ID_TOMCAT50_LOCAL">
       </webServiceStartServerType>
    </extension>
+   
 
 </plugin>

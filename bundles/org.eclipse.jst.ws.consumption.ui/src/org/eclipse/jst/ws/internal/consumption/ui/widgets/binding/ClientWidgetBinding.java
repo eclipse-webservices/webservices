@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.ClientServerDeployableConfigCommand;
-import org.eclipse.jst.ws.internal.consumption.command.common.CreateClientProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForServiceProjectCommand;
@@ -264,7 +263,6 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       //add( new SimpleFragment( new CheckForServiceProjectCommand(), ""));
       add( new SimpleFragment( new ClientExtensionDefaultingCommand( true ), ""));
       //add(new SimpleFragment(new ClientServerDeployableConfigCommand(false), "")); //Note: added here for client      
-      //add( new SimpleFragment( new CreateClientProjectCommand(), ""));  
       //add( new ClientExtensionFragment() );
 	  add( new ClientRootFragment() );
       add( new SimpleFragment( new ClientExtensionOutputCommand(), "" ) );
@@ -354,14 +352,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
 			
       // Map ClientExtensionDefaultingCommand command.
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", ClientExtensionFragment.class);
-      
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProject", CreateClientProjectCommand.class, "ProxyProject", new StringToIProjectTransformer());
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProjectEAR", CreateClientProjectCommand.class, "ProxyProjectEAR", new StringToIProjectTransformer());
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProjectType", CreateClientProjectCommand.class, "ClientProjectTypeId", null);
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServer", CreateClientProjectCommand.class, "ServerFactoryId", null);
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", CreateClientProjectCommand.class, "J2EEVersion", null);      
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientNeedEAR", CreateClientProjectCommand.class, "NeedEAR", null);
-      
+           
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProjectEAR", WebServiceClientTestArrivalCommand.class);
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProject", WebServiceClientTestArrivalCommand.class);
             
@@ -395,8 +386,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
                   
       
       // Map ClientServerDeployableConfigCommand
-      dataRegistry.addMapping(ClientServerDeployableConfigCommand.class, "SampleExistingServerInstId", CreateClientProjectCommand.class, "ExistingServerId", null);
-      dataRegistry.addMapping(ClientServerDeployableConfigCommand.class, "AddedProjectToServer", CreateClientProjectCommand.class);
+
       dataRegistry.addMapping(ClientServerDeployableConfigCommand.class, "SampleExistingServerInstId", FinishDefaultCommand.class, "ExistingServerId", null);
       
       // Map WebServiceClientTestArrivalCommand command.

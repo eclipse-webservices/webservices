@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -423,7 +424,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   {
     if (projects_ != null)
     {
-      if(!projectNeedsEAR(moduleProject_.getText()))
+      if(!projectNeedsEAR(moduleProject_.getText(), module_.getText()))
       {
 	    earModule_.setEnabled(false);   
 		earProject_.setEnabled(false);
@@ -467,7 +468,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     earProject_.setText(earName);
   }
 
-  private boolean projectNeedsEAR(String projectName)
+  private boolean projectNeedsEAR(String projectName, String componentName)
   {
     if (projectTypeId_.equals(IModuleConstants.JST_UTILITY_MODULE))
       return false;
@@ -475,13 +476,21 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     if (projectName == null || projectName.length()==0)
       return true;
     
+    if (componentName == null || componentName.length()==0)
+      return true;
+    
+    
     //IProject project = (IProject)((new StringToIProjectTransformer()).transform(projectName));
 	IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectName);
   	if (project != null && project.exists())
   	{
   	  //Get the runtime target on the project
   	  IRuntime target = ServerSelectionUtils.getRuntimeTarget(projectName);
-  	  String j2eeVersion = String.valueOf(J2EEUtils.getJ2EEVersion(project));
+  	  String j2eeVersion = String.valueOf(J2EEVersionConstants.J2EE_1_4_ID);
+  	  if (J2EEUtils.exists(project, componentName))
+  	    j2eeVersion = String.valueOf(J2EEUtils.getJ2EEVersion(project, componentName));
+  	
+  	  
   	  if (target != null)
   	  {
   	  	if (!ServerUtils.isTargetValidForEAR(target.getRuntimeType().getId(),j2eeVersion))
@@ -515,6 +524,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     try {
       byte result = (byte) 0;
       if (module_.getText().length() != 0 && earModule_.getText().length() != 0) {
+    	String moduleName = module_.getText();
+    	String earModuleName = earModule_.getText();
         String projectText = moduleProject_.getText();
         String earText = earProject_.getText();
         IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectText);
@@ -526,10 +537,10 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
           if (!ear.exists()) {
             result = (byte) (result | CREATE_EAR);
           }
-          //TODO Remove old utility methods
-//          if (project.exists() && ear.exists()) {
-//            if (!J2EEUtils.isEARAssociated(project, ear)) result = (byte) (result | ADD_EAR_ASSOCIATION);
-//          }
+
+          if (project.exists() && J2EEUtils.exists(project, moduleName) && ear.exists() && J2EEUtils.exists(ear, earModuleName)) {
+            if (!J2EEUtils.isComponentAssociated(ear, earModuleName, project, moduleName)) result = (byte) (result | ADD_EAR_ASSOCIATION);
+          }
         }
       }
       if (isClient_) {

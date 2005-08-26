@@ -131,13 +131,14 @@ public class ClientHandlersWidgetOutputCommand extends SimpleCommand {
         getJ2EEEditModel();
         
         // save the resource
-        if (J2EEUtils.getJ2EEVersion(project_) == J2EEVersionConstants.J2EE_1_4_ID) {
-          editModel_.save(accessorKey_);
-        }
-        else {
-          if (wsClientRes_!=null)
-            wsClientRes_.save(new HashMap());
-        }
+        //TODO Remove old Nature refs
+//        if (J2EEUtils.getJ2EEVersion(project_) == J2EEVersionConstants.J2EE_1_4_ID) {
+//          editModel_.save(accessorKey_);
+//        }
+//        else {
+//          if (wsClientRes_!=null)
+//            wsClientRes_.save(new HashMap());
+//        }
       }
     }
     catch (Exception e) {

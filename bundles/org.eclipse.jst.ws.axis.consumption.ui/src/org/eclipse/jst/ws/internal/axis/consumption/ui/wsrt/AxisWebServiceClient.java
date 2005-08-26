@@ -105,13 +105,7 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		registry.addMapping(AxisClientDefaultingCommand.class, "WsdlURL", DefaultsForHTTPBasicAuthCommand.class, "WsdlServiceURL", null); //OK
 		registry.addMapping(AxisClientDefaultingCommand.class, "WebServicesParser", DefaultsForHTTPBasicAuthCommand.class); //OK
 	    registry.addMapping(AxisClientDefaultingCommand.class, "CustomizeClientMappings", MappingFragment.class );    
-		//registry.addMapping(AxisClientDefaultingCommand.class,
-		// "ServiceProject",
-		// CreateWebProjectCommand.class);
-		//registry.addMapping(AxisClientDefaultingCommand.class,
-		// "EJBProjectName",
-		// CreateWebProjectCommand.class);
-		// CopyAxisJarCommand()
+		
 		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", CopyAxisJarCommand.class, "Project", null);
 
 		// DefaultsForClientJavaWSDLCommand() // javaParam_, model_
