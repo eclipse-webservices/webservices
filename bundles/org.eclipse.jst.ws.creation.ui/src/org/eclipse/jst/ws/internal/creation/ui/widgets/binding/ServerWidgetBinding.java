@@ -22,6 +22,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.selection.SelectionTransformer;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.CheckWSDLValidationCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishToPrivateUDDICommandFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishWSWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand;
@@ -409,6 +410,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       add( new SimpleFragment( "ServerWizardWidget" ) );
       add( new SimpleFragment( new ServerWizardWidgetOutputCommand(), "" ));
       add( new ObjectSelectionFragment() );
+      add( new SimpleFragment( new CheckWSDLValidationCommand(), ""));
       add( new SimpleFragment( new ServerRuntimeSelectionWidgetDefaultingCommand(), ""));
       add( new SimpleFragment( "ServerRuntimeSelectionWidget" ) );
       add( new SimpleFragment( new ServerExtensionDefaultingCommand(), ""));
