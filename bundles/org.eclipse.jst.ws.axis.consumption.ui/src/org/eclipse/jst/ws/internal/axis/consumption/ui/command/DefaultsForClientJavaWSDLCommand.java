@@ -15,6 +15,8 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
@@ -23,6 +25,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 
 
@@ -78,24 +81,51 @@ public class DefaultsForClientJavaWSDLCommand extends SimpleCommand {
 		javaWSDLParam_.setMetaInfOnly(false);
 		javaWSDLParam_.setServerSide(JavaWSDLParameter.SERVER_SIDE_NONE);
 		
-		IPath webModuleServerRoot = ResourceUtils.getJavaSourceLocation(proxyProject_, moduleName_ );
-		//String output = PlatformUtils.getPlatformURL(webModuleServerRoot);
-		String output =	ResourceUtils.findResource(webModuleServerRoot).getLocation().toString();
-//		String output = ResourceUtils.getWorkspaceRoot().getFolder(webModuleServerRoot).getLocation().toString();
-		javaWSDLParam_.setJavaOutput(output);
+	    ModuleCoreNature mn = ModuleCoreNature.getModuleCoreNature(proxyProject_);
+	    if (mn!=null)
+	    {
+			IPath webModuleServerRoot = ResourceUtils.getJavaSourceLocation(proxyProject_, moduleName_ );
+			//String output = PlatformUtils.getPlatformURL(webModuleServerRoot);
+			String output =	ResourceUtils.findResource(webModuleServerRoot).getLocation().toString();
+//			String output = ResourceUtils.getWorkspaceRoot().getFolder(webModuleServerRoot).getLocation().toString();
+			javaWSDLParam_.setJavaOutput(output);
 
 
-		IFolder webModuleContainer = ResourceUtils.getWebComponentServerRoot(proxyProject_, moduleName_);
-		if (webModuleContainer !=null)
-		{
-		  IPath webModulePath = webModuleContainer.getFullPath();
-		  //output =  PlatformUtils.getPlatformURL(webModulePath);
-		  IResource res = ResourceUtils.findResource(webModulePath);
-		  if (res!=null){
-			  output = res.getLocation().toString();
-		  } 
-		  javaWSDLParam_.setOutput(output);
-		}
+			IFolder webModuleContainer = ResourceUtils.getWebComponentServerRoot(proxyProject_, moduleName_);
+			if (webModuleContainer !=null)
+			{
+			  IPath webModulePath = webModuleContainer.getFullPath();
+			  //output =  PlatformUtils.getPlatformURL(webModulePath);
+			  IResource res = ResourceUtils.findResource(webModulePath);
+			  if (res!=null){
+				  output = res.getLocation().toString();
+			  } 
+			  javaWSDLParam_.setOutput(output);
+			}	
+	    }
+	    else
+	    {
+	    	//Check if it's a plain old Java project
+	    	IJavaProject javaProject = null;
+	  
+	 		 javaProject = JavaCore.create(proxyProject_);    
+	 		 if (javaProject != null)
+	 		 {
+	 			IPath webModuleServerRoot = ResourceUtils.getJavaSourceLocation(proxyProject_);
+				String output =	ResourceUtils.findResource(webModuleServerRoot).getLocation().toString();
+				javaWSDLParam_.setJavaOutput(output);
+				javaWSDLParam_.setOutput(output);
+	 		 }
+	 		 else
+	 		 {
+	 			 //Not familiar with this kind of project
+	 	 		 status = new SimpleStatus("", msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"), Status.ERROR);	
+	 	 		 environment.getStatusHandler().reportError(status);
+	 	 		 return status;
+	 			 
+	 		 }
+	    }
+
 
 
 		if (WSDLServicePathname_ == null) {

@@ -28,12 +28,17 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
@@ -48,11 +53,15 @@ public class Stub2BeanCommand extends SimpleCommand
   private String module_ = "";
   
   private IProject clientProject_;
+  
+  private MessageUtils msgUtils_;
 
   public Stub2BeanCommand()
   {
     super("org.eclipse.jst.ws.was.creation.ui.task.Stub2BeanCommand", "org.eclipse.jst.ws.was.creation.ui.task.Stub2BeanCommand");
     portTypes_ = new Vector();
+    String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
+    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);    
     //setRunInWorkspaceModifyOperation(false);
   }
   
@@ -60,6 +69,8 @@ public class Stub2BeanCommand extends SimpleCommand
 	  super("org.eclipse.jst.ws.was.creation.ui.task.Stub2BeanCommand", "org.eclipse.jst.ws.was.creation.ui.task.Stub2BeanCommand");
 	  portTypes_ = new Vector();	  
 	  module_ = moduleName;
+	  String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
+	  msgUtils_ = new MessageUtils(pluginId + ".plugin", this);	  
   }
 
   /**
@@ -87,6 +98,22 @@ public class Stub2BeanCommand extends SimpleCommand
         }
       }
     }
+    
+    //Ensure the client project is either a flexible project or a Java project
+    ModuleCoreNature mn = ModuleCoreNature.getModuleCoreNature(clientProject_);
+    if (mn==null)
+    {
+        // Check if it's a plain old Java project
+    	IJavaProject javaProject = null;    	  
+		javaProject = JavaCore.create(clientProject_);    
+		if (javaProject == null)
+		{
+	 		   Status status = new SimpleStatus("", msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"), Status.ERROR);	
+	 		   env.getStatusHandler().reportError(status);
+	 		   return status;
+		}    	
+    }
+    
     Map pkg2nsMapping = javaWSDLParam_.getMappings();
     Map services = def.getServices();
     for (Iterator it = services.values().iterator(); it.hasNext();)

@@ -11,24 +11,41 @@
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
+import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 
 
 public class CopyAxisJarCommand extends SimpleCommand {
@@ -44,6 +61,7 @@ public class CopyAxisJarCommand extends SimpleCommand {
 	  "saaj.jar",
 	  "wsdl4j-1.5.1.jar"
   };
+  public static String PATH_TO_JARS_IN_PLUGIN = "lib/";
 
   private String DESCRIPTION = "TASK_DESC_COPY_JARS_TO_PROJECT";
   private String LABEL = "TASK_LABEL_COPY_JARS_TO_PROJECT";
@@ -73,7 +91,36 @@ public class CopyAxisJarCommand extends SimpleCommand {
   public Status execute(Environment env) {
     Status status = new SimpleStatus("");
     env.getProgressMonitor().report(msgUtils_.getMessage("PROGRESS_INFO_COPY_AXIS_CFG"));
-    copyAxisJarsToProject(project, status, env);
+    
+    ModuleCoreNature mn = ModuleCoreNature.getModuleCoreNature(project);
+    if (mn!=null)
+    {
+    	copyAxisJarsToProject(project, status, env);	
+    }
+    else
+    {
+    	//Check if it's a plain old Java project
+    	IJavaProject javaProject = null;
+  
+ 		 javaProject = JavaCore.create(project);    
+ 		 if (javaProject != null)
+ 		 {
+ 			status = addAxisJarsToBuildPath(project, env);
+ 			if (status.getSeverity()==Status.ERROR)
+ 			{
+ 				env.getStatusHandler().reportError(status);
+ 				return status;
+ 			}
+ 		 }
+ 		 else
+ 		 {
+ 		   status = new SimpleStatus("", msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"), Status.ERROR);	
+ 		   env.getStatusHandler().reportError(status);
+ 		   return status;
+ 		 }
+
+    }
+    
     return status;
 
   }
@@ -127,6 +174,133 @@ public class CopyAxisJarCommand extends SimpleCommand {
     }
   }
 
+  public Status addAxisJarsToBuildPath(IProject p, Environment env)
+  {
+	  for (int i=0; i<JARLIST.length; i++)
+	  {
+		  StringBuffer sb = new StringBuffer();
+		  sb.append(PATH_TO_JARS_IN_PLUGIN);
+		  sb.append(JARLIST[i]);
+		  String jarName = sb.toString();
+		  Status status = AddJar(p, AXIS_RUNTIME_PLUGIN_ID, jarName, env);
+		  if (status.getSeverity()==Status.ERROR)
+		  {			  
+			  return status;
+		  }
+	  }
+	  return new SimpleStatus("");
+  }
+  
+	private Status AddJar(IProject webProject, String pluginId, String jarName, Environment env)  {
+		
+		   Status status = new SimpleStatus("");
+		   //
+		   // Get the current classpath.
+		   //
+		   IJavaProject javaProject_ = null;
+		   IClasspathEntry[] oldClasspath = null;
+    	   javaProject_ = JavaCore.create(webProject); 
+    	   try
+    	   {
+		   oldClasspath = javaProject_.getRawClasspath();
+    	   }
+    	   catch(JavaModelException jme)
+    	   {
+    		   status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.ERROR, jme);
+    		   //env.getStatusHandler().reportError(status);
+    		   return status;
+    	   }
+
+
+		   boolean found = false;
+		   for (int i=0; i<oldClasspath.length; i++)
+		   {
+			 found = found || oldClasspath[i].getPath().toString().toLowerCase().endsWith(jarName.toLowerCase());
+		   }
+
+		   if (found) 
+		   {
+			 return status;
+		   }
+
+		   IClasspathEntry[] newClasspath = new IClasspathEntry[oldClasspath.length + 1];
+		   int i=0;
+		   while (i<oldClasspath.length)
+		   {
+			 newClasspath[i] = oldClasspath[i];
+			 i++;
+		   }
+
+		   try
+		   {
+
+			   newClasspath[i++] = JavaCore.newLibraryEntry(getTheJarPath(pluginId,jarName), null, null);
+
+		   }
+		   catch (CoreException e)
+		   {
+			 status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.ERROR, e);
+			 return status;
+		   }
+
+		   //
+		   // Then update the project classpath.
+		   //
+		   try
+		   {
+		   	 ProgressMonitor monitor = env.getProgressMonitor();
+		   	 IProgressMonitor eclipseMonitor = null;
+		   	 if (monitor instanceof EclipseProgressMonitor)
+		   	 {
+		   	 	eclipseMonitor = ((EclipseProgressMonitor)monitor).getMonitor();
+		   	 }
+			 javaProject_.setRawClasspath(newClasspath,eclipseMonitor);
+		   }
+		   catch (JavaModelException e)
+		   {
+			 status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.ERROR, e);
+			 return status;
+		   }
+		   
+		   return status;
+		 }
+
+		//
+		// Returns the local native pathname of the jar.
+		//
+		private IPath getTheJarPath(String pluginId, String theJar)
+			throws CoreException {
+			try {
+				if (pluginId != null) {
+					IPluginRegistry pluginRegistry = Platform.getPluginRegistry();
+					IPluginDescriptor pluginDescriptor =
+						pluginRegistry.getPluginDescriptor(pluginId);
+					URL localURL =
+						Platform.asLocalURL(
+							new URL(pluginDescriptor.getInstallURL(), theJar));
+					return new Path(localURL.getFile());
+				} else {
+					return new Path(theJar);
+				}
+			} catch (MalformedURLException e) {
+				throw new CoreException(
+					new org.eclipse.core.runtime.Status(
+						IStatus.WARNING,
+						WebServiceAxisConsumptionUIPlugin.ID,
+						0,
+						msgUtils_.getMessage("MSG_BAD_AXIS_JAR_URL"),
+						e));
+			} catch (IOException e) {
+				throw new CoreException(
+					new org.eclipse.core.runtime.Status(
+						IStatus.WARNING,
+						WebServiceAxisConsumptionUIPlugin.ID,
+						0,
+						msgUtils_.getMessage("MSG_BAD_AXIS_JAR_URL"),
+						e));
+			}
+		}  
+  
   public void setProject(IProject project) {
     this.project = project;
   }

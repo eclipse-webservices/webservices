@@ -26,6 +26,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
@@ -39,6 +41,7 @@ import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 
 public class Stub2BeanInfo
 {
@@ -216,9 +219,35 @@ public class Stub2BeanInfo
 
     JavaEMFNature javaMOF = (JavaEMFNature)JavaEMFNature.createRuntime(clientProject_);
     ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-    IPath sourceFolderPath = ResourceUtils.getJavaSourceLocation(clientProject_, moduleName_);
-    IFolder sourceFolder = (IFolder)ResourceUtils.findResource(sourceFolderPath);
-    IPath filePath = sourceFolder.getFile(new Path(sb.toString())).getFullPath();
+    IPath sourceFolderPath = null;
+    IPath filePath = null;
+    ModuleCoreNature mn = ModuleCoreNature.getModuleCoreNature(clientProject_);
+    if (mn!=null)
+    {
+    	sourceFolderPath = ResourceUtils.getJavaSourceLocation(clientProject_, moduleName_);
+        IFolder sourceFolder = (IFolder)ResourceUtils.findResource(sourceFolderPath);
+        filePath = sourceFolder.getFile(new Path(sb.toString())).getFullPath();    	
+    }
+    else
+    {
+        // It's a plain old Java project
+    	IJavaProject javaProject = null;    	  
+		javaProject = JavaCore.create(clientProject_);
+
+		sourceFolderPath = ResourceUtils.getJavaSourceLocation(clientProject_);
+		IResource sourceFolderResource = ResourceUtils.findResource(sourceFolderPath);
+		if (sourceFolderResource instanceof IFolder) 
+		{
+				IFolder sourceFolder = (IFolder) sourceFolderResource;
+				filePath = sourceFolder.getFile(new Path(sb.toString())).getFullPath();
+		} else 
+		{
+			// The source must be going directly in the project
+			filePath = clientProject_.getFile(new Path(sb.toString())).getFullPath();
+		}
+		
+    }
+
     FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), filePath, bais, progressMonitor, statusMonitor);
   }
 
