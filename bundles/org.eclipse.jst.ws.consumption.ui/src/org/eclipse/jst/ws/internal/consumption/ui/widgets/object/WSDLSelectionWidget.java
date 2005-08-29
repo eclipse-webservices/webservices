@@ -106,7 +106,9 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     {
       public void done(IJobChangeEvent event) 
       {   	
-    	Display.getDefault().asyncExec( handleValidationMessages );
+    	  if (msgViewer_!= null && msgViewer_.getContentProvider() != null) {
+    		  Display.getDefault().asyncExec( handleValidationMessages );
+		  }
       }
     };
   }

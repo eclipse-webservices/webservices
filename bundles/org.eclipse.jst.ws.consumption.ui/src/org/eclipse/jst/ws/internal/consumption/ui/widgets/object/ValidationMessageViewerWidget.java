@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -125,6 +126,11 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
   {
 	  IValidationMessage emptyMessages[] = {};
 	  this.setInput(emptyMessages);
+  }
+  
+  public IContentProvider getContentProvider()
+  {
+	  return tableViewer_.getContentProvider();
   }
 
   public Status getStatus()
