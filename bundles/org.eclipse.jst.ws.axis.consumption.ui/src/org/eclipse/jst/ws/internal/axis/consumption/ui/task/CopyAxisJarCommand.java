@@ -11,10 +11,10 @@
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -42,7 +42,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
@@ -176,94 +175,114 @@ public class CopyAxisJarCommand extends SimpleCommand {
 
   public Status addAxisJarsToBuildPath(IProject p, Environment env)
   {
+	  String[] jarNames = new String[JARLIST.length];
 	  for (int i=0; i<JARLIST.length; i++)
 	  {
 		  StringBuffer sb = new StringBuffer();
 		  sb.append(PATH_TO_JARS_IN_PLUGIN);
 		  sb.append(JARLIST[i]);
 		  String jarName = sb.toString();
-		  Status status = AddJar(p, AXIS_RUNTIME_PLUGIN_ID, jarName, env);
-		  if (status.getSeverity()==Status.ERROR)
-		  {			  
-			  return status;
-		  }
+		  jarNames[i] = jarName;
+	  }
+	  
+	  Status status = addJar(p, AXIS_RUNTIME_PLUGIN_ID, jarNames, env);
+	  if (status.getSeverity()==Status.ERROR)
+	  {			  
+		  return status;
 	  }
 	  return new SimpleStatus("");
   }
+
   
-	private Status AddJar(IProject webProject, String pluginId, String jarName, Environment env)  {
-		
-		   Status status = new SimpleStatus("");
-		   //
-		   // Get the current classpath.
-		   //
-		   IJavaProject javaProject_ = null;
-		   IClasspathEntry[] oldClasspath = null;
-    	   javaProject_ = JavaCore.create(webProject); 
-    	   try
-    	   {
-		   oldClasspath = javaProject_.getRawClasspath();
-    	   }
-    	   catch(JavaModelException jme)
-    	   {
-    		   status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.ERROR, jme);
-    		   //env.getStatusHandler().reportError(status);
-    		   return status;
-    	   }
+  private Status addJar(IProject webProject, String pluginId, String[] jarNames, Environment env)
+  {
 
+    Status status = new SimpleStatus("");
+    //
+    // Get the current classpath.
+    //
+    IJavaProject javaProject_ = null;
+    IClasspathEntry[] oldClasspath = null;
+    javaProject_ = JavaCore.create(webProject);
+    try
+    {
+      oldClasspath = javaProject_.getRawClasspath();
+    } catch (JavaModelException jme)
+    {
+      status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.ERROR, jme);
+      // env.getStatusHandler().reportError(status);
+      return status;
+    }
 
-		   boolean found = false;
-		   for (int i=0; i<oldClasspath.length; i++)
-		   {
-			 found = found || oldClasspath[i].getPath().toString().toLowerCase().endsWith(jarName.toLowerCase());
-		   }
+    ArrayList newJarNamesList = new ArrayList();
 
-		   if (found) 
-		   {
-			 return status;
-		   }
+    for (int k = 0; k < jarNames.length; k++)
+    {
+      boolean found = false;
+      for (int i = 0; i < oldClasspath.length; i++)
+      {
+        found = oldClasspath[i].getPath().toString().toLowerCase().endsWith(jarNames[k].toLowerCase());
+        if (found)
+        {
+          break;
+        }
+      }
 
-		   IClasspathEntry[] newClasspath = new IClasspathEntry[oldClasspath.length + 1];
-		   int i=0;
-		   while (i<oldClasspath.length)
-		   {
-			 newClasspath[i] = oldClasspath[i];
-			 i++;
-		   }
+      if (!found)
+      {
+        newJarNamesList.add(jarNames[k]);
+      }
+    }
 
-		   try
-		   {
+    if (newJarNamesList.size() > 0)
+    {
+      String[] newJarNames = (String[]) newJarNamesList.toArray(new String[] {});
 
-			   newClasspath[i++] = JavaCore.newLibraryEntry(getTheJarPath(pluginId,jarName), null, null);
+      IClasspathEntry[] newClasspath = new IClasspathEntry[oldClasspath.length + newJarNames.length];
+      int i = 0;
+      while (i < oldClasspath.length)
+      {
+        newClasspath[i] = oldClasspath[i];
+        i++;
+      }
 
-		   }
-		   catch (CoreException e)
-		   {
-			 status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.ERROR, e);
-			 return status;
-		   }
+      try
+      {
+        int m = 0;
+        while (i < newClasspath.length)
+        {
+          newClasspath[i] = JavaCore.newLibraryEntry(getTheJarPath(pluginId, newJarNames[m]), null, null);
+          m++;
+          i++;
+        }
+      } catch (CoreException e)
+      {
+        status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.ERROR, e);
+        return status;
+      }
 
-		   //
-		   // Then update the project classpath.
-		   //
-		   try
-		   {
-		   	 ProgressMonitor monitor = env.getProgressMonitor();
-		   	 IProgressMonitor eclipseMonitor = null;
-		   	 if (monitor instanceof EclipseProgressMonitor)
-		   	 {
-		   	 	eclipseMonitor = ((EclipseProgressMonitor)monitor).getMonitor();
-		   	 }
-			 javaProject_.setRawClasspath(newClasspath,eclipseMonitor);
-		   }
-		   catch (JavaModelException e)
-		   {
-			 status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.ERROR, e);
-			 return status;
-		   }
-		   
-		   return status;
-		 }
+      //
+      // Then update the project classpath.
+      //
+      try
+      {
+        ProgressMonitor monitor = env.getProgressMonitor();
+        IProgressMonitor eclipseMonitor = null;
+        if (monitor instanceof EclipseProgressMonitor)
+        {
+          eclipseMonitor = ((EclipseProgressMonitor) monitor).getMonitor();
+        }
+        javaProject_.setRawClasspath(newClasspath, eclipseMonitor);
+      } catch (JavaModelException e)
+      {
+        status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.ERROR, e);
+        return status;
+      }
+    }
+
+    return status;
+
+  }
 
 		//
 		// Returns the local native pathname of the jar.
