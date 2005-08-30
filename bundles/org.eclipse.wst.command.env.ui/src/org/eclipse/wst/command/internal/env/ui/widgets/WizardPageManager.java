@@ -453,8 +453,12 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	  {
 	    widgetFactoryTable_.put( id, factory );
 	    factory.registerDataMappings( dataManager_.getMappingRegistry() );
-	    dataManager_.process( factory );
+		dataManager_.process( factory );
 	  }
+	}
+	else
+	{
+	  dataManager_.process( factory );
 	}
 	
 	return factory;

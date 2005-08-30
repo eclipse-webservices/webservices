@@ -33,7 +33,8 @@ public class ClientRootFragment extends SequenceFragment
     add( new DeployClientFragment() );
     add( new SimpleFragment( new PreClientInstallCommand(), "" ) );
     add( new InstallClientFragment() );
-    add( new SimpleFragment( new PreClientRunCommand(), "" ) );
+    add( new SimpleFragment( new PreClientRunCommand(), 
+    	 "org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientRunCommand" ) );
     add( new RunClientFragment() );
   }
 

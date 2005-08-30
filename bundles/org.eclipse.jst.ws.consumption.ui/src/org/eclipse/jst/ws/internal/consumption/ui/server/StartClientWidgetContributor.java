@@ -9,21 +9,20 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.creation.ui.server;
+package org.eclipse.jst.ws.internal.consumption.ui.server;
 
-import org.eclipse.jst.ws.internal.consumption.ui.server.StartServerWidget;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributor;
 import org.eclipse.wst.server.core.IServer;
 
-public class StartServerWidgetContributor implements INamedWidgetContributor 
+public class StartClientWidgetContributor implements INamedWidgetContributor 
 {
   private IServer      server_;
   private MessageUtils msgUtils_;
 	  
-  public StartServerWidgetContributor( IServer server )
+  public StartClientWidgetContributor( IServer server )
   {
 	server_ = server;
 	msgUtils_ = new  MessageUtils( "org.eclipse.jst.ws.consumption.ui.plugin", this );

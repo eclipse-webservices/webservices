@@ -782,5 +782,12 @@
 			moduleTypesExclude="">
   </clientType>
 </extension>
+
+   	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory   
+             id="StartClientServer"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientRunCommand"
+             class="org.eclipse.jst.ws.internal.consumption.ui.server.StartClientWidgetFactory"/>
+    </extension> 
     	
 </plugin>

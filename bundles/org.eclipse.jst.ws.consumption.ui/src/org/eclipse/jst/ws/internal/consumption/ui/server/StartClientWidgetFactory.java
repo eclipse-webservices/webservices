@@ -9,9 +9,9 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.creation.ui.server;
+package org.eclipse.jst.ws.internal.consumption.ui.server;
 
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributor;
@@ -19,7 +19,7 @@ import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetC
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 
-public class StartServerWidgetFactory implements INamedWidgetContributorFactory 
+public class StartClientWidgetFactory implements INamedWidgetContributorFactory 
 {
   private TypeRuntimeServer serverInfo_;
   
@@ -34,7 +34,7 @@ public class StartServerWidgetFactory implements INamedWidgetContributorFactory
     
     if( server != null && server.getServerState() != IServer.STATE_STARTED )
     {
-      return new StartServerWidgetContributor( server );
+      return new StartClientWidgetContributor( server );
     }
     
 	return null;
@@ -47,10 +47,10 @@ public class StartServerWidgetFactory implements INamedWidgetContributorFactory
 
   public void registerDataMappings(DataMappingRegistry dataRegistry) 
   {
-    dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", StartServerWidgetFactory.class);
+    dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", StartClientWidgetFactory.class);
   }
   
-  public void setServiceTypeRuntimeServer( TypeRuntimeServer serverInfo )
+  public void setClientTypeRuntimeServer( TypeRuntimeServer serverInfo )
   {
     serverInfo_ = serverInfo;  
   }

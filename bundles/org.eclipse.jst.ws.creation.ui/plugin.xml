@@ -237,7 +237,7 @@
    
 	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
        <widgetFactory   
-             id="StartServer"
+             id="StartServiceServer"
              insertBeforeCommandId="org.eclipse.jst.ws.internal.creation.ui.extension.PreServiceRunCommand"
              class="org.eclipse.jst.ws.internal.creation.ui.server.StartServerWidgetFactory"/>
     </extension> 

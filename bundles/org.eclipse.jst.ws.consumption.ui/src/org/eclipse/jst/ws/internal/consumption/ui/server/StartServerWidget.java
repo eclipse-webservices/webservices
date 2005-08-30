@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.creation.ui.server;
+package org.eclipse.jst.ws.internal.consumption.ui.server;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -61,7 +61,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
   
   public StartServerWidget( IServer server )
   {
-	pluginId_ = "org.eclipse.jst.ws.creation.ui";
+	pluginId_ = "org.eclipse.jst.ws.consumption.ui";
 	msgUtils_ = new MessageUtils( pluginId_ + ".plugin", this );
 	
 	final Runnable callSetServerState = new Runnable()
@@ -192,10 +192,21 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	Job[]          jobs           = jobManager.find( StartServerFamily );
 	StartServerJob startServerJob = null;
 	
-	if( jobs.length > 0 )
+	// There may be more than one job starting for different servers.
+	// Therefore, we need to find the one for our server if it is available.
+	for( int index = 0; index < jobs.length; index++ )
 	{
-	  startServerJob = (StartServerJob)jobs[0];
+	  StartServerJob jobFound = (StartServerJob)jobs[index];
 	  
+	  if( jobFound.getServer() == server_ )
+	  {
+	    startServerJob = jobFound;
+	    break;
+	  }
+	}
+	
+	if( startServerJob != null )
+	{
 	  synchronized( StartServerFamily ) 
 	  {
         Status status = startServerJob.getStatus();
@@ -218,6 +229,13 @@ public class StartServerWidget extends SimpleWidgetDataContributor
           //       to our new progressMonitor_ control on this wizard page.
           ProgressMonitorWrapper monitor = (ProgressMonitorWrapper)startServerJob.getMonitor().getMonitor();
           monitor.setMonitor( progressMonitor_ );
+        }
+        else
+        {
+          // The job completed before we had a chance to add the job change listener
+          // Therefore, we will just call jobChangeAdapter_ directly to notify
+          // the UI that the job has completed.
+          jobChangeAdapter_.done( null );
         }
 	  }
 	}
@@ -242,6 +260,11 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	  super( "StartServerJob" );
 	  
 	  envMonitor_ = new SimpleProgressMonitor();
+	}
+	
+	public IServer getServer()
+	{
+	  return server_;	
 	}
 	
 	public SimpleProgressMonitor getMonitor()
