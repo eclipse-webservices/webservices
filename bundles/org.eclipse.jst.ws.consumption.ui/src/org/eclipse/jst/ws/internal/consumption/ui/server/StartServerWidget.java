@@ -30,10 +30,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wst.command.internal.env.common.EnvironmentUtils;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -63,26 +65,25 @@ public class StartServerWidget extends SimpleWidgetDataContributor
   {
 	pluginId_ = "org.eclipse.jst.ws.consumption.ui";
 	msgUtils_ = new MessageUtils( pluginId_ + ".plugin", this );
-	
-	final Runnable callSetServerState = new Runnable()
-	                                    {
-			        					  public void run() 
-									      {
-			        						if( !progressMonitor_.isDisposed() )
-			        						{
-									          setServerState();	
-									          progressMonitor_.done();
-			        						}
-									      }
-	                                    };
-	
+		
     server_ = server;
     
     jobChangeAdapter_ = new JobChangeAdapter()
                         {
-                          public void done(IJobChangeEvent event) 
+                          public void done(final IJobChangeEvent event) 
                           {
-                        	Display.getDefault().asyncExec( callSetServerState );
+                        	Display.getDefault().asyncExec( new Runnable()
+                        			                        {
+	        					                              public void run() 
+							                                  {
+	        						                            if( !progressMonitor_.isDisposed() )
+	        						                            {
+							                                      setServerState();	
+							                                      progressMonitor_.done();
+							                                      reportErrorIfRequired( (StartServerJob)event.getJob() );
+	        						                            }
+							                                  }
+                        			                        });
                           }
                         };
   }
@@ -246,7 +247,20 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	  startServerJob.schedule();
 	}
   }
+     
+  private void reportErrorIfRequired( StartServerJob serverJob )
+  {
+	Status status = serverJob.getStatus();
+	
+	if( status.getSeverity() == Status.ERROR )
+	{
+	  Shell                shell   = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+      EclipseStatusHandler handler = new EclipseStatusHandler( shell );
       
+      handler.reportError( status );
+	}
+  }
+  
   final private static String  StartServerFamily = "StartServerFamily";
   
   // This class is used to start up the server in an Eclipse job.
@@ -296,7 +310,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	    setStatus( new SimpleStatus( "", exc.getMessage(), Status.ERROR, exc ) );
 	  }
 	  	
-	  return EnvironmentUtils.convertStatusToIStatus( status_, "id" );
+	  return org.eclipse.core.runtime.Status.OK_STATUS;
 	}
 	
 	// Calls to this method need to first synchronize on the
