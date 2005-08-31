@@ -11,25 +11,25 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.server;
 
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand;
-import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributor;
 import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributorFactory;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
 public class StartClientWidgetFactory implements INamedWidgetContributorFactory 
 {
-  private TypeRuntimeServer serverInfo_;
+  private IWebServiceClient webserviceClient_;
   
   public INamedWidgetContributor getFirstNamedWidget() 
   {
     IServer server = null;
     
-    if( serverInfo_ != null )
+    if( webserviceClient_ != null )
     {
-      server = ServerCore.findServer(serverInfo_.getServerInstanceId() );
+      server = ServerCore.findServer(webserviceClient_.getWebServiceClientInfo().getServerInstanceId() );
     }
     
     if( server != null && server.getServerState() != IServer.STATE_STARTED )
@@ -47,11 +47,11 @@ public class StartClientWidgetFactory implements INamedWidgetContributorFactory
 
   public void registerDataMappings(DataMappingRegistry dataRegistry) 
   {
-    dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", StartClientWidgetFactory.class);
+	dataRegistry.addMapping( PreClientDevelopCommand.class, "WebService", StartClientWidgetFactory.class );
   }
   
-  public void setClientTypeRuntimeServer( TypeRuntimeServer serverInfo )
+  public void setWebService( IWebServiceClient webserviceClient )
   {
-    serverInfo_ = serverInfo;  
+    webserviceClient_ = webserviceClient;  
   }
 }

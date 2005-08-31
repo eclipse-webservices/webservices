@@ -11,25 +11,25 @@
 
 package org.eclipse.jst.ws.internal.creation.ui.server;
 
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
-import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.creation.ui.extension.PreServiceDevelopCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributor;
 import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributorFactory;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 
 public class StartServerWidgetFactory implements INamedWidgetContributorFactory 
 {
-  private TypeRuntimeServer serverInfo_;
+  private IWebService webservice_;
   
   public INamedWidgetContributor getFirstNamedWidget() 
   {
     IServer server = null;
     
-    if( serverInfo_ != null )
+    if( webservice_ != null )
     {
-      server = ServerCore.findServer(serverInfo_.getServerInstanceId() );
+      server = ServerCore.findServer(webservice_.getWebServiceInfo().getServerInstanceId() );
     }
     
     if( server != null && server.getServerState() != IServer.STATE_STARTED )
@@ -47,11 +47,11 @@ public class StartServerWidgetFactory implements INamedWidgetContributorFactory
 
   public void registerDataMappings(DataMappingRegistry dataRegistry) 
   {
-    dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", StartServerWidgetFactory.class);
+	dataRegistry.addMapping( PreServiceDevelopCommand.class, "WebService", StartServerWidgetFactory.class );
   }
   
-  public void setServiceTypeRuntimeServer( TypeRuntimeServer serverInfo )
+  public void setWebService( IWebService webservice )
   {
-    serverInfo_ = serverInfo;  
+    webservice_ = webservice;  
   }
 }
