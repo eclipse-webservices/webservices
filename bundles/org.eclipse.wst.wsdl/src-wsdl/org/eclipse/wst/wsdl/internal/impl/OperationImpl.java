@@ -19,12 +19,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.wsdl.OperationType;
+import javax.xml.namespace.QName;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -37,6 +39,7 @@ import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.internal.util.WSDLUtil;
@@ -214,7 +217,9 @@ public class OperationImpl extends WSDLElementImpl implements Operation
    * @generated
    * @ordered
    */
-  protected EList eParameterOrdering = null;
+  protected EList eParameterOrdering = null; // a list of parts (EMF)
+  
+  private List parameterOrdering = null; // a list of part names (WSDL4J)
 
   private Map faults;
 
@@ -644,20 +649,20 @@ public class OperationImpl extends WSDLElementImpl implements Operation
    */
   public List getParameterOrdering()
   {
-    List ordering = new ArrayList();
+    parameterOrdering = new ArrayList();
     for (Iterator i = getEParameterOrdering().iterator(); i.hasNext();)
     {
       try
       {
         Part part = (Part) i.next();
-        ordering.add(part.getName());
+		parameterOrdering.add(part.getName());
       }
       catch (Exception e)
       {
         // TBD - handle exception
       }
     }
-    return ordering.isEmpty() ? null : ordering;
+    return parameterOrdering.isEmpty() ? null : parameterOrdering;
   }
 
   /**
@@ -667,11 +672,13 @@ public class OperationImpl extends WSDLElementImpl implements Operation
    */
   public void setParameterOrdering(List parameterOrder)
   {
+    parameterOrdering = parameterOrder;
     getEParameterOrdering().clear();
     if (parameterOrder != null)
     {
       for (Iterator i = parameterOrder.iterator(); i.hasNext();)
       {
+        // KB: We should be resolving parts based on the part names in parameterOrder.
         Part part = WSDLFactory.eINSTANCE.createPart();
         part.setName((String) i.next());
         getEParameterOrdering().add(part);
@@ -937,11 +944,14 @@ public class OperationImpl extends WSDLElementImpl implements Operation
 
   public void reconcileAttributes(Element changedElement)
   {
-    String name = changedElement.getAttribute("name");
-    if (name != null)
-    {
-      setName(name);
-    }
+	if (changedElement.hasAttribute("name"))
+	{
+      String name = changedElement.getAttribute("name");
+      if (name != null)
+      {
+        setName(name);
+      }
+    }  
     
     if (changedElement.hasAttribute("parameterOrder"))
     {
@@ -1069,6 +1079,36 @@ public class OperationImpl extends WSDLElementImpl implements Operation
           style = deduceOperationType(theElement); // switch back. no support for the other types
       }
     }
+  }
+  
+  protected void changeReference(EReference eReference)
+  {
+    if (isReconciling)
+      return;
+
+    super.changeReference(eReference);
+    Element theElement = getElement();
+    if (theElement != null)
+    {
+      if (eReference == null || eReference == WSDLPackage.eINSTANCE.getOperation_EParameterOrdering())
+      {
+        // Build up a string of concatenated part names (parameterOrder) from eParameterOrdering.
+		  
+        Iterator parts = getEParameterOrdering().iterator();
+		Part part = null;
+		String partNames = "";
+        while (parts.hasNext())
+		{
+          part = (Part)parts.next();
+		  partNames = partNames + part.getName() + " ";
+		}
+		
+		if ((partNames = partNames.trim()).length() != 0)		
+		  // Update the element's attrubute
+		  niceSetAttribute(theElement, "parameterOrder", partNames);
+      }
+    }
+    //
   }
   
   // Switch <input> and <output>

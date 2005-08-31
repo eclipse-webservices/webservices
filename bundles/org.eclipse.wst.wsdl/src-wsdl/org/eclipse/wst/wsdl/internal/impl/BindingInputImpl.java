@@ -338,11 +338,14 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
 
   public void reconcileAttributes(Element changedElement)
   {
-    String name = changedElement.getAttribute("name");
-    if (name != null)
-    {
-      setName(name);
-    }
+	if (changedElement.hasAttribute("name"))
+	{
+      String name = changedElement.getAttribute("name");
+      if (name != null)
+      {
+        setName(name);
+      }
+	}
   }
 
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)

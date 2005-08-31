@@ -25,7 +25,6 @@ import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
 import org.eclipse.wst.wsdl.binding.soap.SOAPFault;
 import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
 import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
-import org.w3c.dom.Element;
 
 public class SOAPContentGenerator implements ContentGenerator
 {	
@@ -105,11 +104,9 @@ public class SOAPContentGenerator implements ContentGenerator
 	  // We blow away any existing ExtensibilityElements/content before we generate it
 	  // Is it worth being smarter?  Look for matching content first and create those which aren't found????
 	  List removeList = new ArrayList(bindingOperation.getEExtensibilityElements());
-	  Element bindingOperationElement = bindingOperation.getElement();	
 	removeExtensebilityElements(bindingOperation.getEExtensibilityElements(), removeList);
 	
-	SOAPOperation soapOperation = SOAPFactory.eINSTANCE.createSOAPOperation();
-	
+	SOAPOperation soapOperation = SOAPFactory.eINSTANCE.createSOAPOperation();	
 	
     String soapActionValue = getNamespace(bindingOperation);
     if (!soapActionValue.endsWith("/"))
@@ -128,7 +125,6 @@ public class SOAPContentGenerator implements ContentGenerator
 	  // We blow away any existing ExtensibilityElements/content before we generate it
 	  // Is it worth being smarter?  Look for matching content first and create those which aren't found????
 	  List removeList = new ArrayList(bindingInput.getEExtensibilityElements());
-	  Element bindingInputElement = bindingInput.getElement();
 	removeExtensebilityElements(bindingInput.getEExtensibilityElements(), removeList);
 	
 	SOAPFactory soapFactory = SOAPFactory.eINSTANCE;
@@ -153,7 +149,6 @@ public class SOAPContentGenerator implements ContentGenerator
 	  // We blow away any existing ExtensibilityElements/content before we generate it
 	  // Is it worth being smarter?  Look for matching content first and create those which aren't found????
 	  List removeList = new ArrayList(bindingOutput.getEExtensibilityElements());
-	  Element bindingOutputElement = bindingOutput.getElement();
 	removeExtensebilityElements(bindingOutput.getEExtensibilityElements(), removeList);
 	
 	SOAPFactory soapFactory = SOAPFactory.eINSTANCE;
@@ -178,7 +173,6 @@ public class SOAPContentGenerator implements ContentGenerator
 	  // We blow away any existing ExtensibilityElements/content before we generate it
 	  // Is it worth being smarter?  Look for matching content first and create those which aren't found????
 	  List removeList = new ArrayList(bindingFault.getEExtensibilityElements());
-	  Element bindingFaultElement = bindingFault.getElement();
 	removeExtensebilityElements(bindingFault.getEExtensibilityElements(), removeList);
 	
 	SOAPFactory soapFactory = SOAPFactory.eINSTANCE;
@@ -200,6 +194,9 @@ public class SOAPContentGenerator implements ContentGenerator
   private String getNamespace(WSDLElement wsdlElement) {
 	  if (namespaceValue.equals("") && wsdlElement != null) {
 		  namespaceValue = wsdlElement.getEnclosingDefinition().getTargetNamespace();
+	  }
+	  if (namespaceValue == null) {
+		  namespaceValue = "";
 	  }
 	  
 	  return namespaceValue;

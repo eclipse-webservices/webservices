@@ -294,9 +294,7 @@ public class WSDLTextEditor extends StructuredTextEditorXML implements INodeSele
 			  }
 			  
 			  // Little hack to 'redraw' connecting lines in the graph viewer
-			  String localPart = wsdlEditor.getDefinition().getQName().getLocalPart();
-			  String namespace = wsdlEditor.getDefinition().getQName().getNamespaceURI();
-			  wsdlEditor.getDefinition().setQName(new QName(namespace, localPart));
+			  wsdlEditor.getDefinition().setQName(wsdlEditor.getDefinition().getQName());
 		  }
       }
       catch (Exception e)

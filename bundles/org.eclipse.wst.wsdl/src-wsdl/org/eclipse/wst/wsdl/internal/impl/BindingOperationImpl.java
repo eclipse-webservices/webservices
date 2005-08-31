@@ -747,6 +747,14 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
     Element newElement = createElement(WSDLConstants.OPERATION);
     setElement(newElement);
 
+	Iterator iterator = getExtensibilityElements().iterator();
+    while (iterator.hasNext())
+    {
+      ExtensibilityElement extensibilityElement = (ExtensibilityElement) iterator.next();
+      Element child = ((ExtensibilityElementImpl) extensibilityElement).createElement();
+      newElement.appendChild(child);
+    }
+	
     BindingInput input = getEBindingInput();
     if (input != null)
     {
@@ -761,19 +769,11 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
       newElement.appendChild(child);
     }
 
-    Iterator iterator = getEBindingFaults().iterator();
+    iterator = getEBindingFaults().iterator();
     while (iterator.hasNext())
     {
       BindingFault fault = (BindingFault) iterator.next();
       Element child = ((BindingFaultImpl) fault).createElement();
-      newElement.appendChild(child);
-    }
-
-    iterator = getExtensibilityElements().iterator();
-    while (iterator.hasNext())
-    {
-      ExtensibilityElement extensibilityElement = (ExtensibilityElement) iterator.next();
-      Element child = ((ExtensibilityElementImpl) extensibilityElement).createElement();
       newElement.appendChild(child);
     }
 

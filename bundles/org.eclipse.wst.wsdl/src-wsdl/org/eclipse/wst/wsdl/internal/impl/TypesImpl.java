@@ -103,8 +103,12 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
     for (Iterator i = getSchemas().iterator(); i.hasNext();)
     {
       XSDSchema schema = (XSDSchema) i.next();
-      if (namespaceURI.equals(schema.getTargetNamespace()))
+      if (namespaceURI == null && schema.getTargetNamespace() == null) {
+    	  schemas.add(schema);
+      }
+      else if (namespaceURI != null && namespaceURI.equals(schema.getTargetNamespace())) {
         schemas.add(schema);
+      }
     }
     return schemas;
   }

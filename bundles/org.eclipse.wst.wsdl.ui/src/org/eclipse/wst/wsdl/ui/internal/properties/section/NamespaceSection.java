@@ -142,7 +142,10 @@ public class NamespaceSection extends AbstractSection
 	  	Object obj = getElement();
 	  	if (obj instanceof Definition) {
 	  		Definition definition = (Definition) obj;
-	  		String uri = definition.getQName().getNamespaceURI();
+	  		String uri = "";
+	  		if (definition.getQName() != null) {
+	  			uri = definition.getQName().getNamespaceURI();
+	  		}
 	  		definition.setQName(new QName(uri, nameText.getText()));
 	  	}
 	  }
@@ -150,8 +153,6 @@ public class NamespaceSection extends AbstractSection
 	  	Object obj = getElement();
 	  	if (obj instanceof Definition) {
 	  		Definition definition = (Definition) obj;
-	  		String uri = definition.getQName().getNamespaceURI();
-
 	  		Element element = definition.getElement();
 	  		
 	  		// Remove the old prefix
@@ -209,7 +210,6 @@ public class NamespaceSection extends AbstractSection
         {
   	    	for (int index = 0; index < element.getAttributes().getLength(); index++) {
   	    		AttrImpl attr = (AttrImpl) element.getAttributes().item(index);
-  	    		String name = attr.getName();
   	    		String nodeName = attr.getNodeName();
   	    		String nsValue = attr.getNodeValue();
   	    		if (nsValue.equals(targetNS)) {

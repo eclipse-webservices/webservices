@@ -742,7 +742,10 @@ public class WSDLModelAdapterFactory implements ModelAdapterFactory
     
     protected String getLabel()
     {  
-      return definition.getQName().getLocalPart();
+      if (definition.getQName() != null) {
+    	  return definition.getQName().getLocalPart();
+      }
+      return "";
     }
 
     protected Image getImage()

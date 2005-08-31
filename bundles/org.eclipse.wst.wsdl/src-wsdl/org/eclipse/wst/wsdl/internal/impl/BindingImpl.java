@@ -749,8 +749,16 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
   {
     Element newElement = createElement(WSDLConstants.BINDING);
     setElement(newElement);
-
-    Iterator iterator = getEBindingOperations().iterator();
+	
+	Iterator iterator = getExtensibilityElements().iterator();
+    while (iterator.hasNext())
+    {
+      ExtensibilityElement extensibilityElement = (ExtensibilityElement) iterator.next();
+      Element child = ((ExtensibilityElementImpl) extensibilityElement).createElement();
+      newElement.appendChild(child);
+    }
+	
+    iterator = getEBindingOperations().iterator();
     while (iterator.hasNext())
     {
       BindingOperation operation = (BindingOperation) iterator.next();
@@ -758,13 +766,6 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
       newElement.appendChild(child);
     }
 
-    iterator = getExtensibilityElements().iterator();
-    while (iterator.hasNext())
-    {
-      ExtensibilityElement extensibilityElement = (ExtensibilityElement) iterator.next();
-      Element child = ((ExtensibilityElementImpl) extensibilityElement).createElement();
-      newElement.appendChild(child);
-    }
     return newElement;
   }
 

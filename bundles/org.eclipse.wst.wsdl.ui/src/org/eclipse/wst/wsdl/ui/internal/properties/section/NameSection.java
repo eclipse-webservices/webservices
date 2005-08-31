@@ -107,7 +107,10 @@ public class NameSection extends AbstractSection
 
         if (wsdlElement instanceof Definition) {
         	Definition definition = (Definition) wsdlElement;
-        	String uri = definition.getQName().getNamespaceURI();
+        	String uri = "";
+        	if (definition.getQName() != null) {
+        		uri = definition.getQName().getNamespaceURI();	
+        	}
         	definition.setQName(new QName(uri, newValue));
         }
         else if (wsdlElement instanceof Service) {        

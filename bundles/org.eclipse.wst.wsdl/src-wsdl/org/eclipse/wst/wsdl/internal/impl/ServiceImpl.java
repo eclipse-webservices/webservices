@@ -606,19 +606,19 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
     Element newElement = createElement(WSDLConstants.SERVICE);
     setElement(newElement);
 
-    Iterator iterator = getEPorts().iterator();
-    while (iterator.hasNext())
-    {
-      Port port = (Port) iterator.next();
-      Element child = ((PortImpl) port).createElement();
-      newElement.appendChild(child);
-    }
-
-    iterator = getExtensibilityElements().iterator();
+	Iterator iterator = getExtensibilityElements().iterator();
     while (iterator.hasNext())
     {
       ExtensibilityElement extensibilityElement = (ExtensibilityElement) iterator.next();
       Element child = ((ExtensibilityElementImpl) extensibilityElement).createElement();
+      newElement.appendChild(child);
+    }
+	
+    iterator = getEPorts().iterator();
+    while (iterator.hasNext())
+    {
+      Port port = (Port) iterator.next();
+      Element child = ((PortImpl) port).createElement();
       newElement.appendChild(child);
     }
 

@@ -1641,15 +1641,11 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     super.reconcileAttributes(changedElement);
 
     if (changedElement == getElement())
-    {                      
-      setTargetNamespace(changedElement.getAttribute("targetNamespace"));
-      
-      // bug 104120 
-      // ensure that the definition name is non null to avoid QName ctor exception
-      //
-      String definitionName =  WSDLConstants.getAttribute(changedElement, "name");  
-      setQName(new QName(WSDLConstants.WSDL_NAMESPACE_URI, definitionName != null ? definitionName : ""));
-      
+    { 
+      if (changedElement.hasAttribute("targetNamespace"))
+        setTargetNamespace(changedElement.getAttribute("targetNamespace"));
+	  if (changedElement.hasAttribute("name"))
+        setQName(new QName(WSDLConstants.WSDL_NAMESPACE_URI, changedElement.getAttribute("name")));
       getENamespaces().clear();
       getNamespaces().clear();
       //getNamespaces().put("", null);
@@ -1860,8 +1856,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   {
     Element newElement = createElement(WSDLConstants.DEFINITION);
     setElement(newElement);
-
-    Object obj = null;
+    addChildElements(newElement, getEExtensibilityElements());
 
     Types types = getETypes();
     if (types != null)
@@ -1869,12 +1864,12 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       Element child = ((TypesImpl) types).createElement();
       newElement.appendChild(child);
     }
+
     addChildElements(newElement, getEImports());
     addChildElements(newElement, getEMessages());
     addChildElements(newElement, getEPortTypes());
     addChildElements(newElement, getEBindings());
     addChildElements(newElement, getEServices());
-    addChildElements(newElement, getEExtensibilityElements());
 
     return newElement;
   }
@@ -1898,7 +1893,6 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     // We are updating the Definition element.
     {
       Iterator iterator = getNamespaces().entrySet().iterator();
-      Namespace namespace = null;
       String prefix = null;
       String uri = null;
       while (iterator.hasNext())
@@ -2049,6 +2043,11 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   
   protected List getImportedOrInlinedSchemas(String namespace)
   {
+    if (namespace == null)
+    {
+      namespace = "";
+    }
+
     List list = new ArrayList();
     for (Iterator i = getEImports().iterator(); i.hasNext();)
     {
