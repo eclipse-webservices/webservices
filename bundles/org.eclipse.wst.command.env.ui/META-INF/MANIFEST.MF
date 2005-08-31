@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.command.env.ui; singleton:=true
 Bundle-Version: 0.7.0
-Bundle-ClassPath: envui.jar
 Bundle-Activator: org.eclipse.wst.command.internal.env.ui.plugin.EnvUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin

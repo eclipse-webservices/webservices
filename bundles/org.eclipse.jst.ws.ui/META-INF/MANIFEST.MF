@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.ui; singleton:=true
 Bundle-Version: 0.7.1
-Bundle-ClassPath: ws-ui.jar
 Bundle-Activator: org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin

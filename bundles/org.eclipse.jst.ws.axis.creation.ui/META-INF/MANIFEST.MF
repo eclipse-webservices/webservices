@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.axis.creation.ui; singleton:=true
 Bundle-Version: 0.7.0
-Bundle-ClassPath: wss-axis-ui.jar
 Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
