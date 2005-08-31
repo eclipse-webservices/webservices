@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
+import org.eclipse.jst.ws.tests.util.JUnitUtils;
 
 /**
  * This class is to run all the unittest tests.
@@ -27,6 +28,7 @@ public class AllWSJUnitTests extends TestCase implements WSJUnitConstants
     new AllWSJUnitTests().runMain(args);
   }
 
+  
   public Object runMain(Object args)
   {
     Object result = null;
@@ -37,7 +39,6 @@ public class AllWSJUnitTests extends TestCase implements WSJUnitConstants
       parseArgs(args);
 
       testRunner = new TestRunner(System.out);
- 
 
       Test suite = suite();
       TestResult testResult = testRunner.doRun(suite, false);
@@ -53,6 +54,8 @@ public class AllWSJUnitTests extends TestCase implements WSJUnitConstants
 
   public static Test suite()
   {
+    JUnitUtils.enableOverwrite(true);
+    
     TestSuite testSuite = new TestSuite();
     testSuite.addTest( ComponentCreationTests.suite() );
     testSuite.addTest( J2EEUtilsTests.suite() );

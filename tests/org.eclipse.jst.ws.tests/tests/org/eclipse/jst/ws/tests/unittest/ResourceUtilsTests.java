@@ -4,6 +4,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -48,7 +49,10 @@ public class ResourceUtilsTests extends TestCase implements WSJUnitConstants{
             EclipseProgressMonitor     monitor         = new EclipseProgressMonitor();
             EclipseEnvironment         env     = new EclipseEnvironment( null, resourceContext, monitor, handler );
 
-            JUnitUtils.copyTestData("BUJava/src", folder, env);          
+            IFile file = folder.getFile(new Path("foo/Echo.java"));
+            if (!file.exists()) {
+              JUnitUtils.copyTestData("BUJava/src", folder, env);
+            }
         }
         catch (Exception ex){
         	ex.printStackTrace();
