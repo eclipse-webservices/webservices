@@ -198,8 +198,8 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 			}
 		}
 
-		javaWSDLParam_.setStyle(JavaWSDLParameter.STYLE_RPC);
-		javaWSDLParam_.setUse(JavaWSDLParameter.USE_ENCODED);
+		javaWSDLParam_.setStyle(JavaWSDLParameter.STYLE_WRAPPED);
+		javaWSDLParam_.setUse(JavaWSDLParameter.USE_LITERAL);
 
 		String projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_, moduleName_);
 		if (projectURL == null) {

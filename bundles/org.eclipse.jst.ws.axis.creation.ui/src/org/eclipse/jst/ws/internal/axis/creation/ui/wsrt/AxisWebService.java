@@ -30,7 +30,6 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonCon
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.OpenJavaEditorCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.command.WSINonCompliantRuntimeCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ProjectName2IProjectTransformer;
 import org.eclipse.wst.command.internal.env.common.WaitForAutoBuildCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
@@ -77,7 +76,6 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new BUAxisInputCommand(this, project, module));
 //			commands.add(new ValidateObjectSelectionCommand());
 			commands.add(new BUAxisDefaultingCommand());
-			commands.add(new WSINonCompliantRuntimeCommand());
 			commands.add(new DefaultsForServerJavaWSDLCommand(module));
 			commands.add(new JavaToWSDLMethodCommand());
 			// commands.add(new SimpleFragment( "BeanConfig" ));
@@ -166,10 +164,7 @@ public class AxisWebService extends AbstractWebService
 	    //BUAxisDefaultingCommand
 //	    registry.addMapping(SelectionCommand.class, "InitialSelection", BUAxisDefaultingCommand.class );
 //KSC   registry.addMapping(BUAxisInputCommand.class, "ServiceTypeRuntimeServer", BUAxisDefaultingCommand.class );
-	    
-	    //WSINonCompliantRuntimeCommand
-	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", WSINonCompliantRuntimeCommand.class, "ServiceProject", new StringToIProjectTransformer());
-	    
+	    	    
 	    //BUAxisCommands2 - these run after BeanClassWidget
 	    //DefaultsForServerJavaWSDLCommand
 	    registry.addMapping(BUAxisDefaultingCommand.class, "JavaWSDLParam", DefaultsForServerJavaWSDLCommand.class);
