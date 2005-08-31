@@ -51,12 +51,10 @@ public class CopyAxisJarCommand extends SimpleCommand {
 
   public static String AXIS_RUNTIME_PLUGIN_ID = "org.apache.axis"; //$NON-NLS-1$
   public static String[] JARLIST = new String[] {
-	  "axis-ant.jar",
 	  "axis.jar",
 	  "commons-discovery-0.2.jar",
 	  "commons-logging-1.0.4.jar",
 	  "jaxrpc.jar",
-	  "log4j-1.2.8.jar",
 	  "saaj.jar",
 	  "wsdl4j-1.5.1.jar"
   };
