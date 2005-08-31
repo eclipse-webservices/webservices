@@ -401,7 +401,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 
     public boolean isCanceled() 
     {
-      return progressMonitor_.isDisposed() || monitor_.isCanceled();
+      return progressMonitor_.isDisposed() ? false : monitor_.isCanceled();
     }
 
     public void setCanceled(boolean value) 
