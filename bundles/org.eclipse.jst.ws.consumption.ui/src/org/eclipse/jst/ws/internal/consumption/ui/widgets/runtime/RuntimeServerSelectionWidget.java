@@ -30,6 +30,10 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.server.core.IRuntime;
+import org.eclipse.wst.server.core.IServerType;
+import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.ServerUtil;
 
 
 
@@ -196,17 +200,9 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     String scenario = isClientContext_ ? msgUtils_.getMessage( "MSG_CLIENT_SUB" )
                                         : msgUtils_.getMessage( "MSG_SERVICE_SUB" );
     
-    // Kludge!!!  We shouldn't have to check for blank labels.  The defaulting commands should be setting the
-    //            ids to null if there isn't a valid one.  This code should be removed in C4.
-	
-	// rskreg
-    //WebServiceClientTypeRegistry wsctRegistry = WebServiceClientTypeRegistry.getInstance();
-    //String                       runtimeLabel = wsctRegistry.getRuntimeLabelById( ids_.getRuntimeId() );
 	String                       runtimeLabel = WebServiceRuntimeExtensionUtils.getRuntimeLabelById( ids_.getRuntimeId() );
-    //WebServiceServer             server       = wsctRegistry.getWebServiceServerByFactoryId( ids_.getServerId() );
-    //String                       serverLabel  = server == null ? "" : server.getLabel();
 	String                       serverLabel  = ids_.getServerId() == null ? "" : WebServiceRuntimeExtensionUtils.getServerLabelById(ids_.getServerId());
-    // rskreg
+    
 	
     if( ids_.getRuntimeId() == null || runtimeLabel == null || runtimeLabel.equals("" ))
     {
@@ -217,41 +213,56 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
       status = new SimpleStatus( "", msgUtils_.getMessage( "MSG_NO_SERVER", new String[]{ scenario } ), Status.ERROR );      
     }
 
+    //Check if only stub runtime is available for the selected server type
+    
+    String serverFactoryId = ids_.getServerId();
+    //
+    IServerType serverType = ServerCore.findServerType(serverFactoryId);
+	if (serverType!=null) {
+		
+		//Find a Runtime which is not a stub
+		//IRuntime nonStubRuntime = null;
+		boolean foundNonStubRuntime = false;
+		IRuntime[] runtimes = ServerUtil.getRuntimes(null, null);
+		String serverRuntimeTypeId = serverType.getRuntimeType().getId();
+		for (int i = 0; i < runtimes.length; i++) {
+			IRuntime runtime = runtimes[i];
+			String thisRuntimeTypeId = runtime.getRuntimeType().getId();
+			if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub()) {
+		        //Found an appropriate IRuntime that is not a stub
+				foundNonStubRuntime=true;
+				break;
+			}
+		}				
+		
+		if (!foundNonStubRuntime)
+		{	
+			String servertypeLabel = WebServiceRuntimeExtensionUtils.getServerLabelById(serverFactoryId);
+			status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_STUB_ONLY",new String[]{servertypeLabel}), Status.ERROR);					
+		}
+	}		
+    
+    //
+    
 	//--------- check if WSCT exists for these selections
 	if (!(ids_.getServerId() == null) && !(ids_.getRuntimeId() == null) && isClientContext_)
 	{
-		// rskreg
+
 		if (!WebServiceRuntimeExtensionUtils.webServiceClientRuntimeTypeExists( ids_.getServerId(), ids_.getRuntimeId(), ids_.getTypeId())) 
 		{
 			status = new SimpleStatus( "", msgUtils_.getMessage( "MSG_INVALID_SRT_SELECTIONS", new String[]{ scenario } ), Status.ERROR );		  
 		}
-		/*
-		WebServiceServer wss = wsctRegistry.getWebServiceServerByFactoryId(ids_.getServerId());
-		if (wss != null)
-		{
-			String serverTypeId = wss.getId();
-			String runtimeId = ids_.getTypeId();
-			if (!wsctRegistry.webServiceClientRuntimeTypeExists( serverTypeId, ids_.getRuntimeId(), runtimeId)) {
-				status = new SimpleStatus( "", msgUtils_.getMessage( "MSG_INVALID_SRT_SELECTIONS", new String[]{ scenario } ), Status.ERROR );		  
-			}
-		}
-		else
-			status = new SimpleStatus( "", msgUtils_.getMessage( "MSG_INVALID_SRT_SELECTIONS", new String[]{ scenario } ), Status.ERROR );
-		*/
-		// rskreg
+
 	}    
     
     //--------- check if WSSRT exists for these selections
     if (!(ids_.getServerId() == null) && !(ids_.getRuntimeId() == null) && !isClientContext_)
     {
-		// rskreg
-      //WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
-      //String serverTypeId = wsctRegistry.getWebServiceServerByFactoryId(ids_.getServerId()).getId();
-      //if (!wssrtRegistry.isServerRuntimeTypeSupported(serverTypeId, ids_.getRuntimeId(), ids_.getTypeId())) {
+
 	  if (!WebServiceRuntimeExtensionUtils.isServerRuntimeTypeSupported(ids_.getServerId(), ids_.getRuntimeId(), ids_.getTypeId())) {	  
         status = new SimpleStatus( "", msgUtils_.getMessage( "MSG_INVALID_SRT_SELECTIONS", new String[]{ scenario } ), Status.ERROR );      
       }
-	  // rskreg
+
     }
 	
     
