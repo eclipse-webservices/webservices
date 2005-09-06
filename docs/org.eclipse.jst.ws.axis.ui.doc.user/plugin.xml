@@ -13,8 +13,8 @@
  *******************************************************************************/ -->
 <plugin>
   
-	<extension point="org.eclipse.help.contexts">
-		<contexts file="wsconsumptionui-f1Contexts.xml" plugin="org.eclipse.jst.ws.consumption.ui"/>
-		<contexts file="wscreationui-f1Contexts.xml" plugin="org.eclipse.jst.ws.creation.ui"/>
+	<extension point="org.eclipse.help.toc">
+		<toc file="wsaxisbuild_toc.xml" />
+
 	</extension>
 </plugin>

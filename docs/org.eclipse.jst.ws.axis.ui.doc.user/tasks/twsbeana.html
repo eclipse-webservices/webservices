@@ -1,33 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-us" xml:lang="en-us">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="copyright" content="(C) Copyright IBM Corporation 2005" />
-<meta name="DC.rights.owner" content="(C) Copyright IBM Corporation 2005" />
-<meta name="security" content="public" />
-<meta name="Robots" content="index,follow" />
-<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
-<meta name="DC.Type" content="task" />
-<meta name="DC.Title" content="Creating a Web service from a Java bean using the Apache Axis run-time environment" />
-<meta name="abstract" content="The Web Service wizard assists you in creating a new Web service, configuring it for deployment, and deploying the Web service to a server. Once your Web service is deployed, the wizard assists you in generating the client proxy and sample application to test the Web service. When you have completed testing, you can publish your Web service to a UDDI Business Registry using the Export wizard." />
-<meta name="description" content="The Web Service wizard assists you in creating a new Web service, configuring it for deployment, and deploying the Web service to a server. Once your Web service is deployed, the wizard assists you in generating the client proxy and sample application to test the Web service. When you have completed testing, you can publish your Web service to a UDDI Business Registry using the Export wizard." />
-<meta name="DC.Relation" scheme="URI" content="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.html" />
-<meta name="DC.Relation" scheme="URI" content="../../org.eclipse.jst.ws.doc.user/concepts/cws.html" />
-<meta name="DC.Relation" scheme="URI" content="../../org.eclipse.jst.ws.doc.user/concepts/cruntime.html" />
-<meta name="DC.Relation" scheme="URI" content="../../org.eclipse.jst.ws.doc.user/tasks/toverws.html" />
-<meta name="DC.Relation" scheme="URI" content="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tuddiexp.html" />
-<meta name="DC.Relation" scheme="URI" content="../../org.eclipse.jst.ws.doc.user/ref/rwsdl.html" />
-<meta name="DC.Relation" scheme="URI" content="../concepts/caxistover.html" />
-<meta name="DC.Format" content="XHTML" />
-<meta name="DC.Identifier" content="twsbeana" />
-<meta name="DC.Language" content="en-us" />
-<!-- All rights reserved. Licensed Materials Property of IBM -->
-<!-- US Government Users Restricted Rights -->
-<!-- Use, duplication or disclosure restricted by -->
-<!-- GSA ADP Schedule Contract with IBM Corp. -->
-<link rel="stylesheet" type="text/css" href="../ibmdita.css" />
+<link rel="stylesheet" type="text/css" href="../../org.eclipse.wst.doc.user/common.css" />
 <title>Creating a Web service from a Java bean using the Apache Axis
 run-time environment</title>
 </head>
@@ -44,7 +19,7 @@ using the Export wizard.</p>
 <div class="p"><div class="p">Prerequisites:<ol><li>If you are using the Apache Jakarta Tomcat servlet
 container as your server, you must install it, configure an instance of it,
 and create a Web project targeted to it as described in <a href="ttomcatserv.html">Creating an Apache Tomcat server and Web project</a></li>
-<li>Create or import a bean into the Javaâ„¢ source folder of the Web project.</li>
+<li>Create or import a bean into the Java™ source folder of the Web project.</li>
 </ol>
 </div>
 </div>
@@ -91,7 +66,7 @@ name of a project that does not already exist, the wizard will create the
 project for you. Note that the only project type supported for Axis and SOAP
 run-time clients is a Web project. If you want the client to be
 created in a Java, EJB, or Application Client project, you must select
-the WebSphere<sup>Â®</sup> run-time
+the WebSphere<sup>®</sup> run-time
 environment for your client.</span></li>
 <li class="substepexpand"><span>Select an existing EAR or enter a unique name to associate the
 Web service client with a different EAR than the Web service EAR. <strong>Note:</strong> Selecting
@@ -103,7 +78,7 @@ of encountering run time errors, but will use more system resources.</span></li>
 selection.</span> The Apache Axis run-time environment is not WS-I compliant.
 Select <span class="uicontrol">Ignore</span>.</li>
 <li class="stepexpand"><span>Web Service Java Bean Identity page: the Web service
-URI and WSDL name will be listed.</span> YouÂ  have the following
+URI and WSDL name will be listed.</span> You  have the following
 options:<ul><li>Select the methods to expose.</li>
 <li>Select the encoding style. RPC/Encoded is the recommended encoding style
 for the Axis run-time environment. This encoding method is not WS-I compliant.</li>
@@ -133,7 +108,7 @@ server for you automatically.</span></li>
 </ol>
 </li>
 <li class="stepexpand"><span>Web Service Publication page: Select whether or not you want to
-publish this Web service to a UDDI registry. Click <span class="uicontrol">Finish</span>.Â </span> Note: you may see a warning stating <samp class="codeph">Error in generating WSDL
+publish this Web service to a UDDI registry. Click <span class="uicontrol">Finish</span>. </span> Note: you may see a warning stating <samp class="codeph">Error in generating WSDL
 from Java. ClassNotFound: &lt;bean name&gt;</samp>. This error can be safely
 ignored.</li>
 </ol>
@@ -153,7 +128,7 @@ below.</li>
 the Explorer will open. Select the operation you want to test, enter the required
 information, and click  <strong>Go</strong>. The result will display in the Status pane.</li>
 <li>If you have selected to publish the Web service, the Web Services Explorer
-is launched displaying the page required to publish your Web service to the IBM<sup>Â®</sup> UDDI
+is launched displaying the page required to publish your Web service to the IBM<sup>®</sup> UDDI
 Test Registry. Follow the instructions in  <var class="varname">Publishing the Web service</var> to
 complete this task.</li>
 </ul>
@@ -166,13 +141,13 @@ message.</p>
 test the methods of your Web service, using the Universal Test Client, and
 then publish your Web service to a UDDI Business Registry. For more information
 on publishing your Web service using the Web Services Explorer, refer to Publishing
-a Web service.Â  For more information on the Universal Test Client, refer
+a Web service.  For more information on the Universal Test Client, refer
 to the Server tools online help.</p>
 </div>
 </div>
 <div>
 <div class="familylinks">
-<div class="parentlink"><strong>Parent topic:</strong> <a href="../concepts/caxistover.html" title="This run-time environment is for users who prefer to develop for the open Apache Axis platform. It is for non-production use only. Axis is the third generation of the Apache SOAP implementation.Â  It evolved from Apache SOAP (which began at IBM as SOAP4J) to make the SOAP engine more flexible, configurable, and able to handle both SOAP and the upcoming XML Protocol specification from the W3C open-source effort.">Creating Web services with the Apache Axis run-time environment</a></div>
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../concepts/caxistover.html" title="This run-time environment is for users who prefer to develop for the open Apache Axis platform. It is for non-production use only. Axis is the third generation of the Apache SOAP implementation.  It evolved from Apache SOAP (which began at IBM as SOAP4J) to make the SOAP engine more flexible, configurable, and able to handle both SOAP and the upcoming XML Protocol specification from the W3C open-source effort.">Creating Web services with the Apache Axis run-time environment</a></div>
 </div>
 
 <div class="linklist"><strong>Related Concepts</strong><br />
@@ -190,5 +165,8 @@ to the Server tools online help.</p>
 
 <div><a href="../../org.eclipse.jst.ws.doc.user/ref/rwsdl.html">WSDL documents</a></div></div>
 </div>
+<p>
+		(C) Copyright IBM Corporation 2000, 2005. All Rights Reserved.
+		</p> 
 </body>
 </html>
