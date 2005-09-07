@@ -163,17 +163,17 @@
 			class="org.eclipse.wst.wsdl.ui.internal.util.WSDLPreferencePage"
 			id="org.eclipse.wst.wsdl.ui.internal.util.WSDLPreferencePage" />
 	</extension>
-	<extension point="org.eclipse.wst.sse.ui.extendedconfiguration">
+	<extension point="org.eclipse.wst.sse.ui.editorConfiguration">
 		<!-- add preference pages to the context menu action (ID must correspond to the declared "path" above) -->
 		<definition
 			type="preferencepages"
 			value="org.eclipse.wst.wsdl.ui.internal.util.WSDLPreferencePage"
 			target="org.eclipse.wst.wsdl.ui.internal.WSDLEditor.source" />
 		<!--
-			<propertysheetconfiguration
+			<propertySheetConfiguration
 			class="org.eclipse.wst.wsdl.ui.internal.properties.WSDLPropertySheetConfiguration"
 			target="org.eclipse.wst.wsdl.ui.internal.WSDLTextEditor">
-			</propertysheetconfiguration>
+			</propertySheetConfiguration>
 		-->
 	</extension>
 
