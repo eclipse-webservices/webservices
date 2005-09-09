@@ -46,6 +46,15 @@ public class ClasspathUtils {
 	private static String JAR = "jar"; //$NON-NLS-1$
 	private static String WEBINF_LIB = "/WEB-INF/lib"; //$NON-NLS-1$
 	private static String WEBINF = "WEB-INF"; //$NON-NLS-1$
+	
+	// workaround for Axis-2146 - lower case list of JARs that may include javax.activation.DataHandler
+	private static String[] JARLIST = new String[] {
+		  "activation.jar",
+		  "geronimo-spec-activation-1.0.2-rc3.jar",
+		  "geronimo-spec-j2ee-1.4-rc3.jar",
+		  "geronimo-spec-activation-1.0.2-rc4.jar",
+		  "geronimo-spec-j2ee-1.4-rc4.jar"
+	  };
 
 	private ClasspathUtils() {
 	}
@@ -228,7 +237,7 @@ public class ClasspathUtils {
 						buildPath[i],
 						javaProject.getProject());
 				for (int j = 0; j < buildPathString.length; j++) {
-					if (!buildPathString[j].endsWith("activation.jar") && !buildPathString[j].endsWith("mail.jar"))
+					if (!excludeJar(buildPathString[j]))
 						projectClasspath.add(buildPathString[j]);
 				}
 			}
@@ -246,6 +255,19 @@ public class ClasspathUtils {
 		}
 
 		return (String[]) projectClasspath.toArray(new String[projectClasspath.size()]);
+	}
+
+	// workaround for Axis-2146 - exclude JARs which may include javax.activation.DataHandler 
+	// from the classpath passed to Axis emitter
+	
+	private boolean excludeJar(String buildPathString) {
+		
+		for (int i=0; i<JARLIST.length; i++) {
+			if (buildPathString.toLowerCase().endsWith(JARLIST[i])) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private String[] classpathEntry2String(
