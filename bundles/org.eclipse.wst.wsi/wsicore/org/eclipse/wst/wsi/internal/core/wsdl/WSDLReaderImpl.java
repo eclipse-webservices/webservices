@@ -686,7 +686,7 @@ catch (Exception e)
 
       // If it is, then get the element location information
       elementLocation =
-        (ElementLocation) elementImpl.getUserData(ElementLocation.KEY_NAME);
+        (ElementLocation) elementImpl.getUserData();
 
       // Add it to the list
       this.wsdlElementList.addElement(wsdlElement, elementLocation);

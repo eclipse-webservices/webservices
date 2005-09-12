@@ -121,10 +121,10 @@ public class LineNumberDOMParser extends DOMParser
     {
       element = (Element)getProperty(CURRENT_ELEMENT_NODE);
       ElementImpl elementImpl = (ElementImpl)element;
-      elementImpl.setUserData(
-        ElementLocation.ID,
-        new ElementLocation(locator.getLineNumber(), locator.getColumnNumber()),
-        null);
+      // Setting the user data with an identifier such as ElementLocation.KEY_NAME
+      // may be a long term good idea. The setUserData method with no id is used 
+      // to support JVMs with alternate versions of Xerces.
+      elementImpl.setUserData(new ElementLocation(locator.getLineNumber(), locator.getColumnNumber()));
     }
     // catch SAXNotRecognizedException and SAXNotSupportedException if can't get element
     catch (ClassCastException e)

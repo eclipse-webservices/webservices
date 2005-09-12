@@ -350,6 +350,7 @@ public class ValidationController
     	// TODO: Log error if the parser fails to read the WSDL document.
     	// In this case the validator will fail with an unexplained error message
     	// about a null WSDL namespace. This error should be addressed as well.
+    	System.out.println(t);
     }
     return null;
   }

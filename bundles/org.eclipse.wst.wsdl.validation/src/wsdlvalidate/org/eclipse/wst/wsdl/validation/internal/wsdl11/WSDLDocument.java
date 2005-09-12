@@ -1868,7 +1868,7 @@ public class WSDLDocument
     try
     {
       ElementImpl elementImpl = (ElementImpl)element;
-      ElementLocation elementLocation = (ElementLocation)elementImpl.getUserData(ElementLocation.ID);
+      ElementLocation elementLocation = (ElementLocation)elementImpl.getUserData();
       if (elementLocation != null)
       {
 

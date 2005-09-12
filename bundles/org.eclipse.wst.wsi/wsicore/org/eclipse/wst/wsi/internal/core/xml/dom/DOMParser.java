@@ -73,11 +73,10 @@ public class DOMParser extends org.apache.xerces.parsers.DOMParser
       element = (Element) getProperty(CURRENT_ELEMENT_NODE);
 
       elementImpl = (ElementImpl) element;
-
-      elementImpl.setUserData(
-        ElementLocation.KEY_NAME,
-        (ElementLocation)new ElementLocation(locator.getLineNumber(), locator.getColumnNumber()),
-        null);
+      // Setting the user data with an identifier such as ElementLocation.KEY_NAME
+      // may be a long term good idea. The setUserData method with no id is used 
+      // to support JVMs with alternate versions of Xerces.
+      elementImpl.setUserData(new ElementLocation(locator.getLineNumber(), locator.getColumnNumber()));
     }
     catch (ClassCastException cce)
     {
