@@ -3,6 +3,7 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
 import java.util.Vector;
 
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.AxisDeployCommand;
+import org.eclipse.jst.ws.internal.axis.consumption.core.command.GeronimoAxisDeployCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
@@ -140,7 +141,12 @@ public class AxisWebService extends AbstractWebService
 		} else {// For BOTTOM_UP and TOP_DOWN
 			commands.add(new AxisRunInputCommand(this, project, module));
 //			commands.add(new StartProjectCommand(module));
-			commands.add(new AxisDeployCommand());
+			if (getWebServiceInfo().getServerFactoryId().equals("org.eclipse.jst.server.geronimo.10")) {
+				commands.add(new GeronimoAxisDeployCommand(project, module));
+			}
+			else {
+			    commands.add(new AxisDeployCommand());
+			}
 			commands.add( new CopyDeploymentFileCommand( project, module ) );
 			commands.add(new RefreshProjectCommand());
 			if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
@@ -227,9 +233,13 @@ public class AxisWebService extends AbstractWebService
 		
 		// Run extension
 		
-	    //AxisDeployCommand
+		// GeronimoAxisDeployCommand
+		registry.addMapping(AxisRunInputCommand.class, "JavaWSDLParam", GeronimoAxisDeployCommand.class);		
+	    
+		//AxisDeployCommand
 	    registry.addMapping(AxisRunInputCommand.class, "JavaWSDLParam", AxisDeployCommand.class);
-		//RefreshProjectCommand
+		
+	    //RefreshProjectCommand
 	    registry.addMapping(AxisRunInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", new StringToIProjectTransformer());
 
 	    
@@ -288,18 +298,15 @@ public class AxisWebService extends AbstractWebService
 	    // BuildProjectCommand
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", BuildProjectCommand.class, "Project", projectTransformer);
 
-	    // StartProjectCommand
-//	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", StartProjectCommand.class, "ServiceProject", projectTransformer);
-//	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerServer", StartProjectCommand.class, "ServiceExistingServer", new ServerName2IServerTransformer());
-//	    dataRegistry.addMapping(CopyAxisJarCommand.class, "ProjectRestartRequired", StartProjectCommand.class, "IsWebProjectStartupRequested", null);
-
+	    // GeronimoAxisDeployCommand
+	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", GeronimoAxisDeployCommand.class);
+	    
 	    // AxisDeployCommand
 	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", AxisDeployCommand.class);
 	    
 	    // AxisOutputCommand
 	    dataRegistry.addMapping(Skeleton2WSDLCommand.class, "WsdlURI", AxisOutputCommand.class);
 		dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", AxisOutputCommand.class); 
-//	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", AxisOutputCommand.class);
 	    
 	    // ComputeAxisSkeletonBeanCommand
 	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", ComputeAxisSkeletonBeanCommand.class);

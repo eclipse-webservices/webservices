@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
 
 import java.io.File;
-import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 import org.apache.axis.tools.ant.axis.AdminClientTask;
@@ -31,7 +30,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 public class AxisDeployCommand extends SimpleCommand
 {
-  private static final String SERVICE_EXT = "/services/AdminService"; //$NON-NLS-1$
+  protected static final String SERVICE_EXT = "/services/AdminService"; //$NON-NLS-1$
 
   private JavaWSDLParameter javaWSDLParam;
   private ResourceBundle resource = ResourceBundle.getBundle("org.eclipse.jst.ws.axis.consumption.core.consumption"); //$NON-NLS-1$
@@ -147,12 +146,6 @@ public class AxisDeployCommand extends SimpleCommand
     return new SimpleStatus("AxisDeployCommand", //$NON-NLS-1$
     getMessage("MSG_AXIS_DEPLOY_OK"), Status.OK);
 
-  }
-
-  private String getMessage(String messageId, String parm1)
-  {
-    String message = resource.getString(messageId);
-    return MessageFormat.format(message, new String[] { parm1 });
   }
 
   /**

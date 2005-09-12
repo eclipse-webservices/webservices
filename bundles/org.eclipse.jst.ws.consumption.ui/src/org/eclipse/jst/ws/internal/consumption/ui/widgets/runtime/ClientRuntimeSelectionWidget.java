@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.ClientProjectTypeRegistry;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
@@ -199,7 +198,6 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
 
   public SelectionListChoices getRuntime2ClientTypes()
   {
-    ClientProjectTypeRegistry registry = ClientProjectTypeRegistry.getInstance();
     
     String runtime       = runtimeWidget_.getTypeRuntimeServer().getRuntimeId();
     String clientProject = projectWidget_.getProjectChoices().getList().getSelection();
@@ -344,8 +342,14 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
       ValidationUtils valUtils = new ValidationUtils();
       if (clientProjects != null)
       {
-    	  String clientEARName = getClientEarProjectName();
-    	  String clientProjName = getClientProjectName();
+          String clientEARName = projectWidget_.getEarProjectName();
+          if (clientEARName == null){
+        	  clientEARName = clientProjects.getChoice().getList().getSelection();
+          }
+          String clientProjName = projectWidget_.getProjectName();
+          if (clientProjName == null){
+            clientProjName = clientProjects.getList().getSelection();
+          }
         
         String clientCompName = projectWidget_.getComponentName();
         String clientEARCompName = projectWidget_.getEarComponentName();

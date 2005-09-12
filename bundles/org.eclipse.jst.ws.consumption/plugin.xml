@@ -39,6 +39,11 @@
             class="org.eclipse.jst.ws.internal.consumption.command.common.StartTomcatServer"
             id="SERVER_ID_TOMCAT50_LOCAL">
       </webServiceStartServerType>
+      <webServiceStartServerType
+            factoryId="org.eclipse.jst.server.geronimo.10"
+            class="org.eclipse.jst.ws.internal.consumption.command.common.StartTomcatServer"
+            id="SERVER_ID_GERONIMO10_LOCAL">
+       </webServiceStartServerType> 
    </extension>
    
 
