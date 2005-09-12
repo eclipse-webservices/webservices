@@ -21,8 +21,6 @@ import org.apache.xerces.xni.parser.XMLInputSource;
 
 /**
  * Entity resolve to resolve file entities.
- * 
- * @author Lawrence Mandel, IBM
  */
 public class FileEntityResolver implements XMLEntityResolver
 {
@@ -34,24 +32,19 @@ public class FileEntityResolver implements XMLEntityResolver
   {
     String publicId = resource.getPublicId();
     String systemId = resource.getExpandedSystemId();
-    String namespace = resource.getNamespace();
-    URL url = null;
-    if(systemId != null)
+    String url = systemId;
+    if(url == null)
     {
-      url = new URL(systemId);
+      url = publicId;
     }
-    else if(publicId != null)
+    if(url == null)
     {
-      url = new URL(publicId);
-    }
-    else if(namespace != null)
-    {
-      url = new URL(namespace);
+      url = resource.getNamespace();
     }
     if(url != null)
     {
-      InputStream is = url.openStream();
-      return new XMLInputSource(publicId, resource.getExpandedSystemId(), resource.getExpandedSystemId(), is, null);
+      InputStream is = new LazyURLInputStream(url);
+      return new XMLInputSource(publicId, systemId, systemId, is, null);
     }
     return null;
   }
