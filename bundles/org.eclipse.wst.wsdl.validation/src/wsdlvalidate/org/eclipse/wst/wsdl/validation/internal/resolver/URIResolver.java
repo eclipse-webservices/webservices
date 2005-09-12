@@ -11,10 +11,7 @@
 
 package org.eclipse.wst.wsdl.validation.internal.resolver;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,6 +20,7 @@ import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLEntityResolver;
 import org.apache.xerces.xni.parser.XMLInputSource;
+import org.eclipse.wst.wsdl.validation.internal.util.LazyURLInputStream;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog;
 
 /**
@@ -117,16 +115,8 @@ public class URIResolver implements IExtensibleURIResolver, XMLEntityResolver
     XMLInputSource xmlInputSource = null;
     if (result != null)
     {
-      try
-      {
-        URL url = new URL(result.getPhysicalLocation());
-        InputStream is = url.openStream();
-        xmlInputSource = new XMLInputSource(publicId, result.getLogicalLocation(), result.getLogicalLocation(), is, null);
-      }
-      catch (FileNotFoundException e)
-      {
-        //System.out.println(e);
-      }
+      LazyURLInputStream is = new LazyURLInputStream(result.getPhysicalLocation());
+      xmlInputSource = new XMLInputSource(publicId, result.getLogicalLocation(), result.getLogicalLocation(), is, null);
     }
     return xmlInputSource;
   }

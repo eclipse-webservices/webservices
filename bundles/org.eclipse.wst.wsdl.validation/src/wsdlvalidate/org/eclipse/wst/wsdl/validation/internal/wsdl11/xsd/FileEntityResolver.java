@@ -13,12 +13,12 @@ package org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLEntityResolver;
 import org.apache.xerces.xni.parser.XMLInputSource;
+import org.eclipse.wst.wsdl.validation.internal.util.LazyURLInputStream;
 
 /**
  * Entity resolve to resolve file entities.
@@ -34,22 +34,22 @@ public class FileEntityResolver implements XMLEntityResolver
     String publicId = resource.getPublicId();
     String systemId = resource.getExpandedSystemId();
     String namespace = resource.getNamespace();
-    URL url = null;
+    String url = null;
     if(systemId != null)
     {
-      url = new URL(systemId);
+      url = systemId;
     }
     else if(publicId != null)
     {
-      url = new URL(publicId);
+      url = publicId;
     }
     else if(namespace != null)
     {
-      url = new URL(namespace);
+      url = namespace;
     }
     if(url != null)
     {
-      InputStream is = url.openStream();
+      InputStream is = new LazyURLInputStream(url);
       return new XMLInputSource(publicId, resource.getExpandedSystemId(), resource.getExpandedSystemId(), is, null);
     }
     return null;

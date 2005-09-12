@@ -11,15 +11,13 @@
 
 package org.eclipse.wst.wsdl.validation.internal.xml;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLEntityResolver;
 import org.apache.xerces.xni.parser.XMLInputSource;
+import org.eclipse.wst.wsdl.validation.internal.util.LazyURLInputStream;
 
 /**
  * A resolver to resolver entities from the XML catalog.
@@ -63,17 +61,9 @@ public class XMLCatalogResolver implements XMLEntityResolver
     String location = XMLCatalog.getInstance().resolveEntityLocation(publicId, systemId);
     if (location != null)
     {
-      try
-      {
-        URL url = new URL(location);
-        InputStream is = url.openStream();
-        XMLInputSource inputSource = new XMLInputSource(publicId, systemId, systemId, is, null);
-        return inputSource;
-      }
-      catch(FileNotFoundException e)
-      {
-        System.out.println(e);
-      }
+      LazyURLInputStream is = new LazyURLInputStream(location);
+      XMLInputSource inputSource = new XMLInputSource(publicId, systemId, systemId, is, null);
+      return inputSource;
     }
     // otherwise return null to tell the parser to locate the systemId as a URI
     return null;
