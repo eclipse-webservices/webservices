@@ -18,6 +18,7 @@ public class TestInfo {
   private String setEndpointMethod;
   private String clientProject;
   private String clientModule;
+  private boolean clientNeedEAR;
   private String clientEARProject;
   private String clientEARModule;
   private BooleanSelection[] methods;
@@ -237,6 +238,17 @@ public class TestInfo {
   public String getWsdlServiceURL(){
     return wsdlServiceURL;  
   }
+  
+  /**
+   * clientNeedEAR
+   */
+  public boolean getClientNeedEAR() {
+		return clientNeedEAR;
+	}
+
+	public void setClientNeedEAR(boolean clientNeedEAR) {
+		this.clientNeedEAR = clientNeedEAR;
+	}
 
 
 }

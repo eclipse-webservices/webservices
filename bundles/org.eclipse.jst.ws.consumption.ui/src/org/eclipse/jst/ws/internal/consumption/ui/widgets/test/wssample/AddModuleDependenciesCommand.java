@@ -102,6 +102,7 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 	  sampleIProject = ProjectUtilities.getProject(testInfo.getGenerationProject());
 	  clientIProject = ProjectUtilities.getProject(testInfo.getClientProject());
 	  
+	if (testInfo.getClientNeedEAR()) {
 	  if(testInfo.getClientEARProject() == null || testInfo.getClientEARProject().length() == 0){
 		  sampleEARProject = testInfo.getGenerationProject() + DEFAULT_SAMPLE_EAR_PROJECT_EXT;
 	      sampleEARModule = testInfo.getGenerationModule() + DEFAULT_SAMPLE_EAR_PROJECT_EXT;	
@@ -111,7 +112,6 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 		  sampleEARModule = testInfo.getClientEARModule();
 	  }
 	  
-	  System.err.println("sampleEARProject " + sampleEARProject);
 	  sampleEARIProject  = ProjectUtilities.getProject(sampleEARProject);
 	  if(sampleEARIProject == null || !sampleEARIProject.isOpen()){
 		  
@@ -139,7 +139,8 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 	    }     
 	  
 	  }
-	  
+	}
+	
 	  if (!sampleIProject.isOpen())
       {
         CreateModuleCommand createSample = new CreateModuleCommand();
@@ -151,6 +152,7 @@ public class AddModuleDependenciesCommand extends SimpleCommand
         createSample.setJ2eeLevel(J2EEUtils.getJ2EEVersionAsString(clientIProject,testInfo.getClientModule()));
 		Status status = createSample.execute(env);
       
+	   if (testInfo.getClientNeedEAR()) {
 //		Associate the client module and service EAR
 	    AssociateModuleWithEARCommand associateCommand = new AssociateModuleWithEARCommand();
 	    associateCommand.setProject(testInfo.getGenerationProject());
@@ -161,7 +163,8 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 	    if (status.getSeverity()==Status.ERROR)
 	    {
 	      env.getStatusHandler().reportError(status);     
-	    }     
+	    }  
+	   }
 		
 		StartServerCommand startServer = new StartServerCommand(false, true);
 		startServer.setServerInstanceId(testInfo.getClientExistingServer().getId());

@@ -60,6 +60,7 @@ public class ClientTestDelegateCommand extends SimpleCommand
   private String clientProject;
   private String clientP;
   private String clientC;
+  private boolean clientNeedEAR;
   private String clientEarProjectName;
   private String clientEarComponentName;
   private String clientServer;
@@ -166,6 +167,7 @@ public class ClientTestDelegateCommand extends SimpleCommand
 	testInfo.setSetEndpointMethod(setEndpointMethod);
 	testInfo.setClientProject(clientP);
 	testInfo.setClientModule(clientC);
+	testInfo.setClientNeedEAR(clientNeedEAR);
 	testInfo.setClientEARProject(clientEarProjectName);
 	testInfo.setClientEARModule(clientEarComponentName);
 	testInfo.setMethods(methods);
@@ -344,4 +346,12 @@ public class ClientTestDelegateCommand extends SimpleCommand
   {
     this.endpoints = endpoints;
   }
+  
+  public boolean getClientNeedEAR() {
+		return clientNeedEAR;
+	}
+
+	public void setClientNeedEAR(boolean clientNeedEAR) {
+		this.clientNeedEAR = clientNeedEAR;
+	}
 }
