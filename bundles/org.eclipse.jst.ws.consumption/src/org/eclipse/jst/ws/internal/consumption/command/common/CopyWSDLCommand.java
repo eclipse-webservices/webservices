@@ -13,6 +13,8 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +89,7 @@ public class CopyWSDLCommand extends SimpleCommand
     }
   }
 
-  private void copyWSDL(Environment env, String uri, String destURI, String destLocalname) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException
+  private void copyWSDL(Environment env, String uri, String destURI, String destLocalname) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException, URISyntaxException
   {
   	Definition definition;
 	
@@ -99,15 +101,19 @@ public class CopyWSDLCommand extends SimpleCommand
 	}
   }
 
-  private void copyWSDL(Environment env, String uri, String destURI, String destLocalname, Definition definition) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException
+  private void copyWSDL(Environment env, String uri, String destURI, String destLocalname, Definition definition) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException, URISyntaxException
   {
+	URI normalizedURI = new URI(uri);
+	uri = normalizedURI.normalize().toString();
+	  	
     if (ignoreList.contains(uri))
       return;
     ignoreList.add(uri);
-    int index = wsdlURI.lastIndexOf('/');
-    String baseURI = getBaseURI(wsdlURI);
+    
+    String baseURI = getBaseURI(uri);
     if (destLocalname == null || destLocalname.length() <= 0)
-      destLocalname = getLocalname(wsdlURI);
+      destLocalname = getLocalname(uri);
+    
     // copy WSDL
     StringBuffer destinationFileURI = new StringBuffer(addTrailingSeparator(destURI));
     destinationFileURI.append(destLocalname);
@@ -216,8 +222,11 @@ public class CopyWSDLCommand extends SimpleCommand
     return (uri.indexOf(':') == -1);
   }
 
-  private void copyXMLSchema(Environment env, String uri, String destURI) throws TransformerException, TransformerConfigurationException, IOException, URIException
+  private void copyXMLSchema(Environment env, String uri, String destURI) throws TransformerException, TransformerConfigurationException, IOException, URIException, URISyntaxException
   {
+	URI normalizedURI = new URI(uri);
+	uri = normalizedURI.normalize().toString();
+	
     if (ignoreList.contains(uri))
       return;
     ignoreList.add(uri);
@@ -251,7 +260,7 @@ public class CopyWSDLCommand extends SimpleCommand
     }
   }
 
-  private void copyXMLSchema(Environment env, XSDSchema xsdSchema, String baseURI, String destURI) throws TransformerException, TransformerConfigurationException, IOException, URIException
+  private void copyXMLSchema(Environment env, XSDSchema xsdSchema, String baseURI, String destURI) throws TransformerException, TransformerConfigurationException, IOException, URIException, URISyntaxException
   {
     if (xsdSchema != null)
     {
