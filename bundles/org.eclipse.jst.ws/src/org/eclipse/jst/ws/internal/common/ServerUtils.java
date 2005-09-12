@@ -589,7 +589,7 @@ public final class ServerUtils {
 		for (int i = 0; i < runtimes.size(); i++) {
 			IRuntime runtime = (IRuntime) runtimes.get(i);
 			String thisRuntimeTypeId = runtime.getRuntimeType().getId();
-			if (thisRuntimeTypeId.equals(serverRuntimeTypeId)) {
+			if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub()) {
 				return runtime.getId();
 			}
 		}
