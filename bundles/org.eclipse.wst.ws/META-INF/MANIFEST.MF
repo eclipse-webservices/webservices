@@ -6,7 +6,8 @@ Bundle-Version: 0.7.0
 Bundle-Activator: org.eclipse.wst.ws.internal.plugin.WSPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.wst.ws.internal.datamodel,
+Export-Package: org.eclipse.wst.ws.internal.common,
+ org.eclipse.wst.ws.internal.datamodel,
  org.eclipse.wst.ws.internal.extensions,
  org.eclipse.wst.ws.internal.monitor,
  org.eclipse.wst.ws.internal.plugin,
