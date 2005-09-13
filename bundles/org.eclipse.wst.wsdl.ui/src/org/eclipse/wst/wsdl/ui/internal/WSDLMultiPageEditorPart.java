@@ -43,8 +43,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IGotoMarker;
-import org.eclipse.ui.part.MultiPageEditorPart;
-import org.eclipse.ui.part.MultiPageEditorSite;
+import org.eclipse.wst.common.ui.provisional.editors.PostMultiPageEditorSite;
+import org.eclipse.wst.common.ui.provisional.editors.PostSelectionMultiPageEditorPart;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.exceptions.SourceEditingRuntimeException;
 import org.eclipse.wst.sse.ui.internal.StructuredTextEditor;
@@ -53,7 +53,7 @@ import org.eclipse.wst.xml.ui.internal.Logger;
 import org.eclipse.wst.xml.ui.internal.provisional.StructuredTextEditorXML;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLEditorMessages;
 
-public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPropertyListener
+public class WSDLMultiPageEditorPart extends PostSelectionMultiPageEditorPart implements IPropertyListener
 {
 
 	  /**
@@ -204,7 +204,7 @@ public class WSDLMultiPageEditorPart extends MultiPageEditorPart implements IPro
 	  protected IEditorSite createSite(IEditorPart editor) {
 	    IEditorSite site = null;
 	    if (editor == fTextEditor) {
-	      site = new MultiPageEditorSite(this, editor) {
+	      site = new PostMultiPageEditorSite(this, editor) {
 	        /**
 	         * @see org.eclipse.ui.part.MultiPageEditorSite#getActionBarContributor()
 	         */
