@@ -19,11 +19,10 @@ import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
-import org.eclipse.wst.wsdl.ui.internal.WSDLTextEditor;
 
 public class WSDLActionBarContributor extends SourceEditorActionBarContributor
 {
-  protected WSDLTextEditor textEditor;
+  protected ITextEditor textEditor;
 
   /**
    * Constructor for WSDLActionBarContributor.
