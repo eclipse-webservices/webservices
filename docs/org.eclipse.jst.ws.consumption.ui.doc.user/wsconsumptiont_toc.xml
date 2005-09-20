@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?NLS  TYPE="org.eclipse.help.toc"?>
-<toc label="wsconsumptiont" link_to="../com.ibm.etools.webservice.doc/webservice_toc.xml#wsconsumptiont" topic="tasks/tuddiexp.html">
+<toc label="wsconsumptiont" link_to="../org.eclipse.jst.ws.doc.user/webservice_toc.xml#wsconsumptiont" topic="tasks/tuddiexp.html">
    <topic label="Publishing Web services and business entities" href="tasks/tuddiexp.html">
       <topic label="Launching the Web Services Explorer" href="tasks/tstrtexp.html"/>
       <topic label="Registering with a UDDI registry" href="tasks/treg.html"/>

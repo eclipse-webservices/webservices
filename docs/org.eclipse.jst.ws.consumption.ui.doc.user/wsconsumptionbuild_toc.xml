@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?NLS  TYPE="org.eclipse.help.toc"?>
-<toc link_to="../com.ibm.etools.webservice.doc/webservice_toc.xml#wsconsumptiont" label="wsconsumptiont" topic="concepts/cuddi.html">
+<toc link_to="../org.eclipse.jst.ws.doc.user/webservice_toc.xml#wsconsumptiont" label="wsconsumptiont" topic="concepts/cuddi.html">
    <topic label="Universal Description, Discovery, and Integration (UDDI)" href="concepts/cuddi.html"/>
    <topic label="Relationship between UDDI and WSDL" href="concepts/cwsdlud.html"/>
    <topic label="Discovering Web Services" href="tasks/tdiscov.html"/>
