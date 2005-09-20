@@ -15,11 +15,7 @@
 <!-- contributions for using the tool.                 -->
 <!-- ================================================= -->
 
-<plugin
-   id="org.eclipse.wst.wsi.doc.user"
-   name="Web services documentation"
-   version="7.0.0"
-   provider-name="Eclipse.org">
+<plugin>
 
 <extension point="org.eclipse.help.toc">
     <toc file="wswsitest_toc.xml"/>   
