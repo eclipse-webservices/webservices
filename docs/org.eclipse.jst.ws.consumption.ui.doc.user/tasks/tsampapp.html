@@ -1,7 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-us" xml:lang="en-us">
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- /*******************************************************************************
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/ -->
 <link rel="stylesheet" type="text/css" href="../../org.eclipse.wst.doc.user/common.css" />
 <title>Generating a Java client proxy and a sample application from
 a WSDL document</title>
@@ -10,12 +22,12 @@ a WSDL document</title>
 
 <h1 class="topictitle1">Generating a Java client proxy and a sample application
 from a WSDL document using the IBM SOAP run-time environment</h1>
-<div><p>The Web Service Client wizard assists you in generating a Java™ bean
-proxy and a sample application.  The sample Web application demonstrates
+<div><p>The Web Service Client wizard assists you in generating a Javaâ„¢ bean
+proxy and a sample application.Â  The sample Web application demonstrates
 how to code a proxy file.</p>
 <div class="p">Prerequisites:<ol><li id="tsampapp__createtomcatlinks"><a name="tsampapp__createtomcatlinks"><!-- --></a>If you are using the Apache Jakarta Tomcat servlet
 container as your server, you must install it, configure an instance of it,
-and create a Web project targeted to it as described in <a href="../../org.eclipse.jst.ws.axis.creation.ui.doc.user/tasks/ttomcatserv.html">Creating a WebSphere<sup>®</sup> Server and Web project</a></li>
+and create a Web project targeted to it as described in <a href="../../org.eclipse.jst.ws.axis.creation.ui.doc.user/tasks/ttomcatserv.html">Creating a WebSphere<sup>Â®</sup> Server and Web project</a></li>
 <li id="tsampapp__prereqcreatewsprojs"><a name="tsampapp__prereqcreatewsprojs"><!-- --></a>If you are using a WebSphere server, create a dynamic
 Web project targeted to the appropriate server as described in <a href="../../org.eclipse.jst.ws.doc.user/tasks/twasserv.html">Creating a WebSphere Server and Web project</a>.</li>
 <li>Discover and import a WSDL document into the Web project. You can only
@@ -35,7 +47,7 @@ Select the  <span class="uicontrol">Web Service Client</span> wizard. Click  <sp
 <li><span>Web Services panel: Select the type of proxy to be generated, and
 whether or not it will be tested.</span></li>
 <li><span>Client Environment Configuration page: Select the run-time environment
-and the server for your Web service client.</span><ol type="a"><li class="substepexpand"><span>Click  <span class="uicontrol">Explore Options</span> and select the IBM<sup>®</sup> SOAP
+and the server for your Web service client.</span><ol type="a"><li class="substepexpand"><span>Click  <span class="uicontrol">Explore Options</span> and select the IBM<sup>Â®</sup> SOAP
 run-time environment and select the server on which you want to run your Web
 service client.</span> If you want to use the Apache Axis 1.0 run-time
 environment or the IBM WebSphere run-time environments, refer to the appropriate
@@ -69,7 +81,7 @@ will use to test the proxy, and the methods that you want included in the
 proxy. Note that the Universal Test Client (UTC) is only compatible with Web
 service clients deployed on WebSphere servers. Click  <span class="uicontrol">Finish</span></span></li>
 </ol>
-<div class="section"><p>Notes<sup>®</sup>:</p>
+<div class="section"><p>Notes<sup>Â®</sup>:</p>
 <ul><li>When defining custom mappings ensure the bean, serializer, and deserializer
 classes are on the build path of the Web project, otherwise the wizard will
 not accept their class names.</li>
@@ -92,9 +104,9 @@ String.</li>
 document rather than the binding WSDL document in order to generate a client
 proxy that contains the complete endpoint information. The service element
 is the basis for the Business Service that you will publish. You cannot publish
-a Business Service using a WSDL document that does not have service elements. 
+a Business Service using a WSDL document that does not have service elements.Â 
 If you generate a proxy from a WSDL binding document, you must call the  <tt class="sysout">setEndPoint()</tt> method
-to set an endpoint URL before you call any other method in the proxy. 
+to set an endpoint URL before you call any other method in the proxy.Â 
 The proxy generated from a WSDL binding document is not automatically equipped
 with an endpoint URL.</p>
 <p>The generated Java bean proxy provides a remote procedure
@@ -130,8 +142,5 @@ development documentation.</p>
 <div><a href="tuddiexp.html" title="Through UDDI and WSIL, other applications can discover WSDL documents and bind with them to execute transactions or perform other business processes.">Publishing Web services and business entities</a></div></div>
 
 </div>
-<p>
-		(C) Copyright IBM Corporation 2000, 2005. All Rights Reserved.
-		</p> 
 </body>
 </html>

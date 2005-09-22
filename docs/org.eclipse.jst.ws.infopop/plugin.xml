@@ -14,5 +14,6 @@
 <plugin>
 	<extension point="org.eclipse.help.contexts">
 		<contexts file="webserviceui-f1Contexts.xml" plugin="org.eclipse.jst.ws.ui"/>
+		<contexts file="wsui-f1Contexts.xml" plugin="org.eclipse.jst.ws.ui"/>
 	</extension>
 </plugin>

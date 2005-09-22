@@ -1,7 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-us" xml:lang="en-us">
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- /*******************************************************************************
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/ -->
 <link rel="stylesheet" type="text/css" href="../../org.eclipse.wst.doc.user/common.css" />
 <title>Web Services Inspection Language (WSIL)</title>
 </head>
@@ -10,29 +22,29 @@
 <h1 class="topictitle1">Web Services Inspection Language (WSIL)</h1>
 <div><p>Web Services Inspection Language (WSIL) is a service discovery
 mechanism that is an alternative to UDDI as well as complementary to UDDI.
-When you discover Web services with UDDI, you go to a centralized registry. 
-WSIL is an alternative approach to Web service discovery.  WSIL allows
+When you discover Web services with UDDI, you go to a centralized registry.Â 
+WSIL is an alternative approach to Web service discovery.Â  WSIL allows
 you to go directly to the service provider and ask for the services it provides.</p>
-<p>IBM<sup>®</sup> and
+<p>IBM<sup>Â®</sup> and
 Microsoft's proposal for the WSIL specification is designed around an XML-based
 model for building an aggregation of references to existing Web service descriptions,
 that are exposed using standard Web server technology.</p>
 <p>WSIL provides a distributed service discovery method that supplies references
 to service descriptions at the service provider's point-of-offering, by specifying
-how to inspect a Web site for available Web services.  The WSIL specification
-defines the locations on a Web site where you can look for Web service descriptions. </p>
+how to inspect a Web site for available Web services.Â  The WSIL specification
+defines the locations on a Web site where you can look for Web service descriptions.Â </p>
 <p>Since WSIL focuses on distributed service discovery, the WSIL specification
 complements UDDI by facilitating the discovery of services that are available
-on Web sites that may not be listed yet in a UDDI registry. A separate
+on Web sites that may not be listed yet in a UDDI registry.Â A separate
 topic in this documentation discusses the  <a href="cwsilud.html">Relationship
 between UDDI and WSIL</a>.</p>
-<p>The WSIL specification does not define a service description language. 
+<p>The WSIL specification does not define a service description language.Â 
 WSIL documents provide a method for aggregating different types of service
-descriptions.  Within a WSIL document, a single service can have more
-than one reference to a service description.  For example, a single Web
+descriptions.Â  Within a WSIL document, a single service can have more
+than one reference to a service description.Â  For example, a single Web
 service might be referenced twice in a WSIL document: once directly via its
 WSDL, and again via its businessService entry in a UDDI registry. References
-to these two service descriptions should be put into a WSIL document. 
+to these two service descriptions should be put into a WSIL document.Â 
 If multiple references are available, it is beneficial to put all of them
 in the WSIL document so that the application that uses the document can select
 the type of service description that is compatible with and preferred by that
@@ -40,24 +52,24 @@ application.</p>
 <p>The WSIL specification serves two primary functions:</p>
 <ul><li>WSIL defines an XML format for listing references to existing service
 descriptions. These service descriptions can be defined in any format, such
-as WSDL, UDDI, or plain HTML.  A WSIL document is generally made available
+as WSDL, UDDI, or plain HTML.Â  A WSIL document is generally made available
 at the point-of-offering for the services that are referenced within the document.
 A WSIL document can contain a list of references to service descriptions,
 as well as references to other WSIL documents.  <p>The ability to link a WSIL
 document to one or more different WSIL documents allows you to manage service
 description references by grouping them into different documents and to build
-a hierarchy of WSIL documents.  For example, separate WSIL documents
+a hierarchy of WSIL documents.Â  For example, separate WSIL documents
 can be created for different categories of services, and one primary WSIL
 document can link all of them together.</p>
 </li>
 <li>WSIL defines a set of conventions so that it is easy to locate other WSIL
 documents. The WSIL specification does not limit the type of service descriptions
-that can be referenced.  The WSIL specification defines a set of standard
-extensibility elements for both WSDL and UDDI.  The WSIL specification
-is the definition of locations where you can access WSIL documents.  </li>
+that can be referenced.Â  The WSIL specification defines a set of standard
+extensibility elements for both WSDL and UDDI.Â  The WSIL specification
+is the definition of locations where you can access WSIL documents.Â Â </li>
 <li> Two conventions make the location and retrieval of WSIL documents easy: <ul><li> <span class="uicontrol">Fixed-name WSIL documents.</span> The fixed name for
-WSIL documents is inspection.wsil.  The inspection.wsil file is placed
-at common entry points for a Web site.  For example, if the common entry
+WSIL documents is inspection.wsil.Â  The inspection.wsil file is placed
+at common entry points for a Web site.Â  For example, if the common entry
 point is http://entrypoint.com then the location of the WSIL document would
 be http://entrypoint.com/inspection.wsil</li>
 <li> <span class="uicontrol">Linked WSIL documents.</span> References to WSIL documents
@@ -73,8 +85,8 @@ refer to  <a href="http://www-106.ibm.com/developerworks/webservices/library/ws-
 <li class="ulchildlink"><strong><a href="../concepts/cwsilud.html">Relationship between UDDI and WSIL</a></strong><br />
 The Web Services Inspection Language (WSIL) and the Universal Description,
 Discovery, and Integration (UDDI) specification both address issues related
-to Web service discovery.  However, each specification takes a different
-approach to the discovery of Web services.  The two specifications can
+to Web service discovery.Â  However, each specification takes a different
+approach to the discovery of Web services.Â  The two specifications can
 be used separately or jointly; searching with WSIL can result in finding items
 in UDDI.</li>
 </ul>
@@ -93,8 +105,5 @@ in UDDI.</li>
 <div><a href="../tasks/toverws.html"> Developing
 Web services</a></div></div>
 </div>
-<p>
-		(C) Copyright IBM Corporation 2000, 2005. All Rights Reserved.
-		</p> 
 </body>
 </html>
