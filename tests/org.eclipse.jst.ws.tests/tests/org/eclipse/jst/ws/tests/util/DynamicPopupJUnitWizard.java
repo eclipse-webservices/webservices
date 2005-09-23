@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.util;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
@@ -18,6 +19,7 @@ import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
+import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleCommandEngineManager;
 import org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
@@ -38,7 +40,7 @@ public class DynamicPopupJUnitWizard extends DynamicPopupWizard {
     }
     
 	public void runHeadLess(IStructuredSelection selection,IRunnableContext context) {
-		CommandFragment            rootFragment    = getRootFragment( selection, null );
+		
 		PersistentResourceContext  resourceContext = PersistentResourceContext.getInstance();
 		EclipseProgressMonitor     monitor         = new EclipseProgressMonitor();
 		EclipseEnvironment         environment     = new EclipseEnvironment( null, resourceContext, monitor, handler_ );
@@ -49,7 +51,18 @@ public class DynamicPopupJUnitWizard extends DynamicPopupWizard {
 		DataFlowManager            dataManager     = new DataFlowManager( dataRegistry_, environment );
 		SimpleCommandEngineManager manager         = new SimpleCommandEngineManager(environment, dataManager);
 		  
+	    try
+	    {
+	      commandWidgetBinding_ = (CommandWidgetBinding)wizardElement_.createExecutableExtension( "class" );
+	    }
+	    catch( CoreException exc )
+	    {
+	      exc.printStackTrace();
+	    }
+	    
 		commandWidgetBinding_.registerDataMappings( dataRegistry_ );
+		
+		CommandFragment            rootFragment    = getRootFragment( selection, null );
 		manager.setRootFragment( rootFragment );
 		manager.runForwardToNextStop( context );
 	}
