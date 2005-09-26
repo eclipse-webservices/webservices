@@ -93,37 +93,40 @@
     {
       var x=0;
 <%
+         String platformProtocol = "platform:/resource";
          wsdlURLs_.removeAllElements();
          
          Iterator ws = WebServiceFinder.instance().getWebServices();  
+
          while (ws.hasNext())
          {
             WebServiceInfo wsInfo = (WebServiceInfo)ws.next();
             String url = wsInfo.getWsdlURL();
-          
-            if (url.indexOf(projects[i].getName()) == 1)
-            {
+            
+           // filter wsdl URLs with same project name as selected project
+           // only look at workspace URLs returned from the web service finder
+          if (url.startsWith(platformProtocol))
+          {
+             //strip off platformProtocol to look at the workspace path
+             Path wsdlPath = new Path(url.substring(platformProtocol.length()+1));
+             String pathProjName = wsdlPath.segment(0);                          
+
+             if (pathProjName.equals(projects[i].getName()))
+             {
                wsdlURLs_.add(url);
-            }
+             }
+          }
          }
          if (wsdlType == ActionInputs.WSDL_TYPE_SERVICE_INTERFACE)
          {
          
          }
+
          for (Iterator it = wsdlURLs_.iterator(); it.hasNext();)
          {
              String wsdl = HTMLUtils.JSMangle(it.next().toString());
-             String platformURL = "";             
-             if (wsdl.indexOf(":") == -1)
-             {
-                platformURL = "platform:/resource" + wsdl;
-              }
-              else
-              {
-                 platformURL = wsdl;
-              }             
              %>
-              document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[x++] = new Option("<%=wsdl%>", "<%=platformURL%>"); 
+              document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[x++] = new Option("<%=wsdl%>", "<%=wsdl%>"); 
              <%
          }
 %>
