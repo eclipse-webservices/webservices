@@ -11,11 +11,11 @@
 package org.eclipse.wst.command.internal.env.core.fragment;
 
 import java.util.Stack;
-
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
-import org.eclipse.wst.command.internal.provisional.env.core.Command;
 import org.eclipse.wst.command.internal.provisional.env.core.CommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.CommandManager;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -252,11 +252,19 @@ public class CommandFragmentEngine implements CommandManager
   {
     if( entry.parentIndex_ == 0 ) return;
     
-	Command cmd = entry.command_;
+	  EnvironmentalOperation cmd = entry.command_;
   	  
-  	if( cmd != null && cmd.isUndoable() && !entry.beforeExecute_ )
+  	if( cmd != null && cmd.canUndo() && !entry.beforeExecute_ )
 	{
-	  cmd.undo( environment_ );
+    try
+    {
+	    cmd.undo( null, null );
+    }
+    catch( Exception exc )
+    {
+      exc.printStackTrace();
+    }
+    
 	  entry.beforeExecute_ = true;
 	}
   	  
@@ -321,7 +329,8 @@ public class CommandFragmentEngine implements CommandManager
   	
   	if( factory != null )
   	{
-  	  Command cmd    = factory.create();
+  	  EnvironmentalOperation cmd  = factory.create();
+      
   	  entry.command_ = cmd;
   	    
   	  if( cmd != null )
@@ -332,8 +341,10 @@ public class CommandFragmentEngine implements CommandManager
   	    {
   	      environment_.getLog().log(Log.INFO, "command", 5001, this, "runCommand", "Executing: " + cmd.getClass().getName());
   	  	    
- 	      status = cmd.execute( environment_ ); 	      
-		  entry.beforeExecute_ = false;
+ 	        cmd.setEnvironment( environment_ );
+          status = convertIStatusToStatus(cmd.execute( null, null ) );
+          
+		      entry.beforeExecute_ = false;
   	    }
   	    catch( Throwable exc )
   	    {
@@ -359,6 +370,44 @@ public class CommandFragmentEngine implements CommandManager
   	return status;
   }
   
+  private static Status convertIStatusToStatus(IStatus istatus) 
+  {
+    Status status;
+    String message = istatus.getMessage();
+    IStatus[] children = istatus.getChildren();
+    int noOfChildren = children.length;
+    if (noOfChildren > 0) {
+      Status[] statusChildren = new Status[noOfChildren];
+      for (int i = 0; i < noOfChildren; i++) {
+        statusChildren[i] = convertIStatusToStatus(children[i]);
+      }
+
+      status = new SimpleStatus("", message, statusChildren);
+    } else {
+      int severity = istatus.getSeverity();
+      int statusSeverity = Status.OK;
+      switch (severity) {
+      case IStatus.ERROR:
+        statusSeverity = Status.ERROR;
+        break;
+      case IStatus.WARNING:
+        statusSeverity = Status.WARNING;
+        break;
+      case IStatus.INFO:
+        statusSeverity = Status.INFO;
+        break;
+      case IStatus.OK:
+        statusSeverity = Status.OK;
+        break;
+      default:
+      }
+      Throwable e = istatus.getException();
+      status = new SimpleStatus("", message, statusSeverity, e);
+    }
+
+    return status;
+  }
+  
   private class CommandListEntry
   {
   	public CommandListEntry( CommandFragment fragment, int parentIndex )
@@ -369,7 +418,7 @@ public class CommandFragmentEngine implements CommandManager
 	  beforeExecute_   = true;
   	}
   	  	
-  	public Command         command_;
+  	public EnvironmentalOperation command_;
   	public CommandFragment fragment_;
   	public int             parentIndex_;
   	public boolean         fragmentStopped_;

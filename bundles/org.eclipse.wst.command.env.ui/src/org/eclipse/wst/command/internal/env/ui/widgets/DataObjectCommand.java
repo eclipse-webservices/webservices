@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 
 
 /**
@@ -19,7 +19,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
  * this wizard.
  *
  */
-public class DataObjectCommand extends SimpleCommand
+public class DataObjectCommand extends EnvironmentalOperation
 {
   private Object dataObject_;
   

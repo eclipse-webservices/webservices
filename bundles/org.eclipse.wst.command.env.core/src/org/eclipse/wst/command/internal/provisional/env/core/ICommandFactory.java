@@ -25,5 +25,5 @@ public interface ICommandFactory extends Iterator
    * 
    * @return returns the next Command in the sequence.
    */
-  public Command getNextCommand();
+  public EnvironmentalOperation getNextCommand();
 }

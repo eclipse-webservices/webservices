@@ -11,16 +11,16 @@
 package org.eclipse.wst.command.internal.provisional.env.core.uri;
 
 import java.io.File;
-import java.util.List;
 import java.util.LinkedList;
-
-import org.eclipse.wst.command.internal.provisional.env.core.Command;
+import java.util.List;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.uri.URI;
-import org.eclipse.wst.command.internal.provisional.env.core.uri.URIException;
 
-public abstract class NativeFileCommand implements Command
+public abstract class NativeFileCommand extends EnvironmentalOperation
 {
   protected String name;
 
@@ -71,8 +71,10 @@ public abstract class NativeFileCommand implements Command
     return urisToWrite;
   }
 
-  public Status execute ( Environment environment )
+  public IStatus execute ( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment environment = getEnvironment();
+    
     File[] filesToRead = getFiles(urisToRead);
     File[] filesToWrite = getFiles(urisToWrite);
     preProcess(filesToRead,filesToWrite);
@@ -82,26 +84,6 @@ public abstract class NativeFileCommand implements Command
   }
 
   public abstract Status execute ( Environment environment, File[] filesToRead, File[] filesToWrite );
-
-  public boolean isUndoable ()
-  {
-    return false;
-  }
-
-  public Status undo ( Environment environment )
-  {
-    return null;
-  }
-
-  public boolean isRedoable ()
-  {
-    return false;
-  }
-
-  public Status redo ( Environment environment )
-  {
-    return null;
-  }
 
   private void preProcess ( File[] filesToRead, File[] filesToWrite )
   {

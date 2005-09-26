@@ -12,7 +12,7 @@
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 
 
 /**
@@ -22,7 +22,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
  * this command to the command that needs it.
  *
  */
-public class SelectionCommand extends SimpleCommand
+public class SelectionCommand extends EnvironmentalOperation
 {
   private IStructuredSelection selection_;
   

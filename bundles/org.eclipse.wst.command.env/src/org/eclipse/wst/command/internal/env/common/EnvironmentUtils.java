@@ -80,12 +80,11 @@ public final class EnvironmentUtils {
 		String message = status.getMessage();
 		Throwable throwable = status.getThrowable();
 		if (status.hasChildren()) {
-			Status[] children = status.getChildren();
+			IStatus[] children = status.getChildren();
 			int noOfChildren = children.length;
 			IStatus[] istatusChildren = new IStatus[noOfChildren];
 			for (int i = 0; i < noOfChildren; i++) {
-				istatusChildren[i] = convertStatusToIStatus(children[i],
-						pluginId);
+				istatusChildren[i] = children[i];
 			}
 
 			istatus = new MultiStatus(pluginId, 0, istatusChildren, message,

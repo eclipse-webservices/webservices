@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.provisional.env.core.common;
 
+import org.eclipse.core.runtime.IStatus;
+
 /**
  * Carries status information.
  */
-public interface Status
+public interface Status extends IStatus
 {
   /**
    * Status: Everything is fine, and there are no messages or details.
@@ -42,17 +44,6 @@ public interface Status
   public String getId ();
 
   /**
-   * Returns a translated (locale-sensitive) message.
-   * May return null.
-   */
-  public String getMessage ();
-
-  /**
-   * Returns the severity.
-   */
-  public int getSeverity ();
-
-  /**
    * Returns an exception (throwable) behind the status, if any.
    * May return null.
    */
@@ -63,16 +54,4 @@ public interface Status
    */
   public boolean hasChildren ();
 
-  /**
-   * Returns the immediate child Status objects of this object.
-   * Never returns null, but may return a zero-length array.
-   */
-  public Status[] getChildren ();
-
-  /**
-   * Returns true if this status' severity matches the severity
-   * mask passed in. Strictly speaking:
-   * this.matches(that) == (this.getSeverity() | that != 0)
-   */
-  public boolean matches ( int mask );
 }

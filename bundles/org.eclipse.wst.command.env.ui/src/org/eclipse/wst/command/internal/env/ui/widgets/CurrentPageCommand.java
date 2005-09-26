@@ -12,7 +12,7 @@
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 
 
 /**
@@ -20,7 +20,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
  * Use of this class is not recommended.
  *
  */
-public class CurrentPageCommand extends SimpleCommand
+public class CurrentPageCommand extends EnvironmentalOperation
 {
   private WizardPageManager pageManager_;
   

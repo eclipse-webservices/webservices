@@ -16,3 +16,6 @@ Export-Package: org.eclipse.wst.command.env.core,
  org.eclipse.wst.command.internal.provisional.env.core.data,
  org.eclipse.wst.command.internal.provisional.env.core.selection,
  org.eclipse.wst.command.internal.provisional.env.core.uri
+Require-Bundle: org.eclipse.wst.common.frameworks,
+ org.eclipse.core.commands,
+ org.eclipse.core.runtime

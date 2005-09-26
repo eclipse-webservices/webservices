@@ -13,6 +13,7 @@ package org.eclipse.wst.command.internal.env.ui.dialog;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.JFaceResources;
@@ -470,7 +471,7 @@ public class MessageDialog extends Dialog
       populateList(list, childStatus, 0);
     }
   }
-  private void populateList(List list, Status status, int nesting)
+  private void populateList(List list, IStatus status, int nesting)
   {
     if (!status.matches(displayMask))
     {
@@ -483,13 +484,13 @@ public class MessageDialog extends Dialog
     }
     sb.append(status.getMessage());
     list.add(sb.toString());
-    Status[] children = status.getChildren();
+    IStatus[] children = status.getChildren();
     for (int i = 0; i < children.length; i++)
     {
       populateList(list, children[i], nesting + 1);
     }
   }
-  private void populateDetails(Text text, Status status, int nesting)
+  private void populateDetails(Text text, IStatus status, int nesting)
   {
     if (!status.matches(displayMask))
     {
@@ -498,7 +499,7 @@ public class MessageDialog extends Dialog
         
     String    tabChars    = StringUtils.repeat( ' ', nesting * 2 );
     String    messageLine = tabChars + status.getMessage() + System.getProperty("line.separator");
-    Throwable except      = status.getThrowable();
+    Throwable except      = status.getException();
     
     text.append( messageLine );
     
@@ -512,7 +513,7 @@ public class MessageDialog extends Dialog
       }
     }
     
-    Status[] children = status.getChildren();
+    IStatus[] children = status.getChildren();
     for (int i = 0; i < children.length; i++)
     {
       populateDetails(text, children[i], nesting + 1);
@@ -530,7 +531,7 @@ public class MessageDialog extends Dialog
    */
   protected static boolean shouldDisplay(Status status, int mask)
   {
-    Status[] children = status.getChildren();
+    IStatus[] children = status.getChildren();
     if (children == null || children.length == 0)
     {
       return status.matches(mask);

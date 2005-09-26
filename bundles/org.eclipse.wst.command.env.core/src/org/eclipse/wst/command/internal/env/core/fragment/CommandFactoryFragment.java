@@ -12,9 +12,8 @@
 package org.eclipse.wst.command.internal.env.core.fragment;
 
 import java.util.Vector;
-
-import org.eclipse.wst.command.internal.provisional.env.core.Command;
 import org.eclipse.wst.command.internal.provisional.env.core.CommandFactory;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
@@ -139,7 +138,7 @@ public abstract class CommandFactoryFragment implements CommandFragment
 		  
 	while( factory != null && factory.hasNext() )
 	{
-	  Command command = (Command)factory.getNextCommand();
+	  EnvironmentalOperation command = factory.getNextCommand();
 			
 	  commands.add( new ChildFragment( command, index++ ) );
 	}
@@ -149,12 +148,12 @@ public abstract class CommandFactoryFragment implements CommandFragment
   
   private class ChildFragment extends SimpleFragment
   {
-	int index_;
+	  int index_;
 	
-	public ChildFragment( Command command, int index )
-	{
-	  super( command, command.getId() );
-	  index_ = index;
-	}
+	  public ChildFragment( EnvironmentalOperation command, int index )
+	  {
+	    super( command, command.getID() );
+	    index_ = index;
+	  }
   }
 }

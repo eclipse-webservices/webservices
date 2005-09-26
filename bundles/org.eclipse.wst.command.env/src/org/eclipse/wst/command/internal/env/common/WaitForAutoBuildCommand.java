@@ -11,16 +11,17 @@
 package org.eclipse.wst.command.internal.env.common;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
-public class WaitForAutoBuildCommand extends SimpleCommand
+public class WaitForAutoBuildCommand extends EnvironmentalOperation
 {
-  public Status execute(Environment environment) 
+  public IStatus execute( IProgressMonitor montitor, IAdaptable adaptable ) 
   {
   	SimpleStatus status = new SimpleStatus( "" );
   	

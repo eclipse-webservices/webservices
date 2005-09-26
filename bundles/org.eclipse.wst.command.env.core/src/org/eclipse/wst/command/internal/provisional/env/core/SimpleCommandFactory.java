@@ -14,9 +14,9 @@ public class SimpleCommandFactory implements ICommandFactory
 	  index_    = 0;
 	}
 	
-	public Command getNextCommand() 
+	public EnvironmentalOperation getNextCommand() 
 	{
-		return (Command)next();
+		return (EnvironmentalOperation)next();
 	}
 
 	public void remove() 

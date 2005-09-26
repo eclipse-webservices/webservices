@@ -12,7 +12,6 @@ package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;

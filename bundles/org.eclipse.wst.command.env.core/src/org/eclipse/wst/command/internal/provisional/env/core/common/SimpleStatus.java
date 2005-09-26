@@ -13,6 +13,7 @@ package org.eclipse.wst.command.internal.provisional.env.core.common;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
+import org.eclipse.core.runtime.IStatus;
 
 /**
  * A usually sufficient implementation of Status.
@@ -133,9 +134,9 @@ public class SimpleStatus implements Status
   /**
    * @see Status#getChildren()
    */
-  public Status[] getChildren ()
+  public IStatus[] getChildren ()
   {
-    return (Status[])children_.toArray(new Status[0]);
+    return (IStatus[])children_.toArray(new IStatus[0]);
   }
 
   /**
@@ -154,4 +155,30 @@ public class SimpleStatus implements Status
   {
     children_.add(status);
   }
+
+  public int getCode()
+  {
+    return 0;
+  }
+
+  public Throwable getException()
+  {
+    return getThrowable();
+  }
+
+  public String getPlugin()
+  {
+    return id_;
+  }
+
+  public boolean isMultiStatus()
+  {
+    return hasChildren();
+  }
+
+  public boolean isOK()
+  {
+    return getSeverity() != IStatus.ERROR;
+  }
+  
 }
