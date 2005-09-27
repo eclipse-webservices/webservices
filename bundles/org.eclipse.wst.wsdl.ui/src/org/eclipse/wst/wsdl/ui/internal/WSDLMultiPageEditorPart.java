@@ -50,7 +50,6 @@ import org.eclipse.wst.sse.core.internal.provisional.exceptions.SourceEditingRun
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.xml.core.internal.provisional.IXMLPreferenceNames;
 import org.eclipse.wst.xml.core.internal.provisional.contenttype.ContentTypeIdForXML;
-import org.eclipse.wst.xml.ui.internal.Logger;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLEditorMessages;
 
 public class WSDLMultiPageEditorPart extends PostSelectionMultiPageEditorPart implements IPropertyListener
