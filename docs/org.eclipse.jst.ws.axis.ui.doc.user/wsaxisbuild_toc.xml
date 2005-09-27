@@ -10,7 +10,6 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/ -->
-<contexts>
 <toc label="wsaxis" >
    <topic label="Creating an Apache Tomcat server and Web project" href="tasks/ttomcatserv.html"/>
 </toc>
