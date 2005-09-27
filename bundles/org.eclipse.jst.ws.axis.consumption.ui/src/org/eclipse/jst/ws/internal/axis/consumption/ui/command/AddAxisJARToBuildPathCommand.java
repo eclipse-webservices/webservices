@@ -18,16 +18,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -40,7 +43,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class AddAxisJARToBuildPathCommand extends SimpleCommand
+public class AddAxisJARToBuildPathCommand extends EnvironmentalOperation
 {
   private String pluginId_ = "org.eclipse.jst.ws.axis.consumption.ui";
   private MessageUtils msgUtils;
@@ -50,11 +53,8 @@ public class AddAxisJARToBuildPathCommand extends SimpleCommand
   private IProject project;
   
   
-  /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.provisional.env.core.common.Environment)
-   */
-  public Status execute(Environment environment)
-  {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
     msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
     Status status = new SimpleStatus("");
 

@@ -14,7 +14,6 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -29,67 +28,63 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CopyWSDLCommand;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
-public class Skeleton2WSDLCommand extends SimpleCommand
+public class Skeleton2WSDLCommand extends EnvironmentalOperation
 {
-  private static final String LABEL = "TASK_LABEL_SKELETON_WSDL";
-  private static final String DESCRIPTION = "TASK_DESC_SKELETON_WSDL";
   private static final String IMPL = "Impl";	//$NON-NLS-1$
   private static final String SERVICE_EXT = "/services/";	//$NON-NLS-1$
   private static final String WSDL_EXT = "wsdl";	//$NON-NLS-1$
   private static final String DOT = ".";	//$NON-NLS-1$
-  private static final String SLASH = "/";	//$NON-NLS-1$
-  private static final String PROTOCOL_SUFFIX = "://";	//$NON-NLS-1$
   private final String WSDL_FOLDER = "wsdl"; //$NON-NLS-1$
   private WebServicesParser webServicesParser;
   private JavaWSDLParameter javaWSDLParam;
   private IProject serverProject;
-  private HashMap visitedLinks;
   private MessageUtils msgUtils_;
   private String       moduleName_;
 
   public Skeleton2WSDLCommand( String moduleName ) {
-    super(WebServiceAxisCreationUIPlugin.getMessage(LABEL), WebServiceAxisCreationUIPlugin.getMessage(DESCRIPTION));
 	msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.creation.ui.plugin", this );
-    setName( LABEL );
-    setDescription( DESCRIPTION );
-	
 	moduleName_ = moduleName;
   }
 
   /**
   * Execute Skeleton2WSDLCommand
   */
-  public Status execute(Environment env)
-  {
-    if (!(env instanceof EclipseEnvironment))
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();
+    if (!(environment instanceof EclipseEnvironment))
     {
       Status status = new SimpleStatus(WebServiceAxisCreationUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_NOT_IN_ECLIPSE_ENVIRONMENT", new String[] {"Skeleton2WSDLCommand"}), Status.ERROR, null);
-      env.getStatusHandler().reportError(status);
+      environment.getStatusHandler().reportError(status);
       return status;
     }
     if (javaWSDLParam == null)
     {
       Status status = new SimpleStatus(WebServiceAxisCreationUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR, null);
-      env.getStatusHandler().reportError(status);
+      environment.getStatusHandler().reportError(status);
       return status;
     }
 
@@ -133,14 +128,14 @@ public class Skeleton2WSDLCommand extends SimpleCommand
     } 
     else {
       Status status = new SimpleStatus(WebServiceAxisCreationUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_WSDL_NO_DEFINITION", new String[] {wsdlURL}), Status.ERROR, null);
-      env.getStatusHandler().reportError(status);
+      environment.getStatusHandler().reportError(status);
       return status;
     }
 
     // Modify WSDL endpoint
     if (port == null) {
       Status status = new SimpleStatus(WebServiceAxisCreationUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_WSDL_NO_PORT", new String[] {wsdlURL}), Status.ERROR, null);
-      env.getStatusHandler().reportError(status);
+      environment.getStatusHandler().reportError(status);
       return status;
     }
     Map services = definition.getServices();
@@ -154,8 +149,6 @@ public class Skeleton2WSDLCommand extends SimpleCommand
         modifyEndpoint(p);
       }
     }
-
-    visitedLinks = new HashMap();
 
     // Set WSDL file name: javaWSDLParam.setOutputWsdlLocation();
     IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
@@ -201,14 +194,15 @@ public class Skeleton2WSDLCommand extends SimpleCommand
      copyWSDLCommand.setWsdlURI(wsdlURL);
      copyWSDLCommand.setDestinationURI(outputFile.getLocation().toFile().toURL().toString());
      copyWSDLCommand.setDefinition(definition);
-     Status status = copyWSDLCommand.execute(env);
+     copyWSDLCommand.setEnvironment(environment);
+     Status status = EnvironmentUtils.convertIStatusToStatus(copyWSDLCommand.execute(null, null));
      if(status!=null && status.getSeverity()==Status.ERROR) {
        return status;
      }
     } 
     catch (Exception e) {
       Status status = new SimpleStatus(WebServiceAxisCreationUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_WRITE_WSDL", new String[] { wsdlLocation }), Status.ERROR, e);
-      env.getStatusHandler().reportError(status);
+      environment.getStatusHandler().reportError(status);
       return status;
     }
     return new SimpleStatus("");

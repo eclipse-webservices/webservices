@@ -71,10 +71,11 @@ public class AxisClientGenerator extends WebServiceClientGenerator
     axisClientDefaultingCommand.setIsClientScenario(true);
     axisClientDefaultingCommand.setGenerateProxy(true);
     J2EEEnvironment j2eeEnvironment = new J2EEEnvironment();
-    status = axisClientDefaultingCommand.execute(j2eeEnvironment);
+    axisClientDefaultingCommand.setEnvironment(j2eeEnvironment);
+    status = EnvironmentUtils.convertIStatusToStatus(axisClientDefaultingCommand.execute(null, null));
     if (status.getSeverity()!=Status.OK)
     {
-      return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+      return status;
     }
     
 //  Figure out if this is a Web, EJB, or AppClient project
@@ -85,10 +86,11 @@ public class AxisClientGenerator extends WebServiceClientGenerator
     httpCommand.setJavaWSDLParam(axisClientDefaultingCommand.getJavaWSDLParam());
     httpCommand.setWsdlServiceURL(axisClientDefaultingCommand.getWsdlURL());
     httpCommand.setWebServicesParser(axisClientDefaultingCommand.getWebServicesParser());
-    status = httpCommand.execute(j2eeEnvironment);
+    httpCommand.setEnvironment(j2eeEnvironment);
+    status = EnvironmentUtils.convertIStatusToStatus(httpCommand.execute(null, null));
     if (status.getSeverity()!=Status.OK)
     {
-      return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+    	return status;
     }
     
     //CopyAxisJarCommand
@@ -101,30 +103,34 @@ public class AxisClientGenerator extends WebServiceClientGenerator
     {
 	    CopyAxisJarCommand axjCommand = new CopyAxisJarCommand("");
 	    axjCommand.setProject(axisClientDefaultingCommand.getClientProject());
-	    status = axjCommand.execute(j2eeEnvironment);
+	    axjCommand.setEnvironment(j2eeEnvironment);
+	    status = EnvironmentUtils.convertIStatusToStatus(axjCommand.execute(null, null));
 	    if (status.getSeverity()!=Status.OK)
 	    {
-	      return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+	    	return status;
 	    }
     }
     else 
     {
       AddAxisJARToBuildPathCommand addAxisCommand = new AddAxisJARToBuildPathCommand();
       addAxisCommand.setProject(axisClientDefaultingCommand.getClientProject());
-      status = addAxisCommand.execute(j2eeEnvironment);
+      addAxisCommand.setEnvironment(j2eeEnvironment);
+	  status = EnvironmentUtils.convertIStatusToStatus(addAxisCommand.execute(null, null));
 	  if (status.getSeverity() != Status.OK)
       {
-        return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+		  return status;
       }      
     }
     
     //AddJarsToProjectBuildPathTask
     AddJarsToProjectBuildPathTask addJarsCommand = new AddJarsToProjectBuildPathTask();
     addJarsCommand.setProject(axisClientDefaultingCommand.getClientProject());
-    status = addJarsCommand.execute(j2eeEnvironment);
+    addJarsCommand.setEnvironment(j2eeEnvironment);
+	status = EnvironmentUtils.convertIStatusToStatus(addJarsCommand.execute(null, null));
+
     if (status.getSeverity()!=Status.OK)
     {
-      return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+    	return status;
     }    
     
     //DefaultsForClientJavaWSDLCommand
@@ -132,49 +138,54 @@ public class AxisClientGenerator extends WebServiceClientGenerator
     defClientCommand.setJavaWSDLParam(axisClientDefaultingCommand.getJavaWSDLParam());
     defClientCommand.setProxyProject(axisClientDefaultingCommand.getClientProject());
     defClientCommand.setWSDLServiceURL(axisClientDefaultingCommand.getWsdlURL());
-    status = defClientCommand.execute(j2eeEnvironment);
+    defClientCommand.setEnvironment(j2eeEnvironment);
+	status = EnvironmentUtils.convertIStatusToStatus(defClientCommand.execute(null, null));
     if (status.getSeverity()!=Status.OK)
     {
-      return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+    	return status;
     }        
     
     //ValidateWSDLCommand
     ValidateWSDLCommand valWSDLCommand = new ValidateWSDLCommand();
     valWSDLCommand.setWsdlURI(axisClientDefaultingCommand.getWsdlURL());
     valWSDLCommand.setWebServicesParser(axisClientDefaultingCommand.getWebServicesParser());
-    status = valWSDLCommand.execute(j2eeEnvironment);
+    valWSDLCommand.setEnvironment(j2eeEnvironment);
+	status = EnvironmentUtils.convertIStatusToStatus(valWSDLCommand.execute(null, null));
     if (status.getSeverity()!=Status.OK)
     {
-      return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+    	return status;
     }    
     
     //WSDL2JavaCommand
     WSDL2JavaCommand w2jCommand = new WSDL2JavaCommand();
     w2jCommand.setJavaWSDLParam(axisClientDefaultingCommand.getJavaWSDLParam());
     w2jCommand.setWsdlURI(axisClientDefaultingCommand.getWsdlURL());
-    status = w2jCommand.execute(j2eeEnvironment);
+    w2jCommand.setEnvironment(j2eeEnvironment);
+	status = EnvironmentUtils.convertIStatusToStatus(w2jCommand.execute(null, null));
     if (status.getSeverity()!=Status.OK)
     {
-      return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+    	return status;
     }    
 
     //RefreshProjectCommand
     RefreshProjectCommand refreshCommand = new RefreshProjectCommand();
     refreshCommand.setProject(axisClientDefaultingCommand.getClientProject());
-    status = refreshCommand.execute(j2eeEnvironment);
+    refreshCommand.setEnvironment(j2eeEnvironment);
+	status = EnvironmentUtils.convertIStatusToStatus(refreshCommand.execute(null, null));
     if (status.getSeverity()!=Status.OK)
     {
-      return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+    	return status;
     }    
     
     Stub2BeanCommand s2bCommand = new Stub2BeanCommand();
     s2bCommand.setJavaWSDLParam(axisClientDefaultingCommand.getJavaWSDLParam());
     s2bCommand.setWebServicesParser(axisClientDefaultingCommand.getWebServicesParser());
     s2bCommand.setClientProject(axisClientDefaultingCommand.getClientProject());
-    status = s2bCommand.execute(j2eeEnvironment); 
+    s2bCommand.setEnvironment(j2eeEnvironment);
+	status = EnvironmentUtils.convertIStatusToStatus(s2bCommand.execute(null, null));
     if (status.getSeverity()!=Status.OK)
     {
-      return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+    	return status;
     }
 
     //CopyClientWSDLCommand
@@ -182,10 +193,11 @@ public class AxisClientGenerator extends WebServiceClientGenerator
     copyCommand.setWsdlURL(axisClientDefaultingCommand.getWsdlURL());
     copyCommand.setClientWSDLPathName(outputWSDLFilePathName);
     copyCommand.setWsParser(axisClientDefaultingCommand.getWebServicesParser());
-    status = copyCommand.execute(j2eeEnvironment);
+    copyCommand.setEnvironment(j2eeEnvironment);
+	status = EnvironmentUtils.convertIStatusToStatus(copyCommand.execute(null, null));
     if (status.getSeverity()!=Status.OK)
     {
-      return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+    	return status;
     }    
     
     
@@ -193,10 +205,11 @@ public class AxisClientGenerator extends WebServiceClientGenerator
     BuildProjectCommand buildCommand = new BuildProjectCommand();
     buildCommand.setProject(axisClientDefaultingCommand.getClientProject());
     buildCommand.setForceBuild(true);
-    status = buildCommand.execute(j2eeEnvironment);
+    buildCommand.setEnvironment(j2eeEnvironment);
+	status = EnvironmentUtils.convertIStatusToStatus(buildCommand.execute(null, null));
     if (status.getSeverity()!=Status.OK)
     {
-      return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+    	return status;
     }    
         
     //Calculate the service interface and service endpoint interface names
@@ -213,7 +226,7 @@ public class AxisClientGenerator extends WebServiceClientGenerator
     dataModel.setServiceEndpointInterfaceNames(seiNames);
     dataModel.setDidGenDescriptors(false);
     
-    return EnvironmentUtils.convertStatusToIStatus(status, pluginId_);
+    return status;
   }
   
   private InterfaceNames calculateSIandSEIName(String wsdlURL, String serviceQName, WebServicesParser wsParser)

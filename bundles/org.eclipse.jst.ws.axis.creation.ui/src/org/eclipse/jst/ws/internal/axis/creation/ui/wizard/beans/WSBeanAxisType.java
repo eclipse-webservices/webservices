@@ -19,13 +19,12 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidge
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.AxisBeanFragment;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BeanConfigWidget;
 import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionWidget;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeType;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
+import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
@@ -37,10 +36,10 @@ import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingReg
 
 /**
 * This is the class for the
-* Java Bean
-* {@link org.eclipse.jst.ws.was.creation.ui.wizard.WebServiceServerRuntimeType WebServiceServerRuntimeType}.
+* Axis bottom up Java Bean scenario
+* 
 */
-public class WSBeanAxisType implements WebServiceServerRuntimeType, CommandWidgetBinding
+public class WSBeanAxisType implements CommandWidgetBinding
 {	
   private JavaResourceFilter filter_ = new JavaResourceFilter();
   private String serverName_;
@@ -182,9 +181,6 @@ public class WSBeanAxisType implements WebServiceServerRuntimeType, CommandWidge
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", AddJarsToProjectBuildPathTask.class, "JavaWSDLParam", null);
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", Java2WSDLCommand.class, "JavaWSDLParam", null);       
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", WSDL2JavaCommand.class, "JavaWSDLParam", null);
-        
-    //MappingFragment (optionally displays the AxisMappingsWidget) 
-    dataRegistry.addMapping(BeanConfigWidget.class, "CustomizeServiceMappings", AxisBeanFragment.MappingFragment.class);
 
     //AxisMappingsWidget - as target
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", AxisMappingsWidget.class);
@@ -255,7 +251,8 @@ public class WSBeanAxisType implements WebServiceServerRuntimeType, CommandWidge
     {
       public CommandFragment create()
       {
-        return new AxisBeanFragment(); 
+          //dead code - doesn't matter what gets returned here.
+    	  return new SimpleFragment();
       }
     };
   }

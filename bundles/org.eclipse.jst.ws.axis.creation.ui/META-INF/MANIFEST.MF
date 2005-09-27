@@ -39,6 +39,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jst.j2ee.web,
  org.wsdl4j,
  org.eclipse.jst.common.frameworks,
- org.eclipse.jem.util
+ org.eclipse.jem.util,
+ org.eclipse.wst.common.frameworks
 Eclipse-AutoStart: true
 Plugin-Class: org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin

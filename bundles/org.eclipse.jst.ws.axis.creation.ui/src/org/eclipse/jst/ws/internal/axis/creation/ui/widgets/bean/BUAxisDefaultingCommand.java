@@ -13,13 +13,15 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
-import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -31,15 +33,13 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 /**
  * 
  */
-public class BUAxisDefaultingCommand extends SimpleCommand
+public class BUAxisDefaultingCommand extends EnvironmentalOperation
 {
   //Need
   private IStructuredSelection initialSelection_;
-  private TypeRuntimeServer serviceIds_;
   
   //Provide
   private IServer serviceExistingServer_;
-  private String serviceServerTypeID_;  // rsk revisit
   private JavaWSDLParameter javaWSDLParam_;
   private String javaBeanName_;
   private WebServicesParser parser_;
@@ -61,8 +61,9 @@ public class BUAxisDefaultingCommand extends SimpleCommand
   
   private MessageUtils msgUtils_;
   
-  public Status execute(Environment env)
-  {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();
     
   	String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
     msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
@@ -94,18 +95,18 @@ public class BUAxisDefaultingCommand extends SimpleCommand
 		Status status = new SimpleStatus("BUAxisDefaultingCommand", //$NON-NLS-1$
 				msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"), //$NON-NLS-1$
 				Status.ERROR);
-		env.getStatusHandler().reportError(status);
+		environment.getStatusHandler().reportError(status);
 		return status;
 	}
 //    try {
 //		
-//		javaBeanName_ = getJavaBeanFromInitialSelection(env);
+//		javaBeanName_ = getJavaBeanFromInitialSelection(environment);
 //		
 //	} catch (CoreException e) {
 //		Status status = new SimpleStatus("BUAxisDefaultingCommand", //$NON-NLS-1$
 //				msgUtils_.getMessage("MSG_ERROR_INITIAL_SELECTION") + " " //$NON-NLS-1$
 //				+e.getCause().toString(), Status.ERROR);
-//		env.getStatusHandler().reportError(status);
+//		environment.getStatusHandler().reportError(status);
 //		return status;
 //	}
     

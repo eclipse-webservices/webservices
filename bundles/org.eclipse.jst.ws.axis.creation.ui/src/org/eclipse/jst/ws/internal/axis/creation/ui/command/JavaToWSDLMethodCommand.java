@@ -16,12 +16,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jem.java.impl.JavaClassImpl;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -29,18 +32,14 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
-public class JavaToWSDLMethodCommand extends SimpleCommand {
+public class JavaToWSDLMethodCommand extends EnvironmentalOperation {
 
-	private static String LABEL = "TASK_LABEL_JAVA_TO_WSDL";
-	private static String DESCRIPTION = "TASK_DESC_JAVA_TO_WSDL";
 	private static String JAVA_EXTENSION = ".java"; //$NON-NLS-1$
 	private static String CLASS_EXTENSION = ".class"; //$NON-NLS-1$
 
 	private Hashtable fMethodNames;
 	private String fClassName;
-	private String fBeanName;
 	private String fbeanBaseName;
-	private IProject fProject;
 	private JavaWSDLParameter javaWSDLParam_;
 	private IProject serviceProject_;
 	private MessageUtils msgUtils_;
@@ -51,8 +50,6 @@ public class JavaToWSDLMethodCommand extends SimpleCommand {
 	public JavaToWSDLMethodCommand() {
 		String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-	    setName (msgUtils_.getMessage(LABEL));
-		setDescription( msgUtils_.getMessage(DESCRIPTION));
 	}
 	/**
 	* Default CTOR
@@ -62,8 +59,6 @@ public class JavaToWSDLMethodCommand extends SimpleCommand {
 		IProject serviceProject) {
 		String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-	    setName (msgUtils_.getMessage(LABEL));
-		setDescription( msgUtils_.getMessage(DESCRIPTION));
 		javaWSDLParam_ = javaParameter;
 		serviceProject_ = serviceProject;
 
@@ -72,7 +67,10 @@ public class JavaToWSDLMethodCommand extends SimpleCommand {
 	/**
 	* JavaToToWSDLMethod execute
 	*/
-	public Status execute(Environment environment) {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();
+
 		fbeanBaseName = javaWSDLParam_.getBeanName();
 		environment.getLog().log(Log.INFO, 5070, this, "execute", "beanBaseName = "+fbeanBaseName);
 		Status status;
@@ -108,7 +106,6 @@ public class JavaToWSDLMethodCommand extends SimpleCommand {
 
 			// Get the qualified name
 			fClassName = javaClass.getQualifiedName();
-			fBeanName = fClassName;
 			String beanName;
 			if (fClassName.lastIndexOf('.') != -1) {
 				beanName =

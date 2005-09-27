@@ -13,11 +13,13 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
@@ -29,7 +31,7 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
  * AxisClientDefaultingCommand
  *  
  */
-public class AxisClientDefaultingCommand extends SimpleCommand 
+public class AxisClientDefaultingCommand extends EnvironmentalOperation 
 {
     private boolean isClientScenario_  = true;
 	private boolean customizeMappings_ = false;
@@ -54,12 +56,8 @@ public class AxisClientDefaultingCommand extends SimpleCommand
 	  moduleName_ = moduleName;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.provisional.env.core.common.Environment)
-	 */
-	public Status execute(Environment environment) {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
 		Status status = new SimpleStatus("");
 		
 		clientExistingServer_ = getServerFromServerLabel();

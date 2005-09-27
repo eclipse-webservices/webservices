@@ -23,43 +23,40 @@ import org.apache.axis.tools.ant.wsdl.NamespaceMapping;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Target;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-
 
 /**
  * Commands are executable, undoable, redoable objects.
  * Every Command has a name and a description.
  */
 
-public class Java2WSDLCommand extends SimpleCommand {
+public class Java2WSDLCommand extends EnvironmentalOperation
+{
 
 	private JavaWSDLParameter javaWSDLParam_;
 	private ResourceBundle resource = ResourceBundle.getBundle("org.eclipse.jst.ws.axis.consumption.core.consumption"); //$NON-NLS-1$
-	
-	private String LABEL = "TASK_LABEL_JAVA_WSDL_COMMAND";
-	private String DESCRIPTION = "TASK_DESC_JAVA_WSDL_COMMAND";
 
 	public Java2WSDLCommand() {
-		super();
-	    setName (getMessage(LABEL));
-		setDescription(getMessage(DESCRIPTION));
 	}	
 	/**
 	 * Constructor for Java2WSDLCommand.
 	 */
 	public Java2WSDLCommand(JavaWSDLParameter javaWSDLParam) {
 		super();
-	    setName (getMessage(LABEL));
-		setDescription(getMessage(DESCRIPTION));
 		this.javaWSDLParam_ = javaWSDLParam;
 	}
 
-	public Status execute(Environment environment) {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();
 		Status status;
 		if (javaWSDLParam_ == null) {
 			status = new SimpleStatus("Java2WSDLCommand", //$NON-NLS-1$
@@ -85,11 +82,11 @@ public class Java2WSDLCommand extends SimpleCommand {
 
 		final class Emitter extends Java2WsdlAntTask {
 			public Emitter() {
-				project = new Project();
-				project.init();
-				taskType = "axis"; //$NON-NLS-1$
-				taskName = "axis-java2wsdl"; //$NON-NLS-1$
-				target = new Target();
+				super.setProject(new Project());
+				super.getProject().init();
+				super.setTaskType("axis"); //$NON-NLS-1$
+				super.setTaskName("axis-java2wsdl"); //$NON-NLS-1$
+				super.setOwningTarget(new Target());
 			}
 		}
 

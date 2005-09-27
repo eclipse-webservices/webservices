@@ -22,11 +22,14 @@ import javax.wsdl.Import;
 import javax.wsdl.xml.WSDLWriter;
 
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -38,10 +41,8 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 /**
  *
  */
-public class CopyClientWSDLCommand extends SimpleCommand
+public class CopyClientWSDLCommand extends EnvironmentalOperation
 {
-  private String DESCRIPTION = "TASK_DESC_COPY_CLIENT_WSDL";
-  private String LABEL = "TASK_LABEL_COPY_CLIENT_WSDL";
   private String pluginId_ = "org.eclipse.jst.ws.axis.consumption.ui";
   private MessageUtils msgUtils_;  
   private String wsdlURL_;
@@ -50,13 +51,12 @@ public class CopyClientWSDLCommand extends SimpleCommand
   
   public CopyClientWSDLCommand()
   {
-    msgUtils_ = new MessageUtils(pluginId_ + ".plugin", this);
-    setDescription(msgUtils_.getMessage(DESCRIPTION));
-    setName(msgUtils_.getMessage(LABEL));    
+    msgUtils_ = new MessageUtils(pluginId_ + ".plugin", this);    
   }
   
-  public Status execute(Environment env)
-  {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment env = getEnvironment();
     Status status = new SimpleStatus("");
     Definition def = wsParser_.getWSDLDefinition(wsdlURL_);
     if(def==null)

@@ -11,45 +11,32 @@
 package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 
 
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
 
-public class AxisClientOutputCommand extends SimpleCommand {
-
-	private static String LABEL = "TASK_LABEL_AXIS_CLIENT_OUTPUT";
-	private static String DESCRIPTION = "TASK_DESC_AXIS_CLIENT_OUTPUT";
+public class AxisClientOutputCommand extends EnvironmentalOperation {
 	
 	private IWebServiceClient wsc_;
 	private String proxyBean_;
-		
-	  private MessageUtils msgUtils_;
 	  
 		/**
 		* Default CTOR
 		*/
 		public AxisClientOutputCommand() {
-			String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
-		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-		    setName (msgUtils_.getMessage(LABEL));
-			setDescription( msgUtils_.getMessage(DESCRIPTION));
 		}
 		
 		public AxisClientOutputCommand(IWebServiceClient wsc, IContext context, String module) {
-			String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
-		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-		    setName (msgUtils_.getMessage(LABEL));
-			setDescription( msgUtils_.getMessage(DESCRIPTION));
 			wsc_ = wsc;
 		}
 		
-	  public Status execute(Environment env)
-	  {		
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{	
 		wsc_.getWebServiceClientInfo().setImplURL(proxyBean_);
 		return new SimpleStatus("");
 	  }

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.IPluginRegistry;
@@ -36,7 +37,7 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
@@ -47,7 +48,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.context.TransientRe
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 
 
-public class CopyAxisJarCommand extends SimpleCommand {
+public class CopyAxisJarCommand extends EnvironmentalOperation {
 
   public static String AXIS_RUNTIME_PLUGIN_ID = "org.apache.axis"; //$NON-NLS-1$
   public static String[] JARLIST = new String[] {
@@ -59,9 +60,6 @@ public class CopyAxisJarCommand extends SimpleCommand {
 	  "wsdl4j-1.5.1.jar"
   };
   public static String PATH_TO_JARS_IN_PLUGIN = "lib/";
-
-  private String DESCRIPTION = "TASK_DESC_COPY_JARS_TO_PROJECT";
-  private String LABEL = "TASK_LABEL_COPY_JARS_TO_PROJECT";
 
   private MessageUtils msgUtils_;
   private MessageUtils baseConMsgUtils_;
@@ -76,16 +74,15 @@ public class CopyAxisJarCommand extends SimpleCommand {
     String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     baseConMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
-    setDescription(msgUtils_.getMessage(DESCRIPTION));
-    setName(msgUtils_.getMessage(LABEL));
-	
 	moduleName_ = moduleName;
   }
 
   /**
    * Execute the command
    */
-  public Status execute(Environment env) {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment env = getEnvironment();
     Status status = new SimpleStatus("");
     env.getProgressMonitor().report(msgUtils_.getMessage("PROGRESS_INFO_COPY_AXIS_CFG"));
     

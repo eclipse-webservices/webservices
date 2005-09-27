@@ -11,26 +11,26 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
-public class AxisSkeletonDefaultingCommand extends SimpleCommand
+public class AxisSkeletonDefaultingCommand extends EnvironmentalOperation
 {
   private IStructuredSelection initialSelection;
-  private IStructuredSelection objectSelection;
   private WebServicesParser webServicesParser;
   private String wsdlURI_;
   private JavaWSDLParameter javaWSDLParam;
   
-  public Status execute(Environment env){
-    
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
     javaWSDLParam = new JavaWSDLParameter();
     javaWSDLParam.setServerSide(JavaWSDLParameter.SERVER_SIDE_BEAN);
     javaWSDLParam.setSkeletonDeploy(true);
@@ -46,7 +46,6 @@ public class AxisSkeletonDefaultingCommand extends SimpleCommand
 
   public void setObjectSelection(IStructuredSelection objectSelection)
   {
-    this.objectSelection = objectSelection;
   }
   
   public void setWebServicesParser(WebServicesParser webServicesParser)
@@ -83,15 +82,6 @@ public class AxisSkeletonDefaultingCommand extends SimpleCommand
   
   public String getWsdlURI()
   {
-//    if (objectSelection != null && !objectSelection.isEmpty())
-//    {
-//      Object object = objectSelection.getFirstElement();
-//      if (object instanceof IResource)
-//        return ((IResource)object).getLocation().toString();
-//      else
-//        return object.toString();
-//    }
-//    return "";
 	  return wsdlURI_;
   }
   

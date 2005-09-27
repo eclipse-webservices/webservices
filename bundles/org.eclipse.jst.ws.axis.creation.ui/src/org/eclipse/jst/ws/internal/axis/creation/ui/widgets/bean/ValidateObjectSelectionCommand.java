@@ -13,6 +13,9 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.impl.JavaClassImpl;
@@ -20,14 +23,14 @@ import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
-public class ValidateObjectSelectionCommand extends SimpleCommand
+public class ValidateObjectSelectionCommand extends EnvironmentalOperation
 {
   private String JAVA_EXTENSION = ".java"; //$NON-NLS-1$
   private String CLASS_EXTENSION = ".class"; //$NON-NLS-1$
@@ -45,8 +48,9 @@ public class ValidateObjectSelectionCommand extends SimpleCommand
     String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
   }
-  public Status execute(Environment env)
-  {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();
     //Make sure a bean is selected
     String javaBeanName = null;
     if (objectSelection != null && !objectSelection.isEmpty())
@@ -68,7 +72,7 @@ public class ValidateObjectSelectionCommand extends SimpleCommand
 		} catch (CoreException ce)
 		{
 		  Status errorStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"),Status.ERROR);
-		  env.getStatusHandler().reportError(errorStatus);
+		  environment.getStatusHandler().reportError(errorStatus);
 		  return errorStatus;			
 		}
       }
@@ -77,7 +81,7 @@ public class ValidateObjectSelectionCommand extends SimpleCommand
     if (javaBeanName==null || javaBeanName.length()==0)
     {
       Status errorStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"),Status.ERROR);
-      env.getStatusHandler().reportError(errorStatus);
+      environment.getStatusHandler().reportError(errorStatus);
       return errorStatus;
     }
     
@@ -86,7 +90,7 @@ public class ValidateObjectSelectionCommand extends SimpleCommand
     if (serviceProject==null)
     {
       Status errorStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_NO_PROJECT"),Status.ERROR);
-      env.getStatusHandler().reportError(errorStatus);
+      environment.getStatusHandler().reportError(errorStatus);
       return errorStatus;      
     }
     
@@ -103,13 +107,13 @@ public class ValidateObjectSelectionCommand extends SimpleCommand
 	  if (!javaClass.isExistingType()) 
 	  {		
 		Status errorStatus = new SimpleStatus("JavaToWSDLMethodCommand", msgUtils_.getMessage("MSG_ERROR_CANNOT_LOAD_JAVA_BEAN", new String[] { javaBeanName, serviceProjectName }),Status.ERROR);
-		env.getStatusHandler().reportError(errorStatus);
+		environment.getStatusHandler().reportError(errorStatus);
 		return errorStatus;
 	  }
     } catch (CoreException ce)
     {
 	  Status errorStatus = new SimpleStatus("JavaToWSDLMethodCommand", msgUtils_.getMessage("MSG_ERROR_CANNOT_LOAD_JAVA_BEAN", new String[] { javaBeanName, serviceProjectName }),Status.ERROR);
-	  env.getStatusHandler().reportError(errorStatus);
+	  environment.getStatusHandler().reportError(errorStatus);
       return errorStatus;      
     }
     

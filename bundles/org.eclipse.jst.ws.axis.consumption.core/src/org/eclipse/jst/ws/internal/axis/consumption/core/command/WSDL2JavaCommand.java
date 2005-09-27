@@ -19,15 +19,18 @@ import java.util.ResourceBundle;
 
 import org.apache.axis.wsdl.toJava.Emitter;
 import org.apache.axis.wsdl.toJava.GeneratedFileInfo;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
-public class WSDL2JavaCommand extends SimpleCommand {
+public class WSDL2JavaCommand extends EnvironmentalOperation {
 
 	private final String DEPLOY_TYPE = "deploy"; //$NON-NLS-1$
 	private final String UNDEPLOY_TYPE = "undeploy"; //$NON-NLS-1$
@@ -36,17 +39,14 @@ public class WSDL2JavaCommand extends SimpleCommand {
 	private String httpBasicAuthUsername;
 	private String httpBasicAuthPassword;
 	private ResourceBundle resource = ResourceBundle.getBundle("org.eclipse.jst.ws.axis.consumption.core.consumption"); //$NON-NLS-1$
-	private String LABEL = "TASK_LABEL_WSDL_JAVA_COMMAND";
-	private String DESCRIPTION = "TASK_DESC_WSDL_JAVA_COMMAND";
 	
 
 	public WSDL2JavaCommand() {
-		super();
-		setName(getMessage(LABEL));
-		setDescription(getMessage(DESCRIPTION));
 	}
 
-	public Status execute(Environment environment) {
+	  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+	  {
+	    Environment environment = getEnvironment();
 		Status status;
 		if (javaWSDLParam == null) {
 			status = new SimpleStatus("WSDL2JavaCommand", //$NON-NLS-1$

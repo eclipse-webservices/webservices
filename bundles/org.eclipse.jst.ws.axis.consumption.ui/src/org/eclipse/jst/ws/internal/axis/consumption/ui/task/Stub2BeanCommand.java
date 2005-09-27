@@ -28,12 +28,14 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -42,7 +44,7 @@ import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
-public class Stub2BeanCommand extends SimpleCommand
+public class Stub2BeanCommand extends EnvironmentalOperation
 {
   private WebServicesParser webServicesParser;
   private JavaWSDLParameter javaWSDLParam_;
@@ -58,7 +60,7 @@ public class Stub2BeanCommand extends SimpleCommand
 
   public Stub2BeanCommand()
   {
-    super("org.eclipse.jst.ws.was.creation.ui.task.Stub2BeanCommand", "org.eclipse.jst.ws.was.creation.ui.task.Stub2BeanCommand");
+    super();
     portTypes_ = new Vector();
     String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);    
@@ -66,7 +68,7 @@ public class Stub2BeanCommand extends SimpleCommand
   }
   
   public Stub2BeanCommand(String moduleName){
-	  super("org.eclipse.jst.ws.was.creation.ui.task.Stub2BeanCommand", "org.eclipse.jst.ws.was.creation.ui.task.Stub2BeanCommand");
+	  super();
 	  portTypes_ = new Vector();	  
 	  module_ = moduleName;
 	  String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
@@ -76,8 +78,9 @@ public class Stub2BeanCommand extends SimpleCommand
   /**
   * Execute
   */
-  public Status execute(Environment env)
-  {        
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();       
     String inputWsdlLocation = javaWSDLParam_.getInputWsdlLocation();
     Definition def = webServicesParser.getWSDLDefinition(inputWsdlLocation);
     /*
@@ -109,7 +112,7 @@ public class Stub2BeanCommand extends SimpleCommand
 		if (javaProject == null)
 		{
 	 		   Status status = new SimpleStatus("", msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"), Status.ERROR);	
-	 		   env.getStatusHandler().reportError(status);
+	 		   environment.getStatusHandler().reportError(status);
 	 		   return status;
 		}    	
     }
@@ -174,7 +177,7 @@ public class Stub2BeanCommand extends SimpleCommand
             stub2BeanInfo.addSEI(portTypePkgName, portTypeClassName, servicePkgName, serviceClassName, jndiName, port.getName());
             try
             {              
-              stub2BeanInfo.write( env.getProgressMonitor(), env.getStatusHandler() );
+              stub2BeanInfo.write( environment.getProgressMonitor(), environment.getStatusHandler() );
               if (discoveredWsdlPortElementName != null)
               {
                 // The discovered port was processed. Ignore all other ports and services.

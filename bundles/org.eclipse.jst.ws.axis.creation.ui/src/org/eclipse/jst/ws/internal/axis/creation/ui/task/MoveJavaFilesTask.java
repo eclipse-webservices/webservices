@@ -14,19 +14,19 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 import java.io.File;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
-public class MoveJavaFilesTask extends SimpleCommand {
-
-	private final String LABEL = "TASK_LABEL_MOVE_JAVA_FILES";
-	private final String DESCRIPTION = "TASK_DESC_MOVE_JAVA_FILES";
+public class MoveJavaFilesTask extends EnvironmentalOperation {
 
 	private JavaWSDLParameter javaWSDLParam_;
 	private MessageUtils msgUtils_;
@@ -40,9 +40,6 @@ public class MoveJavaFilesTask extends SimpleCommand {
 	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-	    setDescription(msgUtils_.getMessage(DESCRIPTION));
-	    setName(msgUtils_.getMessage(LABEL));
-		
 		this.moduleName_ = moduleName;
 	}
 	
@@ -50,16 +47,12 @@ public class MoveJavaFilesTask extends SimpleCommand {
 	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-	    setDescription(msgUtils_.getMessage(DESCRIPTION));
-	    setName(msgUtils_.getMessage(LABEL));
 	}	
 
 	public MoveJavaFilesTask(JavaWSDLParameter javaWSDLParam) {
 	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-	    setDescription(msgUtils_.getMessage(DESCRIPTION));
-	    setName(msgUtils_.getMessage(LABEL));	  
 		javaWSDLParam_ = javaWSDLParam;
 
 	}
@@ -67,21 +60,14 @@ public class MoveJavaFilesTask extends SimpleCommand {
 	/**
 	* Execute DefaultsForJavaToWSDLTask
 	*/
-	public Status execute(Environment env) {
-	  
-	  // rm 
-	  /*
-	  //Begin Setters
-	  WebServiceElement wse =
-			WebServiceElement.getWebServiceElement(model_);
-	  setServiceProject(wse.getServiceProject());
-	  //End Setters
-	  */
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();
 	  Status status = new SimpleStatus("");
 	  
 		if (javaWSDLParam_ == null) {
 		  status = new SimpleStatus("",coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR);
-		  env.getStatusHandler().reportError(status);
+		  environment.getStatusHandler().reportError(status);
 		  return status;		  
 		}
 
@@ -98,7 +84,7 @@ public class MoveJavaFilesTask extends SimpleCommand {
 		String projectURL = ServerUtils.getEncodedWebComponentURL(project, moduleName_);
 		if (projectURL == null) {
 		    status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] {project.toString()}), Status.ERROR);
-		    env.getStatusHandler().reportError(status);
+		    environment.getStatusHandler().reportError(status);
 		    return status;		  
 
 		} else {
@@ -114,9 +100,9 @@ public class MoveJavaFilesTask extends SimpleCommand {
 		}
 		try {
 			for (int i = 0; i < javaFiles.length; i++) {
-				String resourceToMove = javaFiles[i].substring(output.length());
-				String targetFileName = javaoutput + resourceToMove;
-				File resultFile = new File(targetFileName);
+//				String resourceToMove = javaFiles[i].substring(output.length());
+//				String targetFileName = javaoutput + resourceToMove;
+//				File resultFile = new File(targetFileName);
 				// copy java files that without overwtriting existing ones
 //				if (!resultFile.exists()) {
 //					FileUtil.createTargetFile(
@@ -129,7 +115,7 @@ public class MoveJavaFilesTask extends SimpleCommand {
 			}
 		} catch (Exception e) {
 		  status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_MOVE_RESOURCE",new String[]{e.getLocalizedMessage()}), Status.ERROR, e);
-		  env.getStatusHandler().reportError(status);
+		  environment.getStatusHandler().reportError(status);
 		  return status;		  
 		}
 		

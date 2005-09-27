@@ -13,12 +13,14 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
@@ -31,7 +33,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
  * 
  */
 
-public class CopyDeploymentFileCommand extends SimpleCommand
+public class CopyDeploymentFileCommand extends EnvironmentalOperation
 {
   private String projectName_;
   private String componentName_;
@@ -43,15 +45,13 @@ public class CopyDeploymentFileCommand extends SimpleCommand
    * 
    */
   public CopyDeploymentFileCommand( String projectName, String componentName )
-  {
-    super("org.eclipse.jst.ws.internal.axis.consumption.core.command.CopyDeploymentFileCommand", "org.eclipse.jst.ws.internal.axis.consumption.core.command.CopyDeploymentFileCommand");
-    
+  { 
     projectName_   = projectName;
     componentName_ = componentName;
   }
 
-  public Status execute(Environment environment)
-  {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
     Status            status         = new SimpleStatus("");
     
     try

@@ -13,17 +13,20 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
 
-public class CheckAxisDeploymentDescriptorsTask extends SimpleCommand {
+public class CheckAxisDeploymentDescriptorsTask extends EnvironmentalOperation {
 	
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;
@@ -35,13 +38,12 @@ public class CheckAxisDeploymentDescriptorsTask extends SimpleCommand {
     String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-    setDescription(msgUtils_.getMessage("CHECK_WS_DD_TASK_DESCRIPTION"));
-    setName(msgUtils_.getMessage("CHECK_WS_DD_TASK_LABEL"));
-	
 	moduleName_ = moduleName;
   }
 	
-	public Status execute(Environment env) {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment env = getEnvironment();
 		Status status = new SimpleStatus( "" );
 		if(EnvironmentUtils.getResourceContext(env).isOverwriteFilesEnabled()) {
       return status;

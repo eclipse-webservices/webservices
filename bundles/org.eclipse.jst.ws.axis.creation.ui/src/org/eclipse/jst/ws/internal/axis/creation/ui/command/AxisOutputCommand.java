@@ -11,50 +11,36 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebService;
 import org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebServiceInfo;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
-public class AxisOutputCommand extends SimpleCommand {
+public class AxisOutputCommand extends EnvironmentalOperation {
 
-	private static String LABEL = "TASK_LABEL_BU_AXIS_OUTPUT";
-	private static String DESCRIPTION = "TASK_DESC_BU_AXIS_OUTPUT";
-	
 	private AxisWebService ws_;
 	private JavaWSDLParameter javaWSDLParam_;
 
 	private String            wsdlURI_;
-	  
-	  private boolean isWebProjectStartupRequested_ = false;
-	  
-	  private MessageUtils msgUtils_;
-	  
+	  	  
 		/**
 		* Default CTOR
 		*/
 		public AxisOutputCommand() {
-			String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-		    setName (msgUtils_.getMessage(LABEL));
-			setDescription( msgUtils_.getMessage(DESCRIPTION));
 		}
 		
 		public AxisOutputCommand(AxisWebService ws) {
-			String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-		    setName (msgUtils_.getMessage(LABEL));
-			setDescription( msgUtils_.getMessage(DESCRIPTION));
 			ws_ = ws;
 		}
 		
-		public Status execute(Environment env){
-		  	
+		public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+		{
 		  	Status status = new SimpleStatus("");  	
 		  	ws_.getWebServiceInfo().setWsdlURL(wsdlURI_);
 			AxisWebServiceInfo axisWSInfo = new AxisWebServiceInfo();

@@ -23,9 +23,11 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -34,17 +36,14 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
-public class UpdateAxisWSDDFileTask extends SimpleCommand {
+public class UpdateAxisWSDDFileTask extends EnvironmentalOperation {
 	
-	
-	private final String LABEL = "TASK_LABEL_UPDATE_AXIS_WSDD";	
-	private final String DESCRIPTION = "TASK_DESC_UPDATE_AXIS_WSDD";
 	private final String DEPLOY_XSL = "deploy.xsl";	//$NON-NLS-1$
 	private final String DEPLOY_BAK = "deploy.wsdd.bak";		//$NON-NLS-1$
 	private final String CLASSNAME_PARAM = "newClassName";		//$NON-NLS-1$
@@ -61,9 +60,6 @@ public class UpdateAxisWSDDFileTask extends SimpleCommand {
 	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-	    setDescription(msgUtils_.getMessage(DESCRIPTION));
-	    setName(msgUtils_.getMessage(LABEL));	 
-		
 		moduleName_ = moduleName;
 	}
 	
@@ -71,28 +67,19 @@ public class UpdateAxisWSDDFileTask extends SimpleCommand {
 	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-	    setDescription(msgUtils_.getMessage(DESCRIPTION));
-	    setName(msgUtils_.getMessage(LABEL));	    
 		javaWSDLParam_ = javaWSDLParam;
 	}
 
 	/**
 	* Execute UpdateAxisWSDDFileTask
 	*/
-	public Status execute(Environment env) {
-	  
-	  // rm
-	  /*
-	  //Begin Setters
-	  WebServiceElement wse =
-		WebServiceElement.getWebServiceElement(model_);
-	  setServiceProject(wse.getServiceProject());
-	  //End Setters
-	  */
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();
 	    Status status = new SimpleStatus("");		
 		if (javaWSDLParam_ == null) {
 		  status = new SimpleStatus("",coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR);
-		  env.getStatusHandler().reportError(status);
+		  environment.getStatusHandler().reportError(status);
 		  return status;		  
 		}
 
@@ -109,7 +96,7 @@ public class UpdateAxisWSDDFileTask extends SimpleCommand {
 		String projectURL = ServerUtils.getEncodedWebComponentURL(project, moduleName_);
 		if (projectURL == null) {
 		    status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] {project.toString()}), Status.ERROR);
-		    env.getStatusHandler().reportError(status);
+		    environment.getStatusHandler().reportError(status);
 		    return status;		  
 		} else {
 			javaWSDLParam_.setProjectURL(projectURL);
@@ -123,12 +110,9 @@ public class UpdateAxisWSDDFileTask extends SimpleCommand {
 //				return status;
 //		} catch (Exception ex) {
 //		    status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_INTERAL"), Status.ERROR, ex);
-//		    env.getStatusHandler().reportError(status);
+//		    environment.getStatusHandler().reportError(status);
 //		    return status;		  
 //		}
-		String[] javaFiles = javaWSDLParam_.getJavaFiles();
-		String javaoutput = javaWSDLParam_.getJavaOutput();
-		String output = javaWSDLParam_.getOutput();
 
 //		String webContentPath =	ResourceUtils.getWebModuleServerRoot(project).getLocation().toString();
 		String webContentPath =	J2EEUtils.getWebContentContainer( project, moduleName_ ).getLocation().toString();
@@ -167,7 +151,7 @@ public class UpdateAxisWSDDFileTask extends SimpleCommand {
 		} catch (Exception e) {
 		    String[] errorMsgStrings = new String[]{project.toString(), outputLocation.toString(), webContentPath.toString()}; 
 		    status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_UPDATE_AXIS_WSDD", errorMsgStrings), Status.ERROR, e);
-		    env.getStatusHandler().reportError(status);
+		    environment.getStatusHandler().reportError(status);
 		    return status;		  		  
 		}
 		

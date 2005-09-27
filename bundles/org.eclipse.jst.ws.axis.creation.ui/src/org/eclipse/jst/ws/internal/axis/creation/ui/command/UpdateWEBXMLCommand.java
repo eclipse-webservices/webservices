@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.jst.j2ee.webapplication.Servlet;
@@ -24,7 +27,7 @@ import org.eclipse.jst.j2ee.webapplication.ServletMapping;
 import org.eclipse.jst.j2ee.webapplication.ServletType;
 import org.eclipse.jst.j2ee.webapplication.WebApp;
 import org.eclipse.jst.j2ee.webapplication.WebapplicationFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -32,10 +35,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
-public class UpdateWEBXMLCommand extends SimpleCommand {
-
-	private String LABEL = "TASK_LABEL_UPDATE_WEB_XML";
-	private String DESCRIPTION = "TASK_DESC_UPDATE_WEB_XML";
+public class UpdateWEBXMLCommand extends EnvironmentalOperation {
 
 	private MessageUtils msgUtils_;
 	private IProject serverProject;
@@ -45,13 +45,12 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
   {
     String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
     msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-    setName (msgUtils_.getMessage(LABEL));
-    setDescription( msgUtils_.getMessage(DESCRIPTION));
-	
 	moduleName_ = moduleName;
   }
 
-	public Status execute(Environment environment) {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();
 		if (serverProject != null) {
 			Status status = null;
 			status = addServlet(serverProject, moduleName_, getAxisServletDescriptor());
@@ -113,7 +112,6 @@ public class UpdateWEBXMLCommand extends SimpleCommand {
 		String   moduleName,
 		ServletDescriptor servletDescriptor) {
 
-		Object accessorKey = new Object();
 		WebArtifactEdit webEdit = null;		
 		try {
 			// 

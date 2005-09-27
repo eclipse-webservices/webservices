@@ -11,18 +11,15 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
 
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 
 
-public class TDAxisInputCommand extends SimpleCommand {
-
-	private static String LABEL = "TASK_LABEL_TD_AXIS_INPUT";
-	private static String DESCRIPTION = "TASK_DESC_TD_AXIS_INPUT";
+public class TDAxisInputCommand extends EnvironmentalOperation {
 	
 	private IWebService ws_;
 	private String serverProject_; 
@@ -30,35 +27,21 @@ public class TDAxisInputCommand extends SimpleCommand {
 
 	  private String serverServer_;
 	  private String wsdlURI_;
-	  
-	  private MessageUtils msgUtils_;
-	  
+	  	  
 		/**
 		* Default CTOR
 		*/
 		public TDAxisInputCommand() {
-			String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-		    setName (msgUtils_.getMessage(LABEL));
-			setDescription( msgUtils_.getMessage(DESCRIPTION));
 		}
 		
 		public TDAxisInputCommand(IWebService ws, String project, String module) {
-			String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-		    setName (msgUtils_.getMessage(LABEL));
-			setDescription( msgUtils_.getMessage(DESCRIPTION));
 			ws_ = ws;
 			serverProject_ = project;
 			serverModule_ = module;
 		}
 		
-	  public Status execute(Environment env)
-	  {
-	    
-	  	String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-	    
+		public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+		{	    
 		serverServer_ = ws_.getWebServiceInfo().getServerInstanceId();	
 		wsdlURI_ = ws_.getWebServiceInfo().getWsdlURL();
 		

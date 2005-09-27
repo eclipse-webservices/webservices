@@ -17,12 +17,12 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasic
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisClientCommandsFragment;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisClientFragment;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisProxyWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionOutputCommand;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
+import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
@@ -53,7 +53,6 @@ public class WebServiceClientAxisType implements CommandWidgetBinding
     dataRegistry.addMapping( AxisClientDefaultingCommand.class, "JavaWSDLParam", AxisMappingsWidget.class, "JavaParameter", null);
     
     // AxisProxyWidget
-    dataRegistry.addMapping( AxisProxyWidget.class, "CustomizeClientMappings", AxisClientFragment.MappingFragment.class );
     dataRegistry.addMapping( AxisProxyWidget.class, "GenerateProxy", AxisClientCommandsFragment.class );
     dataRegistry.addMapping( AxisProxyWidget.class, "GenerateProxy", ClientExtensionOutputCommand.class );
     
@@ -107,7 +106,8 @@ public class WebServiceClientAxisType implements CommandWidgetBinding
            {
              public CommandFragment create()
              {
-               return new AxisClientFragment(); 
+               //dead code - doesn't matter what gets returned here.
+               return new SimpleFragment();
              }
            };
   }

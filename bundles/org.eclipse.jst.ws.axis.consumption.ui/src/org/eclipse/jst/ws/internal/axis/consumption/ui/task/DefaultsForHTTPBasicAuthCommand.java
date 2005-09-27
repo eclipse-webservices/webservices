@@ -10,14 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.DialogWWWAuthentication;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
@@ -25,26 +25,19 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
 
-public class DefaultsForHTTPBasicAuthCommand extends SimpleCommand
+public class DefaultsForHTTPBasicAuthCommand extends EnvironmentalOperation
 {
   private WebServicesParser webServicesParser;
   private String wsdlServiceURL;
   private JavaWSDLParameter javaWSDLParam;
-  private Model model;
 
   public DefaultsForHTTPBasicAuthCommand()
   {
-    super("org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand", "org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand");
+    super();
   }
   
-  public Status execute(Environment env)
-  {
-    //WebServiceElement wse = WebServiceElement.getWebServiceElement(model);
-    //setWebServicesParser((WebServicesParser)wse.getWSParser());
-    //setWsdlServiceURL(wse.getWSDLServiceURL());
-    //if (wsdlServiceURL == null || wsdlServiceURL.length() <= 0)
-    //  setWsdlServiceURL((new Utils()).toFileSystemURI(wse.getWSDLServicePathname()));
-    
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{   
     if (wsdlServiceURL != null && wsdlServiceURL.length() > 0)
     {
       if (webServicesParser == null)
@@ -104,13 +97,6 @@ public class DefaultsForHTTPBasicAuthCommand extends SimpleCommand
    */
   public void setJavaWSDLParam(JavaWSDLParameter javaWSDLParam) {
     this.javaWSDLParam = javaWSDLParam;
-  }
-
-  /**
-   * @param model The model to set.
-   */
-  public void setModel(Model model) {
-    this.model = model;
   }
 
   /**

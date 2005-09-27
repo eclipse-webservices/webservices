@@ -15,16 +15,17 @@ import java.net.MalformedURLException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
-public class SkeletonConfigWidgetDefaultingCommand extends SimpleCommand
+public class SkeletonConfigWidgetDefaultingCommand extends EnvironmentalOperation
 {
   private String wsdlURI;
   private IProject serverProject;
@@ -36,8 +37,8 @@ public class SkeletonConfigWidgetDefaultingCommand extends SimpleCommand
     moduleName_ = moduleName;
   }
   
-  public Status execute(Environment env) 
-  {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
     String root = getRootURL();
     javaWSDLParam.setOutput( root + getOutputWSDLFolder());
     javaWSDLParam.setJavaOutput(root + getOutputJavaFolder());  

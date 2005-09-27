@@ -11,8 +11,11 @@
 package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -23,10 +26,7 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
 
-public class AxisClientInputCommand extends SimpleCommand {
-
-	private static String LABEL = "TASK_LABEL_AXIS_CLIENT_INPUT";
-	private static String DESCRIPTION = "TASK_DESC_AXIS_CLIENT_INPUT";
+public class AxisClientInputCommand extends EnvironmentalOperation {
 	
 	private IWebServiceClient wsc_;
 	private String serverProject_; 
@@ -52,24 +52,19 @@ public class AxisClientInputCommand extends SimpleCommand {
 		public AxisClientInputCommand() {
 			String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-		    setName (msgUtils_.getMessage(LABEL));
-			setDescription( msgUtils_.getMessage(DESCRIPTION));
 		}
 		
 		public AxisClientInputCommand(IWebServiceClient wsc, IContext context, String project, String module) {
 			String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 		    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-		    setName (msgUtils_.getMessage(LABEL));
-			setDescription( msgUtils_.getMessage(DESCRIPTION));
 			wsc_ = wsc;
 			context_ = context;
 			clientProject_ = project; 
 			clientModule_ = module;
 		}
 		
-	  public Status execute(Environment env)
-	  {
-	    
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{	    
 		generateProxy_ = context_.getClient();
 		wsdlURL_ = wsc_.getWebServiceClientInfo().getWsdlURL();
 		clientServer_ = wsc_.getWebServiceClientInfo().getServerInstanceId();

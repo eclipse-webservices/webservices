@@ -20,6 +20,7 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.IPluginRegistry;
@@ -35,7 +36,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamete
 import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
@@ -47,10 +48,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
 
-public class AddJarsToProjectBuildPathTask extends SimpleCommand {
-
-	private String DESCRIPTION = "TASK_DESC_JARS_TO_PROJECT";
-	private String LABEL = "TASK_LABEL_JARS_TO_PROJECT";
+public class AddJarsToProjectBuildPathTask extends EnvironmentalOperation {
 
 	private IJavaProject javaProject_;
 	private IClasspathEntry[] oldClasspath_;
@@ -66,8 +64,6 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 	  {
 			String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 			msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-			setDescription(msgUtils_.getMessage(DESCRIPTION));
-			setName(msgUtils_.getMessage(LABEL));
 			module_ = J2EEUtils.getFirstWebModuleName(project);
 		}
 	
@@ -75,15 +71,15 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
   {
 		String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 		msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-		setDescription(msgUtils_.getMessage(DESCRIPTION));
-		setName(msgUtils_.getMessage(LABEL));
 		module_ = module;
 	}
 
 	/**
 	* Execute AddJarsToProjectBuildPathTask
 	*/
-	public Status execute(Environment env) {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment env = getEnvironment();
 //		try {
 //			if (project.hasNature(IWebNatureConstants.J2EE_NATURE_ID)) {
 //				J2EEWebNatureRuntime webNatureRuntime =
@@ -171,11 +167,11 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 					newClasspath_[j+i] = oldClasspath_[i];
 				}
  
-			   	 ProgressMonitor monitor = env.getProgressMonitor();
+			   	 ProgressMonitor localMonitor = env.getProgressMonitor();
 			   	 IProgressMonitor eclipseMonitor = null;
-			   	 if (monitor instanceof EclipseProgressMonitor)
+			   	 if (localMonitor instanceof EclipseProgressMonitor)
 			   	 {
-			   	 	eclipseMonitor = ((EclipseProgressMonitor)monitor).getMonitor();
+			   	 	eclipseMonitor = ((EclipseProgressMonitor)localMonitor).getMonitor();
 			   	 }
 				 javaProject_.setRawClasspath(newClasspath_,eclipseMonitor);
 			}
@@ -289,11 +285,11 @@ public class AddJarsToProjectBuildPathTask extends SimpleCommand {
 	   //
 	   try
 	   {
-	   	 ProgressMonitor monitor = env.getProgressMonitor();
+	   	 ProgressMonitor localMonitor = env.getProgressMonitor();
 	   	 IProgressMonitor eclipseMonitor = null;
-	   	 if (monitor instanceof EclipseProgressMonitor)
+	   	 if (localMonitor instanceof EclipseProgressMonitor)
 	   	 {
-	   	 	eclipseMonitor = ((EclipseProgressMonitor)monitor).getMonitor();
+	   	 	eclipseMonitor = ((EclipseProgressMonitor)localMonitor).getMonitor();
 	   	 }
 		 javaProject_.setRawClasspath(newClasspath_,eclipseMonitor);
 	   }

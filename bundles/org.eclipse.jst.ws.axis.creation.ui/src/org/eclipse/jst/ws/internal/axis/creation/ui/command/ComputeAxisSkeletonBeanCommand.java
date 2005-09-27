@@ -13,15 +13,16 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
-public class ComputeAxisSkeletonBeanCommand extends SimpleCommand
+public class ComputeAxisSkeletonBeanCommand extends EnvironmentalOperation
 {
   private List classNames;
   //private String wsdlURI;
@@ -32,8 +33,8 @@ public class ComputeAxisSkeletonBeanCommand extends SimpleCommand
   {
   }
 
-  public Status execute(Environment environment)
-  {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
     classNames = new Vector();
     if (javaWSDLParameter != null)
     {

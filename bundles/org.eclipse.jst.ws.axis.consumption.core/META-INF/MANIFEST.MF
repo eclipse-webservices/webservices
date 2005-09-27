@@ -16,4 +16,6 @@ Require-Bundle: org.apache.ant,
  org.eclipse.jst.ws.consumption,
  org.eclipse.jst.j2ee.web,
  org.apache.axis,
- org.eclipse.wst.common.modulecore
+ org.eclipse.wst.common.modulecore,
+ org.eclipse.wst.common.frameworks,
+ org.eclipse.core.commands

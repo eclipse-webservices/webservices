@@ -14,24 +14,22 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 import java.io.File;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
-public class MoveDeploymentFilesTask extends SimpleCommand {
-
-	private final String LABEL = "TASK_LABEL_MOVE_DEPLOYMENT_FILES";
-	private final String DESCRIPTION = "TASK_DESC_MOVE_DEPLOYMENT_FILES";
-	private final String WEB_INF = "WEB-INF";	//$NON-NLS-1$
-	private final String META_INF = "META-INF";	//$NON-NLS-1$
+public class MoveDeploymentFilesTask extends EnvironmentalOperation {
 
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;
@@ -45,20 +43,19 @@ public class MoveDeploymentFilesTask extends SimpleCommand {
       String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
       msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
       coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-      setDescription(msgUtils_.getMessage(DESCRIPTION));
-      setName(msgUtils_.getMessage(LABEL));
-	  
 	  moduleName_ = moduleName;
     }
 
   /**
 	* Execute DefaultsForJavaToWSDLTask
 	*/
-	public Status execute(Environment env) {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();
 		Status status = new SimpleStatus("");
 		if (javaWSDLParam_ == null) {
 		  status = new SimpleStatus("",coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR);
-		  env.getStatusHandler().reportError(status);
+		  environment.getStatusHandler().reportError(status);
 		  return status;
 		}
 
@@ -68,20 +65,13 @@ public class MoveDeploymentFilesTask extends SimpleCommand {
 		
 		if (projectURL == null) {
 		    status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] { project.toString()}), Status.ERROR);
-		    env.getStatusHandler().reportError(status);
+		    environment.getStatusHandler().reportError(status);
 		    return status;		  
 		} else {
 			javaWSDLParam_.setProjectURL(projectURL);
 		}
 
 		try {
-//			if (!project.hasNature(IWebNatureConstants.J2EE_NATURE_ID))
-//				return status;
-//		} catch (Exception ex) {
-//		  status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_INTERAL"), Status.ERROR, ex);
-//		  env.getStatusHandler().reportError(status);
-//		  return status;		  
-//		}
 		String[] deployFiles = javaWSDLParam_.getDeploymentFiles();
 		String javaOutput = javaWSDLParam_.getJavaOutput();
 
@@ -104,7 +94,7 @@ public class MoveDeploymentFilesTask extends SimpleCommand {
 
 		} catch (Exception e) {
 		  status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_MOVE_RESOURCE",new String[] { e.getLocalizedMessage()}), Status.ERROR, e);
-		  env.getStatusHandler().reportError(status);
+		  environment.getStatusHandler().reportError(status);
 		  return status;		  
 		}
 		

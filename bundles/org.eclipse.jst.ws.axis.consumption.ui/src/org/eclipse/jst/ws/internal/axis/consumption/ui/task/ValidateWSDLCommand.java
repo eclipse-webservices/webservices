@@ -13,8 +13,11 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
 import javax.wsdl.Definition;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -23,18 +26,18 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
 
-public class ValidateWSDLCommand extends SimpleCommand
+public class ValidateWSDLCommand extends EnvironmentalOperation
 {
   private WebServicesParser webServicesParser;
   private String wsdlURI;
 
   public ValidateWSDLCommand()
   {
-    super("org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand", "org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand");
   }
 
-  public Status execute(Environment env)
-  {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();
 	MessageUtils msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.ui.plugin", this );
 	
     if (wsdlURI != null && wsdlURI.length() > 0)
@@ -46,7 +49,7 @@ public class ValidateWSDLCommand extends SimpleCommand
         if (numServices < 1)
         {
           Status status = new SimpleStatus(WebServiceConsumptionUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_WSDL_HAS_NO_SERVICE_ELEMENT", new Object[] {wsdlURI}), Status.ERROR, null);
-          env.getStatusHandler().reportError(status);
+          environment.getStatusHandler().reportError(status);
           return status;
         }
       }

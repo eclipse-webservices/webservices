@@ -16,15 +16,14 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsFragm
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonDefaultingCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonFragment;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ProjectName2IProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeType;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
+import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
@@ -36,7 +35,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingReg
 /**
 * This is the class for the Axis Web service type.
 */
-public class WSWSDLAxisType implements WebServiceServerRuntimeType, CommandWidgetBinding 
+public class WSWSDLAxisType implements CommandWidgetBinding 
 {
 	private WSDLResourceFilter filter_ = new WSDLResourceFilter();
 
@@ -239,7 +238,8 @@ public class WSWSDLAxisType implements WebServiceServerRuntimeType, CommandWidge
     {
       public CommandFragment create()
       {
-        return new AxisSkeletonFragment(); 
+          //dead code - doesn't matter what gets returned here. 
+    	  return new SimpleFragment();
       }
     };
   }

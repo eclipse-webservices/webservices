@@ -14,13 +14,16 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -29,7 +32,7 @@ import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 
 
-public class DefaultsForClientJavaWSDLCommand extends SimpleCommand {
+public class DefaultsForClientJavaWSDLCommand extends EnvironmentalOperation {
 
 	private JavaWSDLParameter javaWSDLParam_;
 	private IProject proxyProject_;
@@ -39,16 +42,10 @@ public class DefaultsForClientJavaWSDLCommand extends SimpleCommand {
 	private MessageUtils coreMsgUtils_;
 	private String moduleName_;
 	
-	private String LABEL = "TASK_LABEL_CLIENT_JAVA_WSDL_DEFAULTS";
-	private String DESCRIPTION = "TASK_DESC_CLIENT_JAVA_WSDL_DEFAULTS";
-
 	public DefaultsForClientJavaWSDLCommand( String moduleName ) {
 		String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-	    setName (msgUtils_.getMessage(LABEL));
-		setDescription( msgUtils_.getMessage(DESCRIPTION));		
-		
 		moduleName_ = moduleName;
 	}
 	
@@ -62,12 +59,12 @@ public class DefaultsForClientJavaWSDLCommand extends SimpleCommand {
 		String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-	    setName (msgUtils_.getMessage(LABEL));
-		setDescription( msgUtils_.getMessage(DESCRIPTION));
 		this.javaWSDLParam_ = javaWSDLParam;
 	}
 
-	public Status execute(Environment environment) {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();
 		Status status;
 		if (javaWSDLParam_ == null) {
 			status = new SimpleStatus("DefaultsForClientJavaWSDLCommand", //$NON-NLS-1$

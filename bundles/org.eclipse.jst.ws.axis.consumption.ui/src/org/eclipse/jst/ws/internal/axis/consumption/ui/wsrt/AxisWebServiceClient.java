@@ -13,7 +13,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectComman
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisClientCommandsFragment;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisClientFragment.MappingFragment;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
@@ -103,8 +102,7 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		// DefaultsForHTTPBasicAuthCommand()
 		registry.addMapping(AxisClientDefaultingCommand.class, "JavaWSDLParam", DefaultsForHTTPBasicAuthCommand.class); //OK
 		registry.addMapping(AxisClientDefaultingCommand.class, "WsdlURL", DefaultsForHTTPBasicAuthCommand.class, "WsdlServiceURL", null); //OK
-		registry.addMapping(AxisClientDefaultingCommand.class, "WebServicesParser", DefaultsForHTTPBasicAuthCommand.class); //OK
-	    registry.addMapping(AxisClientDefaultingCommand.class, "CustomizeClientMappings", MappingFragment.class );    
+		registry.addMapping(AxisClientDefaultingCommand.class, "WebServicesParser", DefaultsForHTTPBasicAuthCommand.class); //OK    
 		
 		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", CopyAxisJarCommand.class, "Project", null);
 

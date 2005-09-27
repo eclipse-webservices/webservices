@@ -13,9 +13,12 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -23,26 +26,22 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 
-public class RefreshProjectCommand extends SimpleCommand
+public class RefreshProjectCommand extends EnvironmentalOperation
 {
-	private static final String LABEL = "TASK_LABEL_REFESH_PROJECT";
-	private static final String DESCRIPTION = "TASK_DESC_REFESH_PROJECT";
-	
 	private IProject project;
 	private MessageUtils msgUtils_;
 
 	public RefreshProjectCommand()
 	{
 		msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.ui.plugin", this );
-		setName( msgUtils_.getMessage( LABEL ) );
-		setDescription( msgUtils_.getMessage( DESCRIPTION ));
 	}
 
 	/**
 	* Execute RefreshProjectTask
 	*/
-	public Status execute(Environment env)
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
+		Environment env = getEnvironment();
 		try
 		{
 			if (project!=null)

@@ -26,12 +26,15 @@ import org.apache.tools.ant.Target;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
@@ -42,7 +45,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
  * Commands are executable, undoable, redoable objects. Every Command has a name and a description.
  */
 
-public class GeronimoAxisDeployCommand extends SimpleCommand
+public class GeronimoAxisDeployCommand extends EnvironmentalOperation
 {
 
   private JavaWSDLParameter javaWSDLParam;
@@ -63,14 +66,11 @@ public class GeronimoAxisDeployCommand extends SimpleCommand
    */
   public GeronimoAxisDeployCommand(String projectName, String componentName)
   {
-    super("org.eclipse.jst.ws.internal.axis.consumption.core.command.GeronimoAxisDeployCommand", "org.eclipse.jst.ws.internal.axis.consumption.core.command.GeronimoAxisDeployCommand");
-    this.projectName_ = projectName;
-    this.componentName_ = componentName;
   }
   
-  public Status execute(Environment environment)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    
+	Environment environment = getEnvironment();
     if (javaWSDLParam == null)
     {
       return new SimpleStatus("Java2WSDLCommand", //$NON-NLS-1$
@@ -111,11 +111,11 @@ public class GeronimoAxisDeployCommand extends SimpleCommand
     {
       public DeployTask()
       {
-        project = new Project();
-        project.init();
-        taskType = "axis"; //$NON-NLS-1$
-        taskName = "axis-admin"; //$NON-NLS-1$
-        target = new Target();
+        super.setProject(new Project());
+		super.getProject().init();
+		super.setTaskType("axis"); //$NON-NLS-1$
+		super.setTaskName("axis-admin"); //$NON-NLS-1$
+		super.setOwningTarget(new Target());
       }
     }
 

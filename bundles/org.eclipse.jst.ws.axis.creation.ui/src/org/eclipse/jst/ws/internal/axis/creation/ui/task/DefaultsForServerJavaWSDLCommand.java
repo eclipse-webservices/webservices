@@ -11,13 +11,14 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
 
-import javax.wsdl.Definition;
-
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
@@ -29,7 +30,7 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.Utils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -38,7 +39,7 @@ import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
-public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
+public class DefaultsForServerJavaWSDLCommand extends EnvironmentalOperation {
 
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;
@@ -54,8 +55,6 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 	// rm private WebServiceElement wse_; // temporary
 	private String moduleName_;
 	
-	private String LABEL = "TASK_LABEL_SERVER_JAVA_WSDL_DEFAULTS";
-	private String DESCRIPTION = "TASK_DESC_SERVER_JAVA_WSDL_DEFAULTS";
 	private final String WSDL_FOLDER = "wsdl"; //$NON-NLS-1$
 	public final String SERVICE_EXT = "/services/"; //$NON-NLS-1$
 	private final String WSDL_EXT = "wsdl"; //$NON-NLS-1$
@@ -69,9 +68,6 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
 	    conMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.ui.plugin", this );
 		moduleName_  = moduleName;
-
-		setName (msgUtils_.getMessage(LABEL));
-		setDescription( msgUtils_.getMessage(DESCRIPTION));
 	}
 	
 
@@ -83,9 +79,6 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
 
-		setName (msgUtils_.getMessage(LABEL));
-		setDescription( msgUtils_.getMessage(DESCRIPTION));
-		//rm setModel(model);
 		setJavaWSDLParam(javaWSDLParam);
 	
 	}
@@ -93,12 +86,14 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 	/**
 	* Execute DefaultsForJavaToWSDLTask
 	*/
-	public Status execute( Environment env ) {
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+	{
+		Environment environment = getEnvironment();
 
 		Status status;
 		if (javaWSDLParam_ == null) {
 			status = new SimpleStatus( "DefaultsForServerJavaWSDLTask", coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR );
-			env.getStatusHandler().reportError(status);
+			environment.getStatusHandler().reportError(status);
 			return status;
 		}
 		
@@ -119,12 +114,10 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 		javaWSDLParam_.setClasspath(classpath);
 
 		String simpleBeanName = javaBeanName_;
-		String beanPackageName = null;
 		if (javaBeanName_ != null) {
 			int index = javaBeanName_.lastIndexOf('.');
 			if (index != -1) {
 				simpleBeanName = javaBeanName_.substring(index + 1);
-				beanPackageName = javaBeanName_.substring(0, index);
 			}
 		}
 		String namespace = WSDLUtils.makeNamespace(javaWSDLParam_.getBeanName());
@@ -155,7 +148,7 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 
 		} catch (Exception e) {
 			status =  new SimpleStatus( "DefaultsForServerJavaWSDLTask", conMsgUtils_.getMessage("MSG_ERROR_DEFAULT_BEAN"), Status.ERROR, e );
-			env.getStatusHandler().reportError(status);
+			environment.getStatusHandler().reportError(status);
 			return status;
 		}
 
@@ -169,7 +162,7 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 		}
 		catch(CoreException e){
 			status = new SimpleStatus( "DefaultsForServerJavaWSDLTask", conMsgUtils_.getMessage("MSG_ERROR_WRITE_WSDL"), Status.ERROR, e );
-			env.getStatusHandler().reportError(status);
+			environment.getStatusHandler().reportError(status);
 			return status;
 		}
 		
@@ -189,12 +182,10 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 				if (res != null)
 					wsdlURL = (new Utils()).toFileSystemURI(res);
 			}
-			Definition definition = null;
 			if (wsdlURL != null && wsdlURL.length() > 0) {
 				if (WSParser_ == null) {
 					WSParser_ = new WebServicesParserExt();
 				}
-				definition = WSParser_.getWSDLDefinition(wsdlURL);
 			}
 		}
 
@@ -204,7 +195,7 @@ public class DefaultsForServerJavaWSDLCommand extends SimpleCommand {
 		String projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_, moduleName_);
 		if (projectURL == null) {
 			status = new SimpleStatus( "DefaultsForServerJavaWSDLTask", msgUtils_.getMessage("MSG_ERROR_PROJECT_URL"), Status.ERROR);
-			env.getStatusHandler().reportError(status);
+			environment.getStatusHandler().reportError(status);
 			return status;
 		}
 //		else {
