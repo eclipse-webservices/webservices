@@ -89,7 +89,7 @@ public class CopyWSDLCommand extends SimpleCommand
     }
   }
 
-  private void copyWSDL(Environment env, String uri, String destURI, String destLocalname) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException, URISyntaxException
+  private void copyWSDL(Environment env, String uri, String destURI, String destLocalname) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException
   {
   	Definition definition;
 	
@@ -101,14 +101,11 @@ public class CopyWSDLCommand extends SimpleCommand
 	}
   }
 
-  private void copyWSDL(Environment env, String uri, String destURI, String destLocalname, Definition definition) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException, URISyntaxException
+  private void copyWSDL(Environment env, String uri, String destURI, String destLocalname, Definition definition) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException
   {
-	URI normalizedURI = new URI(uri);
-	uri = normalizedURI.normalize().toString();
-	  	
-    if (ignoreList.contains(uri))
-      return;
-    ignoreList.add(uri);
+	if (!needToCopy(uri)) {
+	   	return;
+	}
     
     String baseURI = getBaseURI(uri);
     if (destLocalname == null || destLocalname.length() <= 0)
@@ -222,14 +219,12 @@ public class CopyWSDLCommand extends SimpleCommand
     return (uri.indexOf(':') == -1);
   }
 
-  private void copyXMLSchema(Environment env, String uri, String destURI) throws TransformerException, TransformerConfigurationException, IOException, URIException, URISyntaxException
+  private void copyXMLSchema(Environment env, String uri, String destURI) throws TransformerException, TransformerConfigurationException, IOException, URIException
   {
-	URI normalizedURI = new URI(uri);
-	uri = normalizedURI.normalize().toString();
+	  if (!needToCopy(uri)) {
+	    	return;
+	    }
 	
-    if (ignoreList.contains(uri))
-      return;
-    ignoreList.add(uri);
     // load as a cached schema
     XSDSchema xsdSchema = XSDSchemaImpl.getSchemaForSchema(uri);
     // if schema is not cached, parse it
@@ -260,7 +255,7 @@ public class CopyWSDLCommand extends SimpleCommand
     }
   }
 
-  private void copyXMLSchema(Environment env, XSDSchema xsdSchema, String baseURI, String destURI) throws TransformerException, TransformerConfigurationException, IOException, URIException, URISyntaxException
+  private void copyXMLSchema(Environment env, XSDSchema xsdSchema, String baseURI, String destURI) throws TransformerException, TransformerConfigurationException, IOException, URIException
   {
     if (xsdSchema != null)
     {
@@ -287,6 +282,49 @@ public class CopyWSDLCommand extends SimpleCommand
     }
   }
 
+  private boolean needToCopy (String uri) {
+	  	String normalizedURI = normalize(uri);	
+	    if (ignoreList.contains(normalizedURI))
+	      return false;
+	    ignoreList.add(normalizedURI);
+	    return true;
+	  	
+	  }
+	  private String normalize(String uri )
+	  {
+	  	try {
+	  		URI normalizedURI = new URI(uri);
+	  		return normalizedURI.toString();
+	  	} catch (URISyntaxException e) {
+	  		return removeDots(uri);
+	  	}  
+	  }
+	  
+	  private String removeDots(String uri )
+	  {
+	  	boolean normalized = false;
+
+	  	while(!normalized){
+	  	  int dir = uri.indexOf("/..");
+	  	  if(dir == -1)
+	  	  	normalized = true;
+	  	  else{
+	  	  	String first = uri.substring(0,dir);
+	  	    String second = uri.substring(dir + 3);
+	  	    int newIndex = first.lastIndexOf("/");
+	  	    if (newIndex == -1) {
+	  	    	normalized = true;
+	  	    } else {
+	  	    	first = first.substring(0,newIndex);
+	  	    	uri = first + second;
+	  	    }
+	  	  }
+	  	}
+
+	  	return uri;
+	  
+	  }
+	  
   public void setWsdlURI(String wsdlURI)
   {
     this.wsdlURI = wsdlURI;
