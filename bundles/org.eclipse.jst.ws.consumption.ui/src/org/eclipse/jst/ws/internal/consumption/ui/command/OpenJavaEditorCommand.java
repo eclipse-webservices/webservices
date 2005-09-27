@@ -12,8 +12,8 @@ package org.eclipse.jst.ws.internal.consumption.ui.command;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
@@ -23,13 +23,11 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.ui.progress.UIJob;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
-public class OpenJavaEditorCommand extends SimpleCommand
+public class OpenJavaEditorCommand extends EnvironmentalOperation
 {
   private List classNames;
   private IProject project;
@@ -38,7 +36,7 @@ public class OpenJavaEditorCommand extends SimpleCommand
   {
   }
 
-  public Status execute(Environment environment)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     OpenJavaEditorJob job = new OpenJavaEditorJob(classNames, project);
     job.setPriority(Job.LONG);

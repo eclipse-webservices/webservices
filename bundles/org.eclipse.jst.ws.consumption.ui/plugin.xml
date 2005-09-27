@@ -12,24 +12,9 @@
       name="%XP_PRIVATE_UDDI_REGISTRY_TYPES"/>
 
    <extension-point
-      id="webServiceClientType"
-      name="%XP_WEB_SERVICE_CLIENT_TYPES"
-      schema="schema/webServiceClientType.exsd"/>
-
-   <extension-point
       id="webServiceTest"
       name="%XP_WEB_SERVICE_TEST"
       schema="schema/webServiceTest.exsd"/>
-
-   <extension-point
-      id="webServiceServerRuntimeType"
-      name="%XP_WEB_SERVICE_SERVER_RUNTIME_TYPES"
-      schema="schema/webServiceServerRuntimeType.exsd"/>
-
-   <extension-point
-      id="clientProjectType"
-      name="%XP_WEB_SERVICE_CLIENT_PROJECT_TYPE"
-      schema="schema/clientProjectType.exsd"/>   
 
    <extension-point
       id="objectSelectionWidget"
@@ -132,33 +117,6 @@
             class="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.explorer.WebServiceExplorerExecutable"
             id="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.explorer.WebServiceExplorerExecutable">
       </webServiceTest>
-
-   </extension>
-
-   <!-- Java Beans -->
-
-   <extension
-         point="org.eclipse.jst.ws.consumption.ui.webServiceServerRuntimeType">
-
-      <webServiceType
-            label="%WEBSERVICETYPE_NAME_JAVA"
-            resourceTypeMetadata="File IResource CompilationUnit"
-            extensionMetadata=".java .class"
-            objectSelectionWidget="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.JavaBeanSelectionWidget"
-            includeNatures="org.eclipse.jst.j2ee.web.WebNature"
-            excludeNatures=""
-            id="org.eclipse.jst.ws.type.java">
-      </webServiceType>
-
-      <webServiceType
-            label="%WEBSERVICETYPE_NAME_WSDL"
-            resourceTypeMetadata="File IResource String ServiceImpl ServiceRefImpl WSDLResourceImpl"
-            extensionMetadata=".wsdl .wsil .html .ServiceImpl .ServiceRefImpl .WSDLResourceImpl"
-            objectSelectionWidget="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.WSDLSelectionWidget"
-            includeNatures="org.eclipse.jst.j2ee.web.WebNature"
-            excludeNatures=""            
-            id="org.eclipse.jst.ws.type.wsdl">
-      </webServiceType>
 
    </extension>
 
@@ -629,48 +587,6 @@
 
    </extension>
 
-   <!-- Client Project Types -->
-
-   <extension
-         point="org.eclipse.jst.ws.consumption.ui.clientProjectType">
-      <clientProjectType
-            include="org.eclipse.jst.j2ee.web.WebNature"
-            exclude=""
-            label="%LABEL_CLIENT_TYPE_WEB"
-            id="org.eclipse.jst.ws.consumption.ui.clientProjectType.Web">
-      </clientProjectType>
-   </extension>
-
-   <extension
-         point="org.eclipse.jst.ws.consumption.ui.clientProjectType">
-      <clientProjectType
-            include="org.eclipse.jdt.core.javanature"
-            exclude="org.eclipse.jst.j2ee.web.WebNature org.eclipse.jst.j2ee.ejb.EJBNature org.eclipse.jst.j2ee.ApplicationClientNature"
-            label="%LABEL_CLIENT_TYPE_CONTAINERLESS"
-            id="org.eclipse.jst.ws.consumption.ui.clientProjectType.Containerless">
-      </clientProjectType>
-   </extension>
-
-   <extension
-         point="org.eclipse.jst.ws.consumption.ui.clientProjectType">
-      <clientProjectType
-            include="org.eclipse.jst.j2ee.ejb.EJBNature"
-            exclude=""
-            label="%LABEL_CLIENT_TYPE_EJB"
-            id="org.eclipse.jst.ws.consumption.ui.clientProjectType.EJB">
-      </clientProjectType>
-   </extension>
-
-   <extension
-         point="org.eclipse.jst.ws.consumption.ui.clientProjectType">
-      <clientProjectType
-            include="org.eclipse.jst.j2ee.ApplicationClientNature"
-            exclude=""
-            label="%LABEL_CLIENT_TYPE_APP_CLIENT"
-            id="org.eclipse.jst.ws.consumption.ui.clientProjectType.AppClient">
-      </clientProjectType>
-   </extension>
-
    <!-- Object Selection Widgets -->
 
    <extension
@@ -701,14 +617,12 @@
    </extension>
    
    <!-- New extension points for WTP M4 -->
-   <extension-point id="discovery" name="UI Browsers for implementation artifacts"/>      
    <extension-point id="wsImpl" name="Web service implementations"/>
    <extension-point id="wsClientImpl" name="Web service client implementations"/>
    <extension-point id="serviceType" name="Extensions that provide unique combinations of service implementations, scenarios, and module types "/>
    <extension-point id="clientType" name="Extensions that provide unique combinations of client implementations and module types"/>
    <extension-point id="webServiceRuntime" name="Web service runtimes"/>
    <extension-point id="tester" name="Web service test facilities"/>
-   <extension-point id="publisher" name="Web service publication facilities"/>      
 
 <!-- M4 Extensions to the new extension points -->
 

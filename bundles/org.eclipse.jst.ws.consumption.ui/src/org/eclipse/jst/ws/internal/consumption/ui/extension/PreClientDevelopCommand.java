@@ -11,10 +11,14 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
@@ -29,7 +33,7 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceState;
 import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
 
-public class PreClientDevelopCommand extends SimpleCommand 
+public class PreClientDevelopCommand extends EnvironmentalOperation 
 {
   /*	
   private String ID_WEB = "org.eclipse.jst.ws.consumption.ui.clientProjectType.Web";
@@ -54,8 +58,10 @@ public class PreClientDevelopCommand extends SimpleCommand
   private String            wsdlURI_;
   private Object            dataObject_;
 
-  public Status execute(Environment environment)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment environment = getEnvironment();
+    
     // Split up the project and module
     int index = module_.indexOf("/");
     if (index!=-1){
@@ -103,7 +109,8 @@ public class PreClientDevelopCommand extends SimpleCommand
 	command.setModuleType(intModuleType);
 	command.setServerFactoryId(typeRuntimeServer_.getServerId());
 	command.setJ2eeLevel(j2eeLevel_);
-	Status status = command.execute(environment);		
+  command.setEnvironment( environment );
+	IStatus status = command.execute( null, null );		
 
     // rsk todo -- once the clientProjectType extension is gone, determination
     // of what type of module to create will have to be done.
@@ -116,7 +123,7 @@ public class PreClientDevelopCommand extends SimpleCommand
 
     if (status.getSeverity() == Status.ERROR)
     {
-      environment.getStatusHandler().reportError(status);
+      environment.getStatusHandler().reportError(EnvironmentUtils.convertIStatusToStatus(status));
     }
     return status;
   }
@@ -163,11 +170,6 @@ public class PreClientDevelopCommand extends SimpleCommand
   public IWebServiceClient getWebService()
   {
 	return webServiceClient_;  
-  }
-  
-  public Environment getEnvironment()
-  {
-	return environment_;
   }
   
   public IContext getContext()

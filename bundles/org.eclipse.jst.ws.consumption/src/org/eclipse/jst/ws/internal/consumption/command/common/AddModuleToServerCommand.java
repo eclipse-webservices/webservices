@@ -2,10 +2,13 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -16,11 +19,9 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 
-public class AddModuleToServerCommand extends SimpleCommand
+public class AddModuleToServerCommand extends EnvironmentalOperation
 {
-	  private java.lang.String DESCRIPTION = "(Re)Start and publish the server";
-	  private java.lang.String LABEL = "StartServerCommand";
-	  private MessageUtils msgUtils_;
+  private MessageUtils msgUtils_;
 	  
   private String serverInstanceId;
 	private String project;
@@ -30,12 +31,12 @@ public class AddModuleToServerCommand extends SimpleCommand
 	{
 	  String pluginId = "org.eclipse.jst.ws.consumption";
 	  msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-	  setDescription(DESCRIPTION);
-	  setName(LABEL);		
 	}
 	
-	public Status execute(Environment env)
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 	{
+      Environment env = getEnvironment();
+      
 	    Status status = new SimpleStatus("");	    
 	    
 	    IServer server = ServerCore.findServer(serverInstanceId);

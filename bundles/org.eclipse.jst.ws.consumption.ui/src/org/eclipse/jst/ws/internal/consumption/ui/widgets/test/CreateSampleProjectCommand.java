@@ -12,16 +12,20 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
 
-public class CreateSampleProjectCommand extends SimpleCommand
+public class CreateSampleProjectCommand extends EnvironmentalOperation
 {
   private String sampleProject;
   private String sampleProjectEar;
@@ -33,11 +37,11 @@ public class CreateSampleProjectCommand extends SimpleCommand
   
   public CreateSampleProjectCommand()
   {
-    super("org.eclipse.jst.ws.internal.consumption.ui.wizard.client.common.CreateSampleProjectCommand","org.eclipse.jst.ws.internal.consumption.ui.wizard.client.common.CreateSampleProjectCommand");
   }
 
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
     IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
     if (!root.getProject(sampleProject).exists() || !root.getProject(sampleProjectEar).exists())
     {
@@ -54,7 +58,8 @@ public class CreateSampleProjectCommand extends SimpleCommand
 	  command.setServerFactoryId(serverFactoryId);
 	  command.setServerInstanceId(existingServer.getId());
 	  command.setJ2eeLevel(j2eeVersion);
-	  Status status = command.execute(env);
+    command.setEnvironment( env );
+	  Status status = EnvironmentUtils.convertIStatusToStatus(command.execute( null, null ) );
 	  if (status.getSeverity()==Status.ERROR)
 	  {
 		  env.getStatusHandler().reportError(status);
@@ -72,7 +77,8 @@ public class CreateSampleProjectCommand extends SimpleCommand
 			commandEAR.setServerFactoryId(serverFactoryId);
 			commandEAR.setServerInstanceId(existingServer.getId());
 			commandEAR.setJ2eeLevel(j2eeVersion);
-			status = commandEAR.execute(env);
+      commandEAR.setEnvironment( env );
+			status = EnvironmentUtils.convertIStatusToStatus(commandEAR.execute( null, null ));
 			if (status.getSeverity()==Status.ERROR)
 			{
 			  env.getStatusHandler().reportError(status);
@@ -88,7 +94,8 @@ public class CreateSampleProjectCommand extends SimpleCommand
 			//TODO The EAR component name is not necessarily the same as the project name
 			//so the component name needs to somehow be piped into this command
 			associateCommand.setEar(sampleProjectEar);
-			status = associateCommand.execute(env);
+      associateCommand.setEnvironment( env );
+			status = EnvironmentUtils.convertIStatusToStatus(associateCommand.execute(null, null));
 			if (status.getSeverity()==Status.ERROR)
 			{
 				env.getStatusHandler().reportError(status);
@@ -102,8 +109,8 @@ public class CreateSampleProjectCommand extends SimpleCommand
 			//TODO The EAR component name is not necessarily the same as the project name
 			//so the component name needs to somehow be piped into this command
 			commandInstall.setModule(sampleProjectEar);
-				
-			status = commandInstall.execute(env);
+			commandInstall.setEnvironment( env );	
+			status = EnvironmentUtils.convertIStatusToStatus(commandInstall.execute( null, null ));
 			if (status.getSeverity()==Status.ERROR)
 			{
 				env.getStatusHandler().reportError(status);
@@ -117,8 +124,9 @@ public class CreateSampleProjectCommand extends SimpleCommand
 			commandInstall.setServerInstanceId(existingServer.getId());
 			commandInstall.setProject(sampleProject);
 			commandInstall.setModule(sampleProject);
+      commandInstall.setEnvironment( env );
 			
-			status = commandInstall.execute(env);
+			status = EnvironmentUtils.convertIStatusToStatus(commandInstall.execute( null, null ));
 			if (status.getSeverity()==Status.ERROR)
 			{
 				env.getStatusHandler().reportError(status);

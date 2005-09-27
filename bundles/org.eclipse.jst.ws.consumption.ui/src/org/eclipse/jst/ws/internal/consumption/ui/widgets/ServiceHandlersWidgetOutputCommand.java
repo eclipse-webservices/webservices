@@ -15,7 +15,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.j2ee.webservice.wsdd.Handler;
 import org.eclipse.jst.j2ee.webservice.wsdd.PortComponent;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
@@ -23,8 +25,7 @@ import org.eclipse.jst.j2ee.webservice.wsdd.WsddFactory;
 import org.eclipse.jst.j2ee.webservice.wsdd.WsddResource;
 import org.eclipse.jst.j2ee.webservice.wsdd.internal.impl.WsddFactoryImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.common.internal.emf.utilities.EtoolsCopyUtility;
@@ -33,16 +34,15 @@ import org.eclipse.wst.common.internal.emf.utilities.EtoolsCopyUtility;
  * Provide a way to externalize the edited fields and create new handlers
  *  
  */
-public class ServiceHandlersWidgetOutputCommand extends SimpleCommand {
+public class ServiceHandlersWidgetOutputCommand extends EnvironmentalOperation
+{
 
-  private List handlerTableItems;
-  private WebServiceDescription wsDescription_;
   private WsddResource wsddResource_;
   private Hashtable wsDescToHandlers_;
   private Hashtable serviceDescNameToDescObj_;
 
-  public Status execute(Environment env) {
-
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {
     Status status = new SimpleStatus("");
     try {
       Enumeration e = wsDescToHandlers_.keys();
@@ -142,7 +142,6 @@ public class ServiceHandlersWidgetOutputCommand extends SimpleCommand {
 
   private void removeExistingHandlers(Hashtable portsTable, Hashtable portsToHandlersTable) {
     try {
-      int key = 0;
       Enumeration ports = portsToHandlersTable.keys();
       while (ports.hasMoreElements()) {
         String portName = (String) ports.nextElement();
@@ -181,7 +180,6 @@ public class ServiceHandlersWidgetOutputCommand extends SimpleCommand {
 
   private void addHandlersToPorts(Hashtable portsTable, Hashtable portsToHandlersTable) {
     try {
-      int key = 0;
       Enumeration ports = portsToHandlersTable.keys();
       while (ports.hasMoreElements()) {
         String portName = (String) ports.nextElement();
@@ -204,7 +202,6 @@ public class ServiceHandlersWidgetOutputCommand extends SimpleCommand {
    *          The handlerTableItems to set.
    */
   public void setHandlersList(List handlerTableItems) {
-    this.handlerTableItems = handlerTableItems;
   }
 
   public void setWsDescToHandlers(Hashtable wsDescToHandlers) {

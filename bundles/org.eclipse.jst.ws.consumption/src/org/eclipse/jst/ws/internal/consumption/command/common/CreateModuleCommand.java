@@ -1,6 +1,9 @@
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.application.internal.operations.FlexibleJavaProjectCreationDataModelProvider;
@@ -17,7 +20,7 @@ import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -29,7 +32,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 
-public class CreateModuleCommand extends SimpleCommand
+public class CreateModuleCommand extends EnvironmentalOperation
 {
 	
 	public final static int WEB = J2EEUtils.WEB;
@@ -52,9 +55,9 @@ public class CreateModuleCommand extends SimpleCommand
 		msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
 	}
 	
-	public Status execute(Environment environment)
-	{
-		this.env = environment;
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {
+		this.env = getEnvironment();
 		Status status = new SimpleStatus("");
 		
 		// check if data ready

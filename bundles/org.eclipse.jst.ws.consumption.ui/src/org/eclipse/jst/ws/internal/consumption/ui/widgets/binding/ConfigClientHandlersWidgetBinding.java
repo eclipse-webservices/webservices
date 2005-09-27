@@ -34,11 +34,9 @@ import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingReg
  * Handler Configuration Window - Preferences - Java - Code Generation - Code
  * and Comments
  */
-public class ConfigClientHandlersWidgetBinding implements CommandWidgetBinding {
+public class ConfigClientHandlersWidgetBinding implements CommandWidgetBinding 
+{
   
-  private CanFinishRegistry   canFinishRegistry_;
-  private WidgetRegistry      widgetRegistry_;
-  private DataMappingRegistry dataMappingRegistry_;
   /*
    * (non-Javadoc)
    * 
@@ -48,7 +46,6 @@ public class ConfigClientHandlersWidgetBinding implements CommandWidgetBinding {
 
     String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
     MessageUtils msgUtils = new MessageUtils(pluginId_ + ".plugin", this);
-    widgetRegistry_ = widgetRegistry;
     
     widgetRegistry.add("ConfigClientHandlersTableWidget", 
         msgUtils.getMessage("PAGE_TITLE_CLIENT_HDLR_CONFIG"), 
@@ -68,7 +65,6 @@ public class ConfigClientHandlersWidgetBinding implements CommandWidgetBinding {
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry) {
-    dataMappingRegistry_ = dataRegistry;
     
     
 //    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"AllHandlers", ConfigClientHandlersTableWidget.class);
@@ -97,7 +93,6 @@ public class ConfigClientHandlersWidgetBinding implements CommandWidgetBinding {
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerCanFinish(org.eclipse.wst.command.env.ui.widgets.CanFinishRegistry)
    */
   public void registerCanFinish(CanFinishRegistry canFinishRegistry) {
-    canFinishRegistry_ = canFinishRegistry;
 
   }
 

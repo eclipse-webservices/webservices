@@ -11,23 +11,30 @@
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 
-public class PreServiceRunCommand extends SimpleCommand 
+public class PreServiceRunCommand extends EnvironmentalOperation 
 {
 	private IWebService				webService_;
 	
-	  public Status execute(Environment environment) 
-	  {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {
+      Environment environment = getEnvironment();
+      
 		  System.out.println( "In Pre service run command." );
 			
 			StartServerCommand command = new StartServerCommand();
 			command.setServerInstanceId(webService_.getWebServiceInfo().getServerInstanceId());
-			Status status = command.execute(environment);
+      command.setEnvironment( environment );
+			Status status = EnvironmentUtils.convertIStatusToStatus(command.execute( null, null ));
 			if (status.getSeverity()==Status.ERROR)
 			{
 				environment.getStatusHandler().reportError(status);			  

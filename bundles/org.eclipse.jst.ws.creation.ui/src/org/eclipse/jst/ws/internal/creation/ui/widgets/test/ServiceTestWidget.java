@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.internal.creation.ui.widgets.test;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WSDLTestLaunchCommand;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -105,7 +106,8 @@ public class ServiceTestWidget extends SimpleWidgetDataContributor
   	wtlc.setWsdlURI(wsdlURI);
   	wtlc.setExternalBrowser(true);
   	wtlc.setEndpoint(endpoints);
-  	Status status = wtlc.execute(env);
+  	wtlc.setEnvironment( env );
+  	Status status = EnvironmentUtils.convertIStatusToStatus(wtlc.execute( null, null ));
   }
   
   public void setServiceTestFacilities( SelectionList facilities )

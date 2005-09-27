@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.internal.common;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -121,47 +120,47 @@ public final class EnvironmentUtils
   /**
    * TODO: Delete. There's a replacement in the env plugin. 
    */
-  public static IStatus convertStatusToIStatus(Status status, String pluginId)
-  {
-    IStatus istatus;
-    String message = status.getMessage();
-    Throwable throwable = status.getThrowable();
-    if (status.hasChildren())
-    {
-      Status[] children = status.getChildren();
-      int noOfChildren = children.length;
-      IStatus[] istatusChildren = new IStatus[noOfChildren];
-      for (int i=0;i<noOfChildren;i++)
-      {
-        istatusChildren[i] = convertStatusToIStatus(children[i], pluginId);
-      }
-
-      istatus = new MultiStatus(pluginId,0,istatusChildren,message,throwable);
-    }
-    else
-    {
-      int severity = status.getSeverity();
-      int istatusSeverity = IStatus.OK;
-      switch (severity)
-      {
-        case Status.ERROR:
-          istatusSeverity = IStatus.ERROR;
-        	break;
-        case Status.WARNING:
-          istatusSeverity = IStatus.WARNING;
-        	break;
-        case Status.INFO:
-          istatusSeverity = IStatus.INFO;
-        	break;      	
-        case Status.OK:
-          istatusSeverity = IStatus.OK;
-        	break;      	
-        default:
-      }      
-      istatus = new org.eclipse.core.runtime.Status(istatusSeverity,pluginId,0,message,throwable);
-    }
-      
-    return istatus;
-  }  
+//  public static IStatus convertStatusToIStatus(Status status, String pluginId)
+//  {
+//    IStatus istatus;
+//    String message = status.getMessage();
+//    Throwable throwable = status.getThrowable();
+//    if (status.hasChildren())
+//    {
+//      Status[] children = status.getChildren();
+//      int noOfChildren = children.length;
+//      IStatus[] istatusChildren = new IStatus[noOfChildren];
+//      for (int i=0;i<noOfChildren;i++)
+//      {
+//        istatusChildren[i] = convertStatusToIStatus(children[i], pluginId);
+//      }
+//
+//      istatus = new MultiStatus(pluginId,0,istatusChildren,message,throwable);
+//    }
+//    else
+//    {
+//      int severity = status.getSeverity();
+//      int istatusSeverity = IStatus.OK;
+//      switch (severity)
+//      {
+//        case Status.ERROR:
+//          istatusSeverity = IStatus.ERROR;
+//        	break;
+//        case Status.WARNING:
+//          istatusSeverity = IStatus.WARNING;
+//        	break;
+//        case Status.INFO:
+//          istatusSeverity = IStatus.INFO;
+//        	break;      	
+//        case Status.OK:
+//          istatusSeverity = IStatus.OK;
+//        	break;      	
+//        default:
+//      }      
+//      istatus = new org.eclipse.core.runtime.Status(istatusSeverity,pluginId,0,message,throwable);
+//    }
+//      
+//    return istatus;
+//  }  
   
 }

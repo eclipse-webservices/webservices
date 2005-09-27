@@ -10,14 +10,15 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.uddiregistry.widgets;
 
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
-public class PrivateUDDISelectionWidgetConditionCommand extends SimpleCommand implements Condition
+public class PrivateUDDISelectionWidgetConditionCommand extends EnvironmentalOperation implements Condition
 {
   private boolean condition;
 
@@ -26,26 +27,18 @@ public class PrivateUDDISelectionWidgetConditionCommand extends SimpleCommand im
     condition = true;
   }
   
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     condition = !condition;
     return new SimpleStatus("");
   }
   
-  public Status undo(Environment env)
+  public IStatus undo( IProgressMonitor monitor, IAdaptable adaptable )
   {
     condition = !condition;
     return new SimpleStatus("");
   }
   
-  /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.Command#isUndoable()
-   */
-  public boolean isUndoable()
-  {
-    return true;
-  }
-
   public boolean evaluate()
   {
     return condition;

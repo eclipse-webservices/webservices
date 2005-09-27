@@ -46,13 +46,13 @@ public class StubbedWSDLModel
     BindingElement bind3 = new BindingElement(port3,"bind1");
     BindingElement bind4 = new BindingElement(port4,"bind1");
     OperationElement op1 = new OperationElement(bind1,"op1");
-    OperationElement op2 = new OperationElement(bind2,"op1");
-    OperationElement op3 = new OperationElement(bind3,"op1");
-    OperationElement op4 = new OperationElement(bind4,"op1");
+    new OperationElement(bind2,"op1");
+    new OperationElement(bind3,"op1");
+    new OperationElement(bind4,"op1");
     MessageElement me1 = new MessageElement(op1,"me1");
     MessageElement me2 = new MessageElement(op1,"me2");
-    PartElement pe1  = new PartElement(me1,"pe1");
-    PartElement pe2  = new PartElement(me2,"pe2");
+    new PartElement(me1,"pe1");
+    new PartElement(me2,"pe2");
 
     DefinitionElement def2 = new DefinitionElement((WSDLElement)fModel.getRootElement(),"TempConversion"); 
     ServiceElement ser3 = new ServiceElement(def2,"getTemp");
@@ -61,8 +61,8 @@ public class StubbedWSDLModel
     PortElement port6 = new PortElement(ser4,"port1");
     BindingElement bind5 = new BindingElement(port5,"bind1");
     BindingElement bind6 = new BindingElement(port6,"bind1");
-    OperationElement op5 = new OperationElement(bind5,"op1");
-    OperationElement op6 = new OperationElement(bind6,"op1");
+    new OperationElement(bind5,"op1");
+    new OperationElement(bind6,"op1");
 
   }
 }

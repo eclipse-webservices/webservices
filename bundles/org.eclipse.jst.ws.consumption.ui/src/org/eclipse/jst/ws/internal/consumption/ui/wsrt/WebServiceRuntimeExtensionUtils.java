@@ -8,9 +8,7 @@ import java.util.Vector;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.TypeSelectionFilter;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceTypeImpl;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
@@ -40,18 +38,7 @@ public class WebServiceRuntimeExtensionUtils
 	}
 	
 	return webserviceRuntime;
-  }
-  
-  public static IWebServiceType getWebServiceTypeById(String id)
-  {
-    Object result = registry.webServiceTypes_.get(id);
-	
-    if (result!=null)
-    {
-      return (WebServiceTypeImpl)result;
-    }
-    return null;
-  }
+  }  
   
   public static WebServiceImpl getWebServiceImplById(String id)
   {

@@ -10,20 +10,21 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefaultingCommand
 {    
   private TypeRuntimeServer typeRuntimeServer_;
   private IStructuredSelection initialSelection_;
   
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
     String type      = getScenarioContext().getWebServiceType();
     String runtime   = WebServiceRuntimeExtensionUtils.getDefaultRuntimeValueFor( type );

@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-
 import javax.wsdl.Definition;
 import javax.wsdl.Import;
 import javax.wsdl.Types;
@@ -35,10 +34,12 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
@@ -54,7 +55,7 @@ import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.eclipse.xsd.util.XSDParser;
 import org.w3c.dom.Element;
 
-public class CopyWSDLCommand extends SimpleCommand
+public class CopyWSDLCommand extends EnvironmentalOperation
 {
   private String wsdlURI;
   private WebServicesParser webServicesParser;
@@ -64,14 +65,15 @@ public class CopyWSDLCommand extends SimpleCommand
 
   public CopyWSDLCommand()
   {
-    super(WebServiceConsumptionPlugin.getMessage("COMMAND_LABEL_COPY_WSDL"), WebServiceConsumptionPlugin.getMessage("COMMAND_DESC_COPY_WSDL"));
   }
 
   /**
    * Execute the command
    */
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
+    
     try
     {
       ignoreList = new Vector();

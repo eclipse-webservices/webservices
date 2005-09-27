@@ -15,9 +15,11 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.internal.webservice.WebServiceNavigatorGroupType;
@@ -49,10 +51,6 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
 
   private MessageUtils msgUtils_;
 
-  private boolean isGenSkeletonEnabled_;
-
-  private IPath sourceOutputLocation_;
-
   private Hashtable wsRefsToHandlersTable_;
 
   private Hashtable refNameToServiceRefObj_;
@@ -71,7 +69,9 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
   
   private Collection wsServiceRefs_;
   
-  public Status execute(Environment env) {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {    
+    Environment env = getEnvironment();
     String pluginId = "org.eclipse.jst.ws.consumption.ui";
     MessageUtils msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     Status status = new SimpleStatus("");

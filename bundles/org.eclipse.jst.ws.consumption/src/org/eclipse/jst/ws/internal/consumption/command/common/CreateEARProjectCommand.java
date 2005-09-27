@@ -14,12 +14,15 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.j2ee.datamodel.properties.IEarComponentCreationDataModelProperties;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.earcreation.EarComponentCreationDataModelProvider;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -29,7 +32,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 
 
-public class CreateEARProjectCommand extends SimpleCommand
+public class CreateEARProjectCommand extends EnvironmentalOperation
 {
   private String earProjectName_;
   private String serverFactoryId_;
@@ -40,13 +43,12 @@ public class CreateEARProjectCommand extends SimpleCommand
    */
   public CreateEARProjectCommand()
   {
-    super("org.eclipse.jst.ws.internal.consumption.command.common.CreateEARProjectCommand", "org.eclipse.jst.ws.internal.consumption.command.common.CreateEARProjectCommand");
-    //setRunInWorkspaceModifyOperation(false);
   }
 
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-	MessageUtils msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
+    Environment  env       = getEnvironment();
+	  MessageUtils msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
 	
     try
     {
@@ -57,16 +59,13 @@ public class CreateEARProjectCommand extends SimpleCommand
         info.setProperty(IEarComponentCreationDataModelProperties.PROJECT_NAME, project.getName());
         
         //Set the J2EE version
-        String finalJ2EEVersion = null;
         if (j2eeVersion_ != null && j2eeVersion_.length()>0)
         {
           info.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(j2eeVersion_));
-          finalJ2EEVersion = j2eeVersion_;
         }
         else
         {
           info.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_VERSION, new Integer(J2EEVersionConstants.J2EE_1_3_ID));
-          finalJ2EEVersion = String.valueOf(J2EEVersionConstants.J2EE_1_3_ID);
         }
         
         //Set the server target

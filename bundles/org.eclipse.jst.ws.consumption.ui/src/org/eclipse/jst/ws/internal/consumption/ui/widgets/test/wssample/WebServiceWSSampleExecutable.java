@@ -12,7 +12,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
 import org.eclipse.jst.ws.internal.ext.WebServiceExecutable;
-import org.eclipse.jst.ws.internal.ext.WebServiceFinishCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 
 /**
 * This is the interface for objects that represent a kind of
@@ -23,7 +23,7 @@ public class WebServiceWSSampleExecutable implements WebServiceExecutable
 {
    
   
-  public WebServiceFinishCommand getFinishCommand()
+  public EnvironmentalOperation getFinishCommand()
   {
   	return new WSSampleFinishCommand();
   }

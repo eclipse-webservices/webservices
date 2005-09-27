@@ -98,7 +98,7 @@ public class PopupTestWSDL extends Action implements IActionDelegate
         getMonitorCmd.setCreate(false);
         getMonitorCmd.setWebServicesParser(new WebServicesParser());
         getMonitorCmd.setWsdlURI(wsdlURL);
-        getMonitorCmd.execute(null);
+        getMonitorCmd.execute(null, null);
         List endpoints = getMonitorCmd.getEndpoints();
         for (Iterator endpointsIt = endpoints.iterator(); endpointsIt.hasNext();)
           launchOptions.add(new LaunchOption(LaunchOptions.WEB_SERVICE_ENDPOINT, (String)endpointsIt.next()));

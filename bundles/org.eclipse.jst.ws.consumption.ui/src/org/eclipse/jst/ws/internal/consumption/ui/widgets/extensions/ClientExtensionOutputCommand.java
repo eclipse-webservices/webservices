@@ -12,10 +12,10 @@
  */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
-public class ClientExtensionOutputCommand extends SimpleCommand
+public class ClientExtensionOutputCommand extends EnvironmentalOperation
 {
   private IWebServiceClient webServiceClient_;
   

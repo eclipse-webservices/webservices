@@ -16,14 +16,16 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -31,15 +33,10 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 
-public class GenerateHandlerSkeletonCommand extends SimpleCommand
+public class GenerateHandlerSkeletonCommand extends EnvironmentalOperation
 {
 
-  private IProject serviceProject_;
   private MessageUtils msgUtils_;
- 
-  private String LABEL = "TASK_LABEL_GEN_HANDLER_SKELETON";
-  private String DESCRIPTION = "TASK_DESC_GEN_HANDLER_SKELETON";
-  
   private IPath outputLocation_;
   private String[] handlerNames_;
   private boolean genSkeleton_;
@@ -49,20 +46,18 @@ public class GenerateHandlerSkeletonCommand extends SimpleCommand
   {
     String       pluginId = "org.eclipse.jst.ws.consumption.ui";
   	msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-  	setName (msgUtils_.getMessage(LABEL));
-  	setDescription( msgUtils_.getMessage(DESCRIPTION));    
   }
   
 
-  public Status execute (Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
   	
   	if (!genSkeleton_)
   		return new SimpleStatus(""); 
   	
   	int i;
   	boolean error = false;
-  	boolean warning = false;
   	
   	SimpleStatus status = null;
   	Status writeStatus;	

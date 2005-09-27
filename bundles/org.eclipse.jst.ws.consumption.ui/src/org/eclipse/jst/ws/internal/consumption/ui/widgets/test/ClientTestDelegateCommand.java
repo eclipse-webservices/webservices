@@ -13,14 +13,16 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import java.util.List;
 import java.util.Vector;
-
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
-import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
@@ -39,18 +41,12 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
 *
 *
 */
-public class ClientTestDelegateCommand extends SimpleCommand
+public class ClientTestDelegateCommand extends EnvironmentalOperation
 {
-  private String LABEL = "JSPGenerationTask";
-  private String DESCRIPTION = "Run the JSP Generation";
-  
-  private ScenarioContext scenarioContext;
   private WebServiceTestRegistry testRegistry;
   private SelectionList testFacilities;
-  private String folder;
   private String jspFolder;
   private BooleanSelection[] methods;
-  private boolean runClientTest=true;
   private String sampleServerTypeID;
   private IServer sampleExistingServer;
   private String proxyBean;
@@ -63,28 +59,22 @@ public class ClientTestDelegateCommand extends SimpleCommand
   private boolean clientNeedEAR;
   private String clientEarProjectName;
   private String clientEarComponentName;
-  private String clientServer;
-  private TypeRuntimeServer clientIds;
   private TypeRuntimeServer serverIds;
   private String serviceProject;
   private String serviceP;
-  private String serviceC;
   private String wsdlServiceURL;
-  private boolean generateProxy;
   private boolean isTestWidget = false;
   private String setEndpointMethod;
   private List endpoints;
 
   public ClientTestDelegateCommand ()
   {
-    setDescription(DESCRIPTION);
-    setName(LABEL);  
-    scenarioContext = WebServicePlugin.getInstance().getScenarioContext().copy();
     testRegistry = WebServiceTestRegistry.getInstance();
   }
 
-  public Status execute(Environment env)
-  {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {    
+    Environment env = getEnvironment();
   	Status status = new SimpleStatus( "" );
   	String clientTestID = testFacilities.getSelection();
   	
@@ -110,8 +100,20 @@ public class ClientTestDelegateCommand extends SimpleCommand
   {
     Status status = new SimpleStatus( "" );  	
 	
-	while(commandFactory.hasNext()){ 
-      status = commandFactory.getNextCommand().execute(env);
+	while(commandFactory.hasNext())
+  {
+    EnvironmentalOperation operation = commandFactory.getNextCommand();
+    operation.setEnvironment( env );
+    
+    try
+    {
+      status = EnvironmentUtils.convertIStatusToStatus(operation.execute( null, null ));
+    }
+    catch( Exception exc )
+    {
+      status = new SimpleStatus( "id", exc.getMessage(), Status.ERROR, exc );  
+    }
+    
 	  if(status.getSeverity() == Status.ERROR){
 	    StatusHandler sHandler = env.getStatusHandler();
 		sHandler.reportError(status);
@@ -198,7 +200,6 @@ public class ClientTestDelegateCommand extends SimpleCommand
   
   public void setFolder(String folder)
   {
-  	this.folder = folder;
   }
   
   public void setJspFolder(String jspFolder)
@@ -213,7 +214,6 @@ public class ClientTestDelegateCommand extends SimpleCommand
  
   public void setRunClientTest(boolean runClientTest)
   {
-  	this.runClientTest = runClientTest;
   }
   
   public void setProxyBean(String proxyBean)
@@ -233,7 +233,6 @@ public class ClientTestDelegateCommand extends SimpleCommand
   
   public void setScenarioContext(ScenarioContext scenarioContext)
   {
-  	this.scenarioContext = scenarioContext;
   }
   
   public void setClientTestRegistry(WebServiceTestRegistry testRegistry)
@@ -253,7 +252,6 @@ public class ClientTestDelegateCommand extends SimpleCommand
 
   public void setClientTypeRuntimeServer(TypeRuntimeServer ids)
   {
-    clientIds = ids;
   }
   
   public void setServiceTypeRuntimeServer(TypeRuntimeServer ids)
@@ -273,7 +271,6 @@ public class ClientTestDelegateCommand extends SimpleCommand
 
   public void setClientServer(String clientServer)
   {
-  	this.clientServer = clientServer;
   }
   
   public void setServerProject(String serviceProject)
@@ -287,7 +284,6 @@ public class ClientTestDelegateCommand extends SimpleCommand
 	     int index = serviceProject.indexOf("/");
        if (index!=-1) {
 		     serviceP = serviceProject.substring(0,index);
-		     serviceC = serviceProject.substring(index + 1);
 	       return serviceP;
        }
   	}	
@@ -302,7 +298,6 @@ public class ClientTestDelegateCommand extends SimpleCommand
  
   public void setGenerateProxy(boolean generateProxy)
   {
-  	this.generateProxy = generateProxy;
   }
   
   public boolean getIsTestWidget()

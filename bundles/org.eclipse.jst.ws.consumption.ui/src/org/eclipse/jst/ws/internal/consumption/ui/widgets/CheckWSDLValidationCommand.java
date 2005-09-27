@@ -10,43 +10,35 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
-import java.util.Map;
-
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ValidateWSDLJob;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
-import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
 
 
-public class CheckWSDLValidationCommand extends SimpleCommand
-{
-	  private String LABEL = "TASK_LABEL_CHECK_WSDL_VALIDATION";
-	  private String DESCRIPTION = "TASK_DESC_CHECK_WSDL_VALIDATION";
-	  
-
+public class CheckWSDLValidationCommand extends EnvironmentalOperation
+{	  
 	private static MessageUtils msgUtils_;
 	
 	public CheckWSDLValidationCommand () {
 		String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-	  	msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-	  	setName (msgUtils_.getMessage(LABEL));
-	  	setDescription( msgUtils_.getMessage(DESCRIPTION));   
+	  msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	}
   
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
     
     IJobManager    jobManager     = Platform.getJobManager();
 	  Job[]          jobs           = jobManager.find( ValidateWSDLJob.VALIDATE_WSDL_JOB_FAMILY );

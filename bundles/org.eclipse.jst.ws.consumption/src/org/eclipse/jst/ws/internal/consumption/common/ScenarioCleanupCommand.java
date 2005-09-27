@@ -11,9 +11,11 @@
 
 package org.eclipse.jst.ws.internal.consumption.common;
 
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 
 /**
  *  This command is intended to clean up data after either the
@@ -21,28 +23,23 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
  *  parser factory. 
  *
  */
-public class ScenarioCleanupCommand extends SimpleCommand
+public class ScenarioCleanupCommand extends EnvironmentalOperation
 {
 
-  public Status execute(Environment environment) 
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-	WSDLParserFactory.killParser();
+	  WSDLParserFactory.killParser();
 	
-	return super.execute(environment);
-  }
-
-  public boolean isUndoable() 
-  {
-	return true;
+	  return Status.OK_STATUS;
   }
 
   
-  public Status undo(Environment environment) 
+  public IStatus undo( IProgressMonitor monitor, IAdaptable adaptable )
   {
-	// Even if the user cancels out of the wizard we want to
-	// kill the parser.
-	WSDLParserFactory.killParser();
-	
-	return super.undo(environment);
+	  // Even if the user cancels out of the wizard we want to
+	  // kill the parser.
+	  WSDLParserFactory.killParser();
+    
+    return Status.OK_STATUS;
   }
 }

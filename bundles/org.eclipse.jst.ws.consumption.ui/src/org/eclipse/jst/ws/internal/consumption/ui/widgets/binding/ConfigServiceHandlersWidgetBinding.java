@@ -36,9 +36,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingReg
  */
 public class ConfigServiceHandlersWidgetBinding implements CommandWidgetBinding {
   
-  private CanFinishRegistry   canFinishRegistry_;
-  private WidgetRegistry      widgetRegistry_;
-  private DataMappingRegistry dataMappingRegistry_;
   /*
    * (non-Javadoc)
    * 
@@ -48,7 +45,6 @@ public class ConfigServiceHandlersWidgetBinding implements CommandWidgetBinding 
 
     String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
     MessageUtils msgUtils = new MessageUtils(pluginId_ + ".plugin", this);
-    widgetRegistry_ = widgetRegistry;
     
     widgetRegistry.add("ConfigServiceHandlersTableWidget", 
         msgUtils.getMessage("PAGE_TITLE_SERVICE_HDLR_CONFIG"), 
@@ -68,7 +64,6 @@ public class ConfigServiceHandlersWidgetBinding implements CommandWidgetBinding 
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry) {
-    dataMappingRegistry_ = dataRegistry;
     
     dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"WsRefsToHandlers", ConfigServiceHandlersTableWidget.class);
     dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"GenSkeletonEnabled", ConfigServiceHandlersTableWidget.class);
@@ -97,7 +92,6 @@ public class ConfigServiceHandlersWidgetBinding implements CommandWidgetBinding 
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerCanFinish(org.eclipse.wst.command.env.ui.widgets.CanFinishRegistry)
    */
   public void registerCanFinish(CanFinishRegistry canFinishRegistry) {
-    canFinishRegistry_ = canFinishRegistry;
 
   }
 

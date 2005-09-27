@@ -10,35 +10,31 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.IWebServiceType;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 public class ServiceType {
 
   private IConfigurationElement elem_;
   private Hashtable webServiceImpls_;
-  private HashMap webServiceTypes_;
-	private String id;
-	private WebServiceImpl webServiceImpl;
-	private String[] bottomUpModuleTypesInclude;
-	private String[] topDownModuleTypesInclude;
+  private String id;
+  private WebServiceImpl webServiceImpl;
+  private String[] bottomUpModuleTypesInclude;
+  private String[] topDownModuleTypesInclude;
   private String[] bottomUpModuleTypesExclude;
   private String[] topDownModuleTypesExclude;
-  private IWebServiceType webServiceType;
+
   
 
   
-  public ServiceType(IConfigurationElement elem_, Hashtable webServiceImpls_, HashMap webServiceTypes_)
+  public ServiceType(IConfigurationElement elem_, Hashtable webServiceImpls_)
   {
     super();
     this.elem_ = elem_;
     this.webServiceImpls_ = webServiceImpls_;
-    this.webServiceTypes_ = webServiceTypes_;
   }
 
   public String[] getBottomUpModuleTypesExclude()
@@ -141,23 +137,6 @@ public class ServiceType {
   public void setTopDownModuleTypesInclude(String[] topDownModuleTypesInclude)
   {
     this.topDownModuleTypesInclude = topDownModuleTypesInclude;
-  }
-  
-  /*
-  public IWebServiceType getWebSerivceType()
-  {
-    if (webServiceType==null)
-    {
-      String wsid = elem_.getAttribute("webServiceTypeId");
-      webServiceType = (IWebServiceType)webServiceTypes_.get(wsid);
-    }
-    return webServiceType;
-  }
-  */
-  
-  public void setWebServiceType(IWebServiceType webServiceType)
-  {
-    this.webServiceType = webServiceType;
   }
   
   public WebServiceImpl getWebServiceImpl()

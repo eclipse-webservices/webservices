@@ -11,6 +11,8 @@
 
 package org.eclipse.jst.ws.internal.ext;
 
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+
 /**
 * All Extensions with exectutable extensions should implement this 
 * to fit our framework
@@ -23,7 +25,7 @@ public interface WebServiceExecutable
   *Returns a wizard fragment for this exention type 
   *
   */
-  public WebServiceFinishCommand getFinishCommand();
+  public EnvironmentalOperation getFinishCommand();
 }
 
 

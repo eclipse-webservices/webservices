@@ -1,8 +1,8 @@
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchManager;
@@ -10,7 +10,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -24,12 +24,10 @@ import org.eclipse.wst.server.core.ServerCore;
  * 
  *
  */
-public class StartServerCommand extends SimpleCommand
+public class StartServerCommand extends EnvironmentalOperation
 {
-  private java.lang.String DESCRIPTION = "(Re)Start and publish the server";
-  private java.lang.String LABEL = "StartServerCommand";
   private MessageUtils msgUtils_;
-  private IProgressMonitor monitor;
+  private IProgressMonitor localMonitor;
   private Log log;
   private boolean forcePublish_;
   private boolean doAsyncPublish_;
@@ -41,8 +39,6 @@ public class StartServerCommand extends SimpleCommand
   {
     String pluginId = "org.eclipse.jst.ws.consumption";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-    setDescription(DESCRIPTION);
-    setName(LABEL);
     log             = new EclipseLog();
     forcePublish_   = false;
     doAsyncPublish_ = true;
@@ -56,8 +52,9 @@ public class StartServerCommand extends SimpleCommand
     doAsyncPublish_ = doAsyncPublish;
   }
 
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
     Status status = new SimpleStatus("");
 
     IServer server = ServerCore.findServer(serverInstanceId);
@@ -68,7 +65,7 @@ public class StartServerCommand extends SimpleCommand
       return status;
     }
 
-    monitor = EnvironmentUtils.getIProgressMonitor(env);
+    localMonitor = EnvironmentUtils.getIProgressMonitor(env);
     int serverState = server.getServerState();
     int publishState = server.getServerPublishState();
     
@@ -174,7 +171,7 @@ public class StartServerCommand extends SimpleCommand
   {
     Status status = new SimpleStatus("");
     final IStatus[] istatus = new IStatus[1]; 
-    monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_PUBLISHING_SERVER"));
+    localMonitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_PUBLISHING_SERVER"));
     IRunnableWithProgress runnable = new IRunnableWithProgress()
 	{
   		public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
@@ -191,7 +188,7 @@ public class StartServerCommand extends SimpleCommand
 		}
 		else
 		{
-		  runnable.run( monitor );
+		  runnable.run( localMonitor );
 		}
 		
 	}
@@ -222,8 +219,8 @@ public class StartServerCommand extends SimpleCommand
     Status status = new SimpleStatus("");
     try
     {
-      monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
-      server.synchronousRestart(ILaunchManager.RUN_MODE, monitor);
+      localMonitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
+      server.synchronousRestart(ILaunchManager.RUN_MODE, localMonitor);
       log.log(Log.INFO, 5052, this, "execute", "IServer=" + server + ", Restart command completed");
       return status;
     } catch (CoreException e)
@@ -239,8 +236,8 @@ public class StartServerCommand extends SimpleCommand
     Status status = new SimpleStatus("");
     try
     {
-      monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
-      server.synchronousStart(ILaunchManager.RUN_MODE, monitor);
+      localMonitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
+      server.synchronousStart(ILaunchManager.RUN_MODE, localMonitor);
       log.log(Log.INFO, 5053, this, "execute", "IServer=" + server + ", Start command completed");
       return status;
     } catch (CoreException e)

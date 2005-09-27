@@ -15,15 +15,16 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 //core stuff
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.impl.JavaClassImpl;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
@@ -32,7 +33,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 * This class is to be used to Build the data model
 * first we get the java class and then build the model
 */
-public class JavaMofReflectionCommand extends SimpleCommand
+public class JavaMofReflectionCommand extends EnvironmentalOperation
 {
 
   public static String LABEL = "JavaMofReflectionCommand"; 
@@ -40,14 +41,12 @@ public class JavaMofReflectionCommand extends SimpleCommand
   public static String OK_MESSAGE =  "The model has been built "; 
   private static String JAVA_EXTENSION = ".java";
   private static String CLASS_EXTENSION = ".class";
-  private MessageUtils msgUtils_;
   
   private String clientProject;
   private ResourceSet resourceSet;
   private JavaHelpers javaClass;
   private String qname;
   private String proxyBean;
-  private IProject clientIProject;
  
   /**
   * Constructs a new JavaMofReflectionCommand with the given label and description
@@ -55,11 +54,6 @@ public class JavaMofReflectionCommand extends SimpleCommand
   */
   public JavaMofReflectionCommand()
   {
-	String pluginId = "org.eclipse.jst.ws.consumption";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-
-    setDescription(DESCRIPTION);
-    setName(LABEL);
   }
   
   // setters for this command
@@ -89,9 +83,9 @@ public class JavaMofReflectionCommand extends SimpleCommand
   * Get the java model from the resource then 
   * build the model from the mof
   */
-  public Status execute(Environment env)
-  {
- 	//just make sure the project and qname are there
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {    
+ 	  //just make sure the project and qname are there
   	//they are essential for this operation
   	Status status = new SimpleStatus("");
   	IProject clientIProject = (IProject)ResourceUtils.findResource(clientProject);

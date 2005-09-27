@@ -14,18 +14,18 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
-import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
-public class BuildProjectCommand extends SimpleCommand 
+public class BuildProjectCommand extends EnvironmentalOperation 
 {
   private ValidationManager validationManager;
   private IProject project_;
@@ -37,14 +37,12 @@ public class BuildProjectCommand extends SimpleCommand
    */
   public BuildProjectCommand()
   {
-    super( WebServiceConsumptionPlugin.getMessage("%TASK_LABEL_WEBSERVICE_BUILD_PROJECT"),
-           WebServiceConsumptionPlugin.getMessage("%TASK_DESC_WEBSERVICE_BUILD_PROJECT") );
   }
 
   /**
    * Execute the command
    */
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     try
     {

@@ -16,12 +16,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Properties;
-
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.wst.command.internal.env.common.EnvironmentUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 
 /**
  * @author cbrealey@ca.ibm.com
@@ -29,13 +27,12 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
  * This <code>Command</code>, when executed, launches the
  * Web Services Explorer.
  */
-public class WSExplorerLauncherCommand extends SimpleCommand {
+public class WSExplorerLauncherCommand extends EnvironmentalOperation {
 	private boolean forceLaunchOutsideIDE;
 
 	private LaunchOption[] launchOptions;
 
 	public WSExplorerLauncherCommand() {
-		super("WSExplorerLauncherCommand", "WSExplorerLauncherCommand");
 	}
 
 	public void writeCategoryInfo(String inquiryURL, String categoriesDirectory) {
@@ -65,8 +62,9 @@ public class WSExplorerLauncherCommand extends SimpleCommand {
 				forceLaunchOutsideIDE);
 	}
 
-	public Status execute(Environment env) {
-		return EnvironmentUtils.convertIStatusToStatus(execute());
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+  {
+    return execute();
 	}
 
 	/**

@@ -13,21 +13,22 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.common.WebServiceStartServerRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
 
-public class StartProjectCommand extends SimpleCommand {
+public class StartProjectCommand extends EnvironmentalOperation 
+{
 
-private java.lang.String DESCRIPTION = "Start Web Project";
-private java.lang.String LABEL = "StartProjectCommand";
 private MessageUtils msgUtils_;
 
 private Boolean creationScenario_ = Boolean.TRUE;
@@ -49,10 +50,6 @@ private String  moduleName_;
 public StartProjectCommand( String moduleName ) {
 	String pluginId = "org.eclipse.jst.ws.consumption";
 	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-	setDescription(DESCRIPTION);
-	setName(LABEL);    
-    //TODO setRunInWorkspaceModifyOperation(false);
-	
 	moduleName_ = moduleName;
 }
 
@@ -62,19 +59,15 @@ public StartProjectCommand( String moduleName ) {
 public StartProjectCommand(boolean creationScenario ) {
 	String pluginId = "org.eclipse.jst.ws.consumption";
 	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-	setDescription(DESCRIPTION);
-	setName(LABEL);
-	
-	//TODO setRunInWorkspaceModifyOperation(false);
 	creationScenario_ = new Boolean(creationScenario);
 }
 
 /**
  * Execute the command
  */
-public Status execute(Environment env)
+public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 {
-    
+    Environment env = getEnvironment();    
   
     Status status = new SimpleStatus( "" );
     env.getProgressMonitor().report(msgUtils_.getMessage("PROGRESS_INFO_START_WEB_PROJECT"));

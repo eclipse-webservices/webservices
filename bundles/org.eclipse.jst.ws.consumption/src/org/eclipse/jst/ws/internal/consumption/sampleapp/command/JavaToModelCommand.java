@@ -11,17 +11,16 @@
 
 package org.eclipse.jst.ws.internal.consumption.sampleapp.command;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.java.JavaClass;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions.JavaMofBeanVisitorAction;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofBeanVisitor;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -53,29 +52,20 @@ import org.eclipse.wst.ws.internal.datamodel.Model;
 * Subclasses must follow the rules described for
 * {@link org.eclipse.emf.common.command.AbstractCommand AbstractCommand}.
 */
-public class JavaToModelCommand extends SimpleCommand
+public class JavaToModelCommand extends EnvironmentalOperation
 {
   private MessageUtils msgUtils;
-  private IResource resource;
   private String clientProject;
   private BooleanSelection[] methods;
   private String proxyBean;
   private JavaClass javaClass;
   private Model model;
   private Element parentElement;
-  private IProject project;
   
-  public static String LABEL = "JavaToModelCommand";
-  public static String DESCRIPTION = "this creates a model from a resource";
- 
-  
-
   public JavaToModelCommand ()
   {
 	String pluginId = "org.eclipse.jst.ws.consumption";
 	msgUtils = new MessageUtils(pluginId + ".plugin", this);  	
-  	setDescription(DESCRIPTION);
-  	setName(LABEL);
   }
 
   
@@ -85,8 +75,9 @@ public class JavaToModelCommand extends SimpleCommand
     JavaMofReflectionCommand javaMofReflectionCommand = new JavaMofReflectionCommand();
     javaMofReflectionCommand.setClientProject(clientProject);
     javaMofReflectionCommand.setProxyBean(proxyBean);
+    javaMofReflectionCommand.setEnvironment( env );
     //javaMofReflectionCommand.setStatusMonitor(getStatusMonitor());
-    status = javaMofReflectionCommand.execute(env);
+    status = EnvironmentUtils.convertIStatusToStatus(javaMofReflectionCommand.execute( null, null));
     javaClass = (JavaClass)javaMofReflectionCommand.getJavaClass();
     return status;
   }
@@ -95,7 +86,7 @@ public class JavaToModelCommand extends SimpleCommand
   * The Model that was created from this javamof
   * @return Model The data model that was created
   **/
-  public Model getDataModel()
+  public Model getJavaDataModel()
   {
     return model;
   }
@@ -196,11 +187,11 @@ public class JavaToModelCommand extends SimpleCommand
   * Get the java model from the resource then
   * build the model from the mof
   */
-  public Status execute(Environment env)
-  {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {    
+    Environment env = getEnvironment();
   	Status status = new SimpleStatus("");
     if(clientProject == null) return status;
-    IProject project = (IProject)ProjectUtilities.getProject(clientProject);
     
   	status = createJavaReflection(env);
     if (status.getSeverity()==Status.ERROR) return status;

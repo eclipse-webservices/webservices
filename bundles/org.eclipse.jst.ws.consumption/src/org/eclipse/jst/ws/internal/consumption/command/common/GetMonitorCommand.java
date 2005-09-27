@@ -18,16 +18,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.Service;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.http.HTTPAddress;
 import javax.wsdl.extensions.soap.SOAPAddress;
-
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
@@ -38,7 +39,7 @@ import org.eclipse.wst.internet.monitor.core.internal.provisional.MonitorCore;
 import org.eclipse.wst.server.core.util.SocketUtil;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
-public class GetMonitorCommand extends SimpleCommand
+public class GetMonitorCommand extends EnvironmentalOperation
 {
   private boolean monitorService;
   private boolean create;
@@ -48,13 +49,14 @@ public class GetMonitorCommand extends SimpleCommand
 
   public GetMonitorCommand()
   {
-    super("org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand", "org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand");
     monitorService = true;
     create = true;
   }
 
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
+    
     endpoints = new Vector();
     if (monitorService && webServicesParser != null && wsdlURI != null && wsdlURI.length() > 0)
     {

@@ -16,7 +16,7 @@
  */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 
 /**
  * @author gilberta
@@ -24,7 +24,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
  * To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
-public class TestClientDepartureInitCommand extends SimpleCommand 
+public class TestClientDepartureInitCommand extends EnvironmentalOperation 
 {
   
   private boolean forceBuild;	

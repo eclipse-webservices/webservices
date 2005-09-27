@@ -31,11 +31,11 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.ClientProjectTypeRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
@@ -175,14 +175,30 @@ public class ValidationUtils
     
   }
   
+  
   private String getClientTypeLabel( String type )
-  {
-    ClientProjectTypeRegistry registry         = ClientProjectTypeRegistry.getInstance();
-    String                    clientTypeLabel  = null;
-    
-    clientTypeLabel = registry.getElementById(type).getAttribute("label");
-    
-    return clientTypeLabel;
+  {	  
+	  if (type.equals(IModuleConstants.JST_WEB_MODULE))
+	  {
+		  return msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_WEB");
+	  }
+	  else if (type.equals(IModuleConstants.JST_EJB_MODULE))
+	  {
+		  return msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_EJB");
+	  }
+	  else if (type.equals(IModuleConstants.JST_APPCLIENT_MODULE))
+	  {
+		  return msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_APP_CLIENT");
+	  }
+	  else if (type.equals(IModuleConstants.JST_UTILITY_MODULE))
+	  {
+		  return msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_CONTAINERLESS");
+	  }
+	  else
+	  {
+		  //No known label, return the typeId itself. 
+		  return type;
+	  }	  	  
   }  
   
   /**

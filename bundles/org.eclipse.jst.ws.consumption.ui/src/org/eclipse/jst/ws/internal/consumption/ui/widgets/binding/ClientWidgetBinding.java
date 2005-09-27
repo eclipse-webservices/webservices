@@ -10,13 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
-import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
-import org.eclipse.jst.ws.internal.consumption.command.common.ClientServerDeployableConfigCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForServiceProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
-import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerInstToIServerTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
@@ -39,7 +36,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishDefaultComm
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceClientTestArrivalCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceClientTypeRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
@@ -50,11 +46,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.ws.internal.extensions.AssembleClientFragment;
 import org.eclipse.wst.ws.internal.extensions.DeployClientFragment;
@@ -64,11 +56,7 @@ import org.eclipse.wst.ws.internal.extensions.RunClientFragment;
 
 
 public class ClientWidgetBinding implements CommandWidgetBinding
-{
-  private CanFinishRegistry   canFinishRegistry_;
-  private WidgetRegistry      widgetRegistry_;
-  private DataMappingRegistry dataMappingRegistry_;
-  
+{  
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#create()
    */
@@ -88,16 +76,13 @@ public class ClientWidgetBinding implements CommandWidgetBinding
    */
   public void registerCanFinish(CanFinishRegistry canFinishRegistry)
   {
-    canFinishRegistry_ = canFinishRegistry;
   }
 
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry)
-  {
-    dataMappingRegistry_ = dataRegistry;
-    
+  {    
     // Before ClientWizardWidget
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientWizardWidget.class);
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "TestService", ClientWizardWidget.class );
@@ -176,9 +161,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
   {
     String       pluginId_ = "org.eclipse.jst.ws.consumption.ui";
     MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    
-    widgetRegistry_ = widgetRegistry;
-    
+        
     widgetRegistry.add( "ClientWizardWidget", 
                         msgUtils.getMessage("PAGE_TITLE_WS_PROJECT"),
                         msgUtils.getMessage("PAGE_DESC_WS_PROJECT"),
@@ -223,23 +206,6 @@ public class ClientWidgetBinding implements CommandWidgetBinding
                           }
                         });
   }
-
-  private class InitClientRegistry extends SimpleCommand
-  {  
-    private WebServiceClientTypeRegistry clientRegistry_ = WebServiceClientTypeRegistry.getInstance();
-    
-    /* (non-Javadoc)
-     * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.provisional.env.core.common.Environment)
-     */
-    public Status execute(Environment environment) 
-    {
-      clientRegistry_.setDataMappingRegistry( dataMappingRegistry_ );
-      clientRegistry_.setWidgetRegistry( widgetRegistry_ );
-      clientRegistry_.setCanFinishRegistry( canFinishRegistry_ );
-      
-      return new SimpleStatus( "" );
-    }
-  }
   
   private class ClientRootCommandFragment extends SequenceFragment
   {
@@ -249,7 +215,6 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       
       //add( new SimpleFragment( new CheckForMissingFiles(), "" ) );
       add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(), "" ) );
-      add( new SimpleFragment( new InitClientRegistry(), "" ));
       add( new SimpleFragment( "ClientWizardWidget" ) );
 	  //add( new TestCommandFactoryFragment() );
       add( new SimpleFragment( new ClientWizardWidgetOutputCommand(), "" ));
@@ -328,12 +293,6 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WebServicesParser", ClientRuntimeSelectionWidgetDefaultingCommand.class);
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WsdlURI", CheckForServiceProjectCommand.class);
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WebServicesParser", CheckForServiceProjectCommand.class);      
-      
-      //ServerDeployableConfigurationCommand for client 
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProject", ClientServerDeployableConfigCommand.class, "SampleProject", new StringToIProjectTransformer());
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", ClientServerDeployableConfigCommand.class, "ClientTypeRuntimeServer", null);
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServerInstance", ClientServerDeployableConfigCommand.class,"SampleExistingServer", new ServerInstToIServerTransformer());
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServer", ClientServerDeployableConfigCommand.class,"SampleServerTypeID", null);
 	  
 	  // Setup the PreClientDevelopCommand.
 			//
@@ -383,12 +342,6 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       // MAP post server config call      
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProjectEAR", ClientExtensionOutputCommand.class, "EarProjectName", null);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServerInstance", ClientExtensionOutputCommand.class, "ExistingServerId", null);
-      dataRegistry.addMapping(ClientServerDeployableConfigCommand.class, "SampleExistingServerInstId", ClientExtensionOutputCommand.class, "ExistingServerId", null);
-                  
-      
-      // Map ClientServerDeployableConfigCommand
-
-      dataRegistry.addMapping(ClientServerDeployableConfigCommand.class, "SampleExistingServerInstId", FinishDefaultCommand.class, "ExistingServerId", null);
       
       // Map WebServiceClientTestArrivalCommand command.
       dataRegistry.addMapping(TestDefaultingFragment.class, "TestFacility",ClientTestDelegateCommand.class);

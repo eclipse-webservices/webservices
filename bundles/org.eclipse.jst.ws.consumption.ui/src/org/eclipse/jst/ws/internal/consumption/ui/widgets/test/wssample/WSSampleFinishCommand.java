@@ -15,12 +15,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
@@ -38,7 +40,7 @@ import org.eclipse.jst.ws.internal.ext.test.JavaProxyTestCommand;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -49,7 +51,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSe
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 
-public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTestCommand
+public class WSSampleFinishCommand extends EnvironmentalOperation implements JavaProxyTestCommand
 {
 
   public static String INPUT       = "Input.jsp";
@@ -57,8 +59,6 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
   public static String RESULT      = "Result.jsp";
   public static String METHOD      = "Method.jsp";
 
-  private static String LABEL = "JavaBeanToSampleActiveTask";
-  private static String DESCRIPTION = "default actions";
   private MessageUtils msgUtils;
   
   private Model proxyModel;
@@ -67,7 +67,6 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
   
   
   private String clientProject;
-  private String qname;
   private String jspFolder;
   private boolean runClientTest;
   private String sampleProject;
@@ -83,17 +82,18 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
   {
 	String pluginId = "org.eclipse.jst.ws.consumption.ui";
 	msgUtils = new MessageUtils(pluginId + ".plugin", this);
-	setDescription(DESCRIPTION);
-	setName(LABEL);  	
   }
 
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
+    
   	Status status = new SimpleStatus( "" );
     //setters and getters to be removed
   	CopyWebServiceUtilsJarCommand copy = new CopyWebServiceUtilsJarCommand();    
   	copy.setSampleProject(sampleProject);
-  	status = copy.execute(env);
+    copy.setEnvironment( env );
+  	status = EnvironmentUtils.convertIStatusToStatus(copy.execute( null, null ) );
     if (status.getSeverity() == Status.ERROR) return status;
     status = createModel(env);
     if (status.getSeverity() == Status.ERROR) return status;
@@ -121,7 +121,8 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
     GeneratePageCommand gpcTest = new GeneratePageCommand(EnvironmentUtils.getResourceContext(env), proxyModel,
       new TestClientFileGenerator(INPUT,METHOD,RESULT),fileTest);
     //gpcTest.setStatusMonitor(getStatusMonitor());
-    status = gpcTest.execute(env);
+    gpcTest.setEnvironment( env );
+    status = EnvironmentUtils.convertIStatusToStatus(gpcTest.execute( null, null ) );
     if (status.getSeverity() == Status.ERROR )
     	return status;
     
@@ -133,7 +134,8 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
     GeneratePageCommand gpcInput = new GeneratePageCommand(EnvironmentUtils.getResourceContext(env), proxyModel,
       inputGenerator,fileInput);
     //gpcInput.setStatusMonitor(getStatusMonitor());
-    status = gpcInput.execute(env);
+    gpcInput.setEnvironment( env );
+    status = EnvironmentUtils.convertIStatusToStatus(gpcInput.execute( null, null ));
     if (status.getSeverity() == Status.ERROR )
     	return status;
 
@@ -145,7 +147,8 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
     GeneratePageCommand gpcMethod = new GeneratePageCommand(EnvironmentUtils.getResourceContext(env), proxyModel,
       methodGenerator,fileMethod);
     //gpcMethod.setStatusMonitor(getStatusMonitor());
-    status = gpcMethod.execute(env);
+    gpcMethod.setEnvironment( env );
+    status = EnvironmentUtils.convertIStatusToStatus(gpcMethod.execute( null, null ));
     if (status.getSeverity() == Status.ERROR )
     	return status;    
 
@@ -159,7 +162,8 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
     GeneratePageCommand gpcResult = new GeneratePageCommand(EnvironmentUtils.getResourceContext(env), proxyModel,
       rfg,fileResult);
     //gpcResult.setStatusMonitor(getStatusMonitor());
-    status = gpcResult.execute(env);
+    gpcResult.setEnvironment( env );
+    status = EnvironmentUtils.convertIStatusToStatus(gpcResult.execute( null, null ));
     
     return status;
   }
@@ -178,7 +182,8 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
     ppc.setServerTypeID(sampleServerTypeID);
     ppc.setExistingServer(sampleExistingServer);
     ppc.setProject(sampleProject);
-    status = ppc.execute(env);
+    ppc.setEnvironment( env );
+    status = EnvironmentUtils.convertIStatusToStatus(ppc.execute( null, null ));
 
     StartProjectCommand spc = new StartProjectCommand(false );
     spc.setServiceServerTypeID(sampleServerTypeID);
@@ -186,8 +191,9 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
     IProject project = (IProject) ResourceUtils.findResource(sampleProject);
     spc.setSampleProject(project);
     spc.setIsWebProjectStartupRequested(true);
+    spc.setEnvironment( env );
     
-    status = spc.execute(env);
+    status = EnvironmentUtils.convertIStatusToStatus(spc.execute( null, null ));
     if (status.getSeverity() == Status.ERROR) return status;
     
     IPath newPath = new Path(ResourceUtils.getWebProjectURL(ResourceUtils.getProjectOf(fDestinationFolderPath),sampleServerTypeID,sampleExistingServer));
@@ -260,11 +266,12 @@ public class WSSampleFinishCommand extends SimpleCommand implements JavaProxyTes
     jtmc.setMethods(methods);
     jtmc.setClientProject(clientProject);
     jtmc.setProxyBean(proxyBean);
+    jtmc.setEnvironment( env );
     //jtmc.setStatusMonitor(getStatusMonitor());
-    Status status = jtmc.execute(env);
+    Status status = EnvironmentUtils.convertIStatusToStatus(jtmc.execute(null, null));
     if (status.getSeverity() == Status.ERROR) return status;
 
-    proxyModel = jtmc.getDataModel();
+    proxyModel = jtmc.getJavaDataModel();
     return status;
   }
 

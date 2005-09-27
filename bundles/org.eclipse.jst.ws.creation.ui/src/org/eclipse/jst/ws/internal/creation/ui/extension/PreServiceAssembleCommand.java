@@ -11,15 +11,19 @@
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 
-public class PreServiceAssembleCommand extends SimpleCommand 
+public class PreServiceAssembleCommand extends EnvironmentalOperation 
 {
 	private IWebService				webService_;
 	private String						project_;
@@ -28,8 +32,10 @@ public class PreServiceAssembleCommand extends SimpleCommand
   private String            ear_;
 	private String            j2eeLevel_;
 
-  public Status execute(Environment environment) 
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment environment = getEnvironment();
+    
 	  System.out.println( "In Pre service assemble command." );
     
 		// Check if EAR module is req'd, ie. !=null
@@ -45,7 +51,8 @@ public class PreServiceAssembleCommand extends SimpleCommand
 		command.setServerFactoryId(webService_.getWebServiceInfo().getServerFactoryId());
 		command.setServerInstanceId( webService_.getWebServiceInfo().getServerInstanceId() );
 		command.setJ2eeLevel(j2eeLevel_);
-		Status status = command.execute(environment);
+    command.setEnvironment( environment );
+		Status status = EnvironmentUtils.convertIStatusToStatus(command.execute( null, null ));
 		if (status.getSeverity()==Status.ERROR)
 		{
 			environment.getStatusHandler().reportError(status);
@@ -59,7 +66,8 @@ public class PreServiceAssembleCommand extends SimpleCommand
 		associateCommand.setModule(module_);
 		associateCommand.setEARProject(earProject_);
 		associateCommand.setEar(ear_);
-		status = associateCommand.execute(environment);
+    associateCommand.setEnvironment( environment );
+		status = EnvironmentUtils.convertIStatusToStatus(associateCommand.execute( null, null ));
 		if (status.getSeverity()==Status.ERROR)
 		{
 			environment.getStatusHandler().reportError(status);		  

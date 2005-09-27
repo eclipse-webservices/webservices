@@ -63,7 +63,6 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
 
   private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
   private MessageUtils msgUtils_ = null;
-  private Listener statusListener_;
   private Composite parent_;
   private boolean isGenSkeletonEnabled_;
   private String outputLocation_;
@@ -75,9 +74,6 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
   private Button removeButton_;
   private Button genSkeletonRadioButton_;
   private Combo sourceLocationCombo_;
-  private Text text_; // selected Text
-
-  private HandlerTableItem[] handlers;
   private Hashtable pathsTable_ = new Hashtable();
   private Hashtable wsDescToHandlers_;
   private Hashtable wsDescToPorts_;
@@ -116,11 +112,10 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     UIUtils uiUtils = new UIUtils(msgUtils_, pluginId_);
 
     parent_ = parent;
-    statusListener_ = statusListener;
 
     // Web service reference combo
     Composite webServiceRefComp = uiUtils.createComposite(parent_, 2);
-    webServiceDescCombo_ = uiUtils.createCombo(webServiceRefComp, "LABEL_COMBO_WS_SERVICE_DESC", TOOLTIP_WS_SERVICE_DESC, TOOLTIP_WS_SERVICE_DESC,
+    webServiceDescCombo_ = uiUtils.createCombo(webServiceRefComp, "LABEL_COMBO_WS_SERVICE_DESC", TOOLTIP_WS_SERVICE_DESC, INFOPOP_WS_SERVICE_DESC,
         SWT.READ_ONLY);
     webServiceDescCombo_.addSelectionListener(new SelectionAdapter() {
 
@@ -278,7 +273,6 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     try {
 
       int sizeOfHandlers = wsDescToHandlers_.size();
-      String[] wsRefs = new String[sizeOfHandlers];
 
       String[] wsRefNames = (String[]) wsDescToHandlers_.keySet().toArray(new String[0]);
       webServiceDescCombo_.setItems(wsRefNames);
@@ -330,7 +324,6 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
    *          The handlers to set.
    */
   public void setHandlers(HandlerTableItem[] handlers) {
-    this.handlers = handlers;
     populateHandlersTable();
   }
 
@@ -402,7 +395,6 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
   private void handleMoveUpButtonSelected(SelectionEvent event) {
 
     int index = tableViewer_.getTable().getSelectionIndex();
-    ISelection selected = tableViewer_.getSelection();
     if (index != -1) {
       if (index > 0) {
         orderedHandlers_ = (Vector) wsDescToHandlers_.get(webServiceDescCombo_.getText());
@@ -417,7 +409,6 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
   private void handleMoveDownButtonSelected(SelectionEvent event) {
 
     int index = tableViewer_.getTable().getSelectionIndex();
-    ISelection selected = tableViewer_.getSelection();
     if (index != -1) {
       if (index < orderedHandlers_.size() - 1) {
         orderedHandlers_ = (Vector) wsDescToHandlers_.get(webServiceDescCombo_.getText());
@@ -513,7 +504,6 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     ISelection selection = tableViewer_.getSelection();
     if (selection != null && !selection.isEmpty() && (selection instanceof IStructuredSelection)) {
       int selectionIndex = handlersTable_.getSelectionIndex();
-      int selectionCount = handlersTable_.getItemCount();
 
       orderedHandlers_ = (Vector) wsDescToHandlers_.get(webServiceDescCombo_.getText());
       orderedHandlers_.remove(selectionIndex);
@@ -594,8 +584,6 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     try {
 
       if (wsDescToHandlersArray != null) {
-        int sizeOfHandlers = wsDescToHandlersArray.size();
-        String[] wsRefs = new String[sizeOfHandlers];
         // store the wsRefs
         Enumeration wsDesc = wsDescToHandlersArray.keys();
         while (wsDesc.hasMoreElements()) {

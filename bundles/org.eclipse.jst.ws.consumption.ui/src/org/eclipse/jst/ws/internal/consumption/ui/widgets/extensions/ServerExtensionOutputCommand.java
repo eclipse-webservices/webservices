@@ -12,27 +12,22 @@
  */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 
-public class ServerExtensionOutputCommand extends SimpleCommand
+public class ServerExtensionOutputCommand extends EnvironmentalOperation
 {
   //private String            wsdlURI_;
   private WebServicesParser wsdlParser_;
 	private IWebService 			webService_;
   
-  private String existingServerId_;
-  private String earProjectName_;
   private boolean isWebProjectStartupRequested_ = false;
-  
-  private IServer fExistingServer = null;
-  
+    
   public boolean isUndoable(){
   	return true;
   }
@@ -72,55 +67,7 @@ public class ServerExtensionOutputCommand extends SimpleCommand
   	}  	
   	*/
   	return stat;
-  }  
-
-  public Status execute(Environment env){
-  	
-  	Status status = new SimpleStatus("");  	
-  	// Commenting out all extraneous server startups
-		/*
-    IServer[] servers = ServerCore.getServers();
-    IServer existingServer =null;
-    fExistingServer = null; 
-    for (int i=0; i<servers.length; i++)
-    {
-      IServer thisServer = (IServer)servers[i];
-      IServerWorkingCopy wc = null;
-      String thisServerId = null;
-      if (thisServer!=null) {
-      	wc = thisServer.createWorkingCopy();
-        thisServerId = (wc!=null ? wc.getId() : null);
-      }
-      
-      if (thisServerId.equals(existingServerId_))
-        existingServer = thisServer;
-    }    	
-    try	{
-        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        IProject earProject = null;
-        if (earProjectName_!=null && earProjectName_.length()>0)
-        {
-          earProject = root.getProject(earProjectName_);
-        }    	
-    	
-   		AbstractStartServer startServerCommand = null;
-   		WebServiceStartServerRegistry reg = WebServiceStartServerRegistry.getInstance();
-     	startServerCommand = (AbstractStartServer)reg.getServerStartByTypeId(existingServer.getServerType().getId());
-     	if (earProject!=null) {
-     		startServerCommand.runPostServerConfig(existingServer, earProject);
-     		fExistingServer = existingServer;
-     	}
-   	}
-    catch (CoreException ce ) {
-    	IStatus embeddedStatus = ce.getStatus();
-    	status = EnvironmentUtils.convertIStatusToStatus(embeddedStatus);
-    	env.getStatusHandler().reportError(status);
-  		return status;
-  	}
-  	*/
-  	return status;      	
-  }
-  
+  }    
   
   /**
    * @return Returns the wsdlURI.
@@ -169,13 +116,11 @@ public class ServerExtensionOutputCommand extends SimpleCommand
  * @param earProjectName The earProjectName to set.
  */
 public void setEarProjectName(String earProjectName) {
-	this.earProjectName_ = earProjectName;
 }
 /**
  * @param existingServerId The existingServerId to set.
  */
 public void setExistingServerId(String existingServerId) {
-	this.existingServerId_ = existingServerId;
 }
 
 /**

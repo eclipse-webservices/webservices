@@ -1,16 +1,19 @@
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
-public class AssociateModuleWithEARCommand extends SimpleCommand
+public class AssociateModuleWithEARCommand extends EnvironmentalOperation
 {
 	private String project_;
 	private String module_;
@@ -23,8 +26,10 @@ public class AssociateModuleWithEARCommand extends SimpleCommand
 	    msgUtils_ = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
   }
   
-	public Status execute(Environment env)
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 	{
+    Environment env = getEnvironment();
+    
 		Status status = new SimpleStatus("");
 		IProject moduleProject = null;
 		IProject earProject = null;

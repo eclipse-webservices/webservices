@@ -159,7 +159,8 @@ public class JavaMofAttributeVisitor implements Visitor
     JavaMofReflectionCommand javaMofRef = new JavaMofReflectionCommand();
     javaMofRef.setClientProject(getProject());
     javaMofRef.setProxyBean(((JavaHelpers)spd.getPropertyType()).getQualifiedName());
-    javaMofRef.execute(env);
+    javaMofRef.setEnvironment( env );
+    javaMofRef.execute(null, null);
     if(javaMofRef.getJavaClass() instanceof JavaClass){
        if(TypeFactory.recognizedBean(javaMofRef.getJavaClass().getJavaName())) return true;
        return defaultCheck((JavaClass)javaMofRef.getJavaClass());
@@ -181,8 +182,8 @@ public class JavaMofAttributeVisitor implements Visitor
   	JavaParameter javaParameter[] = writeMethod.listParametersWithoutReturn();
     for(int i = 0;i< javaParameter.length;i++){
       JavaParameter jp = javaParameter[i]; 	
-      String name1 = jp.getJavaType().getJavaName();
-      String name = readMethod.getReturnType().getJavaName();
+      jp.getJavaType().getJavaName();
+      readMethod.getReturnType().getJavaName();
       if(jp.getJavaType().getJavaName().equals(readMethod.getReturnType().getJavaName()))
         return true; 
     }
@@ -212,30 +213,5 @@ public class JavaMofAttributeVisitor implements Visitor
     
        return defaultConst;
   }
-  
-  private boolean polarityCheck(JavaClass javaClass){
-    
-       Iterator m=javaClass.getMethods().iterator();
-        //now check for a default constructor
-        boolean defaultConst = true;
-        while (m.hasNext()) {
-          Method method=(Method)m.next();
-          if (javaClass.getName().equals(method.getName())){
-                //now the inputs
-                JavaParameter javaParameter[] = method.listParametersWithoutReturn();
-                if (javaParameter.length > 0){
-                      //then we have no default constructor
-                      defaultConst = false; 
-                }
-                else if(javaParameter.length == 0){
-                     if (method.getJavaVisibility().getValue() == 0)
-                       return true;
-                }
-          }
-       }
-    
-       return defaultConst;
-  }
-        
-  
+          
 }

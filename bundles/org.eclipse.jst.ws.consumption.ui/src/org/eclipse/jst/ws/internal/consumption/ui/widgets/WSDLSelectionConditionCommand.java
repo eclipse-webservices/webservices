@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.DialogWWWAuthentication;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
@@ -24,7 +26,7 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
-public class WSDLSelectionConditionCommand extends SimpleCommand implements Condition
+public class WSDLSelectionConditionCommand extends EnvironmentalOperation implements Condition
 {
   private String pluginId_;
   private MessageUtils msgUtils_;
@@ -52,7 +54,7 @@ public class WSDLSelectionConditionCommand extends SimpleCommand implements Cond
   	return webServicesParser;
   }
   
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
   	needWSDLSelectionTreeWidget = false;
   	WebServicesParser parser = getWebServicesParser();

@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
@@ -299,10 +300,11 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	  StartServerCommand       serverCommand   = new StartServerCommand( false, false );
 	    
 	  serverCommand.setServerInstanceId( server_.getId() );
+    serverCommand.setEnvironment( environment );
 	    
 	  try
 	  {
-	    setStatus( serverCommand.execute( environment ) );		
+	    setStatus( EnvironmentUtils.convertIStatusToStatus(serverCommand.execute( null, null ) ) );		
 	  }
 	  catch( Throwable exc )
 	  {

@@ -12,19 +12,18 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
-import org.eclipse.jst.ws.internal.context.ScenarioContext;
-import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
-import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -38,27 +37,19 @@ import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSe
 * client page
 *
 */
-public class WebServiceClientTestArrivalCommand extends SimpleCommand
+public class WebServiceClientTestArrivalCommand extends EnvironmentalOperation
 {
   public static final String DEFAULT_WEB_MODULE_ROOT = "WebContent";
   public static final String DEFAULT_SAMPLE_WEB_PROJECT_EXT = "Sample";
-  
 
-  private String LABEL = "WebServiceClientTestArrivalTask";
-  private String DESCRIPTION = "default actions";
   private MessageUtils msgUtils;
   public static String SAMPLE_DIR = "sample";
-  private String PROXY = "Proxy";
-
-  private ScenarioContext scenarioContext;
- 
   
   private String clientProject;
   private String clientProjectEAR;
   private String clientP;
   private String clientC;
   private IProject clientIProject;
-  private WebServiceTestRegistry testRegistry;
   private String folder;
   private String jspFolder;
   private BooleanSelection[] methods;
@@ -75,17 +66,13 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
   */
   public WebServiceClientTestArrivalCommand ()
   {
-  	setDescription(DESCRIPTION);
-  	setName(LABEL);
   	String pluginId = "org.eclipse.jst.ws.consumption.ui";
 	msgUtils = new MessageUtils(pluginId + ".plugin", this);  	
-    
-    scenarioContext = WebServicePlugin.getInstance().getScenarioContext().copy();
-  	testRegistry = WebServiceTestRegistry.getInstance();
   }
 
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
   	
 	Status status = new SimpleStatus( "" );
   	
@@ -93,7 +80,6 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
   	
     //Get the sample Folder ready
     StringBuffer sb = new StringBuffer();
-	IPath path= null;
 	
 	sb.append("/").append(sampleC).append("/").append(DEFAULT_WEB_MODULE_ROOT).append("/");
     folder = SAMPLE_DIR + getBean(); 
@@ -118,11 +104,12 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
     JavaMofReflectionCommand javamofcommand = new JavaMofReflectionCommand(); 
     javamofcommand.setProxyBean(proxyBean);
     javamofcommand.setClientProject(clientP);
+    javamofcommand.setEnvironment( env );
     
     
     
     try{ 
-      Status mofStatus = javamofcommand.execute(env);
+      Status mofStatus = EnvironmentUtils.convertIStatusToStatus(javamofcommand.execute( null, null));
       if(mofStatus.getSeverity() == Status.ERROR)
       	return mofStatus;
     }catch(Exception exc){
@@ -147,7 +134,6 @@ public class WebServiceClientTestArrivalCommand extends SimpleCommand
     {
       Method method = (Method)listIterator.next();
       if(method.isConstructor()) continue;
-      String signature = method.getMethodElementSignature();
       
       tempMethods[j] = new BooleanSelection( method.getMethodElementSignature(), true);      
       j++;

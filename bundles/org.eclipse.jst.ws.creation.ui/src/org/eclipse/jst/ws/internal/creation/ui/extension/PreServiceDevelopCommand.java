@@ -11,10 +11,14 @@
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
@@ -28,7 +32,7 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceState;
 import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
 
-public class PreServiceDevelopCommand extends SimpleCommand 
+public class PreServiceDevelopCommand extends EnvironmentalOperation 
 {
   private TypeRuntimeServer typeRuntimeServer_;
   private Environment       environment_;
@@ -36,7 +40,7 @@ public class PreServiceDevelopCommand extends SimpleCommand
   private ISelection        selection_;
 	private String						project_;
   private String            module_;
-  private String			moduleType_;
+  private String			      moduleType_;
 	private String						earProject_;
   private String            ear_;
 	
@@ -50,8 +54,9 @@ public class PreServiceDevelopCommand extends SimpleCommand
   private boolean publish_;
   
 
-  public Status execute(Environment environment) 
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment environment = getEnvironment();
 	  
     // Split up the project and module
     int index = module_.indexOf("/");
@@ -120,7 +125,8 @@ public class PreServiceDevelopCommand extends SimpleCommand
 		  command.setServerFactoryId(typeRuntimeServer_.getServerId());
 		  command.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
 		  command.setJ2eeLevel(j2eeLevel_);
-		  Status status = command.execute(environment);
+      command.setEnvironment(environment);
+		  Status status = EnvironmentUtils.convertIStatusToStatus(command.execute( null, null));
 
 		
 		if (status.getSeverity()==Status.ERROR)
@@ -172,11 +178,6 @@ public class PreServiceDevelopCommand extends SimpleCommand
   public IWebService getWebService()
   {
 	return webService_;  
-  }
-  
-  public Environment getEnvironment()
-  {
-	return environment_;
   }
   
   public IContext getContext()

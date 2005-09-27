@@ -16,13 +16,13 @@
  */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
-import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 
 
@@ -32,16 +32,15 @@ import org.eclipse.wst.command.internal.provisional.env.core.selection.Selection
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class TestDefaultingFragment extends SimpleCommand
+public class TestDefaultingFragment extends EnvironmentalOperation
 {
   
-  private WebServiceTestRegistry testRegistry;
   private SelectionList testFacilities;
   private String launchedServiceTestName;
   private ScenarioContext scenarioContext;	
   
   
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
   	SimpleStatus status = new SimpleStatus("");
   	

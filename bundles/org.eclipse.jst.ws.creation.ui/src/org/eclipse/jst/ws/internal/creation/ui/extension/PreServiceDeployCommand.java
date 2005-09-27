@@ -11,16 +11,18 @@
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 
-public class PreServiceDeployCommand extends SimpleCommand 
+public class PreServiceDeployCommand extends EnvironmentalOperation
 {
-  public Status execute(Environment environment) 
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-	System.out.println( "In Pre service deploy command." );
+	  System.out.println( "In Pre service deploy command." );
 
-	return super.execute(environment);
+	  return Status.OK_STATUS;
   }
 }

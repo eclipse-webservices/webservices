@@ -11,8 +11,10 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
@@ -25,24 +27,18 @@ import org.eclipse.wst.server.core.ServerCore;
 *
 *
 */
-public class FinishDefaultCommand extends SimpleCommand
+public class FinishDefaultCommand extends EnvironmentalOperation
 {
-  private String LABEL = "JSPGenerationTask";
-  private String DESCRIPTION = "Run the JSP Generation";
-  
   private String sampleServerTypeID;
   private IServer sampleExistingServer;
-  private String existingServerId_;
   private String sampleServerInstanceId;
 
   
   public FinishDefaultCommand ()
   {
-    setDescription(DESCRIPTION);
-    setName(LABEL);  
   }
 
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
   	Status status = new SimpleStatus( "" );
   	if(sampleServerInstanceId != null){
@@ -73,7 +69,6 @@ public class FinishDefaultCommand extends SimpleCommand
 
   public void setExistingServerId(String existingServerId)
   {
-    existingServerId_ = existingServerId;
   }  
 
 }

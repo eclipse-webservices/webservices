@@ -11,11 +11,11 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 
 
-public class ClientWizardWidgetOutputCommand extends SimpleCommand
+public class ClientWizardWidgetOutputCommand extends EnvironmentalOperation
 {    
   private boolean           testService_;
   private boolean monitorService;

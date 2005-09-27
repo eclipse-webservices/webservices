@@ -11,7 +11,7 @@
 package org.eclipse.jst.ws.internal.uddiregistry.widgets;
 
 import org.eclipse.jst.ws.internal.uddiregistry.wizard.PrivateUDDIRegistryType;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 /*
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -20,7 +20,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.jst.ws.internal.uddiregistry.plugin.WebServiceUDDIRegistryPlugin;
 */
 
-public class PrivateUDDISelectionCommand extends SimpleCommand
+public class PrivateUDDISelectionCommand extends EnvironmentalOperation
 {
   private byte operationType;
   private PrivateUDDIRegistryType registryType;

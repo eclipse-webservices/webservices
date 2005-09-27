@@ -14,6 +14,7 @@ import org.eclipse.jem.java.Field;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.impl.FieldImpl;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
@@ -83,7 +84,8 @@ public class JavaMofTypeVisitor implements Visitor
       JavaMofReflectionCommand javaMofRef = new JavaMofReflectionCommand();
       javaMofRef.setClientProject(clientProject);
       javaMofRef.setProxyBean(((JavaHelpers)pd.getPropertyType()).getQualifiedName());
-      status = javaMofRef.execute(env_);
+      javaMofRef.setEnvironment( env_ );
+      status = EnvironmentUtils.convertIStatusToStatus(javaMofRef.execute( null, null ));
       if (status.getSeverity()==Status.ERROR)
       	return status;
       
@@ -94,8 +96,9 @@ public class JavaMofTypeVisitor implements Visitor
       JavaMofReflectionCommand javaMofRef = new JavaMofReflectionCommand();
       javaMofRef.setClientProject(clientProject);
       javaMofRef.setProxyBean(field.getJavaType().getQualifiedName());
+      javaMofRef.setEnvironment( env_ );
      
-      status = javaMofRef.execute(env_);
+      status = EnvironmentUtils.convertIStatusToStatus(javaMofRef.execute( null, null ));
       if (status.getSeverity()==Status.ERROR)
       	return status;
       

@@ -12,11 +12,9 @@
 package org.eclipse.jst.ws.internal.ext.test;
 
 import java.util.List;
-
-import org.eclipse.jst.ws.internal.ext.WebServiceFinishCommand;
 import org.eclipse.wst.server.core.IServer;
 
-public interface WebServiceTestFinishCommand extends WebServiceFinishCommand
+public interface WebServiceTestFinishCommand 
 {
 
   /**

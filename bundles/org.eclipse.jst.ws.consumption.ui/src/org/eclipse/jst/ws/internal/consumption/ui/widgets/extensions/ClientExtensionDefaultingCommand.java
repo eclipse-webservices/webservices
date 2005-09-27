@@ -11,14 +11,14 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
-public class ClientExtensionDefaultingCommand extends SimpleCommand
+public class ClientExtensionDefaultingCommand extends EnvironmentalOperation
 {
   // ClientWizardWidget
   private TypeRuntimeServer    clientIds_;

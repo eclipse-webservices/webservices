@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import java.io.File;
 import java.net.MalformedURLException;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -190,7 +189,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       WSDLSelectionConditionCommand cmd = new WSDLSelectionConditionCommand();
       cmd.setWebServicesParser(webServicesParser);
       cmd.setWebServiceURI(wsURI);
-      cmd.execute(null);
+      cmd.execute(null, null);
     }
     WebServiceEntity entity = webServicesParser.getWebServiceEntityByURI(wsURI);
     if (entity != null && entity.getType() == WebServiceEntity.TYPE_WSDL)
@@ -391,21 +390,6 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       return null;
   }
   
-  private String toAbsoluteWsdlURI(Object object)
-  {
-    if (object instanceof IFile)
-    {
-      try
-      {
-        return ((IFile)object).getLocation().toFile().toURL().toString();
-      }
-      catch (MalformedURLException murle)
-      {
-      }
-    }
-    return toWsdlURI(object);
-  }
-
   public IStructuredSelection getObjectSelection()
   {
     return new StructuredSelection( 

@@ -12,7 +12,10 @@
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -25,10 +28,9 @@ import org.eclipse.wst.server.core.IServer;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ManageServerStartUpCommand extends SimpleCommand {
+public class ManageServerStartUpCommand extends EnvironmentalOperation
+{
 
-	private java.lang.String DESCRIPTION = "Start Web Project";
-	private java.lang.String LABEL = "ServerStartUpManager";
 	private MessageUtils msgUtils_;
 	
 	private Boolean isStartServiceEnabled_;
@@ -58,8 +60,9 @@ public class ManageServerStartUpCommand extends SimpleCommand {
 	/**
 	 * Execute the command
 	 */
-	public Status execute(Environment env)
-	{
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {
+      Environment env = getEnvironment();
 	    Status status = new SimpleStatus( "" );
 	    env.getProgressMonitor().report(msgUtils_.getMessage("PROGRESS_INFO_START_WEB_PROJECT"));
 	 
@@ -70,7 +73,8 @@ public class ManageServerStartUpCommand extends SimpleCommand {
 	    	spc.setServiceServerTypeID(serviceServerTypeId_);
 	    	spc.setServiceExistingServer(serviceExistingServer_);
 	    	spc.setIsWebProjectStartupRequested(isWebProjectStartupRequested_);
-	    	spc.execute(env);
+        spc.setEnvironment( env );
+	    	spc.execute( null, null );
 	    }
 	    
 	    if(isTestServiceEnabled_.booleanValue()&& sampleExistingServer_!=null && serviceExistingServer_!=null && !sampleExistingServer_.equals(serviceExistingServer_)){
@@ -80,7 +84,8 @@ public class ManageServerStartUpCommand extends SimpleCommand {
 	    	spc.setSampleServerTypeID(sampleServerTypeId_);
 	    	spc.setSampleExistingServer(sampleExistingServer_);
 	    	spc.setCreationScenario(new Boolean("false"));
-	    	spc.execute(env);	    	
+        spc.setEnvironment( env );
+	    	spc.execute( null, null );	    	
 	    }
 	    
 	    return status;

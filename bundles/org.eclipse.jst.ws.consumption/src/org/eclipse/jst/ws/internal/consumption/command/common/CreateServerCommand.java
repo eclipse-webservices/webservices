@@ -1,9 +1,12 @@
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -15,7 +18,7 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 
-public class CreateServerCommand extends SimpleCommand
+public class CreateServerCommand extends EnvironmentalOperation
 {
 	private String serverFactoryId;
 	private String serverInstanceId;
@@ -32,8 +35,10 @@ public class CreateServerCommand extends SimpleCommand
 		
 	}
 	
-	public Status execute(Environment env)
-	{
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {
+    Environment env = getEnvironment();
+    
 		Status status = new SimpleStatus("");
 		
 		if (serverFactoryId==null){

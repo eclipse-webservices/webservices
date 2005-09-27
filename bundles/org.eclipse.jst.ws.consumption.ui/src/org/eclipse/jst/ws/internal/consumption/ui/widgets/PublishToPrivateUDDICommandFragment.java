@@ -16,7 +16,6 @@ import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.CommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 
@@ -30,7 +29,7 @@ public class PublishToPrivateUDDICommandFragment extends AbstractCommandFragment
   
   public PublishToPrivateUDDICommandFragment()
   {
-    super((CommandFactory)null, "");
+    super(null, "");
     privateUDDIBinding = PrivateUDDIRegistryTypeRegistry.getInstance().getPrivateUDDIRegistryType().getBinding();
   }
 

@@ -12,9 +12,11 @@
 package org.eclipse.jst.ws.internal.consumption.ui.command;
 
 import java.util.Vector;
-
 import org.eclipse.core.resources.IProject;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -26,26 +28,22 @@ import org.eclipse.wst.ws.internal.ui.wsi.preferences.WSIComplianceUtils;
 
 
 
-public class WSINonCompliantRuntimeCommand extends SimpleCommand
+public class WSINonCompliantRuntimeCommand extends EnvironmentalOperation
 {
 
   private IProject serviceProject_;
   private MessageUtils msgUtils_;
- 
-  private String LABEL = "TASK_LABEL_WSI_NONCOMPLIANT";
-  private String DESCRIPTION = "TASK_DESC_WSI_NONCOMPLIANT";
 	
   public WSINonCompliantRuntimeCommand()
   {
     String       pluginId = "org.eclipse.wst.ws.ui";
   	msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-  	setName (msgUtils_.getMessage(LABEL));
-  	setDescription( msgUtils_.getMessage(DESCRIPTION));    
   }
   
 
-  public Status execute (Environment environment)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment environment = getEnvironment();
     
   	PersistentWSISSBPContext wsiSSBPContext = WSUIPlugin.getInstance().getWSISSBPContext(); 
   	PersistentWSIAPContext wsiAPContext = WSUIPlugin.getInstance().getWSIAPContext(); 

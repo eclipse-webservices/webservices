@@ -15,21 +15,23 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 
-public class CreateJavaProjectCommand extends SimpleCommand
+public class CreateJavaProjectCommand extends EnvironmentalOperation
 {
   private String projectName_;
 
@@ -38,18 +40,17 @@ public class CreateJavaProjectCommand extends SimpleCommand
    */
   public CreateJavaProjectCommand()
   {
-    super("org.eclipse.jst.ws.internal.consumption.command.common.CreateJavaProjectCommand", "org.eclipse.jst.ws.internal.consumption.command.common.CreateJavaProjectCommand");
-    //setRunInWorkspaceModifyOperation(false);
   }
 
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
     IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName_);
+    
     if (project != null && !project.exists())
     {
       try
       {
-        NullProgressMonitor monitor = new NullProgressMonitor();
         project.create(ResourcesPlugin.getWorkspace().newProjectDescription(project.getName()), monitor);
         project.open(monitor);
         IProjectDescription desc = project.getDescription();

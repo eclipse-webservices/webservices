@@ -13,25 +13,23 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.impl.JavaClassImpl;
-import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.webservice.wsclient.Handler;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
 import org.eclipse.jst.j2ee.webservice.wsclient.Webservice_clientFactory;
 import org.eclipse.jst.j2ee.webservice.wsclient.internal.impl.Webservice_clientFactoryImpl;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
@@ -42,7 +40,8 @@ import org.eclipse.wst.common.internal.emfworkbench.integration.EditModel;
  * Provide a way to externalize the edited fields and create new handlers
  *  
  */
-public class ClientHandlersWidgetOutputCommand extends SimpleCommand {
+public class ClientHandlersWidgetOutputCommand extends EnvironmentalOperation 
+{
 
   //private List handlerTableItems_;
   private Hashtable oldWSServiceRefsToHandlersTable_;
@@ -55,15 +54,14 @@ public class ClientHandlersWidgetOutputCommand extends SimpleCommand {
 
   private IProject project_;
 
-  private WebServicesResource wsClientRes_;
-
   private Collection wsServiceRefs_;
 
   private EditModel editModel_;
 
   private Object accessorKey_;
 
-  public Status execute(Environment env) {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {
     String pluginId = "org.eclipse.jst.ws.consumption.ui";
     MessageUtils msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     Status status = new SimpleStatus("");
@@ -153,7 +151,6 @@ public class ClientHandlersWidgetOutputCommand extends SimpleCommand {
 
   private void addHandlersToServiceRefs() {
     try {
-      int key = 0;
       Enumeration refsToHandlers = newWSServiceRefsToHandlersTable_.keys();
       while (refsToHandlers.hasMoreElements()) {
         ServiceRef serviceRef = (ServiceRef) refsToHandlers.nextElement();
@@ -195,7 +192,6 @@ public class ClientHandlersWidgetOutputCommand extends SimpleCommand {
   }
 
   public void setWsClientResource(WebServicesResource wsRes) {
-    this.wsClientRes_ = wsRes;
   }
 
   public void setWsServiceRefs(Collection wsRefs) {

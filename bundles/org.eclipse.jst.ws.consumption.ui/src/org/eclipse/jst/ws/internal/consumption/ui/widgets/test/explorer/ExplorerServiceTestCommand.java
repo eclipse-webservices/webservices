@@ -14,12 +14,15 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.explorer;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
 import org.eclipse.jst.ws.internal.ext.test.WSDLTestFinishCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
@@ -29,11 +32,9 @@ import org.eclipse.wst.ws.internal.explorer.LaunchOptions;
 import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin;
 
-public class ExplorerServiceTestCommand extends SimpleCommand implements WSDLTestFinishCommand
+public class ExplorerServiceTestCommand extends EnvironmentalOperation implements WSDLTestFinishCommand
 {
 
-  private String LABEL = "ExplorerServiceTestCommand";
-  private String DESCRIPTION = "Launch the Explorer";
   private boolean externalBrowser = true;
   private String wsdlServiceURL;
   private String serviceServerTypeID;
@@ -46,12 +47,12 @@ public class ExplorerServiceTestCommand extends SimpleCommand implements WSDLTes
   */
   public ExplorerServiceTestCommand ()
   {
-  	setDescription(DESCRIPTION);
-  	setName(LABEL);
   }
 
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
+    
   	Status status = new SimpleStatus( "" );
     
     StartProjectCommand spc = new StartProjectCommand( true );
@@ -60,8 +61,9 @@ public class ExplorerServiceTestCommand extends SimpleCommand implements WSDLTes
     IProject project = (IProject) ResourceUtils.findResource(serviceProject);
     spc.setServiceProject(project);
     spc.setIsWebProjectStartupRequested(true);
+    spc.setEnvironment( env );
     
-    status = spc.execute(env);
+    status = EnvironmentUtils.convertIStatusToStatus(spc.execute( null, null ));
     if (status.getSeverity() == Status.ERROR)
     	return status;
 
@@ -77,7 +79,8 @@ public class ExplorerServiceTestCommand extends SimpleCommand implements WSDLTes
       for (Iterator it = endpoints.iterator(); it.hasNext();)
         launchOptionVector.add(new LaunchOption(LaunchOptions.WEB_SERVICE_ENDPOINT, it.next().toString()));
     launchCommand.setLaunchOptions((LaunchOption[])launchOptionVector.toArray(new LaunchOption[0]));
-    status = launchCommand.execute(env);
+    launchCommand.setEnvironment( env );
+    status = EnvironmentUtils.convertIStatusToStatus(launchCommand.execute( null, null ));
     return status;
   }
 

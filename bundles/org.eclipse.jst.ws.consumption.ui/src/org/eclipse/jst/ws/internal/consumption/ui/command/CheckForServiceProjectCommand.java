@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.command;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -30,7 +30,7 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
  * This command checks to see if the selected client project is the
  * service project. If so, the user is warned.
  */
-public class CheckForServiceProjectCommand extends SimpleCommand
+public class CheckForServiceProjectCommand extends EnvironmentalOperation
 {
   MessageUtils msgUtils;
   SelectionListChoices runtime2ClientTypes;
@@ -62,8 +62,9 @@ public class CheckForServiceProjectCommand extends SimpleCommand
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.provisional.env.core.common.Environment)
    */
-  public Status execute(Environment environment)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment environment = getEnvironment();
     Status status = new SimpleStatus("");
     if (runtime2ClientTypes==null || wsdlURI==null || wsdlURI.length()==0 || webServicesParser==null)
       return status;
@@ -74,7 +75,6 @@ public class CheckForServiceProjectCommand extends SimpleCommand
     
     IProject clientProject = ProjectUtilities.getProject(clientProjectName);
     ValidationUtils vu = new ValidationUtils();
-    Calendar cal = new GregorianCalendar();
     boolean isServiceProject = vu.isProjectServiceProject(clientProject, wsdlURI, webServicesParser);
     if (isServiceProject)
     {

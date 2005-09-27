@@ -12,7 +12,11 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
@@ -34,7 +38,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragmen
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestWebServiceClient;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceClientTestArrivalCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceClientTypeRegistry;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
@@ -46,7 +49,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -54,18 +57,13 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceClientInfo;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceState;
 
 
 public class GenSampleWidgetBinding implements CommandWidgetBinding
-{
-  private CanFinishRegistry   canFinishRegistry_;
-  private WidgetRegistry      widgetRegistry_;
-  private DataMappingRegistry dataMappingRegistry_;
-  
+{  
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#create()
    */
@@ -85,16 +83,13 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
    */
   public void registerCanFinish(CanFinishRegistry canFinishRegistry)
   {
-    canFinishRegistry_ = canFinishRegistry;
   }
 
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry)
-  {
-    dataMappingRegistry_ = dataRegistry;
-                    
+  {                    
     // Before Client Test widget.
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService",FinishTestFragment.class);
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", ClientTestWidget.class );
@@ -128,9 +123,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
   {
     String       pluginId_ = "org.eclipse.jst.ws.consumption.ui";
     MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    
-    widgetRegistry_ = widgetRegistry;
-        
+            
     widgetRegistry.add( "ClientTestWidget", 
                         msgUtils.getMessage("PAGE_TITLE_WS_SAMPLE"),
                         msgUtils.getMessage("PAGE_DESC_WS_SAMPLE"),
@@ -142,42 +135,23 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
                           }
                         });
   }
-
-  private class InitClientRegistry extends SimpleCommand
-  {  
-    private WebServiceClientTypeRegistry clientRegistry_ = WebServiceClientTypeRegistry.getInstance();
-    
-    /* (non-Javadoc)
-     * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.provisional.env.core.common.Environment)
-     */
-    public Status execute(Environment environment) 
-    {
-      clientRegistry_.setDataMappingRegistry( dataMappingRegistry_ );
-      clientRegistry_.setWidgetRegistry( widgetRegistry_ );
-      clientRegistry_.setCanFinishRegistry( canFinishRegistry_ );
-      
-      return new SimpleStatus( "" );
-    }
-  }
   
-  private class InitializeProxyCommand extends SimpleCommand
+  private class InitializeProxyCommand extends EnvironmentalOperation
   {
     private IStructuredSelection selection_;
 	private TypeRuntimeServer typeRuntimeServer_;
-	private IContext          context_;
 	private String            project_;
 	private String            module_;
-	private String            moduleType_;
 	private String            earProject_;
 	private String            ear_;
 	private IWebServiceClient webServiceClient_;
 	private String            j2eeLevel_;
-	private ResourceContext   resourceContext_;
-	private boolean			  test_;
 	private String            wsdlURI_;
     
-	public Status execute(Environment environment_){
-	  Status status = new SimpleStatus( "" );	
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {    
+      Environment env = getEnvironment();
+	    Status status = new SimpleStatus( "" );	
 	  
       // Split up the project and module
       int index = module_.indexOf("/");
@@ -207,12 +181,13 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  {
 	    CreateServerCommand createServerCommand = new CreateServerCommand();
 	    createServerCommand.setServerFactoryid(clientInfo.getServerFactoryId());
-	    Status createServerStatus = createServerCommand.execute(environment_);
+      createServerCommand.setEnvironment( env );
+	    IStatus createServerStatus = createServerCommand.execute( null, null );
 	    if (createServerStatus.getSeverity()==Status.OK){
 	      clientInfo.setServerInstanceId(createServerCommand.getServerInstanceId());
 	    }
 	    else if (createServerStatus.getSeverity()==Status.ERROR){
-	      environment_.getStatusHandler().reportError(createServerStatus);
+	      env.getStatusHandler().reportError( EnvironmentUtils.convertIStatusToStatus(createServerStatus));
 	    }               
 	    
 	  }
@@ -230,10 +205,11 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
         command.setModule(module_);       
       }
 
-      status = command.execute(environment_);
+      command.setEnvironment( env );
+      status = EnvironmentUtils.convertIStatusToStatus(command.execute( null, null ));
       if (status.getSeverity()==Status.ERROR)
       {
-        environment_.getStatusHandler().reportError(status);
+        env.getStatusHandler().reportError(status);
       }     
 
 	  webServiceClient_ = new TestWebServiceClient(clientInfo);
@@ -295,12 +271,10 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  
 	public void setModuleType( String moduleType)
 	{
-	  moduleType_ = moduleType;
 	}
 	
 	public void setResourceContext( ResourceContext resourceContext )
 	{
-	  resourceContext_ = resourceContext;	  
 	}
 	
 	public void setInitialSelection( IStructuredSelection selection )
@@ -314,7 +288,6 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     public GenSampleRootCommandFragment()
     {
       add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(), "" ) );
-      add( new SimpleFragment( new InitClientRegistry(), "" ));
       add( new SimpleFragment( new ClientWizardWidgetOutputCommand(), "" ));
       add( new SimpleFragment( new WSDLSelectionWidgetDefaultingCommand(), ""));
       add( new SimpleFragment( new ClientRuntimeSelectionWidgetDefaultingCommand(), ""));

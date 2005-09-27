@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
-
 import javax.wsdl.Definition;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -31,7 +30,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.apache.wsil.Abstract;
 import org.apache.wsil.Description;
 import org.apache.wsil.Inspection;
@@ -45,7 +43,10 @@ import org.apache.wsil.extension.wsdl.Reference;
 import org.apache.wsil.extension.wsdl.ReferencedService;
 import org.apache.wsil.extension.wsdl.WSDLConstants;
 import org.apache.wsil.xml.XMLWriter;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
@@ -58,7 +59,7 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-public class AddWSDLToWSILCommand extends SimpleCommand
+public class AddWSDLToWSILCommand extends EnvironmentalOperation
 {
   public static final String ARG_WSIL = "-wsil";
   public static final String ARG_WSDL = "-wsdl";
@@ -77,7 +78,6 @@ public class AddWSDLToWSILCommand extends SimpleCommand
 
   public AddWSDLToWSILCommand()
   {
-    super("org.eclipse.wst.ws.internal.parser.wsil.AddWSDLToWSILCommand", "org.eclipse.wst.ws.internal.parser.wsil.AddWSDLToWSILCommand");
     resBundle_ = ResourceBundle.getBundle("org.eclipse.wst.ws.internal.parser.wsil.wsil");
     wwwAuthHandler_ = null;
     args_ = new String[0];
@@ -106,8 +106,10 @@ public class AddWSDLToWSILCommand extends SimpleCommand
    *         or a Status with a severity of less than <code>Status.ERROR</code>
    *         signifies success.
    */
-  public Status execute(Environment environment)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment environment = getEnvironment();
+    
     URIFactory uriFactory = environment.getURIFactory();
     // Parse arguments
     try
@@ -369,21 +371,6 @@ public class AddWSDLToWSILCommand extends SimpleCommand
     return new SimpleStatus(id, "", Status.OK, null);
   }
 
-  /**
-   * Re-executes the Command.
-   * 
-   * @param environment
-   *            The environment. Must not be null.
-   * @return A <code>Status</code> object indicating the degree to which the
-   *         <code>redo</code> method was successful. A value of <code>null</code>,
-   *         or a Status with a severity of less then <code>Status.ERROR</code>
-   *         signifies success.
-   */
-  public Status redo(Environment environment)
-  {
-    return execute(environment);
-  }
-
   private Definition parseWSDL(String wsdl, ArrayList wsdlService, ArrayList wsdlBinding, String httpUsername, String httpPassword) throws MalformedURLException, IOException, ParserConfigurationException, SAXException, WWWAuthenticationException
   {
     WebServicesParser wsParser = new WebServicesParser(wsdl);
@@ -449,14 +436,6 @@ public class AddWSDLToWSILCommand extends SimpleCommand
       else
         throw new IllegalArgumentsException(args_[i]);
     }
-  }
-
-  private QName parseQName(String qnameString)
-  {
-    int colonIndex = qnameString.indexOf(':');
-    String ns = (colonIndex != -1) ? qnameString.substring(0, colonIndex) : "";
-    String localpart = (colonIndex != -1) ? qnameString.substring(colonIndex + 1, qnameString.length()) : qnameString;
-    return new QName(ns, localpart);
   }
 
   private QName parseQName(javax.xml.namespace.QName qname)

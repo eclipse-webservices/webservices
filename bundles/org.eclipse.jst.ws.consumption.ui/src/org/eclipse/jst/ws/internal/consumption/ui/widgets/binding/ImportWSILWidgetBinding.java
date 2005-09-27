@@ -28,10 +28,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingReg
 
 public class ImportWSILWidgetBinding implements CommandWidgetBinding
 {
-  private CanFinishRegistry   canFinishRegistry;
-  private WidgetRegistry      widgetRegistry;
-  private DataMappingRegistry dataMappingRegistry;
-
   public ImportWSILWidgetBinding()
   {
   }
@@ -57,16 +53,13 @@ public class ImportWSILWidgetBinding implements CommandWidgetBinding
    */
   public void registerCanFinish(CanFinishRegistry canFinishRegistry)
   {
-    this.canFinishRegistry = canFinishRegistry;
   }
 
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry)
-  {
-    this.dataMappingRegistry = dataRegistry;
-    
+  {    
     // ImportWSILWidget
     dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", ImportWSILWidget.class);
     
@@ -81,7 +74,6 @@ public class ImportWSILWidgetBinding implements CommandWidgetBinding
   {
     String       pluginId_ = "org.eclipse.jst.ws.consumption.ui";
     MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    this.widgetRegistry = widgetRegistry;
 
     widgetRegistry.add("ImportWSILWidget", 
       msgUtils.getMessage("TITLE_WSIL_IMPORT"),

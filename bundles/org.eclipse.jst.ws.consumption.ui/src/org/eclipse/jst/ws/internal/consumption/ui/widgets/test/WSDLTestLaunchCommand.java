@@ -16,13 +16,15 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import java.util.List;
-
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.Command;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -38,7 +40,7 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
  *
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class WSDLTestLaunchCommand extends SimpleCommand
+public class WSDLTestLaunchCommand extends EnvironmentalOperation
 {
   private String testID; 
   private String launchedServiceTestName;
@@ -47,7 +49,6 @@ public class WSDLTestLaunchCommand extends SimpleCommand
   private String serverModule;
   private String wsdlURI;
   private MessageUtils msgUtils;
-  private boolean externalBrowser;
   private List endpoints;
   private IServer serviceExistingServer = null;
   private String serviceServerTypeID = null;
@@ -59,8 +60,9 @@ public class WSDLTestLaunchCommand extends SimpleCommand
 	msgUtils = new MessageUtils(pluginId + ".plugin", this);  	
   }
   
-  public Status execute(Environment env)
-  {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {    
+    Environment env = getEnvironment();
   	Status status = new SimpleStatus("");
   	
   	WebServiceTestRegistry testRegistry = WebServiceTestRegistry.getInstance();
@@ -85,10 +87,23 @@ public class WSDLTestLaunchCommand extends SimpleCommand
   private Status commandFactoryExecution(ICommandFactory commandFactory,Environment env)
   {
 	Status status = new SimpleStatus( "" );  	
-	while(commandFactory.hasNext()){ 
-	  Command command = commandFactory.getNextCommand();
-	  if (command != null)
-	    status = command.execute(env);
+	while(commandFactory.hasNext())
+  { 
+	  EnvironmentalOperation operation = commandFactory.getNextCommand();
+    
+	  if (operation != null)
+    {
+      try
+      {
+        operation.setEnvironment( env );
+	      status = EnvironmentUtils.convertIStatusToStatus(operation.execute( null, null ));
+      }
+      catch( Exception exc )
+      {
+        status = new SimpleStatus( "id", exc.getMessage(), Status.ERROR, exc );
+      }
+    }
+    
 	  if(status.getSeverity() == Status.ERROR){
 	    StatusHandler sHandler = env.getStatusHandler();
 		sHandler.reportError(status);
@@ -152,7 +167,6 @@ public class WSDLTestLaunchCommand extends SimpleCommand
 
   public void setExternalBrowser(boolean externalBrowser)
   {
-  	this.externalBrowser = externalBrowser;
   }
   
   public void setEndpoint(List endpoints)

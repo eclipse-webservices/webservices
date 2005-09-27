@@ -11,34 +11,38 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsil;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.wsil.AddWSDLToWSILCommand;
 
 
 
-public class AddWSDLToWSILWrapperCommand extends SimpleCommand
+public class AddWSDLToWSILWrapperCommand extends EnvironmentalOperation
 {
   private AddWSDLToWSILCommand command;
   private Arguments args;
 
   public AddWSDLToWSILWrapperCommand()
   {
-    super("org.eclipse.jst.ws.internal.consumption.ui.wsil.AddWSDLToWSILWrapperCommand", "org.eclipse.jst.ws.internal.consumption.ui.wsil.AddWSDLToWSILWrapperCommand");
   }
 
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
+    
     if (command == null)
       command = new AddWSDLToWSILCommand();
     if (!args.isEmpty())
     {
       command.setArguments(args.getStringArguments());
       command.setWWWAuthenticationHandler(new DialogWWWAuthentication(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell()));
-      return command.execute(env);
+      command.setEnvironment( env );
+      return command.execute( null, null);
     }
     return new SimpleStatus("");
   }

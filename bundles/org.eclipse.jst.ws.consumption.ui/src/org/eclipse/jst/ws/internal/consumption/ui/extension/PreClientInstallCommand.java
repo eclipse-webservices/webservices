@@ -11,14 +11,18 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateServerCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
-public class PreClientInstallCommand extends SimpleCommand 
+public class PreClientInstallCommand extends EnvironmentalOperation 
 {
   private IWebServiceClient webServiceClient_;
   private String            project_;
@@ -26,13 +30,16 @@ public class PreClientInstallCommand extends SimpleCommand
   private String            earProject_;
   private String            ear_;
   
-	  public Status execute(Environment environment) 
-	  {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {
+      Environment environment = getEnvironment();
+      
       if (webServiceClient_.getWebServiceClientInfo().getServerInstanceId()==null)
       {
         CreateServerCommand createServerCommand = new CreateServerCommand();
         createServerCommand.setServerFactoryid(webServiceClient_.getWebServiceClientInfo().getServerFactoryId());
-        Status createServerStatus = createServerCommand.execute(environment);
+        createServerCommand.setEnvironment( environment );
+        IStatus createServerStatus = createServerCommand.execute(null, null);
         if (createServerStatus.getSeverity()==Status.OK)
         {
           webServiceClient_.getWebServiceClientInfo().setServerInstanceId(createServerCommand.getServerInstanceId());
@@ -41,7 +48,7 @@ public class PreClientInstallCommand extends SimpleCommand
         {
           if (createServerStatus.getSeverity()==Status.ERROR)
           {
-            environment.getStatusHandler().reportError(createServerStatus);
+            environment.getStatusHandler().reportError(EnvironmentUtils.convertIStatusToStatus(createServerStatus));
           }               
           return createServerStatus;
         }
@@ -62,10 +69,11 @@ public class PreClientInstallCommand extends SimpleCommand
         command.setModule(module_);       
       }
 
-      Status status = command.execute(environment);
+      command.setEnvironment( environment );
+      IStatus status = command.execute( null, null );
       if (status.getSeverity()==Status.ERROR)
       {
-        environment.getStatusHandler().reportError(status);
+        environment.getStatusHandler().reportError( EnvironmentUtils.convertIStatusToStatus(status));
       }     
       return status;
 	  }

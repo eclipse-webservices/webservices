@@ -11,9 +11,11 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import java.util.Map;
-
 import org.eclipse.core.resources.IProject;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -22,7 +24,7 @@ import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
-public class WSDLSelectionOutputCommand extends SimpleCommand
+public class WSDLSelectionOutputCommand extends EnvironmentalOperation
 {
   private WebServicesParser webServicesParser;
   private String wsdlURI;
@@ -99,8 +101,10 @@ public class WSDLSelectionOutputCommand extends SimpleCommand
     this.webServicesParser = webServicesParser;
   }
 
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
+    
     MessageUtils msgUtils = new MessageUtils("org.eclipse.jst.ws.consumption.ui.plugin", this);    
     if (wsdlURI != null && getWebServicesParser().getWSDLDefinition(wsdlURI) != null) {
       Status status = new SimpleStatus("");     

@@ -103,7 +103,7 @@ public class JavaMofFieldVisitor implements Visitor
     JavaMofReflectionCommand javaMofRef = new JavaMofReflectionCommand();
     javaMofRef.setProxyBean(field.getJavaType().getQualifiedName());
     javaMofRef.setClientProject(getProject());
-    javaMofRef.execute(null);
+    javaMofRef.execute(null, null);
     if(javaMofRef.getJavaClass() instanceof JavaClass){
       if(TypeFactory.recognizedBean(javaMofRef.getJavaClass().getJavaName())) return true;
       return defaultCheck((JavaClass)javaMofRef.getJavaClass());

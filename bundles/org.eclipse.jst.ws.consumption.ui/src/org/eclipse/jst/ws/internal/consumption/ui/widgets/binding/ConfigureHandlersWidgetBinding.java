@@ -36,11 +36,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingReg
 
 public class ConfigureHandlersWidgetBinding implements CommandWidgetBinding {
 
-  private CanFinishRegistry canFinishRegistry_;
-
-  private WidgetRegistry widgetRegistry_;
-
-  private DataMappingRegistry dataMappingRegistry_;
 
   public ConfigureHandlersWidgetBinding() {
 
@@ -66,7 +61,6 @@ public class ConfigureHandlersWidgetBinding implements CommandWidgetBinding {
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerCanFinish(org.eclipse.wst.command.env.ui.widgets.CanFinishRegistry)
    */
   public void registerCanFinish(CanFinishRegistry canFinishRegistry) {
-    canFinishRegistry_ = canFinishRegistry;
   }
 
   /*
@@ -75,7 +69,6 @@ public class ConfigureHandlersWidgetBinding implements CommandWidgetBinding {
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry) {
-    dataMappingRegistry_ = dataRegistry;
 
     // Map client-side widgets to commands
     dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class, "Handlers", ConfigClientHandlersTableWidget.class, "WsRefsToHandlers", null);
@@ -162,7 +155,6 @@ public class ConfigureHandlersWidgetBinding implements CommandWidgetBinding {
     }
 
     public void registerCanFinish(CanFinishRegistry canFinishRegistry) {
-      canFinishRegistry_ = canFinishRegistry;
     }
   }
 

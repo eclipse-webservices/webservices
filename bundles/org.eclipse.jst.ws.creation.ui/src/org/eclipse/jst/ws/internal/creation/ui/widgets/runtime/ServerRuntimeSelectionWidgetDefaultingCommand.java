@@ -11,10 +11,13 @@
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
 import java.util.Vector;
-
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -54,7 +57,6 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   private String serviceComponentName_;
   private String serviceEarComponentName_;
   private String serviceComponentType_;
-  private IStructuredSelection initialSelection_;
   private IProject initialProject_;
   private String initialComponentName_;
   private String serviceJ2EEVersion_;
@@ -65,11 +67,13 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     super();
   }
   
-  public Status execute(Environment env)
-  {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {    
+    Environment env = getEnvironment();
+    
     try
     {
-     Status clientSideStatus = super.execute(env);
+     Status clientSideStatus = EnvironmentUtils.convertIStatusToStatus( super.execute(null, null));
      if (clientSideStatus.getSeverity()==Status.ERROR)
      {
        return clientSideStatus;
@@ -802,7 +806,6 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   }
   public void setInitialSelection(IStructuredSelection selection)
   {
-    initialSelection_ = selection;
   }
   
   public void setInitialProject(IProject initialProject)

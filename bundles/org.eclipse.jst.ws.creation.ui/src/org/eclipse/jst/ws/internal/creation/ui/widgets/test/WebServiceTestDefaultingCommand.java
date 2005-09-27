@@ -18,12 +18,14 @@ package org.eclipse.jst.ws.internal.creation.ui.widgets.test;
 
 import java.util.Enumeration;
 import java.util.Vector;
-
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
@@ -36,15 +38,17 @@ import org.eclipse.wst.command.internal.provisional.env.core.selection.Selection
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
-public class WebServiceTestDefaultingCommand extends SimpleCommand 
+public class WebServiceTestDefaultingCommand extends EnvironmentalOperation 
 {
   
   private SelectionList serviceTestFacilities;	
   private Environment environment;
   private String testID;
   
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
+    
   	ScenarioContext scenarioContext = WebServicePlugin.getInstance().getScenarioContext().copy();
   	testID = scenarioContext.getNonJavaTestService();
   	String[] testTypes = scenarioContext.getWebServiceTestTypes();

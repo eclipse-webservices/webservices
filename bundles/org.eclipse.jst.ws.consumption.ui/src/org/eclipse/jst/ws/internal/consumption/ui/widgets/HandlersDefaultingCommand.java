@@ -10,13 +10,15 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.internal.webservice.WebServiceNavigatorGroupType;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.wst.wsdl.Service;
 
 
 /**
@@ -24,14 +26,14 @@ import org.eclipse.wst.wsdl.Service;
  * 
  * Determine if Handlers belongs to service or client side
  */
-public class HandlersDefaultingCommand extends AbstractHandlersWidgetDefaultingCmd {
-
-  private MessageUtils msgUtils_;
-
+public class HandlersDefaultingCommand extends AbstractHandlersWidgetDefaultingCmd 
+{
   private boolean isClientHandler_ = false;
   private boolean isServiceHandler_ = false;
 
-  public Status execute(Environment env) {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {    
+    Environment env = getEnvironment();
     String pluginId = "org.eclipse.jst.ws.consumption.ui";
     MessageUtils msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     Status status = new SimpleStatus("");
@@ -42,7 +44,6 @@ public class HandlersDefaultingCommand extends AbstractHandlersWidgetDefaultingC
 
         if (obj instanceof WebServiceNavigatorGroupType) {
           WebServiceNavigatorGroupType wsngt = (WebServiceNavigatorGroupType) obj;
-          Service service = (Service)wsngt.getWsdlService();
           if (wsngt.getWsdlService()!=null){
           	isServiceHandler_ = true;
           }

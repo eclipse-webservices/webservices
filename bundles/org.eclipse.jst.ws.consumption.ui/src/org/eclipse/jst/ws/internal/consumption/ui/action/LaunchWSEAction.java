@@ -41,7 +41,8 @@ public class LaunchWSEAction implements IWorkbenchWindowActionDelegate
 		new LaunchOption(LaunchOptions.DEFAULT_FAVORITES_LOCATION,defaultFavoritesLocation)
 	};
     cmd.setLaunchOptions(launchOptions);
-	cmd.execute( environment );
+    cmd.setEnvironment( environment );
+	  cmd.execute( null, null );
   }
   
   /* (non-Javadoc)

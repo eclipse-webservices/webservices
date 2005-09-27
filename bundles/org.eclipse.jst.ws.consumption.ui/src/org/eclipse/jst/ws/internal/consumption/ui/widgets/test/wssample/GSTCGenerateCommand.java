@@ -4,7 +4,10 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
@@ -16,14 +19,15 @@ import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.TestClientFileG
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.GeneratePageCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.JavaToModelCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.CopyWebServiceUtilsJarCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
 
-public class GSTCGenerateCommand extends SimpleCommand {
+public class GSTCGenerateCommand extends EnvironmentalOperation 
+{
 
   public static String INPUT       = "Input.jsp";
   public static String TEST_CLIENT = "TestClient.jsp";
@@ -38,13 +42,15 @@ public class GSTCGenerateCommand extends SimpleCommand {
   	this.testInfo = testInfo;
   }
 	
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Status status = new SimpleStatus( "" );
+    Environment env = getEnvironment();
+    IStatus status = new SimpleStatus( "" );
 	CopyWebServiceUtilsJarCommand copy = new CopyWebServiceUtilsJarCommand();    
 	copy.setSampleProject(testInfo.getGenerationProject());
     copy.setSampleComponent(testInfo.getGenerationModule());
-	status = copy.execute(env);
+    copy.setEnvironment( env );
+	status = copy.execute( null, null);
 	if (status.getSeverity() == Status.ERROR) return status;
 	setJSPFolder();
 	status = createModel(env);
@@ -81,9 +87,10 @@ public class GSTCGenerateCommand extends SimpleCommand {
 	jtmc.setMethods(testInfo.getMethods());
 	jtmc.setClientProject(testInfo.getClientProject());
 	jtmc.setProxyBean(testInfo.getProxyBean());
-	Status status = jtmc.execute(env);
+	jtmc.setEnvironment( env );
+	Status status = EnvironmentUtils.convertIStatusToStatus(jtmc.execute( null, null));
 	if (status.getSeverity() == Status.ERROR) return status;
-    proxyModel = jtmc.getDataModel();
+    proxyModel = jtmc.getJavaDataModel();
 	return status;
   } 
   
@@ -91,10 +98,9 @@ public class GSTCGenerateCommand extends SimpleCommand {
    * Generate the four jsps that make up this
    * sample app.
    */
-   private Status generatePages(Environment env)
+   private IStatus generatePages(Environment env)
    {
-   	Status status = new SimpleStatus( "" );
-	IProject sampleIProject = ProjectUtilities.getProject(testInfo.getClientProject()); 
+   	IStatus status = new SimpleStatus( "" );
 	IPath fDestinationFolderPath = new Path(jspfolder);
     fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
     IWorkspaceRoot fWorkspace = ResourcesPlugin.getWorkspace().getRoot();
@@ -104,7 +110,8 @@ public class GSTCGenerateCommand extends SimpleCommand {
      GeneratePageCommand gpcTest = new GeneratePageCommand(EnvironmentUtils.getResourceContext(env), proxyModel,
        new TestClientFileGenerator(INPUT,METHOD,RESULT),fileTest);
      //gpcTest.setStatusMonitor(getStatusMonitor());
-     status = gpcTest.execute(env);
+     gpcTest.setEnvironment( env );
+     status = gpcTest.execute( null, null );
      if (status.getSeverity() == Status.ERROR )
      	return status;
      
@@ -116,7 +123,8 @@ public class GSTCGenerateCommand extends SimpleCommand {
      GeneratePageCommand gpcInput = new GeneratePageCommand(EnvironmentUtils.getResourceContext(env), proxyModel,
        inputGenerator,fileInput);
      //gpcInput.setStatusMonitor(getStatusMonitor());
-     status = gpcInput.execute(env);
+     gpcInput.setEnvironment( env );
+     status = gpcInput.execute( null, null );
      if (status.getSeverity() == Status.ERROR )
      	return status;
 
@@ -128,7 +136,8 @@ public class GSTCGenerateCommand extends SimpleCommand {
      GeneratePageCommand gpcMethod = new GeneratePageCommand(EnvironmentUtils.getResourceContext(env), proxyModel,
        methodGenerator,fileMethod);
      //gpcMethod.setStatusMonitor(getStatusMonitor());
-     status = gpcMethod.execute(env);
+     gpcMethod.setEnvironment( env );
+     status = gpcMethod.execute( null, null );
      if (status.getSeverity() == Status.ERROR )
      	return status;    
 
@@ -141,7 +150,8 @@ public class GSTCGenerateCommand extends SimpleCommand {
      rfg.setSetEndpointMethod(testInfo.getSetEndpointMethod());
      GeneratePageCommand gpcResult = new GeneratePageCommand(EnvironmentUtils.getResourceContext(env), proxyModel,
        rfg,fileResult);
-     status = gpcResult.execute(env);
+     gpcResult.setEnvironment( env );
+     status = gpcResult.execute( null, null );
      
      return status;
    }

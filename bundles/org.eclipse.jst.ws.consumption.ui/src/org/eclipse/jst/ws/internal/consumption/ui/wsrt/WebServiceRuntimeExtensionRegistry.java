@@ -18,7 +18,6 @@ import java.util.Hashtable;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceTypeImpl;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 public class WebServiceRuntimeExtensionRegistry
@@ -70,23 +69,7 @@ public class WebServiceRuntimeExtensionRegistry
     webServiceRuntimes_ = new Hashtable();
 
     IExtensionRegistry reg = Platform.getExtensionRegistry();
-  
-    //Load WebServiceTypes
-    IConfigurationElement[] config = reg.getConfigurationElementsFor(
-                                     "org.eclipse.jst.ws.consumption.ui",
-                                     "webServiceServerRuntimeType");
     
-    for(int idx=0; idx<config.length; idx++) 
-    {
-      IConfigurationElement elem = config[idx];
-
-        if (elem.getName().equals("webServiceType"))
-        {
-          WebServiceTypeImpl wst = new WebServiceTypeImpl(elem);
-          webServiceTypes_.put(elem.getAttribute("id"), wst);
-        }        
-    }
-
     //Load WebServiceImpls
     IConfigurationElement[] wsImplExts = reg.getConfigurationElementsFor(
         "org.eclipse.jst.ws.consumption.ui", "wsImpl");
@@ -127,7 +110,7 @@ public class WebServiceRuntimeExtensionRegistry
 
         if (elem.getName().equals("serviceType"))
         {
-          ServiceType st = new ServiceType(elem,webServiceImpls_,webServiceTypes_);
+          ServiceType st = new ServiceType(elem,webServiceImpls_);
           serviceTypes_.put(elem.getAttribute("id"), st);
         }        
     }

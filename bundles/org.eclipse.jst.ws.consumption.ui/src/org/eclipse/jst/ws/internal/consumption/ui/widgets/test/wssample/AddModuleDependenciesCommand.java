@@ -11,9 +11,11 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
 import java.io.IOException;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -22,18 +24,19 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.commonarchivecore.internal.helpers.ArchiveManifest;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
 
-public class AddModuleDependenciesCommand extends SimpleCommand
+public class AddModuleDependenciesCommand extends EnvironmentalOperation
 {
   
   private TestInfo testInfo;	
@@ -53,8 +56,9 @@ public class AddModuleDependenciesCommand extends SimpleCommand
    * Execute WebServerDefaultingTask Set the default server name and id given a
    * deployable.
    */
-  public Status execute(Environment env)
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    Environment env = getEnvironment();
     try
     {
       createSampleProjects(env);
@@ -122,7 +126,8 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 	    createEAR.setServerFactoryId(testInfo.getClientServerTypeID());
 	    createEAR.setModuleType(CreateModuleCommand.EAR);
 	    createEAR.setJ2eeLevel(J2EEUtils.getJ2EEVersionAsString(clientIProject,testInfo.getClientModule()));
-		Status status = createEAR.execute(env);
+      createEAR.setEnvironment( env );
+		  Status status = EnvironmentUtils.convertIStatusToStatus(createEAR.execute( null, null ) );
 	    if (status.getSeverity()==Status.ERROR)
         {
           env.getStatusHandler().reportError(status);     
@@ -132,7 +137,8 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 		modToServer.setModule(sampleEARModule);
 		modToServer.setProject(sampleEARProject);
 		modToServer.setServerInstanceId(testInfo.getClientExistingServer().getId());
-		status = modToServer.execute(env);
+    modToServer.setEnvironment( env );
+		status = EnvironmentUtils.convertIStatusToStatus(modToServer.execute( null, null ));
 		if (status.getSeverity()==Status.ERROR)
 	    {
 	      env.getStatusHandler().reportError(status);     
@@ -150,7 +156,8 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 		createSample.setServerInstanceId(testInfo.getClientExistingServer().getId());
         createSample.setServerFactoryId(testInfo.getClientServerTypeID());
         createSample.setJ2eeLevel(J2EEUtils.getJ2EEVersionAsString(clientIProject,testInfo.getClientModule()));
-		Status status = createSample.execute(env);
+        createSample.setEnvironment( env );
+		Status status = EnvironmentUtils.convertIStatusToStatus(createSample.execute( null, null ));
       
 	   if (testInfo.getClientNeedEAR()) {
 //		Associate the client module and service EAR
@@ -159,7 +166,8 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 	    associateCommand.setModule(testInfo.getGenerationModule());
 	    associateCommand.setEARProject(sampleEARProject);
 	    associateCommand.setEar(sampleEARModule);
-	    status = associateCommand.execute(env);
+      associateCommand.setEnvironment( env );
+	    status = EnvironmentUtils.convertIStatusToStatus(associateCommand.execute( null, null ));
 	    if (status.getSeverity()==Status.ERROR)
 	    {
 	      env.getStatusHandler().reportError(status);     
@@ -168,7 +176,8 @@ public class AddModuleDependenciesCommand extends SimpleCommand
 		
 		StartServerCommand startServer = new StartServerCommand(false, true);
 		startServer.setServerInstanceId(testInfo.getClientExistingServer().getId());
-		status = startServer.execute(env);
+    startServer.setEnvironment( env );
+		status = EnvironmentUtils.convertIStatusToStatus(startServer.execute( null, null ));
 	    if (status.getSeverity()==Status.ERROR)
 	    {
 	      env.getStatusHandler().reportError(status);     

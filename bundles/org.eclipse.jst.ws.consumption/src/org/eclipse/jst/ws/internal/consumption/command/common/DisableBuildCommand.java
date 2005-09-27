@@ -11,8 +11,11 @@
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -20,13 +23,10 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 
 
-public class DisableBuildCommand extends SimpleCommand 
+public class DisableBuildCommand extends EnvironmentalOperation 
 {
   private MessageUtils msgUtils_;
-  private Model model_;
   private ValidationManager manager_;
-  private String LABEL = "TASK_LABEL_WEBSERVICE_DISABLE_BUILD";
-  private String DESCRIPTION = "TASK_DESC_WEBSERVICE_DISABLE_BUILD";
   /**
    * CTOR;
    */
@@ -34,15 +34,15 @@ public class DisableBuildCommand extends SimpleCommand
   {
     String pluginId = "org.eclipse.jst.ws.consumption";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-
-    setName(msgUtils_.getMessage(LABEL));
-    setDescription(msgUtils_.getMessage(DESCRIPTION));
   }
 
   /**
    * Execute the command
    */
-  public Status execute(Environment env)  {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {    
+    Environment env = getEnvironment();
+    
     Status status = new SimpleStatus("");
 
     env.getProgressMonitor().report(msgUtils_.getMessage("TASK_DESC_WEBSERVICE_DISABLE_BUILD"));
@@ -59,7 +59,6 @@ public class DisableBuildCommand extends SimpleCommand
    * @param model
    */
   public void setModel(Model model) {
-    this.model_ = model;
   }  
   
   

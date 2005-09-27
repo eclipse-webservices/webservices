@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.fragment.ExtensionFragment;
 
@@ -19,7 +18,7 @@ public class ServerExtensionFragment extends ExtensionFragment
 {  
   public ServerExtensionFragment()
   {
-    setExtensionRegistry( WebServiceServerRuntimeTypeRegistry.getInstance()  );
+
   }
   
   protected ServerExtensionFragment( ServerExtensionFragment fragment )

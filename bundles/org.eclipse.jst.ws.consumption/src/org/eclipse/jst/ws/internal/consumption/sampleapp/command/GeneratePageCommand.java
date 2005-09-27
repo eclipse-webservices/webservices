@@ -14,13 +14,14 @@ package org.eclipse.jst.ws.internal.consumption.sampleapp.command;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.consumption.codegen.Generator;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
@@ -33,28 +34,20 @@ import org.eclipse.wst.ws.internal.datamodel.Model;
  * Creation date: (4/10/2001 12:41:48 PM)
  * @author: Gilbert Andrews
  */
-public class GeneratePageCommand extends SimpleCommand {
+public class GeneratePageCommand extends EnvironmentalOperation 
+{
 		
-private String LABEL = "GeneratePageCommand";
-private String DESCRIPTION = "Generate code based on the model";
-private MessageUtils msgUtils_;
-
 private Model model_;
 private Generator fGenerator;
 private IFile fIFile;
 private ResourceContext resourceContext_;
 private StringBuffer fStringBuffer;
 
-private Element rootElement_;
 /**
  * Build constructor comment.
  */
 public GeneratePageCommand()
 {
-	String pluginId = "org.eclipse.jst.ws.consumption";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-	setDescription(DESCRIPTION);
-	setName(LABEL);  		
 }
 
 /**
@@ -66,18 +59,13 @@ public GeneratePageCommand()
 */
 public GeneratePageCommand(ResourceContext context, Model model, Generator generator, IFile file)
 {
-  String pluginId = "org.eclipse.jst.ws.consumption";
-  msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-  setDescription(DESCRIPTION);
-  setName(LABEL);	
-  
   model_ = model;
   fGenerator = generator;
   fIFile = file;
   resourceContext_ = context;
 }
 
-public Model getDataModel()
+public Model getJavaDataModel()
 {
   return model_;
 }
@@ -85,8 +73,10 @@ public Model getDataModel()
 /**
  *
  */
-public Status execute(Environment env)
+public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 {
+  Environment env = getEnvironment();
+  
   Status status = new SimpleStatus( "" );
   try {
     fGenerator.visit(model_.getRootElement());
@@ -108,7 +98,6 @@ public Status execute(Environment env)
 
 public void setRootElement(Element rootElement)
 {
-  rootElement_ = rootElement;
 }
 
 }

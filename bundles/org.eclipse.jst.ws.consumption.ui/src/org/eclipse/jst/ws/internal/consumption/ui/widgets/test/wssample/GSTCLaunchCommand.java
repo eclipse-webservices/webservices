@@ -3,11 +3,14 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.PublishProjectCommand;
@@ -16,7 +19,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUI
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -25,7 +28,8 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
 import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
 
-public class GSTCLaunchCommand extends SimpleCommand {
+public class GSTCLaunchCommand extends EnvironmentalOperation
+{
 
   public static String INPUT       = "Input.jsp";
   public static String TEST_CLIENT = "TestClient.jsp";
@@ -42,9 +46,12 @@ public class GSTCLaunchCommand extends SimpleCommand {
 	msgUtils = new MessageUtils(pluginId + ".plugin", this);
   }
 		
-  public Status execute(Environment env)
-  {
-      setJSPFolder();
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {    
+    Environment env = getEnvironment();
+    
+    setJSPFolder();
+    
 	  return launchSample(env);
   }
   private void setJSPFolder(){
@@ -76,12 +83,14 @@ public class GSTCLaunchCommand extends SimpleCommand {
     ppc.setServerTypeID(testInfo.getClientServerTypeID());
     ppc.setExistingServer(testInfo.getClientExistingServer());
     ppc.setProject(testInfo.getGenerationProject());
-	status = ppc.execute(env);
+    ppc.setEnvironment( env );
+	status = EnvironmentUtils.convertIStatusToStatus(ppc.execute( null, null ));
 
 	StartServerCommand serverCommand = new StartServerCommand( true, true );
 	serverCommand.setServerInstanceId( testInfo.getClientExistingServer().getId() );
+  serverCommand.setEnvironment( env );
 	
-	status = serverCommand.execute(env);
+	status = EnvironmentUtils.convertIStatusToStatus(serverCommand.execute(null, null));
 	if (status.getSeverity() == Status.ERROR) return status;
 	
 	IProject sampleProject = ProjectUtilities.getProject(testInfo.getGenerationProject());

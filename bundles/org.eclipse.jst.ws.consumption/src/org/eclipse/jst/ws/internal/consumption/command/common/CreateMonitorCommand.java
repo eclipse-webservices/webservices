@@ -11,21 +11,25 @@
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.internal.IMonitoredServerPort;
-import org.eclipse.wst.server.core.internal.ServerMonitorManager;
 import org.eclipse.wst.server.core.internal.IServerMonitorManager;
+import org.eclipse.wst.server.core.internal.ServerMonitorManager;
 
-public class CreateMonitorCommand extends SimpleCommand {
+public class CreateMonitorCommand extends EnvironmentalOperation
+{
 
   private static final String WEB_SERVICES = "Web services";
 
@@ -36,11 +40,12 @@ public class CreateMonitorCommand extends SimpleCommand {
   private Integer monitoredPort;
 
   public CreateMonitorCommand() {
-    super("org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand",
-        "org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand");
   }
 
-  public Status execute(Environment env) {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {
+    Environment env = getEnvironment();
+    
     if (monitorService != null && monitorService.booleanValue()) {
       IServer server = ServerCore.findServer(serviceServerInstanceId);
       if (server != null) {

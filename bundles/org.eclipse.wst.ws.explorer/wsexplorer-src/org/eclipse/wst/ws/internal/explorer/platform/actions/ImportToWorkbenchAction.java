@@ -16,7 +16,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -25,14 +24,14 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormTool;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
 import org.eclipse.wst.ws.internal.wsil.AddWSDLToWSILCommand;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 
 public abstract class ImportToWorkbenchAction extends FormAction {
   private IWorkspaceRoot iWorkspaceRoot_;
@@ -45,7 +44,7 @@ public abstract class ImportToWorkbenchAction extends FormAction {
     }
 
     protected boolean processParsedResults(MultipartFormDataParser parser) throws MultipartFormDataException {
-        FormTool formTool = getSelectedFormTool();
+        getSelectedFormTool();
         MessageQueue msgQueue = controller_.getCurrentPerspective().getMessageQueue();
         boolean inputsValid = true;
         String workbenchProjectName = parser.getParameter(ActionInputs.WORKBENCH_PROJECT_NAME);
@@ -205,7 +204,9 @@ public abstract class ImportToWorkbenchAction extends FormAction {
             args[3] = wsdlURL;
             args[4] = AddWSDLToWSILCommand.ARG_RESOLVE_WSDL;
             command.setArguments(args);
-            command.execute(new EclipseEnvironment(null, null, null, null));
+            Environment env = new EclipseEnvironment(null, null, null, null);
+            command.setEnvironment( env );
+            command.execute( null, null );
             msgQueue.addMessage(controller_.getMessage("MSG_INFO_IMPORT_SERVICE_REF_TO_WSIL_SUCCESSFUL", importedWSILFileName));
         }
         return true;

@@ -11,17 +11,18 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
 import java.util.Vector;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.consumption.ui.common.ClientServerSelectionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ServerSelectionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
@@ -29,7 +30,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRu
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeInfo;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommand;
+import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
@@ -39,9 +40,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.selection.Selection
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IRuntime;
-import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.IServerType;
-import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
@@ -52,7 +50,7 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceState;
 import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
 
-public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
+public class ClientRuntimeSelectionWidgetDefaultingCommand extends EnvironmentalOperation
 {   
   protected MessageUtils msgUtils_;
   // clientRuntimeJ2EEType contains the default client runtime and J2EE level based on the initial selection.
@@ -65,7 +63,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   private String clientComponentName_;
   private String clientEarComponentName_;
   
-  private Environment       environment_;
   private IContext          context_;
   private ISelection        selection_;
   private IWebServiceClient webServiceClient_;
@@ -82,10 +79,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   //1. The containing project contains the Web service for which we are trying to create a client
   //2. The containing project has a J2EE level, server target, and project type combination which
   //   is not supported by any of the registered Web service runtimes.
-  private IStructuredSelection clientInitialSelection_;
   private IProject clientInitialProject_;
   private String clientInitialComponentName_;
-  private IStructuredSelection initialInitialSelection_;
   private IProject initialInitialProject_;
   private String initialInitialComponentName_;
 
@@ -157,12 +152,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   {
     return webServiceClient_;  
   }
-  
-  public Environment getEnvironment()
-  {
-    return environment_;
-  }
-  
+    
   public IContext getContext()
   {
     return context_;
@@ -176,8 +166,10 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.provisional.env.core.common.Environment)
    */
-  public Status execute(Environment environment)
-  {
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+  {    
+    Environment env = getEnvironment();
+    
     try
     {
         	
@@ -230,19 +222,19 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
       Status serverStatus = setClientDefaultServer();
       if (serverStatus.getSeverity()== Status.ERROR)
       {
-          environment.getStatusHandler().reportError(serverStatus);
+          env.getStatusHandler().reportError(serverStatus);
           return serverStatus;
       }
       updateClientEARs();
       
       //Calculate default IWebServiceClient
-      setDefaultsForExtension(environment);
+      setDefaultsForExtension(env);
       return new SimpleStatus("");
     } catch (Exception e)
     {
       //Catch all Exceptions in order to give some feedback to the user
       Status errorStatus = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED",new String[]{e.getMessage()}),Status.ERROR, e);
-      environment.getStatusHandler().reportError(errorStatus);
+      env.getStatusHandler().reportError(errorStatus);
       return errorStatus;
     }
     
@@ -758,77 +750,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
       //clientEarComponentName_ = ResourceUtils.getDefaultClientEARComponentName();
     }    
   }
-  
-  private void setClientDefaultServerNew()
-  {
-    String initialClientProjectName = runtimeClientTypes_.getChoice().getChoice().getList().getSelection();
-    IRuntime runtimeTarget = ServerSelectionUtils.getRuntimeTarget(initialClientProjectName);
-    String runtimeTargetId = null;
-    if (runtimeTarget != null)
-    {
-      runtimeTargetId = runtimeTarget.getRuntimeType().getId();
-      //Pick a compatible existing server if one exists.
-      IServer[] servers = ServerSelectionUtils.getCompatibleExistingServers(runtimeTarget);
-      if (servers!=null && servers.length>0)
-      {
-        for (int i=0; i<servers.length; i++)
-        {
-          String thisFactoryId = servers[0].getServerType().getId();
-          //if (WebServiceRuntimeExtensionUtils.doesRuntimeSupportServer(clientIds_.getRuntimeId(), thisFactoryId))
-          //{
-            //Pick this server and return.
-            clientIds_.setServerId(thisFactoryId);
-            clientIds_.setServerInstanceId(servers[0].getId());
-            return;
-          //}
-        }
-      }
-      
-      //No compatible existing server, set the factory id to something the runtime supports
-      String[] factoryIds = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getServerFactoryIds();
-      if (factoryIds!=null && factoryIds.length>0)
-      {
-        for (int i=0; i<factoryIds.length; i++)
-        {
-          IServerType serverType = ServerCore.findServerType(factoryIds[i]);
-          if (serverType != null)
-          {
-            String serverRuntimeTypeId = serverType.getRuntimeType().getId();            
-            if (serverRuntimeTypeId.equals(runtimeTargetId))
-            {
-              //Found a match
-              clientIds_.setServerId(factoryIds[i]);
-              return;
-            }
-          }
-        }        
-      }
-      else
-      {
-        //Runtime does not specify any server factory ids
-        IServerType[] serverTypes = ServerCore.getServerTypes();
-        clientIds_.setServerId(serverTypes[0].getId());
-      }
-      
-    }
-    else
-    {
-      // The project has no server target so pick a server factory id that is supported by the runtime
-      String[] fids = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getServerFactoryIds();
-      if (fids!=null && fids.length>0)
-      {
-        clientIds_.setServerId(fids[0]);  
-      }
-      else
-      {
-        //Runtime does not specify any server factory ids
-        IServerType[] serverTypes = ServerCore.getServerTypes();
-        clientIds_.setServerId(serverTypes[0].getId());        
-      }
-            
-    }        
-  }
-  
+    
   private Status setClientDefaultServer()
   {
 	Status status = new SimpleStatus("");
@@ -973,7 +895,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   	if (clientProject != null && clientProject.exists())
   	{
   	  //Get the runtime target on the serviceProject
-  	  IRuntime clientTarget = ClientServerSelectionUtils.getRuntimeTarget(clientProjectName);
+  	  IRuntime clientTarget = ServerSelectionUtils.getRuntimeTarget(clientProjectName);
   	  String j2eeVersion = String.valueOf(J2EEUtils.getJ2EEVersion(clientProject, clientComponentName_));
   	  if (clientTarget != null)
   	  {
@@ -1022,7 +944,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
       wsInfo.setWebServiceRuntimeId(clientIds_.getRuntimeId());
       wsInfo.setWsdlURL(wsdlURI_);
 
-      environment_ = env;
       webServiceClient_ = wsrt.getWebServiceClient(wsInfo);
       WebServiceScenario scenario = WebServiceScenario.CLIENT_LITERAL;
       if (resourceContext_ != null)
@@ -1036,7 +957,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
   
   public void setClientInitialSelection(IStructuredSelection selection)
   {
-    clientInitialSelection_ = selection;
     if (clientInitialProject_ == null)
     {
       clientInitialProject_ = getProjectFromInitialSelection(selection);
@@ -1059,7 +979,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends SimpleCommand
    */
   public void setInitialInitialSelection(IStructuredSelection initialInitialSelection)
   {
-    initialInitialSelection_ = initialInitialSelection;
     initialInitialProject_ = getProjectFromInitialSelection(initialInitialSelection);
     initialInitialComponentName_ = getComponentNameFromInitialSelection(initialInitialSelection);
   }

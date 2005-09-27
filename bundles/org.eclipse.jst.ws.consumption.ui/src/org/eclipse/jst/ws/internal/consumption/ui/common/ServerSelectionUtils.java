@@ -27,7 +27,6 @@ import org.eclipse.jst.ws.internal.consumption.common.IServerDefaulter;
 import org.eclipse.jst.ws.internal.consumption.common.ServerInfo;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeTypeRegistry;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeInfo;
 import org.eclipse.wst.server.core.IRuntime;
@@ -251,29 +250,6 @@ public class ServerSelectionUtils
     return null;
   }
   
-  /*
-   * Given a list of existing servers, this returns the first one that is supported
-   * by the given Web service type id. 
-   * Returns null of there are no supported servers in the array.
-   * @deprecated
-   */
-  /*
-  public static IServer getFirstSupportedServer(IServer[] servers, String typeId)
-  {
-    WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
-    if (servers != null && servers.length > 0) {
-      for (int i = 0; i < servers.length; i++)
-      {
-        String serverFactoryId = servers[i].getServerType().getId();
-        if (wssrtRegistry.isServerSupportedForChosenType(typeId, serverFactoryId))
-        {
-          return servers[i];
-        }
-      }
-    }
-    return null;
-  }  
-  */
   
   /*
    * Returns the factory id of a server type compatible with the Web service type and the runtime target.
@@ -282,8 +258,6 @@ public class ServerSelectionUtils
   public static String getFirstSupportedServerType(IRuntime runtimeTarget, String webServiceRuntimeId)
   {
     String runtimeId = runtimeTarget.getRuntimeType().getId();
-    //WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
-    //String[] serverFactoryIds = wssrtRegistry.getServerFactoryIdsByType(typeId);
     WebServiceRuntimeInfo wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(webServiceRuntimeId);
     String[] serverFactoryIds = wsrt.getServerFactoryIds();
     for (int i=0; i<serverFactoryIds.length; i++)
@@ -300,31 +274,6 @@ public class ServerSelectionUtils
     return null;
   }
   
-  /*
-   * Returns the factory id of a server type compatible with the Web service type and the runtime target.
-   * Returns null if there are none.
-   * @deprecated
-   */
-  /*
-  public static String getFirstSupportedServerType(IRuntime runtimeTarget, String typeId)
-  {
-    String runtimeId = runtimeTarget.getRuntimeType().getId();
-    WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
-    String[] serverFactoryIds = wssrtRegistry.getServerFactoryIdsByType(typeId);
-    for (int i=0; i<serverFactoryIds.length; i++)
-    {
-      IServerType serverType = ServerCore.findServerType(serverFactoryIds[i]);
-      if (serverType!=null){
-      	String serverRuntimeId = serverType.getRuntimeType().getId();
-      	if (serverRuntimeId.equals(runtimeId))
-      	{
-      		return serverFactoryIds[i];
-      	}
-      }
-    }
-    return null;
-  }
-  */
 
   /*
    * Return the factory id of the first server type compatible with the runtimeTargets and webServiceRuntimeId.
@@ -506,29 +455,6 @@ public class ServerSelectionUtils
   }
   
   /**
-   * 
-   * @param runtimeTargets
-   * @param webServiceRuntimeId
-   * @return
-   * @deprecated
-   */
-  private static List getRuntimeTargetsSupportedByWSRuntime(List runtimeTargets, String webServiceRuntimeId)
-  {
-    ArrayList suppRuntimeTargets = new ArrayList();
-    WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
-    for (int i=0; i<runtimeTargets.size(); i++)
-    {
-      IRuntime runtimeTarget = (IRuntime)runtimeTargets.get(i);
-      String rtId = runtimeTarget.getRuntimeType().getId();
-      if (wssrtReg.doesRuntimeSupportServerTarget(rtId, webServiceRuntimeId));
-      {
-        suppRuntimeTargets.add(runtimeTarget);
-      }
-    }
-    return suppRuntimeTargets;
-  }  
-  
-  /**
    * Use this method to get a server factory id and instance id that is compatible with the given Web
    * service runtime.
    * @param webServiceRuntimeId
@@ -538,10 +464,9 @@ public class ServerSelectionUtils
   public static String[] getServerFromWebServceRuntimeAndJ2EE(String webServiceRuntimeId, String j2eeVersion)
   {
     String[] serverInfo = new String[2];
-    //WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
     
     //Get all possible valid servers. If there are none, we can't default intelligently, return null.
-    //String[] validServerFactoryIds = wssrtReg.getServerFactoryIDByRuntimeID(webServiceRuntimeId);
+
     WebServiceRuntimeInfo wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(webServiceRuntimeId);
     String[] validServerFactoryIds = wsrt.getServerFactoryIds();
     if (validServerFactoryIds==null || validServerFactoryIds.length<1)
