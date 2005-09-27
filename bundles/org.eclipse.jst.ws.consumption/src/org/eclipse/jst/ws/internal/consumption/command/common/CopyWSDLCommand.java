@@ -44,6 +44,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.URIException;
+import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
 import org.eclipse.wst.ws.internal.parser.discovery.NetUtils;
 import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -285,47 +286,24 @@ public class CopyWSDLCommand extends EnvironmentalOperation
   }
 
   private boolean needToCopy (String uri) {
-	  	String normalizedURI = normalize(uri);	
-	    if (ignoreList.contains(normalizedURI))
-	      return false;
-	    ignoreList.add(normalizedURI);
-	    return true;
-	  	
+	  String normalizedURI = normalize(uri);	
+	  if (ignoreList.contains(normalizedURI))
+		  return false;
+	  ignoreList.add(normalizedURI);
+	  return true;
+  }
+  
+  private String normalize(String uri )
+  {
+	  try {
+		  String encodedURI = URIEncoder.encode(uri);
+		  URI normalizedURI = new URI(encodedURI);
+		  normalizedURI = normalizedURI.normalize();
+		  return normalizedURI.toString();
+	  } catch (URISyntaxException e) {
+		  return uri;
 	  }
-	  private String normalize(String uri )
-	  {
-	  	try {
-	  		URI normalizedURI = new URI(uri);
-	  		return normalizedURI.toString();
-	  	} catch (URISyntaxException e) {
-	  		return removeDots(uri);
-	  	}  
-	  }
-	  
-	  private String removeDots(String uri )
-	  {
-	  	boolean normalized = false;
-
-	  	while(!normalized){
-	  	  int dir = uri.indexOf("/..");
-	  	  if(dir == -1)
-	  	  	normalized = true;
-	  	  else{
-	  	  	String first = uri.substring(0,dir);
-	  	    String second = uri.substring(dir + 3);
-	  	    int newIndex = first.lastIndexOf("/");
-	  	    if (newIndex == -1) {
-	  	    	normalized = true;
-	  	    } else {
-	  	    	first = first.substring(0,newIndex);
-	  	    	uri = first + second;
-	  	    }
-	  	  }
-	  	}
-
-	  	return uri;
-	  
-	  }
+  }
 	  
   public void setWsdlURI(String wsdlURI)
   {
