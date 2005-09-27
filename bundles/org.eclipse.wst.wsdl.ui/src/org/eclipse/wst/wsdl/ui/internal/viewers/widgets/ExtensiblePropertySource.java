@@ -18,10 +18,10 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.properties.section.IPropertyDescriptorProvider;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
-import org.eclipse.wst.xml.ui.internal.properties.XMLPropertySourceAdapter;
+import org.eclipse.wst.xml.ui.internal.properties.XMLPropertySource;
 import org.w3c.dom.Element;
 
-public class ExtensiblePropertySource extends XMLPropertySourceAdapter
+public class ExtensiblePropertySource extends XMLPropertySource
 {
 	protected IEditorPart editorPart;
 	private INodeNotifier nodeNotifier;
