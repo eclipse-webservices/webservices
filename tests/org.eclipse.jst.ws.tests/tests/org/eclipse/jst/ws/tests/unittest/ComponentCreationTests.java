@@ -56,7 +56,7 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       cmc.setProjectName(projectNm);
       cmc.setServerFactoryId(SERVERTYPEID_TC50);
       cmc.setSupportMultipleModules(true);
-      cmc.execute(null);
+      cmc.execute(null, null);
       
       System.out.println("Done creating Web component..."+projectNm+"\""+componentName);      
       IProject p = ResourceUtils.getWorkspaceRoot().getProject(projectNm);
@@ -73,7 +73,7 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       cmc.setModuleType(CreateModuleCommand.EJB);
       cmc.setProjectName(ejbProjectName);
       cmc.setServerFactoryId(SERVERTYPEID_TC50);
-      cmc.execute(null);
+      cmc.execute(null, null);
       
       System.out.println("Done creating EJB component.");
       IProject p = ResourceUtils.getWorkspaceRoot().getProject(ejbProjectName);
@@ -88,7 +88,7 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       cmc.setModuleType(CreateModuleCommand.APPCLIENT);
       cmc.setProjectName(appClientProjectName);
       cmc.setServerFactoryId(SERVERTYPEID_TC50);
-      cmc.execute(null);
+      cmc.execute(null, null);
       
       System.out.println("Done creating App client component.");
       IProject p = ResourceUtils.getWorkspaceRoot().getProject(appClientProjectName);
@@ -103,7 +103,7 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       cmc.setModuleType(CreateModuleCommand.EAR);
       cmc.setProjectName(projectName);
       cmc.setServerFactoryId(SERVERTYPEID_TC50);
-      cmc.execute(null);
+      cmc.execute(null, null);
       
       System.out.println("Done creating EAR component.");
       IProject p = ResourceUtils.getWorkspaceRoot().getProject(projectName);

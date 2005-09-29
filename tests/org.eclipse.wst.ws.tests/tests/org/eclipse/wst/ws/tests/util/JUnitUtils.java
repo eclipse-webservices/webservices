@@ -31,7 +31,8 @@ public class JUnitUtils {
 	{
 		project.build(IncrementalProjectBuilder.FULL_BUILD,null);
 		WaitForAutoBuildCommand cmd = new WaitForAutoBuildCommand();
-		cmd.execute(env);
+		cmd.setEnvironment(env);
+		cmd.execute(null, null);
 	}
 	
 	private static void copyTestFiles(String pathString,int rootSegmentLength,IFolder destFolder,Environment env) throws Exception

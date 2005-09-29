@@ -173,7 +173,7 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
         amwe.setEARProject(projectName);
         amwe.setModule(comp1);
         amwe.setProject(projectName);
-        amwe.execute(null);
+        amwe.execute(null, null);
         
         System.out.println("< END: testAssociateComponentCommand ...");     
       }

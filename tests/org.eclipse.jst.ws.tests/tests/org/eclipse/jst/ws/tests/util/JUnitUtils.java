@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchManager;
@@ -223,7 +224,9 @@ public class JUnitUtils {
 	{
 		project.build(IncrementalProjectBuilder.FULL_BUILD,EnvironmentUtils.getIProgressMonitor(env));
 		WaitForAutoBuildCommand cmd = new WaitForAutoBuildCommand();
-		cmd.execute(env);
+		cmd.setEnvironment(env);
+		cmd.execute(null, null);
+		
 	}
 	
 	private static void copyTestFiles(String pathString,int rootSegmentLength,IFolder destFolder,Environment env) throws Exception
@@ -335,7 +338,7 @@ public class JUnitUtils {
 		return launchWizard("org.eclipse.jst.ws.internal.consumption.ui",wizardId,objectClassId,initialSelection);
 	}
 	
-	public static Status createWebModule(String webProjectName, String moduleName, String serverFactoryId, String j2eeVersion, Environment env){
+	public static IStatus createWebModule(String webProjectName, String moduleName, String serverFactoryId, String j2eeVersion, Environment env){
 
 	  Status status = new SimpleStatus("");
 	  try{
@@ -346,7 +349,8 @@ public class JUnitUtils {
 	    createWeb.setJ2eeLevel(j2eeVersion);
 	    createWeb.setServerFactoryId(serverFactoryId);
 	    createWeb.setSupportMultipleModules(true);
-	    return createWeb.execute(env);
+	    createWeb.setEnvironment(env);
+	    return createWeb.execute(null, null);
 	  }
 	  catch (Exception e){
 	    status = new SimpleStatus("",e.getMessage(), Status.ERROR, e);
