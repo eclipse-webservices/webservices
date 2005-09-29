@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
@@ -26,8 +27,7 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 
@@ -65,12 +65,11 @@ public class DefaultsForClientJavaWSDLCommand extends EnvironmentalOperation {
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
 		Environment environment = getEnvironment();
-		Status status;
+		IStatus status;
 		if (javaWSDLParam_ == null) {
-			status = new SimpleStatus("DefaultsForClientJavaWSDLCommand", //$NON-NLS-1$
+			status = StatusUtils.errorStatus(
 					coreMsgUtils_.getMessage(
-				"MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"),
-				Status.ERROR);
+				"MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
@@ -116,7 +115,7 @@ public class DefaultsForClientJavaWSDLCommand extends EnvironmentalOperation {
 	 		 else
 	 		 {
 	 			 //Not familiar with this kind of project
-	 	 		 status = new SimpleStatus("", msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"), Status.ERROR);	
+	 	 		 status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"));	
 	 	 		 environment.getStatusHandler().reportError(status);
 	 	 		 return status;
 	 			 
@@ -128,10 +127,9 @@ public class DefaultsForClientJavaWSDLCommand extends EnvironmentalOperation {
 		if (WSDLServicePathname_ == null) {
 			
 			if (WSDLServiceURL_ == null) {
-				status = new SimpleStatus("DefaultsForClientJavaWSDLCommand", //$NON-NLS-1$
+				status = StatusUtils.errorStatus(
 						msgUtils_.getMessage(
-					"MSG_ERROR_WSDL_LOCATION_NOT_SET"),
-					Status.ERROR);
+					"MSG_ERROR_WSDL_LOCATION_NOT_SET"));
 				environment.getStatusHandler().reportError(status);
 				return status;
 			}
@@ -141,7 +139,7 @@ public class DefaultsForClientJavaWSDLCommand extends EnvironmentalOperation {
 
 		javaWSDLParam_.setInputWsdlLocation(WSDLServiceURL_);
 
-		return new SimpleStatus( "" );
+		return Status.OK_STATUS;
 	}
 
 	/**

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.provisional.env.core.uri;
 
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.core.runtime.IStatus;
 
 /**
  * This is the base class for most exceptions thrown by URI classes.
@@ -29,7 +29,7 @@ public class URIException extends Exception
    * A Status object containing details about the exception,
    * if applicable.
    */
-  protected Status status;
+  protected IStatus status;
 
   /**
    * The URI for which the exception occured,
@@ -41,7 +41,7 @@ public class URIException extends Exception
    * Creates a new URIException with the given Status.
    * The status may be null.
    */
-  public URIException ( Status status )
+  public URIException ( IStatus status )
   {
     super();
     this.status = status;
@@ -51,7 +51,7 @@ public class URIException extends Exception
    * Creates a new URIException for the given Status and URI,
    * each of which may be null.
    */
-  public URIException ( Status status, URI uri )
+  public URIException ( IStatus status, URI uri )
   {
     super(status != null ? status.getMessage() : null);
     this.status = status;
@@ -61,7 +61,7 @@ public class URIException extends Exception
   /**
    * Returns the Status object inside this exception.
    */
-  public Status getStatus ()
+  public IStatus getStatus ()
   {
     return status;
   }

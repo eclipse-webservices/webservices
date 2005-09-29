@@ -12,10 +12,8 @@ package org.eclipse.wst.command.internal.provisional.env.core.uri;
 
 import java.net.URL;
 import java.util.Hashtable;
-
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 public class SimpleURIFactory implements URIFactory
@@ -51,9 +49,8 @@ public class SimpleURIFactory implements URIFactory
     if( schemeOrURI == null )
     {
       throw new URIException( 
-              new SimpleStatus( "SimpleURIFactory",
-                                msg_.getMessage( "MSG_NULL_ARG_SPECIFIED", new Object[]{"newURIScheme"}),
-                                Status.ERROR ) );
+              StatusUtils.errorStatus(
+                 msg_.getMessage( "MSG_NULL_ARG_SPECIFIED", new Object[]{"newURIScheme"}) ) );
     }
     
     int colon    = schemeOrURI.indexOf(':');
@@ -69,17 +66,16 @@ public class SimpleURIFactory implements URIFactory
       if( newScheme == null )
       {
         throw new URIException( 
-            new SimpleStatus( "SimpleURIFactory",
-                msg_.getMessage( "MSG_SCHEME_NOT_FOUND", new Object[]{ schemeOrURI }),
-                Status.ERROR ) );       
+            StatusUtils.errorStatus(
+                msg_.getMessage( "MSG_SCHEME_NOT_FOUND", new Object[]{ schemeOrURI }) ) );
+                
       }
     }
     else if( schemeOrURI.startsWith( "/") )
     {
       throw new URIException( 
-          new SimpleStatus( "SimpleURIFactory",
-              msg_.getMessage( "MSG_ABSOLUTE_PATH_WITHOUT_SCHEME", new Object[]{ schemeOrURI }),
-              Status.ERROR ) );
+          StatusUtils.errorStatus(
+              msg_.getMessage( "MSG_ABSOLUTE_PATH_WITHOUT_SCHEME", new Object[]{ schemeOrURI }) ) );
       
     }
     else

@@ -13,11 +13,9 @@ package org.eclipse.jst.ws.internal.uddiregistry.plugin;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
-
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 
 /**
 * This is the plugin class for the Web Services UDDI Registry plugin.
@@ -38,7 +36,6 @@ public class WebServiceUDDIRegistryPlugin extends Plugin
   * The reference to the singleton instance of this plugin.
   */
   private static WebServiceUDDIRegistryPlugin instance_;
-  private Log log_;
   
   /**
   * Constructs a runtime plugin object for this plugin.

@@ -56,7 +56,7 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       cmc.setProjectName(projectNm);
       cmc.setServerFactoryId(SERVERTYPEID_TC50);
       cmc.setSupportMultipleModules(true);
-      cmc.execute(null, null);
+      cmc.execute(null, null );
       
       System.out.println("Done creating Web component..."+projectNm+"\""+componentName);      
       IProject p = ResourceUtils.getWorkspaceRoot().getProject(projectNm);
@@ -73,7 +73,7 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       cmc.setModuleType(CreateModuleCommand.EJB);
       cmc.setProjectName(ejbProjectName);
       cmc.setServerFactoryId(SERVERTYPEID_TC50);
-      cmc.execute(null, null);
+      cmc.execute(null, null );
       
       System.out.println("Done creating EJB component.");
       IProject p = ResourceUtils.getWorkspaceRoot().getProject(ejbProjectName);

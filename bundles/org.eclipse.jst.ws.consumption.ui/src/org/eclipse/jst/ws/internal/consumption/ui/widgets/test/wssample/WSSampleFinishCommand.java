@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.PublishProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
@@ -44,11 +44,11 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 
 public class WSSampleFinishCommand extends EnvironmentalOperation implements JavaProxyTestCommand
@@ -88,19 +88,19 @@ public class WSSampleFinishCommand extends EnvironmentalOperation implements Jav
   {
     Environment env = getEnvironment();
     
-  	Status status = new SimpleStatus( "" );
+  	IStatus status = Status.OK_STATUS;
     //setters and getters to be removed
   	CopyWebServiceUtilsJarCommand copy = new CopyWebServiceUtilsJarCommand();    
   	copy.setSampleProject(sampleProject);
     copy.setEnvironment( env );
-  	status = EnvironmentUtils.convertIStatusToStatus(copy.execute( null, null ) );
+  	status = copy.execute( monitor, null );
     if (status.getSeverity() == Status.ERROR) return status;
-    status = createModel(env);
+    status = createModel(env, monitor );
     if (status.getSeverity() == Status.ERROR) return status;
-    status = generatePages(env);
+    status = generatePages(env, monitor );
     if (status.getSeverity() == Status.ERROR) return status;
     //if (!isSuccessful()) return;
-    status = launchSample(env);
+    status = launchSample(env, monitor);
     return status;   
   }
 
@@ -109,9 +109,9 @@ public class WSSampleFinishCommand extends EnvironmentalOperation implements Jav
   * Generate the four jsps that make up this
   * sample app.
   */
-  protected Status generatePages(Environment env)
+  protected IStatus generatePages(Environment env, IProgressMonitor monitor )
   {
-  	Status status = new SimpleStatus( "" );
+  	IStatus status = Status.OK_STATUS;
     IPath fDestinationFolderPath = new Path(jspFolder);
     fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
     IWorkspaceRoot fWorkspace = ResourcesPlugin.getWorkspace().getRoot();
@@ -122,7 +122,7 @@ public class WSSampleFinishCommand extends EnvironmentalOperation implements Jav
       new TestClientFileGenerator(INPUT,METHOD,RESULT),fileTest);
     //gpcTest.setStatusMonitor(getStatusMonitor());
     gpcTest.setEnvironment( env );
-    status = EnvironmentUtils.convertIStatusToStatus(gpcTest.execute( null, null ) );
+    status = gpcTest.execute( monitor, null );
     if (status.getSeverity() == Status.ERROR )
     	return status;
     
@@ -135,7 +135,7 @@ public class WSSampleFinishCommand extends EnvironmentalOperation implements Jav
       inputGenerator,fileInput);
     //gpcInput.setStatusMonitor(getStatusMonitor());
     gpcInput.setEnvironment( env );
-    status = EnvironmentUtils.convertIStatusToStatus(gpcInput.execute( null, null ));
+    status = gpcInput.execute( monitor, null );
     if (status.getSeverity() == Status.ERROR )
     	return status;
 
@@ -148,7 +148,7 @@ public class WSSampleFinishCommand extends EnvironmentalOperation implements Jav
       methodGenerator,fileMethod);
     //gpcMethod.setStatusMonitor(getStatusMonitor());
     gpcMethod.setEnvironment( env );
-    status = EnvironmentUtils.convertIStatusToStatus(gpcMethod.execute( null, null ));
+    status = gpcMethod.execute( monitor, null );
     if (status.getSeverity() == Status.ERROR )
     	return status;    
 
@@ -163,15 +163,15 @@ public class WSSampleFinishCommand extends EnvironmentalOperation implements Jav
       rfg,fileResult);
     //gpcResult.setStatusMonitor(getStatusMonitor());
     gpcResult.setEnvironment( env );
-    status = EnvironmentUtils.convertIStatusToStatus(gpcResult.execute( null, null ));
+    status = gpcResult.execute( monitor, null );
     
     return status;
   }
 
 
-  protected Status launchSample (Environment env) {
+  protected IStatus launchSample (Environment env, IProgressMonitor monitor ) {
 
-  	Status status = new SimpleStatus( "" );
+  	IStatus status = Status.OK_STATUS;
     if (!runClientTest) return status;
     
 
@@ -183,7 +183,7 @@ public class WSSampleFinishCommand extends EnvironmentalOperation implements Jav
     ppc.setExistingServer(sampleExistingServer);
     ppc.setProject(sampleProject);
     ppc.setEnvironment( env );
-    status = EnvironmentUtils.convertIStatusToStatus(ppc.execute( null, null ));
+    status = ppc.execute( monitor, null );
 
     StartProjectCommand spc = new StartProjectCommand(false );
     spc.setServiceServerTypeID(sampleServerTypeID);
@@ -193,7 +193,7 @@ public class WSSampleFinishCommand extends EnvironmentalOperation implements Jav
     spc.setIsWebProjectStartupRequested(true);
     spc.setEnvironment( env );
     
-    status = EnvironmentUtils.convertIStatusToStatus(spc.execute( null, null ));
+    status = spc.execute( monitor, null );
     if (status.getSeverity() == Status.ERROR) return status;
     
     IPath newPath = new Path(ResourceUtils.getWebProjectURL(ResourceUtils.getProjectOf(fDestinationFolderPath),sampleServerTypeID,sampleExistingServer));
@@ -238,20 +238,20 @@ public class WSSampleFinishCommand extends EnvironmentalOperation implements Jav
 	 }catch(PartInitException exc){
 		//TODO: change error message
 		env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
-		status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.WARNING );
+		status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), exc );
 		try {
 			env.getStatusHandler().report(status);
 		} catch (StatusException e) {
-			status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.ERROR );
+			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), e );
 		}
     	return status;
     }catch(MalformedURLException exc){
     	env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
-		status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.WARNING );
+		status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), exc );
 		try {
 			env.getStatusHandler().report(status);
 		} catch (StatusException e) {
-			status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.ERROR );
+			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), e );
 		}
     	return status;
     }
@@ -259,7 +259,7 @@ public class WSSampleFinishCommand extends EnvironmentalOperation implements Jav
 
   
 
-  protected Status createModel(Environment env) {
+  protected IStatus createModel(Environment env, IProgressMonitor monitor ) {
 
   	//create the model from the resource
     JavaToModelCommand jtmc = new JavaToModelCommand();
@@ -268,7 +268,7 @@ public class WSSampleFinishCommand extends EnvironmentalOperation implements Jav
     jtmc.setProxyBean(proxyBean);
     jtmc.setEnvironment( env );
     //jtmc.setStatusMonitor(getStatusMonitor());
-    Status status = EnvironmentUtils.convertIStatusToStatus(jtmc.execute(null, null));
+    IStatus status = jtmc.execute( monitor, null);
     if (status.getSeverity() == Status.ERROR) return status;
 
     proxyModel = jtmc.getJavaDataModel();

@@ -15,11 +15,11 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
 
 
 public class RestoreValidationStateCommand extends EnvironmentalOperation 
@@ -45,12 +45,11 @@ public class RestoreValidationStateCommand extends EnvironmentalOperation
    */
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
-    env.getProgressMonitor().report(msgUtils_.getMessage("TASK_DESC_WEBSERVICE_RESTORE_VALIDATION"));
+    ProgressUtils.report( monitor, msgUtils_.getMessage("TASK_DESC_WEBSERVICE_RESTORE_VALIDATION"));
 
     manager_.restoreValidationForProjects( runValidation_ );    
 
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
     
   /**

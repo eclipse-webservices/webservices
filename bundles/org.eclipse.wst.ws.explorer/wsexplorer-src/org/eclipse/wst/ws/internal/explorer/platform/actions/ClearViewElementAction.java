@@ -11,11 +11,14 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.ListManager;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ViewTool;
 
 // Abstract action class used for both Link and Form actions.
 public abstract class ClearViewElementAction extends LinkAction
@@ -36,7 +39,7 @@ public abstract class ClearViewElementAction extends LinkAction
     // Perform data validation.
     try
     {
-      int viewId = Integer.parseInt(viewIdString);
+      Integer.parseInt(viewIdString);
     }
     catch (NumberFormatException e)
     {

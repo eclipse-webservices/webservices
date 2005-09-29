@@ -11,7 +11,8 @@
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
 import java.util.Vector;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.StringUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.bean.AttributeVisitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.bean.FieldVisitor;
@@ -21,8 +22,6 @@ import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.DataType;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.SimpleElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**
@@ -155,7 +154,7 @@ public class InputFileTypeGenerator extends InputFileHelp2Generator
   * Takes in an object to be acted upon by this visitor action
   * @param Object The object to be acted upon
   */
-  public Status visit (Object object)
+  public IStatus visit (Object object)
   {
      TypeElement element = (TypeElement)object;
           
@@ -189,7 +188,7 @@ public class InputFileTypeGenerator extends InputFileHelp2Generator
 
      //if we have a return param with no getter make sure we are on the 
      //attribute and not the parameter then return
-     if(getReturnParam() &&  element.getOwningElement() instanceof AttributeElementType &&(((AttributeElementType)element.getOwningElement()).getGetterMethod() == null) ) return new SimpleStatus("");
+     if(getReturnParam() &&  element.getOwningElement() instanceof AttributeElementType &&(((AttributeElementType)element.getOwningElement()).getGetterMethod() == null) ) return Status.OK_STATUS;
 
      //Code gen for all elements
      fbuffer.append("<TR>" + StringUtils.NEWLINE);
@@ -287,6 +286,6 @@ public class InputFileTypeGenerator extends InputFileHelp2Generator
      }
 
 
-      return new SimpleStatus("");
+      return Status.OK_STATUS;
   }
 }

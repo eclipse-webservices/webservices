@@ -33,12 +33,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -47,8 +47,7 @@ import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class Skeleton2WSDLCommand extends EnvironmentalOperation
@@ -77,13 +76,13 @@ public class Skeleton2WSDLCommand extends EnvironmentalOperation
 		Environment environment = getEnvironment();
     if (!(environment instanceof EclipseEnvironment))
     {
-      Status status = new SimpleStatus(WebServiceAxisCreationUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_NOT_IN_ECLIPSE_ENVIRONMENT", new String[] {"Skeleton2WSDLCommand"}), Status.ERROR, null);
+      IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_NOT_IN_ECLIPSE_ENVIRONMENT", new String[] {"Skeleton2WSDLCommand"}));
       environment.getStatusHandler().reportError(status);
       return status;
     }
     if (javaWSDLParam == null)
     {
-      Status status = new SimpleStatus(WebServiceAxisCreationUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR, null);
+      IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
       environment.getStatusHandler().reportError(status);
       return status;
     }
@@ -127,14 +126,14 @@ public class Skeleton2WSDLCommand extends EnvironmentalOperation
       }
     } 
     else {
-      Status status = new SimpleStatus(WebServiceAxisCreationUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_WSDL_NO_DEFINITION", new String[] {wsdlURL}), Status.ERROR, null);
+      IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WSDL_NO_DEFINITION", new String[] {wsdlURL}));
       environment.getStatusHandler().reportError(status);
       return status;
     }
 
     // Modify WSDL endpoint
     if (port == null) {
-      Status status = new SimpleStatus(WebServiceAxisCreationUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_WSDL_NO_PORT", new String[] {wsdlURL}), Status.ERROR, null);
+      IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WSDL_NO_PORT", new String[] {wsdlURL}));
       environment.getStatusHandler().reportError(status);
       return status;
     }
@@ -195,20 +194,20 @@ public class Skeleton2WSDLCommand extends EnvironmentalOperation
      copyWSDLCommand.setDestinationURI(outputFile.getLocation().toFile().toURL().toString());
      copyWSDLCommand.setDefinition(definition);
      copyWSDLCommand.setEnvironment(environment);
-     Status status = EnvironmentUtils.convertIStatusToStatus(copyWSDLCommand.execute(null, null));
+     IStatus status = copyWSDLCommand.execute(null, null);
      if(status!=null && status.getSeverity()==Status.ERROR) {
        return status;
      }
     } 
     catch (Exception e) {
-      Status status = new SimpleStatus(WebServiceAxisCreationUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_WRITE_WSDL", new String[] { wsdlLocation }), Status.ERROR, e);
+      IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WRITE_WSDL", new String[] { wsdlLocation }), e);
       environment.getStatusHandler().reportError(status);
       return status;
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
 
-  private Status modifyEndpoint(Port port)
+  private IStatus modifyEndpoint(Port port)
   {
     Iterator it = port.getExtensibilityElements().iterator();
     SOAPAddress soapAddress = null;
@@ -226,13 +225,13 @@ public class Skeleton2WSDLCommand extends EnvironmentalOperation
 //      String projectURL = ResourceUtils.getEncodedWebProjectURL(serverProject);
 	  String projectURL = ServerUtils.getEncodedWebComponentURL(serverProject, moduleName_);
       if (projectURL == null)
-        return new SimpleStatus(WebServiceAxisCreationUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_PROJECT_URL", new String[] {serverProject.toString()}), Status.ERROR, null);
+        return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_PROJECT_URL", new String[] {serverProject.toString()}));
       StringBuffer serviceURL = new StringBuffer(projectURL);
       serviceURL.append(SERVICE_EXT).append(port.getName());
       javaWSDLParam.setUrlLocation(serviceURL.toString());
       soapAddress.setLocationURI(serviceURL.toString());
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
   /**

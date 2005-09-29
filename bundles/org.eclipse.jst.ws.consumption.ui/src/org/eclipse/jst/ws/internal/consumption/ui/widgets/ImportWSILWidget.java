@@ -13,9 +13,10 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
@@ -41,8 +42,7 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.ws.internal.wsil.AddWSDLToWSILCommand;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
@@ -71,7 +71,6 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
   private TableViewerEditor wsdls_;
   
   private MessageUtils msgUtils;
-  private IStructuredSelection selection;
 
   /**
   * Constructs a new page.
@@ -140,24 +139,6 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
     return this;
   }
 
-  private IResource[] getWSDLResources()
-  {
-    ArrayList list = new ArrayList();
-    if (selection != null && !selection.isEmpty())
-    {
-      for (Iterator it = selection.iterator(); it.hasNext();)
-      {
-        Object object = it.next();
-        if ((object instanceof IFile) && ((IFile)object).getFileExtension() != null && ((IFile)object).getFileExtension().equals("wsdl"))
-          list.add(object);
-      }
-    }
-    IResource[] res = new IResource[list.size()];
-    for (int i = 0; i < res.length; i++)
-      res[i] = (IResource)list.get(i);
-    return res;
-  }
-
   public void handleBrowseEvent(Event event)
   {
     DialogResourceBrowser dialog = new DialogResourceBrowser(browse_.getShell(), null, new FileExtensionFilter(new String[] {"wsil"}));
@@ -172,17 +153,16 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
     }
   }
 
-  public Status getStatus()
+  public IStatus getStatus()
   {
     if (!wsil_.getText().endsWith(".wsil"))
-      return new SimpleStatus("", msgUtils.getMessage("PAGE_MSG_INVALID_WSIL_FILE_NAME"), Status.ERROR);
+      return StatusUtils.errorStatus( msgUtils.getMessage("PAGE_MSG_INVALID_WSIL_FILE_NAME") );
     else
-      return new SimpleStatus("");
+      return Status.OK_STATUS;
   }
   
   public void setInitialSelection(IStructuredSelection selection)
   {
-    this.selection = selection;
     ArrayList list = new ArrayList();
     if (selection != null && !selection.isEmpty())
     {

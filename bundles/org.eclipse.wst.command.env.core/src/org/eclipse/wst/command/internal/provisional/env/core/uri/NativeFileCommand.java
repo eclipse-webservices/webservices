@@ -17,8 +17,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 public abstract class NativeFileCommand extends EnvironmentalOperation
 {
@@ -73,17 +71,15 @@ public abstract class NativeFileCommand extends EnvironmentalOperation
 
   public IStatus execute ( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment environment = getEnvironment();
-    
     File[] filesToRead = getFiles(urisToRead);
     File[] filesToWrite = getFiles(urisToWrite);
     preProcess(filesToRead,filesToWrite);
-    Status status = execute(environment,filesToRead,filesToWrite);
+    IStatus status = execute(filesToRead,filesToWrite);
     postProcess(filesToRead,filesToWrite);
     return status;
   }
 
-  public abstract Status execute ( Environment environment, File[] filesToRead, File[] filesToWrite );
+  public abstract IStatus execute ( File[] filesToRead, File[] filesToWrite );
 
   private void preProcess ( File[] filesToRead, File[] filesToWrite )
   {

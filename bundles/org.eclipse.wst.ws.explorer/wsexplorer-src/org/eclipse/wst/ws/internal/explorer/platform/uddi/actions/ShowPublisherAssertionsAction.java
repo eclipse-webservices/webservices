@@ -62,7 +62,7 @@ public class ShowPublisherAssertionsAction extends CommonPublisherAssertionsActi
     subQueryKey_ = parser.getParameter(UDDIActionInputs.SUBQUERY_KEY);
 
     // Validate the data.
-    UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
+    controller_.getUDDIPerspective();
     FormTool formTool = getSelectedFormTool();
     FormToolPropertiesInterface formToolPI = ((MultipleFormToolPropertiesInterface)formTool).getFormToolProperties(subQueryKey_);
     formToolPI.clearErrors();
@@ -201,8 +201,8 @@ public class ShowPublisherAssertionsAction extends CommonPublisherAssertionsActi
     formToolPI.removeProperty(UDDIActionInputs.QUERY_INPUT_EXISTING_PUBLISHER_ASSERTIONS);
     Vector queryInputVector = new Vector();
     RegistryElement registryElement = (RegistryElement)registryNode_.getTreeElement();
-    String userID = registryElement.getUserId();
-    String cred = registryElement.getCred();
+    registryElement.getUserId();
+    registryElement.getCred();
 
     // show all publisher assertions
     UDDIProxy proxy = ((RegistryElement)registryNode_.getTreeElement()).getProxy();
@@ -335,7 +335,6 @@ public class ShowPublisherAssertionsAction extends CommonPublisherAssertionsActi
       String fromKey;
       String toKey;
       String owningBusinessKey;
-      ListElement sp;
       if (relatedBusInfo.getDefaultSharedRelationships().getDirection().equals(SharedRelationships.DIRECTION_FROMKEY)) {
         fromKey = busElement.getBusinessEntity().getBusinessKey();
         toKey = relatedBusInfo.getBusinessKey();

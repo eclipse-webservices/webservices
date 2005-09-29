@@ -25,7 +25,6 @@ import org.eclipse.wst.server.core.IServer;
 
 public abstract class AbstractStartServer {
  
-private IProject project = null;
 protected IProgressMonitor monitor;
 private Log log_;
 private MessageUtils msgUtils_;
@@ -41,7 +40,6 @@ public AbstractStartServer()
  */
 public void StartServer (IProject project, IServer server, IProgressMonitor monitor, boolean restart) throws CoreException
 {
-	this.project = project;
 	this.monitor = monitor;
 
    try

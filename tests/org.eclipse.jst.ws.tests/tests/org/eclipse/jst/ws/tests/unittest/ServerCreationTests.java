@@ -35,7 +35,7 @@ public class ServerCreationTests extends TestCase implements WSJUnitConstants{
 		System.out.println("Creating Tomcat v5 server.");
 		CreateServerCommand csc = new CreateServerCommand();
 		csc.setServerFactoryid(SERVERTYPEID_TC50);
-		csc.execute(null, null);
+		csc.execute(null, null );
 		
 		IServer server = null;
 		String instId = csc.getServerInstanceId();
@@ -52,7 +52,7 @@ public class ServerCreationTests extends TestCase implements WSJUnitConstants{
 		System.out.println("Attempting to create 2nd Tomcat v5 server.");
 		CreateServerCommand csc = new CreateServerCommand();
 		csc.setServerFactoryid(SERVERTYPEID_TC50);
-		csc.execute(null, null);
+		csc.execute(null, null );
 		
 		IServer server = null;
 		String instId = csc.getServerInstanceId();

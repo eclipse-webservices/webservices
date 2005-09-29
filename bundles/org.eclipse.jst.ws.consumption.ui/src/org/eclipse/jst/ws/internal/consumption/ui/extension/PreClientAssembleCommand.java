@@ -14,13 +14,11 @@ package org.eclipse.jst.ws.internal.consumption.ui.extension;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
 public class PreClientAssembleCommand extends EnvironmentalOperation 
@@ -40,7 +38,7 @@ public class PreClientAssembleCommand extends EnvironmentalOperation
 
 	// Check if EAR module is req'd, ie. !=null
 	if (earProject_==null)
-		return new SimpleStatus("");
+		return Status.OK_STATUS;
 	
     //Create the client EAR module
     CreateModuleCommand command = new CreateModuleCommand();
@@ -54,7 +52,7 @@ public class PreClientAssembleCommand extends EnvironmentalOperation
     IStatus status = command.execute( null, null );
     if (status.getSeverity()==Status.ERROR)
     {
-      environment.getStatusHandler().reportError( EnvironmentUtils.convertIStatusToStatus(status));
+      environment.getStatusHandler().reportError( status );
       return status;
     }     
     
@@ -69,7 +67,7 @@ public class PreClientAssembleCommand extends EnvironmentalOperation
     status = associateCommand.execute( null, null );
     if (status.getSeverity()==Status.ERROR)
     {
-      environment.getStatusHandler().reportError( EnvironmentUtils.convertIStatusToStatus(status));     
+      environment.getStatusHandler().reportError(  status );     
     }     
     
     return status;

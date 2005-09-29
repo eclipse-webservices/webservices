@@ -15,7 +15,6 @@ import java.io.File;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
-
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesElement;
@@ -119,7 +118,7 @@ public abstract class AddToUDDIPerspectiveAction extends MultipleLinkAction {
         {
           RegistryElement regElement = (RegistryElement)(controller_.getUDDIPerspective().getNavigatorManager().getSelectedNode().getTreeElement());
           regElement.setCheckForUserDefinedCategories(true);
-          Enumeration userDefinedCategories = regElement.getUserDefinedCategories();
+          regElement.getUserDefinedCategories();
           linkCategoryModelsWithSavedData(registryName,regElement.getUserDefinedCategories());
         }
         return true;

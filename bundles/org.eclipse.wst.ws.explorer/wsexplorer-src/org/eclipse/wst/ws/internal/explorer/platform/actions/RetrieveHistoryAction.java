@@ -11,10 +11,10 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.BreadCrumb;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 
 public class RetrieveHistoryAction extends LinkAction
 {
@@ -41,7 +41,7 @@ public class RetrieveHistoryAction extends LinkAction
     // Perform data validation.
     try
     {
-      int jump = Integer.parseInt(jumpString);
+      Integer.parseInt(jumpString);
     }
     catch (NumberFormatException e)
     {

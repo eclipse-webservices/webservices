@@ -17,12 +17,12 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 
@@ -49,11 +49,11 @@ public class RefreshProjectCommand extends EnvironmentalOperation
 		}
 		catch (CoreException e)
 		{
-		  Status status = new SimpleStatus(WebServiceAxisConsumptionUIPlugin.ID, msgUtils_.getMessage("MSG_ERROR_REFRESH_PROJECT"), Status.ERROR, e);
+		  IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_REFRESH_PROJECT"), e);
 		  env.getStatusHandler().reportError(status);
 		  return status;
 		}
-		return new SimpleStatus("");
+		return Status.OK_STATUS;
 	}
 
 	public IProject getProject() {

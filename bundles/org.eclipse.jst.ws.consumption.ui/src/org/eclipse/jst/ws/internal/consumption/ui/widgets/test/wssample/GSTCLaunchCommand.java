@@ -9,8 +9,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.PublishProjectCommand;
@@ -23,9 +23,8 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
 
 public class GSTCLaunchCommand extends EnvironmentalOperation
@@ -52,7 +51,7 @@ public class GSTCLaunchCommand extends EnvironmentalOperation
     
     setJSPFolder();
     
-	  return launchSample(env);
+	  return launchSample(env, monitor);
   }
   private void setJSPFolder(){
 	    //if the client is not a webcomponent then the 
@@ -75,22 +74,22 @@ public class GSTCLaunchCommand extends EnvironmentalOperation
 	  
 	  }
   
-  private Status launchSample (Environment env) {
-    Status status = new SimpleStatus( "" );
-	IPath fDestinationFolderPath = new Path(jspfolder);
-	fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
+  private IStatus launchSample (Environment env, IProgressMonitor monitor ) {
+    IStatus status = Status.OK_STATUS;
+	  IPath fDestinationFolderPath = new Path(jspfolder);
+	  fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
     PublishProjectCommand ppc = new PublishProjectCommand();
     ppc.setServerTypeID(testInfo.getClientServerTypeID());
     ppc.setExistingServer(testInfo.getClientExistingServer());
     ppc.setProject(testInfo.getGenerationProject());
     ppc.setEnvironment( env );
-	status = EnvironmentUtils.convertIStatusToStatus(ppc.execute( null, null ));
+	status = ppc.execute( monitor, null );
 
 	StartServerCommand serverCommand = new StartServerCommand( true, true );
 	serverCommand.setServerInstanceId( testInfo.getClientExistingServer().getId() );
   serverCommand.setEnvironment( env );
 	
-	status = EnvironmentUtils.convertIStatusToStatus(serverCommand.execute(null, null));
+	status = serverCommand.execute(monitor, null);
 	if (status.getSeverity() == Status.ERROR) return status;
 	
 	IProject sampleProject = ProjectUtilities.getProject(testInfo.getGenerationProject());
@@ -138,20 +137,20 @@ public class GSTCLaunchCommand extends EnvironmentalOperation
 		 }catch(PartInitException exc){
 			//TODO: change error message
 			env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
-			status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.WARNING );
+			status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL") );
 			try {
 				env.getStatusHandler().report(status);
 			} catch (StatusException e) {
-				status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.ERROR );
+				status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), e );
 			}
 	    	return status;
 	    }catch(MalformedURLException exc){
 	    	env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
-			status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.WARNING );
+			status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), exc );
 			try {
 				env.getStatusHandler().report(status);
 			} catch (StatusException e) {
-				status = new SimpleStatus( "launchSample", msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), Status.ERROR );
+				status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), e );
 			}
 	    	return status;
 	    }

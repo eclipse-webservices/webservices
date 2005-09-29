@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
@@ -24,8 +25,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensio
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -76,7 +75,7 @@ public class ObjectSelectionOutputCommand extends EnvironmentalOperation
     }
 	
     // Validation
-    Status status = (objectSelectionWidget_ != null) ? objectSelectionWidget_.validateSelection(getObjectSelection()) : new SimpleStatus("");
+    IStatus status = (objectSelectionWidget_ != null) ? objectSelectionWidget_.validateSelection(getObjectSelection()) : Status.OK_STATUS;
     if (status.getSeverity() != Status.OK)
     {
       try

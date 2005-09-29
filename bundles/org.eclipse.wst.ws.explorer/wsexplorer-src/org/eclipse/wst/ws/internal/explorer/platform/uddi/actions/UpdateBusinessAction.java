@@ -258,7 +258,7 @@ public class UpdateBusinessAction extends UpdateAction
   public final boolean refreshFromRegistry()
   {
     UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
-    MessageQueue messageQueue = uddiPerspective.getMessageQueue();
+    uddiPerspective.getMessageQueue();
     try
     {
       String uuidKey = (String)propertyTable_.get(UDDIActionInputs.QUERY_INPUT_UUID_BUSINESS_KEY);

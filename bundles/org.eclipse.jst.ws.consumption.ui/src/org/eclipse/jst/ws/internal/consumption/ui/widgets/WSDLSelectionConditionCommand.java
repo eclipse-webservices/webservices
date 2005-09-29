@@ -13,13 +13,13 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.DialogWWWAuthentication;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
@@ -81,7 +81,7 @@ public class WSDLSelectionConditionCommand extends EnvironmentalOperation implem
         }
         catch (Throwable t)
         {
-          return new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_URI_NOT_RESOLVABLE", new Object[] {webServiceURI}), Status.ERROR, t);
+          return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_URI_NOT_RESOLVABLE", new Object[] {webServiceURI}), t);
         }
         finally
         {
@@ -92,7 +92,7 @@ public class WSDLSelectionConditionCommand extends EnvironmentalOperation implem
     }
     catch (Throwable t)
     {
-      return new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_URI_NOT_RESOLVABLE", new Object[] {webServiceURI}), Status.ERROR, t);
+      return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_URI_NOT_RESOLVABLE", new Object[] {webServiceURI}), t);
     }
     WebServiceEntity wsEntity = parser.getWebServiceEntityByURI(webServiceURI);
     if (wsEntity != null)
@@ -101,7 +101,7 @@ public class WSDLSelectionConditionCommand extends EnvironmentalOperation implem
       if (type != WebServiceEntity.TYPE_WSDL)
       	needWSDLSelectionTreeWidget = true;
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
   public boolean evaluate()

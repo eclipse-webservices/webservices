@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.Method;
@@ -28,8 +29,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 public class JavaToWSDLMethodCommand extends EnvironmentalOperation {
@@ -73,7 +73,7 @@ public class JavaToWSDLMethodCommand extends EnvironmentalOperation {
 
 		fbeanBaseName = javaWSDLParam_.getBeanName();
 		environment.getLog().log(Log.INFO, 5070, this, "execute", "beanBaseName = "+fbeanBaseName);
-		Status status;
+		IStatus status;
 		try {
 			//Get the qualified bean name; my.package.MyClass
 			fMethodNames = new Hashtable();
@@ -95,11 +95,10 @@ public class JavaToWSDLMethodCommand extends EnvironmentalOperation {
 						"MSG_ERROR_JAVA_MOF_REFLECT_FAILED",
 						new String[] { qName }));
 				
-				status = new SimpleStatus("JavaToWSDLMethodCommand", //$NON-NLS-1$
+				status = StatusUtils.errorStatus(
 						msgUtils_.getMessage(
 					"MSG_ERROR_JAVA_MOF_REFLECT_FAILED",
-					new String[] { qName }),
-					Status.ERROR);
+					new String[] { qName }));
 				environment.getStatusHandler().reportError(status);
 				return status;
 			}
@@ -153,15 +152,15 @@ public class JavaToWSDLMethodCommand extends EnvironmentalOperation {
 			*/
 			javaWSDLParam_.setMethods(fMethodNames);
 			
-			return new SimpleStatus( "" );
+			return Status.OK_STATUS;
 
 		} catch (Exception e) {
 			environment.getLog().log(Log.ERROR, 5023, this, "execute", msgUtils_.getMessage("MSG_ERROR_READ_BEAN"));
 		
-			status = new SimpleStatus("JavaToWSDLMethodCommand", //$NON-NLS-1$
+			status = StatusUtils.errorStatus(
 					msgUtils_.getMessage(
 				"MSG_ERROR_JAVA_TO_METHOD"),
-				Status.ERROR, e);
+				 e);
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}

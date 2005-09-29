@@ -11,8 +11,6 @@
 package org.eclipse.jst.ws.internal.ui.preferences;
 
 import java.util.Vector;
-
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -22,7 +20,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.context.ScenarioDefaults;
-import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
 import org.eclipse.swt.SWT;
@@ -32,10 +29,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
@@ -60,15 +55,6 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
   /*CONTEXT_ID PPSD0002 for the launch sample check box on the Scenario Defaults Preference Page*/
   private final String INFOPOP_PPSD_CHECKBOX_LAUNCH_SAMPLE = WebServiceUIPlugin.ID + ".PPSD0002";
   //
-  private Label sampleGenerationLabel_;
-  private Combo sampleGenerationTypes_;
-  /*CONTEXT_ID PPSD0004 for the sample JSP type combo box on the Scenario Defaults Preference Page*/
-  private final String INFOPOP_PPSD_COMBO_SAMPLE_GEN = WebServiceUIPlugin.ID + ".PPSD0004";
-
-  private Label wsexplorerTypesLabel_;
-  private Combo wsexplorerTypes_;
-  /*CONTEXT_ID PPSD0003 for the web explorer type combo box on the Scenario Defaults Preference Page*/
-  private final String INFOPOP_PPSD_COMBO_EXPLORER = WebServiceUIPlugin.ID + ".PPSD0003";
 
   /**
    * Creates preference page controls on demand.
@@ -306,12 +292,8 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
 
   private class WebServiceTestTypeLabelProvider extends LabelProvider
   {
-    private IConfigurationElement[] configElements_;
-
     public WebServiceTestTypeLabelProvider()
     {
-      WebServiceTestRegistry wstr = WebServiceTestRegistry.getInstance();
-      configElements_ = wstr.getConfigElements();
     }
 
     /**

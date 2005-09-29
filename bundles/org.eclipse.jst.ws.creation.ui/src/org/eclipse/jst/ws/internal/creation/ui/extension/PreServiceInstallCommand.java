@@ -14,12 +14,11 @@ package org.eclipse.jst.ws.internal.creation.ui.extension;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateServerCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 
 public class PreServiceInstallCommand extends EnvironmentalOperation 
@@ -41,7 +40,7 @@ public class PreServiceInstallCommand extends EnvironmentalOperation
 				CreateServerCommand createServerCommand = new CreateServerCommand();
 				createServerCommand.setServerFactoryid(webService_.getWebServiceInfo().getServerFactoryId());
         createServerCommand.setEnvironment( environment );
-				Status createServerStatus = EnvironmentUtils.convertIStatusToStatus(createServerCommand.execute(null, null));
+				IStatus createServerStatus = createServerCommand.execute( monitor, null);
 				if (createServerStatus.getSeverity()==Status.OK)
 				{
 					webService_.getWebServiceInfo().setServerInstanceId(createServerCommand.getServerInstanceId());
@@ -72,7 +71,7 @@ public class PreServiceInstallCommand extends EnvironmentalOperation
 			}
 
       command.setEnvironment( environment );
-			Status status = EnvironmentUtils.convertIStatusToStatus(command.execute( null, null ));
+			IStatus status = command.execute( monitor, null );
 			if (status.getSeverity()==Status.ERROR)
 			{
 				environment.getStatusHandler().reportError(status);

@@ -3,7 +3,6 @@ package org.eclipse.jst.ws.tests.unittest;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -15,7 +14,6 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -46,12 +44,11 @@ public class ResourceUtilsTests extends TestCase implements WSJUnitConstants{
         try {
             PersistentResourceContext  resourceContext = PersistentResourceContext.getInstance();
             EclipseStatusHandler       handler         = new EclipseStatusHandler();
-            EclipseProgressMonitor     monitor         = new EclipseProgressMonitor();
-            EclipseEnvironment         env     = new EclipseEnvironment( null, resourceContext, monitor, handler );
+            EclipseEnvironment         env     = new EclipseEnvironment( null, resourceContext, handler );
 
             IFile file = folder.getFile(new Path("foo/Echo.java"));
             if (!file.exists()) {
-              JUnitUtils.copyTestData("BUJava/src", folder, env);
+              JUnitUtils.copyTestData("BUJava/src", folder, env, null );
             }
         }
         catch (Exception ex){

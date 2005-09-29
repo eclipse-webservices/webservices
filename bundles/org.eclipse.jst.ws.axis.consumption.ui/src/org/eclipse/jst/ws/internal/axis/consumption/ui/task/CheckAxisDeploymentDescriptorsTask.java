@@ -17,14 +17,14 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.ws.internal.common.EnvironmentUtils;
 
 public class CheckAxisDeploymentDescriptorsTask extends EnvironmentalOperation {
 	
@@ -44,7 +44,7 @@ public class CheckAxisDeploymentDescriptorsTask extends EnvironmentalOperation {
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
 		Environment env = getEnvironment();
-		Status status = new SimpleStatus( "" );
+		IStatus status = Status.OK_STATUS;
 		if(EnvironmentUtils.getResourceContext(env).isOverwriteFilesEnabled()) {
       return status;
 		}
@@ -58,21 +58,21 @@ public class CheckAxisDeploymentDescriptorsTask extends EnvironmentalOperation {
 
 	  if(filePath==null || filePath.isEmpty())
 		{
-			status = new SimpleStatus("", coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR);
+			status = StatusUtils.errorStatus( coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
 			env.getStatusHandler().reportError(status);
 			return status;			
 		}
 
 		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(filePath);
 		if (file.exists() && !EnvironmentUtils.getResourceContext(env).isOverwriteFilesEnabled())   {
-			status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_XML_FILE_OVERWRITE_DISABLED"), Status.WARNING);
+			status = StatusUtils.warningStatus( msgUtils_.getMessage("MSG_ERROR_XML_FILE_OVERWRITE_DISABLED"));
 			try
 			{
 				env.getStatusHandler().report(status);
 			}
 			catch(StatusException se)
 			{
-				status = new SimpleStatus("", "User aborted",Status.ERROR);
+				status = StatusUtils.errorStatus( "User aborted");
 			}
 			
 			return status;

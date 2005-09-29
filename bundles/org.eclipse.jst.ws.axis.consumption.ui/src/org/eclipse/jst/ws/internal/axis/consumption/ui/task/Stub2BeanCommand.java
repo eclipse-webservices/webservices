@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
@@ -38,8 +39,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
@@ -111,7 +111,7 @@ public class Stub2BeanCommand extends EnvironmentalOperation
 		javaProject = JavaCore.create(clientProject_);    
 		if (javaProject == null)
 		{
-	 		   Status status = new SimpleStatus("", msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"), Status.ERROR);	
+	 		   IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"));	
 	 		   environment.getStatusHandler().reportError(status);
 	 		   return status;
 		}    	
@@ -177,11 +177,11 @@ public class Stub2BeanCommand extends EnvironmentalOperation
             stub2BeanInfo.addSEI(portTypePkgName, portTypeClassName, servicePkgName, serviceClassName, jndiName, port.getName());
             try
             {              
-              stub2BeanInfo.write( environment.getProgressMonitor(), environment.getStatusHandler() );
+              stub2BeanInfo.write( monitor, environment.getStatusHandler() );
               if (discoveredWsdlPortElementName != null)
               {
                 // The discovered port was processed. Ignore all other ports and services.
-                return new SimpleStatus("");
+                return Status.OK_STATUS;
               }
             }
             catch (CoreException ce)
@@ -194,7 +194,7 @@ public class Stub2BeanCommand extends EnvironmentalOperation
         }
       }
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
   private final char UNDERSCORE = '_';

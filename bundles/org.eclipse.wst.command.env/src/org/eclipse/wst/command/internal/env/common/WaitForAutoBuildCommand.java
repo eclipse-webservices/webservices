@@ -15,15 +15,15 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 
 
 public class WaitForAutoBuildCommand extends EnvironmentalOperation
 {
   public IStatus execute( IProgressMonitor montitor, IAdaptable adaptable ) 
   {
-  	SimpleStatus status = new SimpleStatus( "" );
+  	IStatus status = Status.OK_STATUS;
   	
 	try 
 	{

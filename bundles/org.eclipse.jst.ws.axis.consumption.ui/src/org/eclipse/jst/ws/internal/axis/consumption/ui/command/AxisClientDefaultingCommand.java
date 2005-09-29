@@ -16,12 +16,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -58,7 +57,7 @@ public class AxisClientDefaultingCommand extends EnvironmentalOperation
 
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
-		Status status = new SimpleStatus("");
+		IStatus status = Status.OK_STATUS;
 		
 		clientExistingServer_ = getServerFromServerLabel();
 		if (clientExistingServer_ != null) {

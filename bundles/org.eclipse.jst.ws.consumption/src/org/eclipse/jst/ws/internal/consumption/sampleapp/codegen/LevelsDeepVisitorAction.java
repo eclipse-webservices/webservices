@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.jst.ws.internal.consumption.codegen.bean.AttributeVisitor;
@@ -19,8 +21,6 @@ import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.AttributeElem
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 
 
@@ -34,7 +34,6 @@ public class LevelsDeepVisitorAction implements VisitorAction
   public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
 
 
-  private Visitor fVisitor;
   private int fLevelsDeep;
   private int fDeepestLevel;
   
@@ -73,7 +72,6 @@ public class LevelsDeepVisitorAction implements VisitorAction
   */
   public void setVisitor(Visitor visitor)
   {
-     fVisitor = visitor;
   }
 
 
@@ -91,7 +89,7 @@ public class LevelsDeepVisitorAction implements VisitorAction
   * Takes in an object to be acted upon by this visitor action
   * @param Object The object to be acted upon
   */
-  public Status visit (Object object)
+  public IStatus visit (Object object)
   {
       Element element = (Element)object;
       if (element instanceof AttributeElement || element instanceof TypeElement){
@@ -115,7 +113,7 @@ public class LevelsDeepVisitorAction implements VisitorAction
    
       }
          
-     return new SimpleStatus("");   
+     return Status.OK_STATUS;   
   }
 
 }

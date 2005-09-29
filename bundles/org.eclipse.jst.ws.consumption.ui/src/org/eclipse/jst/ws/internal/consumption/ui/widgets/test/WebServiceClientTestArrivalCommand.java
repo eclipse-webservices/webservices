@@ -16,19 +16,18 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
 
 
@@ -74,7 +73,7 @@ public class WebServiceClientTestArrivalCommand extends EnvironmentalOperation
   {
     Environment env = getEnvironment();
   	
-	Status status = new SimpleStatus( "" );
+	IStatus status = Status.OK_STATUS;
   	
 	sampleProjectAndEarSetup(env);
   	
@@ -94,7 +93,7 @@ public class WebServiceClientTestArrivalCommand extends EnvironmentalOperation
     */
     if(proxyBean == null){
       StatusHandler sHandler = env.getStatusHandler();
-      Status errorStatus = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_JTS_PROXY_NOT_COMPILED"), Status.ERROR);
+      IStatus errorStatus = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_JTS_PROXY_NOT_COMPILED") );
       sHandler.reportError(errorStatus);
       return errorStatus;
       
@@ -109,12 +108,12 @@ public class WebServiceClientTestArrivalCommand extends EnvironmentalOperation
     
     
     try{ 
-      Status mofStatus = EnvironmentUtils.convertIStatusToStatus(javamofcommand.execute( null, null));
+      IStatus mofStatus = javamofcommand.execute( monitor, null);
       if(mofStatus.getSeverity() == Status.ERROR)
       	return mofStatus;
     }catch(Exception exc){
     	StatusHandler sHandler = env.getStatusHandler();
-        Status errorStatus = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_JTS_PROXY_NOT_COMPILED"), Status.ERROR);
+        IStatus errorStatus = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_JTS_PROXY_NOT_COMPILED") );
         sHandler.reportError(errorStatus);
         return errorStatus;
     }  

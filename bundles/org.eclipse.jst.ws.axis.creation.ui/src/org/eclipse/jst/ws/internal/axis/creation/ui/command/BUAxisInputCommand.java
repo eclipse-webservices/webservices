@@ -14,8 +14,8 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
@@ -62,7 +62,7 @@ public class BUAxisInputCommand extends EnvironmentalOperation {
 	    	serviceServerTypeID_ = serverFactoryId;
 	    }
 		
-		return new SimpleStatus("");
+		return Status.OK_STATUS;
 	  }
 	  
 		/**

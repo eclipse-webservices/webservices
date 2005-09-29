@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.jst.j2ee.webapplication.Servlet;
 import org.eclipse.jst.j2ee.webapplication.ServletMapping;
@@ -30,8 +31,7 @@ import org.eclipse.jst.j2ee.webapplication.WebapplicationFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
@@ -52,7 +52,7 @@ public class UpdateWEBXMLCommand extends EnvironmentalOperation {
 	{
 		Environment environment = getEnvironment();
 		if (serverProject != null) {
-			Status status = null;
+			IStatus status = null;
 			status = addServlet(serverProject, moduleName_, getAxisServletDescriptor());
 			if (status.getSeverity() == Status.ERROR) {
 				environment.getStatusHandler().reportError(status);
@@ -68,7 +68,7 @@ public class UpdateWEBXMLCommand extends EnvironmentalOperation {
 				return status;
 			}
 		}
-		return new SimpleStatus( "" );
+		return Status.OK_STATUS;
 	}
 
 	private ServletDescriptor getAxisServletDescriptor() {
@@ -107,7 +107,7 @@ public class UpdateWEBXMLCommand extends EnvironmentalOperation {
 		return sd;
 	}
 
-	public Status addServlet(
+	public IStatus addServlet(
 		IProject webProject,
 		String   moduleName,
 		ServletDescriptor servletDescriptor) {
@@ -133,7 +133,7 @@ public class UpdateWEBXMLCommand extends EnvironmentalOperation {
 			   }
 
 			   if (foundServlet) {
-				  return new SimpleStatus( "" );
+				  return Status.OK_STATUS;
 			   }
 
 			   WebapplicationFactory factory = WebapplicationFactory.eINSTANCE;
@@ -167,13 +167,12 @@ public class UpdateWEBXMLCommand extends EnvironmentalOperation {
 			   webEdit.save(new NullProgressMonitor());
 			}
 
-			return new SimpleStatus( "" );
+			return Status.OK_STATUS;
 		} catch (Exception e) {
 
-			return new SimpleStatus(
-					"UpdateWEBXMLCommand.addServlet", //$NON-NLS-1$
+			return StatusUtils.errorStatus(
 					msgUtils_.getMessage("MSG_ERROR_UPDATE_WEB_XML"),
-					Status.ERROR, e);
+					e);
 		}
 		finally{
 			if (webEdit != null)

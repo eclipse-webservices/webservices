@@ -11,10 +11,10 @@
 
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.StringUtils;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.MethodElement;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 
 
@@ -39,17 +39,17 @@ public class MethodFileHelpGenerator extends MethodFileGenerator
 
 
   //takes in a Method node
-  public Status visit (Object object)
+  public IStatus visit (Object object)
   {
       Element methodElement = (Element)object;
       MethodElement method = (MethodElement)methodElement;
-      if (method.getMethodOmmission()) return new SimpleStatus("");
+      if (method.getMethodOmmission()) return Status.OK_STATUS;
       
       fbuffer.append("<LI><A HREF=\"" + fInputName + "?method=" + method.getNumberID());
       fbuffer.append("\" TARGET=\"inputs\"> " + method.getDisplayName());
       fbuffer.append("</A></LI>" + StringUtils.NEWLINE);
 
-      return new SimpleStatus("");
+      return Status.OK_STATUS;
   }
 
 

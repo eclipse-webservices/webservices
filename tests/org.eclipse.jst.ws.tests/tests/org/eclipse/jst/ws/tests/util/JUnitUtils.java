@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.tests.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
-
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -24,10 +23,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
@@ -41,8 +40,7 @@ import org.eclipse.wst.command.internal.env.common.WaitForAutoBuildCommand;
 import org.eclipse.wst.command.internal.env.context.PersistentActionDialogsContext;
 import org.eclipse.wst.command.internal.env.preferences.ActionDialogPreferenceType;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
@@ -53,6 +51,7 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
+import org.eclipse.wst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
 
@@ -68,7 +67,7 @@ public class JUnitUtils {
 		return wc.save(true, null);
 	}
 
-	public static IServer createServer(String name,String serverTypeId,IRuntime runtime,Environment env) throws Exception
+	public static IServer createServer(String name,String serverTypeId,IRuntime runtime,Environment env, IProgressMonitor monitor ) throws Exception
 	{
 	  IServerType serverType = ServerCore.findServerType(serverTypeId);
       IServer[] servers = ServerCore.getServers(); 
@@ -78,10 +77,10 @@ public class JUnitUtils {
         }
       }
 
-      IServerWorkingCopy serverWc = serverType.createServer(serverTypeId,null,EnvironmentUtils.getIProgressMonitor(env));
+      IServerWorkingCopy serverWc = serverType.createServer(serverTypeId,null, monitor );
 	  serverWc.setName(name);
 	  serverWc.setRuntime(runtime);
-      IServer server = serverWc.saveAll(true, EnvironmentUtils.getIProgressMonitor(env));
+      IServer server = serverWc.saveAll(true, monitor );
       return server;
 	}	
 	
@@ -98,7 +97,7 @@ public class JUnitUtils {
 	 * 
 	 * @deprecated
 	 */
-	public static IServer createServer(String javaRuntimePath, String jreID, String name,String serverTypeId,IRuntime runtime,Environment env) throws Exception
+	public static IServer createServer(String javaRuntimePath, String jreID, String name,String serverTypeId,IRuntime runtime,Environment env, IProgressMonitor monitor ) throws Exception
 	{
 		IServerType serverType = ServerCore.findServerType(serverTypeId);
     IServer[] servers = ServerCore.getServers(); 
@@ -108,11 +107,11 @@ public class JUnitUtils {
       }
     }
 
-		IServerWorkingCopy serverWc = serverType.createServer(serverTypeId,null,EnvironmentUtils.getIProgressMonitor(env));
+		IServerWorkingCopy serverWc = serverType.createServer(serverTypeId,null, monitor );
 		serverWc.setName(name);
 		serverWc.setRuntime(runtime);
 		
-		IServer server = serverWc.saveAll(true, EnvironmentUtils.getIProgressMonitor(env));
+		IServer server = serverWc.saveAll(true, monitor );
 		
 		return server;
 	}
@@ -120,14 +119,13 @@ public class JUnitUtils {
 	public static void startServer(IServer server,Environment env) throws Exception
 	{
 		final IServer currentServer = server;
-		final Environment currentEnv = env;
 		IRunnableWithProgress runnable = new IRunnableWithProgress()
 		{
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
 			{
 				try
 				{
-				  currentServer.start(ILaunchManager.RUN_MODE,EnvironmentUtils.getIProgressMonitor(currentEnv));
+				  currentServer.start(ILaunchManager.RUN_MODE, monitor );
 				}
 				catch (CoreException e)
 				{
@@ -140,14 +138,14 @@ public class JUnitUtils {
 		PlatformUI.getWorkbench().getProgressService().run(true,false,runnable);
 	}
 	
-	public static boolean removeEARFromServer(IServer server,IProject earProject,Environment env) throws Exception
+	public static boolean removeEARFromServer(IServer server,IProject earProject,Environment env, IProgressMonitor monitor ) throws Exception
 	{
 		int numberOfModules = server.getModules().length;
 		if (server != null)
 		{
       final IModule[] modules = ServerUtil.getModules(earProject);
       final IModule earProjectModule = modules[0];
-			new ServerUtils().modifyModules(env, server,earProjectModule,false,EnvironmentUtils.getIProgressMonitor(env));
+			new ServerUtils().modifyModules(env, server,earProjectModule,false, monitor );
 		  	final IServer currentServer = server;
 		  	IRunnableWithProgress runnable = new IRunnableWithProgress()
 			{
@@ -178,7 +176,7 @@ public class JUnitUtils {
 		return false;
 	}
 	
-	public static boolean removeModuleFromServer(IServer server, IProject webProject, Environment env) throws Exception {
+	public static boolean removeModuleFromServer(IServer server, IProject webProject, Environment env, IProgressMonitor monitor ) throws Exception {
 	  
 	  int numberOfModules = server.getModules().length;
 		if (server != null)
@@ -186,7 +184,7 @@ public class JUnitUtils {
       final IModule[] modules = ServerUtil.getModules(webProject);
       final IModule webProjectModule = modules[0];      
 
-			new ServerUtils().modifyModules(env, server,webProjectModule,false,EnvironmentUtils.getIProgressMonitor(env));
+			new ServerUtils().modifyModules(env, server,webProjectModule,false, monitor );
 		  	final IServer currentServer = server;
 		  	IRunnableWithProgress runnable = new IRunnableWithProgress()
 			{
@@ -220,23 +218,22 @@ public class JUnitUtils {
 	
 	// Begin: General Eclipse Utilities
 	
-	public static void syncBuildProject(IProject project,Environment env) throws Exception
+	public static void syncBuildProject(IProject project,Environment env, IProgressMonitor monitor ) throws Exception
 	{
-		project.build(IncrementalProjectBuilder.FULL_BUILD,EnvironmentUtils.getIProgressMonitor(env));
+		project.build(IncrementalProjectBuilder.FULL_BUILD, monitor );
 		WaitForAutoBuildCommand cmd = new WaitForAutoBuildCommand();
-		cmd.setEnvironment(env);
-		cmd.execute(null, null);
-		
+    cmd.setEnvironment( env );
+		cmd.execute( monitor, null );
 	}
 	
-	private static void copyTestFiles(String pathString,int rootSegmentLength,IFolder destFolder,Environment env) throws Exception
+	private static void copyTestFiles(String pathString,int rootSegmentLength,IFolder destFolder,Environment env, IProgressMonitor monitor ) throws Exception
 	{
 		Enumeration e = TestsPlugin.getDefault().getBundle().getEntryPaths(pathString);
 		while (e.hasMoreElements())
 		{
 			String filePath = (String)e.nextElement();
 			if (filePath.endsWith("/"))
-				copyTestFiles(filePath,rootSegmentLength,destFolder,env);
+				copyTestFiles(filePath,rootSegmentLength,destFolder,env, monitor );
 			else
 			{
 				IPath fileIPath = new Path(filePath);
@@ -245,16 +242,16 @@ public class JUnitUtils {
 										   fileIPath.removeLastSegments(fileIPath.segmentCount()-rootSegmentLength), // /data/<subdir>
 										   (new Path(filePath)).removeFirstSegments(rootSegmentLength), // files after /data/<subdir>
 										   destFolder.getFullPath(),
-										   env.getProgressMonitor(),
+										   monitor,
 										   env.getStatusHandler());
 			}
 		}
 	}
 	
-	public static void copyTestData(String dataSubdirectory,IFolder destFolder,Environment env) throws Exception
+	public static void copyTestData(String dataSubdirectory,IFolder destFolder,Environment env, IProgressMonitor monitor ) throws Exception
 	{
 		String pathString = "/data/"+dataSubdirectory;
-		copyTestFiles(pathString,new Path(pathString).segmentCount(),destFolder,env);
+		copyTestFiles(pathString,new Path(pathString).segmentCount(),destFolder,env, monitor);
 		
 	}
 	
@@ -302,7 +299,7 @@ public class JUnitUtils {
 		serverRuntimeCtx.setServerFactoryId(serverTypeId);		
 	}
 	
-	private static Status launchWizard(String pluginNS,String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
+	private static IStatus launchWizard(String pluginNS,String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
 	{
 		IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint("org.eclipse.ui.popupMenus").getExtensions();
 		for (int i=0;i<extensions.length;i++)
@@ -325,22 +322,22 @@ public class JUnitUtils {
 				}
 			}
 		}
-		return new SimpleStatus("","No wizard found for: ",Status.ERROR);
+		return StatusUtils.errorStatus( "No wizard found for: " );
 	}
 	
-	public static Status launchCreationWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
+	public static IStatus launchCreationWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
 	{
 		return launchWizard("org.eclipse.jst.ws.creation.ui",wizardId,objectClassId,initialSelection);
 	}
 	
-	public static Status launchConsumptionWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
+	public static IStatus launchConsumptionWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
 	{
 		return launchWizard("org.eclipse.jst.ws.internal.consumption.ui",wizardId,objectClassId,initialSelection);
 	}
 	
-	public static IStatus createWebModule(String webProjectName, String moduleName, String serverFactoryId, String j2eeVersion, Environment env){
+	public static IStatus createWebModule(String webProjectName, String moduleName, String serverFactoryId, String j2eeVersion, Environment env, IProgressMonitor monitor ){
 
-	  Status status = new SimpleStatus("");
+	  IStatus status = Status.OK_STATUS;
 	  try{
 	    CreateModuleCommand createWeb = new CreateModuleCommand();
 	    createWeb.setProjectName(webProjectName);
@@ -349,11 +346,11 @@ public class JUnitUtils {
 	    createWeb.setJ2eeLevel(j2eeVersion);
 	    createWeb.setServerFactoryId(serverFactoryId);
 	    createWeb.setSupportMultipleModules(true);
-	    createWeb.setEnvironment(env);
-	    return createWeb.execute(null, null);
+      createWeb.setEnvironment( env );
+	    return createWeb.execute( monitor, null );
 	  }
 	  catch (Exception e){
-	    status = new SimpleStatus("",e.getMessage(), Status.ERROR, e);
+	    status = StatusUtils.errorStatus( e );
 	  }
 	  return status;
 	  

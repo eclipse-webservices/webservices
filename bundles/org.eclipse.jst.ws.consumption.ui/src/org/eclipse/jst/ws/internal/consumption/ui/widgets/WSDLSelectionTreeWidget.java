@@ -11,7 +11,8 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import java.util.List;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -35,8 +36,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
@@ -52,16 +52,9 @@ public class WSDLSelectionTreeWidget extends SimpleWidgetDataContributor
   /*CONTEXT_ID PWWS0001 for the WSDL Selection Page*/
   private final String INFOPOP_PWWS_PAGE = ".PWWS0001";
 
-  /*CONTEXT_ID PWWS0002 for the WSDL Document text field of the WSDL Selection Page*/
-  private final String INFOPOP_PWWS_TEXT_WSDL = ".PWWS0002";
-
-  /*CONTEXT_ID PWWS0003 for the WSDL Resource Browse button of the WSDL Selection Page*/
-  private final String INFOPOP_PWWS_BUTTON_BROWSE_WSDL = ".PWWS0003";
-
   private WebServicesParser webServicesParser;
   private String webServiceURI;
   
-  private Composite parent;
   private Listener statusListener;
   private TreeViewer treeViewer_;
   private TreeContentProvider treeContentProvider;
@@ -79,7 +72,6 @@ public class WSDLSelectionTreeWidget extends SimpleWidgetDataContributor
 
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
-    this.parent = parent;
   	this.statusListener = statusListener;
     parent.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWWS_PAGE"));
     PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, pluginId_ + INFOPOP_PWWS_PAGE);
@@ -189,13 +181,13 @@ public class WSDLSelectionTreeWidget extends SimpleWidgetDataContributor
     return null;
   }
 
-  public Status getStatus()
+  public IStatus getStatus()
   {
     WebServiceEntity wsEntity = getSelectionAsWebServiceEntity();
     if (wsEntity == null || wsEntity.getType() != WebServiceEntity.TYPE_WSDL)
-      return new SimpleStatus("", msgUtils_.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL"), Status.ERROR);
+      return StatusUtils.errorStatus( msgUtils_.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL") );
     else
-      return new SimpleStatus("");
+      return Status.OK_STATUS;
   }
 
   private class TreeContentProvider implements ITreeContentProvider

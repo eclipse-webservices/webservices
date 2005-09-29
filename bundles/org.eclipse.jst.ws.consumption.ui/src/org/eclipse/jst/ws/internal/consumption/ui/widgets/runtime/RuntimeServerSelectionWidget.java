@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.RuntimeServerSelectionDialog;
@@ -28,8 +30,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
@@ -194,9 +195,9 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.WidgetContributor#getStatus()
    */
-  public Status getStatus() 
+  public IStatus getStatus() 
   {
-    Status status = new SimpleStatus( "" );
+    IStatus status = Status.OK_STATUS;
     String scenario = isClientContext_ ? msgUtils_.getMessage( "MSG_CLIENT_SUB" )
                                         : msgUtils_.getMessage( "MSG_SERVICE_SUB" );
     
@@ -206,11 +207,11 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
 	
     if( ids_.getRuntimeId() == null || runtimeLabel == null || runtimeLabel.equals("" ))
     {
-      status = new SimpleStatus( "", msgUtils_.getMessage( "MSG_NO_RUNTIME", new String[]{ scenario } ), Status.ERROR );
+      status = StatusUtils.errorStatus(msgUtils_.getMessage( "MSG_NO_RUNTIME", new String[]{ scenario } ) );
     }
     else if( ids_.getServerId() == null || serverLabel.equals( "" ))
     {
-      status = new SimpleStatus( "", msgUtils_.getMessage( "MSG_NO_SERVER", new String[]{ scenario } ), Status.ERROR );      
+      status = StatusUtils.errorStatus( msgUtils_.getMessage( "MSG_NO_SERVER", new String[]{ scenario } ) );      
     }
 
     //Check if only stub runtime is available for the selected server type
@@ -238,7 +239,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
 		if (!foundNonStubRuntime)
 		{	
 			String servertypeLabel = WebServiceRuntimeExtensionUtils.getServerLabelById(serverFactoryId);
-			status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_STUB_ONLY",new String[]{servertypeLabel}), Status.ERROR);					
+			status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_STUB_ONLY",new String[]{servertypeLabel}) );					
 		}
 	}		
     
@@ -250,7 +251,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
 
 		if (!WebServiceRuntimeExtensionUtils.webServiceClientRuntimeTypeExists( ids_.getServerId(), ids_.getRuntimeId(), ids_.getTypeId())) 
 		{
-			status = new SimpleStatus( "", msgUtils_.getMessage( "MSG_INVALID_SRT_SELECTIONS", new String[]{ scenario } ), Status.ERROR );		  
+			status = StatusUtils.errorStatus( msgUtils_.getMessage( "MSG_INVALID_SRT_SELECTIONS", new String[]{ scenario } ) );		  
 		}
 
 	}    
@@ -260,7 +261,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     {
 
 	  if (!WebServiceRuntimeExtensionUtils.isServerRuntimeTypeSupported(ids_.getServerId(), ids_.getRuntimeId(), ids_.getTypeId())) {	  
-        status = new SimpleStatus( "", msgUtils_.getMessage( "MSG_INVALID_SRT_SELECTIONS", new String[]{ scenario } ), Status.ERROR );      
+        status = StatusUtils.errorStatus( msgUtils_.getMessage( "MSG_INVALID_SRT_SELECTIONS", new String[]{ scenario } ) );      
       }
 
     }

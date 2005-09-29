@@ -17,9 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Vector;
-
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.RelativeURI;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.URI;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.URIException;
@@ -97,8 +95,7 @@ public class FileURI extends RelativeURI
     }
     catch( IOException exc )
     {
-      Status status = new SimpleStatus( "", exc.getMessage(), Status.ERROR, exc );
-      throw new URIException( status, this );
+      throw new URIException( StatusUtils.errorStatus( exc ), this );
     }
     
     return stream;
@@ -120,8 +117,7 @@ public class FileURI extends RelativeURI
     }
     catch( IOException exc )
     {
-      Status status = new SimpleStatus( "", exc.getMessage(), Status.ERROR, exc );
-      throw new URIException( status, this );
+      throw new URIException( StatusUtils.errorStatus( exc ), this );
     }
     
     return stream;
@@ -260,12 +256,7 @@ public class FileURI extends RelativeURI
     }
     catch( IOException exc )
     {
-      Status status = new SimpleStatus( "", exc.getMessage(), Status.ERROR, exc );
-      throw new URIException( status, this );      
+      throw new URIException( StatusUtils.errorStatus( exc ), this );      
     }
-  }
-    
-  private class Dummy 
-  {
-  }
+  }    
 }

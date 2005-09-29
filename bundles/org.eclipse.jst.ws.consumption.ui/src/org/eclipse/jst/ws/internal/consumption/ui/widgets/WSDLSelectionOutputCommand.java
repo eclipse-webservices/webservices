@@ -15,11 +15,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
@@ -107,16 +107,16 @@ public class WSDLSelectionOutputCommand extends EnvironmentalOperation
     
     MessageUtils msgUtils = new MessageUtils("org.eclipse.jst.ws.consumption.ui.plugin", this);    
     if (wsdlURI != null && getWebServicesParser().getWSDLDefinition(wsdlURI) != null) {
-      Status status = new SimpleStatus("");     
+      IStatus status = Status.OK_STATUS;     
       Map services = getWebServicesParser().getWSDLDefinition(wsdlURI).getServices();
       if (services.isEmpty()){
         if (testService==true){
             testService = false;
-            status = new SimpleStatus("", msgUtils.getMessage("MSG_WARNING_NO_SERVICE_ELEMENT"), Status.WARNING);
+            status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_WARNING_NO_SERVICE_ELEMENT") );
             try{
               env.getStatusHandler().report(status);
             }catch(Exception e){
-              status = new SimpleStatus("", msgUtils.getMessage("MSG_WARNING_NO_SERVICE_ELEMENT"), Status.ERROR);
+              status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_WARNING_NO_SERVICE_ELEMENT") );
             }
         }
       }    
@@ -124,7 +124,7 @@ public class WSDLSelectionOutputCommand extends EnvironmentalOperation
   }
     else
     {
-      Status status = new SimpleStatus("", msgUtils.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL"), Status.ERROR);
+      IStatus status = StatusUtils.errorStatus( msgUtils.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL") );
       env.getStatusHandler().reportError(status);
       return status;
     }

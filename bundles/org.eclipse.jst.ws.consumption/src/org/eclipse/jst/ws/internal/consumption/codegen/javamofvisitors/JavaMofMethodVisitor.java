@@ -12,13 +12,12 @@
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors;
 
 import java.util.Iterator;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
 
 
@@ -49,9 +48,9 @@ public class JavaMofMethodVisitor implements Visitor
   * @param JavaClass javaclass that holds the methods
   * @param VisitorAction Action to be performed on each method
   **/
-  public Status run ( Object javaclass, VisitorAction vAction)
+  public IStatus run ( Object javaclass, VisitorAction vAction)
   {
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
     JavaClass javaClass = (JavaClass)javaclass;
     for (Iterator m=javaClass.getPublicMethods().iterator(); m.hasNext(); ) {
       Method method=(Method)m.next();
@@ -61,8 +60,10 @@ public class JavaMofMethodVisitor implements Visitor
           if(fMethodsSelected[i] == null) continue;
           if ( fMethodsSelected[i].getValue().equals(method.getMethodElementSignature()))
             methodSelected = (boolean) fMethodsSelected[i].isSelected();
-        }		        	
-        String methodName = method.getName();
+        }
+        
+        method.getName();
+        
         if(methodSelected)
           status = vAction.visit(method);  
         

@@ -204,7 +204,7 @@ public class UpdateServiceInterfaceAction extends UpdateAction
 
   public final boolean refreshFromRegistry()
   {
-    UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
+    controller_.getUDDIPerspective();
     try
     {
       String uuidKey = (String)propertyTable_.get(UDDIActionInputs.QUERY_INPUT_UUID_SERVICE_INTERFACE_KEY);

@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -26,8 +27,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 
@@ -66,12 +66,12 @@ public class CreateJavaProjectCommand extends EnvironmentalOperation
       }
       catch (CoreException ce)
       {
-        Status status = new SimpleStatus(WebServiceConsumptionPlugin.ID, WebServiceConsumptionPlugin.getMessage("%MSG_ERROR_CANNOT_CREATE_JAVA_PROJECT", new String[] {projectName_}), Status.ERROR, ce);
+        IStatus status = StatusUtils.errorStatus( WebServiceConsumptionPlugin.getMessage("MSG_ERROR_CANNOT_CREATE_JAVA_PROJECT", new String[] {projectName_}), ce);
         env.getStatusHandler().reportError(status);
         return status;
       }
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
   public void setProjectName(String projectName)

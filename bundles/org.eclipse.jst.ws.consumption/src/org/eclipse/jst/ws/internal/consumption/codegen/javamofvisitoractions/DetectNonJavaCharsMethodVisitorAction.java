@@ -12,11 +12,10 @@
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
 
 import java.util.Vector;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofParameterVisitor;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**
@@ -41,7 +40,7 @@ public class DetectNonJavaCharsMethodVisitorAction extends VisitorActionImpl
   * Create a method element from the method 
   * @param Method the class to be used to create the method
   **/
-  public Status visit (Object imethod)
+  public IStatus visit (Object imethod)
   {
     
     Method method = (Method)imethod;
@@ -64,7 +63,7 @@ public class DetectNonJavaCharsMethodVisitorAction extends VisitorActionImpl
     	parameterVisitor.run(method, parameterVisitorAction);   
 	  }
 	 
-	 return new SimpleStatus("");
+	 return Status.OK_STATUS;
 	}
 
   private void checkUpperCase(String name, String className)

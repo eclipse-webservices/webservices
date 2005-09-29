@@ -14,13 +14,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerPort;
@@ -78,26 +78,26 @@ public class CreateMonitorCommand extends EnvironmentalOperation
                 }
                 catch (CoreException ce) {
                   MessageUtils msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
-                  Status error = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR",
-                      new Object[] { String.valueOf(port.getPort()), server.getName()}), Status.ERROR, ce);
+                  IStatus error = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR",
+                                                           new Object[] { String.valueOf(port.getPort()), server.getName()}), ce);
                   env.getStatusHandler().reportError(error);
                   return error;
                 }
               }
               monitoredPort = new Integer(imsPort.getMonitorPort());
-              return new SimpleStatus("");
+              return Status.OK_STATUS;
             }
           }
           try {
             IMonitoredServerPort imsPort = serverMonitorManager.createMonitor(server, port, -1, new String[] { WEB_SERVICES});
             serverMonitorManager.startMonitor(imsPort);
             monitoredPort = new Integer(imsPort.getMonitorPort());
-            return new SimpleStatus("");
+            return Status.OK_STATUS;
           }
           catch (CoreException ce) {
             MessageUtils msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
-            Status error = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[] {
-                String.valueOf(port.getPort()), server.getName()}), Status.ERROR, ce);
+            IStatus error = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[] {
+                                                     String.valueOf(port.getPort()), server.getName()}), ce);
             env.getStatusHandler().reportError(error);
             return error;
           }
@@ -105,14 +105,14 @@ public class CreateMonitorCommand extends EnvironmentalOperation
 
         else {
           MessageUtils msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
-          Status info = new SimpleStatus(WebServiceConsumptionPlugin.ID, msgUtils.getMessage("MSG_INFO_MONITORING_NOT_SUPPORTED",
-              new Object[] { server.getName()}), Status.INFO);
+          IStatus info = StatusUtils.infoStatus( msgUtils.getMessage("MSG_INFO_MONITORING_NOT_SUPPORTED",
+                                                 new Object[] { server.getName()}) );
           env.getStatusHandler().reportInfo(info);
           return info;
         }
       }
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
 
   private boolean hasContentWebServices(IMonitoredServerPort imsPort) {

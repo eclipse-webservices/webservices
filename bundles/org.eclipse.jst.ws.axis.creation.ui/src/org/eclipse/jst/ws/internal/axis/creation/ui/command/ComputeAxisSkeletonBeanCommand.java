@@ -16,9 +16,9 @@ import java.util.Vector;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
@@ -42,7 +42,7 @@ public class ComputeAxisSkeletonBeanCommand extends EnvironmentalOperation
       if (beanName != null)
         classNames.add(beanName);
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
 
   public List getClassNames()

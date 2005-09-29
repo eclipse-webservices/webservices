@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.j2ee.webservice.wsdd.Handler;
 import org.eclipse.jst.j2ee.webservice.wsdd.PortComponent;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
@@ -26,8 +27,6 @@ import org.eclipse.jst.j2ee.webservice.wsdd.WsddResource;
 import org.eclipse.jst.j2ee.webservice.wsdd.internal.impl.WsddFactoryImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.common.internal.emf.utilities.EtoolsCopyUtility;
 
 /*
@@ -43,7 +42,7 @@ public class ServiceHandlersWidgetOutputCommand extends EnvironmentalOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
     try {
       Enumeration e = wsDescToHandlers_.keys();
       while (e.hasMoreElements()) {

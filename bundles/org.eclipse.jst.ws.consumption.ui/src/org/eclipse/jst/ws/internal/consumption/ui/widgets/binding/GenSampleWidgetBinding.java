@@ -15,8 +15,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
@@ -52,8 +52,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
@@ -151,7 +149,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
       Environment env = getEnvironment();
-	    Status status = new SimpleStatus( "" );	
+	    IStatus status = Status.OK_STATUS;	
 	  
       // Split up the project and module
       int index = module_.indexOf("/");
@@ -187,7 +185,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	      clientInfo.setServerInstanceId(createServerCommand.getServerInstanceId());
 	    }
 	    else if (createServerStatus.getSeverity()==Status.ERROR){
-	      env.getStatusHandler().reportError( EnvironmentUtils.convertIStatusToStatus(createServerStatus));
+	      env.getStatusHandler().reportError(  createServerStatus );
 	    }               
 	    
 	  }
@@ -206,7 +204,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
       }
 
       command.setEnvironment( env );
-      status = EnvironmentUtils.convertIStatusToStatus(command.execute( null, null ));
+      status = command.execute( monitor, null );
       if (status.getSeverity()==Status.ERROR)
       {
         env.getStatusHandler().reportError(status);

@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**
@@ -33,7 +33,7 @@ public class SimpleWidgetDataContributor implements WidgetDataContributor
   /**
    * @see org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor#getStatus()
    */
-  public Status getStatus()
+  public IStatus getStatus()
   {
     return null;
   }

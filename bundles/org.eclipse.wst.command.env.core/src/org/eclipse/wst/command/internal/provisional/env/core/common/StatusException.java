@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.provisional.env.core.common;
 
+import org.eclipse.core.runtime.IStatus;
+
 /**
  * This is the exception class used by StatusHandlers to tell their
  * callers that processing should stop.
@@ -30,7 +32,7 @@ public class StatusException extends EnvironmentException
   /**
    * Creates a new StatusException with the given Status.
    */
-  public StatusException( Status status )
+  public StatusException( IStatus status )
   {
     super( status );  
   }
@@ -49,7 +51,7 @@ public class StatusException extends EnvironmentException
    * Creates a new StatusException with the given Choice
    * and status object. The Choice may be null.
    */
-  public StatusException ( Status status, Choice choice )
+  public StatusException ( IStatus status, Choice choice )
   {
     super(status);
     this.choice = choice;

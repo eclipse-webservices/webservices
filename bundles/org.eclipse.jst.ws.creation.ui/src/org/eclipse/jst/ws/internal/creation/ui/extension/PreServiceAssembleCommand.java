@@ -14,13 +14,11 @@ package org.eclipse.jst.ws.internal.creation.ui.extension;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 
 public class PreServiceAssembleCommand extends EnvironmentalOperation 
@@ -40,7 +38,7 @@ public class PreServiceAssembleCommand extends EnvironmentalOperation
     
 		// Check if EAR module is req'd, ie. !=null
 		if (earProject_==null)
-			return new SimpleStatus("");
+			return Status.OK_STATUS;
 	  
 	  
 		//Create the service EAR module
@@ -52,7 +50,7 @@ public class PreServiceAssembleCommand extends EnvironmentalOperation
 		command.setServerInstanceId( webService_.getWebServiceInfo().getServerInstanceId() );
 		command.setJ2eeLevel(j2eeLevel_);
     command.setEnvironment( environment );
-		Status status = EnvironmentUtils.convertIStatusToStatus(command.execute( null, null ));
+		IStatus status = command.execute( monitor, null );
 		if (status.getSeverity()==Status.ERROR)
 		{
 			environment.getStatusHandler().reportError(status);
@@ -67,7 +65,7 @@ public class PreServiceAssembleCommand extends EnvironmentalOperation
 		associateCommand.setEARProject(earProject_);
 		associateCommand.setEar(ear_);
     associateCommand.setEnvironment( environment );
-		status = EnvironmentUtils.convertIStatusToStatus(associateCommand.execute( null, null ));
+		status = associateCommand.execute( monitor, null );
 		if (status.getSeverity()==Status.ERROR)
 		{
 			environment.getStatusHandler().reportError(status);		  

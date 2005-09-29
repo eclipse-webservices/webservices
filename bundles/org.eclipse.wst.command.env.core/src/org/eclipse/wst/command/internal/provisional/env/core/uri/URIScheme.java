@@ -11,8 +11,7 @@
 package org.eclipse.wst.command.internal.provisional.env.core.uri;
 
 import java.net.URL;
-
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.core.runtime.IStatus;
 
 /**
  * A URIScheme represents a single scheme for some a family of
@@ -59,5 +58,5 @@ public interface URIScheme
    * URI is valid. The severity and message of the Status object
    * will describe this.
    */
-  public Status validate ( URI uri );
+  public IStatus validate ( URI uri );
 }

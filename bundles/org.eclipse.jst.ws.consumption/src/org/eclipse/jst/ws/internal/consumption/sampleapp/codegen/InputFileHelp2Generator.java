@@ -10,12 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.StringUtils;
-import org.eclipse.jst.ws.internal.consumption.codegen.RelVisitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.bean.TypeVisitor;
-import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.ParameterElement;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 
 
@@ -70,11 +68,10 @@ public class InputFileHelp2Generator extends InputFileHelp1Generator
   * Takes in an object to be acted upon by this visitor action
   * @param Object The object to be acted upon
   */
-  public Status visit (Object object)
+  public IStatus visit (Object object)
   {
       Element parameterElement = (Element)object;
-      RelVisitor visitor = (RelVisitor)getVisitor();
-      ParameterElement parameter = (ParameterElement)parameterElement;
+      getVisitor();
 
       fbuffer.append("<TABLE>" + StringUtils.NEWLINE);
 
@@ -87,7 +84,7 @@ public class InputFileHelp2Generator extends InputFileHelp1Generator
 
       fbuffer.append("</TABLE>" + StringUtils.NEWLINE);
       
-      return new SimpleStatus("");
+      return Status.OK_STATUS;
   
   }
 

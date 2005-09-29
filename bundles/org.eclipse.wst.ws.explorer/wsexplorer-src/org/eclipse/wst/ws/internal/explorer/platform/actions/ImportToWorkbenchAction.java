@@ -204,7 +204,7 @@ public abstract class ImportToWorkbenchAction extends FormAction {
             args[3] = wsdlURL;
             args[4] = AddWSDLToWSILCommand.ARG_RESOLVE_WSDL;
             command.setArguments(args);
-            Environment env = new EclipseEnvironment(null, null, null, null);
+            Environment env = new EclipseEnvironment(null, null, null);
             command.setEnvironment( env );
             command.execute( null, null );
             msgQueue.addMessage(controller_.getMessage("MSG_INFO_IMPORT_SERVICE_REF_TO_WSIL_SUCCESSFUL", importedWSILFileName));

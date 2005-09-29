@@ -13,10 +13,8 @@ package org.eclipse.jst.ws.internal.creation.ui.plugin;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
-
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 
 
@@ -41,7 +39,6 @@ public class WebServiceCreationUIPlugin extends Plugin
   * The reference to the singleton instance of this plugin.
   */
   private static WebServiceCreationUIPlugin instance_;
-  private Log log_;
 
   /**
   * Constructs a runtime plugin object for this plugin.

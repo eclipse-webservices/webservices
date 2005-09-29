@@ -26,7 +26,7 @@ public class RegistryDetailsTool extends DetailsTool
   public final void initDefaultProperties()
   {
     clearPropertyTable();
-    Controller controller = toolManager_.getNode().getNodeManager().getController();
+    toolManager_.getNode().getNodeManager().getController();
     RegistryElement regElement = (RegistryElement)(toolManager_.getNode().getTreeElement());
     setProperty(UDDIActionInputs.QUERY_INPUT_ADVANCED_REGISTRY_NAME,regElement.getName());
   }

@@ -229,7 +229,7 @@ public class UpdateServiceAction extends UpdateAction
   public final boolean refreshBusinessFromRegistry()
   {
     UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
-    MessageQueue messageQueue = uddiPerspective.getMessageQueue();
+    uddiPerspective.getMessageQueue();
     try
     {
       String uuidBusinessKey = (String)propertyTable_.get(UDDIActionInputs.QUERY_INPUT_UUID_BUSINESS_KEY);
@@ -260,7 +260,7 @@ public class UpdateServiceAction extends UpdateAction
   
   public final boolean refreshFromRegistry()
   {
-    UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
+    controller_.getUDDIPerspective();
     try
     {
       String uuidServiceKey = (String)propertyTable_.get(UDDIActionInputs.QUERY_INPUT_UUID_SERVICE_KEY);

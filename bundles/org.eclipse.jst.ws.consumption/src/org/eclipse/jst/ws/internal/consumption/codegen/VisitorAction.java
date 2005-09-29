@@ -11,7 +11,7 @@
 
 package org.eclipse.jst.ws.internal.consumption.codegen;
 
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.core.runtime.IStatus;
 
 
 /**
@@ -25,7 +25,7 @@ public interface VisitorAction
   // Copyright
   public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
 
-  public Status visit (Object object);
+  public IStatus visit (Object object);
   public void setVisitor(Visitor visitor);
   public void initialize(String residentString);
 }

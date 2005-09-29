@@ -22,11 +22,6 @@ public class StateLessBeanType extends RecognizedReturnType
   // Copyright
   public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
 
-  
-
-  private String fTypeName;
-
-
 
   /**
   *Constructor
@@ -36,8 +31,6 @@ public class StateLessBeanType extends RecognizedReturnType
   public StateLessBeanType(String name)
   {
     super(TypeFactory.STATELESS_BEAN);
-    fTypeName = name;
-
   }
 
   

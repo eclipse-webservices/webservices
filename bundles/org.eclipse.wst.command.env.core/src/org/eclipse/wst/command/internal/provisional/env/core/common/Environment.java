@@ -31,11 +31,6 @@ public interface Environment
   public Log getLog ();
 
   /**
-   * Returns a progress monitor.
-   */
-  public ProgressMonitor getProgressMonitor ();
-
-  /**
    * Returns a status handler.
    */
   public StatusHandler getStatusHandler ();
@@ -47,11 +42,6 @@ public interface Environment
    * report progress and announce status.
    */
   public URIFactory getURIFactory ();
-
-  /**
-   * Returns a compiler appropriate to the environment.
-   */
-  public JavaCompiler getJavaCompiler ();
 
   /**
    * Returns an object that helps manage execution/undoing of Commands.

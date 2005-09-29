@@ -15,8 +15,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions.JavaMofBeanVisitorAction;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofBeanVisitor;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
@@ -24,8 +24,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
 import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 import org.eclipse.wst.ws.internal.datamodel.Model;
@@ -69,15 +68,15 @@ public class JavaToModelCommand extends EnvironmentalOperation
   }
 
   
-  private Status createJavaReflection(Environment env)
+  private IStatus createJavaReflection(Environment env, IProgressMonitor monitor )
   {
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
     JavaMofReflectionCommand javaMofReflectionCommand = new JavaMofReflectionCommand();
     javaMofReflectionCommand.setClientProject(clientProject);
     javaMofReflectionCommand.setProxyBean(proxyBean);
     javaMofReflectionCommand.setEnvironment( env );
     //javaMofReflectionCommand.setStatusMonitor(getStatusMonitor());
-    status = EnvironmentUtils.convertIStatusToStatus(javaMofReflectionCommand.execute( null, null));
+    status = javaMofReflectionCommand.execute( monitor, null);
     javaClass = (JavaClass)javaMofReflectionCommand.getJavaClass();
     return status;
   }
@@ -94,7 +93,7 @@ public class JavaToModelCommand extends EnvironmentalOperation
   /**
   * Build the datamodel from the mof
   */
-  public Status buildModelFromMof (Environment env) throws CoreException
+  public IStatus buildModelFromMof (Environment env) throws CoreException
   {
   	
   	Choice OKChoice = new Choice('O', msgUtils.getMessage("LABEL_OK"), msgUtils.getMessage("DESCRIPTION_OK"));
@@ -107,7 +106,7 @@ public class JavaToModelCommand extends EnvironmentalOperation
     //   given parent element
     //3. The model is not null however the parentElement is, meaning we want to add this Bean to
     //   This model but dont attach it to anything
-      Status status = new SimpleStatus("");
+      IStatus status = Status.OK_STATUS;
 
       if(model == null && parentElement == null){
          JavaMofBeanVisitorAction beanVisitorAction = new JavaMofBeanVisitorAction(clientProject,methods, env);
@@ -125,7 +124,7 @@ public class JavaToModelCommand extends EnvironmentalOperation
            if (result.getLabel().equals(CancelChoice.getLabel()))
            {
            	 //return an error status since the user canceled
-           	  return new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED"), Status.ERROR);
+           	  return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
            }
            	
          }
@@ -149,7 +148,7 @@ public class JavaToModelCommand extends EnvironmentalOperation
            if (result.getLabel().equals(CancelChoice.getLabel()))
            {
            	 //return an error status since the user canceled
-           	  return new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED"), Status.ERROR);
+           	  return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
            }
            	
          }
@@ -172,7 +171,7 @@ public class JavaToModelCommand extends EnvironmentalOperation
            if (result.getLabel().equals(CancelChoice.getLabel()))
            {
            	 //return an error status since the user canceled
-           	  return new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED"), Status.ERROR);
+           	  return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
            }
            	
          }
@@ -190,17 +189,17 @@ public class JavaToModelCommand extends EnvironmentalOperation
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
     Environment env = getEnvironment();
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
     if(clientProject == null) return status;
     
-  	status = createJavaReflection(env);
+  	status = createJavaReflection(env, monitor);
     if (status.getSeverity()==Status.ERROR) return status;
     try{
       status = buildModelFromMof(env);
       return status;
     }catch(CoreException exc){
       IStatus embeddedStatus = exc.getStatus();
-      status = EnvironmentUtils.convertIStatusToStatus(embeddedStatus);
+      status = embeddedStatus;
       return status;
     }
 

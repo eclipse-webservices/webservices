@@ -12,9 +12,8 @@
 package org.eclipse.jst.ws.internal.consumption.codegen;
 
 import java.util.Vector;
-
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 
 
@@ -226,10 +225,10 @@ public class Generator implements VisitorAction
   }
 
 
-  public Status visit (Object object)
+  public IStatus visit (Object object)
   {
    //implemented by subclasses
-  	return new SimpleStatus("");
+  	return Status.OK_STATUS;
   }
   
 

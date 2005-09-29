@@ -27,12 +27,12 @@ import javax.wsdl.extensions.soap.SOAPAddress;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.IMonitor;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.IMonitorWorkingCopy;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.MonitorCore;
@@ -129,7 +129,7 @@ public class GetMonitorCommand extends EnvironmentalOperation
                     }
                     catch (Throwable t)
                     {
-                      Status warning = new SimpleStatus(WebServiceConsumptionPlugin.ID, WebServiceConsumptionPlugin.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[]{String.valueOf(port), endpoint}), Status.WARNING, t);
+                      IStatus warning = StatusUtils.warningStatus( WebServiceConsumptionPlugin.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[]{String.valueOf(port), endpoint}), t);
                       try
                       {
                         if (env != null)
@@ -154,7 +154,7 @@ public class GetMonitorCommand extends EnvironmentalOperation
                     }
                     catch (Throwable t)
                     {
-                      Status warning = new SimpleStatus(WebServiceConsumptionPlugin.ID, WebServiceConsumptionPlugin.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[]{String.valueOf(port), endpoint}), Status.WARNING, t);
+                      IStatus warning = StatusUtils.warningStatus( WebServiceConsumptionPlugin.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[]{String.valueOf(port), endpoint}), t);
                       try
                       {
                         if (env != null)
@@ -172,7 +172,7 @@ public class GetMonitorCommand extends EnvironmentalOperation
         }
       }
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
 
   public void setMonitorService(boolean monitorService)

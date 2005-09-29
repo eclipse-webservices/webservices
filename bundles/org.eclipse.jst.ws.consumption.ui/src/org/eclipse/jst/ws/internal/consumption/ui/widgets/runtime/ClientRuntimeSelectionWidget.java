@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -25,8 +27,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -39,19 +39,13 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
   /* CONTEXT_ID PWRS0003 for the Wizard Scenario Client configuration of the Runtime Selection Page */
   private String INFOPOP_PWRS_GROUP_CLIENT = pluginId_ + ".PWRS0003";
   
-  private String                       clientScenarioId;
   private Group                        clientGroup_;
   private RuntimeServerSelectionWidget runtimeWidget_;
   private SelectionListChoices         runtime2ClientTypes_;
   private Combo                        clientType_;
   private SelectionAdapter             clientTypeSelListener;
   private ProjectSelectionWidget       projectWidget_;
-  private boolean 					   isVisible_;
-  
-  // rsk revisit - Putting this in temporarily. The RuntimeSelectionDialog needs the server
-  // information even when it is launched for the client half of the configuration.
-  private String                       serviceScenarioId;
-  //
+  private boolean 					           isVisible_;
   
   
   public WidgetDataEvents addControls( Composite parent, final Listener statusListener )
@@ -322,11 +316,11 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.WidgetContributor#getStatus()
    */
-  public Status getStatus() 
+  public IStatus getStatus() 
   {
-    Status finalStatus   = new SimpleStatus( "" );
-    Status projectStatus = projectWidget_.getStatus();
-    Status runtimeStatus = runtimeWidget_.getStatus();
+    IStatus finalStatus   = Status.OK_STATUS;
+    IStatus projectStatus = projectWidget_.getStatus();
+    IStatus runtimeStatus = runtimeWidget_.getStatus();
     
     if( runtimeStatus.getSeverity() == Status.ERROR )
     {
@@ -355,7 +349,7 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
         String clientEARCompName = projectWidget_.getEarComponentName();
 
         //Validate that the selected client project is of the type indicated by client project type.
-        Status clientProjectTypeStatus = valUtils.validateProjectType(clientProjName, runtime2ClientTypes_);
+        IStatus clientProjectTypeStatus = valUtils.validateProjectType(clientProjName, runtime2ClientTypes_);
         if (clientProjectTypeStatus.getSeverity() == Status.ERROR)
         {
           finalStatus = clientProjectTypeStatus;
@@ -364,7 +358,7 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
         //Validate client side server targets and J2EE levels
         String clientServerFactoryId = getClientTypeRuntimeServer().getServerId();
         String clientJ2EElevel = getJ2EEVersion();
-        Status clientProjectStatus = valUtils.validateProjectTargetAndJ2EE(clientProjName, clientCompName, clientEARName, clientEARCompName, clientServerFactoryId,
+        IStatus clientProjectStatus = valUtils.validateProjectTargetAndJ2EE(clientProjName, clientCompName, clientEARName, clientEARCompName, clientServerFactoryId,
             clientJ2EElevel);
         if (clientProjectStatus.getSeverity() == Status.ERROR)
         {

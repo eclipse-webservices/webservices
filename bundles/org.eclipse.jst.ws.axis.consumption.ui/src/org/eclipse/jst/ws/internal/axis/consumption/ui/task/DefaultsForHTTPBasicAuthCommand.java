@@ -13,11 +13,11 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.DialogWWWAuthentication;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
@@ -90,7 +90,7 @@ public class DefaultsForHTTPBasicAuthCommand extends EnvironmentalOperation
         }
       }
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   /**
    * @param javaWSDLParam The javaWSDLParam to set.

@@ -29,5 +29,6 @@ Require-Bundle: org.eclipse.jst.ws.consumption.ui,
  org.eclipse.ui,
  org.eclipse.debug.core,
  org.eclipse.wst.server.core,
- org.eclipse.jem.util
+ org.eclipse.jem.util,
+ org.eclipse.wst.ws
 Eclipse-AutoStart: true

@@ -12,15 +12,14 @@
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
 
 import java.util.Vector;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.ArrayType;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofBeanVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 
@@ -42,7 +41,7 @@ public class DetectNonJavaCharsParameterVisitorAction extends VisitorActionImpl
   * Create a method element from the method 
   * @param Method the class to be used to create the method
   **/
-  public Status visit (Object ijavaParameter)
+  public IStatus visit (Object ijavaParameter)
   {
     
     JavaParameter javaParameter = (JavaParameter) ijavaParameter;
@@ -69,7 +68,7 @@ public class DetectNonJavaCharsParameterVisitorAction extends VisitorActionImpl
 			beanVisitor.run(javaClass,beanVisitorAction);
   	  	}
    	
-   	return new SimpleStatus("");
+   	return Status.OK_STATUS;
   }
   
 

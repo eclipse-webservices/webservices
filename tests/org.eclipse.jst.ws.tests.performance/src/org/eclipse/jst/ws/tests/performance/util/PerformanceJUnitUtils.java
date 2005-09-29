@@ -12,17 +12,17 @@ package org.eclipse.jst.ws.tests.performance.util;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.tests.util.AccumulateStatusHandler;
 import org.eclipse.jst.ws.tests.util.DynamicPopupJUnitWizard;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 public class PerformanceJUnitUtils {
   
-	private static Status launchWizard(String pluginNS,String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
+	private static IStatus launchWizard(String pluginNS,String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
 	{
 		IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint("org.eclipse.ui.popupMenus").getExtensions();
 		for (int i=0;i<extensions.length;i++)
@@ -36,7 +36,6 @@ public class PerformanceJUnitUtils {
 					{
 						IConfigurationElement actionElement = configElements[j].getChildren()[0];
 						AccumulateStatusHandler statusHandler = new AccumulateStatusHandler();
-                        EclipsePerformanceLog log = new EclipsePerformanceLog();
                         // Use this to enable per command performance measurements
                         //DynamicPopupJUnitWizard wizard = new DynamicPopupJUnitWizard(statusHandler, log);
 						DynamicPopupJUnitWizard wizard = new DynamicPopupJUnitWizard(statusHandler);
@@ -48,15 +47,15 @@ public class PerformanceJUnitUtils {
 				}
 			}
 		}
-		return new SimpleStatus("","No wizard found for: ",Status.ERROR);
+		return StatusUtils.errorStatus( "No wizard found for: " );
 	}
 	
-	public static Status launchCreationWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
+	public static IStatus launchCreationWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
 	{
 		return launchWizard("org.eclipse.jst.ws.creation.ui",wizardId,objectClassId,initialSelection);
 	}
 	
-	public static Status launchConsumptionWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
+	public static IStatus launchConsumptionWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
 	{
 		return launchWizard("org.eclipse.jst.ws.internal.consumption.ui",wizardId,objectClassId,initialSelection);
 	}

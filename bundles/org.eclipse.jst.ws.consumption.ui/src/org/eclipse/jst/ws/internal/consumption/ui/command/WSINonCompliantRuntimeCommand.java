@@ -16,11 +16,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIAPContext;
 import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSISSBPContext;
@@ -48,40 +48,30 @@ public class WSINonCompliantRuntimeCommand extends EnvironmentalOperation
   	PersistentWSISSBPContext wsiSSBPContext = WSUIPlugin.getInstance().getWSISSBPContext(); 
   	PersistentWSIAPContext wsiAPContext = WSUIPlugin.getInstance().getWSIAPContext(); 
     Vector statusSSBP = new Vector();
-    statusSSBP.add(new SimpleStatus("WSINonCompliantRuntimeCommand", 
-    		msgUtils_.getMessage("WSI_SSBP_INCOMPLIANT_RUNTIME"), WSIComplianceUtils.getWSISeverity(serviceProject_, wsiSSBPContext)));
+    statusSSBP.add( new Status( WSIComplianceUtils.getWSISeverity(serviceProject_, wsiSSBPContext), "id", 0,
+        msgUtils_.getMessage("WSI_SSBP_INCOMPLIANT_RUNTIME"), null ) );
     Status[] statusesSSBP = (Status[]) statusSSBP.toArray(new Status[statusSSBP.size()]);
     
     Vector statusAP = new Vector();
-    statusAP.add(new SimpleStatus("WSINonCompliantRuntimeCommand", 
-    		msgUtils_.getMessage("WSI_AP_INCOMPLIANT_RUNTIME"), WSIComplianceUtils.getWSISeverity(serviceProject_, wsiAPContext)));
+    statusAP.add( new Status( WSIComplianceUtils.getWSISeverity(serviceProject_, wsiAPContext), "id", 0, 
+    		msgUtils_.getMessage("WSI_AP_INCOMPLIANT_RUNTIME"), null ));
     Status[] statusesAP = (Status[]) statusAP.toArray(new Status[statusAP.size()]);
 
-    if (WSIComplianceUtils.checkWSICompliance (environment.getStatusHandler(), statusesSSBP, serviceProject_, wsiSSBPContext)) {
-    	if (WSIComplianceUtils.checkWSICompliance (environment.getStatusHandler(), statusesAP, serviceProject_, wsiAPContext)) {
-    		return new SimpleStatus( "" );
-    	} else {
-    		return new SimpleStatus(
-    				"WSINonCompliantRuntimeCommand",
-    				msgUtils_.getMessage("NOT_OK"),
-    				Status.ERROR);
+    if (WSIComplianceUtils.checkWSICompliance (environment.getStatusHandler(), statusesSSBP, serviceProject_, wsiSSBPContext)) 
+    {
+    	if (WSIComplianceUtils.checkWSICompliance (environment.getStatusHandler(), statusesAP, serviceProject_, wsiAPContext)) 
+      {
+    		return Status.OK_STATUS;
+    	} 
+      else 
+      {
+    		return StatusUtils.errorStatus(	msgUtils_.getMessage("NOT_OK") );
     	}
-    } else {
-		return new SimpleStatus(
-				"WSINonCompliantRuntimeCommand",
-				msgUtils_.getMessage("NOT_OK"),
-				Status.ERROR);
+    } 
+    else 
+    {
+		  return StatusUtils.errorStatus( msgUtils_.getMessage("NOT_OK") );
 		}
-  }
-
-  public Status undo(Environment environment)
-  {
-    return null;
-  }
-
-  public Status redo(Environment environment)
-  {
-    return null;
   }
   
   public void setServiceProject(IProject serviceProject) {

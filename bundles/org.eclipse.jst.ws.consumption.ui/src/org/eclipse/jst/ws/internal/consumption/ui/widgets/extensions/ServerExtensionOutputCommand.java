@@ -13,9 +13,6 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
@@ -28,46 +25,6 @@ public class ServerExtensionOutputCommand extends EnvironmentalOperation
   
   private boolean isWebProjectStartupRequested_ = false;
     
-  public boolean isUndoable(){
-  	return true;
-  }
-
-  public Status undo(Environment env){
-		
-
-  	Status stat = new SimpleStatus("");
-		
-		//Commenting out all extranseous sever startups
-		/*
-    try	{
-    	
-      // check existingServer
-      if (fExistingServer!=null) {
-    	
-        // get EAR project
-        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        IProject earProject = null;
-        if (earProjectName_!=null && earProjectName_.length()>0) {
-          earProject = root.getProject(earProjectName_);
-    	}    	
-    	
-    	AbstractStartServer startServerCommand = null;
-    	WebServiceStartServerRegistry reg = WebServiceStartServerRegistry.getInstance();
-    	startServerCommand = (AbstractStartServer)reg.getServerStartByTypeId(fExistingServer.getServerType().getId());
-    	if (earProject!=null) {
-    		startServerCommand.runPreServerConfig(fExistingServer, earProject);
-    	}
-      }
-   	}
-    catch (CoreException ce ) {
-      IStatus embeddedStatus = ce.getStatus();
-      stat = EnvironmentUtils.convertIStatusToStatus(embeddedStatus);
-      env.getStatusHandler().reportError(stat);
-  		return stat;
-  	}  	
-  	*/
-  	return stat;
-  }    
   
   /**
    * @return Returns the wsdlURI.

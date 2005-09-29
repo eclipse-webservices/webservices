@@ -11,10 +11,10 @@
 
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 
@@ -36,7 +36,7 @@ public class JavaMofBeanVisitor implements Visitor
   {
   }
  
-  public Status run ( Object javaClass, VisitorAction vAction)
+  public IStatus run ( Object javaClass, VisitorAction vAction)
   {
     return vAction.visit((JavaClass)javaClass);   
   }

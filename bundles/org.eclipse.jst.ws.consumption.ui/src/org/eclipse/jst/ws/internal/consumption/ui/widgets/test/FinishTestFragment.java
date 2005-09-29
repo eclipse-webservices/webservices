@@ -33,7 +33,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
 public class FinishTestFragment extends BooleanFragment{
 
   private boolean isTestWidget;	
-  private boolean launchedTest;
   private boolean generateProxy;
   private String launchedServiceTestName;
   private boolean testService;

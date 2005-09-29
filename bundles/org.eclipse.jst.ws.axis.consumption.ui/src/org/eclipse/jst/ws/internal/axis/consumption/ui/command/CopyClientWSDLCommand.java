@@ -27,13 +27,13 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
@@ -57,27 +57,28 @@ public class CopyClientWSDLCommand extends EnvironmentalOperation
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
 		Environment env = getEnvironment();
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
     Definition def = wsParser_.getWSDLDefinition(wsdlURL_);
     if(def==null)
     {
-      status = new SimpleStatus(pluginId_, msgUtils_.getMessage("MSG_ERROR_WSDL_NO_DEFINITION",new String[]{wsdlURL_}),Status.ERROR);
+      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WSDL_NO_DEFINITION",new String[]{wsdlURL_}));
       env.getStatusHandler().reportError(status);
       return status;
     }
     IPath clientWSDLPath = new Path(clientWSDLPathName_);
     IWorkspaceRoot workspaceRoot = FileResourceUtils.getWorkspaceRoot();
-    status = resolveWSDL(workspaceRoot, def, clientWSDLPath,env);
+    status = resolveWSDL(workspaceRoot, def, clientWSDLPath, env, monitor);
     return status;
   }
 
-	private Status resolveWSDL(
+	private IStatus resolveWSDL(
 		IWorkspaceRoot workspace,
 		Definition wsdlDef,
 		IPath wsdlPath,
-		Environment env) {
+		Environment env, 
+		IProgressMonitor monitor) {
 		try {
-			writeWSDLFile(workspace, wsdlDef, wsdlPath, env);
+			writeWSDLFile(workspace, wsdlDef, wsdlPath, env, monitor);
 			Map importDefs = wsdlDef.getImports();
 			Set keysSet = importDefs.keySet();
 			for (Iterator e = keysSet.iterator(); e.hasNext();) {
@@ -91,11 +92,11 @@ public class CopyClientWSDLCommand extends EnvironmentalOperation
 							0,
 							wsdlPath.toString().lastIndexOf("/") + 1);	 //$NON-NLS-1$
 					if (isInvalidImportWSDL(importDef.getLocationURI())) {
-					    return new SimpleStatus(pluginId_, msgUtils_.getMessage("MSG_ERROR_IMPORT_WSDL",new String[]{importDef.getLocationURI()}), Status.ERROR);
+					    return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_IMPORT_WSDL",new String[]{importDef.getLocationURI()}));
 					}
 					IPath newPath =
 						new Path(newPathString + importDef.getLocationURI());
-					Status status = resolveWSDL(workspace, def, newPath, env);
+					IStatus status = resolveWSDL(workspace, def, newPath, env, monitor);
 					if (status != null
 						&& status.getSeverity() == Status.ERROR) {
 						return status;
@@ -103,9 +104,9 @@ public class CopyClientWSDLCommand extends EnvironmentalOperation
 				}
 			}
 		} catch (Exception e) {
-		    return new SimpleStatus(pluginId_, msgUtils_.getMessage("MSG_ERROR_WRITE_WSDL",new String[] { wsdlPath.toString() }), Status.ERROR, e);
+		    return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WRITE_WSDL",new String[] { wsdlPath.toString() }), e);
 		}
-		return new SimpleStatus("");
+		return Status.OK_STATUS;
 	}
 
 	private boolean isInvalidImportWSDL(String wsdlPath) {
@@ -127,7 +128,8 @@ public class CopyClientWSDLCommand extends EnvironmentalOperation
 		IWorkspaceRoot workspace,
 		Definition wsdlDef,
 		IPath wsdlPath,
-		Environment env)
+		Environment env, 
+		IProgressMonitor monitor)
 		throws Exception {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -144,7 +146,7 @@ public class CopyClientWSDLCommand extends EnvironmentalOperation
 			context,
 			wsdlPath.makeAbsolute(),
 			bais,
-			env.getProgressMonitor(),
+			monitor,
 			env.getStatusHandler());
 
 		baos.close();

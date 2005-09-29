@@ -11,14 +11,10 @@
 package org.eclipse.jst.ws.tests;
 
 import junit.framework.TestCase;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.server.core.IRuntime;
@@ -48,14 +44,11 @@ public abstract class WSWizardTest extends TestCase
 		// Get an instance of the default environment with the AccumulateStatusHandler to minimize UI dialog blocks.
 	  	PersistentResourceContext  resourceContext = PersistentResourceContext.getInstance();
 		EclipseStatusHandler       handler         = new EclipseStatusHandler();
-		EclipseProgressMonitor     monitor         = new EclipseProgressMonitor();
-		EclipseEnvironment         environment     = new EclipseEnvironment( null, resourceContext, monitor, handler );
+		EclipseEnvironment         environment     = new EclipseEnvironment( null, resourceContext, handler );
 	  
 		env_ = environment; 
 		assertTrue(env_ != null);
 		
-		IProgressMonitor npm = new NullProgressMonitor(); 
-		monitor.setMonitor(npm);
 		server_ = null;
 		JUnitUtils.hideActionDialogs();
 		installServerRuntime();

@@ -12,7 +12,7 @@ package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import java.util.Hashtable;
 import java.util.Stack;
-
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -20,7 +20,6 @@ import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.registry.WidgetRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributor;
 import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributorFactory;
 
@@ -66,7 +65,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	widgetStackStack_   = new Stack();
   }
   
-  public Status runForwardToNextStop()
+  public IStatus runForwardToNextStop()
   {    
   	firstFragment_  = true;
   	nextPage_       = null;
@@ -124,9 +123,9 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	    widgetFactory_ = null;
 	    widgetStack_   = null;
 		
-  	    Status status = runForwardToNextStop();
+  	    IStatus status = runForwardToNextStop();
   	
-  	    if( status.getSeverity() == Status.ERROR )
+  	    if( status.getSeverity() == IStatus.ERROR )
   	    {
   	      // An error has occured so we need undo to the previous stop point.
   	      undoToLastPage();
@@ -227,9 +226,9 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	// Loop through subsequent pages.
   	do
   	{  	  
-  	  Status status = runForwardToNextStop();	  
+  	  IStatus status = runForwardToNextStop();	  
   	  
-  	  if( status.getSeverity() == Status.ERROR )
+  	  if( status.getSeverity() == IStatus.ERROR )
   	  {
   	  	// An error occured in one of the commands.
   	  	doneOk = false;

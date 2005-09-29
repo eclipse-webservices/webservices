@@ -64,7 +64,7 @@ public class UDDIAddToWSDLPerspectiveAction extends LinkAction
     // Perform data validation.
     try
     {
-      int nodeId = Integer.parseInt(nodeIdString);
+      Integer.parseInt(nodeIdString);
     }
     catch (NumberFormatException e)
     {

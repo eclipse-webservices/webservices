@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.dialog;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**
@@ -58,7 +58,7 @@ public class ErrorDialog extends MessageDialog
     Shell parentShell,
     String dialogTitle,
     String message,
-    Status status,
+    IStatus status,
     int displayMask)
   {
     super(parentShell, dialogTitle, message, status, displayMask);
@@ -75,7 +75,7 @@ public class ErrorDialog extends MessageDialog
       StatusDialogConstants.OK_ID,
       IDialogConstants.OK_LABEL,
       true);
-    if (status.hasChildren() || status.getThrowable() != null )
+    if (status.isMultiStatus() || status.getException() != null )
     {
       detailsButton =
         createButton(

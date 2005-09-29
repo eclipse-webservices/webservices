@@ -12,8 +12,6 @@ package org.eclipse.jst.ws.internal.creation.ui.widgets.test;
 
 import java.util.List;
 import java.util.Vector;
-
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WSDLTestLaunchCommand;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -28,7 +26,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContribut
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 
 
@@ -100,14 +97,14 @@ public class ServiceTestWidget extends SimpleWidgetDataContributor
   	WSDLTestLaunchCommand wtlc = new WSDLTestLaunchCommand();
   	wtlc.setTestID(testID);
   	wtlc.setServiceTypeRuntimeServer(serviceids);
-	wtlc.setServiceServerInstanceId(serviceServerInstanceId);
+	  wtlc.setServiceServerInstanceId(serviceServerInstanceId);
   	wtlc.setServerProject(serverProject);
-	wtlc.setServerModule(module);
+	  wtlc.setServerModule(module);
   	wtlc.setWsdlURI(wsdlURI);
   	wtlc.setExternalBrowser(true);
   	wtlc.setEndpoint(endpoints);
   	wtlc.setEnvironment( env );
-  	Status status = EnvironmentUtils.convertIStatusToStatus(wtlc.execute( null, null ));
+  	wtlc.execute( null, null );
   }
   
   public void setServiceTestFacilities( SelectionList facilities )

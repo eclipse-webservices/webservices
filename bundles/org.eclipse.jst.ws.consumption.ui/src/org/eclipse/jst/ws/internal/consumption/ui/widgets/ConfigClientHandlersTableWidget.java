@@ -15,8 +15,9 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -50,8 +51,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 /**
  * ConfigClientHandlersTreeWidget
@@ -61,7 +60,6 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
 
   private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
   private MessageUtils msgUtils_ = null;
-  private Listener statusListener_;
   private Composite parent_;
   private boolean isGenSkeletonEnabled_;
   private String outputLocation_;
@@ -109,7 +107,6 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     UIUtils uiUtils = new UIUtils(msgUtils_, pluginId_);
 
     parent_ = parent;
-    statusListener_ = statusListener;
 
     // Web service reference combo
     Composite webServiceRefComp = uiUtils.createComposite(parent_, 2);
@@ -271,7 +268,6 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     try {
 
       int sizeOfHandlers = wsRefsToHandlers_.size();
-      String[] wsRefs = new String[sizeOfHandlers];
 
       String[] wsRefNames = (String[]) wsRefsToHandlers_.keySet().toArray(new String[0]);
       webServiceRefCombo_.setItems(wsRefNames);
@@ -321,8 +317,8 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
    * 
    * @see org.eclipse.wst.command.env.ui.widgets.WidgetContributor#getStatus()
    */
-  public Status getStatus() {
-    Status finalStatus = new SimpleStatus("");
+  public IStatus getStatus() {
+    IStatus finalStatus = Status.OK_STATUS;
 
     return finalStatus;
   }
@@ -361,7 +357,6 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
   private void handleMoveUpButtonSelected(SelectionEvent event) {
 
     int index = tableViewer_.getTable().getSelectionIndex();
-    ISelection selected = tableViewer_.getSelection();
     if (index != -1) {
       if (index > 0) {
         orderedHandlers_ = (Vector) wsRefsToHandlers_.get(webServiceRefCombo_.getText());
@@ -376,7 +371,6 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
   private void handleMoveDownButtonSelected(SelectionEvent event) {
 
     int index = tableViewer_.getTable().getSelectionIndex();
-    ISelection selected = tableViewer_.getSelection();
     if (index != -1) {
       if (index < orderedHandlers_.size() - 1) {
         orderedHandlers_ = (Vector) wsRefsToHandlers_.get(webServiceRefCombo_.getText());        
@@ -469,7 +463,6 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     ISelection selection = tableViewer_.getSelection();
     if (selection != null && !selection.isEmpty() && (selection instanceof IStructuredSelection)) {
       int selectionIndex = handlersTable_.getSelectionIndex();
-      int selectionCount = handlersTable_.getItemCount();
 
       orderedHandlers_ = (Vector) wsRefsToHandlers_.get(webServiceRefCombo_.getText());
       orderedHandlers_.remove(selectionIndex);
@@ -558,8 +551,6 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     try {
 
       if (wsRefsToHandlersArray != null) {
-        int sizeOfHandlers = wsRefsToHandlersArray.size();
-        String[] wsRefs = new String[sizeOfHandlers];
         // store the wsRefs
         Enumeration wsRef = wsRefsToHandlersArray.keys();
         while (wsRef.hasMoreElements()) {

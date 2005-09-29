@@ -18,12 +18,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.codegen.Generator;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 import org.eclipse.wst.ws.internal.datamodel.Model;
@@ -77,12 +77,12 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 {
   Environment env = getEnvironment();
   
-  Status status = new SimpleStatus( "" );
+  IStatus status = Status.OK_STATUS;
   try {
     fGenerator.visit(model_.getRootElement());
     fStringBuffer = fGenerator.getStringBuffer();
     String tempString = fStringBuffer.toString();
-    OutputStream fileResource = FileResourceUtils.newFileOutputStream(resourceContext_, fIFile.getFullPath(), env.getProgressMonitor(), env.getStatusHandler());
+    OutputStream fileResource = FileResourceUtils.newFileOutputStream(resourceContext_, fIFile.getFullPath(), monitor, env.getStatusHandler());
     //PrintStream ps = new PrintStream(fileResource);
     //ps.print(tempString);
     OutputStreamWriter osw = new OutputStreamWriter(fileResource,"UTF-8");
@@ -91,7 +91,7 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
     fileResource.close();
     return status;
   } catch (IOException ioexc) {
-  	status = new SimpleStatus("", ioexc.getMessage(), Status.ERROR);
+  	status = StatusUtils.errorStatus( ioexc );
   	return status;
   }
 }

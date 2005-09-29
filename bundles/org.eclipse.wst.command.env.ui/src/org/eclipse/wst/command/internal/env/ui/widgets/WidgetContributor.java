@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**
@@ -67,5 +67,5 @@ public interface WidgetContributor
    *         be invalid.  For any other status severity or if the status returned
    *         is null this widget is considered to be valid.
    */
-  public Status getStatus();
+  public IStatus getStatus();
 }

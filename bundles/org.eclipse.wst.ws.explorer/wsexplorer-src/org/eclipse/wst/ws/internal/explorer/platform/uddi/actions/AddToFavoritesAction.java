@@ -39,7 +39,7 @@ public class AddToFavoritesAction extends UDDINodeAction
 
   public final boolean registryExists(String registryName,Node registryNode)
   {
-    RegistryElement regElement = (RegistryElement)registryNode.getTreeElement();
+    registryNode.getTreeElement();
     Hashtable table = new Hashtable();
     table.put(FavoritesModelConstants.PROP_UDDI_REGISTRY_NAME,registryName);
     return favoriteExists(table,FavoritesModelConstants.REL_UDDI_REGISTRY_FOLDER_NODE);

@@ -15,9 +15,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -33,8 +33,7 @@ import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -73,12 +72,12 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     
     try
     {
-     Status clientSideStatus = EnvironmentUtils.convertIStatusToStatus( super.execute(null, null));
+     IStatus clientSideStatus = super.execute(monitor, null);
      if (clientSideStatus.getSeverity()==Status.ERROR)
      {
        return clientSideStatus;
      }
-     Status status = new SimpleStatus("");
+     IStatus status = Status.OK_STATUS;
 
 
     setDefaultServiceRuntimeFromPreference();
@@ -94,7 +93,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      // Default projects EARs and servers.
      setDefaultProjects();
      setDefaultEARs();
-     Status serverStatus = setDefaultServer();
+     IStatus serverStatus = setDefaultServer();
      if (serverStatus.getSeverity()== Status.ERROR)
      {
          env.getStatusHandler().reportError(serverStatus);
@@ -108,7 +107,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     } catch (Exception e)
     {
       //Catch all Exceptions in order to give some feedback to the user
-      Status errorStatus = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED",new String[]{e.getMessage()}),Status.ERROR, e);
+      IStatus errorStatus = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED",new String[]{e.getMessage()}), e);
       env.getStatusHandler().reportError(errorStatus);
       return errorStatus;
     }
@@ -646,9 +645,9 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   }
   */
 
-  private Status setDefaultServer()
+  private IStatus setDefaultServer()
   {
-	Status status = new SimpleStatus("");
+	  IStatus status = Status.OK_STATUS;
     //Calculate reasonable default server based on the default project selection. 
 
     String initialProjectName = getServiceProject2EARProject().getList().getSelection(); 
@@ -748,7 +747,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
             {
               String runtimeLabel = WebServiceRuntimeExtensionUtils.getRuntimeLabelById(serviceIds_.getRuntimeId());
               String serverLabels = getServerLabels(serviceIds_.getRuntimeId());            	
-        	  status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_NO_SERVER_RUNTIME", new String[]{runtimeLabel, serverLabels}),Status.ERROR);
+        	    status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_NO_SERVER_RUNTIME", new String[]{runtimeLabel, serverLabels}) );
             }
         	
         }

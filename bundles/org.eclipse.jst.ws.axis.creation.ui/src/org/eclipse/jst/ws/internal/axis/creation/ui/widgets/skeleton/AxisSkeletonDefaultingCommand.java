@@ -14,11 +14,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
@@ -35,7 +35,7 @@ public class AxisSkeletonDefaultingCommand extends EnvironmentalOperation
     javaWSDLParam.setServerSide(JavaWSDLParameter.SERVER_SIDE_BEAN);
     javaWSDLParam.setSkeletonDeploy(true);
     javaWSDLParam.setMetaInfOnly(false);
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
     
   }
   

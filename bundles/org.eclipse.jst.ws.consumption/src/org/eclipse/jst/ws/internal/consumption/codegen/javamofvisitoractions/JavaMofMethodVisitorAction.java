@@ -13,7 +13,8 @@ package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
 
 import java.util.Iterator;
 import java.util.Vector;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
@@ -24,8 +25,7 @@ import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.MethodElement
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 
 
@@ -72,9 +72,9 @@ public class JavaMofMethodVisitorAction extends JavaMofBeanVisitorAction
   * Create a method element from the method 
   * @param Method the class to be used to create the method
   **/
-  public Status visit (Object imethod)
+  public IStatus visit (Object imethod)
   {
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
     Method method = (Method)imethod;
            
     if (methodCheck(method)){
@@ -82,14 +82,14 @@ public class JavaMofMethodVisitorAction extends JavaMofBeanVisitorAction
       //if there is an unsupported type in these we can react immediately
       //we add it to the omitted methods an go to the next one
       if(!parameterCheck(method)){
-      	status = new SimpleStatus("", msgUtils_.getMessage("MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_ARRAYS") + fUnsupportedParameterName, Status.WARNING );
+      	status = StatusUtils.warningStatus( msgUtils_.getMessage("MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_ARRAYS") + fUnsupportedParameterName );
         //getStatusMonitor().reportStatus (new Status(IStatus.WARNING,WebServiceConsumptionPlugin.ID,0,
         //		WebServiceConsumptionPlugin.getMessage( "%MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_ARRAYS" ) + fUnsupportedParameterName,null));
         fMethodsOmitted.addElement(method.getMethodElementSignature());
         return status;
       }
       if(!nullConstructor(method)){
-      	status = new SimpleStatus("", msgUtils_.getMessage("MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_INPUTS") + fUnsupportedParameterName, Status.WARNING );
+      	status = StatusUtils.warningStatus( msgUtils_.getMessage("MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_INPUTS") + fUnsupportedParameterName );
         //getStatusMonitor().reportStatus (new Status(IStatus.WARNING,WebServiceConsumptionPlugin.ID,0,
        	//	WebServiceConsumptionPlugin.getMessage( "%MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_INPUTS" ) + fUnsupportedParameterName,null));
         fMethodsOmitted.addElement(method.getMethodElementSignature());
@@ -164,7 +164,6 @@ public class JavaMofMethodVisitorAction extends JavaMofBeanVisitorAction
     
     //now the inputs
     JavaParameter javaParameter[] = method.listParametersWithoutReturn(); 
-    boolean paramSupported = true;
     for (int i = 0;i<javaParameter.length;i++) {
       JavaParameter param=javaParameter[i];
       JavaHelpers javaHelper1 = param.getJavaType();
@@ -188,7 +187,6 @@ public class JavaMofMethodVisitorAction extends JavaMofBeanVisitorAction
     boolean ok = true;
     //now the inputs
     JavaParameter javaParameter[] = method.listParametersWithoutReturn(); 
-    boolean paramSupported = true;
     for (int i = 0;i<javaParameter.length;i++) {
       JavaParameter param=javaParameter[i];
       JavaHelpers javaHelper1 = param.getJavaType();

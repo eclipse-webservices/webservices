@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.internal.webservice.WebServiceNavigatorGroupType;
@@ -34,8 +35,7 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.ComponentHandle;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -74,13 +74,13 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
     Environment env = getEnvironment();
     String pluginId = "org.eclipse.jst.ws.consumption.ui";
     MessageUtils msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
 
     webServicesManager_ = new WebServicesManager();
 
     IStructuredSelection selection = getInitialSelection();
     if (selection == null) {
-      status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED"), Status.ERROR, null);
+      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED") );
       env.getStatusHandler().reportError(status);
       return status;
     }
@@ -90,7 +90,7 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
 
   }
 
-  public Status processHandlers() {
+  public IStatus processHandlers() {
     try {
       Vector handlers = new Vector();
       wsRefsToHandlersTable_ = new Hashtable();
@@ -130,9 +130,9 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
       }
     }
     catch (Exception e) {
-      return new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED"), Status.ERROR, e);
+      return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED"), e);
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
 
   public HandlerTableItem[] getAllHandlers() {

@@ -11,11 +11,9 @@
 package org.eclipse.wst.command.internal.env.ui.widgets.popup;
 
 import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableContext;
@@ -33,7 +31,6 @@ import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard;
@@ -164,8 +161,7 @@ public class DynamicPopupWizard extends DynamicWizard implements IActionDelegate
   {
 	PersistentResourceContext  resourceContext = PersistentResourceContext.getInstance();
 	EclipseStatusHandler       handler         = new EclipseStatusHandler();
-	EclipseProgressMonitor     monitor         = new EclipseProgressMonitor();
-	EclipseEnvironment         environment     = new EclipseEnvironment( null, resourceContext, monitor, handler );
+	EclipseEnvironment         environment     = new EclipseEnvironment( null, resourceContext, handler );
 	    
 	DataMappingRegistryImpl    dataRegistry_   = new DataMappingRegistryImpl();	    
 	DataFlowManager            dataManager     = new DataFlowManager( dataRegistry_, environment );

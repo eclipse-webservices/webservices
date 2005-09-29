@@ -29,7 +29,6 @@ public class AttributeVisitor extends RelVisitor
   public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
 
   
-  private String fResidentString; 
   private Vector fResidentVector1;
   private Vector fResidentVector2;
 
@@ -41,18 +40,15 @@ public class AttributeVisitor extends RelVisitor
   public AttributeVisitor ()
   {
     super(TypeElement.REL_ATTRIBUTES);
-    fResidentString = "";
   }
 
   public AttributeVisitor (String rel)
   {
     super(rel);
-    fResidentString = "";
   }
   
   public void setResidentString(String resident)
   {
-    fResidentString = resident;
   }
 
   public void setResidentVector1(Vector resident)

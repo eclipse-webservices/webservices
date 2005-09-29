@@ -64,9 +64,9 @@ public class RegFindBusinessesAdvancedAction extends FindAction
     boolean inputsValid = true;
     UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
     MessageQueue messageQueue = uddiPerspective.getMessageQueue();
-    Node selectedNode = getSelectedNavigatorNode();
-    Node regNode = getRegistryNode();
-    RegistryElement regElement = (RegistryElement)regNode_.getTreeElement();
+    getSelectedNavigatorNode();
+    getRegistryNode();
+    regNode_.getTreeElement();
 
     if (ownedChecked != null)
       propertyTable_.put(UDDIActionInputs.QUERY_INPUT_ADVANCED_BUSINESS_OWNED,ownedChecked);

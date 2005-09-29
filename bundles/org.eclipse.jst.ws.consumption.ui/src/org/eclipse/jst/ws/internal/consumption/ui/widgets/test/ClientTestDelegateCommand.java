@@ -16,7 +16,7 @@ import java.util.Vector;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
@@ -24,9 +24,8 @@ import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.server.core.IServer;
@@ -75,7 +74,7 @@ public class ClientTestDelegateCommand extends EnvironmentalOperation
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
     Environment env = getEnvironment();
-  	Status status = new SimpleStatus( "" );
+  	IStatus status = Status.OK_STATUS;
   	String clientTestID = testFacilities.getSelection();
   	
 	//Get the webservice extension
@@ -84,11 +83,11 @@ public class ClientTestDelegateCommand extends EnvironmentalOperation
     IWebServiceTester iwst = (IWebServiceTester)wscte.getWebServiceExecutableExtension();
 	TestInfo testInfo = getTestInfo();
 	
-	status = commandFactoryExecution(iwst.generate(testInfo),env);
+	status = commandFactoryExecution(iwst.generate(testInfo),env, monitor );
 	if(status.getSeverity() == Status.ERROR){
 	  return status;	
 	}
-	status = commandFactoryExecution(iwst.launch(testInfo),env);
+	status = commandFactoryExecution(iwst.launch(testInfo),env, monitor );
 	if(status.getSeverity() == Status.ERROR){
 	  return status;	
 	}
@@ -96,9 +95,9 @@ public class ClientTestDelegateCommand extends EnvironmentalOperation
     return status;
   }
   
-  private Status commandFactoryExecution(ICommandFactory commandFactory,Environment env)
+  private IStatus commandFactoryExecution(ICommandFactory commandFactory,Environment env, IProgressMonitor monitor )
   {
-    Status status = new SimpleStatus( "" );  	
+    IStatus status = Status.OK_STATUS;  	
 	
 	while(commandFactory.hasNext())
   {
@@ -107,11 +106,11 @@ public class ClientTestDelegateCommand extends EnvironmentalOperation
     
     try
     {
-      status = EnvironmentUtils.convertIStatusToStatus(operation.execute( null, null ));
+      status = operation.execute( monitor, null );
     }
     catch( Exception exc )
     {
-      status = new SimpleStatus( "id", exc.getMessage(), Status.ERROR, exc );  
+      status = StatusUtils.errorStatus( exc );  
     }
     
 	  if(status.getSeverity() == Status.ERROR){

@@ -13,14 +13,14 @@ package org.eclipse.jst.ws.internal.consumption.ui.common;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.Service;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.internal.webservice.helper.WebServicesManager;
 import org.eclipse.jst.j2ee.webservice.internal.WebServiceConstants;
@@ -32,8 +32,7 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.server.core.IRuntime;
@@ -55,18 +54,18 @@ public class ValidationUtils
     msgUtils = new MessageUtils( pluginId + ".plugin", this );
   }
   
-  public Status validateProjectTargetAndJ2EE(String projectName, String compName, String earName, String earCompName, String serverFactoryId, String j2eeLevel)
+  public IStatus validateProjectTargetAndJ2EE(String projectName, String compName, String earName, String earCompName, String serverFactoryId, String j2eeLevel)
   {
     IProject p = ProjectUtilities.getProject(projectName);
     IProject earP = null;
     if (earName!=null && !earName.equalsIgnoreCase("")) {
     	earP = ProjectUtilities.getProject(earName);
     }
-    Status targetStatus = doesProjectTargetMatchServerType(p, serverFactoryId);
+    IStatus targetStatus = doesProjectTargetMatchServerType(p, serverFactoryId);
     if (earP!=null && targetStatus.getSeverity()==Status.OK)
     {
       //check the EAR      
-      Status earTargetStatus = doesProjectTargetMatchServerType(earP, serverFactoryId);
+      IStatus earTargetStatus = doesProjectTargetMatchServerType(earP, serverFactoryId);
       if(earTargetStatus.getSeverity()==Status.ERROR)
       {
         return earTargetStatus;
@@ -79,10 +78,10 @@ public class ValidationUtils
     
 
     //Validate service side J2EE level    
-    Status j2eeStatus = doesProjectMatchJ2EELevel(p, compName, j2eeLevel);
+    IStatus j2eeStatus = doesProjectMatchJ2EELevel(p, compName, j2eeLevel);
     if(earP!=null && j2eeStatus.getSeverity()==Status.OK)
     {
-      Status earJ2EEStatus = doesProjectMatchJ2EELevel(earP, earCompName, j2eeLevel);
+      IStatus earJ2EEStatus = doesProjectMatchJ2EELevel(earP, earCompName, j2eeLevel);
       if(earJ2EEStatus.getSeverity()==Status.ERROR)
       {
         return earJ2EEStatus;
@@ -93,10 +92,10 @@ public class ValidationUtils
       return j2eeStatus;
     }
     
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
-  private Status doesProjectTargetMatchServerType(IProject p, String serverFactoryId)
+  private IStatus doesProjectTargetMatchServerType(IProject p, String serverFactoryId)
   {
     if (p!=null && p.exists())
     {
@@ -109,15 +108,15 @@ public class ValidationUtils
         {
           if(!projectTargetId.equals(serverTargetId))
           { 
-            return new SimpleStatus("",msgUtils.getMessage("MSG_SERVER_TARGET_MISMATCH",new String[]{p.getName()}),Status.ERROR);
+            return StatusUtils.errorStatus( msgUtils.getMessage("MSG_SERVER_TARGET_MISMATCH",new String[]{p.getName()}) );
           }
         }
       }
     }
-    return new SimpleStatus("");        
+    return Status.OK_STATUS;        
   }
 
-  private Status doesProjectMatchJ2EELevel(IProject p, String compName, String j2eeLevel)
+  private IStatus doesProjectMatchJ2EELevel(IProject p, String compName, String j2eeLevel)
   {
 
     try {
@@ -131,7 +130,7 @@ public class ValidationUtils
 		    {
 		      if (!projectJ2EELevelString.equals(j2eeLevel))
 		      {
-		        return new SimpleStatus("",msgUtils.getMessage("MSG_J2EE_MISMATCH",new String[]{p.getName()}), Status.ERROR);
+		        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_J2EE_MISMATCH",new String[]{p.getName()}) );
 		      }
 		    }
 		  }
@@ -140,12 +139,12 @@ public class ValidationUtils
     
   }
     
-    return new SimpleStatus("");        
+    return Status.OK_STATUS;        
   }
   
-  public Status validateProjectType(String projectName, SelectionListChoices runtime2ClientTypes)
+  public IStatus validateProjectType(String projectName, SelectionListChoices runtime2ClientTypes)
   {
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
     IProject p = ProjectUtilities.getProject(projectName);
     if (p==null || !p.exists())
     {
@@ -170,7 +169,7 @@ public class ValidationUtils
     //Get the label for the client type id
     String clientTypeLabel = getClientTypeLabel(runtime2ClientTypes.getChoice().getList().getSelection());
     String message = msgUtils.getMessage("MSG_WRONG_CLIENT_PROJECT_TYPE",new String[]{projectName, clientTypeLabel});
-    Status eStatus = new SimpleStatus("",message,Status.ERROR);
+    IStatus eStatus = StatusUtils.errorStatus( message );
     return eStatus;
     
   }

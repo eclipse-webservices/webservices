@@ -15,6 +15,7 @@ import java.util.Hashtable;
 
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
@@ -36,8 +37,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 public class BeanConfigWidget extends SimpleWidgetDataContributor 
@@ -303,14 +303,14 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.WidgetContributor#getStatus()
    */
-  public Status getStatus() 
+  public IStatus getStatus() 
   {
-    Status       result   = null;
+    IStatus       result   = null;
     MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
     
     if( wsdlFileText_.getText().equals( "" ) )
     {
-      result = new SimpleStatus( "", msgUtils.getMessage( "PAGE_MSG_NO_FILE_SPECIFIED" ), Status.ERROR ); 
+      result = StatusUtils.errorStatus( msgUtils.getMessage( "PAGE_MSG_NO_FILE_SPECIFIED" ) ); 
     }
     else
     {
@@ -328,7 +328,7 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
       
       if( !itemSelected )
       {
-        result = new SimpleStatus( "", msgUtils.getMessage( "PAGE_MSG_NO_METHOD_SELECTED" ), Status.ERROR ); 
+        result = StatusUtils.errorStatus( msgUtils.getMessage( "PAGE_MSG_NO_METHOD_SELECTED" )); 
       }
     }
     

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PreferencesSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WebServiceClientTypeWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
@@ -29,8 +31,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 
 
@@ -286,15 +287,15 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
     handleStartPressed();  
   }
   
-  public Status getStatus()
+  public IStatus getStatus()
   {
-    Status status = new SimpleStatus( "" );
+    IStatus status = Status.OK_STATUS;
     
     // If the webservice has not been selected then user can not move
     // forward to the next page.
     if( webserviceType_.getText().equals("") )
     {
-      status = new SimpleStatus( "", "", Status.ERROR );
+      status = StatusUtils.errorStatus( "" );
     }
     
     return status;

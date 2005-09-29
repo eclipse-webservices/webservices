@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.eclipse;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wst.command.internal.env.ui.dialog.MessageDialog;
 import org.eclipse.wst.command.internal.env.ui.dialog.StatusDialogConstants;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
 
@@ -42,7 +43,7 @@ public class EclipseStatusHandler implements StatusHandler
   /**
    * @see org.eclipse.env.common.StatusHandler#report(org.eclipse.env.common.Status, org.eclipse.env.common.Choice[])
    */
-  public Choice report(Status status, Choice[] choices) 
+  public Choice report(IStatus status, Choice[] choices) 
   {
     int result =
     MessageDialog.openMessage(
@@ -63,7 +64,7 @@ public class EclipseStatusHandler implements StatusHandler
   /**
    * @see org.eclipse.env.common.StatusHandler#report(org.eclipse.env.common.Status)
    */
-  public void report(Status status) throws StatusException
+  public void report(IStatus status) throws StatusException
   {
     boolean userOk = false;
     
@@ -92,7 +93,7 @@ public class EclipseStatusHandler implements StatusHandler
     if( !userOk ) throw new StatusException( status );
   }
   
-  private boolean reportWarning(Status status)
+  private boolean reportWarning(IStatus status)
   {
     int userResponse =
       MessageDialog.openMessage(
@@ -103,7 +104,7 @@ public class EclipseStatusHandler implements StatusHandler
     return (userResponse == StatusDialogConstants.OK_ID);
   }
 
-  private boolean reportErrorStatus(Status status)
+  private boolean reportErrorStatus(IStatus status)
   {
     MessageDialog.openMessage(
       shell_,
@@ -116,7 +117,7 @@ public class EclipseStatusHandler implements StatusHandler
   /**
    * @see org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler#reportError(org.eclipse.wst.command.internal.provisional.env.core.common.Status)
    */
-  public void reportError(Status status)
+  public void reportError(IStatus status)
   {
     reportErrorStatus( status );
   }
@@ -124,7 +125,7 @@ public class EclipseStatusHandler implements StatusHandler
   /**
    * @see org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler#reportInfo(org.eclipse.wst.command.internal.provisional.env.core.common.Status)
    */
-  public void reportInfo(Status status)
+  public void reportInfo(IStatus status)
   {
     MessageDialog.openMessage(
         shell_,

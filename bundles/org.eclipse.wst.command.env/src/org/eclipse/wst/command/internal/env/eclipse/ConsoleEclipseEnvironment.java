@@ -10,13 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.eclipse;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.command.internal.env.core.uri.file.FileScheme;
 import org.eclipse.wst.command.internal.provisional.env.core.CommandManager;
-import org.eclipse.wst.command.internal.provisional.env.core.common.JavaCompiler;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
-import org.eclipse.wst.command.internal.provisional.env.core.common.NullProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.common.NullStatusHandler;
-import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.SimpleURIFactory;
@@ -28,29 +26,26 @@ import org.eclipse.wst.command.internal.provisional.env.core.uri.URIFactory;
  */
 public class ConsoleEclipseEnvironment implements BaseEclipseEnvironment
 {
-	private CommandManager   commandManager_  = null;
-	private SimpleURIFactory uriFactory_      = null;
-	private ResourceContext  resourceContext_ = null;
-	private ProgressMonitor  monitor_         = null;
-	private StatusHandler    statusHandler_   = null;
+	private CommandManager    commandManager_  = null;
+	private SimpleURIFactory  uriFactory_      = null;
+	private ResourceContext   resourceContext_ = null;
+	private StatusHandler     statusHandler_   = null;
 	  
 	public ConsoleEclipseEnvironment( ResourceContext resourceContext )
 	{
-	  this( null, resourceContext, new NullProgressMonitor(), new NullStatusHandler() );	
+	  this( null, resourceContext, new NullStatusHandler() );	
 	}
 	
 	public ConsoleEclipseEnvironment( CommandManager  commandManager, 
 	                                  ResourceContext resourceContext,
-			    	                  ProgressMonitor monitor,
-					                  StatusHandler   statusHandler )
+					                          StatusHandler   statusHandler )
 	{
 	  commandManager_  = commandManager;
 	  resourceContext_ = resourceContext;
 	  uriFactory_      = new SimpleURIFactory();
-	  monitor_         = monitor;
 	  statusHandler_   = statusHandler;
 	    
-	  uriFactory_.registerScheme( "platform", new EclipseScheme( this ) );
+	  uriFactory_.registerScheme( "platform", new EclipseScheme( this, new NullProgressMonitor() ) );
 	  uriFactory_.registerScheme( "file", new FileScheme() );
 	}
 
@@ -69,15 +64,7 @@ public class ConsoleEclipseEnvironment implements BaseEclipseEnvironment
 	{
 		return commandManager_;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getJavaCompiler()
-	 */
-	public JavaCompiler getJavaCompiler() 
-	{
-		return null;
-	}
-	
+		
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getLog()
 	 */
@@ -85,15 +72,7 @@ public class ConsoleEclipseEnvironment implements BaseEclipseEnvironment
 	{
 		return new EclipseLog();
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getProgressMonitor()
-	 */
-	public ProgressMonitor getProgressMonitor() 
-	{
-		return monitor_;
-	}
-	
+		
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getStatusHandler()
 	 */

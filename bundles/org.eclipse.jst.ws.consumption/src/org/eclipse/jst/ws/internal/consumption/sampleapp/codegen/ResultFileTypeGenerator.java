@@ -12,7 +12,8 @@
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
 import java.util.Enumeration;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.StringUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.Generator;
 import org.eclipse.jst.ws.internal.consumption.codegen.bean.AttributeVisitor;
@@ -20,8 +21,6 @@ import org.eclipse.jst.ws.internal.consumption.codegen.bean.FieldVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.DataType;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 
 /**
@@ -50,7 +49,7 @@ public class ResultFileTypeGenerator extends ResultFileHelp2Generator
   * Visit Method generates code for this Visitor
   * @param Parameter parameter code will be generated 
   */
-  public Status visit (Object object)
+  public IStatus visit (Object object)
   {
      Element typeElement = (Element)object;
      TypeElement type = (TypeElement)typeElement;      
@@ -103,7 +102,7 @@ public class ResultFileTypeGenerator extends ResultFileHelp2Generator
      
     }
      
-     return new SimpleStatus("");
+     return Status.OK_STATUS;
   }   
   
 

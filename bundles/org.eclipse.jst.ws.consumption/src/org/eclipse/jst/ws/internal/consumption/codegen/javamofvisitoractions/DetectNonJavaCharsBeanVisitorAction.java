@@ -12,11 +12,10 @@
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
 
 import java.util.Vector;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofMethodVisitor;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 
@@ -30,14 +29,10 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 public class DetectNonJavaCharsBeanVisitorAction extends VisitorActionImpl
 {
   private static char UNDERSCORE = '_';
-  private boolean serviceBean = false;
 
   public DetectNonJavaCharsBeanVisitorAction ( Vector messages, Vector beans)
   	{
   		super (messages, beans);
-  		// if first bean fisited that means it is the Service bean
-  		if ( beans == null ) 
-  			serviceBean = true;
   	}
 
   /**
@@ -45,7 +40,7 @@ public class DetectNonJavaCharsBeanVisitorAction extends VisitorActionImpl
   * Walk the methods
   * @param JavaClass the class to be used to create the bean model
   **/
-  public Status visit (Object javaclass)
+  public IStatus visit (Object javaclass)
   {
     JavaClass javaClass = (JavaClass)javaclass;
     String packageName = javaClass.getJavaPackage().getPackageName();
@@ -61,7 +56,7 @@ public class DetectNonJavaCharsBeanVisitorAction extends VisitorActionImpl
     	methodVisitor.run(javaClass,methodVisitorAction);
      }
     
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
    }
 
    private void checkBeanName(String beanName)

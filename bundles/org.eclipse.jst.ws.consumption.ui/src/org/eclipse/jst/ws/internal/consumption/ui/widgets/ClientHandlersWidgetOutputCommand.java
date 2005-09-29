@@ -20,6 +20,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.impl.JavaClassImpl;
@@ -31,8 +32,7 @@ import org.eclipse.jst.j2ee.webservice.wsclient.internal.impl.Webservice_clientF
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.internal.emf.utilities.EtoolsCopyUtility;
 import org.eclipse.wst.common.internal.emfworkbench.integration.EditModel;
 
@@ -64,7 +64,7 @@ public class ClientHandlersWidgetOutputCommand extends EnvironmentalOperation
   {
     String pluginId = "org.eclipse.jst.ws.consumption.ui";
     MessageUtils msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
 
     try {
 
@@ -139,8 +139,9 @@ public class ClientHandlersWidgetOutputCommand extends EnvironmentalOperation
 //        }
       }
     }
-    catch (Exception e) {
-      return new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED"), Status.ERROR, e);
+    catch (Exception e) 
+    {
+      return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED"), e);
     }
     finally {
       if (editModel_ != null) 

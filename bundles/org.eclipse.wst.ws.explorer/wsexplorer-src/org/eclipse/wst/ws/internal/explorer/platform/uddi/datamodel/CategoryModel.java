@@ -10,18 +10,28 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
-
-import org.uddi4j.util.*;
-
-import java.util.*;
-import java.text.*;
-import java.io.*;
-
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Properties;
+import java.util.Vector;
 import javax.servlet.ServletContext;
+import org.eclipse.wst.ws.internal.datamodel.BasicModel;
+import org.eclipse.wst.ws.internal.datamodel.Element;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.util.HTMLUtils;
+import org.uddi4j.util.KeyedReference;
 
 public class CategoryModel extends BasicModel
 {
@@ -247,7 +257,6 @@ public class CategoryModel extends BasicModel
         if (line.trim().length() == 0)
           continue;
         int index = 0;
-        int tokenCount = 0;
         int length = line.length();
         boolean inStringDelimiters = false;
         values.removeAllElements();

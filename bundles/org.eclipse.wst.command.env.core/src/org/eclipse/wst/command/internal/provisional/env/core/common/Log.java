@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.provisional.env.core.common;
 
+import org.eclipse.core.runtime.IStatus;
+
 /**
  * Log objects provide a means for logging information for FFDC etc.
  */
@@ -69,7 +71,7 @@ public interface Log
    * @param method The simple name of the method doing the loging.
    * @param status The Status to log.
    */
-  public void log ( int severity, int messageNum, Object caller, String method, Status status );
+  public void log ( int severity, int messageNum, Object caller, String method, IStatus status );
   
   /**
    * Logs a <code>Status</code>.
@@ -81,7 +83,7 @@ public interface Log
    * @param method The simple name of the method doing the loging.
    * @param status The Status to log.
    */
-  public void log ( int severity, String option, int messageNum, Object caller, String method, Status status );
+  public void log ( int severity, String option, int messageNum, Object caller, String method, IStatus status );
 
   /**
    * Logs an <code>Object</code>.

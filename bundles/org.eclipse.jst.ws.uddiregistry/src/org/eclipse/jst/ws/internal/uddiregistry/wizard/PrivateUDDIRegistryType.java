@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.uddiregistry.wizard;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 public interface PrivateUDDIRegistryType extends CommandWidgetBinding
@@ -25,7 +25,7 @@ public interface PrivateUDDIRegistryType extends CommandWidgetBinding
   public String getID();
   public String getName();
   public boolean isPrivateUDDIRegistryInstalled();
-  public Status getOperationStatus(byte operation);
+  public IStatus getOperationStatus(byte operation);
 
   // registry URLs
   public String getInquiryAPI();

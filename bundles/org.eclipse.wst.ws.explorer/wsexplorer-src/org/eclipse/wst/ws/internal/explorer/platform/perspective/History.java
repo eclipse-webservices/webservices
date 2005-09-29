@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import java.util.*;
+import java.util.Vector;
 
 // A class representing a Vector of breadcrumbs. A position index is used
 // to navigate through the data structure.
@@ -88,7 +88,7 @@ public class History
   {
     for (int i=0;i<items_.size();i++)
     {
-      BreadCrumb b = (BreadCrumb)items_.elementAt(i);
+      items_.elementAt(i);
     }
   }
 }

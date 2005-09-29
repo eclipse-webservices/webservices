@@ -16,8 +16,9 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -52,8 +53,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 /**
  * ConfigServiceHandlersTreeWidget
@@ -332,8 +331,8 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
    * 
    * @see org.eclipse.wst.command.env.ui.widgets.WidgetContributor#getStatus()
    */
-  public Status getStatus() {
-    Status finalStatus = new SimpleStatus("");
+  public IStatus getStatus() {
+    IStatus finalStatus = Status.OK_STATUS;
 
     return finalStatus;
   }

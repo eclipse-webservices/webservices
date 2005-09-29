@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.uddiregistry.widgets;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.uddiregistry.plugin.WebServiceUDDIRegistryPlugin;
 import org.eclipse.jst.ws.internal.uddiregistry.wizard.PrivateUDDIRegistryType;
 import org.eclipse.jst.ws.internal.uddiregistry.wizard.PrivateUDDIRegistryTypeRegistry;
@@ -27,8 +28,7 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 /**
@@ -201,12 +201,12 @@ public class PrivateUDDISelectionWidget extends SimpleWidgetDataContributor
   	  return PrivateUDDIRegistryType.OP_DEPLOY;
   }
 
-  public Status getStatus()
+  public IStatus getStatus()
   {
     PrivateUDDIRegistryType privateUDDIRegistryType = getPrivateUDDIRegistryType();
     if (privateUDDIRegistryType != null)
       return privateUDDIRegistryType.getOperationStatus(getOperationType());
     else
-      return new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_NO_UDDI_REGISTRY_AVAILABLE"), Status.ERROR);
+      return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_NO_UDDI_REGISTRY_AVAILABLE") );
   }
 }

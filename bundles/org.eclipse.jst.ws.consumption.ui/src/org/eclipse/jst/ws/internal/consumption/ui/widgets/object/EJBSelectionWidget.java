@@ -13,9 +13,10 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
@@ -37,8 +38,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
 public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget
@@ -376,19 +376,19 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
     return null;
   }    
   
-  public Status validateSelection(IStructuredSelection objectSelection)
+  public IStatus validateSelection(IStructuredSelection objectSelection)
   {
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
-  public Status getStatus()
+  public IStatus getStatus()
   {  	
     if (selectedBeanIndex == null)
     {
-    	return new SimpleStatus("","",Status.ERROR);
+    	return StatusUtils.errorStatus( "" );
     }
     
-  	return new SimpleStatus("");
+  	return Status.OK_STATUS;
   }
   
 }

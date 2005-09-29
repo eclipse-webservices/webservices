@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
@@ -24,8 +25,7 @@ import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationMana
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -92,9 +92,8 @@ public class BUAxisDefaultingCommand extends EnvironmentalOperation
 //    }
     
 	if (javaBeanName_ == null) {
-		Status status = new SimpleStatus("BUAxisDefaultingCommand", //$NON-NLS-1$
-				msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"), //$NON-NLS-1$
-				Status.ERROR);
+		IStatus status = StatusUtils.errorStatus(
+				msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"));
 		environment.getStatusHandler().reportError(status);
 		return status;
 	}
@@ -118,7 +117,7 @@ public class BUAxisDefaultingCommand extends EnvironmentalOperation
     //validationManager
     validationManager_ = new ValidationManager();
     
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
   private String getJavaBeanFromInitialSelection(Environment env) throws CoreException

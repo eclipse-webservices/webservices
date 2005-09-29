@@ -14,10 +14,10 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 
@@ -39,7 +39,7 @@ public class CheckProjectOKCommand extends EnvironmentalOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   { 
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
     
     String typeid = serviceServerTypeId_;
     IServer[] servers = ServerCore.getServers();
@@ -62,7 +62,7 @@ public class CheckProjectOKCommand extends EnvironmentalOperation
 
     if (viewOpen) {
       String errorMessage = msgUtils_.getMessage("MSG_ERROR_SERVER_VIEW_OPEN", new String[] { serverName});
-      return new SimpleStatus("", errorMessage, Status.ERROR, null);
+      return StatusUtils.errorStatus( errorMessage );
       
     }
     

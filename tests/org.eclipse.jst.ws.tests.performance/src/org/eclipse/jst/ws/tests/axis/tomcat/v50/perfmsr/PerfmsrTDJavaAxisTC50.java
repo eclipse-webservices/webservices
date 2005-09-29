@@ -3,22 +3,19 @@ package org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
 import org.eclipse.jst.ws.tests.performance.util.PerformanceJUnitUtils;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.jst.ws.tests.util.ScenarioConstants;
 import org.eclipse.test.performance.Performance;
 import org.eclipse.test.performance.PerformanceMeter;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 /**
  * Top down performance scenario with Axis and Tomcat v5.0
@@ -40,15 +37,15 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
 	protected void installInputData() throws Exception {
 
 		// Create an associated Web project (TestWeb) targetted to Tomcat 5.0
-		Status s = JUnitUtils.createWebModule(PROJECT_NAME, WEB_MODULE_NAME, SERVERTYPEID_TC50, String.valueOf(J2EEVersionConstants.J2EE_1_4_ID), env_);
+		IStatus s = JUnitUtils.createWebModule(PROJECT_NAME, WEB_MODULE_NAME, SERVERTYPEID_TC50, String.valueOf(J2EEVersionConstants.J2EE_1_4_ID), env_, null);
 		if (s.getSeverity() != Status.OK)
-			throw new Exception(s.getThrowable());
+			throw new Exception(s.getException());
     
 		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
 		assertTrue(webProject.exists());
 
 		IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject, WEB_MODULE_NAME);		
-		JUnitUtils.copyTestData("TDJava",destFolder,env_);
+		JUnitUtils.copyTestData("TDJava",destFolder,env_, null);
 		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));
 		assertTrue(sourceFile_.exists());
 
@@ -76,7 +73,7 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
    */  
 	public void testTDJavaAxisTC50() throws Exception {
 	  
-	  Status status = new SimpleStatus("");
+	  IStatus status = Status.OK_STATUS;
 		Performance perf= Performance.getDefault();
 		PerformanceMeter performanceMeter= perf.createPerformanceMeter(perf.getDefaultScenarioId(this));	    
 	    try {
@@ -93,7 +90,7 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
 		if (status.getSeverity() == Status.OK)
 		  verifyOutput();
 		else
-		  throw new Exception(status.getThrowable());
+		  throw new Exception(status.getException());
 
 	}
 
@@ -106,8 +103,6 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
         IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
         IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject, WEB_MODULE_NAME);    
     
-        IPath webInfPath = J2EEUtils.getWebInfPath(webProject, WEB_MODULE_NAME);
-        IFolder webInfFolder = (IFolder)ResourceUtils.findResource(webInfPath);
 		
 		IFolder wsdlFolder = webContentFolder.getFolder("wsdl");
 		assertTrue(wsdlFolder.exists());
@@ -123,7 +118,7 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
 	protected void deleteInputData() throws Exception {
 		// Delete the Web project.
 		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
-		webProject.delete(true,true,EnvironmentUtils.getIProgressMonitor(env_));
+		webProject.delete(true,true,null);
 		
 	}
 

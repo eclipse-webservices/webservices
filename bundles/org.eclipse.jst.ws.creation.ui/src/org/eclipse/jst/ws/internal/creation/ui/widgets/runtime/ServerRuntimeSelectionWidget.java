@@ -11,13 +11,14 @@
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ProjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.RuntimeServerSelectionWidget;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
@@ -33,8 +34,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 
@@ -295,12 +295,12 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.WidgetContributor#getStatus()
    */
-  public Status getStatus() 
+  public IStatus getStatus() 
   {
-    Status serviceStatus = runtimeWidget_.getStatus();
-    Status projectStatus = projectWidget_.getStatus();
-    Status clientStatus  = clientWidget_.getStatus();    
-    Status finalStatus   = new SimpleStatus( "" );
+    IStatus serviceStatus = runtimeWidget_.getStatus();
+    IStatus projectStatus = projectWidget_.getStatus();
+    IStatus clientStatus  = clientWidget_.getStatus();    
+    IStatus finalStatus   = Status.OK_STATUS;
     
     // call child widgets' getStatus()
     if( serviceStatus.getSeverity() == Status.ERROR )
@@ -324,7 +324,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 	String serviceJ2EElevel = runtimeWidget_.getJ2EEVersion();
   String serviceComponentName = projectWidget_.getComponentName();
   String serviceEARComponentName = projectWidget_.getEarComponentName();
-	Status serviceProjectStatus = valUtils.validateProjectTargetAndJ2EE(serviceProjName,serviceComponentName, serviceEARName, serviceEARComponentName, serviceServerFactoryId, serviceJ2EElevel);
+	IStatus serviceProjectStatus = valUtils.validateProjectTargetAndJ2EE(serviceProjName,serviceComponentName, serviceEARName, serviceEARComponentName, serviceServerFactoryId, serviceJ2EElevel);
 	if(serviceProjectStatus.getSeverity()==Status.ERROR)
 	{
 		finalStatus = serviceProjectStatus;
@@ -336,9 +336,6 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
       IProject serviceProj = ProjectUtilities.getProject(serviceProjName);
       if (serviceProj.exists())
       {
-        //Determine whether an EJB project is required
-        String webServiceRuntimeId = runtimeWidget_.getTypeRuntimeServer().getRuntimeId();
-        String webServiceTypeId = runtimeWidget_.getTypeRuntimeServer().getTypeId();
 		// rskreg
         //WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
         //String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceServerFactoryId).getId();
@@ -359,7 +356,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
           {
         	//Construct the error message
         	String compTypeLabel = getCompTypeLabel(projectWidget_.getComponentType()); 
-        	finalStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_INVALID_PROJECT_TYPE",new String[]{serviceProjName, compTypeLabel}),Status.ERROR);        	        	
+        	finalStatus = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_INVALID_PROJECT_TYPE",new String[]{serviceProjName, compTypeLabel}) );        	        	
           }
         }
         // begin remove
@@ -390,20 +387,20 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 	    
 		if (serviceComponentName.equalsIgnoreCase(clientComponentName)){
 			  String err_msg = msgUtils_.getMessage( "MSG_SAME_CLIENT_AND_SERVICE_COMPONENTS", new String[]{ "WEB" } );
-			  finalStatus = new SimpleStatus( "", err_msg, Status.ERROR );				
+			  finalStatus = StatusUtils.errorStatus( err_msg );				
 		}
 		
 	    if( clientProjName != null && serviceProjName != null && 
 	        clientProjName.equalsIgnoreCase( serviceProjName ))
 	    {
 		  String error_msg = msgUtils_.getMessage("MSG_SAME_CLIENT_AND_SERVICE_PROJECTS");
-		  finalStatus = new SimpleStatus("", error_msg, Status.ERROR);
+		  finalStatus = StatusUtils.errorStatus( error_msg );
 	    }
 	    
 		if (warning_msg != null)
 	    {
 	      if (finalStatus.getSeverity()!=Status.ERROR)
-	      	return new SimpleStatus( "", warning_msg, Status.WARNING );          
+	      	return StatusUtils.warningStatus( warning_msg );          
 	    }         
       
     }

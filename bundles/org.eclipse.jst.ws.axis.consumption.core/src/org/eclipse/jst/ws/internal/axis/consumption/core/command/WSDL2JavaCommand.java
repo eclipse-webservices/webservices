@@ -22,12 +22,13 @@ import org.apache.axis.wsdl.toJava.GeneratedFileInfo;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 public class WSDL2JavaCommand extends EnvironmentalOperation {
@@ -47,10 +48,10 @@ public class WSDL2JavaCommand extends EnvironmentalOperation {
 	  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 	  {
 	    Environment environment = getEnvironment();
-		Status status;
+		IStatus status;
 		if (javaWSDLParam == null) {
-			status = new SimpleStatus("WSDL2JavaCommand", //$NON-NLS-1$
-					getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR);
+			status = StatusUtils.errorStatus(
+					getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
@@ -104,7 +105,7 @@ public class WSDL2JavaCommand extends EnvironmentalOperation {
 			environment.getLog().log(Log.INFO, 5082, this, "execute", "username: " + javaWSDLParam.getHTTPUsername());
 		}
 		environment.getLog().log(Log.INFO, 5020, this, "execute", "WSDL Location = " + javaWSDLParam.getInputWsdlLocation());
-		environment.getProgressMonitor().report(getMessage("MSG_PARSING_WSDL", javaWSDLParam.getInputWsdlLocation() ) );
+		ProgressUtils.report(monitor, getMessage("MSG_PARSING_WSDL", javaWSDLParam.getInputWsdlLocation() ) );
 		try {
 			wsdl2Java.run(javaWSDLParam.getInputWsdlLocation());
 			if (serverSide) {
@@ -132,13 +133,13 @@ public class WSDL2JavaCommand extends EnvironmentalOperation {
 			
 		} catch (Exception e) {
 			environment.getLog().log(Log.ERROR, 5021, this, "execute", e);
-			status = new SimpleStatus("Java2WSDLCommand", //$NON-NLS-1$
+			status = StatusUtils.errorStatus(
 					getMessage("MSG_ERROR_WSDL_JAVA_GENERATE") + " " //$NON-NLS-1$
-							+ e.toString(), Status.ERROR);
+							+ e.toString());
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
-		return new SimpleStatus("");
+		return Status.OK_STATUS;
 	}
 
 	/*

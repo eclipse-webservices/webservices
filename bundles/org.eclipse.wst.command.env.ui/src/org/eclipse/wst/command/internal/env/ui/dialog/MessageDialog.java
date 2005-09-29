@@ -12,7 +12,6 @@ package org.eclipse.wst.command.internal.env.ui.dialog;
 
 import java.util.Arrays;
 import java.util.Iterator;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -33,7 +32,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.common.StringUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**
@@ -87,7 +85,7 @@ public class MessageDialog extends Dialog
   /**
    * The main status object.
    */
-  protected Status status;
+  protected IStatus status;
   
   private Point savedSize = null;
 
@@ -124,7 +122,7 @@ public class MessageDialog extends Dialog
     Shell parentShell,
     String dialogTitle,
     String message,
-    Status status,
+    IStatus status,
     int displayMask)
   {
     super(parentShell);
@@ -173,7 +171,7 @@ public class MessageDialog extends Dialog
       StatusDialogConstants.OK_ID,
       IDialogConstants.OK_LABEL,
       true);
-    if (status.hasChildren() || status.getThrowable() != null )
+    if (status.isMultiStatus() || status.getException() != null )
     {
       detailsButton =
         createButton(
@@ -327,32 +325,32 @@ public class MessageDialog extends Dialog
     Shell parent,
     String dialogTitle,
     String message,
-    Status status)
+    IStatus status)
   {
 
     switch (status.getSeverity())
     {
-      case Status.INFO :
+      case IStatus.INFO :
         return openInfo(
           parent,
           dialogTitle,
           message,
           status,
-          Status.OK | Status.INFO | Status.WARNING | Status.ERROR);
-      case Status.WARNING :
+          IStatus.OK | IStatus.INFO | IStatus.WARNING | IStatus.ERROR);
+      case IStatus.WARNING :
         return openWarning(
           parent,
           dialogTitle,
           message,
           status,
-          Status.OK | Status.INFO | Status.WARNING | Status.ERROR);
+          IStatus.OK | IStatus.INFO | IStatus.WARNING | IStatus.ERROR);
       default :
         return openError(
           parent,
           dialogTitle,
           message,
           status,
-          Status.OK | Status.INFO | Status.WARNING | Status.ERROR);
+          IStatus.OK | IStatus.INFO | IStatus.WARNING | IStatus.ERROR);
     }
 
   }
@@ -361,7 +359,7 @@ public class MessageDialog extends Dialog
     Shell parent,
     String dialogTitle,
     String message,
-    Status status,
+    IStatus status,
     Choice[] options)
   {
 
@@ -370,7 +368,7 @@ public class MessageDialog extends Dialog
       dialogTitle,
       message,
       status,
-      Status.OK | Status.INFO | Status.WARNING | Status.ERROR,
+      IStatus.OK | IStatus.INFO | IStatus.WARNING | IStatus.ERROR,
       options);
   }
 
@@ -404,7 +402,7 @@ public class MessageDialog extends Dialog
     Shell parentShell,
     String title,
     String message,
-    Status status,
+    IStatus status,
     int displayMask)
   {
     ErrorDialog dialog =
@@ -416,7 +414,7 @@ public class MessageDialog extends Dialog
     Shell parentShell,
     String title,
     String message,
-    Status status,
+    IStatus status,
     int displayMask)
   {
     InfoDialog dialog =
@@ -428,7 +426,7 @@ public class MessageDialog extends Dialog
     Shell parentShell,
     String title,
     String message,
-    Status status,
+    IStatus status,
     int displayMask)
   {
     WarningDialog dialog =
@@ -440,7 +438,7 @@ public class MessageDialog extends Dialog
     Shell parentShell,
     String title,
     String message,
-    Status status,
+    IStatus status,
     int displayMask,
     Choice[] options)
   {
@@ -467,7 +465,7 @@ public class MessageDialog extends Dialog
     Iterator enumeration = statusList.iterator();
     while (enumeration.hasNext())
     {
-      Status childStatus = (Status) enumeration.next();
+      IStatus childStatus = (IStatus) enumeration.next();
       populateList(list, childStatus, 0);
     }
   }
@@ -529,7 +527,7 @@ public class MessageDialog extends Dialog
    * @return <code>true</code> if the given status should be displayed, and
    *         <code>false</code> otherwise
    */
-  protected static boolean shouldDisplay(Status status, int mask)
+  protected static boolean shouldDisplay(IStatus status, int mask)
   {
     IStatus[] children = status.getChildren();
     if (children == null || children.length == 0)

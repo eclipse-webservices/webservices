@@ -21,14 +21,13 @@ import java.util.Vector;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 
 
@@ -55,7 +54,7 @@ public class WebServiceTestDefaultingCommand extends EnvironmentalOperation
   	
   	
   	environment = env;
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
   	WebServiceTestRegistry wsttRegistry = WebServiceTestRegistry.getInstance();
   	
     

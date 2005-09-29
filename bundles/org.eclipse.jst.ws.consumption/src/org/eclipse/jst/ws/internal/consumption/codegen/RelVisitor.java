@@ -12,9 +12,8 @@
 package org.eclipse.jst.ws.internal.consumption.codegen;
       
 import java.util.Enumeration;
-
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.ws.internal.datamodel.BasicElement;
 import org.eclipse.wst.ws.internal.datamodel.Rel;
 
@@ -65,9 +64,9 @@ public class RelVisitor implements Visitor
   {
     //implemented by subclasses
   }  
-  public Status run (Object sourceElement,VisitorAction vAction)
+  public IStatus run (Object sourceElement,VisitorAction vAction)
   {
-  	    Status status = new SimpleStatus("");
+  	    IStatus status = Status.OK_STATUS;
         initialize(vAction);
   
         vAction.setVisitor(this);

@@ -11,10 +11,11 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 
 public abstract class NodeAction extends LinkAction
 {
@@ -41,7 +42,7 @@ public abstract class NodeAction extends LinkAction
     // Perform data validation.
     try
     {
-      int nodeId = Integer.parseInt(nodeIdString);
+      Integer.parseInt(nodeIdString);
     }
     catch (NumberFormatException e)
     {

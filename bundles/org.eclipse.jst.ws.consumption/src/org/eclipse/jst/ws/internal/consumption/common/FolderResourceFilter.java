@@ -90,9 +90,4 @@ public class FolderResourceFilter extends AnyFilter
     }
     return new Status(IStatus.OK,WebServiceConsumptionPlugin.ID,0,"",null);
   }
-
-  private boolean acceptsName ( String name )
-  {
-    return true;
-  }
 }

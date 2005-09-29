@@ -18,9 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -60,8 +61,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 public class TableViewerWidget extends SimpleWidgetDataContributor
@@ -351,10 +351,10 @@ public class TableViewerWidget extends SimpleWidgetDataContributor
 
   }
 
-  public Status getStatus()
+  public IStatus getStatus()
   {
-    return message == null ? new SimpleStatus("") : 
-                             new SimpleStatus( "", message, Status.ERROR );
+    return message == null ? Status.OK_STATUS : 
+                             StatusUtils.errorStatus( message );
   }
 
   private void setSelectionAsObject(Object object)

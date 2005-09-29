@@ -11,9 +11,9 @@
 package org.eclipse.wst.command.internal.provisional.env.core.uri;
 
 import java.net.URL;
-
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 public class RelativeScheme implements URIScheme
@@ -62,17 +62,17 @@ public class RelativeScheme implements URIScheme
   /* (non-Javadoc)
    * @see org.eclipse.env.uri.URIScheme#validate(org.eclipse.env.uri.URI)
    */
-  public Status validate(URI uri)
+  public IStatus validate(URI uri)
   {
-    Status result = null;
+    IStatus result = null;
     
     if( isValid( uri ) )
     {
-      result = new SimpleStatus( "", "", Status.OK );
+      result = Status.OK_STATUS;
     }
     else
     {
-      result = new SimpleStatus( "", "", Status.ERROR );      
+      result = StatusUtils.errorStatus( "" );      
     }
     
     return result;

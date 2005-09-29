@@ -19,7 +19,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
@@ -27,9 +27,8 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceTester;
@@ -63,7 +62,7 @@ public class WSDLTestLaunchCommand extends EnvironmentalOperation
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
     Environment env = getEnvironment();
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
   	
   	WebServiceTestRegistry testRegistry = WebServiceTestRegistry.getInstance();
   	WebServiceTestExtension wscte = (WebServiceTestExtension)testRegistry.getWebServiceExtensionsByName(testID);
@@ -71,12 +70,12 @@ public class WSDLTestLaunchCommand extends EnvironmentalOperation
 	TestInfo testInfo = getTestInfo();
 	
 	
-	status = commandFactoryExecution(iwst.launch(testInfo),env);
+	status = commandFactoryExecution(iwst.launch(testInfo),env, monitor);
 	
     //Dont need to shut everything down because the wsdl test doesnt work
     if(status.getSeverity() != Status.OK){
       StatusHandler sHandler = env.getStatusHandler();
-      Status infoStatus = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_UNABLE_TO_LAUNCH_WSDL_TEST"), Status.INFO);
+      IStatus infoStatus = StatusUtils.infoStatus( msgUtils.getMessage("MSG_ERROR_UNABLE_TO_LAUNCH_WSDL_TEST") );
       sHandler.reportInfo(infoStatus);
       return infoStatus;	
     }
@@ -84,9 +83,9 @@ public class WSDLTestLaunchCommand extends EnvironmentalOperation
   	
   }
 
-  private Status commandFactoryExecution(ICommandFactory commandFactory,Environment env)
+  private IStatus commandFactoryExecution(ICommandFactory commandFactory,Environment env, IProgressMonitor monitor)
   {
-	Status status = new SimpleStatus( "" );  	
+	IStatus status = Status.OK_STATUS;  	
 	while(commandFactory.hasNext())
   { 
 	  EnvironmentalOperation operation = commandFactory.getNextCommand();
@@ -96,11 +95,11 @@ public class WSDLTestLaunchCommand extends EnvironmentalOperation
       try
       {
         operation.setEnvironment( env );
-	      status = EnvironmentUtils.convertIStatusToStatus(operation.execute( null, null ));
+	      status = operation.execute( monitor, null );
       }
       catch( Exception exc )
       {
-        status = new SimpleStatus( "id", exc.getMessage(), Status.ERROR, exc );
+        status = StatusUtils.errorStatus( exc );
       }
     }
     

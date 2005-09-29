@@ -106,7 +106,6 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   private String defaultServer_;
   private String defaultRuntime_;
   private String typeId_;
-  private String clientTypeId_;
   // rskreg
   //private IWebServiceRuntime selectedRuntime_;
   private WebServiceRuntimeInfo selectedRuntime_;
@@ -118,7 +117,6 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   private boolean validateOn_ = false;
   private byte selectionMode_;
   private final byte MODE_SERVICE = (byte) 0;
-  private final byte MODE_CLIENT = (byte) 1;
   private final String SERVER_TYPES_ICON = "icons/servers/servers_obj.gif";
   private final String EXISTING_SERVERS_ICON = "icons/servers/existing_server_obj.gif";
   private String j2eeVersion;
@@ -661,10 +659,6 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     return WebServiceConsumptionUIPlugin.getMessage(key);
   }
 
-  private static String getMessage(String key, Object[] args) {
-    return WebServiceConsumptionUIPlugin.getMessage(key, args);
-  }
-
   private void setRuntimesGroup() {
     runtimesList_.removeAll();
     String[] runtimes = null;
@@ -713,15 +707,6 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   }
   // rskreg
 
-  // Returns the server Factory Id given a server name
-  private String getServerSelectionFactoryId(String selectedServerName) {
-    if (serverLabels_.containsKey(selectedServerName) && !isExistingServer_)
-      return (String) serverLabels_.get(selectedServerName);
-    else {
-      return ((IServer) existingServersTable_.get(selectedServerName)).getServerType().getId();
-    }
-  }
-
   /**
    * 
    * ServersList class
@@ -731,7 +716,6 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   public class ServersList {
 
     private TreeItem[] existingServersTree;
-    private TreeItem[] serverTypesTree;
     boolean existingServer = false;
 
     public void setServerTreeItems(Tree serversList) {

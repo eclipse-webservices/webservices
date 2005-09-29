@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -24,7 +25,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.commonarchivecore.internal.helpers.ArchiveManifest;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
@@ -32,8 +32,6 @@ import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleComman
 import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
 
 public class AddModuleDependenciesCommand extends EnvironmentalOperation
@@ -61,7 +59,7 @@ public class AddModuleDependenciesCommand extends EnvironmentalOperation
     Environment env = getEnvironment();
     try
     {
-      createSampleProjects(env);
+      createSampleProjects(env, monitor );
 	  clientIProject = ProjectUtilities.getProject(testInfo.getClientProject());
 	        
       if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject, testInfo.getClientModule()))
@@ -79,7 +77,7 @@ public class AddModuleDependenciesCommand extends EnvironmentalOperation
     catch (CoreException ce)
     {
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
 
   private void addJavaProjectAsUtilityJar(IProject javaProject, IProject earProject, String uri)
@@ -99,7 +97,8 @@ public class AddModuleDependenciesCommand extends EnvironmentalOperation
 
   public static final String DEFAULT_SAMPLE_EAR_PROJECT_EXT = "EAR";
   
-  private void createSampleProjects(Environment env){
+  private void createSampleProjects(Environment env, IProgressMonitor monitor )
+  {
 	  
 	  
 	  
@@ -127,7 +126,7 @@ public class AddModuleDependenciesCommand extends EnvironmentalOperation
 	    createEAR.setModuleType(CreateModuleCommand.EAR);
 	    createEAR.setJ2eeLevel(J2EEUtils.getJ2EEVersionAsString(clientIProject,testInfo.getClientModule()));
       createEAR.setEnvironment( env );
-		  Status status = EnvironmentUtils.convertIStatusToStatus(createEAR.execute( null, null ) );
+		  IStatus status = createEAR.execute( monitor, null );
 	    if (status.getSeverity()==Status.ERROR)
         {
           env.getStatusHandler().reportError(status);     
@@ -138,7 +137,7 @@ public class AddModuleDependenciesCommand extends EnvironmentalOperation
 		modToServer.setProject(sampleEARProject);
 		modToServer.setServerInstanceId(testInfo.getClientExistingServer().getId());
     modToServer.setEnvironment( env );
-		status = EnvironmentUtils.convertIStatusToStatus(modToServer.execute( null, null ));
+		status = modToServer.execute( monitor, null );
 		if (status.getSeverity()==Status.ERROR)
 	    {
 	      env.getStatusHandler().reportError(status);     
@@ -157,7 +156,7 @@ public class AddModuleDependenciesCommand extends EnvironmentalOperation
         createSample.setServerFactoryId(testInfo.getClientServerTypeID());
         createSample.setJ2eeLevel(J2EEUtils.getJ2EEVersionAsString(clientIProject,testInfo.getClientModule()));
         createSample.setEnvironment( env );
-		Status status = EnvironmentUtils.convertIStatusToStatus(createSample.execute( null, null ));
+		IStatus status = createSample.execute( monitor, null );
       
 	   if (testInfo.getClientNeedEAR()) {
 //		Associate the client module and service EAR
@@ -167,7 +166,7 @@ public class AddModuleDependenciesCommand extends EnvironmentalOperation
 	    associateCommand.setEARProject(sampleEARProject);
 	    associateCommand.setEar(sampleEARModule);
       associateCommand.setEnvironment( env );
-	    status = EnvironmentUtils.convertIStatusToStatus(associateCommand.execute( null, null ));
+	    status = associateCommand.execute( monitor, null );
 	    if (status.getSeverity()==Status.ERROR)
 	    {
 	      env.getStatusHandler().reportError(status);     
@@ -177,7 +176,7 @@ public class AddModuleDependenciesCommand extends EnvironmentalOperation
 		StartServerCommand startServer = new StartServerCommand(false, true);
 		startServer.setServerInstanceId(testInfo.getClientExistingServer().getId());
     startServer.setEnvironment( env );
-		status = EnvironmentUtils.convertIStatusToStatus(startServer.execute( null, null ));
+		status = startServer.execute( monitor, null );
 	    if (status.getSeverity()==Status.ERROR)
 	    {
 	      env.getStatusHandler().reportError(status);     

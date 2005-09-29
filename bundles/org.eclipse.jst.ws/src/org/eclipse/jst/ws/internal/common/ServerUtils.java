@@ -18,18 +18,18 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
@@ -97,11 +97,12 @@ public final class ServerUtils {
 		return (String) serverLabelToId_.get(factoryLabel);
 	}
 
-	public Status modifyModules(Environment env, IServer server,
+	public IStatus modifyModules(Environment env, IServer server,
 			IModule module, boolean add, IProgressMonitor monitor) {
 
 		IServerWorkingCopy wc = null;
-		Status status = new SimpleStatus("");
+		IStatus status = Status.OK_STATUS;
+    
 		try {
 
 			if (module == null || !module.getProject().exists()) {
@@ -147,19 +148,22 @@ public final class ServerUtils {
 			} else {
 				// handle case of Null WC; non-issue for now
 			}
-		} catch (CoreException ce) {
-			status = new SimpleStatus("", msgUtils_
-					.getMessage("MSG_ERROR_SERVER"), Status.ERROR, ce);
+		} 
+    catch (CoreException exc ) 
+    {
+			status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), exc );
 			env.getStatusHandler().reportError(status);
 			return status;
 		} finally {
 			if (wc != null) {
 				// Always saveAll and release the serverWorkingCopy
-				try {
+				try 
+        {
 					wc.saveAll(true, monitor);
-				} catch (CoreException cex) {
-					status = new SimpleStatus("", msgUtils_
-							.getMessage("MSG_ERROR_SERVER"), Status.ERROR, cex);
+				} 
+        catch (CoreException exc ) 
+        {
+					status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), exc );
 					env.getStatusHandler().reportError(status);
 					return status;
 				}
@@ -230,9 +234,9 @@ public final class ServerUtils {
 				if (serverWC != null) {
 					server = serverWC.saveAll(true, monitor);
 				}
-			} catch (CoreException ce) {
-				Status status = new SimpleStatus("", msgUtils_
-						.getMessage("MSG_ERROR_SERVER"), Status.ERROR, ce);
+			} catch (CoreException ce) 
+      {
+				IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), ce);
 				env.getStatusHandler().reportError(status);
 				return null;
 			}
@@ -262,9 +266,10 @@ public final class ServerUtils {
 			}
 
 			return server;
-		} catch (Exception e) {
-			Status status = new SimpleStatus("", msgUtils_
-					.getMessage("MSG_ERROR_SERVER"), Status.ERROR, e);
+		} 
+    catch (Exception e) 
+    {
+			IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), e);
 			env.getStatusHandler().reportError(status);
 			return null;
 		} finally {
@@ -273,8 +278,7 @@ public final class ServerUtils {
 					serverWC.saveAll(true, monitor);
 				}
 			} catch (CoreException ce) {
-				Status status = new SimpleStatus("", msgUtils_
-						.getMessage("MSG_ERROR_SERVER"), Status.ERROR, ce);
+				IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), ce);
 				env.getStatusHandler().reportError(status);
 				return null;
 			}

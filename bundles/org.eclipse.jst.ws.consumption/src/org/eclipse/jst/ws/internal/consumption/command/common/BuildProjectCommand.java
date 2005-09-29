@@ -20,9 +20,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 
 
 public class BuildProjectCommand extends EnvironmentalOperation 
@@ -70,7 +70,7 @@ public class BuildProjectCommand extends EnvironmentalOperation
       // continue execution
     }
     
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   /**
    * @param forceBuild The forceBuild to set.

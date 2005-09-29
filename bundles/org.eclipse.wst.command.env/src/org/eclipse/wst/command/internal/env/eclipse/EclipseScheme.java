@@ -12,11 +12,12 @@ package org.eclipse.wst.command.internal.env.eclipse;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.RelativeURI;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.URI;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.URIException;
@@ -26,10 +27,12 @@ import org.eclipse.wst.command.internal.provisional.env.core.uri.URIScheme;
 public class EclipseScheme implements URIScheme
 {
   private BaseEclipseEnvironment  environment_;
+  private IProgressMonitor        monitor_;
   private MessageUtils            msg_;
   
-  public EclipseScheme( BaseEclipseEnvironment environment )
+  public EclipseScheme( BaseEclipseEnvironment environment, IProgressMonitor monitor )
   {
+    monitor_     = monitor;
     environment_ = environment;
     msg_         = new MessageUtils( "org.eclipse.wst.command.internal.env.common.environment", this );
   }
@@ -76,9 +79,9 @@ public class EclipseScheme implements URIScheme
     {
       // The platform uri is not allowed to contain some other protocol. 
       throw new URIException(
-          new SimpleStatus( "EclipseScheme",
-              msg_.getMessage("MSG_INVALID_PLATFORM_URL", new Object[]{uri}),
-              Status.ERROR ) );
+          StatusUtils.errorStatus(
+              msg_.getMessage("MSG_INVALID_PLATFORM_URL", new Object[]{uri}) ) );
+              
      }
     else if( uri.startsWith( "/") )
     {
@@ -92,7 +95,7 @@ public class EclipseScheme implements URIScheme
     }
     else
     {
-      return new EclipseURI( newURI, environment_ );
+      return new EclipseURI( newURI, environment_, monitor_ );
     }
   }
 
@@ -112,14 +115,14 @@ public class EclipseScheme implements URIScheme
 
   /**
    */
-  public Status validate(URI uri)
+  public IStatus validate(URI uri)
   {
-    Status status = null;
+    IStatus status = null;
     
     try
     {
       getPathFromPlatformURI( uri.toString() );
-      status = new SimpleStatus( "" );
+      status = Status.OK_STATUS;
     }
     catch( URIException exc )
     {
@@ -149,9 +152,8 @@ public class EclipseScheme implements URIScheme
     if( url == null )
     {
       throw new URIException(
-          new SimpleStatus( "EclipseScheme",
-              msg_.getMessage("MSG_INVALID_PLATFORM_URL", new Object[]{uri}),
-              Status.ERROR ) );
+          StatusUtils.errorStatus(
+              msg_.getMessage("MSG_INVALID_PLATFORM_URL", new Object[]{uri}) ) );
     }
     if( url.getProtocol().equals("platform") ) 
     {
@@ -165,9 +167,7 @@ public class EclipseScheme implements URIScheme
     else 
     {
       throw new URIException(
-          new SimpleStatus( "EclipseScheme",
-                            msg_.getMessage("MSG_INVALID_PLATFORM_URL", new Object[]{url.getFile()}),
-							Status.ERROR ) );
+          StatusUtils.errorStatus( msg_.getMessage("MSG_INVALID_PLATFORM_URL", new Object[]{url.getFile()}) ) );
     }
     
     return resourceFile;

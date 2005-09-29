@@ -13,10 +13,10 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebService;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 
 public class AxisRunInputCommand extends EnvironmentalOperation{
 	
@@ -36,7 +36,7 @@ public class AxisRunInputCommand extends EnvironmentalOperation{
 	{
 	 	javaWSDLParam_ = ws_.getAxisWebServiceInfo().getJavaWSDLParameter();
 		
-		return new SimpleStatus("");
+		return Status.OK_STATUS;
 	  }
 	
 	 /**

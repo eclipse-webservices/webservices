@@ -9,8 +9,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.InputFileGenerator;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.MethodFileGenerator;
@@ -21,8 +21,7 @@ import org.eclipse.jst.ws.internal.consumption.sampleapp.command.JavaToModelComm
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.CopyWebServiceUtilsJarCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
 
@@ -45,15 +44,15 @@ public class GSTCGenerateCommand extends EnvironmentalOperation
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     Environment env = getEnvironment();
-    IStatus status = new SimpleStatus( "" );
+    IStatus status = Status.OK_STATUS;
 	CopyWebServiceUtilsJarCommand copy = new CopyWebServiceUtilsJarCommand();    
 	copy.setSampleProject(testInfo.getGenerationProject());
     copy.setSampleComponent(testInfo.getGenerationModule());
     copy.setEnvironment( env );
-	status = copy.execute( null, null);
+	status = copy.execute( monitor, null);
 	if (status.getSeverity() == Status.ERROR) return status;
 	setJSPFolder();
-	status = createModel(env);
+	status = createModel(env, monitor);
 	if (status.getSeverity() == Status.ERROR) return status;
 	status = generatePages(env);
 	if (status.getSeverity() == Status.ERROR) return status;
@@ -82,13 +81,13 @@ public class GSTCGenerateCommand extends EnvironmentalOperation
   }
   
   //create the model from the resource
-  private Status createModel(Environment env) {
+  private IStatus createModel(Environment env, IProgressMonitor monitor ) {
     JavaToModelCommand jtmc = new JavaToModelCommand();
 	jtmc.setMethods(testInfo.getMethods());
 	jtmc.setClientProject(testInfo.getClientProject());
 	jtmc.setProxyBean(testInfo.getProxyBean());
 	jtmc.setEnvironment( env );
-	Status status = EnvironmentUtils.convertIStatusToStatus(jtmc.execute( null, null));
+	IStatus status = jtmc.execute( monitor, null);
 	if (status.getSeverity() == Status.ERROR) return status;
     proxyModel = jtmc.getJavaDataModel();
 	return status;
@@ -100,7 +99,7 @@ public class GSTCGenerateCommand extends EnvironmentalOperation
    */
    private IStatus generatePages(Environment env)
    {
-   	IStatus status = new SimpleStatus( "" );
+   	IStatus status = Status.OK_STATUS;
 	IPath fDestinationFolderPath = new Path(jspfolder);
     fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
     IWorkspaceRoot fWorkspace = ResourcesPlugin.getWorkspace().getRoot();

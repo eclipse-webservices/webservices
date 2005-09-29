@@ -22,14 +22,15 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.ws.internal.common.EnvironmentUtils;
 
 
 
@@ -51,40 +52,45 @@ public class GenerateHandlerSkeletonCommand extends EnvironmentalOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
+    Environment env          = getEnvironment();
+    MultiStatus status       = null;
+    IStatus     returnStatus = Status.OK_STATUS;
   	
-  	if (!genSkeleton_)
-  		return new SimpleStatus(""); 
+  	if (!genSkeleton_)	return returnStatus; 
   	
   	int i;
   	boolean error = false;
   	
-  	SimpleStatus status = null;
-  	Status writeStatus;	
+  	IStatus writeStatus;	
   	
   	
-    for (i=0; i<handlerNames_.length; i++) {
-    	writeStatus = writeFile(env, handlerNames_[i], outputLocation_);
+    for (i=0; i<handlerNames_.length; i++) 
+    {
+    	writeStatus = writeFile(env, handlerNames_[i], outputLocation_, monitor );
     	// handle status return
-    	if (writeStatus.getSeverity() == Status.ERROR) {  // write status is OK or ERROR
+    	if (writeStatus.getSeverity() == Status.ERROR) 
+      {  // write status is OK or ERROR
     		error = true;
-    		if (status == null) {
-    			status = new SimpleStatus( "execute", msgUtils_.getMessage("MSG_ERROR_GENERATE_HANDLER_SKELETON"), Status.ERROR);
+    		if (status == null) 
+        {
+    			status = StatusUtils.multiStatus( msgUtils_.getMessage("MSG_ERROR_GENERATE_HANDLER_SKELETON"), new IStatus[0] );
     		}
-    		status.addChild(writeStatus);
+    		status.add(writeStatus);
     	} 
     }
-    if (error) {
+    
+    if (error) 
+    {
        env.getStatusHandler().reportError(status);
-    } else {
-    	status = new SimpleStatus( "" );
+       returnStatus = status;
     }
-  	return status;
+    
+  	return returnStatus;
   }
   
-  public Status writeFile (Environment env, String className, IPath outputLocation) 
+  private IStatus writeFile (Environment env, String className, IPath outputLocation, IProgressMonitor monitor ) 
   {
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
   	int index;
   	
   	String simpleClassName = className;
@@ -125,7 +131,7 @@ public class GenerateHandlerSkeletonCommand extends EnvironmentalOperation
   		handlerNameForEdit_ = className;
   	}
   	
-  	OutputStream outputStream = FileResourceUtils.newFileOutputStream( EnvironmentUtils.getResourceContext(env), filePath, env.getProgressMonitor(), env.getStatusHandler());
+  	OutputStream outputStream = FileResourceUtils.newFileOutputStream( EnvironmentUtils.getResourceContext(env), filePath, monitor, env.getStatusHandler());
   	// create buffered writer for writing file
   	BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outputStream));
   	try {
@@ -195,9 +201,11 @@ public class GenerateHandlerSkeletonCommand extends EnvironmentalOperation
   		bw.newLine();
   		bw.write("}");
   		bw.close();
-  		status = new SimpleStatus( "" );	
-  	} catch (IOException e) {
-  		status = new SimpleStatus( "writeFile", msgUtils_.getMessage("MSG_ERROR_WRITE_FILE", new String[]{ className }), Status.ERROR, e );
+  		status = Status.OK_STATUS;	
+  	} 
+    catch (IOException e) 
+    {
+  		status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WRITE_FILE", new String[]{ className }), e );
   		if (bw != null) {
   			try {
   				bw.close();
@@ -206,16 +214,6 @@ public class GenerateHandlerSkeletonCommand extends EnvironmentalOperation
   		}
   	}
   	return status;
-  }
-
-  public Status undo(Environment environment)
-  {
-    return null;
-  }
-
-  public Status redo(Environment environment)
-  {
-    return null;
   }
   
   public void setOutputLocation(IPath outputLocation) 

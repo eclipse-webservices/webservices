@@ -16,8 +16,6 @@ import org.eclipse.wst.ws.internal.explorer.platform.uddi.actions.*;
 
 public class RefreshTool extends ActionTool
 {
-  private String actionLink_;
-
   public RefreshTool(ToolManager toolManager,String alt)
   {
     super(toolManager,"images/refresh_enabled.gif","images/refresh_highlighted.gif",alt);

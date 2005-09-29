@@ -14,10 +14,10 @@ package org.eclipse.jst.ws.internal.consumption.ui.wsil;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.ws.internal.wsil.AddWSDLToWSILCommand;
 
 
@@ -44,7 +44,7 @@ public class AddWSDLToWSILWrapperCommand extends EnvironmentalOperation
       command.setEnvironment( env );
       return command.execute( null, null);
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   /**
    * @param args The args to set.

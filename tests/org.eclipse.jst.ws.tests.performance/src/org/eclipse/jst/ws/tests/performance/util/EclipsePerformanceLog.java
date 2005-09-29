@@ -1,9 +1,9 @@
 package org.eclipse.jst.ws.tests.performance.util;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.test.performance.Performance;
 import org.eclipse.test.performance.PerformanceMeter;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 public class EclipsePerformanceLog implements Log {
@@ -21,14 +21,6 @@ public class EclipsePerformanceLog implements Log {
     // TODO Auto-generated method stub
     return false;
   }
-
-  private String getMessageNumString(int messageNum) {
-    String messageNumString = "IWAB";
-    if (messageNum > 9999 || messageNum < 0)
-      messageNum = 9999; //default message number
-    messageNumString += (new Integer(messageNum)).toString();
-    return messageNumString;
-  }
   
   public void log(int severity, int messageNum, Object caller, String method, Throwable throwable) {
     // TODO Auto-generated method stub
@@ -40,12 +32,12 @@ public class EclipsePerformanceLog implements Log {
 
   }
 
-  public void log(int severity, int messageNum, Object caller, String method, Status status) {
+  public void log(int severity, int messageNum, Object caller, String method, IStatus status) {
     // TODO Auto-generated method stub
 
   }
 
-  public void log(int severity, String option, int messageNum, Object caller, String method, Status status) {
+  public void log(int severity, String option, int messageNum, Object caller, String method, IStatus status) {
     // TODO Auto-generated method stub
 
   }

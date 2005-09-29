@@ -19,10 +19,10 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 
 
@@ -42,7 +42,7 @@ public class TestDefaultingFragment extends EnvironmentalOperation
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-  	SimpleStatus status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
   	
   	scenarioContext = WebServicePlugin.getInstance().getScenarioContext().copy();
   	//  test facilities

@@ -15,14 +15,12 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
 
 public class CreateSampleProjectCommand extends EnvironmentalOperation
@@ -59,7 +57,7 @@ public class CreateSampleProjectCommand extends EnvironmentalOperation
 	  command.setServerInstanceId(existingServer.getId());
 	  command.setJ2eeLevel(j2eeVersion);
     command.setEnvironment( env );
-	  Status status = EnvironmentUtils.convertIStatusToStatus(command.execute( null, null ) );
+	  IStatus status = command.execute( monitor, null ) ;
 	  if (status.getSeverity()==Status.ERROR)
 	  {
 		  env.getStatusHandler().reportError(status);
@@ -78,7 +76,7 @@ public class CreateSampleProjectCommand extends EnvironmentalOperation
 			commandEAR.setServerInstanceId(existingServer.getId());
 			commandEAR.setJ2eeLevel(j2eeVersion);
       commandEAR.setEnvironment( env );
-			status = EnvironmentUtils.convertIStatusToStatus(commandEAR.execute( null, null ));
+			status = commandEAR.execute( monitor, null );
 			if (status.getSeverity()==Status.ERROR)
 			{
 			  env.getStatusHandler().reportError(status);
@@ -95,7 +93,7 @@ public class CreateSampleProjectCommand extends EnvironmentalOperation
 			//so the component name needs to somehow be piped into this command
 			associateCommand.setEar(sampleProjectEar);
       associateCommand.setEnvironment( env );
-			status = EnvironmentUtils.convertIStatusToStatus(associateCommand.execute(null, null));
+			status = associateCommand.execute( monitor, null );
 			if (status.getSeverity()==Status.ERROR)
 			{
 				env.getStatusHandler().reportError(status);
@@ -110,7 +108,7 @@ public class CreateSampleProjectCommand extends EnvironmentalOperation
 			//so the component name needs to somehow be piped into this command
 			commandInstall.setModule(sampleProjectEar);
 			commandInstall.setEnvironment( env );	
-			status = EnvironmentUtils.convertIStatusToStatus(commandInstall.execute( null, null ));
+			status = commandInstall.execute( monitor, null ) ;
 			if (status.getSeverity()==Status.ERROR)
 			{
 				env.getStatusHandler().reportError(status);
@@ -126,7 +124,7 @@ public class CreateSampleProjectCommand extends EnvironmentalOperation
 			commandInstall.setModule(sampleProject);
       commandInstall.setEnvironment( env );
 			
-			status = EnvironmentUtils.convertIStatusToStatus(commandInstall.execute( null, null ));
+			status = commandInstall.execute( monitor, null ) ;
 			if (status.getSeverity()==Status.ERROR)
 			{
 				env.getStatusHandler().reportError(status);
@@ -135,7 +133,7 @@ public class CreateSampleProjectCommand extends EnvironmentalOperation
 		}
 		  
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
 
   public void setSampleProject(String sampleProject)

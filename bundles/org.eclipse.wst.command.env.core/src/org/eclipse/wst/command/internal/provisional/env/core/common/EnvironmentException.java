@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.provisional.env.core.common;
 
+import org.eclipse.core.runtime.IStatus;
+
 /**
  * This is the exception class for conditions raised by the Environment.
  */
@@ -20,7 +22,7 @@ public class EnvironmentException extends Exception
    */
   private static final long serialVersionUID = 3978983275899402036L;
   
-  protected Status status = null;
+  protected IStatus status = null;
   
   /**
    * Creates a new EnvironmentException.
@@ -33,7 +35,7 @@ public class EnvironmentException extends Exception
   /**
    * Creates a new EnvironmentException.
    */
-  public EnvironmentException ( Status status )
+  public EnvironmentException ( IStatus status )
   {
     super(status == null ? null : status.getMessage());
     this.status = status;
@@ -42,7 +44,7 @@ public class EnvironmentException extends Exception
   /**
    * Returns the Status object.
    */
-  public Status getStatus()
+  public IStatus getStatus()
   {
     return status;
   }

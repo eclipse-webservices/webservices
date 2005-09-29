@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.ClasspathUtils;
@@ -33,8 +34,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsil.Utils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -90,9 +90,9 @@ public class DefaultsForServerJavaWSDLCommand extends EnvironmentalOperation {
 	{
 		Environment environment = getEnvironment();
 
-		Status status;
+		IStatus status;
 		if (javaWSDLParam_ == null) {
-			status = new SimpleStatus( "DefaultsForServerJavaWSDLTask", coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR );
+			status = StatusUtils.errorStatus( coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
@@ -147,7 +147,7 @@ public class DefaultsForServerJavaWSDLCommand extends EnvironmentalOperation {
 			}
 
 		} catch (Exception e) {
-			status =  new SimpleStatus( "DefaultsForServerJavaWSDLTask", conMsgUtils_.getMessage("MSG_ERROR_DEFAULT_BEAN"), Status.ERROR, e );
+			status =  StatusUtils.errorStatus( conMsgUtils_.getMessage("MSG_ERROR_DEFAULT_BEAN"), e );
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
@@ -161,7 +161,7 @@ public class DefaultsForServerJavaWSDLCommand extends EnvironmentalOperation {
 		
 		}
 		catch(CoreException e){
-			status = new SimpleStatus( "DefaultsForServerJavaWSDLTask", conMsgUtils_.getMessage("MSG_ERROR_WRITE_WSDL"), Status.ERROR, e );
+			status = StatusUtils.errorStatus( conMsgUtils_.getMessage("MSG_ERROR_WRITE_WSDL"), e );
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
@@ -194,7 +194,7 @@ public class DefaultsForServerJavaWSDLCommand extends EnvironmentalOperation {
 
 		String projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_, moduleName_);
 		if (projectURL == null) {
-			status = new SimpleStatus( "DefaultsForServerJavaWSDLTask", msgUtils_.getMessage("MSG_ERROR_PROJECT_URL"), Status.ERROR);
+			status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_PROJECT_URL"));
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
@@ -221,7 +221,7 @@ public class DefaultsForServerJavaWSDLCommand extends EnvironmentalOperation {
 		javaWSDLParam_.setJavaOutput(javaOutput);
 		javaWSDLParam_.setOutput(output);
 		
-		return new SimpleStatus( "" );
+		return Status.OK_STATUS;
 	}
 
 	/**

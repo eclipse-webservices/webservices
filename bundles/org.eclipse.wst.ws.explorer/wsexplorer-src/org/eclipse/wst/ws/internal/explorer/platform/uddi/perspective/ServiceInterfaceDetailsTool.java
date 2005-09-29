@@ -32,7 +32,7 @@ public class ServiceInterfaceDetailsTool extends DetailsTool
   public final void initDefaultProperties()
   {
     clearPropertyTable();
-    Controller controller = toolManager_.getNode().getNodeManager().getController();
+    toolManager_.getNode().getNodeManager().getController();
     ServiceInterfaceElement siElement = (ServiceInterfaceElement)(toolManager_.getNode().getTreeElement());
     TModel tModel = siElement.getTModel();
 

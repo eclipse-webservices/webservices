@@ -75,8 +75,6 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   private String INFOPOP_PWSM_COMBO_PROJECT = "PWSM0010";
 
   private Tree methodsTree_;
-  /*CONTEXT_ID PWSM0005 for the Methods tree of the Sample Page*/
-  private String INFOPOP_PWSM_TREE_METHODS = "PWSM0005";
 
   private Button selectAllMethodsButton_;
   /*CONTEXT_ID PWSM0006 for the Select All button of the Sample Page*/
@@ -98,13 +96,10 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   /*CONTEXT_ID PWSM0016 for the EAR combo box of the Sample Page*/
   private String INFOPOP_PWSM_EAR_COMBO = "PWSM0016";
   
-  private Label                projectExistsLabel_;
-  private Label                earExistsLabel_;
   private Composite            comboGroup_; 
   private SelectionList        testFacilities_;
   private FolderResourceFilter folderFilter_ = new FolderResourceFilter();
   private IStructuredSelection initialSelection_;
-  private String launchedServiceTestName;
   private boolean isTestWidget = false;
   
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
@@ -133,14 +128,14 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
                                           "TOOLTIP_PWSM_COMBOBOX_TEST",
                                           INFOPOP_PWSM_COMBOBOX_TEST,
                                           SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
-    Label dummyLabel = new Label( comboGroup_, SWT.NONE );
+    new Label( comboGroup_, SWT.NONE );
     
     projectCombo_ = uiUtils.createCombo( comboGroup_, "LABEL_JSP_PROJECT_NAME",
                                           "TOOLTIP_PWSM_COMBO_PROJECT",
                                           INFOPOP_PWSM_COMBO_PROJECT,
                                           SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     projectCombo_.setEnabled( false );
-    projectExistsLabel_ = new Label( comboGroup_, SWT.NONE );
+    new Label( comboGroup_, SWT.NONE );
     
     
     earCombo_ = uiUtils.createCombo( comboGroup_, "LABEL_EAR_PROJECTS",
@@ -148,7 +143,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
                                      INFOPOP_PWSM_EAR_COMBO,
                                      SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     earCombo_.setEnabled( false );
-    earExistsLabel_ = new Label( comboGroup_, SWT.NONE );
+    new Label( comboGroup_, SWT.NONE );
     
     
     
@@ -376,7 +371,6 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   
   public void setLaunchedServiceTestName (String launchedServiceTestName)
   {
-  	this.launchedServiceTestName = launchedServiceTestName;
   }
   
   public boolean getRunClientTest()

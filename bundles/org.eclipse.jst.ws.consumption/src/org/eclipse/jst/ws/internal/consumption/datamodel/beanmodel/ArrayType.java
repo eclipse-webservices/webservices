@@ -26,8 +26,6 @@ public class ArrayType extends RecognizedReturnType
   public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
 
   
-  private String fTypeName;
-
   /**
   *Constructor
   *
@@ -40,7 +38,6 @@ public class ArrayType extends RecognizedReturnType
   public ArrayType(String name,String typeName)
   {
     super(name);
-    fTypeName = typeName;
   } 
 
  

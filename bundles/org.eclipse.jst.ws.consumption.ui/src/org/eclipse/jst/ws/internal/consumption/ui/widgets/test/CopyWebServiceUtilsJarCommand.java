@@ -19,17 +19,17 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
 
@@ -60,16 +60,16 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   
   try
   {
-    env.getProgressMonitor().report( msgUtils.getMessage( "PROGRESS_INFO_COPY_WEBSERVICE_UTILS" ) );
+    ProgressUtils.report( monitor, msgUtils.getMessage( "PROGRESS_INFO_COPY_WEBSERVICE_UTILS" ) );
     IProject sampleIProject = ProjectUtilities.getProject(sampleProject);    
     IPath webModulePath = J2EEUtils.getWebContentPath(sampleIProject, sampleC);	
     if (webModulePath == null)
-      return new SimpleStatus(WebServiceConsumptionUIPlugin.ID,msgUtils.getMessage("MSG_ERROR_PROJECT_NOT_FOUND"), Status.ERROR);
+      return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_PROJECT_NOT_FOUND") );
       
-    Status status = copyIFile("webserviceutils.jar",webModulePath,"WEB-INF/lib/webserviceutils.jar", WebServiceConsumptionPlugin.getInstance(),env);
+    IStatus status = copyIFile("webserviceutils.jar",webModulePath,"WEB-INF/lib/webserviceutils.jar", WebServiceConsumptionPlugin.getInstance(),env, monitor);
     if(status.getSeverity() == Status.ERROR){
       StatusHandler sHandler = env.getStatusHandler();
-      Status errorStatus = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS"), Status.ERROR);
+      IStatus errorStatus = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS") );
       sHandler.reportError(errorStatus);	
       return status;
      }
@@ -78,24 +78,24 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
     }
     catch (Exception e) {
       StatusHandler sHandler = env.getStatusHandler();
-      Status errorStatus = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS"), Status.ERROR);
+      IStatus errorStatus = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS") );
       sHandler.reportError(errorStatus);	
-      return new SimpleStatus(WebServiceConsumptionUIPlugin.ID,msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS"),Status.ERROR,e);
+      return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS"), e);
     }
-  return new SimpleStatus("");
+  return Status.OK_STATUS;
 }
 
 /**
  *
  */
-private Status copyIFile(String source, IPath targetPath, String targetFile, Plugin plugin,Environment env)
+private IStatus copyIFile(String source, IPath targetPath, String targetFile, Plugin plugin,Environment env, IProgressMonitor monitor )
 {
     
   if (plugin != null)
   {
     IPath target = targetPath.append(new Path(targetFile));
     
-    env.getProgressMonitor().report( msgUtils.getMessage( "PROGRESS_INFO_COPYING_FILE" ) );
+    ProgressUtils.report( monitor, msgUtils.getMessage( "PROGRESS_INFO_COPYING_FILE" ) );
     try
     {
        ResourceContext context = new TransientResourceContext();
@@ -103,18 +103,18 @@ private Status copyIFile(String source, IPath targetPath, String targetFile, Plu
        context.setCreateFoldersEnabled(true);
        context.setCheckoutFilesEnabled(true);
        IResource resource = FileResourceUtils.findResource(target);
-       if(resource != null) return new SimpleStatus("");
+       if(resource != null) return Status.OK_STATUS;
        FileResourceUtils.createFile(context, 
                       							target,
                                     plugin.openStream(new Path(source)),
-                                    env.getProgressMonitor(),
+                                    monitor,
                                     env.getStatusHandler());
     }
     catch (Exception e) {
-      return new SimpleStatus(WebServiceConsumptionUIPlugin.ID,msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS"),Status.ERROR,e);
+      return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS") ,e);
     }
   }
-  return new SimpleStatus("");
+  return Status.OK_STATUS;
 }
 
 public void setSampleProject(String sampleProject)

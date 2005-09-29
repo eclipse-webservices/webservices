@@ -47,7 +47,6 @@ public class ResizeUDDIFramesAction extends ResizeFramesAction
     UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
     
     // Set the new frameset sizes.
-    boolean saveFrameSettings = false;
     if (frameName.equals(UDDIFrameNames.NAVIGATOR_CONTAINER))
     {
       uddiPerspective.setActionsContainerFramesetRows(actionsContainerFramesetRows);

@@ -15,11 +15,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
 import org.eclipse.wst.server.core.IServer;
 
 /**
@@ -63,8 +63,8 @@ public class ManageServerStartUpCommand extends EnvironmentalOperation
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
       Environment env = getEnvironment();
-	    Status status = new SimpleStatus( "" );
-	    env.getProgressMonitor().report(msgUtils_.getMessage("PROGRESS_INFO_START_WEB_PROJECT"));
+	    IStatus status = Status.OK_STATUS;
+	    ProgressUtils.report(monitor, msgUtils_.getMessage("PROGRESS_INFO_START_WEB_PROJECT"));
 	 
 	    if (isStartServiceEnabled_.booleanValue() && serviceExistingServer_!=null){
 	    	//System.out.println("Calling service server start: "+serviceProject_+"  "+serviceServerTypeId_);

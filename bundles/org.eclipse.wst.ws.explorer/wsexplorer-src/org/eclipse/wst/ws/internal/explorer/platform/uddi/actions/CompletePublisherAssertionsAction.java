@@ -141,8 +141,8 @@ public class CompletePublisherAssertionsAction extends CommonPublisherAssertions
     }
 
     UDDIProxy proxy = registryElement.getProxy();
-    String userID = registryElement.getUserId();
-    String cred = registryElement.getCred();
+    registryElement.getUserId();
+    registryElement.getCred();
     BusinessElement busElement = (BusinessElement)selectedElement;
     ListManager pubAssertions = busElement.getPublisherAssertions();
 

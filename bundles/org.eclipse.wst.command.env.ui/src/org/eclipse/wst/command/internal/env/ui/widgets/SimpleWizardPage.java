@@ -19,7 +19,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 
@@ -61,11 +60,11 @@ public class SimpleWizardPage extends WizardPage implements PageWizardDataEvents
   	  
   public void validatePageToStatus()
   {
-    Status status  = widget_.getStatus();
+    IStatus status  = widget_.getStatus();
     
     if( status != null )
     {
-      if( status.getSeverity() == Status.ERROR )
+      if( status.getSeverity() == IStatus.ERROR )
       {
         String message = status.getMessage();
 
@@ -81,13 +80,13 @@ public class SimpleWizardPage extends WizardPage implements PageWizardDataEvents
           
         setPageComplete( false );
       }
-      else if (status.getSeverity() == Status.WARNING )
+      else if (status.getSeverity() == IStatus.WARNING )
       {
         setErrorMessage( null );
         setMessage(status.getMessage(), IStatus.WARNING );
         setPageComplete( true );
       }
-      else if( status.getSeverity() == Status.INFO )
+      else if( status.getSeverity() == IStatus.INFO )
       {
         setErrorMessage( null );
         setMessage( status.getMessage(), IStatus.INFO );

@@ -25,11 +25,11 @@ import javax.wsdl.extensions.soap.SOAPAddress;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.IMonitor;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.IMonitorWorkingCopy;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.MonitorCore;
@@ -127,18 +127,19 @@ public class GetMonitorCommand extends EnvironmentalOperation
 										monitorWorkingCopy.setRemoteHost(host);
 										monitorWorkingCopy.setRemotePort(port);
 										monitorWorkingCopy.setProtocol("HTTP");
-										try {
+										try 
+                    {
 											m = monitorWorkingCopy.save();
-										} catch (Throwable t) {
-											Status warning = new SimpleStatus(
-													"org.eclipse.wst.ws",
+										} 
+                    catch (Throwable t) 
+                    {
+											IStatus warning = StatusUtils.warningStatus(
 													WSPlugin.getResourceString(
 																	"MSG_ERROR_UNABLE_TO_START_MONITOR",
 																	new Object[] {
 																			String
 																					.valueOf(port),
-																			endpoint }),
-													Status.WARNING, t);
+																			endpoint }), t );
 											try {
 												if (env != null)
 													env.getStatusHandler()
@@ -158,16 +159,16 @@ public class GetMonitorCommand extends EnvironmentalOperation
 													.getLocalPort()));
 											sb.append(endpointURL.getFile());
 											endpoints.add(sb.toString());
-										} catch (Throwable t) {
-											Status warning = new SimpleStatus(
-													"org.eclipse.wst.ws",
+										} 
+                    catch (Throwable t) 
+                    {
+											IStatus warning = StatusUtils.warningStatus(
 													WSPlugin.getResourceString(
 																	"MSG_ERROR_UNABLE_TO_START_MONITOR",
 																	new Object[] {
 																			String
 																					.valueOf(port),
-																			endpoint }),
-													Status.WARNING, t);
+																			endpoint }), t );
 											try {
 												if (env != null)
 													env.getStatusHandler()
@@ -183,7 +184,7 @@ public class GetMonitorCommand extends EnvironmentalOperation
 				}
 			}
 		}
-		return new SimpleStatus("");
+		return Status.OK_STATUS;
 	}
 
 	public void setMonitorService(boolean monitorService) {

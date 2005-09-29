@@ -26,12 +26,13 @@ import org.apache.tools.ant.Target;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 /**
  * Commands are executable, undoable, redoable objects.
@@ -57,28 +58,25 @@ public class Java2WSDLCommand extends EnvironmentalOperation
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
 		Environment environment = getEnvironment();
-		Status status;
+		IStatus status;
 		if (javaWSDLParam_ == null) {
-			status = new SimpleStatus("Java2WSDLCommand", //$NON-NLS-1$
-			getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR);
+			status = StatusUtils.errorStatus(getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
 
 		if (javaWSDLParam_.getBeanName() == null) {
-			status = new SimpleStatus("Java2WSDLCommand", //$NON-NLS-1$
-			getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR);
+			status = StatusUtils.errorStatus(getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
 
-		environment.getProgressMonitor().report(
-			getMessage("MSG_GENERATE_WSDL", javaWSDLParam_.getBeanName() ) );
+		ProgressUtils.report(monitor, getMessage("MSG_GENERATE_WSDL", javaWSDLParam_.getBeanName() ));
 
 		return executeAntTask(environment);
 	}
 
-	protected Status executeAntTask(Environment environment) {
+	protected IStatus executeAntTask(Environment environment) {
 
 		final class Emitter extends Java2WsdlAntTask {
 			public Emitter() {
@@ -141,13 +139,13 @@ public class Java2WSDLCommand extends EnvironmentalOperation
 			emitter.execute();
 		} catch (BuildException e) {
 			environment.getLog().log(Log.ERROR, 5018, this, "executeAntTask", e);
-			Status status = new SimpleStatus("Java2WSDLCommand", //$NON-NLS-1$
+			IStatus status = StatusUtils.errorStatus(
 			getMessage("MSG_ERROR_JAVA_WSDL_GENERATE") + " " //$NON-NLS-1$
-			+e.getCause().toString(), Status.ERROR);
+			+e.getCause().toString());
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
-		return new SimpleStatus( "" );
+		return Status.OK_STATUS;
 
 	}
 	

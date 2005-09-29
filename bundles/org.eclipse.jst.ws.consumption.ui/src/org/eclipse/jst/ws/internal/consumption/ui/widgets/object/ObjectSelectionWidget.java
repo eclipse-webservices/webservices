@@ -14,6 +14,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
@@ -26,8 +28,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
@@ -38,7 +38,6 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
   private Composite parent;
   private Listener statusListener;
   private Composite composite;
-  private TypeRuntimeServer typeRuntimeServer;
   private IStructuredSelection initialSelection;
   private IProject project;
   private String componentName;
@@ -58,7 +57,6 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
    */
   public void setTypeRuntimeServer(TypeRuntimeServer typeRuntimeServer)
   {
-    this.typeRuntimeServer = typeRuntimeServer;
     if (composite != null)
     {
       composite.dispose();
@@ -126,9 +124,9 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
     }
   }
   
-  public Status getStatus()
+  public IStatus getStatus()
   {
-    return (child != null) ? child.getStatus() : new SimpleStatus("");
+    return (child != null) ? child.getStatus() : Status.OK_STATUS;
   }
 
   public void setInitialSelection(IStructuredSelection initialSelection)
@@ -145,9 +143,9 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
     return (child != null) ? child.getObjectSelection() : null;
   }
   
-  public Status validateSelection(IStructuredSelection objectSelection)
+  public IStatus validateSelection(IStructuredSelection objectSelection)
   {
-    return (child != null) ? child.validateSelection(objectSelection) : new SimpleStatus("");
+    return (child != null) ? child.validateSelection(objectSelection) : Status.OK_STATUS;
   }
   
   public IProject getProject()

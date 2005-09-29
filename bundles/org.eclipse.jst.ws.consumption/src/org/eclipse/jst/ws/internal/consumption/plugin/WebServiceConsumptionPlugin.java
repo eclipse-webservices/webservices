@@ -12,9 +12,7 @@
 package org.eclipse.jst.ws.internal.consumption.plugin;
 
 import java.text.MessageFormat;
-
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 
 /**
@@ -39,8 +37,6 @@ public class WebServiceConsumptionPlugin extends Plugin
   */
   private static WebServiceConsumptionPlugin instance_;
 
-  private Log log_;
- 
   /**
   * Constructs a runtime plugin object for this plugin.
   */

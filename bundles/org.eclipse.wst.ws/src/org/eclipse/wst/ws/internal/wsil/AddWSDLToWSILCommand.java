@@ -46,10 +46,10 @@ import org.apache.wsil.xml.XMLWriter;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.URIException;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.URIFactory;
 import org.eclipse.wst.ws.internal.parser.wsil.IllegalArgumentsException;
@@ -66,7 +66,6 @@ public class AddWSDLToWSILCommand extends EnvironmentalOperation
   public static final String ARG_RESOLVE_WSDL = "-resolvewsdl";
   public static final String ARG_HTTP_BASIC_AUTH_USERNAME = "-httpusername";
   public static final String ARG_HTTP_BASIC_AUTH_PASSWORD = "-httppassword";
-  private final String id = "org.eclipse.wst.ws.internal.parser.wsil.AddWSDLToWSILCommand";
   private ResourceBundle resBundle_;
   private WWWAuthenticationHandler wwwAuthHandler_;
   private String[] args_;
@@ -118,11 +117,11 @@ public class AddWSDLToWSILCommand extends EnvironmentalOperation
     }
     catch (IllegalArgumentsException iae)
     {
-      return new SimpleStatus(id, resBundle_.getString("MSG_ERROR_ILLEGAL_ARGUMENTS"), Status.ERROR, iae);
+      return StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_ILLEGAL_ARGUMENTS"), iae);
     }
     catch (ArrayIndexOutOfBoundsException e)
     {
-      return new SimpleStatus(id, resBundle_.getString("MSG_ERROR_INVALID_ARGUMENTS"), Status.ERROR, e);
+      return StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_INVALID_ARGUMENTS"), e);
     }
     // Create new WSIL document
     WSILDocument wsilDocument = null;
@@ -134,13 +133,13 @@ public class AddWSDLToWSILCommand extends EnvironmentalOperation
     }
     catch (MalformedURLException murle)
     {
-      Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_INVALID_WSIL_URI"), Status.ERROR, murle);
+      IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_INVALID_WSIL_URI"), murle);
       environment.getStatusHandler().reportError(status);
       return status;
     }
     catch (WSILException wsile)
     {
-      Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), Status.ERROR, wsile);
+      IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), wsile);
       environment.getStatusHandler().reportError(status);
       return status;
     }
@@ -156,19 +155,19 @@ public class AddWSDLToWSILCommand extends EnvironmentalOperation
     }
     catch (URIException urie)
     {
-      Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), Status.ERROR, urie);
+      IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), urie);
       environment.getStatusHandler().reportError(status);
       return status;
     }
     catch (IOException ioe)
     {
-      Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), Status.ERROR, ioe);
+      IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), ioe);
       environment.getStatusHandler().reportError(status);
       return status;
     }
     catch (WSILException wsile)
     {
-      Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), Status.ERROR, wsile);
+      IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), wsile);
       environment.getStatusHandler().reportError(status);
       return status;
     }
@@ -183,7 +182,7 @@ public class AddWSDLToWSILCommand extends EnvironmentalOperation
     for (Iterator it = wsdls_.iterator(); it.hasNext();)
     {
       String wsdl = (String) it.next();
-      Status status = null;
+      IStatus status = null;
       try
       {
         status = internalExecute(environment, wsilDocument, platform2File(uriFactory, wsil_), wsdl, httpUsername, httpPassword);
@@ -203,7 +202,7 @@ public class AddWSDLToWSILCommand extends EnvironmentalOperation
             }
             catch (WWWAuthenticationException wwwae2)
             {
-              Status wwwaeStatus = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_UNRESOLVABLE_WSDL"), Status.ERROR, wwwae2.getIOException());
+              IStatus wwwaeStatus = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_UNRESOLVABLE_WSDL"), wwwae2.getIOException());
               environment.getStatusHandler().reportError(wwwaeStatus);
               return wwwaeStatus;
             }
@@ -211,7 +210,7 @@ public class AddWSDLToWSILCommand extends EnvironmentalOperation
         }
         if (status == null)
         {
-          Status s = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_UNRESOLVABLE_WSDL"), Status.ERROR, wwwae.getIOException());
+          IStatus s = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_UNRESOLVABLE_WSDL"), wwwae.getIOException());
           environment.getStatusHandler().reportError(s);
           return s;
         }
@@ -232,26 +231,26 @@ public class AddWSDLToWSILCommand extends EnvironmentalOperation
     }
     catch (URIException urie)
     {
-      Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_WRITE_WSIL"), Status.ERROR, urie);
+      IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_WRITE_WSIL"), urie);
       environment.getStatusHandler().reportError(status);
       return status;
     }
     catch (IOException ioe)
     {
-      Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_WRITE_WSIL"), Status.ERROR, ioe);
+      IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_WRITE_WSIL"), ioe);
       environment.getStatusHandler().reportError(status);
       return status;
     }
     catch (WSILException wsile)
     {
-      Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_WRITE_WSIL"), Status.ERROR, wsile);
+      IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_WRITE_WSIL"), wsile);
       environment.getStatusHandler().reportError(status);
       return status;
     }
-    return new SimpleStatus(id, "", Status.OK, null);
+    return Status.OK_STATUS;
   }
 
-  private Status internalExecute(Environment environment, WSILDocument wsilDocument, String wsil, String wsdl, String httpUsername, String httpPassword) throws WWWAuthenticationException
+  private IStatus internalExecute(Environment environment, WSILDocument wsilDocument, String wsil, String wsdl, String httpUsername, String httpPassword) throws WWWAuthenticationException
   {
     Definition definition = null;
     ArrayList wsdlService = new ArrayList();
@@ -265,25 +264,25 @@ public class AddWSDLToWSILCommand extends EnvironmentalOperation
       }
       catch (MalformedURLException murle)
       {
-        Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_INVALID_WSDL_URI"), Status.ERROR, murle);
+        IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_INVALID_WSDL_URI"), murle);
         environment.getStatusHandler().reportError(status);
         return status;
       }
       catch (IOException ioe)
       {
-        Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_UNRESOLVABLE_WSDL"), Status.ERROR, ioe);
+        IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_UNRESOLVABLE_WSDL"), ioe);
         environment.getStatusHandler().reportError(status);
         return status;
       }
       catch (ParserConfigurationException pce)
       {
-        Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), Status.ERROR, pce);
+        IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), pce);
         environment.getStatusHandler().reportError(status);
         return status;
       }
       catch (SAXException saxe)
       {
-        Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_MALFORMED_WSDL"), Status.ERROR, saxe);
+        IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_MALFORMED_WSDL"), saxe);
         environment.getStatusHandler().reportError(status);
         return status;
       }
@@ -332,17 +331,17 @@ public class AddWSDLToWSILCommand extends EnvironmentalOperation
     }
     catch (WSILException wsile)
     {
-      Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), Status.ERROR, wsile);
+      IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), wsile);
       environment.getStatusHandler().reportError(status);
       return status;
     }
     catch (Throwable t)
     {
-      Status status = new SimpleStatus(id, resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), Status.ERROR, t);
+      IStatus status = StatusUtils.errorStatus( resBundle_.getString("MSG_ERROR_UNEXPECTED_EXCEPTION"), t);
       environment.getStatusHandler().reportError(status);
       return status;
     }
-    return new SimpleStatus(id, "", Status.OK, null);
+    return Status.OK_STATUS;
   }
 
   /**
@@ -366,9 +365,9 @@ public class AddWSDLToWSILCommand extends EnvironmentalOperation
    *         or a Status with a severity of less than <code>Status.ERROR</code>
    *         signifies success.
    */
-  public Status undo(Environment environment)
+  public IStatus undo(Environment environment)
   {
-    return new SimpleStatus(id, "", Status.OK, null);
+    return Status.OK_STATUS;
   }
 
   private Definition parseWSDL(String wsdl, ArrayList wsdlService, ArrayList wsdlBinding, String httpUsername, String httpPassword) throws MalformedURLException, IOException, ParserConfigurationException, SAXException, WWWAuthenticationException

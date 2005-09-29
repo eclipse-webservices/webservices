@@ -16,14 +16,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.common.WebServiceStartServerRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.server.core.IServer;
 
 public class StartProjectCommand extends EnvironmentalOperation 
@@ -69,8 +69,8 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 {
     Environment env = getEnvironment();    
   
-    Status status = new SimpleStatus( "" );
-    env.getProgressMonitor().report(msgUtils_.getMessage("PROGRESS_INFO_START_WEB_PROJECT"));
+    IStatus status = Status.OK_STATUS;
+    ProgressUtils.report( monitor, msgUtils_.getMessage("PROGRESS_INFO_START_WEB_PROJECT"));
     
     
     IProject project = ((creationScenario_.booleanValue()) ? serviceProject_ : sampleProject_);
@@ -81,14 +81,14 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
     }
     if (project == null)
     {
-      status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_PROJECT_NOT_FOUND"), Status.ERROR);  
+      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_PROJECT_NOT_FOUND") );  
       env.getStatusHandler().reportError(status);
       return status;
     }	
-    IServer instance = ServerUtils.getServerForModule(ServerUtils.getModule(project, moduleName_), serverTypeID, server, true, EnvironmentUtils.getIProgressMonitor(env));
+    IServer instance = ServerUtils.getServerForModule(ServerUtils.getModule(project, moduleName_), serverTypeID, server, true, monitor );
     if (instance == null)
     {
-      status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_INSTANCE_NOT_FOUND"), Status.ERROR);
+      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_INSTANCE_NOT_FOUND") );
       env.getStatusHandler().reportError(status);
       return status;
     }
@@ -98,19 +98,19 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
    		AbstractStartServer startServerCommand = null;
    		WebServiceStartServerRegistry reg = WebServiceStartServerRegistry.getInstance();
      	startServerCommand = (AbstractStartServer)reg.getServerStartByTypeId(instance.getServerType().getId());
-    	startServerCommand.StartServer(project, instance, EnvironmentUtils.getIProgressMonitor(env), isWebProjectStartupRequested_);
+    	startServerCommand.StartServer(project, instance, monitor, isWebProjectStartupRequested_);
     	return status;
    	}
   catch (CoreException ce )
   	{
     	IStatus embeddedStatus = ce.getStatus();
-    	status = EnvironmentUtils.convertIStatusToStatus(embeddedStatus);
+    	status = embeddedStatus;
     	env.getStatusHandler().reportError(status);
   		return status;
   	}
    catch (Exception e)
    	{
-       status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_SERVER"), Status.ERROR, e);
+       status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), e);
        env.getStatusHandler().reportError(status);
    	   return status;
    	}

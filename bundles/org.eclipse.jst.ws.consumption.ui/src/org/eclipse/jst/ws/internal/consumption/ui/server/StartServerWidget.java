@@ -13,13 +13,14 @@ package org.eclipse.jst.ws.internal.consumption.ui.server;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
@@ -35,21 +36,19 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.NullStatusHandler;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
 import org.eclipse.wst.server.core.IServer;
 
 public class StartServerWidget extends SimpleWidgetDataContributor 
 {
   private IServer             server_;
-  private Status              status_;
+  private IStatus              status_;
   private Listener            statusListener_;
   private Button              button_;
   private JobChangeAdapter    jobChangeAdapter_;
@@ -136,7 +135,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	return this;
   }
 
-  public Status getStatus() 
+  public IStatus getStatus() 
   {
 	return status_;
   }
@@ -149,7 +148,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	{
 	  case IServer.STATE_STARTED:
 	  {
-		status_ = new SimpleStatus( "" );
+		status_ = Status.OK_STATUS;
 		button_.setEnabled( false );
 		serverStateText_.setText( getStateMessage( "TEXT_SERVER_STATUS", "TEXT_SERVER_STARTED" ) );
 		
@@ -158,7 +157,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	  
 	  case IServer.STATE_STARTING:
 	  {
-		status_ = new SimpleStatus( "", "", Status.ERROR );
+		status_ = StatusUtils.errorStatus( "" );
 		button_.setEnabled( false );  
 		serverStateText_.setText( getStateMessage( "TEXT_SERVER_STATUS", "TEXT_SERVER_STARTING" ) );
 		progressMonitor_.beginTask( getStateMessage( "TEXT_SERVER_MSG", "TEXT_SERVER_STARTING" ), IProgressMonitor.UNKNOWN );
@@ -171,7 +170,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	  
 	  default:
 	  {
-		status_ = new SimpleStatus( "", "", Status.ERROR );
+		status_ = StatusUtils.errorStatus( "" );
         button_.setEnabled( true );
 		serverStateText_.setText( getStateMessage( "TEXT_SERVER_STATUS", "TEXT_SERVER_STOPPED" ) );
 		break;  
@@ -211,7 +210,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	{
 	  synchronized( StartServerFamily ) 
 	  {
-        Status status = startServerJob.getStatus();
+        IStatus status = startServerJob.getStatus();
         
         // We are using status to determine if the job has completed or not.
         // Normally, we would not get here if the job had already completed,
@@ -229,7 +228,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
           // Note: this job was reporting progress to different progressMonitor_
           //       control.  We need to tell the job that it should report progress
           //       to our new progressMonitor_ control on this wizard page.
-          ProgressMonitorWrapper monitor = (ProgressMonitorWrapper)startServerJob.getMonitor().getMonitor();
+          ProgressMonitorWrapper monitor = (ProgressMonitorWrapper)startServerJob.getMonitor();
           monitor.setMonitor( progressMonitor_ );
         }
         else
@@ -251,15 +250,15 @@ public class StartServerWidget extends SimpleWidgetDataContributor
      
   private void reportErrorIfRequired( StartServerJob serverJob )
   {
-	Status status = serverJob.getStatus();
+	  IStatus status = serverJob.getStatus();
 	
-	if( status.getSeverity() == Status.ERROR )
-	{
-	  Shell                shell   = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+	  if( status.getSeverity() == Status.ERROR )
+	  {
+	    Shell                shell   = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
       EclipseStatusHandler handler = new EclipseStatusHandler( shell );
       
       handler.reportError( status );
-	}
+	  }
   }
   
   final private static String  StartServerFamily = "StartServerFamily";
@@ -267,93 +266,79 @@ public class StartServerWidget extends SimpleWidgetDataContributor
   // This class is used to start up the server in an Eclipse job.
   private class StartServerJob extends Job
   {
-	private Status                status_ = null;
-	private SimpleProgressMonitor envMonitor_;
+	  private IStatus                status_ = null;
+	  private ProgressMonitorWrapper envMonitor_;
 	
-	public StartServerJob()
-	{
-	  super( "StartServerJob" );
+	  public StartServerJob()
+	  {
+	    super( "StartServerJob" );
 	  
-	  envMonitor_ = new SimpleProgressMonitor();
-	}
+	    envMonitor_ = new ProgressMonitorWrapper( progressMonitor_ );
+	  }
 	
-	public IServer getServer()
-	{
-	  return server_;	
-	}
+	  public IServer getServer()
+	  {
+	    return server_;	
+	  }
 	
-	public SimpleProgressMonitor getMonitor()
-	{
-	  return envMonitor_;	
-	}
+	  public ProgressMonitorWrapper getMonitor()
+	  {
+	    return envMonitor_;	
+	  }
 	
-	public boolean belongsTo(Object family) 
-	{
-	  return family == StartServerFamily;
-	}
+	  public boolean belongsTo(Object family) 
+	  {
+	    return family == StartServerFamily;
+	  }
 
-	protected IStatus run(IProgressMonitor monitor) 
-	{
-	  NullStatusHandler        handler         = new NullStatusHandler();
-	  TransientResourceContext resourceContext = new TransientResourceContext();
-	  EclipseEnvironment       environment     = new EclipseEnvironment( null,resourceContext, envMonitor_ , handler );
-	  StartServerCommand       serverCommand   = new StartServerCommand( false, false );
-	    
-	  serverCommand.setServerInstanceId( server_.getId() );
-    serverCommand.setEnvironment( environment );
-	    
-	  try
+	  protected IStatus run(IProgressMonitor monitor) 
 	  {
-	    setStatus( EnvironmentUtils.convertIStatusToStatus(serverCommand.execute( null, null ) ) );		
-	  }
-	  catch( Throwable exc )
-	  {
-		exc.printStackTrace();
-	    setStatus( new SimpleStatus( "", exc.getMessage(), Status.ERROR, exc ) );
-	  }
+	    NullStatusHandler        handler         = new NullStatusHandler();
+	    TransientResourceContext resourceContext = new TransientResourceContext();
+	    EclipseEnvironment       environment     = new EclipseEnvironment( null,resourceContext, handler );
+	    StartServerCommand       serverCommand   = new StartServerCommand( false, false );
+	    
+	    serverCommand.setServerInstanceId( server_.getId() );
+      serverCommand.setEnvironment( environment );
+	    
+	    try
+	    {
+	      setStatus( serverCommand.execute( envMonitor_, null ) );		
+	    }
+	    catch( Throwable exc )
+	    {
+		    exc.printStackTrace();
+	      setStatus( StatusUtils.errorStatus( exc ) );
+	    }
 	  	
-	  return org.eclipse.core.runtime.Status.OK_STATUS;
-	}
-	
-	// Calls to this method need to first synchronize on the
-	// StartServerFamily object.
-	public Status getStatus()
-	{
-	  return status_;
-	}
-	
-	private void setStatus( Status status )
-	{
-	  synchronized( StartServerFamily ) 
-	  {
-        status_ = status;
+	    return Status.OK_STATUS;
 	  }
-	}
+	
+	  // Calls to this method need to first synchronize on the
+	  // StartServerFamily object.
+	  public IStatus getStatus()
+	  {
+	    return status_;
+	  }
+	
+	  private void setStatus( IStatus status )
+	  {
+	    synchronized( StartServerFamily ) 
+	    {
+        status_ = status;
+	    }
+	  }
   }
-  
-  // This is just a simple progress monitor.
-  private class SimpleProgressMonitor extends EclipseProgressMonitor
-  {	
-	public SimpleProgressMonitor()
-	{
-	  setMonitor( new ProgressMonitorWrapper( progressMonitor_ ) );		
-	}
-		
-	public void report( final String progress) 
-	{
-	  monitor_.beginTask( progress, IProgressMonitor.UNKNOWN );
-	}	  	
-  }
-  
+    
   private class ProgressMonitorWrapper implements IProgressMonitor
   {
-    private IProgressMonitor monitor_;
-  	
+    private IProgressMonitor monitor_ = new NullProgressMonitor();
+  	  	
     public ProgressMonitorWrapper( IProgressMonitor monitor )
     {
-  	  monitor_ = monitor;	
+      monitor_ = monitor;  
     }
-  	
+    
     public void setMonitor( IProgressMonitor monitor )
     {
       monitor_ = monitor;	

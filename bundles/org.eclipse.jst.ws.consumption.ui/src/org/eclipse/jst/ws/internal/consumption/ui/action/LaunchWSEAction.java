@@ -15,7 +15,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
 import org.eclipse.wst.ws.internal.explorer.LaunchOption;
@@ -29,9 +28,8 @@ public class LaunchWSEAction implements IWorkbenchWindowActionDelegate
   public void run(IAction action)
   {
     EclipseStatusHandler             handler     = new EclipseStatusHandler();
-    EclipseProgressMonitor           monitor     = new EclipseProgressMonitor();
     TransientResourceContext         context     = new TransientResourceContext();
-    EclipseEnvironment               environment = new EclipseEnvironment( null, context, monitor, handler ); 
+    EclipseEnvironment               environment = new EclipseEnvironment( null, context, handler ); 
     WSExplorerLauncherCommand        cmd         = new WSExplorerLauncherCommand();
     
     String stateLocation = ExplorerPlugin.getInstance().getPluginStateLocation();

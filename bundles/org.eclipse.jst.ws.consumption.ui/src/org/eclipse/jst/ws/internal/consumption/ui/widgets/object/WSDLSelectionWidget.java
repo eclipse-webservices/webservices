@@ -17,8 +17,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
@@ -49,8 +51,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -215,7 +216,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     statusListener_.handleEvent(null);
   }
   
-  public Status getStatus()
+  public IStatus getStatus()
   {
     // Timer validation
     /*
@@ -228,17 +229,17 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     // For example, is it pointing to an existing resource in the workspace?
     String wsPath  = webServiceURI.getText();
     if( wsPath == null || wsPath.length() <= 0 )
-      return new SimpleStatus("", msgUtils_.getMessage("PAGE_MSG_INVALID_WEB_SERVICE_URI"), Status.ERROR);
+      return StatusUtils.errorStatus( msgUtils_.getMessage("PAGE_MSG_INVALID_WEB_SERVICE_URI") );
     else if( wsPath.indexOf(':') < 0 )
     {
       IResource res = ResourceUtils.findResource(wsPath);
       if( res == null ) {
     	  msgViewer_.clearInput();
-        return new SimpleStatus("", msgUtils_.getMessage("PAGE_MSG_NO_SUCH_FILE", new Object[] {wsPath}), Status.ERROR);
+        return StatusUtils.errorStatus( msgUtils_.getMessage("PAGE_MSG_NO_SUCH_FILE", new Object[] {wsPath}) );
       }
       else if( res.getType() != IResource.FILE ) {
     	  msgViewer_.clearInput();
-        return new SimpleStatus("", msgUtils_.getMessage("PAGE_MSG_INVALID_WEB_SERVICE_URI"), Status.ERROR);
+        return StatusUtils.errorStatus( msgUtils_.getMessage("PAGE_MSG_INVALID_WEB_SERVICE_URI") );
       }
     }
 
@@ -247,7 +248,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     // For example, is selection a WSDL URI?
     if (!Timer.isRunning() && tree.isEnabled())
     {
-      Status status = tree.getStatus();
+      IStatus status = tree.getStatus();
       if (status != null)
       {
         int severity = status.getSeverity();
@@ -264,7 +265,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
           String wsdlURI = iFile2URI((IFile)ResourceUtils.findResource(wsPath));
           if (webServicesParser.getWSDLDefinition(wsdlURI) == null) {
         	  msgViewer_.clearInput();
-            return new SimpleStatus("", msgUtils_.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL"), Status.ERROR);
+            return StatusUtils.errorStatus(msgUtils_.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL") );
           }
         }
     }
@@ -292,7 +293,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     
 
     // OK status
-    return new SimpleStatus( "" );
+    return Status.OK_STATUS;
   }
   
   private void validateWSDL (String wsdlURI, boolean isRemote) {
@@ -402,9 +403,9 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     return webServicesParser;
   }
   
-  public Status validateSelection(IStructuredSelection objectSelection)
+  public IStatus validateSelection(IStructuredSelection objectSelection)
   {
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
   public IProject getProject()

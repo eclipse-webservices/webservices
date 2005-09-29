@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.impl.JavaClassImpl;
@@ -26,8 +27,7 @@ import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 public class ValidateObjectSelectionCommand extends EnvironmentalOperation
@@ -71,7 +71,7 @@ public class ValidateObjectSelectionCommand extends EnvironmentalOperation
       	  javaBeanName = getJavaBeanFromObjectSelection(objectSelection);
 		} catch (CoreException ce)
 		{
-		  Status errorStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"),Status.ERROR);
+		  IStatus errorStatus = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"));
 		  environment.getStatusHandler().reportError(errorStatus);
 		  return errorStatus;			
 		}
@@ -80,7 +80,7 @@ public class ValidateObjectSelectionCommand extends EnvironmentalOperation
     
     if (javaBeanName==null || javaBeanName.length()==0)
     {
-      Status errorStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"),Status.ERROR);
+      IStatus errorStatus = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"));
       environment.getStatusHandler().reportError(errorStatus);
       return errorStatus;
     }
@@ -89,7 +89,7 @@ public class ValidateObjectSelectionCommand extends EnvironmentalOperation
     IProject serviceProject = ProjectUtilities.getProject(serviceProjectName);
     if (serviceProject==null)
     {
-      Status errorStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_NO_PROJECT"),Status.ERROR);
+      IStatus errorStatus = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_NO_PROJECT"));
       environment.getStatusHandler().reportError(errorStatus);
       return errorStatus;      
     }
@@ -106,18 +106,18 @@ public class ValidateObjectSelectionCommand extends EnvironmentalOperation
 	  JavaClass javaClass =(JavaClass) JavaClassImpl.reflect(javaBeanName, jMOF.getResourceSet());
 	  if (!javaClass.isExistingType()) 
 	  {		
-		Status errorStatus = new SimpleStatus("JavaToWSDLMethodCommand", msgUtils_.getMessage("MSG_ERROR_CANNOT_LOAD_JAVA_BEAN", new String[] { javaBeanName, serviceProjectName }),Status.ERROR);
+		IStatus errorStatus = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_CANNOT_LOAD_JAVA_BEAN", new String[] { javaBeanName, serviceProjectName }));
 		environment.getStatusHandler().reportError(errorStatus);
 		return errorStatus;
 	  }
     } catch (CoreException ce)
     {
-	  Status errorStatus = new SimpleStatus("JavaToWSDLMethodCommand", msgUtils_.getMessage("MSG_ERROR_CANNOT_LOAD_JAVA_BEAN", new String[] { javaBeanName, serviceProjectName }),Status.ERROR);
+	  IStatus errorStatus = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_CANNOT_LOAD_JAVA_BEAN", new String[] { javaBeanName, serviceProjectName }));
 	  environment.getStatusHandler().reportError(errorStatus);
       return errorStatus;      
     }
     
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
   /**

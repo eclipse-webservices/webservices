@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
+import javax.servlet.http.HttpServletRequest;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.CurrentNodeSelectionTransformer;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.ITransformer;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-
-import javax.servlet.http.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Tool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ViewTool;
 
 public abstract class SelectNodeToolAction extends SelectNodeAction
 {
@@ -45,7 +48,7 @@ public abstract class SelectNodeToolAction extends SelectNodeAction
     // Perform data validation.
     try
     {
-      int toolId = Integer.parseInt(toolIdString);
+      Integer.parseInt(toolIdString);
     }
     catch (NumberFormatException e)
     {
@@ -61,7 +64,7 @@ public abstract class SelectNodeToolAction extends SelectNodeAction
       propertyTable_.put(ActionInputs.VIEWID,viewIdString);
       if (viewId != ActionInputs.VIEWID_DEFAULT)
       {
-        int viewToolId = Integer.parseInt(viewToolIdString);
+        Integer.parseInt(viewToolIdString);
         propertyTable_.put(ActionInputs.VIEWTOOLID,viewToolIdString);
       }
     }

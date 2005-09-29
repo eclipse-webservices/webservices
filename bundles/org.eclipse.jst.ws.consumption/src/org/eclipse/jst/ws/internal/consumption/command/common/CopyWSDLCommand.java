@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+
 import javax.wsdl.Definition;
 import javax.wsdl.Import;
 import javax.wsdl.Types;
@@ -34,15 +35,16 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.URIException;
 import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
 import org.eclipse.wst.ws.internal.parser.discovery.NetUtils;
@@ -81,12 +83,12 @@ public class CopyWSDLCommand extends EnvironmentalOperation
       if (def == null)
         def = webServicesParser.getWSDLDefinition(wsdlURI);
       copyWSDL(env, wsdlURI, getBaseURI(destinationURI), getLocalname(destinationURI), def);
-      return new SimpleStatus("");
+      return Status.OK_STATUS;
     }
     catch (Throwable t)
     {
       t.printStackTrace();
-      Status status = new SimpleStatus(WebServiceConsumptionPlugin.ID, WebServiceConsumptionPlugin.getMessage("MSG_ERROR_COPY_WSDL", new String[]{wsdlURI, destinationURI}), Status.ERROR, t);
+      IStatus status = StatusUtils.errorStatus( WebServiceConsumptionPlugin.getMessage("MSG_ERROR_COPY_WSDL", new String[]{wsdlURI, destinationURI}), t);
       env.getStatusHandler().reportError(status);
       return status;
     }

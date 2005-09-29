@@ -12,7 +12,8 @@
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
 import java.util.Enumeration;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.StringUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.Generator;
 import org.eclipse.jst.ws.internal.consumption.codegen.bean.ParameterVisitor;
@@ -20,8 +21,6 @@ import org.eclipse.jst.ws.internal.consumption.codegen.bean.ReturnParameterVisit
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.DataType;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.MethodElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 
 
@@ -39,13 +38,6 @@ public class ResultFileHelp1Generator extends ResultFileGenerator
   public static final int FINAL_STATE = 2;
   public static final String MTEMP = "mtemp";
   public static String BEAN = "Proxy";
-
-  /**
-  * keeps the state of the visitor 
-  * */
-
-  private int fstate;
-
   
   /**
   * Constructor.
@@ -53,29 +45,27 @@ public class ResultFileHelp1Generator extends ResultFileGenerator
   */
   public ResultFileHelp1Generator (StringBuffer buffer)
   {
-      super(buffer);
-      fstate = INITIAL_STATE;
-    
+      super(buffer);    
   }
   
   /**
   * Visit Method generates code for this Visitor
   * @param method method code will be generated for 
   */
-  public Status visit (Object object)
+  public IStatus visit (Object object)
   {
      Element methodElement = (Element)object;
   
 
      MethodElement method = (MethodElement)methodElement;
-     if (method.getMethodOmmission()) return new SimpleStatus("");
+     if (method.getMethodOmmission()) return Status.OK_STATUS;
 
      fbuffer.append("case " + method.getNumberID()+ ":" + StringUtils.NEWLINE);
      visitHelper(method);
      
      fbuffer.append("break;" + StringUtils.NEWLINE); 
   
-     return new SimpleStatus("");
+     return Status.OK_STATUS;
   }   
   /**
   * Helps out the visitor

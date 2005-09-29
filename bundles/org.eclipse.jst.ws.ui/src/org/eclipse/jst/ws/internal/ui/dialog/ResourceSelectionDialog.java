@@ -71,7 +71,6 @@ public class ResourceSelectionDialog extends Dialog implements Listener
   //
   // Essential goodies.
   //
-  private Shell shell_;
   private IResource root_;
   private IResource initialSelection_;
   private Filter[] filters_;
@@ -141,7 +140,6 @@ public class ResourceSelectionDialog extends Dialog implements Listener
   public ResourceSelectionDialog ( Shell parent, IResource root, IResource initialSelection, Filter[] filters )
   {
     super(parent);
-    shell_ = parent;
     root_ = root == null ? ResourceUtils.getWorkspaceRoot() : root;
     initialSelection_ = initialSelection;
     filters_ = (filters == null || filters.length == 0) ? new Filter[] {new AnyFilter()} : filters;

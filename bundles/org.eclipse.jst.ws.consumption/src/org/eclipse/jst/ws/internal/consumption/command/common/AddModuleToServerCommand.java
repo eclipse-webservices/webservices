@@ -5,14 +5,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
@@ -37,12 +37,12 @@ public class AddModuleToServerCommand extends EnvironmentalOperation
 	{
       Environment env = getEnvironment();
       
-	    Status status = new SimpleStatus("");	    
+	    IStatus status = Status.OK_STATUS;	    
 	    
 	    IServer server = ServerCore.findServer(serverInstanceId);
 	    if (server == null)
 	    {
-	      status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_INSTANCE_NOT_FOUND"), Status.ERROR);
+	      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_INSTANCE_NOT_FOUND") );
 	      env.getStatusHandler().reportError(status);
 	      return status;
 	    }
@@ -66,7 +66,7 @@ public class AddModuleToServerCommand extends EnvironmentalOperation
 	    }
 	    } catch (CoreException e)
 	    {
-	      status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_ADD_MODULE", new String[]{module}), Status.ERROR);
+	      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_ADD_MODULE", new String[]{module}) );
 	      env.getStatusHandler().reportError(status);
 	      return status;      
 	    } finally
@@ -79,7 +79,7 @@ public class AddModuleToServerCommand extends EnvironmentalOperation
 	        }
 	      } catch (CoreException ce)
 	      {
-	        status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_ADD_MODULE", new String[] { module }), Status.ERROR);
+	        status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_ADD_MODULE", new String[] { module }) );
 	        env.getStatusHandler().reportError(status);
 	        return status;
 	      }      

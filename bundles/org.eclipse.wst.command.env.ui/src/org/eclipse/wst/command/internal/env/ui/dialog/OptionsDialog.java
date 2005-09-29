@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.dialog;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -17,7 +18,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**
@@ -36,7 +36,7 @@ public class OptionsDialog extends MessageDialog
     Shell parentShell,
     String dialogTitle,
     String message,
-    Status status,
+    IStatus status,
     int displayMask,
     Choice[] choices)
   {
@@ -54,7 +54,7 @@ public class OptionsDialog extends MessageDialog
     {
       createButton(parent, choices[i].getShortcut(), choices[i].getLabel(), true);
     }
-    if (status.hasChildren())
+    if (status.isMultiStatus() )
     {
       detailsButton =
         createButton(
@@ -95,9 +95,9 @@ public class OptionsDialog extends MessageDialog
     // create image
     switch (status.getSeverity())
     {
-      case Status.INFO :
+      case IStatus.INFO :
         return PlatformUI.getWorkbench().getDisplay().getSystemImage(SWT.ICON_INFORMATION);
-      case Status.WARNING :
+      case IStatus.WARNING :
         return PlatformUI.getWorkbench().getDisplay().getSystemImage(SWT.ICON_WARNING);
       default :
         return PlatformUI.getWorkbench().getDisplay().getSystemImage(SWT.ICON_ERROR);

@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 
 import java.util.ArrayList;
-
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
@@ -268,7 +267,6 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	    ArrayList serverLabelsList = new ArrayList();
 		  for (int i=0;i<factoryIds.length;i++)
 		  {
-			  String thisFactoryId = factoryIds[i];
 			  //String thisServerLabel = WebServiceServerRuntimeTypeRegistry.getInstance().getServerLabel(factoryIds[i]);
         String thisServerLabel = WebServiceRuntimeExtensionUtils.getServerLabelById(factoryIds[i]);
 			  if (thisServerLabel!=null && thisServerLabel.length()>0)

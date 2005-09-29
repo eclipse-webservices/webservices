@@ -24,7 +24,6 @@ public class ClientType {
 	private WebServiceClientImpl webServiceClientImpl;
 	private String[] moduleTypesInclude;
   private String[] moduleTypesExclude;
-  private String webServiceClientTypeId;
 	
   
   

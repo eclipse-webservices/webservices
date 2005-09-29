@@ -12,7 +12,8 @@
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors;
 
 import java.util.List;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.Method;
@@ -21,8 +22,7 @@ import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 /**
@@ -51,9 +51,9 @@ public class JavaMofParameterVisitor implements Visitor
   * @param JavaClass javaclass that holds the parameters
   * @param VisitorAction Action to be performed on each method
   **/
-  public Status run ( Object imethod, VisitorAction vAction)
+  public IStatus run ( Object imethod, VisitorAction vAction)
   {
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
   	Choice OKChoice = new Choice('O', msgUtils_.getMessage("LABEL_OK"), msgUtils_.getMessage("DESCRIPTION_OK"));
   	Choice CancelChoice = new Choice('C', msgUtils_.getMessage("LABEL_CANCEL"), msgUtils_.getMessage("DESCRIPTION_CANCEL"));  	
     Method method = (Method)imethod;
@@ -73,7 +73,7 @@ public class JavaMofParameterVisitor implements Visitor
       if (result.getLabel().equals(CancelChoice.getLabel()))
       {
       	 //return an error status since the user canceled
-      	  return new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED"), Status.ERROR);
+      	  return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
       }
       	
     }
@@ -97,7 +97,7 @@ public class JavaMofParameterVisitor implements Visitor
         if (result.getLabel().equals(CancelChoice.getLabel()))
         {
         	 //return an error status since the user canceled
-        	  return new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED"), Status.ERROR);
+        	  return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
         }
         	
       }

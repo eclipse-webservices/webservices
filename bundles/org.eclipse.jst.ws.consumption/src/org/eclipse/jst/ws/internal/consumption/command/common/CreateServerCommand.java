@@ -4,13 +4,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
@@ -39,10 +38,10 @@ public class CreateServerCommand extends EnvironmentalOperation
   {
     Environment env = getEnvironment();
     
-		Status status = new SimpleStatus("");
+		IStatus status = Status.OK_STATUS;
 		
 		if (serverFactoryId==null){
-			status = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_CREATE_SERVER"), Status.ERROR, null);
+			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_CREATE_SERVER") );
 			return status;			
 		}
 		
@@ -68,13 +67,13 @@ public class CreateServerCommand extends EnvironmentalOperation
 				
 				if (nonStubRuntime==null)
 				{					
-					status = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_STUB_ONLY",new String[]{serverFactoryId}), Status.ERROR);
+					status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_STUB_ONLY",new String[]{serverFactoryId}) );
 					return status;					
 				}
 				
 				if (env!=null)
 				{
-					serverWC = serverType.createServer(null, null, nonStubRuntime, EnvironmentUtils.getIProgressMonitor(env));
+					serverWC = serverType.createServer(null, null, nonStubRuntime, monitor );
 				}
 				else
 				{					
@@ -83,13 +82,13 @@ public class CreateServerCommand extends EnvironmentalOperation
 				
 				if (serverWC != null) {
 					if (env!=null)
-						server = serverWC.saveAll(true, EnvironmentUtils.getIProgressMonitor(env));
+						server = serverWC.saveAll(true, monitor );
 					else
 						server = serverWC.saveAll(true, null);
 				}
 			}
 		} catch (CoreException ce) {
-			status = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_CREATE_SERVER"), Status.ERROR, ce);
+			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_CREATE_SERVER"), ce);
 			return status;
 		}
 		
@@ -97,7 +96,7 @@ public class CreateServerCommand extends EnvironmentalOperation
 		if (server!=null)
 			serverInstanceId = server.getId();
 		else {
-			status = new SimpleStatus("", msgUtils.getMessage("MSG_ERROR_CREATE_SERVER"), Status.ERROR, null);			
+			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_CREATE_SERVER") );			
 		}
 		
 		return status;

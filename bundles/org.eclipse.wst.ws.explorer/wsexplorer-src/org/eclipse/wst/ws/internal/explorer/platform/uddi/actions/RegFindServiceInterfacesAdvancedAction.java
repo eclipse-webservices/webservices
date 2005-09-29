@@ -61,7 +61,7 @@ public class RegFindServiceInterfacesAdvancedAction extends FindAction
     boolean inputsValid = true;
     UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
     MessageQueue messageQueue = uddiPerspective.getMessageQueue();
-    RegistryElement regElement = (RegistryElement)regNode_.getTreeElement();
+    regNode_.getTreeElement();
 
     if (useServiceChecked != null)
       propertyTable_.put(UDDIActionInputs.QUERY_INPUT_ADVANCED_SERVICE_INTERFACE_USE_SERVICE,useServiceChecked);
@@ -349,7 +349,6 @@ public class RegFindServiceInterfacesAdvancedAction extends FindAction
     TModelInfos tModelInfos = registeredInfo.getTModelInfos();
 
     //Get all the TModelKeys from within the TModelInfos
-    boolean endSearch = false;
     for (int i = 0; i < tModelInfos.size(); i++)
     {
       TModelInfo tModelInfo = tModelInfos.get(i);

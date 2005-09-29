@@ -56,7 +56,7 @@ public class TransferSubQueryResultsAction extends UDDIPropertiesFormAction
   {
     // Transfer the results in this Query node into the property expected by the originating node.
     UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
-    MessageQueue messageQueue = uddiPerspective.getMessageQueue();
+    uddiPerspective.getMessageQueue();
 
     String[] selectedNodeIds = (String[])propertyTable_.get(UDDIActionInputs.SELECTED_NODEIDS);
     Node currentNode = getSelectedNavigatorNode();
@@ -73,7 +73,7 @@ public class TransferSubQueryResultsAction extends UDDIPropertiesFormAction
 
     String targetProperty = subQueryKey.substring(lastSeparatorPos+1,subQueryKey.length());
     FormTool targetFormTool = target.getTargetFormTool();
-    FormToolPropertiesInterface subQueryFormToolPI = ((MultipleFormToolPropertiesInterface)targetFormTool).getFormToolProperties(subQueryKey);
+    ((MultipleFormToolPropertiesInterface)targetFormTool).getFormToolProperties(subQueryKey);
     FormToolPropertiesInterface targetQueryFormToolPI = ((MultipleFormToolPropertiesInterface)targetFormTool).getFormToolProperties(targetQueryKey);
     Vector targetList = (Vector)targetQueryFormToolPI.getProperty(targetProperty);
     if (targetList == null)

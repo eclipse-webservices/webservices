@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -26,16 +25,16 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 
 
@@ -191,7 +190,7 @@ public final class FileResourceUtils
                                 IPath sourcePath,
                                 IPath pathname,
                                 IPath targetPath,
-                                ProgressMonitor progressMonitor,
+                                IProgressMonitor progressMonitor,
                                 StatusHandler statusMonitor )
      throws CoreException
    {
@@ -221,7 +220,7 @@ public final class FileResourceUtils
    */
   public static boolean deleteFile( ResourceContext resourceContext, 
                                     IFile file,
-                                    ProgressMonitor progressMonitor, 
+                                    IProgressMonitor progressMonitor, 
                                     StatusHandler statusMonitor)
     throws CoreException
   {
@@ -229,11 +228,11 @@ public final class FileResourceUtils
     {
       if (!resourceContext.isOverwriteFilesEnabled())
       {
-        SimpleStatus status 
-          = new SimpleStatus("", msg_.getMessage( "MSG_ERROR_FILE_OVERWRITE_DISABLED",
-                                                  new Object[]{ file.getParent().getFullPath().toString(),
-                                                                file.getName()}),
-                             Status.WARNING );
+        IStatus status 
+          = StatusUtils.warningStatus( msg_.getMessage( "MSG_ERROR_FILE_OVERWRITE_DISABLED",
+                                                        new Object[]{ file.getParent().getFullPath().toString(),
+                                                                      file.getName()}) );
+                            
         
         Choice choice = statusMonitor.report( status, getThreeStateFileOptions() );
         
@@ -247,11 +246,10 @@ public final class FileResourceUtils
       {
         if (!resourceContext.isCheckoutFilesEnabled())
         {
-          SimpleStatus status 
-          = new SimpleStatus("", msg_.getMessage( "MSG_ERROR_FILE_CHECKOUT_DISABLED",
-                                                  new Object[]{ file.getParent().getFullPath().toString(),
-                                                                file.getName()}),
-                             Status.WARNING );
+          IStatus status 
+            = StatusUtils.warningStatus( msg_.getMessage( "MSG_ERROR_FILE_CHECKOUT_DISABLED",
+                                                          new Object[]{ file.getParent().getFullPath().toString(),
+                                                                        file.getName()}) );
           
           Choice choice = statusMonitor.report( status, getThreeStateFileOptions() );
           
@@ -266,8 +264,7 @@ public final class FileResourceUtils
         
         if( status.getSeverity() == IStatus.ERROR )
         {
-          SimpleStatus validateStatus = new SimpleStatus( "", status.getMessage(), SimpleStatus.ERROR );
-          statusMonitor.reportError( validateStatus );
+          statusMonitor.reportError( status );
           return false;
         }
       }
@@ -288,7 +285,7 @@ public final class FileResourceUtils
    */
    public static boolean deleteFolder( ResourceContext resourceContext,
                                        IFolder folder,
-                                       ProgressMonitor progressMonitor,
+                                       IProgressMonitor progressMonitor,
                                        StatusHandler statusMonitor )
      throws CoreException
    {
@@ -342,7 +339,7 @@ public final class FileResourceUtils
     ResourceContext resourceContext,
     IPath           absolutePath,
     InputStream     inputStream,
-    ProgressMonitor progressMonitor,
+    IProgressMonitor progressMonitor,
     StatusHandler   statusHandler )
 
     throws CoreException 
@@ -414,7 +411,7 @@ public final class FileResourceUtils
     IProject        project,
     IPath           relativePath,
     InputStream     inputStream,
-    ProgressMonitor progressMonitor,
+    IProgressMonitor progressMonitor,
     StatusHandler   statusMonitor )
  
     throws CoreException 
@@ -457,10 +454,10 @@ public final class FileResourceUtils
   */
 
   public static OutputStream newFileOutputStream (
-       ResourceContext context,
-       IPath           file,
-       ProgressMonitor progressMonitor,
-       StatusHandler   statusHandler )
+       ResourceContext  context,
+       IPath            file,
+       IProgressMonitor progressMonitor,
+       StatusHandler    statusHandler )
  
   {
     return new FileResourceOutputStream(context, file, progressMonitor, statusHandler);
@@ -484,10 +481,10 @@ public final class FileResourceUtils
    * @return returns the IContainer of the created folder.
    */
   public static IContainer makeFolderPath (
-    ResourceContext resourceContext,
-    IPath absolutePath,
-    ProgressMonitor progressMonitor,
-    StatusHandler statusHandler )
+    ResourceContext  resourceContext,
+    IPath            absolutePath,
+    IProgressMonitor progressMonitor,
+    StatusHandler    statusHandler )
   
     throws CoreException
   {
@@ -508,11 +505,11 @@ public final class FileResourceUtils
   // The container must already exist.
   //
  private static IFolder makeFolder (
-    ResourceContext resourceContext,
-    IContainer      parent,
-    String          folderName,
-    ProgressMonitor progressMonitor,
-    StatusHandler   statusHandler )
+    ResourceContext  resourceContext,
+    IContainer       parent,
+    String           folderName,
+    IProgressMonitor progressMonitor,
+    StatusHandler    statusHandler )
   
   throws CoreException
   {
@@ -524,10 +521,9 @@ public final class FileResourceUtils
       if (!resourceContext.isCreateFoldersEnabled())  
       {
         result = statusHandler.report(
-                new SimpleStatus( "ResourceUtils",
+                StatusUtils.warningStatus(
         	                      msg_.getMessage("MSG_ERROR_FOLDER_CREATION_DISABLED",
-        	                      new Object[]{ parent.getFullPath().toString(), folderName} ),
-                                  Status.WARNING, null ), 
+        	                      new Object[]{ parent.getFullPath().toString(), folderName} ) ), 
                 getThreeStateFileOptions() );
         
         if( result == null || result.getShortcut() == 'C' )
@@ -565,12 +561,12 @@ public final class FileResourceUtils
   // The container must already exist.
   //
  private static IFile makeFile (
-    ResourceContext resourceContext,
-    IContainer      parent,
-    String          fileName,
-    InputStream     inputStream,
-    ProgressMonitor progressMonitor,
-    StatusHandler   statusHandler )
+    ResourceContext  resourceContext,
+    IContainer       parent,
+    String           fileName,
+    InputStream      inputStream,
+    IProgressMonitor progressMonitor,
+    StatusHandler    statusHandler )
  
     throws CoreException
   {
@@ -584,11 +580,8 @@ public final class FileResourceUtils
         if( !resourceContext.isOverwriteFilesEnabled() )   
         {
           result = statusHandler.report( 
-                new SimpleStatus( "ResourceUtils",
-          	                      msg_.getMessage( "MSG_ERROR_FILE_OVERWRITE_DISABLED",
-                                                   new Object[] {parent.getFullPath().toString(),fileName}),
-                                  Status.WARNING ),
-					  		    
+                StatusUtils.warningStatus( msg_.getMessage( "MSG_ERROR_FILE_OVERWRITE_DISABLED",
+                                           new Object[] {parent.getFullPath().toString(),fileName}) ),					  		    
                 getThreeStateFileOptions() );
           
           if( result == null || result.getShortcut() == 'C' )
@@ -607,10 +600,8 @@ public final class FileResourceUtils
           if( !resourceContext.isCheckoutFilesEnabled() ) 
           {            
             result = statusHandler.report( 
-                         new SimpleStatus( "ResourceUtils",
-            		                       msg_.getMessage( "MSG_ERROR_FILE_CHECKOUT_DISABLED",
-                                                            new Object[]{ parent.getFullPath().toString(),fileName} ),
-                                           Status.WARNING ), 
+                         StatusUtils.errorStatus( msg_.getMessage( "MSG_ERROR_FILE_CHECKOUT_DISABLED",
+                                                  new Object[]{ parent.getFullPath().toString(),fileName} ) ), 
                          getThreeStateFileOptions() );
             
 		    if( result == null || result.getShortcut() == 'C' )
@@ -626,15 +617,11 @@ public final class FileResourceUtils
           IFile[] files = new IFile[1];
           files[0] = (IFile)child;
           
-          IStatus      status = getWorkspace().validateEdit(files,null);
-          SimpleStatus ss     = new SimpleStatus( status.getPlugin(), 
-                                                  status.getMessage(),
-                                                  status.getSeverity(), 
-												  status.getException() );
+          IStatus status = getWorkspace().validateEdit(files,null);
           
           try
           {
-            statusHandler.report( ss );
+            statusHandler.report( status );
           }
           catch( StatusException exc )
           {

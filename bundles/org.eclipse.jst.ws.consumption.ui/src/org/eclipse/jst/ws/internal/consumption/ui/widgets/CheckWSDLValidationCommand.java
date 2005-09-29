@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ValidateWSDLJob;
@@ -21,10 +22,8 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
 import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 
 
 public class CheckWSDLValidationCommand extends EnvironmentalOperation
@@ -53,19 +52,16 @@ public class CheckWSDLValidationCommand extends EnvironmentalOperation
 				  if (ignoreWSDLValidation(env)) {
 					  // if don't want to wait for validation, cancel existing validation job
 					  existingValidateWSDLJob.cancel();
-					  return new SimpleStatus("");
+					  return Status.OK_STATUS;
 				  } else {
 					  // wait for WSDL validation
-					  return new SimpleStatus(
-							  "CheckWSDLValidationCommand",
-							  msgUtils_.getMessage("WAIT_FOR_WSDL"),
-							  Status.ERROR);
+					  return StatusUtils.errorStatus( msgUtils_.getMessage("WAIT_FOR_WSDL") );
 				  }
 			  }
 		  }
 	  }
 	  
-      return new SimpleStatus("");
+      return Status.OK_STATUS;
 	  
   }
   
@@ -75,8 +71,7 @@ public class CheckWSDLValidationCommand extends EnvironmentalOperation
 		  
 		// give a warning message with the options to stop, ignore this one, or
 		// ignore all coming messages
-		SimpleStatus status_ = new SimpleStatus(WSUIPlugin.ID, msgUtils_
-				.getMessage("STILL_VALIDATING_WSDL"), Status.WARNING);
+		IStatus status_ = StatusUtils.warningStatus( msgUtils_.getMessage("STILL_VALIDATING_WSDL") );
 		// adding all messages from WSI Incompliances
 
 		Choice ignoreChoice = new Choice('I', msgUtils_

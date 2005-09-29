@@ -47,7 +47,6 @@ public class AddHandlerDialog extends Dialog implements Listener {
   private boolean isClient_;
   private String className;
   private String name;
-  private String[] portNames;
   private String selectedPortName;
   
   private Text classNameText;
@@ -261,7 +260,6 @@ public class AddHandlerDialog extends Dialog implements Listener {
    * @param portName The portName to set.
    */
   public void setPortNames(String[] portNames) {
-    this.portNames = portNames;
     portNameCombo.setItems(portNames);
     portNameCombo.select(0);
   }

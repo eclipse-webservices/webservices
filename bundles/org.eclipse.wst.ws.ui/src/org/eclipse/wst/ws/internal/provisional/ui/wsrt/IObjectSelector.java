@@ -11,11 +11,10 @@
 
 package org.eclipse.wst.ws.internal.provisional.ui.wsrt;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
-
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
 
 public interface IObjectSelector {
@@ -23,7 +22,7 @@ public interface IObjectSelector {
 	public void setInitialSelection(ISelection sel);
 	public ISelection getSelection();
 	public String getProject();
-	public Status validateSelection(ISelection sel);
+	public IStatus validateSelection(ISelection sel);
 	public WidgetDataEvents addControls(Composite parent, Listener statusListener);
 
 }

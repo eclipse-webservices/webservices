@@ -11,6 +11,8 @@
 
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.Field;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofTypeVisitor;
@@ -20,9 +22,8 @@ import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 
 
@@ -59,16 +60,16 @@ public class JavaMofFieldVisitorAction extends JavaMofBeanVisitorAction
   //bean info code
 
 
-  public Status visit (Object field_)
+  public IStatus visit (Object field_)
   {
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
     Field field = (Field)field_;
      
     try{
        //if the type of this attribute is unsupported dont make an Attribute
       if(!(getReturnParam() && TypeFactory.isRecognizedReturnType((JavaHelpers)field.getJavaClass())) 
       	&& (TypeFactory.isUnSupportedType((JavaHelpers)field.getJavaClass()))){
-      	  status = new SimpleStatus("", msgUtils_.getMessage("MSG_WARN_JTS_UNSUPPORTED_TYPE") + ((JavaHelpers)field.getJavaClass()).getJavaName(), Status.WARNING );
+      	  status = StatusUtils.warningStatus( msgUtils_.getMessage("MSG_WARN_JTS_UNSUPPORTED_TYPE") + ((JavaHelpers)field.getJavaClass()).getJavaName() );
 	      //getStatusMonitor().reportStatus( new Status(IStatus.WARNING,WebServiceConsumptionPlugin.ID,0,
 	      //WebServiceConsumptionPlugin.getMessage( "%MSG_WARN_JTS_UNSUPPORTED_TYPE") + ((JavaHelpers)field.getJavaClass()).getJavaName(),null));
 	      return status;
@@ -96,13 +97,13 @@ public class JavaMofFieldVisitorAction extends JavaMofBeanVisitorAction
     }catch(Exception e)
 	{
     	env_.getLog().log(Log.WARNING, 5055, this, "visit", e);
-    	status = new SimpleStatus("JavaMofFieldVisitorAction", //$NON-NLS-1$
-    			msgUtils_.getMessage("MSG_ERROR_JTS_JSP_GEN"), Status.WARNING, e);
+    	status = StatusUtils.warningStatus(	msgUtils_.getMessage("MSG_ERROR_JTS_JSP_GEN"), e);
     	try {
     		env_.getStatusHandler().report(status);
-    	} catch (StatusException e1) {
-    		status = new SimpleStatus("JavaMofFieldVisitorAction", //$NON-NLS-1$
-    				msgUtils_.getMessage("MSG_ERROR_JTS_JSP_GEN"), Status.ERROR);
+    	} 
+      catch (StatusException e1) 
+      {
+    		status = StatusUtils.errorStatus(	msgUtils_.getMessage("MSG_ERROR_JTS_JSP_GEN"), e1 );
     	}
     	return status;
 	}

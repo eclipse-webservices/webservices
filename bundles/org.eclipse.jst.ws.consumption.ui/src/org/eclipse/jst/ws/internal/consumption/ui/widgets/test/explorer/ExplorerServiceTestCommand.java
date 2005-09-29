@@ -18,14 +18,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
 import org.eclipse.jst.ws.internal.ext.test.WSDLTestFinishCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.explorer.LaunchOption;
 import org.eclipse.wst.ws.internal.explorer.LaunchOptions;
@@ -53,7 +51,7 @@ public class ExplorerServiceTestCommand extends EnvironmentalOperation implement
   {
     Environment env = getEnvironment();
     
-  	Status status = new SimpleStatus( "" );
+  	IStatus status = Status.OK_STATUS;
     
     StartProjectCommand spc = new StartProjectCommand( true );
     spc.setServiceServerTypeID(serviceServerTypeID);
@@ -63,7 +61,7 @@ public class ExplorerServiceTestCommand extends EnvironmentalOperation implement
     spc.setIsWebProjectStartupRequested(true);
     spc.setEnvironment( env );
     
-    status = EnvironmentUtils.convertIStatusToStatus(spc.execute( null, null ));
+    status = spc.execute( monitor, null );
     if (status.getSeverity() == Status.ERROR)
     	return status;
 
@@ -80,7 +78,7 @@ public class ExplorerServiceTestCommand extends EnvironmentalOperation implement
         launchOptionVector.add(new LaunchOption(LaunchOptions.WEB_SERVICE_ENDPOINT, it.next().toString()));
     launchCommand.setLaunchOptions((LaunchOption[])launchOptionVector.toArray(new LaunchOption[0]));
     launchCommand.setEnvironment( env );
-    status = EnvironmentUtils.convertIStatusToStatus(launchCommand.execute( null, null ));
+    status = launchCommand.execute( monitor, null );
     return status;
   }
 

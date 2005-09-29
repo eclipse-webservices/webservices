@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.TableViewerWidget;
 import org.eclipse.swt.SWT;
@@ -26,7 +27,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 public class AxisMappingsWidget extends SimpleWidgetDataContributor
@@ -87,7 +87,7 @@ public class AxisMappingsWidget extends SimpleWidgetDataContributor
     return this;
   }
   
-  public Status getStatus()
+  public IStatus getStatus()
   {
     return mappings_.getStatus();  
   }

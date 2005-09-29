@@ -8,13 +8,11 @@ Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
 Export-Package: org.eclipse.jst.ws.axis.consumption.ui,
  org.eclipse.jst.ws.internal.axis.consumption.ui.command,
- org.eclipse.jst.ws.internal.axis.consumption.ui.env,
  org.eclipse.jst.ws.internal.axis.consumption.ui.plugin,
  org.eclipse.jst.ws.internal.axis.consumption.ui.task,
  org.eclipse.jst.ws.internal.axis.consumption.ui.util,
  org.eclipse.jst.ws.internal.axis.consumption.ui.widgets,
  org.eclipse.jst.ws.internal.axis.consumption.ui.wizard.client,
- org.eclipse.jst.ws.internal.axis.consumption.ui.wizard.test,
  org.eclipse.jst.ws.internal.axis.consumption.ui.wsrt
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources,

@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -24,7 +25,6 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 
 
 public class OpenJavaEditorCommand extends EnvironmentalOperation
@@ -41,7 +41,7 @@ public class OpenJavaEditorCommand extends EnvironmentalOperation
     OpenJavaEditorJob job = new OpenJavaEditorJob(classNames, project);
     job.setPriority(Job.LONG);
     job.schedule();
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
 
   public void setClassNames(List classNames)

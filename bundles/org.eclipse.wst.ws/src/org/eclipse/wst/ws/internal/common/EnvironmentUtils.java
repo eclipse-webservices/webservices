@@ -10,31 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.common;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
 
 public final class EnvironmentUtils
-{
-  /**
-   * @param env
-   * @return IProgressMonitor
-   */
-  public static IProgressMonitor getIProgressMonitor(Environment env)
-  {
-  	 ProgressMonitor monitor = env.getProgressMonitor();
-     	 IProgressMonitor eclipseMonitor = null;
-     	 if (monitor instanceof EclipseProgressMonitor)
-     	 {
-     	 	eclipseMonitor = ((EclipseProgressMonitor)monitor).getMonitor();
-     	 }
-     	 return eclipseMonitor;
-  }
-     
+{     
   /**
    * 
    * @param env This should be an EclipseEnvironment.

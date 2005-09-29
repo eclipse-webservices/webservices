@@ -17,7 +17,6 @@ import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleCommandEngineManager;
 import org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
@@ -31,8 +30,7 @@ public class DynamicPopupJUnitWizard extends DynamicPopupWizard {
 	public void runHeadLess(IStructuredSelection selection,IRunnableContext context) {
 		CommandFragment            rootFragment    = getRootFragment( selection, null );
 		PersistentResourceContext  resourceContext = PersistentResourceContext.getInstance();
-		EclipseProgressMonitor     monitor         = new EclipseProgressMonitor();
-		EclipseEnvironment         environment     = new EclipseEnvironment( null, resourceContext, monitor, handler_ );
+		EclipseEnvironment         environment     = new EclipseEnvironment( null, resourceContext, handler_ );
 		    
 		DataMappingRegistryImpl    dataRegistry_   = new DataMappingRegistryImpl();	    
 		DataFlowManager            dataManager     = new DataFlowManager( dataRegistry_, environment );

@@ -31,7 +31,7 @@ public class ServiceDetailsTool extends DetailsTool
   public final void initDefaultProperties()
   {
     clearPropertyTable();
-    Controller controller = toolManager_.getNode().getNodeManager().getController();
+    toolManager_.getNode().getNodeManager().getController();
     ServiceElement serviceElement = (ServiceElement)(toolManager_.getNode().getTreeElement());
     BusinessService busService = serviceElement.getBusinessService();
 

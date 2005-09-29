@@ -4,11 +4,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
@@ -17,8 +18,6 @@ import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.jst.ws.tests.util.ScenarioConstants;
 import org.eclipse.test.performance.Performance;
 import org.eclipse.test.performance.PerformanceMeter;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 /**
  * Bottom up performance scenario with Axis and Tomcat v5.0
@@ -39,10 +38,10 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 	protected void installInputData() throws Exception
 	{
 		// Create a Web project (TestWeb) targetted to Tomcat 5.0
-		Status s = JUnitUtils.createWebModule(PROJECT_NAME, WEB_MODULE_NAME, SERVERTYPEID_TC50, String.valueOf(J2EEVersionConstants.J2EE_1_3_ID), env_);
+		IStatus s = JUnitUtils.createWebModule(PROJECT_NAME, WEB_MODULE_NAME, SERVERTYPEID_TC50, String.valueOf(J2EEVersionConstants.J2EE_1_3_ID), env_, null);
 		if (s.getSeverity() != Status.OK) {
 		  System.out.println("Error: "+s.getMessage());
-			throw new Exception(s.getThrowable());
+			throw new Exception(s.getException());
 		}
 		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
 		assertTrue(webProject.exists());
@@ -53,13 +52,13 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 		//IFolder destFolder = JUnitUtils.getSourceFolderForWebProject(WEB_PROJECT_NAME);
         IPath destPath = ResourceUtils.getJavaSourceLocation(webProject, WEB_MODULE_NAME);
         IFolder folder = (IFolder)ResourceUtils.findResource(destPath);
-		JUnitUtils.copyTestData("BUJava/src",folder,env_);
+		JUnitUtils.copyTestData("BUJava/src",folder,env_, null);
 		sourceFile_ = folder.getFile(new Path("foo/Echo.java"));
 		assertTrue(sourceFile_.exists());
 		
 		// Ensure that Echo.class is built in:
 		// <Web Project>/WebContent/WEB-INF/classes/foo/Echo.class
-		JUnitUtils.syncBuildProject(webProject,env_);
+		JUnitUtils.syncBuildProject(webProject,env_, null);
 		//assertTrue(JUnitUtils.getClassesFolderForWebProject(WEB_PROJECT_NAME).getFile(new Path("foo/Echo.class")).exists());
 		
 		
@@ -88,7 +87,7 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
    */  
 	public void testBUJavaAxisTC50() throws Exception
 	{
-	  	Status status = new SimpleStatus("");
+	  	IStatus status = Status.OK_STATUS;
 	    IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
 	    JUnitUtils.disableWSIDialog(webProject);
 
@@ -110,7 +109,7 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 		if (status.getSeverity() == Status.OK)
 		  verifyOutput();
 		else
-		  throw new Exception(status.getThrowable());
+		  throw new Exception(status.getException());
 		
 	}
 	
@@ -123,9 +122,6 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
         IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
 		IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject, WEB_MODULE_NAME);
     
-        IPath webInfPath = J2EEUtils.getWebInfPath(webProject, WEB_MODULE_NAME);
-		IFolder webInfFolder = (IFolder)ResourceUtils.findResource(webInfPath);
-
         IFolder wsdlFolder = webContentFolder.getFolder("wsdl");
 		assertTrue(wsdlFolder.exists());
 		assertTrue(wsdlFolder.members().length > 0);
@@ -145,7 +141,7 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 		//JUnitUtils.removeModuleFromServer(server_,webProject,env_);
 		
 		// Delete the Web project.
-		webProject.delete(true,true,EnvironmentUtils.getIProgressMonitor(env_));
+		webProject.delete(true,true, null);
         assertFalse(webProject.exists());
 		
 	}

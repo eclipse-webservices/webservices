@@ -43,7 +43,6 @@ public class DialogResourceBrowser extends Dialog
 {
   private final String INFOPOP_RESOURCE_TREE = WebServiceUIPlugin.ID + ".DRES0001";
 
-  private Shell shell_;
   private IResource root_;
   private IFilter[] filters_;
   private boolean multipleSelectionEnabled_;
@@ -70,7 +69,6 @@ public class DialogResourceBrowser extends Dialog
   public DialogResourceBrowser(Shell shell, IResource root, IFilter[] filters)
   {
     super(shell);
-    shell_ = shell;
 
     IResource moduleRoot = root;
     if (root instanceof IProject)

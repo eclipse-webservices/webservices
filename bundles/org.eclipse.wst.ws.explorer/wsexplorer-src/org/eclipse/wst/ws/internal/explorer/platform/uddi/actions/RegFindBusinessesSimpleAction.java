@@ -66,7 +66,7 @@ public class RegFindBusinessesSimpleAction extends FindAction
       nameVector.addElement(new Name(name));
 
       // The action can be run under the context of either a registry or a query node.
-      Node selectedNode = getSelectedNavigatorNode();
+      getSelectedNavigatorNode();
       RegistryElement regElement = (RegistryElement)regNode_.getTreeElement();
       UDDIProxy proxy = regElement.getProxy();
       

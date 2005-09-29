@@ -88,7 +88,7 @@ public class RegistryNode extends UDDINavigatorNode
 
   protected final void initTools()
   {
-    Controller controller = nodeManager_.getController();
+    nodeManager_.getController();
     UDDIPerspective uddiPerspective = nodeManager_.getController().getUDDIPerspective();
     regDetailsTool_ = new RegistryDetailsTool(toolManager_ ,uddiPerspective.getMessage("ALT_REGISTRY_DETAILS"));
     RegFindTool regFindTool = new RegFindTool(toolManager_,uddiPerspective.getMessage("ALT_FIND"));

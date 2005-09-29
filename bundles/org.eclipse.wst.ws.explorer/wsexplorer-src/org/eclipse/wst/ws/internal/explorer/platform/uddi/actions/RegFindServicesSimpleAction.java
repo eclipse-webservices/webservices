@@ -65,7 +65,7 @@ public class RegFindServicesSimpleAction extends FindAction
       nameVector.addElement(new Name(name));
 
       // The action can be run under the context of either a registry or a query node.
-      Node selectedNode = getSelectedNavigatorNode();
+      getSelectedNavigatorNode();
       RegistryElement regElement = (RegistryElement)regNode_.getTreeElement();
       UDDIProxy proxy = regElement.getProxy();
       ServiceList serviceList = proxy.find_service("",nameVector,null,null,null,UDDIActionInputs.QUERY_MAX_SEARCH_SET);

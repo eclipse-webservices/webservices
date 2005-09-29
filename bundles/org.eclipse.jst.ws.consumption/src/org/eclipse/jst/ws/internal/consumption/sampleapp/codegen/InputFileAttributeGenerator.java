@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.codegen.bean.TypeVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.AttributeElementType;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**
@@ -44,7 +44,7 @@ public class InputFileAttributeGenerator extends InputFileTypeGenerator
   * Takes in an object to be acted upon by this visitor action
   * @param Object The object to be acted upon
   */
-  public Status visit (Object object)
+  public IStatus visit (Object object)
   {
      
      AttributeElementType attributeElementType = (AttributeElementType)object;
@@ -68,6 +68,6 @@ public class InputFileAttributeGenerator extends InputFileTypeGenerator
      typeVisitor.run(attributeElementType,inputFileTypeGenerator);   
      fbuffer = inputFileTypeGenerator.getStringBuffer();
      
-     return new SimpleStatus("");
+     return Status.OK_STATUS;
   }
 }

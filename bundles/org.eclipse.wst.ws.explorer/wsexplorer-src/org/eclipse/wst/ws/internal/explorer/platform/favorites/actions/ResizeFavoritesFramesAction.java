@@ -47,7 +47,6 @@ public class ResizeFavoritesFramesAction extends ResizeFramesAction
     FavoritesPerspective favPerspective = controller_.getFavoritesPerspective();
     
     // Set the new frameset sizes.
-    boolean saveFrameSettings = false;
     if (frameName.equals(FavoritesFrameNames.NAVIGATOR_CONTAINER))
     {
       favPerspective.setActionsContainerFramesetRows(actionsContainerFramesetRows);

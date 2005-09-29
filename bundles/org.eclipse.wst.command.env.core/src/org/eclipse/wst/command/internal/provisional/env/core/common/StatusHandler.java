@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.provisional.env.core.common;
 
+import org.eclipse.core.runtime.IStatus;
+
 /**
  * Processes status events raised by the caller and returns an
  * indication of choices made by the recipient of the status and
@@ -22,7 +24,7 @@ public interface StatusHandler
    * Reports the given Status and set of possible responses.
    * Returns the choice made by the handler.
    */
-  public Choice report ( Status status, Choice[] choices );
+  public Choice report ( IStatus status, Choice[] choices );
   
   /**
    * Reports the given Status with implied options to either
@@ -30,17 +32,17 @@ public interface StatusHandler
    * Throws an exception if the handler decides the caller
    * should stop processing.
    */
-  public void report ( Status status ) throws StatusException;
+  public void report ( IStatus status ) throws StatusException;
   
   /**
    * Report the given Error Status.  No user feedback is provided.
    * @param status
    */
-  public void reportError( Status status );
+  public void reportError( IStatus status );
   
   /**
    * Report the given Info Status.  No user feedback is provided.
    * @param status
    */
-  public void reportInfo( Status status );
+  public void reportInfo( IStatus status );
 }

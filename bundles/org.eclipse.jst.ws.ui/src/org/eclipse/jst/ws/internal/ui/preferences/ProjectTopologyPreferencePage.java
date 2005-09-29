@@ -54,16 +54,8 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
   private Button moveUp_;
   private Button moveDown_;
   private Vector clientTypes_;
-  /* CONTEXT_ID PTPP0002 for the client type table viewer on the Project Topology Preference Page */
-  private final String INFOPOP_PTPP_CLIENT_TYPE = WebServiceUIPlugin.ID + ".PTPP0002";
-  /* CONTEXT_ID PTPP0003 for the move up button on the Project Topology Preference Page */
-  private final String INFOPOP_PTPP_MOVE_UP = WebServiceUIPlugin.ID + ".PTPP0003";
-  /* CONTEXT_ID PTPP0004 for the move down button on the Project Topology Preference Page */
-  private final String INFOPOP_PTPP_MOVE_DOWN = WebServiceUIPlugin.ID + ".PTPP0004";
 
   private Button twoEAR_;
-  /* CONTEXT_ID PTPP0005 for the enable 2 EARs checkbox on the Project Topology Preference Page */
-  private final String INFOPOP_PTPP_TWO_EAR_CHECKBOX = WebServiceUIPlugin.ID + ".PTPP0005";
 
  /**
    * Creates preference page controls on demand.

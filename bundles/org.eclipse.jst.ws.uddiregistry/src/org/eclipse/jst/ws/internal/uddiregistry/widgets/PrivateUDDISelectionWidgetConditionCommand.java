@@ -13,9 +13,9 @@ package org.eclipse.jst.ws.internal.uddiregistry.widgets;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 
 
 public class PrivateUDDISelectionWidgetConditionCommand extends EnvironmentalOperation implements Condition
@@ -30,13 +30,13 @@ public class PrivateUDDISelectionWidgetConditionCommand extends EnvironmentalOpe
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     condition = !condition;
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
   public IStatus undo( IProgressMonitor monitor, IAdaptable adaptable )
   {
     condition = !condition;
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
   public boolean evaluate()

@@ -12,10 +12,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -30,8 +27,6 @@ public class TypeSelectionFilter
 {
   // Copyright
   public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
-
-  private IStructuredSelection initSelection_;
 
   public String[] getWebServiceTypeByInitialSelection(IStructuredSelection initialSelection, ArrayList webServiceTypeList)
   {

@@ -13,11 +13,11 @@ package org.eclipse.jst.ws.internal.creation.ui.widgets;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 
 public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefaultingCommand
 {    
@@ -44,7 +44,7 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
       typeRuntimeServer_.setTypeId(typeIds[0]);
     }
     
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
   public void setInitialSelection(IStructuredSelection selection)

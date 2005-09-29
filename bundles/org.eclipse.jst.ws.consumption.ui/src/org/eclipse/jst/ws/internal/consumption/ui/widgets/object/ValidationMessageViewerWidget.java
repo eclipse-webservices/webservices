@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -33,23 +35,15 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 
 
 public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 {
   private int DEFAULT_TABLE_HEIGHT_HINT = 100;
-  private int DEFAULT_COLUMN_WIDTH = 20;
-
-//  private String[] columns_;
   private TableViewer tableViewer_;
   private Table table_;
-  
-  private Composite parent_;
-  private Listener  statusListener_;
-
   private String message = null;
   static final String columns_[] = {"severity", "line", "column", "message"};
   static final int columnsWidth_[] = {10, 10, 10, 60};
@@ -62,9 +56,6 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   { 
-    parent_         = parent;
-    statusListener_ = statusListener;
-    
     String       pluginId = "org.eclipse.jst.ws.consumption.ui";
     MessageUtils msgUtils = new MessageUtils( pluginId + ".plugin", this );
     
@@ -133,10 +124,10 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 	  return tableViewer_.getContentProvider();
   }
 
-  public Status getStatus()
+  public IStatus getStatus()
   {
-    return message == null ? new SimpleStatus("") : 
-                             new SimpleStatus( "", message, Status.ERROR );
+    return message == null ? Status.OK_STATUS : 
+                             StatusUtils.errorStatus(message );
   }
 
   public void refresh()

@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.StringUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.Generator;
 import org.eclipse.jst.ws.internal.consumption.codegen.bean.MethodVisitor;
-import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanElement;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 
 
@@ -62,10 +61,9 @@ public class MethodFileGenerator extends Generator
 
   
   //takes in a bean node
-  public Status visit (Object object)
+  public IStatus visit (Object object)
    {
       Element beanElement = (Element)object;
-      BeanElement bean = (BeanElement)beanElement;
       fbuffer.append("<%@page contentType=\"text/html;charset=UTF-8\"%>");
       fbuffer.append("<HTML>" + StringUtils.NEWLINE + "<HEAD>" + StringUtils.NEWLINE + "<TITLE>Methods</TITLE>" + StringUtils.NEWLINE + "</HEAD>" + StringUtils.NEWLINE + "<BODY>" + StringUtils.NEWLINE + "<H1>Methods</H1>" + StringUtils.NEWLINE + "<UL>" + StringUtils.NEWLINE);
       MethodVisitor methodVisitor = new MethodVisitor();
@@ -74,6 +72,6 @@ public class MethodFileGenerator extends Generator
       fbuffer = methodFileHelpGenerator.getStringBuffer();
       fbuffer.append("</UL>" + StringUtils.NEWLINE + "</BODY>" + StringUtils.NEWLINE + "</HTML>");
       
-      return new SimpleStatus("");
+      return Status.OK_STATUS;
   }
 }

@@ -14,7 +14,8 @@ package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
@@ -26,8 +27,6 @@ import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionC
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.common.SamplePropertyDescriptor;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**
@@ -77,9 +76,9 @@ public class JavaMofAttributeVisitor implements Visitor
   * @param JavaParameter javaParameter that owns the type
   * @param VisitorAction Action to be performed on each method
   **/
-  public Status run ( Object javaclass, VisitorAction vAction)
+  public IStatus run ( Object javaclass, VisitorAction vAction)
   {
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
     JavaClass javaClass = (JavaClass)javaclass;     
 
     Hashtable spdMap = new Hashtable();  

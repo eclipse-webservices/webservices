@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
 
 import java.util.Vector;
-
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
@@ -29,7 +28,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils
 public abstract class VisitorActionImpl implements VisitorAction 
 {
 
-  private Visitor fVisitor = null;
   private Vector beansVisited = null;
   private Vector messages = null;
   private MessageUtils msgUtils_;
@@ -82,7 +80,6 @@ public abstract class VisitorActionImpl implements VisitorAction
 
   public void setVisitor(Visitor visitor)
   {
-      fVisitor = visitor;
   }
 
   protected void addMessage ( String key )

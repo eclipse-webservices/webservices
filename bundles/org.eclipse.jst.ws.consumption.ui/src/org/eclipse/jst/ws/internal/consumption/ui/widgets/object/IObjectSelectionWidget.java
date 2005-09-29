@@ -11,9 +11,9 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataContributor;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 /**
  * This interface defines extra methods that Object Selection Widgets
@@ -50,7 +50,7 @@ public interface IObjectSelectionWidget extends WidgetDataContributor
    * @param objectSelection the object to be validated.
    * @return the status of the validation.
    */
-  public Status validateSelection(IStructuredSelection objectSelection);
+  public IStatus validateSelection(IStructuredSelection objectSelection);
   
   /**
    * 

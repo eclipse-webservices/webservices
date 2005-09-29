@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.WSDLSelectionWidget;
@@ -19,39 +20,26 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class WSDLSelectionWidgetWrapper extends SimpleWidgetDataContributor
 {
-  private String pluginId;
-  private MessageUtils msgUtils;
-
-  private Composite parent;
-  private Listener statusListener;
-  
   private WSDLSelectionWidget wsdlSelectionWidget;
-  private String webServiceURI;
   private IProject project;
   private String componentName;
   
   public WSDLSelectionWidgetWrapper()
   {
-    pluginId = "org.eclipse.jst.ws.consumption.ui";
-    msgUtils = new MessageUtils(pluginId + ".plugin", this);
   }
   
   public WidgetDataEvents addControls(Composite parent, Listener statusListener)
   {
-    this.parent = parent;
-    this.statusListener = statusListener;
     wsdlSelectionWidget = new WSDLSelectionWidget();
     wsdlSelectionWidget.addControls(parent, statusListener);
     return this;
   }
   
-  public Status getStatus()
+  public IStatus getStatus()
   {
     return wsdlSelectionWidget.getStatus();
   }

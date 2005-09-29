@@ -5,6 +5,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.application.internal.operations.FlexibleJavaProjectCreationDataModelProvider;
 import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientComponentCreationDataModelProvider;
@@ -16,15 +17,13 @@ import org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationD
 import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationDataModelProvider;
 import org.eclipse.jst.j2ee.project.datamodel.properties.IFlexibleJavaProjectCreationDataModelProperties;
 import org.eclipse.jst.j2ee.web.datamodel.properties.IWebComponentCreationDataModelProperties;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -48,6 +47,7 @@ public class CreateModuleCommand extends EnvironmentalOperation
 	private String   serverInstanceId_;
 	private Environment env;
 	private boolean supportMultipleModules;
+  private IProgressMonitor monitor_;
 	
 	private MessageUtils msgUtils;
 	
@@ -57,8 +57,9 @@ public class CreateModuleCommand extends EnvironmentalOperation
 	
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
+    monitor_ = monitor;
 		this.env = getEnvironment();
-		Status status = new SimpleStatus("");
+		IStatus status = Status.OK_STATUS;
 		
 		// check if data ready
 		status = checkDataReady();
@@ -87,7 +88,7 @@ public class CreateModuleCommand extends EnvironmentalOperation
           }
         }
 		else {
-			return new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{projectName, moduleName}),Status.ERROR, null);
+			return StatusUtils.errorStatus(msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{projectName, moduleName}) );
 		}        
         
 		// create the component according to the component type specified
@@ -107,20 +108,20 @@ public class CreateModuleCommand extends EnvironmentalOperation
 			break;
 
 		default:
-			return new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{moduleName}),Status.ERROR,null);			
+			return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{moduleName}) );			
 		}
 		
 	
 		return status;
 	}
 
-	private Status checkDataReady(){
+	private IStatus checkDataReady(){
 		
 		if (projectName==null || serverFactoryId==null){
-			return new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{projectName, moduleName}),Status.ERROR,null);
+			return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{projectName, moduleName}) );
 		}
 		
-		return new SimpleStatus("");
+		return Status.OK_STATUS;
 	}
 	
 	
@@ -128,8 +129,8 @@ public class CreateModuleCommand extends EnvironmentalOperation
 	 * Create a Web component
 	 * @return
 	 */
-	public Status createWebComponent(){
-		Status status = new SimpleStatus("");
+	public IStatus createWebComponent(){
+		IStatus status = Status.OK_STATUS;
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new WebComponentCreationDataModelProvider());
@@ -148,14 +149,11 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		  if (j2eeLevel!=null)
 			  projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_VERSION, servletLevel);
 		  IDataModelOperation op = projectInfo.getDefaultOperation();
-		  if (env!=null)
-			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
-		  else 
-			  op.execute(new NullProgressMonitor(), null);
+			op.execute(monitor_, null);
 		}
 		catch (Exception e)
 		{
-			status = new SimpleStatus("",e.getMessage(),Status.ERROR,e);
+			status = StatusUtils.errorStatus( e );
 		}
 		return status;		
 	}
@@ -164,8 +162,8 @@ public class CreateModuleCommand extends EnvironmentalOperation
 	 * Create an EAR component
 	 * @return
 	 */
-	public Status createEARComponent(){
-		Status status = new SimpleStatus("");
+	public IStatus createEARComponent(){
+		IStatus status = Status.OK_STATUS;
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new EarComponentCreationDataModelProvider());
@@ -178,14 +176,11 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		  if (j2eeLevel!=null)
 			  projectInfo.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
 		  IDataModelOperation op =projectInfo.getDefaultOperation();
-		  if (env!=null)
-			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
-		  else 
-			  op.execute(new NullProgressMonitor(), null);
+			op.execute(monitor_, null);
 		}
 		catch (Exception e)
 		{
-			status = new SimpleStatus("",e.getMessage(),Status.ERROR,e);
+			status = StatusUtils.errorStatus( e );
 		}
 		return status;				
 	}
@@ -194,8 +189,9 @@ public class CreateModuleCommand extends EnvironmentalOperation
 	 * Create an EJB Component
 	 * @return
 	 */
-	public Status createEJBComponent(){
-		Status status = new SimpleStatus("");
+	public IStatus createEJBComponent(){
+		IStatus status = Status.OK_STATUS;
+    
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new EjbComponentCreationDataModelProvider());
@@ -216,14 +212,11 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.ADD_TO_EAR, Boolean.FALSE);
 		  
 		  IDataModelOperation op = projectInfo.getDefaultOperation();
-		  if (env!=null)
-			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
-		  else 
-			  op.execute(new NullProgressMonitor(), null);
+			op.execute( monitor_, null);
 		}
 		catch (Exception e)
 		{
-			status = new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_CREATE_EJB_COMPONENT", new String[]{projectName}),Status.ERROR,e);
+			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_CREATE_EJB_COMPONENT", new String[]{projectName}), e);
 		}
 		return status;		
 	}
@@ -232,8 +225,9 @@ public class CreateModuleCommand extends EnvironmentalOperation
 	 * Create an Application Client component
 	 * @return
 	 */
-	public Status createAppClientComponent(){
-		Status status = new SimpleStatus("");
+	public IStatus createAppClientComponent()
+  {
+		IStatus status = Status.OK_STATUS;
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new AppClientComponentCreationDataModelProvider());
@@ -251,14 +245,11 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		  
 		  IDataModelOperation op = projectInfo.getDefaultOperation();
 
-		  if (env!=null)
-			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
-		  else 
-			  op.execute(new NullProgressMonitor(), null);
+			op.execute( monitor_, null);
 		}
 		catch (Exception e)
 		{
-			status = new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_CREATE_APPCIENT_PROJET", new String[]{projectName}),Status.ERROR,e);
+			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_CREATE_APPCIENT_PROJET", new String[]{projectName}), e);
 		}
 		return status;		
 	}
@@ -271,8 +262,8 @@ public class CreateModuleCommand extends EnvironmentalOperation
 	 * Note: This call may not be necessary once J2EE implements creating a flex project automatically
 	 * 		with the creation of components.
 	 */
-	public Status createFlexibleJavaProject(){
-		Status status = new SimpleStatus("");
+	public IStatus createFlexibleJavaProject(){
+		IStatus status = Status.OK_STATUS;
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new FlexibleJavaProjectCreationDataModelProvider());
@@ -295,14 +286,14 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.ADD_SERVER_TARGET,Boolean.TRUE);
 		  IDataModelOperation op = projectInfo.getDefaultOperation();
 		  if (env!=null)
-			  op.execute(EnvironmentUtils.getIProgressMonitor(env), null);
+			  op.execute( monitor_, null);
 		  else 
 			  op.execute(new NullProgressMonitor(), null);
 
 		}
 		catch (Exception e)
 		{
-			status = new SimpleStatus("",msgUtils.getMessage("MSG_ERROR_CREATE_FLEX_PROJET", new String[]{projectName}),Status.ERROR,e);
+			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_CREATE_FLEX_PROJET", new String[]{projectName}), e);
 		}
 		return status;		
 	}

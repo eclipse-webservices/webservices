@@ -11,13 +11,14 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.*;
-
-import java.util.*;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ProxyLoadPageAction;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormToolPropertiesInterface;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.actions.SelectFindToolAction;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.RegistryElement;
 
 public class ManagePublisherAssertionsTool extends FormTool implements MultipleFormToolPropertiesInterface
 {
@@ -83,7 +84,7 @@ public class ManagePublisherAssertionsTool extends FormTool implements MultipleF
     String subQueryKey = null;
     if (subQueryKeyObject != null)
     {
-      Hashtable subQueriesProperties = (Hashtable)getProperty(UDDIActionInputs.SUBQUERIES_PROPERTIES);
+      getProperty(UDDIActionInputs.SUBQUERIES_PROPERTIES);
       FormToolPropertiesInterface subQueryProperties = getFormToolProperties(subQueryKeyObject);
       Object subQueryGetObject = subQueryProperties.getProperty(UDDIActionInputs.SUBQUERY_GET);
       if (subQueryGetObject != null)

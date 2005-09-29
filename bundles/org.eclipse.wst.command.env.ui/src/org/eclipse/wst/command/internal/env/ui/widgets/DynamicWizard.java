@@ -33,7 +33,6 @@ import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -197,8 +196,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   {    
     PersistentResourceContext context        = PersistentResourceContext.getInstance();
     EclipseStatusHandler      handler        = new EclipseStatusHandler();
-    EclipseProgressMonitor    monitor        = new EclipseProgressMonitor();
-    EclipseEnvironment        environment    = new EclipseEnvironment( null, context, monitor, handler );
+    EclipseEnvironment        environment    = new EclipseEnvironment( null, context, handler );
     
     DataMappingRegistryImpl dataRegistry_   = new DataMappingRegistryImpl();
     SimpleWidgetRegistry    widgetRegistry_ = new SimpleWidgetRegistry();  

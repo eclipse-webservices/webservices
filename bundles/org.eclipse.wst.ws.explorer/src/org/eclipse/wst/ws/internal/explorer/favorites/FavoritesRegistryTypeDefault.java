@@ -12,12 +12,10 @@
 package org.eclipse.wst.ws.internal.explorer.favorites;
 
 import java.io.IOException;
-
 import org.apache.wsil.WSILDocument;
 import org.apache.wsil.WSILException;
 import org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin;
 import org.eclipse.wst.ws.internal.parser.favorites.FavoritesRegistryTypeAbstract;
-import org.eclipse.wst.ws.internal.parser.favorites.IFavoritesUDDIRegistry;
 
 public class FavoritesRegistryTypeDefault extends FavoritesRegistryTypeAbstract {
 	private static WSILDocument wsilDoc_;
@@ -58,7 +56,7 @@ public class FavoritesRegistryTypeDefault extends FavoritesRegistryTypeAbstract 
 	protected WSILDocument getWSILDocument() {
 		if (wsilDoc_ == null) {
 			wsilDoc_ = loadWSILDocument(getReadLocation(), true);
-			IFavoritesUDDIRegistry[] registries = getFavoritesUDDIRegistries();
+			getFavoritesUDDIRegistries();
 			/* TODO: Public registry strings shouldn't be in properties - Ain't extensible.
 			for (int i = 0; i < registries.length; i++) {
 				registries[i].setName(WSPlugin.getResourceString(registries[i].getName()));

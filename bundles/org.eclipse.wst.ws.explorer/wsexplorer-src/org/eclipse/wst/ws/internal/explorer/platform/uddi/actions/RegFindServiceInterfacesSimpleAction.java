@@ -42,7 +42,7 @@ public class RegFindServiceInterfacesSimpleAction extends FindAction
     // Validate the data.
     boolean inputsValid = true;
     UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
-    MessageQueue messageQueue = uddiPerspective.getMessageQueue();
+    uddiPerspective.getMessageQueue();
     if (name != null)
       propertyTable_.put(UDDIActionInputs.QUERY_INPUT_SIMPLE_SERVICE_INTERFACE_NAME,name);
     else

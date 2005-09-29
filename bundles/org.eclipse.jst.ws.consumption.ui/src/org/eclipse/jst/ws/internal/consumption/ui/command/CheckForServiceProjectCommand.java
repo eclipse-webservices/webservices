@@ -14,14 +14,14 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
@@ -65,7 +65,7 @@ public class CheckForServiceProjectCommand extends EnvironmentalOperation
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     Environment environment = getEnvironment();
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
     if (runtime2ClientTypes==null || wsdlURI==null || wsdlURI.length()==0 || webServicesParser==null)
       return status;
     
@@ -78,7 +78,7 @@ public class CheckForServiceProjectCommand extends EnvironmentalOperation
     boolean isServiceProject = vu.isProjectServiceProject(clientProject, wsdlURI, webServicesParser);
     if (isServiceProject)
     {
-      Status wStatus = new SimpleStatus("", msgUtils.getMessage("MSG_WARN_IS_SERVICE_PROJECT", new String[]{clientProjectName}), Status.WARNING);
+      IStatus wStatus = StatusUtils.warningStatus( msgUtils.getMessage("MSG_WARN_IS_SERVICE_PROJECT", new String[]{clientProjectName}) );
       try
       {
         environment.getStatusHandler().report(wStatus);
@@ -86,7 +86,7 @@ public class CheckForServiceProjectCommand extends EnvironmentalOperation
       catch (StatusException se)
       {
         //User decided to abort. Return an error status
-        Status eStatus = new SimpleStatus("", msgUtils.getMessage("MSG_USER_ABORTED"), Status.ERROR);
+        IStatus eStatus = StatusUtils.errorStatus( msgUtils.getMessage("MSG_USER_ABORTED") );
         return eStatus;
       }
     }

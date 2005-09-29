@@ -11,8 +11,8 @@
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
@@ -20,9 +20,7 @@ import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentEngine;
 import org.eclipse.wst.command.internal.env.core.fragment.FragmentListener;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**
@@ -143,7 +141,7 @@ public class SimpleCommandEngineManager
    * @param context the context
    * @return returns the status of executing the commands.
    */
-  public Status runForwardToNextStop( IRunnableContext context )
+  public IStatus runForwardToNextStop( IRunnableContext context )
   {
     IRunnableWithProgress operation = null;
     
@@ -202,10 +200,8 @@ public class SimpleCommandEngineManager
     //{
     //  public void execute( IProgressMonitor monitor )
       {
-        EclipseProgressMonitor eclipseMonitor = (EclipseProgressMonitor)environment_.getProgressMonitor();
-        eclipseMonitor.setMonitor( monitor );
         environment_.getLog().log(Log.INFO, "command", 5002, this, "getTransactionOperation", "Start of transaction");
-        engine_.moveForwardToNextStop();
+        engine_.moveForwardToNextStop( monitor );
         environment_.getLog().log(Log.INFO, "command", 5003, this, "getTransactionOperation", "End of transaction");
       }
     };
@@ -219,10 +215,8 @@ public class SimpleCommandEngineManager
     {
       public void run( IProgressMonitor monitor )
       {
-        EclipseProgressMonitor eclipseMonitor = (EclipseProgressMonitor)environment_.getProgressMonitor();
-        eclipseMonitor.setMonitor( monitor );
         environment_.getLog().log(Log.INFO, "command", 5085, this, "getNoTransactionOperation", "Start of NON transaction");
-        engine_.moveForwardToNextStop();
+        engine_.moveForwardToNextStop( monitor );
         environment_.getLog().log(Log.INFO, "command", 5086, this, "getNoTransactionOperation", "End of NON transaction");
       }
     }; 

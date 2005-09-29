@@ -14,12 +14,11 @@ package org.eclipse.jst.ws.internal.consumption.ui.extension;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateServerCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
 public class PreClientInstallCommand extends EnvironmentalOperation 
@@ -48,7 +47,7 @@ public class PreClientInstallCommand extends EnvironmentalOperation
         {
           if (createServerStatus.getSeverity()==Status.ERROR)
           {
-            environment.getStatusHandler().reportError(EnvironmentUtils.convertIStatusToStatus(createServerStatus));
+            environment.getStatusHandler().reportError( createServerStatus );
           }               
           return createServerStatus;
         }
@@ -73,7 +72,7 @@ public class PreClientInstallCommand extends EnvironmentalOperation
       IStatus status = command.execute( null, null );
       if (status.getSeverity()==Status.ERROR)
       {
-        environment.getStatusHandler().reportError( EnvironmentUtils.convertIStatusToStatus(status));
+        environment.getStatusHandler().reportError( status );
       }     
       return status;
 	  }

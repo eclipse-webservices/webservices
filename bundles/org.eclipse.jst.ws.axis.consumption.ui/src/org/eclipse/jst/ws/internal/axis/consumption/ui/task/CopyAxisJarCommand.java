@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -36,13 +37,11 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisCons
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
@@ -83,13 +82,13 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
 		Environment env = getEnvironment();
-    Status status = new SimpleStatus("");
-    env.getProgressMonitor().report(msgUtils_.getMessage("PROGRESS_INFO_COPY_AXIS_CFG"));
+    IStatus status = Status.OK_STATUS;
+    ProgressUtils.report(monitor, msgUtils_.getMessage("PROGRESS_INFO_COPY_AXIS_CFG"));
     
     ModuleCoreNature mn = ModuleCoreNature.getModuleCoreNature(project);
     if (mn!=null)
     {
-    	copyAxisJarsToProject(project, status, env);	
+    	copyAxisJarsToProject(project, status, env, monitor);	
     }
     else
     {
@@ -99,7 +98,7 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
  		 javaProject = JavaCore.create(project);    
  		 if (javaProject != null)
  		 {
- 			status = addAxisJarsToBuildPath(project, env);
+ 			status = addAxisJarsToBuildPath(project, env, monitor);
  			if (status.getSeverity()==Status.ERROR)
  			{
  				env.getStatusHandler().reportError(status);
@@ -108,7 +107,7 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
  		 }
  		 else
  		 {
- 		   status = new SimpleStatus("", msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"), Status.ERROR);	
+ 		   status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"));	
  		   env.getStatusHandler().reportError(status);
  		   return status;
  		 }
@@ -119,17 +118,17 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
 
   }
 
-  private void copyAxisJarsToProject(IProject project, Status status, Environment env) {
+  private void copyAxisJarsToProject(IProject project, IStatus status, Environment env, IProgressMonitor monitor) {
 //    IPath webModulePath = ResourceUtils.getWebModuleServerRoot(project).getFullPath();
 	IPath webModulePath = J2EEUtils.getWebContentPath( project, moduleName_ );
     if (webModulePath == null) {
-      status = new SimpleStatus("", baseConMsgUtils_.getMessage("MSG_ERROR_PROJECT_NOT_FOUND"), Status.ERROR);
+      status = StatusUtils.errorStatus( baseConMsgUtils_.getMessage("MSG_ERROR_PROJECT_NOT_FOUND"));
       env.getStatusHandler().reportError(status);
       return;
     }
 	
 	for (int i=0; i<JARLIST.length; ) {
-		copyIFile("lib/"+JARLIST[i], webModulePath, "WEB-INF/lib/"+JARLIST[i++], status, env); 
+		copyIFile("lib/"+JARLIST[i], webModulePath, "WEB-INF/lib/"+JARLIST[i++], status, env, monitor); 
 	    if (status.getSeverity() == Status.ERROR)
 	      return;
 	}
@@ -139,9 +138,9 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
   /**
    *  
    */
-  private void copyIFile(String source, IPath targetPath, String targetFile, Status status, Environment env) {
+  private void copyIFile(String source, IPath targetPath, String targetFile, IStatus status, Environment env, IProgressMonitor monitor) {
     IPath target = targetPath.append(new Path(targetFile));
-    env.getProgressMonitor().report(baseConMsgUtils_.getMessage("PROGRESS_INFO_COPYING_FILE"));
+    ProgressUtils.report(monitor, baseConMsgUtils_.getMessage("PROGRESS_INFO_COPYING_FILE"));
 
     try {
       ResourceContext context = new TransientResourceContext();
@@ -153,7 +152,7 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
       Plugin axisrt_plugin = pluginDescriptor.getPlugin();
       IFile resource = ResourceUtils.getWorkspaceRoot().getFile(target);
       if (!resource.exists()) {
-        IFile file = FileResourceUtils.createFile(context, target, axisrt_plugin.openStream(new Path(source)), env.getProgressMonitor(), env
+        IFile file = FileResourceUtils.createFile(context, target, axisrt_plugin.openStream(new Path(source)), monitor, env
             .getStatusHandler());
         if (projectRestartRequired_.booleanValue() == false && file.exists()) {
           projectRestartRequired_ = Boolean.TRUE;
@@ -162,13 +161,13 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
       }
     }
     catch (Exception e) {
-      status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_FILECOPY"), Status.ERROR, e);
+      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_FILECOPY"), e);
       env.getStatusHandler().reportError(status);
 
     }
   }
 
-  public Status addAxisJarsToBuildPath(IProject p, Environment env)
+  public IStatus addAxisJarsToBuildPath(IProject p, Environment env, IProgressMonitor monitor)
   {
 	  String[] jarNames = new String[JARLIST.length];
 	  for (int i=0; i<JARLIST.length; i++)
@@ -180,19 +179,19 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
 		  jarNames[i] = jarName;
 	  }
 	  
-	  Status status = addJar(p, AXIS_RUNTIME_PLUGIN_ID, jarNames, env);
+	  IStatus status = addJar(p, AXIS_RUNTIME_PLUGIN_ID, jarNames, env, monitor);
 	  if (status.getSeverity()==Status.ERROR)
 	  {			  
 		  return status;
 	  }
-	  return new SimpleStatus("");
+	  return Status.OK_STATUS;
   }
 
   
-  private Status addJar(IProject webProject, String pluginId, String[] jarNames, Environment env)
+  private IStatus addJar(IProject webProject, String pluginId, String[] jarNames, Environment env, IProgressMonitor monitor)
   {
 
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
     //
     // Get the current classpath.
     //
@@ -204,7 +203,7 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
       oldClasspath = javaProject_.getRawClasspath();
     } catch (JavaModelException jme)
     {
-      status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.ERROR, jme);
+      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), jme);
       // env.getStatusHandler().reportError(status);
       return status;
     }
@@ -252,7 +251,7 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
         }
       } catch (CoreException e)
       {
-        status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.ERROR, e);
+        status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), e);
         return status;
       }
 
@@ -261,16 +260,10 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
       //
       try
       {
-        ProgressMonitor monitor = env.getProgressMonitor();
-        IProgressMonitor eclipseMonitor = null;
-        if (monitor instanceof EclipseProgressMonitor)
-        {
-          eclipseMonitor = ((EclipseProgressMonitor) monitor).getMonitor();
-        }
-        javaProject_.setRawClasspath(newClasspath, eclipseMonitor);
+        javaProject_.setRawClasspath(newClasspath, monitor);
       } catch (JavaModelException e)
       {
-        status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), Status.ERROR, e);
+        status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), e);
         return status;
       }
     }

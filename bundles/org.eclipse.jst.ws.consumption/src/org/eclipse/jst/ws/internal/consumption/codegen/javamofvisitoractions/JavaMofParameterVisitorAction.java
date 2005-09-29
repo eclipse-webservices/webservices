@@ -11,14 +11,15 @@
 
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofTypeVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanModelElementsFactory;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.ParameterElement;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 
 
@@ -50,9 +51,9 @@ public class JavaMofParameterVisitorAction extends JavaMofBeanVisitorAction
   * Create a parameter element from the method 
   * @param JavaParameter the mof element to be used to create the Parameter
   **/
-  public Status visit (Object ijavaParameter)
+  public IStatus visit (Object ijavaParameter)
   {
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
   	Choice OKChoice = new Choice('O', msgUtils_.getMessage("LABEL_OK"), msgUtils_.getMessage("DESCRIPTION_OK"));
   	Choice CancelChoice = new Choice('C', msgUtils_.getMessage("LABEL_CANCEL"), msgUtils_.getMessage("DESCRIPTION_CANCEL"));
   	
@@ -74,7 +75,7 @@ public class JavaMofParameterVisitorAction extends JavaMofBeanVisitorAction
       if (result.getLabel().equals(CancelChoice.getLabel()))
       {
       	 //return an error status since the user canceled
-      	  return new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED"), Status.ERROR);
+      	  return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
       }
       	
     }

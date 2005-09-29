@@ -11,11 +11,11 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 public abstract class AbstractObjectSelectionWidget extends SimpleWidgetDataContributor implements IObjectSelectionWidget
@@ -31,10 +31,10 @@ public abstract class AbstractObjectSelectionWidget extends SimpleWidgetDataCont
     return new StructuredSelection();
   }
 
-  public Status validateSelection(IStructuredSelection objectSelection)
+  public IStatus validateSelection(IStructuredSelection objectSelection)
   {
     //  subclass should override this method
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
 
   public IProject getProject()

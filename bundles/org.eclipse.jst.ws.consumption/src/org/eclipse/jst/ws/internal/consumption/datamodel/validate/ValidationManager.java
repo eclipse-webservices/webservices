@@ -13,8 +13,6 @@
 package org.eclipse.jst.ws.internal.consumption.datamodel.validate;
 
 import java.util.HashSet;
-import java.util.Iterator;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
@@ -70,21 +68,6 @@ public class ValidationManager
   **/
   public void restoreValidationForProjects( boolean runValidation )
   {
-    //pgm j2eeManager.suspendAllValidation( false );
-    
-    Iterator iterator = projects.iterator();
-
-    while( iterator.hasNext() )
-    {
-      IProject project = (IProject)(iterator.next());
-
-      // Now kick off validation for this project if this was requested.
-      if( runValidation )
-      {
-	    //pgm EnabledValidatorsOperation validOp = new EnabledValidatorsOperation( project, null );
-	    //pgm validOp.run( monitor );
-      }
-    }
   }
 
   public void modifyAutoBuild(boolean isAutoBuild) {

@@ -293,11 +293,4 @@ public final class StringUtils
   
   private static final char[] URI_SYMBOLS = {'-', '~', '#', '/', '.'};
   private static final char UNDERSCORE = '_';
-
-  private static boolean isDelimiter(char character)
-  {
-    return "\u002D\u002E\u003A\u005F\u00B7\u0387\u06DD\u06DE".indexOf(character) != -1;
-  }
-  
-  
 }

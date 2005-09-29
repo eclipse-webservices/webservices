@@ -12,13 +12,12 @@
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
 import java.util.Vector;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.codegen.bean.TypeVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.AttributeElementType;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.DataType;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.datamodel.BasicElement;
 
 /**
@@ -56,7 +55,7 @@ public class ResultFileAttributeGenerator extends ResultFileHelp2Generator
   * Visit Method generates code for this Visitor
   * @param Parameter parameter code will be generated 
   */
-  public Status visit (Object object)
+  public IStatus visit (Object object)
   {
      AttributeElementType attributeElementType = (AttributeElementType)object;
      BasicElement element = (BasicElement)object;
@@ -79,10 +78,10 @@ public class ResultFileAttributeGenerator extends ResultFileHelp2Generator
      typeVisitor.run(attributeElementType,resultFileTypeGenerator);
      setNumberFactory(resultFileTypeGenerator.getNumberFactory());
      Vector setterInputs = resultFileTypeGenerator.getResidentVector(); 
-     if(attributeElementType.getSetterMethod() == null) return new SimpleStatus(""); 
+     if(attributeElementType.getSetterMethod() == null) return Status.OK_STATUS; 
      putResidentVector(attributeElementType.getSetterSignature((String)setterInputs.firstElement()));
      
-     return new SimpleStatus("");
+     return Status.OK_STATUS;
   }   
 
   

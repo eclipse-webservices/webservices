@@ -14,8 +14,8 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 
 
@@ -45,7 +45,7 @@ public class TDAxisInputCommand extends EnvironmentalOperation {
 		serverServer_ = ws_.getWebServiceInfo().getServerInstanceId();	
 		wsdlURI_ = ws_.getWebServiceInfo().getWsdlURL();
 		
-		return new SimpleStatus("");
+		return Status.OK_STATUS;
 	  }
 	  
 		/**

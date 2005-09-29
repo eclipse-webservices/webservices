@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaHelpers;
@@ -25,8 +26,7 @@ import org.eclipse.jem.java.impl.JavaClassImpl;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 /**
@@ -87,11 +87,11 @@ public class JavaMofReflectionCommand extends EnvironmentalOperation
   {    
  	  //just make sure the project and qname are there
   	//they are essential for this operation
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
   	IProject clientIProject = (IProject)ResourceUtils.findResource(clientProject);
   	processQName();
   	if(clientProject == null || qname == null)
-  	  return new SimpleStatus(WebServiceConsumptionPlugin.ID,WebServiceConsumptionPlugin.getMessage("%MSG_WARN_UNABLE_TO_FIND_PROXY"),Status.WARNING);
+  	  return StatusUtils.warningStatus( WebServiceConsumptionPlugin.getMessage("%MSG_WARN_UNABLE_TO_FIND_PROXY") );
   	
     JavaEMFNature nature = (JavaEMFNature)JavaEMFNature.getRuntime(clientIProject);
     if(nature == null){

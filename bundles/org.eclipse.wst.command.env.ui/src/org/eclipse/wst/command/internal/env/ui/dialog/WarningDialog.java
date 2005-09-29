@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.dialog;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.swt.SWT;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -57,7 +57,7 @@ public class WarningDialog extends MessageDialog
     Shell parentShell,
     String dialogTitle,
     String message,
-    Status status,
+    IStatus status,
     int displayMask)
   {
     super(parentShell, dialogTitle, message, status, displayMask);
@@ -79,7 +79,7 @@ public class WarningDialog extends MessageDialog
       StatusDialogConstants.CANCEL_ID,
       IDialogConstants.CANCEL_LABEL,
       false);
-    if (status.hasChildren())
+    if (status.isMultiStatus())
     {
       detailsButton =
         createButton(

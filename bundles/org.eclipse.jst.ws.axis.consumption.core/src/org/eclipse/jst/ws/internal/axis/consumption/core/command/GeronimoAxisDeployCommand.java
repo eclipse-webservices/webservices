@@ -31,13 +31,14 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
@@ -73,25 +74,23 @@ public class GeronimoAxisDeployCommand extends EnvironmentalOperation
 	Environment environment = getEnvironment();
     if (javaWSDLParam == null)
     {
-      return new SimpleStatus("Java2WSDLCommand", //$NON-NLS-1$
-      getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR);
+      return StatusUtils.errorStatus(getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
     }
 
     if (javaWSDLParam.getProjectURL() == null || javaWSDLParam.getProjectURL().equals(""))
     { //$NON-NLS-1$
-      return new SimpleStatus("Java2WSDLCommand", //$NON-NLS-1$
-      getMessage("MSG_ERROR_PROJECT_URL_PARAM_NOT_SET"), Status.ERROR);
+      return StatusUtils.errorStatus(getMessage("MSG_ERROR_PROJECT_URL_PARAM_NOT_SET"));
     }
 
     if (javaWSDLParam.getDeploymentFiles() == null || javaWSDLParam.getDeploymentFiles().length == 0)
     {
-      return new SimpleStatus("Java2WSDLCommand", //$NON-NLS-1$
-      getMessage("MSG_ERROR_DEPLOY_FILE_PARAM_NOT_SET"), Status.ERROR);
+      return StatusUtils.errorStatus(
+      getMessage("MSG_ERROR_DEPLOY_FILE_PARAM_NOT_SET"));
     }
 
-    environment.getProgressMonitor().report(getMessage("MSG_AXIS_DEPLOY"));
+    ProgressUtils.report(monitor, getMessage("MSG_AXIS_DEPLOY"));
 
-    Status status = executeAdminTask();
+    IStatus status = executeAdminTask();
     if (status.getSeverity() == Status.ERROR)
     {
         environment.getStatusHandler().reportError(status);
@@ -105,7 +104,7 @@ public class GeronimoAxisDeployCommand extends EnvironmentalOperation
     return status;
   }
   
-  protected Status executeAntTask()
+  protected IStatus executeAntTask()
   {
     final class DeployTask extends AdminClientTask
     {
@@ -166,19 +165,24 @@ public class GeronimoAxisDeployCommand extends EnvironmentalOperation
         message = e.getCause().toString();
       }
       
-      Status[] childStatus = new Status[1];
-      childStatus[0] = new SimpleStatus("AxisDeployCommand", message, Status.ERROR);
-      return new SimpleStatus("AxisDeployCommand", //$NON-NLS-1$
-      getMessage("MSG_ERROR_AXIS_DEPLOY"), childStatus);
+//      Status[] childStatus = new Status[1];
+//      childStatus[0] = new SimpleStatus("AxisDeployCommand", message, Status.ERROR);
+//      return new SimpleStatus("AxisDeployCommand", //$NON-NLS-1$
+//      getMessage("MSG_ERROR_AXIS_DEPLOY"), childStatus);
+//    }
+//    return new SimpleStatus("AxisDeployCommand", //$NON-NLS-1$
+//    getMessage("MSG_AXIS_DEPLOY_OK"), Status.OK);
+      IStatus[] childStatus = new Status[1];
+      childStatus[0] = StatusUtils.errorStatus( message);
+      return StatusUtils.multiStatus(getMessage("MSG_ERROR_AXIS_DEPLOY"), childStatus);
     }
-    return new SimpleStatus("AxisDeployCommand", //$NON-NLS-1$
-    getMessage("MSG_AXIS_DEPLOY_OK"), Status.OK);
+    return Status.OK_STATUS; 
 
   }
   
-  protected Status executeAdminTask(){
+  protected IStatus executeAdminTask(){
     
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
     // check if server-config.wsdd exists
     IVirtualComponent component = J2EEUtils.getVirtualComponent( projectName_, componentName_ );
     outputRoot = StructureEdit.getOutputContainerRoot( component );
@@ -233,10 +237,9 @@ public class GeronimoAxisDeployCommand extends EnvironmentalOperation
         message = e.getCause().toString();
       }
       
-      Status[] childStatus = new Status[1];
-      childStatus[0] = new SimpleStatus("AxisDeployCommand", message, Status.ERROR);
-      return new SimpleStatus("AxisDeployCommand", //$NON-NLS-1$
-      getMessage("MSG_ERROR_AXIS_DEPLOY"), childStatus);
+      IStatus[] childStatus = new Status[1];
+      childStatus[0] = StatusUtils.errorStatus( message);
+      return StatusUtils.multiStatus(getMessage("MSG_ERROR_AXIS_DEPLOY"), childStatus);
     }
     
     return status;
@@ -246,7 +249,7 @@ public class GeronimoAxisDeployCommand extends EnvironmentalOperation
    * Creates the initial server-config.wsdd file from a template in Axis
    * @return
    */
-  private Status createServerConfigFile(){
+  private IStatus createServerConfigFile(){
     try{
 
       // server-config.wsdd file
@@ -260,7 +263,7 @@ public class GeronimoAxisDeployCommand extends EnvironmentalOperation
       ResourceUtils.copyStream(is, fos);
       fos.close();
       
-      return new SimpleStatus("");
+      return Status.OK_STATUS;
     }
     catch(Exception e){
       e.printStackTrace();
@@ -269,11 +272,11 @@ public class GeronimoAxisDeployCommand extends EnvironmentalOperation
       {
         message = e.getCause().toString();
       }
-      
-      Status[] childStatus = new Status[1];
-      childStatus[0] = new SimpleStatus("AxisDeployCommand", message, Status.ERROR);
-      return new SimpleStatus("AxisDeployCommand", //$NON-NLS-1$
-      getMessage("MSG_ERROR_AXIS_DEPLOY"), childStatus);      
+
+      IStatus[] childStatus = new Status[1];
+      childStatus[0] = StatusUtils.errorStatus( message);
+      return StatusUtils.multiStatus(getMessage("MSG_ERROR_AXIS_DEPLOY"), childStatus);
+
     }
   }
 

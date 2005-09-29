@@ -11,12 +11,12 @@
 package org.eclipse.jst.ws.tests.util;
 
 import java.util.Vector;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 public class AccumulateStatusHandler implements StatusHandler {
 	  Vector statusList_;
@@ -35,14 +35,14 @@ public class AccumulateStatusHandler implements StatusHandler {
 	    statusList_ = new Vector();      
 	  }
 	  
-	  public Status getStatus()
+	  public IStatus getStatus()
 	  {
-	    Status worstStatus = new SimpleStatus( "", "", Status.OK );
+	    IStatus worstStatus = Status.OK_STATUS;
 	    
 	    // Find the worst error status code
 	    for( int index = 0; index < statusList_.size(); index++ )
 	    {
-	      Status status = (Status)statusList_.elementAt( index );
+	      IStatus status = (IStatus)statusList_.elementAt( index );
 	      
 	      if( status.getSeverity() > worstStatus.getSeverity() )
 	      {
@@ -50,15 +50,14 @@ public class AccumulateStatusHandler implements StatusHandler {
 	      }
 	    }
 	    
-	    return new SimpleStatus( worstStatus.getId(), 
-	                             worstStatus.getMessage(),
-	                             (Status[])statusList_.toArray( new Status[0] ) );
+	    return StatusUtils.multiStatus( worstStatus.getMessage(),
+	                                    (IStatus[])statusList_.toArray( new IStatus[0] ) );
 	  }
 	  
 	  /**
 	   * @see org.eclipse.env.common.StatusHandler#report(org.eclipse.env.common.Status, org.eclipse.env.common.Choice[])
 	   */
-	  public Choice report(Status status, Choice[] choices) 
+	  public Choice report(IStatus status, Choice[] choices) 
 	  {
 	  	Choice result = null;
 	  	
@@ -76,25 +75,15 @@ public class AccumulateStatusHandler implements StatusHandler {
 	  /**
 	   * @see org.eclipse.env.common.StatusHandler#report(org.eclipse.env.common.Status)
 	   */
-	  public void report(Status status) throws StatusException
+	  public void report(IStatus status) throws StatusException
 	  {
 	    statusList_.add( status );
 	  }
-	  
-	  /*
-	   * Report a warning.
-	   */
-	  private boolean reportWarning(Status status)
-	  {
-	    statusList_.add( status );
-	    
-	    return true;
-	  }
-	 
+	  	 
 	  /**
 	   * @see com.ibm.env.common.StatusHandler#reportError(com.ibm.env.common.Status)
 	   */
-	  public void reportError(Status status)
+	  public void reportError(IStatus status)
 	  {
 	    statusList_.add( status );
 	  }
@@ -102,7 +91,7 @@ public class AccumulateStatusHandler implements StatusHandler {
 	  /**
 	   * @see com.ibm.env.common.StatusHandler#reportInfo(com.ibm.env.common.Status)
 	   */
-	  public void reportInfo(Status status)
+	  public void reportInfo(IStatus status)
 	  {
 	    statusList_.add( status );
 	  }

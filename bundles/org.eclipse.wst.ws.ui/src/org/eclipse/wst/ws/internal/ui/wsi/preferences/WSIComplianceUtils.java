@@ -12,20 +12,17 @@
 package org.eclipse.wst.ws.internal.ui.wsi.preferences;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 
 
 public class WSIComplianceUtils
 {
-private static final int IGNORE_ID =0;
-private static final int IGNORE_ALL_ID =1;
-private static final int CANCEL_ID =2;
-
 private static MessageUtils msgUtils_;
 
 /**
@@ -77,21 +74,16 @@ public static boolean checkWSICompliance ( StatusHandler monitor, Status[] statu
 	
   	if (context.projectStopNonWSICompliances(project))
   		{
+      
   			// emit an error message and return false
-  			SimpleStatus status_ = new SimpleStatus(WSUIPlugin.ID, msgUtils_.getMessage(context.getError()), Status.ERROR);
-  			// adding all messages from WSI Incompliances
-  			for (int i = 0; i< status.length; i++)
-	  			status_.addChild(status[i]); 			
-			monitor.reportError(status_);
+  			IStatus status_ = StatusUtils.multiStatus( msgUtils_.getMessage(context.getError()), status );
+			  monitor.reportError(status_);
   			return false;
   		}
   	else if (context.projectWarnNonWSICompliances(project))
   		{
   			// give a warning message with the options to stop, ignore this one, or ignore all coming messages
-  			SimpleStatus status_ = new SimpleStatus(WSUIPlugin.ID, msgUtils_.getMessage(context.getWarning()), Status.WARNING);
-  			// adding all messages from WSI Incompliances
-  			for (int i = 0; i< status.length; i++)
-	  			status_.addChild(status[i]);
+  			IStatus status_ = StatusUtils.multiStatus( msgUtils_.getMessage(context.getWarning()), status);
 
   			Choice ignoreChoice = new Choice('I', msgUtils_.getMessage("IGNORE_LABEL"), msgUtils_.getMessage("IGNORE_DESCRIPTION"));
   			Choice ignoreAllChoice = new Choice('A', msgUtils_.getMessage("IGNORE_ALL_LABEL"), msgUtils_.getMessage("IGNORE_ALL_DESCRIPTION"));

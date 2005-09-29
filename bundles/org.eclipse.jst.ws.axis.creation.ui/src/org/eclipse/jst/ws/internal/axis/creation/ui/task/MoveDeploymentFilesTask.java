@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
@@ -26,8 +27,7 @@ import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 public class MoveDeploymentFilesTask extends EnvironmentalOperation {
 
@@ -52,9 +52,9 @@ public class MoveDeploymentFilesTask extends EnvironmentalOperation {
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
 		Environment environment = getEnvironment();
-		Status status = new SimpleStatus("");
+		IStatus status = Status.OK_STATUS;
 		if (javaWSDLParam_ == null) {
-		  status = new SimpleStatus("",coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"), Status.ERROR);
+		  status = StatusUtils.errorStatus(coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
 		  environment.getStatusHandler().reportError(status);
 		  return status;
 		}
@@ -64,7 +64,7 @@ public class MoveDeploymentFilesTask extends EnvironmentalOperation {
 		String projectURL = ServerUtils.getEncodedWebComponentURL(project, moduleName_);
 		
 		if (projectURL == null) {
-		    status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] { project.toString()}), Status.ERROR);
+		    status = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] { project.toString()}));
 		    environment.getStatusHandler().reportError(status);
 		    return status;		  
 		} else {
@@ -93,7 +93,7 @@ public class MoveDeploymentFilesTask extends EnvironmentalOperation {
 			}
 
 		} catch (Exception e) {
-		  status = new SimpleStatus("",msgUtils_.getMessage("MSG_ERROR_MOVE_RESOURCE",new String[] { e.getLocalizedMessage()}), Status.ERROR, e);
+		  status = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_MOVE_RESOURCE",new String[] { e.getLocalizedMessage()}), e);
 		  environment.getStatusHandler().reportError(status);
 		  return status;		  
 		}

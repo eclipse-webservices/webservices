@@ -15,18 +15,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.RelativeURI;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.URI;
 import org.eclipse.wst.command.internal.provisional.env.core.uri.URIException;
@@ -37,16 +36,18 @@ import org.eclipse.wst.command.internal.provisional.env.core.uri.URIScheme;
 public class EclipseURI extends RelativeURI
 {
   private BaseEclipseEnvironment environment_;
+  private IProgressMonitor       monitor_;
   private EclipseScheme          scheme_;
   private MessageUtils           msg_;
   private File                   file_;
   
-  public EclipseURI( String uri, BaseEclipseEnvironment environment )
+  public EclipseURI( String uri, BaseEclipseEnvironment environment, IProgressMonitor monitor )
   {
     super( uri );
     
+    monitor_      = monitor;
     environment_  = environment;
-    scheme_       = new EclipseScheme( environment );
+    scheme_       = new EclipseScheme( environment , monitor_);
     msg_          = new MessageUtils( "org.eclipse.wst.command.internal.env.common.environment", this );
     file_         = getFile();
   }
@@ -66,14 +67,14 @@ public class EclipseURI extends RelativeURI
         {
           FileResourceUtils.deleteFile( environment_.getResourceContext(),
                                         (IFile)file,
-                                        environment_.getProgressMonitor(),
+                                        monitor_,
                                         environment_.getStatusHandler() );
         }
         else if( file instanceof IFolder )
         {
           FileResourceUtils.deleteFolder( environment_.getResourceContext(),
                                           (IFolder)file,
-                                          environment_.getProgressMonitor(),
+                                          monitor_,
                                           environment_.getStatusHandler() );          
         }
       }
@@ -81,12 +82,7 @@ public class EclipseURI extends RelativeURI
     }
     catch( Exception exc ) 
     {      
-      throw new URIException(
-          new SimpleStatus( "EclipseURI",
-                            exc.getMessage(),
-		                    Status.ERROR,
-			                exc ), 
-          this );
+      throw new URIException( StatusUtils.errorStatus( exc ), this );
     }
   }
 
@@ -109,12 +105,7 @@ public class EclipseURI extends RelativeURI
     }
     catch( Throwable exc ) 
     {
-      throw new URIException(
-          new SimpleStatus( "EclipseURI",
-                            exc.getMessage(),
-							Status.ERROR,
-							exc ),
-          this );
+      throw new URIException( StatusUtils.errorStatus( exc ), this );
     }
     
     return null;
@@ -277,7 +268,7 @@ public class EclipseURI extends RelativeURI
         for( int index = 0; index < children.length; index++ )
         {
           IPath path = children[index].getFullPath();
-          uriChildren[index] = new EclipseURI( scheme_.getURLFromPath(path), environment_ );
+          uriChildren[index] = new EclipseURI( scheme_.getURLFromPath(path), environment_, monitor_ );
         }
       }
       catch( CoreException exc )
@@ -308,7 +299,7 @@ public class EclipseURI extends RelativeURI
         for( int index = 0; index < children.length; index++ )
          {
           IPath path = children[index].getFullPath();
-          URI   uri  = new EclipseURI( scheme_.getURLFromPath(path), environment_ );
+          URI   uri  = new EclipseURI( scheme_.getURLFromPath(path), environment_, monitor_ );
           
           if( uriFilter.accepts( uri ) )
           {
@@ -353,21 +344,15 @@ public class EclipseURI extends RelativeURI
           if( folder.members().length > 0 )
           {
             throw new URIException( 
-                new SimpleStatus( "EclipseURI",
-                    msg_.getMessage( "MSG_ERROR_FOLDER_HAS_CHILDREN", new Object[]{ folder.toString() } ),
-                    Status.ERROR ),
+                StatusUtils.errorStatus(
+                    msg_.getMessage( "MSG_ERROR_FOLDER_HAS_CHILDREN", new Object[]{ folder.toString() } ) ),
                 this );
 								
           }
         }
         catch( CoreException exc )
         {        
-          throw new URIException( 
-              new SimpleStatus( "EclipseURI",
-                  exc.getMessage(),
-                  Status.ERROR,
-				  exc ),
-              this );
+          throw new URIException( StatusUtils.errorStatus( exc ), this );
         }
       }
       else
@@ -382,19 +367,13 @@ public class EclipseURI extends RelativeURI
       try
       {
         FileResourceUtils.makeFolderPath( environment_.getResourceContext(), 
-                                      newPath,
-                                      environment_.getProgressMonitor(),
-			  	                      environment_.getStatusHandler() );
+                                          newPath,
+                                          monitor_,
+			  	                                environment_.getStatusHandler() );
       }
       catch( CoreException exc )
       {
-        throw new URIException( 
-            new SimpleStatus( "EclipseURI",
-                exc.getMessage(),
-                Status.ERROR,
-								exc ),
-            this );
-        
+        throw new URIException( StatusUtils.errorStatus( exc ), this );
       }
     }
   }
@@ -428,11 +407,7 @@ public class EclipseURI extends RelativeURI
       }
       catch( IOException exc )
       {
-        throw new URIException( new SimpleStatus( "EclipseURI", 
-                                                  exc.getMessage(), 
-                                                  Status.ERROR,
-											      exc ),
-                                this ); 
+        throw new URIException( StatusUtils.errorStatus( exc ), this );
       }
     }
 
@@ -455,9 +430,9 @@ public class EclipseURI extends RelativeURI
     OutputStream stream = null;
     
     stream = FileResourceUtils.newFileOutputStream ( environment_.getResourceContext(),
-                                                 file,
-                                                 environment_.getProgressMonitor(),
- 			                                     environment_.getStatusHandler() );    
+                                                     file,
+                                                     monitor_,
+ 			                                               environment_.getStatusHandler() );    
     return stream;
   }
   

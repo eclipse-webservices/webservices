@@ -5,17 +5,16 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 
@@ -55,17 +54,17 @@ public class StartServerCommand extends EnvironmentalOperation
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     Environment env = getEnvironment();
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
 
     IServer server = ServerCore.findServer(serverInstanceId);
     if (server == null)
     {
-      status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_INSTANCE_NOT_FOUND"), Status.ERROR);
+      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_INSTANCE_NOT_FOUND") );
       env.getStatusHandler().reportError(status);
       return status;
     }
 
-    localMonitor = EnvironmentUtils.getIProgressMonitor(env);
+    localMonitor = monitor;
     int serverState = server.getServerState();
     int publishState = server.getServerPublishState();
     
@@ -167,9 +166,9 @@ public class StartServerCommand extends EnvironmentalOperation
     return status;
   }
 
-  private Status publish(final IServer server, final int kind)
+  private IStatus publish(final IServer server, final int kind)
   {
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
     final IStatus[] istatus = new IStatus[1]; 
     localMonitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_PUBLISHING_SERVER"));
     IRunnableWithProgress runnable = new IRunnableWithProgress()
@@ -206,7 +205,7 @@ public class StartServerCommand extends EnvironmentalOperation
     
 	if (istatus[0].getSeverity() != IStatus.OK)
     {
-      status = EnvironmentUtils.convertIStatusToStatus(istatus[0]);
+      status = istatus[0];
       return status;
     }
     
@@ -214,9 +213,9 @@ public class StartServerCommand extends EnvironmentalOperation
     return status;
   }
 
-  private Status restart(IServer server)
+  private IStatus restart(IServer server)
   {
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
     try
     {
       localMonitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
@@ -225,15 +224,15 @@ public class StartServerCommand extends EnvironmentalOperation
       return status;
     } catch (CoreException e)
     {
-      status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_SERVER"), Status.ERROR, e);
+      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), e);
       return status;
     }
 
   }
 
-  private Status start(IServer server)
+  private IStatus start(IServer server)
   {
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
     try
     {
       localMonitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
@@ -242,7 +241,7 @@ public class StartServerCommand extends EnvironmentalOperation
       return status;
     } catch (CoreException e)
     {
-      status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_SERVER"), Status.ERROR, e);
+      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), e);
       return status;
     }
   }

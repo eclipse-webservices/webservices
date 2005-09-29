@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.command.data;
 
-import java.util.Vector;
-
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
@@ -20,7 +18,6 @@ public class ServerName2IServerTransformer implements Transformer
 {
   public Object transform(Object value)
   {
-    Vector serverIds = new Vector();
     {
       String serverName = value.toString();
       IServer[] servers = ServerCore.getServers();

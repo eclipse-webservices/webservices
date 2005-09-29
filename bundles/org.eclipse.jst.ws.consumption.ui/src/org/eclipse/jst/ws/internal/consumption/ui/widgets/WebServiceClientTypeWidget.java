@@ -15,7 +15,6 @@ import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -33,11 +32,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   /*CONTEXT_ID PWPR0014 for the Web Service Client Type combo box of the Project Page*/
   private String INFOPOP_PWPR_COMBO_CLIENTTYPE = "PWPR0014";
   private Combo  clientTypeCombo_;
-    
-  /*CONTEXT_ID PWPR0006 for the Test Proxy check box of the Project Page*/
-  private String INFOPOP_PWPR_CHECKBOX_TEST_PROXY = "PWPR0006";
-  private Button testProxyCheckbox_;
-  
+      
   private TypeRuntimeServer ids_;
   private LabelsAndIds      labelIds_;
     

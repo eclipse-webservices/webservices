@@ -14,13 +14,12 @@ package org.eclipse.jst.ws.internal.creation.ui.extension;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
@@ -35,7 +34,6 @@ import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
 public class PreServiceDevelopCommand extends EnvironmentalOperation 
 {
   private TypeRuntimeServer typeRuntimeServer_;
-  private Environment       environment_;
   private IContext          context_;
   private ISelection        selection_;
 	private String						project_;
@@ -86,8 +84,6 @@ public class PreServiceDevelopCommand extends EnvironmentalOperation
 	  wsInfo.setState( WebServiceState.UNKNOWN_LITERAL );
 	  wsInfo.setWebServiceRuntimeId( typeRuntimeServer_.getRuntimeId() );
     
-
-		environment_ = environment;
 		webService_  = wsrt.getWebService( wsInfo );
 	
 		//Set up the IContext
@@ -126,7 +122,7 @@ public class PreServiceDevelopCommand extends EnvironmentalOperation
 		  command.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
 		  command.setJ2eeLevel(j2eeLevel_);
       command.setEnvironment(environment);
-		  Status status = EnvironmentUtils.convertIStatusToStatus(command.execute( null, null));
+		  IStatus status = command.execute( monitor, null);
 
 		
 		if (status.getSeverity()==Status.ERROR)

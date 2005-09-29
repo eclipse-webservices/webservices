@@ -35,7 +35,7 @@ public abstract class WSWizardTomcat50Test extends WSWizardTest {
    */
   protected void installServer() throws Exception {
 
-    server_ = JUnitUtils.createServer("Apache Tomcat v50", SERVERTYPEID_TC50, serverRuntime_, env_);
+    server_ = JUnitUtils.createServer("Apache Tomcat v50", SERVERTYPEID_TC50, serverRuntime_, env_, null );
   }
   
 }

@@ -15,10 +15,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
 public class RelativeURI implements URI
@@ -40,9 +38,9 @@ public class RelativeURI implements URI
       MessageUtils msg = new MessageUtils( "org.eclipse.wst.command.env.core.environment", new Dummy() );
       
       throw new URIException( 
-          new SimpleStatus( "RelativeURI", 
-              msg.getMessage( "MSG_URI_NOT_RELATIVE", new Object[]{ relativeURI.toString() }),
-              Status.ERROR ));
+          StatusUtils.errorStatus(
+              msg.getMessage( "MSG_URI_NOT_RELATIVE", new Object[]{ relativeURI.toString() }) ) );
+      
     }
     
     String newURI = uri_ + "/" + relativeURI.toString();
@@ -87,9 +85,7 @@ public class RelativeURI implements URI
     }
     catch( MalformedURLException exc )
     {
-      throw new URIException( 
-              new SimpleStatus( "RelativeURI", exc.getMessage(), Status.ERROR ),
-            this ); 
+      throw new URIException( StatusUtils.errorStatus( exc ), this ); 
     }
     
     return url;

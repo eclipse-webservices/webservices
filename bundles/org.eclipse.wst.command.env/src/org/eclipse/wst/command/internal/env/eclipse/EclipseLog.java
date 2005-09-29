@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.eclipse;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.command.internal.env.plugin.EnvPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 public class EclipseLog implements Log 
 {
@@ -88,7 +88,7 @@ public class EclipseLog implements Log
 	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Log#log(int, int, java.lang.Object, java.lang.String, org.eclipse.wst.command.internal.provisional.env.core.common.Status)
 	 */
 	public void log(int severity, int messageNum, Object caller,
-			String method, Status status) {
+			String method, IStatus status) {
 		log(severity, messageNum, caller, method, (Object)status);
 	}
 	
@@ -163,7 +163,7 @@ public class EclipseLog implements Log
 	 * @see org.eclipse.wst.command.internal.provisional.env.core.common.Log#log(int, java.lang.String, int, java.lang.Object, java.lang.String, org.eclipse.wst.command.internal.provisional.env.core.common.Status)
 	 */
 	public void log(int severity, String option, int messageNum,
-			Object caller, String method, Status status) {
+			Object caller, String method, IStatus status) {
 		log(severity, option, messageNum, caller, method, (Object)status);
 	}
 	

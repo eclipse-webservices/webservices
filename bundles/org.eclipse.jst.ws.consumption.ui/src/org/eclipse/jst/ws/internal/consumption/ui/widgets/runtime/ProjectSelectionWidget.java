@@ -12,6 +12,8 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
@@ -30,8 +32,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -519,8 +520,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   	return true;    
   }
   
-  private Status handleSetMessageText() {
-    Status status = new SimpleStatus("");
+  private IStatus handleSetMessageText() {
+    IStatus status = Status.OK_STATUS;
     try {
       byte result = (byte) 0;
       if (module_.getText().length() != 0 && earModule_.getText().length() != 0) {
@@ -551,7 +552,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
       }
     }
     catch (Exception e) {
-      return new SimpleStatus("", msgUtils.getMessage("PAGE_MSG_VALIDATION_INTERNAL_ERROR"), Status.ERROR);
+      return StatusUtils.errorStatus( msgUtils.getMessage("PAGE_MSG_VALIDATION_INTERNAL_ERROR"), e );
     }
     return status;
   }
@@ -580,8 +581,9 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     return msg != null ? msgUtils.getMessage(msg, new Object[] { serviceOrClient}) : "";
   }
 
-  public Status getStatus() {
-    Status finalStatus = new SimpleStatus("");
+  public IStatus getStatus() 
+  {
+    IStatus finalStatus = Status.OK_STATUS;
     handleSetMessageText();
     String projectText = moduleProject_.getText();
     String earText = earProject_.getText();
@@ -590,28 +592,28 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     if (projectText==null || projectText.length()==0)
     {
       if (isClient_)
-        return new SimpleStatus("",msgUtils.getMessage("MSG_CLIENT_PROJECT_EMPTY", new String[]{""} ),Status.ERROR);
+        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_CLIENT_PROJECT_EMPTY", new String[]{""} ) );
       else
-        return new SimpleStatus("",msgUtils.getMessage("MSG_SERVICE_PROJECT_EMPTY", new String[]{""} ),Status.ERROR);
+        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_SERVICE_PROJECT_EMPTY", new String[]{""} ) );
     }
     
     if (needEAR_ && (earText==null || earText.length()==0))
     {
       if (isClient_)
-        return new SimpleStatus("",msgUtils.getMessage("MSG_CLIENT_EAR_EMPTY", new String[]{""} ),Status.ERROR);
+        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_CLIENT_EAR_EMPTY", new String[]{""} ) );
       else
-        return new SimpleStatus("",msgUtils.getMessage("MSG_SERVICE_EAR_EMPTY", new String[]{""} ),Status.ERROR);      
+        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_SERVICE_EAR_EMPTY", new String[]{""} ) );      
     }
     
     if( module_ == null || module_.getText().length() == 0 ) 
     {
       if( isClient_ )
       {
-        return new SimpleStatus("",msgUtils.getMessage("MSG_CLIENT_PROJECT_EMPTY", new String[]{moduleText} ),Status.ERROR);
+        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_CLIENT_PROJECT_EMPTY", new String[]{moduleText} ) );
       }
       else
       {
-        return new SimpleStatus("",msgUtils.getMessage("MSG_CLIENT_EAR_EMPTY", new String[]{moduleText} ),Status.ERROR);        	
+        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_CLIENT_EAR_EMPTY", new String[]{moduleText} ) );        	
       }
     }
       
@@ -619,11 +621,11 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     {
       if( isClient_ )
       {
-        return new SimpleStatus("",msgUtils.getMessage("MSG_CLIENT_EAR_EMPTY", new String[]{moduleText} ),Status.ERROR);
+        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_CLIENT_EAR_EMPTY", new String[]{moduleText} ) );
       }
       else
       {
-        return new SimpleStatus("",msgUtils.getMessage("MSG_SERVICE_EAR_EMPTY", new String[]{moduleText} ),Status.ERROR);        	
+        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_SERVICE_EAR_EMPTY", new String[]{moduleText} ) );        	
       }  
     }
     

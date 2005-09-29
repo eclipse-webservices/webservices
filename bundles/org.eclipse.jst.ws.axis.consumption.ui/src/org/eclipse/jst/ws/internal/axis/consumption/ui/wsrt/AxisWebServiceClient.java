@@ -12,7 +12,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasic
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisClientCommandsFragment;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
@@ -138,7 +137,6 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		registry.addMapping(AxisClientDefaultingCommand.class, "ValidationManager", BuildProjectCommand.class);
 		
 		registry.addMapping(Stub2BeanCommand.class, "ProxyBean", AxisClientOutputCommand.class, "ProxyBean", null);
-		registry.addMapping(AxisClientDefaultingCommand.class, "GenerateProxy", AxisClientCommandsFragment.class);
 //		registry.addMapping(AxisClientDefaultingCommand.class, "GenerateProxy", ClientExtensionOutputCommand.class);
 //		registry.addMapping(AxisClientDefaultingCommand.class, "SetEndpointMethod", ClientExtensionOutputCommand.class);
 	}

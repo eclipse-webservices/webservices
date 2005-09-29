@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.wizard.beans;
 
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.task.AddJarsToProjectBuildPathTask;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CheckAxisDeploymentDescriptorsTask;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
@@ -178,7 +177,6 @@ public class WSBeanAxisType implements CommandWidgetBinding
     //BeanConfigWidget - as source
 
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", CheckAxisDeploymentDescriptorsTask.class, "JavaWSDLParam", null);
-    dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", AddJarsToProjectBuildPathTask.class, "JavaWSDLParam", null);
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", Java2WSDLCommand.class, "JavaWSDLParam", null);       
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", WSDL2JavaCommand.class, "JavaWSDLParam", null);
 
@@ -188,7 +186,6 @@ public class WSBeanAxisType implements CommandWidgetBinding
     //AxisMappingsWidget - as source
 
     dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", CheckAxisDeploymentDescriptorsTask.class, "JavaWSDLParam", null);
-    dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", AddJarsToProjectBuildPathTask.class, "JavaWSDLParam", null);
     dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", Java2WSDLCommand.class, "JavaWSDLParam", null);       
     dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", WSDL2JavaCommand.class, "JavaWSDLParam", null);    
     

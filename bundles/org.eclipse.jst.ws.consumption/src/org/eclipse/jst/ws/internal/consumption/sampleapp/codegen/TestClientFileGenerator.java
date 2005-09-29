@@ -11,11 +11,10 @@
 
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.StringUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.Generator;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
-import org.eclipse.wst.ws.internal.datamodel.Element;
 
 
 /**
@@ -52,10 +51,8 @@ public class TestClientFileGenerator extends Generator
   }
 
   //takes in a bean node
-   public Status visit (Object object)
+   public IStatus visit (Object object)
    {
-      Element beanElement = (Element)object;
-      
       fbuffer.append("<%@page contentType=\"text/html;charset=UTF-8\"%>");
       fbuffer.append("<HTML>" + StringUtils.NEWLINE);
       fbuffer.append("<HEAD>" + StringUtils.NEWLINE);
@@ -86,6 +83,6 @@ public class TestClientFileGenerator extends Generator
       fbuffer.append("</FRAMESET>" + StringUtils.NEWLINE);
       fbuffer.append("</HTML>");
 
-      return new SimpleStatus("");
+      return Status.OK_STATUS;
   }
 }

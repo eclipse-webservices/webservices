@@ -60,8 +60,8 @@ public class RemoveSubQueryItemAction extends Action
   
   public boolean run()
   {
-    String subQueryKey = (String)propertyTable_.get(UDDIActionInputs.SUBQUERY_KEY);
-    String subQueryListKey = (String)propertyTable_.get(UDDIActionInputs.SUBQUERY_LIST_KEY);
+    propertyTable_.get(UDDIActionInputs.SUBQUERY_KEY);
+    propertyTable_.get(UDDIActionInputs.SUBQUERY_LIST_KEY);
     int subQueryListItemId = Integer.parseInt((String)propertyTable_.get(UDDIActionInputs.SUBQUERY_LIST_ITEMID));
     UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
     NodeManager navigatorManager = uddiPerspective.getNavigatorManager();

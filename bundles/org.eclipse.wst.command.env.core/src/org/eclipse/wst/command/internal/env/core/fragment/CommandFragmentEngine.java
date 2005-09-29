@@ -11,7 +11,10 @@
 package org.eclipse.wst.command.internal.env.core.fragment;
 
 import java.util.Stack;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.provisional.env.core.CommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.CommandManager;
@@ -19,8 +22,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 
@@ -37,7 +39,7 @@ public class CommandFragmentEngine implements CommandManager
   private FragmentListener peekFragmentListener_;
   private DataFlowManager  dataManager_;
   private Environment      environment_;
-  private Status           lastStatus_;
+  private IStatus          lastStatus_;
   
   /**
    * Creates a CommandFragmentEngine.
@@ -72,7 +74,7 @@ public class CommandFragmentEngine implements CommandManager
    * 
    * @return the Status from the last Command executed.
    */
-  public Status getLastStatus()
+  public IStatus getLastStatus()
   {
     return lastStatus_;
   }
@@ -167,20 +169,20 @@ public class CommandFragmentEngine implements CommandManager
    * command fragment stack and does execute any command associated with
    * a CommandFragment.
    */
-  public void moveForwardToNextStop()
+  public void moveForwardToNextStop( IProgressMonitor monitor )
   {
   	CommandListEntry topEntry        = (CommandListEntry)commandStack_.lastElement();  	
   	int              parentIndex     = topEntry.parentIndex_;
   	CommandFragment  currentFragment = topEntry.fragment_;  
-  	boolean          continueExecute = visitTop();
+  	boolean          continueExecute = visitTop( monitor );
   	CommandFragment  childFragment    = currentFragment.getFirstSubFragment();
-  	
+  	    
   	// If the current fragment has child fragments we need to traverse these children.
   	while( childFragment != null && continueExecute )
   	{
   	  parentIndex = commandStack_.size() - 1;
   	  addToStack( childFragment, parentIndex );
-  	  continueExecute = visitTop();
+  	  continueExecute = visitTop( monitor );
   	  currentFragment = childFragment;
   	  childFragment   = currentFragment.getFirstSubFragment();
   	}
@@ -214,7 +216,7 @@ public class CommandFragmentEngine implements CommandManager
   	  	// We have a new fragment that we need to add to the top of the stack.
   	  	addToStack( nextFragment, parentIndex );  	  	
   	    parentIndex     = commandStack_.size() - 1;  	
-  	    continueExecute = visitTop();
+  	    continueExecute = visitTop( monitor );
   	    currentFragment = null;  	  	
   	  }
   	}
@@ -293,7 +295,7 @@ public class CommandFragmentEngine implements CommandManager
   	return continueNavigate;
   }
     
-  private boolean visitTop()
+  private boolean visitTop( IProgressMonitor monitor )
   {  
   	CommandListEntry entry           = (CommandListEntry)commandStack_.lastElement();
   	boolean         continueNavigate = nextFragmentListener_.notify( entry.fragment_ );
@@ -306,9 +308,9 @@ public class CommandFragmentEngine implements CommandManager
       // Add any rules to the mapping registry before we execute the command.
       entry.fragment_.registerDataMappings( dataManager_.getMappingRegistry() );
    
-  	  lastStatus_ = runCommand( entry );
+  	  lastStatus_ = runCommand( entry, monitor );
   	  
-  	  if( lastStatus_.getSeverity() == Status.ERROR ) continueNavigate = false;
+  	  if( lastStatus_.getSeverity() == IStatus.ERROR ) continueNavigate = false;
   	}
   	
    	if( !continueNavigate ) entry.fragmentStopped_ = true;
@@ -322,10 +324,10 @@ public class CommandFragmentEngine implements CommandManager
     commandStack_.push( entry );
   }
   
-  private Status runCommand( CommandListEntry entry )
+  private IStatus runCommand( CommandListEntry entry, IProgressMonitor monitor )
   {
 	CommandFactory factory  = entry.fragment_.getCommandFactory();
-  	Status         status   = new SimpleStatus( "" );
+  	IStatus      status   = Status.OK_STATUS;
   	
   	if( factory != null )
   	{
@@ -342,16 +344,17 @@ public class CommandFragmentEngine implements CommandManager
   	      environment_.getLog().log(Log.INFO, "command", 5001, this, "runCommand", "Executing: " + cmd.getClass().getName());
   	  	    
  	        cmd.setEnvironment( environment_ );
-          status = convertIStatusToStatus(cmd.execute( null, null ) );
+          status = cmd.execute( monitor, null );
           
 		      entry.beforeExecute_ = false;
   	    }
   	    catch( Throwable exc )
   	    {
   	      MessageUtils utils           = new MessageUtils( "org.eclipse.wst.command.env.core.environment", this );
-  	      SimpleStatus unexpectedError = new SimpleStatus("id", exc.getMessage(), Status.ERROR, exc );
-  	      status = new SimpleStatus( "", utils.getMessage( "MSG_ERROR_UNEXPECTED_ERROR" ), new Status[]{unexpectedError} );
-  	      environment_.getStatusHandler().reportError( status );
+  	      IStatus      unexpectedError = StatusUtils.errorStatus( exc );
+          MultiStatus  parentStatus    = new MultiStatus( "id", 0, new IStatus[]{unexpectedError}, 
+                                                          utils.getMessage( "MSG_ERROR_UNEXPECTED_ERROR" ), null );
+  	      environment_.getStatusHandler().reportError( parentStatus );
   	    }
   	    finally
   	    {
@@ -369,45 +372,7 @@ public class CommandFragmentEngine implements CommandManager
   	
   	return status;
   }
-  
-  private static Status convertIStatusToStatus(IStatus istatus) 
-  {
-    Status status;
-    String message = istatus.getMessage();
-    IStatus[] children = istatus.getChildren();
-    int noOfChildren = children.length;
-    if (noOfChildren > 0) {
-      Status[] statusChildren = new Status[noOfChildren];
-      for (int i = 0; i < noOfChildren; i++) {
-        statusChildren[i] = convertIStatusToStatus(children[i]);
-      }
-
-      status = new SimpleStatus("", message, statusChildren);
-    } else {
-      int severity = istatus.getSeverity();
-      int statusSeverity = Status.OK;
-      switch (severity) {
-      case IStatus.ERROR:
-        statusSeverity = Status.ERROR;
-        break;
-      case IStatus.WARNING:
-        statusSeverity = Status.WARNING;
-        break;
-      case IStatus.INFO:
-        statusSeverity = Status.INFO;
-        break;
-      case IStatus.OK:
-        statusSeverity = Status.OK;
-        break;
-      default:
-      }
-      Throwable e = istatus.getException();
-      status = new SimpleStatus("", message, statusSeverity, e);
-    }
-
-    return status;
-  }
-  
+    
   private class CommandListEntry
   {
   	public CommandListEntry( CommandFragment fragment, int parentIndex )

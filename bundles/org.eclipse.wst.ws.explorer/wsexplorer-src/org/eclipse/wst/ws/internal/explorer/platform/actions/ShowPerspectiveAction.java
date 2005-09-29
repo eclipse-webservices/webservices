@@ -11,11 +11,12 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
-
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.util.HTMLUtils;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
 
 public class ShowPerspectiveAction extends LinkAction
 {
@@ -49,7 +50,7 @@ public class ShowPerspectiveAction extends LinkAction
     // Perform data validation.
     try
     {
-      int perspective = Integer.parseInt(perspectiveString);
+      Integer.parseInt(perspectiveString);
       propertyTable_.put(ActionInputs.PERSPECTIVE,perspectiveString);
       MultipartFormDataParser parser = new MultipartFormDataParser();
       parser.parseRequest(request,HTMLUtils.UTF8_ENCODING);

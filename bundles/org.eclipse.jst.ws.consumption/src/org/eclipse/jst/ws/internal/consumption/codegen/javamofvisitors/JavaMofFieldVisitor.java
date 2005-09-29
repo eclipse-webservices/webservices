@@ -13,7 +13,8 @@ package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jem.java.Field;
 import org.eclipse.jem.java.JavaClass;
@@ -25,8 +26,6 @@ import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 /**
@@ -69,9 +68,9 @@ public class JavaMofFieldVisitor implements Visitor
   * @param JavaParameter javaParameter that owns the type
   * @param VisitorAction Action to be performed on each method
   **/
-  public Status run ( Object javaclass, VisitorAction vAction)
+  public IStatus run ( Object javaclass, VisitorAction vAction)
   {
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
     JavaClass javaClass = (JavaClass)javaclass;     
 
     boolean holderClass = false;

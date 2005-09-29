@@ -13,12 +13,12 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.internal.webservice.WebServiceNavigatorGroupType;
@@ -32,8 +32,7 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
@@ -60,12 +59,12 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
     Environment env = getEnvironment();
     String pluginId = "org.eclipse.jst.ws.consumption.ui";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-    Status status = new SimpleStatus("");
+    IStatus status = Status.OK_STATUS;
 
     webServicesManager_ = new WebServicesManager();
     IStructuredSelection selection = getInitialSelection();
     if (selection == null) {
-      status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED"), Status.ERROR, null);
+      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED") );
       env.getStatusHandler().reportError(status);
       return status;
     }
@@ -75,7 +74,7 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
 
   }
 
-  public Status processHandlers(Environment env) {
+  public IStatus processHandlers(Environment env) {
     try {
       Vector handlers = new Vector();
       wsDescToHandlers_ = new Hashtable();
@@ -88,7 +87,7 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
   //      wsddResource_ = wsed.getWebServicesXmlResource();
 
       if (wsddResource_ == null) {
-        Status status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED"), Status.ERROR, null);
+        IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED") );
         env.getStatusHandler().reportError(status);
         return status;
       }
@@ -132,11 +131,12 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
         handlers_ = (HandlerTableItem[]) handlers.toArray(new HandlerTableItem[0]);
       }
     }
-    catch (Exception e) {
+    catch (Exception e) 
+    {
       e.printStackTrace();
-      return new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED"), Status.ERROR, e);
+      return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED"), e);
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
 
   public HandlerTableItem[] getHandlers() {

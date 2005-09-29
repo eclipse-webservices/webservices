@@ -60,7 +60,7 @@ public class RegFindServicesAdvancedAction extends FindAction
     boolean inputsValid = true;
     UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
     MessageQueue messageQueue = uddiPerspective.getMessageQueue();
-    RegistryElement regElement = (RegistryElement)regNode_.getTreeElement();
+    regNode_.getTreeElement();
 
     if (ownedChecked != null)
       propertyTable_.put(UDDIActionInputs.QUERY_INPUT_ADVANCED_SERVICE_OWNED,ownedChecked);

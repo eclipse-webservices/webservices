@@ -15,6 +15,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
@@ -22,7 +24,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jst.j2ee.webservice.wsdd.BeanLink;
 import org.eclipse.jst.j2ee.webservice.wsdd.internal.impl.PortComponentImpl;
 import org.eclipse.jst.j2ee.webservice.wsdd.internal.impl.ServiceImplBeanImpl;
@@ -43,8 +44,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
 public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget
@@ -53,7 +53,6 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
   private IProject           serverProject_ = null;
   private String             serverComponentName_ = null;
   private Composite          parent_ = null;
-  private IWizardContainer   context_ = null;
   private JavaResourceFilter filter_ = new JavaResourceFilter();
   private IResource          initialResource_ = null;
   private Listener statusListener;
@@ -261,19 +260,19 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
     return serverComponentName_;
   }
   
-  public Status getStatus()
+  public IStatus getStatus()
   {
     String beanClassName = beanClassText_.getText().trim();
     if (beanClassName == null || beanClassName.length() <= 0)
     {
       MessageUtils msgUtils = new MessageUtils(pluginId_ + ".plugin", this);
-      return new SimpleStatus("", msgUtils.getMessage("PAGE_MSG_BEAN_CANNOT_BE_EMPTY"), Status.ERROR);
+      return StatusUtils.errorStatus( msgUtils.getMessage("PAGE_MSG_BEAN_CANNOT_BE_EMPTY") );
     }
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
   
-  public Status validateSelection(IStructuredSelection objectSelection)
+  public IStatus validateSelection(IStructuredSelection objectSelection)
   {
-    return new SimpleStatus("");
+    return Status.OK_STATUS;
   }
 }

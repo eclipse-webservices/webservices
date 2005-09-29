@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -39,7 +40,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 
@@ -199,7 +199,7 @@ public class Stub2BeanInfo
       return javaHelpers.getQualifiedName();
   }
 
-  public void write(ProgressMonitor progressMonitor, StatusHandler statusMonitor) throws CoreException, IOException
+  public void write(IProgressMonitor progressMonitor, StatusHandler statusMonitor) throws CoreException, IOException
   {
     StringWriter sw = new StringWriter(2048);
     writePackage(sw);

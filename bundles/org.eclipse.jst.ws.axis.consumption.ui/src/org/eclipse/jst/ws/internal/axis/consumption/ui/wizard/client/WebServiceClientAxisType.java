@@ -16,7 +16,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.command.DefaultsForClient
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisClientCommandsFragment;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisProxyWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionOutputCommand;
@@ -53,7 +52,6 @@ public class WebServiceClientAxisType implements CommandWidgetBinding
     dataRegistry.addMapping( AxisClientDefaultingCommand.class, "JavaWSDLParam", AxisMappingsWidget.class, "JavaParameter", null);
     
     // AxisProxyWidget
-    dataRegistry.addMapping( AxisProxyWidget.class, "GenerateProxy", AxisClientCommandsFragment.class );
     dataRegistry.addMapping( AxisProxyWidget.class, "GenerateProxy", ClientExtensionOutputCommand.class );
     
     //AxisMappingsWidget

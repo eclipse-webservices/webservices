@@ -10,18 +10,17 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.Field;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.impl.FieldImpl;
-import org.eclipse.jst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.common.SamplePropertyDescriptor;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 
 
 
@@ -67,9 +66,9 @@ public class JavaMofTypeVisitor implements Visitor
   * @param JavaParameter javaParameter that owns the type
   * @param VisitorAction Action to be performed on each method
   **/
-  public Status run ( Object typeNavigator, VisitorAction vAction)
+  public IStatus run ( Object typeNavigator, VisitorAction vAction)
   {
-  	Status status = new SimpleStatus("");
+  	IStatus status = Status.OK_STATUS;
     if (typeNavigator instanceof JavaParameter){
 
       JavaParameter javaParameter = (JavaParameter)typeNavigator;
@@ -85,7 +84,7 @@ public class JavaMofTypeVisitor implements Visitor
       javaMofRef.setClientProject(clientProject);
       javaMofRef.setProxyBean(((JavaHelpers)pd.getPropertyType()).getQualifiedName());
       javaMofRef.setEnvironment( env_ );
-      status = EnvironmentUtils.convertIStatusToStatus(javaMofRef.execute( null, null ));
+      status = javaMofRef.execute( null, null );
       if (status.getSeverity()==Status.ERROR)
       	return status;
       
@@ -98,7 +97,7 @@ public class JavaMofTypeVisitor implements Visitor
       javaMofRef.setProxyBean(field.getJavaType().getQualifiedName());
       javaMofRef.setEnvironment( env_ );
      
-      status = EnvironmentUtils.convertIStatusToStatus(javaMofRef.execute( null, null ));
+      status = javaMofRef.execute( null, null );
       if (status.getSeverity()==Status.ERROR)
       	return status;
       

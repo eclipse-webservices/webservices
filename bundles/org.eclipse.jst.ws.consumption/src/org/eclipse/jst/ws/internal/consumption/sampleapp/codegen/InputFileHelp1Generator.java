@@ -12,11 +12,11 @@
 
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.StringUtils;
 import org.eclipse.jst.ws.internal.consumption.codegen.bean.ParameterVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.MethodElement;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 
 
@@ -59,11 +59,11 @@ public class InputFileHelp1Generator extends InputFileGenerator
   * Takes in an element
   * @param Object Takes in an object to be acted upon
   */
-  public Status visit (Object object)
+  public IStatus visit (Object object)
   {
      Element methodElement = (Element)object;
      MethodElement method = (MethodElement)methodElement;
-     if (method.getMethodOmmission()) return new SimpleStatus("");
+     if (method.getMethodOmmission()) return Status.OK_STATUS;
      
      ParameterVisitor parameterVisitor = new ParameterVisitor();
      fbuffer.append("case " + method.getNumberID()+ ":" + StringUtils.NEWLINE);
@@ -85,7 +85,7 @@ public class InputFileHelp1Generator extends InputFileGenerator
      fbuffer.append("break;" + StringUtils.NEWLINE);
       
 
-     return new SimpleStatus("");
+     return Status.OK_STATUS;
      
   
   }   

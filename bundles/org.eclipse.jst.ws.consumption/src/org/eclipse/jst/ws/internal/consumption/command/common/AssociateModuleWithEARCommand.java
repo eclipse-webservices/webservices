@@ -4,14 +4,14 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 public class AssociateModuleWithEARCommand extends EnvironmentalOperation
 {
@@ -30,7 +30,7 @@ public class AssociateModuleWithEARCommand extends EnvironmentalOperation
 	{
     Environment env = getEnvironment();
     
-		Status status = new SimpleStatus("");
+		IStatus status = Status.OK_STATUS;
 		IProject moduleProject = null;
 		IProject earProject = null;
 
@@ -48,7 +48,7 @@ public class AssociateModuleWithEARCommand extends EnvironmentalOperation
 		
 		// ensure modules are associated otherwise report error
 		if (!J2EEUtils.isComponentAssociated(earProject, ear_, moduleProject, module_)){
-			status = new SimpleStatus("", msgUtils_.getMessage("MSG_ERROR_UNABLE_TO_ASSOCIATE", new String[]{module_, ear_}), Status.ERROR);
+			status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_UNABLE_TO_ASSOCIATE", new String[]{module_, ear_}) );
 			if (env!=null)
 				env.getStatusHandler().reportError(status);
 		    return status; 
