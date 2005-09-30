@@ -26,7 +26,6 @@ import org.eclipse.wst.server.core.ServerCore;
 public class StartServerCommand extends EnvironmentalOperation
 {
   private MessageUtils msgUtils_;
-  private IProgressMonitor localMonitor;
   private Log log;
   private boolean forcePublish_;
   private boolean doAsyncPublish_;
@@ -64,7 +63,6 @@ public class StartServerCommand extends EnvironmentalOperation
       return status;
     }
 
-    localMonitor = monitor;
     int serverState = server.getServerState();
     int publishState = server.getServerPublishState();
     
@@ -74,7 +72,7 @@ public class StartServerCommand extends EnvironmentalOperation
       case IServer.PUBLISH_STATE_INCREMENTAL:
         if (server.canPublish().getSeverity() == IStatus.OK)
         {
-          status = publish(server, IServer.PUBLISH_INCREMENTAL);
+          status = publish(server, IServer.PUBLISH_INCREMENTAL, monitor );
           if (status.getSeverity() == Status.ERROR)
           {
             env.getStatusHandler().reportError(status);
@@ -85,7 +83,7 @@ public class StartServerCommand extends EnvironmentalOperation
       case IServer.PUBLISH_STATE_FULL:
         if (server.canPublish().getSeverity() == IStatus.OK)
         {
-          status = publish(server, IServer.PUBLISH_FULL);
+          status = publish(server, IServer.PUBLISH_FULL, monitor );
           if (status.getSeverity() == Status.ERROR)
           {
             env.getStatusHandler().reportError(status);
@@ -97,7 +95,7 @@ public class StartServerCommand extends EnvironmentalOperation
       case IServer.PUBLISH_STATE_UNKNOWN:
         if (server.canPublish().getSeverity() == IStatus.OK)
         {
-          status = publish(server, IServer.PUBLISH_INCREMENTAL);
+          status = publish(server, IServer.PUBLISH_INCREMENTAL, monitor );
           if (status.getSeverity() == Status.ERROR)
           {
             env.getStatusHandler().reportError(status);
@@ -113,7 +111,7 @@ public class StartServerCommand extends EnvironmentalOperation
         {
           if( forcePublish_ )
           {
-            status = publish(server, IServer.PUBLISH_INCREMENTAL);
+            status = publish(server, IServer.PUBLISH_INCREMENTAL, monitor );
             
             if (status.getSeverity() == Status.ERROR)
             {
@@ -134,7 +132,7 @@ public class StartServerCommand extends EnvironmentalOperation
       case IServer.STATE_STOPPED:
         if (server.canStart(ILaunchManager.RUN_MODE).getSeverity()==IStatus.OK)
         {
-          status = start(server);
+          status = start(server, monitor );
           if (status.getSeverity() == Status.ERROR)
           {
             env.getStatusHandler().reportError(status);
@@ -154,7 +152,7 @@ public class StartServerCommand extends EnvironmentalOperation
     	
     	if (publishState != IServer.PUBLISH_STATE_NONE && shouldRestart && server.canRestart(ILaunchManager.RUN_MODE).getSeverity()==IStatus.OK)    	  
         {
-          status = restart(server);
+          status = restart(server, monitor );
           if (status.getSeverity() == Status.ERROR)
           {
             env.getStatusHandler().reportError(status);
@@ -166,11 +164,11 @@ public class StartServerCommand extends EnvironmentalOperation
     return status;
   }
 
-  private IStatus publish(final IServer server, final int kind)
+  private IStatus publish(final IServer server, final int kind, IProgressMonitor monitor )
   {
     IStatus status = Status.OK_STATUS;
     final IStatus[] istatus = new IStatus[1]; 
-    localMonitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_PUBLISHING_SERVER"));
+    monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_PUBLISHING_SERVER"));
     IRunnableWithProgress runnable = new IRunnableWithProgress()
 	{
   		public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
@@ -187,7 +185,7 @@ public class StartServerCommand extends EnvironmentalOperation
 		}
 		else
 		{
-		  runnable.run( localMonitor );
+		  runnable.run( monitor );
 		}
 		
 	}
@@ -213,13 +211,13 @@ public class StartServerCommand extends EnvironmentalOperation
     return status;
   }
 
-  private IStatus restart(IServer server)
+  private IStatus restart(IServer server, IProgressMonitor monitor )
   {
     IStatus status = Status.OK_STATUS;
     try
     {
-      localMonitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
-      server.synchronousRestart(ILaunchManager.RUN_MODE, localMonitor);
+      monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
+      server.synchronousRestart(ILaunchManager.RUN_MODE, monitor);
       log.log(Log.INFO, 5052, this, "execute", "IServer=" + server + ", Restart command completed");
       return status;
     } catch (CoreException e)
@@ -230,13 +228,13 @@ public class StartServerCommand extends EnvironmentalOperation
 
   }
 
-  private IStatus start(IServer server)
+  private IStatus start(IServer server, IProgressMonitor monitor )
   {
     IStatus status = Status.OK_STATUS;
     try
     {
-      localMonitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
-      server.synchronousStart(ILaunchManager.RUN_MODE, localMonitor);
+      monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
+      server.synchronousStart(ILaunchManager.RUN_MODE, monitor);
       log.log(Log.INFO, 5053, this, "execute", "IServer=" + server + ", Start command completed");
       return status;
     } catch (CoreException e)

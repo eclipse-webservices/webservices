@@ -32,7 +32,7 @@ public class PreClientRunCommand extends EnvironmentalOperation
     StartServerCommand command = new StartServerCommand();
     command.setServerInstanceId(webServiceClient_.getWebServiceClientInfo().getServerInstanceId());
     command.setEnvironment( environment );
-    IStatus status = command.execute( null, null );
+    IStatus status = command.execute( monitor, null );
     if (status.getSeverity()==Status.ERROR)
     {
       environment.getStatusHandler().reportError( status );       

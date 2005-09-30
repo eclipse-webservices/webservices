@@ -21,7 +21,9 @@ public class StatusUtils
   
   public static IStatus errorStatus( Throwable exc )
   {
-    return new Status( IStatus.ERROR, "id", 0, exc.getMessage(), exc );
+    String message = exc.getMessage();
+    
+    return new Status( IStatus.ERROR, "id", 0, message == null ? "" : message, exc );
   }
   
   public static IStatus errorStatus( String message, Throwable exc )
