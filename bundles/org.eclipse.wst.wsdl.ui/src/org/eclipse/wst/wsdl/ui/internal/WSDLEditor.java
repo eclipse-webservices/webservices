@@ -193,10 +193,11 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
       setActivePage(pageIndexToShow);
       getSelectionManager().setSelection(new StructuredSelection(getDefinition()));
     }
-    catch (PartInitException exception)
+    catch (PartInitException e)
     {
-      throw new SourceEditingRuntimeException(exception, WSDLEditorPlugin.getWSDLString("An_error_has_occurred_when1_ERROR_")); //$NON-NLS-1$ = "An error has occurred when initializing the input for the the editor's source page."
-    }
+		// log for now, unless we find reason not to
+		Logger.log(Logger.INFO, e.getMessage());
+   }
     // TODO: add a catch block here for any exception the design page throws and
     // convert it into a more informative message.
   }
