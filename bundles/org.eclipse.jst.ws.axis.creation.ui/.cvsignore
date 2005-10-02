@@ -2,3 +2,4 @@ bin
 build.xml
 temp.folder
 wss-axis-ui.jar
+@dot
