@@ -43,6 +43,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IGotoMarker;
+import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.texteditor.IDocumentProviderExtension;
 import org.eclipse.wst.common.ui.provisional.editors.PostMultiPageEditorSite;
 import org.eclipse.wst.common.ui.provisional.editors.PostSelectionMultiPageEditorPart;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
@@ -645,16 +647,6 @@ public class WSDLMultiPageEditorPart extends PostSelectionMultiPageEditorPart im
 		// TextViewer to set us straight
 		super.setInput(input);
 		setPartName(input.getName());
-	}
-
-	/**
-	 * IExtendedMarkupEditor method
-	 */
-	public IStatus validateEdit(Shell context) {
-		if (getTextEditor() == null)
-			return new Status(IStatus.ERROR, WSDLEditorPlugin.PLUGIN_ID, IStatus.INFO, "", null); //$NON-NLS-1$
-
-		return getTextEditor().validateEdit(context);
 	}
 
 }
