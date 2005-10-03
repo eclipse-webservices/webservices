@@ -43,8 +43,6 @@ import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
-import org.eclipse.wst.common.componentcore.resources.ComponentHandle;
-import org.eclipse.wst.common.componentcore.resources.IFlexibleProject;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
@@ -233,12 +231,9 @@ public final class J2EEUtils {
 		List v = new ArrayList();
 		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
 		for (int i = 0; i < projects.length; i++) {
-		  IFlexibleProject fp = ComponentCore.createFlexibleProject(projects[i]);
-          IVirtualComponent[] vcs = fp.getComponents();
-          for (int j=0;j<vcs.length;j++){
-             v.add(vcs[j]);
+          IVirtualComponent vc = ComponentCore.createComponent(projects[i]);
+          v.add(vc);
           }
-		}
 
 		return (IVirtualComponent[])v.toArray(new IVirtualComponent[0]);
 	}
@@ -294,12 +289,9 @@ public final class J2EEUtils {
 		//get all components in the project
 		List v = new ArrayList();		
 		try {
-			IFlexibleProject flex = ComponentCore.createFlexibleProject(project);
-			IVirtualComponent[] components = flex.getComponents();
-			for (int i=0;i<components.length;i++){
-				if (isEARComponent(project, components[i].getName())){
-					v.add(components[i]);
-				}
+			IVirtualComponent component = ComponentCore.createComponent(project);
+			if (isEARComponent(component)){
+				v.add(component);
 			}
 		}
 		catch (Exception e){
@@ -319,13 +311,11 @@ public final class J2EEUtils {
 		//get all components in the project
 		List v = new ArrayList();
 		try {
-			IFlexibleProject flex = ComponentCore.createFlexibleProject(project);
-			IVirtualComponent[] components = flex.getComponents();
-			for (int i=0;i<components.length;i++){
-				if (isWebComponent(project, components[i].getName())){
-					v.add(components[i]);
-				}
-			}			
+			IVirtualComponent component = ComponentCore.createComponent(project);
+			
+				if (isWebComponent(component)){
+					v.add(component);
+				}		
 
 		}
 		catch (Exception e){
@@ -385,18 +375,15 @@ public final class J2EEUtils {
 		//get all components in the project of type componentTypeId
 		List v = new ArrayList();
 		try {
-			IFlexibleProject flex = ComponentCore.createFlexibleProject(project);
-			IVirtualComponent[] components = flex.getComponents();
-			for (int i=0;i<components.length;i++){
-				IVirtualComponent vc = ComponentCore.createComponent(project, components[i].getName());
-				if ( vc.getComponentTypeId().equals(componentTypeId))
-				{
-					v.add(components[i]);
-				}
-				//if (isWebComponent(project, components[i].getName())){
-					//v.add(components[i]);
-				//}
-			}			
+
+			IVirtualComponent vc = ComponentCore.createComponent(project);	
+			if ( vc.getComponentTypeId().equals(componentTypeId))
+			{
+				v.add(vc);
+			}
+			//if (isWebComponent(project, components[i].getName())){
+				//v.add(components[i]);
+			//}		
 
 		}
 		catch (Exception e){
@@ -800,13 +787,11 @@ public final class J2EEUtils {
 		
 		//get all components in the project
 		List v = new ArrayList();
+		IVirtualComponent component = ComponentCore.createComponent(project);
 		try {
-			IFlexibleProject flex = ComponentCore.createFlexibleProject(project);
-			IVirtualComponent[] comps = flex.getComponents();
-			for (int i=0;i<comps.length;i++){
-				if (isEJBComponent(comps[i]))
-					v.add(comps[i]);
-			}
+			if (isEJBComponent(component)){
+				v.add(component);
+			}	
 		}
 		catch (Exception e){
 			//handle exception
@@ -825,12 +810,11 @@ public final class J2EEUtils {
 		//get all components in the project
 		List v = new ArrayList();
 		try {
-			IFlexibleProject flex = ComponentCore.createFlexibleProject(project);
-			IVirtualComponent[] comps = flex.getComponents();
-			for (int i=0;i<comps.length;i++){
-				if (isAppClientComponent(comps[i]))
-					v.add(comps[i]);
-			}
+			IVirtualComponent component = ComponentCore.createComponent(project);
+			
+				if (isAppClientComponent(component)){
+					v.add(component);
+				}	
 		}
 		catch (Exception e){
 			//handle exception
@@ -1002,16 +986,13 @@ public final class J2EEUtils {
 	public static void associateComponentToEAR(IProject project, String componentName,
 							IProject earProject, String earComponentName) {
 		
-        IFlexibleProject flexearProj = ComponentCore.createFlexibleProject(earProject);
-		ComponentHandle earHandle = flexearProj.getComponent(earComponentName).getComponentHandle();
-		IFlexibleProject flexcompProj = ComponentCore.createFlexibleProject(project);
-		ComponentHandle compHandle = flexcompProj.getComponent(componentName).getComponentHandle();
         IDataModel addComponentToEARDataModel = DataModelFactory.createDataModel(new AddComponentToEnterpriseApplicationDataModelProvider());
-		addComponentToEARDataModel.setProperty(ICreateReferenceComponentsDataModelProperties.SOURCE_COMPONENT_HANDLE, earHandle);
-		
-        List modList = (List) addComponentToEARDataModel.getProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENTS_HANDLE_LIST);
-        modList.add(compHandle);
-		addComponentToEARDataModel.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENTS_HANDLE_LIST, modList);
+		IVirtualComponent earComp = ComponentCore.createComponent(earProject);
+        addComponentToEARDataModel.setProperty(ICreateReferenceComponentsDataModelProperties.SOURCE_COMPONENT, earComp);
+        List modList = (List) addComponentToEARDataModel.getProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST);
+        IVirtualComponent targetComp = ComponentCore.createComponent(project);
+        modList.add(targetComp);
+		addComponentToEARDataModel.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST, modList);
         
 		try {
 			addComponentToEARDataModel.getDefaultOperation().execute(null, null);
@@ -1049,10 +1030,9 @@ public final class J2EEUtils {
 		
 		IPath modulePath = null;
 		try {
-          IFlexibleProject fp = ComponentCore.createFlexibleProject(project);
-          IVirtualComponent[] vcs = fp.getComponents();
-		  if (vcs.length!=0) {
-            modulePath = vcs[0].getRootFolder().getWorkspaceRelativePath();
+          IVirtualComponent vc = ComponentCore.createComponent(project);
+		  if (ModuleCoreNature.isFlexibleProject(project)) {
+            modulePath = vc.getRootFolder().getWorkspaceRelativePath();
 		  }
 		}
 		catch(Exception ex){}
@@ -1113,48 +1093,24 @@ public final class J2EEUtils {
 	public static String getFirstWebModuleName(IProject project){
       String moduleName = null;
       try {
-        IFlexibleProject fp = ComponentCore.createFlexibleProject(project);
-        IVirtualComponent[] vcs = fp.getComponents();
-        if (vcs.length!=0)
-          moduleName = vcs[0].getName();
+        IVirtualComponent vc = ComponentCore.createComponent(project);
+        moduleName = vc.getName();
       }
       catch(Exception ex){}
   
       return moduleName;  			
 	}
 	
-
-	/**
-	 * True if the component is a valid Web component
-	 * @param project
-	 * @param componentName
-	 * @return
-	 */
-	public static boolean isWebComponent(IProject project, String componentName) {
-    IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
-    return isWebComponent(vc);
-	}
 	
 	public static boolean isWebComponent(IVirtualComponent comp){
-    if ( comp.getComponentTypeId().equals(IModuleConstants.JST_WEB_MODULE)){
+    if (IModuleConstants.JST_WEB_MODULE.equals(comp.getComponentTypeId())){
       return true;
     }
     return false;
   }
-
-	/**
-	 * True is the component is a valid EAR component
-	 * @param project
-	 * @param componentName
-	 * @return
-	 */
-	public static boolean isEARComponent(IProject project, String componentName){
-    IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
-    return isEARComponent(vc);
-	}
 	
 	public static boolean isEARComponent(IVirtualComponent comp){
-    if (comp.getComponentTypeId().equals(IModuleConstants.JST_EAR_MODULE)){
+    if (IModuleConstants.JST_EAR_MODULE.equals(comp.getComponentTypeId())){
       return true;
     }
     return false;
@@ -1176,39 +1132,17 @@ public final class J2EEUtils {
       return true;
     }
     return false;
-	}
-	
-	/**
-	 * True if the component is a true Application client component
-	 * @param project
-	 * @param componentName
-	 * @return
-	 */
-	public static boolean isAppClientComponent(IProject project, String componentName) {
-    IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
-    return isAppClientComponent(vc);
 	}	
 
 	public static boolean isAppClientComponent(IVirtualComponent comp){
-    if (comp.getComponentTypeId().equals(IModuleConstants.JST_APPCLIENT_MODULE)){
+    if (IModuleConstants.JST_APPCLIENT_MODULE.equals(comp.getComponentTypeId())){
       return true;
     }
     return false;
 	}
 	
-	/**
-	 * True if the component is a valid Java component
-	 * @param project
-	 * @param componentName
-	 * @return
-	 */
-	public static boolean isJavaComponent(IProject project, String componentName) {
-    IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
-    return isJavaComponent(vc);
-	}
-	
 	public static boolean isJavaComponent(IVirtualComponent comp){
-    if (comp.getComponentTypeId().equals(IModuleConstants.JST_UTILITY_MODULE)){
+    if (IModuleConstants.JST_UTILITY_MODULE.equals(comp.getComponentTypeId())){
       return true;
     }
     return false;
@@ -1278,6 +1212,50 @@ public final class J2EEUtils {
 		default:
 			return new Integer(J2EEVersionConstants.EJB_2_0_ID);
 		}			
+	}
+
+	/**
+	 * True if the component is a valid Java component
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static boolean isJavaComponent(IProject project, String componentName) {
+	IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+	return isJavaComponent(vc);
+	}
+
+	/**
+	 * True if the component is a valid Web component
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static boolean isWebComponent(IProject project, String componentName) {
+	IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+	return isWebComponent(vc);
+	}
+
+	/**
+	 * True if the component is a true Application client component
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static boolean isAppClientComponent(IProject project, String componentName) {
+	IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+	return isAppClientComponent(vc);
+	}
+
+	/**
+	 * True is the component is a valid EAR component
+	 * @param project
+	 * @param componentName
+	 * @return
+	 */
+	public static boolean isEARComponent(IProject project, String componentName){
+	IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+	return isEARComponent(vc);
 	}
 	
 }

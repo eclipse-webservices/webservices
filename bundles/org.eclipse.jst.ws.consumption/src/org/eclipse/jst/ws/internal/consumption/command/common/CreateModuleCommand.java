@@ -24,7 +24,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
@@ -134,10 +133,10 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new WebComponentCreationDataModelProvider());
-
-		  if (supportMultipleModules){
-			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
-		  }		  
+//TODO Mode has been removed
+//		  if (supportMultipleModules){
+//			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
+//		  }		  
 		  
 		  projectInfo.setProperty(IWebComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)
@@ -167,9 +166,10 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new EarComponentCreationDataModelProvider());
-		  if (supportMultipleModules){
-			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
-		  }
+//		TODO Mode has been removed
+		  //		  if (supportMultipleModules){
+//			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
+//		  }
 		  projectInfo.setProperty(IEarComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)
               projectInfo.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
@@ -195,9 +195,10 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new EjbComponentCreationDataModelProvider());
-		  if (supportMultipleModules){
-			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
-		  }
+//		TODO Mode has been removed
+		  //		  if (supportMultipleModules){
+//			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
+//		  }
 		  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)  
               projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
@@ -231,9 +232,10 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new AppClientComponentCreationDataModelProvider());
-		  if (supportMultipleModules){
-			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
-		  }
+//		TODO Mode has been removed
+		  //		  if (supportMultipleModules){
+//			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
+//		  }
 		  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)      
 		      projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);

@@ -91,23 +91,24 @@ public class ClasspathUtils {
 		
 		try {
 			String module;
+			IVirtualComponent comp = ComponentCore.createComponent(project);
 			mc = StructureEdit.getStructureEditForRead(project);
-			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			for (int i = 0; i < wbcs.length; i++) {
-				module = wbcs[i].getName();
+			WorkbenchComponent wbc = mc.getComponent();
+				module = wbc.getName();
 				// get the module's classpath
-				if (J2EEUtils.isEARComponent(project, module)) {
+				
+				if (J2EEUtils.isEARComponent(comp)) {
 					moduleClasspath = getClasspathForEARProject(project, module);
-				} else if (J2EEUtils.isWebComponent(project, module)) {
-					webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[i]);
+				} else if (J2EEUtils.isWebComponent(comp)) {
+					webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbc);
 					if (webModuleServerRoot != null) { 
 						webModuleClasses = webModuleServerRoot.getFolder(WEBINF).getFolder(DIR_CLASSES);
 						if (webModuleClasses != null)
 							moduleClasspath = new String[] { webModuleClasses.getLocation().toOSString() };
 					}
-				} else if (J2EEUtils.isJavaComponent(project, module)) {
+				} else if (J2EEUtils.isJavaComponent(comp)) {
 					needJavaClasspath = true;
-					webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbcs[i]);
+					webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbc);
 					if (webModuleServerRoot != null) { 
 						moduleClasspath = new String[] { webModuleServerRoot.getLocation().toOSString() };
 					}
@@ -117,9 +118,8 @@ public class ClasspathUtils {
 				for (int j = 0; j < moduleClasspath.length; j++) {
 					projectClasspath.add(moduleClasspath[j]);
 				}
-			}
 			if (!isDependent) {
-				if (J2EEUtils.isWebComponent(project, inputModule)) {
+				if (J2EEUtils.isWebComponent(comp)) {
 					needJavaClasspath = true;
 					moduleClasspath = getWEBINFLib(project, inputModule);
 					for (int j = 0; j < moduleClasspath.length; j++) {
@@ -158,16 +158,15 @@ public class ClasspathUtils {
 		try {
 			String module;
 			mc = StructureEdit.getStructureEditForRead(project);
-			WorkbenchComponent[] wbcs = mc.getWorkbenchModules();
-			for (int i = 0; i < wbcs.length; i++) {
-				module = wbcs[i].getName();
-				if (J2EEUtils.isEARComponent(project, module)) {
+			WorkbenchComponent wbc = mc.getComponent();
+			IVirtualComponent comp = ComponentCore.createComponent(project);
+				module = wbc.getName();
+				if (J2EEUtils.isEARComponent(comp)) {
 					moduleClasspath = getClasspathForEARProject(project, module);
 					for (int j = 0; j < moduleClasspath.length; j++) {
 						utilityJarsClasspath.add(moduleClasspath[j]);
 					}
 				}
-			}
 
 		} finally {
 			if (mc != null)

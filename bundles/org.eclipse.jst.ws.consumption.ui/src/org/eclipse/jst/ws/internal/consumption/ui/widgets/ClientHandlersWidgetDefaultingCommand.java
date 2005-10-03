@@ -15,6 +15,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
@@ -37,7 +38,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.resources.ComponentHandle;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
 /**
@@ -212,9 +212,8 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
       // get module name
       componentName_ = getComponentName();
       
-      ComponentHandle ch = ComponentHandle.create(project_, componentName_);
        
-      List clientWSResourceList = webServicesManager_.get13ServiceRefs(ch);
+      List clientWSResourceList = webServicesManager_.get13ServiceRefs(project_);
       if (!clientWSResourceList.isEmpty())
         wsClientRes_ = (WebServicesResource)clientWSResourceList.get(0);
 
