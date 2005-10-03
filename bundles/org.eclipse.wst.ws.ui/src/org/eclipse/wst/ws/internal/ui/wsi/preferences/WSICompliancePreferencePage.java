@@ -47,27 +47,14 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
   private Label wsi_ssbp_Label_;
   private Combo wsi_ssbp_Types_;
   
-  /*CONTEXT_ID PWSI0001 for the stop WS-I SSBP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_SSBP_COMBO_STOP_NON_WSI = WSUIPlugin.ID + ".PWSI0001";
-  /*CONTEXT_ID PWSI0002 for the warn WS-I SSBP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_SSBP_COMBO_WARN_NON_WSI = WSUIPlugin.ID + ".PWSI0002";
-  /*CONTEXT_ID PWSI0003 for the ignore WS-I SSBP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_SSBP_COMBO_IGNORE_NON_WSI = WSUIPlugin.ID + ".PWSI0003";
   /*CONTEXT_ID PWSI0004 for the WS-I SSBP type combo box on the WS-I AP Non compliance Preference Page*/
   private String INFOPOP_PWSI_SSBP_COMBO_TYPE = WSUIPlugin.ID + ".PWSI0004";
-  
+  /*CONTEXT_ID PWSI0008 for the WS-I AP type combo box on the WS-I AP Non compliance Preference Page*/
+  private String INFOPOP_PWSI_AP_COMBO_TYPE = WSUIPlugin.ID + ".PWSI0008";
+      
   private Label wsi_ap_Label_;
   private Combo wsi_ap_Types_;
   
-  /*CONTEXT_ID PWSI0005 for the stop WS-I AP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_AP_COMBO_STOP_NON_WSI = WSUIPlugin.ID + ".PWSI0005";
-  /*CONTEXT_ID PWSI0006 for the warn WS-I AP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_AP_COMBO_WARN_NON_WSI = WSUIPlugin.ID + ".PWSI0006";
-  /*CONTEXT_ID PWSI0007 for the ignore WS-I AP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_AP_COMBO_IGNORE_NON_WSI = WSUIPlugin.ID + ".PWSI0007";
-  /*CONTEXT_ID PWSI0008 for the WS-I AP type combo box on the WS-I AP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_AP_COMBO_TYPE = WSUIPlugin.ID + ".PWSI0008";
-    
   private int savedSSBPSetting_ = -1;
   
   private Group validationSelectionGroup_;

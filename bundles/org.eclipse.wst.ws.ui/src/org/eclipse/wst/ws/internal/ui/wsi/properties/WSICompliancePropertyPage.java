@@ -11,22 +11,22 @@
 package org.eclipse.wst.ws.internal.ui.wsi.properties;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
 
 
@@ -41,32 +41,13 @@ public class WSICompliancePropertyPage extends PropertyPage implements Selection
   private Label wsi_ssbp_Label_;
   private Combo wsi_ssbp_Types_;
   
-  /*CONTEXT_ID PWSI0001 for the stop WS-I SSBP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_SSBP_COMBO_STOP_NON_WSI = WSUIPlugin.ID + ".PWSI0001";
-  /*CONTEXT_ID PWSI0002 for the warn WS-I SSBP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_SSBP_COMBO_WARN_NON_WSI = WSUIPlugin.ID + ".PWSI0002";
-  /*CONTEXT_ID PWSI0003 for the ignore WS-I SSBP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_SSBP_COMBO_IGNORE_NON_WSI = WSUIPlugin.ID + ".PWSI0003";
   /*CONTEXT_ID PWSI0004 for the WS-I SSBP type combo box on the WS-I AP Non compliance Preference Page*/
   private String INFOPOP_PWSI_SSBP_COMBO_TYPE = WSUIPlugin.ID + ".PWSI0004";
-  
-  private Label wsi_ap_Label_;
-  private Combo wsi_ap_Types_;
-  
-  /*CONTEXT_ID PWSI0005 for the stop WS-I AP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_AP_COMBO_STOP_NON_WSI = WSUIPlugin.ID + ".PWSI0005";
-  /*CONTEXT_ID PWSI0006 for the warn WS-I AP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_AP_COMBO_WARN_NON_WSI = WSUIPlugin.ID + ".PWSI0006";
-  /*CONTEXT_ID PWSI0007 for the ignore WS-I AP Non compliance Preference Page*/
-  private String INFOPOP_PWSI_AP_COMBO_IGNORE_NON_WSI = WSUIPlugin.ID + ".PWSI0007";
   /*CONTEXT_ID PWSI0008 for the WS-I AP type combo box on the WS-I AP Non compliance Preference Page*/
   private String INFOPOP_PWSI_AP_COMBO_TYPE = WSUIPlugin.ID + ".PWSI0008";
-  
-  /*CONTEXT_ID PWSI0009 for the WS-I follow preference radio button the WS-I SSBP compliance project property Page*/
-  private String INFOPOPP_PWSI_RADIO_FOLLOW_WSI_SSBP_PREFERENCE = WSUIPlugin.ID + ".PWSI0009";
-  /*CONTEXT_ID PWSI0010 for the WS-I follow preference radio button the WS-I AP compliance project property Page*/
-  private String INFOPOPP_PWSI_RADIO_FOLLOW_WSI_AP_PREFERENCE = WSUIPlugin.ID + ".PWSI0010";
 
+  private Label wsi_ap_Label_;
+  private Combo wsi_ap_Types_;
   private int savedSSBPSetting_ = -1;
   
  /**
@@ -128,18 +109,6 @@ public class WSICompliancePropertyPage extends PropertyPage implements Selection
     initializeValues();
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);    
     return parent;
-  }
- 
-  private String getMessage(String key) 
-  {
-  		return WSUIPlugin.getMessage(key);
-  }
-
-  private Button createRadioButton( Composite parent, String text )
-  {
-    Button button = new Button( parent, SWT.RADIO );
-    button.setText( text );
-    return button;
   }
 
   /**
