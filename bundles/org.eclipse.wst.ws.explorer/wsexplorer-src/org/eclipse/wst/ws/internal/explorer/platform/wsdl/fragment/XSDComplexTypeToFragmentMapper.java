@@ -35,7 +35,7 @@ public class XSDComplexTypeToFragmentMapper extends XSDToFragmentMapper {
   private IXSDFragment getXSDComplexFragment(XSDToFragmentConfiguration config, String id, String name) {
     int minOccurs = config.getMinOccurs();
     int maxOccurs = config.getMaxOccurs();
-    IXSDComplexFragment frag;
+    
     if (minOccurs == maxOccurs)
       return new XSDComplexFixFragment(id, name, config, getController());
     else

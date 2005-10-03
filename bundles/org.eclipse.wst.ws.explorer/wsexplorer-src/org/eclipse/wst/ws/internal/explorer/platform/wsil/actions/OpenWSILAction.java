@@ -42,8 +42,6 @@ public class OpenWSILAction extends FormAction
   {
     String wsilURL = parser.getParameter(WsilActionInputs.WSIL_URL);
     String inspectionType = parser.getParameter(WsilActionInputs.WSIL_INSPECTION_TYPE);
-    WSILPerspective wsilPerspective = controller_.getWSILPerspective();
-    MessageQueue messageQueue = wsilPerspective.getMessageQueue();
     FormTool formTool = getSelectedFormTool();
     propertyTable_.put(WsilActionInputs.WSIL_URL, wsilURL);
     if (inspectionType != null && inspectionType.length() > 0)

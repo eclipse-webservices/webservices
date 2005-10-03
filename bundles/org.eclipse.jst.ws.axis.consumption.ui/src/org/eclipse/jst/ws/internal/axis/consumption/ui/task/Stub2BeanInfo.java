@@ -27,7 +27,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
@@ -182,15 +181,6 @@ public class Stub2BeanInfo
     return sb.toString();
   }
 
-  private String trimArraySymbol(String s)
-  {
-    int index = s.indexOf("[");
-    if (index != -1)
-      return s.substring(0, index);
-    else
-      return s;
-  }
-
   private String getFullyQualifiedName(JavaHelpers javaHelpers)
   {
     if (javaHelpers.isPrimitive())
@@ -217,7 +207,7 @@ public class Stub2BeanInfo
     sb = new StringBuffer(sb.toString().replace('.', '/'));
     sb.append(".java");
 
-    JavaEMFNature javaMOF = (JavaEMFNature)JavaEMFNature.createRuntime(clientProject_);
+    JavaEMFNature.createRuntime(clientProject_);
     ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
     IPath sourceFolderPath = null;
     IPath filePath = null;
@@ -231,8 +221,7 @@ public class Stub2BeanInfo
     else
     {
         // It's a plain old Java project
-    	IJavaProject javaProject = null;    	  
-		javaProject = JavaCore.create(clientProject_);
+    	JavaCore.create(clientProject_);
 
 		sourceFolderPath = ResourceUtils.getJavaSourceLocation(clientProject_);
 		IResource sourceFolderResource = ResourceUtils.findResource(sourceFolderPath);
@@ -371,7 +360,7 @@ public class Stub2BeanInfo
     */
     StringTokenizer st = new StringTokenizer(seis_.toString(), ";");
     StringTokenizer serviceTokens = new StringTokenizer(services_.toString(), ";");
-    StringTokenizer jndiNameTokens = new StringTokenizer(jndiNames_.toString(), ";");
+    //StringTokenizer jndiNameTokens = new StringTokenizer(jndiNames_.toString(), ";");
     StringTokenizer portTokens = new StringTokenizer(ports_.toString(), ";");
     /*
     if (st.hasMoreTokens())
@@ -476,27 +465,7 @@ public class Stub2BeanInfo
     }
   }
 
-  private void writeUseJNDI(Writer w) throws IOException
-  {
-    newLine(w);
-    w.write("public void useJNDI(boolean useJNDI) {");
-    incrementIndent();
-    newLine(w);
-    w.write("_useJNDI = useJNDI;");
-    newLine(w);
-    StringTokenizer st = new StringTokenizer(seis_.toString(), ";");
-    while (st.hasMoreTokens())
-    {
-      w.write(firstCharToLowerCase(getClassName(st.nextToken())));
-      w.write(" = null;");
-      newLine(w);
-    }
-    decrementIndent();
-    newLine(w);
-    w.write("}");
-    newLine(w);
-  }
-
+ 
   private void writeSEIGetters(Writer w) throws IOException
   {
     StringTokenizer st = new StringTokenizer(seis_.toString(), ";");
@@ -653,20 +622,6 @@ public class Stub2BeanInfo
     newLine(w);
     w.write("}");
     newLine(w);
-  }
-
-  private void createParentFolder(IResource res) throws CoreException
-  {
-    IResource parent = res.getParent();
-    if (parent != null && parent != res && parent instanceof IFolder)
-    {
-      IFolder folder = (IFolder)parent;
-      if (!folder.exists())
-      {
-        createParentFolder(folder);
-        folder.create(true, true, null);
-      }
-    }
   }
 
   private void incrementIndent()

@@ -66,8 +66,8 @@ public abstract class SOAPEncArrayFragment extends XSDGroupSeqFragment implement
     Element[] instanceDocument = new Element[groupIDs.length];
     StringBuffer attrName = new StringBuffer();
     StringBuffer attrValue = new StringBuffer();
-    StringBuffer attrArrayTypeName = new StringBuffer();
-    StringBuffer attrArrayTypeValue = new StringBuffer();
+//    StringBuffer attrArrayTypeName = new StringBuffer();
+//    StringBuffer attrArrayTypeValue = new StringBuffer();
     for (int i = 0; i < instanceDocument.length; i++)
     {
       int numInstances = 0;

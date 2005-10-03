@@ -235,25 +235,6 @@ public abstract class XSDFragment extends Fragment implements IXSDFragment
     return prefix;
   }
 
-  private Element removeDupNSFromChildren(Element element, String[] nsNames, String[] nsValues)
-  {
-    NodeList children = element.getChildNodes();
-    for (int i = 0; i < children.getLength(); i++)
-    {
-      Node child = children.item(i);
-      if (child instanceof Element)
-      {
-        for (int j = 0; j < nsNames.length; j++)
-        {
-          String childNSValue = ((Element)child).getAttribute(nsNames[j]);
-          if (childNSValue != null && childNSValue.equals(nsValues[j]))
-            ((Element)child).removeAttribute(nsNames[j]);
-        }
-      }
-    }
-    return element;
-  }
-
   protected Element setElementTagName(Element e, String tagName)
   {
     if (!e.getTagName().equals(tagName))

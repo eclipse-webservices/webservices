@@ -58,7 +58,7 @@ public class HTTPTransport
   private final String HTTP_HEADER_CONNECTION = "Connection";
   
   private final int HTTP_CODE_CONTINUE = 100;
-  private final int HTTP_CODE_OK = 200;
+  //private final int HTTP_CODE_OK = 200;
   private final int HTTP_CODE_EXCEPTION = 300;
 
   private final String IBM_WEB_SERVICES_EXPLORER = "IBM Web Services Explorer";
@@ -90,7 +90,6 @@ public class HTTPTransport
   private boolean maintainSession = false;
   private String cookie;
   private String cookie2;
-  private boolean useChunked = false;
   private HTTPResponse httpResponse;
 
   public String getHttpBasicAuthUsername()
@@ -466,8 +465,8 @@ public class HTTPTransport
     int port = url.getPort();
     String proxyHost = System.getProperty(SYS_PROP_HTTP_PROXY_HOST);
     int proxyPort = Integer.getInteger(SYS_PROP_HTTP_PROXY_PORT, DEFAULT_HTTP_PORT).intValue();
-    String proxyUserName = System.getProperty(SYS_PROP_HTTP_PROXY_USER_NAME);
-    String proxyPassword = System.getProperty(SYS_PROP_HTTP_PROXY_PASSWORD);
+//    String proxyUserName = System.getProperty(SYS_PROP_HTTP_PROXY_USER_NAME);
+//    String proxyPassword = System.getProperty(SYS_PROP_HTTP_PROXY_PASSWORD);
     if (url.getProtocol().equalsIgnoreCase(HTTPS))
     {
       proxyHost = System.getProperty(SYS_PROP_HTTPS_PROXY_HOST);

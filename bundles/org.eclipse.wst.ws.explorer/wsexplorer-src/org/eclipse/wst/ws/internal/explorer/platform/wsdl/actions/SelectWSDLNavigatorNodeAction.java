@@ -37,9 +37,7 @@ public class SelectWSDLNavigatorNodeAction extends SelectNodeAction
       ToolManager toolManager = selectedNode_.getToolManager();
       Tool selectedTool = toolManager.getSelectedTool();
       int nodeId = selectedNode_.getNodeId();
-      int toolId = selectedTool.getToolId();
-      int viewId = selectedNode_.getViewId();
-      int viewToolId = selectedNode_.getViewToolId();
+      
       if (selectedTool.getToolType() != ToolTypes.ACTION)
         return selectedTool.getSelectToolActionHref(true);
       else

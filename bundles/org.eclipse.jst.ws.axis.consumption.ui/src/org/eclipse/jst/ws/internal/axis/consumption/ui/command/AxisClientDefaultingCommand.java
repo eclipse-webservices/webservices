@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 
-import java.util.Vector;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -43,12 +41,10 @@ public class AxisClientDefaultingCommand extends EnvironmentalOperation
 	private boolean testProxySelected_;
 	private IServer clientExistingServer_;
 	private String clientServer_;
-	private String clientServerTypeId_;
 	private boolean clientIsExistingServer_;
 	private String proxyProjectFolder_;
 	private WebServicesParser webServicesParser_;
 	private String            moduleName_;
-	
 	
 	public AxisClientDefaultingCommand( String moduleName ) 
 	{
@@ -60,11 +56,12 @@ public class AxisClientDefaultingCommand extends EnvironmentalOperation
 		IStatus status = Status.OK_STATUS;
 		
 		clientExistingServer_ = getServerFromServerLabel();
-		if (clientExistingServer_ != null) {
-			clientServerTypeId_ = clientExistingServer_.getServerType().getId();
-		} else {
-			//TODO get the factory id for the type.
-		}
+//		if (clientExistingServer_ != null) {
+//			//TODO The following line should no longer be necessary.
+//			clientExistingServer_.getServerType().getId();
+//		} else {
+//			//TODO get the factory id for the type.
+//		}
 		//javaWSDLParam
 		javaWSDLParam_ = new JavaWSDLParameter();
 		
@@ -192,7 +189,6 @@ public class AxisClientDefaultingCommand extends EnvironmentalOperation
 		// rsk revisit if (clientIsExistingServer_)
 		{
 			// Maybe this should be in WebServiceServerRuntimeTypeRegistry
-			Vector serverIds = new Vector();
 			{
 				IServer[] servers = ServerCore.getServers();
 				if (servers != null && servers.length!=0) {

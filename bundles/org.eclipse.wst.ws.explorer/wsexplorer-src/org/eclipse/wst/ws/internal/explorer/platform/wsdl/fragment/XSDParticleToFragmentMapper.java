@@ -75,7 +75,7 @@ public class XSDParticleToFragmentMapper extends XSDToFragmentMapper {
     }
     config.setMinOccurs(minOccurs);
     config.setMaxOccurs(maxOccurs);
-    IXSDGroupFragment groupFragment = null;
+    
     switch (xsdModelGroup.getCompositor().getValue()) {
       case XSDCompositor.SEQUENCE: 
         if (minOccurs == maxOccurs)

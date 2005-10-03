@@ -36,7 +36,7 @@ public class WsilElement extends TreeElement
   private static final String NAMESPACE_WSDL = "http://schemas.xmlsoap.org/wsdl/";
   private static final String NAMESPACE_UDDI_V1 = "urn:uddi-org:api";
   private static final String NAMESPACE_UDDI_V2 = "urn:uddi-org:api_v2";
-  private static final String NAMESPACE_UDDI_BINDING = "http://schemas.xmlsoap.org/ws/2001/10/inspection/uddi/";
+  //private static final String NAMESPACE_UDDI_BINDING = "http://schemas.xmlsoap.org/ws/2001/10/inspection/uddi/";
   private static final String NAMESPACE_WSIL_INSPECTION = "http://schemas.xmlsoap.org/ws/2001/10/inspection/";
   /** ****************** Rels **************** */
   // Relation for a WSIL doucment and its link nodes

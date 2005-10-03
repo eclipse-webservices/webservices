@@ -42,13 +42,6 @@ public abstract class XSDToFragmentMapper {
   }
 
   protected IXSDFragment getXSDDefaultFragment(XSDToFragmentConfiguration config, String id, String name) {
-    XSDComponent xsdComponent = config.getXSDComponent();
-    String componentName = name;
-    if (xsdComponent instanceof XSDNamedComponent) {
-      String componentNameCopy = ((XSDNamedComponent)xsdComponent).getName();
-      if (componentNameCopy != null && componentNameCopy.length() > 0)
-        componentName = componentNameCopy;
-    }
     return new XSDDefaultFragment(id, name, config);
   }
 

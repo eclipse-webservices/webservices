@@ -14,16 +14,9 @@ import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
 import org.eclipse.wst.ws.internal.explorer.platform.util.*;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.util.*;
-
 import org.w3c.dom.*;
-import org.xml.sax.*;
-
 import javax.xml.parsers.*;
-import javax.wsdl.*;
-
 import java.util.*;
 import java.io.*;
 
@@ -41,36 +34,10 @@ public class InvokeWSDLSOAPOperationSourceAction extends InvokeWSDLSOAPOperation
     saveAsSelected_ = false;
   }
 
-  private final void fragmentize(StringBuffer fileContents) throws ParserConfigurationException,SAXException,UnsupportedEncodingException,IOException
-  {
-    fileContents.insert(0,DUMMY_WRAPPER_START_TAG).append(DUMMY_WRAPPER_END_TAG);
-    Element dummyWrapperElement = XMLUtils.stringToElement(fileContents.toString());          
-    Vector partElements = new Vector();
-    NodeList partNodes = dummyWrapperElement.getChildNodes();
-    for (int i=0;i<partNodes.getLength();i++)
-    {
-      org.w3c.dom.Node partNode = partNodes.item(i);
-      if (partNode instanceof Element)
-        partElements.addElement(partNode);
-    }
-    Element[] elementArray = new Element[partElements.size()];
-    partElements.copyInto(elementArray);
-    WSDLOperationElement operElement = (WSDLOperationElement)(getSelectedNavigatorNode().getTreeElement());
-    Iterator it = operElement.getOrderedBodyParts().iterator();
-    while (it.hasNext())
-    {
-      Part part = (Part)it.next();
-      IXSDFragment fragment = operElement.getFragment(part);
-      fragment.setParameterValuesFromInstanceDocuments(elementArray);
-    }                          
-  }
-
   protected boolean processParsedResults(MultipartFormDataParser parser) throws MultipartFormDataException
   {
     super.processParsedResults(parser);
-    WSDLPerspective wsdlPerspective = controller_.getWSDLPerspective();
     WSDLOperationElement operElement = (WSDLOperationElement)getSelectedNavigatorNode().getTreeElement();
-    MessageQueue messageQueue = wsdlPerspective.getMessageQueue();
     newFileSelected_ = false;
     saveAsSelected_ = false;
     /*  try and catch is needed if we are doing fragmentization.

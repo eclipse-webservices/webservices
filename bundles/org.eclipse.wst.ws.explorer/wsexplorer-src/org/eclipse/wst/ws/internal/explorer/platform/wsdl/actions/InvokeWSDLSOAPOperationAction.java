@@ -116,7 +116,6 @@ public abstract class InvokeWSDLSOAPOperationAction extends WSDLPropertiesFormAc
     {
       Part part = (Part)it.next();
       IXSDFragment frag = (IXSDFragment)operElement.getFragment(part);
-      XSDToFragmentConfiguration config = frag.getXSDToFragmentConfiguration();
       Element[] instanceDocuments = frag.genInstanceDocumentsFromParameterValues(!isUseLiteral,soapEnvelopeNamespaceTable, XMLUtils.createNewDocument(null));
       for (int j=0;j<instanceDocuments.length;j++)
       {

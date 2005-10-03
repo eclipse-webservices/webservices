@@ -47,7 +47,7 @@ public class ChunkedInputStream extends FilterInputStream
   {
     if (closed)
       return -1;
-    int cs = (int) Math.min(Integer.MAX_VALUE, chunkSize);
+
     int totalread = 0;
     int bytesread = 0;
     try

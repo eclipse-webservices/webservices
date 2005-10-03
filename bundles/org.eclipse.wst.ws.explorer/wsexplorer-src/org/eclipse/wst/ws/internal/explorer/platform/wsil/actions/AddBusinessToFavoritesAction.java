@@ -32,7 +32,6 @@ public class AddBusinessToFavoritesAction extends AddToFavoritesAction
   {
     int nodeID = Integer.parseInt((String) propertyTable_.get(ActionInputs.NODEID));
     int viewID = Integer.parseInt((String) propertyTable_.get(ActionInputs.VIEWID));
-    WSILPerspective wsilPerspective = controller_.getWSILPerspective();
     Node selectedNode = nodeManager_.getNode(nodeID);
     WsilElement selectedElement = (WsilElement) selectedNode.getTreeElement();
     Object obj = selectedElement.getAllUDDILinks().getElementWithViewId(viewID).getObject();

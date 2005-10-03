@@ -31,8 +31,6 @@ public class OpenWSDLAction extends WSDLPropertiesFormAction {
 
   protected boolean processParsedResults(MultipartFormDataParser parser) throws MultipartFormDataException {
     String wsdlUrl = parser.getParameter(ActionInputs.QUERY_INPUT_WSDL_URL);
-    WSDLPerspective wsdlPerspective = controller_.getWSDLPerspective();
-    MessageQueue messageQueue = wsdlPerspective.getMessageQueue();
     FormTool formTool = getSelectedFormTool();
     propertyTable_.put(ActionInputs.QUERY_INPUT_WSDL_URL, wsdlUrl);
     formTool.updatePropertyTable(propertyTable_);

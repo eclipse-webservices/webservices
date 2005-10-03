@@ -147,7 +147,6 @@ public class WSDLPerspective extends Perspective
     if (wsdlURLs != null && wsdlURLs.length > 0)
     {
       String wsdlURL = wsdlURLs[0];
-      Vector wsdlNodes = nodeManager_.getRootNode().getChildNodes();
       if (serviceQNameStrings != null && serviceQNameStrings.length > 0)
         preselectService(wsdlURL,serviceQNameStrings[0]);
       else

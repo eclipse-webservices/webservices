@@ -47,7 +47,6 @@ public class ResizeWSDLFramesAction extends ResizeFramesAction
     WSDLPerspective wsdlPerspective = controller_.getWSDLPerspective();
     
     // Set the new frameset sizes.
-    boolean saveFrameSettings = false;
     if (frameName.equals(WSDLFrameNames.WSDL_NAVIGATOR_CONTAINER))
     {
       wsdlPerspective.setActionsContainerFramesetRows(actionsContainerFramesetRows);

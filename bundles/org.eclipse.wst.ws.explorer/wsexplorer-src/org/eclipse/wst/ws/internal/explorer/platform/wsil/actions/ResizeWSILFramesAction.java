@@ -47,7 +47,6 @@ public class ResizeWSILFramesAction extends ResizeFramesAction
     WSILPerspective wsilPerspective = controller_.getWSILPerspective();
     
     // Set the new frameset sizes.
-    boolean saveFrameSettings = false;
     if (frameName.equals(WsilFrameNames.WSIL_NAVIGATOR_CONTAINER))
     {
       wsilPerspective.setActionsContainerFramesetRows(actionsContainerFramesetRows);

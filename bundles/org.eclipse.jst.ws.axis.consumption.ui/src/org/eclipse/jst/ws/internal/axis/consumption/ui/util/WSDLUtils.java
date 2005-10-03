@@ -34,14 +34,6 @@ import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
 public class WSDLUtils {
 
   private static final String DOT = ".";
-  private static final String SLASH = "/";
-  private static final String PROTOCOL_SUFFIX = "://";
-
-  /**
-   * Tokens in a namespace that are treated as package name part separators.
-   * Used by normalizePackageName.
-   */
-  private static final char[] pkgSeparators = { ':', '\\', '/' };
 
   /**
   * These are java keywords as specified at the following URL (sorted alphabetically).
@@ -170,7 +162,6 @@ public class WSDLUtils {
 
     WSDLFactory wsdlFactory;
     Definition definition = null;
-    String wsdlLocation = null;
     try {
       wsdlFactory = new WSDLFactoryImpl();
       WSDLReader wsdlReader = wsdlFactory.newWSDLReader();
@@ -493,22 +484,6 @@ public static String getPackageNameForPortType(Definition definition)
 //    return normalizePackageName(sb.toString(), DOT.charAt(0));
   }
 
-  /**
-   * normalizePackageName
-   * @param pkg
-   * @param separator
-   * @return normalize a String (package name) and repalcing 
-   *         ':', '\\', '/' by separator (DOT).
-   */
-  private static String normalizePackageName(String pkg, char separator)
-  {
-	if (pkg == null) {
-		return pkg;
-	}
-	for(int i=0; i<pkgSeparators.length; i++)
-	   pkg = pkg.replace(pkgSeparators[i], separator);
-	return pkg;
-  }
   
   public static String resolveDotInPortName(String name) {
 	if(name.indexOf(".")<0)

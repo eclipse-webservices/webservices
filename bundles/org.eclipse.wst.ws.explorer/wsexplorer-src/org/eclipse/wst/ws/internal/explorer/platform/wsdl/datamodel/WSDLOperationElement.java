@@ -46,12 +46,11 @@ public class WSDLOperationElement extends WSDLCommonElement
     encodingStyle_ = null;
     encodingNamespace_ = null;
 
-    Binding binding = bindingElement.getBinding();
     if (soapBinding != null)
       isDocumentStyle_ = "document".equals(soapBinding.getStyle());
     BindingOperation bindingOperation = getBindingOperation(bindingElement);
     SOAPOperation soapOperation = null;
-    String soapAction = "";
+    
     for (Iterator i = bindingOperation.getExtensibilityElements().iterator();i.hasNext();)
     {
       ExtensibilityElement e = (ExtensibilityElement)i.next();

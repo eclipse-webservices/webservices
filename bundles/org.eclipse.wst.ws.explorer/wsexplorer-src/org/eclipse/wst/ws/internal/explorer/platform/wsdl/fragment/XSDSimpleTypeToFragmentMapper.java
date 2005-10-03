@@ -138,7 +138,7 @@ public class XSDSimpleTypeToFragmentMapper extends XSDToFragmentMapper {
   }
 
   private IXSDFragment getXSDSimpleListFragment(XSDToFragmentConfiguration config, String id, String name) {
-    IXSDSimpleListFragment frag;
+    
     boolean isFixed = ((config.getMinOccurs() == config.getMaxOccurs()) && config.getMaxOccurs() != FragmentConstants.UNBOUNDED);
     if (isFixed)
       return new XSDSimpleListFixFragment(id, name, config, getController());
@@ -147,7 +147,7 @@ public class XSDSimpleTypeToFragmentMapper extends XSDToFragmentMapper {
   }
 
   private IXSDFragment getXSDSimpleUnionFragment(XSDToFragmentConfiguration config, String id, String name) {
-    IXSDSimpleUnionFragment frag;
+    
     boolean isFixed = ((config.getMinOccurs() == config.getMaxOccurs()) && config.getMaxOccurs() != FragmentConstants.UNBOUNDED);
     if (isFixed)
       return new XSDSimpleUnionFixFragment(id, name, config, getController());

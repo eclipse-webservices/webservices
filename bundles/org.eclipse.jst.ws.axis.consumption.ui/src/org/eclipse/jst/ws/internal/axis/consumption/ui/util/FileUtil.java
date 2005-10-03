@@ -31,10 +31,10 @@ public class FileUtil
   {
     InputStream is = null;
     FileOutputStream fos = null;
+    
     try
     {
       is = new FileInputStream(src);
-      byte buff[] = new byte[1024];
       fos = new FileOutputStream(dest);
       int c = 0;
       byte[] array = new byte[1024];

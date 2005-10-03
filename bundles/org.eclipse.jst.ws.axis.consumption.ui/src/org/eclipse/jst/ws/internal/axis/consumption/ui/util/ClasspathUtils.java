@@ -41,7 +41,6 @@ public class ClasspathUtils {
 
 	private static ClasspathUtils instance_; //$NON-NLS-1$
 	private static String DIR_CLASSES = "classes"; //$NON-NLS-1$
-	private static String DIR_LIB = "lib"; //$NON-NLS-1$
 	private static String DOT_JAR = ".jar"; //$NON-NLS-1$
 	private static String JAR = "jar"; //$NON-NLS-1$
 	private static String WEBINF_LIB = "/WEB-INF/lib"; //$NON-NLS-1$
@@ -88,7 +87,6 @@ public class ClasspathUtils {
 		boolean needJavaClasspath = false;
 		StructureEdit mc = null;
 		IFolder webModuleServerRoot = null;
-		String resourceLocation = null;
 		IFolder webModuleClasses = null;
 		
 		try {
@@ -202,8 +200,7 @@ public class ClasspathUtils {
 	private String[] getWEBINFLib(IProject project, String module) {
 		String[] webinfLibJars = new String[0];
 		ArrayList anArrayList = new ArrayList();
-		try {
-			String resourceLocation = null;
+		try {			
 					IVirtualComponent component = ComponentCore.createComponent(project, module);
 					if (component != null) {
 						
