@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsi.internal.core.wsdl.xsd;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.Hashtable;
 
@@ -47,7 +46,6 @@ public class InlineXSDResolver implements XMLEntityResolver
 	String publicId = resourceIdentifier.getPublicId();
 	String namespace = resourceIdentifier.getNamespace();
 	XMLInputSource is = null;
-	Reader reader = null;
 	String schema = null;
 	if (systemId == null)
 	{

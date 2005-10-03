@@ -364,7 +364,7 @@ public class BasicRules
       }
       if (str.charAt(idx) == '(')
       {
-        int idxNew = getLastComment(str, idx);
+        getLastComment(str, idx);
       }
       else if (str.charAt(idx) == ')')
       {
@@ -443,9 +443,7 @@ public class BasicRules
    */
   public static int getLastQuotedString(String str, int startIndex)
   {
-
     int index = startIndex;
-    int newIndex = 0;
 
     // if end if the string
     if (startIndex == str.length())

@@ -533,17 +533,6 @@ public class AnalyzerConfigReaderImpl implements AnalyzerConfigReader
   }
 
   /**
-   * Determine if this element matches specified local name in the analyzer config namespace.
-   */
-  private boolean isElement(
-    Element element,
-    String namespace,
-    String localName)
-  {
-    return XMLUtils.isElement(element, namespace, localName);
-  }
-
-  /**
    * Get message from resource bundle.
    */
   private String getMessage(String messageID, String defaultMessage)

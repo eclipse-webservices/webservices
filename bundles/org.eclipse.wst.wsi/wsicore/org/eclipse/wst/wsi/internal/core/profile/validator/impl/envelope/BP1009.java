@@ -147,8 +147,6 @@ public class BP1009 extends AssertionProcess
         // There is not a body or more than one bodies in the envlope.
         throw new AssertionPassException();
       }
-      Element soapBodyElem = (Element) soapBodyList.item(0);
-
       // find headers
       NodeList soapHeaders =
         doc.getElementsByTagNameNS(

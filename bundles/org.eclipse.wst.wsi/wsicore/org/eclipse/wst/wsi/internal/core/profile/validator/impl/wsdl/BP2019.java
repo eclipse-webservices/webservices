@@ -56,8 +56,6 @@ public class BP2019 extends AssertionProcess
   {
     boolean docLitFound = false;
     String errantElements = new String("");
-    String soapExtensibleWithNamespace = null;
-
     // Get the binding from the entry context
     Binding binding = (Binding) entryContext.getEntry().getEntryDetail();
 

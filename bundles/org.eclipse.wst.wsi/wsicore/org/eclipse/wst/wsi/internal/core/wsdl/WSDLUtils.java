@@ -281,7 +281,6 @@ public final class WSDLUtils
   public static HashSet findMessages(PortType portType)
   {
     HashSet messageSet = new HashSet();
-    ExtensibilityElement extElement;
     Operation operation;
 
     Iterator iterator = portType.getOperations().iterator();

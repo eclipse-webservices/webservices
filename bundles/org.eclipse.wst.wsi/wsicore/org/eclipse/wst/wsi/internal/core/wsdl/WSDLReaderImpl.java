@@ -453,7 +453,6 @@ catch (Exception e)
       String prefixedValue =
         DOMUtils.getAttribute(partEl, Constants.ATTR_ELEMENT);
       int index = prefixedValue.indexOf(':');
-      String prefix = (index != -1) ? prefixedValue.substring(0, index) : null;
       String localPart = prefixedValue.substring(index + 1);
 
       elementName = new QName(localPart);

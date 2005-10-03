@@ -113,12 +113,8 @@ public class ChunkedData
   private boolean checkData(String chunkedData)
   {
     boolean moreChunkedData = false;
-    int index;
-
     // Look for [CRLF][0][CRLF] in the chunked data      
-    if ((index =
-      chunkedData.indexOf(SocketHandler.CRLF + "0" + SocketHandler.CRLF))
-      != -1)
+    if (chunkedData.indexOf(SocketHandler.CRLF + "0" + SocketHandler.CRLF) != -1)
     {
       moreChunkedData = false;
 

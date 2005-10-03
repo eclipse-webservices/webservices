@@ -855,8 +855,7 @@ public abstract class BaseMessageValidator
         if (!child.getNodeName().startsWith(
           nodeName.substring(nodeName.indexOf(":") + 1) + ":"))
         {
-          String nodeValue = node.getNodeValue();
-          child.setAttribute(node.getNodeName(), node.getNodeValue());
+          child.setAttribute(nodeName, node.getNodeValue());
         }
       }
     }
@@ -1080,61 +1079,61 @@ public abstract class BaseMessageValidator
    * @param op binding operations.
    * @return matched operation.
    */
-  private BindingOperation getOperationPartsMatch(
-    Document requestMessage,
-    Document responseMessage,
-    BindingOperation[] op)
-  {
-    Map inParts = getPartListFromMessage(requestMessage); // list of QNames
-    Map outParts = getPartListFromMessage(responseMessage);
-    // list of QNames
-
-    // Look for a candidate operation in the wsdl that matches this signature.
-    for (int k = 0; k < op.length; k++)
-    {
-
-      //Map wsdlFaultParts = null;
-      Message wsdlInMessage = null;
-      Message wsdlOutMessage = null;
-
-      BindingOperation bindingOp = op[k];
-      if (bindingOp.getOperation().getInput() != null)
-      {
-        wsdlInMessage = bindingOp.getOperation().getInput().getMessage();
-      }
-
-      if (bindingOp.getOperation().getOutput() != null)
-      {
-        wsdlOutMessage = bindingOp.getOperation().getOutput().getMessage();
-      }
-      //wsdlFaultParts = op[k].getFaults();
-      // ADD: check for case when response message is a fault
-
-      if (sameParts(inParts,
-        wsdlInMessage,
-        getSoapHeader(bindingOp.getBindingInput().getExtensibilityElements())))
-      {
-        // match on the request - now check response if its not a fault
-        if (responseMessage != null && isFault(responseMessage))
-        {
-          return (bindingOp);
-        }
-        else if (
-          sameParts(
-            outParts,
-            wsdlOutMessage,
-            getSoapHeader(
-              bindingOp.getBindingOutput().getExtensibilityElements())))
-        {
-          // It does match so treat this as a relevant message pair. 
-          // Let the message through for validation.
-          //ADD: could pass the operations list back to the entryContext for the message.
-          return (bindingOp);
-        }
-      }
-    }
-    return null;
-  }
+  //private BindingOperation getOperationPartsMatch(
+  //  Document requestMessage,
+  //  Document responseMessage,
+  //  BindingOperation[] op)
+  //{
+  //  Map inParts = getPartListFromMessage(requestMessage); // list of QNames
+  //  Map outParts = getPartListFromMessage(responseMessage);
+  //  // list of QNames
+  //
+  //  // Look for a candidate operation in the wsdl that matches this signature.
+  //  for (int k = 0; k < op.length; k++)
+  //  {
+  //
+  //    //Map wsdlFaultParts = null;
+  //    Message wsdlInMessage = null;
+  //    Message wsdlOutMessage = null;
+  //
+  //    BindingOperation bindingOp = op[k];
+  //    if (bindingOp.getOperation().getInput() != null)
+  //    {
+  //      wsdlInMessage = bindingOp.getOperation().getInput().getMessage();
+  //    }
+  //
+  //    if (bindingOp.getOperation().getOutput() != null)
+  //    {
+  //      wsdlOutMessage = bindingOp.getOperation().getOutput().getMessage();
+  //    }
+  //    //wsdlFaultParts = op[k].getFaults();
+  //    // ADD: check for case when response message is a fault
+  //
+  //    if (sameParts(inParts,
+  //      wsdlInMessage,
+  //      getSoapHeader(bindingOp.getBindingInput().getExtensibilityElements())))
+  //    {
+  //      // match on the request - now check response if its not a fault
+  //      if (responseMessage != null && isFault(responseMessage))
+  //      {
+  //        return (bindingOp);
+  //      }
+  //      else if (
+  //        sameParts(
+  //          outParts,
+  //          wsdlOutMessage,
+  //          getSoapHeader(
+  //            bindingOp.getBindingOutput().getExtensibilityElements())))
+  //      {
+  //        // It does match so treat this as a relevant message pair. 
+  //        // Let the message through for validation.
+  //        //ADD: could pass the operations list back to the entryContext for the message.
+  //        return (bindingOp);
+  //      }
+  //    }
+  //  }
+  //  return null;
+  //}
 
   /**
    * Get the soap:body from a List of extensibility elements.
@@ -1332,22 +1331,22 @@ public abstract class BaseMessageValidator
   /**
    * Compare soap message element part names with Parts from specified wsdl Operation
    */
-  private boolean sameParts(HashSet messageParts, Map wsdlParts)
-  {
-
-    // look for the soap-message operation signature
-    Iterator i = wsdlParts.values().iterator();
-    // build a set of Part names
-    HashSet h = new HashSet();
-    while (i.hasNext())
-    {
-      Part p = (Part) i.next();
-      h.add(p.getName());
-    }
-
-    // compare with the parts list from the message	(unordered)
-    return (h.equals(messageParts));
-  }
+  //private boolean sameParts(HashSet messageParts, Map wsdlParts)
+  //{
+  //
+  //  // look for the soap-message operation signature
+  //  Iterator i = wsdlParts.values().iterator();
+  //  // build a set of Part names
+  //  HashSet h = new HashSet();
+  //  while (i.hasNext())
+  //  {
+  //    Part p = (Part) i.next();
+  //    h.add(p.getName());
+  //  }
+  //
+  //  // compare with the parts list from the message	(unordered)
+  //  return (h.equals(messageParts));
+  //}
 
   /**
    * Compare soap message element part names with Parts from specified wsdl Operation
@@ -1783,9 +1782,9 @@ public abstract class BaseMessageValidator
       //replaceRelativeURIs(schema, wsdlURI);
       // Serialize the schema elements inside the Types, then use this as
       // the schema string for the validation
-      String schemaString =
-        DOM2Writer.nodeToString(schema);
-       // schemaStrings.add(schemaString);
+      //String schemaString =
+      //  DOM2Writer.nodeToString(schema);
+      // schemaStrings.add(schemaString);
       	}
       }
     }

@@ -56,7 +56,7 @@ public class ReportWriterImpl
   public void write(Report report, Writer writer)
   {
     // Create print writer
-    PrintWriter printWriter = new PrintWriter(writer);
+    new PrintWriter(writer);
 
     // ADD: Write out complete report
   }

@@ -128,8 +128,6 @@ public class WSDLValidatorImpl
   public WSDLDocument validate() throws WSIException
   {
     //WSDLDocument wsdlDocument = null;
-    Entry entry = null;
-
     Service service = null;
     Port port = null;
     Binding binding = null;

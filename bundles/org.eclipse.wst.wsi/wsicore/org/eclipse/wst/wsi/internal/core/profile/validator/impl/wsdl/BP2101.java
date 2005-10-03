@@ -24,7 +24,6 @@ import org.eclipse.wst.wsi.internal.core.util.TestUtils;
 import org.eclipse.wst.wsi.internal.core.util.Utils;
 import org.eclipse.wst.wsi.internal.core.wsdl.traversal.WSDLTraversal;
 import org.eclipse.wst.wsi.internal.core.wsdl.traversal.WSDLTraversalContext;
-import org.w3c.dom.Document;
 
 
 /**
@@ -68,11 +67,10 @@ public class BP2101 extends AssertionProcessVisitor implements WSITag
       try
       {
         // try to parse WSDL according to the WSDL schema
-        Document doc =
-          validator.parseXMLDocumentURL(
-            im.getLocationURI(),
-            ((Definition)parent).getDocumentBaseURI(),
-            TestUtils.getWSDLSchemaLocation());
+        validator.parseXMLDocumentURL(
+           im.getLocationURI(),
+           ((Definition)parent).getDocumentBaseURI(),
+           TestUtils.getWSDLSchemaLocation());
       }
       catch (Throwable t)
       {

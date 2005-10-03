@@ -13,10 +13,7 @@ package org.eclipse.wst.wsi.internal.core.profile.validator.impl.message;
 import java.util.List;
 
 import javax.wsdl.BindingOperation;
-import javax.wsdl.extensions.mime.MIMEContent;
 import javax.wsdl.extensions.mime.MIMEMultipartRelated;
-import javax.wsdl.extensions.mime.MIMEPart;
-
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.analyzer.AssertionFailException;
@@ -127,10 +124,10 @@ public class AP1925 extends AssertionProcess
    * @param part MIMEPart element
    * @return the part value from MIMEContent element
    */
-  private String getMIMEContentPart(MIMEPart part) {
-    List list = part.getExtensibilityElements();
-    if(list.size() == 0)
-      return null;
-    return ((MIMEContent) list.get(0)).getPart();
-  }
+  //private String getMIMEContentPart(MIMEPart part) {
+  //  List list = part.getExtensibilityElements();
+  //  if(list.size() == 0)
+  //    return null;
+  //  return ((MIMEContent) list.get(0)).getPart();
+  //}
 }

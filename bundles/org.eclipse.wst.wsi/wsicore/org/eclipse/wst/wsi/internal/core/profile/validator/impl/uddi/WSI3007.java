@@ -53,8 +53,6 @@ public class WSI3007 extends AssertionProcess
     EntryContext entryContext)
     throws WSIException
   {
-    String serviceLocation = null;
-
     result = AssertionResult.RESULT_PASSED;
 
     // Get the bindingTemplate from the entryContext

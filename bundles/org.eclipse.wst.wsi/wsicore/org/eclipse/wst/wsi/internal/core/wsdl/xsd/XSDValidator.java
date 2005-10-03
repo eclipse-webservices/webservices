@@ -18,7 +18,6 @@ import java.util.List;
 import org.apache.xerces.parsers.XMLGrammarPreparser;
 import org.apache.xerces.util.XMLGrammarPoolImpl;
 import org.apache.xerces.xni.grammars.XMLGrammarDescription;
-import org.apache.xerces.xni.grammars.XMLGrammarLoader;
 import org.apache.xerces.xni.grammars.XMLGrammarPool;
 import org.apache.xerces.xni.grammars.XSGrammar;
 import org.apache.xerces.xni.parser.XMLEntityResolver;
@@ -136,7 +135,7 @@ public class XSDValidator
         }
         
         grammarPreparser.registerPreparser(XMLGrammarDescription.XML_SCHEMA,null/*schemaLoader*/);
-        XMLGrammarLoader schemaLoader = grammarPreparser.getLoader(XMLGrammarDescription.XML_SCHEMA);
+        grammarPreparser.getLoader(XMLGrammarDescription.XML_SCHEMA);
 
 		XSGrammar grammar = (XSGrammar)grammarPreparser.preparseGrammar(XMLGrammarDescription.XML_SCHEMA,is);
 		xsModel = grammar.toXSModel();

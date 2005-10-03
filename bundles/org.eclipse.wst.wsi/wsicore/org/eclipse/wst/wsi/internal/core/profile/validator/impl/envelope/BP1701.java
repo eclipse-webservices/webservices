@@ -81,10 +81,9 @@ public class BP1701 extends AssertionProcess
         String filteredMessage = DOM2Writer.nodeToString(doc);
 
         // Parse the result with validation "on"
-        Document validationDoc =
-          XMLUtils.parseXML(
-            filteredMessage,
-            TestUtils.getSOAPSchemaLocation());
+        XMLUtils.parseXML(
+          filteredMessage,
+          TestUtils.getSOAPSchemaLocation());
       }
       catch (WSIException e)
       {

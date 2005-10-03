@@ -180,8 +180,8 @@ public class MessageAnalyzer
 		}
 		catch (UnsupportedEncodingException uee)
 		{
-		  analyzerconfig.setLogLocation(URIEncoder.encode(filename));
-	      analyzerconfig.setTestAssertionsDocumentLocation(URIEncoder.encode(wsiPreferences.getTADFile()));
+		  analyzerconfig.setLogLocation(URIEncoder.encode(filename, "UTF8"));
+	      analyzerconfig.setTestAssertionsDocumentLocation(URIEncoder.encode(wsiPreferences.getTADFile(), "UTF8"));
 		}
         //analyzerconfig.setLogLocation(filename);
         //analyzerconfig.setTestAssertionsDocumentLocation(getBasicProfileTestAssertionsFile());
@@ -223,12 +223,9 @@ public class MessageAnalyzer
                   if (ta.isEnabled())
                   {
                     Iterator errorMessages = ar.getFailureDetailList().iterator();
-                    String error = "";
                     while (errorMessages.hasNext())
                     {
                       FailureDetailImpl fdi = (FailureDetailImpl)errorMessages.next();
-                      error = (String) fdi.getFailureMessage();
-
                       int lineNumber = 0;
                       int columnNumber = 0;
                     
@@ -257,12 +254,9 @@ public class MessageAnalyzer
                   if (ta.isEnabled())
                   {
                     Iterator errorMessages = ar.getFailureDetailList().iterator();
-                    String error = "";
                     while (errorMessages.hasNext())
                     {
                       FailureDetailImpl fdi = (FailureDetailImpl)errorMessages.next();
-                      error = (String) fdi.getFailureMessage();
-
                       int lineNumber = 0;
                       int columnNumber = 0;
                     

@@ -12,8 +12,6 @@ package org.eclipse.wst.wsi.internal.core.wsdl.xsd;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-
 import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLEntityResolver;

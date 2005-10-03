@@ -32,7 +32,6 @@ import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidationInfoImpl;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDLDocument;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDLReaderImpl;
 import org.eclipse.wst.wsi.internal.WSIPreferences;
-import org.eclipse.wst.wsi.internal.WSITestToolsEclipseProperties;
 import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
 import org.eclipse.wst.wsi.internal.analyzer.WSDLAnalyzer;
 import org.eclipse.wst.wsi.internal.analyzer.WSIAnalyzerException;

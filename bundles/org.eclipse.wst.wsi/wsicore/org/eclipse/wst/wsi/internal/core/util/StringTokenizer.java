@@ -30,7 +30,6 @@ final public class StringTokenizer
     private final char[] str;
     private final int size;
     private int index;
-    private String next;
 
     /**
      * Constructor.

@@ -120,7 +120,7 @@ public class BP1011 extends AssertionProcess
         // *** Now we know it's document-literal, schema-validate the SOAP payload accordingly            		
         try
         {
-          boolean isSchemaValid = this.validator.messageIsDocLitSchemaValid(entryContext);
+          this.validator.messageIsDocLitSchemaValid(entryContext);
         }
         catch (Exception e)
         {

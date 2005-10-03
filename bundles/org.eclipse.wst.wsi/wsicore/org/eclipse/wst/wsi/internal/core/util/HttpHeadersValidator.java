@@ -35,7 +35,6 @@ public class HttpHeadersValidator
   private static final String HEADER_CONTENT_LANGUAGE = "Content-Language";
   private static final String HEADER_CONTENT_LENGHT = "Content-Length";
   private static final String HEADER_CONTENT_LOCATION = "Content-Location";
-  private static final String HEADER_CONTENT_MD5 = "Content-MD5";
   private static final String HEADER_CONTENT_RANGE = "Content-Range";
   private static final String HEADER_EXPIRES = "Expires";
   private static final String HEADER_LAST_MODIFIED = "Last-Modified";
@@ -881,7 +880,7 @@ public class HttpHeadersValidator
 
     try
     {
-      URL url = new URL("http://" + value);
+      new URL("http://" + value);
     }
     catch (MalformedURLException e)
     {
@@ -1580,17 +1579,15 @@ public class HttpHeadersValidator
    */
   private static boolean isURI(String value)
   {
-    URL url;
-
     try
     {
-      url = new URL(value);
+      new URL(value);
     }
     catch (MalformedURLException e)
     {
       try
       {
-        url = new URL("http://localhost" + value);
+        new URL("http://localhost" + value);
       }
       catch (MalformedURLException e2)
       {
@@ -1707,22 +1704,6 @@ public class HttpHeadersValidator
     if (BasicRules.getLastQuotedString(parValue, 0) != parValue.length())
     {
       return false;
-    }
-    return true;
-  }
-
-  /**
-   * Method isText.
-   * @param text
-   * @return boolean
-   */
-  private static boolean isText(String text)
-  {
-    char[] chs = text.toCharArray();
-    for (int i = 0; i < chs.length; i++)
-    {
-      if (chs[i] == '\"')
-        return false;
     }
     return true;
   }

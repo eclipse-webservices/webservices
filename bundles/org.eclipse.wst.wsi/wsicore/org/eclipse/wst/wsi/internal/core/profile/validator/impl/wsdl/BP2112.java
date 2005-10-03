@@ -57,7 +57,6 @@ public class BP2112 extends AssertionProcessVisitor implements WSITag
 
   private boolean rpcLiteralFound = false;
   private ErrorList errors = new ErrorList();
-  private Message message = null;
 
   /* 
    * Put in context soap binding's style

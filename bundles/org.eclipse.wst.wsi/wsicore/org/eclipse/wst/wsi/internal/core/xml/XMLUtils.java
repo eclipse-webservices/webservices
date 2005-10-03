@@ -180,11 +180,9 @@ public final class XMLUtils
 	 */
 	public static Document parseXMLDocumentURL(String url, String schema,
 			String baseURI) throws WSIException {
-		Document document = null;
-
 		try
 		{
-			document = parseXMLDocumentURL(createURL(url, baseURI), schema);
+		  parseXMLDocumentURL(createURL(url, baseURI), schema);
 		}
 
 		catch (Exception e)
@@ -364,7 +362,6 @@ public final class XMLUtils
 		try
 		{
 		  Thread.currentThread().setContextClassLoader(XMLUtils.class.getClassLoader());   
-		  ClassLoader tempLoader = Thread.currentThread().getContextClassLoader();
 		
 		  // Create input source
 		  InputSource inputSource = new InputSource(reader);
@@ -1516,9 +1513,9 @@ public final class XMLUtils
 	public static void main(String[] args) {
 		try
 		{
-			System.out.println("Filename: " + args[0] + ", schema: " + args[1]);
-			Document doc = parseXMLDocument(args[0], args[1]);
-			System.out.println("Done.");
+		  System.out.println("Filename: " + args[0] + ", schema: " + args[1]);
+		  parseXMLDocument(args[0], args[1]);
+		  System.out.println("Done.");
 		}
 
 		catch (Exception e)

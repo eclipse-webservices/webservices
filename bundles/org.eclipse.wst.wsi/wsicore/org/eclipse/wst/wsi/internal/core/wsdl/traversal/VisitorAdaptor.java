@@ -53,10 +53,6 @@ public class VisitorAdaptor implements InvocationHandler
 {
 
   // optimization hint
-  static final private Class[] nullClass = new Class[] {
-  };
-  static final private Object[] nullObject = new Object[] {
-  };
   static final private Class[] visitorClass = new Class[] { WSDLVisitor.class };
 
   /**

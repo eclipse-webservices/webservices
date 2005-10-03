@@ -12,7 +12,6 @@ package org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl;
 
 import java.util.List;
 
-import javax.wsdl.Definition;
 import javax.wsdl.Types;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.UnknownExtensibilityElement;
@@ -44,8 +43,6 @@ public class BP2122 extends AssertionProcess
     this.validator = impl;
   }
 
-  private String context;
-
   /**
    * @see org.eclipse.wst.wsi.test.profile.validator.impl.BaseValidatorImpl.AssertionProcess#validate(TestAssertion, EntryContext)
    */
@@ -60,19 +57,8 @@ public class BP2122 extends AssertionProcess
     // Get the types from the entry context
     Types types = (Types) entryContext.getEntry().getEntryDetail();
 
-    Definition definition = null;
-
     if (types != null)
     {
-      if ((definition =
-        validator.analyzerContext.getCandidateInfo().getDefinition(types))
-        == null)
-      {
-        throw new WSIException("Could not find types definition in any WSDL document.");
-      }
-
-      context = definition.getDocumentBaseURI();
-
       ExtensibilityElement extElement;
       List extElements = types.getExtensibilityElements();
 

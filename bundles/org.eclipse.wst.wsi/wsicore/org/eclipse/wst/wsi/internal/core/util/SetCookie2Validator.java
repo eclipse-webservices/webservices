@@ -30,26 +30,14 @@ public class SetCookie2Validator
   private Vector portVect = new Vector();
   private Vector versionVect = new Vector();
 
-  private boolean comment = false;
-  private boolean commentURL = false;
-  private boolean domain = false;
-  private boolean max_age = false;
   private boolean path = false;
-  private boolean port = false;
-  private boolean version = false;
 
   /**
    * Method resetFlags.
    */
-  private void resetFlags()
+  private void resetPath()
   {
-    comment = false;
-    commentURL = false;
-    domain = false;
-    max_age = false;
     path = false;
-    port = false;
-    version = false;
   }
 
   /**
@@ -103,7 +91,7 @@ public class SetCookie2Validator
   private int getLastCookie(String str, int startIndex)
   {
 
-    resetFlags();
+    resetPath();
 
     int index = startIndex;
     // find token
@@ -179,8 +167,6 @@ public class SetCookie2Validator
     int index = startIndex;
     int newIndex = 0;
 
-    String token = str.substring(index, BasicRules.getLastToken(str, index));
-
     if (str.startsWith("Comment=", index))
     {
       index += "Comment=".length();
@@ -191,7 +177,6 @@ public class SetCookie2Validator
       String qqq = getValue(str, index, newIndex);
       commentVect.add(qqq);
       // debug <-
-      comment = true;
       return newIndex;
     }
     else if (str.startsWith("CommentURL=", index))
@@ -206,7 +191,7 @@ public class SetCookie2Validator
         return startIndex;
       try
       {
-        URL url = new URL(str.substring(index + 1, newIndex));
+        new URL(str.substring(index + 1, newIndex));
       }
       catch (MalformedURLException mue)
       {
@@ -217,7 +202,6 @@ public class SetCookie2Validator
       commentURLVect.add(qqq);
       // debug <-
       newIndex++;
-      commentURL = true;
       return newIndex;
     }
     else if (str.startsWith("Discard", index))
@@ -236,7 +220,6 @@ public class SetCookie2Validator
       String qqq = getValue(str, index, newIndex);
       domainVect.add(qqq);
       // debug <-
-      domain = true;
       return newIndex;
     }
     else if (str.startsWith("Max-Age=", index))
@@ -259,7 +242,6 @@ public class SetCookie2Validator
       // debug ->
       max_AgeVect.add(qqq);
       // debug <-
-      max_age = true;
       return newIndex;
     }
     else if (str.startsWith("Path=", index))
@@ -279,7 +261,6 @@ public class SetCookie2Validator
     else if (str.startsWith("Port", index))
     {
       index += "Port".length();
-      port = true;
       if (str.charAt(index) != '=')
         return index;
 
@@ -320,7 +301,6 @@ public class SetCookie2Validator
       String qqq = getValue(str, index, newIndex);
       versionVect.add(qqq);
       // debug <-
-      version = true;
       return newIndex;
     }
     else

@@ -67,7 +67,6 @@ public class BP2202 extends AssertionProcess implements WSITag
   private final String UTF_16_ENCODING = "UTF-16";
 
   private final String ENCODING_TOKEN = "encoding";
-  private final String VERSION_TOKEN = "version";
 
   /* (non-Javadoc)
    * @see org.wsi.test.profile.validator.impl.BaseValidatorImpl.AssertionProcess#validate(org.wsi.test.profile.TestAssertion, org.wsi.test.profile.validator.EntryContext)
@@ -193,9 +192,7 @@ public class BP2202 extends AssertionProcess implements WSITag
 
         if (XMLUtils.equals(schema.getDocumentElement(), ELEM_XSD_SCHEMA))
         {
-          Attr a = XMLUtils.getAttribute(im, ATTR_XSD_NAMESPACE);
-          String namespace = (a != null) ? a.getValue() : "";
-          processSchema(schema.getDocumentElement(),
+           processSchema(schema.getDocumentElement(),
               XMLUtils.createURLString(schemaLocation.getValue(), context));
         }
         result = result = AssertionResult.RESULT_PASSED;
@@ -313,38 +310,38 @@ public class BP2202 extends AssertionProcess implements WSITag
    * @return if xml declaration contains encoding="utf-16" or encoding="utf-8" it retirns true. 
   */
 
-  private boolean validEncoding(String xmlDecl)
-  {
-    //boolean result = false;
-    boolean result = true;
-    if (xmlDecl != null)
-    {
-      StringTokenizer st =
-        new StringTokenizer(
-          OMMITED_XML_DECLARATION_DELIMITERS,
-          XML_DECLARATION_DELIMITERS);
-      Enumeration tokens = st.parse(xmlDecl);
-      boolean found = false;
-      while (tokens.hasMoreElements() && !found)
-      {
-        String token = (String) tokens.nextElement();
-
-        if (token.equals(ENCODING_TOKEN))
-        {
-          found = true;
-
-          tokens.nextElement();
-          String enc = (String) tokens.nextElement();
-
-          result =
-            UTF_8_ENCODING.equalsIgnoreCase(enc)
-              || UTF_16_ENCODING.equalsIgnoreCase(enc);
-        }
-      }
-    }
-
-    return result;
-  }
+  //private boolean validEncoding(String xmlDecl)
+  //{
+  //  //boolean result = false;
+  //  boolean result = true;
+  //  if (xmlDecl != null)
+  //  {
+  //    StringTokenizer st =
+  //      new StringTokenizer(
+  //        OMMITED_XML_DECLARATION_DELIMITERS,
+  //        XML_DECLARATION_DELIMITERS);
+  //    Enumeration tokens = st.parse(xmlDecl);
+  //   boolean found = false;
+  //    while (tokens.hasMoreElements() && !found)
+  //    {
+  //      String token = (String) tokens.nextElement();
+  //
+  //      if (token.equals(ENCODING_TOKEN))
+  //      {
+  //        found = true;
+  //
+  //        tokens.nextElement();
+  //        String enc = (String) tokens.nextElement();
+  //
+  //        result =
+  //         UTF_8_ENCODING.equalsIgnoreCase(enc)
+  //            || UTF_16_ENCODING.equalsIgnoreCase(enc);
+  //      }
+  //    }
+  //  }
+  //
+  //  return result;
+  //}
 
   /**
    * @param xmlDecl - xml declaration

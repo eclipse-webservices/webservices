@@ -33,7 +33,6 @@ import org.eclipse.wst.wsi.internal.core.report.Report;
 import org.eclipse.wst.wsi.internal.core.report.ReportWriter;
 import org.eclipse.wst.wsi.internal.core.report.impl.ReportImpl;
 import org.eclipse.wst.wsi.internal.core.report.impl.ReportWriterImpl;
-import org.eclipse.wst.wsi.internal.core.util.WSIProperties;
 
 /**
  * This is the implementation of the Conformance document factory which provides access to
@@ -147,11 +146,11 @@ public class DocumentFactoryImpl extends DocumentFactory
   /**
    * Find the factory class name which can be specified as a Java property.
    */
-  private static String getFactoryClassName()
-  {
-    // Get property value
-    return WSIProperties.getProperty(
-      WSIProperties.PROP_DOCUMENT_FACTORY,
-      WSIProperties.DEF_DOCUMENT_FACTORY);
-  }
+  //private static String getFactoryClassName()
+  //{
+  //  // Get property value
+  //  return WSIProperties.getProperty(
+  //    WSIProperties.PROP_DOCUMENT_FACTORY,
+  //    WSIProperties.DEF_DOCUMENT_FACTORY);
+  //}
 }

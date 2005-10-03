@@ -17,7 +17,6 @@ import java.util.Map;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.util.TestUtils;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -47,7 +46,6 @@ public class XMLSchemaValidator extends XMLSchemaProcessor
   protected void processSchema(Element element)
   {
     NamedNodeMap attrList;
-    String elementPrefix = null;
 
     HashMap elementMap = new HashMap();
     HashMap nsMap = new HashMap();
@@ -115,8 +113,7 @@ public class XMLSchemaValidator extends XMLSchemaProcessor
       }
 
       // Schema validate the XML schema document
-      Document doc =
-        XMLUtils.parseXML(schema, TestUtils.getXMLSchemaLocation());
+      XMLUtils.parseXML(schema, TestUtils.getXMLSchemaLocation());
     }
 
     catch (WSIException we)

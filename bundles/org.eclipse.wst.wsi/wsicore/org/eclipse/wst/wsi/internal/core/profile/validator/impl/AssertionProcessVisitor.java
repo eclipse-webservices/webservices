@@ -47,15 +47,12 @@ public abstract class AssertionProcessVisitor
   extends AssertionProcess
   implements WSDLVisitor
 {
-  private final BaseValidatorImpl base_validator;
-
   /**
    * @param BaseValidatorImpl
    */
   public AssertionProcessVisitor(BaseValidatorImpl impl)
   {
     super(impl);
-    this.base_validator = impl;
   }
   
   public void visit(Part obj, Object parent, WSDLTraversalContext ctx)

@@ -759,8 +759,6 @@ public class SocketHandler extends Thread
    */
   private void logMessage(MessageContext messageContext) throws WSIException
   {
-    MessageEntry messageEntry = null;
-
     // Determine sender and receiver host/port
     String senderHostAndPort, receiverHostAndPort;
 

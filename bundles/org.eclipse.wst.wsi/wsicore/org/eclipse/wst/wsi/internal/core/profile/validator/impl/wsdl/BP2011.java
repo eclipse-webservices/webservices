@@ -169,8 +169,6 @@ public class BP2011 extends AssertionProcess implements WSITag
           validator.parseXMLDocumentURL(schemaLocation.getValue(), context);
         if (XMLUtils.equals(schema.getDocumentElement(), ELEM_XSD_SCHEMA))
         {
-          Attr a = XMLUtils.getAttribute(im, ATTR_XSD_NAMESPACE);
-          String namespace = (a != null) ? a.getValue() : "";
           processSchema(schema.getDocumentElement(),
             XMLUtils.createURLString(schemaLocation.getValue(), context));
         }

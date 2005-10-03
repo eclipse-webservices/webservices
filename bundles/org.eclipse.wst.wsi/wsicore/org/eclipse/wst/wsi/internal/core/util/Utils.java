@@ -481,7 +481,6 @@ public final class Utils
 
 	    int index = 0;
 	    int start = 0;
-	    int end = message.length;
 	    while (index != -1)
 	    {
 	      index = indexOf(message, boundary, start);
@@ -663,8 +662,7 @@ public final class Utils
       URL url = new URL(fileLocation);
 
       // If successful, then try to open connection
-      InputStream is = url.openStream();
-
+      url.openStream();
       fileExists = true;
     }
 
@@ -1409,7 +1407,6 @@ public final class Utils
   	  String message = new String(buffer);
   	  message = XMLUtils.xmlRemoveEscapedString(message);
   	  String headers = Utils.getHTTPHeaders(message);
-  	  String content = Utils.getContent(message);
   	  MimeParts parts = Utils.parseMultipartRelatedMessage(message, headers, Utils.JAVA_ENCODING_DEFAULT);
   	  System.out.println(Utils.toXMLString(parts));
 	}

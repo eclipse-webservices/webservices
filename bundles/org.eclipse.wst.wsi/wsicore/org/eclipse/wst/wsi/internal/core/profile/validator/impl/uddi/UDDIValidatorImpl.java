@@ -68,11 +68,6 @@ public class UDDIValidatorImpl
    */
   protected UDDIProxy uddiProxy;
 
-  /**
-   * WSDL binding.
-   */
-  private Binding binding = null;
-
   /* (non-Javadoc)
    * @see org.wsi.test.profile.validator.UDDIValidator#init(org.eclipse.wst.wsi.internal.core.analyzer.AnalyzerContext, org.wsi.test.profile.ProfileArtifact, org.wsi.test.report.ReportArtifact, org.wsi.test.analyzer.config.UDDIReference, org.wsi.test.report.Reporter)
    */
@@ -209,7 +204,7 @@ public class UDDIValidatorImpl
         WSDLDocument wsdlDocument = getWSDLDocument(wsdlURL);
 
         // ADD: The WSDL binding is used in WSI3001 and should be moved to the entryContext
-        binding = getBinding(overviewURL, wsdlDocument);
+        getBinding(overviewURL, wsdlDocument);
       }
 
       catch (Exception e)

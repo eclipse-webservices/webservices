@@ -83,21 +83,21 @@ public class WSITestToolsProperties
       schemaLocationProperties.setProperty(
         "wsi.analyzer.wsdlsoap.schema",
         URIEncoder.encode(schemaURL + "wsdlSoap.xsd", "UTF8"));
+      schemaLocationProperties.setProperty(
+        "wsi.analyzer.xmlschema.schema",
+        URIEncoder.encode(schemaURL + "XMLSchema.xsd", "UTF8"));
+      schemaLocationProperties.setProperty(
+        "wsi.analyzer.wsdl.schema",
+        URIEncoder.encode(schemaURL + "wsdl11.xsd", "UTF8"));
+      schemaLocationProperties.setProperty(
+        "wsi.analyzer.soap.schema",
+        URIEncoder.encode(schemaURL + "soapEnvelope.xsd", "UTF8"));
+      schemaLocationProperties.setProperty(
+        "wsi.analyzer.wsdlsoap.schema",
+        URIEncoder.encode(schemaURL + "wsdlSoap.xsd", "UTF8"));
     }
     catch (UnsupportedEncodingException e)
     {
-      schemaLocationProperties.setProperty(
-        "wsi.analyzer.xmlschema.schema",
-        URIEncoder.encode(schemaURL + "XMLSchema.xsd"));
-      schemaLocationProperties.setProperty(
-        "wsi.analyzer.wsdl.schema",
-        URIEncoder.encode(schemaURL + "wsdl11.xsd"));
-      schemaLocationProperties.setProperty(
-        "wsi.analyzer.soap.schema",
-        URIEncoder.encode(schemaURL + "soapEnvelope.xsd"));
-      schemaLocationProperties.setProperty(
-        "wsi.analyzer.wsdlsoap.schema",
-        URIEncoder.encode(schemaURL + "wsdlSoap.xsd"));
     }
     WSIProperties.setThreadLocalProperties(schemaLocationProperties);
   }

@@ -169,7 +169,6 @@ public class InlineSchemaValidator
 
     String XMLNS = Constants.ATTR_XMLNS;
     
-    String schemaLocation = "";
     while (nameSpaces.hasNext())
     {
       String nsprefix = XMLNS;
@@ -226,17 +225,17 @@ public class InlineSchemaValidator
    * @param namespace The namespace used for replacement.
    * @return The message with the 2001 schema namespace replaced by the given namespace.
    */
-  private String replaceNamespace(String message, String namespace)
-   {
-     String xsd2001 = Constants.NS_URI_XSD_2001;
-     int start = message.indexOf(xsd2001);
-     int end = start + xsd2001.length();
-     if(start < 0)
-     {
-       return message;
-     }
-     String startString = message.substring(0,start);
-     String endString = message.substring(end,message.length());
-     return startString + namespace + endString;
-   }
+ // private String replaceNamespace(String message, String namespace)
+ //  {
+ //    String xsd2001 = Constants.NS_URI_XSD_2001;
+ //    int start = message.indexOf(xsd2001);
+ //    int end = start + xsd2001.length();
+ //    if(start < 0)
+ //    {
+ //      return message;
+ //    }
+ //    String startString = message.substring(0,start);
+ //    String endString = message.substring(end,message.length());
+ //    return startString + namespace + endString;
+ //  }
 }

@@ -283,7 +283,6 @@ public class Monitor
 
     try
     {
-      String configFileName;
       if (args.length < 2)
       {
         staticPrintMessage("usage01", USAGE_MESSAGE);
@@ -449,8 +448,6 @@ public class Monitor
      */
     public void run()
     {
-      String line = null;
-
       // Get the exit string
       String exitString = messageList.getMessage("exit01", "exit");
 

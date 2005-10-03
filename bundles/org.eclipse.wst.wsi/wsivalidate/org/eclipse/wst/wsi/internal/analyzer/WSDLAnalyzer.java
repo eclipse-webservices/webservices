@@ -205,12 +205,9 @@ public class WSDLAnalyzer
                     {
                       Iterator errorMessages = errorMessageList.iterator();
 
-                      String error = "";
                       while (errorMessages.hasNext())
                       {
                         FailureDetailImpl fdi = (FailureDetailImpl) errorMessages.next();
-                        error = (String) fdi.getFailureMessage();
-
                         int lineNumber = 0;
                         int columnNumber = 0;
 
@@ -242,12 +239,9 @@ public class WSDLAnalyzer
                     if (errorMessageList != null)
                     {
                       Iterator errorMessages = errorMessageList.iterator();
-                      String error = "";
                       while (errorMessages.hasNext())
                       {
                         FailureDetailImpl fdi = (FailureDetailImpl) errorMessages.next();
-                        error = (String) fdi.getFailureMessage();
-
                         int lineNumber = 0;
                         int columnNumber = 0;
 
@@ -338,7 +332,7 @@ public class WSDLAnalyzer
 	 }
 	 catch (UnsupportedEncodingException uee)
 	 {
-	   analyzerconfig.setTestAssertionsDocumentLocation(URIEncoder.encode(wsiPreferences.getTADFile()));
+	   analyzerconfig.setTestAssertionsDocumentLocation(URIEncoder.encode(wsiPreferences.getTADFile(), "UTF8"));
 
 	 }
       analyzerconfig.setVerboseOption(false);
@@ -391,7 +385,6 @@ public class WSDLAnalyzer
 	  }
 	  catch (UnsupportedEncodingException uee)
 	  {
-	    wsdlURI = URIEncoder.encode(tmp);
 	  }
 	}
   	analyzerConfigs = new Vector();

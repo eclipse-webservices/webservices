@@ -200,20 +200,16 @@ public class ProfileAssertionsReaderImpl implements ProfileAssertionsReader
   class ProfileAssertionsHandler extends DefaultHandler
   {
     private ProfileArtifact artifact = profileAssertions.createArtifact();
-    private String id;
     private StringBuffer context = null;
     private StringBuffer assertionDescription = null;
     private StringBuffer failureMessage = null;
     private StringBuffer failureDetailDescription = null;
     private StringBuffer detailDescription = null;
     private StringBuffer testAssertionId = null;
-    //    private Vector prereqIdList = new Vector();
-    private TreeMap assertions = new TreeMap();
     private String currentElement = null;
     private TestAssertion testAssertion = null;
     private StringBuffer logInput = null;
     private StringBuffer wsdlInput = null;
-    private StringBuffer uddiInput = null;
     private EntryTypeList entryTypeList = null;
 
     // Process start element event

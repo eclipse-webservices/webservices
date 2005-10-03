@@ -26,7 +26,6 @@ import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
 import org.eclipse.wst.wsi.internal.core.util.ErrorList;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
 import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -51,7 +50,7 @@ public class BP2107 extends AssertionProcess implements WSITag
 
   private boolean schemaFound = false;
   private ErrorList errors = new ErrorList();
-  private String context;
+  //private String context;
 
   /* 
    * Validates the test assertion.
@@ -68,8 +67,7 @@ public class BP2107 extends AssertionProcess implements WSITag
     List exts = t.getExtensibilityElements();
     if (exts != null)
     {
-      context =
-        entryContext.getWSDLDocument().getDefinitions().getDocumentBaseURI();
+      //context = entryContext.getWSDLDocument().getDefinitions().getDocumentBaseURI();
       Iterator it = exts.iterator();
       while (it.hasNext())
       {
@@ -134,29 +132,29 @@ public class BP2107 extends AssertionProcess implements WSITag
    * Load schema and process it.
    * @param importNode - xsd:import element
   */
-  private void loadSchema(Node importNode)
-  {
-    Element im = (Element) importNode;
-    Attr schemaLocation = XMLUtils.getAttribute(im, ATTR_XSD_SCHEMALOCATION);
-    // try to parse imported XSD
-    if (schemaLocation != null && schemaLocation.getValue() != null)
-      try
-      {
-        // if any error or root element is not XSD schema -> error
-        Document schema =
-          validator.parseXMLDocumentURL(schemaLocation.getValue(), context);
-        if (XMLUtils.equals(schema.getDocumentElement(), ELEM_XSD_SCHEMA))
-        {
-          Attr a = XMLUtils.getAttribute(im, ATTR_XSD_NAMESPACE);
-          String namespace = (a != null) ? a.getValue() : "";
-          processSchema(schema.getDocumentElement(), namespace);
-        }
-      }
-      catch (Throwable t)
-      {
-        // nothing. it's not a schema
-      }
-  }
+  //private void loadSchema(Node importNode)
+  //{
+  //  Element im = (Element) importNode;
+  //  Attr schemaLocation = XMLUtils.getAttribute(im, ATTR_XSD_SCHEMALOCATION);
+  //  // try to parse imported XSD
+  //  if (schemaLocation != null && schemaLocation.getValue() != null)
+  //    try
+  //    {
+  //      // if any error or root element is not XSD schema -> error
+  //      Document schema =
+  //        validator.parseXMLDocumentURL(schemaLocation.getValue(), context);
+  //      if (XMLUtils.equals(schema.getDocumentElement(), ELEM_XSD_SCHEMA))
+  //      {
+  //        Attr a = XMLUtils.getAttribute(im, ATTR_XSD_NAMESPACE);
+  //        String namespace = (a != null) ? a.getValue() : "";
+  //        processSchema(schema.getDocumentElement(), namespace);
+  //      }
+  //    }
+  //    catch (Throwable t)
+  //    {
+  //      // nothing. it's not a schema
+  //    }
+  //}
 
   /*
    * Create falure report if it's not correspons assertion description.

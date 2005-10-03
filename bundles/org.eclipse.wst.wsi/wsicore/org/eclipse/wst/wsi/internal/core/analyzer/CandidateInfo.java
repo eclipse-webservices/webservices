@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.wsdl.Binding;
-import javax.wsdl.BindingOperation;
 import javax.wsdl.Definition;
 import javax.wsdl.Fault;
 import javax.wsdl.Import;
@@ -444,8 +443,6 @@ public class CandidateInfo
         descendents(this.portTypes[0]);
 
         // Get any messages that are referenced from headers and headerfaults
-
-        BindingOperation bindingOperation;
 
         // Get reference to definition
         Definition definition = definitions[0];

@@ -25,15 +25,12 @@ import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
  */
 public class AP2904 extends AP2903
 {
-  private final WSDLValidatorImpl validator;
-
   /**
    * @param WSDLValidatorImpl
    */
   public AP2904(WSDLValidatorImpl impl)
   {
     super(impl);
-    this.validator = impl;
   }
 
   /* Validates the test assertion.
