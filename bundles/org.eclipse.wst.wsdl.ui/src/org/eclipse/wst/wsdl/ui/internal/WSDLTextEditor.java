@@ -49,6 +49,8 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
   protected WSDLContentOutlinePage outlinePage;
   protected WSDLSelectionManager wsdlSelectionManager;
   protected InternalSelectionProvider internalSelectionProvider = new InternalSelectionProvider();
+  private IPropertySheetPage fPropertySheetPage;
+  private IContentOutlinePage fOutlinePage;
 
   public WSDLTextEditor(WSDLEditor wsdlEditor)
   {
