@@ -23,7 +23,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jst.ws.internal.ui.dialog.DialogUtils;
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -37,7 +36,6 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 /**
 * This class provides a dialog for browsing workspace resources.
-* See also {@link DialogUtils#browseResources}.
 */
 public class DialogResourceBrowser extends Dialog
 {
