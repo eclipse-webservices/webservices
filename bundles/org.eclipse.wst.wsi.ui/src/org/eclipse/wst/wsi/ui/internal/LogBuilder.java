@@ -83,14 +83,6 @@ public class LogBuilder
   private static final String TOOL_LOCATION = "";
 
   /**
-   * Properties of a RequestResponse.
-   */
-  private static final String PROPERTY_REQUEST_HEADER = "request-header";
-  private static final String PROPERTY_RESPONSE_HEADER = "response-header";
-  private static final String HTTP_REQUEST_BODY = "http-request-body";
-  private static final String HTTP_RESPONSE_BODY = "http-response-body";
-
-  /**
    * Common timestamp format.
    */
   public static final SimpleDateFormat timestampFormat = new SimpleDateFormat ("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -143,9 +135,6 @@ public class LogBuilder
   {
     if (rr != null)
     {
-      byte[] request = rr.getRequest(Request.ALL);
-      byte[] response = rr.getResponse(Request.ALL);
-        
       String requestHeader = new String(rr.getRequest(Request.TRANSPORT));
       String responseHeader = new String(rr.getResponse(Request.TRANSPORT));
       

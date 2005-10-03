@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.ui.internal;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.IPluginDescriptor;

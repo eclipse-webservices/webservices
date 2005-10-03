@@ -10,17 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.ui.internal;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.resources.IFile;
-import org.eclipse.wst.validation.internal.core.IMessageAccess;
 import org.eclipse.wst.validation.internal.core.ValidationException;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
 import org.eclipse.wst.validation.internal.provisional.core.IValidator;
-import org.eclipse.wst.validation.internal.provisional.core.MessageLimitException;
 import org.eclipse.wst.wsi.ui.internal.actions.WSIValidateAction;
 //import org.eclipse.wst.wsi.internal.core.report.impl.DefaultReporter;
 

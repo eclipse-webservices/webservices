@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.ui.internal.wizards;
 
-import javax.wsdl.Definition;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
 
@@ -217,7 +216,7 @@ public class ValidationWizard extends Wizard
         {
           WSDLFactory factory = WSDLFactory.newInstance();
           WSDLReader reader = factory.newWSDLReader();
-          Definition defElem = reader.readWSDL(getWSDLFile());
+          reader.readWSDL(getWSDLFile());
         }
         catch (Exception e)
         {
