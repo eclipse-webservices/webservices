@@ -499,18 +499,6 @@ public class WebServicesParser
     return new URL(url);
   }
 
-  private byte[] getBytes(WebServiceEntity wsEntity) throws MalformedURLException, IOException, WWWAuthenticationException
-  {
-    byte[] b = wsEntity.getBytes();
-    if (b == null)
-    {
-      b = getInputStreamAsByteArray(wsEntity.getURI());
-      wsEntity.setBytes(b);
-      setHTTPSettings(wsEntity);
-    }
-    return b;
-  }
-
   private void associate(WebServiceEntity parent, WebServiceEntity child)
   {
     parent.addChild(child);
