@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -90,20 +89,6 @@ public class UpdateWEBXMLCommand extends EnvironmentalOperation {
 		sd._className = "org.apache.axis.transport.http.AdminServlet"; //$NON-NLS-1$
 		sd._mappings = new String[] { "/servlet/AdminServlet" }; //$NON-NLS-1$
 		sd._loadOnStartup = new Integer(100);
-		return sd;
-	}
-
-	private ServletDescriptor getSoapMonitorServletDescriptor() {
-		ServletDescriptor sd = new ServletDescriptor();
-		sd._name = "SOAPMonitorService"; //$NON-NLS-1$
-		sd._displayName = "SOAPMonitorService"; //$NON-NLS-1$
-		sd._className = "org.apache.axis.monitor.SOAPMonitorService"; //$NON-NLS-1$
-		sd._mappings = new String[] { "/SOAPMonitor" }; //$NON-NLS-1$
-		sd._loadOnStartup = new Integer(100);
-		Map params = new HashMap();
-		params.put("SOAPMonitorPort", //$NON-NLS-1$
-					 "5001");   //$NON-NLS-1$
-		sd._params = params;
 		return sd;
 	}
 

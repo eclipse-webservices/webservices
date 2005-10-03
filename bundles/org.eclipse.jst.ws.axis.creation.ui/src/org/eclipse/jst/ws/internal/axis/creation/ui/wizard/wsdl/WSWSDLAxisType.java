@@ -18,7 +18,6 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreatio
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidgetDefaultingCommand;
-import org.eclipse.jst.ws.internal.consumption.common.WSDLResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ProjectName2IProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
@@ -37,8 +36,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingReg
 */
 public class WSWSDLAxisType implements CommandWidgetBinding 
 {
-	private WSDLResourceFilter filter_ = new WSDLResourceFilter();
-
 	private String serverName_;
 	private String runtimeName_;
 	private boolean isWebModuleRequired_;

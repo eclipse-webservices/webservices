@@ -19,7 +19,6 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodComm
 import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BeanConfigWidget;
-import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionWidget;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
@@ -40,7 +39,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingReg
 */
 public class WSBeanAxisType implements CommandWidgetBinding
 {	
-  private JavaResourceFilter filter_ = new JavaResourceFilter();
   private String serverName_;
   private String runtimeName_;
   private boolean isWebModuleRequired_;

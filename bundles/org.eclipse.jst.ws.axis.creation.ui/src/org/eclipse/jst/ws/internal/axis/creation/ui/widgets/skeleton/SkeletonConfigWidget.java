@@ -23,7 +23,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
@@ -42,8 +41,8 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
   
   // private Text uriText_;
   /* CONTEXT_ID PBCF0002 for the URI field of the Bean Config Page */
-  private final String INFOPOP_PBCF_TEXT_URI = "PBCF0002"; //$NON-NLS-1$
-  private final String TOOLTIP_PBCF_TEXT_URI = "TOOLTIP_PBCF_TEXT_URI";
+  //private final String INFOPOP_PBCF_TEXT_URI = "PBCF0002"; //$NON-NLS-1$
+  //private final String TOOLTIP_PBCF_TEXT_URI = "TOOLTIP_PBCF_TEXT_URI";
   
   private Text wsdlFolderText_;
   /* CONTEXT_ID PBCF0006 for the WSDL Folder field in the Bean Config Page */
@@ -109,7 +108,7 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
         INFOPOP_PBSC_TEXT_SKELETON_FOLDER,
         SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
 
-    Label separator = uiUtils.createHorizontalSeparator( parent, 5 );
+    uiUtils.createHorizontalSeparator( parent, 5 );
 
     showMappingsCheckbox_ = conUiUtils.createCheckbox( parent, "LABEL_EXPLORE_MAPPINGS_XML2BEAN",
                                                        "TOOLTIP_N2P_SHOW_MAPPINGS",

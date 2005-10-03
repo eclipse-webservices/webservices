@@ -11,16 +11,11 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -35,8 +30,6 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
  */
 public class BUAxisDefaultingCommand extends EnvironmentalOperation
 {
-  //Need
-  private IStructuredSelection initialSelection_;
   
   //Provide
   private IServer serviceExistingServer_;
@@ -120,43 +113,7 @@ public class BUAxisDefaultingCommand extends EnvironmentalOperation
     return Status.OK_STATUS;
   }
   
-  private String getJavaBeanFromInitialSelection(Environment env) throws CoreException
-  {
-    String beanClass = "";
-    JavaResourceFilter filter = new JavaResourceFilter(); 
-    IStructuredSelection selection = initialSelection_;
-    //
-    if (selection != null)
-    {
-      Object obj = selection.getFirstElement();
-      if (obj != null)
-      {
-        // get the IResource represented by the selection
-        IResource res = null;
-        
-        res = ResourceUtils.getResourceFromSelection(obj);
-        
-        if (filter.accepts(res))
-        {
-          // get the package-qualified class name without file extensions
-          String beanPackage = ResourceUtils.getJavaResourcePackageName(res.getFullPath());
-          if (beanPackage==null)
-            beanPackage = "";
-          else
-            beanPackage = beanPackage + ".";
-
-          beanClass = beanPackage + res.getName();
-
-          if (beanClass.toLowerCase().endsWith(".java") || beanClass.toLowerCase().endsWith(".class")) {
-            beanClass = beanClass.substring(0,beanClass.lastIndexOf('.'));
-          }
-        }
-      }
-    }
-    
-    //
-    return beanClass;
-  }
+	
   /**
    * @return Returns the clientRuntimeID_.
    */
@@ -235,10 +192,6 @@ public class BUAxisDefaultingCommand extends EnvironmentalOperation
     return validationManager_;
   }
   
-  public void setInitialSelection(IStructuredSelection initialSelection)
-  {
-    initialSelection_ = initialSelection;
-  }
   /**
    * @return Returns the serviceExistingServer_.
    */
@@ -247,11 +200,7 @@ public class BUAxisDefaultingCommand extends EnvironmentalOperation
     return serviceExistingServer_;
   }
   
-//  public String getServiceServerTypeID()
-//  {
-//    return serviceServerTypeID_;
-//  }
-  
+ 
   public boolean getCustomizeServiceMappings()
   {
     return customizeServiceMappings_;

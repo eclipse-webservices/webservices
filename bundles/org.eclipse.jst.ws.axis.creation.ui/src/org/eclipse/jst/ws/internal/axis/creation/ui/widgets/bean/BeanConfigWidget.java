@@ -13,13 +13,10 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -28,7 +25,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
@@ -120,7 +116,7 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
                                         SWT.SINGLE | SWT.BORDER  );
     wsdlFileText_.addListener( SWT.Modify, statusListener );
     
-    Label separator = uiUtils.createHorizontalSeparator( parent, 6 );
+    uiUtils.createHorizontalSeparator( parent, 6 );
     
     // TODO this group has no TOOLTIP or INFOPOP.
     Group    methodsGroup = baseConUiUtils.createGroup( parent, "LABEL_METHODS", null, null );
@@ -258,8 +254,7 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
   {
     IPath wsdlPath 
       = new Path( wsdlFolderText_.getText().trim() ).append( wsdlFileText_.getText().trim() );
-	IWorkspaceRoot workspace = ResourceUtils.getWorkspaceRoot();
-    
+	    
 	// TODO Do we need to go to the eclipse file system??
 	//String wsdlLocation = workspace.getFile(wsdlPath).getLocation().toString();
 	String wsdlLocation = wsdlPath.toString();
@@ -267,8 +262,6 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
 	javaParameter_.setOutputWsdlLocation(wsdlLocation);
 	javaParameter_.setInputWsdlLocation(wsdlLocation);
 	
-	String fileURL = PlatformUtils.getFileURLFromPath(new Path(wsdlLocation));
-
 	Hashtable methods = new Hashtable();
 
 	TreeItem[] items = methodsTree_.getItems();
