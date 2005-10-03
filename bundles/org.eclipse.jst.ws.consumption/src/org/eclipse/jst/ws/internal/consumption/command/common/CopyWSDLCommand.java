@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.command.common;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Iterator;
@@ -298,11 +299,13 @@ public class CopyWSDLCommand extends EnvironmentalOperation
   private String normalize(String uri )
   {
 	  try {
-		  String encodedURI = URIEncoder.encode(uri);
+		  String encodedURI = URIEncoder.encode(uri,"UTF-8");
 		  URI normalizedURI = new URI(encodedURI);
 		  normalizedURI = normalizedURI.normalize();
 		  return normalizedURI.toString();
 	  } catch (URISyntaxException e) {
+		  return uri;
+	  } catch (UnsupportedEncodingException e) {
 		  return uri;
 	  }
   }

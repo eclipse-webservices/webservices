@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaHelpers;
-import org.eclipse.jem.java.impl.JavaClassImpl;
+import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
@@ -100,7 +100,7 @@ public class JavaMofReflectionCommand extends EnvironmentalOperation
       }catch(CoreException exc){}
     }
     resourceSet = nature.getResourceSet();
-    javaClass = (JavaHelpers)JavaClassImpl.reflect(qname, resourceSet); 
+    javaClass = JavaRefFactory.eINSTANCE.reflectType(qname,resourceSet);
     
     return status;
   }

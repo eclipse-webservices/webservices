@@ -22,8 +22,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
+import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jem.java.Method;
-import org.eclipse.jem.java.impl.JavaClassImpl;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
@@ -89,7 +89,8 @@ public class JavaToWSDLMethodCommand extends EnvironmentalOperation {
 				(JavaEMFNature) JavaEMFNature.createRuntime(
 					serviceProject_);
 			JavaClass javaClass =
-				(JavaClass) JavaClassImpl.reflect(qName, jMOF.getResourceSet());
+				(JavaClass)JavaRefFactory.eINSTANCE.reflectType(qName, jMOF.getResourceSet());
+			
 			if (!javaClass.isExistingType()) {
 				environment.getLog().log(Log.ERROR, 5022, this, "execute", msgUtils_.getMessage(
 						"MSG_ERROR_JAVA_MOF_REFLECT_FAILED",

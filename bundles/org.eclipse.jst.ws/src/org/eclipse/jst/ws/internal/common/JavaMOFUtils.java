@@ -19,9 +19,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
+import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jem.java.JavaVisibilityKind;
 import org.eclipse.jem.java.Method;
-import org.eclipse.jem.java.impl.JavaClassImpl;
 
 /**
 * This class contains some useful utilities for dealing with the JavaMOF
@@ -187,7 +187,7 @@ public static boolean implementsInterface(JavaClass javaClass, JavaClass interfa
  public static JavaClass getJavaClass(String className , IProject project) throws CoreException
  	{
  		JavaEMFNature jMOF = (JavaEMFNature)JavaEMFNature.createRuntime(project);
-    	return  (JavaClass)JavaClassImpl.reflect(className, jMOF.getResourceSet());
+    	return (JavaClass)JavaRefFactory.eINSTANCE.reflectType(className,jMOF.getResourceSet());
  	}
 
  public static boolean isValidSEIFile(JavaClass beanClass, JavaClass seiClass)

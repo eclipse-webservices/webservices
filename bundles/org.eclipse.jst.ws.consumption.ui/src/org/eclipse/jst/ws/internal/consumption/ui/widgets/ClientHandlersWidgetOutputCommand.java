@@ -16,6 +16,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -23,7 +24,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
-import org.eclipse.jem.java.impl.JavaClassImpl;
+import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jst.j2ee.webservice.wsclient.Handler;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
@@ -110,7 +111,7 @@ public class ClientHandlersWidgetOutputCommand extends EnvironmentalOperation
                   Handler newHandler = wsClientFactory.createHandler();
                   newHandler.setHandlerName(hti.getHandlerName());
 
-                  JavaClass javaClass = (JavaClass) JavaClassImpl.reflect(hti.getHandlerClassName(), jMOF.getResourceSet());
+                  JavaClass javaClass = (JavaClass)JavaRefFactory.eINSTANCE.reflectType(hti.getHandlerClassName(), jMOF.getResourceSet());
                   if (javaClass != null) {
                     newHandler.setHandlerClass(javaClass);
                   }

@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
-import org.eclipse.jem.java.impl.JavaClassImpl;
+import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
@@ -103,7 +103,7 @@ public class ValidateObjectSelectionCommand extends EnvironmentalOperation
     try
     {
 	  JavaEMFNature jMOF = (JavaEMFNature) JavaEMFNature.createRuntime(serviceProject);
-	  JavaClass javaClass =(JavaClass) JavaClassImpl.reflect(javaBeanName, jMOF.getResourceSet());
+	  JavaClass javaClass = (JavaClass)JavaRefFactory.eINSTANCE.reflectType(javaBeanName, jMOF.getResourceSet());
 	  if (!javaClass.isExistingType()) 
 	  {		
 		IStatus errorStatus = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_CANNOT_LOAD_JAVA_BEAN", new String[] { javaBeanName, serviceProjectName }));

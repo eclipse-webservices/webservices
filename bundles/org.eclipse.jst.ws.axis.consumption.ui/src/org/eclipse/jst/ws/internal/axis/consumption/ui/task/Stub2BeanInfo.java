@@ -32,9 +32,9 @@ import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
+import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jem.java.JavaVisibilityKind;
 import org.eclipse.jem.java.Method;
-import org.eclipse.jem.java.impl.JavaClassImpl;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
@@ -512,7 +512,7 @@ public class Stub2BeanInfo
     while (st.hasMoreTokens())
     {
       String sei = st.nextToken();
-      JavaClass javaClass = (JavaClass)JavaClassImpl.reflect(getPackageName(sei), getClassName(sei), javaMOF.getResourceSet());
+      JavaClass javaClass = (JavaClass)JavaRefFactory.eINSTANCE.reflectType(getPackageName(sei), getClassName(sei), javaMOF.getResourceSet());
       if (javaClass != null)
       {
         List methods = javaClass.getMethods();
