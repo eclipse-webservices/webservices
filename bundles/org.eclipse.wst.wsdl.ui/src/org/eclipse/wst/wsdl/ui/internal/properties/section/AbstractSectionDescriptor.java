@@ -100,4 +100,9 @@ public class AbstractSectionDescriptor implements ISectionDescriptor
   {
     return "";
   }
+  
+  public int getEnablesFor()
+  {
+	return ENABLES_FOR_ANY;
+  }
 }
