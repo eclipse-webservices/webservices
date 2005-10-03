@@ -16,7 +16,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
@@ -68,7 +67,7 @@ public class InputOutputFaultViewer extends NamedComponentViewer
   {
     Composite composite = super.populatePrimaryDetailsSection(parent);
                    
-    Label messageLabel = flatViewUtility.createLabel(composite, 0, WSDLEditorPlugin.getWSDLString("_UI_LABEL_MESSAGE")); //$NON-NLS-1$
+    flatViewUtility.createLabel(composite, 0, WSDLEditorPlugin.getWSDLString("_UI_LABEL_MESSAGE")); //$NON-NLS-1$
 
     componentNameCombo = flatViewUtility.createCComboBox(composite);
     componentNameCombo.addListener(SWT.Modify, this);      

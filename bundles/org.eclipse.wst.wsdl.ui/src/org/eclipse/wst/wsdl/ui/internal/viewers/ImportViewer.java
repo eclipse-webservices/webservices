@@ -14,7 +14,6 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -40,7 +39,6 @@ import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.XMLQuickScan;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 
 public class ImportViewer extends BaseViewer implements ModelAdapterListener
@@ -96,7 +94,7 @@ public class ImportViewer extends BaseViewer implements ModelAdapterListener
     layout2.marginHeight = 3;
     composite.setLayout(layout2);
 
-    Label namespaceLabel = flatViewUtility.createLabel(composite, 0, WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAMESPACE")); //$NON-NLS-1$
+    flatViewUtility.createLabel(composite, 0, WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAMESPACE")); //$NON-NLS-1$
     namespaceText = flatViewUtility.createTextField(composite);
     namespaceText.setEnabled(false);
 
@@ -106,7 +104,7 @@ public class ImportViewer extends BaseViewer implements ModelAdapterListener
     gd.grabExcessHorizontalSpace = false;
     con.setLayoutData(gd);
 
-    Label prefixLabel = flatViewUtility.createLabel(composite, 0, WSDLEditorPlugin.getWSDLString("_UI_LABEL_PREFIX")); //$NON-NLS-1$
+    flatViewUtility.createLabel(composite, 0, WSDLEditorPlugin.getWSDLString("_UI_LABEL_PREFIX")); //$NON-NLS-1$
     prefixText = flatViewUtility.createTextField(composite);
     prefixText.addListener(SWT.Modify,this);
     prefixText.setEnabled(false);    
@@ -117,7 +115,7 @@ public class ImportViewer extends BaseViewer implements ModelAdapterListener
     gd.grabExcessHorizontalSpace = false;
     con2.setLayoutData(gd);
 
-    Label locationLabel = flatViewUtility.createLabel(composite, 0, WSDLEditorPlugin.getWSDLString("_UI_LABEL_LOCATION")); //$NON-NLS-1$
+    flatViewUtility.createLabel(composite, 0, WSDLEditorPlugin.getWSDLString("_UI_LABEL_LOCATION")); //$NON-NLS-1$
     locationText = flatViewUtility.createTextField(composite);
     locationText.setEnabled(false);
 
@@ -134,7 +132,7 @@ public class ImportViewer extends BaseViewer implements ModelAdapterListener
     setListenerEnabled(false);                          
     try
     {          
-      Node node = WSDLEditorUtil.getInstance().getNodeForObject(input);
+//      Node node = WSDLEditorUtil.getInstance().getNodeForObject(input);
       update();
     }
     finally
@@ -144,10 +142,10 @@ public class ImportViewer extends BaseViewer implements ModelAdapterListener
 
     if (oldInput != null)
     {
-      WSDLModelAdapterFactory.getWSDLModelAdapterFactory().removeModelAdapterListener(oldInput, this);
+      WSDLModelAdapterFactory.removeModelAdapterListener(oldInput, this);
     }
 
-    WSDLModelAdapterFactory.getWSDLModelAdapterFactory().addModelAdapterListener(input, this);
+    WSDLModelAdapterFactory.addModelAdapterListener(input, this);
     oldInput = input;
   }
 
@@ -231,10 +229,7 @@ public class ImportViewer extends BaseViewer implements ModelAdapterListener
   {
     if (e.widget == selectButton)
     {
-      ResourceSet resourceSet = null;
 // TODO: port check
-      resourceSet = ((org.eclipse.emf.ecore.EObject)input).eResource().getResourceSet();
-
       WSDLEditor editor = (WSDLEditor)editorPart;
       IFile currentWSDLFile = ((IFileEditorInput)editor.getEditorInput()).getFile();
       

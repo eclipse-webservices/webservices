@@ -84,7 +84,7 @@ public class HttpContentGenerator implements ContentGenerator
     }
     else
     {
-      Element element = createElement(bindingInputElement, "http", "urlEncoded");
+      createElement(bindingInputElement, "http", "urlEncoded");
     }
   }
 

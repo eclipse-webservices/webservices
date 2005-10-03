@@ -18,9 +18,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceStatus;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextInputListener;
@@ -28,7 +26,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorActionBarContributor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -43,11 +40,12 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IGotoMarker;
-import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.eclipse.ui.texteditor.IDocumentProviderExtension;
 import org.eclipse.wst.common.ui.provisional.editors.PostMultiPageEditorSite;
 import org.eclipse.wst.common.ui.provisional.editors.PostSelectionMultiPageEditorPart;
+import org.eclipse.wst.sse.core.internal.model.ModelManagerImpl;
+import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.xml.core.internal.provisional.IXMLPreferenceNames;
 import org.eclipse.wst.xml.core.internal.provisional.contenttype.ContentTypeIdForXML;
@@ -211,7 +209,7 @@ public class WSDLMultiPageEditorPart extends PostSelectionMultiPageEditorPart im
 				 */
 				public IEditorActionBarContributor getActionBarContributor() {
 					IEditorActionBarContributor contributor = super.getActionBarContributor();
-					IEditorActionBarContributor multiContributor = WSDLMultiPageEditorPart.this.getEditorSite().getActionBarContributor();
+//					IEditorActionBarContributor multiContributor = WSDLMultiPageEditorPart.this.getEditorSite().getActionBarContributor();
 					// if (multiContributor instanceof
 					// XMLMultiPageEditorActionBarContributor) {
 					// contributor = ((XMLMultiPageEditorActionBarContributor)
@@ -426,8 +424,12 @@ public class WSDLMultiPageEditorPart extends PostSelectionMultiPageEditorPart im
 
 	protected IStructuredModel getModel() {
 		IStructuredModel model = null;
-		if (fTextEditor != null)
-			model = fTextEditor.getModel();
+		if (fTextEditor != null) {
+			IDocument doc = fTextEditor.getDocumentProvider().getDocument(getEditorInput());	
+	    	IModelManager modelManager = ModelManagerImpl.getInstance();    	
+	    	model = modelManager.getModelForRead((IStructuredDocument) doc);
+		}
+
 		return model;
 	}
 

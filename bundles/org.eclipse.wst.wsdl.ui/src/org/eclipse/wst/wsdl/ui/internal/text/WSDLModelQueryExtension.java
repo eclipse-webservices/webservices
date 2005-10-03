@@ -72,7 +72,7 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
               // TODO.. we should investigate removing the  ExtensiblityElementFilter extension point
               // shouldn't this be a ModelQueryExtension defined on the extension languages?
               //
-              ExtensiblityElementFilter filter = (ExtensiblityElementFilter) WSDLEditorPlugin.getInstance().getExtensiblityElementFilterRegistry().get(namespace);
+              ExtensiblityElementFilter filter = (ExtensiblityElementFilter) WSDLEditorPlugin.getInstance().getExtensiblityElementFilterRegistry().getProperty(namespace, "");
               if (filter != null)
               {
                 result = filter.isValidContext(element, name);
@@ -92,8 +92,6 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
       List list = new ArrayList();
       ComponentReferenceUtil util = new ComponentReferenceUtil(lookupOrCreateDefinition(element));
       String currentElementName = element.getLocalName();
-      Node parentNode = element.getParentNode();
-      String parentName = parentNode != null ? parentNode.getLocalName() : "";
       if (checkName(name, "message"))
       {
         list.addAll(util.getMessageNames());

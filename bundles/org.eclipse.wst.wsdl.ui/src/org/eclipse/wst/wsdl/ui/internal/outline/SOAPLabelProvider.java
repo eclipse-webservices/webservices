@@ -15,7 +15,6 @@ import java.util.HashMap;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.w3c.dom.Node;
 
 
@@ -46,7 +45,6 @@ public class SOAPLabelProvider extends LabelProvider
   {    
     Node node = (Node)object;
     String imageName = (String)map.get(node.getLocalName());                        
-    boolean isReadOnly = !(node instanceof IDOMNode);  
 	  return imageName != null ? WSDLEditorPlugin.getInstance().getImage(imageName) : null; 
   }
   

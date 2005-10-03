@@ -332,7 +332,6 @@ public class GroupEditPart extends WSDLEditPart
   public AbstractGraphicalEditPart getMatchingChildEditPart(Object model)
   {
     List list = new ArrayList();
-    Definition definition = getDefinition();
     for (Object o = model; o != null && !(o instanceof Definition); o = getParent(o))
     {
       list.add(0, o);

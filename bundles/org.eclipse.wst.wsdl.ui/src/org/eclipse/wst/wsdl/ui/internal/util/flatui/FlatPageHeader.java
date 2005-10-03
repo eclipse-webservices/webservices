@@ -45,7 +45,6 @@ public class FlatPageHeader extends Canvas implements IPropertyChangeListener
 	private int textHMargin = 10;
 	private int textVMargin = 5;
 	private Font headerFont;
-	private int widthHint;
 
 	private List listeners;
 	private int buttonImageX;
@@ -128,7 +127,6 @@ public class FlatPageHeader extends Canvas implements IPropertyChangeListener
 	// Compute size of the widget
 	public Point computeSize(int wHint, int hHint, boolean changed) 
   {
-		widthHint = wHint;
 		int width = getParent().getClientArea().width;
 		int height = 0;
 		if (backgroundImage != null) 
@@ -139,7 +137,6 @@ public class FlatPageHeader extends Canvas implements IPropertyChangeListener
 		if (text != null) 
     {
 			GC gc = new GC(this);
-			int textWidth = getTextWidth(gc);
 			int textHeight = getTextHeight(gc);
 			gc.dispose();
 			height = Math.max(height, textHeight);
@@ -158,7 +155,6 @@ public class FlatPageHeader extends Canvas implements IPropertyChangeListener
 	protected void paintControl(PaintEvent e) 
   {
 		GC gc = e.gc;
-		int height = getTextHeight(gc);
 		if (backgroundImage != null) 
     {
 			Rectangle imageBounds = backgroundImage.getBounds();
@@ -328,20 +324,20 @@ public class FlatPageHeader extends Canvas implements IPropertyChangeListener
 		return Math.max(height, imageHeight);
 	}
 
-	private int getTextWidth(GC gc) 
-  {
-		int imageWidth = 0;
-		if (backgroundImage!= null && SWT.getPlatform().equals("motif")==false) 
-    {
-			imageWidth = backgroundImage.getBounds().width;
-		}
-		gc.setFont(headerFont);
-//		gc.setFont(getFont());
-		FontMetrics fm = gc.getFontMetrics();
-		int fontWidth = fm.getAverageCharWidth() + 5;
-		int width =  fontWidth * text.length() + textHMargin + textHMargin;
-		return Math.max(width, imageWidth);
-	}
+//	private int getTextWidth(GC gc) 
+//  {
+//		int imageWidth = 0;
+//		if (backgroundImage!= null && SWT.getPlatform().equals("motif")==false) 
+//    {
+//			imageWidth = backgroundImage.getBounds().width;
+//		}
+//		gc.setFont(headerFont);
+////		gc.setFont(getFont());
+//		FontMetrics fm = gc.getFontMetrics();
+//		int fontWidth = fm.getAverageCharWidth() + 5;
+//		int width =  fontWidth * text.length() + textHMargin + textHMargin;
+//		return Math.max(width, imageWidth);
+//	}
 	
 	public void handleEvent(Event e) 
   {

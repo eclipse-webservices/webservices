@@ -545,26 +545,26 @@ public class WSDLMenuActionContributor implements IMenuActionContributor
     return submenu;
   }
   
-  private WSDLElement showPasteAction(WSDLElement element, IEditorPart ePart) {
-  	WSDLElement parentElement = null;
-  	
-  	if (ePart instanceof WSDLEditor) {
-  		WSDLElement clipboardElement = ((WSDLEditor) ePart).getClipboardContents();
-  		
-  		if (element instanceof PortType) {
-  			if (clipboardElement instanceof Operation) {
-  				parentElement = element;
-  			}
-  		}
-  		if (element instanceof Operation) {
-  			if (clipboardElement instanceof Operation) {
-  				parentElement = (WSDLElement) ((Operation) element).eContainer();
-  			}
-  		}
-  	}
-  	
-  	return parentElement;
-  }
+//  private WSDLElement showPasteAction(WSDLElement element, IEditorPart ePart) {
+//  	WSDLElement parentElement = null;
+//  	
+//  	if (ePart instanceof WSDLEditor) {
+//  		WSDLElement clipboardElement = ((WSDLEditor) ePart).getClipboardContents();
+//  		
+//  		if (element instanceof PortType) {
+//  			if (clipboardElement instanceof Operation) {
+//  				parentElement = element;
+//  			}
+//  		}
+//  		if (element instanceof Operation) {
+//  			if (clipboardElement instanceof Operation) {
+//  				parentElement = (WSDLElement) ((Operation) element).eContainer();
+//  			}
+//  		}
+//  	}
+//  	
+//  	return parentElement;
+//  }
 }
 
 class AddBindingOperationAction extends AddElementAction
@@ -652,8 +652,6 @@ class AddOperationAction extends AddElementAction
   		expandEditParts(operation,true);
   	}
   	else {
-  		Definition def = portType.getEnclosingDefinition();	
-		
   		// Add Operation
   		AddOperationCommand opAction = new AddOperationCommand(portType, name);
 		opAction.run();

@@ -61,8 +61,6 @@ public class RenameAction //extends BaseNodeAction implements Runnable
 
   public void run()
   {
-    String oldName = "";
-                                
     if (modelObject instanceof Operation) 
     {
       renameOperationHelper((Operation)modelObject);

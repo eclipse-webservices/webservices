@@ -58,7 +58,7 @@ public class WSDLNewFilePage extends WizardNewFileCreationPage
     String sameName = existsFileAnyCase(fullFileName);
     if (sameName != null) 
     {
-       String qualifiedFileName = getContainerFullPath().toString() + '/' + fullFileName;
+//       String qualifiedFileName = getContainerFullPath().toString() + '/' + fullFileName;
        setErrorMessage(WSDLEditorPlugin.getWSDLString("_UI_ERROR_FILE_ALREADY_EXISTS",  sameName)); //$NON-NLS-1$
        return false;
     }

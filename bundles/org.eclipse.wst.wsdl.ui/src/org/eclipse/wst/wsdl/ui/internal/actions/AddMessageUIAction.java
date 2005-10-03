@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.actions;
 
 
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -27,7 +26,6 @@ public final class AddMessageUIAction extends WSDLElementUIAction
 {
   private Definition definition;
   private String name;
-  private IEditorPart editorPart;
   
   public AddMessageUIAction
   	(Definition definition, 

@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -26,6 +27,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.wst.common.ui.properties.internal.provisional.ITabbedPropertySheetPageContributor;
+import org.eclipse.wst.sse.core.internal.model.ModelManagerImpl;
+import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.sse.ui.internal.view.events.INodeSelectionListener;
 import org.eclipse.wst.sse.ui.internal.view.events.NodeSelectionChangedEvent;
@@ -50,7 +54,6 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
   protected WSDLSelectionManager wsdlSelectionManager;
   protected InternalSelectionProvider internalSelectionProvider = new InternalSelectionProvider();
   private IPropertySheetPage fPropertySheetPage;
-  private IContentOutlinePage fOutlinePage;
 
   public WSDLTextEditor(WSDLEditor wsdlEditor)
   {
@@ -252,8 +255,11 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
   public void update()
   {
     super.update();
-    if (outlinePage != null)
-      outlinePage.setModel(getModel());
+    if (outlinePage != null) {    	
+    	IDocument doc = getDocumentProvider().getDocument(getEditorInput());	
+    	IModelManager modelManager = ModelManagerImpl.getInstance();    	
+    	outlinePage.setModel(modelManager.getModelForRead((IStructuredDocument) doc));
+    }
   }
   
   /*

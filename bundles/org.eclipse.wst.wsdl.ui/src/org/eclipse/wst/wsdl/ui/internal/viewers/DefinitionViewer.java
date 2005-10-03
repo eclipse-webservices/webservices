@@ -14,7 +14,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -34,22 +33,22 @@ public class DefinitionViewer extends NamedComponentViewer
     
   protected Composite populatePrimaryDetailsSection(Composite parent)
   {
-  	Composite composite = super.populatePrimaryDetailsSection(parent);
-	  Label label = flatViewUtility.createLabel(composite, 0, WSDLEditorPlugin.getWSDLString("_UI_NAMESPACES")); //$NON-NLS-1$
-  	Button button = flatViewUtility.createPushButton(composite, WSDLEditorPlugin.getWSDLString("_UI_EDIT_NAMESPACES"));
+	  Composite composite = super.populatePrimaryDetailsSection(parent);
+	  flatViewUtility.createLabel(composite, 0, WSDLEditorPlugin.getWSDLString("_UI_NAMESPACES")); //$NON-NLS-1$
+	  Button button = flatViewUtility.createPushButton(composite, WSDLEditorPlugin.getWSDLString("_UI_EDIT_NAMESPACES"));
 	  SelectionListener listener = new SelectionListener()
-    {
-    	public void widgetDefaultSelected(SelectionEvent event)
-    	{    		
-    	}
-    	
-    	public void widgetSelected(SelectionEvent event)
-    	{
-		  EditNamespacesAction action = new EditNamespacesAction((Definition)getInput());					
-		  action.run();	
-    	}	
-    };
-    button.addSelectionListener(listener);
-  	return composite;	
+	  {
+		  public void widgetDefaultSelected(SelectionEvent event)
+		  {    		
+		  }
+		  
+		  public void widgetSelected(SelectionEvent event)
+		  {
+			  EditNamespacesAction action = new EditNamespacesAction((Definition)getInput());					
+			  action.run();	
+		  }	
+	  };
+	  button.addSelectionListener(listener);
+	  return composite;	
   }	    
 }

@@ -13,9 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.visitor;
 import java.util.Iterator;
 
 import org.eclipse.wst.wsdl.Binding;
-import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOperation;
-import org.eclipse.wst.wsdl.BindingOutput;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
@@ -26,7 +24,6 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
-import org.eclipse.xsd.XSDTypeDefinition;
 
 public class WSDLVisitor
 {
@@ -109,8 +106,8 @@ public class WSDLVisitor
 
   public void visitBindingOperation(BindingOperation bindingOperation)
   {
-    BindingInput bindingInput = bindingOperation.getEBindingInput();
-    BindingOutput bindingOutput = bindingOperation.getEBindingOutput();         
+//    BindingInput bindingInput = bindingOperation.getEBindingInput();
+//    BindingOutput bindingOutput = bindingOperation.getEBindingOutput();         
   }
 
   public void visitOperation(Operation operation)
@@ -140,7 +137,7 @@ public class WSDLVisitor
 
   public void visitPart(Part part)
   {
-    XSDTypeDefinition type = part.getTypeDefinition();
+//    XSDTypeDefinition type = part.getTypeDefinition();
   }
 
   public void visitMessage(Message message)

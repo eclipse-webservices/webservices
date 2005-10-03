@@ -289,7 +289,6 @@ public abstract class BaseViewer extends BaseDesignWindow implements Listener, S
       list = parent.getChildNodes();
     }
    
-    String name = null;
     if (list != null)
     {
       // Performance issue perhaps?

@@ -17,7 +17,6 @@ import java.util.Vector;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalEditPart;
@@ -47,7 +46,6 @@ public class WSDLDragAndDropCommand extends Command //AbstractCommand
 
   public WSDLDragAndDropCommand(EditPartViewer viewer, ChangeBoundsRequest request)
   {
-  	boolean constructor = false;
     this.viewer = viewer;                    
     this.request = request;
 
@@ -59,8 +57,6 @@ public class WSDLDragAndDropCommand extends Command //AbstractCommand
   		WSDLElement wsdlElement = (WSDLElement) targetEditPart.getModel();
   		if (wsdlElement.getElement() instanceof IDOMNode) {
   			((GraphicalEditPart)viewer.getRootEditPart()).getFigure().translateToRelative(location);
-  			Rectangle targetRectangle; 
-  			WSDLTreeNodeEditPart targetParentEditPart;
   			WSDLTreeNodeEditPart movingChildEditPart;
   			Vector dragActions = new Vector();
 

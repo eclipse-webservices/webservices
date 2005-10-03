@@ -22,7 +22,6 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.TableTree;
 import org.eclipse.swt.custom.ViewForm;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -53,7 +52,6 @@ public class WidgetFactory {
   private Hashtable colorRegistry = new Hashtable();
   private Color backgroundColor;
   private Color clientAreaColor;
-  private KeyListener deleteListener;
   private Color foregroundColor;
   private Color fReadOnlyColor;
   private Display fDisplay;

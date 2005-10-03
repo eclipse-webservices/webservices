@@ -52,7 +52,6 @@ public class ToggleControl extends Canvas {
   private static final int DEFAULT_HEIGHT = 8;
   private static final int[] EXPANDED_POINTS = { 0, 2, 8, 2, 4, 6 }; 
   private static final int[] COLLAPSED_POINTS = { 2, 0, 2, 8, 6, 4 }; 
-  private int fMultiplier = 2;
   private int fHeight = DEFAULT_HEIGHT;  
 
   /* accessibility */

@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.ui.internal.properties.section;
 
 import org.eclipse.jface.text.TextSelection;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.graphics.Image;
@@ -171,10 +170,10 @@ public class WSDLLabelProvider extends LabelProvider
 	 * unequal selected elements in a IStructuredSelection.
 	 * @return the object to get labels for.
 	 */
-	private Object getObject(Object objects, boolean multiple[]) {
-		Assert.isNotNull(objects);
-		Object object = null;
-		return object;
-	}
+//	private Object getObject(Object objects, boolean multiple[]) {
+//		Assert.isNotNull(objects);
+//		Object object = null;
+//		return object;
+//	}
 
 }

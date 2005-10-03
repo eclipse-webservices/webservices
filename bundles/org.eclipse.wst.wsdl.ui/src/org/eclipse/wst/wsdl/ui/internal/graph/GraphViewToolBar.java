@@ -127,7 +127,7 @@ public class GraphViewToolBar extends ViewForm
       	
         public void widgetSelected(SelectionEvent e)
         {                                             
-          ViewMode vm = WSDLGraphModelAdapterFactory.getWSDLGraphModelAdapterFactory().getViewMode((Definition)editor.getDefinition());
+          ViewMode vm = WSDLGraphModelAdapterFactory.getViewMode((Definition)editor.getDefinition());
           vm.setBindingVisible(!vm.isBindingVisible());
           
           // hack to make the button look like a toggle button

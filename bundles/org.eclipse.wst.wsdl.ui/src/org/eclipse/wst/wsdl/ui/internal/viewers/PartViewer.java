@@ -55,14 +55,14 @@ public class PartViewer extends NamedComponentViewer
   {
     Composite composite = super.populatePrimaryDetailsSection(parent);
      
-    Label componentTypeLabel = flatViewUtility.createLabel(composite, WSDLEditorPlugin.getWSDLString("_UI_LABEL_REFERENCE_KIND")); //$NON-NLS-1$
+    flatViewUtility.createLabel(composite, WSDLEditorPlugin.getWSDLString("_UI_LABEL_REFERENCE_KIND")); //$NON-NLS-1$
     referenceKindCombo = flatViewUtility.createCComboBox(composite);
     referenceKindCombo.add("element");
     referenceKindCombo.add("type");
     referenceKindCombo.setText("type");
     referenceKindCombo.addListener(SWT.Modify, this);
 
-    Label ph = flatViewUtility.createLabel(composite, ""); 
+    flatViewUtility.createLabel(composite, ""); 
     
     componentNameLabel = flatViewUtility.createLabel(composite, WSDLEditorPlugin.getWSDLString("_UI_LABEL_ELEMENT"));   //$NON-NLS-1$
 

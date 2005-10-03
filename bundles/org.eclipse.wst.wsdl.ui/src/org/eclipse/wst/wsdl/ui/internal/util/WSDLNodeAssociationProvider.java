@@ -52,7 +52,7 @@ public class WSDLNodeAssociationProvider implements INodeAssociationProvider
   protected Object getModelObjectHelper(Object parentObject, Element elementNode)
   {          
 		Object result = null;
-		Collection childComponentList = ((WSDLElementImpl) parentObject).getModelObjects(parentObject);
+		Collection childComponentList = ((WSDLElementImpl) parentObject).getWSDLContents();
 		for (Iterator i = childComponentList.iterator(); i.hasNext();)
 		{
 			Object o = i.next();

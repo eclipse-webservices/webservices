@@ -19,7 +19,6 @@ import org.eclipse.wst.wsdl.ui.internal.actions.DeleteInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.xml.core.internal.document.DocumentImpl;
 import org.eclipse.wst.xsd.ui.internal.XSDEditorPlugin;
-import org.eclipse.wst.xsd.ui.internal.refactor.delete.BaseGlobalCleanup;
 import org.eclipse.wst.xsd.ui.internal.util.TypesHelper;
 import org.eclipse.wst.xsd.ui.internal.util.XSDDOMHelper;
 import org.eclipse.xsd.XSDComponent;
@@ -28,7 +27,6 @@ import org.eclipse.xsd.XSDImport;
 import org.eclipse.xsd.XSDInclude;
 import org.eclipse.xsd.XSDRedefine;
 import org.eclipse.xsd.XSDSchema;
-import org.eclipse.xsd.XSDSchemaDirective;
 import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -146,7 +144,7 @@ public class DeleteAction extends Action implements DeleteInterfaceAction
         comp instanceof XSDImport ||
         comp instanceof XSDRedefine)
     {
-      XSDSchema resolvedSchema = ((XSDSchemaDirective)comp).getResolvedSchema();
+//      XSDSchema resolvedSchema = ((XSDSchemaDirective)comp).getResolvedSchema();
       XSDSchema referencedSchema = null;
       if (comp instanceof XSDInclude)
       {
@@ -179,7 +177,7 @@ public class DeleteAction extends Action implements DeleteInterfaceAction
     }
     else if (getSchema().equals(comp.getContainer()))
     {
-      BaseGlobalCleanup cleanHelper = null;
+//      BaseGlobalCleanup cleanHelper = null;
    //   Only need to clean up references if the component being deleted is global scoped
 //      if (comp instanceof XSDElementDeclaration)
 //      {

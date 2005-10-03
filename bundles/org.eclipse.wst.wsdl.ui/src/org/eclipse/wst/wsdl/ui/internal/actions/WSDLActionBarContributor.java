@@ -14,7 +14,7 @@ import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionConstants;
@@ -38,8 +38,8 @@ public class WSDLActionBarContributor extends SourceEditorActionBarContributor
 
     // always enable undo/redo regardless of which page we're on.  The undo/redo comes from the editor
     //    
-    updateAction(IWorkbenchActionConstants.UNDO, ITextEditorActionConstants.UNDO, true);
-    updateAction(IWorkbenchActionConstants.REDO, ITextEditorActionConstants.REDO, true);
+    updateAction(ActionFactory.UNDO.getId(), ITextEditorActionConstants.UNDO, true);
+    updateAction(ActionFactory.REDO.getId(), ITextEditorActionConstants.REDO, true);
 
     // turn these off so that the actionhandler will handle it for us
     //
@@ -90,7 +90,7 @@ public class WSDLActionBarContributor extends SourceEditorActionBarContributor
       textEditor = ((WSDLEditor) activeEditor).getWSDLTextEditor();
     }
     
-    updateAction(IWorkbenchActionConstants.UNDO, ITextEditorActionConstants.UNDO, true);
-    updateAction(IWorkbenchActionConstants.REDO, ITextEditorActionConstants.REDO, true);
+    updateAction(ActionFactory.UNDO.getId(), ITextEditorActionConstants.UNDO, true);
+    updateAction(ActionFactory.REDO.getId(), ITextEditorActionConstants.REDO, true);
   }
 }

@@ -154,7 +154,6 @@ public class TabbedViewer implements ISelectionChangedListener
       targetName = childName;
     }  
    
-    String name = null;
     if (list != null)
     {
       // Performance issue perhaps?

@@ -44,7 +44,6 @@ public class MessageRenamer extends BaseRenamer
   public void visitOutput(Output output)
   {
     super.visitOutput(output);
-    Message message = output.getEMessage();
     if (globalComponent.equals(output))
     {
       Element element = WSDLEditorUtil.getInstance().getElementForObject(output);
@@ -55,7 +54,6 @@ public class MessageRenamer extends BaseRenamer
   public void visitFault(Fault fault)
   {
     super.visitFault(fault);
-    Message message = fault.getEMessage();
     if (globalComponent.equals(fault))
     {
       Element element = WSDLEditorUtil.getInstance().getElementForObject(fault);

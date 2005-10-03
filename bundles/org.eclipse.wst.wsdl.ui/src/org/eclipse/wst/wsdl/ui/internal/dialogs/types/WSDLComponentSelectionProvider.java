@@ -23,9 +23,6 @@ import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.impl.ImportImpl;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.extension.ITypeSystemProvider;
-import org.eclipse.wst.wsdl.ui.internal.typesystem.ExtensibleTypeSystemProvider;
-import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xsd.ui.internal.XSDEditorPlugin;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.common.IComponentList;
@@ -506,17 +503,17 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         }
     }
 
-      private ITypeSystemProvider getTypeSystemProvider() {
-            ITypeSystemProvider provider = WSDLEditorUtil.getInstance().getTypeSystemProvider(definition);
-            if (provider instanceof ExtensibleTypeSystemProvider) {
-                provider = (ExtensibleTypeSystemProvider) provider; 
-            }
-            else {
-                return null;
-            }
-            
-            return provider;
-      }
+//      private ITypeSystemProvider getTypeSystemProvider() {
+//            ITypeSystemProvider provider = WSDLEditorUtil.getInstance().getTypeSystemProvider(definition);
+//            if (provider instanceof ExtensibleTypeSystemProvider) {
+//                provider = (ExtensibleTypeSystemProvider) provider; 
+//            }
+//            else {
+//                return null;
+//            }
+//            
+//            return provider;
+//      }
 
     
   

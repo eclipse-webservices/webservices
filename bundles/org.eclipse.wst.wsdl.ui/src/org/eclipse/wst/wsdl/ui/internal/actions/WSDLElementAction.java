@@ -27,7 +27,6 @@ import org.w3c.dom.Node;
 public abstract class WSDLElementAction extends Action
 {
   protected WSDLElementCommand modelCommand;
-  private String undoDescription;
   private IEditorPart editorPart;
   
   public WSDLElementAction
@@ -38,19 +37,18 @@ public abstract class WSDLElementAction extends Action
   {
     super(label,image);
     modelCommand = command;
-    this.undoDescription = undoDescription;
   }
 
   public void setEditorPart(IEditorPart editorPart)
   {
     this.editorPart = editorPart;
   }
-  
+/*
   private String getUndoDescription()
   {
     return undoDescription;
   }
-
+*/
   abstract protected WSDLElement getOwner();
   
   abstract protected boolean showDialog();
@@ -75,7 +73,7 @@ public abstract class WSDLElementAction extends Action
   protected void postRun()
   {
   }
-
+/*
   private void beginRecording()
   {    
     Node node = null;
@@ -99,7 +97,7 @@ public abstract class WSDLElementAction extends Action
       ((IDOMNode)node).getModel().endRecording(this);  
     }
   }
-  
+*/
   protected WSDLElement getWSDLElement()
   {
     return modelCommand.getWSDLElement();

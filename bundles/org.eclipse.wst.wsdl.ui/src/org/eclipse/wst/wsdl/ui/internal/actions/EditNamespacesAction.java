@@ -45,7 +45,7 @@ public class EditNamespacesAction extends Action
     if (element != null)
     {
       List namespaceInfoList = namespaceInfoManager.getNamespaceInfoList(element);
-      List oldNamespaceInfoList = NamespaceInfo.cloneNamespaceInfoList(namespaceInfoList);
+//      List oldNamespaceInfoList = NamespaceInfo.cloneNamespaceInfoList(namespaceInfoList);
 
       // here we store a copy of the old info for each NamespaceInfo
       // this info will be used in createPrefixMapping() to figure out how to update the document 

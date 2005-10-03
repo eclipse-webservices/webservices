@@ -51,10 +51,8 @@ public class WSDLSetComponentHelper {
         String componentObject = getPrefixedComponentName(spec);
 
         org.w3c.dom.Element wsdlElement = inputElement.getElement();
-        org.w3c.dom.Element definitionElement = definition.getElement();
         
         wsdlElement.setAttribute(property, componentObject); //$NON-NLS-1$
-        
     }
     
     public void setXSDTypeComponent(Part part, XMLComponentSpecification spec) {

@@ -20,9 +20,9 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.IPluginRegistry;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -34,7 +34,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.ExtensibilityItemTreeProviderRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extension.NSKeyedExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtensionRegistry;
-
 
 public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
 {
@@ -177,8 +176,8 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
    * Get resource string
    */
   public static String getWSDLString(String key)
-  {
-    return getInstance().getDescriptor().getResourceBundle().getString(key);
+  {	  
+    return Platform.getResourceBundle(Platform.getBundle(PLUGIN_ID)).getString(key);
   }
 
   /**
@@ -350,8 +349,9 @@ class BaseRegistryReader
    */
   public void readRegistry(String extensionPointId)
   {
-    IPluginRegistry pluginRegistry = Platform.getPluginRegistry();
-    IExtensionPoint point = pluginRegistry.getExtensionPoint(PLUGIN_ID, extensionPointId);
+	IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+	IExtensionPoint point = extensionRegistry.getExtensionPoint(PLUGIN_ID, extensionPointId);
+
     if (point != null)
     {
       IConfigurationElement[] elements = point.getConfigurationElements();

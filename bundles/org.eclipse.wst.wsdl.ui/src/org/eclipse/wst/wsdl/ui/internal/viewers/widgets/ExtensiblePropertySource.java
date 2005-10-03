@@ -44,7 +44,7 @@ public class ExtensiblePropertySource extends XMLPropertySource
 			String namespaceURI = (String)cmDocument.getProperty("http://org.eclipse.wst/cm/properties/targetNamespaceURI");   
 			if (namespaceURI != null)
 			{
-				IPropertyDescriptorProvider provider = (IPropertyDescriptorProvider)WSDLEditorPlugin.getInstance().getPropertyDescriptorProviderRegistry().get(namespaceURI);
+				IPropertyDescriptorProvider provider = (IPropertyDescriptorProvider)WSDLEditorPlugin.getInstance().getPropertyDescriptorProviderRegistry().getProperty(namespaceURI, "");
 				if (provider != null)
 				{
 				  result = provider.getPropertyDescriptor(editorPart, (Element) nodeNotifier, namespaceURI, attrDecl.getNodeName());

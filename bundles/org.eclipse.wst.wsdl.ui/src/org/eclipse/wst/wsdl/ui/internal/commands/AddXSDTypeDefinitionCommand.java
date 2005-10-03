@@ -24,7 +24,6 @@ import org.eclipse.xsd.XSDSchema;
 public final class AddXSDTypeDefinitionCommand extends WSDLElementCommand
 {
   private Definition definition;
-  private XSDSchemaExtensibilityElement extensibilityElement;
   private String targetNamespace;
   private String typeName;
   private XSDSchema schema;

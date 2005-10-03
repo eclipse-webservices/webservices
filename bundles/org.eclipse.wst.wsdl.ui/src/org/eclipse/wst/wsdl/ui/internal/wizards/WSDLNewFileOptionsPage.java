@@ -22,7 +22,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -354,7 +353,8 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     boolean test = true;
     try
     {
-      URI testURI = new URI(ns);
+    	new URI(ns);
+//      URI testURI = new URI(ns);
       //      if (!testURI.isGenericURI())
       //      {
       //        setErrorMessage(WSDLEditorPlugin.getInstance().getWSDLString("_UI_ERROR_NAMESPACE_INVALID")); //$NON-NLS-1$
@@ -535,17 +535,6 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   
   Label sepLabel;
   
-  private Text createTextField(Composite comp) {
-    Text textField = new Text(comp, SWT.SINGLE | SWT.BORDER);
-    GridData textData = new GridData();
-    textData.horizontalAlignment = GridData.FILL;
-    textData.grabExcessHorizontalSpace = true;
-    textData.widthHint = 10;
-    textField.setLayoutData(textData);
-
-  	return textField;
-  }
-  
   private Label createLabel(Composite comp, String labelString) {
     Label label = new Label(comp, SWT.LEFT);
     label.setText(labelString);
@@ -554,23 +543,6 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     label.setLayoutData(nsData);
     
     return label;
-  }
-  
-  private Composite createComposite(Composite parent, int numColumns)
-  {
-    Composite composite = new Composite(parent, SWT.NONE);
-
-    composite.setFont(new Font(Display.getCurrent(), "ms sans serif", 8, SWT.NORMAL));
-
-    GridLayout layout = new GridLayout();
-    layout.numColumns = numColumns;
-    composite.setLayout(layout);
-
-    GridData data = new GridData();
-    data.verticalAlignment = GridData.FILL;
-    data.horizontalAlignment = GridData.FILL;
-    composite.setLayoutData(data);
-    return composite;
   }
   
   public Vector getNamespaceInfo() {

@@ -14,7 +14,6 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -179,7 +178,7 @@ public class ImportSection extends AbstractSection
 	    if (event.widget == prefixText && locationText.getText().length() > 0 && namespaceText.getText().length() > 0) {    	
 	    	Object input = getElement();
 	        Import importObj = (Import)input;
-	        org.w3c.dom.Element importElement = WSDLEditorUtil.getInstance().getElementForObject(importObj);
+//	        org.w3c.dom.Element importElement = WSDLEditorUtil.getInstance().getElementForObject(importObj);
 	        Map namespacesMap = importObj.getEnclosingDefinition().getNamespaces();
 
 	        if (namespacesMap.containsKey(prefixText.getText())) {
@@ -199,81 +198,77 @@ public class ImportSection extends AbstractSection
 	
   public void widgetSelected(SelectionEvent e)
   {
-    if (e.widget == button)
-    {
-        ResourceSet resourceSet = null;
-        
-        Object input = getElement();
-        
-           resourceSet = ((org.eclipse.emf.ecore.EObject)input).eResource().getResourceSet();
-
-           WSDLEditor editor = (WSDLEditor)editorPart;
-           IFile currentWSDLFile = ((IFileEditorInput)editor.getEditorInput()).getFile();
-           
-           SelectSingleFileDialog dialog = new SelectSingleFileDialog(WSDLEditorPlugin.getShell(), null, true);
-           String [] filters = { "xsd", "wsdl" }; //$NON-NLS-1$
-           IFile [] excludedFiles = { currentWSDLFile };
-           
-           dialog.addFilterExtensions(filters, excludedFiles);
-           dialog.create();
-           dialog.getShell().setText(WSDLEditorPlugin.getWSDLString("_UI_TITLE_SELECT")); //$NON-NLS-1$
-           dialog.setTitle(WSDLEditorPlugin.getWSDLString("_UI_TITLE_SELECT_FILE")); //$NON-NLS-1$
-           dialog.setMessage(WSDLEditorPlugin.getWSDLString("_UI_DESCRIPTION_SELECT_WSDL_OR_XSD")); //$NON-NLS-1$
-           int rc = dialog.open();
-           if (rc == IDialogConstants.OK_ID)
-           {
-             IFile selectedFile = dialog.getFile();
-                     
-             //if (selectedFile.getLocation().toOSString().equals(currentWSDLFile.getLocation().toOSString()))
-             //{
-             //  System.out.println("SAME FILE:" + currentWSDLFile.getLocation());
-             //}
-
-             String location = ComponentReferenceUtil.computeRelativeURI(selectedFile, currentWSDLFile, true);
-
-             Import importObj = (Import)input;
-             org.w3c.dom.Element importElement = WSDLEditorUtil.getInstance().getElementForObject(importObj);
-             Definition definition = importObj.getEnclosingDefinition();
-             org.w3c.dom.Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
-             
-             String importTargetNamespace = ""; //$NON-NLS-1$
-             String prefix = prefixText.getText();
-             String uniquePrefix = ""; //$NON-NLS-1$
-           
-     		URI uri = URI.createPlatformResourceURI(selectedFile.getFullPath().toString());      
-
-     		// note that the getTargetNamespaceURIForSchema works for both schema and wsdl files
-     		// I should change the name of this convenience method
-             importTargetNamespace =  XMLQuickScan.getTargetNamespaceURIForSchema(uri.toString());
-
-             if (prefix.trim().equals("")) //$NON-NLS-1$
-             {
-               uniquePrefix = getUniquePrefix(definition, uri.fileExtension());
-             }
-             else
-             {
-               uniquePrefix = prefix; 
-             }
-            
-             
-             if (importTargetNamespace == null ||
-                (importTargetNamespace != null && importTargetNamespace.trim().length() == 0))
-             {
-               return;  // what to do with no namespace docs?
-             }
-
-             importElement.setAttribute("location", location); //$NON-NLS-1$
-             importElement.setAttribute("namespace", importTargetNamespace); //$NON-NLS-1$
-
-             definitionElement.setAttribute("xmlns:" + uniquePrefix, importTargetNamespace); //$NON-NLS-1$
-
-             namespaceText.setText(importTargetNamespace);
-             locationText.setText(location);
-             prefixText.setText(uniquePrefix);
-           }
-
-        refresh();
-    }
+	  if (e.widget == button)
+	  {
+		  Object input = getElement();
+		  
+		  WSDLEditor editor = (WSDLEditor)editorPart;
+		  IFile currentWSDLFile = ((IFileEditorInput)editor.getEditorInput()).getFile();
+		  
+		  SelectSingleFileDialog dialog = new SelectSingleFileDialog(WSDLEditorPlugin.getShell(), null, true);
+		  String [] filters = { "xsd", "wsdl" }; //$NON-NLS-1$
+		  IFile [] excludedFiles = { currentWSDLFile };
+		  
+		  dialog.addFilterExtensions(filters, excludedFiles);
+		  dialog.create();
+		  dialog.getShell().setText(WSDLEditorPlugin.getWSDLString("_UI_TITLE_SELECT")); //$NON-NLS-1$
+		  dialog.setTitle(WSDLEditorPlugin.getWSDLString("_UI_TITLE_SELECT_FILE")); //$NON-NLS-1$
+		  dialog.setMessage(WSDLEditorPlugin.getWSDLString("_UI_DESCRIPTION_SELECT_WSDL_OR_XSD")); //$NON-NLS-1$
+		  int rc = dialog.open();
+		  if (rc == IDialogConstants.OK_ID)
+		  {
+			  IFile selectedFile = dialog.getFile();
+			  
+			  //if (selectedFile.getLocation().toOSString().equals(currentWSDLFile.getLocation().toOSString()))
+			  //{
+			  //  System.out.println("SAME FILE:" + currentWSDLFile.getLocation());
+			  //}
+			  
+			  String location = ComponentReferenceUtil.computeRelativeURI(selectedFile, currentWSDLFile, true);
+			  
+			  Import importObj = (Import)input;
+			  org.w3c.dom.Element importElement = WSDLEditorUtil.getInstance().getElementForObject(importObj);
+			  Definition definition = importObj.getEnclosingDefinition();
+			  org.w3c.dom.Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
+			  
+			  String importTargetNamespace = ""; //$NON-NLS-1$
+			  String prefix = prefixText.getText();
+			  String uniquePrefix = ""; //$NON-NLS-1$
+			  
+			  URI uri = URI.createPlatformResourceURI(selectedFile.getFullPath().toString());      
+			  
+			  // note that the getTargetNamespaceURIForSchema works for both schema and wsdl files
+			  // I should change the name of this convenience method
+			  importTargetNamespace =  XMLQuickScan.getTargetNamespaceURIForSchema(uri.toString());
+			  
+			  if (prefix.trim().equals("")) //$NON-NLS-1$
+			  {
+				  uniquePrefix = getUniquePrefix(definition, uri.fileExtension());
+			  }
+			  else
+			  {
+				  uniquePrefix = prefix; 
+			  }
+			  
+			  
+			  if (importTargetNamespace == null ||
+					  (importTargetNamespace != null && importTargetNamespace.trim().length() == 0))
+			  {
+				  return;  // what to do with no namespace docs?
+			  }
+			  
+			  importElement.setAttribute("location", location); //$NON-NLS-1$
+			  importElement.setAttribute("namespace", importTargetNamespace); //$NON-NLS-1$
+			  
+			  definitionElement.setAttribute("xmlns:" + uniquePrefix, importTargetNamespace); //$NON-NLS-1$
+			  
+			  namespaceText.setText(importTargetNamespace);
+			  locationText.setText(location);
+			  prefixText.setText(uniquePrefix);
+		  }
+		  
+		  refresh();
+	  }
   }
 	
   

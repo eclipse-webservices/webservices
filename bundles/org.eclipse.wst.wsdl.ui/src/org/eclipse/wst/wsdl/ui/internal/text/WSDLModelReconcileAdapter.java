@@ -103,11 +103,7 @@ class WSDLModelReconcileAdapter extends DocumentAdapter
       }
     }
   }
- 
-  private void removeAllContent(Definition definition)
-  {                                   
-  }
-  
+
   protected void reconcileModelObjectForElement(Element element, int eventType, Object feature, Object oldValue, Object newValue, int index)
   {                                                                  
     Object modelObject = WSDLEditorUtil.getInstance().findModelObjectForElement(definition, element);  

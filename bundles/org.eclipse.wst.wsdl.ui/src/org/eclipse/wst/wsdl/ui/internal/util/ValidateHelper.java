@@ -281,10 +281,10 @@ public class ValidateHelper
   /**
    * isXMLPrefixStart
    **/
-  private static boolean isXMLPrefixStart(char ch)
-  {
-    return (ch == '_' || Character.isLetter(ch) );
-  }
+//  private static boolean isXMLPrefixStart(char ch)
+//  {
+//    return (ch == '_' || Character.isLetter(ch) );
+//  }
 
   /**
    * isXMLPrefixChar
@@ -395,7 +395,7 @@ public class ValidateHelper
 
       if(!isXMLPrefixChar(character))
       {
-        return UIPlugin.getDefault().getString("_WARN_PREFIX_INVALID_CHAR", String.valueOf(character));
+        return UIPlugin.getString("_WARN_PREFIX_INVALID_CHAR", String.valueOf(character));
       }
     }
     return null;

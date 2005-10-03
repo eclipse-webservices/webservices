@@ -189,7 +189,6 @@ public final Control createControl(
 	section.setLayout(slayout);
 	section.setData(this);
 
-	GridData gd;
 	if (headerPainted) {
 		Color headerColor = factory.getColor(getHeaderColorKey());
 		header = factory.createHeadingLabel(section, getHeaderText(), headerColor, SWT.WRAP);

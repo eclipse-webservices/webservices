@@ -143,7 +143,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     emptySettingsPage = new Composite(pageBook, SWT.NONE);
     for (int i = 0; i < 6; i++)
     {
-      Label placeHolder = new Label(emptySettingsPage, SWT.NONE);
+      new Label(emptySettingsPage, SWT.NONE);
     }
   }
 
@@ -174,11 +174,11 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     return gd;
   }
 
-  private Control createPlaceHolder(Composite parent)
-  {
-    Label label = new Label(parent, SWT.NONE);
-    return label;
-  }
+//  private Control createPlaceHolder(Composite parent)
+//  {
+//    Label label = new Label(parent, SWT.NONE);
+//    return label;
+//  }
   public BaseGenerator getGenerator()
   {
     return generator;

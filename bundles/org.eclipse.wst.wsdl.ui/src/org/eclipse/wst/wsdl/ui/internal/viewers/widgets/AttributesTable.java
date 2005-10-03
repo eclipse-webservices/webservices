@@ -148,8 +148,6 @@ public class AttributesTable extends TableViewer implements ICellModifier
 	cellEditors[0] = textCellEditor;
 	cellEditors[1] = textCellEditor;
 
-	Element element = (Element)getInput();
-      	 
 	IPropertyDescriptor[] propertyDescriptors = propertySource.getPropertyDescriptors();
 	int index = getTable().getSelectionIndex();
 	if (index >= 0 && index < propertyDescriptors.length)
@@ -242,8 +240,6 @@ public class AttributesTable extends TableViewer implements ICellModifier
 	{
 		IPropertyDescriptor p1 = (IPropertyDescriptor)e1;
 		IPropertyDescriptor p2 = (IPropertyDescriptor)e2;
-		String p1Name = p1.getDisplayName();
-		String p2Name = p2.getDisplayName();
 		return Collator.getInstance().compare(p1.getDisplayName(), p2.getDisplayName());
 	}  	
   }

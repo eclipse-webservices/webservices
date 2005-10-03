@@ -136,13 +136,7 @@ public class SoapContentGenerator implements ContentGenerator
   }  
 
   protected void generateSoapBody(Element parentElement)
-  {               
-    String soapActionValue = "";
-    if (definition.getTargetNamespace() != null)
-    {
-      soapActionValue = definition.getTargetNamespace();
-    }    
-
+  {
     Element element = createElement(parentElement, "soap", "body");      
     element.setAttribute("use", (bindingOption == RPC_ENCODED) ? "encoded" : "literal"); 
     if (bindingOption == RPC_ENCODED)

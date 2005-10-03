@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.viewers;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -33,7 +32,7 @@ public class OperationViewer extends NamedComponentViewer
   {
     Composite composite = super.populatePrimaryDetailsSection(parent);
                    
-    Label parameterOrderLabel = flatViewUtility.createLabel(composite, 0, WSDLEditorPlugin.getWSDLString("_UI_LABEL_PARAMETER_ORDER"));  //$NON-NLS-1$
+    flatViewUtility.createLabel(composite, 0, WSDLEditorPlugin.getWSDLString("_UI_LABEL_PARAMETER_ORDER"));  //$NON-NLS-1$
     Text parameterOrderField = flatViewUtility.createTextField(composite);  
     parameterOrderField.addListener(SWT.Modify, this);  
                               

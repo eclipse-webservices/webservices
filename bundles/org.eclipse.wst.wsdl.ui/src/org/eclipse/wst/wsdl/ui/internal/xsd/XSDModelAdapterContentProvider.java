@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.xsd;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.xsd.ui.internal.provider.XSDContentProvider;
 import org.eclipse.wst.xsd.ui.internal.provider.XSDModelAdapterFactoryImpl;
@@ -28,13 +25,10 @@ public class XSDModelAdapterContentProvider extends XSDContentProvider
 
   public Object[] getChildren(Object parentObject)
   {                                     
-    List list = null;
-
     XSDConcreteComponent xsdComp = null;
     if (parentObject instanceof XSDSchemaExtensibilityElement)
     {
       XSDSchemaExtensibilityElement xsdSchemaExtensibilityElement = (XSDSchemaExtensibilityElement)parentObject;
-      list = new ArrayList();
       xsdComp = xsdSchemaExtensibilityElement.getSchema();
       return super.getChildren(xsdComp);
     }

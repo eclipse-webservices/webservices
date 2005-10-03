@@ -80,7 +80,7 @@ public class CreateWSDLElementHelper {
 	    AddServiceCommand addService = new AddServiceCommand(definition, serviceName, false);
 	    addService.run();
 	    Service service = (Service) addService.getWSDLElement();
-	    Port port = CreateWSDLElementHelper.createPort(service);
+	    CreateWSDLElementHelper.createPort(service);
   		
 	    return service;
 	}
@@ -138,12 +138,11 @@ public class CreateWSDLElementHelper {
   		if (operationName == null || operationName.trim().equals(""))
   			operationName = NameUtil.buildUniqueOperationName(portType);
   		
-  		Definition def = portType.getEnclosingDefinition();	
 		AddOperationCommand action = new AddOperationCommand(portType, operationName);
 		action.run();
 		Operation operation = (Operation) action.getWSDLElement();
-  		Output output = CreateWSDLElementHelper.createOutput(portType, operation);
-		Input input = CreateWSDLElementHelper.createInput(portType, operation, null);
+  		CreateWSDLElementHelper.createOutput(portType, operation);
+		CreateWSDLElementHelper.createInput(portType, operation, null);
 
 //  		((PortTypeImpl) portType).updateElement(false);
    		return operation;
@@ -153,7 +152,6 @@ public class CreateWSDLElementHelper {
   		if (inputName == null || inputName.trim().equals(""))
   	  		inputName = NameUtil.buildUniqueInputName(portType, operation.getName(), "");
   		
-  		Definition def = operation.getEnclosingDefinition();
   		AddInputCommand action = new AddInputCommand(operation, inputName);
   		action.run();
   		Input input = (Input) action.getWSDLElement(); 
@@ -167,7 +165,6 @@ public class CreateWSDLElementHelper {
   		if (outputName == null || outputName.trim().equals(""))
   	  		outputName = NameUtil.buildUniqueOutputName(portType, operation.getName(), "");
   		
-  		Definition def = operation.getEnclosingDefinition();
   		AddOutputCommand action = new AddOutputCommand(operation, outputName);
   		action.run();
   		Output output = (Output) action.getWSDLElement();
@@ -181,7 +178,6 @@ public class CreateWSDLElementHelper {
   		if (faultName == null || faultName.trim().equals("")) 
 	  		faultName = NameUtil.buildUniqueFaultName(operation);
   		
-  		Definition def = operation.getEnclosingDefinition();
   		AddFaultCommand action = new AddFaultCommand(operation, faultName);
   		action.run();
   		Fault fault = (Fault) action.getWSDLElement();
@@ -200,7 +196,7 @@ public class CreateWSDLElementHelper {
   		AddMessageCommand action = new AddMessageCommand(def, messageName);
   		action.run();
   		Message message = (Message) action.getWSDLElement();
-  		Part part = CreateWSDLElementHelper.createPart(message);
+  		CreateWSDLElementHelper.createPart(message);
   		Element parentNode = message.getElement();
       if (parentNode instanceof IDOMNode) 
       {

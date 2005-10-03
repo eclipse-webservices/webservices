@@ -166,11 +166,11 @@ public class WSDLEditorResourceChangeHandler
 
       public void run()
       {
-        for (Iterator i = list.iterator(); i.hasNext();)
-        {
-          IResource resource = (IResource)i.next();
-          String platformPath = URI.createPlatformResourceURI(resource.getFullPath().toString()).toString();
-        }
+//        for (Iterator i = list.iterator(); i.hasNext();)
+//        {
+//          IResource resource = (IResource)i.next();
+//          String platformPath = URI.createPlatformResourceURI(resource.getFullPath().toString()).toString();
+//        }
 
         Map dependencyMap = computeDependencyMap();
 

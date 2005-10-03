@@ -357,10 +357,10 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 		return replaceSectionWithSubString(string, oldSubString, newSubString, 0);		
 	}
 	
-	private String computeNewFaultMessageName(Message message, String oldSubString, String newSubString) {
-		String string = message.getQName().getLocalPart();
-		return replaceSectionWithSubString(string, oldSubString, newSubString, 1);		
-	}
+//	private String computeNewFaultMessageName(Message message, String oldSubString, String newSubString) {
+//		String string = message.getQName().getLocalPart();
+//		return replaceSectionWithSubString(string, oldSubString, newSubString, 1);		
+//	}
 	
 	// Method for Input, Output, and Fault Parts
 	// See computeNewFaultPartName() for comparison

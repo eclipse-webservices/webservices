@@ -18,7 +18,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.WSDLElement;
@@ -30,7 +29,6 @@ import org.eclipse.wst.wsdl.ui.internal.model.WSDLModelAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 public abstract class NamedComponentViewer extends BaseViewer implements ModelAdapterListener
 {                                    
@@ -70,7 +68,7 @@ public abstract class NamedComponentViewer extends BaseViewer implements ModelAd
     nameFieldComposite.setLayoutData(gd);
 
 
-    Label nameLabel = flatViewUtility.createLabel(nameFieldComposite, 0, WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAME")); //$NON-NLS-1$
+    flatViewUtility.createLabel(nameFieldComposite, 0, WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAME")); //$NON-NLS-1$
     nameField = flatViewUtility.createTextField(nameFieldComposite);  
     nameField.addListener(SWT.Modify, this);  
     
@@ -115,7 +113,7 @@ public abstract class NamedComponentViewer extends BaseViewer implements ModelAd
     setListenerEnabled(false);                          
     try
     {          
-      Node node = WSDLEditorUtil.getInstance().getNodeForObject(input);
+//      Node node = WSDLEditorUtil.getInstance().getNodeForObject(input);
       update();
     }
     finally
@@ -125,10 +123,10 @@ public abstract class NamedComponentViewer extends BaseViewer implements ModelAd
 
     if (oldInput != null)
     {
-      WSDLModelAdapterFactory.getWSDLModelAdapterFactory().removeModelAdapterListener(oldInput, this);
+      WSDLModelAdapterFactory.removeModelAdapterListener(oldInput, this);
     }
 
-    WSDLModelAdapterFactory.getWSDLModelAdapterFactory().addModelAdapterListener(input, this);
+    WSDLModelAdapterFactory.addModelAdapterListener(input, this);
     oldInput = input;
   }
 

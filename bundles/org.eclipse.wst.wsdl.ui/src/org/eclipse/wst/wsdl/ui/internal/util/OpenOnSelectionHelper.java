@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
@@ -86,7 +85,6 @@ public class OpenOnSelectionHelper extends WSDLSwitch
         if (editorPart.getEditorInput() instanceof IFileEditorInput &&
            ((IFileEditorInput)editorPart.getEditorInput()).getFile().equals(file))
         {  
-			    INavigationLocation current = workbenchPage.getNavigationHistory().getCurrentLocation();
         	workbenchPage.getNavigationHistory().markLocation(editorPart);
         }
         else

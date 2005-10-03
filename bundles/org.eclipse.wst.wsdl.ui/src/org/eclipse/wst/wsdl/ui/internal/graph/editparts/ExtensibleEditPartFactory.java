@@ -58,10 +58,7 @@ public class ExtensibleEditPartFactory implements EditPartFactory
         }
       }
     }
-    
-    if (result == null) {
-    	boolean b = true;
-    }
+
     return result;
   }  
 

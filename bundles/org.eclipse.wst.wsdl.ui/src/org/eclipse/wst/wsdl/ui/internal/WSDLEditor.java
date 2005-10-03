@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -32,8 +33,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.TextSelectionNavigationLocation;
+import org.eclipse.wst.sse.core.internal.model.ModelManagerImpl;
+import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
@@ -152,12 +156,14 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 
   public IStructuredModel getStructuredModel()
   {
-    return textEditor.getModel();
+	  IDocument doc = textEditor.getDocumentProvider().getDocument(getEditorInput());	
+	  IModelManager modelManager = ModelManagerImpl.getInstance();    	
+	  return modelManager.getModelForRead((IStructuredDocument) doc);
   }
 
   public Document getXMLDocument()
   {
-    return ((IDOMModel) textEditor.getModel()).getDocument();
+    return ((IDOMModel) getStructuredModel()).getDocument();
   }
 
   public Definition getDefinition()
@@ -301,7 +307,6 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
     sashForm = new SashForm(getContainer(), SWT.BORDER);
     sashForm.setLayoutData(new GridData(GridData.FILL_BOTH));
     sashForm.setOrientation(SWT.VERTICAL);
-    int[] weights = {8, 3};
     graphPageIndex = addPage(sashForm);
     setPageText(graphPageIndex, WSDLEditorPlugin.getWSDLString("_UI_TAB_GRAPH"));
     // create the graph viewer

@@ -56,7 +56,6 @@ import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 
 public class WSDLModelAdapterFactory implements ModelAdapterFactory
@@ -492,8 +491,7 @@ public class WSDLModelAdapterFactory implements ModelAdapterFactory
     		if (s2 == null) {
     			s2 = "";
     		}
-    		
-    		boolean boo = true;
+
       		return s1.compareToIgnoreCase(s2);
       	}
       });
@@ -937,18 +935,18 @@ public class WSDLModelAdapterFactory implements ModelAdapterFactory
       return list;
     }
       
-	private int getNodeIndex(NodeList nodeList, Node node) {
-		int index = 0;
-		while (index < nodeList.getLength() && !(nodeList.item(index).equals(node))) {
-			index++;
-		}
-		
-		if (index >= nodeList.getLength()) {
-			index = -1;
-		}
-		
-		return index;
-	}
+//	private int getNodeIndex(NodeList nodeList, Node node) {
+//		int index = 0;
+//		while (index < nodeList.getLength() && !(nodeList.item(index).equals(node))) {
+//			index++;
+//		}
+//		
+//		if (index >= nodeList.getLength()) {
+//			index = -1;
+//		}
+//		
+//		return index;
+//	}
 
     protected String getLabel()
     {  

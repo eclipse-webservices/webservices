@@ -212,8 +212,6 @@ public class ReferenceManager
   {                                                                                  
     public void notifyChanged(Notification msg)
     {                                
-      Definition definition = (Definition)getTarget();
-                                  
       if ((EStructuralFeature)msg.getFeature() == getPackage().getDefinition_EBindings())
       {                           
         Object newValue = msg.getNewValue();

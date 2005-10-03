@@ -33,8 +33,6 @@ import org.eclipse.wst.wsdl.internal.impl.OperationImpl;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
 import org.eclipse.wst.wsdl.ui.internal.graph.WSDLComponentViewer;
 import org.eclipse.wst.wsdl.ui.internal.graph.editparts.WSDLTreeNodeEditPart;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 
 public class WSDLDragReorderAction extends WSDLDragAction
@@ -221,7 +219,6 @@ public class WSDLDragReorderAction extends WSDLDragAction
     	Rectangle rightRectangle = rightSiblingEditPart.getFigure().getBounds();
     	int xCoord = rightRectangle.x + 15;
     	int yCoord = rightRectangle.y;
-   		int height = rightRectangle.height;
    		int width = rightRectangle.width - 15;	
 
    		// Draw left end line
@@ -378,18 +375,18 @@ public class WSDLDragReorderAction extends WSDLDragAction
 /*
  * return -1 if node is not found in the given nodeList
  */
-	private int getNodeIndex(NodeList nodeList, Node node) {
-		int index = 0;
-		while (index < nodeList.getLength() && !(nodeList.item(index).equals(node))) {
-			index++;
-		}
-		
-		if (index >= nodeList.getLength()) {
-			index = -1;
-		}
-		
-		return index;
-	}
+//	private int getNodeIndex(NodeList nodeList, Node node) {
+//		int index = 0;
+//		while (index < nodeList.getLength() && !(nodeList.item(index).equals(node))) {
+//			index++;
+//		}
+//		
+//		if (index >= nodeList.getLength()) {
+//			index = -1;
+//		}
+//		
+//		return index;
+//	}
   
   private void setOperationStyle(OperationImpl operation, OperationType operationType) {
   	// If there is no style to begin with, don't set one now

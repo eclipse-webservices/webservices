@@ -12,8 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.wizards;
 
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Preferences;
@@ -86,7 +84,7 @@ public class BindingWizard extends Wizard
 
   public void setBindingName(String bindingName)
   {
-    QName qname = new QName(definition.getTargetNamespace(), bindingName);
+//    QName qname = new QName(definition.getTargetNamespace(), bindingName);
     bindingGenerator.setName(bindingName);
 /*
  	// Binding binding = (Binding) definition.getBinding(qname);

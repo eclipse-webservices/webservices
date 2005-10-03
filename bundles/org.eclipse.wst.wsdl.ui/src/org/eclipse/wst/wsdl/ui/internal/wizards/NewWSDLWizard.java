@@ -69,7 +69,6 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 	private WSDLNewFilePage newFilePage;
 	private WSDLNewFileOptionsPage optionsPage;
 	private IStructuredSelection selection;
-	private IWorkbench workbench;
 
 	/**
 	 * Constructor for NewWSDLWizard.
@@ -218,7 +217,6 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.selection = selection;
-		this.workbench = workbench;
 
 		// Need new icon
 		this.setDefaultPageImageDescriptor(ImageDescriptor.createFromFile(WSDLEditor.class, "icons/new_wsdl_wiz.gif"));

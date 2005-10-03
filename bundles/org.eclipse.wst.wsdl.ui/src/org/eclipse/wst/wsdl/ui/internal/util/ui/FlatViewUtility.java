@@ -58,7 +58,6 @@ public class FlatViewUtility implements PaintListener
   private Image headingImage = null;
   private Composite headerControl = null;
   private int TITLE_VMARGIN = 5;
-  private FlatPageHeader flatPageHeader = null;
 
   private KeyboardHandler keyboardHandler;
 
@@ -126,7 +125,6 @@ public class FlatViewUtility implements PaintListener
           || c instanceof List
           || c instanceof CCombo)
       {
-        Rectangle b = c.getParent().getBounds();
         GC gc = event.gc;
         gc.setForeground(backgroundColor);
 //      gc.drawRectangle(b.x - 1, b.y - 1, b.width + 1, b.height + 1);
@@ -766,7 +764,7 @@ public class FlatViewUtility implements PaintListener
     {
       if (wHint != SWT.DEFAULT && hHint != SWT.DEFAULT)
         return new Point(wHint, hHint);
-      int x = 0;
+
       Control client = composite.getChildren()[0];
       Point csize = client.computeSize(SWT.DEFAULT, SWT.DEFAULT, flushCache);
       if (headingVisible) csize.y += getTitleHeight();
@@ -839,7 +837,6 @@ public class FlatViewUtility implements PaintListener
 
     private void scrollPage(ScrolledComposite scomp, boolean up)
     {
-      Point origin = scomp.getOrigin();
       Rectangle clientArea = scomp.getClientArea();
       int increment = up ? -clientArea.height : clientArea.height;
       scroll(scomp, 0, increment);

@@ -55,7 +55,6 @@ public class InvokeSetDialog
       IFile iFile = ((IFileEditorInput) editorPart.getEditorInput()).getFile();
       Definition definition = ((WSDLElement) input).getEnclosingDefinition();
       String property = "";
-      List lookupPaths = new ArrayList(2);
       
     if (input instanceof Binding)
     {
@@ -80,7 +79,6 @@ public class InvokeSetDialog
         List validExtensions = new ArrayList(2);
         validExtensions.add("wsdl");
         validExtensions.add("xsd");
-        lookupPaths = new ArrayList(4);
         WSDLComponentSelectionProvider provider = null;
         if (kind.equalsIgnoreCase("type")) {
             property = ""; 

@@ -15,7 +15,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -29,8 +28,6 @@ import org.eclipse.wst.common.ui.internal.UIPlugin;
 
 abstract public class BaseDesignWindow extends Viewer
 {
-  private Font font;
-
   protected ScrolledComposite mainUIComponent;
   protected Composite controlsContainer;
 
@@ -105,8 +102,6 @@ abstract public class BaseDesignWindow extends Viewer
    */
   protected Control createDesignPane(Composite parent, int numColumns)
   {
-    GridData gd;
-
     // Create the main UI container
     mainUIComponent= new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL)
     {

@@ -132,7 +132,6 @@ public class XSDTypeSystemProvider implements ITypeSystemProvider
     
     public List getAvailableTypes(Definition definition, XSDSchema schema, int typeNameCategory)
     {
-        List list = new ArrayList();
         List keepTypes = new ArrayList();
         Iterator typeIterator = schema.getTypeDefinitions().iterator();
         // Filter out unwanted Types
