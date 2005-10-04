@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:tns="http://example.com/simple/" 
-                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
-                  name="simple" 
-                  targetNamespace="http://example.com/simple/">
-</wsdl:definitions>
