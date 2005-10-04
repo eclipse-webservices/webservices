@@ -345,7 +345,6 @@ public class JUnitUtils {
         createWeb.setModuleType(CreateModuleCommand.WEB);
 	    createWeb.setJ2eeLevel(j2eeVersion);
 	    createWeb.setServerFactoryId(serverFactoryId);
-	    createWeb.setSupportMultipleModules(true);
       createWeb.setEnvironment( env );
 	    return createWeb.execute( monitor, null );
 	  }

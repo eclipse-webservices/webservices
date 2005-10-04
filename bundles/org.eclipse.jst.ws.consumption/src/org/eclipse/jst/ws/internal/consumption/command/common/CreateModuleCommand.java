@@ -45,8 +45,7 @@ public class CreateModuleCommand extends EnvironmentalOperation
 	private String   serverFactoryId;
 	private String   serverInstanceId_;
 	private Environment env;
-	private boolean supportMultipleModules;
-  private IProgressMonitor monitor_;
+    private IProgressMonitor monitor_;
 	
 	private MessageUtils msgUtils;
 	
@@ -133,11 +132,7 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new WebComponentCreationDataModelProvider());
-//TODO Mode has been removed
-//		  if (supportMultipleModules){
-//			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
-//		  }		  
-		  
+
 		  projectInfo.setProperty(IWebComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)
             projectInfo.setProperty(IWebComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
@@ -166,10 +161,6 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new EarComponentCreationDataModelProvider());
-//		TODO Mode has been removed
-		  //		  if (supportMultipleModules){
-//			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
-//		  }
 		  projectInfo.setProperty(IEarComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)
               projectInfo.setProperty(IEarComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
@@ -195,10 +186,6 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new EjbComponentCreationDataModelProvider());
-//		TODO Mode has been removed
-		  //		  if (supportMultipleModules){
-//			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
-//		  }
 		  projectInfo.setProperty(IEjbComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)  
               projectInfo.setProperty(IEjbComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
@@ -232,10 +219,6 @@ public class CreateModuleCommand extends EnvironmentalOperation
 		try
 		{
 		  IDataModel projectInfo = DataModelFactory.createDataModel(new AppClientComponentCreationDataModelProvider());
-//		TODO Mode has been removed
-		  //		  if (supportMultipleModules){
-//			  projectInfo.setProperty(IComponentCreationDataModelProperties.SUPPORT_MULTIPLE_MODULES, Boolean.TRUE);
-//		  }
 		  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.PROJECT_NAME,projectName);
           if (moduleName!=null)      
 		      projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
@@ -340,14 +323,6 @@ public class CreateModuleCommand extends EnvironmentalOperation
 	public void setServerInstanceId( String serverInstanceId )
 	{
 	  serverInstanceId_ = serverInstanceId;
-	}
-
-	public boolean getSupportMultipleModules() {
-		return supportMultipleModules;
-	}
-
-	public void setSupportMultipleModules(boolean supportMultipleModules) {
-		this.supportMultipleModules = supportMultipleModules;
 	}
 
 }
