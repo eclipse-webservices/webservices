@@ -29,6 +29,7 @@ public final class AddXSDElementDeclarationCommand extends WSDLElementCommand
   private String targetNamespace;
   private String elementName;
   private XSDSchema schema;
+  private XSDElementDeclaration xsdElement;
   
   /**
    * TODO:
@@ -135,5 +136,10 @@ public final class AddXSDElementDeclarationCommand extends WSDLElementCommand
   public WSDLElement getWSDLElement()
   {
     return null;
+  }
+  
+  public XSDElementDeclaration getXSDElement()
+  {
+	  return xsdElement;
   }
 }
