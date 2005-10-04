@@ -1128,7 +1128,7 @@ public final class J2EEUtils {
 	}
 
 	public static boolean isEJBComponent(IVirtualComponent comp){
-    if (comp.getComponentTypeId().equals(IModuleConstants.JST_EJB_MODULE)){
+    if (IModuleConstants.JST_EJB_MODULE.equals(comp.getComponentTypeId())){
       return true;
     }
     return false;

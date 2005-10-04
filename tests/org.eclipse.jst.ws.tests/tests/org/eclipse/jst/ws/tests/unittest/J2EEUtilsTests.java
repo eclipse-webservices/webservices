@@ -61,38 +61,38 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 	 
 	  public void testComponentsExist(){
 		  System.out.println("< BEGIN: testComponentExists ...");
-		  IVirtualComponent vc1 = J2EEUtils.getVirtualComponent(project1, comp1);
-		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2.getName(), comp3);
+		  IVirtualComponent vc1 = J2EEUtils.getVirtualComponent(project1, project1.getName());
+		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2.getName(), project2.getName());
 		  
 		  assertTrue(vc1.exists());
-		  assertTrue(J2EEUtils.exists(project1, comp1));
+		  assertTrue(J2EEUtils.exists(project1, project1.getName()));
 		  assertTrue(vc2.exists());
-		  assertTrue(J2EEUtils.exists(project2.getName(), comp3));
+		  assertTrue(J2EEUtils.exists(project2.getName(), project2.getName()));
 		  System.out.println("< END: testComponentExists ...");
 	  }
 	  
 	  public void testLocationGetterMethods(){
 		  
 		  System.out.println("< BEGIN: testLocationGetterMethods ...");
-		  IPath loc1 = J2EEUtils.getWebContentPath(project1,comp1);
-		  System.out.println("WebContentPath of comp1 = "+loc1);
+		  IPath loc1 = J2EEUtils.getWebContentPath(project1, project1.getName());
+		  System.out.println("WebContentPath of project1 = "+loc1);
 		  IResource res = ResourceUtils.getWorkspaceRoot().findMember(loc1);
 		  assertTrue(res.exists());
 		  assertTrue(res.toString().endsWith("WebContent"));
 		  
-		  IPath loc2 = J2EEUtils.getWebContentPath(project2,comp3);
-		  System.out.println("WebContentPath of comp1 = "+loc2);
+		  IPath loc2 = J2EEUtils.getWebContentPath(project2, project2.getName());
+		  System.out.println("WebContentPath of project2 = "+loc2);
 		  IResource res2 = ResourceUtils.getWorkspaceRoot().findMember(loc2);
 		  assertTrue(res2.exists());
 		  assertTrue(res2.toString().endsWith("WebContent"));		  
 		  
-		  IPath loc3 = J2EEUtils.getWebInfPath(project1, comp2);
+		  IPath loc3 = J2EEUtils.getWebInfPath(project1, project1.getName());
 		  System.out.println("Web-INF path = "+loc3);
 		  IResource res3 = ResourceUtils.getWorkspaceRoot().findMember(loc3);
 		  assertTrue(res3.exists());
 		  assertTrue(res3.toString().endsWith("WEB-INF"));
 		  
-		  IContainer container = J2EEUtils.getWebContentContainer(project2, comp3);
+		  IContainer container = J2EEUtils.getWebContentContainer(project2, project2.getName());
 		  IResource res4 = ResourceUtils.getWorkspaceRoot().findMember(container.getFullPath());
 		  assertEquals(res2, res4);
 		  
@@ -103,16 +103,13 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 	  public void testJ2EEVersionMethods(){
 		  
 		  System.out.println("< BEGIN: testJ2EEVersionMethods ...");
-	  
-		  int j1 = J2EEUtils.getJ2EEVersion(project2, comp4);
-		  
-		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project1, comp2);
+	  		  
+		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2, project2.getName());
 		  int j2 = J2EEUtils.getJ2EEVersion(vc2);
-		  System.out.println("J2EEVersions p1: "+j2);
-		  System.out.println("J2EEVersions p2: "+j1);		  
-		  assertEquals(j1, j2);
+		  System.out.println("J2EEVersions p1: "+j2);		  
+		  assertEquals(j2, J2EEVersionConstants.VERSION_1_3);
 		  
-		  String j3 = J2EEUtils.getJ2EEVersionAsString(project1, comp1);
+		  String j3 = J2EEUtils.getJ2EEVersionAsString(project1, project1.getName());
 		  System.out.println("J2EEVersion p1 as String: "+j3);
 		  assertEquals(j3, J2EEVersionConstants.VERSION_1_4_TEXT);
 		  
