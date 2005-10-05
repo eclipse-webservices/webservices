@@ -21,6 +21,8 @@
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.test.performance"/>
+      <import plugin="org.eclipse.wst.validation"/>
+      <import plugin="org.eclipse.wst.common.frameworks"/>
       <import plugin="org.eclipse.wst.wsdl"/>
       <import plugin="org.eclipse.wst.wsdl.validation"/>
       <import plugin="org.wsdl4j"/>
