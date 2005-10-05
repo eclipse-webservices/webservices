@@ -14,7 +14,6 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.wizard.wsdl;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsFragment;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
-import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidgetDefaultingCommand;
@@ -39,21 +38,6 @@ public class WSWSDLAxisType implements CommandWidgetBinding
 	private String serverName_;
 	private String runtimeName_;
 	private boolean isWebModuleRequired_;
-	/**
-	* Returns a short, locale specific name of this Web Service type.
-	* @return A short, locale specific name of this Web Service type.
-	*/
-	public String getName() {
-		return WebServiceAxisCreationUIPlugin.getMessage("%WS_NAME_WSDLAXIS");
-	}
-
-	/**
-	* Returns a locale specific description of this Web Service type.
-	* @return A locale specific description of this Web Service type.
-	*/
-	public String getDescription() {
-		return WebServiceAxisCreationUIPlugin.getMessage("%WS_DESC_WSDLAXIS");
-	}
 
 	/**
 	* Returns a locale specific label for the Server supported by this Web Service type
@@ -88,15 +72,6 @@ public class WSWSDLAxisType implements CommandWidgetBinding
 	}
 
 	/**
-	* Returns a label for the Web Service type associated with this WebServiceServerRuntimeType
-	* @return A label for the Web Service type
-	*/
-	public String getWebServiceTypeLabel() {
-		return WebServiceAxisCreationUIPlugin.getMessage(
-			"%WEBSERVICETYPE_NAME_WSDL_AXIS");
-	}
-
-	/**
 	* Returns whether or not a Web Module is required for this WebServiceServerRuntimeType
 	* @return true if requireWebModule
 	*/
@@ -112,13 +87,6 @@ public class WSWSDLAxisType implements CommandWidgetBinding
 		isWebModuleRequired_ = requireWebModule;
 	}
 
-	/**
-	* Returns a string representation of this object.
-	* @return A string representation of this object.
-	*/
-	public String toString() {
-		return getName();
-	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeType#isEJBModuleRequired()

@@ -15,19 +15,15 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.IPluginRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -45,6 +41,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
+import org.eclipse.wst.ws.internal.common.BundleUtils;
 
 
 public class CopyAxisJarCommand extends EnvironmentalOperation {
@@ -147,13 +144,11 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
       context.setOverwriteFilesEnabled(true);
       context.setCreateFoldersEnabled(true);
       context.setCheckoutFilesEnabled(true);
-      IPluginRegistry pluginRegistry = Platform.getPluginRegistry();
-      IPluginDescriptor pluginDescriptor = pluginRegistry.getPluginDescriptor(AXIS_RUNTIME_PLUGIN_ID);
-      Plugin axisrt_plugin = pluginDescriptor.getPlugin();
+      URL sourceURL = BundleUtils.getURLFromBundle( AXIS_RUNTIME_PLUGIN_ID, source );
       IFile resource = ResourceUtils.getWorkspaceRoot().getFile(target);
       if (!resource.exists()) {
-        IFile file = FileResourceUtils.createFile(context, target, axisrt_plugin.openStream(new Path(source)), monitor, env
-            .getStatusHandler());
+        IFile file = FileResourceUtils.createFile(context, target, sourceURL.openStream(), monitor, 
+            env.getStatusHandler());
         if (projectRestartRequired_.booleanValue() == false && file.exists()) {
           projectRestartRequired_ = Boolean.TRUE;
         }
@@ -279,12 +274,9 @@ public class CopyAxisJarCommand extends EnvironmentalOperation {
 			throws CoreException {
 			try {
 				if (pluginId != null) {
-					IPluginRegistry pluginRegistry = Platform.getPluginRegistry();
-					IPluginDescriptor pluginDescriptor =
-						pluginRegistry.getPluginDescriptor(pluginId);
 					URL localURL =
 						Platform.asLocalURL(
-							new URL(pluginDescriptor.getInstallURL(), theJar));
+              BundleUtils.getURLFromBundle( pluginId, theJar ) );
 					return new Path(localURL.getFile());
 				} else {
 					return new Path(theJar);

@@ -199,7 +199,7 @@ public class WebServiceRuntimeInfo {
 		}
 		catch(CoreException ce)
 		{
-			
+			ce.printStackTrace();
 		}
 	}
 	

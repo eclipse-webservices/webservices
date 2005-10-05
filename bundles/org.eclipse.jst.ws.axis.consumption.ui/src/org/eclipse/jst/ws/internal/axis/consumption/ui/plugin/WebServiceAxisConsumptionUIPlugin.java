@@ -11,13 +11,11 @@
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.plugin;
 
-import java.text.MessageFormat;
-
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.osgi.framework.BundleContext;
 
 
 /**
@@ -47,8 +45,8 @@ public class WebServiceAxisConsumptionUIPlugin extends Plugin
 	* class = "org.eclipse.jst.ws.internal.ui.plugin.WebServicePlugin".
 	* @param descriptor The descriptor of this plugin.
 	*/
-	public WebServiceAxisConsumptionUIPlugin(IPluginDescriptor descriptor) {
-		super(descriptor);
+	public WebServiceAxisConsumptionUIPlugin() {
+		super();
 		if (instance_ == null) {
 			instance_ = this;
 		}
@@ -56,6 +54,12 @@ public class WebServiceAxisConsumptionUIPlugin extends Plugin
 
 	}
 
+  // This method is needed to keep the logging from blowing up.
+  public String toString()
+  {
+    return ID;  
+  }
+  
 	/**
 	* Returns the singleton instance of this plugin. Equivalent to calling
 	* (WebServiceWasConsumptionPlugin)Platform.getPlugin("org.eclipse.jst.ws.was.v5.tp");
@@ -69,51 +73,33 @@ public class WebServiceAxisConsumptionUIPlugin extends Plugin
 	* Called once by the platform when this plugin is first loaded.
 	* @throws CoreException If this plugin fails to start.
 	*/
-	public void startup() throws CoreException {
-		log_.log(Log.INFO, 5066, this, "startup", "Starting plugin org.eclipse.jst.ws.axis.consumption.ui");
-		super.startup();
+	public void start( BundleContext bundle ) throws CoreException {
+		log_.log(Log.INFO, 5066, this, "start", "Starting plugin org.eclipse.jst.ws.axis.consumption.ui");
+    
+    try
+    {
+		  super.start( bundle );
+    }
+    catch( Exception exc )
+    {
+      log_.log( Log.ERROR, 5066, this, "start", exc );
+    }
 	}
 
 	/**
 	* Called once by the platform when this plugin is unloaded.
 	* @throws CoreException If this plugin fails to shutdown.
 	*/
-	public void shutdown() throws CoreException {
+	public void stop( BundleContext context ) throws CoreException {
 		log_.log(Log.INFO, 5067, this, "shutdown", "Shutting plugin org.eclipse.jst.ws.axis.consumption.ui");
-		super.shutdown();
+    
+    try
+    {
+		  super.stop( context );
+    }
+    catch( Exception exc )
+    {
+      log_.log( Log.ERROR, 5066, this, "stop", exc );      
+    }
 	}
-
-	/**
-	* Returns the message string identified by the given key from
-	* the plugin.properties file for the appropriate locale.
-	* @param key The message key string prefixed by a "%" symbol.
-	* That is, the string passed in must be of the form "%KEY"
-	* where the plugin.properties file contains a line of the
-	* form: "KEY = value".
-	* @return The locale-specific message.
-	*/
-	public static String getMessage(String key) {
-		return instance_.getDescriptor().getResourceString(key);
-	}
-
-	/**
-	* Returns the message string identified by the given key from
-	* the plugin.properties file for the appropriate locale.
-	* Substitution sequences in the message string
-	* are replaced by the given array of substitution objects (which
-	* are most frequently strings). See java.text.MessageFormat for
-	* further details on substitution.
-	* @param key The message key string prefixed by a "%" symbol.
-	* That is, the string passed in must be of the form "%KEY"
-	* where the plugin.properties file contains a line of the
-	* form: "KEY = value".
-	* @param args The substitution values for the message
-	* as required by the message in plugin.properties and
-	* by the rules of class java.text.MessageFormat.
-	* @return The locale-specific message.
-	*/
-	public static String getMessage(String key, Object[] args) {
-		return MessageFormat.format(getMessage(key), args);
-	}
-
 }

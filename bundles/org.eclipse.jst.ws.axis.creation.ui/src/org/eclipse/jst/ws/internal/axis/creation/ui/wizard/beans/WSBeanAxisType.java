@@ -16,7 +16,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaComman
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CheckAxisDeploymentDescriptorsTask;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BeanConfigWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionWidget;
@@ -43,23 +42,6 @@ public class WSBeanAxisType implements CommandWidgetBinding
   private String runtimeName_;
   private boolean isWebModuleRequired_;
 
-  /**
-  * Returns a short, locale specific name of this Web Service type.
-  * @return A short, locale specific name of this Web Service type.
-  */
-  public String getName ()
-  {
-    return WebServiceAxisCreationUIPlugin.getMessage("%WS_NAME_BEANWAXIS");
-  }
-
-  /**
-  * Returns a locale specific description of this Web Service type.
-  * @return A locale specific description of this Web Service type.
-  */
-  public String getDescription ()
-  {
-    return WebServiceAxisCreationUIPlugin.getMessage("%WS_DESC_BEANWAXIS");
-  }
 
   /**
   * Returns a locale specific label for the Server supported by this Web Service type
@@ -97,14 +79,6 @@ public class WSBeanAxisType implements CommandWidgetBinding
     runtimeName_ = runtimeLabel;
   }
 
-  /**
-  * Returns a label for the Web Service type associated with this WebServiceServerRuntimeType
-  * @return A label for the Web Service type
-  */
-  public String getWebServiceTypeLabel()
-  {
-    return WebServiceAxisCreationUIPlugin.getMessage("%WEBSERVICETYPE_NAME_JAVA_AXIS");
-  }
 
   /**
   * Returns whether or not a Web Module is required for this WebServiceServerRuntimeType
@@ -125,14 +99,6 @@ public class WSBeanAxisType implements CommandWidgetBinding
   }
 
   
-  /**
-  * Returns a string representation of this object.
-  * @return A string representation of this object.
-  */
-  public String toString ()
-  {
-    return getName();
-  }
 	/* (non-Javadoc)
 	 * @see org.eclipse.jst.ws.internal.consumption.ui.wizard.WebServiceServerRuntimeType#isEJBModuleRequired()
 	 */

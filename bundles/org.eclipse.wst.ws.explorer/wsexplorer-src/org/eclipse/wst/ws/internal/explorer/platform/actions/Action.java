@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
+import java.util.Hashtable;
+import java.util.Vector;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.CurrentNodeSelectionTransformer;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.ITransformer;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-
-import java.util.*;
-import javax.servlet.http.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Perspective;
 
 // Abstract action class used for both Link and Form actions.
 public abstract class Action
@@ -40,13 +41,6 @@ public abstract class Action
   {
     return controller_;
   }
-
-  /**
-  * Read properties from an HttpServletRequest and add them to the property table.
-  * @param HttpServletRequest The HttpServletRequest containing the embedded parameters.
-  * @return boolean Whether or not the operation was successful.
-  */
-  public abstract boolean populatePropertyTable(HttpServletRequest request);
 
   /**
   * Get the property table.

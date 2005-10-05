@@ -15,18 +15,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.IPluginRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -41,6 +37,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.ws.internal.common.BundleUtils;
 
 public class UpdateAxisWSDDFileTask extends EnvironmentalOperation {
 	
@@ -161,13 +158,10 @@ public class UpdateAxisWSDDFileTask extends EnvironmentalOperation {
 	private IPath getPluginFilePath(String pluginfileName)
 		throws CoreException {
 		try {
-			IPluginRegistry pluginRegistry = Platform.getPluginRegistry();
-			IPluginDescriptor pluginDescriptor =
-				pluginRegistry.getPluginDescriptor(WebServiceAxisCreationUIPlugin.ID);
 
 			URL localURL =
 				Platform.asLocalURL(
-					new URL(pluginDescriptor.getInstallURL(), pluginfileName));
+					BundleUtils.getURLFromBundle( WebServiceAxisCreationUIPlugin.ID, pluginfileName));
 			return new Path(localURL.getFile());
 		} catch (MalformedURLException e) {
 			throw new CoreException(

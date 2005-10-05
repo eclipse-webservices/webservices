@@ -11,17 +11,12 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.plugin;
 
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.MessageFormat;
-
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.osgi.framework.BundleContext;
 
 /**
 * This is the plugin class for the Web Services plugin.
@@ -52,9 +47,9 @@ public class WebServiceAxisCreationUIPlugin extends AbstractUIPlugin
   * class = "org.eclipse.jst.ws.internal.ui.plugin.WebServicePlugin".
   * @param descriptor The descriptor of this plugin.
   */
-  public WebServiceAxisCreationUIPlugin ( IPluginDescriptor descriptor )
+  public WebServiceAxisCreationUIPlugin()
   {
-    super(descriptor);
+    super();
     if (instance_ == null)
     {
       instance_ = this;
@@ -63,6 +58,12 @@ public class WebServiceAxisCreationUIPlugin extends AbstractUIPlugin
 
   }
 
+  // This method is needed to keep the logging from blowing up.
+  public String toString()
+  {
+    return ID;  
+  }
+  
   /**
   * Returns the singleton instance of this plugin. Equivalent to calling
   * (WebServiceWasCreationUIPlugin)Platform.getPlugin("org.eclipse.jst.ws.was.v5.tp.ui");
@@ -77,10 +78,19 @@ public class WebServiceAxisCreationUIPlugin extends AbstractUIPlugin
   * Called once by the platform when this plugin is first loaded.
   * @throws CoreException If this plugin fails to start.
   */
-  public void startup () throws CoreException
+  public void start( BundleContext context ) throws CoreException
   {
-  	log_.log(Log.INFO, 5068, this, "startup", "Starting plugin org.eclipse.jst.ws.axis.creation.ui");
-    super.startup();
+  	log_.log(Log.INFO, 5068, this, "start", "Starting plugin org.eclipse.jst.ws.axis.creation.ui");
+    
+    try
+    {
+      super.start( context );
+    }
+    catch( Exception exc )
+    {
+      log_.log( Log.ERROR, 5068, this, "start", exc );  
+    }
+    
     setPreferences();
   }
 
@@ -88,10 +98,18 @@ public class WebServiceAxisCreationUIPlugin extends AbstractUIPlugin
   * Called once by the platform when this plugin is unloaded.
   * @throws CoreException If this plugin fails to shutdown.
   */
-  public void shutdown () throws CoreException
+  public void stop( BundleContext context ) throws CoreException
   {
-  	log_.log(Log.INFO, 5069, this, "shutdown", "Shutting plugin org.eclipse.jst.ws.axis.creation.ui");
-    super.shutdown();
+  	log_.log(Log.INFO, 5069, this, "stop", "Shutting plugin org.eclipse.jst.ws.axis.creation.ui");
+    
+    try
+    {
+      super.stop( context );
+    }
+    catch( Exception exc )
+    {
+      log_.log( Log.ERROR, 5068, this, "start", exc );        
+    }
   }
 
 
@@ -112,58 +130,4 @@ public class WebServiceAxisCreationUIPlugin extends AbstractUIPlugin
 //	ActionDialogsPreferenceHelper.initializeDefaults(preferenceStore);
   }
  
-  /**
-  * Returns the message string identified by the given key from
-  * the plugin.properties file for the appropriate locale.
-  * @param key The message key string prefixed by a "%" symbol.
-  * That is, the string passed in must be of the form "%KEY"
-  * where the plugin.properties file contains a line of the
-  * form: "KEY = value".
-  * @return The locale-specific message.
-  */
-  public static String getMessage ( String key )
-  {
-    return instance_.getDescriptor().getResourceString(key);
-  }
-
-  /**
-  * Returns the message string identified by the given key from
-  * the plugin.properties file for the appropriate locale.
-  * Substitution sequences in the message string
-  * are replaced by the given array of substitution objects (which
-  * are most frequently strings). See java.text.MessageFormat for
-  * further details on substitution.
-  * @param key The message key string prefixed by a "%" symbol.
-  * That is, the string passed in must be of the form "%KEY"
-  * where the plugin.properties file contains a line of the
-  * form: "KEY = value".
-  * @param args The substitution values for the message
-  * as required by the message in plugin.properties and
-  * by the rules of class java.text.MessageFormat.
-  * @return The locale-specific message.
-  */
-  public static String getMessage ( String key, Object[] args )
-  {
-    return MessageFormat.format(getMessage(key),args);
-  }
-
-  /**
-  * Returns an image descriptor for the named resource
-  * as relative to the plugin install location.
-  * @return An image descriptor, possibly null.
-  */
-  public static ImageDescriptor getImageDescriptor ( String name )
-  {
-    try
-    {
-      URL installURL = instance_.getDescriptor().getInstallURL();
-      URL imageURL = new URL(installURL,name);
-      return ImageDescriptor.createFromURL(imageURL);
-    }
-    catch (MalformedURLException e)
-    {
-      return null;
-    }
-  }
-
 }
