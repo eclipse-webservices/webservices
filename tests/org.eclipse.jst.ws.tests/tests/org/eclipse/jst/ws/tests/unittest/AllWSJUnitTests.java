@@ -58,13 +58,13 @@ public class AllWSJUnitTests extends TestCase implements WSJUnitConstants
     
     TestSuite testSuite = new TestSuite();
     testSuite.addTest( ComponentCreationTests.suite() );
-//    testSuite.addTest( J2EEUtilsTests.suite() );
+    testSuite.addTest( J2EEUtilsTests.suite() );
    
     String s = System.getProperty("org.eclipse.jst.server.tomcat.50");
     if (s != null && s.length() > 0) {
       testSuite.addTest( ServerCreationTests.suite());
     }
-//    testSuite.addTest( ResourceUtilsTests.suite() );
+    testSuite.addTest( ResourceUtilsTests.suite() );
 
 
     return testSuite;

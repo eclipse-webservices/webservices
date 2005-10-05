@@ -61,38 +61,38 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 	 
 	  public void testComponentsExist(){
 		  System.out.println("< BEGIN: testComponentExists ...");
-		  IVirtualComponent vc1 = J2EEUtils.getVirtualComponent(project1, project1.getName());
-		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2.getName(), project2.getName());
+		  IVirtualComponent vc1 = J2EEUtils.getVirtualComponent(project1, projectName);
+		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2.getName(), project2Name);
 		  
 		  assertTrue(vc1.exists());
-		  assertTrue(J2EEUtils.exists(project1, project1.getName()));
+		  assertTrue(J2EEUtils.exists(project1, projectName));
 		  assertTrue(vc2.exists());
-		  assertTrue(J2EEUtils.exists(project2.getName(), project2.getName()));
+		  assertTrue(J2EEUtils.exists(project2.getName(), project2Name));
 		  System.out.println("< END: testComponentExists ...");
 	  }
 	  
 	  public void testLocationGetterMethods(){
 		  
 		  System.out.println("< BEGIN: testLocationGetterMethods ...");
-		  IPath loc1 = J2EEUtils.getWebContentPath(project1, project1.getName());
+		  IPath loc1 = J2EEUtils.getWebContentPath(project1, projectName);
 		  System.out.println("WebContentPath of project1 = "+loc1);
 		  IResource res = ResourceUtils.getWorkspaceRoot().findMember(loc1);
 		  assertTrue(res.exists());
 		  assertTrue(res.toString().endsWith("WebContent"));
 		  
-		  IPath loc2 = J2EEUtils.getWebContentPath(project2, project2.getName());
+		  IPath loc2 = J2EEUtils.getWebContentPath(project2, project2Name);
 		  System.out.println("WebContentPath of project2 = "+loc2);
 		  IResource res2 = ResourceUtils.getWorkspaceRoot().findMember(loc2);
 		  assertTrue(res2.exists());
 		  assertTrue(res2.toString().endsWith("WebContent"));		  
 		  
-		  IPath loc3 = J2EEUtils.getWebInfPath(project1, project1.getName());
+		  IPath loc3 = J2EEUtils.getWebInfPath(project1, projectName);
 		  System.out.println("Web-INF path = "+loc3);
 		  IResource res3 = ResourceUtils.getWorkspaceRoot().findMember(loc3);
 		  assertTrue(res3.exists());
 		  assertTrue(res3.toString().endsWith("WEB-INF"));
 		  
-		  IContainer container = J2EEUtils.getWebContentContainer(project2, project2.getName());
+		  IContainer container = J2EEUtils.getWebContentContainer(project2, project2Name);
 		  IResource res4 = ResourceUtils.getWorkspaceRoot().findMember(container.getFullPath());
 		  assertEquals(res2, res4);
 		  
@@ -104,12 +104,12 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 		  
 		  System.out.println("< BEGIN: testJ2EEVersionMethods ...");
 	  		  
-		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2, project2.getName());
+		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2, project2Name);
 		  int j2 = J2EEUtils.getJ2EEVersion(vc2);
 		  System.out.println("J2EEVersions p1: "+j2);		  
 		  assertEquals(j2, J2EEVersionConstants.VERSION_1_3);
 		  
-		  String j3 = J2EEUtils.getJ2EEVersionAsString(project1, project1.getName());
+		  String j3 = J2EEUtils.getJ2EEVersionAsString(project1, projectName);
 		  System.out.println("J2EEVersion p1 as String: "+j3);
 		  assertEquals(j3, J2EEVersionConstants.VERSION_1_4_TEXT);
 		  
@@ -182,9 +182,9 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 		  System.out.println("isComponentAssociated ..");
 		  J2EEUtils.isComponentAssociated(project1, earCompName, project1, comp1);
 		
-		  String[] names = J2EEUtils.toComponentNamesArray(J2EEUtils.getReferencingEARComponents(project1, comp1));
+		  String[] names = J2EEUtils.toComponentNamesArray(J2EEUtils.getReferencingEARComponents(project1, projectName));
 		  printNameStrings(names);
-		  String[] names2 = J2EEUtils.toComponentNamesArray(J2EEUtils.getReferencingEARComponents(project2, comp3));
+		  String[] names2 = J2EEUtils.toComponentNamesArray(J2EEUtils.getReferencingEARComponents(project2, project2Name));
 		  printNameStrings(names2);
 		  
 		  String[] names3 = J2EEUtils.toComponentNamesArray(J2EEUtils.getReferencingWebComponentsFromEAR(project1, earCompName));
