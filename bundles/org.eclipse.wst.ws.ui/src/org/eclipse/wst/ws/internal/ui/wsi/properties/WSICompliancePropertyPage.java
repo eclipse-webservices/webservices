@@ -20,8 +20,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
@@ -133,12 +131,6 @@ public class WSICompliancePropertyPage extends PropertyPage implements Selection
   protected void performApply()
   {
     performOk();
-  }
-
-  /**
-   * @see IWorkbenchPropertyPage
-   */
-  public void init(IWorkbench workbench)   { 
   }
 
   /**
