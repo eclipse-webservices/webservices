@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -232,7 +232,8 @@ public final class J2EEUtils {
 		IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
 		for (int i = 0; i < projects.length; i++) {
           IVirtualComponent vc = ComponentCore.createComponent(projects[i]);
-          v.add(vc);
+          if(vc != null)
+        	  v.add(vc);
           }
 
 		return (IVirtualComponent[])v.toArray(new IVirtualComponent[0]);
@@ -290,7 +291,7 @@ public final class J2EEUtils {
 		List v = new ArrayList();		
 		try {
 			IVirtualComponent component = ComponentCore.createComponent(project);
-			if (isEARComponent(component)){
+			if (component != null && isEARComponent(component)){
 				v.add(component);
 			}
 		}
@@ -313,7 +314,7 @@ public final class J2EEUtils {
 		try {
 			IVirtualComponent component = ComponentCore.createComponent(project);
 			
-				if (isWebComponent(component)){
+				if (component != null && isWebComponent(component)){
 					v.add(component);
 				}		
 
@@ -377,7 +378,7 @@ public final class J2EEUtils {
 		try {
 
 			IVirtualComponent vc = ComponentCore.createComponent(project);	
-			if ( vc.getComponentTypeId().equals(componentTypeId))
+			if ( vc != null && vc.getComponentTypeId().equals(componentTypeId))
 			{
 				v.add(vc);
 			}
@@ -789,7 +790,7 @@ public final class J2EEUtils {
 		List v = new ArrayList();
 		IVirtualComponent component = ComponentCore.createComponent(project);
 		try {
-			if (isEJBComponent(component)){
+			if (component != null && isEJBComponent(component)){
 				v.add(component);
 			}	
 		}
@@ -812,7 +813,7 @@ public final class J2EEUtils {
 		try {
 			IVirtualComponent component = ComponentCore.createComponent(project);
 			
-				if (isAppClientComponent(component)){
+				if (component != null && isAppClientComponent(component)){
 					v.add(component);
 				}	
 		}
