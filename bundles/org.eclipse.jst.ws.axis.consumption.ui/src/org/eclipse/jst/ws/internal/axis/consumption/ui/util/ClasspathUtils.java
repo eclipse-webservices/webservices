@@ -38,11 +38,9 @@ public class ClasspathUtils {
 	public static final String copyright = "(c) Copyright IBM Corporation 2003."; //$NON-NLS-1$
 
 	private static ClasspathUtils instance_; //$NON-NLS-1$
-	private static String DIR_CLASSES = "classes"; //$NON-NLS-1$
 	private static String DOT_JAR = ".jar"; //$NON-NLS-1$
 	private static String JAR = "jar"; //$NON-NLS-1$
 	private static String WEBINF_LIB = "/WEB-INF/lib"; //$NON-NLS-1$
-	private static String WEBINF = "WEB-INF"; //$NON-NLS-1$
 	
 	// workaround for Axis-2146 - lower case list of JARs that may include javax.activation.DataHandler
 	private static String[] JARLIST = new String[] {
@@ -84,7 +82,6 @@ public class ClasspathUtils {
 		ArrayList projectClasspath = new ArrayList();
 		boolean needJavaClasspath = false;
 		IFolder webModuleServerRoot = null;
-		IFolder webModuleClasses = null;
 		
 		IVirtualComponent comp = ComponentCore.createComponent(project);
 		if (comp != null) {
@@ -92,14 +89,7 @@ public class ClasspathUtils {
 			
 			if (J2EEUtils.isEARComponent(comp)) {
 				moduleClasspath = getClasspathForEARProject(project, comp.getName());
-			} else if (J2EEUtils.isWebComponent(comp)) {
-				webModuleServerRoot = J2EEUtils.getOutputContainerRoot(comp);
-				if (webModuleServerRoot != null) { 
-					webModuleClasses = webModuleServerRoot.getFolder(WEBINF).getFolder(DIR_CLASSES);
-					if (webModuleClasses != null)
-						moduleClasspath = new String[] { webModuleClasses.getLocation().toOSString() };
-				}
-			} else if (J2EEUtils.isJavaComponent(comp)) {
+			} else if (J2EEUtils.isWebComponent(comp) || J2EEUtils.isJavaComponent(comp)) {
 				needJavaClasspath = true;
 				webModuleServerRoot = J2EEUtils.getOutputContainerRoot(comp);
 				if (webModuleServerRoot != null) { 
