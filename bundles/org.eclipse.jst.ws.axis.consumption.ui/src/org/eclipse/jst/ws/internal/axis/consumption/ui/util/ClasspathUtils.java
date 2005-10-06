@@ -29,7 +29,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
-import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
@@ -81,78 +80,69 @@ public class ClasspathUtils {
 
 		
 	private String[] getClasspath(IProject project, boolean isDependent, String inputModule) {
-//		 inputModule is valid only if it's not a dependent project
+//		inputModule is valid only if it's not a dependent project
 		String[] moduleClasspath = new String[0];
 		ArrayList projectClasspath = new ArrayList();
 		boolean needJavaClasspath = false;
-		StructureEdit mc = null;
 		IFolder webModuleServerRoot = null;
 		IFolder webModuleClasses = null;
 		
-		try {
-			String module;
-			IVirtualComponent comp = ComponentCore.createComponent(project);
-			if (comp != null) {
-				mc = StructureEdit.getStructureEditForRead(project);
-				WorkbenchComponent wbc = mc.getComponent();
-				module = wbc.getName();
-				// get the module's classpath
-				
-				if (J2EEUtils.isEARComponent(comp)) {
-					moduleClasspath = getClasspathForEARProject(project, module);
-				} else if (J2EEUtils.isWebComponent(comp)) {
-					webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbc);
-					if (webModuleServerRoot != null) { 
-						webModuleClasses = webModuleServerRoot.getFolder(WEBINF).getFolder(DIR_CLASSES);
-						if (webModuleClasses != null)
-							moduleClasspath = new String[] { webModuleClasses.getLocation().toOSString() };
-					}
-				} else if (J2EEUtils.isJavaComponent(comp)) {
-					needJavaClasspath = true;
-					webModuleServerRoot = StructureEdit.getOutputContainerRoot(wbc);
-					if (webModuleServerRoot != null) { 
-						moduleClasspath = new String[] { webModuleServerRoot.getLocation().toOSString() };
-					}
+		IVirtualComponent comp = ComponentCore.createComponent(project);
+		if (comp != null) {
+			// get the module's classpath
+			
+			if (J2EEUtils.isEARComponent(comp)) {
+				moduleClasspath = getClasspathForEARProject(project, comp.getName());
+			} else if (J2EEUtils.isWebComponent(comp)) {
+				webModuleServerRoot = StructureEdit.getOutputContainerRoot(comp);
+				if (webModuleServerRoot != null) { 
+					webModuleClasses = webModuleServerRoot.getFolder(WEBINF).getFolder(DIR_CLASSES);
+					if (webModuleClasses != null)
+						moduleClasspath = new String[] { webModuleClasses.getLocation().toOSString() };
 				}
-				
-				// add module classpath to project classpath
-				for (int j = 0; j < moduleClasspath.length; j++) {
-					projectClasspath.add(moduleClasspath[j]);
-				}
-				
-				if (!isDependent) {
-					if (J2EEUtils.isWebComponent(comp)) {
-						needJavaClasspath = true;
-						moduleClasspath = getWEBINFLib(project, inputModule);
-						for (int j = 0; j < moduleClasspath.length; j++) {
-							projectClasspath.add(moduleClasspath[j]);
-						}
-					}
-				}
-				
-			} else {
+			} else if (J2EEUtils.isJavaComponent(comp)) {
 				needJavaClasspath = true;
+				webModuleServerRoot = StructureEdit.getOutputContainerRoot(comp);
+				if (webModuleServerRoot != null) { 
+					moduleClasspath = new String[] { webModuleServerRoot.getLocation().toOSString() };
+				}
 			}
 			
-			// If there are Web or Java module in the project, get the project's Java classpath
-			if (needJavaClasspath) {
-				String[] javaClasspath;
-				try {
-					IJavaProject javaProj = (IJavaProject) project.getNature(JavaCore.NATURE_ID);
-					if (javaProj != null) {
-						javaClasspath = getClasspathForJavaProject(javaProj);
-						for (int j = 0; j < javaClasspath.length; j++) {
-							projectClasspath.add(javaClasspath[j]);
-						}
-					}
-				} catch (CoreException e) {
-					// not able to get Java classpath, just ignore
-				}	
+			// add module classpath to project classpath
+			for (int j = 0; j < moduleClasspath.length; j++) {
+				projectClasspath.add(moduleClasspath[j]);
 			}
-		} finally {
-			if (mc != null)
-				mc.dispose();
+			
+			if (!isDependent) {
+				if (J2EEUtils.isWebComponent(comp)) {
+					needJavaClasspath = true;
+					moduleClasspath = getWEBINFLib(project, inputModule);
+					for (int j = 0; j < moduleClasspath.length; j++) {
+						projectClasspath.add(moduleClasspath[j]);
+					}
+				}
+			}
+			
+		} else {
+			needJavaClasspath = true;
 		}
+		
+		// If there are Web or Java module in the project, get the project's Java classpath
+		if (needJavaClasspath) {
+			String[] javaClasspath;
+			try {
+				IJavaProject javaProj = (IJavaProject) project.getNature(JavaCore.NATURE_ID);
+				if (javaProj != null) {
+					javaClasspath = getClasspathForJavaProject(javaProj);
+					for (int j = 0; j < javaClasspath.length; j++) {
+						projectClasspath.add(javaClasspath[j]);
+					}
+				}
+			} catch (CoreException e) {
+				// not able to get Java classpath, just ignore
+			}	
+		}
+		
 		return (String[]) projectClasspath.toArray(new String[projectClasspath.size()]);
 	}
 
@@ -160,24 +150,17 @@ public class ClasspathUtils {
 	private String[] getUtilityJarClasspath(IProject project) {
 		String[] moduleClasspath = new String[0];
 		ArrayList utilityJarsClasspath = new ArrayList();
-		StructureEdit mc = null;
-		try {
-			String module;
-			mc = StructureEdit.getStructureEditForRead(project);
-			WorkbenchComponent wbc = mc.getComponent();
-			IVirtualComponent comp = ComponentCore.createComponent(project);
-				module = wbc.getName();
-				if (J2EEUtils.isEARComponent(comp)) {
-					moduleClasspath = getClasspathForEARProject(project, module);
-					for (int j = 0; j < moduleClasspath.length; j++) {
-						utilityJarsClasspath.add(moduleClasspath[j]);
-					}
-				}
-
-		} finally {
-			if (mc != null)
-				mc.dispose();
+		
+		String module;
+		IVirtualComponent comp = ComponentCore.createComponent(project);
+		module = comp.getName();
+		if (J2EEUtils.isEARComponent(comp)) {
+			moduleClasspath = getClasspathForEARProject(project, module);
+			for (int j = 0; j < moduleClasspath.length; j++) {
+				utilityJarsClasspath.add(moduleClasspath[j]);
+			}
 		}
+
 		return (String[]) utilityJarsClasspath.toArray(new String[utilityJarsClasspath.size()]);
 	}
 	
