@@ -92,8 +92,9 @@ public class ClasspathUtils {
 		try {
 			String module;
 			IVirtualComponent comp = ComponentCore.createComponent(project);
-			mc = StructureEdit.getStructureEditForRead(project);
-			WorkbenchComponent wbc = mc.getComponent();
+			if (comp != null) {
+				mc = StructureEdit.getStructureEditForRead(project);
+				WorkbenchComponent wbc = mc.getComponent();
 				module = wbc.getName();
 				// get the module's classpath
 				
@@ -118,14 +119,19 @@ public class ClasspathUtils {
 				for (int j = 0; j < moduleClasspath.length; j++) {
 					projectClasspath.add(moduleClasspath[j]);
 				}
-			if (!isDependent) {
-				if (J2EEUtils.isWebComponent(comp)) {
-					needJavaClasspath = true;
-					moduleClasspath = getWEBINFLib(project, inputModule);
-					for (int j = 0; j < moduleClasspath.length; j++) {
-						projectClasspath.add(moduleClasspath[j]);
+				
+				if (!isDependent) {
+					if (J2EEUtils.isWebComponent(comp)) {
+						needJavaClasspath = true;
+						moduleClasspath = getWEBINFLib(project, inputModule);
+						for (int j = 0; j < moduleClasspath.length; j++) {
+							projectClasspath.add(moduleClasspath[j]);
+						}
 					}
 				}
+				
+			} else {
+				needJavaClasspath = true;
 			}
 			
 			// If there are Web or Java module in the project, get the project's Java classpath
