@@ -28,7 +28,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
@@ -94,7 +93,7 @@ public class ClasspathUtils {
 			if (J2EEUtils.isEARComponent(comp)) {
 				moduleClasspath = getClasspathForEARProject(project, comp.getName());
 			} else if (J2EEUtils.isWebComponent(comp)) {
-				webModuleServerRoot = StructureEdit.getOutputContainerRoot(comp);
+				webModuleServerRoot = J2EEUtils.getOutputContainerRoot(comp);
 				if (webModuleServerRoot != null) { 
 					webModuleClasses = webModuleServerRoot.getFolder(WEBINF).getFolder(DIR_CLASSES);
 					if (webModuleClasses != null)
@@ -102,7 +101,7 @@ public class ClasspathUtils {
 				}
 			} else if (J2EEUtils.isJavaComponent(comp)) {
 				needJavaClasspath = true;
-				webModuleServerRoot = StructureEdit.getOutputContainerRoot(comp);
+				webModuleServerRoot = J2EEUtils.getOutputContainerRoot(comp);
 				if (webModuleServerRoot != null) { 
 					moduleClasspath = new String[] { webModuleServerRoot.getLocation().toOSString() };
 				}

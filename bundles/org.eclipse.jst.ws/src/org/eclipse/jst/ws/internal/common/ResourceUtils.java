@@ -785,7 +785,7 @@ public final class ResourceUtils {
       IFolder webModuleServerRoot = null;
       IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
       if (vc.exists())
-        webModuleServerRoot = StructureEdit.getOutputContainerRoot(vc);
+        webModuleServerRoot = J2EEUtils.getOutputContainerRoot(vc);
 
 	  return webModuleServerRoot;
 	}

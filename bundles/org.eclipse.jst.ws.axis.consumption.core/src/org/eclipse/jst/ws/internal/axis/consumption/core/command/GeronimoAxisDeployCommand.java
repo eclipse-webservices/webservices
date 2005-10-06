@@ -39,7 +39,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
 /**
@@ -185,7 +184,7 @@ public class GeronimoAxisDeployCommand extends EnvironmentalOperation
     IStatus status = Status.OK_STATUS;
     // check if server-config.wsdd exists
     IVirtualComponent component = J2EEUtils.getVirtualComponent( projectName_, componentName_ );
-    outputRoot = StructureEdit.getOutputContainerRoot( component );
+    outputRoot = J2EEUtils.getOutputContainerRoot( component );
     IPath path = new Path( "WEB-INF" ).append( "server-config.wsdd" );    
     IFile descriptorFile = outputRoot.getFile( path );
     

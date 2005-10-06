@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
 
@@ -56,7 +55,7 @@ public class CopyDeploymentFileCommand extends EnvironmentalOperation
     try
     {
       IVirtualComponent component      = J2EEUtils.getVirtualComponent( projectName_, componentName_ );
-      IFolder           root           = StructureEdit.getOutputContainerRoot( component );
+      IFolder           root           = J2EEUtils.getOutputContainerRoot( component );
       IPath             path           = new Path( "WEB-INF" ).append( "server-config.wsdd" );
       IFile             descriptorFile = root.getFile( path );
       IVirtualFile      newLocation    = component.getRootFolder().getFile( path );

@@ -18,6 +18,7 @@ import java.util.Vector;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
@@ -25,6 +26,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.logger.proxy.Logger;
+import org.eclipse.jst.common.componentcore.util.ComponentUtilities;
 import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationDataModelProvider;
 import org.eclipse.jst.j2ee.applicationclient.componentcore.util.AppClientArtifactEdit;
 import org.eclipse.jst.j2ee.componentcore.util.EARArtifactEdit;
@@ -1257,6 +1259,10 @@ public final class J2EEUtils {
 	public static boolean isEARComponent(IProject project, String componentName){
 	IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
 	return isEARComponent(vc);
+	}
+	
+	public static IFolder getOutputContainerRoot (IVirtualComponent component) {
+		return (IFolder)ComponentUtilities.getOutputContainers(component)[0];
 	}
 	
 }
