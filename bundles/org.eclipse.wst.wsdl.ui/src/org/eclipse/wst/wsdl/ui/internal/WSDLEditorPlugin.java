@@ -306,13 +306,12 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
    */
   protected void initializeDefaultPreferences(IPreferenceStore store)
   {
-    super.initializeDefaultPreferences(store);
     store.setDefault(DEFAULT_PAGE, GRAPH_PAGE);
     
     // WSDLPreferencePage prefs
     store.setDefault(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"), DEFAULT_TARGET_NAMESPACE);
-    store.setDefault(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING"), true);
-    store.setDefault("Prompt Regenerate Binding on save", true);	// TODO: Externalize
+    store.setDefault(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING"), false);
+    store.setDefault("Prompt Regenerate Binding on save", false);	// TODO: Externalize
     // Do we need this preference below?  Look at WSDLPreferencePage.java
 //    store.setDefault("Defualt Location:", "http://www.example.com");
   }

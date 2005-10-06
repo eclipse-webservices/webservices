@@ -270,7 +270,7 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
   public void doSave(IProgressMonitor monitor) {
       try{
 		  // Display prompt message
-		  boolean continueRegeneration = true;
+		  boolean continueRegeneration = false;
 		  if (WSDLEditorPlugin.getInstance().getPluginPreferences().getBoolean("Prompt Regenerate Binding on save")) {
 			  Shell shell = Display.getCurrent().getActiveShell();
 			  GenerateBindingOnSaveDialog dialog = new GenerateBindingOnSaveDialog(shell);
@@ -288,9 +288,12 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
 			  else {
 				  System.out.println("\nNothing: " + rValue);
 			  }
-		  }	    	  
+		  }
+		  else {
+			  continueRegeneration = WSDLEditorPlugin.getInstance().getPluginPreferences().getBoolean(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING"));
+		  }
     	  
-		  if (continueRegeneration || WSDLEditorPlugin.getInstance().getPluginPreferences().getBoolean(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING"))) {
+		  if (continueRegeneration) {
 			  Iterator bindingsIt = wsdlEditor.getDefinition().getEBindings().iterator();
 			  while (bindingsIt.hasNext()) {
 				  Binding binding = (Binding) bindingsIt.next();
