@@ -22,10 +22,10 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 
 
-public class BuildProjectCommand extends EnvironmentalOperation 
+public class BuildProjectCommand extends AbstractDataModelOperation 
 {
   private ValidationManager validationManager;
   private IProject project_;

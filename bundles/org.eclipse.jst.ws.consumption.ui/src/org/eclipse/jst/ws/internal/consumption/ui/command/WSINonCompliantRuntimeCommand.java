@@ -17,10 +17,10 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIAPContext;
 import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSISSBPContext;
@@ -28,7 +28,7 @@ import org.eclipse.wst.ws.internal.ui.wsi.preferences.WSIComplianceUtils;
 
 
 
-public class WSINonCompliantRuntimeCommand extends EnvironmentalOperation
+public class WSINonCompliantRuntimeCommand extends AbstractDataModelOperation
 {
 
   private IProject serviceProject_;

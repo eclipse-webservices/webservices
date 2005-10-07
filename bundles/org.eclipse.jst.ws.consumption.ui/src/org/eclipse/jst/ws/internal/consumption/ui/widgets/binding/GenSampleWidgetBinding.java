@@ -49,12 +49,12 @@ import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceClientInfo;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceState;
@@ -134,7 +134,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
                         });
   }
   
-  private class InitializeProxyCommand extends EnvironmentalOperation
+  private class InitializeProxyCommand extends AbstractDataModelOperation
   {
     private IStructuredSelection selection_;
 	private TypeRuntimeServer typeRuntimeServer_;

@@ -40,18 +40,18 @@ import org.eclipse.jst.ws.internal.ext.test.JavaProxyTestCommand;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
+import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 
-public class WSSampleFinishCommand extends EnvironmentalOperation implements JavaProxyTestCommand
+public class WSSampleFinishCommand extends AbstractDataModelOperation implements JavaProxyTestCommand
 {
 
   public static String INPUT       = "Input.jsp";

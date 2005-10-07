@@ -3,7 +3,6 @@ package org.eclipse.wst.ws.internal.plugin;
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSDLValidationContext;
 import org.eclipse.wst.ws.internal.preferences.PersistentWaitForWSDLValidationContext;

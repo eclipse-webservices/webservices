@@ -19,10 +19,10 @@ import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.Choice;
+import org.eclipse.wst.common.environment.Environment;
 
 
 /**

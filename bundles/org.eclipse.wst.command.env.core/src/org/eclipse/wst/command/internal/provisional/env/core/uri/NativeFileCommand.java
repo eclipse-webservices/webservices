@@ -16,9 +16,11 @@ import java.util.List;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.wst.common.environment.uri.URI;
+import org.eclipse.wst.common.environment.uri.URIException;
 
-public abstract class NativeFileCommand extends EnvironmentalOperation
+public abstract class NativeFileCommand extends AbstractDataModelOperation
 {
   protected String name;
 

@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
 
@@ -31,7 +31,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
  * 
  */
 
-public class CopyDeploymentFileCommand extends EnvironmentalOperation
+public class CopyDeploymentFileCommand extends AbstractDataModelOperation
 {
   private String projectName_;
   private String componentName_;

@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
 import java.io.File;
 import java.util.ResourceBundle;
-
 import org.apache.axis.tools.ant.axis.AdminClientTask;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -23,15 +22,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.Environment;
 /**
  * Commands are executable, undoable, redoable objects. Every Command has a name and a description.
  */
 
-public class AxisDeployCommand extends EnvironmentalOperation
+public class AxisDeployCommand extends AbstractDataModelOperation
 {
   protected static final String SERVICE_EXT = "/services/AdminService"; //$NON-NLS-1$
 

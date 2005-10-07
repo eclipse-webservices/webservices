@@ -25,7 +25,7 @@ import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 
 
@@ -33,7 +33,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 * This class is to be used to Build the data model
 * first we get the java class and then build the model
 */
-public class JavaMofReflectionCommand extends EnvironmentalOperation
+public class JavaMofReflectionCommand extends AbstractDataModelOperation
 {
 
   public static String LABEL = "JavaMofReflectionCommand"; 

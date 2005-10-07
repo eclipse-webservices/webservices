@@ -11,9 +11,9 @@
 package org.eclipse.wst.ws.internal.common;
 
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
+import org.eclipse.wst.common.environment.Environment;
 
 public final class EnvironmentUtils
 {     

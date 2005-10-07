@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -28,7 +28,7 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
  * AxisClientDefaultingCommand
  *  
  */
-public class AxisClientDefaultingCommand extends EnvironmentalOperation 
+public class AxisClientDefaultingCommand extends AbstractDataModelOperation 
 {
     private boolean isClientScenario_  = true;
 	private boolean customizeMappings_ = false;

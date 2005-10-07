@@ -11,7 +11,7 @@
 
 package org.eclipse.jst.ws.internal.ext;
 
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 
 /**
 * All Extensions with exectutable extensions should implement this 
@@ -25,7 +25,7 @@ public interface WebServiceExecutable
   *Returns a wizard fragment for this exention type 
   *
   */
-  public EnvironmentalOperation getFinishCommand();
+  public AbstractDataModelOperation getFinishCommand();
 }
 
 

@@ -18,15 +18,15 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ValidateWSDLJob;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.Choice;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
 
-public class CheckWSDLValidationCommand extends EnvironmentalOperation
+public class CheckWSDLValidationCommand extends AbstractDataModelOperation
 {	  
 	private static MessageUtils msgUtils_;
 	

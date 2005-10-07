@@ -10,17 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.eclipse;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.wst.command.internal.env.core.uri.file.FileScheme;
 import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
-import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
-import org.eclipse.wst.command.internal.env.eclipse.EclipseScheme;
 import org.eclipse.wst.command.internal.provisional.env.core.CommandManager;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
-import org.eclipse.wst.command.internal.provisional.env.core.uri.SimpleURIFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.uri.URIFactory;
+import org.eclipse.wst.common.environment.EnvironmentService;
+import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.StatusHandler;
+import org.eclipse.wst.common.environment.uri.SimpleURIFactory;
+import org.eclipse.wst.common.environment.uri.URIFactory;
+import org.eclipse.wst.common.environment.uri.URIScheme;
 
 
 /**
@@ -41,13 +39,16 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
  		                         ResourceContext resourceContext,
 						                 StatusHandler   statusHandler )
   {
+    URIScheme eclipseScheme = EnvironmentService.getEclipseScheme( this );
+    URIScheme fileScheme    = EnvironmentService.getFileScheme();
+    
     commandManager_  = commandManager;
     resourceContext_ = resourceContext;
     uriFactory_      = new SimpleURIFactory();
     statusHandler_   = statusHandler;
     
-    uriFactory_.registerScheme( "platform", new EclipseScheme( this, new NullProgressMonitor() ) );
-    uriFactory_.registerScheme( "file", new FileScheme() );
+    uriFactory_.registerScheme( "platform", eclipseScheme );
+    uriFactory_.registerScheme( "file", fileScheme );
   }
   
   /**
@@ -63,7 +64,10 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
    */
   public Log getLog()
   {
-	if( logger_ == null ) logger_ = new EclipseLog();
+	  if( logger_ == null )
+    {  
+      logger_ = EnvironmentService.getEclipseLog(); 
+    };
 	
     return logger_;
   }

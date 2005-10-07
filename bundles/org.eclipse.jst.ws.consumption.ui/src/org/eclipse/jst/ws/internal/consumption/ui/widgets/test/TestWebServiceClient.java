@@ -1,7 +1,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.provisional.wsrt.AbstractWebServiceClient;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;

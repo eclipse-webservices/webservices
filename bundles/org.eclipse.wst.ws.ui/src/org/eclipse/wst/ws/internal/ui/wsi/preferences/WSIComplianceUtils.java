@@ -14,10 +14,10 @@ package org.eclipse.wst.ws.internal.ui.wsi.preferences;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.Choice;
+import org.eclipse.wst.common.environment.StatusHandler;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 
 

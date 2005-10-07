@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.provisional.env.core.common;
 
-import org.eclipse.wst.command.internal.provisional.env.core.uri.URI;
+import org.eclipse.wst.common.environment.uri.URI;
 
 /**
  * Carries position information within a resource.

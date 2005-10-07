@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 
@@ -26,7 +26,7 @@ import org.eclipse.wst.server.core.ServerCore;
 *
 *
 */
-public class FinishDefaultCommand extends EnvironmentalOperation
+public class FinishDefaultCommand extends AbstractDataModelOperation
 {
   private String sampleServerTypeID;
   private IServer sampleExistingServer;

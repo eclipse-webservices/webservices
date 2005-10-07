@@ -1,7 +1,6 @@
 package org.eclipse.wst.ws.internal.provisional.wsrt;
 
 import java.util.List;
-
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
 import org.eclipse.wst.server.core.IServer;
 /**

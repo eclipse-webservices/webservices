@@ -12,9 +12,8 @@
 package org.eclipse.wst.ws.internal.wsfinder;
 
 import java.util.Iterator;
-import java.util.Vector;
 import java.util.List;
-
+import java.util.Vector;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 

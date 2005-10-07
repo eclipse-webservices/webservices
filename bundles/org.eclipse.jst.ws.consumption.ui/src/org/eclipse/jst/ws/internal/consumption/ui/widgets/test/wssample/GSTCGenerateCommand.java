@@ -19,13 +19,13 @@ import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.TestClientFileG
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.GeneratePageCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.JavaToModelCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.CopyWebServiceUtilsJarCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
 
-public class GSTCGenerateCommand extends EnvironmentalOperation 
+public class GSTCGenerateCommand extends AbstractDataModelOperation 
 {
 
   public static String INPUT       = "Input.jsp";

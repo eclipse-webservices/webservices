@@ -18,10 +18,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
@@ -31,7 +31,7 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceState;
 import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
 
-public class PreServiceDevelopCommand extends EnvironmentalOperation 
+public class PreServiceDevelopCommand extends AbstractDataModelOperation 
 {
   private TypeRuntimeServer typeRuntimeServer_;
   private IContext          context_;

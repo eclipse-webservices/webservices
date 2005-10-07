@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-
 import javax.wsdl.Definition;
 import javax.wsdl.Import;
 import javax.wsdl.Types;
@@ -36,17 +35,16 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.uri.URIException;
+import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.uri.URIException;
 import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
 import org.eclipse.wst.ws.internal.parser.discovery.NetUtils;
 import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
@@ -59,7 +57,7 @@ import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.eclipse.xsd.util.XSDParser;
 import org.w3c.dom.Element;
 
-public class CopyWSDLCommand extends EnvironmentalOperation
+public class CopyWSDLCommand extends AbstractDataModelOperation
 {
   private String wsdlURI;
   private WebServicesParser webServicesParser;

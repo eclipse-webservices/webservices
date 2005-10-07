@@ -26,9 +26,9 @@ import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
+import org.eclipse.wst.common.environment.Environment;
 
 
 /**
@@ -37,7 +37,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.selection.Selection
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
-public class WebServiceTestDefaultingCommand extends EnvironmentalOperation 
+public class WebServiceTestDefaultingCommand extends AbstractDataModelOperation 
 {
   
   private SelectionList serviceTestFacilities;	

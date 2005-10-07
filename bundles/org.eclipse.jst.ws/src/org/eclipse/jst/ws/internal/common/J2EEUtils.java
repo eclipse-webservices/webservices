@@ -39,8 +39,6 @@ import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
-import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
@@ -48,6 +46,8 @@ import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
+import org.eclipse.wst.common.environment.EnvironmentService;
+import org.eclipse.wst.common.environment.Log;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.server.core.IModule;
@@ -773,7 +773,7 @@ public final class J2EEUtils {
 					}
 				}
 			} catch (Exception ce) {
-				Log log = new EclipseLog();
+				Log log = EnvironmentService.getEclipseLog();
 				log.log(Log.ERROR, 5039, J2EEUtils.class, "getEARProjects", ce);
 
 			}

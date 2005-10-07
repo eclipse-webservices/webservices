@@ -31,7 +31,7 @@ import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
 import org.eclipse.jst.j2ee.webservice.wsclient.Webservice_clientFactory;
 import org.eclipse.jst.j2ee.webservice.wsclient.internal.impl.Webservice_clientFactoryImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.internal.emf.utilities.EtoolsCopyUtility;
@@ -41,7 +41,7 @@ import org.eclipse.wst.common.internal.emfworkbench.integration.EditModel;
  * Provide a way to externalize the edited fields and create new handlers
  *  
  */
-public class ClientHandlersWidgetOutputCommand extends EnvironmentalOperation 
+public class ClientHandlersWidgetOutputCommand extends AbstractDataModelOperation 
 {
 
   //private List handlerTableItems_;

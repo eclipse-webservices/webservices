@@ -47,11 +47,11 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.uri.URIException;
-import org.eclipse.wst.command.internal.provisional.env.core.uri.URIFactory;
+import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.uri.URIException;
+import org.eclipse.wst.common.environment.uri.URIFactory;
 import org.eclipse.wst.ws.internal.parser.wsil.IllegalArgumentsException;
 import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
 import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationHandler;
@@ -59,7 +59,7 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-public class AddWSDLToWSILCommand extends EnvironmentalOperation
+public class AddWSDLToWSILCommand extends AbstractDataModelOperation
 {
   public static final String ARG_WSIL = "-wsil";
   public static final String ARG_WSDL = "-wsdl";

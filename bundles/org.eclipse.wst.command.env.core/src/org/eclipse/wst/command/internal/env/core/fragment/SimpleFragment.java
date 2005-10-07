@@ -11,7 +11,7 @@
 package org.eclipse.wst.command.internal.env.core.fragment;
 
 import org.eclipse.wst.command.internal.provisional.env.core.CommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 
 /**
   * This class implements an empty of WizardFragment.
@@ -28,11 +28,11 @@ public class SimpleFragment extends AbstractCommandFragment
     this( (CommandFactory)null, id );  
   }
   
-  public SimpleFragment( final EnvironmentalOperation operation, String id )
+  public SimpleFragment( final AbstractDataModelOperation operation, String id )
   {
     super( new CommandFactory()
            {
-             public EnvironmentalOperation create()
+             public AbstractDataModelOperation create()
              {
                return operation;
              }

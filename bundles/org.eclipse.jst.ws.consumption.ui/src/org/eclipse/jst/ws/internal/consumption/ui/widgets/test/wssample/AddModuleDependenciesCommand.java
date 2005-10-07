@@ -30,11 +30,11 @@ import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerC
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
 
-public class AddModuleDependenciesCommand extends EnvironmentalOperation
+public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 {
   
   private TestInfo testInfo;	

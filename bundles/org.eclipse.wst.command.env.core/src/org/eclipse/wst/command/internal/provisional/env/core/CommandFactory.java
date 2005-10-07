@@ -20,5 +20,5 @@ public interface CommandFactory
    * 
    * @return returns a created Command object.
    */
-  public EnvironmentalOperation create();
+  public AbstractDataModelOperation create();
 }

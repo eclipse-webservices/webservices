@@ -24,13 +24,13 @@ import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.Environment;
 
 
-public class ValidateObjectSelectionCommand extends EnvironmentalOperation
+public class ValidateObjectSelectionCommand extends AbstractDataModelOperation
 {
   private String JAVA_EXTENSION = ".java"; //$NON-NLS-1$
   private String CLASS_EXTENSION = ".class"; //$NON-NLS-1$

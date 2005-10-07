@@ -12,7 +12,7 @@ package org.eclipse.wst.ws.internal.provisional.wsrt;
 
 
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.common.environment.Environment;
 
 
 public interface IWebService {

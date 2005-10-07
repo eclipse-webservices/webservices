@@ -28,5 +28,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.command.env.ui,
  org.eclipse.wst.command.env,
  org.eclipse.wst.common.frameworks,
- org.eclipse.core.commands
+ org.eclipse.core.commands,
+ org.eclipse.wst.common.environment
 Eclipse-AutoStart: true

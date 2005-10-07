@@ -18,12 +18,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 
-public class WSDLSelectionWidgetDefaultingCommand extends EnvironmentalOperation
+public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOperation
 {
   private IStructuredSelection selection_;
   

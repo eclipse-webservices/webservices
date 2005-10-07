@@ -15,10 +15,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wst.command.internal.env.ui.dialog.MessageDialog;
 import org.eclipse.wst.command.internal.env.ui.dialog.StatusDialogConstants;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.common.environment.Choice;
+import org.eclipse.wst.common.environment.StatusException;
+import org.eclipse.wst.common.environment.StatusHandler;
 
 
 /**

@@ -12,12 +12,12 @@
  */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 
-public class ServerExtensionOutputCommand extends EnvironmentalOperation
+public class ServerExtensionOutputCommand extends AbstractDataModelOperation
 {
   //private String            wsdlURI_;
   private WebServicesParser wsdlParser_;

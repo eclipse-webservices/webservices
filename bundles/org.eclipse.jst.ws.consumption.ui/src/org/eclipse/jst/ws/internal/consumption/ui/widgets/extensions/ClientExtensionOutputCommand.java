@@ -12,10 +12,10 @@
  */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
-public class ClientExtensionOutputCommand extends EnvironmentalOperation
+public class ClientExtensionOutputCommand extends AbstractDataModelOperation
 {
   private IWebServiceClient webServiceClient_;
   

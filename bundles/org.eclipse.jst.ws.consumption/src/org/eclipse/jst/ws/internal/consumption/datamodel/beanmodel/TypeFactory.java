@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel;
 
 import java.util.Hashtable;
-
 import org.eclipse.jem.java.JavaHelpers;
 /**
  * TypeFactory

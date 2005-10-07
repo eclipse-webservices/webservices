@@ -40,9 +40,9 @@ import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.NullStatusHandler;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
+import org.eclipse.wst.common.environment.NullStatusHandler;
 import org.eclipse.wst.server.core.IServer;
 
 public class StartServerWidget extends SimpleWidgetDataContributor 

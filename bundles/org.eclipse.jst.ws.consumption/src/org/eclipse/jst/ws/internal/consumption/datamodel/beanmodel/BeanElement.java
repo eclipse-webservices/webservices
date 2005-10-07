@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel;
 
 import java.util.Enumeration;
-
 import org.eclipse.wst.ws.internal.datamodel.BasicModel;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 

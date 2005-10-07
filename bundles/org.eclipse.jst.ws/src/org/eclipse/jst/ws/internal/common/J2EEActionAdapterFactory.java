@@ -16,16 +16,14 @@ package org.eclipse.jst.ws.internal.common;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
-
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 
 
 /**

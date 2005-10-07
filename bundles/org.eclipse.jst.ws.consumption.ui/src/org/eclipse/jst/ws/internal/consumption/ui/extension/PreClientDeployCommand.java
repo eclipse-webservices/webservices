@@ -15,9 +15,9 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 
-public class PreClientDeployCommand extends EnvironmentalOperation 
+public class PreClientDeployCommand extends AbstractDataModelOperation 
 {
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {

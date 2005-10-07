@@ -4,14 +4,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-
-import javax.wsdl.Port;
 import javax.wsdl.Definition;
+import javax.wsdl.Port;
 import javax.wsdl.Service;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.http.HTTPAddress;
 import javax.wsdl.extensions.soap.SOAPAddress;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 

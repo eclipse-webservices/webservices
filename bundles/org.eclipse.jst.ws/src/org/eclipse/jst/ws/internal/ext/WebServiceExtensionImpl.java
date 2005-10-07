@@ -13,8 +13,8 @@ package org.eclipse.jst.ws.internal.ext;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.common.environment.EnvironmentService;
+import org.eclipse.wst.common.environment.Log;
 
 
 
@@ -43,7 +43,7 @@ public class WebServiceExtensionImpl implements WebServiceExtension
   public WebServiceExtensionImpl(IConfigurationElement configElement)
   {
     configElement_ = configElement;
-    log_ = new EclipseLog();
+    log_ = EnvironmentService.getEclipseLog();
   }
 
   // Copyright

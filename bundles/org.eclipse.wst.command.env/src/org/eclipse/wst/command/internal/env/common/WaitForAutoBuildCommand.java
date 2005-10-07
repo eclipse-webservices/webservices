@@ -16,10 +16,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 
 
-public class WaitForAutoBuildCommand extends EnvironmentalOperation
+public class WaitForAutoBuildCommand extends AbstractDataModelOperation
 {
   public IStatus execute( IProgressMonitor montitor, IAdaptable adaptable ) 
   {

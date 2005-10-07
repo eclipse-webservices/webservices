@@ -22,15 +22,15 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
 import org.eclipse.jst.ws.internal.ext.test.WSDLTestFinishCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.explorer.LaunchOption;
 import org.eclipse.wst.ws.internal.explorer.LaunchOptions;
 import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin;
 
-public class ExplorerServiceTestCommand extends EnvironmentalOperation implements WSDLTestFinishCommand
+public class ExplorerServiceTestCommand extends AbstractDataModelOperation implements WSDLTestFinishCommand
 {
 
   private boolean externalBrowser = true;

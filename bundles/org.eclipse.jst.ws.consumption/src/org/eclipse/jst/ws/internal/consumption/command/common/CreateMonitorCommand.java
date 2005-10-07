@@ -17,10 +17,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerPort;
@@ -28,7 +28,7 @@ import org.eclipse.wst.server.core.internal.IMonitoredServerPort;
 import org.eclipse.wst.server.core.internal.IServerMonitorManager;
 import org.eclipse.wst.server.core.internal.ServerMonitorManager;
 
-public class CreateMonitorCommand extends EnvironmentalOperation
+public class CreateMonitorCommand extends AbstractDataModelOperation
 {
 
   private static final String WEB_SERVICES = "Web services";

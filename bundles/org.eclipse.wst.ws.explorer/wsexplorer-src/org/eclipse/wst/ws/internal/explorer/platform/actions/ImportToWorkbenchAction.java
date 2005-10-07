@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;

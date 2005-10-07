@@ -19,7 +19,7 @@ import java.util.Properties;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 
 /**
  * @author cbrealey@ca.ibm.com
@@ -27,7 +27,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
  * This <code>Command</code>, when executed, launches the
  * Web Services Explorer.
  */
-public class WSExplorerLauncherCommand extends EnvironmentalOperation {
+public class WSExplorerLauncherCommand extends AbstractDataModelOperation {
 	private boolean forceLaunchOutsideIDE;
 
 	private LaunchOption[] launchOptions;

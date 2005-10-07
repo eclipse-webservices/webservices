@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.JavaConventions;
 
 /**

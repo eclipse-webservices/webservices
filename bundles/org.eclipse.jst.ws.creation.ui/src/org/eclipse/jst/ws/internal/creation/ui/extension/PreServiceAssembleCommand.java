@@ -17,11 +17,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 
-public class PreServiceAssembleCommand extends EnvironmentalOperation 
+public class PreServiceAssembleCommand extends AbstractDataModelOperation 
 {
 	private IWebService				webService_;
 	private String						project_;

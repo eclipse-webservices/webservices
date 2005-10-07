@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
 
 import java.io.File;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
@@ -24,12 +23,12 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.Environment;
 
-public class MoveDeploymentFilesTask extends EnvironmentalOperation {
+public class MoveDeploymentFilesTask extends AbstractDataModelOperation {
 
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;

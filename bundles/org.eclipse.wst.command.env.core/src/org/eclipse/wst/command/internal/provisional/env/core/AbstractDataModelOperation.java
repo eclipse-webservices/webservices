@@ -13,12 +13,9 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
-public abstract class EnvironmentalOperation extends AbstractDataModelOperation
+public abstract class AbstractDataModelOperation extends org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation
 {
-  private Environment environment_;
     
   public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
   {
@@ -35,13 +32,4 @@ public abstract class EnvironmentalOperation extends AbstractDataModelOperation
     return Status.OK_STATUS;
   }
 
-  public Environment getEnvironment()
-  {
-    return environment_;
-  }
-  
-  public void setEnvironment( Environment environment )
-  {
-    environment_ = environment;
-  }
 }

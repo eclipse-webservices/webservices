@@ -20,7 +20,7 @@ import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.common.SamplePropertyDescriptor;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.common.environment.Environment;
 
 
 

@@ -17,12 +17,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
@@ -30,7 +30,7 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
  * This command checks to see if the selected client project is the
  * service project. If so, the user is warned.
  */
-public class CheckForServiceProjectCommand extends EnvironmentalOperation
+public class CheckForServiceProjectCommand extends AbstractDataModelOperation
 {
   MessageUtils msgUtils;
   SelectionListChoices runtime2ClientTypes;

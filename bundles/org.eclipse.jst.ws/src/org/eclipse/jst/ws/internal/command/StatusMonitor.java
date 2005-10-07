@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.command;
 
 import java.util.Vector;
-
 import org.eclipse.core.runtime.IStatus;
 
 /**

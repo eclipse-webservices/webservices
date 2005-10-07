@@ -14,11 +14,11 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensio
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 
 
-public class ClientWizardWidgetDefaultingCommand extends EnvironmentalOperation
+public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperation
 {    
   public Boolean getTestService()
   {

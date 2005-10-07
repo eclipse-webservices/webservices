@@ -21,10 +21,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.codegen.Generator;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 
@@ -34,7 +34,7 @@ import org.eclipse.wst.ws.internal.datamodel.Model;
  * Creation date: (4/10/2001 12:41:48 PM)
  * @author: Gilbert Andrews
  */
-public class GeneratePageCommand extends EnvironmentalOperation 
+public class GeneratePageCommand extends AbstractDataModelOperation 
 {
 		
 private Model model_;

@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 
 
 /**
@@ -19,7 +19,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
  * this wizard.
  *
  */
-public class DataObjectCommand extends EnvironmentalOperation
+public class DataObjectCommand extends AbstractDataModelOperation
 {
   private Object dataObject_;
   

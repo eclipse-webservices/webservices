@@ -21,13 +21,13 @@ import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
+import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.StatusHandler;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceTester;
@@ -40,7 +40,7 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
 *
 *
 */
-public class ClientTestDelegateCommand extends EnvironmentalOperation
+public class ClientTestDelegateCommand extends AbstractDataModelOperation
 {
   private WebServiceTestRegistry testRegistry;
   private SelectionList testFacilities;
@@ -101,7 +101,7 @@ public class ClientTestDelegateCommand extends EnvironmentalOperation
 	
 	while(commandFactory.hasNext())
   {
-    EnvironmentalOperation operation = commandFactory.getNextCommand();
+    AbstractDataModelOperation operation = commandFactory.getNextCommand();
     operation.setEnvironment( env );
     
     try

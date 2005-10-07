@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.plugin;
 
 import java.text.MessageFormat;
-
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jst.ws.internal.context.PersistentProjectTopologyContext;

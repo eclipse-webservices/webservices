@@ -14,11 +14,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
-
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 
 public class SelectionToResource implements Transformer
 {

@@ -16,14 +16,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.CommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.CommandManager;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.Log;
 
 
 
@@ -254,7 +254,7 @@ public class CommandFragmentEngine implements CommandManager
   {
     if( entry.parentIndex_ == 0 ) return;
     
-	  EnvironmentalOperation cmd = entry.command_;
+	  AbstractDataModelOperation cmd = entry.command_;
   	  
   	if( cmd != null && cmd.canUndo() && !entry.beforeExecute_ )
 	{
@@ -331,7 +331,7 @@ public class CommandFragmentEngine implements CommandManager
   	
   	if( factory != null )
   	{
-  	  EnvironmentalOperation cmd  = factory.create();
+  	  AbstractDataModelOperation cmd  = factory.create();
       
   	  entry.command_ = cmd;
   	    
@@ -383,7 +383,7 @@ public class CommandFragmentEngine implements CommandManager
 	  beforeExecute_   = true;
   	}
   	  	
-  	public EnvironmentalOperation command_;
+  	public AbstractDataModelOperation command_;
   	public CommandFragment fragment_;
   	public int             parentIndex_;
   	public boolean         fragmentStopped_;

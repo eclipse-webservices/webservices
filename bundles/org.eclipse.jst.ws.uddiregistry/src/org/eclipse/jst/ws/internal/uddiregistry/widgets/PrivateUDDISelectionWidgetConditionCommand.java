@@ -14,11 +14,11 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
 
 
-public class PrivateUDDISelectionWidgetConditionCommand extends EnvironmentalOperation implements Condition
+public class PrivateUDDISelectionWidgetConditionCommand extends AbstractDataModelOperation implements Condition
 {
   private boolean condition;
 

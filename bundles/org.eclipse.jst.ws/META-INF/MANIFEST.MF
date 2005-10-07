@@ -44,5 +44,6 @@ Require-Bundle: org.eclipse.wst.command.env,
  org.eclipse.wst.common.emf,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.jem.util,
- org.eclipse.jst.common.frameworks
+ org.eclipse.jst.common.frameworks,
+ org.eclipse.wst.common.environment
 Eclipse-AutoStart: true

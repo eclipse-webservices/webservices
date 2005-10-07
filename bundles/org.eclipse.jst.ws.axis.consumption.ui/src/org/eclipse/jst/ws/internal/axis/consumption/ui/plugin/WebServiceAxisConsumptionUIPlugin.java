@@ -13,8 +13,8 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.plugin;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.common.environment.EnvironmentService;
+import org.eclipse.wst.common.environment.Log;
 import org.osgi.framework.BundleContext;
 
 
@@ -50,7 +50,7 @@ public class WebServiceAxisConsumptionUIPlugin extends Plugin
 		if (instance_ == null) {
 			instance_ = this;
 		}
-		log_ = new EclipseLog();
+		log_ = EnvironmentService.getEclipseLog();
 
 	}
 

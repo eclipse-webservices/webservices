@@ -20,12 +20,12 @@ import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions.JavaMofBeanVisitorAction;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofBeanVisitor;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Choice;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
+import org.eclipse.wst.common.environment.Choice;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 
@@ -51,7 +51,7 @@ import org.eclipse.wst.ws.internal.datamodel.Model;
 * Subclasses must follow the rules described for
 * {@link org.eclipse.emf.common.command.AbstractCommand AbstractCommand}.
 */
-public class JavaToModelCommand extends EnvironmentalOperation
+public class JavaToModelCommand extends AbstractDataModelOperation
 {
   private MessageUtils msgUtils;
   private String clientProject;

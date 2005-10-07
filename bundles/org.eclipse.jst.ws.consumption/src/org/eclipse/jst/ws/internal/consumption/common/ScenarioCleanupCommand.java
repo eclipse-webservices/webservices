@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 
 /**
  *  This command is intended to clean up data after either the
@@ -23,7 +23,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperat
  *  parser factory. 
  *
  */
-public class ScenarioCleanupCommand extends EnvironmentalOperation
+public class ScenarioCleanupCommand extends AbstractDataModelOperation
 {
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )

@@ -65,5 +65,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.uddi4j,
  org.apache.axis,
  org.eclipse.wst.common.frameworks,
- org.eclipse.wst.common.frameworks.ui
+ org.eclipse.wst.common.frameworks.ui,
+ org.eclipse.wst.common.environment
 Eclipse-AutoStart: true

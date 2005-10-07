@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -50,14 +49,14 @@ import org.eclipse.jst.j2ee.componentcore.util.EARArtifactEdit;
 import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
+import org.eclipse.wst.common.environment.EnvironmentService;
+import org.eclipse.wst.common.environment.Log;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -594,7 +593,7 @@ public final class ResourceUtils {
 			}
 		} catch (JavaModelException e) {
 		}
-		Log log = new EclipseLog();
+		Log log = EnvironmentService.getEclipseLog();
 		log.log(Log.INFO, 5032, ResourceUtils.class, "getJavaOutputLocation",
 				"project=" + project + ",outputLocation=" + outputLocation);
 
@@ -634,7 +633,7 @@ public final class ResourceUtils {
 			}
 		}
 
-		Log log = new EclipseLog();
+		Log log = EnvironmentService.getEclipseLog();
 		log.log(Log.INFO, 5030, ResourceUtils.class, "getJavaSourceLocation",
 				"project=" + project + ",sourceLocation=" + sourceLocation);
 		
@@ -820,7 +819,7 @@ public final class ResourceUtils {
 			}
 		}
 		
-		Log log = new EclipseLog();
+		Log log = EnvironmentService.getEclipseLog();
 		log.log(Log.INFO, 5036, ResourceUtils.class, "getWebProjectURL",
 				"project=" + project + ",webProjectURL=" + webProjectURL);
 
@@ -917,7 +916,7 @@ public final class ResourceUtils {
 				}
 			}
 		}
-		Log log = new EclipseLog();
+		Log log = EnvironmentService.getEclipseLog();
 		log.log(Log.INFO, 5037, ResourceUtils.class, "getWebProjectURL",
 				"project=" + project + ",webProjectURL=" + webProjectURL);
 

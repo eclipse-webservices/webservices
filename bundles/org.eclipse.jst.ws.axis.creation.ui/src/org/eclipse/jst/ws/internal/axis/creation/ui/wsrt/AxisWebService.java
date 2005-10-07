@@ -1,7 +1,6 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
 
 import java.util.Vector;
-
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.AxisDeployCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.GeronimoAxisDeployCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand;
@@ -32,10 +31,11 @@ import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectComman
 import org.eclipse.jst.ws.internal.consumption.ui.command.OpenJavaEditorCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ProjectName2IProjectTransformer;
 import org.eclipse.wst.command.internal.env.common.WaitForAutoBuildCommand;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.provisional.wsrt.AbstractWebService;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
@@ -68,10 +68,11 @@ public class AxisWebService extends AbstractWebService
 	{
 		
 		Vector commands = new Vector();
+    EclipseEnvironment environment = (EclipseEnvironment)env;
 		
 		if (ctx.getScenario().getValue() == WebServiceScenario.BOTTOMUP) {
 			
-			registerBUDataMappings( env.getCommandManager().getMappingRegistry());
+			registerBUDataMappings( environment.getCommandManager().getMappingRegistry());
 			
 			commands.add(new BUAxisInputCommand(this, project, module));
 //			commands.add(new ValidateObjectSelectionCommand());
@@ -95,7 +96,7 @@ public class AxisWebService extends AbstractWebService
 			
 		} else if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
 			
-			registerTDDataMappings( env.getCommandManager().getMappingRegistry());
+			registerTDDataMappings( environment.getCommandManager().getMappingRegistry());
 			
 			commands.add(new TDAxisInputCommand(this, project, module));
 			commands.add(new AxisSkeletonDefaultingCommand());

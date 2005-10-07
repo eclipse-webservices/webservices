@@ -24,15 +24,15 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 
 
-public class DefaultsForClientJavaWSDLCommand extends EnvironmentalOperation {
+public class DefaultsForClientJavaWSDLCommand extends AbstractDataModelOperation {
 
 	private JavaWSDLParameter javaWSDLParam_;
 	private IProject proxyProject_;

@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.context;
 
 import java.util.StringTokenizer;
-
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;

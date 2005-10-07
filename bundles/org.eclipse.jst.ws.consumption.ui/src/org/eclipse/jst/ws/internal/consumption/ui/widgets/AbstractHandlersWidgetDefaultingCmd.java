@@ -21,10 +21,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.Environment;
 
 
 /**
@@ -32,7 +32,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
  *
  * Initialize and load the handlers data
  */
-public abstract class AbstractHandlersWidgetDefaultingCmd extends EnvironmentalOperation 
+public abstract class AbstractHandlersWidgetDefaultingCmd extends AbstractDataModelOperation 
 {
   
   private IStructuredSelection initialSelection_; 

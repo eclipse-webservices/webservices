@@ -18,9 +18,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.common.environment.EnvironmentService;
+import org.eclipse.wst.common.environment.Log;
 import org.eclipse.wst.server.core.IServer;
 
 public abstract class AbstractStartServer {
@@ -31,7 +31,7 @@ private MessageUtils msgUtils_;
 
 public AbstractStartServer()
 {
-	log_ = new EclipseLog();
+	log_ = EnvironmentService.getEclipseLog();
     msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
 }
 

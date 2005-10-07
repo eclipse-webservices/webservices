@@ -26,10 +26,10 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusException;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.IMonitor;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.IMonitorWorkingCopy;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.MonitorCore;
@@ -37,7 +37,7 @@ import org.eclipse.wst.server.core.util.SocketUtil;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
-public class GetMonitorCommand extends EnvironmentalOperation 
+public class GetMonitorCommand extends AbstractDataModelOperation 
 {
 	private boolean monitorService;
 

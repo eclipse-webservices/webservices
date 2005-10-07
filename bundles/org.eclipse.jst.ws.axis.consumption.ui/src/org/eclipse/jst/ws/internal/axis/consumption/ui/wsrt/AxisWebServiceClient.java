@@ -1,7 +1,6 @@
 package org.eclipse.jst.ws.internal.axis.consumption.ui.wsrt;
 
 import java.util.Vector;
-
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientInputCommand;
@@ -14,10 +13,11 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.provisional.wsrt.AbstractWebServiceClient;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
@@ -47,7 +47,8 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 	public ICommandFactory develop(Environment env, IContext ctx, ISelection sel,
 			String project, String module, String earProject, String ear)
 	{
-		registerDataMappings( env.getCommandManager().getMappingRegistry());
+    EclipseEnvironment environment = (EclipseEnvironment)env;
+		registerDataMappings( environment.getCommandManager().getMappingRegistry());
 		
 		Vector commands = new Vector();
 		commands.add(new AxisClientInputCommand(this, ctx, project, module));

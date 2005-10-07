@@ -17,7 +17,6 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ResourceBundle;
-
 import org.apache.axis.tools.ant.wsdl.Java2WsdlAntTask;
 import org.apache.axis.tools.ant.wsdl.NamespaceMapping;
 import org.apache.tools.ant.BuildException;
@@ -28,18 +27,18 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.Log;
 
 /**
  * Commands are executable, undoable, redoable objects.
  * Every Command has a name and a description.
  */
 
-public class Java2WSDLCommand extends EnvironmentalOperation
+public class Java2WSDLCommand extends AbstractDataModelOperation
 {
 
 	private JavaWSDLParameter javaWSDLParam_;

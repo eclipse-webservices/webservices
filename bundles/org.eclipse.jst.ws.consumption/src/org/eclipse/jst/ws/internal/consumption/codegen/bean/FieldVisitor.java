@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.consumption.codegen.bean;
 
 import java.util.Vector;
-
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeElement;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.InputFileAttributeGenerator;

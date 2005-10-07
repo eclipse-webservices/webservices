@@ -2,7 +2,6 @@ package org.eclipse.wst.ws.internal.wsfinder;
 
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspaceRoot;

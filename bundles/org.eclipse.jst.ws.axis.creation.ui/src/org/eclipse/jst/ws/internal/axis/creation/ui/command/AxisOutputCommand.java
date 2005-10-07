@@ -18,10 +18,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebService;
 import org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebServiceInfo;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 
 
-public class AxisOutputCommand extends EnvironmentalOperation {
+public class AxisOutputCommand extends AbstractDataModelOperation {
 
 	private AxisWebService ws_;
 	private JavaWSDLParameter javaWSDLParam_;

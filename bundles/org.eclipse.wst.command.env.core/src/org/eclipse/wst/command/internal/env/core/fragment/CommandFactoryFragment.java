@@ -13,7 +13,7 @@ package org.eclipse.wst.command.internal.env.core.fragment;
 
 import java.util.Vector;
 import org.eclipse.wst.command.internal.provisional.env.core.CommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
@@ -138,7 +138,7 @@ public abstract class CommandFactoryFragment implements CommandFragment
 		  
 	while( factory != null && factory.hasNext() )
 	{
-	  EnvironmentalOperation command = factory.getNextCommand();
+	  AbstractDataModelOperation command = factory.getNextCommand();
 			
 	  commands.add( new ChildFragment( command, index++ ) );
 	}
@@ -150,7 +150,7 @@ public abstract class CommandFactoryFragment implements CommandFragment
   {
 	  int index_;
 	
-	  public ChildFragment( EnvironmentalOperation command, int index )
+	  public ChildFragment( AbstractDataModelOperation command, int index )
 	  {
 	    super( command, command.getID() );
 	    index_ = index;

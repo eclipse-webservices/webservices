@@ -14,7 +14,6 @@ package org.eclipse.jst.ws.internal.common;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;

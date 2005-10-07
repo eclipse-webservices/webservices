@@ -16,11 +16,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-
 import javax.wsdl.Definition;
 import javax.wsdl.Import;
 import javax.wsdl.xml.WSDLWriter;
-
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
@@ -30,18 +28,18 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
+import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
 /**
  *
  */
-public class CopyClientWSDLCommand extends EnvironmentalOperation
+public class CopyClientWSDLCommand extends AbstractDataModelOperation
 {
   private String pluginId_ = "org.eclipse.jst.ws.axis.consumption.ui";
   private MessageUtils msgUtils_;  

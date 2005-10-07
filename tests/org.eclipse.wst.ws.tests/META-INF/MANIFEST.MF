@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.wst.ws,
  org.eclipse.wst.common.frameworks,
  org.eclipse.wst.server.core,
  org.eclipse.wst.ws.ui,
- org.eclipse.wst.command.env.ui
+ org.eclipse.wst.command.env.ui,
+ org.eclipse.wst.common.environment
 Eclipse-AutoStart: true
 Export-Package: org.eclipse.wst.ws.tests.plugin,
  org.eclipse.wst.ws.tests.unittest,

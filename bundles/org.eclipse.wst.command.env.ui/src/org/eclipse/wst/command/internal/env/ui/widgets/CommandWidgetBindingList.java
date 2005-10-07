@@ -11,7 +11,6 @@
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import java.util.Vector;
-
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;

@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.consumption.datamodel.wsdlmodel;
 
 import java.util.Enumeration;
-
 import org.eclipse.wst.ws.internal.datamodel.BasicElement;
 
 

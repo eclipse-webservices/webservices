@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.internal.ext;
 
 import java.util.Hashtable;
 import java.util.Vector;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 

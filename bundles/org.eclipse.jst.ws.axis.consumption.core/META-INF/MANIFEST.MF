@@ -18,4 +18,5 @@ Require-Bundle: org.apache.ant,
  org.apache.axis,
  org.eclipse.wst.common.modulecore,
  org.eclipse.wst.common.frameworks,
- org.eclipse.core.commands
+ org.eclipse.core.commands,
+ org.eclipse.wst.common.environment

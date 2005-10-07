@@ -21,8 +21,8 @@ import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleCommandEngineManager;
 import org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusHandler;
+import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.StatusHandler;
 
 public class DynamicPopupJUnitWizard extends DynamicPopupWizard {
 	private StatusHandler handler_;

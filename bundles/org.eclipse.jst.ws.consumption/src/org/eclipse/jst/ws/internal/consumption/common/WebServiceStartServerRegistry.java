@@ -12,13 +12,12 @@
 package org.eclipse.jst.ws.internal.consumption.common;
 
 import java.util.Hashtable;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.wst.command.internal.env.eclipse.EclipseLog;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.common.environment.EnvironmentService;
+import org.eclipse.wst.common.environment.Log;
 
 
 
@@ -54,7 +53,7 @@ public class WebServiceStartServerRegistry
       } 
       catch (Exception e)
       {
-        EclipseLog log = new EclipseLog();
+        Log log = EnvironmentService.getEclipseLog();
         log.log(Log.ERROR, 5047, this, "load", e);
       }
       

@@ -18,11 +18,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.EnvironmentalOperation;
+import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
-public class AxisSkeletonDefaultingCommand extends EnvironmentalOperation
+public class AxisSkeletonDefaultingCommand extends AbstractDataModelOperation
 {
   private IStructuredSelection initialSelection;
   private WebServicesParser webServicesParser;

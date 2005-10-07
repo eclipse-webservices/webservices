@@ -3,7 +3,7 @@ package org.eclipse.jst.ws.tests.performance.util;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.test.performance.Performance;
 import org.eclipse.test.performance.PerformanceMeter;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Log;
+import org.eclipse.wst.common.environment.Log;
 
 
 public class EclipsePerformanceLog implements Log {
