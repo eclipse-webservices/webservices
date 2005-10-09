@@ -28,7 +28,6 @@ import org.eclipse.xsd.XSDSchema;
 public class XSDLabelProvider extends LabelProvider
 {
   XSDAdapterFactoryLabelProvider adapterFactoryLabelProvider;
-  private static final Class ILabelProviderClass = ILabelProvider.class;
   
   /**
    * Constructor for XSDLabelProvider.
@@ -66,7 +65,7 @@ public class XSDLabelProvider extends LabelProvider
     	// We don't call "adapterFactoryLabelProvider.getText(element)" because it will return a object.toString() if
     	// there is no labelProvider....  but we don't want to display this 'garbage' info to the user.    	
     	AdapterFactory adapterFactory = adapterFactoryLabelProvider.getAdapterFactory();
-        ILabelProvider labelProvider = (ILabelProvider)adapterFactory.adapt(element, ILabelProviderClass);
+        ILabelProvider labelProvider = (ILabelProvider)adapterFactory.adapt(element, ILabelProvider.class);
         String text = "";
         if (labelProvider != null) {
         	text = labelProvider.getText(element);
