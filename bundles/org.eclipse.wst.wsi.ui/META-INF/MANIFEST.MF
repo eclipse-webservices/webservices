@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %_PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.wsi.ui; singleton:=true
 Bundle-Version: 0.7.0
-Bundle-ClassPath: wsiui.jar
 Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator
 Bundle-Vendor: %_PROVIDER_NAME
 Bundle-Localization: plugin
