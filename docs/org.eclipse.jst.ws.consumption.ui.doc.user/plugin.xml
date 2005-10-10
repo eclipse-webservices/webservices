@@ -14,7 +14,7 @@
 <plugin>
   
 	<extension point="org.eclipse.help.toc">
-		<toc file="wsconsumptionbuild_toc.xml""/>
+		<toc file="wsconsumptionbuild_toc.xml"/>
 		<toc file="wsconsumptiont_toc.xml" />
 	</extension>
 </plugin>
