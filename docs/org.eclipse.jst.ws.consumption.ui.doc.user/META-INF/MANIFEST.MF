@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Plugin.name
-Bundle-SymbolicName: org.eclipse.jst.ws.consumption.doc.user
+Bundle-SymbolicName: org.eclipse.jst.ws.consumption.ui.doc.user
 Bundle-Version: 0.7.0
 Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator
 Bundle-Vendor: Eclipse.org
