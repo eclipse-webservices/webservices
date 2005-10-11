@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.internal.consumption.ui.wsil;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;

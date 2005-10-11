@@ -11,9 +11,12 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.datamodel.ElementAdapter;
+import org.eclipse.wst.ws.internal.datamodel.RelAddEvent;
+import org.eclipse.wst.ws.internal.datamodel.RelRemoveEvent;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 
 // WSDL operation node for the WSDL Navigator Tree View
 public class WSDLOperationNode extends WSDLNavigatorNode

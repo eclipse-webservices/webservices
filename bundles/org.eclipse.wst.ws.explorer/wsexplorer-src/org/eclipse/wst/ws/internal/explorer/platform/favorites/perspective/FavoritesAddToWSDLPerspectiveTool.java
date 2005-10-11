@@ -11,8 +11,11 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.actions.FavoritesAddToWSDLPerspectiveAction;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.actions.SelectFavoritesToolAction;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.AddToWSDLPerspectiveTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
 
 public class FavoritesAddToWSDLPerspectiveTool extends AddToWSDLPerspectiveTool {
 

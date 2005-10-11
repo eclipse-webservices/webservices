@@ -14,7 +14,6 @@ package org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel;
 import java.io.File;
 import java.util.Enumeration;
 import java.util.Hashtable;
-
 import org.apache.wsil.Link;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;

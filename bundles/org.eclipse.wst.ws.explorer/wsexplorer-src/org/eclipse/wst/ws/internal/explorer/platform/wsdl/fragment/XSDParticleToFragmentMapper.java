@@ -11,15 +11,19 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDGroupAllFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDGroupChoiceFixFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDGroupChoiceRangeFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDGroupSeqFixFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDGroupSeqRangeFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
 import org.eclipse.xsd.XSDComponent;
+import org.eclipse.xsd.XSDCompositor;
 import org.eclipse.xsd.XSDConcreteComponent;
-import org.eclipse.xsd.XSDParticle;
-import org.eclipse.xsd.XSDParticleContent;
 import org.eclipse.xsd.XSDModelGroup;
 import org.eclipse.xsd.XSDModelGroupDefinition;
-import org.eclipse.xsd.XSDCompositor;
+import org.eclipse.xsd.XSDParticle;
+import org.eclipse.xsd.XSDParticleContent;
 import org.eclipse.xsd.XSDWildcard;
 
 

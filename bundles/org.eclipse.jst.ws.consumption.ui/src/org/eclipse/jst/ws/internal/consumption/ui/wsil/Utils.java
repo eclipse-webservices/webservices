@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.consumption.ui.wsil;
 
 import java.net.MalformedURLException;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;

@@ -11,8 +11,9 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.util;
 
-import javax.servlet.http.*;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import javax.servlet.http.HttpServletResponse;
 
 public final class HTMLUtils
 {

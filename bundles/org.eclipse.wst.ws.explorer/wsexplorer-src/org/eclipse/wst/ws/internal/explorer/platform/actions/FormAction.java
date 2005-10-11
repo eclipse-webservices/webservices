@@ -10,12 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
-
-import javax.servlet.http.*;
 import java.util.Hashtable;
 import java.util.Iterator;
+import javax.servlet.http.HttpServletRequest;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormTool;
+import org.eclipse.wst.ws.internal.explorer.platform.util.HTMLUtils;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
 
 public abstract class FormAction extends Action
 {

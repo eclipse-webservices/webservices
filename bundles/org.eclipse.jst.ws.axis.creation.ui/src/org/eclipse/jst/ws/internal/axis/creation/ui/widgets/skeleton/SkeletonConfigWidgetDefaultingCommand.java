@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton;
 
 import java.io.File;
 import java.net.MalformedURLException;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
@@ -23,7 +22,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public class SkeletonConfigWidgetDefaultingCommand extends AbstractDataModelOperation
 {

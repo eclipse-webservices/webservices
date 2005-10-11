@@ -11,9 +11,7 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util;
 
 import java.util.Hashtable;
-
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.axis.Constants;
 import org.eclipse.wst.ws.internal.explorer.platform.util.URLUtils;
 import org.eclipse.wst.ws.internal.explorer.platform.util.XMLUtils;

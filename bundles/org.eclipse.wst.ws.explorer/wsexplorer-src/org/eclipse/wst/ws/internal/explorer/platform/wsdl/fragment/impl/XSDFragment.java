@@ -10,22 +10,22 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
+import java.util.Hashtable;
+import java.util.Vector;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
 import org.eclipse.xsd.XSDComponent;
-import org.eclipse.xsd.XSDNamedComponent;
-import org.eclipse.xsd.XSDTypeDefinition;
-import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDForm;
-import java.util.Vector;
-import java.util.Hashtable;
+import org.eclipse.xsd.XSDNamedComponent;
+import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDTypeDefinition;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Attr;
 
 public abstract class XSDFragment extends Fragment implements IXSDFragment
 {

@@ -11,7 +11,9 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.datamodel;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
 public class ListManager
 {

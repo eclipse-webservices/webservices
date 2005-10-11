@@ -11,14 +11,15 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.apache.wsil.*;
-import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.Hashtable;
+import org.apache.wsil.Link;
+import org.eclipse.wst.ws.internal.datamodel.Model;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 
 public class FavoritesWSILFolderElement extends FavoritesFolderElement {
 

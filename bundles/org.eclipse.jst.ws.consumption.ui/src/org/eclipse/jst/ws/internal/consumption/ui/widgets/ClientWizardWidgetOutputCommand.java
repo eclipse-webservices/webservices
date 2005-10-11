@@ -10,9 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
 public class ClientWizardWidgetOutputCommand extends AbstractDataModelOperation
@@ -61,5 +66,10 @@ public class ClientWizardWidgetOutputCommand extends AbstractDataModelOperation
   public void setClientTypeRuntimeServer( TypeRuntimeServer clientIds )
   {
     clientIds_ = clientIds;
+  }
+
+  public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
+  {
+    return Status.OK_STATUS;
   }
 }

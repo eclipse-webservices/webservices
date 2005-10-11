@@ -11,10 +11,9 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-
-import java.util.*;
+import java.util.Hashtable;
+import org.eclipse.wst.ws.internal.datamodel.Model;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
 
 public class UDDIMainElement extends TreeElement
 {

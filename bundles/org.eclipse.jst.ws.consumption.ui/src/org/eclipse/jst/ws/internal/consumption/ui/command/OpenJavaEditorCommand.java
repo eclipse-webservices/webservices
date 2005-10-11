@@ -24,7 +24,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.ui.progress.UIJob;
-import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
 public class OpenJavaEditorCommand extends AbstractDataModelOperation

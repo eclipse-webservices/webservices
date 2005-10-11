@@ -11,12 +11,13 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ShowPerspectiveAction;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.WsilActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.WSILPerspective;
 
 public final class SwitchPerspectiveFromWSILAction extends ShowPerspectiveAction
 {

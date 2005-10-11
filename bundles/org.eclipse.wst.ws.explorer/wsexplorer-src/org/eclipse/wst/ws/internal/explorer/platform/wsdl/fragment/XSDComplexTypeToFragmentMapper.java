@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDComplexFixFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDComplexRangeFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.XSDTypeDefinitionUtil;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.*;
-import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
 import org.eclipse.xsd.XSDComplexTypeContent;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
 
 public class XSDComplexTypeToFragmentMapper extends XSDToFragmentMapper {
   public XSDComplexTypeToFragmentMapper(XSDToFragmentController controller, WSDLPartsToXSDTypeMapper wsdlToXSDMapper) {

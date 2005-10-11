@@ -14,7 +14,6 @@ package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;

@@ -10,17 +10,16 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Vector;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDMapFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentController;
-
-import java.util.Vector;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Enumeration;
 
 public abstract class XSDMapFragment extends XSDFragment implements IXSDMapFragment {
   private XSDToFragmentController controller_;

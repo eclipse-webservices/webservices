@@ -11,8 +11,11 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
 
 import org.eclipse.wst.ws.internal.explorer.platform.actions.SelectNodeAction;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ToolTypes;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Tool;
 
 public class SelectWSILNodeAction extends SelectNodeAction
 {

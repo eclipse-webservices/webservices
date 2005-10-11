@@ -11,8 +11,10 @@
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.actions;
 
 import org.eclipse.wst.ws.internal.explorer.platform.actions.SelectNodeToolAction;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ToolTypes;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
 
 public class SelectFavoritesToolAction extends SelectNodeToolAction
 {

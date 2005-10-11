@@ -13,10 +13,8 @@ package org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
-
 import javax.servlet.ServletContext;
 import javax.wsdl.Service;
-
 import org.eclipse.emf.ecore.impl.EcorePackageImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.wst.ws.internal.datamodel.BasicModel;

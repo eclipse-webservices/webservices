@@ -11,12 +11,11 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
-
-import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.Hashtable;
+import org.eclipse.wst.ws.internal.datamodel.Model;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 
 /**
 * The data model element that represents 

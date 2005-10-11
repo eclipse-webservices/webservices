@@ -11,9 +11,11 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.*;
+import org.eclipse.wst.ws.internal.datamodel.ElementAdapter;
+import org.eclipse.wst.ws.internal.datamodel.RelAddEvent;
+import org.eclipse.wst.ws.internal.datamodel.RelRemoveEvent;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 
 public class FavoritesUDDIServiceInterfaceFolderNode extends FavoritesNavigatorFolderNode {

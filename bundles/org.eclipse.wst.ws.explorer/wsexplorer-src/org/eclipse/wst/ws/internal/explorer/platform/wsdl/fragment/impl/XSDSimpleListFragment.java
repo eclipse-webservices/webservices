@@ -10,21 +10,21 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDSimpleListFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentController;
-import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDLengthFacet;
-import org.eclipse.xsd.XSDMinLengthFacet;
 import org.eclipse.xsd.XSDMaxLengthFacet;
+import org.eclipse.xsd.XSDMinLengthFacet;
+import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import java.util.StringTokenizer;
-import java.util.Hashtable;
 
 public abstract class XSDSimpleListFragment extends XSDMapFragment implements IXSDSimpleListFragment
 {

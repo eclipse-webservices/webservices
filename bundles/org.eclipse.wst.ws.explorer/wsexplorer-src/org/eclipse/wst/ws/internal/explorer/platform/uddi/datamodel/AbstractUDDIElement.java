@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel;
 
+import java.util.Enumeration;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
-
-import java.util.Enumeration;
 
 public abstract class AbstractUDDIElement extends TreeElement
 {

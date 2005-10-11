@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;

@@ -12,8 +12,8 @@ package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.*;
-import org.eclipse.xsd.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.OptionVector;
+import org.eclipse.xsd.XSDEnumerationFacet;
 
 public abstract class XSDSimpleAtomicEnumFragment extends XSDSimpleAtomicFragment {
   private OptionVector optionVector_;

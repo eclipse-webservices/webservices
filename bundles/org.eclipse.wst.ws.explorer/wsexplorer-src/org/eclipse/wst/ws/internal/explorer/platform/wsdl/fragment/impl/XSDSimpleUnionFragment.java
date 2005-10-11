@@ -11,17 +11,16 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
 
+import java.util.Hashtable;
+import java.util.Vector;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDSimpleUnionFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentController;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import java.util.Vector;
-import java.util.Hashtable;
 
 public abstract class XSDSimpleUnionFragment extends XSDMapFragment implements IXSDSimpleUnionFragment {
   private XSDSimpleTypeDefinition[] memberTypes_;

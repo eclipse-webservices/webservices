@@ -11,13 +11,14 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.*;
+import java.io.File;
+import org.eclipse.wst.ws.internal.datamodel.ElementAdapter;
+import org.eclipse.wst.ws.internal.datamodel.RelAddEvent;
+import org.eclipse.wst.ws.internal.datamodel.RelRemoveEvent;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUDDIRegistryFolderElement;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
-
-import java.io.*;
 
 public class FavoritesUDDIRegistryFolderNode extends FavoritesNavigatorFolderNode {
     public FavoritesUDDIRegistryFolderNode(TreeElement treeElement, NodeManager nodeManager, int nodeDepth) {

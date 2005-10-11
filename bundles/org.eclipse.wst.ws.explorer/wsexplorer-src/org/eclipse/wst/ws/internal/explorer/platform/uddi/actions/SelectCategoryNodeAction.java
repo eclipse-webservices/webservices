@@ -11,9 +11,9 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.SelectNodeAction;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 
 public class SelectCategoryNodeAction extends SelectNodeAction
 {

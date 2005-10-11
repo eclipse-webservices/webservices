@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import java.util.Calendar;
-
 import org.eclipse.swt.widgets.Display;
 
 public class Timer extends Thread

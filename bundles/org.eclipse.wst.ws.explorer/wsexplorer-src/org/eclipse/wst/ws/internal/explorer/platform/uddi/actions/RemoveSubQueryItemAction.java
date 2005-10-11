@@ -11,14 +11,17 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.*;
-
-import javax.servlet.http.*;
-
-import java.util.*;
+import java.util.Vector;
+import javax.servlet.http.HttpServletRequest;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.Action;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormToolPropertiesInterface;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.MultipleFormToolPropertiesInterface;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.UDDIPerspective;
 
 public class RemoveSubQueryItemAction extends Action
 {

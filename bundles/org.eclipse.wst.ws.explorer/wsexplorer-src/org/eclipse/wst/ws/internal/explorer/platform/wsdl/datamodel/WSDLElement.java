@@ -10,24 +10,37 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*;
-import org.eclipse.wst.ws.internal.parser.discovery.*;
+import java.io.InputStream;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Vector;
+import javax.wsdl.Definition;
+import javax.wsdl.Import;
+import javax.wsdl.Service;
+import javax.wsdl.Types;
+import javax.wsdl.WSDLException;
+import javax.wsdl.extensions.UnknownExtensibilityElement;
+import javax.xml.namespace.QName;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.wst.ws.internal.datamodel.Model;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.util.Validator;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.WSDLModelConstants;
+import org.eclipse.wst.ws.internal.parser.discovery.NetUtils;
+import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl;
-
-import org.eclipse.xsd.util.*;
-import org.eclipse.xsd.impl.*;
-import org.eclipse.xsd.*;
-import org.eclipse.emf.common.util.EList;
-
-import javax.xml.namespace.QName;
-import javax.wsdl.extensions.*;
-import javax.wsdl.*;
-import java.util.*;
-import java.io.*;
+import org.eclipse.xsd.XSDDiagnostic;
+import org.eclipse.xsd.XSDDiagnosticSeverity;
+import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDSchemaDirective;
+import org.eclipse.xsd.impl.XSDSchemaImpl;
+import org.eclipse.xsd.util.XSDParser;
 
 public class WSDLElement extends WSDLCommonElement
 {

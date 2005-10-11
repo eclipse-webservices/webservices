@@ -11,7 +11,6 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.transformer;
 
 import java.util.Hashtable;
-
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.ViewSelectionTransformer;

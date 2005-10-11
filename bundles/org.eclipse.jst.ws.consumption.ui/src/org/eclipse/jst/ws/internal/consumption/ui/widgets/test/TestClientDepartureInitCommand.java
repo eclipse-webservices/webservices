@@ -16,7 +16,12 @@
  */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
-import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
  * @author gilberta
@@ -37,6 +42,11 @@ public class TestClientDepartureInitCommand extends AbstractDataModelOperation
   public boolean getForceBuild()
   {
   	return forceBuild;
+  }
+
+  public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
+  {
+    return Status.OK_STATUS;
   }
   
 }

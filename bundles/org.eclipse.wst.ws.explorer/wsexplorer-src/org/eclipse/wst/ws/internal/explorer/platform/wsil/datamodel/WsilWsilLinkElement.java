@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.apache.wsil.*;
+import org.apache.wsil.Link;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 
 /**
 * The data model element that represents 

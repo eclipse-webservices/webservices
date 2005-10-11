@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.util;
 
-import java.text.*;
+import java.text.Collator;
 import java.util.Vector;
 
 public class QuickSort

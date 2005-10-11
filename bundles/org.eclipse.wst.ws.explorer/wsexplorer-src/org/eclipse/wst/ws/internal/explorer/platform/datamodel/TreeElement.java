@@ -11,7 +11,8 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
+import org.eclipse.wst.ws.internal.datamodel.BasicElement;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 
 public class TreeElement extends BasicElement
 {

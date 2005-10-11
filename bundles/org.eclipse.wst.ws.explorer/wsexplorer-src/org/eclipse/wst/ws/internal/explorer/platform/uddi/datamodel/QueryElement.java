@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-
+import java.util.Vector;
+import org.eclipse.wst.ws.internal.datamodel.Model;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIModelConstants;
 import org.uddi4j.datatype.business.BusinessEntity;
 import org.uddi4j.datatype.service.BusinessService;
-import org.uddi4j.datatype.tmodel.*;
-
-import java.util.*;
+import org.uddi4j.datatype.tmodel.TModel;
 
 public class QueryElement extends AbstractUDDIElement
 {

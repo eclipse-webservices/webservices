@@ -17,9 +17,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Vector;
-
 import javax.servlet.ServletContext;
-
 import org.eclipse.wst.ws.internal.datamodel.BasicModel;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.explorer.favorites.FavoritesRegistryTypeDefault;

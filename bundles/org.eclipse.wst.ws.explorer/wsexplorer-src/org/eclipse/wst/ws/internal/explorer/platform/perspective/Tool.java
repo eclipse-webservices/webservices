@@ -11,12 +11,10 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
-
-import javax.servlet.http.*;
-
-import java.util.*;
+import java.util.Hashtable;
+import javax.servlet.http.HttpServletResponse;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.FrameNames;
+import org.eclipse.wst.ws.internal.explorer.platform.util.HTMLUtils;
 
 // A class for representing toolbar tools.
 public abstract class Tool

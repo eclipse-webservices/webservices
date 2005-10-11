@@ -11,16 +11,20 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.LinkAction;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLElement;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*;
-
 import java.util.Vector;
+import javax.servlet.http.HttpServletRequest;
 import javax.wsdl.Definition;
 import javax.wsdl.WSDLException;
-import javax.servlet.http.*;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.LinkAction;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLElement;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLMainNode;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLNode;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLPerspective;
 
 public class RefreshWSDLAction extends LinkAction {
 

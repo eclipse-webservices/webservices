@@ -11,8 +11,8 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import java.util.ResourceBundle;
 import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 /**
 * An message bundle is a collection of messages drawn from some

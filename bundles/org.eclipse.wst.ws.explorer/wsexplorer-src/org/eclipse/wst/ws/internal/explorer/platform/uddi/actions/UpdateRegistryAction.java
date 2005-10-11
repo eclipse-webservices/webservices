@@ -10,14 +10,19 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
-
-import java.text.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.StringReader;
+import java.text.ParseException;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormToolPropertiesInterface;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.CategoryModel;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.RegistryElement;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.UDDIPerspective;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
+import org.eclipse.wst.ws.internal.explorer.platform.util.Validator;
 
 public class UpdateRegistryAction extends UpdateAction
 {

@@ -11,8 +11,8 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
 
 import org.eclipse.wst.ws.internal.explorer.platform.actions.ClearNodeAction;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 
 public class ClearWSILAction extends ClearNodeAction {
 

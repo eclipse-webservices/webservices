@@ -11,9 +11,9 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
+import org.apache.wsil.Link;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.parser.favorites.FavoritesUDDIBusiness;
-import org.apache.wsil.*;
 
 public class FavoritesUDDIBusinessElement extends FavoritesElement {
 

@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
 import java.util.Hashtable;
 import java.util.Vector;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;

@@ -10,14 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.actions;
 
+import javax.servlet.http.HttpServletRequest;
 import org.eclipse.wst.ws.internal.explorer.platform.actions.LinkAction;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.ITransformer;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.MassNodeIdTransformer;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-
-import javax.servlet.http.*;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 
 public abstract class MultipleLinkAction extends LinkAction
 {

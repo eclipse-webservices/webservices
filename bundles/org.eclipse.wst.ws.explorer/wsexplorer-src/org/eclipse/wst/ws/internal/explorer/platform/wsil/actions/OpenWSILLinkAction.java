@@ -10,16 +10,20 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
+import java.util.Hashtable;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.ListElement;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.ITransformer;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.WsilActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.WsilModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel.WsilElement;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel.WsilWsilLinkElement;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.WSILPerspective;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.transformer.WSILViewSelectionTransformer;
-
-import java.util.Hashtable;
 
 public class OpenWSILLinkAction extends MultipleLinkAction
 {

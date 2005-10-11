@@ -11,11 +11,15 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.*;
+import org.eclipse.wst.ws.internal.datamodel.ElementAdapter;
+import org.eclipse.wst.ws.internal.datamodel.RelAddEvent;
+import org.eclipse.wst.ws.internal.datamodel.RelRemoveEvent;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.PublishedItemsElement;
 
 public class PublishedItemsNode extends UDDINavigatorFolderNode
 {

@@ -11,8 +11,8 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDElementFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
 import org.eclipse.xsd.XSDComponent;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDElementDeclaration;

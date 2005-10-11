@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ProxyLoadPageAction;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.ViewTool;

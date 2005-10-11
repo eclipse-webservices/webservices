@@ -11,12 +11,13 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ShowPerspectiveAction;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.FavoritesPerspective;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
 
 public final class SwitchPerspectiveFromFavoritesAction extends ShowPerspectiveAction
 {

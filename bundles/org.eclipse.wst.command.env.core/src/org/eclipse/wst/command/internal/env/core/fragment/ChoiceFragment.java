@@ -12,7 +12,6 @@ package org.eclipse.wst.command.internal.env.core.fragment;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
-
 import org.eclipse.wst.command.internal.provisional.env.core.CommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.common.Evaluate;
 

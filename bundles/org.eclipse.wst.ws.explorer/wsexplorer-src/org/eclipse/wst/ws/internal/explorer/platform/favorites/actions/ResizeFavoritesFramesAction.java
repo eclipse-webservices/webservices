@@ -11,12 +11,14 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ResizeFramesAction;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesFrameNames;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.FavoritesPerspective;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
 
 public class ResizeFavoritesFramesAction extends ResizeFramesAction
 {

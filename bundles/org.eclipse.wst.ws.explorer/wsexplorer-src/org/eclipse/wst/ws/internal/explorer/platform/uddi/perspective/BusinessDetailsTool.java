@@ -11,15 +11,15 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.*;
-
+import java.util.Vector;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ProxyLoadPageAction;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.BusinessElement;
 import org.uddi4j.datatype.business.BusinessEntity;
-import org.uddi4j.util.*;
-
-import java.util.*;
+import org.uddi4j.util.CategoryBag;
+import org.uddi4j.util.DiscoveryURLs;
+import org.uddi4j.util.IdentifierBag;
 
 public class BusinessDetailsTool extends DetailsTool
 {

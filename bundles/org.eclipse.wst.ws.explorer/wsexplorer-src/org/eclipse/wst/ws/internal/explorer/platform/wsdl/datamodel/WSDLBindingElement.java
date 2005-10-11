@@ -10,17 +10,24 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*;
-
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import javax.wsdl.Binding;
+import javax.wsdl.Input;
+import javax.wsdl.Operation;
+import javax.wsdl.Output;
+import javax.wsdl.PortType;
+import javax.wsdl.extensions.ExtensibilityElement;
+import javax.wsdl.extensions.http.HTTPBinding;
+import javax.wsdl.extensions.soap.SOAPBinding;
 import javax.xml.namespace.QName;
-import javax.wsdl.extensions.soap.*;
-import javax.wsdl.extensions.http.*;
-import javax.wsdl.extensions.*;
-import javax.wsdl.*;
-
-import java.util.*;
+import org.eclipse.wst.ws.internal.datamodel.Model;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.BindingTypes;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.WSDLModelConstants;
 
 public class WSDLBindingElement extends WSDLCommonElement
 {

@@ -11,8 +11,11 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.actions.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ActionTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.actions.RefreshUDDINodeAction;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.actions.SelectPropertiesToolAction;
 
 public class RefreshTool extends ActionTool
 {

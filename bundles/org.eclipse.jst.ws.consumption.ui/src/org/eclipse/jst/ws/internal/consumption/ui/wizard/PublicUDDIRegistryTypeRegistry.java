@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
 import java.util.Vector;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;

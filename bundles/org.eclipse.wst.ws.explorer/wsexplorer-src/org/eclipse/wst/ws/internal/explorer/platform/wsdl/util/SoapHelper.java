@@ -11,12 +11,10 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.util;
 
-import org.eclipse.wst.ws.internal.explorer.platform.util.URLUtils;
-
 import java.util.Enumeration;
 import java.util.Hashtable;
-
 import org.apache.axis.Constants;
+import org.eclipse.wst.ws.internal.explorer.platform.util.URLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

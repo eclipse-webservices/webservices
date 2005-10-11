@@ -11,7 +11,8 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 public class FormToolProperties implements FormToolPropertiesInterface
 {

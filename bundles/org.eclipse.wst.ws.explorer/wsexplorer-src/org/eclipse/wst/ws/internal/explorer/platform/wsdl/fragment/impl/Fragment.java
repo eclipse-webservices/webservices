@@ -10,13 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IFragment;
-
-import java.util.Vector;
-import java.util.Hashtable;
-import java.util.Enumeration;
 
 public abstract class Fragment implements IFragment {
   private String id_;

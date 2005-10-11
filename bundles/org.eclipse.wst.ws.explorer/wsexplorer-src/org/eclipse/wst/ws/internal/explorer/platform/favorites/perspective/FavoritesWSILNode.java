@@ -11,8 +11,8 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 
 public class FavoritesWSILNode extends FavoritesNavigatorNode {
     public FavoritesWSILNode(TreeElement treeElement, NodeManager nodeManager, int nodeDepth) {

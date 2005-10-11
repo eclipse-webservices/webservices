@@ -11,12 +11,13 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ShowPerspectiveAction;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.UDDIPerspective;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
 
 public final class SwitchPerspectiveFromUDDIAction extends ShowPerspectiveAction
 {

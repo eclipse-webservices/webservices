@@ -11,12 +11,12 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.*;
-
-import java.util.*;
+import java.util.Enumeration;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.CategoryElement;
 
 public class RootCategoryNode extends Node
 {

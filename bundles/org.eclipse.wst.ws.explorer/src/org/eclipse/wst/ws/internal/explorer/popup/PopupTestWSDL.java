@@ -15,21 +15,20 @@ import java.net.MalformedURLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IActionDelegate;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.ws.internal.explorer.LaunchOption;
 import org.eclipse.wst.ws.internal.explorer.LaunchOptions;
 import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin;
 import org.eclipse.wst.ws.internal.monitor.GetMonitorCommand;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
-import org.eclipse.ui.IActionDelegate;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 
 public class PopupTestWSDL extends Action implements IActionDelegate
 {

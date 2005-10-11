@@ -10,9 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
@@ -278,5 +283,10 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
   public void setServiceEarComponentName(String s)
   {
     serviceEarComponentName_ = s;
+  }
+
+  public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
+  {
+    return Status.OK_STATUS;
   }
 }

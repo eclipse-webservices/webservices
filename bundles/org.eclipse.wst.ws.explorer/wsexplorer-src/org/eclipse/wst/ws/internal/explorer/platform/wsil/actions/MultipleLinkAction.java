@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
 
+import javax.servlet.http.HttpServletRequest;
 import org.eclipse.wst.ws.internal.explorer.platform.actions.LinkAction;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.*;
-
-import javax.servlet.http.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.WsilActionInputs;
 
 public abstract class MultipleLinkAction extends LinkAction
 {

@@ -10,17 +10,24 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel;
 
-import java.util.Vector;
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Properties;
 import java.net.URL;
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Vector;
+import org.apache.wsil.Abstract;
+import org.apache.wsil.Description;
+import org.apache.wsil.Inspection;
+import org.apache.wsil.Link;
+import org.apache.wsil.Service;
+import org.apache.wsil.WSILDocument;
+import org.eclipse.wst.ws.internal.datamodel.Model;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.ListElement;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.ListManager;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
 import org.eclipse.wst.ws.internal.explorer.platform.util.Validator;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.*;
-import org.apache.wsil.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.WsilModelConstants;
 import org.uddi4j.client.UDDIProxy;
 import org.uddi4j.datatype.business.BusinessEntity;
 import org.uddi4j.datatype.service.BusinessService;

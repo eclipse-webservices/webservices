@@ -11,7 +11,8 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import java.util.*;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 // A Class which provides String messages.
 public class MessageProvider

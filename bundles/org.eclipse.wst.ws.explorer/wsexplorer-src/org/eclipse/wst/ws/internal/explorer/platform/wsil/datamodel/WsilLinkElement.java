@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.Model;
-
 import java.util.Vector;
-import org.apache.wsil.*;
+import org.apache.wsil.Abstract;
+import org.apache.wsil.Link;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 
 /**
 * The data model element that represents 

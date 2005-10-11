@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.Vector;
 import javax.wsdl.Part;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.ITransformer;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 import org.eclipse.wst.ws.internal.explorer.platform.util.XMLUtils;

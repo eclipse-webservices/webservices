@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
 
 public class WriteWSDLToWorkbenchAction extends Action
 {

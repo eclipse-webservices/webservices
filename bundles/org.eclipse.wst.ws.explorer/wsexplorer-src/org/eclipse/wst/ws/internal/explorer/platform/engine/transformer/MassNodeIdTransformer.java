@@ -12,7 +12,6 @@ package org.eclipse.wst.ws.internal.explorer.platform.engine.transformer;
 
 import java.util.Hashtable;
 import java.util.Vector;
-
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;

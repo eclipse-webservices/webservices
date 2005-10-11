@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.*;
-
 import java.util.Hashtable;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
 
 public class XSDToFragmentController {
   private WSDLPartsToXSDTypeMapper wsdlToXSDMapper_;

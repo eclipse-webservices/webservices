@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.ITransformer;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.NodeSelectionTransformer;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 
 public abstract class SelectNodeAction extends NodeAction
 {

@@ -11,11 +11,10 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.Action;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIActionInputs;
 
 public class TransferToAddCategoryDataAction extends Action
 {

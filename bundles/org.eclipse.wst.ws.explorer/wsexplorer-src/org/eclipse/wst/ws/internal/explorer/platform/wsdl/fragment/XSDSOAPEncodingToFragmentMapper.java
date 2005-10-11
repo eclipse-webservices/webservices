@@ -10,20 +10,21 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.SOAPEncArrayFixFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.SOAPEncArrayRangeFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.SOAPEncodingWrapperFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.XSDTypeDefinitionUtil;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
+import org.eclipse.xsd.XSDAttributeGroupContent;
+import org.eclipse.xsd.XSDComplexTypeContent;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDComponent;
+import org.eclipse.xsd.XSDModelGroup;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDParticleContent;
-import org.eclipse.xsd.XSDComplexTypeDefinition;
-import org.eclipse.xsd.XSDComplexTypeContent;
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.eclipse.xsd.XSDAttributeGroupContent;
-import org.eclipse.xsd.XSDModelGroup;
-import org.eclipse.emf.common.util.EList;
-
 import org.w3c.dom.Element;
 
 public class XSDSOAPEncodingToFragmentMapper extends XSDToFragmentMapper {

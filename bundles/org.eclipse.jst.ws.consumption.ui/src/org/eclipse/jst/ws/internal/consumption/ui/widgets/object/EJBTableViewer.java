@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import java.util.Vector;
-
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;

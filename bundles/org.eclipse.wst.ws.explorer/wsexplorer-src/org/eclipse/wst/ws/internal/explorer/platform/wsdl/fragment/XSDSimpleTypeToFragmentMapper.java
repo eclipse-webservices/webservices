@@ -11,12 +11,24 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.*;
-import org.eclipse.xsd.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDSimpleAtomicDateTimeFixFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDSimpleAtomicDateTimeRangeFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDSimpleAtomicEnumFixFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDSimpleAtomicEnumRangeFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDSimpleAtomicFixFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDSimpleAtomicFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDSimpleAtomicRangeFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDSimpleListFixFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDSimpleListRangeFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDSimpleUnionFixFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDSimpleUnionRangeFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.OptionVector;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.XSDTypeDefinitionUtil;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
+import org.eclipse.xsd.XSDSimpleTypeDefinition;
+import org.eclipse.xsd.XSDVariety;
 
 public class XSDSimpleTypeToFragmentMapper extends XSDToFragmentMapper {
   public XSDSimpleTypeToFragmentMapper(XSDToFragmentController controller, WSDLPartsToXSDTypeMapper wsdlToXSDMapper) {

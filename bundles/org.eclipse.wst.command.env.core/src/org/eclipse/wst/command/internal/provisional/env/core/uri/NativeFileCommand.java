@@ -16,9 +16,9 @@ import java.util.List;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
 import org.eclipse.wst.common.environment.uri.URI;
 import org.eclipse.wst.common.environment.uri.URIException;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public abstract class NativeFileCommand extends AbstractDataModelOperation
 {

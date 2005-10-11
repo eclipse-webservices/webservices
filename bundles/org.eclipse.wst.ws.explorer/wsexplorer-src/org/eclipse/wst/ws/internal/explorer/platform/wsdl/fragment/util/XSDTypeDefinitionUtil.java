@@ -11,9 +11,9 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util;
 
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
-import org.eclipse.xsd.XSDTypeDefinition;
-import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDComplexTypeContent;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.xsd.XSDTypeDefinition;
 
 public class XSDTypeDefinitionUtil {
   private XSDTypeDefinitionUtil() {

@@ -10,16 +10,19 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import javax.servlet.http.HttpServletRequest;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesFolderElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.FavoritesPerspective;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.*;
-
-import java.util.Enumeration;
-import java.util.Hashtable;
-import javax.servlet.http.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Tool;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.ListUDDIBusinessTool;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.ListUDDIServicesTool;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.ListWSDLServicesTool;
 
 public abstract class AddToFavoritesAction extends MultipleLinkAction {
     protected NodeManager nodeManager_;

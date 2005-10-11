@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.widgets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.TableViewerWidget;

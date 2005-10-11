@@ -11,14 +11,15 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective;
 
+import javax.servlet.ServletContext;
 import org.eclipse.wst.ws.internal.datamodel.BasicModel;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Perspective;
 import org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.actions.*;
-
-import javax.servlet.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.actions.SwitchPerspectiveFromWSILAction;
 
 public class WSILPerspective extends Perspective
 {

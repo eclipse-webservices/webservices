@@ -10,19 +10,22 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.*;
-
+import java.util.Hashtable;
+import java.util.Vector;
+import javax.servlet.http.HttpServletRequest;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.ListElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormToolPropertiesInterface;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ViewTool;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.MultipleFormToolPropertiesInterface;
 import org.uddi4j.datatype.business.BusinessEntity;
 import org.uddi4j.datatype.service.BusinessService;
 import org.uddi4j.datatype.tmodel.TModel;
-
-import javax.servlet.http.*;
-
-import java.util.*;
 
 public class SelectSubQueryItemAction extends SelectPropertiesToolAction
 {

@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.datamodel;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 
 public class ListElement
 {

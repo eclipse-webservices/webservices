@@ -10,12 +10,17 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd;
 
-import org.eclipse.xsd.*;
-
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Vector;
+import javax.wsdl.Part;
 import javax.xml.namespace.QName;
-import javax.wsdl.*;
-
-import java.util.*;
+import org.eclipse.xsd.XSDComponent;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDModelGroupDefinition;
+import org.eclipse.xsd.XSDNamedComponent;
+import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDTypeDefinition;
 
 public class WSDLPartsToXSDTypeMapper
 {

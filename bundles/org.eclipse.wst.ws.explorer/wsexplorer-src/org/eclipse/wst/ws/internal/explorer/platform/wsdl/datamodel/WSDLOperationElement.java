@@ -10,16 +10,27 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.*;
-import org.eclipse.xsd.*;
-
-import javax.wsdl.extensions.soap.*;
-import javax.wsdl.extensions.*;
-import javax.wsdl.*;
-
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import javax.wsdl.Binding;
+import javax.wsdl.BindingInput;
+import javax.wsdl.BindingOperation;
+import javax.wsdl.Input;
+import javax.wsdl.Operation;
+import javax.wsdl.Output;
+import javax.wsdl.Part;
+import javax.wsdl.extensions.ExtensibilityElement;
+import javax.wsdl.extensions.soap.SOAPBinding;
+import javax.wsdl.extensions.soap.SOAPBody;
+import javax.wsdl.extensions.soap.SOAPOperation;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.BindingTypes;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentController;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
+import org.eclipse.xsd.XSDNamedComponent;
 
 public class WSDLOperationElement extends WSDLCommonElement
 {

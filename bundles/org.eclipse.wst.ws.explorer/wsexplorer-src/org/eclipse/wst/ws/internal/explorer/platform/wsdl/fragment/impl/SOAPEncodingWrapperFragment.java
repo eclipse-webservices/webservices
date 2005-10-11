@@ -10,13 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
+import java.util.Hashtable;
+import java.util.Vector;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.ISOAPEncodingWrapperFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
 import org.eclipse.xsd.XSDTypeDefinition;
-
-import org.w3c.dom.*;
-import java.util.Vector;
-import java.util.Hashtable;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class SOAPEncodingWrapperFragment extends XSDDelegationFragment implements ISOAPEncodingWrapperFragment
 {

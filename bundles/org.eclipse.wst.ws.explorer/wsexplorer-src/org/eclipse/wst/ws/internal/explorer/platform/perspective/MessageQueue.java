@@ -11,9 +11,9 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
-
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Vector;
+import org.eclipse.wst.ws.internal.explorer.platform.util.HTMLUtils;
 
 public class MessageQueue
 {

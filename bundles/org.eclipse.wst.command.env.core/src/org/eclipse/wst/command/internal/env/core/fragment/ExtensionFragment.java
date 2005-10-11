@@ -11,7 +11,6 @@
 package org.eclipse.wst.command.internal.env.core.fragment;
 
 import java.util.Hashtable;
-
 import org.eclipse.wst.command.internal.env.core.registry.CommandRegistry;
 
 

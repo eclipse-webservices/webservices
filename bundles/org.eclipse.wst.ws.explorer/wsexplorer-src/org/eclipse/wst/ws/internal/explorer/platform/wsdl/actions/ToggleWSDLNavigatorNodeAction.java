@@ -11,9 +11,12 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ToggleNodeAction;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ToolTypes;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Tool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
 
 public class ToggleWSDLNavigatorNodeAction extends ToggleNodeAction
 {

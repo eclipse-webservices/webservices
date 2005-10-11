@@ -11,10 +11,8 @@
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
 import java.util.Hashtable;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
-
 import org.eclipse.wst.ws.internal.explorer.LaunchOptions;
 import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.UDDIPerspective;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLPerspective;

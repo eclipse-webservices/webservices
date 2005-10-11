@@ -11,8 +11,13 @@
 
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
 /**
@@ -34,5 +39,10 @@ public class SelectionCommand extends AbstractDataModelOperation
   public IStructuredSelection getInitialSelection()
   {
     return selection_;
+  }
+
+  public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
+  {
+    return Status.OK_STATUS;
   }
 }

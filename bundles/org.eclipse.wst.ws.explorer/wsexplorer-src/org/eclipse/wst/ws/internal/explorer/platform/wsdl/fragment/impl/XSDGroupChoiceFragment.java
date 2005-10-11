@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
+import java.util.Hashtable;
+import java.util.Vector;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
@@ -18,13 +20,10 @@ import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDGroupChoiceFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentController;
-import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDModelGroup;
-
+import org.eclipse.xsd.XSDParticle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import java.util.Hashtable;
-import java.util.Vector;
 
 public abstract class XSDGroupChoiceFragment extends XSDGroupFragment implements IXSDGroupChoiceFragment {
   private XSDParticle[] choices_;

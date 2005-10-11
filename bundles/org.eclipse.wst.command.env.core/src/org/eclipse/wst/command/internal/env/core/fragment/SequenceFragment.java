@@ -13,7 +13,6 @@ package org.eclipse.wst.command.internal.env.core.fragment;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.wst.command.internal.provisional.env.core.CommandFactory;
 
 

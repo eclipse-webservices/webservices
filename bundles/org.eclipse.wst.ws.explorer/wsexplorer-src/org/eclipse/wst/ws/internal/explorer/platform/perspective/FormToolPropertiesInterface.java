@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import java.util.*;
+import java.util.Hashtable;
 
 public abstract interface FormToolPropertiesInterface
 {

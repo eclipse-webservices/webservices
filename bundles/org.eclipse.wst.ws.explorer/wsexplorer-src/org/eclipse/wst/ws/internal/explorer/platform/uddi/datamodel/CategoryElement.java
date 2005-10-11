@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-
-import org.uddi4j.util.*;
+import org.eclipse.wst.ws.internal.datamodel.Model;
+import org.uddi4j.util.KeyedReference;
 
 public class CategoryElement extends AbstractUDDIElement
 {

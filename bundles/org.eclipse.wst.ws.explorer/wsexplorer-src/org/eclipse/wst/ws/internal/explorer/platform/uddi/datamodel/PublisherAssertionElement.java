@@ -11,10 +11,9 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel;
 
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.ListElement;
 import org.uddi4j.datatype.assertion.PublisherAssertion;
 import org.uddi4j.util.KeyedReference;
-
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.ListElement;
 
 public class PublisherAssertionElement {
 

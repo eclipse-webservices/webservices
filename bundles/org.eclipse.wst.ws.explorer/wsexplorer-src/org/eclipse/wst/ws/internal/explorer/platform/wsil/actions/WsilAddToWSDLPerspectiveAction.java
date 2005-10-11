@@ -10,17 +10,17 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
 
+import java.util.Hashtable;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.ITransformer;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.OpenWSDLAction;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.WsilModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel.WsilElement;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel.WsilWsdlServiceElement;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.WSILPerspective;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.transformer.WSILViewSelectionTransformer;
-
-import java.util.Hashtable;
 
 public class WsilAddToWSDLPerspectiveAction extends MultipleLinkAction
 {

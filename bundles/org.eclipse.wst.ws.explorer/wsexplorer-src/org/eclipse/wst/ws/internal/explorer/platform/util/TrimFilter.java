@@ -11,10 +11,15 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.util;
 
-import javax.servlet.http.*;
-import javax.servlet.*;
-
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 public class TrimFilter implements Filter
 {

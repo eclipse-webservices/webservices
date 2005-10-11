@@ -10,17 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport;
 
-import org.eclipse.wst.ws.internal.explorer.platform.util.XMLUtils;
-
-import sun.misc.BASE64Encoder;
-
-import org.w3c.dom.Element;
-
-import java.net.Socket;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.Hashtable;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -28,7 +17,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.Hashtable;
 import javax.net.ssl.SSLSocketFactory;
+import org.eclipse.wst.ws.internal.explorer.platform.util.XMLUtils;
+import org.w3c.dom.Element;
+import sun.misc.BASE64Encoder;
 
 public class HTTPTransport
 {

@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-
-import java.util.*;
+import java.util.Enumeration;
+import org.eclipse.wst.ws.internal.datamodel.Model;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIModelConstants;
 
 public class PublishedItemsElement extends AbstractUDDIElement
 {

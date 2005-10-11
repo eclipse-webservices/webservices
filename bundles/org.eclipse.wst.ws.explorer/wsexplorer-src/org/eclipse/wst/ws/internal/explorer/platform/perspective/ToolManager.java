@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import java.util.*;
+import java.util.List;
+import java.util.Vector;
 
 public class ToolManager
 {

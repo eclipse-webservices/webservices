@@ -11,26 +11,25 @@
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.util;
 
 import java.util.Hashtable;
-import java.util.Vector;
-import java.util.List;
 import java.util.Iterator;
-import javax.wsdl.Definition;
-import javax.wsdl.Service;
-import javax.wsdl.Port;
+import java.util.List;
+import java.util.Vector;
 import javax.wsdl.Binding;
-import javax.wsdl.PortType;
-import javax.wsdl.Message;
+import javax.wsdl.Definition;
 import javax.wsdl.Import;
+import javax.wsdl.Message;
+import javax.wsdl.Port;
+import javax.wsdl.PortType;
+import javax.wsdl.Service;
 import javax.wsdl.WSDLException;
 import javax.wsdl.extensions.ExtensibilityElement;
-import javax.wsdl.extensions.soap.SOAPAddress;
 import javax.wsdl.extensions.http.HTTPAddress;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.CharacterData;
+import javax.wsdl.extensions.soap.SOAPAddress;
+import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.uddi4j.UDDIException;
 import org.uddi4j.client.UDDIProxy;
+import org.uddi4j.datatype.OverviewDoc;
+import org.uddi4j.datatype.OverviewURL;
 import org.uddi4j.datatype.binding.AccessPoint;
 import org.uddi4j.datatype.binding.BindingTemplate;
 import org.uddi4j.datatype.binding.BindingTemplates;
@@ -39,14 +38,13 @@ import org.uddi4j.datatype.binding.TModelInstanceDetails;
 import org.uddi4j.datatype.binding.TModelInstanceInfo;
 import org.uddi4j.datatype.service.BusinessService;
 import org.uddi4j.datatype.tmodel.TModel;
-import org.uddi4j.datatype.OverviewDoc;
-import org.uddi4j.datatype.OverviewURL;
 import org.uddi4j.response.TModelDetail;
 import org.uddi4j.transport.TransportException;
 import org.uddi4j.util.CategoryBag;
 import org.uddi4j.util.KeyedReference;
-
-import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
+import org.w3c.dom.CharacterData;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class Uddi4jHelper
 {

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.provisional.env.core;
 
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+
 /**
  * This interface is used to create Command objects.
  *

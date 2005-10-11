@@ -11,14 +11,13 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
+import javax.servlet.ServletContext;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.ActionEngine;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.*;
-
-import javax.servlet.*;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.FavoritesPerspective;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.UDDIPerspective;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLPerspective;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.WSILPerspective;
 
 public class Controller extends MessageProvider
 {

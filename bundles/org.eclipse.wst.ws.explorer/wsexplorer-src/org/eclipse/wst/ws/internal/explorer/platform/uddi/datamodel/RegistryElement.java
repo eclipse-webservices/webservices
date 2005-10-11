@@ -10,17 +10,19 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-import org.eclipse.wst.ws.internal.parser.discovery.*;
+import java.net.MalformedURLException;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
+import org.eclipse.wst.ws.internal.datamodel.Model;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIModelConstants;
+import org.eclipse.wst.ws.internal.parser.discovery.NetUtils;
 import org.uddi4j.UDDIException;
 import org.uddi4j.client.UDDIProxy;
+import org.uddi4j.datatype.Description;
+import org.uddi4j.datatype.service.BusinessService;
 import org.uddi4j.response.AuthToken;
 import org.uddi4j.transport.TransportException;
-import org.uddi4j.datatype.service.*;
-import org.uddi4j.datatype.*;
-import java.util.*;
-import java.net.*;
 
 public class RegistryElement extends AbstractUDDIElement
 {

@@ -11,13 +11,15 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
 
+import java.util.Hashtable;
 import org.eclipse.wst.ws.internal.explorer.platform.actions.ImportToFileSystemAction;
 import org.eclipse.wst.ws.internal.explorer.platform.actions.ImportToWorkbenchAction;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.WSILPerspective;
-
-import java.util.Hashtable;
 
 public class WsilImportWSDLToWorkbenchAction extends ImportToWorkbenchAction {
     public WsilImportWSDLToWorkbenchAction(Controller controller) {

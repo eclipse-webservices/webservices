@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDComponent;
 import org.eclipse.xsd.XSDElementDeclaration;
-import org.eclipse.xsd.XSDSimpleTypeDefinition;
-import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDParticleContent;
+import org.eclipse.xsd.XSDSimpleTypeDefinition;
 
 public class XSDLiteralXMLEncodingToFragmentMapper extends XSDToFragmentMapper {
   private XSDSimpleTypeToFragmentMapper xsdSimpleMapper_;

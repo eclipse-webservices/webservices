@@ -11,17 +11,21 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
+import java.util.Vector;
+import javax.wsdl.WSDLException;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.WSDLModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLElement;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLPerspective;
-
-import javax.wsdl.WSDLException;
-import java.util.Vector;
 
 public class OpenWSDLAction extends WSDLPropertiesFormAction {
 

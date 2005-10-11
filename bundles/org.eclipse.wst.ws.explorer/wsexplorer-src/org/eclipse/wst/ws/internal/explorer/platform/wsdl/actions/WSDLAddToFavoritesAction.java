@@ -11,19 +11,19 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import javax.servlet.http.HttpServletRequest;
 import org.eclipse.wst.ws.internal.explorer.platform.actions.LinkAction;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesFolderElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.FavoritesPerspective;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLElement;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLPerspective;
-
-import java.util.Enumeration;
-import java.util.Hashtable;
-import javax.servlet.http.*;
 
 public class WSDLAddToFavoritesAction extends LinkAction {
   public WSDLAddToFavoritesAction(Controller controller) {

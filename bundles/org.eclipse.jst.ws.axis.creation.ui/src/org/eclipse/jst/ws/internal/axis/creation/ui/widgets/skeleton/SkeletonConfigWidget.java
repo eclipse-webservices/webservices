@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton;
 
 import java.io.File;
 import java.net.MalformedURLException;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;

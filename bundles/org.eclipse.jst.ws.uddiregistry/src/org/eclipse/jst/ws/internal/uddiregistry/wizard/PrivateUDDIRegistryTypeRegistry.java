@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.internal.uddiregistry.wizard;
 
 import java.util.StringTokenizer;
 import java.util.Vector;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;

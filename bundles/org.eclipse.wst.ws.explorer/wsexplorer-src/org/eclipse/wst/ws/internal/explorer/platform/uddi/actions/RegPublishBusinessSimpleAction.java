@@ -11,20 +11,22 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
-
+import java.net.MalformedURLException;
+import java.util.Vector;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormToolPropertiesInterface;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.RegistryElement;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.UDDIPerspective;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
+import org.eclipse.wst.ws.internal.explorer.platform.util.Validator;
 import org.uddi4j.UDDIException;
 import org.uddi4j.client.UDDIProxy;
-import org.uddi4j.transport.TransportException;
+import org.uddi4j.datatype.Name;
 import org.uddi4j.datatype.business.BusinessEntity;
-import org.uddi4j.datatype.*;
-
-import java.util.*;
-import java.net.*;
+import org.uddi4j.transport.TransportException;
 
 public class RegPublishBusinessSimpleAction extends PublishAction
 {

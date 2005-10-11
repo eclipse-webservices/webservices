@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
 import java.util.StringTokenizer;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 
 public class WebServiceImpl {

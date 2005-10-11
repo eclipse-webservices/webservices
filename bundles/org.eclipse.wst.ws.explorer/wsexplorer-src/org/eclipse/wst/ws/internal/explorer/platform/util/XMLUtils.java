@@ -10,17 +10,22 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.util;
 
-import org.w3c.dom.*;
-import org.xml.sax.*;
-
-import javax.xml.parsers.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import java.io.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 public final class XMLUtils
 {

@@ -11,8 +11,11 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.actions.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.AddToWSDLPerspectiveTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.actions.SelectWSILToolAction;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.actions.WsilAddToWSDLPerspectiveAction;
 
 public class WsilAddToWSDLPerspectiveTool extends AddToWSDLPerspectiveTool {
 

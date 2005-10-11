@@ -10,10 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.util;
 
-import java.io.*;
-import java.util.*;
-
-import javax.servlet.http.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import javax.servlet.http.HttpServletRequest;
 
 public final class MultipartFormDataParser
 {

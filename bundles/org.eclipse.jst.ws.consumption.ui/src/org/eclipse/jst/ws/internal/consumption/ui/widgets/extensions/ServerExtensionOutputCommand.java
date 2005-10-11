@@ -12,7 +12,12 @@
  */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
-import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
@@ -101,5 +106,10 @@ public String getServiceServerFactoryId()
 public String getServiceServerInstanceId()
 {
 	return webService_.getWebServiceInfo().getServerInstanceId();
+}
+
+public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
+{
+  return Status.OK_STATUS;
 }
 }

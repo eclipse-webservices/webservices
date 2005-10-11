@@ -11,7 +11,7 @@
 
 package org.eclipse.jst.ws.internal.ext;
 
-import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
 * All Extensions with exectutable extensions should implement this 

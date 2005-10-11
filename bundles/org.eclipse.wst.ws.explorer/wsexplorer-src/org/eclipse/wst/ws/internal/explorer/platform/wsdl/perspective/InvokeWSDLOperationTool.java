@@ -11,10 +11,12 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.SelectWSDLPropertiesToolAction;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLOperationElement;
 
 public class InvokeWSDLOperationTool extends FormTool {
 

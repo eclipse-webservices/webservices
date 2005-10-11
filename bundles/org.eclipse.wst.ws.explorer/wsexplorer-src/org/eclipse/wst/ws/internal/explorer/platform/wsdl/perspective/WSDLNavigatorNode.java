@@ -11,9 +11,11 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.*;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.SelectWSDLNavigatorNodeAction;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.ToggleWSDLNavigatorNodeAction;
 
 public abstract class WSDLNavigatorNode extends Node
 {

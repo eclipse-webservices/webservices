@@ -12,10 +12,17 @@
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective;
 
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesMainElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUDDIBusinessFolderElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUDDIRegistryFolderElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUDDIServiceFolderElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUDDIServiceInterfaceFolderElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesWSDLServiceFolderElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesWSILFolderElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 
 public class FavoritesMainNode extends FavoritesNavigatorNode {
     public FavoritesMainNode(TreeElement treeElement, NodeManager nodeManager) {

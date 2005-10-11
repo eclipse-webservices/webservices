@@ -16,7 +16,6 @@ import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.ViewTool;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.actions.SelectWSILToolAction;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.WsilSetDefaultViewTool;
 
 public class ListWSDLServicesTool extends ViewTool {
     public ListWSDLServicesTool(ToolManager toolManager, String alt) {

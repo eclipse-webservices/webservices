@@ -10,16 +10,16 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import javax.servlet.http.HttpServletRequest;
 import javax.wsdl.Definition;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLWriter;
-import java.io.OutputStreamWriter;
-import java.io.OutputStream;
-import javax.servlet.http.*;
 import org.apache.wsil.WSILDocument;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
 
 public abstract class ImportToFileSystemAction extends LinkAction
 {

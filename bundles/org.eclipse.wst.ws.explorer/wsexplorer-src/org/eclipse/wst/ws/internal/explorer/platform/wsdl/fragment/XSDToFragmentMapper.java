@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDDefaultFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDEmptyFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
 import org.eclipse.xsd.XSDComponent;
 import org.eclipse.xsd.XSDNamedComponent;

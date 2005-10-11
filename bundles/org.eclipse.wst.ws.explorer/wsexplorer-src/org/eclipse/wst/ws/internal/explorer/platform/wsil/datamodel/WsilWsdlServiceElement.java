@@ -11,12 +11,13 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel;
 
 import java.util.Vector;
-
-import org.eclipse.wst.ws.internal.datamodel.*;
-
-import org.apache.wsil.*;
-import org.apache.wsil.extension.*;
-import org.apache.wsil.extension.wsdl.*;
+import org.apache.wsil.Description;
+import org.apache.wsil.Service;
+import org.apache.wsil.extension.ExtensionElement;
+import org.apache.wsil.extension.wsdl.ImplementedBinding;
+import org.apache.wsil.extension.wsdl.Reference;
+import org.apache.wsil.extension.wsdl.ReferencedService;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 
 /**
 * The data model element that represents 

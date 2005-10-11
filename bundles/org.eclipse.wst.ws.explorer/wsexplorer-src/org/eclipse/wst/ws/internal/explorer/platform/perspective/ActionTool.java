@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ToolTypes;
 
 public abstract class ActionTool extends Tool
 {

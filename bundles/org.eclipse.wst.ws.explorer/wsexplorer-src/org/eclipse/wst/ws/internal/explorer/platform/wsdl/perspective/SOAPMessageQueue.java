@@ -11,9 +11,8 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-
-import java.util.*;
+import java.util.Vector;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
 
 public class SOAPMessageQueue extends MessageQueue
 {

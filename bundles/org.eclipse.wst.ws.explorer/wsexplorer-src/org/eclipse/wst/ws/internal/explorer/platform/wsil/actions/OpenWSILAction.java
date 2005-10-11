@@ -11,24 +11,29 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
 
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import org.apache.wsil.WSILDocument;
 import org.eclipse.wst.ws.internal.explorer.platform.actions.FormAction;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.WsilActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.WsilModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel.WsilElement;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.WSILPerspective;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
-
-import org.apache.wsil.WSILDocument;
-
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Iterator;
 
 public class OpenWSILAction extends FormAction
 {

@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import java.net.MalformedURLException;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;

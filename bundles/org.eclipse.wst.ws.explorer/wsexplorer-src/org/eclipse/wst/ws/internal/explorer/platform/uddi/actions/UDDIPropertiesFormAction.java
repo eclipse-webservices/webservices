@@ -11,9 +11,13 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.FormAction;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.RegistryNode;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.UDDIMainNode;
 
 public abstract class UDDIPropertiesFormAction extends FormAction
 {

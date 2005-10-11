@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.ResourceBundle;
 import java.util.Vector;
-
 import org.eclipse.wst.command.internal.env.common.StringUtils;
 
 

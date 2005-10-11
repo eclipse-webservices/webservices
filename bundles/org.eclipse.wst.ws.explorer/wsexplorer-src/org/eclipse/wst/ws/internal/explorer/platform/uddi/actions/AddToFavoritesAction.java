@@ -12,16 +12,27 @@
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
 
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.*;
-
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesFolderElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.FavoritesPerspective;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.BusinessElement;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.CategoryModel;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.RegistryElement;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.ServiceElement;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.ServiceInterfaceElement;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.BusinessNode;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.RegistryNode;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.ServiceInterfaceNode;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.ServiceNode;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.UDDIPerspective;
 
 public class AddToFavoritesAction extends UDDINodeAction
 {

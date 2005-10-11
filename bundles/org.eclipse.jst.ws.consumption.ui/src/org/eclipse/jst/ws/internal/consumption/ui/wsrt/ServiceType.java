@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
 import java.util.Hashtable;
 import java.util.StringTokenizer;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 

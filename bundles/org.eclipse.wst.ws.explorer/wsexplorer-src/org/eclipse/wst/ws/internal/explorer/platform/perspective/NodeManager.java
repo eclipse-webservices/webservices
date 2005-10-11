@@ -11,8 +11,10 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import javax.servlet.http.*;
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Vector;
+import javax.servlet.http.HttpServletResponse;
 
 public class NodeManager
 {

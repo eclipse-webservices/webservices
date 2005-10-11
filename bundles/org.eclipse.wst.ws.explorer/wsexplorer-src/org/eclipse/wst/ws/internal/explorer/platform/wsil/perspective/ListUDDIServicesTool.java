@@ -11,13 +11,12 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ProxyLoadPageAction;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.ViewTool;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.actions.SelectWSILToolAction;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.WsilSetDefaultViewTool;
 
 public class ListUDDIServicesTool extends ViewTool {
     public ListUDDIServicesTool(ToolManager toolManager, String alt) {

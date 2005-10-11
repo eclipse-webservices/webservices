@@ -11,9 +11,10 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.util;
 
-import javax.servlet.http.*;
-
-import java.io.*;
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 
 public class CharArrayWrapper extends HttpServletResponseWrapper
 {

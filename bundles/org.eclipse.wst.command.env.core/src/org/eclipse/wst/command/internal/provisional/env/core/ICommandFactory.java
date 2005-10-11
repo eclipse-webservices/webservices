@@ -12,6 +12,7 @@
 package org.eclipse.wst.command.internal.provisional.env.core;
 
 import java.util.Iterator;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
 /**

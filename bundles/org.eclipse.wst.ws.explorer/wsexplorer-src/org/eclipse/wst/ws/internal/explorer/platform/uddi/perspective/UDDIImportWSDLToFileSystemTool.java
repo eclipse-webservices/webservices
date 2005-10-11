@@ -11,8 +11,11 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.actions.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ImportToFileSystemTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.actions.SelectPropertiesToolAction;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.actions.UDDIImportWSDLToFileSystemAction;
 
 public class UDDIImportWSDLToFileSystemTool extends ImportToFileSystemTool
 {

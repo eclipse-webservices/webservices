@@ -11,10 +11,10 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
+import org.apache.wsil.Link;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.parser.favorites.FavoritesUDDIRegistry;
 import org.eclipse.wst.ws.internal.parser.favorites.IFavoritesUDDIRegistry;
-import org.apache.wsil.*;
 
 public class FavoritesUDDIRegistryElement extends FavoritesElement {
 

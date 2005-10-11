@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
+import java.util.Vector;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
-
-import java.util.Vector;
 
 public interface IFragment {
   public void setID(String id);

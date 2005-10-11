@@ -14,7 +14,6 @@ package org.eclipse.jst.ws.internal.consumption.ui.plugin;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

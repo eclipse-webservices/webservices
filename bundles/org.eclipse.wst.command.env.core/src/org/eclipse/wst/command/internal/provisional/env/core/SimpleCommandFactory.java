@@ -1,6 +1,7 @@
 package org.eclipse.wst.command.internal.provisional.env.core;
 
 import java.util.Vector;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
 public class SimpleCommandFactory implements ICommandFactory 

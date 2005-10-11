@@ -10,8 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Tool;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.WSDLActionInputs;
@@ -19,10 +26,6 @@ import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLBindingE
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.InvokeWSDLOperationTool;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLBindingNode;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLPerspective;
-
-import java.util.Vector;
-import java.util.List;
-import java.util.Iterator;
 
 public class UpdateWSDLBindingAction extends WSDLPropertiesFormAction
 {

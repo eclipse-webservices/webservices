@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.*;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.OptionVector;
 
 public class XSDSimpleAtomicEnumFixFragment extends XSDSimpleAtomicEnumFragment {
   public XSDSimpleAtomicEnumFixFragment(String id, String name, XSDToFragmentConfiguration config, EList elist) {

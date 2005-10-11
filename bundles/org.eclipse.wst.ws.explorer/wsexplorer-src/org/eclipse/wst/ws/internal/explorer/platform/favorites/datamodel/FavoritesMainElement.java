@@ -11,13 +11,14 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.favorites.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.apache.wsil.*;
+import org.apache.wsil.Link;
+import org.apache.wsil.Service;
+import org.eclipse.wst.ws.internal.datamodel.Model;
+import org.eclipse.wst.ws.internal.explorer.favorites.FavoritesRegistryTypeWSE;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.FavoritesPerspective;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 
 /**
 * The data model element that represents 

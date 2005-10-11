@@ -11,9 +11,8 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-
-import java.util.*;
+import java.util.Hashtable;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ToolTypes;
 
 public abstract class FormTool extends Tool implements FormToolPropertiesInterface
 {

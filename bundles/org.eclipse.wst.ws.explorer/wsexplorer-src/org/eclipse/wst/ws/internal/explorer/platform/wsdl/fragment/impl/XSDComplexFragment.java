@@ -10,27 +10,27 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Vector;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDComplexFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentController;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.XSDTypeDefinitionUtil;
-import org.eclipse.xsd.XSDComplexTypeDefinition;
-import org.eclipse.xsd.XSDComplexTypeContent;
-import org.eclipse.xsd.XSDNamedComponent;
-import org.eclipse.xsd.XSDTypeDefinition;
-import org.eclipse.xsd.XSDModelGroup;
 import org.eclipse.xsd.XSDComplexFinal;
+import org.eclipse.xsd.XSDComplexTypeContent;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.xsd.XSDModelGroup;
+import org.eclipse.xsd.XSDModelGroupDefinition;
+import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDParticleContent;
-import org.eclipse.xsd.XSDModelGroupDefinition;
+import org.eclipse.xsd.XSDTypeDefinition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import java.util.Vector;
-import java.util.Hashtable;
-import java.util.List;
 
 public abstract class XSDComplexFragment extends XSDMapFragment implements IXSDComplexFragment
 {

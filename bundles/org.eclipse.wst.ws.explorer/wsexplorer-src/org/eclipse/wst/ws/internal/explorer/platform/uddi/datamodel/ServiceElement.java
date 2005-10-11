@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-
+import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.uddi4j.datatype.service.BusinessService;
 
 public class ServiceElement extends AbstractUDDIElement

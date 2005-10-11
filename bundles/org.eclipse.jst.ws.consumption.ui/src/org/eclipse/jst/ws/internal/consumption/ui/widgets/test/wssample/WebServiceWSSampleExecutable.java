@@ -12,7 +12,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
 import org.eclipse.jst.ws.internal.ext.WebServiceExecutable;
-import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
 * This is the interface for objects that represent a kind of

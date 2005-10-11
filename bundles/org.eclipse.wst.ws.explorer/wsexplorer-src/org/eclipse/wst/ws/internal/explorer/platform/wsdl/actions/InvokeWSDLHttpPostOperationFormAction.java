@@ -14,7 +14,6 @@ package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLConnection;
-
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLPerspective;

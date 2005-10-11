@@ -11,9 +11,8 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
 
+import javax.servlet.http.HttpServletRequest;
 import org.eclipse.wst.ws.internal.explorer.platform.actions.Action;
-
-import javax.servlet.http.*;
 
 public class NullAction extends Action
 {

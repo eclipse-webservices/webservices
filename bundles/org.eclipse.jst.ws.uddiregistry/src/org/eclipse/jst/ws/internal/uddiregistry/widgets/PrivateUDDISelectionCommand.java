@@ -10,8 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.uddiregistry.widgets;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.uddiregistry.wizard.PrivateUDDIRegistryType;
-import org.eclipse.wst.command.internal.provisional.env.core.AbstractDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 /*
 import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -74,5 +79,10 @@ public class PrivateUDDISelectionCommand extends AbstractDataModelOperation
   public void setPrivateUDDIRegistryType(PrivateUDDIRegistryType regType)
   {
   	registryType = regType;
+  }
+
+  public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
+  {
+    return Status.OK_STATUS;
   }
 }

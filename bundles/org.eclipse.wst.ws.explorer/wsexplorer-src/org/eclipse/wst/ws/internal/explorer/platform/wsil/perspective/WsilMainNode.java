@@ -11,7 +11,9 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
+import org.eclipse.wst.ws.internal.datamodel.ElementAdapter;
+import org.eclipse.wst.ws.internal.datamodel.RelAddEvent;
+import org.eclipse.wst.ws.internal.datamodel.RelRemoveEvent;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.WsilModelConstants;

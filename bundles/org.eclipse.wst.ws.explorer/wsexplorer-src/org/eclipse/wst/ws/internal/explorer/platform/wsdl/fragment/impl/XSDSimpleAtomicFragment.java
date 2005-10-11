@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.*;
-import org.eclipse.xsd.*;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDSimpleAtomicFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
+import org.eclipse.xsd.XSDSimpleTypeDefinition;
 
 public abstract class XSDSimpleAtomicFragment extends XSDFragment implements IXSDSimpleAtomicFragment {
   public XSDSimpleAtomicFragment(String id, String name, XSDToFragmentConfiguration config) {

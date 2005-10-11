@@ -12,7 +12,10 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 
 import org.eclipse.wst.ws.internal.explorer.platform.actions.LaunchWebServiceWizardAction;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLElement;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLPerspective;
 

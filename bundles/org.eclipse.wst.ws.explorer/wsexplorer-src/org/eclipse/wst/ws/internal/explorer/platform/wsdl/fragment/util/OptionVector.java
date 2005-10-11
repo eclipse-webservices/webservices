@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util;
 
-import java.util.*;
+import java.util.Vector;
 
 public class OptionVector
 {

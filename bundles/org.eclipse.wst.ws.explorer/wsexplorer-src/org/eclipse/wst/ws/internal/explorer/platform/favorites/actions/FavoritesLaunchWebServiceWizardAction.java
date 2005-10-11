@@ -12,10 +12,13 @@
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.actions;
 
 import org.eclipse.wst.ws.internal.explorer.platform.actions.LaunchWebServiceWizardAction;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.*;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesWSDLServiceElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.FavoritesPerspective;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormTool;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 
 public class FavoritesLaunchWebServiceWizardAction extends LaunchWebServiceWizardAction {
 

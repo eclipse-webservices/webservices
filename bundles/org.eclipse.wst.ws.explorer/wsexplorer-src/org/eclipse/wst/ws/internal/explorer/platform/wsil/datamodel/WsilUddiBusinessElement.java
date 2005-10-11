@@ -11,15 +11,13 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
+import org.apache.wsil.Link;
+import org.apache.wsil.extension.ExtensionElement;
+import org.apache.wsil.extension.uddi.BusinessDescription;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.explorer.platform.util.Validator;
-
-import org.apache.wsil.*;
-import org.apache.wsil.extension.*;
-import org.apache.wsil.extension.uddi.*;
-
-import org.uddi4j.util.DiscoveryURL;
 import org.uddi4j.datatype.business.BusinessEntity;
+import org.uddi4j.util.DiscoveryURL;
 
 /**
 * The data model element that represents 

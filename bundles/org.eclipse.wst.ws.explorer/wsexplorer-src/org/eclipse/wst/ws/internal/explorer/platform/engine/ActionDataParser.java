@@ -10,25 +10,23 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.engine;
 
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.FactoryConfigurationError;
+import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.constants.ActionDataConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.data.ActionDescriptor;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.data.ScenarioDescriptor;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.data.TransactionDescriptor;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.FactoryConfigurationError;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
+import org.w3c.dom.NodeList;
 
 public class ActionDataParser
 {

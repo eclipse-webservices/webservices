@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.engine.transformer;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
-import java.util.Enumeration;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 import org.eclipse.wst.ws.internal.datamodel.Rel;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;

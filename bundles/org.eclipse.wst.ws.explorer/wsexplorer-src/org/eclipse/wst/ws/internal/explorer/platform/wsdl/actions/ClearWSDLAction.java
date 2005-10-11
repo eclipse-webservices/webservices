@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 
+import javax.servlet.http.HttpServletRequest;
 import org.eclipse.wst.ws.internal.explorer.platform.actions.ClearNodeAction;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLMainNode;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLNode;
-
-import javax.servlet.http.*;
 
 public class ClearWSDLAction extends ClearNodeAction {
 

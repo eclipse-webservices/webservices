@@ -11,8 +11,8 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 
 public class FavoritesUDDIRegistryNode extends FavoritesNavigatorNode {
     public FavoritesUDDIRegistryNode(TreeElement treeElement, NodeManager nodeManager, int nodeDepth,String imagePath) {

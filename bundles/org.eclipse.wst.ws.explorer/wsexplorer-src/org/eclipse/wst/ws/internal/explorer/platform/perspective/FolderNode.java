@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
 
 public abstract class FolderNode extends Node
 {

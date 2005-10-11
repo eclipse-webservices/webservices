@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
-import org.eclipse.xsd.XSDTypeDefinition;
-import org.w3c.dom.Element;
-import org.w3c.dom.Document;
 import java.util.Hashtable;
+import org.eclipse.xsd.XSDTypeDefinition;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public interface IXSDFragment extends IFragment {
   public void setXSDToFragmentConfiguration(XSDToFragmentConfiguration config);

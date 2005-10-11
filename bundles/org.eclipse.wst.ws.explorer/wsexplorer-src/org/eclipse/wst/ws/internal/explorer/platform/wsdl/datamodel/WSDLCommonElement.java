@@ -10,15 +10,16 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*;
-
-import org.w3c.dom.*;
-
-import javax.xml.parsers.*;
+import javax.xml.parsers.ParserConfigurationException;
+import org.eclipse.wst.ws.internal.datamodel.Model;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.util.XMLUtils;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.WSDLModelConstants;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class WSDLCommonElement extends TreeElement
 {

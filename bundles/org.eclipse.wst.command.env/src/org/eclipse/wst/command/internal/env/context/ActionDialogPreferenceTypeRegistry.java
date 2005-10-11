@@ -12,7 +12,6 @@
 package org.eclipse.wst.command.internal.env.context;
 
 import java.util.Vector;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;

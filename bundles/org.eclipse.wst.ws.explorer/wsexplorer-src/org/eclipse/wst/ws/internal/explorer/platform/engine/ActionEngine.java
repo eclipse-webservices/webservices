@@ -13,11 +13,10 @@ package org.eclipse.wst.ws.internal.explorer.platform.engine;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Hashtable;
 import java.util.Vector;
-
 import org.eclipse.wst.ws.internal.explorer.platform.actions.Action;
 import org.eclipse.wst.ws.internal.explorer.platform.actions.ShowPerspectiveAction;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;

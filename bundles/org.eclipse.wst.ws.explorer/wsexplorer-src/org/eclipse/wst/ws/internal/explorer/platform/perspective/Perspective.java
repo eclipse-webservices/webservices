@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
-import javax.servlet.*;
+import javax.servlet.ServletContext;
 
 public abstract class Perspective extends MessageProvider
 {

@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
-
 import javax.wsdl.Binding;
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
@@ -27,7 +26,6 @@ import javax.wsdl.extensions.soap.SOAPAddress;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
 import javax.xml.namespace.QName;
-
 import org.apache.axis.wsdl.toJava.Utils;
 import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
 

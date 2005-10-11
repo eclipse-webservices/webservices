@@ -11,14 +11,15 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel.WsilElement;
-
-import org.apache.wsil.WSILDocument;
 import java.io.OutputStream;
+import org.apache.wsil.WSILDocument;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ImportToFileSystemAction;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel.WsilElement;
 
 public class ImportWSILToFileSystemAction extends ImportToFileSystemAction {
     private WSILDocument wsilDoc_;

@@ -11,10 +11,12 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective;
 
-import org.eclipse.wst.ws.internal.explorer.platform.datamodel.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.*;
+import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.actions.SelectNavigatorNodeAction;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.actions.ToggleNavigatorNodeAction;
+import org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel.RegistryElement;
 
 public abstract class UDDINavigatorNode extends Node
 {

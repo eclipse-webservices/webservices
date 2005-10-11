@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.internal.uddiregistry.wizard;
 
 import java.util.Enumeration;
 import java.util.Vector;
-
 import org.eclipse.jst.ws.internal.uddiregistry.widgets.binding.PrivateUDDIWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 

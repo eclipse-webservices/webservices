@@ -11,12 +11,14 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 
-import org.eclipse.wst.ws.internal.explorer.platform.actions.*;
-import org.eclipse.wst.ws.internal.explorer.platform.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.perspective.*;
-import org.eclipse.wst.ws.internal.explorer.platform.util.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*;
+import org.eclipse.wst.ws.internal.explorer.platform.actions.ResizeFramesAction;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
+import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.WSDLActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.WSDLFrameNames;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLPerspective;
 
 public class ResizeWSDLFramesAction extends ResizeFramesAction
 {

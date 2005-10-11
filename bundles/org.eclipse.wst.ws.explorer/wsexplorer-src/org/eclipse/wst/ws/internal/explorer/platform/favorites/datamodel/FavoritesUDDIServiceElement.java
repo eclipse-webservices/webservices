@@ -11,9 +11,9 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel;
 
-import org.eclipse.wst.ws.internal.datamodel.*;
+import org.apache.wsil.Service;
+import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.parser.favorites.FavoritesUDDIService;
-import org.apache.wsil.*;
 
 public class FavoritesUDDIServiceElement extends FavoritesElement {
 

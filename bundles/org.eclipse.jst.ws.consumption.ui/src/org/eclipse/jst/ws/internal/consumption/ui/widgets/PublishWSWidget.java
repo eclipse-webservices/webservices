@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import java.util.Vector;
-
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.PrivateUDDIRegistryTypeRegistry;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.PublicUDDIRegistryTypeRegistry;
