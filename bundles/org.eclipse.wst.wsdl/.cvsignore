@@ -4,3 +4,4 @@ build.xml
 temp.folder
 org.eclipse.wst.wsdl_1.0.0.jar
 org.eclipse.wst.wsdl.patch
+@dot
