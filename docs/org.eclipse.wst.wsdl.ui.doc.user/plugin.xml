@@ -15,12 +15,7 @@
 <!-- contributions for using the tool.                 -->
 <!-- ================================================= -->
 
-<plugin
-   id="org.eclipse.wst.wsdl.ui.doc.user"
-   name="webservices documentation"
-   version="7.0.0"
-   provider-name="Eclipse.org">
-
+<plugin>
 <extension point="org.eclipse.help.toc">
     <toc file="wswsdleditort_toc.xml"/>   
     <toc file="wswsdleditorc_toc.xml"/>

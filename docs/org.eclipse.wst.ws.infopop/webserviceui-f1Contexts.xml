@@ -17,7 +17,7 @@
 <context id="PWSI0001">
 <!--desc-->
 <description>The Web services WS-I validation tools support the level of WS-I compliance outlined in the WS-I Basic Profile 1.1, the WS-I Simple SOAP Binding Profile 1.0 (WS-I SSBP), and the WS-I Attachments Profile 1.0 (WS-I AP). You can choose to make your Web service compliant or non-compliant, depending on your needs. For example, encoded style (RPC/encoded), SOAP over JMS protocols, and secured Web services, are not WS-I compliant.
-<br>
+<br />
 You can set the level of compliance for either the Basic Profile and the Simple SOAP Binding Profile, or for the Attachments Profile. You can select from three levels of compliance with WS-I specifications:
 <ul>
 <li>Require WS-I compliance - this level prevents you from creating a non-compliant Web service.</li>
