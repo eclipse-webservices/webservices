@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * Copyright (c) 2001, 2004 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -42,10 +43,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.wst.common.ui.provisional.editors.PostMultiPageEditorSite;
 import org.eclipse.wst.common.ui.provisional.editors.PostSelectionMultiPageEditorPart;
-import org.eclipse.wst.sse.core.internal.model.ModelManagerImpl;
-import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.xml.core.internal.provisional.IXMLPreferenceNames;
 import org.eclipse.wst.xml.core.internal.provisional.contenttype.ContentTypeIdForXML;
@@ -425,9 +423,10 @@ public class WSDLMultiPageEditorPart extends PostSelectionMultiPageEditorPart im
 	protected IStructuredModel getModel() {
 		IStructuredModel model = null;
 		if (fTextEditor != null) {
-			IDocument doc = fTextEditor.getDocumentProvider().getDocument(getEditorInput());	
-	    	IModelManager modelManager = ModelManagerImpl.getInstance();    	
-	    	model = modelManager.getModelForRead((IStructuredDocument) doc);
+			model = fTextEditor.getModel();
+//			IDocument doc = fTextEditor.getDocumentProvider().getDocument(getEditorInput());	
+//	    	IModelManager modelManager = ModelManagerImpl.getInstance();    	
+//	    	model = modelManager.getModelForRead((IStructuredDocument) doc);
 		}
 
 		return model;
