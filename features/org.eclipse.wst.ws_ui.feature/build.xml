@@ -9,9 +9,9 @@
 	<target name="all.plugins" depends="init">
 		<ant antfile="build.xml" dir="../org.eclipse.wst.ws.infopop" target="${target}">
 		</ant>
-		<ant antfile="build.xml" dir="../org.eclipse.wst.ws.ui" target="${target}">
-		</ant>
 		<ant antfile="build.xml" dir="../org.eclipse.wst.ws.explorer" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../org.eclipse.wst.ws.ui" target="${target}">
 		</ant>
 		<ant antfile="build.xml" dir="../org.eclipse.wst.wsdl.validation" target="${target}">
 		</ant>
