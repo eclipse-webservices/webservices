@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.wst.ws_core.feature"
+      label="org.eclipse.wst.ws_core.feature"
+      version="1.0.0">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <includes
+         id="org.apache.axis.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.apache.wsil4j.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.uddi4j.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.wsdl4j.feature"
+         version="0.0.0"/>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.wst.internet.monitor.core"/>
+      <import plugin="org.eclipse.wst.server.core"/>
+      <import plugin="org.eclipse.wst.command.env.core"/>
+      <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.wsdl4j"/>
+      <import plugin="org.apache.wsil4j"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.wst.command.env.ui"/>
+      <import plugin="org.eclipse.wst.command.env"/>
+      <import plugin="org.eclipse.wst.common.frameworks"/>
+      <import plugin="org.eclipse.core.commands"/>
+      <import plugin="org.eclipse.wst.common.environment"/>
+      <import plugin="org.uddi4j"/>
+      <import plugin="org.apache.axis"/>
+      <import plugin="org.eclipse.core.runtime.compatibility"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.xsd"/>
+      <import plugin="org.eclipse.wst.common.uriresolver"/>
+      <import plugin="org.eclipse.wst.wsdl.validation"/>
+      <import plugin="org.eclipse.wst.ws.ui"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime" version="2.1.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.wst.ws"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.wst.ws.parser"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.wst.wsdl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.wst.wsi"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
