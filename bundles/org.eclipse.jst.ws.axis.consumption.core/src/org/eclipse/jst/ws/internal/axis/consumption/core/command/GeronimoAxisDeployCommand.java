@@ -51,19 +51,16 @@ public class GeronimoAxisDeployCommand extends AbstractDataModelOperation
   private ResourceBundle resource = ResourceBundle.getBundle("org.eclipse.jst.ws.axis.consumption.core.consumption"); //$NON-NLS-1$
 
   private String projectName_;
-  private String componentName_;
-  
   private static final String AXIS_SERVER_CONFIG_FILE = "axis.ServerConfigFile";
   
   IFolder outputRoot;
   
   /**
    * Constructor for GeronimoAxisDeployCommand.
-   * @param String projectName
-   * @param String componentName
+ * @param String projectName
    * 
    */
-  public GeronimoAxisDeployCommand(String projectName, String componentName)
+  public GeronimoAxisDeployCommand(String projectName)
   {
   }
   
@@ -182,7 +179,7 @@ public class GeronimoAxisDeployCommand extends AbstractDataModelOperation
     
     IStatus status = Status.OK_STATUS;
     // check if server-config.wsdd exists
-    IVirtualComponent component = J2EEUtils.getVirtualComponent( projectName_, componentName_ );
+    IVirtualComponent component = J2EEUtils.getVirtualComponent( projectName_ );
     outputRoot = J2EEUtils.getOutputContainerRoot( component );
     IPath path = new Path( "WEB-INF" ).append( "server-config.wsdd" );    
     IFile descriptorFile = outputRoot.getFile( path );

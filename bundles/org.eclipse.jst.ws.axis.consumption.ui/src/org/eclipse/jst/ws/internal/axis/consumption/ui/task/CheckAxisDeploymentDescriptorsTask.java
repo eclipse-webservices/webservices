@@ -31,14 +31,12 @@ public class CheckAxisDeploymentDescriptorsTask extends AbstractDataModelOperati
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;
 	private IProject serverProject;
-	private String   moduleName_;
     
-  public CheckAxisDeploymentDescriptorsTask( String moduleName )
+  public CheckAxisDeploymentDescriptorsTask( )
   {
     String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-	moduleName_ = moduleName;
   }
 	
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
@@ -53,7 +51,7 @@ public class CheckAxisDeploymentDescriptorsTask extends AbstractDataModelOperati
       IProject project = serverProject;
 	  	  
 
-      filePath = J2EEUtils.getWebInfPath( project, moduleName_ );
+      filePath = J2EEUtils.getWebInfPath( project );
       filePath = filePath.append("/server-config.wsdd");
 
 	  if(filePath==null || filePath.isEmpty())

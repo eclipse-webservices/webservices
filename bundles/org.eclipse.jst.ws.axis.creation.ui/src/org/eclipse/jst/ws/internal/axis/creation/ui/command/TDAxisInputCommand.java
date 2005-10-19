@@ -23,7 +23,6 @@ public class TDAxisInputCommand extends AbstractDataModelOperation {
 	
 	private IWebService ws_;
 	private String serverProject_; 
-	private String serverModule_;
 
 	  private String serverServer_;
 	  private String wsdlURI_;
@@ -34,10 +33,9 @@ public class TDAxisInputCommand extends AbstractDataModelOperation {
 		public TDAxisInputCommand() {
 		}
 		
-		public TDAxisInputCommand(IWebService ws, String project, String module) {
+		public TDAxisInputCommand(IWebService ws, String project) {
 			ws_ = ws;
 			serverProject_ = project;
-			serverModule_ = module;
 		}
 		
 		public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
@@ -65,7 +63,4 @@ public class TDAxisInputCommand extends AbstractDataModelOperation {
 			return wsdlURI_;
 		}
 
-		public String getServerModule() {
-			return serverModule_;
-		}
 }

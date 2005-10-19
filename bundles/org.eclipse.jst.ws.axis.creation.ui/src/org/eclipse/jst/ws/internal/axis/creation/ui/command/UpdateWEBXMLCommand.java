@@ -37,13 +37,11 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 
 	private MessageUtils msgUtils_;
 	private IProject serverProject;
-	private String   moduleName_;
 
-  public UpdateWEBXMLCommand( String moduleName )
+  public UpdateWEBXMLCommand( )
   {
     String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
     msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-	moduleName_ = moduleName;
   }
 
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
@@ -51,7 +49,7 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 		Environment environment = getEnvironment();
 		if (serverProject != null) {
 			IStatus status = null;
-			status = addServlet(serverProject, moduleName_, getAxisServletDescriptor());
+			status = addServlet(serverProject, getAxisServletDescriptor());
 			if (status.getSeverity() == Status.ERROR) {
 				environment.getStatusHandler().reportError(status);
 				return status;
@@ -60,7 +58,7 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 				environment.getStatusHandler().reportError(status);
 				return status;
 			}
-			addServlet(serverProject, moduleName_, getAdmintServletDescriptor());
+			addServlet(serverProject, getAdmintServletDescriptor());
 			if (status.getSeverity() == Status.ERROR) {
 				environment.getStatusHandler().reportError(status);
 				return status;
@@ -93,14 +91,13 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 
 	public IStatus addServlet(
 		IProject webProject,
-		String   moduleName,
 		ServletDescriptor servletDescriptor) {
 
 		WebArtifactEdit webEdit = null;		
 		try {
 			// 
 			WebApp webapp = null;
-      IVirtualComponent vc = ComponentCore.createComponent(webProject, moduleName);
+      IVirtualComponent vc = ComponentCore.createComponent(webProject);
       webEdit = WebArtifactEdit.getWebArtifactEditForWrite(vc);
 			if (webEdit != null)
 			{

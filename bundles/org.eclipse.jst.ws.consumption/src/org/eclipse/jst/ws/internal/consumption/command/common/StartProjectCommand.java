@@ -40,17 +40,15 @@ private String serviceServerTypeID_;
 private String sampleServerTypeID_;
 private IServer serviceExistingServer_;
 private IServer sampleExistingServer_;
-private String  moduleName_;
 
 // rm private Model model_;
 
 /**
  * Default CTOR;
  */
-public StartProjectCommand( String moduleName ) {
+public StartProjectCommand( ) {
 	String pluginId = "org.eclipse.jst.ws.consumption";
 	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-	moduleName_ = moduleName;
 }
 
 /**
@@ -85,7 +83,7 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
       env.getStatusHandler().reportError(status);
       return status;
     }	
-    IServer instance = ServerUtils.getServerForModule(ServerUtils.getModule(project, moduleName_), serverTypeID, server, true, monitor );
+    IServer instance = ServerUtils.getServerForModule(ServerUtils.getModule(project), serverTypeID, server, true, monitor );
     if (instance == null)
     {
       status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_INSTANCE_NOT_FOUND") );

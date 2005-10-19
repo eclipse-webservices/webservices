@@ -33,16 +33,14 @@ public class MoveDeploymentFilesTask extends AbstractDataModelOperation {
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;
 	private IProject serverProject;
-	private String   moduleName_;
 	
     private JavaWSDLParameter javaWSDLParam_;
 	
-	public MoveDeploymentFilesTask( String moduleName )
+	public MoveDeploymentFilesTask( )
     {
       String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
       msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
       coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-	  moduleName_ = moduleName;
     }
 
   /**
@@ -60,7 +58,7 @@ public class MoveDeploymentFilesTask extends AbstractDataModelOperation {
 
 		IProject project = serverProject;
 		//String projectURL = ResourceUtils.getEncodedWebProjectURL(project);
-		String projectURL = ServerUtils.getEncodedWebComponentURL(project, moduleName_);
+		String projectURL = ServerUtils.getEncodedWebComponentURL(project);
 		
 		if (projectURL == null) {
 		    status = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] { project.toString()}));
@@ -79,7 +77,7 @@ public class MoveDeploymentFilesTask extends AbstractDataModelOperation {
 		}
 
 
-		IPath webinfPath = J2EEUtils.getWebInfPath(project, moduleName_ );
+		IPath webinfPath = J2EEUtils.getWebInfPath(project );
 
 			for (int i = 0; i < deployFiles.length; i++) {
         File f = new File(deployFiles[i]);

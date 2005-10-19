@@ -25,7 +25,6 @@ public class BUAxisInputCommand extends AbstractDataModelOperation {
 	
 	private IWebService ws_;
 	private String serverProject_; 
-	private String serverModule_;
 	private String javaBeanName_;
 
 	  private String serviceServerTypeID_;
@@ -36,10 +35,10 @@ public class BUAxisInputCommand extends AbstractDataModelOperation {
 		public BUAxisInputCommand() {
 		}
 		
-		public BUAxisInputCommand(IWebService ws, String project, String module) {
+		public BUAxisInputCommand(IWebService ws, String project) {
 			ws_ = ws;
 			serverProject_ = project; 
-			serverModule_ = module;	}
+		}
 		
 		public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 		{
@@ -77,10 +76,6 @@ public class BUAxisInputCommand extends AbstractDataModelOperation {
 		  {
 		    return serviceServerTypeID_;
 		  }
-
-		public String getServerModule() {
-			return serverModule_;
-		}
 
 		public String getJavaBeanName() {
 			return javaBeanName_;

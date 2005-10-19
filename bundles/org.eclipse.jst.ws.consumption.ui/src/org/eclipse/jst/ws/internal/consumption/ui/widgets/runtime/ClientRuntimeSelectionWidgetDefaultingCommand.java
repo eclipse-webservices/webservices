@@ -412,10 +412,10 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       boolean isValidComponentType = false;
       if (componentName != null && componentName.length()>0)
       {
-        isValidComponentType = J2EEUtils.isWebComponent(project, componentName) ||
-                                     J2EEUtils.isEJBComponent(project, componentName) ||
-                                     J2EEUtils.isAppClientComponent(project, componentName) ||
-                                     J2EEUtils.isJavaComponent(project, componentName);
+        isValidComponentType = J2EEUtils.isWebComponent(project) ||
+                                     J2EEUtils.isEJBComponent(project) ||
+                                     J2EEUtils.isAppClientComponent(project) ||
+                                     J2EEUtils.isJavaComponent(project);
       }
       
       if (isValidComponentType)
@@ -424,9 +424,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
         
         //Get the J2EE level
         String versionString = null;
-        if (!J2EEUtils.isJavaComponent(project, componentName))
+        if (!J2EEUtils.isJavaComponent(project))
         {
-	        int versionId = J2EEUtils.getJ2EEVersion(project, componentName);        
+	        int versionId = J2EEUtils.getJ2EEVersion(project);        
 	        versionString = String.valueOf(versionId);
         }
 
@@ -438,7 +438,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
         
         //Get the client project type
         //String clientProjectTypeId = getClientProjectTypeFromRuntimeId(project, clientIds_.getRuntimeId());
-        String clientComponentTypeId = J2EEUtils.getComponentTypeId(project, componentName);        
+        String clientComponentTypeId = J2EEUtils.getComponentTypeId(project);        
         
         //If the preferred runtime supports this J2EE level and server target, keep it
         if ((versionString == null || WebServiceRuntimeExtensionUtils.doesRuntimeSupportJ2EELevel(versionString, clientIds_.getRuntimeId())) &&
@@ -705,7 +705,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   protected String[] getDefaultEARFromClientProject(IProject project, String componentName)
   {
     String[] projectAndComp = new String[2];
-    IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(project, componentName);
+    IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(project);
     if (earComps.length>0)
     {
       //Pick the first one
@@ -896,7 +896,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   	{
   	  //Get the runtime target on the serviceProject
   	  IRuntime clientTarget = ServerSelectionUtils.getRuntimeTarget(clientProjectName);
-  	  String j2eeVersion = String.valueOf(J2EEUtils.getJ2EEVersion(clientProject, clientComponentName_));
+  	  String j2eeVersion = String.valueOf(J2EEUtils.getJ2EEVersion(clientProject));
   	  if (clientTarget != null)
   	  {
   	  	if (!ServerUtils.isTargetValidForEAR(clientTarget.getRuntimeType().getId(),j2eeVersion))

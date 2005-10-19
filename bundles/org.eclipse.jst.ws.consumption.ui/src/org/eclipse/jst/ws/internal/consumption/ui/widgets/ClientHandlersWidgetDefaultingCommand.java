@@ -60,8 +60,6 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
 
   private IProject project_;
   
-  private String componentName_;
-  
   private WebServicesResource wsClientRes_;
 
   private String serviceRefName_ = null;
@@ -206,20 +204,16 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
       }
       if (project_==null){
         return null;
-      }
-      
-      // get module name
-      componentName_ = getComponentName();
-      
+      }     
        
       List clientWSResourceList = webServicesManager_.get13ServiceRefs(project_);
       if (!clientWSResourceList.isEmpty())
         wsClientRes_ = (WebServicesResource)clientWSResourceList.get(0);
 
-      if (J2EEUtils.isWebComponent(project_, componentName_)) {
+      if (J2EEUtils.isWebComponent(project_)) {
         WebArtifactEdit webEdit = null;
         try {
-          IVirtualComponent vc = ComponentCore.createComponent(project_, componentName_);          
+          IVirtualComponent vc = ComponentCore.createComponent(project_);          
           webEdit = WebArtifactEdit.getWebArtifactEditForRead(vc);
           if (webEdit != null)
           {

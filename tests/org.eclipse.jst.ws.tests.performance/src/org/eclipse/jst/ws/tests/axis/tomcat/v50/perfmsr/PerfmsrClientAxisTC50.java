@@ -47,7 +47,7 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 		assertTrue(webProject.exists());
 
         // Copy Echo.wsdl file to WebContent folder
-        IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject, CLIENT_WEB_MODULE_NAME);
+        IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
 		JUnitUtils.copyTestData("TDJava",destFolder,env_, null);
 		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));
 		assertTrue(sourceFile_.exists());
@@ -109,7 +109,7 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 	private final void verifyOutput() throws Exception {
         IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
     
-        IPath destPath = ResourceUtils.getJavaSourceLocation(webProject, CLIENT_WEB_MODULE_NAME);
+        IPath destPath = ResourceUtils.getJavaSourceLocation(webProject);
         IFolder srcFolder = (IFolder)ResourceUtils.findResource(destPath);
     
 		//IFolder srcFolder = JUnitUtils.getSourceFolderForWebProject(CLIENT_PROJECT_NAME);

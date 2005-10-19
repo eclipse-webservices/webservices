@@ -299,9 +299,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	}
 	
 	IProject project     = ProjectUtilities.getProject( projectName );
-	String   compName    = module_.getText();
 	
-	IVirtualComponent[] components = J2EEUtils.getReferencingEARComponents( project, compName );
+	IVirtualComponent[] components = J2EEUtils.getReferencingEARComponents( project );
 	
 	return components.length == 0 ? null : components[0];
   }
@@ -451,7 +450,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     IProject moduleProj = ResourcesPlugin.getWorkspace().getRoot().getProject(moduleProject_.getText());
     if (moduleProj.exists())
     {
-      IVirtualComponent[] ears = J2EEUtils.getReferencingEARComponents(moduleProj, moduleName);
+      IVirtualComponent[] ears = J2EEUtils.getReferencingEARComponents(moduleProj);
       if (ears != null && ears.length > 0)
       {
         for (int i = 0; i < ears.length; i++)
@@ -488,8 +487,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   	  //Get the runtime target on the project
   	  IRuntime target = ServerSelectionUtils.getRuntimeTarget(projectName);
   	  String j2eeVersion = String.valueOf(J2EEVersionConstants.J2EE_1_4_ID);
-  	  if (J2EEUtils.exists(project, componentName))
-  	    j2eeVersion = String.valueOf(J2EEUtils.getJ2EEVersion(project, componentName));
+  	  if (J2EEUtils.exists(project))
+  	    j2eeVersion = String.valueOf(J2EEUtils.getJ2EEVersion(project));
   	
   	  
   	  if (target != null)
@@ -525,8 +524,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     try {
       byte result = (byte) 0;
       if (module_.getText().length() != 0 && earModule_.getText().length() != 0) {
-    	String moduleName = module_.getText();
-    	String earModuleName = earModule_.getText();
         String projectText = moduleProject_.getText();
         String earText = earProject_.getText();
         IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectText);
@@ -539,8 +536,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
             result = (byte) (result | CREATE_EAR);
           }
 
-          if (project.exists() && J2EEUtils.exists(project, moduleName) && ear.exists() && J2EEUtils.exists(ear, earModuleName)) {
-            if (!J2EEUtils.isComponentAssociated(ear, earModuleName, project, moduleName)) result = (byte) (result | ADD_EAR_ASSOCIATION);
+          if (project.exists() && J2EEUtils.exists(project) && ear.exists() && J2EEUtils.exists(ear)) {
+            if (!J2EEUtils.isComponentAssociated(ear, project)) result = (byte) (result | ADD_EAR_ASSOCIATION);
           }
         }
       }

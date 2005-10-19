@@ -353,7 +353,7 @@ public final class ServerUtils {
 		String[] serverIds = null;
 
 		if (project != null) {
-			IServer[] servers = ServerUtil.getServersByModule(getModule(project, component.getName()), null);
+			IServer[] servers = ServerUtil.getServersByModule(getModule(project), null);
 			if (servers != null) {
 				serverIds = new String[servers.length];
 
@@ -390,18 +390,12 @@ public final class ServerUtils {
 		return (String[]) serverIds.toArray(new String[serverIds.size()]);
 	}
 
-	public static IModule getModule(IProject project, String componentName) {
+	public static IModule getModule(IProject project) {
 		IModule[] modules = ServerUtil.getModules(project);
-		IModule moduleFound = null;
-
-		for (int index = 0; index < modules.length; index++) {
-			if (modules[index].getName().equals(componentName)) {
-				moduleFound = modules[index];
-				break;
-			}
+		if (modules!=null && modules.length!=0) {
+			return modules[0];
 		}
-
-		return moduleFound;
+		return null;
 	}
   
 	/**
@@ -414,9 +408,9 @@ public final class ServerUtils {
 	 * @return The web server module root URL or null if the project has no Web
 	 *         nature or has no association to a server instance.
 	 */
-	public static String getWebComponentURL(IProject project, String componentName) {
+	public static String getWebComponentURL(IProject project) {
 		String webProjectURL = null;
-		IModule module = getModule(project, componentName);
+		IModule module = getModule(project);
 		if (module != null) {
 			IServer serverInstance = getServerForModule(module);
 			if (serverInstance != null) {
@@ -469,10 +463,10 @@ public final class ServerUtils {
 	 *         nature or has no association to a server instance.
 	 */
 	public static String getWebComponentURL(IProject project,
-			String componentName, String serverFactoryId, IServer server) {
+			String serverFactoryId, IServer server) {
 
 		String webProjectURL = null;
-		IModule module = getModule(project, componentName);
+		IModule module = getModule(project);
 		if (module != null) {
 			IServer serverInstance = ServerUtils.getServerForModule(module, serverFactoryId, server, true, new NullProgressMonitor());
 			if (serverInstance != null) {
@@ -489,8 +483,8 @@ public final class ServerUtils {
 		return webProjectURL;
 	}
 
-	public static String getEncodedWebComponentURL(IProject project, String componentName) {
-		String url = getWebComponentURL(project, componentName);
+	public static String getEncodedWebComponentURL(IProject project) {
+		String url = getWebComponentURL(project);
 		if (url != null) {
 			int index = url.lastIndexOf('/');
 			if (index != -1) {
@@ -520,7 +514,7 @@ public final class ServerUtils {
 
 	public static IServer getDefaultExistingServer(IVirtualComponent component) {
 		IProject project = component.getProject();
-		IModule module = getModule(project, component.getName());
+		IModule module = getModule(project);
 		IServer preferredServer = ServerCore.getDefaultServer(module);
 		if (preferredServer != null)
 			return preferredServer;

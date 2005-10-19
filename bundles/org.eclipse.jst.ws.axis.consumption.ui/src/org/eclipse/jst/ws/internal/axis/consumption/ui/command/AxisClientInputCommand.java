@@ -26,7 +26,6 @@ public class AxisClientInputCommand extends AbstractDataModelOperation {
 	private IWebServiceClient wsc_;
 
 		private String clientProject_ = null;
-		private String clientModule_ = null;
 		private String wsdlURL_;
 		private String clientServer_;
 		private WebServicesParser webServicesParser_;
@@ -37,10 +36,9 @@ public class AxisClientInputCommand extends AbstractDataModelOperation {
 		public AxisClientInputCommand() {
 		}
 		
-		public AxisClientInputCommand(IWebServiceClient wsc, IContext context, String project, String module) {
+		public AxisClientInputCommand(IWebServiceClient wsc, IContext context, String project) {
 			wsc_ = wsc;
 			clientProject_ = project; 
-			clientModule_ = module;
 		}
 		
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
@@ -65,10 +63,6 @@ public class AxisClientInputCommand extends AbstractDataModelOperation {
 
 	public String getWsdlURL() {
 		return wsdlURL_;
-	}
-
-	public String getClientModule() {
-		return clientModule_;
 	}
 	  
 		

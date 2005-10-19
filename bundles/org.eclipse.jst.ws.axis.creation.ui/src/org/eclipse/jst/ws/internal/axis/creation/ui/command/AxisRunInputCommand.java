@@ -27,7 +27,7 @@ public class AxisRunInputCommand extends AbstractDataModelOperation{
 	public AxisRunInputCommand() {
 	}
 	
-	public AxisRunInputCommand(AxisWebService ws, String project, String module) {
+	public AxisRunInputCommand(AxisWebService ws, String project) {
 		ws_ = ws;
 		serverProject_ = project; 
 	}

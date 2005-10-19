@@ -37,7 +37,6 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 public class CopyWebServiceUtilsJarCommand extends AbstractDataModelOperation 
 {
   private String sampleProject;
-	private String sampleC;
   private MessageUtils msgUtils;
 	
 /**
@@ -62,7 +61,7 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     ProgressUtils.report( monitor, msgUtils.getMessage( "PROGRESS_INFO_COPY_WEBSERVICE_UTILS" ) );
     IProject sampleIProject = ProjectUtilities.getProject(sampleProject);    
-    IPath webModulePath = J2EEUtils.getWebContentPath(sampleIProject, sampleC);	
+    IPath webModulePath = J2EEUtils.getWebContentPath(sampleIProject);	
     if (webModulePath == null)
       return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_PROJECT_NOT_FOUND") );
       
@@ -120,10 +119,6 @@ private IStatus copyIFile(String source, IPath targetPath, String targetFile, Pl
 public void setSampleProject(String sampleProject)
 {
   this.sampleProject = sampleProject;  
-}
-
-public void setSampleComponent(String sampleComponent){
-  this.sampleC = sampleComponent;
 }
 
 

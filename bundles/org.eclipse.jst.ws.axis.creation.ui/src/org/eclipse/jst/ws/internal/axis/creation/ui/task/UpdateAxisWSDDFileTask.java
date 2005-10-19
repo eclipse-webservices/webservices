@@ -48,25 +48,14 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
     private MessageUtils coreMsgUtils_;
 	private JavaWSDLParameter javaWSDLParam_;
 	private IProject serviceProject_;
-	// rm private Model model_;
-	
-	private String moduleName_;
 
-	public UpdateAxisWSDDFileTask( String moduleName) 
+	public UpdateAxisWSDDFileTask() 
 	{
 	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-		moduleName_ = moduleName;
 	}
 	
-	public UpdateAxisWSDDFileTask(JavaWSDLParameter javaWSDLParam) {
-	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-		javaWSDLParam_ = javaWSDLParam;
-	}
-
 	/**
 	* Execute UpdateAxisWSDDFileTask
 	*/
@@ -90,7 +79,7 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 	
 		IProject project = serviceProject_;
 		//String projectURL = ResourceUtils.getEncodedWebProjectURL(project);
-		String projectURL = ServerUtils.getEncodedWebComponentURL(project, moduleName_);
+		String projectURL = ServerUtils.getEncodedWebComponentURL(project);
 		if (projectURL == null) {
 		    status = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] {project.toString()}));
 		    environment.getStatusHandler().reportError(status);
@@ -112,7 +101,7 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 //		}
 
 //		String webContentPath =	ResourceUtils.getWebModuleServerRoot(project).getLocation().toString();
-		String webContentPath =	J2EEUtils.getWebContentContainer( project, moduleName_ ).getLocation().toString();
+		String webContentPath =	J2EEUtils.getWebContentContainer( project ).getLocation().toString();
 		try {
 
 			if (javaWSDLParam_.getDeploymentFiles() != null

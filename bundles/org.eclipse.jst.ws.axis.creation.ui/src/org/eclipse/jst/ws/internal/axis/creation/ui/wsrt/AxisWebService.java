@@ -74,22 +74,22 @@ public class AxisWebService extends AbstractWebService
 			
 			registerBUDataMappings( environment.getCommandManager().getMappingRegistry());
 			
-			commands.add(new BUAxisInputCommand(this, project, module));
+			commands.add(new BUAxisInputCommand(this, project));
 //			commands.add(new ValidateObjectSelectionCommand());
 			commands.add(new BUAxisDefaultingCommand());
-			commands.add(new DefaultsForServerJavaWSDLCommand(module));
+			commands.add(new DefaultsForServerJavaWSDLCommand());
 			commands.add(new JavaToWSDLMethodCommand());
 			// commands.add(new SimpleFragment( "BeanConfig" ));
 			// commands.add(new SimpleFragment( "AxisServiceBeanMapping" ));
-			commands.add(new BUCheckAxisDeploymentDescriptors(module));
-			commands.add(new CopyAxisJarCommand(module));
+			commands.add(new BUCheckAxisDeploymentDescriptors());
+			commands.add(new CopyAxisJarCommand());
 			commands.add(new WaitForAutoBuildCommand());
 			commands.add(new Java2WSDLCommand());
 			commands.add(new RefreshProjectCommand());
 			commands.add(new WSDL2JavaCommand());
-			commands.add(new MoveJavaFilesTask(module));
-			commands.add(new UpdateAxisWSDDFileTask(module));
-			commands.add(new UpdateWEBXMLCommand(module));
+			commands.add(new MoveJavaFilesTask());
+			commands.add(new UpdateAxisWSDDFileTask());
+			commands.add(new UpdateWEBXMLCommand());
 			commands.add(new RefreshProjectCommand());
 			commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
@@ -98,18 +98,18 @@ public class AxisWebService extends AbstractWebService
 			
 			registerTDDataMappings( environment.getCommandManager().getMappingRegistry());
 			
-			commands.add(new TDAxisInputCommand(this, project, module));
+			commands.add(new TDAxisInputCommand(this, project));
 			commands.add(new AxisSkeletonDefaultingCommand());
 		    commands.add(new ValidateWSDLCommand());
-		    commands.add(new SkeletonConfigWidgetDefaultingCommand(module));
+		    commands.add(new SkeletonConfigWidgetDefaultingCommand());
 //			commands.add(new SimpleFragment( "SkeletonConfig" ));
 //			commands.add(new SimpleFragment( "AxisMappingsWidget" ));
-		    commands.add(new TDCheckAxisDeploymentDescriptors(module));
-			commands.add(new CopyAxisJarCommand(module));
+		    commands.add(new TDCheckAxisDeploymentDescriptors());
+			commands.add(new CopyAxisJarCommand());
 		    commands.add(new WSDL2JavaCommand());
-		    commands.add(new MoveDeploymentFilesTask(module));
-		    commands.add(new Skeleton2WSDLCommand(module));
-		    commands.add(new UpdateWEBXMLCommand(module));
+		    commands.add(new MoveDeploymentFilesTask());
+		    commands.add(new Skeleton2WSDLCommand());
+		    commands.add(new UpdateWEBXMLCommand());
 		    commands.add(new RefreshProjectCommand());
 		    commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
@@ -139,15 +139,14 @@ public class AxisWebService extends AbstractWebService
 					.println("Error - WebServiceScenario should not be Client for AxisWebService");
 			return null;
 		} else {// For BOTTOM_UP and TOP_DOWN
-			commands.add(new AxisRunInputCommand(this, project, module));
-//			commands.add(new StartProjectCommand(module));
+			commands.add(new AxisRunInputCommand(this, project));
 			if (getWebServiceInfo().getServerFactoryId().equals("org.eclipse.jst.server.geronimo.10")) {
-				commands.add(new GeronimoAxisDeployCommand(project, module));
+				commands.add(new GeronimoAxisDeployCommand(project));
 			}
 			else {
 			    commands.add(new AxisDeployCommand());
 			}
-			commands.add( new CopyDeploymentFileCommand( project, module ) );
+			commands.add( new CopyDeploymentFileCommand( project ) );
 			commands.add(new RefreshProjectCommand());
 			if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
 				commands.add(new ComputeAxisSkeletonBeanCommand());

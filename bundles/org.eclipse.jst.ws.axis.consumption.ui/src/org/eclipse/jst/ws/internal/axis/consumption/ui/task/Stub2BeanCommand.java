@@ -50,25 +50,13 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
   private Vector portTypes_;
   private String proxyBean_;
   
-  private String module_ = "";
-  
   private IProject clientProject_;
   
   private MessageUtils msgUtils_;
 
-  public Stub2BeanCommand()
-  {
-    super();
-    portTypes_ = new Vector();
-    String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
-    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);    
-    //setRunInWorkspaceModifyOperation(false);
-  }
-  
-  public Stub2BeanCommand(String moduleName){
+  public Stub2BeanCommand(){
 	  super();
 	  portTypes_ = new Vector();	  
-	  module_ = moduleName;
 	  String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 	  msgUtils_ = new MessageUtils(pluginId + ".plugin", this);	  
   }
@@ -164,7 +152,6 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
             portTypes_.add(portTypeID.toString());
             Stub2BeanInfo stub2BeanInfo = new Stub2BeanInfo();
             stub2BeanInfo.setClientProject(clientProject_);
-            stub2BeanInfo.setClientModuleName(module_);
             String portTypePkgName = WSDLUtils.getPackageName(portType, pkg2nsMapping);
             String portTypeClassName = computeClassName(portTypeQName.getLocalPart());
             stub2BeanInfo.setPackage(portTypePkgName);

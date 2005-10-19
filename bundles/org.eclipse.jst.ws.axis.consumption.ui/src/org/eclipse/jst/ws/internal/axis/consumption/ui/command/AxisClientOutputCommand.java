@@ -31,7 +31,7 @@ public class AxisClientOutputCommand extends AbstractDataModelOperation {
 		public AxisClientOutputCommand() {
 		}
 		
-		public AxisClientOutputCommand(IWebServiceClient wsc, IContext context, String module) {
+		public AxisClientOutputCommand(IWebServiceClient wsc, IContext context) {
 			wsc_ = wsc;
 		}
 		

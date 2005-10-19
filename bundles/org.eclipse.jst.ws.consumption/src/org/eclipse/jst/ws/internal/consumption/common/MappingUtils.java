@@ -41,7 +41,7 @@ public final class MappingUtils
   {
     IPath wsdlFolder=null;
 //  	IPath webModuleServerRoot = ResourceUtils.getWebModuleServerRoot( project ).getFullPath();
-  	IPath webModuleServerRoot = J2EEUtils.getWebContentPath(project, componentName);
+  	IPath webModuleServerRoot = J2EEUtils.getWebContentPath(project);
   	if (webModuleServerRoot != null )
   		wsdlFolder = webModuleServerRoot.append(WSDL_FOLDER);
     return wsdlFolder;

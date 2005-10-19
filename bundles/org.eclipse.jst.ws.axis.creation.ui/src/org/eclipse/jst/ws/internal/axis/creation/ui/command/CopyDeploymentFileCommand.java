@@ -34,18 +34,16 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 public class CopyDeploymentFileCommand extends AbstractDataModelOperation
 {
   private String projectName_;
-  private String componentName_;
   
   /**
    * Constructor for CopyDeploymentFileCommand.
-   * @param String description
-   * @param String name
+ * @param String description
+ * @param String name
    * 
    */
-  public CopyDeploymentFileCommand( String projectName, String componentName )
+  public CopyDeploymentFileCommand( String projectName )
   { 
     projectName_   = projectName;
-    componentName_ = componentName;
   }
 
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
@@ -54,7 +52,7 @@ public class CopyDeploymentFileCommand extends AbstractDataModelOperation
     
     try
     {
-      IVirtualComponent component      = J2EEUtils.getVirtualComponent( projectName_, componentName_ );
+      IVirtualComponent component      = J2EEUtils.getVirtualComponent( projectName_ );
       IFolder           root           = J2EEUtils.getOutputContainerRoot( component );
       IPath             path           = new Path( "WEB-INF" ).append( "server-config.wsdd" );
       IFile             descriptorFile = root.getFile( path );

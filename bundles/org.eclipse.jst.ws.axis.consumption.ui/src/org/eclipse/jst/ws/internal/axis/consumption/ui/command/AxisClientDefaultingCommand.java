@@ -44,11 +44,8 @@ public class AxisClientDefaultingCommand extends AbstractDataModelOperation
 	private boolean clientIsExistingServer_;
 	private String proxyProjectFolder_;
 	private WebServicesParser webServicesParser_;
-	private String            moduleName_;
-	
-	public AxisClientDefaultingCommand( String moduleName ) 
+	public AxisClientDefaultingCommand( ) 
 	{
-	  moduleName_ = moduleName;
 	}
 
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
@@ -210,7 +207,7 @@ public class AxisClientDefaultingCommand extends AbstractDataModelOperation
 	 */
 	public String getProxyProjectFolder() {
 		if (proxyProject_!=null) {
-			proxyProjectFolder_ = ResourceUtils.getJavaSourceLocation(proxyProject_, moduleName_ ).toString();
+			proxyProjectFolder_ = ResourceUtils.getJavaSourceLocation(proxyProject_ ).toString();
 		}		
 		return proxyProjectFolder_;  
 	}

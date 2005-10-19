@@ -153,7 +153,7 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
 	  
 	clientIProject = (IProject)ProjectUtilities.getProject(clientP);
   	
-  	if(J2EEUtils.isWebComponent(clientIProject, clientC)){
+  	if(J2EEUtils.isWebComponent(clientIProject)){
       sampleProject = clientProject;
 	  sampleP = clientP;
 	  sampleC = clientC;

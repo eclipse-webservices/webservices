@@ -51,18 +51,18 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		registerDataMappings( environment.getCommandManager().getMappingRegistry());
 		
 		Vector commands = new Vector();
-		commands.add(new AxisClientInputCommand(this, ctx, project, module));
-		commands.add(new AxisClientDefaultingCommand(module));
+		commands.add(new AxisClientInputCommand(this, ctx, project));
+		commands.add(new AxisClientDefaultingCommand());
 //		commands.add(new SimpleFragment("AxisClientStart"));
 //		commands.add(new SimpleFragment("AxisClientBeanMapping"));
 		commands.add(new DefaultsForHTTPBasicAuthCommand());
-		commands.add(new CopyAxisJarCommand(module));
-		commands.add(new DefaultsForClientJavaWSDLCommand(module));
+		commands.add(new CopyAxisJarCommand());
+		commands.add(new DefaultsForClientJavaWSDLCommand());
 		commands.add(new ValidateWSDLCommand());
 		commands.add(new WSDL2JavaCommand());
 		commands.add(new RefreshProjectCommand());
-		commands.add(new Stub2BeanCommand(module));
-		commands.add(new AxisClientOutputCommand(this,ctx,module));
+		commands.add(new Stub2BeanCommand());
+		commands.add(new AxisClientOutputCommand(this,ctx));
 		commands.add(new BuildProjectCommand());
 		return new SimpleCommandFactory(commands);
 	}

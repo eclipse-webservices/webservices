@@ -58,11 +58,9 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
   private JavaWSDLParameter javaWSDLParam;
   private IProject serverProject;
   private MessageUtils msgUtils_;
-  private String       moduleName_;
 
-  public Skeleton2WSDLCommand( String moduleName ) {
+  public Skeleton2WSDLCommand( ) {
 	msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.creation.ui.plugin", this );
-	moduleName_ = moduleName;
   }
 
   /**
@@ -172,7 +170,7 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
 //			wsdlPath = wsdlPath.append(ejbProject.getMetaFolder().getProjectRelativePath().addTrailingSeparator());
 //		}		
 // TODO:  handle EJB case
-		     wsdlPath = J2EEUtils.getWebContentPath( serverProject, moduleName_ );
+		     wsdlPath = J2EEUtils.getWebContentPath( serverProject );
 			 IPath wsdlFilePath = wsdlPath.append(WSDL_FOLDER).append(port.getName()).addFileExtension(WSDL_EXT);
 		     IFolder folder = ResourceUtils
 								.getWorkspaceRoot()
@@ -220,7 +218,7 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
     if (soapAddress != null)
     {
 //      String projectURL = ResourceUtils.getEncodedWebProjectURL(serverProject);
-	  String projectURL = ServerUtils.getEncodedWebComponentURL(serverProject, moduleName_);
+	  String projectURL = ServerUtils.getEncodedWebComponentURL(serverProject);
       if (projectURL == null)
         return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_PROJECT_URL", new String[] {serverProject.toString()}));
       StringBuffer serviceURL = new StringBuffer(projectURL);

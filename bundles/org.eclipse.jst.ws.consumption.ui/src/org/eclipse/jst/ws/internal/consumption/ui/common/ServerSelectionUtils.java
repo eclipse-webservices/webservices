@@ -49,7 +49,7 @@ public class ServerSelectionUtils
 
     // If the project has been added to an existing server, pick that server
     //IServer[] configuredServers = ServerUtil.getServersByModule(ResourceUtils.getModule(project), null);
-    IServer[] configuredServers = ServerUtil.getServersByModule(ServerUtils.getModule(project, componentName), null);
+    IServer[] configuredServers = ServerUtil.getServersByModule(ServerUtils.getModule(project), null);
     IServer firstSupportedServer = getFirstSupportedServer(configuredServers, runtimeId );
     if (firstSupportedServer != null)
     {

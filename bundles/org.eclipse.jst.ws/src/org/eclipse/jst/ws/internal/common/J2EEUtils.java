@@ -65,38 +65,35 @@ public final class J2EEUtils {
 	/**
 	 * Returns an IVirtualComponent
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static IVirtualComponent getVirtualComponent(IProject project, String componentName){
-		return ComponentCore.createComponent(project, componentName);
+	public static IVirtualComponent getVirtualComponent(IProject project){
+		return ComponentCore.createComponent(project);
 	}
 	
 	/**
 	 * 
 	 * @param projectName
-	 * @param componentName
 	 * @return
 	 */
-	public static IVirtualComponent getVirtualComponent(String projectName, String componentName){
+	public static IVirtualComponent getVirtualComponent(String projectName){
 		IProject project = null;
 		if (projectName!=null && projectName.length() > 0 )
       project = ProjectUtilities.getProject(projectName);
 		
-		return ComponentCore.createComponent(project, componentName);
+		return ComponentCore.createComponent(project);
 	}
 	
 
 	/**
 	 * Returns the J2EE version
 	 * @param p project
-	 * @param component name
 	 * @return int
 	 */
-	public static int getJ2EEVersion(IProject p, String componentName){
+	public static int getJ2EEVersion(IProject p){
 		int j2eeVer = -1;
 		try {
-          IVirtualComponent vc = ComponentCore.createComponent(p, componentName);
+          IVirtualComponent vc = ComponentCore.createComponent(p);
           if (vc!=null){
             j2eeVer = getJ2EEVersion(vc);
           }
@@ -150,11 +147,10 @@ public final class J2EEUtils {
 	/**
 	 * Returns the J2EEVersion
 	 * @param p IProject
-	 * @param compName
 	 * @return String
 	 */
-	public static String getJ2EEVersionAsString(IProject p, String compName){
-		int j2eeVer = getJ2EEVersion(p, compName);
+	public static String getJ2EEVersionAsString(IProject p){
+		int j2eeVer = getJ2EEVersion(p);
 		if (j2eeVer!=-1){
 			return J2EEVersionUtil.getJ2EETextVersion(j2eeVer);
 		}
@@ -463,21 +459,20 @@ public final class J2EEUtils {
         else
           return false;
 		
-		return exists(project, componentName);
+		return exists(project);
 	}
 	
 	/**
 	 * True if there exists a underlying resource backing up the component and project
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static boolean exists(IProject project, String componentName){
-		if (project!=null && componentName!=null &&	componentName.length() > 0) {
+	public static boolean exists(IProject project){
+		if (project!=null) {
             if (!project.exists())
               return false;
             
-			IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+			IVirtualComponent vc = ComponentCore.createComponent(project);
 			return vc.exists();
 		}
 		else 
@@ -488,13 +483,12 @@ public final class J2EEUtils {
 	/**
 	 * Returns an array of EAR components which are referenced by the component
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static IVirtualComponent[] getReferencingEARComponents(IProject project, String componentName){
+	public static IVirtualComponent[] getReferencingEARComponents(IProject project){
 		List ears = new ArrayList();
 		try{
-			IVirtualComponent targetVC = ComponentCore.createComponent(project, componentName);
+			IVirtualComponent targetVC = ComponentCore.createComponent(project);
 			
 			IVirtualComponent[] earVC = getAllEARComponents();
 			for (int i=0; i<earVC.length;i++) {
@@ -517,14 +511,13 @@ public final class J2EEUtils {
 	/**
 	 * Returns the EJB Components referenced by the ear
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static IVirtualComponent[] getReferencingEJBComponentsFromEAR(IProject project, String earComponentName){
+	public static IVirtualComponent[] getReferencingEJBComponentsFromEAR(IProject project){
 
 		List ejbComps = new ArrayList();
 		try{
-			IVirtualComponent vc = ComponentCore.createComponent(project, earComponentName);
+			IVirtualComponent vc = ComponentCore.createComponent(project);
 			IVirtualReference[] refs = vc.getReferences();
 			for (int i=0;i<refs.length;i++){
 				if (isEJBComponent(refs[i].getReferencedComponent())){
@@ -828,14 +821,13 @@ public final class J2EEUtils {
 	/**
 	 * 
 	 * @param project
-	 * @param earComponentName
 	 * @return
 	 */
-	public static IVirtualComponent[] getReferencingEJB20ComponentsFromEAR(IProject project, String earComponentName){
+	public static IVirtualComponent[] getReferencingEJB20ComponentsFromEAR(IProject project){
 		 
 		List ejbComps = new ArrayList();
 		try{
-			IVirtualComponent vc = ComponentCore.createComponent(project, earComponentName);
+			IVirtualComponent vc = ComponentCore.createComponent(project);
 			IVirtualReference[] refs = vc.getReferences();
 			for (int i=0; i<refs.length;i++) {
 				if (isEJB20Component(refs[i].getReferencedComponent()))
@@ -881,13 +873,13 @@ public final class J2EEUtils {
 
 	/**
 	 * 
-	 * @param earComponents
+	 * @param project
 	 * @return
 	 */
-	public static IVirtualComponent[] getReferencingWebComponentsFromEAR(IProject project, String earComponentName){
+	public static IVirtualComponent[] getReferencingWebComponentsFromEAR(IProject project){
 		List webComps = new ArrayList();
 		try{
-			IVirtualComponent vc = ComponentCore.createComponent(project, earComponentName);
+			IVirtualComponent vc = ComponentCore.createComponent(project);
 			IVirtualReference[] refs = vc.getReferences();
 			for (int i=0; i<refs.length;i++) {
 				if (isWebComponent(refs[i].getReferencedComponent()))
@@ -908,19 +900,18 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean isEJB20Component(IVirtualComponent ejbComponent){
-		return isEJB20Component(ejbComponent.getProject(), ejbComponent.getName());
+		return isEJB20Component(ejbComponent.getProject());
 	}
 	
 	/**
 	 * 
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static boolean isEJB20Component(IProject project, String componentName){
+	public static boolean isEJB20Component(IProject project){
 		boolean isEJB = false;
 		try {
-      IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+      IVirtualComponent vc = ComponentCore.createComponent(project);
 		  if (EJBArtifactEdit.isValidEJBModule(vc)) {
 			  EJBArtifactEdit  ejbEdit = null;
 			  try {
@@ -945,15 +936,12 @@ public final class J2EEUtils {
 	/**
 	 * Checks if the component at compName is referenced by the ear at earCompName
 	 * @param earProject
-	 * @param earCompName
 	 * @param project
-	 * @param compName
 	 * @return
 	 */
-	public static boolean isComponentAssociated(IProject earProject, String earCompName,
-								IProject project, String compName) {
-		IVirtualComponent vc1 = ComponentCore.createComponent(earProject, earCompName);
-		IVirtualComponent vc2 = ComponentCore.createComponent(project, compName);
+	public static boolean isComponentAssociated(IProject earProject, IProject project) {
+		IVirtualComponent vc1 = ComponentCore.createComponent(earProject);
+		IVirtualComponent vc2 = ComponentCore.createComponent(project);
 		return isComponentAssociated(vc1, vc2);
 	}
 	
@@ -981,12 +969,9 @@ public final class J2EEUtils {
 	/**
 	 * 
 	 * @param project
-	 * @param componentName
 	 * @param earProject
-	 * @param earComponentName
 	 */
-	public static void associateComponentToEAR(IProject project, String componentName,
-							IProject earProject, String earComponentName) {
+	public static void associateComponentToEAR(IProject project, IProject earProject) {
 		
         IDataModel addComponentToEARDataModel = DataModelFactory.createDataModel(new AddComponentToEnterpriseApplicationDataModelProvider());
 		IVirtualComponent earComp = ComponentCore.createComponent(earProject);
@@ -1009,12 +994,11 @@ public final class J2EEUtils {
 	
 	/**
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static IPath getWebInfPath(IProject project, String componentName){
+	public static IPath getWebInfPath(IProject project){
 		
-		IVirtualComponent component = ComponentCore.createComponent(project, componentName);
+		IVirtualComponent component = ComponentCore.createComponent(project);
 		IVirtualFolder webInfDir = component.getRootFolder().getFolder(new Path("/WEB-INF"));
 		IPath modulePath = webInfDir.getWorkspaceRelativePath();
 	
@@ -1044,11 +1028,10 @@ public final class J2EEUtils {
 	
 	/**
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static IPath getWebContentPath(IProject project, String componentName){
-		IVirtualComponent component = ComponentCore.createComponent(project, componentName);
+	public static IPath getWebContentPath(IProject project){
+		IVirtualComponent component = ComponentCore.createComponent(project);
 		IPath modulePath = component.getRootFolder().getWorkspaceRelativePath();
 		return modulePath;
 	}
@@ -1072,12 +1055,11 @@ public final class J2EEUtils {
 	
 	/**
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static IContainer getWebContentContainer(IProject project, String componentName){
+	public static IContainer getWebContentContainer(IProject project){
 		IContainer container = null;
-		IPath modulePath = getWebContentPath(project, componentName);
+		IPath modulePath = getWebContentPath(project);
 		IResource res = ResourceUtils.findResource(modulePath);
 		if (res instanceof IContainer){
 		  container = (IContainer)res;
@@ -1121,11 +1103,10 @@ public final class J2EEUtils {
 	/**
 	 * True if the component is a valid EJB component
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static boolean isEJBComponent(IProject project, String componentName) {
-    IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+	public static boolean isEJBComponent(IProject project) {
+    IVirtualComponent vc = ComponentCore.createComponent(project);
     return isEJBComponent(vc);
 	}
 
@@ -1150,9 +1131,9 @@ public final class J2EEUtils {
     return false;
 	}	
 	
-  public static String getComponentTypeId(IProject project, String componentName)
+  public static String getComponentTypeId(IProject project)
   {
-    IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+    IVirtualComponent vc = ComponentCore.createComponent(project);
     return vc.getComponentTypeId();
   }
   
@@ -1219,44 +1200,40 @@ public final class J2EEUtils {
 	/**
 	 * True if the component is a valid Java component
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static boolean isJavaComponent(IProject project, String componentName) {
-	IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+	public static boolean isJavaComponent(IProject project) {
+	IVirtualComponent vc = ComponentCore.createComponent(project);
 	return isJavaComponent(vc);
 	}
 
 	/**
 	 * True if the component is a valid Web component
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static boolean isWebComponent(IProject project, String componentName) {
-	IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+	public static boolean isWebComponent(IProject project) {
+	IVirtualComponent vc = ComponentCore.createComponent(project);
 	return isWebComponent(vc);
 	}
 
 	/**
 	 * True if the component is a true Application client component
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static boolean isAppClientComponent(IProject project, String componentName) {
-	IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+	public static boolean isAppClientComponent(IProject project) {
+	IVirtualComponent vc = ComponentCore.createComponent(project);
 	return isAppClientComponent(vc);
 	}
 
 	/**
 	 * True is the component is a valid EAR component
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static boolean isEARComponent(IProject project, String componentName){
-	IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+	public static boolean isEARComponent(IProject project){
+	IVirtualComponent vc = ComponentCore.createComponent(project);
 	return isEARComponent(vc);
 	}
 	

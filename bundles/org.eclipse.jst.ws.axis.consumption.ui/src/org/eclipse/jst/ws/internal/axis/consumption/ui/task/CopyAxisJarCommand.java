@@ -61,16 +61,14 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
   private MessageUtils baseConMsgUtils_;
   private IProject project;
   private Boolean projectRestartRequired_ = Boolean.FALSE;
-  private String  moduleName_;
-
+  
   /**
    * Default CTOR;
    */
-  public CopyAxisJarCommand( String moduleName ) {
+  public CopyAxisJarCommand( ) {
     String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     baseConMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
-	moduleName_ = moduleName;
   }
 
   /**
@@ -117,7 +115,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 
   private void copyAxisJarsToProject(IProject project, IStatus status, Environment env, IProgressMonitor monitor) {
 //    IPath webModulePath = ResourceUtils.getWebModuleServerRoot(project).getFullPath();
-	IPath webModulePath = J2EEUtils.getWebContentPath( project, moduleName_ );
+	IPath webModulePath = J2EEUtils.getWebContentPath( project );
     if (webModulePath == null) {
       status = StatusUtils.errorStatus( baseConMsgUtils_.getMessage("MSG_ERROR_PROJECT_NOT_FOUND"));
       env.getStatusHandler().reportError(status);

@@ -29,9 +29,6 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
     private IProject ejbProject = null;
     
     private String comp1 = webComponentName;
-    private String comp2 = webComponent2Name;
-    private String comp3 = webComp3Name;
-    private String comp4 = webComp4Name;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -61,11 +58,11 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 	 
 	  public void testComponentsExist(){
 		  System.out.println("< BEGIN: testComponentExists ...");
-		  IVirtualComponent vc1 = J2EEUtils.getVirtualComponent(project1, projectName);
-		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2.getName(), project2Name);
+		  IVirtualComponent vc1 = J2EEUtils.getVirtualComponent(project1);
+		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2.getName());
 		  
 		  assertTrue(vc1.exists());
-		  assertTrue(J2EEUtils.exists(project1, projectName));
+		  assertTrue(J2EEUtils.exists(project1));
 		  assertTrue(vc2.exists());
 		  assertTrue(J2EEUtils.exists(project2.getName(), project2Name));
 		  System.out.println("< END: testComponentExists ...");
@@ -74,25 +71,25 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 	  public void testLocationGetterMethods(){
 		  
 		  System.out.println("< BEGIN: testLocationGetterMethods ...");
-		  IPath loc1 = J2EEUtils.getWebContentPath(project1, projectName);
+		  IPath loc1 = J2EEUtils.getWebContentPath(project1);
 		  System.out.println("WebContentPath of project1 = "+loc1);
 		  IResource res = ResourceUtils.getWorkspaceRoot().findMember(loc1);
 		  assertTrue(res.exists());
 		  assertTrue(res.toString().endsWith("WebContent"));
 		  
-		  IPath loc2 = J2EEUtils.getWebContentPath(project2, project2Name);
+		  IPath loc2 = J2EEUtils.getWebContentPath(project2);
 		  System.out.println("WebContentPath of project2 = "+loc2);
 		  IResource res2 = ResourceUtils.getWorkspaceRoot().findMember(loc2);
 		  assertTrue(res2.exists());
 		  assertTrue(res2.toString().endsWith("WebContent"));		  
 		  
-		  IPath loc3 = J2EEUtils.getWebInfPath(project1, projectName);
+		  IPath loc3 = J2EEUtils.getWebInfPath(project1);
 		  System.out.println("Web-INF path = "+loc3);
 		  IResource res3 = ResourceUtils.getWorkspaceRoot().findMember(loc3);
 		  assertTrue(res3.exists());
 		  assertTrue(res3.toString().endsWith("WEB-INF"));
 		  
-		  IContainer container = J2EEUtils.getWebContentContainer(project2, project2Name);
+		  IContainer container = J2EEUtils.getWebContentContainer(project2);
 		  IResource res4 = ResourceUtils.getWorkspaceRoot().findMember(container.getFullPath());
 		  assertEquals(res2, res4);
 		  
@@ -104,12 +101,12 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 		  
 		  System.out.println("< BEGIN: testJ2EEVersionMethods ...");
 	  		  
-		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2, project2Name);
+		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2);
 		  int j2 = J2EEUtils.getJ2EEVersion(vc2);
 		  System.out.println("J2EEVersions p1: "+j2);		  
 		  assertEquals(j2, J2EEVersionConstants.VERSION_1_3);
 		  
-		  String j3 = J2EEUtils.getJ2EEVersionAsString(project1, projectName);
+		  String j3 = J2EEUtils.getJ2EEVersionAsString(project1);
 		  System.out.println("J2EEVersion p1 as String: "+j3);
 		  assertEquals(j3, J2EEVersionConstants.VERSION_1_4_TEXT);
 		  
@@ -180,14 +177,14 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 		  System.out.println("< BEGIN: testReferencingGetterMethods ...");
 		  
 		  System.out.println("isComponentAssociated ..");
-		  J2EEUtils.isComponentAssociated(project1, earCompName, project1, comp1);
+		  J2EEUtils.isComponentAssociated(project1, project1);
 		
-		  String[] names = J2EEUtils.toComponentNamesArray(J2EEUtils.getReferencingEARComponents(project1, projectName));
+		  String[] names = J2EEUtils.toComponentNamesArray(J2EEUtils.getReferencingEARComponents(project1));
 		  printNameStrings(names);
-		  String[] names2 = J2EEUtils.toComponentNamesArray(J2EEUtils.getReferencingEARComponents(project2, project2Name));
+		  String[] names2 = J2EEUtils.toComponentNamesArray(J2EEUtils.getReferencingEARComponents(project2));
 		  printNameStrings(names2);
 		  
-		  String[] names3 = J2EEUtils.toComponentNamesArray(J2EEUtils.getReferencingWebComponentsFromEAR(project1, earCompName));
+		  String[] names3 = J2EEUtils.toComponentNamesArray(J2EEUtils.getReferencingWebComponentsFromEAR(project1));
 		  printNameStrings(names3);
 		  
 		  System.out.println("< END: testReferencingGetterMethods ...");
@@ -198,7 +195,7 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 		  System.out.println("< BEGIN: testIsComponentMethods ...");
 		  
 		  //assertFalse(J2EEUtils.isEJB20Component(ejbProject, ejbComponentName));
-		  assertTrue(J2EEUtils.isEJB20Component(ejbProject, ejbComponentName));
+		  assertTrue(J2EEUtils.isEJB20Component(ejbProject));
 		  
 		  System.out.println("< END: testIsComponentMethods ...");
 	  }

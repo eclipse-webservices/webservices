@@ -47,7 +47,6 @@ public class GSTCGenerateCommand extends AbstractDataModelOperation
     IStatus status = Status.OK_STATUS;
 	CopyWebServiceUtilsJarCommand copy = new CopyWebServiceUtilsJarCommand();    
 	copy.setSampleProject(testInfo.getGenerationProject());
-    copy.setSampleComponent(testInfo.getGenerationModule());
     copy.setEnvironment( env );
 	status = copy.execute( monitor, null);
 	if (status.getSeverity() == Status.ERROR) return status;
@@ -65,9 +64,9 @@ public class GSTCGenerateCommand extends AbstractDataModelOperation
 	//flexible projects  
 	  
 	IProject clientIProject = ProjectUtilities.getProject(testInfo.getClientProject());
-    if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject, testInfo.getClientModule())){   
+    if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject)){   
 	  IProject project = ProjectUtilities.getProject(testInfo.getGenerationProject());
-	  IPath path = J2EEUtils.getWebContentPath(project,testInfo.getGenerationModule());
+	  IPath path = J2EEUtils.getWebContentPath(project);
 	  int index = testInfo.getJspFolder().lastIndexOf("/");
 	  String jsp = testInfo.getJspFolder().substring(index + 1);
 	  StringBuffer sb = new StringBuffer();	

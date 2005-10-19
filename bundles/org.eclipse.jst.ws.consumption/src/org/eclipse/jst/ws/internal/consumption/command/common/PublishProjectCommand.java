@@ -63,7 +63,7 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
     }
 	
     IProject iProject = (IProject)ResourceUtils.findResource(project);
-    IServer instance = ServerUtils.getServerForModule(ResourceUtils.getModule(iProject), serverTypeID, existingServer, true, monitor);
+    IServer instance = ServerUtils.getServerForModule(ServerUtils.getModule(iProject), serverTypeID, existingServer, true, monitor);
     if (instance == null)
     {
       status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_INSTANCE_NOT_FOUND") );

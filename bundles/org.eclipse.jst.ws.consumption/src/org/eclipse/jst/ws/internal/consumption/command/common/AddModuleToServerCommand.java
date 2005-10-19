@@ -53,9 +53,9 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	    {
 	    //Ensure the module is not a Java utility
 	    IProject iproject = ProjectUtilities.getProject(project);
-	    if (!J2EEUtils.isJavaComponent(iproject, module))
+	    if (!J2EEUtils.isJavaComponent(iproject))
 	    {      
-	      IModule imodule = ServerUtils.getModule(iproject, module);
+	      IModule imodule = ServerUtils.getModule(iproject);
 	      if (!ServerUtil.containsModule(server, imodule, null))
 	      {
 	        IModule[] imodules = new IModule[]{imodule};

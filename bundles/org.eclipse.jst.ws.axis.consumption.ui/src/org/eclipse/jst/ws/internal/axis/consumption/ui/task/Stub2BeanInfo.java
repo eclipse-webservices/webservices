@@ -57,7 +57,6 @@ public class Stub2BeanInfo
   private Vector usedNames;
   
   private IProject clientProject_;
-  private String moduleName_;
   
   public Stub2BeanInfo()
   {
@@ -76,10 +75,6 @@ public class Stub2BeanInfo
   	this.clientProject_ =  clientProject;
   }
   
-  public void setClientModuleName(String moduleName) {
-	  this.moduleName_ = moduleName;
-  }
-
   public void setPackage(String pkgName)
   {
     if (pkgName != null && pkgName.length() > 0)
@@ -213,7 +208,7 @@ public class Stub2BeanInfo
     ModuleCoreNature mn = ModuleCoreNature.getModuleCoreNature(clientProject_);
     if (mn!=null)
     {
-    	sourceFolderPath = ResourceUtils.getJavaSourceLocation(clientProject_, moduleName_);
+    	sourceFolderPath = ResourceUtils.getJavaSourceLocation(clientProject_);
         IFolder sourceFolder = (IFolder)ResourceUtils.findResource(sourceFolderPath);
         filePath = sourceFolder.getFile(new Path(sb.toString())).getFullPath();    	
     }

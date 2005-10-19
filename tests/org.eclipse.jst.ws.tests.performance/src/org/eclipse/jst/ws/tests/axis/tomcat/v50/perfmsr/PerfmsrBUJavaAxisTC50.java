@@ -50,7 +50,7 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 		// Copy the contents of data/<test name> to the Web project's source folder.
 		// <Web Project>/JavaSource/foo/Echo.java
 		//IFolder destFolder = JUnitUtils.getSourceFolderForWebProject(WEB_PROJECT_NAME);
-        IPath destPath = ResourceUtils.getJavaSourceLocation(webProject, WEB_MODULE_NAME);
+        IPath destPath = ResourceUtils.getJavaSourceLocation(webProject);
         IFolder folder = (IFolder)ResourceUtils.findResource(destPath);
 		JUnitUtils.copyTestData("BUJava/src",folder,env_, null);
 		sourceFile_ = folder.getFile(new Path("foo/Echo.java"));
@@ -120,7 +120,7 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 	private final void verifyOutput() throws Exception
 	{
         IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
-		IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject, WEB_MODULE_NAME);
+		IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
     
         IFolder wsdlFolder = webContentFolder.getFolder("wsdl");
 		assertTrue(wsdlFolder.exists());

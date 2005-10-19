@@ -351,7 +351,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
         rskejb */
         if (serviceComponentName!=null && serviceComponentName.length()>0)
         {
-          String compTypeId = J2EEUtils.getComponentTypeId(serviceProj, serviceComponentName);
+          String compTypeId = J2EEUtils.getComponentTypeId(serviceProj);
           if (!compTypeId.equals(projectWidget_.getComponentType()))
           {
         	//Construct the error message

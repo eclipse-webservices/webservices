@@ -62,12 +62,12 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
       createSampleProjects(env, monitor );
 	  clientIProject = ProjectUtilities.getProject(testInfo.getClientProject());
 	        
-      if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject, testInfo.getClientModule()))
+      if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject))
       {
         String uri = clientIProject.getName() + ".jar";
-		if (J2EEUtils.isJavaComponent(clientIProject,testInfo.getClientModule()))
+		if (J2EEUtils.isJavaComponent(clientIProject))
           addJavaProjectAsUtilityJar(clientIProject, sampleEARIProject, uri);
-        addJAROrModuleDependency(sampleIProject, testInfo.getGenerationModule(), uri);
+        addJAROrModuleDependency(sampleIProject, uri);
         addBuildPath(sampleIProject, clientIProject);
       }
     }
@@ -87,7 +87,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 //    cmd.execute();
   }
 
-  private void addJAROrModuleDependency(IProject project, String compName, String uri) throws IOException, CoreException
+  private void addJAROrModuleDependency(IProject project, String uri) throws IOException, CoreException
   {
      ArchiveManifest manifest = J2EEProjectUtilities.readManifest(project);
      manifest.mergeClassPath(new String[]{uri});
@@ -107,12 +107,10 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 	  
 	if (testInfo.getClientNeedEAR()) {
 	  if(testInfo.getClientEARProject() == null || testInfo.getClientEARProject().length() == 0){
-		  sampleEARProject = testInfo.getGenerationProject() + DEFAULT_SAMPLE_EAR_PROJECT_EXT;
-	      sampleEARModule = testInfo.getGenerationModule() + DEFAULT_SAMPLE_EAR_PROJECT_EXT;	
+		  sampleEARProject = testInfo.getGenerationProject() + DEFAULT_SAMPLE_EAR_PROJECT_EXT;	
 	  }
 	  else{ 
 	      sampleEARProject = testInfo.getClientEARProject();
-		  sampleEARModule = testInfo.getClientEARModule();
 	  }
 	  
 	  sampleEARIProject  = ProjectUtilities.getProject(sampleEARProject);
@@ -124,7 +122,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 	    createEAR.setServerInstanceId(testInfo.getClientExistingServer().getId());
 	    createEAR.setServerFactoryId(testInfo.getClientServerTypeID());
 	    createEAR.setModuleType(CreateModuleCommand.EAR);
-	    createEAR.setJ2eeLevel(J2EEUtils.getJ2EEVersionAsString(clientIProject,testInfo.getClientModule()));
+	    createEAR.setJ2eeLevel(J2EEUtils.getJ2EEVersionAsString(clientIProject));
       createEAR.setEnvironment( env );
 		  IStatus status = createEAR.execute( monitor, null );
 	    if (status.getSeverity()==Status.ERROR)
@@ -150,11 +148,10 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
       {
         CreateModuleCommand createSample = new CreateModuleCommand();
         createSample.setProjectName(testInfo.getGenerationProject());
-        createSample.setModuleName(testInfo.getGenerationModule());
 		createSample.setModuleType(CreateModuleCommand.WEB);
 		createSample.setServerInstanceId(testInfo.getClientExistingServer().getId());
         createSample.setServerFactoryId(testInfo.getClientServerTypeID());
-        createSample.setJ2eeLevel(J2EEUtils.getJ2EEVersionAsString(clientIProject,testInfo.getClientModule()));
+        createSample.setJ2eeLevel(J2EEUtils.getJ2EEVersionAsString(clientIProject));
         createSample.setEnvironment( env );
 		IStatus status = createSample.execute( monitor, null );
       
@@ -162,7 +159,6 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 //		Associate the client module and service EAR
 	    AssociateModuleWithEARCommand associateCommand = new AssociateModuleWithEARCommand();
 	    associateCommand.setProject(testInfo.getGenerationProject());
-	    associateCommand.setModule(testInfo.getGenerationModule());
 	    associateCommand.setEARProject(sampleEARProject);
 	    associateCommand.setEar(sampleEARModule);
       associateCommand.setEnvironment( env );

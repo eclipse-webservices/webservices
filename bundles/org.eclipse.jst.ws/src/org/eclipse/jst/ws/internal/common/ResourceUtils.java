@@ -288,14 +288,11 @@ public final class ResourceUtils {
 	 */
 	public static IVirtualComponent getComponentOf(IPath absolutePath){
 		if (absolutePath.isAbsolute()) {
-			String componentName = absolutePath.segment(1);
-			if (componentName != null) {
 				String projectName = absolutePath.segment(0);
 				IProject project = getWorkspaceRoot().getProject(projectName);
 				if (projectName != null) {
-					return ComponentCore.createComponent(project, componentName);
+					return ComponentCore.createComponent(project);
 				}
-			}
 		}
 		return null;
 	}
@@ -520,11 +517,10 @@ public final class ResourceUtils {
 	 * Returns the component type id as defined in IModuleConstants
 	 * i.e. IModuleConstants.JST_WEB_MODULE = "jst.web"
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static String getComponentType(IProject project, String componentName){
-		IVirtualComponent comp = ComponentCore.createComponent(project, componentName);
+	public static String getComponentType(IProject project){
+		IVirtualComponent comp = ComponentCore.createComponent(project);
 		return getComponentType(comp);
 	}
 	
@@ -599,7 +595,7 @@ public final class ResourceUtils {
 
 		return outputLocation;
 	}
-	
+
 	/**
 	 * Returns a build source location of the <code>project</code> as an
 	 * <code>IPath</code>, or null if the project either has no Java nature
@@ -617,6 +613,7 @@ public final class ResourceUtils {
 	 *         classpath contains no folders local to the project.
 	 * @deprecated use getJavaSourceLocation(IProject project, String compName)
 	 */
+/*
 	public static IPath getJavaSourceLocation(IProject project) {
 		IPath sourceLocation = null;
 		IPackageFragmentRoot[] fragmentRoots = getJavaPackageFragmentRoots(project);
@@ -639,15 +636,15 @@ public final class ResourceUtils {
 		
 		return sourceLocation;
 	}
-
+*/
+	
 	/**
 	 * Returns the "JavaSource" folder
 	 * @param project
-	 * @param compName
 	 * @return
 	 */
-	public static IPath getJavaSourceLocation(IProject project, String compName){
-		IVirtualComponent component = ComponentCore.createComponent(project, compName);
+	public static IPath getJavaSourceLocation(IProject project){
+		IVirtualComponent component = ComponentCore.createComponent(project);
 		return getJavaSourceLocation(component);			
 	}
 	
@@ -776,13 +773,12 @@ public final class ResourceUtils {
 	/**
 	 * 
 	 * @param project
-	 * @param componentName
 	 * @return
 	 */
-	public static IFolder getWebComponentServerRoot(IProject project, String componentName){
+	public static IFolder getWebComponentServerRoot(IProject project){
 		
       IFolder webModuleServerRoot = null;
-      IVirtualComponent vc = ComponentCore.createComponent(project, componentName);
+      IVirtualComponent vc = ComponentCore.createComponent(project);
       if (vc.exists())
         webModuleServerRoot = J2EEUtils.getOutputContainerRoot(vc);
 

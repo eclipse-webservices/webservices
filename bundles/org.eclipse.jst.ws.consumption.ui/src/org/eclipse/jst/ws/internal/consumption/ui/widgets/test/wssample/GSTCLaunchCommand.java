@@ -59,9 +59,9 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 		//flexible projects  
 		  
 		IProject clientIProject = ProjectUtilities.getProject(testInfo.getClientProject());
-	    if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject, testInfo.getClientModule())){   
+	    if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject)){   
 		  IProject project = ProjectUtilities.getProject(testInfo.getGenerationProject());
-		  IPath path = J2EEUtils.getWebContentPath(project,testInfo.getGenerationModule());
+		  IPath path = J2EEUtils.getWebContentPath(project);
 		  int index = testInfo.getJspFolder().lastIndexOf("/");
 		  String jsp = testInfo.getJspFolder().substring(index + 1);
 		  StringBuffer sb = new StringBuffer();	
@@ -93,8 +93,8 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 	if (status.getSeverity() == Status.ERROR) return status;
 	
 	IProject sampleProject = ProjectUtilities.getProject(testInfo.getGenerationProject());
-	IPath newPath = new Path(ServerUtils.getWebComponentURL(sampleProject,testInfo.getGenerationModule(),testInfo.getClientServerTypeID(),testInfo.getClientExistingServer()));
-	int count = J2EEUtils.getWebContentPath(sampleProject,testInfo.getGenerationModule()).segmentCount();
+	IPath newPath = new Path(ServerUtils.getWebComponentURL(sampleProject, testInfo.getClientServerTypeID(),testInfo.getClientExistingServer()));
+	int count = J2EEUtils.getWebContentPath(sampleProject).segmentCount();
 	
 	newPath = newPath.append(fDestinationFolderPath.removeFirstSegments(count).makeAbsolute());
 	StringBuffer urlString = new StringBuffer(newPath.append(TEST_CLIENT).toString());

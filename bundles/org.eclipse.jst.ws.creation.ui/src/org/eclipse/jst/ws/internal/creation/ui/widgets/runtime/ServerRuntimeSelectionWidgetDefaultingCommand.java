@@ -168,15 +168,15 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       boolean isValidComponentType = false;
       if (componentName != null && componentName.length()>0)
       {
-        isValidComponentType = J2EEUtils.isWebComponent(project, componentName) ||
-                                     J2EEUtils.isEJBComponent(project, componentName);
+        isValidComponentType = J2EEUtils.isWebComponent(project) ||
+                                     J2EEUtils.isEJBComponent(project);
       }
       if (isValidComponentType)
       {
         //WebServiceServerRuntimeTypeRegistry wssrtReg = WebServiceServerRuntimeTypeRegistry.getInstance();
         
         //Get the J2EE level
-        int versionId = J2EEUtils.getJ2EEVersion(project, componentName);
+        int versionId = J2EEUtils.getJ2EEVersion(project);
         String versionString = String.valueOf(versionId);
         
         //Get the runtime target of the project
@@ -454,7 +454,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     boolean earIsSet = false;
     if (initialProject != null && initialProject.exists())
     {
-      IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(initialProject, serviceComponentName_);
+      IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(initialProject);
       if (earComps.length > 0)
       {
         // Pick the first one
@@ -768,7 +768,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   	{
   	  //Get the runtime target on the serviceProject
   	  IRuntime serviceTarget = ServerSelectionUtils.getRuntimeTarget(serviceProjectName);
-  	  String j2eeVersion = String.valueOf(J2EEUtils.getJ2EEVersion(serviceProject, serviceComponentName_));
+  	  String j2eeVersion = String.valueOf(J2EEUtils.getJ2EEVersion(serviceProject));
   	  if (serviceTarget != null)
   	  {
   	  	if (!ServerUtils.isTargetValidForEAR(serviceTarget.getRuntimeType().getId(),j2eeVersion))

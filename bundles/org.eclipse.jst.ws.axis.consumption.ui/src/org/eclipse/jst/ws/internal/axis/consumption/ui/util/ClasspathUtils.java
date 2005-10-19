@@ -60,9 +60,9 @@ public class ClasspathUtils {
 		return instance_;
 	}
 	
-	public String getClasspathString(IProject project, String module) {
+	public String getClasspathString(IProject project) {
 		StringBuffer classpath = new StringBuffer();
-		String[] classpathEntries = getClasspath(project, false, module);
+		String[] classpathEntries = getClasspath(project, false);
 
 		Vector classpathVector = new Vector();
 		for (int i = 0; i < classpathEntries.length; i++) {
@@ -76,8 +76,7 @@ public class ClasspathUtils {
 	}
 
 		
-	private String[] getClasspath(IProject project, boolean isDependent, String inputModule) {
-//		inputModule is valid only if it's not a dependent project
+	private String[] getClasspath(IProject project, boolean isDependent) {
 		String[] moduleClasspath = new String[0];
 		ArrayList projectClasspath = new ArrayList();
 		boolean needJavaClasspath = false;
@@ -105,7 +104,7 @@ public class ClasspathUtils {
 			if (!isDependent) {
 				if (J2EEUtils.isWebComponent(comp)) {
 					needJavaClasspath = true;
-					moduleClasspath = getWEBINFLib(project, inputModule);
+					moduleClasspath = getWEBINFLib(project);
 					for (int j = 0; j < moduleClasspath.length; j++) {
 						projectClasspath.add(moduleClasspath[j]);
 					}
@@ -174,11 +173,11 @@ public class ClasspathUtils {
 		return jars;
 	}
 
-	private String[] getWEBINFLib(IProject project, String module) {
+	private String[] getWEBINFLib(IProject project) {
 		String[] webinfLibJars = new String[0];
 		ArrayList anArrayList = new ArrayList();
 		try {			
-					IVirtualComponent component = ComponentCore.createComponent(project, module);
+					IVirtualComponent component = ComponentCore.createComponent(project);
 					if (component != null) {
 						
 						IVirtualFolder webInfLib = component.getRootFolder().getFolder(new Path(
@@ -257,7 +256,7 @@ public class ClasspathUtils {
 			{			
 				return getClasspath(
 					ResourcesPlugin.getWorkspace().getRoot().getProject(
-						entry.getPath().lastSegment()), true, "");
+						entry.getPath().lastSegment()), true);
 			}
 			case IClasspathEntry.CPE_SOURCE :
 				{

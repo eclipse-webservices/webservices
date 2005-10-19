@@ -42,12 +42,12 @@ public class AssociateModuleWithEARCommand extends AbstractDataModelOperation
 		
 		// associate modules if not already associated
 		if (moduleProject!=null && earProject!=null) {
-			if (!J2EEUtils.isComponentAssociated(earProject, ear_, moduleProject, module_))
-				J2EEUtils.associateComponentToEAR(moduleProject, module_, earProject, ear_);
+			if (!J2EEUtils.isComponentAssociated(earProject, moduleProject))
+				J2EEUtils.associateComponentToEAR(moduleProject, earProject);
 		}
 		
 		// ensure modules are associated otherwise report error
-		if (!J2EEUtils.isComponentAssociated(earProject, ear_, moduleProject, module_)){
+		if (!J2EEUtils.isComponentAssociated(earProject, moduleProject)){
 			status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_UNABLE_TO_ASSOCIATE", new String[]{module_, ear_}) );
 			if (env!=null)
 				env.getStatusHandler().reportError(status);

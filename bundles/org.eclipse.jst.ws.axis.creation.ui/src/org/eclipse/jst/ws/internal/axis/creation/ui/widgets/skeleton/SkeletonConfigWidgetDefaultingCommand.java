@@ -29,11 +29,9 @@ public class SkeletonConfigWidgetDefaultingCommand extends AbstractDataModelOper
   private String wsdlURI;
   private IProject serverProject;
   private JavaWSDLParameter javaWSDLParam;
-  private String moduleName_;
 
-  public SkeletonConfigWidgetDefaultingCommand( String moduleName )
+  public SkeletonConfigWidgetDefaultingCommand( )
   {
-    moduleName_ = moduleName;
   }
   
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
@@ -62,7 +60,7 @@ public class SkeletonConfigWidgetDefaultingCommand extends AbstractDataModelOper
   
   public String getOutputWSDLFolder()
   {
-	  IPath wsdlPath = J2EEUtils.getWebContentPath(serverProject, moduleName_ ).append("wsdl");
+	  IPath wsdlPath = J2EEUtils.getWebContentPath(serverProject ).append("wsdl");
       return wsdlPath.toString();
   }
   
@@ -77,7 +75,7 @@ public class SkeletonConfigWidgetDefaultingCommand extends AbstractDataModelOper
   public String getOutputJavaFolder()
   {
     if (serverProject!=null){
-      return ResourceUtils.getJavaSourceLocation(serverProject, moduleName_).toString();
+      return ResourceUtils.getJavaSourceLocation(serverProject).toString();
     }
     return null;
   }

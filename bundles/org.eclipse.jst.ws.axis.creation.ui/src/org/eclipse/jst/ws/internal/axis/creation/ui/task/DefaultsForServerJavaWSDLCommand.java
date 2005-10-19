@@ -45,15 +45,12 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 	private MessageUtils coreMsgUtils_;
 	private MessageUtils conMsgUtils_;
 	
-	// rm private Model model_;
 	private JavaWSDLParameter javaWSDLParam_ = null;
 	private IProject serviceProject_;
 	private String javaBeanName_; // this needs to be set by the extension with initial selection
 	private String WSDLServiceURL_;
 	private String WSDLServicePathname_;
 	private WebServicesParser WSParser_;
-	// rm private WebServiceElement wse_; // temporary
-	private String moduleName_;
 	
 	private final String WSDL_FOLDER = "wsdl"; //$NON-NLS-1$
 	public final String SERVICE_EXT = "/services/"; //$NON-NLS-1$
@@ -61,27 +58,14 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 	public final byte MODE_BEAN = (byte) 0;
 	public final String SERVICE_NAME_EXT = "Service"; //$NON-NLS-1$
 
-	public DefaultsForServerJavaWSDLCommand( String moduleName ) 
+	public DefaultsForServerJavaWSDLCommand( ) 
 	{
 		String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
 	    conMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.ui.plugin", this );
-		moduleName_  = moduleName;
 	}
 	
-
-	public DefaultsForServerJavaWSDLCommand(
-		JavaWSDLParameter javaWSDLParam,
-		Model model) {
-
-		String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-
-		setJavaWSDLParam(javaWSDLParam);
-	
-	}
 
 	/**
 	* Execute DefaultsForJavaToWSDLTask
@@ -110,7 +94,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 		javaWSDLParam_.setSkeletonDeploy(false);
 
 		javaWSDLParam_.setBeanName(javaBeanName_);
-		String classpath = ClasspathUtils.getInstance().getClasspathString(serviceProject_, moduleName_);
+		String classpath = ClasspathUtils.getInstance().getClasspathString(serviceProject_);
 		javaWSDLParam_.setClasspath(classpath);
 
 		String simpleBeanName = javaBeanName_;
@@ -132,8 +116,8 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 		IPath webinfPath = serviceProject_.getFullPath();
 		try {
 			//if ( ResourceUtils.isWebProject(serviceProject_)) {
-      if (J2EEUtils.isWebComponent(serviceProject_, moduleName_)){
-				moduleServerRoot = ResourceUtils.getJavaSourceLocation(serviceProject_, moduleName_);
+      if (J2EEUtils.isWebComponent(serviceProject_)){
+				moduleServerRoot = ResourceUtils.getJavaSourceLocation(serviceProject_);
 
 				// should use ModuleCore.getSourceContainers();
 //				IContainer container = ResourceUtils.getWebModuleServerRoot(serviceProject_);
@@ -141,8 +125,8 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 //					moduleServerRoot = container.getFullPath();
 //				}
 				
-				modulePath = J2EEUtils.getWebContentPath(serviceProject_, moduleName_);
-				webinfPath = J2EEUtils.getWebInfPath( serviceProject_, moduleName_ );
+				modulePath = J2EEUtils.getWebContentPath(serviceProject_);
+				webinfPath = J2EEUtils.getWebInfPath( serviceProject_ );
 				
 			}
 
@@ -192,15 +176,12 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 		javaWSDLParam_.setStyle(JavaWSDLParameter.STYLE_WRAPPED);
 		javaWSDLParam_.setUse(JavaWSDLParameter.USE_LITERAL);
 
-		String projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_, moduleName_);
+		String projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_);
 		if (projectURL == null) {
 			status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_PROJECT_URL"));
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
-//		else {
-//			javaWSDLParam_.setUrlLocation("http://localhost:8080/"+moduleName_);
-//		}
 		
 		String serviceURL = projectURL + SERVICE_EXT + simpleBeanName;
 		javaWSDLParam_.setUrlLocation(serviceURL);

@@ -178,7 +178,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
 
   private void setBeanList(IVirtualComponent earComponent)
   {
-    IVirtualComponent[] ejbComponentsArray = J2EEUtils.getReferencingEJBComponentsFromEAR(earComponent.getProject(), earComponent.getName());
+    IVirtualComponent[] ejbComponentsArray = J2EEUtils.getReferencingEJBComponentsFromEAR(earComponent.getProject());
     Table beanTable = beanList.getTable();
     beanTable.removeAll();
     ejbBeanNames = new Vector();
@@ -250,7 +250,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
         {
           for (int i = 0; i < earComponents.length; i++)
           {
-			      IVirtualComponent[] ejbComponents = J2EEUtils.getReferencingEJBComponentsFromEAR(earComponents[i].getProject(), earComponents[i].getName());
+			      IVirtualComponent[] ejbComponents = J2EEUtils.getReferencingEJBComponentsFromEAR(earComponents[i].getProject());
 			      for (int j=0; j <ejbComponents.length; j++)
 			      {
               EJBArtifactEdit  ejbEdit = null;
@@ -308,8 +308,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
         if (selEJBName != null)
         {
           IProject project = earComponents[earList.getSelectionIndex()].getProject();
-          String name = earComponents[earList.getSelectionIndex()].getName();
-          IVirtualComponent[] ejbComponents = J2EEUtils.getReferencingEJBComponentsFromEAR(project, name);
+          IVirtualComponent[] ejbComponents = J2EEUtils.getReferencingEJBComponentsFromEAR(project);
           for (int i=0; i<ejbComponents.length; i++)
           {
             EJBArtifactEdit  ejbEdit = null;

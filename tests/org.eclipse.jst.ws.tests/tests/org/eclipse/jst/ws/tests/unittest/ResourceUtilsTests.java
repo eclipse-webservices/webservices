@@ -33,13 +33,13 @@ public class ResourceUtilsTests extends TestCase implements WSJUnitConstants{
 	
 	public void testComponentType(){
 		IProject project = ProjectUtilities.getProject(projectName);
-		String componentType = ResourceUtils.getComponentType(project, projectName);
+		String componentType = ResourceUtils.getComponentType(project);
 		assertEquals(IModuleConstants.JST_WEB_MODULE, componentType);
 	}
 	
 	public void testComponentOf(){
 		IProject project = ProjectUtilities.getProject(projectName);
-        IPath destPath = ResourceUtils.getJavaSourceLocation(project, projectName);
+        IPath destPath = ResourceUtils.getJavaSourceLocation(project);
         IFolder folder = (IFolder)ResourceUtils.findResource(destPath);
         try {
             PersistentResourceContext  resourceContext = PersistentResourceContext.getInstance();
@@ -64,13 +64,13 @@ public class ResourceUtilsTests extends TestCase implements WSJUnitConstants{
 	
 	public void testJavaSourceLocation(){
 		IProject project = ProjectUtilities.getProject(projectName);
-		String javaSourceLoc = ResourceUtils.getJavaSourceLocation(project, projectName).toString();
+		String javaSourceLoc = ResourceUtils.getJavaSourceLocation(project).toString();
 		System.out.println("Java source location = "+javaSourceLoc);
 		assertTrue(javaSourceLoc.endsWith("JavaSource"));
 		
 		// get all the JavaSourceLocations via the VirtualComponent
-		IVirtualComponent vc1 = ComponentCore.createComponent(project, projectName);
-		IVirtualComponent vc2 = ComponentCore.createComponent(project, projectName);
+		IVirtualComponent vc1 = ComponentCore.createComponent(project);
+		IVirtualComponent vc2 = ComponentCore.createComponent(project);
 		IVirtualComponent[] vcs = new IVirtualComponent[]{vc1, vc2};
 		IPath[] paths = ResourceUtils.getAllJavaSourceLocations(vcs);
 		
@@ -91,7 +91,7 @@ public class ResourceUtilsTests extends TestCase implements WSJUnitConstants{
 	
 	public void testWebComponentServerRoot() {
 		IProject project = ProjectUtilities.getProject(projectName);
-		IFolder folder = ResourceUtils.getWebComponentServerRoot(project, projectName);
+		IFolder folder = ResourceUtils.getWebComponentServerRoot(project);
 		assertTrue(folder.exists());
 	
 	}

@@ -51,7 +51,6 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
   private String proxyBean;
   private String sampleProject;
   private String sampleP;
-  private String sampleC;
   private String clientProject;
   private String clientP;
   private String clientC;
@@ -151,7 +150,6 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
 	  int index = sampleProject.indexOf("/");
       if (index!=-1){
         sampleP = sampleProject.substring(0,index);
-        sampleC = sampleProject.substring(index + 1);
       }
 	}
 	
@@ -163,7 +161,6 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
 	testInfo.setJspFolder(jspFolder);
 	testInfo.setEndpoint(endpoints);
 	testInfo.setGenerationProject(sampleP);
-	testInfo.setGenerationModule(sampleC);
 	testInfo.setProxyBean(proxyBean);
 	testInfo.setSetEndpointMethod(setEndpointMethod);
 	testInfo.setClientProject(clientP);

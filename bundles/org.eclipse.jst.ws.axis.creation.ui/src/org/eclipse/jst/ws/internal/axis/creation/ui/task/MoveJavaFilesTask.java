@@ -32,29 +32,13 @@ public class MoveJavaFilesTask extends AbstractDataModelOperation {
 	private MessageUtils coreMsgUtils_;
 	private IProject serviceProject_;
 	
-	private String moduleName_;
 	// rm private Model model_;
 
-	public MoveJavaFilesTask(String moduleName) {
-	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-		this.moduleName_ = moduleName;
-	}
-	
 	public MoveJavaFilesTask() {
 	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
 	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
 	}	
-
-	public MoveJavaFilesTask(JavaWSDLParameter javaWSDLParam) {
-	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-		javaWSDLParam_ = javaWSDLParam;
-
-	}
 
 	/**
 	* Execute DefaultsForJavaToWSDLTask
@@ -80,7 +64,7 @@ public class MoveJavaFilesTask extends AbstractDataModelOperation {
 
 		IProject project = serviceProject_;
 		//String projectURL = ResourceUtils.getEncodedWebProjectURL(project);
-		String projectURL = ServerUtils.getEncodedWebComponentURL(project, moduleName_);
+		String projectURL = ServerUtils.getEncodedWebComponentURL(project);
 		if (projectURL == null) {
 		    status = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] {project.toString()}));
 		    environment.getStatusHandler().reportError(status);

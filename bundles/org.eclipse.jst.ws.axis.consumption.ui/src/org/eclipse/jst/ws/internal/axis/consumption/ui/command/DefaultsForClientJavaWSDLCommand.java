@@ -29,7 +29,6 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.ws.internal.datamodel.Model;
 
 
 public class DefaultsForClientJavaWSDLCommand extends AbstractDataModelOperation {
@@ -40,28 +39,13 @@ public class DefaultsForClientJavaWSDLCommand extends AbstractDataModelOperation
 	private String WSDLServicePathname_;
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;
-	private String moduleName_;
 	
-	public DefaultsForClientJavaWSDLCommand( String moduleName ) {
+	public DefaultsForClientJavaWSDLCommand( ) {
 		String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
 	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-		moduleName_ = moduleName;
 	}
 	
-	/**
-	 * Constructor for DefaultsForClientJavaWSDLCommand.
-	 */
-	public DefaultsForClientJavaWSDLCommand(
-		JavaWSDLParameter javaWSDLParam,
-		Model model) {
-		//super();
-		String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
-	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-		this.javaWSDLParam_ = javaWSDLParam;
-	}
-
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
 		Environment environment = getEnvironment();
@@ -80,14 +64,14 @@ public class DefaultsForClientJavaWSDLCommand extends AbstractDataModelOperation
 	    ModuleCoreNature mn = ModuleCoreNature.getModuleCoreNature(proxyProject_);
 	    if (mn!=null)
 	    {
-			IPath webModuleServerRoot = ResourceUtils.getJavaSourceLocation(proxyProject_, moduleName_ );
+			IPath webModuleServerRoot = ResourceUtils.getJavaSourceLocation(proxyProject_ );
 			//String output = PlatformUtils.getPlatformURL(webModuleServerRoot);
 			String output =	ResourceUtils.findResource(webModuleServerRoot).getLocation().toString();
 //			String output = ResourceUtils.getWorkspaceRoot().getFolder(webModuleServerRoot).getLocation().toString();
 			javaWSDLParam_.setJavaOutput(output);
 
 
-			IFolder webModuleContainer = ResourceUtils.getWebComponentServerRoot(proxyProject_, moduleName_);
+			IFolder webModuleContainer = ResourceUtils.getWebComponentServerRoot(proxyProject_);
 			if (webModuleContainer !=null)
 			{
 			  IPath webModulePath = webModuleContainer.getFullPath();

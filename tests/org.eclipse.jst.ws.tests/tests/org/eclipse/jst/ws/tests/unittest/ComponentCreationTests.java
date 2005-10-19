@@ -54,9 +54,9 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       cmc.setServerFactoryId(SERVERTYPEID_TC50);
       cmc.execute(null, null );
       
-      System.out.println("Done creating Web component..."+projectNm+"\""+componentName);      
+      System.out.println("Done creating Web component..."+projectNm);      
       IProject p = ResourceUtils.getWorkspaceRoot().getProject(projectNm);
-      IVirtualComponent vc = ComponentCore.createComponent(p, componentName);
+      IVirtualComponent vc = ComponentCore.createComponent(p);
       assertTrue(vc.exists());      
       
     }
@@ -73,7 +73,7 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       
       System.out.println("Done creating EJB component.");
       IProject p = ResourceUtils.getWorkspaceRoot().getProject(ejbProjectName);
-      IVirtualComponent vc = ComponentCore.createComponent(p, ejbComponentName);
+      IVirtualComponent vc = ComponentCore.createComponent(p);
       assertTrue(vc.exists());      
     }
     
@@ -88,7 +88,7 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       
       System.out.println("Done creating App client component.");
       IProject p = ResourceUtils.getWorkspaceRoot().getProject(appClientProjectName);
-      IVirtualComponent vc = ComponentCore.createComponent(p, appClientCompName);
+      IVirtualComponent vc = ComponentCore.createComponent(p);
       assertTrue(vc.exists());       
     }
 
@@ -103,7 +103,7 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       
       System.out.println("Done creating EAR component.");
       IProject p = ResourceUtils.getWorkspaceRoot().getProject(projectName);
-      IVirtualComponent vc = ComponentCore.createComponent(p, earCompName);
+      IVirtualComponent vc = ComponentCore.createComponent(p);
       assertTrue(vc.exists());       
     }
 }

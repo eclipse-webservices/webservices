@@ -122,7 +122,7 @@ public class ValidationUtils
     try {
 		if (p!=null && p.exists())
 		{
-  	  int projectJ2EELevel = J2EEUtils.getJ2EEVersion(p, compName);
+  	  int projectJ2EELevel = J2EEUtils.getJ2EEVersion(p);
 		  if (projectJ2EELevel!=-1)
 		  {
 		    String projectJ2EELevelString = String.valueOf(projectJ2EELevel);
