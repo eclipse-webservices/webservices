@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.xsd;
                                       
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.gef.EditPart;
@@ -52,7 +53,7 @@ public class XSDMenuActionContributor implements IMenuActionContributor
 {
   Element currElement;
   Document currDocument;
-  XSDSchema xsdSchema;
+//  XSDSchema xsdSchema;
 //  protected ISelectionProvider iSelectionProvider;
   WSDLEditor wsdlEditor;
 
@@ -73,7 +74,36 @@ public class XSDMenuActionContributor implements IMenuActionContributor
     {
       super(selectionProvider);
     }
+    
+    protected boolean isSchemaReadOnly()
+    {
+    	Iterator eeIt = wsdlEditor.getDefinition().getETypes().getEExtensibilityElements().iterator();
+    	while (eeIt.hasNext()) {
+    		XSDSchemaExtensibilityElement ee = (XSDSchemaExtensibilityElement) eeIt.next();
+    		XSDSchema schema = ee.getSchema();
+    		if (schema == xsdSchema) {
+    			return false;
+    		}
+    	}
+    	
+    	
+    	return true;
+    }
 
+    /*
+     * TODO: For now, just return the first inline schema we have.
+     */
+    protected XSDSchema getCurrentSchemaInEditor()
+    {
+    	Iterator eeIt = wsdlEditor.getDefinition().getETypes().getEExtensibilityElements().iterator();
+    	while (eeIt.hasNext()) {
+    		XSDSchemaExtensibilityElement ee = (XSDSchemaExtensibilityElement) eeIt.next();
+    		return ee.getSchema();    		
+    	}
+    
+      return null;
+    }
+    
     public void contributeMenuActions(IMenuManager manager, Node node, Object object)
     {
       updateXSDSchema();
