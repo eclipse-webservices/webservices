@@ -36,6 +36,7 @@ import org.eclipse.wst.sse.ui.internal.view.events.NodeSelectionChangedEvent;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.GenerateBindingOnSaveDialog;
+import org.eclipse.wst.wsdl.ui.internal.outline.ExtensibleOutlineProvider;
 import org.eclipse.wst.wsdl.ui.internal.outline.WSDLContentOutlinePage;
 import org.eclipse.wst.wsdl.ui.internal.properties.section.WSDLTabbedPropertySheetPage;
 import org.eclipse.wst.wsdl.ui.internal.util.OpenOnSelectionHelper;
@@ -46,7 +47,9 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-
+/**
+ * @deprecated use StructuredTextEditor directly instead
+ */
 public class WSDLTextEditor extends StructuredTextEditor implements INodeSelectionListener, ISelectionChangedListener, ITabbedPropertySheetPageContributor
 {
   protected WSDLEditor wsdlEditor;
@@ -54,6 +57,7 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
   protected WSDLSelectionManager wsdlSelectionManager;
   protected InternalSelectionProvider internalSelectionProvider = new InternalSelectionProvider();
   private IPropertySheetPage fPropertySheetPage;
+  private ExtensibleOutlineProvider fExtensibleOutlineProvider;
 
   public WSDLTextEditor(WSDLEditor wsdlEditor)
   {
@@ -155,8 +159,8 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
     if ((outlinePage == null) || outlinePage.getControl() == null || (outlinePage.getControl().isDisposed()))
     {
       outlinePage = new WSDLContentOutlinePage(wsdlEditor);
-      outlinePage.setContentProvider(wsdlEditor.getExtensibleOutlineProvider());
-      outlinePage.setLabelProvider(wsdlEditor.getExtensibleOutlineProvider());
+      outlinePage.setContentProvider(getExtensibleOutlineProvider());
+      outlinePage.setLabelProvider(getExtensibleOutlineProvider());
       outlinePage.setModel(wsdlEditor.getDefinition()); //XMLDocument());
 
       getViewerSelectionManager().addNodeSelectionListener(this);
@@ -315,5 +319,12 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
 
   public InternalSelectionProvider getInternalSelectionProvider() {
 	return internalSelectionProvider;
+  }
+  
+  public ExtensibleOutlineProvider getExtensibleOutlineProvider() {
+	if (fExtensibleOutlineProvider == null) {
+	  fExtensibleOutlineProvider = new ExtensibleOutlineProvider(getWSDLEditor());
+	}
+	return fExtensibleOutlineProvider;
   }
 }

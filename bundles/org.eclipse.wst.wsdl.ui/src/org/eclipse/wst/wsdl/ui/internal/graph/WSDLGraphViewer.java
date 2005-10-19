@@ -33,7 +33,6 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
-import org.eclipse.wst.wsdl.ui.internal.WSDLTextEditor;
 import org.eclipse.wst.wsdl.ui.internal.actions.CopyGlobalAction;
 import org.eclipse.wst.wsdl.ui.internal.actions.DeleteWSDLAndXSDAction;
 import org.eclipse.wst.wsdl.ui.internal.actions.PasteGlobalAction;
@@ -197,7 +196,7 @@ public class WSDLGraphViewer implements ISelectionChangedListener
  		}
      }
 
-    if (event.getSource() != internalSelectionAdapter && event.getSource() != ((WSDLTextEditor)editor.getTextEditor()).getInternalSelectionProvider())
+    if (event.getSource() != internalSelectionAdapter && event.getSource() != (editor.getTextEditor()).getSelectionProvider())
     {   
       boolean isEmptySelectionRequired = true;
       if (event.getSelection() instanceof IStructuredSelection)

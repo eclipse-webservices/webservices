@@ -31,7 +31,10 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLSelectionManager;
 import org.eclipse.wst.wsdl.ui.internal.actions.WSDLMenuListener;
 import org.eclipse.wst.wsdl.ui.internal.util.OpenOnSelectionHelper;
 
-
+/**
+ * @deprecated Using SSE's ConfiguratbleContentOutlinePage 
+ * instead via WSDLContentOutlineCOnfiguration
+ */
 public class WSDLContentOutlinePage extends ContentOutlinePage 
 {                                                    
   protected WSDLEditor wsdlEditor;

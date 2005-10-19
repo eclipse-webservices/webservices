@@ -184,6 +184,12 @@
 			type="preferencepages"
 			value="org.eclipse.wst.wsdl.ui.internal.util.WSDLPreferencePage"
 			target="org.eclipse.wst.wsdl.ui.internal.WSDLEditor.source" />
+		<sourceViewerConfiguration
+			class="org.eclipse.wst.wsdl.ui.internal.StructuredTextViewerConfigurationWSDL"
+			target="org.eclipse.wst.wsdl.wsdlsource" />
+		<contentOutlineConfiguration
+			class="org.eclipse.wst.wsdl.ui.internal.outline.WSDLContentOutlineConfiguration"
+			target="org.eclipse.wst.wsdl.wsdlsource" />
 		<!--
 			<propertySheetConfiguration
 			class="org.eclipse.wst.wsdl.ui.internal.properties.WSDLPropertySheetConfiguration"

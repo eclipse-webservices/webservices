@@ -87,7 +87,7 @@ public class WSDLActionBarContributor extends SourceEditorActionBarContributor
     textEditor = null;
     if (activeEditor instanceof WSDLEditor)
     {
-      textEditor = ((WSDLEditor) activeEditor).getWSDLTextEditor();
+      textEditor = ((WSDLEditor) activeEditor).getTextEditor();
     }
     
     updateAction(ActionFactory.UNDO.getId(), ITextEditorActionConstants.UNDO, true);
