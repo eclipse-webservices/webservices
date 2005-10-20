@@ -202,7 +202,7 @@
 		point="org.eclipse.wst.common.ui.properties.propertyContributor">
 		<propertyContributor
 			typeMapper="org.eclipse.wst.wsdl.ui.internal.properties.section.WSDLTypeMapper"
-			contributorId="org.eclipse.wst.wsdl.ui.internal.WSDLTextEditor"
+			contributorId="org.eclipse.wst.wsdl.ui.internal.WSDLEditor"
 			sectionDescriptorProvider="org.eclipse.wst.wsdl.ui.internal.properties.section.WSDLSectionDescriptorProvider"
 			labelProvider="org.eclipse.wst.wsdl.ui.internal.properties.section.WSDLLabelProvider">
 			<propertyCategory category="general"></propertyCategory>
@@ -219,7 +219,7 @@
 	<extension
 		point="org.eclipse.wst.common.ui.properties.propertyTabs">
 		<propertyTabs
-			contributorId="org.eclipse.wst.wsdl.ui.internal.WSDLTextEditor">
+			contributorId="org.eclipse.wst.wsdl.ui.internal.WSDLEditor">
 			<propertyTab
 				label="%_UI_LABEL_GENERAL"
 				category="general"

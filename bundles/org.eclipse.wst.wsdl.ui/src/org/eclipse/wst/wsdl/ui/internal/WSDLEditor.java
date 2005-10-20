@@ -585,7 +585,7 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 	 * @see org.eclipse.wst.common.ui.properties.internal.provisional.ITabbedPropertySheetPageContributor#getContributorId()
 	 */
 	public String getContributorId() {
-		return "org.eclipse.wst.wsdl.ui.internal.WSDLTextEditor";
+		return "org.eclipse.wst.wsdl.ui.internal.WSDLEditor";
 		// return getSite().getId();
 	}
 
