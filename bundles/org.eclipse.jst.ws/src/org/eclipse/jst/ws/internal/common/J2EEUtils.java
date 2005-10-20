@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
@@ -37,11 +38,11 @@ import org.eclipse.jst.j2ee.ejb.SessionType;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
@@ -375,7 +376,7 @@ public final class J2EEUtils {
 		try {
 
 			IVirtualComponent vc = ComponentCore.createComponent(project);	
-			if ( vc != null && vc.getComponentTypeId().equals(componentTypeId))
+			if ( vc != null && J2EEProjectUtilities.isProjectOfType(project,componentTypeId))
 			{
 				v.add(vc);
 			}
@@ -396,7 +397,7 @@ public final class J2EEUtils {
 	    Vector v = new Vector(); 
 	    IVirtualComponent[] comps = getAllComponents();
 	    for (int i = 0; i < comps.length; i++) {
-			if (comps[i].getComponentTypeId().equals(componentTypeId))
+			if (J2EEProjectUtilities.isProjectOfType(comps[i].getProject(),componentTypeId))
 			{
 				//Add the project name to the vector if it has not been added already
 				String name = comps[i].getProject().getName();
@@ -1087,17 +1088,11 @@ public final class J2EEUtils {
 	
 	
 	public static boolean isWebComponent(IVirtualComponent comp){
-    if (IModuleConstants.JST_WEB_MODULE.equals(comp.getComponentTypeId())){
-      return true;
-    }
-    return false;
+	    return J2EEProjectUtilities.isDynamicWebProject(comp.getProject());
   }
 	
 	public static boolean isEARComponent(IVirtualComponent comp){
-    if (IModuleConstants.JST_EAR_MODULE.equals(comp.getComponentTypeId())){
-      return true;
-    }
-    return false;
+	    return J2EEProjectUtilities.isEARProject(comp.getProject());
 	}
 
 	/**
@@ -1111,31 +1106,20 @@ public final class J2EEUtils {
 	}
 
 	public static boolean isEJBComponent(IVirtualComponent comp){
-    if (IModuleConstants.JST_EJB_MODULE.equals(comp.getComponentTypeId())){
-      return true;
-    }
-    return false;
+		return J2EEProjectUtilities.isEJBProject(comp.getProject());
 	}	
 
 	public static boolean isAppClientComponent(IVirtualComponent comp){
-    if (IModuleConstants.JST_APPCLIENT_MODULE.equals(comp.getComponentTypeId())){
-      return true;
-    }
-    return false;
+		return J2EEProjectUtilities.isApplicationClientProject(comp.getProject());
 	}
 	
 	public static boolean isJavaComponent(IVirtualComponent comp){
-    if (IModuleConstants.JST_UTILITY_MODULE.equals(comp.getComponentTypeId())){
-      return true;
-    }
-    return false;
+		return J2EEProjectUtilities.isUtilityProject(comp.getProject());
 	}	
 	
-  public static String getComponentTypeId(IProject project)
-  {
-    IVirtualComponent vc = ComponentCore.createComponent(project);
-    return vc.getComponentTypeId();
-  }
+	public static String getComponentTypeId(IProject project) {
+		return J2EEProjectUtilities.getJ2EEProjectType(project);
+	}
   
 	public static String[] toComponentNamesArray(IVirtualComponent[] components){
 		String[] ecNames = new String[components.length];

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -48,6 +49,7 @@ import org.eclipse.jst.j2ee.applicationclient.componentcore.util.AppClientArtifa
 import org.eclipse.jst.j2ee.componentcore.util.EARArtifactEdit;
 import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
@@ -520,8 +522,7 @@ public final class ResourceUtils {
 	 * @return
 	 */
 	public static String getComponentType(IProject project){
-		IVirtualComponent comp = ComponentCore.createComponent(project);
-		return getComponentType(comp);
+		return J2EEProjectUtilities.getJ2EEProjectType(project);
 	}
 	
 	/**
@@ -530,7 +531,7 @@ public final class ResourceUtils {
 	 * @return
 	 */
 	public static String getComponentType(IVirtualComponent component){
-		return component.getComponentTypeId();
+		return getComponentType(component.getProject());
 	}
 	
 	/**
