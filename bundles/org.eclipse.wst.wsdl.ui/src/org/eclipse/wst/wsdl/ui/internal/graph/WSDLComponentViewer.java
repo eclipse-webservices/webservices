@@ -27,12 +27,15 @@ import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.tools.SelectionTool;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IEditorSite;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
@@ -160,8 +163,19 @@ public class WSDLComponentViewer extends ScrollingGraphicalViewer implements ICo
     centerLayout.setVerticalAlignment(CenterLayout.ALIGNMENT_TOP);
     graphicalRootEditPart.getLayer(LayerConstants.PRIMARY_LAYER).setLayoutManager(centerLayout); //new ContainerLayout());//
 
-    setContextMenu(new InternalContextMenuProvider(this, editor));
-
+    ContextMenuProvider menuProvider = new InternalContextMenuProvider(this, editor); 
+    setContextMenu(menuProvider);
+    
+    // add context menu to the graph
+    MenuManager manager = new MenuManager("#popup");
+    manager.addMenuListener(menuProvider);
+    manager.setRemoveAllWhenShown(true);
+    Menu menu = manager.createContextMenu(getControl());
+    getControl().setMenu(menu);    
+    
+    // enable popupMenus extension
+    ((IEditorSite) editor.getSite()).registerContextMenu("org.eclipse.wst.wsdl.ui.popup.graph", manager, menuSelectionProvider, false);
+  
     // add the ConnectionFigure which is responsible for drawing all of the lines in the view
     //                       
     IFigure figure = graphicalRootEditPart.getLayer(LayerConstants.CONNECTION_LAYER);

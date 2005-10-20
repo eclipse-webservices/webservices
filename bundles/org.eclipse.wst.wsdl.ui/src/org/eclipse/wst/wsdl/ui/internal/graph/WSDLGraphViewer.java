@@ -79,7 +79,7 @@ public class WSDLGraphViewer implements ISelectionChangedListener
 
   public Control createControl(Composite parent)
   {
-    componentViewer = new WSDLComponentViewer(editor, null);
+    componentViewer = new WSDLComponentViewer(editor, editor.getSelectionManager());
 
     componentViewer.addSelectionChangedListener(internalSelectionAdapter);
     internalSelectionAdapter.addSelectionChangedListener(editor.getSelectionManager());

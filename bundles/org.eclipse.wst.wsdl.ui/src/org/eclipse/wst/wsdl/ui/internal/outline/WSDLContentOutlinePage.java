@@ -108,7 +108,10 @@ public class WSDLContentOutlinePage extends ContentOutlinePage
     WSDLMenuListener menuListener = new WSDLMenuListener(wsdlEditor, wsdlEditor.getSelectionManager());//, (XSDTextEditor)fTextEditor);
     menuManager.addMenuListener(menuListener);
 
-    setSelectionManager(wsdlEditor.getSelectionManager());
+    setSelectionManager(wsdlEditor.getSelectionManager());    
+    
+    // enable popupMenus extension - Rich - this class is deprecated.  TODO - change this
+    getSite().registerContextMenu("org.eclipse.wst.wsdl.ui.popup.outline", menuManager, wsdlEditor.getSelectionManager());
 	}
 
 

@@ -28,6 +28,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
@@ -342,6 +343,9 @@ public class WSDLMenuActionContributor implements IMenuActionContributor
     	if (renameDialog.showRenameDialog())
     		menu.add(renameDialog);
     }
+    
+    // insertion point for popupMenus extension
+    menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
   }
 
   /*
