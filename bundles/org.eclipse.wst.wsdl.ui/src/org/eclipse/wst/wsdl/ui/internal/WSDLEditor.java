@@ -16,6 +16,8 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -44,11 +46,14 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.TextSelectionNavigationLocation;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.wst.common.ui.properties.internal.provisional.ITabbedPropertySheetPageContributor;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
+import org.eclipse.wst.sse.ui.internal.contentoutline.ConfigurableContentOutlinePage;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
@@ -96,6 +101,102 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 	private IPropertySheetPage fPropertySheetPage;
 	private SourceEditorSelectionListener fSourceEditorSelectionListener;
 	private WSDLSelectionManagerSelectionListener fWSDLSelectionListener;
+
+	/**
+	 * Listener on SSE's outline page's selections that converts DOM
+	 * selections into wsdl selections and notifies WSDL selection manager
+	 */
+	class OutlineTreeSelectionChangeListener implements ISelectionChangedListener, IDoubleClickListener {
+		private ISelectionProvider fProvider = null;
+
+		public OutlineTreeSelectionChangeListener(IContentOutlinePage provider) {
+			fProvider = provider;
+			fProvider.addSelectionChangedListener(OutlineTreeSelectionChangeListener.this);
+			if (provider instanceof ConfigurableContentOutlinePage) {
+				((ConfigurableContentOutlinePage) provider).addDoubleClickListener(OutlineTreeSelectionChangeListener.this);
+			}
+		}
+
+		private ISelection getWSDLSelection(ISelection selection) {
+			ISelection sel = null;
+			if (selection instanceof IStructuredSelection) {
+				IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+				Object o = structuredSelection.getFirstElement();
+
+				// TODO ...
+				// we need to implement a selectionManagerMapping
+				// extension point
+				// so that extensions can specify how they'd like to map
+				// view objects
+				// to selection objects
+				//                                        
+				// if (o instanceof Element)
+				// {
+				// try
+				// {
+				// Object modelObject =
+				// WSDLEditorUtil.getInstance().findModelObjectForElement(wsdlEditor.getDefinition(),
+				// (Element)o);
+				// if (modelObject != null && !(modelObject instanceof
+				// UnknownExtensibilityElement))
+				// {
+				// o = modelObject;
+				// }
+				// }
+				// catch (Exception e)
+				// {
+				// }
+				// }
+				if (o != null)
+					sel = new StructuredSelection(o);
+			}
+			return sel;
+		}
+
+		public void doubleClick(DoubleClickEvent event) {
+			/*
+			 * Selection in outline tree changed so set outline tree's
+			 * selection into editor's selection and say it came from outline
+			 * tree
+			 */
+			if (getSelectionManager() != null && getSelectionManager().enableNotify) {
+				ISelection selection = getWSDLSelection(event.getSelection());
+				if (selection != null) {
+					getSelectionManager().setSelection(selection, fProvider);
+				}
+
+				if(getTextEditor() != null && selection instanceof IStructuredSelection) {
+					int start = -1;
+					int length = 0;
+					Object o = ((IStructuredSelection)selection).getFirstElement();
+					if (o != null)
+						o = WSDLEditorUtil.getInstance().getNodeForObject(o);
+					if (o instanceof IndexedRegion) {
+						start = ((IndexedRegion) o).getStartOffset();
+						length = ((IndexedRegion) o).getEndOffset() - start;
+					}
+					if(start > -1) {
+						getTextEditor().selectAndReveal(start, length);
+					}
+				}
+			}
+		}
+
+		public void selectionChanged(SelectionChangedEvent event) {
+			/*
+			 * Selection in outline tree changed so set outline tree's
+			 * selection into editor's selection and say it came from outline
+			 * tree
+			 */
+			if (getSelectionManager() != null && getSelectionManager().enableNotify) {
+				ISelection selection = getWSDLSelection(event.getSelection());
+				if (selection != null) {
+					getSelectionManager().setSelection(selection, fProvider);
+				}
+			}
+		}
+	}
+	private OutlineTreeSelectionChangeListener fOutlineTreeListener = null;
 
 	/**
 	 * Listener on SSE's source editor's selections that converts DOM
@@ -234,8 +335,14 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 				((WSDLTabbedPropertySheetPage) fPropertySheetPage).setSelectionManager(getSelectionManager());
 
 			}
-
 			return fPropertySheetPage;
+		}
+		else if (IContentOutlinePage.class.equals(key)) {
+			IContentOutlinePage page = (IContentOutlinePage) super.getAdapter(key);
+			if(page != null) {
+				fOutlineTreeListener = new OutlineTreeSelectionChangeListener(page);
+			}
+			result = page;
 		}
 		else {
 			result = super.getAdapter(key);

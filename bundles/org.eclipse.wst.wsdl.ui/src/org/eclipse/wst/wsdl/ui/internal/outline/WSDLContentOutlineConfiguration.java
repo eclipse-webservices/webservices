@@ -18,14 +18,10 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IContentProvider;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -40,7 +36,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.sse.ui.views.contentoutline.ContentOutlineConfiguration;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
-import org.eclipse.wst.wsdl.ui.internal.WSDLSelectionManager;
 import org.eclipse.wst.wsdl.ui.internal.actions.WSDLMenuListener;
 import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelAdapter;
 import org.eclipse.wst.wsdl.ui.internal.util.OpenOnSelectionHelper;
@@ -52,91 +47,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class WSDLContentOutlineConfiguration extends ContentOutlineConfiguration {
-	class TreeSelectionChangeListener implements ISelectionChangedListener, IDoubleClickListener {
-		private TreeViewer fViewer = null;
-		private WSDLSelectionManager fSelectionManager = null;
-
-		public TreeSelectionChangeListener(TreeViewer viewer, WSDLSelectionManager manager) {
-			fViewer = viewer;
-			fSelectionManager = manager;
-		}
-
-		private WSDLSelectionManager getSelectionManager() {
-			if (fSelectionManager == null && getWSDLEditor() != null) {
-				fSelectionManager = getWSDLEditor().getSelectionManager();
-			}
-			return fSelectionManager;
-		}
-
-		private ISelection getWSDLSelection(ISelection selection) {
-			ISelection sel = null;
-			if (selection instanceof IStructuredSelection) {
-				IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-				Object o = structuredSelection.getFirstElement();
-
-				// TODO ...
-				// we need to implement a selectionManagerMapping
-				// extension point
-				// so that extensions can specify how they'd like to map
-				// view objects
-				// to selection objects
-				//                                        
-				// if (o instanceof Element)
-				// {
-				// try
-				// {
-				// Object modelObject =
-				// WSDLEditorUtil.getInstance().findModelObjectForElement(wsdlEditor.getDefinition(),
-				// (Element)o);
-				// if (modelObject != null && !(modelObject instanceof
-				// UnknownExtensibilityElement))
-				// {
-				// o = modelObject;
-				// }
-				// }
-				// catch (Exception e)
-				// {
-				// }
-				// }
-				if (o != null)
-					sel = new StructuredSelection(o);
-			}
-			return sel;
-		}
-
-		public void doubleClick(DoubleClickEvent event) {
-			/*
-			 * Selection in outline tree changed so set outline tree's
-			 * selection into editor's selection and say it came from outline
-			 * tree
-			 */
-			if (getSelectionManager() != null) {
-				ISelection selection = getWSDLSelection(event.getSelection());
-				if (selection != null) {
-					getSelectionManager().setSelection(selection, fViewer);
-				}
-			}
-		}
-
-		public void selectionChanged(SelectionChangedEvent event) {
-			/*
-			 * Selection in outline tree changed so set outline tree's
-			 * selection into editor's selection and say it came from outline
-			 * tree
-			 */
-			if (getSelectionManager() != null) {
-				ISelection selection = getWSDLSelection(event.getSelection());
-				if (selection != null) {
-					getSelectionManager().setSelection(selection, fViewer);
-				}
-			}
-		}
-	}
-
 	private ExtensibleOutlineProvider fOutlineProvider = null;
 	private KeyListener[] fKeyListeners = null;
 	private IMenuListener fMenuListener = null;
-	private TreeSelectionChangeListener fTreeListener = null;
 	private WSDLEditor fEditor = null;
 
 	private ExtensibleOutlineProvider getOutlineProvider() {
@@ -150,16 +63,6 @@ public class WSDLContentOutlineConfiguration extends ContentOutlineConfiguration
 
 	public IContentProvider getContentProvider(TreeViewer viewer) {
 		return getOutlineProvider();
-	}
-
-	public IDoubleClickListener getDoubleClickListener(TreeViewer viewer) {
-		if (fTreeListener == null) {
-			if (getWSDLEditor() != null)
-				fTreeListener = new TreeSelectionChangeListener(viewer, getWSDLEditor().getSelectionManager());
-			else
-				fTreeListener = new TreeSelectionChangeListener(viewer, null);
-		}
-		return fTreeListener;
 	}
 
 	public ILabelProvider getLabelProvider(TreeViewer viewer) {
@@ -217,16 +120,6 @@ public class WSDLContentOutlineConfiguration extends ContentOutlineConfiguration
 			}
 		}
 		return sel;
-	}
-
-	public ISelectionChangedListener getSelectionChangedListener(TreeViewer viewer) {
-		if (fTreeListener == null) {
-			if (getWSDLEditor() != null)
-				fTreeListener = new TreeSelectionChangeListener(viewer, getWSDLEditor().getSelectionManager());
-			else
-				fTreeListener = new TreeSelectionChangeListener(viewer, null);
-		}
-		return fTreeListener;
 	}
 
 	/**
