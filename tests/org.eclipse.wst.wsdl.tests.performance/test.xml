@@ -53,6 +53,15 @@
   	<antcall target="ValidateOAGISWSITestcase"/>
   	<antcall target="ValidateOAGISWSITestcase"/>
 
+  	<antcall target="ValidateWSDLProjectTestCase"/>
+  	<antcall target="ValidateWSDLProjectTestCase"/>
+	<antcall target="ValidateWSDLProjectTestCase"/>
+  	<antcall target="ValidateWSDLProjectTestCase"/>
+  	<antcall target="ValidateWSDLProjectTestCase"/>
+  	<antcall target="ValidateWSDLProjectTestCase"/>
+  	<antcall target="ValidateWSDLProjectTestCase"/>
+  	<antcall target="ValidateWSDLProjectTestCase"/>
+  	
     <antcall target="openEditorOAGISWSDLTestcase"/>
     <antcall target="openEditorOAGISWSDLTestcase"/>
     <antcall target="openEditorOAGISWSDLTestcase"/>
@@ -139,6 +148,16 @@
     </ant>
   </target>
 
+  <target name="ValidateWSDLProjectTestCase">
+    <delete dir="${workspace}" quiet="true"/>
+    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+      <property name="data-dir" value="${workspace}"/>
+      <property name="plugin-name" value="${plugin-name}"/>
+      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.ValidateWSDLProjectTestCase"/>
+      <property name="extraVMargs" value="${extraVMargs}"/>
+    </ant>
+  </target>
+	
   <target name="openEditorOAGISWSDLTestcase">
     <delete dir="${workspace}" quiet="true"/>
     <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
