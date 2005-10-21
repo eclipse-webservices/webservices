@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.Field;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
-import org.eclipse.jem.java.impl.FieldImpl;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
@@ -91,10 +90,10 @@ public class JavaMofTypeVisitor implements Visitor
       status = vAction.visit(javaMofRef.getJavaClass());
     }
     else if (typeNavigator instanceof Field){
-      FieldImpl field = (FieldImpl)typeNavigator;
+      Field field = (Field)typeNavigator;
       JavaMofReflectionCommand javaMofRef = new JavaMofReflectionCommand();
       javaMofRef.setClientProject(clientProject);
-      javaMofRef.setProxyBean(field.getJavaType().getQualifiedName());
+      javaMofRef.setProxyBean(((JavaHelpers)field.getEType()).getQualifiedName());
       javaMofRef.setEnvironment( env_ );
      
       status = javaMofRef.execute( null, null );

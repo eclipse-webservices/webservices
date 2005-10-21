@@ -14,13 +14,14 @@ package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jem.java.Field;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.Method;
-import org.eclipse.jem.java.impl.FieldImpl;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
@@ -111,10 +112,10 @@ public class JavaMofAttributeVisitor implements Visitor
         else 
           spd.setReadMethod(method);
 
-        FieldImpl field = (FieldImpl)javaClass.getFieldNamed(propertyName);
+        Field field = javaClass.getFieldNamed(propertyName);
         JavaHelpers propertyType = null; 
         if(field != null){
-          propertyType = field.getJavaType();
+          propertyType = (JavaHelpers)field.getEType();
           spd.setfStatic(field.isStatic());
         }
         else{

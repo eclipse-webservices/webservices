@@ -13,15 +13,16 @@ package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jem.java.Field;
 import org.eclipse.jem.java.JavaClass;
+import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.JavaVisibilityKind;
 import org.eclipse.jem.java.Method;
-import org.eclipse.jem.java.impl.FieldImpl;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
@@ -88,7 +89,7 @@ public class JavaMofFieldVisitor implements Visitor
       while(list.hasNext()){
         Field field = (Field)list.next();     
         if(field.getJavaVisibility().getValue() == JavaVisibilityKind.PUBLIC && !field.isFinal() && !field.isStatic()){
-          if(fieldCheck((FieldImpl)field))
+          if(fieldCheck(field))
             status = vAction.visit(field);
         }
       }
@@ -96,11 +97,11 @@ public class JavaMofFieldVisitor implements Visitor
     
     return status;
   }       
-  private boolean fieldCheck(FieldImpl field)
+  private boolean fieldCheck(Field field)
   {
     // so its a bean make sure it has a default constructor 
     JavaMofReflectionCommand javaMofRef = new JavaMofReflectionCommand();
-    javaMofRef.setProxyBean(field.getJavaType().getQualifiedName());
+    javaMofRef.setProxyBean(((JavaHelpers)field.getEType()).getQualifiedName());
     javaMofRef.setClientProject(getProject());
     javaMofRef.execute(null, null);
     if(javaMofRef.getJavaClass() instanceof JavaClass){
