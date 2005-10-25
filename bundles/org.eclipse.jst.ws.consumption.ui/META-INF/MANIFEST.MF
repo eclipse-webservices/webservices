@@ -67,5 +67,6 @@ Require-Bundle: org.eclipse.wst.ws.parser,
  org.eclipse.jem.util,
  org.eclipse.wst.wsdl.validation,
  org.eclipse.wst.common.frameworks.ui,
- org.eclipse.wst.common.environment
+ org.eclipse.wst.common.environment,
+ org.eclipse.wst.common.project.facet.core
 Eclipse-AutoStart: true

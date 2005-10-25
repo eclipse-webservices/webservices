@@ -13,6 +13,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
@@ -952,5 +953,4 @@ public class WebServiceRuntimeExtensionUtils
     
     return (String)runtimeIdByLabel_.get(label);    
   }    
-
 }

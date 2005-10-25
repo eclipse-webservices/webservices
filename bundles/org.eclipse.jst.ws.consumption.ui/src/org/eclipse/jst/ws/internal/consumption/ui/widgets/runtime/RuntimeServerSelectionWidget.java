@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.RuntimeServerSelectionDialog;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
@@ -43,11 +43,11 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
   private String            pluginId_ = "org.eclipse.jst.ws.consumption.ui";
   private Text              runtime_;
   private Text              server_;
-  private Text              j2eeVersionText;
+  //private Text              j2eeVersionText;
   private Composite         parent_;
   private boolean           isClientContext_;
   private TypeRuntimeServer ids_;
-  private String             j2eeVersion_;
+  //private String             j2eeVersion_;
   private MessageUtils       msgUtils_;
   private Listener           statusListener_;
   
@@ -86,8 +86,6 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
                                   "TOOLTIP_PWRS_TEXT_SERVER",
                                   INFOPOP_PWRS_GROUP_SERVICE_SERVER, SWT.READ_ONLY );
     
-    j2eeVersionText = uiUtils.createText(parent, "LABEL_J2EE_VERSION", "TOOLTIP_PWRS_J2EE_VERSION", INFOPOP_PWRS_J2EE_VERSION, SWT.READ_ONLY);
-    
     Button editButton = new Button( parent, SWT.NONE );
     editButton.setText( msgUtils_.getMessage("LABEL_EDIT_BUTTON")); 
     editButton.addSelectionListener( new SelectionAdapter()
@@ -115,24 +113,9 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     setLabels();
   }
   
-  public String getJ2EEVersion()
-  {
-    return j2eeVersion_;
-  }
-  
-  public void setJ2EEVersion(String j2eeVersion)
-  {
-    this.j2eeVersion_ = j2eeVersion;
-    j2eeVersionText.setText((j2eeVersion_ != null) ? J2EEUtils.getLabelFromJ2EEVersion(j2eeVersion_) : msgUtils_.getMessage("LABEL_NA"));
-    //setLabels();
-  }
-  
   private void setLabels()
   {
-	  // rskreg
-    //WebServiceClientTypeRegistry registry     = WebServiceClientTypeRegistry.getInstance();
-    //String                       runtimeLabel = registry.getRuntimeLabelById( ids_.getRuntimeId() );
-	String                       runtimeLabel = WebServiceRuntimeExtensionUtils.getRuntimeLabelById( ids_.getRuntimeId() );
+	String                       runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById( ids_.getRuntimeId() );
     String                       serverLabel  = null;
     
     if( ids_.getServerInstanceId() == null )
@@ -142,7 +125,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
       //serverLabel = server == null ? "" : server.getLabel();
       String serverId = ids_.getServerId();
       if (serverId != null)
-        serverLabel = WebServiceRuntimeExtensionUtils.getServerLabelById(serverId);
+        serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId);
     }
     else
     {
@@ -150,7 +133,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
       //serverLabel = registry.getServerInstanceLabelFromInstanceId( ids_.getServerInstanceId() );
       String serverInstanceId = ids_.getServerInstanceId();
       if (serverInstanceId != null)
-        serverLabel = WebServiceRuntimeExtensionUtils.getServerInstanceLabelFromInstanceId(serverInstanceId);
+        serverLabel = WebServiceRuntimeExtensionUtils2.getServerInstanceLabelFromInstanceId(serverInstanceId);
     }
     // rskreg
     runtimeLabel = runtimeLabel == null ? "" : runtimeLabel;
@@ -158,7 +141,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     runtime_.setText( runtimeLabel );
     if (serverLabel != null)
       server_.setText( serverLabel );
-    j2eeVersionText.setText((j2eeVersion_ != null) ? J2EEUtils.getLabelFromJ2EEVersion(j2eeVersion_) : msgUtils_.getMessage("LABEL_NA"));
+ 
   }
   
   public void handleEditButton()
@@ -166,7 +149,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     byte mode = isClientContext_ ? (byte)1 : (byte)0;
     
     RuntimeServerSelectionDialog dialog     
-      = dialog = new RuntimeServerSelectionDialog( parent_.getShell(), mode, ids_, j2eeVersion_ );
+      = dialog = new RuntimeServerSelectionDialog( parent_.getShell(), mode, ids_, "14" ); //rm j2ee
     dialog.create();
     dialog.handleServerViewSelectionEvent();
     int result = dialog.open();
@@ -174,7 +157,6 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     if (result == Window.OK)
     {
       ids_ = dialog.getTypeRuntimeServer();
-      j2eeVersion_ = dialog.getJ2EEVersion();
       setLabels();
       statusListener_.handleEvent(null);
     }  
@@ -201,8 +183,8 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     String scenario = isClientContext_ ? msgUtils_.getMessage( "MSG_CLIENT_SUB" )
                                         : msgUtils_.getMessage( "MSG_SERVICE_SUB" );
     
-	String                       runtimeLabel = WebServiceRuntimeExtensionUtils.getRuntimeLabelById( ids_.getRuntimeId() );
-	String                       serverLabel  = ids_.getServerId() == null ? "" : WebServiceRuntimeExtensionUtils.getServerLabelById(ids_.getServerId());
+	String                       runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById( ids_.getRuntimeId() );
+	String                       serverLabel  = ids_.getServerId() == null ? "" : WebServiceRuntimeExtensionUtils2.getServerLabelById(ids_.getServerId());
     
 	
     if( ids_.getRuntimeId() == null || runtimeLabel == null || runtimeLabel.equals("" ))
@@ -238,7 +220,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
 		
 		if (!foundNonStubRuntime)
 		{	
-			String servertypeLabel = WebServiceRuntimeExtensionUtils.getServerLabelById(serverFactoryId);
+			String servertypeLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverFactoryId);
 			status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_STUB_ONLY",new String[]{servertypeLabel}) );					
 		}
 	}		
@@ -249,7 +231,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
 	if (!(ids_.getServerId() == null) && !(ids_.getRuntimeId() == null) && isClientContext_)
 	{
 
-		if (!WebServiceRuntimeExtensionUtils.webServiceClientRuntimeTypeExists( ids_.getServerId(), ids_.getRuntimeId(), ids_.getTypeId())) 
+		if (!WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported( ids_.getServerId(), ids_.getRuntimeId(), ids_.getTypeId())) 
 		{
 			status = StatusUtils.errorStatus( msgUtils_.getMessage( "MSG_INVALID_SRT_SELECTIONS", new String[]{ scenario } ) );		  
 		}
@@ -260,7 +242,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     if (!(ids_.getServerId() == null) && !(ids_.getRuntimeId() == null) && !isClientContext_)
     {
 
-	  if (!WebServiceRuntimeExtensionUtils.isServerRuntimeTypeSupported(ids_.getServerId(), ids_.getRuntimeId(), ids_.getTypeId())) {	  
+	  if (!WebServiceRuntimeExtensionUtils2.isServerRuntimeTypeSupported(ids_.getServerId(), ids_.getRuntimeId(), ids_.getTypeId())) {	  
         status = StatusUtils.errorStatus( msgUtils_.getMessage( "MSG_INVALID_SRT_SELECTIONS", new String[]{ scenario } ) );      
       }
 

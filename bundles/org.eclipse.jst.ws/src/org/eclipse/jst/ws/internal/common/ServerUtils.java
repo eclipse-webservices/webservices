@@ -408,7 +408,7 @@ public final class ServerUtils {
 	 * @return The web server module root URL or null if the project has no Web
 	 *         nature or has no association to a server instance.
 	 */
-	public static String getWebComponentURL(IProject project) {
+	public static String getWebComponentURL(IProject project, String serverFactoryId) {
 		String webProjectURL = null;
 		IModule module = getModule(project);
 		if (module != null) {
@@ -424,24 +424,38 @@ public final class ServerUtils {
 				}
 			}
 			else {
-				IRuntime projectTarget = ServerCore.getProjectProperties(project).getRuntimeTarget();
-				if (projectTarget!=null)
+				//IRuntime projectTarget = ServerCore.getProjectProperties(project).getRuntimeTarget();
+                IServerType serverType = ServerCore.findServerType(serverFactoryId);               
+				if (serverType!=null)
 				{
-					String projectTargetId = projectTarget.getRuntimeType().getId();
-					String serverFactoryId = getFactoryIdFromRuntimeTargetId(projectTargetId);
-					IServerType serverType = ServerCore.findServerType(serverFactoryId);
 					try {
-						if (serverType!=null) {
-							IServerWorkingCopy serverWC = serverType.createServer(null, null, projectTarget, null);
-							IURLProvider urlProvider = (IURLProvider) serverWC.loadAdapter(IURLProvider.class, null);
-							if (urlProvider!=null) {
-								URL url = urlProvider.getModuleRootURL(module);							
-								if (url != null) {
-									String s = url.toString();
-									webProjectURL = (s.endsWith("/") ? s.substring(0, s.length() - 1) : s);
-								}				
-							}
-						}
+                        //Choose a Runtime which is not a stub
+                        IRuntime nonStubRuntime = null;
+                        IRuntime[] runtimes = ServerUtil.getRuntimes(null, null);
+                        String serverRuntimeTypeId = serverType.getRuntimeType().getId();
+                        for (int i = 0; i < runtimes.length; i++) {
+                            IRuntime runtime = runtimes[i];
+                            String thisRuntimeTypeId = runtime.getRuntimeType().getId();
+                            if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub()) {
+                                //Found an appropriate IRuntime that is not a stub
+                                nonStubRuntime = runtime;
+                                break;
+                            }
+                        }
+                        
+                        if (nonStubRuntime != null)
+                        {
+					      IServerWorkingCopy serverWC = serverType.createServer(null, null, nonStubRuntime, null);
+						  IURLProvider urlProvider = (IURLProvider) serverWC.loadAdapter(IURLProvider.class, null);
+						  if (urlProvider!=null) {
+						     URL url = urlProvider.getModuleRootURL(module);							
+							 if (url != null) {
+								String s = url.toString();
+								webProjectURL = (s.endsWith("/") ? s.substring(0, s.length() - 1) : s);
+							 }				
+						  }
+                        }
+
 					} catch(CoreException ce){
                         Logger.getLogger().log(ce);
 					}
@@ -483,8 +497,8 @@ public final class ServerUtils {
 		return webProjectURL;
 	}
 
-	public static String getEncodedWebComponentURL(IProject project) {
-		String url = getWebComponentURL(project);
+	public static String getEncodedWebComponentURL(IProject project, String serverFactoryId) {
+		String url = getWebComponentURL(project, serverFactoryId);
 		if (url != null) {
 			int index = url.lastIndexOf('/');
 			if (index != -1) {

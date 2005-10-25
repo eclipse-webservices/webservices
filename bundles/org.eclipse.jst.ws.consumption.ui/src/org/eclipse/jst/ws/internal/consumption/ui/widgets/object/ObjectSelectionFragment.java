@@ -11,7 +11,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
@@ -71,8 +71,8 @@ public class ObjectSelectionFragment extends SequenceFragment implements Conditi
     {
       String wst = typeRuntimeServer.getTypeId();
 
-      int scenario = WebServiceRuntimeExtensionUtils.getScenarioFromTypeId(wst);
-      String implId = WebServiceRuntimeExtensionUtils.getImplIdFromTypeId(wst);
+      int scenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(wst);
+      String implId = WebServiceRuntimeExtensionUtils2.getWebServiceImplIdFromTypeId(wst);
       if (scenario == WebServiceScenario.TOPDOWN)
       {
         //Must have WSDL object selection. No choice.
@@ -80,7 +80,7 @@ public class ObjectSelectionFragment extends SequenceFragment implements Conditi
       }
       else
       {
-        WebServiceImpl wsimpl = WebServiceRuntimeExtensionUtils.getWebServiceImplById(implId);
+        WebServiceImpl wsimpl = WebServiceRuntimeExtensionUtils2.getWebServiceImplById(implId);
         if (wsimpl!=null)
         {  
           String objectSelectionWidgetId = wsimpl.getObjectSelectionWidget(); 

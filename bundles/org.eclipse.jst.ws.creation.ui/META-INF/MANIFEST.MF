@@ -39,5 +39,6 @@ Require-Bundle: org.eclipse.wst.command.env,
  org.eclipse.jst.j2ee.ejb,
  org.wsdl4j,
  org.eclipse.wst.common.frameworks,
- org.eclipse.wst.common.environment
+ org.eclipse.wst.common.environment,
+ org.eclipse.wst.common.project.facet.core
 Eclipse-AutoStart: true

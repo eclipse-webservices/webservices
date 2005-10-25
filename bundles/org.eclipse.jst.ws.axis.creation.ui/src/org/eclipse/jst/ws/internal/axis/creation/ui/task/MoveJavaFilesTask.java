@@ -31,6 +31,7 @@ public class MoveJavaFilesTask extends AbstractDataModelOperation {
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;
 	private IProject serviceProject_;
+    private String serviceServerTypeID_;    
 	
 	// rm private Model model_;
 
@@ -64,7 +65,7 @@ public class MoveJavaFilesTask extends AbstractDataModelOperation {
 
 		IProject project = serviceProject_;
 		//String projectURL = ResourceUtils.getEncodedWebProjectURL(project);
-		String projectURL = ServerUtils.getEncodedWebComponentURL(project);
+		String projectURL = ServerUtils.getEncodedWebComponentURL(project, serviceServerTypeID_);
 		if (projectURL == null) {
 		    status = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] {project.toString()}));
 		    environment.getStatusHandler().reportError(status);
@@ -126,4 +127,9 @@ public class MoveJavaFilesTask extends AbstractDataModelOperation {
 	  model_ = model;
 	}
 	*/
+    
+    public void setServiceServerTypeID(String id)
+    {
+      serviceServerTypeID_ = id;
+    }    
 }

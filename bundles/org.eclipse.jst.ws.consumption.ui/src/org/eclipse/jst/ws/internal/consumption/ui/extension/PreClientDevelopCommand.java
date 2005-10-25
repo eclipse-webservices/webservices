@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -42,6 +42,7 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
   */
   
   private TypeRuntimeServer typeRuntimeServer_;
+  private String            clientRuntimeId_;
   private IContext          context_;
   private ISelection        selection_;
   private String            project_;
@@ -76,8 +77,8 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
       }
     }    
     
-    IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils
-        .getWebServiceRuntime(typeRuntimeServer_.getRuntimeId());
+    IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils2
+        .getClientRuntime(clientRuntimeId_);
     WebServiceClientInfo wsInfo = new WebServiceClientInfo();
 
     System.out.println("In Pre client develop command.");
@@ -152,6 +153,11 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
   public void setClientTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )
   {
 	typeRuntimeServer_ = typeRuntimeServer;  
+  }
+  
+  public void setClientRuntimeId( String id)
+  {
+    clientRuntimeId_ = id;
   }
   
   public void setClientJ2EEVersion( String j2eeLevel )

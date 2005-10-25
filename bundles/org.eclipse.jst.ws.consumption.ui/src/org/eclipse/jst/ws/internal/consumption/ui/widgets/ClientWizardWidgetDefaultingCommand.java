@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
@@ -55,9 +55,9 @@ public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperat
 		//WebServiceClientTypeRegistry registry = WebServiceClientTypeRegistry.getInstance();
     String                       type     = getScenarioContext().getClientWebServiceType();
     //String                       runtime  = registry.getAllClientRuntimes()[0];
-		String                       runtime  = WebServiceRuntimeExtensionUtils.getAllClientRuntimes()[0];
+		String                       runtime  = WebServiceRuntimeExtensionUtils2.getAllRuntimesForClientSide()[0];
     //String                       server   = registry.getAllClientServerFactoryIds()[0];
-		String                       server   = WebServiceRuntimeExtensionUtils.getAllClientServerFactoryIds()[0];
+		String                       server   = WebServiceRuntimeExtensionUtils2.getAllClientServerFactoryIds()[0];
     TypeRuntimeServer            result   = new TypeRuntimeServer();
 		// rskreg
     

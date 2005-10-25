@@ -27,17 +27,18 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
 {
   // ClientWizardWidget
   private TypeRuntimeServer    clientIds_;
+  private String               clientRuntimeId_;
   private Boolean              testService;
   private ResourceContext      resourceContext;
   
   // ClientRuntimeSelectionWidget
-  private SelectionListChoices clientChoices_;
+  //private SelectionListChoices clientChoices_;
   private String clientProjectName_;
   private String clientEarProjectName_;
-  private String clientComponentName_;
-  private String clientEarComponentName_;
+  //private String clientComponentName_;
+  //private String clientEarComponentName_;
   private String clientComponentType_;
-  private String j2eeVersion;
+  //private String j2eeVersion;
   private boolean clientNeedEAR_;
   
   private String serviceServerFactoryId_;
@@ -75,17 +76,18 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
     return isClientScenario_; 
   }
   
-  
+  /*
   public void setRuntime2ClientTypes( SelectionListChoices choices )
   {
     clientChoices_ = choices;  
   }
   
+  
   public SelectionListChoices getRuntime2ClientTypes()
   {
     return clientChoices_;  
   }
-  
+  */
   
   public void setClientTypeRuntimeServer(TypeRuntimeServer ids)
   {
@@ -111,6 +113,16 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
     return clientIds_;
   }
   
+  public void setClientRuntimeId(String id)
+  {
+    clientRuntimeId_ = id;
+  }
+  
+  public String getClientRuntimeId()
+  {
+    return clientRuntimeId_;
+  }
+  
   public void setServiceExistingServerInstId(String serverInstId) {
   	this.serverInstId_ = serverInstId;
   }
@@ -132,7 +144,8 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
    */
   public String getClientProject()
   {
-	  return clientProjectName_ + "/" + clientComponentName_;
+	  //return clientProjectName_ + "/" + clientComponentName_;
+      return clientProjectName_ + "/" + clientProjectName_;
   }
 
   /**
@@ -140,10 +153,10 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
    */
   public String getClientProjectEAR()
   {
-    if (clientEarProjectName_!=null && clientEarProjectName_.length()>0 
-        && clientEarComponentName_!=null && clientEarComponentName_.length()>0)
+    if (clientEarProjectName_!=null && clientEarProjectName_.length()>0)
     {
-	    return clientEarProjectName_ + "/" + clientEarComponentName_;
+	    //return clientEarProjectName_ + "/" + clientEarComponentName_;
+      return clientEarProjectName_ + "/" + clientEarProjectName_;
     }
     else
     {
@@ -315,17 +328,18 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
    */
   public String getClientJ2EEVersion()
   {
-	  return j2eeVersion;
+	  return "14"; //rm j2ee
   }
 
   /**
    * @param version The j2eeVersion to set.
    */
+  /*
   public void setClientJ2EEVersion(String version)
   {
 	  j2eeVersion = version;
   }
-  
+  */
   /**
    * 
    * @return returns true if a proxy should be generated and false otherwise.
@@ -379,30 +393,36 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
     this.clientProjectName_ = clientProjectName;
   }
 
+  /*
   public void setClientComponentName(String clientComponentName)
   {
     this.clientComponentName_ = clientComponentName;
   }
-
+  */
+  
   public void setClientEarProjectName(String clientEarProjectName)
   {
     this.clientEarProjectName_ = clientEarProjectName;
   }
   
+  /*
   public void setClientEarComponentName(String clientEarComponentName)
   {
     this.clientEarComponentName_ = clientEarComponentName;
   }
+  */
   
   public String getClientEarProjectName()
   {
     return clientEarProjectName_;
   }
   
+  /*
   public String getClientEarComponentName()
   {
     return clientEarComponentName_;
   }
+  */
   
   public void setServiceServerFactoryId(String id)
   {

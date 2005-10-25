@@ -57,6 +57,7 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
   private WebServicesParser webServicesParser;
   private JavaWSDLParameter javaWSDLParam;
   private IProject serverProject;
+  private String serviceServerTypeID_;  
   private MessageUtils msgUtils_;
 
   public Skeleton2WSDLCommand( ) {
@@ -218,7 +219,7 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
     if (soapAddress != null)
     {
 //      String projectURL = ResourceUtils.getEncodedWebProjectURL(serverProject);
-	  String projectURL = ServerUtils.getEncodedWebComponentURL(serverProject);
+	  String projectURL = ServerUtils.getEncodedWebComponentURL(serverProject, serviceServerTypeID_);
       if (projectURL == null)
         return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_PROJECT_URL", new String[] {serverProject.toString()}));
       StringBuffer serviceURL = new StringBuffer(projectURL);
@@ -276,5 +277,10 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
 	  catch(MalformedURLException mue){}
 	return url;
   }
+  
+  public void setServiceServerTypeID(String id)
+  {
+    serviceServerTypeID_ = id;
+  }  
 
 }

@@ -57,7 +57,7 @@ public class ScenarioDefaults
   
   public String webserviceTypeIdDefault()
   {
-    return "0/org.eclipse.jst.ws.type.java";
+    return "0/org.eclipse.jst.ws.wsImpl.java";
   }
   
   public boolean startWebserviceDefault()

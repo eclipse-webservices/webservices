@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 
 public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefaultingCommand
@@ -27,9 +27,9 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
     String type      = getScenarioContext().getWebServiceType();
-    String runtime   = WebServiceRuntimeExtensionUtils.getDefaultRuntimeValueFor( type );
+    String runtime   = WebServiceRuntimeExtensionUtils2.getDefaultRuntimeValueFor( type );
 	
-    String factoryID = WebServiceRuntimeExtensionUtils.getDefaultServerValueFor(type);    
+    String factoryID = WebServiceRuntimeExtensionUtils2.getDefaultServerValueFor(type);    
     typeRuntimeServer_ = new TypeRuntimeServer();
     
     typeRuntimeServer_.setTypeId( type );
@@ -37,7 +37,7 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
     typeRuntimeServer_.setServerId( factoryID );
     
     //Default the typeId from the initial selection
-    String[] typeIds = WebServiceRuntimeExtensionUtils.getWebServiceTypeBySelection(initialSelection_);
+    String[] typeIds = WebServiceRuntimeExtensionUtils2.getWebServiceTypeBySelection(initialSelection_);
 
     if (typeIds!=null && typeIds.length>0)
     {

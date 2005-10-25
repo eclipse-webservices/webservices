@@ -33,6 +33,7 @@ public class MoveDeploymentFilesTask extends AbstractDataModelOperation {
 	private MessageUtils msgUtils_;
 	private MessageUtils coreMsgUtils_;
 	private IProject serverProject;
+    private String serviceServerTypeID_;    
 	
     private JavaWSDLParameter javaWSDLParam_;
 	
@@ -58,7 +59,7 @@ public class MoveDeploymentFilesTask extends AbstractDataModelOperation {
 
 		IProject project = serverProject;
 		//String projectURL = ResourceUtils.getEncodedWebProjectURL(project);
-		String projectURL = ServerUtils.getEncodedWebComponentURL(project);
+		String projectURL = ServerUtils.getEncodedWebComponentURL(project, serviceServerTypeID_);
 		
 		if (projectURL == null) {
 		    status = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] { project.toString()}));
@@ -112,4 +113,9 @@ public class MoveDeploymentFilesTask extends AbstractDataModelOperation {
 	{
 	  this.serverProject = serverProject;
 	}
+    
+    public void setServiceServerTypeID(String id)
+    {
+      serviceServerTypeID_ = id;
+    }    
 }

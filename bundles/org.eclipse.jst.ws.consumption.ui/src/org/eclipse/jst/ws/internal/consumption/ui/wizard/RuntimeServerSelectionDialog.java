@@ -18,8 +18,8 @@ import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeInfo;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -107,7 +107,8 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   private String typeId_;
   // rskreg
   //private IWebServiceRuntime selectedRuntime_;
-  private WebServiceRuntimeInfo selectedRuntime_;
+  //private WebServiceRuntimeInfo selectedRuntime_;
+  private RuntimeDescriptor selectedRuntime_;
   // rskreg
   private IServer selectedServer_;
   private String selectedServerLabel_;
@@ -408,12 +409,12 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
       // {
 		  
 		  //rskreg
-      boolean wssrtSupported = WebServiceRuntimeExtensionUtils.isServerRuntimeTypeSupported(selectedServerFactoryID_,selectedRuntime_.getId(),typeId_);		  
+      boolean wssrtSupported = WebServiceRuntimeExtensionUtils2.isServerRuntimeTypeSupported(selectedServerFactoryID_,selectedRuntime_.getId(),typeId_);		  
       //if (wssrt != null && wssrtRegistry.isServerSupportedForChosenType(typeId_, selectedServerFactoryID_)) {
         //setOKStatusMessage();
       //}
 	  
-      if (wssrtSupported && WebServiceRuntimeExtensionUtils.isServerSupportedForChosenType(typeId_, selectedServerFactoryID_)) {
+      if (wssrtSupported && WebServiceRuntimeExtensionUtils2.isServerSupportedForChosenServiceType(typeId_, selectedServerFactoryID_)) {
 	        setOKStatusMessage();
 	      }
 	  // rskreg
@@ -435,7 +436,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
       //if (wss == null || selectedRuntime_ == null || !wsctRegistry.webServiceClientRuntimeTypeExists(wss.getId(), selectedRuntime_.getId(), clientId)) {
         //setERRORStatusMessage("%MSG_INVALID_SRT_SELECTIONS");
       //}
-      if (selectedServerFactoryID_==null || selectedRuntime_ == null || !WebServiceRuntimeExtensionUtils.webServiceClientRuntimeTypeExists(selectedServerFactoryID_, selectedRuntime_.getId(), clientId)) {
+      if (selectedServerFactoryID_==null || selectedRuntime_ == null || !WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported(selectedServerFactoryID_, selectedRuntime_.getId(), clientId)) {
 	        setERRORStatusMessage("%MSG_INVALID_SRT_SELECTIONS");
 	  }	  
 	  // rskreg
@@ -603,16 +604,13 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   }
 
   private void processRuntimeListSelection(String runtimeName) {
-	  // rskreg
+
     if (selectionMode_ == MODE_SERVICE) {
-      //selectedRuntime_ = wssrtRegistry.getWebServiceRuntimeByLabel(runtimeName);
-		selectedRuntime_ = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeByLabel(runtimeName);
+		selectedRuntime_ = WebServiceRuntimeExtensionUtils2.getRuntimeByLabel(runtimeName);
     }
     else {
-      //selectedRuntime_ = wsctRegistry.getWebServiceRuntimeByName(runtimeName);
-		selectedRuntime_ = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeByLabel(runtimeName);
+		selectedRuntime_ = WebServiceRuntimeExtensionUtils2.getRuntimeByLabel(runtimeName);
     }
-	 // rskreg
   }
 
   private void processServerListSelection() {
@@ -663,14 +661,10 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     String[] runtimes = null;
 
     if (selectionMode_ == MODE_SERVICE) {
-		// rskreg
-      //runtimes = wssrtRegistry.getRuntimesByType(typeId_);
-		runtimes = WebServiceRuntimeExtensionUtils.getRuntimesByType(typeId_);
+		runtimes = WebServiceRuntimeExtensionUtils2.getRuntimesByServiceType(typeId_);
     }
     else {
-      //runtimes = wsctRegistry.getAllClientRuntimes();
-	  runtimes = WebServiceRuntimeExtensionUtils.getAllClientRuntimes();
-	  // rskreg
+	  runtimes = WebServiceRuntimeExtensionUtils2.getAllRuntimesForClientSide();
     }
 
     TreeItem[] runtimeName = new TreeItem[runtimes.length];
@@ -693,18 +687,14 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     return getRuntime(type).getLabel();
   }
 
-  // rskreg
-  private WebServiceRuntimeInfo getRuntime(String type) {
+  private RuntimeDescriptor getRuntime(String type) {
     if (selectionMode_ == MODE_SERVICE) {
-      //return wssrtRegistry.getRuntimeById(type);
-	  return WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(type);
+	  return WebServiceRuntimeExtensionUtils2.getRuntimeById(type);
     }
     else {
-      //return wsctRegistry.getRuntimeById(type);
-	  return WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(type);
+	  return WebServiceRuntimeExtensionUtils2.getRuntimeById(type);
     }
   }
-  // rskreg
 
   /**
    * 
@@ -763,18 +753,10 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
       String[] serverIds = null;
       // rm String wst = wse.getWebServiceType();
       if (selectionMode_ == MODE_SERVICE) {
-		  // rskreg
-        //serverIds = wssrtRegistry.getServerFactoryIdsByType(typeId_);
-		serverIds = WebServiceRuntimeExtensionUtils.getServerFactoryIdsByType(typeId_);
-		  // rskreg
+		serverIds = WebServiceRuntimeExtensionUtils2.getServerFactoryIdsByServiceType(typeId_);
       }
       else {
-        //serverIds = wsctRegistry.getServerFactoryIdsByClientType(typeId_);
-		  // rskreg
-        //serverIds = wsctRegistry.getAllClientServerFactoryIds();
-		serverIds = WebServiceRuntimeExtensionUtils.getAllClientServerFactoryIds();
-		// rskreg
-
+		serverIds = WebServiceRuntimeExtensionUtils2.getAllClientServerFactoryIds();
       }
       // rm serverId =
       // wssrtRegistry.getServerFactoryIdsByType(wse.getWebServiceType());

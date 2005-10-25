@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -99,11 +99,11 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
     {
       String wst = typeRuntimeServer.getTypeId();
 
-      int scenario = WebServiceRuntimeExtensionUtils.getScenarioFromTypeId(wst);
-      String implId = WebServiceRuntimeExtensionUtils.getImplIdFromTypeId(wst);
+      int scenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(wst);
+      String implId = WebServiceRuntimeExtensionUtils2.getWebServiceImplIdFromTypeId(wst);
 
-      WebServiceImpl wsimpl = WebServiceRuntimeExtensionUtils.getWebServiceImplById(implId);
-	    //IWebServiceType wst = WebServiceRuntimeExtensionUtils.getWebServiceTypeById(typeRuntimeServer.getTypeId());
+      WebServiceImpl wsimpl = WebServiceRuntimeExtensionUtils2.getWebServiceImplById(implId);
+	    //IWebServiceType wst = WebServiceRuntimeExtensionUtils2.getWebServiceTypeById(typeRuntimeServer.getTypeId());
 
       if (wsimpl != null)
       {

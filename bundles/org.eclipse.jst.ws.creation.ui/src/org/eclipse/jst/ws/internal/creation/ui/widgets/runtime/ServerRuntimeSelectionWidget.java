@@ -19,6 +19,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ProjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.RuntimeServerSelectionWidget;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
@@ -57,6 +58,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   private ClientRuntimeSelectionWidget clientWidget_;
   private TextModifyListener           textListener_;
   private MessageUtils msgUtils_;
+  private String serviceRuntimeId_;
   
   private boolean isClientWidgetVisible_ = true;
   
@@ -132,46 +134,31 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     clientWidget_.setClientTypeRuntimeServer( ids );  
   }
   
-  public SelectionListChoices getServiceProject2EARProject()
+  public void setServiceRuntimeId(String id)
   {
-    return projectWidget_.getProjectChoices();
+    serviceRuntimeId_ = id;
   }
   
-  public void setServiceProject2EARProject(SelectionListChoices serviceProject2EARProject)
+  public String getServiceRuntimeId()
   {
-    projectWidget_.setProjectChoices(serviceProject2EARProject);
-  }
-  
-  public SelectionListChoices getRuntime2ClientTypes()
-  {
-    return clientWidget_.getRuntime2ClientTypes();
+    //calculate the most appropriate clientRuntimeId based on current settings.
+    String projectName = projectWidget_.getProjectName();
+    String templateId = projectWidget_.getComponentType();
+    
+    //Find the service runtime that fits this profile best.
+    return WebServiceRuntimeExtensionUtils2.getServiceRuntimeId(runtimeWidget_.getTypeRuntimeServer(), projectName, templateId);    
   }  
   
-  public void setRuntime2ClientTypes(SelectionListChoices runtime2ClientTypes)
+  public void setClientRuntimeId(String id)
   {
-    clientWidget_.setRuntime2ClientTypes(runtime2ClientTypes);
+    clientWidget_.setClientRuntimeId(id);
   }
   
-  public String getServiceJ2EEVersion()
+  public String getClientRuntimeId()
   {
-    return runtimeWidget_.getJ2EEVersion();
-  }
-  
-  public void setServiceJ2EEVersion(String j2eeVersion)
-  {
-    runtimeWidget_.setJ2EEVersion(j2eeVersion);
-    projectWidget_.setJ2EEVersion(j2eeVersion);
-  }
-  
-  public String getClientJ2EEVersion()
-  {
-    return clientWidget_.getJ2EEVersion();
-  }
-  
-  public void setClientJ2EEVersion(String j2eeVersion)
-  {
-    clientWidget_.setJ2EEVersion(j2eeVersion);
-  }
+    //calculate the most appropriate clientRuntimeId based on current settings.
+    return clientWidget_.getClientRuntimeId();
+  } 
   
   public boolean getServiceNeedEAR()
   {
@@ -193,49 +180,9 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     clientWidget_.setClientNeedEAR(b);
   }  
   
-  public String getServiceComponentName()
-  {
-	return projectWidget_.getComponentName();  
-  }
-  
-  public void setServiceComponentName( String name )
-  {
-    projectWidget_.setComponentName( name );
-  }
-  
-  public String getServiceEarComponentName()
-  {
-    return projectWidget_.getEarComponentName();	  
-  }
-  
-  public void setServiceEarComponentName( String name )
-  {
-	projectWidget_.setEarComponentName( name );  
-  }
-  
   public void setServiceComponentType( String type )
   {
 	projectWidget_.setComponentType( type );  
-  }
-  
-  public String getClientComponentName()
-  {
-	return clientWidget_.getClientComponentName();  
-  }
-  
-  public void setClientComponentName( String name )
-  {
-    clientWidget_.setClientComponentName( name );
-  }
-  
-  public String getClientEarComponentName()
-  {
-    return clientWidget_.getClientEarComponentName();	  
-  }
-  
-  public void setClientEarComponentName( String name )
-  {
-	clientWidget_.setClientEarComponentName( name );  
   }
   
   public String getClientComponentType()
@@ -243,7 +190,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     return clientWidget_.getClientComponentType();
   }  
   
-  public void setComponentType( String type )
+  public void setClientComponentType( String type )
   {
 	clientWidget_.setClientComponentType( type );  
   }
@@ -253,20 +200,40 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     return projectWidget_.getProjectName();  
   }
   
+  public void setServiceProjectName(String name)
+  {
+    projectWidget_.setProjectName(name);  
+  }
+  
   public String getServiceEarProjectName()
   {
 	return projectWidget_.getEarProjectName();  
   }
+  
+  public void setServiceEarProjectName(String name)
+  {
+    projectWidget_.setEarProjectName(name);  
+  }  
   
   public String getClientProjectName()
   {
     return clientWidget_.getClientProjectName();  
   }
   
+  public void setClientProjectName(String name)
+  {
+    clientWidget_.setClientProjectName(name);  
+  }  
+  
   public String getClientEarProjectName()
   {
 	return clientWidget_.getClientEarProjectName();  
   }
+  
+  public void setClientEarProjectName(String name)
+  {
+    clientWidget_.setClientEarProjectName(name);  
+  }    
   
   private class TextModifyListener implements ModifyListener 
   {
@@ -282,12 +249,11 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   		  clientIds.setServerInstanceId( serviceIds.getServerInstanceId() );
 
   		  clientWidget_.setClientTypeRuntimeServer( clientIds );
-  		  clientWidget_.setJ2EEVersion(runtimeWidget_.getJ2EEVersion());  	
+  		  //clientWidget_.setJ2EEVersion(runtimeWidget_.getJ2EEVersion());  	
   		}
 		
 		//Set the current server selection and J2EE level on the ProjectSelectionWidget
 		projectWidget_.setTypeRuntimeServer(runtimeWidget_.getTypeRuntimeServer());
-		projectWidget_.setJ2EEVersion(runtimeWidget_.getJ2EEVersion());
   	}
   }
  
@@ -301,6 +267,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     IStatus projectStatus = projectWidget_.getStatus();
     IStatus clientStatus  = clientWidget_.getStatus();    
     IStatus finalStatus   = Status.OK_STATUS;
+    /*
     
     // call child widgets' getStatus()
     if( serviceStatus.getSeverity() == Status.ERROR )
@@ -336,19 +303,6 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
       IProject serviceProj = ProjectUtilities.getProject(serviceProjName);
       if (serviceProj.exists())
       {
-		// rskreg
-        //WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
-        //String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceServerFactoryId).getId();
-		//String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceServerFactoryId).getId();
-        /* rskejb
-        boolean isEJBRequired = WebServiceRuntimeExtensionUtils.requiresEJBModuleFor(serviceServerFactoryId, webServiceRuntimeId, webServiceTypeId);
-        if (!isEJBRequired)
-        {
-          //Check the Web service type to see if an EJB project is required
-          //isEJBRequired = wssrtRegistry.requiresEJBProject(webServiceTypeId);
-			isEJBRequired = WebServiceRuntimeExtensionUtils.requiresEJBProject(webServiceTypeId);
-        }
-        rskejb */
         if (serviceComponentName!=null && serviceComponentName.length()>0)
         {
           String compTypeId = J2EEUtils.getComponentTypeId(serviceProj);
@@ -359,19 +313,6 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
         	finalStatus = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_INVALID_PROJECT_TYPE",new String[]{serviceProjName, compTypeLabel}) );        	        	
           }
         }
-        // begin remove
-        /*
-        boolean isEJBRequired = WebServiceRuntimeExtensionUtils.requiresEJBProject(webServiceRuntimeId, webServiceTypeId);
-        if (isEJBRequired && serviceComponentName!=null && serviceComponentName.length()>0 && !J2EEUtils.isEJBComponent(serviceProj, serviceComponentName))
-        {
-          finalStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_INVALID_EJB_PROJECT",new String[]{serviceProjName}),Status.ERROR);          
-        }
-        if (!isEJBRequired && serviceComponentName!=null && serviceComponentName.length()>0 && !J2EEUtils.isWebComponent(serviceProj, serviceComponentName))
-        {
-          finalStatus = new SimpleStatus("",msgUtils_.getMessage("MSG_INVALID_WEB_PROJECT",new String[]{serviceProjName}),Status.ERROR);
-        }
-        */
-        // end remove
       }
     }
     
@@ -404,7 +345,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 	    }         
       
     }
-    
+    */
     return finalStatus;
   }
   

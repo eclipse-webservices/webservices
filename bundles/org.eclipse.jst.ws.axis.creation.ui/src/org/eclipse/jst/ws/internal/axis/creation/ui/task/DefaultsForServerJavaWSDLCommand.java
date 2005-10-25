@@ -50,6 +50,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 	private String WSDLServiceURL_;
 	private String WSDLServicePathname_;
 	private WebServicesParser WSParser_;
+    private String serviceServerTypeID_;
 	
 	private final String WSDL_FOLDER = "wsdl"; //$NON-NLS-1$
 	public final String SERVICE_EXT = "/services/"; //$NON-NLS-1$
@@ -175,7 +176,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 		javaWSDLParam_.setStyle(JavaWSDLParameter.STYLE_WRAPPED);
 		javaWSDLParam_.setUse(JavaWSDLParameter.USE_LITERAL);
 
-		String projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_);
+		String projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_, serviceServerTypeID_);
 		if (projectURL == null) {
 			status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_PROJECT_URL"));
 			environment.getStatusHandler().reportError(status);
@@ -259,5 +260,10 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
       if (object instanceof String)
         setJavaBeanName((String)object);
     }
-  }	
+  }
+  
+  public void setServiceServerTypeID(String id)
+  {
+    serviceServerTypeID_ = id;
+  }
 }

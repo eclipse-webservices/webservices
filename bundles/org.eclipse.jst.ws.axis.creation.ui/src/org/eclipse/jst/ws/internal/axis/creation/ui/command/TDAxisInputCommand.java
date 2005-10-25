@@ -25,6 +25,7 @@ public class TDAxisInputCommand extends AbstractDataModelOperation {
 	private String serverProject_; 
 
 	  private String serverServer_;
+      private String serviceServerTypeID_; 
 	  private String wsdlURI_;
 	  	  
 		/**
@@ -40,7 +41,8 @@ public class TDAxisInputCommand extends AbstractDataModelOperation {
 		
 		public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 		{	    
-		serverServer_ = ws_.getWebServiceInfo().getServerInstanceId();	
+		serverServer_ = ws_.getWebServiceInfo().getServerInstanceId();
+        serviceServerTypeID_ = ws_.getWebServiceInfo().getServerFactoryId();
 		wsdlURI_ = ws_.getWebServiceInfo().getWsdlURL();
 		
 		return Status.OK_STATUS;
@@ -58,6 +60,11 @@ public class TDAxisInputCommand extends AbstractDataModelOperation {
 		  {
 		    return serverServer_;
 		  }
+          
+          public String getServiceServerTypeID()
+          {
+            return serviceServerTypeID_;
+          }          
 
 		public String getWsdlURI() {
 			return wsdlURI_;

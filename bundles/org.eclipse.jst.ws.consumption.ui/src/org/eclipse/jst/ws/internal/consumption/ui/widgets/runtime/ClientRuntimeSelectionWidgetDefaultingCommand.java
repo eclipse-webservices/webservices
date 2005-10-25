@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
+import java.util.Set;
 import java.util.Vector;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -24,11 +25,16 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.common.FacetMatcher;
+import org.eclipse.jst.ws.internal.consumption.ui.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ServerSelectionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ClientRuntimeDescriptor;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeInfo;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
@@ -39,7 +45,12 @@ import org.eclipse.wst.command.internal.provisional.env.core.selection.Selection
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.Environment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.server.core.IRuntime;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
@@ -56,12 +67,15 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   // clientRuntimeJ2EEType contains the default client runtime and J2EE level based on the initial selection.
   // If the initialSeleciton does not result in a valid client runtime and J2EE level, clientRuntimeJ2EEType
   // should remain null for the life of this instance.  
-  private WSRuntimeJ2EEType    clientRuntimeJ2EEType_;
+  private WSRuntimeJ2EEType    clientRuntimeJ2EEType_; //usage is internal to this class
   
   private TypeRuntimeServer    clientIds_;
-  private SelectionListChoices runtimeClientTypes_;
-  private String clientComponentName_;
-  private String clientEarComponentName_;
+  private String clientRuntimeId_;
+  private String clientProjectName_;
+  private String clientEarProjectName_;
+  protected boolean clientNeedEAR_ = true;
+  private String clientComponentType_;
+  private FacetMatcher clientFacetMatcher_;
   
   private IContext          context_;
   private ISelection        selection_;
@@ -80,12 +94,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   //2. The containing project has a J2EE level, server target, and project type combination which
   //   is not supported by any of the registered Web service runtimes.
   private IProject clientInitialProject_;
-  private String clientInitialComponentName_;
   private IProject initialInitialProject_;
-  private String initialInitialComponentName_;
 
-  private String clientJ2EEVersion_;
-  protected boolean clientNeedEAR_ = true;
+
   
   private String wsdlURI_;
   private WebServicesParser parser_;
@@ -108,44 +119,24 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     return clientIds_; 
   }
   
-  public SelectionListChoices getRuntime2ClientTypes()
+  public String getClientRuntimeId()
   {
-    return runtimeClientTypes_;
+    return clientRuntimeId_;
   }
   
   public String getClientProjectName()
   {
-    return getRuntime2ClientTypes().getChoice().getChoice().getList().getSelection();
+    return clientProjectName_;
   }
   
   public String getClientEarProjectName()
   {
-    return getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().getSelection();
-  }
-  
-  public String getClientComponentName()
-  {
-    return clientComponentName_;
-  }
-  
-  public String getClientEarComponentName()
-  {
-    return clientEarComponentName_;
-  }
-  
-  protected void setClientEARComponentName(String name)
-  {
-    clientEarComponentName_ = name;
+    return clientEarProjectName_;
   }
   
   public String getClientComponentType()
   {
-    return  getRuntime2ClientTypes().getChoice().getList().getSelection();
-  }
-  
-  public String getClientJ2EEVersion()
-  {
-    return clientJ2EEVersion_;
+    return  clientComponentType_;
   }
   
   public IWebServiceClient getWebService()
@@ -163,9 +154,228 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     return selection_;    
   }
   
+  public IStatus execute(IProgressMonitor monitor, IAdaptable adaptable)
+  {
+
+    Environment env = getEnvironment();
+
+    try
+    {
+      // Set the runtime based on the initial selection
+      clientRuntimeId_ = getDefaultClientRuntime(clientInitialProject_);
+      if (clientRuntimeId_ == null)
+      {
+        // return and error.
+      }
+      clientIds_.setRuntimeId(WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRuntime()
+          .getId());
+
+      // Set the project
+      if (clientProjectName_ == null)
+      {
+        // Project name did not get set when the runtime was set, so set it now
+        clientProjectName_ = getDefaultClientProjectName();
+      }
+
+      IProject clientProject = ProjectUtilities.getProject(clientProjectName_);
+      if (!clientProject.exists())
+      {
+        // Set the project template
+        clientComponentType_ = getDefaultClientProjectTemplate();
+      }
+      else
+      {
+        //Set it to an empty String
+        clientComponentType_ = "";
+      }
+
+      // Set the EAR
+      clientEarProjectName_ = ""; // TODO fix this!
+      clientNeedEAR_ = false;
+
+      // Set the server
+      IStatus serverStatus = setClientDefaultServer();
+      if (serverStatus.getSeverity() == Status.ERROR)
+      {
+        env.getStatusHandler().reportError(serverStatus);
+        return serverStatus;
+      }
+
+      // Calculate default IWebServiceClient
+      setDefaultsForExtension(env);
+
+      return Status.OK_STATUS;
+      
+    } catch (Exception e)
+    {
+      // Catch all Exceptions in order to give some feedback to the user
+      IStatus errorStatus = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED",
+          new String[] { e.getMessage() }), e);
+      env.getStatusHandler().reportError(errorStatus);
+      return errorStatus;
+    }
+  }
+  
+  private IStatus setClientDefaultServer()
+  {
+    //Choose an existing server the module is already associated with if possible
+    IProject clientProject = ProjectUtilities.getProject(clientProjectName_);
+    IServer[] configuredServers = ServerUtil.getServersByModule(ServerUtils.getModule(clientProject), null);
+    IServer firstSupportedServer = getFirstSupportedServer(configuredServers, clientRuntimeId_, clientProject);
+    if (firstSupportedServer != null)
+    {
+      clientIds_.setServerId(firstSupportedServer.getServerType().getId());
+      clientIds_.setServerInstanceId(firstSupportedServer.getId());
+      return Status.OK_STATUS;        
+    }    
+    
+    
+    //Choose any suitable existing server
+    IServer[] servers = ServerCore.getServers();
+    IServer supportedServer = getFirstSupportedServer(servers, clientRuntimeId_, clientProject);
+    if (supportedServer != null)
+    {
+      clientIds_.setServerId(supportedServer.getServerType().getId());
+      clientIds_.setServerInstanceId(supportedServer.getId());
+      return Status.OK_STATUS;        
+    }        
+    
+    //No suitable existing server was found. Choose a suitable server type
+    String[] serverTypes = WebServiceRuntimeExtensionUtils2.getServerFactoryIdsByClientRuntime(clientRuntimeId_);
+    if (serverTypes!=null && serverTypes.length>0)
+    {
+      //TODO give priority to a server type that corresponds to the runtime associated with
+      //this project, if any.
+      clientIds_.setServerId(serverTypes[0]);
+      return Status.OK_STATUS;
+    }
+    
+    //No suitable server was found. Popup an error.
+    String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(clientIds_.getRuntimeId());
+    String serverLabels = getServerLabels(clientIds_.getRuntimeId());    
+    IStatus status = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_NO_SERVER_RUNTIME", new String[]{runtimeLabel, serverLabels}) );
+    return status;
+  }
+  
+  private IServer getFirstSupportedServer(IServer[] servers, String clientRuntimeId, IProject clientProject)
+  {
+    if (servers != null && servers.length > 0) {
+      for (int i = 0; i < servers.length; i++)
+      {
+        String serverFactoryId = servers[i].getServerType().getId();
+        if (WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportServer(clientRuntimeId, serverFactoryId))
+        {
+          //TODO check if the server type supports the project before returning.
+          return servers[i];
+        }
+      }
+    }
+    return null;
+  }    
+  
+  private String getDefaultClientProjectTemplate()
+  {
+    String[] templates = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(clientIds_.getTypeId(), clientIds_.getRuntimeId());
+    return templates[0];
+  }
+  
+  private String getDefaultClientProjectName()
+  {
+    IProject[] projects = FacetUtils.getAllProjects();
+    ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_);
+    RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
+    
+    //Check each project for compatibility with the clientRuntime
+    for (int i=0; i<projects.length; i++)
+    {
+      try
+      {
+        IFacetedProject fproject = ProjectFacetsManager.create(projects[i]);
+        if (fproject != null)
+        {
+          Set facetVersions = fproject.getProjectFacets();
+          FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+          if (fm.isMatch())
+          {
+            clientFacetMatcher_ = fm;
+            return projects[i].getName();
+          }            
+        }
+        else
+        {
+          //TODO Handle the plain-old Java projects            
+        }
+      } catch (CoreException ce)
+      {
+        
+      }
+    }
+    
+    //No project was suitable, return a new project name
+    return ResourceUtils.getDefaultWebProjectName();
+    
+  }
+  
+  private String getDefaultClientRuntime(IProject project)
+  {
+    //If possible, pick a Web service runtime that works with the initially selected project.
+    //If the initially selected project does not work with any of the Web service runtimes, pick the 
+    //preferred Web service runtime.
+    
+    String[] clientRuntimes = WebServiceRuntimeExtensionUtils2.getClientRuntimesByType(clientIds_.getTypeId());
+    if (project != null && project.exists())
+    {
+      for (int i=0; i<clientRuntimes.length; i++)
+      {
+        RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimes[i]).getRequiredFacetVersions();
+        try
+        {
+          IFacetedProject fproject = ProjectFacetsManager.create(project);
+          if (fproject != null)
+          {
+            Set facetVersions = fproject.getProjectFacets();
+            FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+            if (fm.isMatch())
+            {
+              clientFacetMatcher_ = fm;
+              clientProjectName_ = project.getName();
+              return clientRuntimes[i];
+            }            
+          }
+          else
+          {
+            //TODO Handle the plain-old Java projects            
+          }
+        } catch (CoreException ce)
+        {
+          
+        }
+      }
+    }
+    
+    //Haven't returned yet so this means that the intitially selected project cannot be used
+    //to influence the selection of the runtime. Pick the preferred Web service runtime.
+    PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
+    String runtimeId = context.getRuntimeId();
+    for (int j=0; j<clientRuntimes.length; j++ )
+    {
+      ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimes[j]);
+      if (desc.getRuntime().getId().equals(runtimeId))
+      {
+        return desc.getId();
+      }
+    }
+    
+    if (clientRuntimes.length > 0)
+      return WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimes[0]).getId();
+    else
+      return null;
+  }
+   
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.provisional.env.core.common.Environment)
    */
+  /*
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
     Environment env = getEnvironment();
@@ -191,14 +401,10 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
         setClientProjectType(clientRuntimeJ2EEType_.getClientProjectTypeId());
         
       }
-	  //setClientRuntimeId((WebServiceRuntimeExtensionUtils.getRuntimesByClientType(clientIds_.getTypeId()))[0]);
-	  //setClientComponentType();
-	  //clientJ2EEVersion_ = (WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(clientIds_.getRuntimeId()).getJ2eeLevels())[0];
 	  
 
       //If clientInitialProject is the service project, check the initialInitialProject
-      //to see if it is valid.
-	    ///* 
+      //to see if it is valid. 
       ValidationUtils vu = new ValidationUtils();
       if (vu.isProjectServiceProject(clientInitialProject_, wsdlURI_, parser_))
       {            
@@ -215,7 +421,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
           clientInitialComponentName_ = initialInitialComponentName_;
         }
       }
-      //*/
     
       setClientDefaultProject();
       setClientDefaultEAR();
@@ -239,13 +444,14 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     }
     
   }
-  
+  */
 
   /**
    * 
    * @param runtimeId
    * @return
    */
+  /*
   private SelectionListChoices getClientTypesChoice(String runtimeId)
   {
     String[] clientComponentTypes;
@@ -257,7 +463,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     }
     return new SelectionListChoices(list, choices);
   }
-    
+  */  
   /**
    * 
    * @param clientType
@@ -326,7 +532,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   */
   // rskreg
   
-
+  /*
   private void setClientDefaultRuntimeFromPreference()
   {
     PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
@@ -335,8 +541,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     //set the client runtime to be the preferred runtime if the client type allows.
     setClientRuntimeId(pRuntimeId);
   }
-
-  
+  */
+  /*
   private void setClientRuntimeId(String id)
   {
     String[] clientRuntimeIds = getRuntime2ClientTypes().getList().getList();
@@ -350,7 +556,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
    	    }
     }    
   }
-  
+  */
+  /*
   private void setClientProjectType(String id)
   {
     String[] clientProjectTypeIds = getRuntime2ClientTypes().getChoice().getList().getList();
@@ -363,8 +570,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
    	    }
     }        
   }
-  
-
+  */
+  /*
   protected void setClientDefaultJ2EEVersionFromPreference()
   {
     if (clientIds_ != null)
@@ -399,8 +606,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       }
     }  	
   }
+  */
 
-
+  /*
   private WSRuntimeJ2EEType getClientRuntimeAndJ2EEFromProject(IProject project, String componentName)
   {
     WSRuntimeJ2EEType cRJ2EE = null;
@@ -478,13 +686,14 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     }    
     return cRJ2EE;
   }
-
+  */
   
+  /*
   private void setClientComponentType()
   {
 	  getRuntime2ClientTypes().getChoice().getList().setIndex(0);	  
   }
-
+  */
   /*
   private void setClientDefaultProjectNew()
   {
@@ -541,6 +750,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   }
   */
   
+  /*
   private void setClientDefaultProject()
   {    
 	//Handle the case where no valid initial selection exists
@@ -563,8 +773,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     }
 
   }
+  */
 
-
+  /*
   private void setClientProjectToFirstValid()
   {
     //WebServiceClientTypeRegistry wsctReg = WebServiceClientTypeRegistry.getInstance();
@@ -615,7 +826,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(ResourceUtils.getDefaultWebProjectName());
     clientComponentName_ = ResourceUtils.getDefaultWebProjectName();
   }
-
+  */
   
   protected IResource getResourceFromInitialSelection(IStructuredSelection selection)
   {
@@ -638,6 +849,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   }
   
   
+  /*
   private void setClientDefaultEAR()
   {
     //Client-side
@@ -649,7 +861,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(clientEARInfo[0]);
     clientEarComponentName_ = clientEARInfo[1];
   }
-  
+  */
   /*
   private void setClientDefaultEARNew()
   {    
@@ -702,6 +914,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
    *  
    */
   
+  /*
   protected String[] getDefaultEARFromClientProject(IProject project, String componentName)
   {
     String[] projectAndComp = new String[2];
@@ -750,7 +963,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       //clientEarComponentName_ = ResourceUtils.getDefaultClientEARComponentName();
     }    
   }
+  */  
     
+  /*
   private IStatus setClientDefaultServer()
   {
 	  IStatus status = Status.OK_STATUS;
@@ -857,11 +1072,10 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     
     return status;
   }  
-  
-  protected String getServerLabels(String runtimeId)
+  */
+  protected String getServerLabels(String clientRuntimeId)
   {
-	    WebServiceRuntimeInfo wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntimeById(runtimeId);
-	    String[] validServerFactoryIds = wsrt.getServerFactoryIds();
+        String[] validServerFactoryIds = WebServiceRuntimeExtensionUtils2.getServerFactoryIdsByClientRuntime(clientRuntimeId);
 	    //String[] validServerLabels = new String[validServerFactoryIds.length];
 	    StringBuffer validServerLabels = new StringBuffer(); 
 	    for (int i=0; i<validServerFactoryIds.length; i++)
@@ -876,17 +1090,19 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	    return validServerLabels.toString();
   }
   
-  protected void updateClientProject(String projectName, String componentName, String serviceTypeId)
+  
+  protected void updateClientProject(String projectName, String serviceTypeId)
   {
     boolean isEJB = false;
-    String implId = WebServiceRuntimeExtensionUtils.getImplIdFromTypeId(serviceTypeId);
+    String implId = WebServiceRuntimeExtensionUtils2.getWebServiceImplIdFromTypeId(serviceTypeId);
     isEJB = (implId.equals("org.eclipse.jst.ws.wsImpl.ejb"));
-    String[] updatedNames = ResourceUtils.getClientProjectComponentName(projectName, componentName, isEJB);
-    getRuntime2ClientTypes().getChoice().getChoice().getList().setSelectionValue(updatedNames[0]);
-    clientComponentName_ = updatedNames[1];
+    String[] updatedNames = ResourceUtils.getClientProjectComponentName(projectName, projectName, isEJB);
+    clientProjectName_ = updatedNames[0];
     
   }
   
+  
+  /*
   protected void updateClientEARs()
   {
   	//Set EAR selection to null if the project/server defaults imply an EAR should not be created
@@ -929,15 +1145,16 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       }
   	}  	
   }  
+  */
   
   private void setDefaultsForExtension(Environment env)
   {
-    IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils.getWebServiceRuntime(clientIds_.getRuntimeId());
+    IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils2.getClientRuntime(clientRuntimeId_);
     if (wsrt != null)
     {
       WebServiceClientInfo wsInfo = new WebServiceClientInfo();
 
-      wsInfo.setJ2eeLevel(clientJ2EEVersion_);
+      wsInfo.setJ2eeLevel("14"); //rm j2ee
       wsInfo.setServerFactoryId(clientIds_.getServerId());
       wsInfo.setServerInstanceId(clientIds_.getServerInstanceId());
       wsInfo.setState(WebServiceState.UNKNOWN_LITERAL);
@@ -960,7 +1177,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     if (clientInitialProject_ == null)
     {
       clientInitialProject_ = getProjectFromInitialSelection(selection);
-      clientInitialComponentName_ = getComponentNameFromInitialSelection(selection);
     }
   }
 
@@ -969,18 +1185,12 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     clientInitialProject_ = clientInitialProject;
   }
   
-  public void setClientInitialComponentName(String name)
-  {
-    clientInitialComponentName_ = name;
-  }  
-  
   /**
    * @param initialInitialSelection_ The initialInitialSelection_ to set.
    */
   public void setInitialInitialSelection(IStructuredSelection initialInitialSelection)
   {
     initialInitialProject_ = getProjectFromInitialSelection(initialInitialSelection);
-    initialInitialComponentName_ = getComponentNameFromInitialSelection(initialInitialSelection);
   }
   
   public boolean getClientNeedEAR()

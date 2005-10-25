@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -93,8 +93,7 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	private void initializeValues()
 	{
 		PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
-		//serverToRuntimeToJ2EE_ = WebServiceServerRuntimeTypeRegistry.getInstance().getServerToRuntimeToJ2EE();
-    serverToRuntimeToJ2EE_ = WebServiceRuntimeExtensionUtils.getServerToRuntimeToJ2EE();
+        serverToRuntimeToJ2EE_ = WebServiceRuntimeExtensionUtils2.getServerToRuntimeToJ2EE();
 
 
 		setServerItems(serverToRuntimeToJ2EE_.getList().getList());
@@ -268,7 +267,7 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		  for (int i=0;i<factoryIds.length;i++)
 		  {
 			  //String thisServerLabel = WebServiceServerRuntimeTypeRegistry.getInstance().getServerLabel(factoryIds[i]);
-        String thisServerLabel = WebServiceRuntimeExtensionUtils.getServerLabelById(factoryIds[i]);
+        String thisServerLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(factoryIds[i]);
 			  if (thisServerLabel!=null && thisServerLabel.length()>0)
 			  {
 			    serverLabelsList.add(thisServerLabel);
@@ -289,7 +288,7 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		for (int i=0;i<ids.length;i++)
 		{
 		  //runtimeLabels[i] = WebServiceServerRuntimeTypeRegistry.getInstance().getRuntimeLabel(ids[i]);
-      runtimeLabels[i] = WebServiceRuntimeExtensionUtils.getRuntimeLabelById(ids[i]);
+      runtimeLabels[i] = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(ids[i]);
 		}
 		runtime_.setItems(runtimeLabels);
 	  }
@@ -324,14 +323,14 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	{
 	  String serverLabel = server_.getText();
 	  //return WebServiceServerRuntimeTypeRegistry.getInstance().getServerFactoryId(serverLabel);
-    return WebServiceRuntimeExtensionUtils.getServerFactoryId(serverLabel);
+    return WebServiceRuntimeExtensionUtils2.getServerFactoryId(serverLabel);
 	}
 	
 	private String getRuntimeSelection()
 	{
       String runtimeLabel = runtime_.getText();
 	  //return WebServiceServerRuntimeTypeRegistry.getInstance().getRuntimeId(runtimeLabel);
-      return WebServiceRuntimeExtensionUtils.getRuntimeId(runtimeLabel);
+      return WebServiceRuntimeExtensionUtils2.getRuntimeId(runtimeLabel);
 	}
 	
 	private String getJ2EESelection()
@@ -343,14 +342,14 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	private void setServerSelection(String factoryId)
 	{
 		//String label = WebServiceServerRuntimeTypeRegistry.getInstance().getServerLabel(factoryId);
-    String label = WebServiceRuntimeExtensionUtils.getServerLabelById(factoryId);
+    String label = WebServiceRuntimeExtensionUtils2.getServerLabelById(factoryId);
 		setSelection(server_,label);
 	}
 	
 	private void setRuntimeSelection(String id)
 	{
 		//String label = WebServiceServerRuntimeTypeRegistry.getInstance().getRuntimeLabel(id);
-    String label = WebServiceRuntimeExtensionUtils.getRuntimeLabelById(id);
+    String label = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(id);
 		setSelection(runtime_,label);		
 	}
 	

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -74,7 +74,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		// rskreg
     //WebServiceClientTypeRegistry registry   = WebServiceClientTypeRegistry.getInstance();
     //LabelsAndIds                 labelIds   = registry.getClientTypeLabels();
-		LabelsAndIds                 labelIds   = WebServiceRuntimeExtensionUtils.getClientTypeLabels();
+		LabelsAndIds                 labelIds   = WebServiceRuntimeExtensionUtils2.getClientTypeLabels();
     int                          selection  = 0;
     String[]                     clientIds  = labelIds.getIds_();
     String                       selectedId = ids.getTypeId();

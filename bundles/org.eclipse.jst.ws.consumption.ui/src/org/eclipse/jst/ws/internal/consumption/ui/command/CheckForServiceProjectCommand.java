@@ -33,7 +33,8 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 public class CheckForServiceProjectCommand extends AbstractDataModelOperation
 {
   MessageUtils msgUtils;
-  SelectionListChoices runtime2ClientTypes;
+  //SelectionListChoices runtime2ClientTypes;
+  String clientProjectName;
   String wsdlURI;
   WebServicesParser webServicesParser;
     
@@ -43,9 +44,10 @@ public class CheckForServiceProjectCommand extends AbstractDataModelOperation
     msgUtils = new MessageUtils(pluginId + ".plugin", this);  
   }
   
-  public void setRuntime2ClientTypes( SelectionListChoices runtime2ClientTypes )
+
+  public void setClientProjectName(String name)
   {
-    this.runtime2ClientTypes = runtime2ClientTypes;
+    clientProjectName = name;
   }
   
   public void setWsdlURI(String wsdlURI)
@@ -66,10 +68,9 @@ public class CheckForServiceProjectCommand extends AbstractDataModelOperation
   {
     Environment environment = getEnvironment();
     IStatus status = Status.OK_STATUS;
-    if (runtime2ClientTypes==null || wsdlURI==null || wsdlURI.length()==0 || webServicesParser==null)
+    if (clientProjectName==null || wsdlURI==null || wsdlURI.length()==0 || webServicesParser==null)
       return status;
     
-    String clientProjectName = runtime2ClientTypes.getChoice().getChoice().getList().getSelection();
     if (clientProjectName==null || clientProjectName.length()==0)
       return status;
     

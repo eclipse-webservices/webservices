@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
@@ -42,10 +43,11 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
   private Group                        clientGroup_;
   private RuntimeServerSelectionWidget runtimeWidget_;
   private SelectionListChoices         runtime2ClientTypes_;
-  private Combo                        clientType_;
+  //private Combo                        clientType_;
   private SelectionAdapter             clientTypeSelListener;
   private ProjectSelectionWidget       projectWidget_;
   private boolean 					           isVisible_;
+  private String                        clientRuntimeId_;
   
   
   public WidgetDataEvents addControls( Composite parent, final Listener statusListener )
@@ -58,39 +60,37 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
     
     runtimeWidget_ = new RuntimeServerSelectionWidget( true );
     runtimeWidget_.addControls( clientGroup_, statusListener );
+
+    
     runtimeWidget_.addModifyListener( new ModifyListener()
                                       {
                                         public void modifyText(ModifyEvent e)
                                         {
-                                          handleRuntime2ClientTypesEvent();
+                                          //handleRuntime2ClientTypesEvent();
                                           handleUpdateProjectWidget();
                                         }
                                       });
-    
-    clientType_ = uiUtils.createCombo( clientGroup_, "LABEL_CLIENT_TYPE",  
-                                       "TOOLTIP_PWCR_COMBO_CLIENT_TYPE",
-                                       INFOPOP_PWRS_GROUP_CLIENT, 
-                                       SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
-    
-    clientTypeSelListener = new SelectionAdapter()
-                                {
-                                  public void widgetSelected( SelectionEvent evt )
-                                  {
-                                    handleSetProjects( clientType_.getSelectionIndex() );
-                                    statusListener.handleEvent(null);
-                                  }
-                                };
-                                
-    clientType_.addSelectionListener(clientTypeSelListener);
+                                         
     
     projectWidget_ = new ProjectSelectionWidget(true);
     projectWidget_.addControls( clientGroup_, statusListener );
     
-    //projectWidget_.addModifyListener(new ModifyListener(){
-    //  								public void modifyText(ModifyEvent e){
-    //  								  getProjectSelections();
-    //  								}
-    //								});
+    //clientType_ = uiUtils.createCombo(clientGroup_, "LABEL_CLIENT_TYPE", "TOOLTIP_PWCR_COMBO_CLIENT_TYPE",
+    //    INFOPOP_PWRS_GROUP_CLIENT, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
+
+    //Temporarily remove the listeners
+    /*
+    clientTypeSelListener = new SelectionAdapter()
+    {
+      public void widgetSelected(SelectionEvent evt)
+      {
+        handleSetProjects(clientType_.getSelectionIndex());
+        statusListener.handleEvent(null);
+      }
+    };
+
+    clientType_.addSelectionListener(clientTypeSelListener);
+    */
     
     return this;
   }
@@ -118,16 +118,20 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
     return runtimeWidget_.getTypeRuntimeServer();  
   }
   
-  public String getJ2EEVersion()
+  public void setClientRuntimeId(String id)
   {
-    return runtimeWidget_.getJ2EEVersion();
+    clientRuntimeId_ = id;
   }
   
-  public void setJ2EEVersion(String j2eeVersion)
+  public String getClientRuntimeId()
   {
-    runtimeWidget_.setJ2EEVersion(j2eeVersion);
-    projectWidget_.setJ2EEVersion(j2eeVersion);
-  }
+    //calculate the most appropriate clientRuntimeId based on current settings.
+    String projectName = projectWidget_.getProjectName();
+    String templateId = projectWidget_.getComponentType();
+    
+    //Find the client runtime that fits this profile best.
+    return WebServiceRuntimeExtensionUtils2.getClientRuntimeId(runtimeWidget_.getTypeRuntimeServer(), projectName, templateId);
+  } 
     
   public boolean getClientNeedEAR()
   {
@@ -139,31 +143,29 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
     projectWidget_.setNeedEAR(b);
   }  
   
-  public String getClientComponentName()
+  public String getClientProjectName()
   {
-	return projectWidget_.getComponentName();  
+	return projectWidget_.getProjectName();  
   }
   
-  public void setClientComponentName( String name )
+  public void setClientProjectName( String name )
   {
-    projectWidget_.setComponentName( name );
+    projectWidget_.setProjectName( name );
   }
   
-  public String getClientEarComponentName()
+  public String getClientEarProjectName()
   {
-    return projectWidget_.getEarComponentName();	  
+    return projectWidget_.getEarProjectName();	  
   }
   
-  public void setClientEarComponentName( String name )
+  public void setClientEarProjectName( String name )
   {
-	projectWidget_.setEarComponentName( name );  
+	projectWidget_.setEarProjectName( name );  
   }
   
   public String getClientComponentType()
   {
-    SelectionList projTypeList = runtime2ClientTypes_.getChoice().getList();
-    projTypeList.setIndex( clientType_.getSelectionIndex() );
-    return projTypeList.getSelection();
+    return projectWidget_.getComponentType();
   }
   
   public void setClientComponentType( String type )
@@ -171,48 +173,7 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
 	projectWidget_.setComponentType( type );  
   }
   
-  public String getClientProjectName()
-  {
-    return projectWidget_.getProjectName();  
-  }
-  
-  public String getClientEarProjectName()
-  {
-	return projectWidget_.getEarProjectName();  
-  }
-  
-  /**
-   * @param runtime2ClientTypes The runtime2ClientTypes to set.
-   */
-  public void setRuntime2ClientTypes(SelectionListChoices runtime2ClientTypes)
-  {
-    runtime2ClientTypes_ = runtime2ClientTypes;
-    handleRuntime2ClientTypesEvent();
-  }
-
-  public SelectionListChoices getRuntime2ClientTypes()
-  {
-    
-    String runtime       = runtimeWidget_.getTypeRuntimeServer().getRuntimeId();
-    String clientProject = projectWidget_.getProjectChoices().getList().getSelection();
-    String earProject    = projectWidget_.getProjectChoices().getChoice().getList().getSelection();
-    
-    SelectionList runtimeList  = runtime2ClientTypes_.getList();
-    runtimeList.setSelectionValue( runtime );
-    
-    SelectionList projTypeList = runtime2ClientTypes_.getChoice().getList();
-    projTypeList.setIndex( clientType_.getSelectionIndex() );
-    
-    SelectionListChoices clientProjChoice = runtime2ClientTypes_.getChoice().getChoice();
-    SelectionList        clientProjList   = clientProjChoice.getList();
-    clientProjList.setSelectionValue( clientProject );    
-    
-    SelectionList        earProjList      = clientProjChoice.getChoice().getList();   
-    earProjList.setSelectionValue( earProject );
-    
-    return runtime2ClientTypes_; 
-  }
-  
+  /*
   private void handleRuntime2ClientTypesEvent()
   {
     if (runtime2ClientTypes_ != null)
@@ -234,19 +195,24 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
       clientType_.setItems( getClientTypeLabels( clientTypeIds ));
       clientType_.select(selectedClientTypeIdx);
       clientType_.addSelectionListener(clientTypeSelListener);
-      handleSetProjects(selectedClientTypeIdx);
+      // Temp remove listeners and event handling 
+      //handleSetProjects(selectedClientTypeIdx);
       
     }
   }
+  */
 
 
   private void handleUpdateProjectWidget()
   {
-    projectWidget_.setTypeRuntimeServer(runtimeWidget_.getTypeRuntimeServer());
-    projectWidget_.setJ2EEVersion(runtimeWidget_.getJ2EEVersion());
+    projectWidget_.setTypeRuntimeServer(runtimeWidget_.getTypeRuntimeServer());    
+
+    //Update the list of projects shown to the user.
+    projectWidget_.refreshProjectItems();    
   }
 
   
+  /*
   private void handleSetProjects( int clientTypeIndex )
   {    
     SelectionListChoices clientType2Projects = runtime2ClientTypes_.getChoice();
@@ -273,6 +239,7 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
 	projectWidget_.setComponentType(clientType2Projects.getList().getSelection());
     projectWidget_.setProjectChoices( clientType2Projects.getChoice() );    
   }
+  */
   
   private String[] getClientTypeLabels( String[] types )
   {
@@ -318,7 +285,10 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
    */
   public IStatus getStatus() 
   {
+    //Return OK all the time for now.
     IStatus finalStatus   = Status.OK_STATUS;
+    
+    /*
     IStatus projectStatus = projectWidget_.getStatus();
     IStatus runtimeStatus = runtimeWidget_.getStatus();
     
@@ -357,7 +327,8 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
         
         //Validate client side server targets and J2EE levels
         String clientServerFactoryId = getClientTypeRuntimeServer().getServerId();
-        String clientJ2EElevel = getJ2EEVersion();
+        // rm j2ee
+        String clientJ2EElevel = "14";
         IStatus clientProjectStatus = valUtils.validateProjectTargetAndJ2EE(clientProjName, clientCompName, clientEARName, clientEARCompName, clientServerFactoryId,
             clientJ2EElevel);
         if (clientProjectStatus.getSeverity() == Status.ERROR)
@@ -366,6 +337,7 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
         }
       }
     }
+    */
     return finalStatus;    
   }
 }

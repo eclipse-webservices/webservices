@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -34,6 +34,7 @@ import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
 public class PreServiceDevelopCommand extends AbstractDataModelOperation 
 {
   private TypeRuntimeServer typeRuntimeServer_;
+  private String            serviceRuntimeId_;
   private IContext          context_;
   private ISelection        selection_;
 	private String						project_;
@@ -73,7 +74,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
     }
     
     
-	  IWebServiceRuntime wsrt   = WebServiceRuntimeExtensionUtils.getWebServiceRuntime( typeRuntimeServer_.getRuntimeId() );
+	  IWebServiceRuntime wsrt   = WebServiceRuntimeExtensionUtils2.getServiceRuntime( serviceRuntimeId_ );
 	  WebServiceInfo     wsInfo = new WebServiceInfo();
 
 	  System.out.println( "In Pre service develop command." );
@@ -88,7 +89,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 	
 		//Set up the IContext
 		WebServiceScenario scenario = null;
-    int scenarioInt = WebServiceRuntimeExtensionUtils.getScenarioFromTypeId(typeRuntimeServer_.getTypeId());
+    int scenarioInt = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeRuntimeServer_.getTypeId());
     if (scenarioInt == WebServiceScenario.BOTTOMUP)
 		{
 			scenario = WebServiceScenario.BOTTOMUP_LITERAL;
@@ -159,6 +160,11 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
   public void setServiceTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )
   {
 	  typeRuntimeServer_ = typeRuntimeServer;  
+  }
+  
+  public void setServiceRuntimeId(String id)
+  {
+    serviceRuntimeId_ = id;
   }
 	  
   public void setServiceJ2EEVersion( String j2eeLevel )

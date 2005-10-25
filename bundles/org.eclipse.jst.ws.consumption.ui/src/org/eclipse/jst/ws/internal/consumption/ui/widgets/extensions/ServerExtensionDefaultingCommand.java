@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
@@ -28,12 +27,13 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
   private Boolean              testService;
   private Boolean              publishService;
   private TypeRuntimeServer    serviceIds_;
+  private String               serviceRuntimeId_;
   //private SelectionListChoices serviceChoices_;
   private String               serviceProjectName_;
   private String               serviceEarProjectName_;
-  private String               serviceComponentName_;
-  private String               serviceEarComponentName_;
-  private String j2eeVersion;
+  //private String               serviceComponentName_;
+  //private String               serviceEarComponentName_;
+  //private String j2eeVersion;
   private boolean serviceNeedEAR_;
   private WebServicesParser wsdlParser_;
   
@@ -58,6 +58,16 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
   public TypeRuntimeServer getServiceTypeRuntimeServer()
   {
     return serviceIds_;
+  }
+  
+  public void setServiceRuntimeId(String id)
+  {
+    serviceRuntimeId_ = id;
+  }
+  
+  public String getServiceRuntimeId()
+  {
+    return serviceRuntimeId_;
   }
 
   /*
@@ -106,7 +116,7 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
    */
   public String getServerProject()
   {
-    return serviceProjectName_ + "/" + serviceComponentName_; 
+    return serviceProjectName_ + "/" + serviceProjectName_; 
   }
   
   /**
@@ -114,10 +124,9 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
    */
   public String getServerProjectEAR()
   {
-    if (serviceEarProjectName_!=null && serviceEarProjectName_.length()>0 && 
-        serviceEarComponentName_!=null && serviceEarComponentName_.length()>0)
+    if (serviceEarProjectName_!=null && serviceEarProjectName_.length()>0)
     {
-      return serviceEarProjectName_ + "/" + serviceEarComponentName_;
+      return serviceEarProjectName_ + "/" + serviceEarProjectName_;
     }
     else
     {
@@ -193,15 +202,7 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
    */
   public String getServiceJ2EEVersion()
   {
-  	return j2eeVersion;
-  }
-  
-  /**
-   * @param version The j2eeVersion to set.
-   */
-  public void setServiceJ2EEVersion(String version)
-  {
-  	j2eeVersion = version;
+  	return "14"; //rm j2ee
   }
   
   /**
@@ -216,33 +217,7 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
   public void setServiceNeedEAR(boolean serviceNeedEAR)
   {
     serviceNeedEAR_ = serviceNeedEAR;
-  }  
-  
-  /**
-   * 
-   * @return returns true if the web service project is an EJB project.
-   */
-  public boolean getIsServiceProjectEJB()
-  {
-    //If the type/server/runtime suggests that an EJB project
-    //is required, return true.
-    boolean ejbRequired = false;
-    boolean ejbRequired2 = false;
-	// rskreg
-    //WebServiceServerRuntimeTypeRegistry wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
-    if (serviceIds_ != null)
-    {      
-      //String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceIds_.getServerId()).getId();
-	  //String serverTypeId = wssrtRegistry.getWebServiceServerByFactoryId(serviceIds_.getServerId()).getId();
-      //ejbRequired = wssrtRegistry.requiresEJBModuleFor(serverTypeId, serviceIds_.getRuntimeId(), serviceIds_.getTypeId());
-	  ejbRequired = WebServiceRuntimeExtensionUtils.requiresEJBModuleFor(serviceIds_.getServerId(), serviceIds_.getRuntimeId(), serviceIds_.getTypeId());
-      //ejbRequired2 = wssrtRegistry.requiresEJBProject(serviceIds_.getTypeId()); 
-	  ejbRequired2 = WebServiceRuntimeExtensionUtils.requiresEJBProject(serviceIds_.getRuntimeId(), serviceIds_.getTypeId());
-    }
-
-	// rskreg
-    return (ejbRequired || ejbRequired2);    
-  }
+  }    
   
   /**
    * @return Returns the wsdlParser_.
@@ -270,19 +245,9 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
     this.serviceProjectName_ = serviceProjectName;
   }
 
-  public void setServiceComponentName(String s)
-  {
-    serviceComponentName_ = s;
-  }
-
   public void setServiceEarProjectName(String serviceEarProjectName)
   {
     this.serviceEarProjectName_ = serviceEarProjectName;
-  }
-  
-  public void setServiceEarComponentName(String s)
-  {
-    serviceEarComponentName_ = s;
   }
 
   public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
