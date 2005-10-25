@@ -58,7 +58,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
 import org.eclipse.wst.common.environment.EnvironmentService;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -585,8 +585,8 @@ public final class ResourceUtils {
 			}
 		} catch (JavaModelException e) {
 		}
-		Log log = EnvironmentService.getEclipseLog();
-		log.log(Log.INFO, 5032, ResourceUtils.class, "getJavaOutputLocation",
+		ILog log = EnvironmentService.getEclipseLog();
+		log.log(ILog.INFO, 5032, ResourceUtils.class, "getJavaOutputLocation",
 				"project=" + project + ",outputLocation=" + outputLocation);
 
 		return outputLocation;
@@ -626,8 +626,8 @@ public final class ResourceUtils {
 			}
 		}
 
-		Log log = EnvironmentService.getEclipseLog();
-		log.log(Log.INFO, 5030, ResourceUtils.class, "getJavaSourceLocation",
+		ILog log = EnvironmentService.getEclipseLog();
+		log.log(ILog.INFO, 5030, ResourceUtils.class, "getJavaSourceLocation",
 				"project=" + project + ",sourceLocation=" + sourceLocation);
 		
 		return sourceLocation;
@@ -811,8 +811,8 @@ public final class ResourceUtils {
 			}
 		}
 		
-		Log log = EnvironmentService.getEclipseLog();
-		log.log(Log.INFO, 5036, ResourceUtils.class, "getWebProjectURL",
+		ILog log = EnvironmentService.getEclipseLog();
+		log.log(ILog.INFO, 5036, ResourceUtils.class, "getWebProjectURL",
 				"project=" + project + ",webProjectURL=" + webProjectURL);
 
 		return webProjectURL;
@@ -878,8 +878,8 @@ public final class ResourceUtils {
 //  			}
 //  		}
 //  	}
-// 	Log log = new EclipseLog();
-//    log.log(Log.INFO, 5036, ResourceUtils.class, "getWebProjectURL", "project="+project+",webProjectURL="+webProjectURL);
+// 	ILog log = new EclipseLog();
+//    log.log(ILog.INFO, 5036, ResourceUtils.class, "getWebProjectURL", "project="+project+",webProjectURL="+webProjectURL);
 //  	return webProjectURL;  	
 //  }
 	/**
@@ -908,8 +908,8 @@ public final class ResourceUtils {
 				}
 			}
 		}
-		Log log = EnvironmentService.getEclipseLog();
-		log.log(Log.INFO, 5037, ResourceUtils.class, "getWebProjectURL",
+		ILog log = EnvironmentService.getEclipseLog();
+		log.log(ILog.INFO, 5037, ResourceUtils.class, "getWebProjectURL",
 				"project=" + project + ",webProjectURL=" + webProjectURL);
 
 		return webProjectURL;
@@ -1099,8 +1099,8 @@ public final class ResourceUtils {
 //			IWorkspaceRoot workspace = getWorkspaceRoot();
 //			url.append(getResourceURI(workspace.getFile(absolutePath)));
 //		}
-//		Log log = new EclipseLog();
-//		log.log(Log.INFO, 5038, ResourceUtils.class, "getURLFromPath",
+//		ILog log = new EclipseLog();
+//		log.log(ILog.INFO, 5038, ResourceUtils.class, "getURLFromPath",
 //				"absolutePath=" + absolutePath + ",url=" + url);
 //
 //		return url.toString();

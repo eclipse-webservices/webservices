@@ -16,9 +16,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
 import org.eclipse.wst.common.environment.StatusException;
-import org.eclipse.wst.common.environment.StatusHandler;
+import org.eclipse.wst.common.environment.IStatusHandler;
 
-public class AccumulateStatusHandler implements StatusHandler {
+public class AccumulateStatusHandler implements IStatusHandler {
 	  Vector statusList_;
 	  
 	  public AccumulateStatusHandler()
@@ -55,7 +55,7 @@ public class AccumulateStatusHandler implements StatusHandler {
 	  }
 	  
 	  /**
-	   * @see org.eclipse.env.common.StatusHandler#report(org.eclipse.env.common.Status, org.eclipse.env.common.Choice[])
+	   * @see org.eclipse.env.common.IStatusHandler#report(org.eclipse.env.common.Status, org.eclipse.env.common.Choice[])
 	   */
 	  public Choice report(IStatus status, Choice[] choices) 
 	  {
@@ -73,7 +73,7 @@ public class AccumulateStatusHandler implements StatusHandler {
 	  }
 
 	  /**
-	   * @see org.eclipse.env.common.StatusHandler#report(org.eclipse.env.common.Status)
+	   * @see org.eclipse.env.common.IStatusHandler#report(org.eclipse.env.common.Status)
 	   */
 	  public void report(IStatus status) throws StatusException
 	  {
@@ -81,7 +81,7 @@ public class AccumulateStatusHandler implements StatusHandler {
 	  }
 	  	 
 	  /**
-	   * @see com.ibm.env.common.StatusHandler#reportError(com.ibm.env.common.Status)
+	   * @see com.ibm.env.common.IStatusHandler#reportError(com.ibm.env.common.Status)
 	   */
 	  public void reportError(IStatus status)
 	  {
@@ -89,7 +89,7 @@ public class AccumulateStatusHandler implements StatusHandler {
 	  }
 	  
 	  /**
-	   * @see com.ibm.env.common.StatusHandler#reportInfo(com.ibm.env.common.Status)
+	   * @see com.ibm.env.common.IStatusHandler#reportInfo(com.ibm.env.common.Status)
 	   */
 	  public void reportInfo(IStatus status)
 	  {

@@ -25,7 +25,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensio
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -43,7 +43,7 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     
     // Transformation
     if (objectSelectionWidgetId_ != null && objectSelectionWidgetId_.length() > 0)

@@ -33,7 +33,7 @@ import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.Utils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -72,7 +72,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 	*/
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
-		Environment environment = getEnvironment();
+		IEnvironment environment = getEnvironment();
 
 		IStatus status;
 		if (javaWSDLParam_ == null) {

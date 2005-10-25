@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 
@@ -26,7 +26,7 @@ public class PreClientRunCommand extends AbstractDataModelOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment environment = getEnvironment();
+    IEnvironment environment = getEnvironment();
     
     System.out.println("In Pre client run command.");
     StartServerCommand command = new StartServerCommand();

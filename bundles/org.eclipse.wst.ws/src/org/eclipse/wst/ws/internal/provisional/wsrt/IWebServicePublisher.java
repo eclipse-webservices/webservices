@@ -11,10 +11,10 @@
 package org.eclipse.wst.ws.internal.provisional.wsrt;
 
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 
 public interface IWebServicePublisher {
 	
-	public ICommandFactory publish(Environment env, IWebService ws);
+	public ICommandFactory publish(IEnvironment env, IWebService ws);
 
 }

@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
-import org.eclipse.wst.common.environment.StatusHandler;
+import org.eclipse.wst.common.environment.IStatusHandler;
 
 
 
@@ -32,7 +32,7 @@ public class FileResourceOutputStream extends OutputStream
   IPath                 fFilePath;
   ResourceContext       fResourceContext; 
   IProgressMonitor       fMonitor;   
-  StatusHandler         fStatusHandler;
+  IStatusHandler         fStatusHandler;
   ByteArrayOutputStream fByteArrayOutputStream;
   boolean               fOpen;
 
@@ -57,7 +57,7 @@ public class FileResourceOutputStream extends OutputStream
   			ResourceContext resourceContext, 
   			IPath           filePath, 
   			IProgressMonitor monitor,
-  			StatusHandler   statusHandler
+  			IStatusHandler   statusHandler
   			)
   {
     fFilePath = filePath;

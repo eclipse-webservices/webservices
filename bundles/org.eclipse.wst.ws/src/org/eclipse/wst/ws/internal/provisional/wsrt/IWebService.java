@@ -12,7 +12,7 @@ package org.eclipse.wst.ws.internal.provisional.wsrt;
 
 
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 
 
 public interface IWebService {
@@ -21,9 +21,9 @@ public interface IWebService {
 	 */
 	public WebServiceInfo getWebServiceInfo();
 	
-	public ICommandFactory develop(Environment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
-	public ICommandFactory deploy(Environment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
-	public ICommandFactory assemble(Environment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
-	public ICommandFactory install(Environment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
-	public ICommandFactory run(Environment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
+	public ICommandFactory develop(IEnvironment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
+	public ICommandFactory deploy(IEnvironment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
+	public ICommandFactory assemble(IEnvironment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
+	public ICommandFactory install(IEnvironment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
+	public ICommandFactory run(IEnvironment env, IContext ctx, ISelection sel, String project, String module, String earProject, String ear);
 }

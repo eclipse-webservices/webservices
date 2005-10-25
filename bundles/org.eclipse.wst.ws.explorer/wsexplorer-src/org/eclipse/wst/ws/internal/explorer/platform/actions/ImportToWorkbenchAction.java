@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
@@ -204,7 +204,7 @@ public abstract class ImportToWorkbenchAction extends FormAction {
             args[3] = wsdlURL;
             args[4] = AddWSDLToWSILCommand.ARG_RESOLVE_WSDL;
             command.setArguments(args);
-            Environment env = new EclipseEnvironment(null, null, null);
+            IEnvironment env = new EclipseEnvironment(null, null, null);
             command.setEnvironment( env );
             command.execute( null, null );
             msgQueue.addMessage(controller_.getMessage("MSG_INFO_IMPORT_SERVICE_REF_TO_WSIL_SUCCESSFUL", importedWSILFileName));

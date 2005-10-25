@@ -32,7 +32,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
 import org.eclipse.wst.common.environment.Choice;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 
@@ -49,7 +49,7 @@ public class JavaMofBeanVisitorAction implements VisitorAction
   public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
 
   private MessageUtils msgUtils_;
-  protected Environment env_;
+  protected IEnvironment env_;
  // protected BeanElement fBeanElement;
 
   protected Visitor fVisitor;
@@ -88,7 +88,7 @@ public class JavaMofBeanVisitorAction implements VisitorAction
   */
   protected boolean fReturnParam=false;
 
-  public JavaMofBeanVisitorAction(String clientProject,BooleanSelection[] methods, Environment env)
+  public JavaMofBeanVisitorAction(String clientProject,BooleanSelection[] methods, IEnvironment env)
   {
     this.clientProject = clientProject;
     fMethodsSelected = methods;
@@ -104,7 +104,7 @@ public class JavaMofBeanVisitorAction implements VisitorAction
   * @param Model model is the Model that this bean will be placed in
   * @param IProject used in nature
   **/
-  public JavaMofBeanVisitorAction(Model model, String clientProject, Environment env)
+  public JavaMofBeanVisitorAction(Model model, String clientProject, IEnvironment env)
   {
     this.clientProject = clientProject;
     fModel = model;
@@ -118,7 +118,7 @@ public class JavaMofBeanVisitorAction implements VisitorAction
   * @param Element the parent element that this element will be added too
   * @param IProject used in nature
   **/
-  public JavaMofBeanVisitorAction(Element parentElement, String clientProject, Environment env )
+  public JavaMofBeanVisitorAction(Element parentElement, String clientProject, IEnvironment env )
   {
     fParentElement = parentElement;
     this.clientProject = clientProject;
@@ -357,7 +357,7 @@ public class JavaMofBeanVisitorAction implements VisitorAction
     fBeansCreated = new Vector();
   }
 
-  public void setEnvironment(Environment env)
+  public void setEnvironment(IEnvironment env)
   {
   	env_ = env;
   }

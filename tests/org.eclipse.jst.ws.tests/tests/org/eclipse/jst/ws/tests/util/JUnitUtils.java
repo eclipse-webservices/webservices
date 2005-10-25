@@ -41,7 +41,7 @@ import org.eclipse.wst.command.internal.env.context.PersistentActionDialogsConte
 import org.eclipse.wst.command.internal.env.preferences.ActionDialogPreferenceType;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
@@ -67,7 +67,7 @@ public class JUnitUtils {
 		return wc.save(true, null);
 	}
 
-	public static IServer createServer(String name,String serverTypeId,IRuntime runtime,Environment env, IProgressMonitor monitor ) throws Exception
+	public static IServer createServer(String name,String serverTypeId,IRuntime runtime,IEnvironment env, IProgressMonitor monitor ) throws Exception
 	{
 	  IServerType serverType = ServerCore.findServerType(serverTypeId);
       IServer[] servers = ServerCore.getServers(); 
@@ -91,13 +91,13 @@ public class JUnitUtils {
 	 * @param name server name
 	 * @param serverTypeId server type id
 	 * @param runtime IRuntime
-	 * @param env Environment
+	 * @param env IEnvironment
 	 * @return  server IServer
 	 * @throws Exception
 	 * 
 	 * @deprecated
 	 */
-	public static IServer createServer(String javaRuntimePath, String jreID, String name,String serverTypeId,IRuntime runtime,Environment env, IProgressMonitor monitor ) throws Exception
+	public static IServer createServer(String javaRuntimePath, String jreID, String name,String serverTypeId,IRuntime runtime,IEnvironment env, IProgressMonitor monitor ) throws Exception
 	{
 		IServerType serverType = ServerCore.findServerType(serverTypeId);
     IServer[] servers = ServerCore.getServers(); 
@@ -116,7 +116,7 @@ public class JUnitUtils {
 		return server;
 	}
 	
-	public static void startServer(IServer server,Environment env) throws Exception
+	public static void startServer(IServer server,IEnvironment env) throws Exception
 	{
 		final IServer currentServer = server;
 		IRunnableWithProgress runnable = new IRunnableWithProgress()
@@ -138,7 +138,7 @@ public class JUnitUtils {
 		PlatformUI.getWorkbench().getProgressService().run(true,false,runnable);
 	}
 	
-	public static boolean removeEARFromServer(IServer server,IProject earProject,Environment env, IProgressMonitor monitor ) throws Exception
+	public static boolean removeEARFromServer(IServer server,IProject earProject,IEnvironment env, IProgressMonitor monitor ) throws Exception
 	{
 		int numberOfModules = server.getModules().length;
 		if (server != null)
@@ -176,7 +176,7 @@ public class JUnitUtils {
 		return false;
 	}
 	
-	public static boolean removeModuleFromServer(IServer server, IProject webProject, Environment env, IProgressMonitor monitor ) throws Exception {
+	public static boolean removeModuleFromServer(IServer server, IProject webProject, IEnvironment env, IProgressMonitor monitor ) throws Exception {
 	  
 	  int numberOfModules = server.getModules().length;
 		if (server != null)
@@ -218,7 +218,7 @@ public class JUnitUtils {
 	
 	// Begin: General Eclipse Utilities
 	
-	public static void syncBuildProject(IProject project,Environment env, IProgressMonitor monitor ) throws Exception
+	public static void syncBuildProject(IProject project,IEnvironment env, IProgressMonitor monitor ) throws Exception
 	{
 		project.build(IncrementalProjectBuilder.FULL_BUILD, monitor );
 		WaitForAutoBuildCommand cmd = new WaitForAutoBuildCommand();
@@ -226,7 +226,7 @@ public class JUnitUtils {
 		cmd.execute( monitor, null );
 	}
 	
-	private static void copyTestFiles(String pathString,int rootSegmentLength,IFolder destFolder,Environment env, IProgressMonitor monitor ) throws Exception
+	private static void copyTestFiles(String pathString,int rootSegmentLength,IFolder destFolder,IEnvironment env, IProgressMonitor monitor ) throws Exception
 	{
 		Enumeration e = TestsPlugin.getDefault().getBundle().getEntryPaths(pathString);
 		while (e.hasMoreElements())
@@ -248,7 +248,7 @@ public class JUnitUtils {
 		}
 	}
 	
-	public static void copyTestData(String dataSubdirectory,IFolder destFolder,Environment env, IProgressMonitor monitor ) throws Exception
+	public static void copyTestData(String dataSubdirectory,IFolder destFolder,IEnvironment env, IProgressMonitor monitor ) throws Exception
 	{
 		String pathString = "/data/"+dataSubdirectory;
 		copyTestFiles(pathString,new Path(pathString).segmentCount(),destFolder,env, monitor);
@@ -335,7 +335,7 @@ public class JUnitUtils {
 		return launchWizard("org.eclipse.jst.ws.internal.consumption.ui",wizardId,objectClassId,initialSelection);
 	}
 	
-	public static IStatus createWebModule(String webProjectName, String moduleName, String serverFactoryId, String j2eeVersion, Environment env, IProgressMonitor monitor ){
+	public static IStatus createWebModule(String webProjectName, String moduleName, String serverFactoryId, String j2eeVersion, IEnvironment env, IProgressMonitor monitor ){
 
 	  IStatus status = Status.OK_STATUS;
 	  try{

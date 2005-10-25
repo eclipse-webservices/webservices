@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 
@@ -39,7 +39,7 @@ public class CreateSampleProjectCommand extends AbstractDataModelOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
     if (!root.getProject(sampleProject).exists() || !root.getProject(sampleProjectEar).exists())
     {

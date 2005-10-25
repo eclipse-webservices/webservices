@@ -3,10 +3,10 @@ package org.eclipse.jst.ws.tests.performance.util;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.test.performance.Performance;
 import org.eclipse.test.performance.PerformanceMeter;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.ILog;
 
 
-public class EclipsePerformanceLog implements Log {
+public class EclipsePerformanceLog implements ILog {
 
   private boolean runState = false;
   Performance perf = null;      

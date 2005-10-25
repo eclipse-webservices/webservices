@@ -53,7 +53,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceClientInfo;
@@ -148,7 +148,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
-      Environment env = getEnvironment();
+      IEnvironment env = getEnvironment();
 	    IStatus status = Status.OK_STATUS;	
 	  
       // Split up the project and module

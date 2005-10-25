@@ -27,7 +27,7 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
@@ -48,7 +48,7 @@ public class DefaultsForClientJavaWSDLCommand extends AbstractDataModelOperation
 	
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
-		Environment environment = getEnvironment();
+		IEnvironment environment = getEnvironment();
 		IStatus status;
 		if (javaWSDLParam_ == null) {
 			status = StatusUtils.errorStatus(

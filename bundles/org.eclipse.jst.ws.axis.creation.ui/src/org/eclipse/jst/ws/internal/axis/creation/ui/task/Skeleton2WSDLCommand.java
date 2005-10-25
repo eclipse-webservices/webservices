@@ -43,7 +43,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.CopyWSDLCommand;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
@@ -69,7 +69,7 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
   */
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
-		Environment environment = getEnvironment();
+		IEnvironment environment = getEnvironment();
     if (!(environment instanceof EclipseEnvironment))
     {
       IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_NOT_IN_ECLIPSE_ENVIRONMENT", new String[] {"Skeleton2WSDLCommand"}));

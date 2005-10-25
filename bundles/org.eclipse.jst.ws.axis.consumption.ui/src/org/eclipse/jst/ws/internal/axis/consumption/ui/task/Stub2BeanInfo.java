@@ -39,7 +39,7 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
-import org.eclipse.wst.common.environment.StatusHandler;
+import org.eclipse.wst.common.environment.IStatusHandler;
 
 public class Stub2BeanInfo
 {
@@ -183,7 +183,7 @@ public class Stub2BeanInfo
       return javaHelpers.getQualifiedName();
   }
 
-  public void write(IProgressMonitor progressMonitor, StatusHandler statusMonitor) throws CoreException, IOException
+  public void write(IProgressMonitor progressMonitor, IStatusHandler statusMonitor) throws CoreException, IOException
   {
     StringWriter sw = new StringWriter(2048);
     writePackage(sw);

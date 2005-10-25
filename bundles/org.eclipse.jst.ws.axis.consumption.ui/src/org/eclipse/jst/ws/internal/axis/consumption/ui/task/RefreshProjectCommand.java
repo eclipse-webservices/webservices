@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
@@ -40,7 +40,7 @@ public class RefreshProjectCommand extends AbstractDataModelOperation
 	*/
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
-		Environment env = getEnvironment();
+		IEnvironment env = getEnvironment();
 		try
 		{
 			if (project!=null)

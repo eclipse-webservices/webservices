@@ -1,7 +1,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.ws.internal.provisional.wsrt.AbstractWebServiceClient;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
@@ -13,29 +13,29 @@ public class TestWebServiceClient extends AbstractWebServiceClient {
 	super(clientInfo);  
   }
   
-  public ICommandFactory assemble(Environment env, IContext ctx, ISelection sel,
+  public ICommandFactory assemble(IEnvironment env, IContext ctx, ISelection sel,
       String project, String module, String earProject, String ear){
     return null;	  
   }
 			
-  public ICommandFactory deploy(Environment env, IContext ctx, ISelection sel,
+  public ICommandFactory deploy(IEnvironment env, IContext ctx, ISelection sel,
       String project, String module, String earProject, String ear){
     return null;	  
   }
 			
 
-  public ICommandFactory develop(Environment env, IContext ctx, ISelection sel,
+  public ICommandFactory develop(IEnvironment env, IContext ctx, ISelection sel,
 		      String project, String module, String earProject, String ear){
     return null;	  
   }
 				
-  public ICommandFactory install(Environment env, IContext ctx, ISelection sel,
+  public ICommandFactory install(IEnvironment env, IContext ctx, ISelection sel,
 		      String project, String module, String earProject, String ear){
     return null;
   }
 			
 
-  public ICommandFactory run(Environment env, IContext ctx, ISelection sel,
+  public ICommandFactory run(IEnvironment env, IContext ctx, ISelection sel,
 		      String project, String module, String earProject, String ear){
     return null;	  
   }

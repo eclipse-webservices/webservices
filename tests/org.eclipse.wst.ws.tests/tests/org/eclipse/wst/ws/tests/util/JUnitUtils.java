@@ -20,14 +20,14 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.common.WaitForAutoBuildCommand;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.ws.tests.plugin.TestsPlugin;
 
 
 public class JUnitUtils {
 	
 	// Begin: General Eclipse Utilities
-	public static void syncBuildProject(IProject project,Environment env, IProgressMonitor monitor ) throws Exception
+	public static void syncBuildProject(IProject project,IEnvironment env, IProgressMonitor monitor ) throws Exception
 	{
 		project.build(IncrementalProjectBuilder.FULL_BUILD,null);
 		WaitForAutoBuildCommand cmd = new WaitForAutoBuildCommand();
@@ -35,7 +35,7 @@ public class JUnitUtils {
 		cmd.execute( monitor, null );
 	}
 	
-	private static void copyTestFiles(String pathString,int rootSegmentLength,IFolder destFolder,Environment env, IProgressMonitor monitor ) throws Exception
+	private static void copyTestFiles(String pathString,int rootSegmentLength,IFolder destFolder,IEnvironment env, IProgressMonitor monitor ) throws Exception
 	{
 		Enumeration e = TestsPlugin.getDefault().getBundle().getEntryPaths(pathString);
 		while (e.hasMoreElements())
@@ -57,7 +57,7 @@ public class JUnitUtils {
 		}
 	}
 	
-	public static void copyTestData(String dataSubdirectory,IFolder destFolder,Environment env, IProgressMonitor monitor ) throws Exception
+	public static void copyTestData(String dataSubdirectory,IFolder destFolder,IEnvironment env, IProgressMonitor monitor ) throws Exception
 	{
 		String pathString = "/data/"+dataSubdirectory;
 		copyTestFiles(pathString,new Path(pathString).segmentCount(),destFolder,env, monitor );

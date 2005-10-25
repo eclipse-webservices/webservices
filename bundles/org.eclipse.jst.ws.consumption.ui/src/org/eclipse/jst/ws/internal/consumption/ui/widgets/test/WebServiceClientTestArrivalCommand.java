@@ -26,8 +26,8 @@ import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionC
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.StatusHandler;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
@@ -71,7 +71,7 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
   	
 	IStatus status = Status.OK_STATUS;
   	
@@ -92,7 +92,7 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
     * Getting the method names using javamof introspection
     */
     if(proxyBean == null){
-      StatusHandler sHandler = env.getStatusHandler();
+      IStatusHandler sHandler = env.getStatusHandler();
       IStatus errorStatus = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_JTS_PROXY_NOT_COMPILED") );
       sHandler.reportError(errorStatus);
       return errorStatus;
@@ -112,7 +112,7 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
       if(mofStatus.getSeverity() == Status.ERROR)
       	return mofStatus;
     }catch(Exception exc){
-    	StatusHandler sHandler = env.getStatusHandler();
+    	IStatusHandler sHandler = env.getStatusHandler();
         IStatus errorStatus = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_JTS_PROXY_NOT_COMPILED") );
         sHandler.reportError(errorStatus);
         return errorStatus;
@@ -142,7 +142,7 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
   }
   public static final String DEFAULT_SAMPLE_EAR_PROJECT_EXT = "EAR";
   
-  private void sampleProjectAndEarSetup(Environment env)
+  private void sampleProjectAndEarSetup(IEnvironment env)
   {
 	if(clientProject == null) return;
   	else{

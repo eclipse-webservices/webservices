@@ -21,8 +21,8 @@ import org.eclipse.wst.command.internal.provisional.env.core.CommandManager;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
@@ -38,7 +38,7 @@ public class CommandFragmentEngine implements CommandManager
   private FragmentListener nextFragmentListener_;
   private FragmentListener peekFragmentListener_;
   private DataFlowManager  dataManager_;
-  private Environment      environment_;
+  private IEnvironment      environment_;
   private IStatus          lastStatus_;
   
   /**
@@ -48,7 +48,7 @@ public class CommandFragmentEngine implements CommandManager
    * @param dataManager the data manager containing all of the data mappings.
    * @param environment the environment.
    */
-  public CommandFragmentEngine( CommandFragment startFragment, DataFlowManager dataManager, Environment environment )
+  public CommandFragmentEngine( CommandFragment startFragment, DataFlowManager dataManager, IEnvironment environment )
   {
   	SequenceFragment root = new SequenceFragment();
   	root.add( startFragment );
@@ -341,7 +341,7 @@ public class CommandFragmentEngine implements CommandManager
   	  	  
   	    try
   	    {
-  	      environment_.getLog().log(Log.INFO, "command", 5001, this, "runCommand", "Executing: " + cmd.getClass().getName());
+  	      environment_.getLog().log(ILog.INFO, "command", 5001, this, "runCommand", "Executing: " + cmd.getClass().getName());
   	  	    
  	        cmd.setEnvironment( environment_ );
           status = cmd.execute( monitor, null );
@@ -365,7 +365,7 @@ public class CommandFragmentEngine implements CommandManager
   	        message = "Error: " + status.getMessage(); 
   	      }
   	      
-	      environment_.getLog().log(Log.INFO, "command", 5001, this, "runCommand", "Execution status: " + message );
+	      environment_.getLog().log(ILog.INFO, "command", 5001, this, "runCommand", "Execution status: " + message );
   	    }
   	  }
   	}

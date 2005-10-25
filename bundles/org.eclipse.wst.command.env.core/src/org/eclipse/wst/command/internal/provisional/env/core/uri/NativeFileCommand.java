@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.wst.common.environment.uri.URI;
+import org.eclipse.wst.common.environment.uri.IURI;
 import org.eclipse.wst.common.environment.uri.URIException;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
@@ -26,9 +26,9 @@ public abstract class NativeFileCommand extends AbstractDataModelOperation
 
   protected String description;
 
-  protected URI[] urisToRead;
+  protected IURI[] urisToRead;
 
-  protected URI[] urisToWrite;
+  protected IURI[] urisToWrite;
 
   protected NativeFileCommand ()
   {
@@ -51,22 +51,22 @@ public abstract class NativeFileCommand extends AbstractDataModelOperation
     return description;
   }
 
-  public void setURIsToRead ( URI[] urisToRead )
+  public void setURIsToRead ( IURI[] urisToRead )
   {
     this.urisToRead = urisToRead;
   }
 
-  public URI[] getURIsToRead ()
+  public IURI[] getURIsToRead ()
   {
     return urisToRead;
   }
 
-  public void setURIsToWrite ( URI[] urisToWrite )
+  public void setURIsToWrite ( IURI[] urisToWrite )
   {
     this.urisToWrite = urisToWrite;
   }
 
-  public URI[] getURIsToWrite ()
+  public IURI[] getURIsToWrite ()
   {
     return urisToWrite;
   }
@@ -93,7 +93,7 @@ public abstract class NativeFileCommand extends AbstractDataModelOperation
     // TBD.
   }
 
-  private File[] getFiles ( URI[] uris )
+  private File[] getFiles ( IURI[] uris )
   {
     List list = new LinkedList();
     if (uris != null)

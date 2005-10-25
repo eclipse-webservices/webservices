@@ -32,7 +32,7 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
@@ -56,7 +56,7 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     String pluginId = "org.eclipse.jst.ws.consumption.ui";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     IStatus status = Status.OK_STATUS;
@@ -74,7 +74,7 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
 
   }
 
-  public IStatus processHandlers(Environment env) {
+  public IStatus processHandlers(IEnvironment env) {
     try {
       Vector handlers = new Vector();
       wsDescToHandlers_ = new Hashtable();

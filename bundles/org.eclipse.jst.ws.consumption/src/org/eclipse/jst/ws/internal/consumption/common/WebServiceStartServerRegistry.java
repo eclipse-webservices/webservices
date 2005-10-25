@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.common.environment.EnvironmentService;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.ILog;
 
 
 
@@ -53,8 +53,8 @@ public class WebServiceStartServerRegistry
       } 
       catch (Exception e)
       {
-        Log log = EnvironmentService.getEclipseLog();
-        log.log(Log.ERROR, 5047, this, "load", e);
+        ILog log = EnvironmentService.getEclipseLog();
+        log.log(ILog.ERROR, 5047, this, "load", e);
       }
       
     }

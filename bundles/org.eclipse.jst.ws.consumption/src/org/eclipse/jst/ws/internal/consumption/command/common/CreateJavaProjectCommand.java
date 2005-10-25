@@ -26,7 +26,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
@@ -44,7 +44,7 @@ public class CreateJavaProjectCommand extends AbstractDataModelOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName_);
     
     if (project != null && !project.exists())

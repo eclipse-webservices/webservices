@@ -13,7 +13,7 @@ package org.eclipse.wst.ws.internal.common;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 
 public final class EnvironmentUtils
 {     
@@ -22,7 +22,7 @@ public final class EnvironmentUtils
    * @param env This should be an EclipseEnvironment.
    * @return Returns a ResourceContext.
    */ 
-  public static ResourceContext getResourceContext( Environment env )
+  public static ResourceContext getResourceContext( IEnvironment env )
   {
     ResourceContext context = null;
     

@@ -19,7 +19,7 @@ import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.TestClientFileG
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.GeneratePageCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.JavaToModelCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.CopyWebServiceUtilsJarCommand;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.wst.ws.internal.datamodel.Model;
@@ -43,7 +43,7 @@ public class GSTCGenerateCommand extends AbstractDataModelOperation
 	
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     IStatus status = Status.OK_STATUS;
 	CopyWebServiceUtilsJarCommand copy = new CopyWebServiceUtilsJarCommand();    
 	copy.setSampleProject(testInfo.getGenerationProject());
@@ -80,7 +80,7 @@ public class GSTCGenerateCommand extends AbstractDataModelOperation
   }
   
   //create the model from the resource
-  private IStatus createModel(Environment env, IProgressMonitor monitor ) {
+  private IStatus createModel(IEnvironment env, IProgressMonitor monitor ) {
     JavaToModelCommand jtmc = new JavaToModelCommand();
 	jtmc.setMethods(testInfo.getMethods());
 	jtmc.setClientProject(testInfo.getClientProject());
@@ -96,7 +96,7 @@ public class GSTCGenerateCommand extends AbstractDataModelOperation
    * Generate the four jsps that make up this
    * sample app.
    */
-   private IStatus generatePages(Environment env)
+   private IStatus generatePages(IEnvironment env)
    {
    	IStatus status = Status.OK_STATUS;
 	IPath fDestinationFolderPath = new Path(jspfolder);

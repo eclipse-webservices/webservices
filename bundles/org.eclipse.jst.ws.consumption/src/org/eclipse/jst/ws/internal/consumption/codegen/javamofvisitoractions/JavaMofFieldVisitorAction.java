@@ -21,8 +21,8 @@ import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.FieldElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 
@@ -44,7 +44,7 @@ public class JavaMofFieldVisitorAction extends JavaMofBeanVisitorAction
   /*
   *Constructor
   **/
-  public JavaMofFieldVisitorAction(Element parentElement, String project, Environment env)
+  public JavaMofFieldVisitorAction(Element parentElement, String project, IEnvironment env)
   {
     super(parentElement,project, env);
     String pluginId = "org.eclipse.jst.ws.consumption";
@@ -96,7 +96,7 @@ public class JavaMofFieldVisitorAction extends JavaMofBeanVisitorAction
     
     }catch(Exception e)
 	{
-    	env_.getLog().log(Log.WARNING, 5055, this, "visit", e);
+    	env_.getLog().log(ILog.WARNING, 5055, this, "visit", e);
     	status = StatusUtils.warningStatus(	msgUtils_.getMessage("MSG_ERROR_JTS_JSP_GEN"), e);
     	try {
     		env_.getStatusHandler().report(status);

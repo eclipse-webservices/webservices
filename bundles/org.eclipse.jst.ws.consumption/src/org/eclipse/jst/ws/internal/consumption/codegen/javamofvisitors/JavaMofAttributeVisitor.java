@@ -27,7 +27,7 @@ import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.common.SamplePropertyDescriptor;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 
 
 /**
@@ -42,10 +42,10 @@ public class JavaMofAttributeVisitor implements Visitor
 
   private String clientProject;
   private boolean returnParameter;
-  private Environment env;
+  private IEnvironment env;
   
   
-  public void setEnvironment(Environment env)
+  public void setEnvironment(IEnvironment env)
   {
   	this.env = env;
   }

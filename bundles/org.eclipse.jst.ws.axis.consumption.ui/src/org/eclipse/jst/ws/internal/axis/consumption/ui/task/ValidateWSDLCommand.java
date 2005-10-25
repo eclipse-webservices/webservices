@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
@@ -35,7 +35,7 @@ public class ValidateWSDLCommand extends AbstractDataModelOperation
 
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
-		Environment environment = getEnvironment();
+		IEnvironment environment = getEnvironment();
 	MessageUtils msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.ui.plugin", this );
 	
     if (wsdlURI != null && wsdlURI.length() > 0)

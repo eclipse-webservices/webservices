@@ -25,8 +25,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
@@ -46,7 +46,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 
 	  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 	  {
-	    Environment environment = getEnvironment();
+	    IEnvironment environment = getEnvironment();
 		IStatus status;
 		if (javaWSDLParam == null) {
 			status = StatusUtils.errorStatus(
@@ -94,16 +94,16 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 				wsdl2Java.setNamespaceMap(javaWSDLParam.getMappings());
 			}
 		}
-		environment.getLog().log(Log.INFO, 5019, this, "execute", "Java output = " + javaWSDLParam.getJavaOutput());
+		environment.getLog().log(ILog.INFO, 5019, this, "execute", "Java output = " + javaWSDLParam.getJavaOutput());
 		if (javaWSDLParam.getHTTPPassword() != null) {
 			wsdl2Java.setPassword(javaWSDLParam.getHTTPPassword());
-			environment.getLog().log(Log.INFO, 5081, this, "execute", "password: " + javaWSDLParam.getHTTPPassword());
+			environment.getLog().log(ILog.INFO, 5081, this, "execute", "password: " + javaWSDLParam.getHTTPPassword());
 		}
 		if (javaWSDLParam.getHTTPUsername() != null) {
 			wsdl2Java.setUsername(javaWSDLParam.getHTTPUsername());
-			environment.getLog().log(Log.INFO, 5082, this, "execute", "username: " + javaWSDLParam.getHTTPUsername());
+			environment.getLog().log(ILog.INFO, 5082, this, "execute", "username: " + javaWSDLParam.getHTTPUsername());
 		}
-		environment.getLog().log(Log.INFO, 5020, this, "execute", "WSDL Location = " + javaWSDLParam.getInputWsdlLocation());
+		environment.getLog().log(ILog.INFO, 5020, this, "execute", "WSDL Location = " + javaWSDLParam.getInputWsdlLocation());
 		ProgressUtils.report(monitor, getMessage("MSG_PARSING_WSDL", javaWSDLParam.getInputWsdlLocation() ) );
 		try {
 			wsdl2Java.run(javaWSDLParam.getInputWsdlLocation());
@@ -131,7 +131,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			}
 			
 		} catch (Exception e) {
-			environment.getLog().log(Log.ERROR, 5021, this, "execute", e);
+			environment.getLog().log(ILog.ERROR, 5021, this, "execute", e);
 			status = StatusUtils.errorStatus(
 					getMessage("MSG_ERROR_WSDL_JAVA_GENERATE") + " " //$NON-NLS-1$
 							+ e.toString());
@@ -161,11 +161,11 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 		return s;
 	}
 
-	public Status undo(Environment environment) {
+	public Status undo(IEnvironment environment) {
 		return null;
 	}
 
-	public Status redo(Environment environment) {
+	public Status redo(IEnvironment environment) {
 		return null;
 	}
 

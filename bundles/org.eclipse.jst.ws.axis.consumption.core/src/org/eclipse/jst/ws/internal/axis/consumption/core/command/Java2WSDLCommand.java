@@ -29,8 +29,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
@@ -56,7 +56,7 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
-		Environment environment = getEnvironment();
+		IEnvironment environment = getEnvironment();
 		IStatus status;
 		if (javaWSDLParam_ == null) {
 			status = StatusUtils.errorStatus(getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
@@ -75,7 +75,7 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 		return executeAntTask(environment);
 	}
 
-	protected IStatus executeAntTask(Environment environment) {
+	protected IStatus executeAntTask(IEnvironment environment) {
 
 		final class Emitter extends Java2WsdlAntTask {
 			public Emitter() {
@@ -89,34 +89,34 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 
 		Emitter emitter = new Emitter();
 		emitter.createClasspath().setPath(javaWSDLParam_.getClasspath());
-		environment.getLog().log(Log.INFO, 5008, this, "executeAntTask", "Class Path = "+ javaWSDLParam_.getClasspath());
+		environment.getLog().log(ILog.INFO, 5008, this, "executeAntTask", "Class Path = "+ javaWSDLParam_.getClasspath());
 		
 		emitter.setPortTypeName(javaWSDLParam_.getPortTypeName());
-		environment.getLog().log(Log.INFO, 5009, this, "executeAntTask", "Port Type Name = "+ javaWSDLParam_.getPortTypeName());
+		environment.getLog().log(ILog.INFO, 5009, this, "executeAntTask", "Port Type Name = "+ javaWSDLParam_.getPortTypeName());
 		
 		emitter.setServiceElementName(javaWSDLParam_.getServiceName());
-		environment.getLog().log(Log.INFO, 5010, this, "executeAntTask", "Service Name = "+ javaWSDLParam_.getServiceName());
+		environment.getLog().log(ILog.INFO, 5010, this, "executeAntTask", "Service Name = "+ javaWSDLParam_.getServiceName());
 		
 		emitter.setLocation(javaWSDLParam_.getUrlLocation());
-		environment.getLog().log(Log.INFO, 5011, this, "executeAntTask", "URL Location = "+ javaWSDLParam_.getUrlLocation());
+		environment.getLog().log(ILog.INFO, 5011, this, "executeAntTask", "URL Location = "+ javaWSDLParam_.getUrlLocation());
 		
 		emitter.setMethods(javaWSDLParam_.getMethodString());
-		environment.getLog().log(Log.INFO, 5012, this, "executeAntTask", "Methods = "+ javaWSDLParam_.getMethodString());
+		environment.getLog().log(ILog.INFO, 5012, this, "executeAntTask", "Methods = "+ javaWSDLParam_.getMethodString());
 		
 		emitter.setStyle(javaWSDLParam_.getStyle());
-		environment.getLog().log(Log.INFO, 5013, this, "executeAntTask", "Style = "+ javaWSDLParam_.getStyle());
+		environment.getLog().log(ILog.INFO, 5013, this, "executeAntTask", "Style = "+ javaWSDLParam_.getStyle());
 		
 		emitter.setUse(javaWSDLParam_.getUse());
-		environment.getLog().log(Log.INFO, 5014, this, "executeAntTask", "Use = "+ javaWSDLParam_.getUse());
+		environment.getLog().log(ILog.INFO, 5014, this, "executeAntTask", "Use = "+ javaWSDLParam_.getUse());
 		
 		emitter.setOutput(new File(javaWSDLParam_.getOutputWsdlLocation()));
-		environment.getLog().log(Log.INFO, 5015, this, "executeAntTask", "WSDL Location = "+ javaWSDLParam_.getOutputWsdlLocation());
+		environment.getLog().log(ILog.INFO, 5015, this, "executeAntTask", "WSDL Location = "+ javaWSDLParam_.getOutputWsdlLocation());
 		
 		emitter.setNamespace(javaWSDLParam_.getNamespace());
-		environment.getLog().log(Log.INFO, 5016, this, "executeAntTask", "Name Space = "+ javaWSDLParam_.getNamespace());
+		environment.getLog().log(ILog.INFO, 5016, this, "executeAntTask", "Name Space = "+ javaWSDLParam_.getNamespace());
 		
 		emitter.setClassName(javaWSDLParam_.getBeanName());
-		environment.getLog().log(Log.INFO, 5017, this, "executeAntTask", "Bean name = "+ javaWSDLParam_.getBeanName());
+		environment.getLog().log(ILog.INFO, 5017, this, "executeAntTask", "Bean name = "+ javaWSDLParam_.getBeanName());
 		
 		emitter.setImplClass(javaWSDLParam_.getBeanName());
 		
@@ -137,7 +137,7 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 		try {
 			emitter.execute();
 		} catch (BuildException e) {
-			environment.getLog().log(Log.ERROR, 5018, this, "executeAntTask", e);
+			environment.getLog().log(ILog.ERROR, 5018, this, "executeAntTask", e);
 			IStatus status = StatusUtils.errorStatus(
 			getMessage("MSG_ERROR_JAVA_WSDL_GENERATE") + " " //$NON-NLS-1$
 			+e.getCause().toString());
@@ -148,11 +148,11 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 
 	}
 	
-	public Status undo(Environment environment) {
+	public Status undo(IEnvironment environment) {
 		return null;
 	}
 
-	public Status redo(Environment environment) {
+	public Status redo(IEnvironment environment) {
 		return null;
 	}
 

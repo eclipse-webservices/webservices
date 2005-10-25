@@ -14,7 +14,7 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.plugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.wst.common.environment.EnvironmentService;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.ILog;
 import org.osgi.framework.BundleContext;
 
 
@@ -37,7 +37,7 @@ public class WebServiceAxisConsumptionUIPlugin extends Plugin
 	* The reference to the singleton instance of this plugin.
 	*/
 	private static WebServiceAxisConsumptionUIPlugin instance_;
-	private Log log_;
+	private ILog log_;
 
 	/**
 	* Constructs a runtime plugin object for this plugin.
@@ -74,7 +74,7 @@ public class WebServiceAxisConsumptionUIPlugin extends Plugin
 	* @throws CoreException If this plugin fails to start.
 	*/
 	public void start( BundleContext bundle ) throws CoreException {
-		log_.log(Log.INFO, 5066, this, "start", "Starting plugin org.eclipse.jst.ws.axis.consumption.ui");
+		log_.log(ILog.INFO, 5066, this, "start", "Starting plugin org.eclipse.jst.ws.axis.consumption.ui");
     
     try
     {
@@ -82,7 +82,7 @@ public class WebServiceAxisConsumptionUIPlugin extends Plugin
     }
     catch( Exception exc )
     {
-      log_.log( Log.ERROR, 5066, this, "start", exc );
+      log_.log( ILog.ERROR, 5066, this, "start", exc );
     }
 	}
 
@@ -91,7 +91,7 @@ public class WebServiceAxisConsumptionUIPlugin extends Plugin
 	* @throws CoreException If this plugin fails to shutdown.
 	*/
 	public void stop( BundleContext context ) throws CoreException {
-		log_.log(Log.INFO, 5067, this, "shutdown", "Shutting plugin org.eclipse.jst.ws.axis.consumption.ui");
+		log_.log(ILog.INFO, 5067, this, "shutdown", "Shutting plugin org.eclipse.jst.ws.axis.consumption.ui");
     
     try
     {
@@ -99,7 +99,7 @@ public class WebServiceAxisConsumptionUIPlugin extends Plugin
     }
     catch( Exception exc )
     {
-      log_.log( Log.ERROR, 5066, this, "stop", exc );      
+      log_.log( ILog.ERROR, 5066, this, "stop", exc );      
     }
 	}
 }

@@ -14,7 +14,7 @@ package org.eclipse.jst.ws.internal.ext;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.wst.common.environment.EnvironmentService;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.ILog;
 
 
 
@@ -27,7 +27,7 @@ import org.eclipse.wst.common.environment.Log;
 public class WebServiceExtensionImpl implements WebServiceExtension
 {
 
-	private Log	log_;
+	private ILog	log_;
 	
   /*
   * The ConfigElement that holds extension info
@@ -61,7 +61,7 @@ public class WebServiceExtensionImpl implements WebServiceExtension
     try{
       return configElement_.createExecutableExtension("class");
     }catch (CoreException e){
-      log_.log(Log.ERROR, 5029, this, "getWebServiceExecutableExtension",e);
+      log_.log(ILog.ERROR, 5029, this, "getWebServiceExecutableExtension",e);
     }
 
     return null;

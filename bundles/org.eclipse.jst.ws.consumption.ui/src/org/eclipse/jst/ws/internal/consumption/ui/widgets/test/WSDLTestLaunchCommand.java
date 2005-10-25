@@ -26,8 +26,8 @@ import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.StatusHandler;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
@@ -61,7 +61,7 @@ public class WSDLTestLaunchCommand extends AbstractDataModelOperation
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
   	IStatus status = Status.OK_STATUS;
   	
   	WebServiceTestRegistry testRegistry = WebServiceTestRegistry.getInstance();
@@ -74,7 +74,7 @@ public class WSDLTestLaunchCommand extends AbstractDataModelOperation
 	
     //Dont need to shut everything down because the wsdl test doesnt work
     if(status.getSeverity() != Status.OK){
-      StatusHandler sHandler = env.getStatusHandler();
+      IStatusHandler sHandler = env.getStatusHandler();
       IStatus infoStatus = StatusUtils.infoStatus( msgUtils.getMessage("MSG_ERROR_UNABLE_TO_LAUNCH_WSDL_TEST") );
       sHandler.reportInfo(infoStatus);
       return infoStatus;	
@@ -83,7 +83,7 @@ public class WSDLTestLaunchCommand extends AbstractDataModelOperation
   	
   }
 
-  private IStatus commandFactoryExecution(ICommandFactory commandFactory,Environment env, IProgressMonitor monitor)
+  private IStatus commandFactoryExecution(ICommandFactory commandFactory,IEnvironment env, IProgressMonitor monitor)
   {
 	IStatus status = Status.OK_STATUS;  	
 	while(commandFactory.hasNext())
@@ -104,7 +104,7 @@ public class WSDLTestLaunchCommand extends AbstractDataModelOperation
     }
     
 	  if(status.getSeverity() == Status.ERROR){
-	    StatusHandler sHandler = env.getStatusHandler();
+	    IStatusHandler sHandler = env.getStatusHandler();
 		sHandler.reportError(status);
 		return status;
 	  }

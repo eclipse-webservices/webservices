@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 import org.eclipse.wst.command.internal.env.context.PersistentContext;
 import org.eclipse.wst.common.environment.EnvironmentService;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.ILog;
 
 
 
@@ -92,8 +92,8 @@ public void updateProjectWSICompliances ( IProject project, String value)
     }
     catch (CoreException e) { 
     	System.out.println("No such Project");
-    	Log log = EnvironmentService.getEclipseLog();
-    	log.log(Log.INFO, 5084, this, "updateProjectWSICompliances", "No such Project "+project);
+    	ILog log = EnvironmentService.getEclipseLog();
+    	log.log(ILog.INFO, 5084, this, "updateProjectWSICompliances", "No such Project "+project);
     }
 }
 

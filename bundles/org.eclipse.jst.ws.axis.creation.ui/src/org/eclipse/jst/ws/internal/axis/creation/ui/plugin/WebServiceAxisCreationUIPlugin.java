@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.common.environment.EnvironmentService;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.ILog;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -39,7 +39,7 @@ public class WebServiceAxisCreationUIPlugin extends AbstractUIPlugin
   * The reference to the singleton instance of this plugin.
   */
   private static WebServiceAxisCreationUIPlugin instance_;
-  private Log log_;
+  private ILog log_;
 
   /**
   * Constructs a runtime plugin object for this plugin.
@@ -80,7 +80,7 @@ public class WebServiceAxisCreationUIPlugin extends AbstractUIPlugin
   */
   public void start( BundleContext context ) throws CoreException
   {
-  	log_.log(Log.INFO, 5068, this, "start", "Starting plugin org.eclipse.jst.ws.axis.creation.ui");
+  	log_.log(ILog.INFO, 5068, this, "start", "Starting plugin org.eclipse.jst.ws.axis.creation.ui");
     
     try
     {
@@ -88,7 +88,7 @@ public class WebServiceAxisCreationUIPlugin extends AbstractUIPlugin
     }
     catch( Exception exc )
     {
-      log_.log( Log.ERROR, 5068, this, "start", exc );  
+      log_.log( ILog.ERROR, 5068, this, "start", exc );  
     }
     
     setPreferences();
@@ -100,7 +100,7 @@ public class WebServiceAxisCreationUIPlugin extends AbstractUIPlugin
   */
   public void stop( BundleContext context ) throws CoreException
   {
-  	log_.log(Log.INFO, 5069, this, "stop", "Shutting plugin org.eclipse.jst.ws.axis.creation.ui");
+  	log_.log(ILog.INFO, 5069, this, "stop", "Shutting plugin org.eclipse.jst.ws.axis.creation.ui");
     
     try
     {
@@ -108,7 +108,7 @@ public class WebServiceAxisCreationUIPlugin extends AbstractUIPlugin
     }
     catch( Exception exc )
     {
-      log_.log( Log.ERROR, 5068, this, "start", exc );        
+      log_.log( ILog.ERROR, 5068, this, "start", exc );        
     }
   }
 

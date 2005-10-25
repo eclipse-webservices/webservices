@@ -21,7 +21,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ValidateWSDLJob
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
@@ -37,7 +37,7 @@ public class CheckWSDLValidationCommand extends AbstractDataModelOperation
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     
     IJobManager    jobManager     = Platform.getJobManager();
 	  Job[]          jobs           = jobManager.find( ValidateWSDLJob.VALIDATE_WSDL_JOB_FAMILY );
@@ -65,7 +65,7 @@ public class CheckWSDLValidationCommand extends AbstractDataModelOperation
 	  
   }
   
-  private boolean ignoreWSDLValidation(Environment env) {
+  private boolean ignoreWSDLValidation(IEnvironment env) {
 	  if (!WSPlugin.getInstance().getWaitForWSDLValidationContext().getPersistentWaitForWSDLValidation()) 
 		  return true; // do not want to wait for WSDL validation, i.e. Ignore all
 		  

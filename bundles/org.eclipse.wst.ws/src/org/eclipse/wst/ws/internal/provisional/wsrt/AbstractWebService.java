@@ -12,7 +12,7 @@
 package org.eclipse.wst.ws.internal.provisional.wsrt;
 
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 
 
 public abstract class AbstractWebService implements IWebService {
@@ -28,22 +28,22 @@ public abstract class AbstractWebService implements IWebService {
 		return info;
 	}
 
-	public abstract ICommandFactory assemble(Environment env, IContext ctx, ISelection sel,
+	public abstract ICommandFactory assemble(IEnvironment env, IContext ctx, ISelection sel,
 			String project, String module, String earProject, String ear);
 	
 
-	public abstract ICommandFactory deploy(Environment env, IContext ctx, ISelection sel,
+	public abstract ICommandFactory deploy(IEnvironment env, IContext ctx, ISelection sel,
       String project, String module, String earProject, String ear);
 	
 
-	public abstract ICommandFactory develop(Environment env, IContext ctx, ISelection sel,
+	public abstract ICommandFactory develop(IEnvironment env, IContext ctx, ISelection sel,
       String project, String module, String earProject, String ear);
 		
 
-	public abstract ICommandFactory install(Environment env, IContext ctx, ISelection sel,
+	public abstract ICommandFactory install(IEnvironment env, IContext ctx, ISelection sel,
       String project, String module, String earProject, String ear);
 	
 
-	public abstract ICommandFactory run(Environment env, IContext ctx, ISelection sel,
+	public abstract ICommandFactory run(IEnvironment env, IContext ctx, ISelection sel,
       String project, String module, String earProject, String ear);
 }

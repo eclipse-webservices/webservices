@@ -43,7 +43,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceCon
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
@@ -157,7 +157,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   public IStatus execute(IProgressMonitor monitor, IAdaptable adaptable)
   {
 
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
 
     try
     {
@@ -378,7 +378,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   /*
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     
     try
     {
@@ -1147,7 +1147,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   }  
   */
   
-  private void setDefaultsForExtension(Environment env)
+  private void setDefaultsForExtension(IEnvironment env)
   {
     IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils2.getClientRuntime(clientRuntimeId_);
     if (wsrt != null)

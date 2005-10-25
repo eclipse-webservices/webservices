@@ -11,13 +11,13 @@
 package org.eclipse.wst.command.internal.env.eclipse;
 
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 
 
 /**
- * This interface adds resources to the base Environment.
+ * This interface adds resources to the base IEnvironment.
  */
-public interface BaseEclipseEnvironment extends Environment 
+public interface BaseEclipseEnvironment extends IEnvironment 
 {
   /**
    * 

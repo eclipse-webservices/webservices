@@ -20,7 +20,7 @@ import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentEngine;
 import org.eclipse.wst.command.internal.env.core.fragment.FragmentListener;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.ILog;
 
 
 /**
@@ -200,9 +200,9 @@ public class SimpleCommandEngineManager
     //{
     //  public void execute( IProgressMonitor monitor )
       {
-        environment_.getLog().log(Log.INFO, "command", 5002, this, "getTransactionOperation", "Start of transaction");
+        environment_.getLog().log(ILog.INFO, "command", 5002, this, "getTransactionOperation", "Start of transaction");
         engine_.moveForwardToNextStop( monitor );
-        environment_.getLog().log(Log.INFO, "command", 5003, this, "getTransactionOperation", "End of transaction");
+        environment_.getLog().log(ILog.INFO, "command", 5003, this, "getTransactionOperation", "End of transaction");
       }
     };
     
@@ -215,9 +215,9 @@ public class SimpleCommandEngineManager
     {
       public void run( IProgressMonitor monitor )
       {
-        environment_.getLog().log(Log.INFO, "command", 5085, this, "getNoTransactionOperation", "Start of NON transaction");
+        environment_.getLog().log(ILog.INFO, "command", 5085, this, "getNoTransactionOperation", "Start of NON transaction");
         engine_.moveForwardToNextStop( monitor );
-        environment_.getLog().log(Log.INFO, "command", 5086, this, "getNoTransactionOperation", "End of NON transaction");
+        environment_.getLog().log(ILog.INFO, "command", 5086, this, "getNoTransactionOperation", "End of NON transaction");
       }
     }; 
     

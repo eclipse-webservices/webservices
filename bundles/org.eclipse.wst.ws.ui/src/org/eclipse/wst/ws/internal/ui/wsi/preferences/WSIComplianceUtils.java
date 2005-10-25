@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
-import org.eclipse.wst.common.environment.StatusHandler;
+import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 
 
@@ -50,24 +50,24 @@ public static int getWSISeverity (IProject project, PersistentWSIContext context
 }
 
 /**
- * @deprecated use checkWSICompliance ( StatusHandler monitor, Status[] status, IProject project, PersistentWSIContext context) instead
- * @param monitor StatusHandler
+ * @deprecated use checkWSICompliance ( IStatusHandler monitor, Status[] status, IProject project, PersistentWSIContext context) instead
+ * @param monitor IStatusHandler
  * @param status Status[]
  * @param project IProject
  * @return boolean true if to continue
  */
-public static boolean checkWSICompliance ( StatusHandler monitor, Status[] status, IProject project)
+public static boolean checkWSICompliance ( IStatusHandler monitor, Status[] status, IProject project)
 {	// check for SSBP by default
 	return checkWSICompliance ( monitor, status, project, WSUIPlugin.getInstance().getWSISSBPContext());
 }
 /**
- * @param monitor StatusHandler
+ * @param monitor IStatusHandler
  * @param status Status[]
  * @param project IProject
  * @param context PersistentWSIContext
  * @return boolean true if to continue
  */
-public static boolean checkWSICompliance ( StatusHandler monitor, Status[] status, IProject project, PersistentWSIContext context)
+public static boolean checkWSICompliance ( IStatusHandler monitor, Status[] status, IProject project, PersistentWSIContext context)
 {
 	String pluginId = "org.eclipse.wst.ws.ui";
 	msgUtils_ = new MessageUtils(pluginId + ".plugin", WSUIPlugin.getInstance()); 

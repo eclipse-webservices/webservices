@@ -21,8 +21,8 @@ import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 
@@ -49,7 +49,7 @@ public PublishProjectCommand() {
  */
 public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 {
-  Environment env = getEnvironment();
+  IEnvironment env = getEnvironment();
   
   IStatus status = Status.OK_STATUS;
   try
@@ -75,8 +75,8 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
       status = returnedStatus;
       
       //getStatusMonitor().reportStatus (instance.publish(getProgressMonitor()));
-      env.getLog().log(Log.OK, 5026, this, "execute", new String("project="+project+" successfully published"));
-      //Log.write(PublishProjectCommand.class,"execute",Log.OK,"project="+project+" successfully published");
+      env.getLog().log(ILog.OK, 5026, this, "execute", new String("project="+project+" successfully published"));
+      //ILog.write(PublishProjectCommand.class,"execute",ILog.OK,"project="+project+" successfully published");
       return status;
   }
   catch (Exception e) {

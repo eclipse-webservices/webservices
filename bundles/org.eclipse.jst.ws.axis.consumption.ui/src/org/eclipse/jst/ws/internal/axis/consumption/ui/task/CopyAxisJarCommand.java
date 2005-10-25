@@ -39,7 +39,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.common.BundleUtils;
 
@@ -76,7 +76,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
    */
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
-		Environment env = getEnvironment();
+		IEnvironment env = getEnvironment();
     IStatus status = Status.OK_STATUS;
     ProgressUtils.report(monitor, msgUtils_.getMessage("PROGRESS_INFO_COPY_AXIS_CFG"));
     
@@ -113,7 +113,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 
   }
 
-  private void copyAxisJarsToProject(IProject project, IStatus status, Environment env, IProgressMonitor monitor) {
+  private void copyAxisJarsToProject(IProject project, IStatus status, IEnvironment env, IProgressMonitor monitor) {
 //    IPath webModulePath = ResourceUtils.getWebModuleServerRoot(project).getFullPath();
 	IPath webModulePath = J2EEUtils.getWebContentPath( project );
     if (webModulePath == null) {
@@ -133,7 +133,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
   /**
    *  
    */
-  private void copyIFile(String source, IPath targetPath, String targetFile, IStatus status, Environment env, IProgressMonitor monitor) {
+  private void copyIFile(String source, IPath targetPath, String targetFile, IStatus status, IEnvironment env, IProgressMonitor monitor) {
     IPath target = targetPath.append(new Path(targetFile));
     ProgressUtils.report(monitor, baseConMsgUtils_.getMessage("PROGRESS_INFO_COPYING_FILE"));
 
@@ -160,7 +160,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
     }
   }
 
-  public IStatus addAxisJarsToBuildPath(IProject p, Environment env, IProgressMonitor monitor)
+  public IStatus addAxisJarsToBuildPath(IProject p, IEnvironment env, IProgressMonitor monitor)
   {
 	  String[] jarNames = new String[JARLIST.length];
 	  for (int i=0; i<JARLIST.length; i++)
@@ -181,7 +181,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
   }
 
   
-  private IStatus addJar(IProject webProject, String pluginId, String[] jarNames, Environment env, IProgressMonitor monitor)
+  private IStatus addJar(IProject webProject, String pluginId, String[] jarNames, IEnvironment env, IProgressMonitor monitor)
   {
 
     IStatus status = Status.OK_STATUS;

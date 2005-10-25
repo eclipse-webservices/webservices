@@ -12,7 +12,7 @@
 package org.eclipse.wst.ws.internal.extensions;
 
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFactoryFragment;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
@@ -20,7 +20,7 @@ import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 public abstract class AbstractServiceFragment extends CommandFactoryFragment
 {
   protected IWebService webService_;
-  protected Environment environment_;
+  protected IEnvironment environment_;
   protected IContext    context_;
   protected ISelection  selection_;
   protected String      project_;
@@ -49,7 +49,7 @@ public abstract class AbstractServiceFragment extends CommandFactoryFragment
 	webService_ = webService;  
   }
 
-  public void setEnvironment( Environment environment )
+  public void setEnvironment( IEnvironment environment )
   {
 	environment_ = environment;
   }

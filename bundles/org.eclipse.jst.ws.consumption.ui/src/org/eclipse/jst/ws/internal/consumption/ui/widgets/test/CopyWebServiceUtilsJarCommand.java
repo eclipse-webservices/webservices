@@ -29,8 +29,8 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtil
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.StatusHandler;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
@@ -55,7 +55,7 @@ public CopyWebServiceUtilsJarCommand()
  */
 public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 {
-  Environment env = getEnvironment();
+  IEnvironment env = getEnvironment();
   
   try
   {
@@ -67,7 +67,7 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
       
     IStatus status = copyIFile("webserviceutils.jar",webModulePath,"WEB-INF/lib/webserviceutils.jar", WebServiceConsumptionPlugin.getInstance(),env, monitor);
     if(status.getSeverity() == Status.ERROR){
-      StatusHandler sHandler = env.getStatusHandler();
+      IStatusHandler sHandler = env.getStatusHandler();
       IStatus errorStatus = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS") );
       sHandler.reportError(errorStatus);	
       return status;
@@ -76,7 +76,7 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
       
     }
     catch (Exception e) {
-      StatusHandler sHandler = env.getStatusHandler();
+      IStatusHandler sHandler = env.getStatusHandler();
       IStatus errorStatus = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS") );
       sHandler.reportError(errorStatus);	
       return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_FILECOPY_WEBSERVICE_UTILS"), e);
@@ -87,7 +87,7 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 /**
  *
  */
-private IStatus copyIFile(String source, IPath targetPath, String targetFile, Plugin plugin,Environment env, IProgressMonitor monitor )
+private IStatus copyIFile(String source, IPath targetPath, String targetFile, Plugin plugin,IEnvironment env, IProgressMonitor monitor )
 {
     
   if (plugin != null)

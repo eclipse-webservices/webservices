@@ -45,7 +45,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.selection.Selection
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.server.core.IRuntime;
@@ -86,7 +86,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     
     try
     {
@@ -309,7 +309,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   /*
   public IStatus execuste( IProgressMonitor monitor, IAdaptable adaptable )
   {    
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     
     try
     {

@@ -16,13 +16,13 @@ import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 
 public abstract class WSWizardTest extends TestCase
 {
-	protected Environment env_;
+	protected IEnvironment env_;
 	protected IRuntime serverRuntime_;
 	protected IServer server_;
 	protected IStructuredSelection initialSelection_;
@@ -73,7 +73,7 @@ public abstract class WSWizardTest extends TestCase
 	 * @param server
 	 * @throws Exception
 	 */
-	public void installInputData(Environment env,IRuntime serverRuntime,IServer server) throws Exception
+	public void installInputData(IEnvironment env,IRuntime serverRuntime,IServer server) throws Exception
 	{
 		env_ = env;
 		serverRuntime_ = serverRuntime;

@@ -11,9 +11,9 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.EnvironmentService;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
@@ -26,7 +26,7 @@ import org.eclipse.wst.server.core.ServerCore;
 public class StartServerCommand extends AbstractDataModelOperation
 {
   private MessageUtils msgUtils_;
-  private Log log;
+  private ILog log;
   private boolean forcePublish_;
   private boolean doAsyncPublish_;
   
@@ -52,7 +52,7 @@ public class StartServerCommand extends AbstractDataModelOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     IStatus status = Status.OK_STATUS;
 
     IServer server = ServerCore.findServer(serverInstanceId);
@@ -207,7 +207,7 @@ public class StartServerCommand extends AbstractDataModelOperation
       return status;
     }
     
-    log.log(Log.INFO, 5051, this, "publishProject", "IServer=" + server + ", Publish command completed");
+    log.log(ILog.INFO, 5051, this, "publishProject", "IServer=" + server + ", Publish command completed");
     return status;
   }
 
@@ -218,7 +218,7 @@ public class StartServerCommand extends AbstractDataModelOperation
     {
       monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
       server.synchronousRestart(ILaunchManager.RUN_MODE, monitor);
-      log.log(Log.INFO, 5052, this, "execute", "IServer=" + server + ", Restart command completed");
+      log.log(ILog.INFO, 5052, this, "execute", "IServer=" + server + ", Restart command completed");
       return status;
     } catch (CoreException e)
     {
@@ -235,7 +235,7 @@ public class StartServerCommand extends AbstractDataModelOperation
     {
       monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
       server.synchronousStart(ILaunchManager.RUN_MODE, monitor);
-      log.log(Log.INFO, 5053, this, "execute", "IServer=" + server + ", Start command completed");
+      log.log(ILog.INFO, 5053, this, "execute", "IServer=" + server + ", Start command completed");
       return status;
     } catch (CoreException e)
     {

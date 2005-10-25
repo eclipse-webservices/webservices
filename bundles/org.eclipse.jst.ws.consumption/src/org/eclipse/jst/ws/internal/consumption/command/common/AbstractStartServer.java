@@ -20,13 +20,13 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.common.environment.EnvironmentService;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.server.core.IServer;
 
 public abstract class AbstractStartServer {
  
 protected IProgressMonitor monitor;
-private Log log_;
+private ILog log_;
 private MessageUtils msgUtils_;
 
 public AbstractStartServer()
@@ -55,7 +55,7 @@ public void StartServer (IProject project, IServer server, IProgressMonitor moni
       {    
       	
         server.synchronousStop(false);
-        log_.log(Log.INFO, 5050, this, "StartServer", "project="+project+", Stop command completed, restart needed");
+        log_.log(ILog.INFO, 5050, this, "StartServer", "project="+project+", Stop command completed, restart needed");
         publishProject(server);
     	startProject(server);
       }
@@ -90,7 +90,7 @@ protected void publishProject(IServer server) throws CoreException
       IStatus status = server.publish(IServer.PUBLISH_INCREMENTAL, monitor);
       if (status.getSeverity() != IStatus.OK)
       	throw new CoreException(status);
-      log_.log(Log.INFO, 5051, this, "publishProject", "IServer="+server+", Publish command completed");
+      log_.log(ILog.INFO, 5051, this, "publishProject", "IServer="+server+", Publish command completed");
  }
 
 protected void startProject(IServer server) throws CoreException
@@ -99,7 +99,7 @@ protected void startProject(IServer server) throws CoreException
   {
     monitor.subTask( msgUtils_.getMessage( "PROGRESS_INFO_STARTING_SERVER" ) );    
     server.synchronousStart(ILaunchManager.RUN_MODE, monitor);
-    log_.log(Log.INFO, 5052, this, "startProject", "IServer="+server+", Start command completed");
+    log_.log(ILog.INFO, 5052, this, "startProject", "IServer="+server+", Start command completed");
     
   }
   catch (Exception e) {

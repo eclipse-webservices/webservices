@@ -21,8 +21,8 @@ import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
@@ -47,7 +47,7 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 		
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     
     setJSPFolder();
     
@@ -74,7 +74,7 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 	  
 	  }
   
-  private IStatus launchSample (Environment env, IProgressMonitor monitor ) {
+  private IStatus launchSample (IEnvironment env, IProgressMonitor monitor ) {
     IStatus status = Status.OK_STATUS;
 	  IPath fDestinationFolderPath = new Path(jspfolder);
 	  fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
@@ -136,7 +136,7 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 	      return status;
 		 }catch(PartInitException exc){
 			//TODO: change error message
-			env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
+			env.getLog().log(ILog.WARNING, 5048, this, "launchSample", exc);
 			status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL") );
 			try {
 				env.getStatusHandler().report(status);
@@ -145,7 +145,7 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 			}
 	    	return status;
 	    }catch(MalformedURLException exc){
-	    	env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
+	    	env.getLog().log(ILog.WARNING, 5048, this, "launchSample", exc);
 			status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), exc );
 			try {
 				env.getStatusHandler().report(status);

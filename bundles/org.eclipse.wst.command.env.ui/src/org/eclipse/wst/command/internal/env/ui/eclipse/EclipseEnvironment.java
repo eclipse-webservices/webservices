@@ -14,16 +14,16 @@ import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
 import org.eclipse.wst.command.internal.provisional.env.core.CommandManager;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.EnvironmentService;
-import org.eclipse.wst.common.environment.Log;
-import org.eclipse.wst.common.environment.StatusHandler;
+import org.eclipse.wst.common.environment.ILog;
+import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.environment.uri.SimpleURIFactory;
-import org.eclipse.wst.common.environment.uri.URIFactory;
-import org.eclipse.wst.common.environment.uri.URIScheme;
+import org.eclipse.wst.common.environment.uri.IURIFactory;
+import org.eclipse.wst.common.environment.uri.IURIScheme;
 
 
 /**
- * This class implements an Environment class for the Eclipse Environment.
- * This Environment currently supports the "platform" protocol and the "file"
+ * This class implements an IEnvironment class for the Eclipse IEnvironment.
+ * This IEnvironment currently supports the "platform" protocol and the "file"
  * protocol.
  *
  */
@@ -32,15 +32,15 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
   private CommandManager   commandManager_  = null;
   private SimpleURIFactory uriFactory_      = null;
   private ResourceContext  resourceContext_ = null;
-  private StatusHandler    statusHandler_   = null;
-  private Log              logger_          = null;
+  private IStatusHandler    statusHandler_   = null;
+  private ILog              logger_          = null;
   
   public EclipseEnvironment( CommandManager  commandManager, 
  		                         ResourceContext resourceContext,
-						                 StatusHandler   statusHandler )
+						                 IStatusHandler   statusHandler )
   {
-    URIScheme eclipseScheme = EnvironmentService.getEclipseScheme( this );
-    URIScheme fileScheme    = EnvironmentService.getFileScheme();
+    IURIScheme eclipseScheme = EnvironmentService.getEclipseScheme( this );
+    IURIScheme fileScheme    = EnvironmentService.getFileScheme();
     
     commandManager_  = commandManager;
     resourceContext_ = resourceContext;
@@ -52,7 +52,7 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
   }
   
   /**
-   * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getCommandManager()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.IEnvironment#getCommandManager()
    */
   public CommandManager getCommandManager()
   {
@@ -60,9 +60,9 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
   }
 
   /**
-   * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getLog()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.IEnvironment#getLog()
    */
-  public Log getLog()
+  public ILog getLog()
   {
 	  if( logger_ == null )
     {  
@@ -76,29 +76,29 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
    * 
    * @param logger the new logger for this environment.
    */
-  public void setLog( Log logger )
+  public void setLog( ILog logger )
   {
 	logger_ = logger;  
   }
    
   /**
-   * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getStatusHandler()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.IEnvironment#getStatusHandler()
    */
-  public StatusHandler getStatusHandler()
+  public IStatusHandler getStatusHandler()
   {
     return statusHandler_;
   }
 
   /** (non-Javadoc)
-   * @see org.eclipse.wst.command.internal.provisional.env.core.common.Environment#getURIFactory()
+   * @see org.eclipse.wst.command.internal.provisional.env.core.common.IEnvironment#getURIFactory()
    */
-  public URIFactory getURIFactory()
+  public IURIFactory getURIFactory()
   {
     return uriFactory_;
   }
 
   /**
-   * @return returns a ResourceContext for this Environment.
+   * @return returns a ResourceContext for this IEnvironment.
    */
   public ResourceContext getResourceContext()
   {

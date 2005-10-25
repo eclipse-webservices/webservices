@@ -26,7 +26,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContribut
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 
 
 public class ServiceTestWidget extends SimpleWidgetDataContributor
@@ -80,7 +80,7 @@ public class ServiceTestWidget extends SimpleWidgetDataContributor
   private String module;
   private String wsdlURI;
   private String launchedServiceTestName = "";
-  private Environment env;
+  private IEnvironment env;
   private List endpoints;
   
   private void handleLaunchButton()
@@ -145,7 +145,7 @@ public class ServiceTestWidget extends SimpleWidgetDataContributor
     return launchedServiceTestName;
   }
 
-  public void setEnvironment(Environment env)
+  public void setEnvironment(IEnvironment env)
   {
   	this.env = env;
   }

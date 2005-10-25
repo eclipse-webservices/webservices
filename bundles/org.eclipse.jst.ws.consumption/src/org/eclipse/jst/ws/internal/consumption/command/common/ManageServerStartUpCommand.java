@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 
@@ -59,7 +59,7 @@ public class ManageServerStartUpCommand extends AbstractDataModelOperation
 	 */
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-      Environment env = getEnvironment();
+      IEnvironment env = getEnvironment();
 	    IStatus status = Status.OK_STATUS;
 	    ProgressUtils.report(monitor, msgUtils_.getMessage("PROGRESS_INFO_START_WEB_PROJECT"));
 	 

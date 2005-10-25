@@ -21,7 +21,7 @@ import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 
 
@@ -43,7 +43,7 @@ public class JavaMofTypeVisitorAction extends JavaMofBeanVisitorAction
   /*
   *Constructor
   **/
-  public JavaMofTypeVisitorAction(Element parentElement,String project, Environment env)
+  public JavaMofTypeVisitorAction(Element parentElement,String project, IEnvironment env)
   {
     super(parentElement,project, env);
 	String pluginId = "org.eclipse.jst.ws.consumption";

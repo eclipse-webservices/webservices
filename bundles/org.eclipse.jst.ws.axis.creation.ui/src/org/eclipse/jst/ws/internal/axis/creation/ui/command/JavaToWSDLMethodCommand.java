@@ -26,8 +26,8 @@ import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
@@ -68,10 +68,10 @@ public class JavaToWSDLMethodCommand extends AbstractDataModelOperation {
 	*/
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
-		Environment environment = getEnvironment();
+		IEnvironment environment = getEnvironment();
 
 		fbeanBaseName = javaWSDLParam_.getBeanName();
-		environment.getLog().log(Log.INFO, 5070, this, "execute", "beanBaseName = "+fbeanBaseName);
+		environment.getLog().log(ILog.INFO, 5070, this, "execute", "beanBaseName = "+fbeanBaseName);
 		IStatus status;
 		try {
 			//Get the qualified bean name; my.package.MyClass
@@ -91,7 +91,7 @@ public class JavaToWSDLMethodCommand extends AbstractDataModelOperation {
 				(JavaClass)JavaRefFactory.eINSTANCE.reflectType(qName, jMOF.getResourceSet());
 			
 			if (!javaClass.isExistingType()) {
-				environment.getLog().log(Log.ERROR, 5022, this, "execute", msgUtils_.getMessage(
+				environment.getLog().log(ILog.ERROR, 5022, this, "execute", msgUtils_.getMessage(
 						"MSG_ERROR_JAVA_MOF_REFLECT_FAILED",
 						new String[] { qName }));
 				
@@ -155,7 +155,7 @@ public class JavaToWSDLMethodCommand extends AbstractDataModelOperation {
 			return Status.OK_STATUS;
 
 		} catch (Exception e) {
-			environment.getLog().log(Log.ERROR, 5023, this, "execute", msgUtils_.getMessage("MSG_ERROR_READ_BEAN"));
+			environment.getLog().log(ILog.ERROR, 5023, this, "execute", msgUtils_.getMessage("MSG_ERROR_READ_BEAN"));
 		
 			status = StatusUtils.errorStatus(
 					msgUtils_.getMessage(

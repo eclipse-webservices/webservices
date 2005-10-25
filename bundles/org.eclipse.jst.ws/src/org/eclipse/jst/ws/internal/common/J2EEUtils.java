@@ -47,7 +47,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
 import org.eclipse.wst.common.environment.EnvironmentService;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.server.core.IModule;
@@ -766,8 +766,8 @@ public final class J2EEUtils {
 					}
 				}
 			} catch (Exception ce) {
-				Log log = EnvironmentService.getEclipseLog();
-				log.log(Log.ERROR, 5039, J2EEUtils.class, "getEARProjects", ce);
+				ILog log = EnvironmentService.getEclipseLog();
+				log.log(ILog.ERROR, 5039, J2EEUtils.class, "getEARProjects", ce);
 
 			}
 		}

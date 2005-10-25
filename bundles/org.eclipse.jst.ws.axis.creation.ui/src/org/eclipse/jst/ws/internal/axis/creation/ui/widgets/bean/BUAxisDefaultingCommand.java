@@ -19,7 +19,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamete
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
@@ -56,7 +56,7 @@ public class BUAxisDefaultingCommand extends AbstractDataModelOperation
   
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
-		Environment environment = getEnvironment();
+		IEnvironment environment = getEnvironment();
     
   	String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
     msgUtils_ = new MessageUtils( pluginId + ".plugin", this );

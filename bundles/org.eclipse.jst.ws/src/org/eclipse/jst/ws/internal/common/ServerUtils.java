@@ -30,7 +30,7 @@ import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
@@ -97,7 +97,7 @@ public final class ServerUtils {
 		return (String) serverLabelToId_.get(factoryLabel);
 	}
 
-	public IStatus modifyModules(Environment env, IServer server,
+	public IStatus modifyModules(IEnvironment env, IServer server,
 			IModule module, boolean add, IProgressMonitor monitor) {
 
 		IServerWorkingCopy wc = null;
@@ -223,7 +223,7 @@ public final class ServerUtils {
 	 * 
 	 * @deprecated
 	 */
-	public IServer createServer(Environment env, IModule module,
+	public IServer createServer(IEnvironment env, IModule module,
 			String serverTypeId, IProgressMonitor monitor) {
 		IServerWorkingCopy serverWC = null;
 		IServer server = null;

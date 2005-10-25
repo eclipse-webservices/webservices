@@ -35,7 +35,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.Choice;
 import org.eclipse.wst.common.environment.StatusException;
-import org.eclipse.wst.common.environment.StatusHandler;
+import org.eclipse.wst.common.environment.IStatusHandler;
 
 
 
@@ -191,7 +191,7 @@ public final class FileResourceUtils
                                 IPath pathname,
                                 IPath targetPath,
                                 IProgressMonitor progressMonitor,
-                                StatusHandler statusMonitor )
+                                IStatusHandler statusMonitor )
      throws CoreException
    {
      try
@@ -221,7 +221,7 @@ public final class FileResourceUtils
   public static boolean deleteFile( ResourceContext resourceContext, 
                                     IFile file,
                                     IProgressMonitor progressMonitor, 
-                                    StatusHandler statusMonitor)
+                                    IStatusHandler statusMonitor)
     throws CoreException
   {
     if (file.exists())
@@ -286,7 +286,7 @@ public final class FileResourceUtils
    public static boolean deleteFolder( ResourceContext resourceContext,
                                        IFolder folder,
                                        IProgressMonitor progressMonitor,
-                                       StatusHandler statusMonitor )
+                                       IStatusHandler statusMonitor )
      throws CoreException
    {
      if (!folder.exists()) return true;
@@ -340,7 +340,7 @@ public final class FileResourceUtils
     IPath           absolutePath,
     InputStream     inputStream,
     IProgressMonitor progressMonitor,
-    StatusHandler   statusHandler )
+    IStatusHandler   statusHandler )
 
     throws CoreException 
   {    
@@ -412,7 +412,7 @@ public final class FileResourceUtils
     IPath           relativePath,
     InputStream     inputStream,
     IProgressMonitor progressMonitor,
-    StatusHandler   statusMonitor )
+    IStatusHandler   statusMonitor )
  
     throws CoreException 
   {
@@ -457,7 +457,7 @@ public final class FileResourceUtils
        ResourceContext  context,
        IPath            file,
        IProgressMonitor progressMonitor,
-       StatusHandler    statusHandler )
+       IStatusHandler    statusHandler )
  
   {
     return new FileResourceOutputStream(context, file, progressMonitor, statusHandler);
@@ -484,7 +484,7 @@ public final class FileResourceUtils
     ResourceContext  resourceContext,
     IPath            absolutePath,
     IProgressMonitor progressMonitor,
-    StatusHandler    statusHandler )
+    IStatusHandler    statusHandler )
   
     throws CoreException
   {
@@ -509,7 +509,7 @@ public final class FileResourceUtils
     IContainer       parent,
     String           folderName,
     IProgressMonitor progressMonitor,
-    StatusHandler    statusHandler )
+    IStatusHandler    statusHandler )
   
   throws CoreException
   {
@@ -566,7 +566,7 @@ public final class FileResourceUtils
     String           fileName,
     InputStream      inputStream,
     IProgressMonitor progressMonitor,
-    StatusHandler    statusHandler )
+    IStatusHandler    statusHandler )
  
     throws CoreException
   {

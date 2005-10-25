@@ -42,7 +42,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.uri.URIException;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
@@ -74,7 +74,7 @@ public class CopyWSDLCommand extends AbstractDataModelOperation
    */
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     
     try
     {
@@ -93,7 +93,7 @@ public class CopyWSDLCommand extends AbstractDataModelOperation
     }
   }
 
-  private void copyWSDL(Environment env, String uri, String destURI, String destLocalname) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException
+  private void copyWSDL(IEnvironment env, String uri, String destURI, String destLocalname) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException
   {
   	Definition definition;
 	
@@ -105,7 +105,7 @@ public class CopyWSDLCommand extends AbstractDataModelOperation
 	}
   }
 
-  private void copyWSDL(Environment env, String uri, String destURI, String destLocalname, Definition definition) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException
+  private void copyWSDL(IEnvironment env, String uri, String destURI, String destLocalname, Definition definition) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException
   {
 	if (!needToCopy(uri)) {
 	   	return;
@@ -223,7 +223,7 @@ public class CopyWSDLCommand extends AbstractDataModelOperation
     return (uri.indexOf(':') == -1);
   }
 
-  private void copyXMLSchema(Environment env, String uri, String destURI) throws TransformerException, TransformerConfigurationException, IOException, URIException
+  private void copyXMLSchema(IEnvironment env, String uri, String destURI) throws TransformerException, TransformerConfigurationException, IOException, URIException
   {
 	  if (!needToCopy(uri)) {
 	    	return;
@@ -259,7 +259,7 @@ public class CopyWSDLCommand extends AbstractDataModelOperation
     }
   }
 
-  private void copyXMLSchema(Environment env, XSDSchema xsdSchema, String baseURI, String destURI) throws TransformerException, TransformerConfigurationException, IOException, URIException
+  private void copyXMLSchema(IEnvironment env, XSDSchema xsdSchema, String baseURI, String destURI) throws TransformerException, TransformerConfigurationException, IOException, URIException
   {
     if (xsdSchema != null)
     {

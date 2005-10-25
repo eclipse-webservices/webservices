@@ -28,7 +28,7 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.common.EnvironmentUtils;
 
@@ -52,7 +52,7 @@ public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env          = getEnvironment();
+    IEnvironment env          = getEnvironment();
     MultiStatus status       = null;
     IStatus     returnStatus = Status.OK_STATUS;
   	
@@ -88,7 +88,7 @@ public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
   	return returnStatus;
   }
   
-  private IStatus writeFile (Environment env, String className, IPath outputLocation, IProgressMonitor monitor ) 
+  private IStatus writeFile (IEnvironment env, String className, IPath outputLocation, IProgressMonitor monitor ) 
   {
   	IStatus status = Status.OK_STATUS;
   	int index;

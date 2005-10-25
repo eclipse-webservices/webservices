@@ -30,7 +30,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
@@ -46,7 +46,7 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
-		Environment environment = getEnvironment();
+		IEnvironment environment = getEnvironment();
 		if (serverProject != null) {
 			IStatus status = null;
 			status = addServlet(serverProject, getAxisServletDescriptor());

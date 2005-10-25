@@ -23,7 +23,7 @@ import org.eclipse.jst.ws.internal.consumption.codegen.Generator;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 import org.eclipse.wst.ws.internal.datamodel.Model;
@@ -75,7 +75,7 @@ public Model getJavaDataModel()
  */
 public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 {
-  Environment env = getEnvironment();
+  IEnvironment env = getEnvironment();
   
   IStatus status = Status.OK_STATUS;
   try {

@@ -17,8 +17,8 @@ import java.util.Hashtable;
 import java.util.Vector;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.ILog;
 
 
 public class DataFlowManager 
@@ -26,9 +26,9 @@ public class DataFlowManager
   private DataMappingRegistryImpl registry_;
   private Hashtable               classTable_;
   private int                     order_;
-  private Environment				environment_;
+  private IEnvironment				environment_;
   
-  public DataFlowManager( DataMappingRegistryImpl registry, Environment environment )
+  public DataFlowManager( DataMappingRegistryImpl registry, IEnvironment environment )
   {
     registry_   = registry;
     classTable_ = new Hashtable();
@@ -47,7 +47,7 @@ public class DataFlowManager
     String     objectType = object.getClass().getName();
     ClassEntry classEntry = (ClassEntry)classTable_.get( objectType );
 	
-    environment_.getLog().log(Log.INFO, "data", 5004, this, "process", "Processing: " + objectType );
+    environment_.getLog().log(ILog.INFO, "data", 5004, this, "process", "Processing: " + objectType );
     
     if( classEntry == null )
     {
@@ -93,7 +93,7 @@ public class DataFlowManager
             
             if( getter.order == -1 )
             {
-            	environment_.getLog().log(Log.INFO , "data", 5005, this, "process", "  >>No getter found for property: " + setterMethod.getName());
+            	environment_.getLog().log(ILog.INFO , "data", 5005, this, "process", "  >>No getter found for property: " + setterMethod.getName());
             }
             
             if( currentObjectMethod.order < getter.order ) 
@@ -115,7 +115,7 @@ public class DataFlowManager
         }
         else
         {
-        	environment_.getLog().log(Log.INFO, "data", 5006, this, "process", "  >>No rule found for setter: " + setterMethod.getName() );
+        	environment_.getLog().log(ILog.INFO, "data", 5006, this, "process", "  >>No rule found for setter: " + setterMethod.getName() );
         }
       }
     }   
@@ -237,7 +237,7 @@ public class DataFlowManager
                                         "\" threw an exception." );
   	}
   	
-  	environment_.getLog().log(Log.INFO, "data", 5007, this, "invokeMethod ","  Setting prop: " + clientMethod.getName() + " data=" + data + " from: " + sourceObject.getClass().getName() );
+  	environment_.getLog().log(ILog.INFO, "data", 5007, this, "invokeMethod ","  Setting prop: " + clientMethod.getName() + " data=" + data + " from: " + sourceObject.getClass().getName() );
   	
   	
   	if( transformer != null )

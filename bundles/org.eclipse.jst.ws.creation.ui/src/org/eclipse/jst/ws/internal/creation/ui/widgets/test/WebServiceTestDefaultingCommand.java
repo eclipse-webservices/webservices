@@ -27,7 +27,7 @@ import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
@@ -41,12 +41,12 @@ public class WebServiceTestDefaultingCommand extends AbstractDataModelOperation
 {
   
   private SelectionList serviceTestFacilities;	
-  private Environment environment;
+  private IEnvironment environment;
   private String testID;
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     
   	ScenarioContext scenarioContext = WebServicePlugin.getInstance().getScenarioContext().copy();
   	testID = scenarioContext.getNonJavaTestService();
@@ -90,7 +90,7 @@ public class WebServiceTestDefaultingCommand extends AbstractDataModelOperation
   	return testID;
   }
   
-  public Environment getEnvironment()
+  public IEnvironment getEnvironment()
   {
   	return environment;
   }

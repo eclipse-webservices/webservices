@@ -43,8 +43,8 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.Log;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
@@ -86,7 +86,7 @@ public class WSSampleFinishCommand extends AbstractDataModelOperation implements
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     
   	IStatus status = Status.OK_STATUS;
     //setters and getters to be removed
@@ -109,7 +109,7 @@ public class WSSampleFinishCommand extends AbstractDataModelOperation implements
   * Generate the four jsps that make up this
   * sample app.
   */
-  protected IStatus generatePages(Environment env, IProgressMonitor monitor )
+  protected IStatus generatePages(IEnvironment env, IProgressMonitor monitor )
   {
   	IStatus status = Status.OK_STATUS;
     IPath fDestinationFolderPath = new Path(jspFolder);
@@ -169,7 +169,7 @@ public class WSSampleFinishCommand extends AbstractDataModelOperation implements
   }
 
 
-  protected IStatus launchSample (Environment env, IProgressMonitor monitor ) {
+  protected IStatus launchSample (IEnvironment env, IProgressMonitor monitor ) {
 
   	IStatus status = Status.OK_STATUS;
     if (!runClientTest) return status;
@@ -237,7 +237,7 @@ public class WSSampleFinishCommand extends AbstractDataModelOperation implements
       return status;
 	 }catch(PartInitException exc){
 		//TODO: change error message
-		env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
+		env.getLog().log(ILog.WARNING, 5048, this, "launchSample", exc);
 		status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), exc );
 		try {
 			env.getStatusHandler().report(status);
@@ -246,7 +246,7 @@ public class WSSampleFinishCommand extends AbstractDataModelOperation implements
 		}
     	return status;
     }catch(MalformedURLException exc){
-    	env.getLog().log(Log.WARNING, 5048, this, "launchSample", exc);
+    	env.getLog().log(ILog.WARNING, 5048, this, "launchSample", exc);
 		status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), exc );
 		try {
 			env.getStatusHandler().report(status);
@@ -259,7 +259,7 @@ public class WSSampleFinishCommand extends AbstractDataModelOperation implements
 
   
 
-  protected IStatus createModel(Environment env, IProgressMonitor monitor ) {
+  protected IStatus createModel(IEnvironment env, IProgressMonitor monitor ) {
 
   	//create the model from the resource
     JavaToModelCommand jtmc = new JavaToModelCommand();

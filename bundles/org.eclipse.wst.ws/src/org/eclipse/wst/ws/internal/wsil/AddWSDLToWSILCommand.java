@@ -48,9 +48,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.uri.URIException;
-import org.eclipse.wst.common.environment.uri.URIFactory;
+import org.eclipse.wst.common.environment.uri.IURIFactory;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.wsil.IllegalArgumentsException;
 import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
@@ -107,9 +107,9 @@ public class AddWSDLToWSILCommand extends AbstractDataModelOperation
    */
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment environment = getEnvironment();
+    IEnvironment environment = getEnvironment();
     
-    URIFactory uriFactory = environment.getURIFactory();
+    IURIFactory uriFactory = environment.getURIFactory();
     // Parse arguments
     try
     {
@@ -250,7 +250,7 @@ public class AddWSDLToWSILCommand extends AbstractDataModelOperation
     return Status.OK_STATUS;
   }
 
-  private IStatus internalExecute(Environment environment, WSILDocument wsilDocument, String wsil, String wsdl, String httpUsername, String httpPassword) throws WWWAuthenticationException
+  private IStatus internalExecute(IEnvironment environment, WSILDocument wsilDocument, String wsil, String wsdl, String httpUsername, String httpPassword) throws WWWAuthenticationException
   {
     Definition definition = null;
     ArrayList wsdlService = new ArrayList();
@@ -365,7 +365,7 @@ public class AddWSDLToWSILCommand extends AbstractDataModelOperation
    *         or a Status with a severity of less than <code>Status.ERROR</code>
    *         signifies success.
    */
-  public IStatus undo(Environment environment)
+  public IStatus undo(IEnvironment environment)
   {
     return Status.OK_STATUS;
   }
@@ -459,7 +459,7 @@ public class AddWSDLToWSILCommand extends AbstractDataModelOperation
     return new String(b);
   }
 
-  private String platform2File(URIFactory uriFactory, String uri)
+  private String platform2File(IURIFactory uriFactory, String uri)
   {
     try
     {

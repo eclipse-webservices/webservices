@@ -22,7 +22,7 @@ import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 
 
 /**
@@ -34,12 +34,12 @@ public class JavaMofParameterVisitor implements Visitor
   // Copyright
   public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
   private MessageUtils msgUtils_;
-  private Environment env_;
+  private IEnvironment env_;
 
   /*
   * Constructor
   **/
-  public JavaMofParameterVisitor(Environment env)
+  public JavaMofParameterVisitor(IEnvironment env)
   {
 	String pluginId = "org.eclipse.jst.ws.consumption";
 	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);  	

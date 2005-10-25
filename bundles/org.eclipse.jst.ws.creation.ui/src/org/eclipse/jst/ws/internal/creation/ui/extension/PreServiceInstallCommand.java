@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateServerCommand;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
 
@@ -31,7 +31,7 @@ public class PreServiceInstallCommand extends AbstractDataModelOperation
 		
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-      Environment environment = getEnvironment();
+      IEnvironment environment = getEnvironment();
       
 		  System.out.println( "In Pre service install command." );
 			

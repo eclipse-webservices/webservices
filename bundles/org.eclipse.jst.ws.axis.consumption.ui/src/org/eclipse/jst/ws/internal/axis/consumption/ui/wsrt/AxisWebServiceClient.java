@@ -17,7 +17,7 @@ import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.ws.internal.provisional.wsrt.AbstractWebServiceClient;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
 import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
@@ -32,19 +32,19 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		// TODO Auto-generated constructor stub
 	}
 
-	public ICommandFactory assemble(Environment env, IContext ctx,
+	public ICommandFactory assemble(IEnvironment env, IContext ctx,
 			ISelection sel, String project, String module, String earProject, String ear)
 	{
 		return null;
 	}
 
-	public ICommandFactory deploy(Environment env, IContext ctx, ISelection sel,
+	public ICommandFactory deploy(IEnvironment env, IContext ctx, ISelection sel,
 			String project, String module, String earProject, String ear)
 	{
 		return null;
 	}
 
-	public ICommandFactory develop(Environment env, IContext ctx, ISelection sel,
+	public ICommandFactory develop(IEnvironment env, IContext ctx, ISelection sel,
 			String project, String module, String earProject, String ear)
 	{
     EclipseEnvironment environment = (EclipseEnvironment)env;
@@ -67,13 +67,13 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		return new SimpleCommandFactory(commands);
 	}
 
-	public ICommandFactory install(Environment env, IContext ctx, ISelection sel,
+	public ICommandFactory install(IEnvironment env, IContext ctx, ISelection sel,
 			String project, String module, String earProject, String ear)
 	{
 		return null;
 	}
 
-	public ICommandFactory run(Environment env, IContext ctx, ISelection sel,
+	public ICommandFactory run(IEnvironment env, IContext ctx, ISelection sel,
 			String project, String module, String earProject, String ear)
 	{
 		return null;

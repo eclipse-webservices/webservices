@@ -24,7 +24,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
 import org.eclipse.wst.common.environment.Choice;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.datamodel.Element;
 import org.eclipse.wst.ws.internal.datamodel.Model;
@@ -68,7 +68,7 @@ public class JavaToModelCommand extends AbstractDataModelOperation
   }
 
   
-  private IStatus createJavaReflection(Environment env, IProgressMonitor monitor )
+  private IStatus createJavaReflection(IEnvironment env, IProgressMonitor monitor )
   {
   	IStatus status = Status.OK_STATUS;
     JavaMofReflectionCommand javaMofReflectionCommand = new JavaMofReflectionCommand();
@@ -93,7 +93,7 @@ public class JavaToModelCommand extends AbstractDataModelOperation
   /**
   * Build the datamodel from the mof
   */
-  public IStatus buildModelFromMof (Environment env) throws CoreException
+  public IStatus buildModelFromMof (IEnvironment env) throws CoreException
   {
   	
   	Choice OKChoice = new Choice('O', msgUtils.getMessage("LABEL_OK"), msgUtils.getMessage("DESCRIPTION_OK"));
@@ -188,7 +188,7 @@ public class JavaToModelCommand extends AbstractDataModelOperation
   */
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
   	IStatus status = Status.OK_STATUS;
     if(clientProject == null) return status;
     

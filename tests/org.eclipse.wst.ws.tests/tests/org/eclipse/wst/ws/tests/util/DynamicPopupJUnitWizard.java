@@ -19,11 +19,11 @@ import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleCommandEngineManager;
 import org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard;
-import org.eclipse.wst.common.environment.StatusHandler;
+import org.eclipse.wst.common.environment.IStatusHandler;
 
 public class DynamicPopupJUnitWizard extends DynamicPopupWizard {
-	private StatusHandler handler_;
-	public DynamicPopupJUnitWizard(StatusHandler handler)
+	private IStatusHandler handler_;
+	public DynamicPopupJUnitWizard(IStatusHandler handler)
 	{
 		handler_ = handler;
 	}

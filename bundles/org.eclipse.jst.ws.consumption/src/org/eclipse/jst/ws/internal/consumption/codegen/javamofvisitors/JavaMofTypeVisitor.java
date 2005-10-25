@@ -19,7 +19,7 @@ import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.common.SamplePropertyDescriptor;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 
 
 
@@ -32,14 +32,14 @@ public class JavaMofTypeVisitor implements Visitor
   // Copyright
   public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
 
-  private Environment env_;
+  private IEnvironment env_;
 
   private String clientProject;
 
   /*
   * Constructor
   **/
-  public JavaMofTypeVisitor(Environment env)
+  public JavaMofTypeVisitor(IEnvironment env)
   {
   	env_ = env;
   }

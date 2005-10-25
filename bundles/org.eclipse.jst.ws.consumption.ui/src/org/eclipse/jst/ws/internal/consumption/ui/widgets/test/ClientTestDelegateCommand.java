@@ -25,8 +25,8 @@ import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
-import org.eclipse.wst.common.environment.Environment;
-import org.eclipse.wst.common.environment.StatusHandler;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
@@ -72,7 +72,7 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
   	IStatus status = Status.OK_STATUS;
   	String clientTestID = testFacilities.getSelection();
   	
@@ -94,7 +94,7 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
     return status;
   }
   
-  private IStatus commandFactoryExecution(ICommandFactory commandFactory,Environment env, IProgressMonitor monitor )
+  private IStatus commandFactoryExecution(ICommandFactory commandFactory,IEnvironment env, IProgressMonitor monitor )
   {
     IStatus status = Status.OK_STATUS;  	
 	
@@ -113,7 +113,7 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
     }
     
 	  if(status.getSeverity() == Status.ERROR){
-	    StatusHandler sHandler = env.getStatusHandler();
+	    IStatusHandler sHandler = env.getStatusHandler();
 		sHandler.reportError(status);
 		return status;
 	  }

@@ -22,7 +22,7 @@ import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -44,7 +44,7 @@ public class CreateModuleCommand extends AbstractDataModelOperation
 	private String   j2eeLevel;
 	private String   serverFactoryId;
 	private String   serverInstanceId_;
-	private Environment env;
+	private IEnvironment env;
     private IProgressMonitor monitor_;
 	
 	private MessageUtils msgUtils;

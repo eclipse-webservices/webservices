@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.provisional.env.core.common;
 
-import org.eclipse.wst.common.environment.uri.URI;
+import org.eclipse.wst.common.environment.uri.IURI;
 
 /**
  * Carries position information within a resource.
@@ -22,7 +22,7 @@ public interface Range
   /**
    * Returns the identifier of the resource the range applies to.
    */
-  public URI getURI ();
+  public IURI getURI ();
 
   /**
    * Returns the index, zero-indexed, of the first line

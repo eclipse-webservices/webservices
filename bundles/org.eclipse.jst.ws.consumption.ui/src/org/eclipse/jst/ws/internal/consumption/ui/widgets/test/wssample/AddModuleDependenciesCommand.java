@@ -30,7 +30,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerC
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
-import org.eclipse.wst.common.environment.Environment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
 
@@ -56,7 +56,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
    */
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    Environment env = getEnvironment();
+    IEnvironment env = getEnvironment();
     try
     {
       createSampleProjects(env, monitor );
@@ -97,7 +97,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 
   public static final String DEFAULT_SAMPLE_EAR_PROJECT_EXT = "EAR";
   
-  private void createSampleProjects(Environment env, IProgressMonitor monitor )
+  private void createSampleProjects(IEnvironment env, IProgressMonitor monitor )
   {
 	  
 	  
