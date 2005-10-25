@@ -561,14 +561,9 @@ public final class ResourceUtils {
 	 *            The project.
 	 * @return WebModule Deployable of the <code>project</code> or null if the
 	 *         project has no Web nature.
-	 * @deprecated  see ServerUtils.getModule(IProject, String)
 	 */
 	public static IModule getModule(IProject project) {
-		IModule[] modules = ServerUtil.getModules(project);
-		if (modules!=null && modules.length!=0) {
-			return modules[0];
-		}
-		return null;
+		return ServerUtil.getModule(project);
 	}
 
 	/**

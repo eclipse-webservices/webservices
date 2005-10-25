@@ -391,11 +391,7 @@ public final class ServerUtils {
 	}
 
 	public static IModule getModule(IProject project) {
-		IModule[] modules = ServerUtil.getModules(project);
-		if (modules!=null && modules.length!=0) {
-			return modules[0];
-		}
-		return null;
+		return ServerUtil.getModule(project);
 	}
   
 	/**
@@ -558,11 +554,9 @@ public final class ServerUtils {
 	 */
 	public static IServer getDefaultExistingServer(IProject project) {
     
-        IModule[] modules = ServerUtil.getModules(project);
+        IModule module = ServerUtil.getModule(project);
         IServer preferredServer = null;
-        if (modules.length > 0){
-          preferredServer = ServerCore.getDefaultServer(modules[0]);
-        }
+        preferredServer = ServerCore.getDefaultServer(module);
   
 		if (preferredServer != null)
 			return preferredServer;

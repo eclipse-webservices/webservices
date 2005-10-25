@@ -143,8 +143,8 @@ public class JUnitUtils {
 		int numberOfModules = server.getModules().length;
 		if (server != null)
 		{
-      final IModule[] modules = ServerUtil.getModules(earProject);
-      final IModule earProjectModule = modules[0];
+      final IModule earProjectModule = ServerUtil.getModule(earProject);
+      final IModule[] modules = {earProjectModule};
 			new ServerUtils().modifyModules(env, server,earProjectModule,false, monitor );
 		  	final IServer currentServer = server;
 		  	IRunnableWithProgress runnable = new IRunnableWithProgress()
@@ -181,8 +181,8 @@ public class JUnitUtils {
 	  int numberOfModules = server.getModules().length;
 		if (server != null)
 		{
-      final IModule[] modules = ServerUtil.getModules(webProject);
-      final IModule webProjectModule = modules[0];      
+      final IModule webProjectModule = ServerUtil.getModule(webProject);
+      final IModule[] modules = {webProjectModule};
 
 			new ServerUtils().modifyModules(env, server,webProjectModule,false, monitor );
 		  	final IServer currentServer = server;
