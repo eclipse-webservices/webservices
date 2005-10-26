@@ -23,7 +23,7 @@ import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.wst.ws.internal.datamodel.Model;
-import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
+import org.eclipse.wst.ws.internal.wsrt.TestInfo;
 
 public class GSTCGenerateCommand extends AbstractDataModelOperation 
 {

@@ -13,9 +13,9 @@ package org.eclipse.wst.ws.internal.extensions;
 
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFactoryFragment;
 import org.eclipse.wst.common.environment.IEnvironment;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
-import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
+import org.eclipse.wst.ws.internal.wsrt.IContext;
+import org.eclipse.wst.ws.internal.wsrt.ISelection;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
 
 public abstract class AbstractClientFragment extends CommandFactoryFragment
 {

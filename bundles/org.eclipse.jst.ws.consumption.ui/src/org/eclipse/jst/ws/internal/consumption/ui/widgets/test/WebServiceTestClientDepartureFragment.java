@@ -18,9 +18,9 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample.AddModuleDependenciesCommand;
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 
 /**

@@ -15,7 +15,7 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceRuntime;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntime;
 
 
 public class WebServiceRuntimeInfo {

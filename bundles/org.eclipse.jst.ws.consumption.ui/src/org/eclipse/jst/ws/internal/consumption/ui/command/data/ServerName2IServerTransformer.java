@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.command.data;
 
-import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.env.core.data.Transformer;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 

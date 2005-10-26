@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
+import org.eclipse.wst.ws.internal.wsrt.IWebService;
 
 public class ServerExtensionOutputCommand extends AbstractDataModelOperation
 {

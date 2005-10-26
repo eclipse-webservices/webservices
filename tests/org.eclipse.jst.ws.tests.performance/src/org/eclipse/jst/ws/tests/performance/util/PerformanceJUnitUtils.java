@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.tests.util.AccumulateStatusHandler;
 import org.eclipse.jst.ws.tests.util.DynamicPopupJUnitWizard;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 
 
 public class PerformanceJUnitUtils {

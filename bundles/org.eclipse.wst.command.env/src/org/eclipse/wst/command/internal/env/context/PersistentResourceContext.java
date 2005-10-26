@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.context;
 
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.core.context.ResourceDefaults;
+import org.eclipse.wst.command.internal.env.core.context.TransientResourceContext;
 import org.eclipse.wst.command.internal.env.plugin.EnvPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
-import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceDefaults;
-import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
 
 
 public class PersistentResourceContext extends PersistentContext implements ResourceContext

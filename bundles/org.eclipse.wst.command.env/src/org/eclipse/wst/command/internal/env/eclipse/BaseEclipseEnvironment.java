@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.eclipse;
 
-import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.IEnvironment;
 
 

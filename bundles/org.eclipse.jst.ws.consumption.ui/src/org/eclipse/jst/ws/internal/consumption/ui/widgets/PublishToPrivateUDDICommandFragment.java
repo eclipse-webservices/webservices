@@ -11,12 +11,12 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.PrivateUDDIRegistryTypeRegistry;
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.AbstractCommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 
 public class PublishToPrivateUDDICommandFragment extends AbstractCommandFragment

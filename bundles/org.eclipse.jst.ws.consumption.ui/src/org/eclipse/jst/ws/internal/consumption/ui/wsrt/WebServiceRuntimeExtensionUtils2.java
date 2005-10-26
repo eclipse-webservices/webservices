@@ -15,9 +15,9 @@ import org.eclipse.jst.ws.internal.consumption.ui.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.TypeSelectionFilter2;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
@@ -26,8 +26,8 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.ui.ServerUICore;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceRuntime;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntime;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 public class WebServiceRuntimeExtensionUtils2
 {

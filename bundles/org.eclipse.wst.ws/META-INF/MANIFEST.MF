@@ -12,7 +12,6 @@ Export-Package: org.eclipse.wst.ws.internal.common,
  org.eclipse.wst.ws.internal.monitor,
  org.eclipse.wst.ws.internal.plugin,
  org.eclipse.wst.ws.internal.preferences,
- org.eclipse.wst.ws.internal.provisional.wsrt,
  org.eclipse.wst.ws.internal.wsfinder,
  org.eclipse.wst.ws.internal.wsil,
  org.eclipse.wst.ws.internal.wsrt

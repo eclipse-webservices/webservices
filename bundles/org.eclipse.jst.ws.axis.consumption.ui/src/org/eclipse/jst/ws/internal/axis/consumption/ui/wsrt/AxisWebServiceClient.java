@@ -13,15 +13,15 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
+import org.eclipse.wst.command.internal.env.core.ICommandFactory;
+import org.eclipse.wst.command.internal.env.core.SimpleCommandFactory;
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.common.environment.IEnvironment;
-import org.eclipse.wst.ws.internal.provisional.wsrt.AbstractWebServiceClient;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
-import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceClientInfo;
+import org.eclipse.wst.ws.internal.wsrt.AbstractWebServiceClient;
+import org.eclipse.wst.ws.internal.wsrt.IContext;
+import org.eclipse.wst.ws.internal.wsrt.ISelection;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceClientInfo;
 
 public class AxisWebServiceClient extends AbstractWebServiceClient
 {		

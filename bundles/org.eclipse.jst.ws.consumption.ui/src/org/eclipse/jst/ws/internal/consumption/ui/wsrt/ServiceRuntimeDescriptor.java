@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceRuntime;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntime;
 
 
 public class ServiceRuntimeDescriptor

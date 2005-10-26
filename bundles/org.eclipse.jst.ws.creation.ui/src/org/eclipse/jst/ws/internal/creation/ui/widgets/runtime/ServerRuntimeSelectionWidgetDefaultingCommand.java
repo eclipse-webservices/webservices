@@ -40,9 +40,9 @@ import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -52,7 +52,7 @@ import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntimeSelectionWidgetDefaultingCommand
 {

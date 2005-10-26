@@ -28,8 +28,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.context.PersistentActionDialogsContext;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.preferences.ActionDialogPreferenceType;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 
 
 /**

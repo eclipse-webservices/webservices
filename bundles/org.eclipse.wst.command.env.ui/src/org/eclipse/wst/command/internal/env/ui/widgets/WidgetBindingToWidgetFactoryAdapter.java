@@ -12,8 +12,8 @@
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import java.util.Hashtable;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributor;
+
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 
 public class WidgetBindingToWidgetFactoryAdapter 
 {

@@ -28,9 +28,9 @@ import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofFi
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofMethodVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanModelElementsFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.selection.BooleanSelection;
 import org.eclipse.wst.common.environment.Choice;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.ws.internal.datamodel.Element;

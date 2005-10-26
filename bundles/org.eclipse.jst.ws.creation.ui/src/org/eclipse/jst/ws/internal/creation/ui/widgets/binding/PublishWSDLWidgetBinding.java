@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 
 public class PublishWSDLWidgetBinding implements CommandWidgetBinding
@@ -47,7 +47,7 @@ public class PublishWSDLWidgetBinding implements CommandWidgetBinding
   }
 
   /* (non-Javadoc), 
-   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
+   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry)
   {

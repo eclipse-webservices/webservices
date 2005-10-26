@@ -20,8 +20,6 @@ import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.registry.WidgetRegistry;
-import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributor;
-import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributorFactory;
 
 
 

@@ -13,13 +13,13 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.wst.command.internal.env.core.common.Condition;
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 
 public class ObjectSelectionFragment extends SequenceFragment implements Condition

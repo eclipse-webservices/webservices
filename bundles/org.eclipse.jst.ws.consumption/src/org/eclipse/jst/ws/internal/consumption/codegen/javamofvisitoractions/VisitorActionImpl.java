@@ -15,7 +15,7 @@ import java.util.Vector;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 
 
 

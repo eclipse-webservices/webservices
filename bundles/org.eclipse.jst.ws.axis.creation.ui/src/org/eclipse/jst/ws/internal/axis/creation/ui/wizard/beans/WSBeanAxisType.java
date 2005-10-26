@@ -19,6 +19,8 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodComm
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BeanConfigWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionWidget;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
@@ -27,8 +29,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 
 /**
@@ -122,7 +122,7 @@ public class WSBeanAxisType implements CommandWidgetBinding
   }
   
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
+   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry) 
   {

@@ -27,8 +27,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.server.core.IModule;
@@ -391,8 +391,17 @@ public final class ServerUtils {
 	}
 
 	public static IModule getModule(IProject project) {
-		return ServerUtil.getModule(project);
-	}
+	return ServerUtil.getModule(project);
+}
+	
+// Workaround for 113621
+//public static IModule getModule(IProject project) {
+//	IModule[] modules = ServerUtil.getModules(project);
+//	if (modules!=null && modules.length!=0) {
+//		return modules[0];
+//	}
+//	return null;
+//}
   
 	/**
 	 * Returns the URL string corresponding to the web server module root of the
@@ -554,9 +563,16 @@ public final class ServerUtils {
 	 */
 	public static IServer getDefaultExistingServer(IProject project) {
     
-        IModule module = ServerUtil.getModule(project);
-        IServer preferredServer = null;
-        preferredServer = ServerCore.getDefaultServer(module);
+      IModule module = ServerUtil.getModule(project);
+      IServer preferredServer = null;
+      preferredServer = ServerCore.getDefaultServer(module);
+		
+// Workaround for 113621
+//		IModule[] modules = ServerUtil.getModules(project);
+//      IServer preferredServer = null;
+//      if (modules.length > 0){
+//        preferredServer = ServerCore.getDefaultServer(modules[0]);
+//      }
   
 		if (preferredServer != null)
 			return preferredServer;

@@ -12,12 +12,12 @@
 package org.eclipse.jst.ws.internal.creation.ui.server;
 
 import org.eclipse.jst.ws.internal.creation.ui.extension.PreServiceDevelopCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributor;
-import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributorFactory;
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.command.internal.env.ui.widgets.INamedWidgetContributor;
+import org.eclipse.wst.command.internal.env.ui.widgets.INamedWidgetContributorFactory;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
+import org.eclipse.wst.ws.internal.wsrt.IWebService;
 
 public class StartServerWidgetFactory implements INamedWidgetContributorFactory 
 {

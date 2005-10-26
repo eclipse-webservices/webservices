@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.core.fragment;
 
-import org.eclipse.wst.command.internal.provisional.env.core.CommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.command.internal.env.core.CommandFactory;
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 
 
 /**

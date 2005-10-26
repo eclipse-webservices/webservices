@@ -16,7 +16,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 
 /**
  * The main plugin class to be used in the desktop.

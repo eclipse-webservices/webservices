@@ -563,8 +563,17 @@ public final class ResourceUtils {
 	 *         project has no Web nature.
 	 */
 	public static IModule getModule(IProject project) {
-		return ServerUtil.getModule(project);
-	}
+	return ServerUtil.getModule(project);
+}
+	
+// Workaround for 113621 
+//public static IModule getModule(IProject project) {
+//	IModule[] modules = ServerUtil.getModules(project);
+//	if (modules!=null && modules.length!=0) {
+//		return modules[0];
+//	}
+//	return null;
+//}
 
 	/**
 	 * Returns the build output location of the <code>project</code> as an

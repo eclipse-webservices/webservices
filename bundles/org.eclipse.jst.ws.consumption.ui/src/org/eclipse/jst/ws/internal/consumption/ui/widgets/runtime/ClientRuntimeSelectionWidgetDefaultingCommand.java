@@ -39,11 +39,11 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeInfo;
 import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -54,14 +54,14 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
-import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceRuntime;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceClientInfo;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceState;
+import org.eclipse.wst.ws.internal.wsrt.IContext;
+import org.eclipse.wst.ws.internal.wsrt.ISelection;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntime;
 import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceClientInfo;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceState;
 
 public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataModelOperation
 {   
@@ -412,7 +412,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   }
    
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.provisional.env.core.common.Environment)
+   * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.env.core.common.Environment)
    */
   /*
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )

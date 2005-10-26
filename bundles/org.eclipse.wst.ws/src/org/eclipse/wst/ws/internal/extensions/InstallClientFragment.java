@@ -12,8 +12,9 @@
 package org.eclipse.wst.ws.internal.extensions;
 
 import java.util.Vector;
-import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommandFactory;
+
+import org.eclipse.wst.command.internal.env.core.ICommandFactory;
+import org.eclipse.wst.command.internal.env.core.SimpleCommandFactory;
 
 public class InstallClientFragment extends AbstractClientFragment 
 {

@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
+import org.eclipse.wst.ws.internal.wsrt.IContext;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
 
 
 public class AxisClientOutputCommand extends AbstractDataModelOperation {

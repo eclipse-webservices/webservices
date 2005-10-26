@@ -36,6 +36,8 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishDefaultComm
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceClientTestArrivalCommand;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
@@ -46,8 +48,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.ws.internal.extensions.AssembleClientFragment;
 import org.eclipse.wst.ws.internal.extensions.DeployClientFragment;
 import org.eclipse.wst.ws.internal.extensions.DevelopClientFragment;
@@ -79,7 +79,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
+   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry)
   {    
@@ -245,7 +245,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     }
     
     /* (non-Javadoc)
-     * @see org.eclipse.wst.command.internal.env.core.fragment.CommandFragment#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
+     * @see org.eclipse.wst.command.internal.env.core.fragment.CommandFragment#registerDataMappings(org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry)
      */
     public void registerDataMappings(DataMappingRegistry dataRegistry)
     {

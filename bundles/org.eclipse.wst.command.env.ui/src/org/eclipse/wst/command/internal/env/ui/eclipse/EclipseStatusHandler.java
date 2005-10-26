@@ -13,9 +13,9 @@ package org.eclipse.wst.command.internal.env.ui.eclipse;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.ui.dialog.MessageDialog;
 import org.eclipse.wst.command.internal.env.ui.dialog.StatusDialogConstants;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.common.environment.Choice;
 import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.common.environment.IStatusHandler;
@@ -115,7 +115,7 @@ public class EclipseStatusHandler implements IStatusHandler
   }
   
   /**
-   * @see org.eclipse.wst.command.internal.provisional.env.core.common.IStatusHandler#reportError(org.eclipse.wst.command.internal.provisional.env.core.common.Status)
+   * @see org.eclipse.wst.command.internal.env.core.common.IStatusHandler#reportError(org.eclipse.wst.command.internal.env.core.common.Status)
    */
   public void reportError(IStatus status)
   {
@@ -123,7 +123,7 @@ public class EclipseStatusHandler implements IStatusHandler
   }
   
   /**
-   * @see org.eclipse.wst.command.internal.provisional.env.core.common.IStatusHandler#reportInfo(org.eclipse.wst.command.internal.provisional.env.core.common.Status)
+   * @see org.eclipse.wst.command.internal.env.core.common.IStatusHandler#reportInfo(org.eclipse.wst.command.internal.env.core.common.Status)
    */
   public void reportInfo(IStatus status)
   {

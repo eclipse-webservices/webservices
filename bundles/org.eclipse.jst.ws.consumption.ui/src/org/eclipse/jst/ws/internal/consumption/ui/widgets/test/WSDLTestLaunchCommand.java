@@ -23,16 +23,16 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.ICommandFactory;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceTester;
-import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceTester;
+import org.eclipse.wst.ws.internal.wsrt.TestInfo;
 
 /**
  * @author gilberta

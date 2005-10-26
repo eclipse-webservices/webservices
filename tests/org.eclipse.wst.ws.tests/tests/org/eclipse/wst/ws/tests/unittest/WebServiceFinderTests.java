@@ -3,7 +3,8 @@ package org.eclipse.wst.ws.tests.unittest;
 import java.util.Iterator;
 
 import org.eclipse.wst.ws.internal.wsfinder.WebServiceFinder;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceInfo;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

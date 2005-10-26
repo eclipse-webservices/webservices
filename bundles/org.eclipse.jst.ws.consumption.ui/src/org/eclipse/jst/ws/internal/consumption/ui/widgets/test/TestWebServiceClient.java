@@ -1,11 +1,11 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
-import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
+import org.eclipse.wst.command.internal.env.core.ICommandFactory;
 import org.eclipse.wst.common.environment.IEnvironment;
-import org.eclipse.wst.ws.internal.provisional.wsrt.AbstractWebServiceClient;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
-import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceClientInfo;
+import org.eclipse.wst.ws.internal.wsrt.AbstractWebServiceClient;
+import org.eclipse.wst.ws.internal.wsrt.IContext;
+import org.eclipse.wst.ws.internal.wsrt.ISelection;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceClientInfo;
 
 public class TestWebServiceClient extends AbstractWebServiceClient {
   

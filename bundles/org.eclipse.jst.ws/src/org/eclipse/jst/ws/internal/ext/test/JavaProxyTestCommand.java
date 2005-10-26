@@ -11,7 +11,7 @@
 
 package org.eclipse.jst.ws.internal.ext.test;
 
-import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
+import org.eclipse.wst.command.internal.env.core.selection.BooleanSelection;
 
 public interface JavaProxyTestCommand extends WebServiceTestFinishCommand
 {

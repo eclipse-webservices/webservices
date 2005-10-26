@@ -13,7 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.command.data;
 import java.net.MalformedURLException;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.env.core.data.Transformer;
 
 
 public class EclipseIPath2URLStringTransformer implements Transformer

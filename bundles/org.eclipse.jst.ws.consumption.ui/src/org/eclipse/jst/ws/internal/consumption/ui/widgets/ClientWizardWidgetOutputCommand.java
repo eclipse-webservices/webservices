@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 

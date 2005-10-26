@@ -11,7 +11,7 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
-import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
+import org.eclipse.wst.ws.internal.wsrt.ISelection;
 
 public class Selection implements ISelection {
 

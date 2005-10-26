@@ -9,17 +9,17 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.TypeSelectionFilter;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.ui.ServerUICore;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceRuntime;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntime;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 public class WebServiceRuntimeExtensionUtils
 {

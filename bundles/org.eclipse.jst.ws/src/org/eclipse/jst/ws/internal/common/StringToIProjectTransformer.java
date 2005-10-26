@@ -11,7 +11,7 @@
 package org.eclipse.jst.ws.internal.common;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.env.core.data.Transformer;
 
 
 /**
@@ -20,7 +20,7 @@ import org.eclipse.wst.command.internal.provisional.env.core.data.Transformer;
 public class StringToIProjectTransformer implements Transformer
 {
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.internal.provisional.env.core.data.Transformer#transform(java.lang.Object)
+   * @see org.eclipse.wst.command.internal.env.core.data.Transformer#transform(java.lang.Object)
    * @param Object This must be a java.lang.String
    * @return Object Returns an IProject
    */

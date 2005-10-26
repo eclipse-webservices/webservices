@@ -20,7 +20,7 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.constants.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.datamodel.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.util.*,
-                                                        org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceInfo,
+                                                        org.eclipse.wst.ws.internal.wsrt.WebServiceInfo,
                                                         org.eclipse.wst.ws.internal.wsfinder.WebServiceFinder,
                                                         javax.wsdl.extensions.soap.*,
                                                         javax.wsdl.extensions.http.*,

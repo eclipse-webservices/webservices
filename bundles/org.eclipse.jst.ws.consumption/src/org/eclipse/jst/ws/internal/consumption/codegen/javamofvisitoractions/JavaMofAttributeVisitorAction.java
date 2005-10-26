@@ -21,8 +21,8 @@ import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.AttributeElem
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanModelElementsFactory;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.common.SamplePropertyDescriptor;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.environment.StatusException;

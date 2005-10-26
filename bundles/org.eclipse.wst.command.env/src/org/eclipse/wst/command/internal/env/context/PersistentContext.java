@@ -12,7 +12,7 @@ package org.eclipse.wst.command.internal.env.context;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Preferences;
-import org.eclipse.wst.command.internal.provisional.env.core.context.Context;
+import org.eclipse.wst.command.internal.env.core.context.Context;
 
 /**
  * This class is used as the base class for types that what to persist preference

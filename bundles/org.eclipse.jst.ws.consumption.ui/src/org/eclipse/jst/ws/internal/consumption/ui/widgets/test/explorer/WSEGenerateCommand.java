@@ -15,7 +15,7 @@ import org.eclipse.wst.ws.internal.explorer.LaunchOption;
 import org.eclipse.wst.ws.internal.explorer.LaunchOptions;
 import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin;
-import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
+import org.eclipse.wst.ws.internal.wsrt.TestInfo;
 
 public class WSEGenerateCommand extends AbstractDataModelOperation 
 {

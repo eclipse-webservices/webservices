@@ -21,7 +21,7 @@ import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.context.UDDIPreferenceContext;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
-import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 
 
 /**

@@ -14,8 +14,7 @@ Export-Package: org.eclipse.wst.command.env.ui,
  org.eclipse.wst.command.internal.env.ui.preferences,
  org.eclipse.wst.command.internal.env.ui.registry,
  org.eclipse.wst.command.internal.env.ui.widgets,
- org.eclipse.wst.command.internal.env.ui.widgets.popup,
- org.eclipse.wst.command.internal.provisional.env.ui.widgets
+ org.eclipse.wst.command.internal.env.ui.widgets.popup
 Require-Bundle: org.eclipse.wst.command.env.core,
  org.eclipse.wst.command.env,
  org.eclipse.core.runtime,

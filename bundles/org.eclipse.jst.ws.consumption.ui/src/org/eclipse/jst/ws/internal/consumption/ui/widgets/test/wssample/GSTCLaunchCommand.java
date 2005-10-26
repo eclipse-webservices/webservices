@@ -19,13 +19,13 @@ import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUI
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
+import org.eclipse.wst.ws.internal.wsrt.TestInfo;
 
 public class GSTCLaunchCommand extends AbstractDataModelOperation
 {

@@ -7,7 +7,7 @@ import java.util.Hashtable;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 public class WebServiceRuntimeExtensionRegistry2
 {

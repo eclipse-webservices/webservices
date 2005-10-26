@@ -12,10 +12,10 @@
 package org.eclipse.jst.ws.internal.creation.ui.server;
 
 import org.eclipse.jst.ws.internal.consumption.ui.server.StartServerWidget;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.ui.widgets.INamedWidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.ui.widgets.INamedWidgetContributor;
 import org.eclipse.wst.server.core.IServer;
 
 public class StartServerWidgetContributor implements INamedWidgetContributor 

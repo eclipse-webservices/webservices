@@ -56,7 +56,7 @@
          <attribute name="transformer" type="string">
             <annotation>
                <documentation>
-                  This attribute specifies a class that must implement the org.eclipse.wst.command.internal.provisional.env.core.data.Transformer interface.  This interface contains a transform method.  Even though the type of the input parameter and the return value are of type Object it is expected that they will be used with the type org.eclipse.jface.viewers.IStructuredSelection.  This transformation method allows the extender to modify the initial selection to an IStructuredSelection object that is more readily usable by the runtime server type.
+                  This attribute specifies a class that must implement the org.eclipse.wst.command.internal.env.core.data.Transformer interface.  This interface contains a transform method.  Even though the type of the input parameter and the return value are of type Object it is expected that they will be used with the type org.eclipse.jface.viewers.IStructuredSelection.  This transformation method allows the extender to modify the initial selection to an IStructuredSelection object that is more readily usable by the runtime server type.
                </documentation>
             </annotation>
          </attribute>

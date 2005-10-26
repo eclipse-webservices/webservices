@@ -32,7 +32,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleComman
 import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
+import org.eclipse.wst.ws.internal.wsrt.TestInfo;
 
 public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 {

@@ -19,6 +19,8 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisProxyWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionOutputCommand;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
@@ -27,8 +29,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 
 /**
@@ -40,7 +40,7 @@ public class WebServiceClientAxisType implements CommandWidgetBinding
 
 	
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry)
+   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry) 
   {

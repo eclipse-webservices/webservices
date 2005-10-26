@@ -33,11 +33,11 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisCons
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.ProgressUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
-import org.eclipse.wst.command.internal.provisional.env.core.context.TransientResourceContext;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.core.context.TransientResourceContext;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;

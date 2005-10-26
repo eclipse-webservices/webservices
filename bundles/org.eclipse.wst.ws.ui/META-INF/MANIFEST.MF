@@ -6,7 +6,7 @@ Bundle-Version: 0.7.0
 Bundle-Activator: org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.wst.ws.internal.provisional.ui.wsrt,
+Export-Package: org.eclipse.wst.ws.internal.ui.wsrt,
  org.eclipse.wst.ws.internal.ui.plugin,
  org.eclipse.wst.ws.internal.ui.preferences,
  org.eclipse.wst.ws.internal.ui.wsi.preferences,

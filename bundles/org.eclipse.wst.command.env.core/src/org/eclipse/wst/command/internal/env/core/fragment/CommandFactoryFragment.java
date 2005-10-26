@@ -12,9 +12,10 @@
 package org.eclipse.wst.command.internal.env.core.fragment;
 
 import java.util.Vector;
-import org.eclipse.wst.command.internal.provisional.env.core.CommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
+
+import org.eclipse.wst.command.internal.env.core.CommandFactory;
+import org.eclipse.wst.command.internal.env.core.ICommandFactory;
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public abstract class CommandFactoryFragment implements CommandFragment 

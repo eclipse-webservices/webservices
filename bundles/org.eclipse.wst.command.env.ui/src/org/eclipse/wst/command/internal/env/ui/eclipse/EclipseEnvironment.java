@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.eclipse;
 
+import org.eclipse.wst.command.internal.env.core.CommandManager;
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
-import org.eclipse.wst.command.internal.provisional.env.core.CommandManager;
-import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.environment.IStatusHandler;
@@ -52,7 +52,7 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
   }
   
   /**
-   * @see org.eclipse.wst.command.internal.provisional.env.core.common.IEnvironment#getCommandManager()
+   * @see org.eclipse.wst.command.internal.env.core.common.IEnvironment#getCommandManager()
    */
   public CommandManager getCommandManager()
   {
@@ -60,7 +60,7 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
   }
 
   /**
-   * @see org.eclipse.wst.command.internal.provisional.env.core.common.IEnvironment#getLog()
+   * @see org.eclipse.wst.command.internal.env.core.common.IEnvironment#getLog()
    */
   public ILog getLog()
   {
@@ -82,7 +82,7 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
   }
    
   /**
-   * @see org.eclipse.wst.command.internal.provisional.env.core.common.IEnvironment#getStatusHandler()
+   * @see org.eclipse.wst.command.internal.env.core.common.IEnvironment#getStatusHandler()
    */
   public IStatusHandler getStatusHandler()
   {
@@ -90,7 +90,7 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
   }
 
   /** (non-Javadoc)
-   * @see org.eclipse.wst.command.internal.provisional.env.core.common.IEnvironment#getURIFactory()
+   * @see org.eclipse.wst.command.internal.env.core.common.IEnvironment#getURIFactory()
    */
   public IURIFactory getURIFactory()
   {

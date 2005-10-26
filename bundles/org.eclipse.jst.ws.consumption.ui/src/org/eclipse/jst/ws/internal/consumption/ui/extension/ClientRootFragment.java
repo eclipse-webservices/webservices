@@ -11,10 +11,10 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
 
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.ui.widgets.DataObjectCommand;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.ws.internal.extensions.AssembleClientFragment;
 import org.eclipse.wst.ws.internal.extensions.DeployClientFragment;
 import org.eclipse.wst.ws.internal.extensions.DevelopClientFragment;

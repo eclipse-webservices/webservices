@@ -28,18 +28,18 @@ import org.eclipse.jst.ws.internal.consumption.ui.common.FacetMatcher;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
-import org.eclipse.wst.ws.internal.provisional.wsrt.ISelection;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceRuntime;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceInfo;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceState;
+import org.eclipse.wst.ws.internal.wsrt.IContext;
+import org.eclipse.wst.ws.internal.wsrt.ISelection;
+import org.eclipse.wst.ws.internal.wsrt.IWebService;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntime;
 import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceState;
 
 public class PreServiceDevelopCommand extends AbstractDataModelOperation 
 {

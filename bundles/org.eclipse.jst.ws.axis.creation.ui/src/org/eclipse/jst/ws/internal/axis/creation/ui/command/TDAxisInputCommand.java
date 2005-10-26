@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebService;
+import org.eclipse.wst.ws.internal.wsrt.IWebService;
 
 
 public class TDAxisInputCommand extends AbstractDataModelOperation {

@@ -1,10 +1,11 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.explorer;
 
 import java.util.Vector;
-import org.eclipse.wst.command.internal.provisional.env.core.ICommandFactory;
-import org.eclipse.wst.command.internal.provisional.env.core.SimpleCommandFactory;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceTester;
-import org.eclipse.wst.ws.internal.provisional.wsrt.TestInfo;
+
+import org.eclipse.wst.command.internal.env.core.ICommandFactory;
+import org.eclipse.wst.command.internal.env.core.SimpleCommandFactory;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceTester;
+import org.eclipse.wst.ws.internal.wsrt.TestInfo;
 
 public class WSEWebServiceTester implements IWebServiceTester  {
 

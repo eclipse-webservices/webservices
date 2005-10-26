@@ -18,7 +18,7 @@ import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.BooleanSelection;
+import org.eclipse.wst.command.internal.env.core.selection.BooleanSelection;
 
 
 /**

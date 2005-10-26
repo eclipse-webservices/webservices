@@ -17,9 +17,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -62,7 +62,7 @@ public class CheckForServiceProjectCommand extends AbstractDataModelOperation
   
   
   /* (non-Javadoc)
-   * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.provisional.env.core.common.Environment)
+   * @see org.eclipse.wst.command.env.core.Command#execute(org.eclipse.wst.command.internal.env.core.common.Environment)
    */
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {

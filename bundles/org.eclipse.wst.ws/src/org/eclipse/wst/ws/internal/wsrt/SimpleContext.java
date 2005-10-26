@@ -1,7 +1,5 @@
 package org.eclipse.wst.ws.internal.wsrt;
 
-import org.eclipse.wst.ws.internal.provisional.wsrt.IContext;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
 
 public class SimpleContext implements IContext {
 

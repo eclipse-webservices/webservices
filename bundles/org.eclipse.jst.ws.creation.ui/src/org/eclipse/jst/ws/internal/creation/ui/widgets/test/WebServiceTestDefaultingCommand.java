@@ -26,7 +26,7 @@ import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionList;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 

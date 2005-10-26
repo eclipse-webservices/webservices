@@ -17,7 +17,7 @@ import java.text.MessageFormat;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 
 
 /**

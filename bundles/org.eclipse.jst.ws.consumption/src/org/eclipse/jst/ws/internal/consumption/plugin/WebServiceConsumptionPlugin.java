@@ -13,7 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.plugin;
 
 import java.text.MessageFormat;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 
 /**
 * This is the plugin class for the Web Services plugin.

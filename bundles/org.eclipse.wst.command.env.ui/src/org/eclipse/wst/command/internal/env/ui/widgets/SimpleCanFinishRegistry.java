@@ -11,7 +11,8 @@
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import java.util.Vector;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
+
+import org.eclipse.wst.command.internal.env.core.common.Condition;
 
 
 

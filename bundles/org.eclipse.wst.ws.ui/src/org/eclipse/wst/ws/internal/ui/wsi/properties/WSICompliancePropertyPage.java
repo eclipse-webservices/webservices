@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
 

@@ -6,7 +6,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceInfo;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
 
 /**
  * Extends the Web Services Finder Framework.

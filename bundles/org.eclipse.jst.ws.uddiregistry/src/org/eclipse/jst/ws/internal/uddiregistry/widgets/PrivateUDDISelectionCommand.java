@@ -18,10 +18,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.uddiregistry.wizard.PrivateUDDIRegistryType;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 /*
-import org.eclipse.wst.command.internal.provisional.env.core.common.Environment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.provisional.env.core.common.SimpleStatus;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Status;
+import org.eclipse.wst.command.internal.env.core.common.Environment;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.common.SimpleStatus;
+import org.eclipse.wst.command.internal.env.core.common.Status;
 import org.eclipse.jst.ws.internal.uddiregistry.plugin.WebServiceUDDIRegistryPlugin;
 */
 

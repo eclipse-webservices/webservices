@@ -13,11 +13,11 @@
 package org.eclipse.jst.ws.internal.creation.ui.widgets.test;
 
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WSDLTestLaunchCommand;
+import org.eclipse.wst.command.internal.env.core.common.Condition;
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
-import org.eclipse.wst.command.internal.provisional.env.core.common.Condition;
-import org.eclipse.wst.command.internal.provisional.env.core.data.DataMappingRegistry;
 
 
 public class ServiceTestFragment extends BooleanFragment

@@ -19,7 +19,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerC
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateServerCommand;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceClient;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
 
 public class PreClientInstallCommand extends AbstractDataModelOperation 
 {
