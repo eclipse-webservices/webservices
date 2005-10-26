@@ -11,10 +11,14 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -83,6 +87,7 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
 
     System.out.println("In Pre client develop command.");
 
+    j2eeLevel_ = getJ2EELevelFromExistingProject();
     wsInfo.setJ2eeLevel(j2eeLevel_);
     wsInfo.setServerFactoryId(typeRuntimeServer_.getServerId());
     wsInfo.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
@@ -124,6 +129,23 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
       environment.getStatusHandler().reportError( status );
     }
     return status;
+  }
+  
+  private String getJ2EELevelFromExistingProject()
+  {
+    IProject project = ProjectUtilities.getProject(project_);
+    if (project != null && project.exists())
+    {
+          //If the project has the "jst.web", "jst.ejb", or "jst.appclient" facet, deduce a J2EE version.
+          int j2eeLevelInt = J2EEUtils.getJ2EEVersion(project);
+          if (j2eeLevelInt != -1)
+          {
+            return String.valueOf(j2eeLevelInt);                    
+          }
+    }
+    
+    //TODO Figure out the J2EE version from the facets to add to a project.
+    return String.valueOf(J2EEVersionConstants.J2EE_1_4_ID); //for now, just return something
   }
   
   private int convertModuleType(String type)

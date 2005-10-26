@@ -36,7 +36,9 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeInfo;
+import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.provisional.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.provisional.env.core.context.ResourceContext;
@@ -134,6 +136,11 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     return clientEarProjectName_;
   }
   
+  public void setClientEarProjectName(String name)
+  {
+    clientEarProjectName_ = name;
+  }
+  
   public String getClientComponentType()
   {
     return  clientComponentType_;
@@ -190,8 +197,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       }
 
       // Set the EAR
-      clientEarProjectName_ = ""; // TODO fix this!
-      clientNeedEAR_ = false;
+      //clientEarProjectName_ = ""; // TODO fix this!
+      //clientNeedEAR_ = false;
+
 
       // Set the server
       IStatus serverStatus = setClientDefaultServer();
@@ -201,6 +209,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
         return serverStatus;
       }
 
+      setDefaultClientEarProject();      
       // Calculate default IWebServiceClient
       setDefaultsForExtension(env);
 
@@ -214,6 +223,36 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       env.getStatusHandler().reportError(errorStatus);
       return errorStatus;
     }
+  }
+  
+  private void setDefaultClientEarProject()
+  {
+    
+    //Determine if an ear selection is needed based on the server type.
+    boolean clientNeedEAR_ = true;
+    String serverId = clientIds_.getServerId();
+    if (serverId != null)
+    {
+        //Use the server type
+        String serverTargetId = ServerUtils.getRuntimeTargetIdFromFactoryId(serverId);
+        if (serverTargetId!=null && serverTargetId.length()>0)
+        {
+          if (!ServerUtils.isTargetValidForEAR(serverTargetId,"13"))
+          {
+            //Default the EAR selection to be empty
+            clientNeedEAR_ = false;
+          }
+        }
+    }    
+    
+    if (clientNeedEAR_)
+    {
+      clientEarProjectName_ = getDefaultClientEarProjectName();
+    }
+    else
+    {
+      clientEarProjectName_ = "";
+    }   
   }
   
   private IStatus setClientDefaultServer()
@@ -914,56 +953,32 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
    *  
    */
   
-  /*
-  protected String[] getDefaultEARFromClientProject(IProject project, String componentName)
+  
+  protected String getDefaultClientEarProjectName()
   {
-    String[] projectAndComp = new String[2];
-    IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(project);
+    IProject clientProject = ProjectUtilities.getProject(clientProjectName_);
+    IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(clientProject);
     if (earComps.length>0)
     {
       //Pick the first one
-      IVirtualComponent earComp = earComps[0];
-      projectAndComp[0] = earComp.getProject().getName();
-      projectAndComp[1]= earComp.getName();
-      return projectAndComp;
-      //getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(earProjectName);
-      //clientEarComponentName_ = earComponentName;      
+      return earComps[0].getName();
     }    
 
     //Either project does not exist or component is not associated with any EARs, so pick the first EAR you see with the correct J2EE version.
     IVirtualComponent[] allEarComps = J2EEUtils.getAllEARComponents();
     if (allEarComps.length>0)
     {
-      for (int i=0; i<allEarComps.length; i++)
-      {
-        if (clientJ2EEVersion_.equals(String.valueOf(J2EEUtils.getJ2EEVersion(allEarComps[i]))))
-        {
-          String earProjectName = allEarComps[i].getProject().getName();
-          projectAndComp[0] = earProjectName;
-          projectAndComp[1] = allEarComps[i].getName();
-          return projectAndComp;
-          //getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(earProjectName);
-          //clientEarComponentName_ = allEarComps[i].getName();
-          
-        }
-          
-      }
-      projectAndComp[0] = ResourceUtils.getDefaultClientEARProjectName();
-      projectAndComp[1] = ResourceUtils.getDefaultClientEARComponentName();
-      return projectAndComp;      
-      
+        //TODO Choose an existing EAR that can be added to the server and who's J2EE level in consistent with 
+        //that of the selected project, if applicable. Picking the first one for now.        
+        return allEarComps[0].getName();             
     }
     else
     {
       //there are no Ears.
-      projectAndComp[0] = ResourceUtils.getDefaultClientEARProjectName();
-      projectAndComp[1] = ResourceUtils.getDefaultClientEARComponentName();
-      return projectAndComp;
-      //getRuntime2ClientTypes().getChoice().getChoice().getChoice().getList().setSelectionValue(ResourceUtils.getDefaultClientEARProjectName());
-      //clientEarComponentName_ = ResourceUtils.getDefaultClientEARComponentName();
+      return ResourceUtils.getDefaultClientEARProjectName();
     }    
   }
-  */  
+    
     
   /*
   private IStatus setClientDefaultServer()

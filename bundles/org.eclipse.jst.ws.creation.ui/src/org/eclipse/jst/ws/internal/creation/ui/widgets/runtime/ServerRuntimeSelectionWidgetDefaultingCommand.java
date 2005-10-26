@@ -68,9 +68,6 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   private String serviceRuntimeId_;
   private String serviceProjectName_;
   private String serviceEarProjectName_;
-  //private SelectionListChoices serviceProject2EARProject_;
-  //private String serviceComponentName_;
-  //private String serviceEarComponentName_;
   private String serviceComponentType_;
   private IProject initialProject_;
   private String initialComponentName_;
@@ -128,8 +125,9 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      updateClientProject(serviceProjectName_, serviceIds_.getTypeId());
      
      // Set the EAR
-     serviceEarProjectName_ = ""; // TODO fix this!
-     serviceNeedEAR_ = false;
+     //serviceEarProjectName_ = ""; // TODO fix this!
+     //serviceEarProjectName_ = getDefaultServiceEarProjectName();
+     //serviceNeedEAR_ = false;
 
      // Set the server
      IStatus serverStatus = setServiceDefaultServer();
@@ -139,6 +137,8 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
        return serverStatus;
      }
      
+     setDefaultServiceEarProject();
+          
      return Status.OK_STATUS;
      
     } catch (Exception e)
@@ -149,6 +149,95 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       env.getStatusHandler().reportError(errorStatus);
       return errorStatus;
     }
+  }
+
+  private void setDefaultServiceEarProject()
+  {
+    
+    //Determine if an ear selection is needed based on the server type.
+    boolean serviceNeedEAR_ = true;
+    String serverId = serviceIds_.getServerId();
+    if (serverId != null)
+    {
+        //Use the server type
+        String serverTargetId = ServerUtils.getRuntimeTargetIdFromFactoryId(serverId);
+        if (serverTargetId!=null && serverTargetId.length()>0)
+        {
+          if (!ServerUtils.isTargetValidForEAR(serverTargetId,"13"))
+          {
+            //Default the EAR selection to be empty
+            serviceNeedEAR_ = false;
+          }
+        }
+    }    
+    
+    if (serviceNeedEAR_)
+    {
+      serviceEarProjectName_ = getDefaultServiceEarProjectName();
+
+      
+      //Client side
+      if (getClientNeedEAR())
+      {
+        String defaultClientEarProjectName = getDefaultClientEarProjectName();
+        IProject clientProject = ProjectUtilities.getProject(getClientProjectName());
+        if(clientProject!=null && clientProject.exists() 
+          && defaultClientEarProjectName.equalsIgnoreCase(serviceEarProjectName_))
+        {
+          setClientEarProjectName(defaultClientEarProjectName);
+        }
+        else
+        { 
+          ProjectTopologyContext ptc= WebServicePlugin.getInstance().getProjectTopologyContext();         
+          if (!ptc.isUseTwoEARs()) 
+          {
+            setClientEarProjectName(serviceEarProjectName_);
+          }
+          else 
+          {
+            IProject proxyEARProject = getUniqueClientEAR(defaultClientEarProjectName, serviceEarProjectName_, getClientProjectName());
+            setClientEarProjectName(proxyEARProject.getName());
+          }     
+        }
+      }
+    }
+    else
+    {
+      serviceEarProjectName_ = "";
+    }   
+  }
+
+  private String getDefaultServiceEarProjectName()
+  {
+    //Choose an appropriate default.
+    
+    IProject serviceProject = ProjectUtilities.getProject(serviceProjectName_);
+    if (serviceProject != null && serviceProject.exists())
+    {
+      IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(serviceProject);
+      if (earComps.length > 0)
+      {
+        //pick the first one.
+        return earComps[0].getName();
+
+      }
+    }
+    
+
+    IVirtualComponent[] allEarComps = J2EEUtils.getAllEARComponents();
+      
+    //TODO Choose an existing EAR that can be added to the server and who's J2EE level in consistent with 
+    //that of the selected project, if applicable. Picking the first one for now.
+    if (allEarComps.length > 0)
+    {
+      return allEarComps[0].getName();
+    }
+
+
+    
+    // there are no suitable existing EARs
+    return ResourceUtils.getDefaultServiceEARProjectName();
+    
   }
   
   private IStatus setServiceDefaultServer()
@@ -307,7 +396,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       return null;
   }  
   /*
-  public IStatus execuste( IProgressMonitor monitor, IAdaptable adaptable )
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
     IEnvironment env = getEnvironment();
     

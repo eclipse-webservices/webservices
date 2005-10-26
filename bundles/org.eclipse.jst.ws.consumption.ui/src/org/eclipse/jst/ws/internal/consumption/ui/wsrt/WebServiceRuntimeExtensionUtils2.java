@@ -1,18 +1,13 @@
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FacetMatcher;
@@ -25,18 +20,11 @@ import org.eclipse.wst.command.internal.provisional.env.core.selection.Selection
 import org.eclipse.wst.command.internal.provisional.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
-import org.eclipse.wst.common.project.facet.core.IProjectFacet;
-import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action.Type;
-import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 import org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager;
-import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
-import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.ui.ServerUICore;
 import org.eclipse.wst.ws.internal.provisional.wsrt.IWebServiceRuntime;
 import org.eclipse.wst.ws.internal.provisional.wsrt.WebServiceScenario;
@@ -93,6 +81,33 @@ public class WebServiceRuntimeExtensionUtils2
     IServer server = ServerCore.findServer( instanceId );    
     return server.getName();
   }  
+
+  private static String[] getServerFactoryIdsByFacetRuntimes(Set facetRuntimes)
+  {
+    /*
+    ArrayList supportedServerFactoryIds = new ArrayList();
+    String[] serverTypeIds = getAllServerFactoryIdsWithRuntimes();
+    Iterator itr = facetRuntimes.iterator();
+    while(itr.hasNext())
+    {
+      IRuntime fRuntime = (IRuntime)itr.next();
+      org.eclipse.wst.server.core.IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
+      for (int i=0; i<serverTypeIds.length; i++)
+      {
+        IServerType serverType = ServerCore.findServerType(serverTypeIds[i]);
+        String runtimeTypeId = serverType.getRuntimeType().getId();
+        if (runtimeTypeId.equals(sRuntime.getRuntimeType().getId()))
+        {
+          supportedServerFactoryIds.add(serverTypeIds[i]);          
+        }        
+      }
+    }
+    
+    return (String[])supportedServerFactoryIds.toArray(new String[0]);
+    */
+    //Temporarily return all factory ids with runtimes
+    return getAllServerFactoryIdsWithRuntimes();    
+  }
   
   //Service-side utilities
   public static WebServiceImpl getWebServiceImplById(String id)
@@ -315,19 +330,22 @@ public class WebServiceRuntimeExtensionUtils2
     {
       for (int i = 0; i < srts.length; i++)
       {
-        //Get the runtimes that work for the facets required for this service runtime
-        ServiceRuntimeDescriptor descriptor = getServiceRuntimeDescriptorById(srts[i]);        
-        Set runtimes = getRuntimes(descriptor.getProjectFacetVersions());
-        IServerType[] allServerTypes = ServerCore.getServerTypes();
-        //TODO iterate over all the server types and see if their runtime types have an
-        //id that matches the runtime type of any of the runtimes.
+        //Get the runtimes that work for the facets required for this service runtime        
+        String[] fIds = getServerFactoryIdsByServiceRuntime(srts[i]);
+        for (int j=0; j<fIds.length; j++)
+        {
+          if (!serverFactoryIds.contains(fIds[j]))
+          {
+            serverFactoryIds.add(fIds[j]);            
+          }
+        }
       }
     }
     
-    //return (String[])serverFactoryIds.toArray(new String[]{});
+    return (String[])serverFactoryIds.toArray(new String[]{});
     
     //Temporarily return all server type ids.
-    return getAllServerFactoryIdsWithRuntimes();
+    //return getAllServerFactoryIdsWithRuntimes();
   }
   
   /*
@@ -356,19 +374,16 @@ public class WebServiceRuntimeExtensionUtils2
   }
   
   public static String[] getServerFactoryIdsByServiceRuntime(String serviceRuntimeId)
-  {
-    ArrayList serverFactoryIds = new ArrayList();    
-   
+  {       
     ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(serviceRuntimeId);
     Set facetRuntimes = getRuntimes(desc.getProjectFacetVersions());
-    
-    //TODO iterate over all the server types and see if their runtime types have an
-    //id that matches the runtime type of any of the runtimes.        
             
-    //return (String[])serverFactoryIds.toArray(new String[]{});
     //Temporarily return all server types
-    return getAllServerFactoryIdsWithRuntimes();    
-  }      
+    //return getAllServerFactoryIdsWithRuntimes();
+    return getServerFactoryIdsByFacetRuntimes(facetRuntimes);
+  } 
+  
+
   
 
   public static boolean doesServiceRuntimeSupportServer(String serviceRuntimeId, String serverFactoryId)
@@ -472,16 +487,23 @@ public class WebServiceRuntimeExtensionUtils2
       for (int i=0; i<serviceRuntimes.length; i++)
       {
         ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(serviceRuntimes[i]);
-        Set runtimes = getRuntimes(desc.getProjectFacetVersions());
-        //TODO Iterate through the runtimes to see if there is a facet runtime that corresponds
-        //to a server runtime for this server type.
-        
-        //Temporarily return true
-        return true;
-        
+        if (desc.getRuntime().getId().equals(runtimeId))
+        {
+          //Matches the type and the runtime. Check if it matches the server
+          Set runtimes = getRuntimes(desc.getProjectFacetVersions());
+          String[] fIds = getServerFactoryIdsByFacetRuntimes(runtimes);
+          for (int j=0; j<fIds.length; j++)
+          {
+            if (fIds[j].equals(serverFactoryId))
+            {
+              return true;
+            }
+          }          
+        }        
       }
     }
     
+    //didn't find a match. return false.
     return false;
   }  
   
@@ -508,18 +530,19 @@ public class WebServiceRuntimeExtensionUtils2
       if (thisRuntimeId.equals(runtimeId))
       {
         Set facetRuntimes = getRuntimes(desc.getProjectFacetVersions());
-        //TODO Iterate over the facetRuntimes to see if any of them is a suitable server runtime for a
-        //server of the given type. If so, return true.
-        
-        //Temporarily return true
-        return true;
+        String[] fIds = getServerFactoryIdsByFacetRuntimes(facetRuntimes);
+        for (int j=0; j<fIds.length; j++)
+        {
+          if (fIds[j].equals(factoryId))
+          {
+            return true;
+          }
+        }              
       }            
     }
     
-    //return false;
-    
-    //Always return true temporarily
-    return true;
+    //No service runtime matched. Return false.
+    return false;
   }
   
   /*
@@ -538,22 +561,16 @@ public class WebServiceRuntimeExtensionUtils2
       if (thisRuntimeId.equals(runtimeId))
       {
         Set facetRuntimes = getRuntimes(desc.getProjectFacetVersions());
-        IServerType[] allServerTypes = ServerCore.getServerTypes();
-        //TODO iterate over all the server types and return the first server type that
-        //has a server runtime corresponding to a supported facet runtime.
+        String[] factoryIds = getServerFactoryIdsByFacetRuntimes(facetRuntimes);
+        if (factoryIds!=null && factoryIds.length >0)
+        {
+          return factoryIds[0];
+        }
       }            
     }
     
-    //Temporarliy return the first server type
-    String[] factoryIds = getAllServerFactoryIdsWithRuntimes();
-    if (factoryIds!=null && factoryIds.length >0)
-    {
-      return factoryIds[0];
-    }
-    else
-    {
-      return null;
-    }
+    //didn't get a single suitable server type id, return null.
+    return null;
   }  
   
   public static String[] getProjectsForServiceTypeAndRuntime(String typeId, String runtimeId)
@@ -858,18 +875,19 @@ public class WebServiceRuntimeExtensionUtils2
     {
       for (int i = 0; i < crts.length; i++)
       {
-        //Get the runtimes that work for the facets required for this client runtime
-        ClientRuntimeDescriptor descriptor = getClientRuntimeDescriptorById(crts[i]);        
-        Set runtimes = getRuntimes(descriptor.getProjectFacetVersions());
-        IServerType[] allServerTypes = ServerCore.getServerTypes();
-        //TODO iterate over all the server types and see if their runtime types have an
-        //id that matches the runtime type of any of the runtimes.
-      }
+        //Get the runtimes that work for the facets required for this service runtime        
+        String[] fIds = getServerFactoryIdsByClientRuntime(crts[i]);
+        for (int j=0; j<fIds.length; j++)
+        {
+          if (!serverFactoryIds.contains(fIds[j]))
+          {
+            serverFactoryIds.add(fIds[j]);            
+          }
+        }
+      }        
     }
     
-    //return (String[])serverFactoryIds.toArray(new String[]{});
-    //Temporarily return all server types
-    return getAllServerFactoryIdsWithRuntimes();
+    return (String[])serverFactoryIds.toArray(new String[]{});
   }  
   
   /*
@@ -899,18 +917,12 @@ public class WebServiceRuntimeExtensionUtils2
    * 
    */
   public static String[] getServerFactoryIdsByClientRuntime(String clientRuntimeId)
-  {
-    ArrayList serverFactoryIds = new ArrayList();    
-   
+  {       
     ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(clientRuntimeId);
     Set facetRuntimes = getRuntimes(desc.getProjectFacetVersions());
-    
-    //TODO iterate over all the server types and see if their runtime types have an
-    //id that matches the runtime type of any of the runtimes.        
-            
-    //return (String[])serverFactoryIds.toArray(new String[]{});
-    //Temporarily return all server types
-    return getAllServerFactoryIdsWithRuntimes();    
+
+    String[] fIds = getServerFactoryIdsByFacetRuntimes(facetRuntimes);
+    return fIds;    
   }    
 
   /*
@@ -946,14 +958,18 @@ public class WebServiceRuntimeExtensionUtils2
       if (thisRuntimeId.equals(runtimeId))
       {
         Set facetRuntimes = getRuntimes(desc.getProjectFacetVersions());
-        //TODO Iterate over the facetRuntimes to see if any of them is a suitable server runtime for a
-        //server of the given type. If so, return true.
-        
-        //Temporarliy return true
-        return true;
+        String[] fIds = getServerFactoryIdsByFacetRuntimes(facetRuntimes);
+        for (int i=0; i<fIds.length; i++)
+        {
+          if (fIds[i].equals(factoryId))
+          {
+            return true;
+          }
+        }
       }            
     }
     
+    //No match.
     return false;
   }    
   
@@ -973,22 +989,17 @@ public class WebServiceRuntimeExtensionUtils2
       if (thisRuntimeId.equals(runtimeId))
       {
         Set facetRuntimes = getRuntimes(desc.getProjectFacetVersions());
-        IServerType[] allServerTypes = ServerCore.getServerTypes();
-        //TODO iterate over all the server types and return the first server type that
-        //has a server runtime corresponding to a supported facet runtime.     
+        String[] factoryIds = getServerFactoryIdsByFacetRuntimes(facetRuntimes);
+        if (factoryIds!=null && factoryIds.length >0)
+        {
+          return factoryIds[0];
+        }
       }            
     }
     
-    //Temporarliy return the first server type
-    String[] factoryIds = getAllServerFactoryIdsWithRuntimes();
-    if (factoryIds!=null && factoryIds.length >0)
-    {
-      return factoryIds[0];
-    }
-    else
-    {
-      return null;
-    }
+    //No suitable servers found. Return null.
+    return null;
+
   }
   
   /*
@@ -1006,16 +1017,22 @@ public class WebServiceRuntimeExtensionUtils2
       for (int i=0; i<clientRuntimes.length; i++)
       {
         ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(clientRuntimes[i]);
-        Set runtimes = getRuntimes(desc.getProjectFacetVersions());
-        //TODO Iterate through the runtimes to see if there is a facet runtime that corresponds
-        //to a server runtime for this server type.
-        
-        //Temporarily return true
-        return true;
-        
+        if (desc.getRuntime().getId().equals(runtimeId))
+        {
+          //Matched type and runtime. Check the server.
+          String[] factoryIds = getServerFactoryIdsByClientRuntime(desc.getId());
+          for (int j=0; j<factoryIds.length; j++)
+          {
+            if (factoryIds[j].equals(serverFactoryId))
+            {
+              return true;
+            }
+          }
+        }
       }
     }
     
+    //No match found. return false.
     return false;
   }    
   
