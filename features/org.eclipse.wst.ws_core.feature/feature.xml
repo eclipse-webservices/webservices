@@ -44,6 +44,10 @@
          id="org.apache.xerces.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.apache.wsil4j.feature"
+         version="0.0.0"/>
+
    <requires>
       <import feature="org.eclipse.wst.xml_core.feature" version="1.0.0"/>
       <import feature="org.eclipse.wst.common_core.feature" version="1.0.0"/>
@@ -70,13 +74,6 @@
 
    <plugin
          id="org.eclipse.wst.wsdl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.wsi"
          download-size="0"
          install-size="0"
          version="0.0.0"
