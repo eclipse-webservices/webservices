@@ -1,5 +1,7 @@
 package org.eclipse.jst.ws.tests.unittest;
 
+import org.eclipse.core.runtime.Path;
+
 
 public interface WSJUnitConstants {
   
@@ -30,4 +32,6 @@ public interface WSJUnitConstants {
   
   public final String earCompName = "EARComponent";
   
+  public final Path zipFilePath = new Path("/data/WSTestProjects.zip");
+  public final String[] projectNames = new String[]{projectName, project2Name};
 }
