@@ -1,9 +1,21 @@
+/*******************************************************************************
+ * Copyright (c) 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -13,7 +25,6 @@ import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
-import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
