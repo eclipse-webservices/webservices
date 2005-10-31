@@ -30,9 +30,9 @@ import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.TestClientFileG
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.GeneratePageCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.JavaToModelCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.CopyWebServiceUtilsJarCommand;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EnvironmentUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.ws.internal.common.EnvironmentUtils;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.wsrt.TestInfo;
 
