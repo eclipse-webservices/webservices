@@ -99,6 +99,7 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 	// clipboard
 	protected WSDLElement clipboardElement;
 	private IPropertySheetPage fPropertySheetPage;
+	private IContentOutlinePage fContentOutlinePage;
 	private SourceEditorSelectionListener fSourceEditorSelectionListener;
 	private WSDLSelectionManagerSelectionListener fWSDLSelectionListener;
 
@@ -109,12 +110,24 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 	class OutlineTreeSelectionChangeListener implements ISelectionChangedListener, IDoubleClickListener {
 		private ISelectionProvider fProvider = null;
 
-		public OutlineTreeSelectionChangeListener(IContentOutlinePage provider) {
+		public OutlineTreeSelectionChangeListener() {
+			super();
+		}
+		
+		void connect(IContentOutlinePage provider) {
 			fProvider = provider;
 			fProvider.addSelectionChangedListener(OutlineTreeSelectionChangeListener.this);
 			if (provider instanceof ConfigurableContentOutlinePage) {
 				((ConfigurableContentOutlinePage) provider).addDoubleClickListener(OutlineTreeSelectionChangeListener.this);
 			}
+		}
+		
+		void disconnect() {
+			fProvider.removeSelectionChangedListener(OutlineTreeSelectionChangeListener.this);
+			if (fProvider instanceof ConfigurableContentOutlinePage) {
+				((ConfigurableContentOutlinePage) fProvider).removeDoubleClickListener(OutlineTreeSelectionChangeListener.this);
+			}
+			fProvider = null;
 		}
 
 		private ISelection getWSDLSelection(ISelection selection) {
@@ -338,11 +351,14 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 			return fPropertySheetPage;
 		}
 		else if (IContentOutlinePage.class.equals(key)) {
-			IContentOutlinePage page = (IContentOutlinePage) super.getAdapter(key);
-			if(page != null) {
-				fOutlineTreeListener = new OutlineTreeSelectionChangeListener(page);
+			if (fContentOutlinePage == null) {
+				fContentOutlinePage = (IContentOutlinePage) super.getAdapter(key);
+				if (fContentOutlinePage == null) {
+					fOutlineTreeListener = new OutlineTreeSelectionChangeListener();
+					fOutlineTreeListener.connect(fContentOutlinePage);
+				}
 			}
-			result = page;
+			result = fContentOutlinePage;
 		}
 		else {
 			result = super.getAdapter(key);
@@ -368,6 +384,10 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 		}
 		else {
 			provider.removeSelectionChangedListener(fSourceEditorSelectionListener);
+		}
+		if (fOutlineTreeListener != null) {
+			fOutlineTreeListener.disconnect();
+			fOutlineTreeListener = null;
 		}
 		getSelectionManager().removeSelectionChangedListener(fWSDLSelectionListener);
 		super.dispose();
