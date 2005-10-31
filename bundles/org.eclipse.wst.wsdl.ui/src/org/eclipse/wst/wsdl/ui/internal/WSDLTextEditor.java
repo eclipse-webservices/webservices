@@ -15,7 +15,9 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -80,14 +82,17 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
       {
         if (arg0.keyCode == SWT.F3)
         {
-          List list = getViewerSelectionManager().getSelectedNodes();
-          if (list.size() > 0)
-          {
-            Object object = list.get(0);
-            if (object instanceof Node)
+          ISelection selection = getSelectionProvider().getSelection();
+          if(selection instanceof IStructuredSelection) {
+              List list = ((IStructuredSelection)selection).toList();
+            if (list.size() > 0)
             {
-              OpenOnSelectionHelper helper = new OpenOnSelectionHelper(wsdlEditor.getDefinition());   
-              helper.openEditor((Node)object);
+              Object object = list.get(0);
+              if (object instanceof Node)
+              {
+                OpenOnSelectionHelper helper = new OpenOnSelectionHelper(wsdlEditor.getDefinition());   
+                helper.openEditor((Node)object);
+              }
             }
           }
         }
@@ -163,9 +168,9 @@ public class WSDLTextEditor extends StructuredTextEditor implements INodeSelecti
       outlinePage.setLabelProvider(getExtensibleOutlineProvider());
       outlinePage.setModel(wsdlEditor.getDefinition()); //XMLDocument());
 
-      getViewerSelectionManager().addNodeSelectionListener(this);
-      internalSelectionProvider.addSelectionChangedListener(getViewerSelectionManager());
-      internalSelectionProvider.setEventSource(outlinePage);
+//      getViewerSelectionManager().addNodeSelectionListener(this);
+//      internalSelectionProvider.addSelectionChangedListener(getViewerSelectionManager());
+//      internalSelectionProvider.setEventSource(outlinePage);
     }
     return outlinePage;
   }
