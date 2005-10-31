@@ -4,3 +4,4 @@ build.xml
 temp.folder
 parser.jar
 @dot
+src.zip

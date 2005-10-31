@@ -3,3 +3,5 @@ build.xml
 temp.folder
 wsdlvalidate.jar
 wsdlvalidateui.jar
+wsdlvalidatesrc.zip
+wsdlvalidateuisrc.zip
