@@ -12,6 +12,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.command;
 
 import java.util.Vector;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -21,10 +22,10 @@ import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIAPContext;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSISSBPContext;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.WSIComplianceUtils;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIAPContext;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSISSBPContext;
+import org.eclipse.wst.ws.internal.preferences.WSIComplianceUtils;
 
 
 
@@ -45,8 +46,8 @@ public class WSINonCompliantRuntimeCommand extends AbstractDataModelOperation
   {
     IEnvironment environment = getEnvironment();
     
-  	PersistentWSISSBPContext wsiSSBPContext = WSUIPlugin.getInstance().getWSISSBPContext(); 
-  	PersistentWSIAPContext wsiAPContext = WSUIPlugin.getInstance().getWSIAPContext(); 
+  	PersistentWSISSBPContext wsiSSBPContext = WSPlugin.getInstance().getWSISSBPContext(); 
+  	PersistentWSIAPContext wsiAPContext = WSPlugin.getInstance().getWSIAPContext(); 
     Vector statusSSBP = new Vector();
     statusSSBP.add( new Status( WSIComplianceUtils.getWSISeverity(serviceProject_, wsiSSBPContext), "id", 0,
         msgUtils_.getMessage("WSI_SSBP_INCOMPLIANT_RUNTIME"), null ) );

@@ -16,9 +16,9 @@ import java.net.URL;
 import java.text.MessageFormat;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIAPContext;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSISSBPContext;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIAPContext;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSISSBPContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 
@@ -44,9 +44,6 @@ public class WSUIPlugin extends AbstractUIPlugin
  * The reference to the singleton instance of this plugin.
  */
  private static WSUIPlugin instance_;
-
- private PersistentWSISSBPContext wsiSSBPContext_;
- private PersistentWSIAPContext wsiAPContext_;
  
  /**
   * Constructs a runtime plugin object for this plugin.
@@ -64,44 +61,6 @@ public class WSUIPlugin extends AbstractUIPlugin
  static public WSUIPlugin getInstance() {
    return instance_;
  }
-
-	/**
-	 * Get WSI Context
-	 * @deprecated use getWSISSBPContext or getWSIAPContext instead
-	 * 
-	 */ 
- public PersistentWSIContext getWSIContext() 
- 	{ // defaulting to get WSI Simple SOAP Binding Profile context
- 	  return getWSISSBPContext();
- 	}
- 
- /**
-	 * Get WSI Simple SOAP Binding Profile Context
-	 * 
-	 */ 
- public PersistentWSISSBPContext getWSISSBPContext() 
-	{
-	  if (wsiSSBPContext_ == null)
-	  	{
-	  		wsiSSBPContext_ = new PersistentWSISSBPContext();
-	  		wsiSSBPContext_.load();
-	  	}
-	  return wsiSSBPContext_;
-	}
- 
- /**
-	 * Get WSI Attachment Profile Context
-	 * 
-	 */ 
- public PersistentWSIAPContext getWSIAPContext() 
-	{
-	  if (wsiAPContext_ == null)
-	  	{
-	  		wsiAPContext_ = new PersistentWSIAPContext();
-	  		wsiAPContext_.load();
-	  	}
-	  return wsiAPContext_;
-	}
 
  /**
  * Returns the message string identified by the given key from

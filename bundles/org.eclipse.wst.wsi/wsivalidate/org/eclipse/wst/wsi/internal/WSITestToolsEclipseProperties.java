@@ -14,8 +14,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 
 /**
  * WS-I test tool properties specific for Eclipse.
@@ -33,9 +33,8 @@ public class WSITestToolsEclipseProperties extends WSITestToolsProperties
     // Eclipse's resolution mechanism needs to start with the drive.
     String uriStr = trimURI(fileuri);
 
-    WSUIPlugin wsui = WSUIPlugin.getInstance();
-    PersistentWSIContext APcontext = wsui.getWSIAPContext();
-    PersistentWSIContext SSBPcontext = wsui.getWSISSBPContext();
+    PersistentWSIContext APcontext = WSPlugin.getInstance().getWSIAPContext();
+    PersistentWSIContext SSBPcontext = WSPlugin.getInstance().getWSISSBPContext();
     
     IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(new Path(uriStr));
     if (files != null && files.length == 1)

@@ -9,10 +9,10 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.ws.internal.ui.wsi.preferences;
+package org.eclipse.wst.ws.internal.preferences;
 
 import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
 
 
@@ -24,7 +24,7 @@ public PersistentWSISSBPContext ()
 {
 	super();
 	non_wsi_compliance = NON_WSI_SSBP_COMPLIANCE;
-	name = new QualifiedName(WSUIPlugin.ID , non_wsi_compliance);
+	name = new QualifiedName(WSPlugin.ID , non_wsi_compliance);
 	wsiWarning_ = "WSI_SSBP_WARNING";
 	wsiError_ = "WSI_SSBP_ERROR";
 }

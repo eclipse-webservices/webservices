@@ -16,6 +16,9 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSDLValidationContext;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIAPContext;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSISSBPContext;
 import org.eclipse.wst.ws.internal.preferences.PersistentWaitForWSDLValidationContext;
 import org.osgi.framework.BundleContext;
 
@@ -26,13 +29,17 @@ public class WSPlugin extends Plugin {
 
 	// The shared instance.
 	private static WSPlugin plugin;
-
+	
 	// Resource bundle.
 	private ResourceBundle resourceBundle;
 	
+	private PersistentWSISSBPContext wsiSSBPContext_;
+	private PersistentWSIAPContext wsiAPContext_;
 	private PersistentWSDLValidationContext wsdlValidationContext_;
 	private PersistentWaitForWSDLValidationContext waitForWsdlValidationContext_;
 
+	public static final String ID = "org.eclipse.wst.ws.ui";
+	
 	/**
 	 * The constructor.
 	 */
@@ -107,7 +114,44 @@ public class WSPlugin extends Plugin {
 		}
 		return resourceBundle;
 	}
-	
+	/**
+	 * Get WSI Context
+	 * @deprecated use getWSISSBPContext or getWSIAPContext instead
+	 * 
+	 */ 
+ public PersistentWSIContext getWSIContext() 
+ 	{ // defaulting to get WSI Simple SOAP Binding Profile context
+ 	  return getWSISSBPContext();
+ 	}
+ 
+ /**
+	 * Get WSI Simple SOAP Binding Profile Context
+	 * 
+	 */ 
+ public PersistentWSISSBPContext getWSISSBPContext() 
+	{
+	  if (wsiSSBPContext_ == null)
+	  	{
+	  		wsiSSBPContext_ = new PersistentWSISSBPContext();
+	  		wsiSSBPContext_.load();
+	  	}
+	  return wsiSSBPContext_;
+	}
+ 
+ /**
+	 * Get WSI Attachment Profile Context
+	 * 
+	 */ 
+ public PersistentWSIAPContext getWSIAPContext() 
+	{
+	  if (wsiAPContext_ == null)
+	  	{
+	  		wsiAPContext_ = new PersistentWSIAPContext();
+	  		wsiAPContext_.load();
+	  	}
+	  return wsiAPContext_;
+	}
+
 	 /**
 	 * Get WSDL Valiation Context
 	 * 

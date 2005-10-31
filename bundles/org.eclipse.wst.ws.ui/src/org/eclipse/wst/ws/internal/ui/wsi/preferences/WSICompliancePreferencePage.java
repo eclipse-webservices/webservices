@@ -31,6 +31,7 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSDLValidationContext;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 
 
@@ -253,10 +254,10 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
   private void initializeValues()
   {
     
-	String WSIText = getWSISelection(WSUIPlugin.getInstance().getWSISSBPContext());
+	String WSIText = getWSISelection(WSPlugin.getInstance().getWSISSBPContext());
     wsi_ssbp_Types_.select(wsi_ssbp_Types_.indexOf(WSIText));
     
-    int apSelection = wsi_ap_Types_.indexOf(getWSISelection(WSUIPlugin.getInstance().getWSIAPContext()));
+    int apSelection = wsi_ap_Types_.indexOf(getWSISelection(WSPlugin.getInstance().getWSIAPContext()));
     wsi_ap_Types_.select(apSelection);
     savedSSBPSetting_ = -1;  // do not restore saved SSBP setting
     processAPSelection(apSelection);
@@ -296,8 +297,8 @@ private String getWSISelection(PersistentWSIContext context)
    */
   private void storeValues()
   {
-  	updateWSIContext(wsi_ssbp_Types_.getSelectionIndex(), WSUIPlugin.getInstance().getWSISSBPContext());
-  	updateWSIContext(wsi_ap_Types_.getSelectionIndex(), WSUIPlugin.getInstance().getWSIAPContext());
+  	updateWSIContext(wsi_ssbp_Types_.getSelectionIndex(), WSPlugin.getInstance().getWSISSBPContext());
+  	updateWSIContext(wsi_ap_Types_.getSelectionIndex(), WSPlugin.getInstance().getWSIAPContext());
   }
   
   private void updateWSIContext(int selectionIndex, PersistentWSIContext context)

@@ -53,8 +53,8 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 
 
 public class JUnitUtils {
@@ -284,10 +284,10 @@ public class JUnitUtils {
 	
 	public static void disableWSIDialog(IProject project){
 	  
-	  PersistentWSIContext ctx = WSUIPlugin.getInstance().getWSIAPContext();
+	  PersistentWSIContext ctx = WSPlugin.getInstance().getWSIAPContext();
 	  ctx.updateProjectWSICompliances(project, PersistentWSIContext.IGNORE_NON_WSI);
 	  
-	  PersistentWSIContext ctx2 = WSUIPlugin.getInstance().getWSISSBPContext();
+	  PersistentWSIContext ctx2 = WSPlugin.getInstance().getWSISSBPContext();
 	  ctx2.updateProjectWSICompliances(project, PersistentWSIContext.IGNORE_NON_WSI);
 	  
 	}

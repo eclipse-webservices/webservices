@@ -9,15 +9,15 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.ws.internal.ui.wsi.preferences;
+package org.eclipse.wst.ws.internal.preferences;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 import org.eclipse.wst.command.internal.env.context.PersistentContext;
 import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.ILog;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
 
 
@@ -36,11 +36,11 @@ public class PersistentWSIContext extends PersistentContext
 
 public PersistentWSIContext () 
 {
-	super(  WSUIPlugin.getInstance());
+	super(  WSPlugin.getInstance());
 	
 //  NOTE:  name, wsiWarning_ and wsiError_ should be set in the subclasses.  This is providing defaulting only.
 	non_wsi_compliance = NON_WSI_SSBP_COMPLIANCE;
-	name = new QualifiedName(WSUIPlugin.ID , non_wsi_compliance);
+	name = new QualifiedName(WSPlugin.ID , non_wsi_compliance);
 	wsiWarning_ = "WSI_SSBP_WARNING";
 	wsiError_ = "WSI_SSBP_ERROR";
 }

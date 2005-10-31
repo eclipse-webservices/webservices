@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.ws.internal.ui.wsi.preferences;
+package org.eclipse.wst.ws.internal.preferences;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
@@ -18,22 +18,13 @@ import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
 import org.eclipse.wst.common.environment.IStatusHandler;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
 
 public class WSIComplianceUtils
 {
 private static MessageUtils msgUtils_;
 
-/**
- * @deprecated use getWSISeverity (IProject project, PersistentWSIContext context) instead
- * @param project
- * @return int
- */
-public static int getWSISeverity (IProject project)
-{
-	return getWSISeverity (project, WSUIPlugin.getInstance().getWSISSBPContext());
-}
 /**
  * @param project
  * @param context
@@ -50,17 +41,6 @@ public static int getWSISeverity (IProject project, PersistentWSIContext context
 }
 
 /**
- * @deprecated use checkWSICompliance ( IStatusHandler monitor, Status[] status, IProject project, PersistentWSIContext context) instead
- * @param monitor IStatusHandler
- * @param status Status[]
- * @param project IProject
- * @return boolean true if to continue
- */
-public static boolean checkWSICompliance ( IStatusHandler monitor, Status[] status, IProject project)
-{	// check for SSBP by default
-	return checkWSICompliance ( monitor, status, project, WSUIPlugin.getInstance().getWSISSBPContext());
-}
-/**
  * @param monitor IStatusHandler
  * @param status Status[]
  * @param project IProject
@@ -70,7 +50,7 @@ public static boolean checkWSICompliance ( IStatusHandler monitor, Status[] stat
 public static boolean checkWSICompliance ( IStatusHandler monitor, Status[] status, IProject project, PersistentWSIContext context)
 {
 	String pluginId = "org.eclipse.wst.ws.ui";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", WSUIPlugin.getInstance()); 
+	msgUtils_ = new MessageUtils(pluginId + ".plugin", WSPlugin.getInstance()); 
 	
   	if (context.projectStopNonWSICompliances(project))
   		{
