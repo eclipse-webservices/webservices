@@ -32,8 +32,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.test.performance.Dimension;
 import org.eclipse.test.performance.PerformanceTestCase;
 import org.eclipse.wst.validation.internal.operations.OneValidatorOperation;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 
 /**
  * Test for validation of 50 WSDL files in the sample workspace.
@@ -54,7 +54,7 @@ public class ValidateWSDLProjectTestCase extends PerformanceTestCase {
 	protected void setUp() throws Exception {
 	    super.setUp();
 		// Set the WS-I preference to ignore so WS-I validation will not be run.
-		WSUIPlugin wsui = WSUIPlugin.getInstance();
+		WSPlugin wsui = WSPlugin.getInstance();
 		PersistentWSIContext wsicontext = wsui.getWSISSBPContext();
 		wsicontext.updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
 	}

@@ -23,8 +23,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.ui.eclipse.WSDLValidator;
@@ -55,7 +55,7 @@ public class BaseTestCase extends TestCase
     PLUGIN_ABSOLUTE_PATH = WSDLValidatorTestsPlugin.getInstallURL();//getPluginLocation();
     
     // Set the WS-I preference to ignore so only WSDL errors will be tested.
-    WSUIPlugin wsui = WSUIPlugin.getInstance();
+    WSPlugin wsui = WSPlugin.getInstance();
     PersistentWSIContext wsicontext = wsui.getWSISSBPContext();
     wsicontext.updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
     wsicontext = wsui.getWSIAPContext();

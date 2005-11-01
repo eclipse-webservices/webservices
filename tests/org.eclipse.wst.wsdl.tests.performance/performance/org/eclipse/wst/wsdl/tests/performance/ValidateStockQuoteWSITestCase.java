@@ -17,8 +17,8 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.eclipse.test.performance.PerformanceTestCase;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
-import org.eclipse.wst.ws.internal.ui.wsi.preferences.PersistentWSIContext;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.ui.eclipse.WSDLValidator;
 
@@ -33,7 +33,7 @@ public class ValidateStockQuoteWSITestCase extends PerformanceTestCase
   {
     super.setUp();
     // Set the WS-I preference to ignore so only WSDL errors will be tested.
-    WSUIPlugin wsui = WSUIPlugin.getInstance();
+    WSPlugin wsui = WSPlugin.getInstance();
     PersistentWSIContext wsicontext = wsui.getWSISSBPContext();
     wsicontext.updateWSICompliances(PersistentWSIContext.STOP_NON_WSI);
     wsicontext = wsui.getWSIAPContext();
