@@ -31,6 +31,8 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action.Type;
+import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
+import org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager;
 
 public class FacetUtils
 {
@@ -84,25 +86,41 @@ public class FacetUtils
     for( Iterator itr = ProjectFacetsManager.getTemplates().iterator(); itr.hasNext(); )
     {
         final IFacetedProjectTemplate template = (IFacetedProjectTemplate) itr.next();
-        //TODO final Set initial = template.getInitialProjectFacets();
-        Set fixedFacets = template.getFixedProjectFacets(); 
-        HashSet initial = new HashSet(); 
-        for (Iterator itr2 = fixedFacets.iterator(); itr2.hasNext(); ) 
-        { 
-          IProjectFacet facet = (IProjectFacet) itr2.next(); 
-          IProjectFacetVersion highestFacetVersion = facet.getLatestVersion(); 
-          initial.add(highestFacetVersion); 
-        }         
-        
-        FacetMatcher fm = match(requiredFacetVersions, initial);
-        if (fm.isMatch())
+        String templateId = template.getId();
+        if (templateId.indexOf("ear") == -1) //Don't include the EARs!!
         {
-          templates.add(template);
+          //TODO final Set initial = template.getInitialProjectFacets(); 
+          Set initial = getInitialFacetVersionsFromTemplate(templateId);         
+          FacetMatcher fm = match(requiredFacetVersions, initial);
+          if (fm.isMatch())
+          {
+            templates.add(template);
+          }
         }
     }    
     
     return templates;
     
+  }
+  
+  public static Set getInitialFacetVersionsFromTemplate(String templateId)
+  {
+    IFacetedProjectTemplate template = ProjectFacetsManager.getTemplate(templateId);
+    Set fixedFacets = template.getFixedProjectFacets(); 
+    HashSet initial = new HashSet(); 
+    for (Iterator itr2 = fixedFacets.iterator(); itr2.hasNext(); ) 
+    { 
+      IProjectFacet facet = (IProjectFacet) itr2.next(); 
+      IProjectFacetVersion highestFacetVersion = null;
+      if (isJavaFacet(facet)) //special case the java facet because 1.4 is a better default than 5.0 for now.
+      {
+        highestFacetVersion = facet.getVersion("1.4");
+      }
+      highestFacetVersion = facet.getLatestVersion(); 
+      initial.add(highestFacetVersion); 
+    }             
+    
+    return initial;
   }
   
   public static String[] getTemplateLabels(String[] templateIds)
@@ -228,6 +246,99 @@ public class FacetUtils
     return fm;
   }
   
+  //Methods related to facet runtimes.
+  
+  public static Set getRuntimes(RequiredFacetVersion[] requiredFacetVersions)
+  {
+    //Form the sets of IProjectFacetVersions these RequiredFacetVersions represent.
+    ArrayList listOfFacetSets = new ArrayList();
+    
+    HashSet facets = new HashSet();
+    int javaFacetIndex = -1;
+    for (int i=0; i<requiredFacetVersions.length; i++)
+    {
+      IProjectFacetVersion pfv = requiredFacetVersions[i].getProjectFacetVersion();
+      if (FacetUtils.isJavaFacet(pfv.getProjectFacet()))
+      {
+        //Remember the index
+        javaFacetIndex = i;
+      }
+      facets.add(requiredFacetVersions[i].getProjectFacetVersion());
+    }
+    
+    listOfFacetSets.add(facets);
+    
+    //If the java facet was one of the facets in the set, and new versions of java are allowed,
+    //create sets that contain the newer permitted versions of the java facets.
+    if (javaFacetIndex > -1)
+    {
+      ArrayList permittedJavaVersions = new ArrayList();
+      RequiredFacetVersion rfv = requiredFacetVersions[javaFacetIndex];
+      if (rfv.getAllowNewer())
+      {
+        String version = rfv.getProjectFacetVersion().getVersionString();      
+        Set allVersions = rfv.getProjectFacetVersion().getProjectFacet().getVersions();
+        Iterator itr = allVersions.iterator();
+        while (itr.hasNext())
+        {
+          IProjectFacetVersion thisPfv = (IProjectFacetVersion)itr.next();
+          String thisVersion = thisPfv.getVersionString();
+          if (greaterThan(thisVersion, version))
+          {
+            permittedJavaVersions.add(thisVersion);
+          }          
+        }
+        
+        String[] javaVersions = (String[])permittedJavaVersions.toArray(new String[0]);
+        
+        for (int j=0; j<javaVersions.length; j++)
+        {
+          HashSet thisFacetSet = new HashSet();
+          
+          for (int k=0; k<requiredFacetVersions.length; k++)
+          {
+             if (k==javaFacetIndex)
+             {
+               IProjectFacetVersion pfv = requiredFacetVersions[k].getProjectFacetVersion().getProjectFacet().getVersion(javaVersions[j]);
+               thisFacetSet.add(pfv);
+             }
+             else
+             {
+               IProjectFacetVersion pfv = requiredFacetVersions[k].getProjectFacetVersion();
+               thisFacetSet.add(pfv);
+             }
+          }
+          
+          listOfFacetSets.add(thisFacetSet);          
+        }
+      }
+    }
+    
+    //Return the union of runtimes for all the facetSets.
+    return getRuntimes((Set[])listOfFacetSets.toArray(new Set[0]));
+    
+  }  
+    
+  public static Set getRuntimes(Set[] facetSets)  
+  {
+    HashSet unionSet = new HashSet();
+    for (int i=0; i<facetSets.length; i++)
+    {
+      Set facets = facetSets[i];
+      Set runtimes = RuntimeManager.getRuntimes(facets);
+      Iterator itr = runtimes.iterator();
+      while (itr.hasNext())
+      {
+        IRuntime runtime = (IRuntime)itr.next();
+        if (!unionSet.contains(runtime))
+        {
+          unionSet.add(runtime);
+        }
+      }
+    }
+    return unionSet;
+  }
+  
   /*
    * @param versionA version number of the form 1.2.3
    * @param versionA version number of the form 1.2.3
@@ -261,4 +372,13 @@ public class FacetUtils
     
     return sizeA > sizeB;
   }
+  
+  public static boolean isJavaFacet(IProjectFacet pf)
+  {
+    if (pf.getId().equals("jst.java"))
+      return true;
+    else
+      return false;
+  }
+  
 }
