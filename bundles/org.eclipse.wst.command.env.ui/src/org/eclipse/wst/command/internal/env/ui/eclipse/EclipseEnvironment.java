@@ -39,7 +39,7 @@ public class EclipseEnvironment implements BaseEclipseEnvironment
  		                         ResourceContext resourceContext,
 						                 IStatusHandler   statusHandler )
   {
-    IURIScheme eclipseScheme = EnvironmentService.getEclipseScheme( this );
+    IURIScheme eclipseScheme = EnvironmentService.getEclipseScheme();
     IURIScheme fileScheme    = EnvironmentService.getFileScheme();
     
     commandManager_  = commandManager;
