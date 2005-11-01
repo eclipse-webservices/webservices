@@ -3,13 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %_PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.wsi; singleton:=true
 Bundle-Version: 0.7.0
-Bundle-ClassPath: wsicore.jar,
- wsivalidate.jar
-Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator
+Bundle-Activator: org.eclipse.wst.wsi.internal.WSITestToolsPlugin
 Bundle-Vendor: %_PROVIDER_NAME
 Bundle-Localization: plugin
-Export-Package: .,
- org.eclipse.wst.wsi.internal,
+Export-Package: org.eclipse.wst.wsi.internal,
  org.eclipse.wst.wsi.internal.analyzer,
  org.eclipse.wst.wsi.internal.core,
  org.eclipse.wst.wsi.internal.core.analyzer,
@@ -45,8 +42,7 @@ Export-Package: .,
  org.eclipse.wst.wsi.internal.document,
  org.eclipse.wst.wsi.internal.report,
  org.eclipse.wst.wsi.internal.validate.wsdl
-Require-Bundle: org.eclipse.core.runtime.compatibility,
- org.eclipse.wst.command.env,
+Require-Bundle:  org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.ui,
  org.eclipse.wst.command.env.core,
  org.eclipse.wst.common.uriresolver,
@@ -59,4 +55,3 @@ Require-Bundle: org.eclipse.core.runtime.compatibility,
  org.eclipse.core.runtime;bundle-version="2.1.0",
  org.apache.axis
 Eclipse-AutoStart: true
-Plugin-Class: org.eclipse.wst.wsi.internal.WSITestToolsPlugin

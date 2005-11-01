@@ -15,6 +15,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.wst.common.ui.internal.dialogs.SelectSingleFileDialog;
+import org.eclipse.wst.wsi.ui.internal.Messages;
 import org.eclipse.wst.wsi.ui.internal.Resource;
 import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
 import org.eclipse.swt.SWT;
@@ -67,8 +68,8 @@ public class ValidationWizardWSDLPage extends WizardPage implements SelectionLis
   {
     super("ValidationWizardWSDLPage");
     this.selection = selection;
-    this.setTitle(WSIUIPlugin.getResourceString("_UI_WIZARD_V_SELECT_WSDL_FILENAME_HEADING"));
-    this.setDescription(WSIUIPlugin.getResourceString("_UI_WIZARD_V_SELECT_WSDL_FILENAME_EXPL"));
+    this.setTitle(Messages.WSDL_PAGE_SELECT_WSDL_FILENAME_HEADING);
+    this.setDescription(Messages.WSDL_PAGE_SELECT_WSDL_FILENAME_EXPL);
   }
 
   /**
@@ -102,7 +103,7 @@ public class ValidationWizardWSDLPage extends WizardPage implements SelectionLis
 
     // add includeWSDL flag
     includeWSDLButton = new Button(base, SWT.CHECK);
-    includeWSDLButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_INCLUDE_WSDL_BUTTON"));
+    includeWSDLButton.setText(Messages.WSDL_PAGE_INCLUDE_WSDL_BUTTON);
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     includeWSDLButton.setLayoutData(data);
@@ -150,7 +151,7 @@ public class ValidationWizardWSDLPage extends WizardPage implements SelectionLis
     group1.setLayoutData(data);
 
     Label documentLabel = new Label(group1, SWT.LEFT);
-    documentLabel.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_INCLUDE_WSDL_LABEL"));
+    documentLabel.setText(Messages.WSDL_PAGE_INCLUDE_WSDL_LABEL);
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     documentLabel.setLayoutData(data);
@@ -179,7 +180,7 @@ public class ValidationWizardWSDLPage extends WizardPage implements SelectionLis
     fileField.addModifyListener(new FileFieldListener());
 
     Label wsdlLabel = new Label(group1, SWT.LEFT);
-    wsdlLabel.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_VALID_WSDL_LABEL"));
+    wsdlLabel.setText(Messages.WSDL_PAGE_VALID_WSDL_LABEL);
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     documentLabel.setLayoutData(data);
@@ -202,21 +203,21 @@ public class ValidationWizardWSDLPage extends WizardPage implements SelectionLis
     group.setLayoutData(data);
 
     Button workspaceButton = new Button(group, SWT.PUSH);
-    workspaceButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_WORKBENCH_BUTTON"));
+    workspaceButton.setText(Messages.WSDL_PAGE_WORKBENCH_BUTTON);
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     workspaceButton.setLayoutData(data);
     workspaceButton.addSelectionListener(new WorkspaceButtonListener());
 
     Button browseButton = new Button(group, SWT.PUSH);
-    browseButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_BROWSE_BUTTON"));
+    browseButton.setText(Messages.WSDL_PAGE_BROWSE_BUTTON);
     data = new GridData();
     data.horizontalAlignment = GridData.FILL;
     browseButton.setLayoutData(data);
     browseButton.addSelectionListener(new BrowseButtonListener());
 
     // Button searchUDDIButton = new Button(group, SWT.PUSH);
-    // searchUDDIButton.setText(WSIUIPlugin.getResourceString("_UI_WIZARD_V_SEARCH_UDDI_BUTTON"));
+    // searchUDDIButton.setText(Messages.("_UI_WIZARD_V_SEARCH_UDDI_BUTTON"));
     // data = new GridData();
     // data.horizontalAlignment = GridData.FILL;
     // searchUDDIButton.setLayoutData(data);
@@ -293,9 +294,9 @@ public class ValidationWizardWSDLPage extends WizardPage implements SelectionLis
       SelectSingleFileDialog dialog = new SelectSingleFileDialog(getShell(), selection, false);
       dialog.addFilterExtensions(new String[] { ".wsdl" });
       dialog.create();
-      dialog.getShell().setText(WSIUIPlugin.getResourceString("_UI_DIALOG_SS_FILE_SHELL_TEXT"));
-      dialog.setTitle(WSIUIPlugin.getResourceString("_UI_DIALOG_SS_FILE_TITLE"));
-      dialog.setMessage(WSIUIPlugin.getResourceString("_UI_DIALOG_SS_FILE_DESCRIPTION"));
+      dialog.getShell().setText(Messages.WSDL_PAGE_FILE_SHELL_TEXT);
+      dialog.setTitle(Messages.WSDL_PAGE_FILE_TITLE);
+      dialog.setMessage(Messages.WSDL_PAGE_FILE_DESCRIPTION);
       dialog.setTitleImage(WSIUIPlugin.getResourceImage(Resource.VALIDATE_WSI_LOGFILE_WIZ));
       
       int result = dialog.open();

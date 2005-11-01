@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.MessageLimitExceptio
 import org.eclipse.wst.wsi.internal.analyzer.MessageAnalyzer;
 import org.eclipse.wst.wsi.internal.analyzer.WSIAnalyzerException;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
-import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
+import org.eclipse.wst.wsi.ui.internal.Messages;
 import org.eclipse.wst.wsi.internal.report.AssertionError;
 import org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage;
 import org.eclipse.wst.xml.ui.internal.validation.ValidateAction;
@@ -149,25 +149,25 @@ public class WSIValidateAction extends ValidateAction
         if (exceptionCaught)
         {
           MessageDialog.openError(Display.getDefault().getActiveShell(), 
-          		WSIUIPlugin.getResourceString("_UI_UNABLE_TO_VALIDATE"), 
-          		WSIUIPlugin.getResourceString("_UI_PROBLEMS_READING_WSIMSG_FILE"));
+          		Messages.ERROR_UNABLE_TO_VALIDATE, 
+          		Messages.ERROR_PROBLEMS_READING_WSIMSG_FILE);
         }
         else if (messageanalyzer.getAssertionErrors().size() != 0)
         {
           MessageDialog.openError(Display.getDefault().getActiveShell(), 
-          		WSIUIPlugin.getResourceString("_UI_VALIDATION_FAILED"), 
-          		WSIUIPlugin.getResourceString("_UI_THE_WSIMSG_FILE_IS_NOT_VALID"));
+          		Messages.ERROR_VALIDATION_FAILED, 
+          		Messages.ERROR_THE_WSIMSG_FILE_IS_NOT_VALID);
         }
         else if (messageanalyzer.getAssertionWarnings().size() != 0)
         {                                                           
-          String title = WSIUIPlugin.getResourceString("_UI_VALIDATION_SUCEEDED");
-          String message = WSIUIPlugin.getResourceString("_UI_VALIDATION_WARNINGS_DETECTED");
+          String title = Messages.INFO_VALIDATION_SUCEEDED;
+          String message = Messages.WARNING_VALIDATION_WARNINGS_DETECTED;
           MessageDialog.openInformation(Display.getDefault().getActiveShell(), title, message);
         }
         else
         {
-          String title = WSIUIPlugin.getResourceString("_UI_VALIDATION_SUCEEDED");
-          String message = WSIUIPlugin.getResourceString("_UI_THE_WSIMSG_FILE_IS_VALID");
+          String title = Messages.INFO_VALIDATION_SUCEEDED;
+          String message = Messages.INFO_THE_WSIMSG_FILE_IS_VALID;
           MessageDialog.openInformation(Display.getDefault().getActiveShell(), title, message);
         }
       }

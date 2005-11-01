@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
-import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
+import org.eclipse.wst.wsi.ui.internal.Messages;
 
 /**
  * Wizard page that allows the user to specify the location of the 
@@ -49,8 +49,8 @@ public class ValidationWizardLogPage extends WizardNewFileCreationPage
   {
     super("ValidationWizardLogPage", selection);
     this.filename = filename;
-    this.setTitle(WSIUIPlugin.getResourceString("_UI_WIZARD_V_SELECT_LOG_FILENAME_HEADING"));
-    this.setDescription(WSIUIPlugin.getResourceString("_UI_WIZARD_V_SELECT_LOG_FILENAME_EXPL"));
+    this.setTitle(Messages.LOG_PAGE_SELECT_LOG_FILENAME_HEADING);
+    this.setDescription(Messages.LOG_PAGE_SELECT_LOG_FILENAME_EXPL);
   }
 
 
@@ -99,7 +99,7 @@ public class ValidationWizardLogPage extends WizardNewFileCreationPage
     {
       if (fileExtension.compareTo(WSI_LOG_EXTENSION) != 0)
       {        
-        setErrorMessage(WSIUIPlugin.getResourceString("_ERROR_INVALID_LOG_FILE_EXTENSION"));
+        setErrorMessage(Messages.ERROR_INVALID_LOG_FILE_EXTENSION);
         return false;
       }
     }
@@ -121,7 +121,7 @@ public class ValidationWizardLogPage extends WizardNewFileCreationPage
       
       setErrorMessage(null);
       if (resource != null)
-        setMessage(WSIUIPlugin.getResourceString("_WARNING_FILE_ALREADY_EXISTS"));
+        setMessage(Messages.WARNING_FILE_ALREADY_EXISTS);
       else
         setMessage(null);
 

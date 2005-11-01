@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.wst.wsi.ui.internal.Messages;
 import org.eclipse.wst.wsi.ui.internal.Resource;
 import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
 import org.eclipse.ui.IViewReference;
@@ -118,7 +119,7 @@ public class ValidationWizard extends Wizard
   public ValidationWizard(String filename)
   {
     this.filename = filename;
-    this.setWindowTitle(WSIUIPlugin.getResourceString("_UI_WIZARD_VALIDATE_LOG_TITLE"));
+    this.setWindowTitle(Messages.VALIDATION_WIZARD_TITLE);
     setDefaultPageImageDescriptor(
       ImageDescriptor.createFromFile(WSIUIPlugin.class, Resource.VALIDATE_WSI_LOGFILE_WIZ));
     setNeedsProgressMonitor(true);

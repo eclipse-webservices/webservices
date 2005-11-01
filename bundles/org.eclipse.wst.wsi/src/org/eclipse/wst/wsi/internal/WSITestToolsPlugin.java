@@ -10,12 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal;
 
-import java.io.IOException;
-import java.util.ResourceBundle;
-
-import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.core.runtime.Plugin;
 
 /**
  * The WS-I test tools plugin.
@@ -23,68 +18,41 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author lauzond
  */
 
-public class WSITestToolsPlugin extends AbstractUIPlugin
+public class WSITestToolsPlugin extends Plugin
 {
-  private static AbstractUIPlugin instance;
+  private static Plugin instance;
   protected final String PLUGIN_PROPERTIES = "wsivalidate";
-  protected ResourceBundle resourcebundle = null;
+  //protected ResourceBundle resourcebundle = null;
   
   /**
    * Constructor for wsiTestToolsPlugin.
    * @param descriptor an IPluginDescriptor object.
    */
-  public WSITestToolsPlugin(IPluginDescriptor descriptor)
+  public WSITestToolsPlugin()
   {
-    super(descriptor);
+    super();
     instance = this;
 
     // set the current directory
-   WSITestToolsProperties.setInstallDir(getInstallURL());
    WSITestToolsProperties.setEclipseContext(true);
-   resourcebundle = ResourceBundle.getBundle(PLUGIN_PROPERTIES);
+   //resourcebundle = ResourceBundle.getBundle(PLUGIN_PROPERTIES);
   }
 
   /**
    * Method getInstance.
    * @return AbstractUIPlugin
    */
-  public static AbstractUIPlugin getInstance()
+  public static Plugin getInstance()
   {
     return instance;
   }
 
-  /**
-   * Returns the resource bundle for this plugin.
-   * 
-   * @return The resource bundle for this plugin.
-   */
-  public ResourceBundle getResourceBundle()
-  {
-    return resourcebundle;
-  }
-
-  /**
+   /**
    * Method getPlugin.
    * @return WSIToolsUtilPlugin
    */
   public static WSITestToolsPlugin getPlugin()
   {
     return (WSITestToolsPlugin) instance;
-  }
-
-  /**
-   * Returns installable URL for this plugin.
-   * @return installable URL for this plugin.
-   */
-  public String getInstallURL()
-  {
-    try
-    {
-      return Platform.resolve(getDescriptor().getInstallURL()).getFile();
-    }
-    catch (IOException e)
-    {
-      return null;
-    }
   }
 }

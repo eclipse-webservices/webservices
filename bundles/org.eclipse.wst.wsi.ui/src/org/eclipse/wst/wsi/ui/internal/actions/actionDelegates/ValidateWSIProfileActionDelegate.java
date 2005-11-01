@@ -26,7 +26,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.Request;
 import org.eclipse.wst.internet.monitor.ui.internal.provisional.MonitorUICore;
 import org.eclipse.wst.wsi.ui.internal.LogBuilder;
-import org.eclipse.wst.wsi.ui.internal.WSIUIPlugin;
+import org.eclipse.wst.wsi.ui.internal.Messages;
 import org.eclipse.wst.wsi.ui.internal.wizards.ValidationWizard;
 import org.eclipse.wst.wsi.ui.internal.WSIValidator;
 import org.eclipse.swt.widgets.Display;
@@ -181,8 +181,8 @@ public class ValidateWSIProfileActionDelegate implements IViewActionDelegate
       else
       {
         // no available messages to validate
-    	  String title = WSIUIPlugin.getResourceString("_UI_WSI_VALIDATOR");
-          String message = WSIUIPlugin.getResourceString("_UI_NO_MESSAGES_TO_VALIDATE");
+    	  String title = Messages.ACTION_WSI_VALIDATOR;
+          String message = Messages.INFO_NO_MESSAGES_TO_VALIDATE;
     	MessageDialog.openInformation(shell, title, message);
       }
     }

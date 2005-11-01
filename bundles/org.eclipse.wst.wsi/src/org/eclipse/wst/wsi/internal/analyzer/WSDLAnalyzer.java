@@ -151,8 +151,6 @@ public class WSDLAnalyzer
   {
     try
     {
-      WSITestToolsProperties.setLocal();
-	  
 	  if (wsiPreferences.getComplianceLevel() != WSITestToolsProperties.IGNORE_NON_WSI)
 	  {
         // here's where the validation actually starts happening
@@ -375,7 +373,7 @@ public class WSDLAnalyzer
 	if (filename != null)
 	{
 	  String tmp = filename.replace('\\', '/');
-	  if ((!tmp.startsWith(WSIConstants.HTTP_PREFIX)) &&
+	  if ((true) &&
           (!tmp.startsWith(WSIConstants.FILE_PREFIX)))
 	  {
 	    tmp = WSIConstants.FILE_PROTOCOL + tmp;

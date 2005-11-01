@@ -134,8 +134,6 @@ public class MessageAnalyzer
   {
     try
     {
-	  WSITestToolsEclipseProperties.setLocal();
-	  
 	  if (wsiPreferences.getComplianceLevel() != WSITestToolsEclipseProperties.IGNORE_NON_WSI)
 	  {
         DocumentFactory documentFactory = DocumentFactory.newInstance();

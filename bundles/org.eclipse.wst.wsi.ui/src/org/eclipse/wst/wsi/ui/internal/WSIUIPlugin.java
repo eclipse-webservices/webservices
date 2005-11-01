@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.ui.internal;
 
-import java.util.ResourceBundle;
-
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
@@ -27,20 +24,18 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class WSIUIPlugin extends AbstractUIPlugin
 {
-	private ResourceBundle pluginRB = null;
   /**
    * The singleton.
    */
   protected static WSIUIPlugin instance;                
-
+  public static final String PLUGIN_ID = "org.eclipse.wst.wsi.ui";
   /**
    * Constructor.
    */
-  public WSIUIPlugin(IPluginDescriptor descriptor)
+  public WSIUIPlugin()
   {
-    super(descriptor);
+    super();
     instance = this;
-    pluginRB = descriptor.getResourceBundle();
   }    
 
   /**
@@ -83,17 +78,5 @@ public class WSIUIPlugin extends AbstractUIPlugin
   public static Image getResourceImage(String iconName)
   {
     return instance.getImageRegistry().get(iconName);
-  }
-
-  /**
-   * Convience API.     
-   * This gets the string resource based on the key.
-   * @param key: key associated witha string resource.
-   * @return the string resource associated with the given key.
-   */
-  public static String getResourceString(String key)
-  {
-  	
-    return instance.pluginRB.getString(key);
   }
 }

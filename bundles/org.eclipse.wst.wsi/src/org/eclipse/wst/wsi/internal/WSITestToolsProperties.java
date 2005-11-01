@@ -10,12 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Properties;
-
-import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
-import org.eclipse.wst.wsi.internal.core.util.WSIProperties;
-
 /**
  * WS-I test tools property.
  */
@@ -53,55 +47,6 @@ public class WSITestToolsProperties
     return eclipseContext;
   }
   
-  /**
-   * Set the schema location.
-   * @param dir the schema location.
-   */
-  public static void setInstallDir(String dir)
-  {
-    installURL = dir.replace('\\', '/');
-  }
-  
-  /**
-   * Set local properties.
-   */
-  public static void setLocal()
-  {
-    Properties schemaLocationProperties = new Properties();
-    String schemaURL = installURL + schemaDir;
-    try
-    {
-      schemaLocationProperties.setProperty(
-        "wsi.analyzer.xmlschema.schema",
-        URIEncoder.encode(schemaURL + "XMLSchema.xsd", "UTF8"));
-      schemaLocationProperties.setProperty(
-        "wsi.analyzer.wsdl.schema",
-        URIEncoder.encode(schemaURL + "wsdl11.xsd", "UTF8"));
-      schemaLocationProperties.setProperty(
-        "wsi.analyzer.soap.schema",
-        URIEncoder.encode(schemaURL + "soapEnvelope.xsd", "UTF8"));
-      schemaLocationProperties.setProperty(
-        "wsi.analyzer.wsdlsoap.schema",
-        URIEncoder.encode(schemaURL + "wsdlSoap.xsd", "UTF8"));
-      schemaLocationProperties.setProperty(
-        "wsi.analyzer.xmlschema.schema",
-        URIEncoder.encode(schemaURL + "XMLSchema.xsd", "UTF8"));
-      schemaLocationProperties.setProperty(
-        "wsi.analyzer.wsdl.schema",
-        URIEncoder.encode(schemaURL + "wsdl11.xsd", "UTF8"));
-      schemaLocationProperties.setProperty(
-        "wsi.analyzer.soap.schema",
-        URIEncoder.encode(schemaURL + "soapEnvelope.xsd", "UTF8"));
-      schemaLocationProperties.setProperty(
-        "wsi.analyzer.wsdlsoap.schema",
-        URIEncoder.encode(schemaURL + "wsdlSoap.xsd", "UTF8"));
-    }
-    catch (UnsupportedEncodingException e)
-    {
-    }
-    WSIProperties.setThreadLocalProperties(schemaLocationProperties);
-  }
-
   /**
    * Checks the WS-I preferences for the given file and return them in a
    * WSIPreferences object.
