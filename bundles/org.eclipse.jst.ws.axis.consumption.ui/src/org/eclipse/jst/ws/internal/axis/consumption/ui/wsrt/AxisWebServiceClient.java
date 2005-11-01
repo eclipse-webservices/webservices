@@ -27,7 +27,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectComman
 import org.eclipse.wst.command.internal.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.env.core.SimpleCommandFactory;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.ws.internal.wsrt.AbstractWebServiceClient;
 import org.eclipse.wst.ws.internal.wsrt.IContext;

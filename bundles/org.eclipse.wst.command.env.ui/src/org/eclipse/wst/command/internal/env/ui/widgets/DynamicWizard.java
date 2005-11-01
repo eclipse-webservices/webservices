@@ -34,7 +34,7 @@ import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.osgi.framework.Bundle;
 

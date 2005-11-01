@@ -45,7 +45,7 @@ import org.eclipse.wst.command.internal.env.common.WaitForAutoBuildCommand;
 import org.eclipse.wst.command.internal.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.env.core.SimpleCommandFactory;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.ws.internal.wsrt.AbstractWebService;
 import org.eclipse.wst.ws.internal.wsrt.IContext;

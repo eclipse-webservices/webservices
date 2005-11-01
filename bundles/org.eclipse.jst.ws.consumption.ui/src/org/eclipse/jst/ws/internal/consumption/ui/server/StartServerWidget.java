@@ -38,7 +38,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.TransientResourceContext;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;

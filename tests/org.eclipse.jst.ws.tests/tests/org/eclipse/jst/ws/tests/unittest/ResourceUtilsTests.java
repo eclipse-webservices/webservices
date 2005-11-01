@@ -13,7 +13,7 @@ import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;

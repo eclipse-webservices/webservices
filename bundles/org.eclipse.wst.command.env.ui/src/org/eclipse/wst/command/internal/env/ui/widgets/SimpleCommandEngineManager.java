@@ -19,7 +19,7 @@ import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentEngine;
 import org.eclipse.wst.command.internal.env.core.fragment.FragmentListener;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.common.environment.ILog;
 
 

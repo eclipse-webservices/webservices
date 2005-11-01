@@ -30,7 +30,7 @@ import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard;

@@ -8,11 +8,10 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.internal.env.ui.eclipse;
+package org.eclipse.wst.command.internal.env.eclipse;
 
 import org.eclipse.wst.command.internal.env.core.CommandManager;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
-import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
 import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.environment.IStatusHandler;
