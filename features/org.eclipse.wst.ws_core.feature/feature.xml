@@ -56,7 +56,7 @@
       <import feature="org.eclipse.wst.xml_core.feature" version="1.0.0"/>
       <import feature="org.eclipse.wst.common_core.feature" version="1.0.0"/>
       <import feature="org.apache.axis.feature" version="1.2.1"/>
-      <import feature="org.apache.wsil4j.feature" version="0.0.0"/>
+      <import feature="org.apache.wsil4j.feature" version="1.0.0"/>
       <import feature="org.uddi4j.feature" version="2.0.3"/>
       <import feature="org.apache.xerces.feature" version="2.7.0"/>
       <import feature="org.wsdl4j.feature" version="1.4.0"/>
@@ -78,13 +78,6 @@
 
    <plugin
          id="org.eclipse.wst.wsdl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-         
-    <plugin
-         id="org.eclipse.wst.wsi"
          download-size="0"
          install-size="0"
          version="0.0.0"
