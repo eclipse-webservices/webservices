@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.logger.proxy.Logger;
-import org.eclipse.jst.common.componentcore.util.ComponentUtilities;
 import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationDataModelProvider;
 import org.eclipse.jst.j2ee.applicationclient.componentcore.util.AppClientArtifactEdit;
 import org.eclipse.jst.j2ee.componentcore.util.EARArtifactEdit;
@@ -1222,7 +1221,7 @@ public final class J2EEUtils {
 	}
 	
 	public static IFolder getOutputContainerRoot (IVirtualComponent component) {
-		return (IFolder)ComponentUtilities.getOutputContainers(component)[0];
+		return (IFolder)J2EEProjectUtilities.getOutputContainers(component.getProject())[0];
 	}
 	
 }
