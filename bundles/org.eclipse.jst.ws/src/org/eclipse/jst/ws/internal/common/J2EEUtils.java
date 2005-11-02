@@ -27,8 +27,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationDataModelProvider;
-import org.eclipse.jst.j2ee.applicationclient.componentcore.util.AppClientArtifactEdit;
-import org.eclipse.jst.j2ee.componentcore.util.EARArtifactEdit;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
 import org.eclipse.jst.j2ee.ejb.EJBResource;
 import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
@@ -38,7 +36,6 @@ import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
-import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
@@ -91,6 +88,11 @@ public final class J2EEUtils {
 	 * @return int
 	 */
 	public static int getJ2EEVersion(IProject p){
+		
+		String ver = J2EEProjectUtilities.getJ2EEProjectVersion(p);
+		return J2EEVersionUtil.convertVersionStringToInt(ver);
+
+		/*
 		int j2eeVer = -1;
 		try {
           IVirtualComponent vc = ComponentCore.createComponent(p);
@@ -101,13 +103,19 @@ public final class J2EEUtils {
 		catch (Exception e){
 			//handle exception
 		}
-
-		return j2eeVer;	
+		return j2eeVer;
+		*/
 	}
 	
 	public static int getJ2EEVersion(IVirtualComponent ch){
       int j2eeVer = -1;
       //check type
+      if (ch!=null){
+    	  IProject project = ch.getProject();
+    	  j2eeVer = getJ2EEVersion(project);
+      }
+      
+      /*  Use new API provided by J2EE 
       if (ch!=null) {
         if (isWebComponent(ch))
           j2eeVer = getWebComponentJ2EEVersion(ch);
@@ -117,112 +125,33 @@ public final class J2EEUtils {
           j2eeVer = getEJBComponentJ2EEVersion(ch);
         else if (isEARComponent(ch))
           j2eeVer = getEARComponentJ2EEVersion(ch);
-        
       }
+      */
+      
       return j2eeVer; 
 	}
 	
-	/**
-	 * Return's the EAR module's J2EEVersion
-	 * @param wbc
-	 * @return
-	 */
-	private static int getEARComponentJ2EEVersion(IVirtualComponent ch){
-		EARArtifactEdit edit = null;
-		int nVersion = 12;
-		try {
-			edit = EARArtifactEdit.getEARArtifactEditForRead(ch);
-			if (edit != null) {
-				nVersion = edit.getJ2EEVersion();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (edit != null)
-				edit.dispose();
-		}
-		return nVersion;		
-	}
-	
+
 	/**
 	 * Returns the J2EEVersion
 	 * @param p IProject
 	 * @return String
 	 */
 	public static String getJ2EEVersionAsString(IProject p){
+		
+		String ver = J2EEProjectUtilities.getJ2EEProjectVersion(p);
+		return  ver != null ? ver : null;
+		 
+		/*
 		int j2eeVer = getJ2EEVersion(p);
 		if (j2eeVer!=-1){
 			return J2EEVersionUtil.getJ2EETextVersion(j2eeVer);
 		}
 		else 
 			return null;
+		
+		*/
 	}
-	
-	/**
-	 * Returns the Web Module's J2EE version
-	 * @param wbModule
-	 * @return the J2EE version id
-	 */
-	private static int getWebComponentJ2EEVersion(IVirtualComponent ch) {
-		WebArtifactEdit webEdit = null;
-		int nVersion = 12;
-		try {
-          webEdit = WebArtifactEdit.getWebArtifactEditForRead(ch);
-          if (webEdit != null) {
-			nVersion = webEdit.getJ2EEVersion();
-          }
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (webEdit != null)
-				webEdit.dispose();
-		}
-		return nVersion;
-	}
-
-	/**
-	 * Returns Application client's J2EE version
-	 * @param wbc
-	 * @return
-	 */
-	private static int getAppClientComponentJ2EEVersion(IVirtualComponent ch){
-		AppClientArtifactEdit edit = null;
-		int nVersion = 12;
-		try {
-      edit = AppClientArtifactEdit.getAppClientArtifactEditForRead(ch);
-			if (edit != null) {
-				nVersion = edit.getJ2EEVersion();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (edit != null)
-				edit.dispose();
-		}
-		return nVersion;		
-	}
-	
-	/**
-	 * Returns EJB component's J2EE version
-	 * @param wbc
-	 * @return
-	 */
-	private static int getEJBComponentJ2EEVersion(IVirtualComponent ch){
-		EJBArtifactEdit edit = null;
-		int nVersion = 12;
-		try {
-      edit = EJBArtifactEdit.getEJBArtifactEditForRead(ch);
-			if (edit != null) {
-				nVersion = edit.getJ2EEVersion();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (edit != null)
-				edit.dispose();
-		}
-		return nVersion;			
-	}	
 	
 	public static IVirtualComponent[] getAllComponents(){
 		List v = new ArrayList();
