@@ -24,6 +24,10 @@
          id="org.eclipse.wst.xml_ui.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.wst.ws_userdoc.feature"
+         version="0.0.0"/>
+
    <requires>
       <import feature="org.eclipse.wst.xml_ui.feature" version="0.0.0"/>
       <import feature="org.eclipse.wst.ws_core.feature" version="0.0.0"/>
@@ -70,6 +74,5 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
 
 </feature>
