@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
+package org.eclipse.jst.ws.internal.consumption.common;
 
 
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;

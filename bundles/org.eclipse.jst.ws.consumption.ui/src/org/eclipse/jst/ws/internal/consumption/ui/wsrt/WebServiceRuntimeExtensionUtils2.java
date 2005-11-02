@@ -23,8 +23,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.server.core.FacetUtil;
-import org.eclipse.jst.ws.internal.consumption.ui.common.FacetMatcher;
-import org.eclipse.jst.ws.internal.consumption.ui.common.FacetUtils;
+import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
+import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.TypeSelectionFilter2;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -708,8 +709,9 @@ public class WebServiceRuntimeExtensionUtils2
   {
     ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(serviceRuntimeId);
     //Get the templates for this client runtime
-    Set templateIds = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
-    return templateIds.contains(templateId);
+    Set templates = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+    IFacetedProjectTemplate checkingTemplate = ProjectFacetsManager.getTemplate(templateId);
+    return templates.contains(checkingTemplate);
   }  
   
   //Client-side utilities
@@ -1114,8 +1116,9 @@ public class WebServiceRuntimeExtensionUtils2
   {
     ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(clientRuntimeId);
     //Get the templates for this client runtime
-    Set templateIds = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
-    return templateIds.contains(templateId);
+    Set templates = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+    IFacetedProjectTemplate checkingTemplate = ProjectFacetsManager.getTemplate(templateId);
+    return templates.contains(checkingTemplate);
   }
   
     

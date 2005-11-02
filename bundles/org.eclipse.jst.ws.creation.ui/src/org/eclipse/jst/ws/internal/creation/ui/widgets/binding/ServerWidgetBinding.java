@@ -170,6 +170,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerRuntimeSelectionWidget.class, "ServiceProjectName", ServerExtensionDefaultingCommand.class);
     //dataRegistry.addMapping(ServerRuntimeSelectionWidget.class, "ServiceComponentName", ServerExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidget.class, "ServiceEarProjectName", ServerExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ServerRuntimeSelectionWidget.class, "ServiceComponentType", ServerExtensionDefaultingCommand.class);        
     //dataRegistry.addMapping(ServerRuntimeSelectionWidget.class, "ServiceEarComponentName", ServerExtensionDefaultingCommand.class);
     //dataRegistry.addMapping(ServerRuntimeSelectionWidget.class, "Runtime2ClientTypes", ClientExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidget.class, "ClientProjectName", ClientExtensionDefaultingCommand.class);
@@ -471,6 +472,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       //dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceProject2EARProject", ServerExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceProjectName", ServerExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceEarProjectName", ServerExtensionDefaultingCommand.class);
+      //dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceComponentType", ServerExtensionDefaultingCommand.class);      
       //dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceComponentName", ServerExtensionDefaultingCommand.class);
       //dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceEarComponentName", ServerExtensionDefaultingCommand.class);
       //dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "Runtime2ClientTypes", ClientExtensionDefaultingCommand.class);
@@ -502,12 +504,13 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "GenerateProxy", PreServiceDevelopCommand.class);      
       dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "ResourceContext", PreServiceDevelopCommand.class);			
 			//
-	  dataRegistry.addMapping( ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceComponentType", PreServiceDevelopCommand.class, "ModuleType", null);
+	  //dataRegistry.addMapping( ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceComponentType", PreServiceDevelopCommand.class, "ModuleType", null);
 	    dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", PreServiceDevelopCommand.class );
         dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceRuntimeId", PreServiceDevelopCommand.class );
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceJ2EEVersion", PreServiceDevelopCommand.class);
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServerProject", PreServiceDevelopCommand.class, "Module", null );
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServerProjectEAR", PreServiceDevelopCommand.class, "Ear", null );
+      dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceComponentType", PreServiceDevelopCommand.class, "ModuleType", null );
       //
 	    dataRegistry.addMapping( ObjectSelectionOutputCommand.class, "ObjectSelection", PreServiceDevelopCommand.class, "Selection", new SelectionTransformer() );
 			

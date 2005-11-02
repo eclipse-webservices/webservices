@@ -31,6 +31,7 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
   //private SelectionListChoices serviceChoices_;
   private String               serviceProjectName_;
   private String               serviceEarProjectName_;
+  private String               serviceComponentType_;
   //private String               serviceComponentName_;
   //private String               serviceEarComponentName_;
   //private String j2eeVersion;
@@ -248,6 +249,16 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
   public void setServiceEarProjectName(String serviceEarProjectName)
   {
     this.serviceEarProjectName_ = serviceEarProjectName;
+  }
+  
+  public void setServiceComponentType(String type)
+  {
+    this.serviceComponentType_ = type;
+  }
+  
+  public String getServiceComponentType()
+  {
+    return serviceComponentType_;
   }
 
   public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException

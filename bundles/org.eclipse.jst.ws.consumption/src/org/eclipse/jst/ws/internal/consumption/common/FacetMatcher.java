@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.consumption.ui.common;
+package org.eclipse.jst.ws.internal.consumption.common;
 
 import java.util.Set;
 

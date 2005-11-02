@@ -180,6 +180,11 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     clientWidget_.setClientNeedEAR(b);
   }  
   
+  public String getServiceComponentType()
+  {
+    return projectWidget_.getComponentType();
+  }
+  
   public void setServiceComponentType( String type )
   {
 	projectWidget_.setComponentType( type );  

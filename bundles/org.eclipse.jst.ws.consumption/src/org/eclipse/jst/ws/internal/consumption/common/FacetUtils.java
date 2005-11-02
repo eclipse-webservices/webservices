@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.consumption.ui.common;
+package org.eclipse.jst.ws.internal.consumption.common;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RequiredFacetVersion;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
@@ -87,7 +86,7 @@ public class FacetUtils
     {
         final IFacetedProjectTemplate template = (IFacetedProjectTemplate) itr.next();
         String templateId = template.getId();
-        if (templateId.indexOf("ear") == -1) //Don't include the EARs!!
+        if (templateId.indexOf("ear") == -1 && templateId.indexOf("wst.web") == -1) //Don't include the EARs!!
         {
           //TODO final Set initial = template.getInitialProjectFacets(); 
           Set initial = getInitialFacetVersionsFromTemplate(templateId);         
@@ -337,6 +336,22 @@ public class FacetUtils
       }
     }
     return unionSet;
+  }
+  
+  public static boolean doesRuntimeSupportFacets(IRuntime facetRuntime, Set projectFacetVersions)
+  {
+    Set runtimes = RuntimeManager.getRuntimes(projectFacetVersions);
+    Iterator itr = runtimes.iterator();
+    while (itr.hasNext())
+    {
+      IRuntime runtime = (IRuntime)itr.next();
+      if (runtime.getName().equals(facetRuntime.getName()))
+      {
+        return true;
+      }
+    }
+    
+    return false;
   }
   
   /*

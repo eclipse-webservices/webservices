@@ -25,14 +25,14 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.consumption.ui.common.FacetMatcher;
-import org.eclipse.jst.ws.internal.consumption.ui.common.FacetUtils;
+import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
+import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ServerSelectionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ClientRuntimeDescriptor;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeInfo;
@@ -1195,6 +1195,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     isEJB = (implId.equals("org.eclipse.jst.ws.wsImpl.ejb"));
     String[] updatedNames = ResourceUtils.getClientProjectComponentName(projectName, projectName, isEJB);
     clientProjectName_ = updatedNames[0];
+    clientComponentType_ = getDefaultClientProjectTemplate();
     
   }
   

@@ -11,6 +11,8 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
 
+import java.util.Set;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -19,7 +21,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
+import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
+import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
@@ -38,12 +44,6 @@ import org.eclipse.wst.ws.internal.wsrt.WebServiceState;
 
 public class PreClientDevelopCommand extends AbstractDataModelOperation 
 {
-  /*	
-  private String ID_WEB = "org.eclipse.jst.ws.consumption.ui.clientProjectType.Web";
-  private String ID_EJB = "org.eclipse.jst.ws.consumption.ui.clientProjectType.EJB";
-  private String ID_APP_CLIENT = "org.eclipse.jst.ws.consumption.ui.clientProjectType.AppClient";
-  private String ID_JAVA = "org.eclipse.jst.ws.consumption.ui.clientProjectType.Containerless";
-  */
   
   private TypeRuntimeServer typeRuntimeServer_;
   private String            clientRuntimeId_;
@@ -57,7 +57,7 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
   private IWebServiceClient webServiceClient_;
   private String            j2eeLevel_;
   private ResourceContext   resourceContext_;
-	private boolean						test_;
+  private boolean						test_;
   private String            wsdlURI_;
   private Object            dataObject_;
 
@@ -102,18 +102,47 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
         resourceContext_.isCreateFoldersEnabled(), resourceContext_
             .isCheckoutFilesEnabled());
 
-    // Create the client module
+    IStatus status = Status.OK_STATUS;
 
-	int intModuleType = convertModuleType(moduleType_);
+    // Create the client module if needed.
+    IProject project = ProjectUtilities.getProject(project_);
+    if (!project.exists())
+    {
+      RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRequiredFacetVersions();
+      Set facetVersions = FacetUtils.getInitialFacetVersionsFromTemplate(moduleType_);
+      FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+      if (fm.isMatch())
+      {  
+        CreateFacetedProjectCommand command = new CreateFacetedProjectCommand();
+        command.setProjectName(project_);
+        command.setTemplateId(moduleType_);
+        command.setRequiredFacetVersions(rfv);
+        command.setServerFactoryId(typeRuntimeServer_.getServerId());
+        command.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
+        //command.setFacetMatcher(fm);
+        status = command.execute( monitor, adaptable );
+        if (status.getSeverity() == Status.ERROR)
+        {
+          environment.getStatusHandler().reportError( status );
+        }        
+      }            
+    }
+    else
+    {
+      //TODO add the necessary facets
+    }
+    
+    
+	//int intModuleType = convertModuleType(moduleType_);
 
-	CreateModuleCommand command = new CreateModuleCommand();
-	command.setProjectName(project_);
-	command.setModuleName(module_);
-	command.setModuleType(intModuleType);
-	command.setServerFactoryId(typeRuntimeServer_.getServerId());
-	command.setJ2eeLevel(j2eeLevel_);
-  command.setEnvironment( environment );
-	IStatus status = command.execute( null, null );		
+	//CreateModuleCommand command = new CreateModuleCommand();
+	//command.setProjectName(project_);
+	//command.setModuleName(module_);
+	//command.setModuleType(intModuleType);
+	//command.setServerFactoryId(typeRuntimeServer_.getServerId());
+	//command.setJ2eeLevel(j2eeLevel_);
+    //command.setEnvironment( environment );
+	//IStatus status = command.execute( null, null );		
 
     // rsk todo -- once the clientProjectType extension is gone, determination
     // of what type of module to create will have to be done.
@@ -121,13 +150,10 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
     //if (moduleType_.equals(ID_EJB)) command.setModuleType(CreateModuleCommand.EJB);
     //if (moduleType_.equals(ID_APP_CLIENT)) command.setModuleType(CreateModuleCommand.APPCLIENT);
     
-    command.setServerInstanceId( typeRuntimeServer_.getServerInstanceId() );
+    //command.setServerInstanceId( typeRuntimeServer_.getServerInstanceId() );
 
 
-    if (status.getSeverity() == Status.ERROR)
-    {
-      environment.getStatusHandler().reportError( status );
-    }
+
     return status;
   }
   
@@ -148,6 +174,7 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
     return String.valueOf(J2EEVersionConstants.J2EE_1_4_ID); //for now, just return something
   }
   
+  /*
   private int convertModuleType(String type)
   {
 	  if (type.equals(IModuleConstants.JST_WEB_MODULE))
@@ -171,6 +198,7 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
 		  return -1;
 	  }
   }
+  */
   
   public void setClientTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )
   {

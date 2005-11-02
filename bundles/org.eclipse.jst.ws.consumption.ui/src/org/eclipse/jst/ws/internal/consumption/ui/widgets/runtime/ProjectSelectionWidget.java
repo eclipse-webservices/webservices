@@ -19,7 +19,7 @@ import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.consumption.ui.common.FacetUtils;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ServerSelectionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -76,6 +76,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   private Combo moduleProject_;
   private Combo earProject_;
   private Combo projectType_;
+  
+  private String[] templates_;
 
   //private String   componentType_;
   
@@ -388,9 +390,18 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   public String getComponentType()
   {
-    String templateLabel = projectType_.getText();
-    String templateId = FacetUtils.getTemplateIdByLabel(templateLabel);
-    return templateId;
+    int idx = projectType_.getSelectionIndex();
+    if (templates_ != null)
+    {
+      return templates_[idx];
+    }
+    else
+    {
+      String templateLabel = projectType_.getText();
+      String templateId = FacetUtils.getTemplateIdByLabel(templateLabel);
+      return templateId;
+    }
+
   }
   
   public boolean getNeedEAR()
@@ -517,9 +528,35 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     
     String[] templateLabels = FacetUtils.getTemplateLabels(templates);
     projectType_.setItems(templateLabels);
+    templates_ = templates;
   
     if (templates.length > 0)
-      projectType_.select(0);    
+    {
+      //If a "..web.." template is there, pick that as the default.
+      int webTemplateIndex = getWebTemplateIndex(templates);
+      if (webTemplateIndex > -1)
+      {
+        projectType_.select(webTemplateIndex); 
+      }
+      else
+      {
+        projectType_.select(0);  
+      }
+      
+    }
+  }
+  
+  private int getWebTemplateIndex(String[] templateIds)
+  {
+    for (int i=0; i<templateIds.length; i++)
+    {
+      if (templateIds[i].indexOf("web") > -1)
+      {
+        return i;
+      }
+    }
+    
+    return -1;
   }
   
   private void updateEARState()

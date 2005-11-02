@@ -23,9 +23,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.common.FacetMatcher;
-import org.eclipse.jst.ws.internal.consumption.ui.common.FacetUtils;
+import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
+import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
@@ -120,9 +122,39 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 																		resourceContext_.isCreateFoldersEnabled(),
 																		resourceContext_.isCheckoutFilesEnabled());
 
-    //Create the service module
+        IStatus status = Status.OK_STATUS;
 
+        // Create the service module if needed.
+        IProject project = ProjectUtilities.getProject(project_);
+        if (!project.exists())
+        {
+          RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_).getRequiredFacetVersions();
+          Set facetVersions = FacetUtils.getInitialFacetVersionsFromTemplate(moduleType_);
+          FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+          if (fm.isMatch())
+          {  
+            CreateFacetedProjectCommand command = new CreateFacetedProjectCommand();
+            command.setProjectName(project_);
+            command.setTemplateId(moduleType_);
+            command.setRequiredFacetVersions(rfv);
+            command.setServerFactoryId(typeRuntimeServer_.getServerId());
+            command.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
+            //command.setFacetMatcher(fm);
+            status = command.execute( monitor, adaptable );
+            if (status.getSeverity() == Status.ERROR)
+            {
+              environment.getStatusHandler().reportError( status );
+            }        
+          }            
+        }
+        else
+        {
+          //TODO add the necessary facets
+        }        
+        
+        //Create the service module
 		//rsk todo -- pick the correct module type based on the Web service type, it's hard coded to WEB for now.
+/*        
 		int intModuleType = convertModuleType(moduleType_);
 		
 
@@ -135,12 +167,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 		  command.setJ2eeLevel(j2eeLevel_);
       command.setEnvironment(environment);
 		  IStatus status = command.execute( monitor, null);
-
-		
-		if (status.getSeverity()==Status.ERROR)
-		{
-			environment.getStatusHandler().reportError(status);
-		}			
+*/
 	  return status;				
   }
   
