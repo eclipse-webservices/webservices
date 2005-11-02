@@ -10,7 +10,8 @@ Export-Package: org.eclipse.wst.ws.internal.parser.disco,
  org.eclipse.wst.ws.internal.parser.discovery,
  org.eclipse.wst.ws.internal.parser.favorites,
  org.eclipse.wst.ws.internal.parser.plugin,
- org.eclipse.wst.ws.internal.parser.wsil
+ org.eclipse.wst.ws.internal.parser.wsil,
+ org.eclipse.wst.ws.parser
 Require-Bundle: org.eclipse.wst.wsdl,
  org.wsdl4j,
  org.eclipse.core.runtime,

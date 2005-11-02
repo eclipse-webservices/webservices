@@ -11,7 +11,7 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi;
 
-import org.eclipse.wst.ws.internal.parser.plugin.ParserPlugin;
+import org.eclipse.wst.ws.parser.PluginMessages;
 
 public class PublicUDDIRegistryIBMTest implements PublicUDDIRegistryType
 {
@@ -23,7 +23,7 @@ public class PublicUDDIRegistryIBMTest implements PublicUDDIRegistryType
     }
 
     public String getName() {
-        return ParserPlugin.getMessage("%PUBLICUDDIREGISTRYTYPE_NAME_IBM_TEST");
+        return PluginMessages.PUBLICUDDIREGISTRYTYPE_NAME_IBM_TEST;
     }
 
     public String getInquiryURL() {

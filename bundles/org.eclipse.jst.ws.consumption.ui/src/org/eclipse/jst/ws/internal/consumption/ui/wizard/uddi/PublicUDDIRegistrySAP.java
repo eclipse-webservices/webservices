@@ -11,7 +11,7 @@
 
 package org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi;
 
-import org.eclipse.wst.ws.internal.parser.plugin.ParserPlugin;
+import org.eclipse.wst.ws.parser.PluginMessages;
 
 public class PublicUDDIRegistrySAP implements PublicUDDIRegistryType
 {
@@ -23,7 +23,7 @@ public class PublicUDDIRegistrySAP implements PublicUDDIRegistryType
     }
 
     public String getName() {
-        return ParserPlugin.getMessage("%PUBLICUDDIREGISTRYTYPE_NAME_SAP");
+        return PluginMessages.PUBLICUDDIREGISTRYTYPE_NAME_SAP;
     }
 
     public String getInquiryURL() {
