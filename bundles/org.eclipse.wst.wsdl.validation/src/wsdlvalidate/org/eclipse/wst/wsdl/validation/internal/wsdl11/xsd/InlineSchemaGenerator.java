@@ -11,6 +11,7 @@
 
 package org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -103,7 +104,7 @@ public class InlineSchemaGenerator
 
     InlineSchemaGenerator schemaGenerator = InlineSchemaGenerator.getInstance();
     Hashtable nsResolver = schemaGenerator.getNSResolver(element);
-    List reqns = schemaGenerator.getRequiredNamespaces(element);
+    List reqns = schemaGenerator.getNamespacePrefixes(element);
     Hashtable reqNSDecl = schemaGenerator.resolveNamespaces(reqns, nsResolver, parentNSs);
     //Hashtable reqNSDecl = schemaGenerator.getRequiredNSDeclarations(reqns, nsResolver, parentNSs);
     List importNS = schemaGenerator.getImportNamespaces(element);
@@ -126,7 +127,7 @@ public class InlineSchemaGenerator
     Hashtable nsResolver = schemaGenerator.getNSResolver(element);
     List reqns = null;
 
-    reqns = schemaGenerator.getRequiredNamespaces(element);
+    reqns = schemaGenerator.getNamespacePrefixes(element);
     schemaGenerator.resolveNamespaces(reqns, nsResolver, parentNSs);
     //schemaGenerator.resolveUndeclaredNamespaces(reqns, parentNSs);
     List importNS = schemaGenerator.getImportNamespaces(element);
@@ -310,29 +311,27 @@ public class InlineSchemaGenerator
 
   }
   /**
-   * Get a list of all the namespaces that are used for elements or types in the schema.
-   * These are the required namespaces in order to ensure that all the elments are valid.
-   * 
-   * @param elem The element to check for required namespaces.
-   * @return A list of required namespaces for the element and all its children.
+   * Get a list of all the namespace prefixes that are used for elements or types in the schema.
+   *  
+   * @param elem The root element of the schema to check for namespace prefixes.
+   * @return A list of namespace prefixes for the element and all its children.
    */
-  protected List getRequiredNamespaces(Element elem)
+  protected List getNamespacePrefixes(Element elem)
   {
-    List namespace = new Vector();
+    List namespace = new ArrayList();
 
     // call the method recursively for each child element
     // register all the child types first
     NodeList childNodes = elem.getChildNodes();
     int numChildren = childNodes.getLength();
-    // TODO: why is there a < 5 condition?
-    for (int i = 0; i < numChildren /*|| i < 5*/; i++)
+    for (int i = 0; i < numChildren; i++)
     {
       Node n = childNodes.item(i);
       // we only want nodes that are Elements
       if (n instanceof Element)
       {
         Element child = (Element)n;
-        List childns = getRequiredNamespaces(child);
+        List childns = getNamespacePrefixes(child);
         for (int j = childns.size() - 1; j >= 0; j--)
         {
           String ns = (String)childns.get(j);
@@ -371,10 +370,23 @@ public class InlineSchemaGenerator
         //		{
         // don't take namespace info from attributes defining namespaces.
         // that includes xmlns, targetNamespace
-        // don't take namespace info from name attributes
         if (nodeName.indexOf(XMLNS) != -1 || nodeName.equals(TARGETNAMESPACE) || nodeName.equals(NAME))
         {
           continue;
+        }
+        // Grab namespace prefixes from attributes.
+        else
+        {
+          int colonIndex = nodeName.indexOf(":");
+          if(colonIndex != -1 && (colonIndex + 1 < nodeName.length() && nodeName.charAt(colonIndex + 1) != '/'))
+          {
+            String prefix = nodeName.substring(0, colonIndex);
+            if (!namespace.contains(prefix))
+            {
+
+              namespace.add(prefix);
+            }
+          }
         }
         String nodeValue = n.getNodeValue();
         
@@ -398,7 +410,6 @@ public class InlineSchemaGenerator
 
           namespace.add(nodeValue);
         }
-        //		}
       }
     }
 
