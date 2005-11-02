@@ -10,8 +10,19 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.tests;
 
+import java.io.IOException;
+import java.net.URL;
+
 import junit.framework.TestCase;
+
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.etools.common.test.apitools.ProjectUnzipUtil;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.ws.tests.plugin.TestsPlugin;
+import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
@@ -20,7 +31,7 @@ import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 
-public abstract class WSWizardTest extends TestCase
+public abstract class WSWizardTest extends TestCase implements WSJUnitConstants
 {
 	protected IEnvironment env_;
 	protected IRuntime serverRuntime_;
@@ -53,6 +64,11 @@ public abstract class WSWizardTest extends TestCase
 		JUnitUtils.hideActionDialogs();
 		installServerRuntime();
 		installServer();
+		
+		// unzip pre-configured workspace projects
+		if (!ProjectUtilities.getProject(WSJUnitConstants.BU_PROJECT_NAME).exists())
+			createProjects();		
+		
 		installInputData();
 		initJ2EEWSRuntimeServerDefaults();
 		initInitialSelection();
@@ -78,8 +94,25 @@ public abstract class WSWizardTest extends TestCase
 		env_ = env;
 		serverRuntime_ = serverRuntime;
 		server_ = server;
-		installInputData();
+		//installInputData();
 	}
+	
+	// Creates projects from the provided ZIP file.
+	public static boolean createProjects() {
+		IPath localZipPath = getLocalPath();
+		ProjectUnzipUtil util = new ProjectUnzipUtil(localZipPath, perf_projectNames);
+		return util.createProjects();
+	}
+	
+	private static IPath getLocalPath() {
+		URL url = TestsPlugin.getDefault().find(perf_zipFilePath);
+		try {
+			url = Platform.asLocalURL(url);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new Path(url.getPath());
+	}	
 	
 	/**
 	 * Install the input data for the test. This may include projects, source files etc.

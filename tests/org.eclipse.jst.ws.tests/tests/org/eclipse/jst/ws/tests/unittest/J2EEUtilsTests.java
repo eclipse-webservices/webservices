@@ -101,16 +101,16 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 		  
 		  System.out.println("< BEGIN: testJ2EEVersionMethods ...");
 	  		  
+		  String j3 = J2EEUtils.getJ2EEVersionAsString(project1);
+		  System.out.println("J2EEVersion p1 as String: "+j3);
+		  assertEquals(J2EEVersionConstants.VERSION_2_4_TEXT, j3);
+		  
 		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2);
 		  int j2 = J2EEUtils.getJ2EEVersion(vc2);
 		  System.out.println("J2EEVersions p1: "+j2);		  
-		  assertEquals(j2, J2EEVersionConstants.VERSION_1_3);
+		  assertEquals(J2EEVersionConstants.SERVLET_2_3, j2);
 		  
-		  String j3 = J2EEUtils.getJ2EEVersionAsString(project1);
-		  System.out.println("J2EEVersion p1 as String: "+j3);
-		  assertEquals(j3, J2EEVersionConstants.VERSION_1_4_TEXT);
-		  
-		  System.out.println("< ENG: testJ2EEVersionMethods ...");
+		  System.out.println("< END: testJ2EEVersionMethods ...");
 	  }
 
 	  public void testComponentGetterMethods(){

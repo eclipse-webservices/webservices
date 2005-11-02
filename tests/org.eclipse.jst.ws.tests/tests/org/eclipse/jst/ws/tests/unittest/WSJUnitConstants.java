@@ -34,4 +34,13 @@ public interface WSJUnitConstants {
   
   public final Path zipFilePath = new Path("/data/WSTestProjects.zip");
   public final String[] projectNames = new String[]{projectName, project2Name};
+  
+  // performance constants
+  public final String BU_PROJECT_NAME = "TestWeb";
+  public final String TD_PROJECT_NAME = "TestTDProject";
+  public final String CLIENT_PROJECT_NAME = "TestWebClient";
+  
+  public final Path perf_zipFilePath = new Path("/data/WSPerfProjects.zip");
+  public final String[] perf_projectNames = new String[]{BU_PROJECT_NAME, TD_PROJECT_NAME, CLIENT_PROJECT_NAME};
+ 
 }

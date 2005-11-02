@@ -66,7 +66,7 @@ public class ResourceUtilsTests extends TestCase implements WSJUnitConstants{
 		IProject project = ProjectUtilities.getProject(projectName);
 		String javaSourceLoc = ResourceUtils.getJavaSourceLocation(project).toString();
 		System.out.println("Java source location = "+javaSourceLoc);
-		assertTrue(javaSourceLoc.endsWith("JavaSource"));
+		assertTrue(javaSourceLoc.endsWith("src"));
 		
 		// get all the JavaSourceLocations via the VirtualComponent
 		IVirtualComponent vc1 = ComponentCore.createComponent(project);
