@@ -15,5 +15,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.ws,
  org.eclipse.wst.command.env.core,
  org.eclipse.wst.command.env,
- org.apache.ant
+ org.apache.ant,
+ org.wsdl4j
 Eclipse-AutoStart: true
