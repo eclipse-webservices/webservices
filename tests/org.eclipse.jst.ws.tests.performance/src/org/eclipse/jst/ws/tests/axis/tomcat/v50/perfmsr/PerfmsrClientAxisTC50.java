@@ -14,6 +14,7 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
 import org.eclipse.jst.ws.tests.performance.util.PerformanceJUnitUtils;
+import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.jst.ws.tests.util.ScenarioConstants;
 import org.eclipse.test.performance.Performance;
@@ -24,10 +25,12 @@ import org.eclipse.test.performance.PerformanceMeter;
  */
 public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 
-  private final String WS_RUNTIMEID_AXIS = "org.eclipse.jst.ws.runtime.axis11";
+	private final String WS_RUNTIMEID_AXIS = WSJUnitConstants.WS_RUNTIMEID_AXIS;
   
-	private final String CLIENT_PROJECT_NAME = "TestWebClient";
-  private final String CLIENT_WEB_MODULE_NAME =  "TestWebClientModule";
+	private final String CLIENT_PROJECT_NAME = WSJUnitConstants.CLIENT_PROJECT_NAME;
+	
+	/* module name to be removed later */
+	private final String CLIENT_WEB_MODULE_NAME =  "TestWebClientModule";
 
 	private IFile sourceFile_;
 
@@ -38,6 +41,7 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 	 */
 	protected void installInputData() throws Exception {
 		
+		/*
 		// Create an associated Web project (TestWeb) targetted to Tomcat v5.0 
 		IStatus s = JUnitUtils.createWebModule(CLIENT_PROJECT_NAME, CLIENT_WEB_MODULE_NAME, SERVERTYPEID_TC50, String.valueOf(J2EEVersionConstants.J2EE_1_4_ID), env_, null);
 		if (s.getSeverity() != Status.OK)
@@ -51,8 +55,13 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 		JUnitUtils.copyTestData("TDJava",destFolder,env_, null);
 		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));
 		assertTrue(sourceFile_.exists());
-
-
+		*/
+		
+		IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
+        IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
+		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));		
+		JUnitUtils.syncBuildProject(webProject,env_, null);
+		
 	}
 
   /**

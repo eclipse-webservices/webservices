@@ -14,6 +14,7 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
 import org.eclipse.jst.ws.tests.performance.util.PerformanceJUnitUtils;
+import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.jst.ws.tests.util.ScenarioConstants;
 import org.eclipse.test.performance.Performance;
@@ -24,9 +25,11 @@ import org.eclipse.test.performance.PerformanceMeter;
  */
 public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 	// Constants
-    private final String WS_RUNTIMEID_AXIS = "org.eclipse.jst.ws.runtime.axis11";
-	private final String PROJECT_NAME = "TestBUWeb";
-    private final String WEB_MODULE_NAME = "TestBUWebModule";
+    private final String WS_RUNTIMEID_AXIS =  WSJUnitConstants.WS_RUNTIMEID_AXIS; 
+	private final String PROJECT_NAME = WSJUnitConstants.BU_PROJECT_NAME;
+    
+	/* could be removed later */
+	private final String WEB_MODULE_NAME = "TestBUWebModule";
 
 	private IFile sourceFile_;
 	
@@ -38,6 +41,7 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 	protected void installInputData() throws Exception
 	{
 		// Create a Web project (TestWeb) targetted to Tomcat 5.0
+		/*
 		IStatus s = JUnitUtils.createWebModule(PROJECT_NAME, WEB_MODULE_NAME, SERVERTYPEID_TC50, String.valueOf(J2EEVersionConstants.J2EE_1_3_ID), env_, null);
 		if (s.getSeverity() != Status.OK) {
 		  System.out.println("Error: "+s.getMessage());
@@ -45,17 +49,23 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 		}
 		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
 		assertTrue(webProject.exists());
-
+		*/
 		
 		// Copy the contents of data/<test name> to the Web project's source folder.
 		// <Web Project>/JavaSource/foo/Echo.java
 		//IFolder destFolder = JUnitUtils.getSourceFolderForWebProject(WEB_PROJECT_NAME);
+		/*
         IPath destPath = ResourceUtils.getJavaSourceLocation(webProject);
         IFolder folder = (IFolder)ResourceUtils.findResource(destPath);
 		JUnitUtils.copyTestData("BUJava/src",folder,env_, null);
 		sourceFile_ = folder.getFile(new Path("foo/Echo.java"));
 		assertTrue(sourceFile_.exists());
+		*/
 		
+		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
+        IPath destPath = ResourceUtils.getJavaSourceLocation(webProject);
+        IFolder folder = (IFolder)ResourceUtils.findResource(destPath);		
+		sourceFile_ = folder.getFile(new Path("foo/Echo.java"));
 		// Ensure that Echo.class is built in:
 		// <Web Project>/WebContent/WEB-INF/classes/foo/Echo.class
 		JUnitUtils.syncBuildProject(webProject,env_, null);
@@ -64,13 +74,15 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 		
 	}
 	
+	
+	
   /**
    * Set the persistent server runtime context preferences
    */  
 	protected void initJ2EEWSRuntimeServerDefaults() throws Exception
 	{
 		// Set default preferences for J2EE 1.4 Axis and Tomcat 5.0
-		JUnitUtils.setJ2EEWSRuntimeServer(String.valueOf(J2EEVersionConstants.J2EE_1_3_ID), WS_RUNTIMEID_AXIS, SERVERTYPEID_TC50);		
+		JUnitUtils.setJ2EEWSRuntimeServer(String.valueOf(J2EEVersionConstants.J2EE_1_4_ID), WS_RUNTIMEID_AXIS, SERVERTYPEID_TC50);		
 	}
 	
   /**
