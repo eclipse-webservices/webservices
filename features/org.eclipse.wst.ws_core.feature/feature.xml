@@ -53,8 +53,8 @@
          version="0.0.0"/>
 
    <requires>
-      <import feature="org.eclipse.wst.xml_core.feature" version="0.0.0"/>
-      <import feature="org.eclipse.wst.common_core.feature" version="0.0.0"/>
+      <import feature="org.eclipse.wst.xml_core.feature" version="1.0.0"/>
+      <import feature="org.eclipse.wst.common_core.feature" version="1.0.0"/>
       <import feature="org.apache.axis.feature" version="1.2.1"/>
       <import feature="org.apache.wsil4j.feature" version="0.0.0"/>
       <import feature="org.uddi4j.feature" version="2.0.3"/>

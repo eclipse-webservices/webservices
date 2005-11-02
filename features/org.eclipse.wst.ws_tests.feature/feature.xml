@@ -17,8 +17,8 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.test" version="3.1.0"/>
-      <import feature="org.eclipse.wst.ws_ui.feature" version="0.0.0"/>
+      <import feature="org.eclipse.test"/>
+      <import feature="org.eclipse.wst.ws_ui.feature"/>
    </requires>
 
    <plugin
