@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.ws.parser
-Bundle-Version: 0.7.0
+Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.wst.ws.internal.parser.plugin.ParserPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin

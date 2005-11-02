@@ -3,7 +3,7 @@
 <plugin
    id="org.eclipse.wst.wsdl.tests"
    name="WSDL JUnit Test"
-   version="0.7.0"
+   version="1.0.0"
    class="org.eclipse.wst.wsdl.tests.WSDLTestsPlugin">
 
    <runtime>

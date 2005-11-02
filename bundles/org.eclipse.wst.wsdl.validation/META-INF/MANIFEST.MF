@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %_PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.wsdl.validation; singleton:=true
-Bundle-Version: 0.7.0
+Bundle-Version: 1.0.0
 Bundle-ClassPath: wsdlvalidateui.jar,
  wsdlvalidate.jar
 Bundle-Activator: org.eclipse.wst.wsdl.validation.internal.ui.eclipse.ValidateWSDLPlugin

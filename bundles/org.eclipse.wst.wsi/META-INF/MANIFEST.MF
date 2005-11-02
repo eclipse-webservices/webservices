@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %_PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.wsi; singleton:=true
-Bundle-Version: 0.7.0
+Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.wst.wsi.internal.WSITestToolsPlugin
 Bundle-Vendor: %_PROVIDER_NAME
 Bundle-Localization: plugin

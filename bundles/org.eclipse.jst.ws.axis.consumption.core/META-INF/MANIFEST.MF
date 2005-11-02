@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.axis.consumption.core; singleton:=true
-Bundle-Version: 0.7.0
+Bundle-Version: 1.0.0
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
 Export-Package: org.eclipse.jst.ws.axis.consumption.core,
