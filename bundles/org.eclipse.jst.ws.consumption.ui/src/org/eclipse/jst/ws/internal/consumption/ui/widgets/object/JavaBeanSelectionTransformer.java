@@ -47,7 +47,7 @@ public class JavaBeanSelectionTransformer implements Transformer
     if (basename != null && basename.length() > 0)
     {
       String beanPackage = org.eclipse.jst.ws.internal.common.ResourceUtils.getJavaResourcePackageName(path);
-      beanClass = (beanPackage == null ? basename : (beanPackage + "." + basename));
+      beanClass = (beanPackage == null || beanPackage.length() == 0 ? basename : (beanPackage + "." + basename));
       if (beanClass.toLowerCase().endsWith(".java") || beanClass.toLowerCase().endsWith(".class"))
         beanClass = beanClass.substring(0, beanClass.lastIndexOf('.'));
     }

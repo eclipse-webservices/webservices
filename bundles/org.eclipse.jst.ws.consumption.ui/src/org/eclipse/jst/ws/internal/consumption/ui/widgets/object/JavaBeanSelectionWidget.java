@@ -180,7 +180,7 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
       if( basename != null && basename.length() > 0 )
       {
         String beanPackage = org.eclipse.jst.ws.internal.common.ResourceUtils.getJavaResourcePackageName(path);
-        String beanClass = (beanPackage == null ? basename : (beanPackage + "." + basename));
+        String beanClass = (beanPackage == null || beanPackage.length() == 0 ? basename : (beanPackage + "." + basename));
         
         if( beanClass.toLowerCase().endsWith(".java") || beanClass.toLowerCase().endsWith(".class" ) )
         {
