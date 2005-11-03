@@ -6,41 +6,43 @@
 	<plugin id="org.eclipse.wst.wsdl.ui" fragment="false" />
 	<plugin id="org.eclipse.wst.wsdl.validation" fragment="false" />
 	<plugin id="org.wsdl4j" fragment="false" />
-	<package name="org.eclipse.wst.wsdl" api="false">
-		<type name="BindingFault" />
-		<type name="BindingOutput" />
-		<type name="Types" />
-		<type name="Operation" />
-		<type name="Fault" />
-		<type name="ExtensibilityElement" />
-		<type name="Message" />
-		<type name="ExtensibleElement" />
-		<type name="BindingInput" />
-		<type name="PortType" />
-		<type name="Service" />
-		<type name="Input" />
-		<type name="WSDLElement" />
-		<type name="Port" />
-		<type name="Namespace" />
-		<type name="Part" />
-		<type name="Definition" />
-		<type name="Import" />
-		<type name="XSDSchemaExtensibilityElement" />
-		<type name="WSDLPlugin" />
-		<type name="WSDLFactory" />
-		<type name="MessageReference" />
-		<type name="UnknownExtensibilityElement" />
-		<type name="Output" />
-		<type name="Binding" />
-		<type name="BindingOperation" />
+	<package name="org.eclipse.wst.wsdl">
+		<type name="Binding"  implement="false" subclass="false" instantiate="false"/>	
+		<type name="BindingFault"  implement="false" subclass="false" instantiate="false"/>
+		<type name="BindingInput"  implement="false" subclass="false" instantiate="false"/>
+		<type name="BindingOperation"  implement="false" subclass="false" instantiate="false"/>		
+		<type name="BindingOutput"  implement="false" subclass="false" instantiate="false"/>
+		<type name="Definition"  implement="false" subclass="false" instantiate="false"/>
+    	<type name="ExtensibilityElement"  implement="false" subclass="false" instantiate="false"/>
+		<type name="ExtensibleElement"  implement="false" subclass="false" instantiate="false"/>
+		<type name="Fault"  implement="false" subclass="false" instantiate="false"/>
+		<type name="Import"  implement="false" subclass="false" instantiate="false"/>			
+		<type name="Input"  implement="false" subclass="false" instantiate="false"/>			
+		<type name="Message"  implement="false" subclass="false" instantiate="false"/>
+		<type name="MessageReference"  implement="false" subclass="false" instantiate="false"/>		
+		<type name="Namespace"  implement="false" subclass="false" instantiate="false"/>		
+		<type name="Operation"  implement="false" subclass="false" instantiate="false"/>	
+    	<type name="Output"  implement="false" subclass="false" instantiate="false"/>			
+     	<type name="Part"  implement="false" subclass="false" instantiate="false"/>			
+		<type name="Port"  implement="false" subclass="false" instantiate="false"/>		
+		<type name="PortType"  implement="false" subclass="false" instantiate="false"/>
+		<type name="Service"  implement="false" subclass="false" instantiate="false"/>
+		<type name="Types"  implement="false" subclass="false" instantiate="false"/>
+		<type name="UnknownExtensibilityElement"  implement="false" subclass="false" instantiate="false"/>
+		<type name="WSDLElement"  implement="false" subclass="false" instantiate="false"/>
+		<type name="WSDLFactory"  implement="false" subclass="false" instantiate="false"/>	
+<!--	<type name="WSDLPlugin"  implement="false" subclass="false" instantiate="false"/>-->
+		<type name="XSDSchemaExtensibilityElement"  implement="false" subclass="false" instantiate="false"/>	
 	</package>
 	<package name="org.eclipse.wst.wsdl.util" api="false">
-		<type name="WSDLConstants" />
-		<type name="ExtensibilityElementFactoryRegistry" />
-		<type name="WSDLResourceFactoryImpl" />
-		<type name="ExtensibilityElementFactory" />
-		<type name="WSDLResourceImpl" subclass="false"/>
+		<type name="WSDLConstants" implement="false" subclass="false" instantiate="false"/>
+<!--	<type name="ExtensibilityElementFactory" /> -->		
+<!--	<type name="ExtensibilityElementFactoryRegistry" />-->	
+<!--	<type name="WSDLResourceImpl" subclass="false"/>-->
 	</package>
+	
+<!-- provisional APIs -->
+<!--	
 	<package name="org.eclipse.wst.wsdl.binding.soap" api="false">
 		<type name="SOAPBody" />
 		<type name="SOAPHeaderFault" />
@@ -52,8 +54,7 @@
 		<type name="SOAPFault" />
 		<type name="SOAPOperation" />
 	</package>
-<!-- provisional APIs -->
-<!--
+
 	<package name="org.eclipse.wst.wsdl.binding.mime">
 		<type name="MIMEContent" />
 		<type name="MIMEPackage" />

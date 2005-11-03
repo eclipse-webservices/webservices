@@ -1327,7 +1327,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     String wsdlNamespace = WSDLConstants.WSDL_NAMESPACE_URI;
     String qualifier = definition.getPrefix(wsdlNamespace);
 
-    Element newElement = document.createElementNS(wsdlNamespace, (qualifier == null ? "" : qualifier + ":") + WSDLConstants.ELEMENT_TAGS[nodeType]);
+    Element newElement = document.createElementNS(wsdlNamespace, (qualifier == null ? "" : qualifier + ":") + WSDLConstants.getElementTag(nodeType));
 
     if (document.getDocumentElement() == null)
       document.appendChild(newElement);

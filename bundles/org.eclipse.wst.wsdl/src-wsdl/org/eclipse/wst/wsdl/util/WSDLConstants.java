@@ -87,7 +87,7 @@ public class WSDLConstants
    */
   public static final String SCHEMA_FOR_SCHEMA_URI_2001 = "http://www.w3.org/2001/XMLSchema";
 
-  public static final String[] ELEMENT_TAGS =
+  private static final String[] ELEMENT_TAGS =
     new String[] {
       BINDING_ELEMENT_TAG,
       DEFINITION_ELEMENT_TAG,
@@ -104,6 +104,11 @@ public class WSDLConstants
       SERVICE_ELEMENT_TAG,
       TYPES_ELEMENT_TAG };
 
+  public static final String getElementTag(int nodeType)
+  {
+    return ELEMENT_TAGS[nodeType];
+  }
+  
   public static final int nodeType(String localName)
   {
     for (int i = 0; i < ELEMENT_TAGS.length; ++i)
