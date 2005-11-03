@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jem.internal.plugin.JavaEMFNature;
+import org.eclipse.jem.util.emf.workbench.nature.EMFNature;
+import org.eclipse.jem.workbench.utility.JemProjectUtilities;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jem.java.JavaVisibilityKind;
@@ -183,11 +184,33 @@ public static boolean implementsInterface(JavaClass javaClass, JavaClass interfa
 		return false;
  	}
 
- public static JavaClass getJavaClass(String className , IProject project) throws CoreException
+  /* 
+   * 
+   */
+ /**
+ * @param classQName Fully qualified classname (packageName + typeName)
+ * @param project
+ * @return
+ * @throws CoreException
+ */
+public static JavaClass getJavaClass(String classQName , IProject project) throws CoreException
  	{
- 		JavaEMFNature jMOF = (JavaEMFNature)JavaEMFNature.createRuntime(project);
-    	return (JavaClass)JavaRefFactory.eINSTANCE.reflectType(className,jMOF.getResourceSet());
+	 	EMFNature jMOF = JemProjectUtilities.getJEM_EMF_Nature(project, true);
+	 	return (JavaClass)JavaRefFactory.eINSTANCE.reflectType(classQName,jMOF.getResourceSet());
  	}
+ 
+ /**
+ * @param packageName
+ * @param typeName
+ * @param project
+ * @return
+ * @throws CoreException
+ */
+public static JavaClass getJavaClass(String packageName, String typeName , IProject project) throws CoreException
+	{
+	 	EMFNature jMOF = JemProjectUtilities.getJEM_EMF_Nature(project, true);
+	 	return (JavaClass)JavaRefFactory.eINSTANCE.reflectType(packageName, typeName, jMOF.getResourceSet());
+	}
 
  public static boolean isValidSEIFile(JavaClass beanClass, JavaClass seiClass)
  	{

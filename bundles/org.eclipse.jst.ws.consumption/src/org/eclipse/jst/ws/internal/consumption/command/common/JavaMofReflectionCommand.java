@@ -20,9 +20,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.jem.internal.plugin.JavaEMFNature;
+import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaRefFactory;
+import org.eclipse.jem.util.emf.workbench.nature.EMFNature;
+import org.eclipse.jem.workbench.utility.JemProjectUtilities;
+import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -93,14 +96,11 @@ public class JavaMofReflectionCommand extends AbstractDataModelOperation
   	if(clientProject == null || qname == null)
   	  return StatusUtils.warningStatus( WebServiceConsumptionPlugin.getMessage("%MSG_WARN_UNABLE_TO_FIND_PROXY") );
   	
-    JavaEMFNature nature = (JavaEMFNature)JavaEMFNature.getRuntime(clientIProject);
-    if(nature == null){
-      try{
-        nature = (JavaEMFNature)JavaEMFNature.createRuntime(clientIProject);  	
-      }catch(CoreException exc){}
-    }
-    resourceSet = nature.getResourceSet();
-    javaClass = JavaRefFactory.eINSTANCE.reflectType(qname,resourceSet);
+    try {
+		EMFNature nature = JemProjectUtilities.getJEM_EMF_Nature(clientIProject, true);
+		javaClass = JavaRefFactory.eINSTANCE.reflectType(qname, nature.getResourceSet());
+	} catch (CoreException e) {
+	}
     
     return status;
   }

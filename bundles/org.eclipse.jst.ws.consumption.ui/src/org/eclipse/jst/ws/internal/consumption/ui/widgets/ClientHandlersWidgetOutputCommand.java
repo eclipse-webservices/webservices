@@ -16,19 +16,19 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
-import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jst.j2ee.webservice.wsclient.Handler;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
 import org.eclipse.jst.j2ee.webservice.wsclient.Webservice_clientFactory;
 import org.eclipse.jst.j2ee.webservice.wsclient.internal.impl.Webservice_clientFactoryImpl;
+import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -67,8 +67,6 @@ public class ClientHandlersWidgetOutputCommand extends AbstractDataModelOperatio
     IStatus status = Status.OK_STATUS;
 
     try {
-
-      JavaEMFNature jMOF = (JavaEMFNature) JavaEMFNature.createRuntime(project_);
 
       oldWSServiceRefsToHandlersTable_ = new Hashtable();
       newWSServiceRefsToHandlersTable_ = new Hashtable();
@@ -110,7 +108,7 @@ public class ClientHandlersWidgetOutputCommand extends AbstractDataModelOperatio
                   Handler newHandler = wsClientFactory.createHandler();
                   newHandler.setHandlerName(hti.getHandlerName());
 
-                  JavaClass javaClass = (JavaClass)JavaRefFactory.eINSTANCE.reflectType(hti.getHandlerClassName(), jMOF.getResourceSet());
+                  JavaClass javaClass = JavaMOFUtils.getJavaClass(hti.getHandlerClassName(), project_);
                   if (javaClass != null) {
                     newHandler.setHandlerClass(javaClass);
                   }

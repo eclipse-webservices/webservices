@@ -14,16 +14,16 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
-import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -84,11 +84,7 @@ public class JavaToWSDLMethodCommand extends AbstractDataModelOperation {
 				qName = qName.substring(0, qName.lastIndexOf('.'));
 			}
 
-			JavaEMFNature jMOF =
-				(JavaEMFNature) JavaEMFNature.createRuntime(
-					serviceProject_);
-			JavaClass javaClass =
-				(JavaClass)JavaRefFactory.eINSTANCE.reflectType(qName, jMOF.getResourceSet());
+			JavaClass javaClass = JavaMOFUtils.getJavaClass(qName, serviceProject_);
 			
 			if (!javaClass.isExistingType()) {
 				environment.getLog().log(ILog.ERROR, 5022, this, "execute", msgUtils_.getMessage(
