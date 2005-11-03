@@ -41,7 +41,7 @@
 <!--	<type name="WSDLResourceImpl" subclass="false"/>-->
 	</package>
 	
-<!-- provisional APIs -->
+<!-- these plugin's to be provided with non API disclaimers -->
 <!--	
 	<package name="org.eclipse.wst.wsdl.binding.soap" api="false">
 		<type name="SOAPBody" />
@@ -63,8 +63,7 @@
 		<type name="MIMEMimeXml" />
 		<type name="MIMEFactory" />
 	</package>
--->
-<!--
+
 	<package name="org.eclipse.wst.wsdl.binding.http">
 		<type name="HTTPFactory" />
 		<type name="HTTPOperation" />
