@@ -43,6 +43,7 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 {
   private int DEFAULT_TABLE_HEIGHT_HINT = 100;
   private TableViewer tableViewer_;
+  private MessageUtils msgUtils_;
   private Table table_;
   private String message = null;
   static final String columns_[] = {"severity", "line", "column", "message"};
@@ -52,12 +53,12 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 
   public ValidationMessageViewerWidget()
   {
+	  String       pluginId = "org.eclipse.jst.ws.consumption.ui";
+	  msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
   }
 
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   { 
-    String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId + ".plugin", this );
     
 	Composite  composite = new Composite(parent, SWT.NONE);
 	GridLayout gl        = new GridLayout();
@@ -68,10 +69,10 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 	composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 	
     Label messageLabel = new Label( composite, SWT.WRAP);
-    messageLabel.setText( msgUtils.getMessage("LABEL_VALIDATE_MESSAGES"));
-    GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+    messageLabel.setText( msgUtils_.getMessage("LABEL_VALIDATE_MESSAGES"));
+    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
     messageLabel.setLayoutData(gd);
-    messageLabel.setToolTipText( msgUtils.getMessage("TOOLTIP_VALIDATE_TEXT_MESSAGE") );
+    messageLabel.setToolTipText( msgUtils_.getMessage("TOOLTIP_VALIDATE_TEXT_MESSAGE") );
 
 	table_ = new Table(composite, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
 	gd = new GridData(GridData.FILL_BOTH);
@@ -79,7 +80,7 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 	table_.setLayoutData(gd);
 	table_.setHeaderVisible(true);
 	table_.setLinesVisible(true);
-	table_.setToolTipText(msgUtils.getMessage("TOOLTIP_TABLE_VALIDATE_MESSAGE") );
+	table_.setToolTipText(msgUtils_.getMessage("TOOLTIP_TABLE_VALIDATE_MESSAGE") );
 	TableLayout tableLayout = new TableLayout();
 	for (int i = 0; i < columns_.length; i++)
 	{
@@ -96,14 +97,6 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 	tableViewer_.setContentProvider(new ListContentProvider());
 	tableViewer_.setLabelProvider(new ListLabelProvider());
 
-	Composite buttonComposite = new Composite(composite, SWT.NONE);
-	gl = new GridLayout();
-	gl.numColumns = 3;
-	gl.makeColumnsEqualWidth = true;
-	buttonComposite.setLayout(gl);
-	buttonComposite.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
-
-	
 	return this;
   }
 

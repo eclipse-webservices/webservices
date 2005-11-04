@@ -74,15 +74,15 @@ public class CheckWSDLValidationCommand extends AbstractDataModelOperation
 		IStatus status_ = StatusUtils.warningStatus( msgUtils_.getMessage("STILL_VALIDATING_WSDL") );
 		// adding all messages from WSI Incompliances
 
-		Choice ignoreChoice = new Choice('I', msgUtils_
-				.getMessage("IGNORE_LABEL"), msgUtils_
-				.getMessage("IGNORE_DESCRIPTION"));
+		Choice ignoreChoice = new Choice('C', msgUtils_
+				.getMessage("CANCEL_VALIDATION_LABEL"), msgUtils_
+				.getMessage("CANCEL_VALIDATION_DESCRIPTION"));
 		Choice ignoreAllChoice = new Choice('A', msgUtils_
-				.getMessage("IGNORE_ALL_LABEL"), msgUtils_
-				.getMessage("IGNORE_ALL_DESCRIPTION"));
-		Choice cancelChoice = new Choice('C', msgUtils_
-				.getMessage("CANCEL_LABEL"), msgUtils_
-				.getMessage("CANCEL_DESCRIPTION"));
+				.getMessage("CANCEL_ALL_VALIDATION_LABEL"), msgUtils_
+				.getMessage("CANCEL_ALL_VALIDATION_DESCRIPTION"));
+		Choice cancelChoice = new Choice('W', msgUtils_
+				.getMessage("WAIT_VALIDATION_LABEL"), msgUtils_
+				.getMessage("WAIT_VALIDATION_DESCRIPTION"));
 
 		Choice result = env.getStatusHandler().report(status_,
 				new Choice[] { ignoreChoice, ignoreAllChoice, cancelChoice });

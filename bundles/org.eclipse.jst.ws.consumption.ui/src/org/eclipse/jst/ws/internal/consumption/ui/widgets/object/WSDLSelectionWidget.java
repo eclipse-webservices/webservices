@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import java.io.File;
 import java.net.MalformedURLException;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -59,6 +60,7 @@ import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSDLValidationContext;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
+import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 
 public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget, Runnable
 {
@@ -85,6 +87,8 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   
   private ValidateWSDLJob validateWSDLJob_;
   private JobChangeAdapter    jobChangeAdapter_;
+  private Text validationSummaryText_;
+  private Text validationSummaryText2_;
 
   
   public WSDLSelectionWidget()
@@ -99,6 +103,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 	  public void run() 
       {
 		  msgViewer_.setInput(validateWSDLJob_.getValidationMessages());
+		  updateValidationSummary(validateWSDLJob_.getValidationMessageSeverity());
       }
     };
     
@@ -164,7 +169,31 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     msgViewer_ = new ValidationMessageViewerWidget();
     msgViewer_.addControls(parent, statusListener);
     
+    validationSummaryText_ = new Text( parent, SWT.WRAP);
+    validationSummaryText_.setEditable(false);
+    GridData gd1 = new GridData(GridData.FILL_BOTH);
+    validationSummaryText_.setLayoutData(gd1);
+    validationSummaryText_.setToolTipText( msgUtils_.getMessage("TOOLTIP_VALIDATE_TEXT_MESSAGE_SUMMARY") );
+    
+    validationSummaryText2_ = new Text( parent, SWT.WRAP);
+    validationSummaryText2_.setEditable(false);
+    validationSummaryText2_.setLayoutData(gd1);
+    
+    setMessageSummary();
     return this;
+  }
+  
+  private void setMessageSummary() {
+	  String validationMessageSummary = msgUtils_.getMessage("MESSAGE_VALIDATE_NO_WSDL");
+	  PersistentWSDLValidationContext wsdlValidationContext = WSPlugin.getInstance().getWSDLValidationContext();
+	  String validationSelection = wsdlValidationContext.getPersistentWSDLValidation();
+	  if (PersistentWSDLValidationContext.VALIDATE_REMOTE_WSDL.equals(validationSelection)) {
+		  validationMessageSummary = msgUtils_.getMessage("MESSAGE_VALIDATE_REMOTE_WSDL");
+	  } else if (PersistentWSDLValidationContext.VALIDATE_ALL_WSDL.equals(validationSelection)) {
+		  validationMessageSummary = msgUtils_.getMessage("MESSAGE_VALIDATE_ALL_WSDL");
+	  }
+	  validationSummaryText_.setText( validationMessageSummary );
+	  validationSummaryText2_.setText(" ");
   }
   
   private void handleWebServiceURIModifyEvent()
@@ -288,6 +317,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     		}
     	}
   	  
+      setMessageSummary();
   	  validateWSDL(wsdlURI1, isRemote);
     }
     
@@ -307,6 +337,8 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 		  ValidateWSDLJob existingValidateWSDLJob = null;
 		  
 		  boolean startWSDLValidation = true;
+		  validationSummaryText_.setText( msgUtils_.getMessage("MESSAGE_VALIDATE_IN_PROGRESS") );
+		  validationSummaryText2_.setText(" ");
 		  if( jobs.length > 0 )
 		  {
 			  for (int i=0; i<jobs.length; i++) {
@@ -337,6 +369,25 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 	  validateWSDLJob_ = new ValidateWSDLJob(wsdlURI);
 	  validateWSDLJob_.addJobChangeListener( jobChangeAdapter_ );
 	  validateWSDLJob_.schedule();
+  }
+  
+  public void updateValidationSummary(int messageSeverity)
+  {
+  	
+  	switch (messageSeverity) {
+  	case IValidationMessage.SEV_ERROR:
+		validationSummaryText_.setText(msgUtils_.getMessage("ERROR_MESSAGES_IN_VALIDATION"));
+		validationSummaryText2_.setText(msgUtils_.getMessage("WARNING_IF_CONTINUE"));
+		break;
+	case IValidationMessage.SEV_WARNING:
+		validationSummaryText_.setText(msgUtils_.getMessage("WARNING_MESSAGES_IN_VALIDATION"));
+		validationSummaryText2_.setText(msgUtils_.getMessage("WARNING_IF_CONTINUE"));
+		break;
+	default:
+		validationSummaryText_.setText(msgUtils_.getMessage("VALIDATION_COMPLETED"));
+		validationSummaryText2_.setText(" ");
+		break;
+	}
   }
   
   private IFile uri2IFile(String uri)
