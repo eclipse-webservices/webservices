@@ -87,8 +87,6 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
 
     System.out.println("In Pre client develop command.");
 
-    j2eeLevel_ = getJ2EELevelFromExistingProject();
-    wsInfo.setJ2eeLevel(j2eeLevel_);
     wsInfo.setServerFactoryId(typeRuntimeServer_.getServerId());
     wsInfo.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
     wsInfo.setState(WebServiceState.UNKNOWN_LITERAL);

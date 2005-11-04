@@ -42,7 +42,7 @@ public class RunClientFragment extends AbstractClientFragment
 	}
 	else
 	{
-	  factory = webServiceClient_.run( environment_, context_, selection_, project_, module_, earProject_, ear_ );	
+	  factory = webServiceClient_.run( environment_, context_, selection_, project_, earProject_);	
 	}
 	
 	return factory;

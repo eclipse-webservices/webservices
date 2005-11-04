@@ -42,7 +42,7 @@ public class DevelopClientFragment extends AbstractClientFragment
 	}
 	else
 	{
-	  factory = webServiceClient_.develop( environment_, context_, selection_, project_, module_, earProject_, ear_ );	
+	  factory = webServiceClient_.develop( environment_, context_, selection_, project_, earProject_);	
 	}
 	
 	return factory;

@@ -42,7 +42,7 @@ public class RunServiceFragment extends AbstractServiceFragment
 	}
 	else
 	{
-	  factory = webService_.run( environment_, context_, selection_, project_, module_, earProject_, ear_ );	
+	  factory = webService_.run( environment_, context_, selection_, project_, earProject_);	
 	}
 	
 	return factory;

@@ -29,21 +29,21 @@ public abstract class AbstractWebService implements IWebService {
 	}
 
 	public abstract ICommandFactory assemble(IEnvironment env, IContext ctx, ISelection sel,
-			String project, String module, String earProject, String ear);
+			String project, String earProject);
 	
 
 	public abstract ICommandFactory deploy(IEnvironment env, IContext ctx, ISelection sel,
-      String project, String module, String earProject, String ear);
+      String project, String earProject);
 	
 
 	public abstract ICommandFactory develop(IEnvironment env, IContext ctx, ISelection sel,
-      String project, String module, String earProject, String ear);
+      String project, String earProject);
 		
 
 	public abstract ICommandFactory install(IEnvironment env, IContext ctx, ISelection sel,
-      String project, String module, String earProject, String ear);
+      String project, String earProject);
 	
 
 	public abstract ICommandFactory run(IEnvironment env, IContext ctx, ISelection sel,
-      String project, String module, String earProject, String ear);
+      String project, String earProject);
 }

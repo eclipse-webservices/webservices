@@ -169,7 +169,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  
 	  WebServiceClientInfo clientInfo = new WebServiceClientInfo();
 	  clientInfo.setImplURL(getProxyBean());
-	  clientInfo.setJ2eeLevel(j2eeLevel_);
+	  //clientInfo.setJ2eeLevel(j2eeLevel_);
 	  clientInfo.setServerFactoryId(typeRuntimeServer_.getServerId());
 	  clientInfo.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
 	  clientInfo.setState(WebServiceState.UNKNOWN_LITERAL);

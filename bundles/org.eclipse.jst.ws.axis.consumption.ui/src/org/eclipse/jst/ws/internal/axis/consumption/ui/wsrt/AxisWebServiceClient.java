@@ -44,19 +44,19 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 	}
 
 	public ICommandFactory assemble(IEnvironment env, IContext ctx,
-			ISelection sel, String project, String module, String earProject, String ear)
+			ISelection sel, String project, String earProject)
 	{
 		return null;
 	}
 
 	public ICommandFactory deploy(IEnvironment env, IContext ctx, ISelection sel,
-			String project, String module, String earProject, String ear)
+			String project, String earProject)
 	{
 		return null;
 	}
 
 	public ICommandFactory develop(IEnvironment env, IContext ctx, ISelection sel,
-			String project, String module, String earProject, String ear)
+			String project, String earProject)
 	{
     EclipseEnvironment environment = (EclipseEnvironment)env;
 		registerDataMappings( environment.getCommandManager().getMappingRegistry());
@@ -79,13 +79,13 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 	}
 
 	public ICommandFactory install(IEnvironment env, IContext ctx, ISelection sel,
-			String project, String module, String earProject, String ear)
+			String project, String earProject)
 	{
 		return null;
 	}
 
 	public ICommandFactory run(IEnvironment env, IContext ctx, ISelection sel,
-			String project, String module, String earProject, String ear)
+			String project, String earProject)
 	{
 		return null;
 	}

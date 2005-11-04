@@ -63,19 +63,19 @@ public class AxisWebService extends AbstractWebService
 	}
 
 	public ICommandFactory assemble(IEnvironment env, IContext ctx,
-			ISelection sel, String project, String module, String earProject, String ear)
+			ISelection sel, String project, String earProject)
 	{
 		return null;
 	}
 
 	public ICommandFactory deploy(IEnvironment env, IContext ctx, ISelection sel,
-			String project, String module, String earProject, String ear)
+			String project, String earProject)
 	{
 		return null;
 	}
 
 	public ICommandFactory develop(IEnvironment env, IContext ctx, ISelection sel,
-			String project, String module, String earProject, String ear)
+			String project, String earProject)
 	{
 		
 		Vector commands = new Vector();
@@ -135,13 +135,13 @@ public class AxisWebService extends AbstractWebService
 	}
 
 	public ICommandFactory install(IEnvironment env, IContext ctx, ISelection sel,
-			String project, String module, String earProject, String ear)
+			String project, String earProject)
 	{
 		return null;
 	}
 
 	public ICommandFactory run(IEnvironment env, IContext ctx, ISelection sel,
-			String project, String module, String earProject, String ear)
+			String project, String earProject)
 	{
 		Vector commands = new Vector();
 

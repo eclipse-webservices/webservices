@@ -14,8 +14,6 @@ package org.eclipse.wst.ws.internal.wsrt;
 public class WebServiceInfo {
 
 	private WebServiceState state;
-	private java.lang.String servletLevel;
-	private java.lang.String j2eeLevel;
 	private java.lang.String serverFactoryId;
 	private java.lang.String serverInstanceId;
 	private java.lang.String webServiceRuntimeId;
@@ -38,14 +36,6 @@ public class WebServiceInfo {
 	{
 		this.implURL = implURL;
 	}
-	public java.lang.String getJ2eeLevel()
-	{
-		return j2eeLevel;
-	}
-	public void setJ2eeLevel(java.lang.String level)
-	{
-		j2eeLevel = level;
-	}
 	public java.lang.String getServerFactoryId()
 	{
 		return serverFactoryId;
@@ -61,14 +51,6 @@ public class WebServiceInfo {
 	public void setServerInstanceId(java.lang.String serverInstanceId)
 	{
 		this.serverInstanceId = serverInstanceId;
-	}
-	public java.lang.String getServletLevel()
-	{
-		return servletLevel;
-	}
-	public void setServletLevel(java.lang.String servletLevel)
-	{
-		this.servletLevel = servletLevel;
 	}
 	public WebServiceState getState()
 	{

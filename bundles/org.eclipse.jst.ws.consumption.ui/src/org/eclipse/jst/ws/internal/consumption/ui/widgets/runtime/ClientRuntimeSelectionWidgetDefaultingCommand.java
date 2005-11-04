@@ -1250,9 +1250,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils2.getClientRuntime(clientRuntimeId_);
     if (wsrt != null)
     {
-      WebServiceClientInfo wsInfo = new WebServiceClientInfo();
-
-      wsInfo.setJ2eeLevel("14"); //rm j2ee
+      WebServiceClientInfo wsInfo = new WebServiceClientInfo();      
       wsInfo.setServerFactoryId(clientIds_.getServerId());
       wsInfo.setServerInstanceId(clientIds_.getServerInstanceId());
       wsInfo.setState(WebServiceState.UNKNOWN_LITERAL);

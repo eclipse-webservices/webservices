@@ -42,7 +42,7 @@ public class InstallClientFragment extends AbstractClientFragment
 	}
 	else
 	{
-	  factory = webServiceClient_.install( environment_, context_, selection_, project_, module_, earProject_, ear_ );	
+	  factory = webServiceClient_.install( environment_, context_, selection_, project_, earProject_);	
 	}
 	
 	return factory;
