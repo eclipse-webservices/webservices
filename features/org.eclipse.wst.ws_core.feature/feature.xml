@@ -41,10 +41,6 @@
          version="0.0.0"/>
 
    <includes
-         id="org.apache.xerces.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.apache.wsil4j.feature"
          version="0.0.0"/>
 
