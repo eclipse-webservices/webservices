@@ -66,6 +66,8 @@ public final class AddXSDElementDeclarationCommand extends WSDLElementCommand
     XSDSimpleTypeDefinition simpleTypeDefinition = getXSDStringType(xsdSchema);
     elementDecl.setTypeDefinition(simpleTypeDefinition);    
     xsdSchema.getContents().add(elementDecl);
+    
+    xsdElement = elementDecl;
   }
   
   public void run(String newElementName) {

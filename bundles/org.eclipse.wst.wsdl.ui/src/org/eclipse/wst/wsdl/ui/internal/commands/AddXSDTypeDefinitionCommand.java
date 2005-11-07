@@ -17,8 +17,8 @@ import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.xsd.XSDFactory;
-import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDTypeDefinition;
 
 // This class is used to create a new XSDTypeDefinition in the targetNamespace.
 public final class AddXSDTypeDefinitionCommand extends WSDLElementCommand
@@ -27,6 +27,7 @@ public final class AddXSDTypeDefinitionCommand extends WSDLElementCommand
   private String targetNamespace;
   private String typeName;
   private XSDSchema schema;
+  private XSDTypeDefinition xsdType;
   private boolean isComplexType = true;
   
   /**
@@ -63,7 +64,7 @@ public final class AddXSDTypeDefinitionCommand extends WSDLElementCommand
   public void run()
   {
     XSDSchema xsdSchema = getSchema();
-    XSDNamedComponent typeDef;
+    XSDTypeDefinition typeDef;
     
     if (isComplexType) {
     	typeDef = XSDFactory.eINSTANCE.createXSDComplexTypeDefinition();
@@ -74,6 +75,8 @@ public final class AddXSDTypeDefinitionCommand extends WSDLElementCommand
     
     typeDef.setName(typeName);
     xsdSchema.getContents().add(typeDef);
+    
+    xsdType = typeDef;
   }
   
   public void run(String newTypeName) {
@@ -150,5 +153,10 @@ public final class AddXSDTypeDefinitionCommand extends WSDLElementCommand
   public WSDLElement getWSDLElement()
   {
     return null;
+  }
+  
+  public XSDTypeDefinition getXSDElement()
+  {
+	  return xsdType;
   }
 }

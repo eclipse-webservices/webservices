@@ -78,14 +78,19 @@ public class NewComponentDialog extends Dialog implements ModifyListener
     createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
   }
 
+  protected void createHeaderContent(Composite parent)
+  {
+  }
+  
   protected void createExtendedContent(Composite parent)
   {
-  }  
-
+  }
 
   protected Control createDialogArea(Composite parent) 
   {
     Composite dialogArea = (Composite)super.createDialogArea(parent);
+    
+    createHeaderContent(dialogArea);
 
     Composite composite = new Composite(dialogArea, SWT.NONE);
     GridLayout layout = new GridLayout();
