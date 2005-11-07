@@ -373,7 +373,7 @@ public class WSDLAnalyzer
 	if (filename != null)
 	{
 	  String tmp = filename.replace('\\', '/');
-	  if ((true) &&
+	  if ((!tmp.startsWith(WSIConstants.HTTP_PREFIX)) &&
           (!tmp.startsWith(WSIConstants.FILE_PREFIX)))
 	  {
 	    tmp = WSIConstants.FILE_PROTOCOL + tmp;
