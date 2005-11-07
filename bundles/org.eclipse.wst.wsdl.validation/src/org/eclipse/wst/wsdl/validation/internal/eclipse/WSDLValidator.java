@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.wsdl.validation.internal.ui.eclipse;
+package org.eclipse.wst.wsdl.validation.internal.eclipse;
 
 import java.util.Iterator;
 import java.util.List;

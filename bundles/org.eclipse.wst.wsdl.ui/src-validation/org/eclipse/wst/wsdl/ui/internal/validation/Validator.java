@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.wsdl.validation.internal.ui.eclipse;
+package org.eclipse.wst.wsdl.ui.internal.validation;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -19,7 +19,6 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.validation.internal.core.ValidationException;
 import org.eclipse.wst.validation.internal.operations.IRuleGroup;
-import org.eclipse.wst.validation.internal.operations.ValidatorManager;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
 import org.eclipse.wst.validation.internal.provisional.core.IValidator;
@@ -161,7 +160,7 @@ public class Validator implements IValidator
    */
   protected void validateIfNeeded(IFile file, IValidationContext helper, IReporter reporter)
   {
-    ValidatorManager mgr = ValidatorManager.getManager();
+    //ValidatorManager mgr = ValidatorManager.getManager();
     // Pass in a "null" so that loadModel doesn't attempt to cast the result into a RefObject.
     Integer ruleGroupInt = (Integer) helper.loadModel(IRuleGroup.PASS_LEVEL, null); 
     int ruleGroup = (ruleGroupInt == null) ? IRuleGroup.PASS_FULL : ruleGroupInt.intValue();

@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.wsdl.validation.internal.ui.eclipse;
+package org.eclipse.wst.wsdl.validation.internal.eclipse;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.wst.wsdl.validation.internal.Constants;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
@@ -31,7 +31,7 @@ import org.osgi.framework.BundleContext;
 /**
  * The main plugin class required for eclipse.
  */
-public class ValidateWSDLPlugin extends AbstractUIPlugin
+public class ValidateWSDLPlugin extends Plugin
 {
   protected final String PROPERTIES_FILE = "validatewsdlui";
   protected static ValidateWSDLPlugin instance;

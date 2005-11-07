@@ -27,7 +27,7 @@ import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
-import org.eclipse.wst.wsdl.validation.internal.ui.eclipse.WSDLValidator;
+import org.eclipse.wst.wsdl.validation.internal.eclipse.WSDLValidator;
 
 /**
  * Base test case class which provides methods to 

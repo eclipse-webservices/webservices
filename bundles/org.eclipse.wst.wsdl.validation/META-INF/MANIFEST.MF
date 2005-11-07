@@ -3,18 +3,16 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %_PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.wsdl.validation; singleton:=true
 Bundle-Version: 1.0.0
-Bundle-ClassPath: wsdlvalidateui.jar,
- wsdlvalidate.jar
-Bundle-Activator: org.eclipse.wst.wsdl.validation.internal.ui.eclipse.ValidateWSDLPlugin
+Bundle-Activator: org.eclipse.wst.wsdl.validation.internal.eclipse.ValidateWSDLPlugin
 Bundle-Vendor: %_PROVIDER_NAME
 Bundle-Localization: plugin
 Export-Package: .,
  org.eclipse.wst.wsdl.validation.internal,
+ org.eclipse.wst.wsdl.validation.internal.eclipse,
  org.eclipse.wst.wsdl.validation.internal.exception,
  org.eclipse.wst.wsdl.validation.internal.resolver,
  org.eclipse.wst.wsdl.validation.internal.ui,
  org.eclipse.wst.wsdl.validation.internal.ui.ant,
- org.eclipse.wst.wsdl.validation.internal.ui.eclipse,
  org.eclipse.wst.wsdl.validation.internal.ui.text,
  org.eclipse.wst.wsdl.validation.internal.util,
  org.eclipse.wst.wsdl.validation.internal.wsdl11,
@@ -25,14 +23,10 @@ Export-Package: .,
  org.eclipse.wst.wsdl.validation.internal.wsdl20,
  org.eclipse.wst.wsdl.validation.internal.xml
 Require-Bundle: org.eclipse.core.resources,
- org.eclipse.ui,
  org.apache.ant,
  org.eclipse.wst.common.uriresolver,
  org.eclipse.wst.validation,
  org.wsdl4j,
  org.apache.xerces;visibility:=reexport,
- org.eclipse.core.runtime,
- org.eclipse.wst.xml.core,
- org.eclipse.wst.xml.ui
+ org.eclipse.core.runtime
 Eclipse-AutoStart: true
-Plugin-Class: org.eclipse.wst.wsdl.validation.internal.ui.eclipse.ValidateWSDLPlugin

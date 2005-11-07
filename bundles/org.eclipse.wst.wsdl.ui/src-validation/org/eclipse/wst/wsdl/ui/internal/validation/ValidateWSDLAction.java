@@ -9,13 +9,14 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.wsdl.validation.internal.ui.eclipse;
+package org.eclipse.wst.wsdl.ui.internal.validation;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -29,6 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
+import org.eclipse.wst.wsdl.validation.internal.eclipse.WSDLValidator;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLMessageInfoHelper;
 import org.eclipse.wst.xml.ui.internal.validation.core.ValidateAction;
 
@@ -37,18 +39,20 @@ import org.eclipse.wst.xml.ui.internal.validation.core.ValidateAction;
  */
 public class ValidateWSDLAction extends ValidateAction
 {
-  private static final String REFERENCED_FILE_ERROR_OPEN = "referencedFileError(";
+ // private static final String REFERENCED_FILE_ERROR_OPEN = "referencedFileError(";
 
-  private static final String REFERENCED_FILE_ERROR_CLOSE = ")";
+  //private static final String REFERENCED_FILE_ERROR_CLOSE = ")";
   private final String FILE_PROTOCOL = "file:///";
 
-  private static final String _UI_SAVE_DIRTY_FILE_MESSAGE = "_UI_SAVE_DIRTY_FILE_MESSAGE";
+  //private static final String _UI_SAVE_DIRTY_FILE_MESSAGE = "_UI_SAVE_DIRTY_FILE_MESSAGE";
 
-  private static final String _UI_SAVE_DIRTY_FILE_TITLE = "_UI_SAVE_DIRTY_FILE_TITLE";
-  private static final String _UI_REF_FILE_ERROR_MESSAGE = "_UI_REF_FILE_ERROR_MESSAGE";
-  private static final String NESTED_ERRORS = "NESTED_ERRORS";
+  //private static final String _UI_SAVE_DIRTY_FILE_TITLE = "_UI_SAVE_DIRTY_FILE_TITLE";
+  //private static final String _UI_REF_FILE_ERROR_MESSAGE = "_UI_REF_FILE_ERROR_MESSAGE";
+  //private static final String NESTED_ERRORS = "NESTED_ERRORS";
 
   private InputStream inputStream = null;
+  
+  private static ResourceBundle wsdlActionRB = ResourceBundle.getBundle("org.eclipse.wst.wsdl.ui.internal.validation.validatewsdlui");
   /**
    * Constructor.
    * 
@@ -352,14 +356,14 @@ public class ValidateWSDLAction extends ValidateAction
       if (validationOutcome.hasMessages)
       {
         showProblemsView();
-        title = ValidateWSDLPlugin.getInstance().getString("_VALIDATION_SUCCEEDED");
-        message = ValidateWSDLPlugin.getInstance().getString("_UI_THE_WSDL_FILE_IS_VALID_WITH_WARNINGS");
+        title = wsdlActionRB.getString("_VALIDATION_SUCCEEDED");
+        message = wsdlActionRB.getString("_UI_THE_WSDL_FILE_IS_VALID_WITH_WARNINGS");
         MessageDialog.openWarning(Display.getDefault().getActiveShell(), title, message);
       }
       else
       {
-        title = ValidateWSDLPlugin.getInstance().getString("_VALIDATION_SUCCEEDED");
-        message = ValidateWSDLPlugin.getInstance().getString("_UI_THE_WSDL_FILE_IS_VALID");
+        title = wsdlActionRB.getString("_VALIDATION_SUCCEEDED");
+        message = wsdlActionRB.getString("_UI_THE_WSDL_FILE_IS_VALID");
         MessageDialog.openInformation(Display.getDefault().getActiveShell(), title, message);
       }
 
@@ -368,13 +372,13 @@ public class ValidateWSDLAction extends ValidateAction
     {
       if (validationOutcome.isWSDLValid)
       {
-        title = ValidateWSDLPlugin.getInstance().getString("_VALIDATION_FAILED");
-        message = ValidateWSDLPlugin.getInstance().getString("_UI_THE_WSDL_FILE_IS_VALID_WSDL11");
+        title = wsdlActionRB.getString("_VALIDATION_FAILED");
+        message = wsdlActionRB.getString("_UI_THE_WSDL_FILE_IS_VALID_WSDL11");
       }
       else
       {
-        title = ValidateWSDLPlugin.getInstance().getString("_VALIDATION_FAILED");
-        message = ValidateWSDLPlugin.getInstance().getString("_UI_THE_WSDL_FILE_IS_NOT_VALID");
+        title = wsdlActionRB.getString("_VALIDATION_FAILED");
+        message = wsdlActionRB.getString("_UI_THE_WSDL_FILE_IS_NOT_VALID");
       }
       showProblemsView();
       MessageDialog.openError(Display.getDefault().getActiveShell(), title, message);

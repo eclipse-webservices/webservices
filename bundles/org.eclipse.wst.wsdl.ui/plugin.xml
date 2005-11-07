@@ -295,4 +295,47 @@
 			contentType="org.eclipse.wst.wsdl.wsdlsource">
 		</modelQueryExtension>
 	</extension>
+	
+   <!-- ====================================================== -->
+   <!-- Set the Validate WSDL File context menu item. This     -->
+   <!-- menu item should be removed once the validation        -->
+   <!-- framework is modified to create the item.              -->
+   <!-- ====================================================== -->
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.wsdl"
+            id="org.eclipse.wst.wsdl.validation.wsdlaction">
+         <action
+               label="%_UI_MENU_VALIDATE_WSDL"
+               class="org.eclipse.wst.wsdl.ui.internal.validation.ValidateWSDLActionDelegate"
+               enablesFor="1"
+               id="org.eclipse.wst.wsdl.ui.internal.validation.ValidateWSDLActionDelegate">
+         </action>
+      </objectContribution>
+   </extension>
+   
+   <!-- ====================================================== -->
+   <!-- An extension for adding the WSDL validator to the      -->
+   <!-- validation framework. 						           -->										   -->
+   <!-- ====================================================== -->
+   <extension
+         id="wsdlValidator"
+         name="%_UI_WSDL_VALIDATOR"
+         point="org.eclipse.wst.validation.validator">
+      <validator>
+         <filter
+               objectClass="org.eclipse.core.resources.IFile"
+               caseSensitive="false"
+               nameFilter="*.wsdl">
+         </filter>
+         <helper
+               class="org.eclipse.wst.xml.core.internal.validation.core.Helper">
+         </helper>
+         <run
+               class="org.eclipse.wst.wsdl.ui.internal.validation.Validator">
+         </run>
+      </validator>
+   </extension>
 </plugin>
