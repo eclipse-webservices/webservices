@@ -113,10 +113,17 @@ public class HTTPTransport
   {
     StringBuffer sb = new StringBuffer(HTTP_METHOD);
     sb.append(SPACE);
+    String protocol = url.getProtocol();
     String httpProxyHost = System.getProperty(SYS_PROP_HTTP_PROXY_HOST);
     String httpsProxyHost = System.getProperty(SYS_PROP_HTTPS_PROXY_HOST);
-    if (httpProxyHost != null && httpProxyHost.length() > 0 && httpsProxyHost != null && httpsProxyHost.length() > 0)
+    if (protocol.equalsIgnoreCase("http") && httpProxyHost != null && httpProxyHost.length() > 0)
+    {
       sb.append(url.toString());
+    }
+    else if (protocol.equalsIgnoreCase("https") && httpsProxyHost != null && httpsProxyHost.length() > 0)
+    {
+      sb.append(url.toString());
+    }
     else
     {
       String file = url.getFile();

@@ -12,6 +12,9 @@ package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
 import java.util.Hashtable;
 import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.CurrentNodeSelectionTransformer;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.transformer.ITransformer;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
@@ -41,6 +44,13 @@ public abstract class Action
   {
     return controller_;
   }
+
+  /**
+  * Read properties from an HttpServletRequest and add them to the property table.
+  * @param HttpServletRequest The HttpServletRequest containing the embedded parameters.
+  * @return boolean Whether or not the operation was successful.
+  */
+  public abstract boolean populatePropertyTable(HttpServletRequest request);
 
   /**
   * Get the property table.
