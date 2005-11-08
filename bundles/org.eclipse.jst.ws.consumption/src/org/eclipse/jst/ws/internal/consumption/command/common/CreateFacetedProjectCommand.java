@@ -11,6 +11,7 @@
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +37,7 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
+import org.eclipse.wst.common.project.facet.core.VersionFormatException;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
@@ -148,8 +150,27 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
       while (templateFacetsItr.hasNext())
       {
         IProjectFacet fixedFacet = (IProjectFacet)templateFacetsItr.next();
+        List versions = null;
         //IProjectFacetVersion[] versions = FacetUtils.getOrderedVersions(fixedFacet);
-        List versions = fixedFacet.getSortedVersions(false); 
+        try {
+			versions = fixedFacet.getSortedVersions(false);
+		} catch (VersionFormatException e) {
+			Set versionSet = fixedFacet.getVersions();
+			Iterator itr = versionSet.iterator();
+			versions = new ArrayList();
+			while (itr.hasNext())
+			{
+				versions.add(itr.next());
+			}            
+		} catch (CoreException e) {
+			Set versionSet = fixedFacet.getVersions();
+			Iterator itr = versionSet.iterator();
+			versions = new ArrayList();
+			while (itr.hasNext())
+			{
+				versions.add(itr.next());
+			}            
+		} 
         Iterator versionsItr = versions.iterator();
         while(versionsItr.hasNext())
         //for (int i=0; i<versions.length; i++)

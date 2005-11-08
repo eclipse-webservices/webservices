@@ -28,6 +28,7 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
+import org.eclipse.wst.common.project.facet.core.VersionFormatException;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action.Type;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
@@ -115,7 +116,11 @@ public class FacetUtils
       {
         highestFacetVersion = facet.getVersion("1.4");
       }
-      highestFacetVersion = facet.getLatestVersion(); 
+      try {
+		highestFacetVersion = facet.getLatestVersion();
+	} catch (VersionFormatException e) {
+	} catch (CoreException e) {
+	} 
       initial.add(highestFacetVersion); 
     }             
     
