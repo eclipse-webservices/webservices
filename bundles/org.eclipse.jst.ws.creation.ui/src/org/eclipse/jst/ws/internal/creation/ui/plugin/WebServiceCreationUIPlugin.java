@@ -27,8 +27,6 @@ import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 */
 public class WebServiceCreationUIPlugin extends Plugin
 {
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2002.";
 
   /**
   * The identifier of the descriptor of this plugin in plugin.xml.

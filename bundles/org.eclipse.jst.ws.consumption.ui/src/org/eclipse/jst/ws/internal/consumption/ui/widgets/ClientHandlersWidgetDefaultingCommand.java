@@ -15,6 +15,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
@@ -32,8 +33,8 @@ import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -47,8 +48,6 @@ import org.eclipse.wst.common.environment.IEnvironment;
 public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidgetDefaultingCmd {
 
   private HandlerTableItem[] handlers_;
-
-  private MessageUtils msgUtils_;
 
   private Hashtable wsRefsToHandlersTable_;
 
@@ -69,15 +68,13 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
     IEnvironment env = getEnvironment();
-    String pluginId = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     IStatus status = Status.OK_STATUS;
 
     webServicesManager_ = new WebServicesManager();
 
     IStructuredSelection selection = getInitialSelection();
     if (selection == null) {
-      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED") );
+      status = StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED );
       env.getStatusHandler().reportError(status);
       return status;
     }
@@ -127,7 +124,7 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
       }
     }
     catch (Exception e) {
-      return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED"), e);
+      return StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED, e);
     }
     return Status.OK_STATUS;
   }

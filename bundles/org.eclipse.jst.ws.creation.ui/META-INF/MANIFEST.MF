@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.jst.ws.internal.creation.ui.plugin.WebServiceCreationUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.jst.ws.creation.ui,
+Export-Package: org.eclipse.jst.ws.internal.creation.ui,
  org.eclipse.jst.ws.internal.creation.ui.extension,
  org.eclipse.jst.ws.internal.creation.ui.plugin,
  org.eclipse.jst.ws.internal.creation.ui.preferences,

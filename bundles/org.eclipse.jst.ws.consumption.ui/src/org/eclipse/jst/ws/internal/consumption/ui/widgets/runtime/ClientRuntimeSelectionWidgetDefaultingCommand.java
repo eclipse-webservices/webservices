@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -28,18 +29,14 @@ import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
-import org.eclipse.jst.ws.internal.consumption.ui.common.ServerSelectionUtils;
-import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ClientRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeInfo;
-import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
@@ -49,7 +46,6 @@ import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
-import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -65,7 +61,7 @@ import org.eclipse.wst.ws.internal.wsrt.WebServiceState;
 
 public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataModelOperation
 {   
-  protected MessageUtils msgUtils_;
+
   // clientRuntimeJ2EEType contains the default client runtime and J2EE level based on the initial selection.
   // If the initialSeleciton does not result in a valid client runtime and J2EE level, clientRuntimeJ2EEType
   // should remain null for the life of this instance.  
@@ -107,8 +103,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   public ClientRuntimeSelectionWidgetDefaultingCommand()
   {
     super();
-    String  pluginId = "org.eclipse.jst.ws.consumption.ui";
-    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
   }
   
   public void setClientTypeRuntimeServer( TypeRuntimeServer ids )
@@ -214,7 +208,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     } catch (Exception e)
     {
       // Catch all Exceptions in order to give some feedback to the user
-      IStatus errorStatus = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED",
+      IStatus errorStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED,
           new String[] { e.getMessage() }), e);
       env.getStatusHandler().reportError(errorStatus);
       return errorStatus;
@@ -288,7 +282,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     //No suitable server was found. Popup an error.
     String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(clientIds_.getRuntimeId());
     String serverLabels = getServerLabels(clientIds_.getRuntimeId());    
-    IStatus status = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_NO_SERVER_RUNTIME", new String[]{runtimeLabel, serverLabels}) );
+    IStatus status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME, new String[]{runtimeLabel, serverLabels}) );
     return status;
   }
   
@@ -1159,7 +1153,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
             {
               String runtimeLabel = WebServiceRuntimeExtensionUtils.getRuntimeLabelById(clientIds_.getRuntimeId());
               String serverLabels = getServerLabels(clientIds_.getRuntimeId());
-        	  status = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_NO_SERVER_RUNTIME", new String[]{runtimeLabel, serverLabels}) );
+        	  status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME, new String[]{runtimeLabel, serverLabels}) );
             }
         	
         }

@@ -26,8 +26,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EnvironmentUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -37,8 +38,6 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
 {
-
-  private MessageUtils msgUtils_;
   private IPath outputLocation_;
   private String[] handlerNames_;
   private boolean genSkeleton_;
@@ -46,8 +45,6 @@ public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
   
   public GenerateHandlerSkeletonCommand()
   {
-    String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-  	msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
   }
   
 
@@ -74,7 +71,7 @@ public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
     		error = true;
     		if (status == null) 
         {
-    			status = StatusUtils.multiStatus( msgUtils_.getMessage("MSG_ERROR_GENERATE_HANDLER_SKELETON"), new IStatus[0] );
+    			status = StatusUtils.multiStatus( ConsumptionUIMessages.MSG_ERROR_GENERATE_HANDLER_SKELETON, new IStatus[0] );
     		}
     		status.add(writeStatus);
     	} 
@@ -206,7 +203,7 @@ public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
   	} 
     catch (IOException e) 
     {
-  		status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WRITE_FILE", new String[]{ className }), e );
+  		status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_ERROR_WRITE_FILE, new String[]{ className }), e );
   		if (bw != null) {
   			try {
   				bw.close();

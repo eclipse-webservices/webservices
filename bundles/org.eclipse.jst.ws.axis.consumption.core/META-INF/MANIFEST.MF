@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.jst.ws.axis.consumption.core; singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.jst.ws.axis.consumption.core,
+Export-Package: org.eclipse.jst.ws.internal.axis.consumption.core,
  org.eclipse.jst.ws.internal.axis.consumption.core.command,
  org.eclipse.jst.ws.internal.axis.consumption.core.common
 Require-Bundle: org.apache.ant,

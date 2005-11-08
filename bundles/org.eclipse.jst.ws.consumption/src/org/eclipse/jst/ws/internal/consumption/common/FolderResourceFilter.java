@@ -15,7 +15,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.AnyFilter;
+import org.eclipse.jst.ws.internal.common.Filter;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -30,9 +33,6 @@ import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugi
 public class FolderResourceFilter extends AnyFilter
 {
 
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
-
   /**
   * Constructs a new <code>JavaResourceFilter</code> that filters
   * "<code>.java</code>" and "<code>.class</code>" objects.
@@ -46,7 +46,7 @@ public class FolderResourceFilter extends AnyFilter
   */
   public String getName ()
   {
-    return WebServiceConsumptionPlugin.getMessage("%FOLDER_FILTER_NAME");
+    return ConsumptionMessages.FOLDER_FILTER_NAME;
   }
 
   /**
@@ -55,7 +55,7 @@ public class FolderResourceFilter extends AnyFilter
   */
   public String getDescription ()
   {
-    return WebServiceConsumptionPlugin.getMessage("%FOLDER_FILTER_DESC");
+    return ConsumptionMessages.FOLDER_FILTER_DESC;
   }
 
  public IStatus statusOf ( Object object )
@@ -66,7 +66,7 @@ public class FolderResourceFilter extends AnyFilter
         IStatus.ERROR,
         WebServiceConsumptionPlugin.ID,
         0,
-        WebServiceConsumptionPlugin.getMessage("%FILTER_MSG_ERROR_NULL_OBJECT"),
+        ConsumptionMessages.FILTER_MSG_ERROR_NULL_OBJECT,
         null
       );
     }
@@ -83,7 +83,7 @@ public class FolderResourceFilter extends AnyFilter
           IStatus.ERROR,
           WebServiceConsumptionPlugin.ID,
           0,
-          WebServiceConsumptionPlugin.getMessage("%FILTER_MSG_ERROR_NOT_FOLDER",new Object[] {name}),
+          NLS.bind(ConsumptionMessages.FILTER_MSG_ERROR_NOT_FOLDER,new Object[] {name}),
           null
         );
       }

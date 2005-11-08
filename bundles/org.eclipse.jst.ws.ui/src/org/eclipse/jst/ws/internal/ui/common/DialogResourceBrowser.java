@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -155,7 +156,7 @@ public class DialogResourceBrowser extends Dialog
   protected void configureShell(Shell shell)
   {
     super.configureShell(shell);
-    shell.setText(getMessage("%DIALOG_TITLE_RESOURCE_BROWSER"));
+    shell.setText(WSUIPluginMessages.DIALOG_TITLE_RESOURCE_BROWSER);
   }
 
   /** 
@@ -185,7 +186,7 @@ public class DialogResourceBrowser extends Dialog
     gd.grabExcessVerticalSpace = true;
     gd.grabExcessHorizontalSpace = true;
     resourceTree_.setLayoutData(gd);
-    resourceTree_.setToolTipText(getMessage("%TOOLTIP_RESOURCE_TREE"));
+    resourceTree_.setToolTipText(WSUIPluginMessages.TOOLTIP_RESOURCE_TREE);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(resourceTree_, INFOPOP_RESOURCE_TREE);
 
     fileViewer_ = new TreeViewer(resourceTree_);
@@ -214,8 +215,4 @@ public class DialogResourceBrowser extends Dialog
     return composite;
   }
 
-  private String getMessage(String msgId)
-  {
-    return WebServiceUIPlugin.getMessage(msgId);
-  }
 }

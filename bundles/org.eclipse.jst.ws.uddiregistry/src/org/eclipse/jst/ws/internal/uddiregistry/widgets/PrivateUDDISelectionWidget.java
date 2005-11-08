@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.uddiregistry.widgets;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.ws.internal.uddiregistry.UDDIRegistryMessages;
 import org.eclipse.jst.ws.internal.uddiregistry.plugin.WebServiceUDDIRegistryPlugin;
 import org.eclipse.jst.ws.internal.uddiregistry.wizard.PrivateUDDIRegistryType;
 import org.eclipse.jst.ws.internal.uddiregistry.wizard.PrivateUDDIRegistryTypeRegistry;
@@ -25,7 +26,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -38,7 +38,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 */
 public class PrivateUDDISelectionWidget extends SimpleWidgetDataContributor
 {
-  private MessageUtils msgUtils;
   private Listener statusListener;
 
   private Button deployRadio_;
@@ -58,13 +57,12 @@ public class PrivateUDDISelectionWidget extends SimpleWidgetDataContributor
 
   public PrivateUDDISelectionWidget()
   {
-    msgUtils = new MessageUtils(WebServiceUDDIRegistryPlugin.ID + ".plugin", this );
   }
 
   public WidgetDataEvents addControls(Composite parent, Listener statusListener)
   {
   	this.statusListener = statusListener;
-    parent.setToolTipText(msgUtils.getMessage("TOOLTIP_PUPR_PRIVATE_UDDI_PAGE"));
+    parent.setToolTipText(UDDIRegistryMessages.TOOLTIP_PUPR_PRIVATE_UDDI_PAGE);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, INFOPOP_PUPR_PRIVATE_UDDI_PAGE);
 
     GridLayout gl;
@@ -81,10 +79,10 @@ public class PrivateUDDISelectionWidget extends SimpleWidgetDataContributor
     IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
     
     deployRadio_ = new Button(parent, SWT.RADIO);
-    deployRadio_.setText(msgUtils.getMessage("BUTTON_DEPLOY_UDDI_REGISTRY"));
+    deployRadio_.setText(UDDIRegistryMessages.BUTTON_DEPLOY_UDDI_REGISTRY);
     deployRadio_.setSelection(true);
     deployRadio_.addListener(SWT.Selection, listener);
-    deployRadio_.setToolTipText(msgUtils.getMessage("TOOLTIP_PUPR_DEPLOY_PRIVATE_UDDI"));
+    deployRadio_.setToolTipText(UDDIRegistryMessages.TOOLTIP_PUPR_DEPLOY_PRIVATE_UDDI);
     helpSystem.setHelp(deployRadio_, INFOPOP_PUPR_DEPLOY_PRIVATE_UDDI);
 
     Composite typeComposite = new Composite(parent,SWT.NONE);
@@ -98,29 +96,29 @@ public class PrivateUDDISelectionWidget extends SimpleWidgetDataContributor
     typeComposite.setLayoutData(gd);
 
     typesLabel_ = new Label(typeComposite, SWT.WRAP);
-    typesLabel_.setText(msgUtils.getMessage("LABEL_PRIVATE_UDDI_REGISTRY_TYPES"));
-    typesLabel_.setToolTipText(msgUtils.getMessage("TOOLTIP_PUPR_PRIVATE_UDDI_TYPE"));
+    typesLabel_.setText(UDDIRegistryMessages.LABEL_PRIVATE_UDDI_REGISTRY_TYPES);
+    typesLabel_.setToolTipText(UDDIRegistryMessages.TOOLTIP_PUPR_PRIVATE_UDDI_TYPE);
     helpSystem.setHelp(typesLabel_, INFOPOP_PUPR_PRIVATE_UDDI_TYPE);
 
     typesCombo_ = new Combo(typeComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
     gd = new GridData(GridData.FILL_HORIZONTAL);
     typesCombo_.setLayoutData(gd);
     typesCombo_.addListener(SWT.Selection, listener);
-    typesCombo_.setToolTipText(msgUtils.getMessage("TOOLTIP_PUPR_PRIVATE_UDDI_TYPE"));
+    typesCombo_.setToolTipText(UDDIRegistryMessages.TOOLTIP_PUPR_PRIVATE_UDDI_TYPE);
     helpSystem.setHelp(typesCombo_, INFOPOP_PUPR_PRIVATE_UDDI_TYPE);
 
     updateRadio_ = new Button(parent,SWT.RADIO);
-    updateRadio_.setText(msgUtils.getMessage("BUTTON_UPDATE_UDDI_REGISTRY"));
+    updateRadio_.setText(UDDIRegistryMessages.BUTTON_UPDATE_UDDI_REGISTRY);
     updateRadio_.setSelection(false);
     updateRadio_.addListener(SWT.Selection,listener);
-    updateRadio_.setToolTipText(msgUtils.getMessage("TOOLTIP_PUPR_UPDATE_PRIVATE_UDDI"));
+    updateRadio_.setToolTipText(UDDIRegistryMessages.TOOLTIP_PUPR_UPDATE_PRIVATE_UDDI);
     helpSystem.setHelp(updateRadio_, INFOPOP_PUPR_UPDATE_PRIVATE_UDDI);
 
     removeRadio_ = new Button(parent, SWT.RADIO);
-    removeRadio_.setText(msgUtils.getMessage("BUTTON_REMOVE_UDDI_REGISTRY"));
+    removeRadio_.setText(UDDIRegistryMessages.BUTTON_REMOVE_UDDI_REGISTRY);
     removeRadio_.setSelection(false);
     removeRadio_.addListener(SWT.Selection, listener);
-    removeRadio_.setToolTipText(msgUtils.getMessage("TOOLTIP_PUPR_REMOVE_PRIVATE_UDDI"));
+    removeRadio_.setToolTipText(UDDIRegistryMessages.TOOLTIP_PUPR_REMOVE_PRIVATE_UDDI);
     helpSystem.setHelp(removeRadio_, INFOPOP_PUPR_REMOVE_PRIVATE_UDDI);                
 
     loadTypes();
@@ -207,6 +205,6 @@ public class PrivateUDDISelectionWidget extends SimpleWidgetDataContributor
     if (privateUDDIRegistryType != null)
       return privateUDDIRegistryType.getOperationStatus(getOperationType());
     else
-      return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_NO_UDDI_REGISTRY_AVAILABLE") );
+      return StatusUtils.errorStatus( UDDIRegistryMessages.MSG_ERROR_NO_UDDI_REGISTRY_AVAILABLE );
   }
 }

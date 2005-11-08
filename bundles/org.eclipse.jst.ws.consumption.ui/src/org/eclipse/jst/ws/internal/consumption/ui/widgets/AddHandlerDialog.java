@@ -20,7 +20,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.jst.ws.internal.ui.dialog.DialogUtils;
 import org.eclipse.swt.SWT;
@@ -35,14 +35,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 
 
 
 public class AddHandlerDialog extends Dialog implements Listener {
 
   private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-  private MessageUtils msgUtils_;
+
   private boolean validateOn_;
   private boolean isClient_;
   private String className;
@@ -56,15 +55,12 @@ public class AddHandlerDialog extends Dialog implements Listener {
   // ----TOOLTIPS Section----
   /* CONTEXT_ID AHDL0001 for the Handler Config Page */
   private final String INFOPOP_TEXT_HANDLER_NAME  = "AHDL0001"; //$NON-NLS-1$
-  private final String TOOLTIP_TEXT_HANDLER_NAME = "TOOLTIP_TEXT_HANDLER_NAME";
   
   /* CONTEXT_ID AHDL0002 for the Handler Config Page */
   private final String INFOPOP_TEXT_HANDLER_CLASS  = "AHDL0002"; //$NON-NLS-1$
-  private final String TOOLTIP_TEXT_HANDLER_CLASS = "TOOLTIP_TEXT_HANDLER_CLASS";
   
   /* CONTEXT_ID AHDL0001 for the Handler Config Page */
   private final String INFOPOP_TEXT_HANDLER_PORT  = "AHDL0003"; //$NON-NLS-1$
-  private final String TOOLTIP_TEXT_HANDLER_PORT = "TOOLTIP_TEXT_HANDLER_PORT";
     
   private Button beanClassBrowseButton_;
   /*CONTEXT_ID PBCL0003 for the Bean Class Browse button of the Bean Selection Page*/
@@ -84,24 +80,23 @@ public class AddHandlerDialog extends Dialog implements Listener {
 
   protected Control createDialogArea(Composite parent) {
     validateOn_ = false;
-    msgUtils_ = new MessageUtils(WebServiceConsumptionUIPlugin.ID + ".plugin", this);
-    UIUtils uiUtils = new UIUtils(msgUtils_, pluginId_);
+    UIUtils uiUtils = new UIUtils(pluginId_);
     
     Shell thisShell = parent.getShell();
     if (thisShell == null) {
       thisShell = createShell();
     }
-    thisShell.setText(msgUtils_.getMessage("DIALOG_TITLE_WS_ADD_HANDLER"));
+    thisShell.setText(ConsumptionUIMessages.DIALOG_TITLE_WS_ADD_HANDLER);
     
     Composite composite = (Composite) super.createDialogArea(parent);    
     
     Composite sourceLocationComp = uiUtils.createComposite(composite, 3);
     
-    classNameText = uiUtils.createText(sourceLocationComp, "LABEL_TEXT_HANDLER_CLASS", TOOLTIP_TEXT_HANDLER_CLASS, INFOPOP_TEXT_HANDLER_CLASS, SWT.SINGLE | SWT.BORDER);
+    classNameText = uiUtils.createText(sourceLocationComp, ConsumptionUIMessages.LABEL_TEXT_HANDLER_CLASS, ConsumptionUIMessages.TOOLTIP_TEXT_HANDLER_CLASS, INFOPOP_TEXT_HANDLER_CLASS, SWT.SINGLE | SWT.BORDER);
     classNameText.addListener(SWT.Modify,this);
     
-    beanClassBrowseButton_ = uiUtils.createPushButton( sourceLocationComp, "BUTTON_BROWSE_CLASSES",
-                                                       "TOOLTIP_PBCL_BUTTON_BEAN_CLASS_BROWSE",
+    beanClassBrowseButton_ = uiUtils.createPushButton( sourceLocationComp, ConsumptionUIMessages.BUTTON_BROWSE_CLASSES,
+    		ConsumptionUIMessages.TOOLTIP_PBCL_BUTTON_BEAN_CLASS_BROWSE,
                                                        INFOPOP_PBCL_BUTTON_BEAN_CLASS_BROWSE );
     beanClassBrowseButton_.addSelectionListener( new SelectionAdapter()
         {
@@ -111,14 +106,14 @@ public class AddHandlerDialog extends Dialog implements Listener {
           }
         } );
     
-    nameText = uiUtils.createText(sourceLocationComp, "LABEL_TEXT_HANDLER_NAME", TOOLTIP_TEXT_HANDLER_NAME, INFOPOP_TEXT_HANDLER_NAME, SWT.SINGLE | SWT.BORDER );
+    nameText = uiUtils.createText(sourceLocationComp, ConsumptionUIMessages.LABEL_TEXT_HANDLER_NAME, ConsumptionUIMessages.TOOLTIP_TEXT_HANDLER_NAME, INFOPOP_TEXT_HANDLER_NAME, SWT.SINGLE | SWT.BORDER );
     nameText.addListener(SWT.Modify, this);
     
     // dummy label for column 3.
     new Label( sourceLocationComp, SWT.NONE );
     
     if (!isClient_){
-      portNameCombo = uiUtils.createCombo(sourceLocationComp, "LABEL_TEXT_HANDLER_PORT", TOOLTIP_TEXT_HANDLER_PORT, INFOPOP_TEXT_HANDLER_PORT, SWT.SINGLE | SWT.BORDER );
+      portNameCombo = uiUtils.createCombo(sourceLocationComp, ConsumptionUIMessages.LABEL_TEXT_HANDLER_PORT, ConsumptionUIMessages.TOOLTIP_TEXT_HANDLER_PORT, INFOPOP_TEXT_HANDLER_PORT, SWT.SINGLE | SWT.BORDER );
       portNameCombo.addListener(SWT.Modify, this);
       
       // dummy label for column 3.

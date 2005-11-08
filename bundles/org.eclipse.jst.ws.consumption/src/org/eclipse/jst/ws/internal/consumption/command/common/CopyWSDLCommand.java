@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+
 import javax.wsdl.Definition;
 import javax.wsdl.Import;
 import javax.wsdl.Types;
@@ -35,12 +36,14 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.uri.URIException;
@@ -87,7 +90,7 @@ public class CopyWSDLCommand extends AbstractDataModelOperation
     catch (Throwable t)
     {
       t.printStackTrace();
-      IStatus status = StatusUtils.errorStatus( WebServiceConsumptionPlugin.getMessage("MSG_ERROR_COPY_WSDL", new String[]{wsdlURI, destinationURI}), t);
+      IStatus status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_COPY_WSDL, new String[]{wsdlURI, destinationURI}), t);
       env.getStatusHandler().reportError(status);
       return status;
     }

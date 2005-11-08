@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -33,16 +33,12 @@ public class CreateServerCommand extends AbstractDataModelOperation
 	private String serverFactoryId;
 	private String serverInstanceId;
 	
-	private MessageUtils msgUtils;
-	
 	/**
 	 * Creates a server of the factory id
 	 * Note1: Checking for server instance == null is done in the PreService/ClientInstallCommands
 	 * Note2: Reporting of errors is done in PreService/ClientInstallCommands; simply return the status.
 	 */
 	public CreateServerCommand(){
-		msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
-		
 	}
 	
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -52,7 +48,7 @@ public class CreateServerCommand extends AbstractDataModelOperation
 		IStatus status = Status.OK_STATUS;
 		
 		if (serverFactoryId==null){
-			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_CREATE_SERVER") );
+			status = StatusUtils.errorStatus(ConsumptionMessages.MSG_ERROR_CREATE_SERVER );
 			return status;			
 		}
 		
@@ -78,7 +74,7 @@ public class CreateServerCommand extends AbstractDataModelOperation
 				
 				if (nonStubRuntime==null)
 				{					
-					status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_STUB_ONLY",new String[]{serverFactoryId}) );
+					status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_STUB_ONLY,new String[]{serverFactoryId}) );
 					return status;					
 				}
 				
@@ -99,7 +95,7 @@ public class CreateServerCommand extends AbstractDataModelOperation
 				}
 			}
 		} catch (CoreException ce) {
-			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_CREATE_SERVER"), ce);
+			status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_CREATE_SERVER, ce);
 			return status;
 		}
 		
@@ -107,7 +103,7 @@ public class CreateServerCommand extends AbstractDataModelOperation
 		if (server!=null)
 			serverInstanceId = server.getId();
 		else {
-			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_CREATE_SERVER") );			
+			status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_CREATE_SERVER );			
 		}
 		
 		return status;

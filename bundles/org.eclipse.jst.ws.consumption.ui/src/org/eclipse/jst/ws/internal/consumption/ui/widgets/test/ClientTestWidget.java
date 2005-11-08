@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FolderResourceFilter;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.jst.ws.internal.ui.dialog.DialogUtils;
 import org.eclipse.swt.SWT;
@@ -40,7 +41,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.selection.BooleanSelection;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
@@ -105,14 +105,13 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
     isTestWidget = true;
-  	MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    UIUtils      uiUtils  = new UIUtils(msgUtils, pluginId_ );
+    UIUtils      uiUtils  = new UIUtils( pluginId_ );
         
-	parent.setToolTipText( msgUtils.getMessage( "TOOLTIP_PWSM_PAGE" ) );
+	parent.setToolTipText( ConsumptionUIMessages.TOOLTIP_PWSM_PAGE );
 	PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId_ + "." + INFOPOP_PWSM_PAGE );
     
-    testCheckbox_ = uiUtils.createCheckbox( parent, "BUTTON_TEST",
-                                            "TOOLTIP_PWSM_CHECKBOX_TEST",
+    testCheckbox_ = uiUtils.createCheckbox( parent, ConsumptionUIMessages.BUTTON_TEST,
+    		ConsumptionUIMessages.TOOLTIP_PWSM_CHECKBOX_TEST,
                                             INFOPOP_PWSM_CHECKBOX_TEST );
     testCheckbox_.addSelectionListener( new SelectionAdapter()
                                         {
@@ -124,22 +123,22 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     
     comboGroup_ = uiUtils.createComposite( parent, 3, 5, 0 );
     
-    testTypeCombo_ = uiUtils.createCombo( comboGroup_, "LABEL_TEST_TYPES",
-                                          "TOOLTIP_PWSM_COMBOBOX_TEST",
+    testTypeCombo_ = uiUtils.createCombo( comboGroup_, ConsumptionUIMessages.LABEL_TEST_TYPES,
+    									ConsumptionUIMessages.TOOLTIP_PWSM_COMBOBOX_TEST,
                                           INFOPOP_PWSM_COMBOBOX_TEST,
                                           SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     new Label( comboGroup_, SWT.NONE );
     
-    projectCombo_ = uiUtils.createCombo( comboGroup_, "LABEL_JSP_PROJECT_NAME",
-                                          "TOOLTIP_PWSM_COMBO_PROJECT",
+    projectCombo_ = uiUtils.createCombo( comboGroup_, ConsumptionUIMessages.LABEL_JSP_PROJECT_NAME,
+    									ConsumptionUIMessages.TOOLTIP_PWSM_COMBO_PROJECT,
                                           INFOPOP_PWSM_COMBO_PROJECT,
                                           SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     projectCombo_.setEnabled( false );
     new Label( comboGroup_, SWT.NONE );
     
     
-    earCombo_ = uiUtils.createCombo( comboGroup_, "LABEL_EAR_PROJECTS",
-                                     "TOOLTIP_PWSM_EAR_PROJECT",
+    earCombo_ = uiUtils.createCombo( comboGroup_, ConsumptionUIMessages.LABEL_EAR_PROJECTS,
+    								ConsumptionUIMessages.TOOLTIP_PWSM_EAR_PROJECT,
                                      INFOPOP_PWSM_EAR_COMBO,
                                      SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     earCombo_.setEnabled( false );
@@ -147,8 +146,8 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     
     
     
-    sampleFolderText_ = uiUtils.createText( comboGroup_, "LABEL_FOLDER_NAME",
-                                            "TOOLTIP_PWSM_TEXT_SAMPLE_FOLDER",
+    sampleFolderText_ = uiUtils.createText( comboGroup_, ConsumptionUIMessages.LABEL_FOLDER_NAME,
+    										ConsumptionUIMessages.TOOLTIP_PWSM_TEXT_SAMPLE_FOLDER,
                                             INFOPOP_PWSM_TEXT_SAMPLE_FOLDER,
                                             SWT.SINGLE | SWT.BORDER );
     
@@ -161,8 +160,8 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
       });
     
        
-    sampleFolderBrowseButton_ = uiUtils.createPushButton( comboGroup_, "BUTTON_BROWSE", 
-                                                          "TOOLTIP_PWSM_BUTTON_JSP_FOLDER_BROWSE",
+    sampleFolderBrowseButton_ = uiUtils.createPushButton( comboGroup_, ConsumptionUIMessages.BUTTON_BROWSE, 
+    											ConsumptionUIMessages.TOOLTIP_PWSM_BUTTON_JSP_FOLDER_BROWSE,
                                                           INFOPOP_PWSM_BUTTON_JSP_FOLDER_BROWSE );
     sampleFolderBrowseButton_.addSelectionListener( new SelectionAdapter()
                                                     {
@@ -172,14 +171,14 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
                                                       }
                                                     });
     
-    jspFolderText_ = uiUtils.createText( comboGroup_, "LABEL_JSP_FOLDER_NAME",
-            "TOOLTIP_PWSM_TEXT_JSP_FOLDER",
+    jspFolderText_ = uiUtils.createText( comboGroup_, ConsumptionUIMessages.LABEL_JSP_FOLDER_NAME,
+    		ConsumptionUIMessages.TOOLTIP_PWSM_TEXT_JSP_FOLDER,
             INFOPOP_PWSM_TEXT_JSP_FOLDER,
             SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     jspFolderText_.setEnabled( false );
     
-    Group methodsGroup = uiUtils.createGroup( parent, "LABEL_METHODS",  
-                                             "TOOLTIP_PWSM_TREE_METHODS", null );
+    Group methodsGroup = uiUtils.createGroup( parent, ConsumptionUIMessages.LABEL_METHODS,  
+    				ConsumptionUIMessages.TOOLTIP_PWSM_TREE_METHODS, null );
     
 	methodsGroup.setLayoutData( uiUtils.createFillAll() );
 	
@@ -189,15 +188,15 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	methodsGroup.setLayout( layout );
 	
 	// TODO No infopop for this tree.
-	methodsTree_ = uiUtils.createTree( methodsGroup, "TOOLTIP_PWSM_TREE_METHODS", 
+	methodsTree_ = uiUtils.createTree( methodsGroup, ConsumptionUIMessages.TOOLTIP_PWSM_TREE_METHODS, 
 	                                   null,
 	                   				   SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL	| SWT.CHECK );
 
     Composite selectButtons = uiUtils.createComposite( methodsGroup, 2 );
     
     selectAllMethodsButton_ 
-      = uiUtils.createPushButton( selectButtons, "BUTTON_SELECT_ALL", 
-                                                 "TOOLTIP_PWSM_BUTTON_SELECT_ALL",
+      = uiUtils.createPushButton( selectButtons, ConsumptionUIMessages.BUTTON_SELECT_ALL, 
+    		  ConsumptionUIMessages.TOOLTIP_PWSM_BUTTON_SELECT_ALL,
                                                  INFOPOP_PWSM_BUTTON_SELECT_ALL );
     selectAllMethodsButton_.addSelectionListener( new SelectionAdapter() 
                                                   {
@@ -208,8 +207,8 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
                                                   });
     
     deselectAllMethodsButton_ 
-      = uiUtils.createPushButton( selectButtons, "BUTTON_DESELECT_ALL", 
-                                  "TOOLTIP_PWSM_BUTTON_DESELECT_ALL",
+      = uiUtils.createPushButton( selectButtons, ConsumptionUIMessages.BUTTON_DESELECT_ALL, 
+    		  					ConsumptionUIMessages.TOOLTIP_PWSM_BUTTON_DESELECT_ALL,
                                   INFOPOP_PWSM_BUTTON_DESELECT_ALL );
     deselectAllMethodsButton_.addSelectionListener( new SelectionAdapter() 
                                                     {
@@ -219,8 +218,8 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
                                                       }
                                                     });
     
-    runTestCheckbox_ = uiUtils.createCheckbox( parent, "BUTTON_RUN_TEST",
-                                               "TOOLTIP_PWSM_CHECKBOX_LAUNCH",
+    runTestCheckbox_ = uiUtils.createCheckbox( parent, ConsumptionUIMessages.BUTTON_RUN_TEST,
+    										ConsumptionUIMessages.TOOLTIP_PWSM_CHECKBOX_LAUNCH,
                                                INFOPOP_PWSM_CHECKBOX_LAUNCH );
     
     return this;

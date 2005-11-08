@@ -15,9 +15,9 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -77,8 +77,7 @@ public class CreateMonitorCommand extends AbstractDataModelOperation
                   serverMonitorManager.startMonitor(imsPort);
                 }
                 catch (CoreException ce) {
-                  MessageUtils msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
-                  IStatus error = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR",
+                  IStatus error = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_UNABLE_TO_START_MONITOR,
                                                            new Object[] { String.valueOf(port.getPort()), server.getName()}), ce);
                   env.getStatusHandler().reportError(error);
                   return error;
@@ -95,8 +94,7 @@ public class CreateMonitorCommand extends AbstractDataModelOperation
             return Status.OK_STATUS;
           }
           catch (CoreException ce) {
-            MessageUtils msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
-            IStatus error = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[] {
+            IStatus error = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_UNABLE_TO_START_MONITOR, new Object[] {
                                                      String.valueOf(port.getPort()), server.getName()}), ce);
             env.getStatusHandler().reportError(error);
             return error;
@@ -104,8 +102,7 @@ public class CreateMonitorCommand extends AbstractDataModelOperation
         }
 
         else {
-          MessageUtils msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
-          IStatus info = StatusUtils.infoStatus( msgUtils.getMessage("MSG_INFO_MONITORING_NOT_SUPPORTED",
+          IStatus info = StatusUtils.infoStatus( NLS.bind(ConsumptionMessages.MSG_INFO_MONITORING_NOT_SUPPORTED,
                                                  new Object[] { server.getName()}) );
           env.getStatusHandler().reportInfo(info);
           return info;

@@ -18,6 +18,7 @@ import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
 import org.eclipse.wst.common.environment.IStatusHandler;
+import org.eclipse.wst.ws.internal.WstWSPluginMessages;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
 
@@ -50,7 +51,7 @@ public static int getWSISeverity (IProject project, PersistentWSIContext context
 public static boolean checkWSICompliance ( IStatusHandler monitor, Status[] status, IProject project, PersistentWSIContext context)
 {
 	String pluginId = "org.eclipse.wst.ws.ui";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", WSPlugin.getInstance()); 
+    msgUtils_ = new MessageUtils(pluginId + ".plugin", WSPlugin.getInstance()); 
 	
   	if (context.projectStopNonWSICompliances(project))
   		{
@@ -65,9 +66,9 @@ public static boolean checkWSICompliance ( IStatusHandler monitor, Status[] stat
   			// give a warning message with the options to stop, ignore this one, or ignore all coming messages
   			IStatus status_ = StatusUtils.multiStatus( msgUtils_.getMessage(context.getWarning()), status);
 
-  			Choice ignoreChoice = new Choice('I', msgUtils_.getMessage("IGNORE_LABEL"), msgUtils_.getMessage("IGNORE_DESCRIPTION"));
-  			Choice ignoreAllChoice = new Choice('A', msgUtils_.getMessage("IGNORE_ALL_LABEL"), msgUtils_.getMessage("IGNORE_ALL_DESCRIPTION"));
-  			Choice cancelChoice = new Choice('C', msgUtils_.getMessage("CANCEL_LABEL"), msgUtils_.getMessage("CANCEL_DESCRIPTION"));
+  			Choice ignoreChoice = new Choice('I', WstWSPluginMessages.IGNORE_LABEL, WstWSPluginMessages.IGNORE_DESCRIPTION);
+  			Choice ignoreAllChoice = new Choice('A', WstWSPluginMessages.IGNORE_ALL_LABEL, WstWSPluginMessages.IGNORE_ALL_DESCRIPTION);
+  			Choice cancelChoice = new Choice('C', WstWSPluginMessages.CANCEL_LABEL, WstWSPluginMessages.CANCEL_DESCRIPTION);
   			Choice result = monitor.report(status_, new Choice[]{ignoreChoice, ignoreAllChoice, cancelChoice});
   			
   			// if the user closes the message box or selects ignore continue

@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
-import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;

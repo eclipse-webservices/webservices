@@ -31,7 +31,7 @@ import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jst.ws.internal.common.Filter;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
+import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.SelectionDialog;
@@ -42,8 +42,7 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 */
 public final class DialogUtils
 {
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
+
   /**
   * Raises a dialog for browsing containers.
   * @param parentShell The parent shell, optionally null.
@@ -174,8 +173,8 @@ public final class DialogUtils
     try
 	{
       SelectionDialog dialog = JavaUI.createTypeDialog(parentShell, ctxt, scope, IJavaElementSearchConstants.CONSIDER_CLASSES, false);
-      dialog.setTitle(WebServiceUIPlugin.getMessage("%DIALOG_TITLE_CLASS_BROWSE"));
-      dialog.setMessage(WebServiceUIPlugin.getMessage("%DIALOG_TITLE_CLASS_BROWSE"));    
+      dialog.setTitle(WSUIPluginMessages.DIALOG_TITLE_CLASS_BROWSE);
+      dialog.setMessage(WSUIPluginMessages.DIALOG_TITLE_CLASS_BROWSE);    
       dialog.open();
 
       //Getting the result and returning it
@@ -221,8 +220,8 @@ public final class DialogUtils
     try
 	{
     	SelectionDialog dialog = JavaUI.createTypeDialog(parentShell, container, scope, IJavaElementSearchConstants.CONSIDER_TYPES, false);
-    	dialog.setTitle(WebServiceUIPlugin.getMessage("%DIALOG_TITLE_INTERFACE_BROWSE"));
-    	dialog.setMessage(WebServiceUIPlugin.getMessage("%DIALOG_TITLE_INTERFACE_BROWSE"));    
+    	dialog.setTitle(WSUIPluginMessages.DIALOG_TITLE_INTERFACE_BROWSE);
+    	dialog.setMessage(WSUIPluginMessages.DIALOG_TITLE_INTERFACE_BROWSE);    
     	dialog.open();
 
     	//Getting the result and returning it

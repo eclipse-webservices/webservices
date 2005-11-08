@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,7 +28,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.WSPluginMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -46,8 +47,6 @@ import org.eclipse.wst.server.core.model.IURLProvider;
  */
 public final class ServerUtils {
 
-	private MessageUtils msgUtils_;
-
 	private Hashtable serverIdToLabel_;
 
 	private Hashtable serverLabelToId_;
@@ -63,8 +62,6 @@ public final class ServerUtils {
 	}
 
 	public ServerUtils() {
-		String pluginId = "org.eclipse.jst.ws";
-		msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	}
 
 	// Gets the Server labels given the server factory id
@@ -151,7 +148,7 @@ public final class ServerUtils {
 		} 
     catch (CoreException exc ) 
     {
-			status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), exc );
+			status = StatusUtils.errorStatus( WSPluginMessages.MSG_ERROR_SERVER, exc );
 			env.getStatusHandler().reportError(status);
 			return status;
 		} finally {
@@ -163,7 +160,7 @@ public final class ServerUtils {
 				} 
         catch (CoreException exc ) 
         {
-					status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), exc );
+					status = StatusUtils.errorStatus( WSPluginMessages.MSG_ERROR_SERVER, exc );
 					env.getStatusHandler().reportError(status);
 					return status;
 				}
@@ -236,7 +233,7 @@ public final class ServerUtils {
 				}
 			} catch (CoreException ce) 
       {
-				IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), ce);
+				IStatus status = StatusUtils.errorStatus( WSPluginMessages.MSG_ERROR_SERVER, ce);
 				env.getStatusHandler().reportError(status);
 				return null;
 			}
@@ -269,7 +266,7 @@ public final class ServerUtils {
 		} 
     catch (Exception e) 
     {
-			IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), e);
+			IStatus status = StatusUtils.errorStatus( WSPluginMessages.MSG_ERROR_SERVER, e);
 			env.getStatusHandler().reportError(status);
 			return null;
 		} finally {
@@ -278,7 +275,7 @@ public final class ServerUtils {
 					serverWC.saveAll(true, monitor);
 				}
 			} catch (CoreException ce) {
-				IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), ce);
+				IStatus status = StatusUtils.errorStatus( WSPluginMessages.MSG_ERROR_SERVER, ce);
 				env.getStatusHandler().reportError(status);
 				return null;
 			}

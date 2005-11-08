@@ -11,13 +11,14 @@
 package org.eclipse.wst.command.internal.env.core.fragment;
 
 import java.util.Stack;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.env.core.CommandFactory;
 import org.eclipse.wst.command.internal.env.core.CommandManager;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.EnvironmentCoreMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
@@ -350,10 +351,9 @@ public class CommandFragmentEngine implements CommandManager
   	    }
   	    catch( Throwable exc )
   	    {
-  	      MessageUtils utils           = new MessageUtils( "org.eclipse.wst.command.env.core.environment", this );
   	      IStatus      unexpectedError = StatusUtils.errorStatus( exc );
           MultiStatus  parentStatus    = new MultiStatus( "id", 0, new IStatus[]{unexpectedError}, 
-                                                          utils.getMessage( "MSG_ERROR_UNEXPECTED_ERROR" ), null );
+                                                          EnvironmentCoreMessages.MSG_ERROR_UNEXPECTED_ERROR, null );
   	      environment_.getStatusHandler().reportError( parentStatus );
   	    }
   	    finally

@@ -6,8 +6,7 @@ Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.wst.command.internal.env.ui.plugin.EnvUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.wst.command.env.ui,
- org.eclipse.wst.command.env.ui.widgets,
+Export-Package: org.eclipse.wst.command.internal.env.ui,
  org.eclipse.wst.command.internal.env.ui.dialog,
  org.eclipse.wst.command.internal.env.ui.eclipse,
  org.eclipse.wst.command.internal.env.ui.plugin,

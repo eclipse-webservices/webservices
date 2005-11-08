@@ -21,10 +21,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -37,13 +38,8 @@ public class DefaultsForClientJavaWSDLCommand extends AbstractDataModelOperation
 	private IProject proxyProject_;
 	private String WSDLServiceURL_;
 	private String WSDLServicePathname_;
-	private MessageUtils msgUtils_;
-	private MessageUtils coreMsgUtils_;
 	
 	public DefaultsForClientJavaWSDLCommand( ) {
-		String       pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
-	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
 	}
 	
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
@@ -52,8 +48,7 @@ public class DefaultsForClientJavaWSDLCommand extends AbstractDataModelOperation
 		IStatus status;
 		if (javaWSDLParam_ == null) {
 			status = StatusUtils.errorStatus(
-					coreMsgUtils_.getMessage(
-				"MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
+					AxisConsumptionCoreMessages.MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET);
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
@@ -99,7 +94,7 @@ public class DefaultsForClientJavaWSDLCommand extends AbstractDataModelOperation
 	 		 else
 	 		 {
 	 			 //Not familiar with this kind of project
-	 	 		 status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"));	
+	 	 		 status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_WARN_NO_JAVA_NATURE);	
 	 	 		 environment.getStatusHandler().reportError(status);
 	 	 		 return status;
 	 			 
@@ -112,8 +107,7 @@ public class DefaultsForClientJavaWSDLCommand extends AbstractDataModelOperation
 			
 			if (WSDLServiceURL_ == null) {
 				status = StatusUtils.errorStatus(
-						msgUtils_.getMessage(
-					"MSG_ERROR_WSDL_LOCATION_NOT_SET"));
+						AxisConsumptionUIMessages.MSG_ERROR_WSDL_LOCATION_NOT_SET);
 				environment.getStatusHandler().reportError(status);
 				return status;
 			}

@@ -13,17 +13,18 @@ package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
 
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.Method;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofParameterVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanModelElementsFactory;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.MethodElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.ws.internal.datamodel.Element;
@@ -38,10 +39,6 @@ import org.eclipse.wst.ws.internal.datamodel.Element;
 public class JavaMofMethodVisitorAction extends JavaMofBeanVisitorAction 
 {
 
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
-
-  private MessageUtils msgUtils_;
   public String fUnsupportedParameterName;
 
  /*
@@ -61,8 +58,6 @@ public class JavaMofMethodVisitorAction extends JavaMofBeanVisitorAction
   public JavaMofMethodVisitorAction(Element parentElement,String project, IEnvironment env)
   {
     super(parentElement,project, env);
-    String pluginId = "org.eclipse.jst.ws.consumption";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     fMethodsOmitted = new Vector();
     fMethodsProcessed = new Vector();
 
@@ -82,16 +77,16 @@ public class JavaMofMethodVisitorAction extends JavaMofBeanVisitorAction
       //if there is an unsupported type in these we can react immediately
       //we add it to the omitted methods an go to the next one
       if(!parameterCheck(method)){
-      	status = StatusUtils.warningStatus( msgUtils_.getMessage("MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_ARRAYS") + fUnsupportedParameterName );
+      	status = StatusUtils.warningStatus(ConsumptionMessages.MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_ARRAYS + fUnsupportedParameterName );
         //getStatusMonitor().reportStatus (new Status(IStatus.WARNING,WebServiceConsumptionPlugin.ID,0,
-        //		WebServiceConsumptionPlugin.getMessage( "%MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_ARRAYS" ) + fUnsupportedParameterName,null));
+        //		ConsumptionMessages.MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_ARRAYS + fUnsupportedParameterName,null));
         fMethodsOmitted.addElement(method.getMethodElementSignature());
         return status;
       }
       if(!nullConstructor(method)){
-      	status = StatusUtils.warningStatus( msgUtils_.getMessage("MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_INPUTS") + fUnsupportedParameterName );
+      	status = StatusUtils.warningStatus( ConsumptionMessages.MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_INPUTS + fUnsupportedParameterName );
         //getStatusMonitor().reportStatus (new Status(IStatus.WARNING,WebServiceConsumptionPlugin.ID,0,
-       	//	WebServiceConsumptionPlugin.getMessage( "%MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_INPUTS" ) + fUnsupportedParameterName,null));
+       	//	ConsumptionMessages.MSG_WARN_JTS_UNSUPPORTED_PARAMETERS_INPUTS + fUnsupportedParameterName,null));
         fMethodsOmitted.addElement(method.getMethodElementSignature());
         return status;
       

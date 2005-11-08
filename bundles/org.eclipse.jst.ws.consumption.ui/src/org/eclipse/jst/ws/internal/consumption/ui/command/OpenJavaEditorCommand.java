@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.command;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -22,7 +23,9 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
@@ -81,13 +84,13 @@ public class OpenJavaEditorCommand extends AbstractDataModelOperation
           }
           catch (Throwable t)
           {
-            return new org.eclipse.core.runtime.Status(org.eclipse.core.runtime.Status.ERROR, WebServiceConsumptionUIPlugin.ID, 0, WebServiceConsumptionUIPlugin.getMessage("MSG_ERROR_UNABLE_TO_OPEN_JAVA_EDITOR", new String[]{className, project.getName()}), t);
+            return new org.eclipse.core.runtime.Status(org.eclipse.core.runtime.Status.ERROR, WebServiceConsumptionUIPlugin.ID, 0, NLS.bind(ConsumptionUIMessages.MSG_ERROR_UNABLE_TO_OPEN_JAVA_EDITOR, new String[]{className, project.getName()}), t);
           }
         }
         return new org.eclipse.core.runtime.Status(org.eclipse.core.runtime.Status.OK, WebServiceConsumptionUIPlugin.ID, 0, "", null);
       }
       else
-        return new org.eclipse.core.runtime.Status(org.eclipse.core.runtime.Status.ERROR, WebServiceConsumptionUIPlugin.ID, 0, WebServiceConsumptionUIPlugin.getMessage("MSG_ERROR_UNABLE_TO_OPEN_JAVA_EDITOR", new String[]{classNames != null ? classNames.toString() : "", project != null ? project.getName() : ""}), null);
+        return new org.eclipse.core.runtime.Status(org.eclipse.core.runtime.Status.ERROR, WebServiceConsumptionUIPlugin.ID, 0, NLS.bind(ConsumptionUIMessages.MSG_ERROR_UNABLE_TO_OPEN_JAVA_EDITOR, new String[]{classNames != null ? classNames.toString() : "", project != null ? project.getName() : ""}), null);
     }
   }
 }

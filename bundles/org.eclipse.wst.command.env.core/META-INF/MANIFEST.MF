@@ -5,8 +5,7 @@ Bundle-SymbolicName: org.eclipse.wst.command.env.core
 Bundle-Version: 1.0.0
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.wst.command.env.core,
- org.eclipse.wst.command.internal.env.core.data,
+Export-Package: org.eclipse.wst.command.internal.env.core.data,
  org.eclipse.wst.command.internal.env.core.fragment,
  org.eclipse.wst.command.internal.env.core.registry,
  org.eclipse.wst.command.internal.env.core,

@@ -12,11 +12,15 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton;
 
 import java.io.File;
 import java.net.MalformedURLException;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -25,7 +29,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
@@ -36,28 +39,25 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
 
   /* CONTEXT_ID PBSC0001 for the Skeleton Config Page */
   private static final String INFOPOP_PBSC_PAGE = "PBSC0001"; //$NON-NLS-1$
-  private static final String TOOLTIP_PBSC_PAGE = "TOOLTIP_PBSC_PAGE";
   
   // private Text uriText_;
   /* CONTEXT_ID PBCF0002 for the URI field of the Bean Config Page */
   //private final String INFOPOP_PBCF_TEXT_URI = "PBCF0002"; //$NON-NLS-1$
-  //private final String TOOLTIP_PBCF_TEXT_URI = "TOOLTIP_PBCF_TEXT_URI";
+
   
   private Text wsdlFolderText_;
   /* CONTEXT_ID PBCF0006 for the WSDL Folder field in the Bean Config Page */
   private final String INFOPOP_PBCF_TEXT_WSDL_FOLDER = "PBCF0006"; //$NON-NLS-1$
-  private final String TOOLTIP_PBCF_TEXT_WSDL_FOLDER = "TOOLTIP_PBCF_TEXT_WSDL_FOLDER";
   
   private Text wsdlFileText_;
   /* CONTEXT_ID PBCF0007 for the WSDL File field of the Bean Config Page */
   private final String INFOPOP_PBCF_TEXT_WSDL_FILE = "PBCF0007"; //$NON-NLS-1$
-  private final String TOOLTIP_PBCF_TEXT_WSDL_FILE = "TOOLTIP_PBCF_TEXT_WSDL_FILE";
+
   
   private Combo skeletonFolderText_;
   /* CONTEXT_ID PBSC0004 for the Skeleton Folder field of the Skeleton Config Page */
   private static final String INFOPOP_PBSC_TEXT_SKELETON_FOLDER = "PBSC0004"; //$NON-NLS-1$
-  private static final String TOOLTIP_PBSC_TEXT_SKELETON_FOLDER = "TOOLTIP_PBSC_TEXT_SKELETON_FOLDER";
-  //
+
 
   /* CONTEXT_ID PBSC0005 for the Skeleton Folder Browse button of the Skeleton Config Page */
   // private static final String INFOPOP_PBSC_BUTTON_SKELETON_FOLDER_BROWSE = "PBSC0005"; //$NON-NLS-1$
@@ -70,18 +70,13 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
   public WidgetDataEvents addControls( Composite parent, Listener statusListener)
   {
     String       pluginId        = "org.eclipse.jst.ws.axis.creation.ui";
-    String       conPluginId     = "org.eclipse.jst.ws.axis.consumption.ui";
-    String       baseConPluginId = "org.eclipse.jst.ws.consumption.ui";
     
-    MessageUtils msgUtils        = new MessageUtils( pluginId + ".plugin", this );
-    MessageUtils conMsgUtils     = new MessageUtils( conPluginId + ".plugin", this );
-    MessageUtils baseConMsgUtils = new MessageUtils( baseConPluginId + ".plugin", this );
-    UIUtils      uiUtils         = new UIUtils( msgUtils, pluginId );
-    UIUtils      conUiUtils      = new UIUtils( conMsgUtils, pluginId );
-    UIUtils      baseConUiUtils  = new UIUtils( baseConMsgUtils, pluginId );
+    UIUtils      uiUtils         = new UIUtils( pluginId );
+    UIUtils      conUiUtils      = new UIUtils( pluginId );
+    UIUtils      baseConUiUtils  = new UIUtils( pluginId );
 
   	PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId + "." +  INFOPOP_PBSC_PAGE );
-  	parent.setToolTipText( msgUtils.getMessage( TOOLTIP_PBSC_PAGE ) );
+  	parent.setToolTipText( AxisCreationUIMessages.TOOLTIP_PBSC_PAGE );
     
     Composite textGroup = uiUtils.createComposite( parent, 2, 0, 0 );
 
@@ -92,25 +87,25 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
                                    SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     */
 
-    wsdlFolderText_ = uiUtils.createText( textGroup, "LABEL_OUTPUT_FOLDER_NAME",
-                                          TOOLTIP_PBCF_TEXT_WSDL_FOLDER,
+    wsdlFolderText_ = uiUtils.createText( textGroup, AxisCreationUIMessages.LABEL_OUTPUT_FOLDER_NAME,
+    		AxisCreationUIMessages.TOOLTIP_PBCF_TEXT_WSDL_FOLDER,
                                           INFOPOP_PBCF_TEXT_WSDL_FOLDER,
                                           SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
 
-    wsdlFileText_ = uiUtils.createText( textGroup, "LABEL_OUTPUT_FILE_NAME",
-                                        TOOLTIP_PBCF_TEXT_WSDL_FILE,
+    wsdlFileText_ = uiUtils.createText( textGroup, AxisCreationUIMessages.LABEL_OUTPUT_FILE_NAME,
+    		AxisCreationUIMessages.TOOLTIP_PBCF_TEXT_WSDL_FILE,
                                         INFOPOP_PBCF_TEXT_WSDL_FILE,
                                         SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
 
-    skeletonFolderText_ = baseConUiUtils.createCombo( textGroup, "LABEL_SKELETON_ROOT_NAME",
-        TOOLTIP_PBSC_TEXT_SKELETON_FOLDER,
+    skeletonFolderText_ = baseConUiUtils.createCombo( textGroup, ConsumptionUIMessages.LABEL_SKELETON_ROOT_NAME,
+    		ConsumptionUIMessages.TOOLTIP_PBSC_TEXT_SKELETON_FOLDER,
         INFOPOP_PBSC_TEXT_SKELETON_FOLDER,
         SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
 
     uiUtils.createHorizontalSeparator( parent, 5 );
 
-    showMappingsCheckbox_ = conUiUtils.createCheckbox( parent, "LABEL_EXPLORE_MAPPINGS_XML2BEAN",
-                                                       "TOOLTIP_N2P_SHOW_MAPPINGS",
+    showMappingsCheckbox_ = conUiUtils.createCheckbox( parent, AxisConsumptionUIMessages.LABEL_EXPLORE_MAPPINGS_XML2BEAN,
+    													AxisConsumptionUIMessages.TOOLTIP_N2P_SHOW_MAPPINGS,
                                                        INFOPOP_N2P_SHOW_MAPPINGS );
         
     return this;

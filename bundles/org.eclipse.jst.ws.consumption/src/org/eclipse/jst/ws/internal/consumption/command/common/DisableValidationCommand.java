@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
@@ -25,7 +25,6 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 public class DisableValidationCommand extends AbstractDataModelOperation 
 {
 
-  private MessageUtils msgUtils_;
   private ValidationManager manager_;
   private IProject serviceProject_;
 
@@ -33,8 +32,6 @@ public class DisableValidationCommand extends AbstractDataModelOperation
    * CTOR;
    */
   public DisableValidationCommand() {
-    String pluginId = "org.eclipse.jst.ws.consumption";
-    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
   }
 
   /**
@@ -44,7 +41,7 @@ public class DisableValidationCommand extends AbstractDataModelOperation
   {
     IStatus status = Status.OK_STATUS;
 
-    ProgressUtils.report(monitor, msgUtils_.getMessage("TASK_DESC_WEBSERVICE_DISABLE_VALIDATION"));
+    ProgressUtils.report(monitor, ConsumptionMessages.TASK_DESC_WEBSERVICE_DISABLE_VALIDATION);
 
     IProject project = serviceProject_;
     if (project != null) manager_.disableValidationForProject(project);

@@ -13,11 +13,12 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.RuntimeServerSelectionDialog;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -27,7 +28,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -43,12 +43,11 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
   private String            pluginId_ = "org.eclipse.jst.ws.consumption.ui";
   private Text              runtime_;
   private Text              server_;
-  //private Text              j2eeVersionText;
+
   private Composite         parent_;
   private boolean           isClientContext_;
   private TypeRuntimeServer ids_;
-  //private String             j2eeVersion_;
-  private MessageUtils       msgUtils_;
+
   private Listener           statusListener_;
   
   /* CONTEXT_ID PWRS0004 for the service-side runtime selection of the runtime selection Page */
@@ -56,9 +55,6 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
 
   /* CONTEXT_ID PWRS0005 for the service-sdie server selection of the runtime selection Page */
   private String INFOPOP_PWRS_GROUP_SERVICE_SERVER = pluginId_ + ".PWRS0005";
-
-  /* CONTEXT_ID PWRS0009 for the J2EE version selection of the runtime selection Page */
-  private String INFOPOP_PWRS_J2EE_VERSION = pluginId_ + ".PWRS0009";
 
   public RuntimeServerSelectionWidget( boolean isClientScenario )
   {
@@ -70,24 +66,23 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
    */
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
-    msgUtils_ = new MessageUtils( pluginId_ + ".plugin", this );
-    UIUtils      uiUtils  = new UIUtils(msgUtils_, pluginId_ ); 
+    UIUtils      uiUtils  = new UIUtils( pluginId_ ); 
     
     parent_         = parent;
     statusListener_ = statusListener;
         
     // Runtime label and text
-    runtime_ = uiUtils.createText( parent, "LABEL_RUNTIMES_LIST",  
-                                   "TOOLTIP_PWRS_TEXT_RUNTIME",
+    runtime_ = uiUtils.createText( parent, ConsumptionUIMessages.LABEL_RUNTIMES_LIST,  
+    		ConsumptionUIMessages.TOOLTIP_PWRS_TEXT_RUNTIME,
                                    INFOPOP_PWRS_GROUP_SERVICE_RUNTIME, SWT.READ_ONLY );
     
     // Server label and text
-    server_ = uiUtils.createText( parent, "LABEL_SERVERS_LIST",  
-                                  "TOOLTIP_PWRS_TEXT_SERVER",
+    server_ = uiUtils.createText( parent, ConsumptionUIMessages.LABEL_SERVERS_LIST,  
+    		ConsumptionUIMessages.TOOLTIP_PWRS_TEXT_SERVER,
                                   INFOPOP_PWRS_GROUP_SERVICE_SERVER, SWT.READ_ONLY );
     
     Button editButton = new Button( parent, SWT.NONE );
-    editButton.setText( msgUtils_.getMessage("LABEL_EDIT_BUTTON")); 
+    editButton.setText( ConsumptionUIMessages.LABEL_EDIT_BUTTON); 
     editButton.addSelectionListener( new SelectionAdapter()
                                      {
                                        public void widgetSelected( SelectionEvent  evt )
@@ -180,8 +175,8 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
   public IStatus getStatus() 
   {
     IStatus status = Status.OK_STATUS;
-    String scenario = isClientContext_ ? msgUtils_.getMessage( "MSG_CLIENT_SUB" )
-                                        : msgUtils_.getMessage( "MSG_SERVICE_SUB" );
+    String scenario = isClientContext_ ? ConsumptionUIMessages.MSG_CLIENT_SUB
+                                        : ConsumptionUIMessages.MSG_SERVICE_SUB;
     
 	String                       runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById( ids_.getRuntimeId() );
 	String                       serverLabel  = ids_.getServerId() == null ? "" : WebServiceRuntimeExtensionUtils2.getServerLabelById(ids_.getServerId());
@@ -189,11 +184,11 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
 	
     if( ids_.getRuntimeId() == null || runtimeLabel == null || runtimeLabel.equals("" ))
     {
-      status = StatusUtils.errorStatus(msgUtils_.getMessage( "MSG_NO_RUNTIME", new String[]{ scenario } ) );
+      status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_NO_RUNTIME, new String[]{ scenario } ) );
     }
     else if( ids_.getServerId() == null || serverLabel.equals( "" ))
     {
-      status = StatusUtils.errorStatus( msgUtils_.getMessage( "MSG_NO_SERVER", new String[]{ scenario } ) );      
+      status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_NO_SERVER, new String[]{ scenario } ) );      
     }
 
     //Check if only stub runtime is available for the selected server type
@@ -221,7 +216,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
 		if (!foundNonStubRuntime)
 		{	
 			String servertypeLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverFactoryId);
-			status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_STUB_ONLY",new String[]{servertypeLabel}) );					
+			status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_ERROR_STUB_ONLY,new String[]{servertypeLabel}) );					
 		}
 	}		
     
@@ -233,7 +228,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
 
 		if (!WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported( ids_.getServerId(), ids_.getRuntimeId(), ids_.getTypeId())) 
 		{
-			status = StatusUtils.errorStatus( msgUtils_.getMessage( "MSG_INVALID_SRT_SELECTIONS", new String[]{ scenario } ) );		  
+			status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[]{ scenario } ) );		  
 		}
 
 	}    
@@ -243,7 +238,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     {
 
 	  if (!WebServiceRuntimeExtensionUtils2.isServerRuntimeTypeSupported(ids_.getServerId(), ids_.getRuntimeId(), ids_.getTypeId())) {	  
-        status = StatusUtils.errorStatus( msgUtils_.getMessage( "MSG_INVALID_SRT_SELECTIONS", new String[]{ scenario } ) );      
+        status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[]{ scenario } ) );      
       }
 
     }

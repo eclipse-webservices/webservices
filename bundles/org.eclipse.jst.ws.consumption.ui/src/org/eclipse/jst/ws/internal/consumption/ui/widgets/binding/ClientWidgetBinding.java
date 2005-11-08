@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
 import org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForServiceProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
@@ -36,7 +37,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishDefaultComm
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceClientTestArrivalCommand;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
@@ -164,12 +164,10 @@ public class ClientWidgetBinding implements CommandWidgetBinding
    */
   public void registerWidgetMappings(WidgetRegistry widgetRegistry)
   {
-    String       pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-        
+       
     widgetRegistry.add( "ClientWizardWidget", 
-                        msgUtils.getMessage("PAGE_TITLE_WS_PROJECT"),
-                        msgUtils.getMessage("PAGE_DESC_WS_PROJECT"),
+    		ConsumptionUIMessages.PAGE_TITLE_WS_PROJECT,
+                        ConsumptionUIMessages.PAGE_DESC_WS_PROJECT,
 				        new WidgetContributorFactory()
 				        {
 				          public WidgetContributor create()
@@ -179,8 +177,8 @@ public class ClientWidgetBinding implements CommandWidgetBinding
 				        } );
     
     widgetRegistry.add( "ClientRuntimeSelectionWidget", 
-                        msgUtils.getMessage("PAGE_TITLE_WS_CLIENT_RUNTIME_SELECTION"),
-                        msgUtils.getMessage("PAGE_DESC_WS_CLIENT_RUNTIME_SELECTION"),
+                        ConsumptionUIMessages.PAGE_TITLE_WS_CLIENT_RUNTIME_SELECTION,
+                        ConsumptionUIMessages.PAGE_DESC_WS_CLIENT_RUNTIME_SELECTION,
 						new WidgetContributorFactory()
                         {
 						  public WidgetContributor create()
@@ -190,8 +188,8 @@ public class ClientWidgetBinding implements CommandWidgetBinding
 						} );
     
     widgetRegistry.add( "WSDLSelectionWidgetWrapper", 
-                        msgUtils.getMessage("PAGE_TITLE_WS_SELECTION"),
-                        msgUtils.getMessage("PAGE_DESC_WS_SELECTION"),
+                        ConsumptionUIMessages.PAGE_TITLE_WS_SELECTION,
+                        ConsumptionUIMessages.PAGE_DESC_WS_SELECTION,
 		                new WidgetContributorFactory()
                         {
 		                  public WidgetContributor create()
@@ -201,8 +199,8 @@ public class ClientWidgetBinding implements CommandWidgetBinding
 		                } );
     
     widgetRegistry.add( "ClientTestWidget", 
-                        msgUtils.getMessage("PAGE_TITLE_WS_SAMPLE"),
-                        msgUtils.getMessage("PAGE_DESC_WS_SAMPLE"),
+                        ConsumptionUIMessages.PAGE_TITLE_WS_SAMPLE,
+                        ConsumptionUIMessages.PAGE_DESC_WS_SAMPLE,
                         new WidgetContributorFactory()
                         {
                           public WidgetContributor create()

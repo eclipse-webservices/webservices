@@ -12,7 +12,7 @@ Export-Package: org.eclipse.jst.ws.internal.ui.action,
  org.eclipse.jst.ws.internal.ui.plugin,
  org.eclipse.jst.ws.internal.ui.preferences,
  org.eclipse.jst.ws.internal.ui.uddi,
- org.eclipse.jst.ws.ui
+ org.eclipse.jst.ws.internal.ui
 Require-Bundle: org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.ui,
  org.eclipse.wst.command.env.core,

@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jst.ws.internal.common.AnyFilter;
 import org.eclipse.jst.ws.internal.common.Filter;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -50,23 +51,18 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 */
 public class ResourceSelectionDialog extends Dialog implements Listener
 {
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
 
-  //
   // Dialog controls.
   //
   private Label filterLabel_;
   private Combo filterCombo_;
   /*CONTEXT_ID DRES0001 for the Resource Type combo box of the Resource Selection Dialog*/
   private static final String INFOPOP_DRES_COMBO_RESOURCE_TYPE = WebServiceUIPlugin.ID + ".DRES0001";
-  private static final String TOOLTIP_DRES_COMBO_RESOURCE_TYPE = "%TOOLTIP_DRES_COMBO_RESOURCE_TYPE";
-  //
+
   private Tree resourceTree_;
   private TreeViewer fileViewer_;
   /*CONTEXT_ID DRES0002 for the Resource tree of the Resource Selection Dialog*/
   private static final String INFOPOP_DRES_TREE_RESOURCE = WebServiceUIPlugin.ID + ".DRES0002";
-  private static final String TOOLTIP_DRES_TREE_RESOURCE = "%TOOLTIP_DRES_TREE_RESOURCE";
 
   //
   // Essential goodies.
@@ -214,7 +210,7 @@ public class ResourceSelectionDialog extends Dialog implements Listener
   protected void configureShell ( Shell shell )
   {
     super.configureShell(shell);
-    shell.setText(WebServiceUIPlugin.getMessage("%DIALOG_TITLE_RESOURCE_BROWSE"));
+    shell.setText(WSUIPluginMessages.DIALOG_TITLE_RESOURCE_BROWSE);
   }
 
   /** 
@@ -247,14 +243,14 @@ public class ResourceSelectionDialog extends Dialog implements Listener
       f.setLayoutData(gd);
 
       filterLabel_ = new Label(f,SWT.WRAP);
-      filterLabel_.setText(WebServiceUIPlugin.getMessage("%LABEL_RESOURCE_FILTER"));
-      filterLabel_.setToolTipText(WebServiceUIPlugin.getMessage(TOOLTIP_DRES_COMBO_RESOURCE_TYPE));
+      filterLabel_.setText(WSUIPluginMessages.LABEL_RESOURCE_FILTER);
+      filterLabel_.setToolTipText(WSUIPluginMessages.TOOLTIP_DRES_COMBO_RESOURCE_TYPE);
 
       filterCombo_ = new Combo(f,SWT.DROP_DOWN | SWT.READ_ONLY);
       gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
       filterCombo_.setLayoutData(gd);
       filterCombo_.addListener(SWT.Selection,this);
-      filterCombo_.setToolTipText(WebServiceUIPlugin.getMessage(TOOLTIP_DRES_COMBO_RESOURCE_TYPE));
+      filterCombo_.setToolTipText(WSUIPluginMessages.TOOLTIP_DRES_COMBO_RESOURCE_TYPE);
       PlatformUI.getWorkbench().getHelpSystem().setHelp(filterCombo_,INFOPOP_DRES_COMBO_RESOURCE_TYPE);
     }
 
@@ -271,7 +267,7 @@ public class ResourceSelectionDialog extends Dialog implements Listener
     gd.grabExcessHorizontalSpace = true;
     resourceTree_.setLayoutData(gd);
 //  resourceTree_.addListener(SWT.Selection,this);
-    resourceTree_.setToolTipText(WebServiceUIPlugin.getMessage(TOOLTIP_DRES_TREE_RESOURCE));
+    resourceTree_.setToolTipText(WSUIPluginMessages.TOOLTIP_DRES_TREE_RESOURCE);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(resourceTree_,INFOPOP_DRES_TREE_RESOURCE);
 
     fileViewer_ = new TreeViewer(resourceTree_);

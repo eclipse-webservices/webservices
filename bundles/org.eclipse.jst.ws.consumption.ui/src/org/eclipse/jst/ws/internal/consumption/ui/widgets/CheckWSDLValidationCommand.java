@@ -17,8 +17,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ValidateWSDLJob;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -28,11 +28,8 @@ import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
 public class CheckWSDLValidationCommand extends AbstractDataModelOperation
 {	  
-	private static MessageUtils msgUtils_;
 	
 	public CheckWSDLValidationCommand () {
-		String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-	  msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	}
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -55,7 +52,7 @@ public class CheckWSDLValidationCommand extends AbstractDataModelOperation
 					  return Status.OK_STATUS;
 				  } else {
 					  // wait for WSDL validation
-					  return StatusUtils.errorStatus( msgUtils_.getMessage("WAIT_FOR_WSDL") );
+					  return StatusUtils.errorStatus( ConsumptionUIMessages.WAIT_FOR_WSDL );
 				  }
 			  }
 		  }
@@ -71,18 +68,15 @@ public class CheckWSDLValidationCommand extends AbstractDataModelOperation
 		  
 		// give a warning message with the options to stop, ignore this one, or
 		// ignore all coming messages
-		IStatus status_ = StatusUtils.warningStatus( msgUtils_.getMessage("STILL_VALIDATING_WSDL") );
+		IStatus status_ = StatusUtils.warningStatus( ConsumptionUIMessages.STILL_VALIDATING_WSDL );
 		// adding all messages from WSI Incompliances
 
-		Choice ignoreChoice = new Choice('C', msgUtils_
-				.getMessage("CANCEL_VALIDATION_LABEL"), msgUtils_
-				.getMessage("CANCEL_VALIDATION_DESCRIPTION"));
-		Choice ignoreAllChoice = new Choice('A', msgUtils_
-				.getMessage("CANCEL_ALL_VALIDATION_LABEL"), msgUtils_
-				.getMessage("CANCEL_ALL_VALIDATION_DESCRIPTION"));
-		Choice cancelChoice = new Choice('W', msgUtils_
-				.getMessage("WAIT_VALIDATION_LABEL"), msgUtils_
-				.getMessage("WAIT_VALIDATION_DESCRIPTION"));
+		Choice ignoreChoice = new Choice('C', ConsumptionUIMessages.CANCEL_VALIDATION_LABEL, 
+				ConsumptionUIMessages.CANCEL_VALIDATION_DESCRIPTION);
+		Choice ignoreAllChoice = new Choice('A', ConsumptionUIMessages.CANCEL_ALL_VALIDATION_LABEL, 
+				ConsumptionUIMessages.CANCEL_ALL_VALIDATION_DESCRIPTION);
+		Choice cancelChoice = new Choice('W', ConsumptionUIMessages.WAIT_VALIDATION_LABEL, 
+				ConsumptionUIMessages.WAIT_VALIDATION_DESCRIPTION);
 
 		Choice result = env.getStatusHandler().report(status_,
 				new Choice[] { ignoreChoice, ignoreAllChoice, cancelChoice });

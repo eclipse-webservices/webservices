@@ -11,8 +11,8 @@
 
 package org.eclipse.jst.ws.internal.creation.ui.server;
 
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.server.StartServerWidget;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.INamedWidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
@@ -21,17 +21,15 @@ import org.eclipse.wst.server.core.IServer;
 public class StartServerWidgetContributor implements INamedWidgetContributor 
 {
   private IServer      server_;
-  private MessageUtils msgUtils_;
 	  
   public StartServerWidgetContributor( IServer server )
   {
 	server_ = server;
-	msgUtils_ = new  MessageUtils( "org.eclipse.jst.ws.consumption.ui.plugin", this );
   }
   
   public String getDescription() 
   {
-	return msgUtils_.getMessage( "PAGE_DESC_WS_START_SERVER" );
+	return ConsumptionUIMessages.PAGE_DESC_WS_START_SERVER;
   }
 
   public String getName() 
@@ -41,7 +39,7 @@ public class StartServerWidgetContributor implements INamedWidgetContributor
 
   public String getTitle() 
   {
-	return msgUtils_.getMessage( "PAGE_TITLE_WS_START_SERVER" );
+	return ConsumptionUIMessages.PAGE_TITLE_WS_START_SERVER;
   }
 
   public WidgetContributorFactory getWidgetContributorFactory() 

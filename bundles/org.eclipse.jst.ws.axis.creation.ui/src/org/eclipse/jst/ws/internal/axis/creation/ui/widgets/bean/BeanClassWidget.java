@@ -18,6 +18,7 @@ import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.jst.ws.internal.ui.dialog.DialogUtils;
 import org.eclipse.swt.SWT;
@@ -28,15 +29,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
 
 public class BeanClassWidget extends SimpleWidgetDataContributor
 {
-  private String             pluginId_  = "org.eclipse.jst.ws.consumption.ui";
-  private String             thisPlugin = "org.eclipse.jst.ws.axis.creation.ui";
+
   private IProject           serverProject_ = null;
   private Composite          parent_ = null;
   private IWizardContainer   context_ = null;
@@ -60,23 +59,24 @@ public class BeanClassWidget extends SimpleWidgetDataContributor
    
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    UIUtils      uiUtils  = new UIUtils(msgUtils, thisPlugin ); 
+	String       pluginId_  = "org.eclipse.jst.ws.consumption.ui";	  
+	String       thisPlugin = "org.eclipse.jst.ws.axis.creation.ui";
+    UIUtils      uiUtils  = new UIUtils( thisPlugin ); 
     
     parent_ = parent;
     
     Composite group = uiUtils.createComposite( parent, 4 );
     
-    group.setToolTipText( msgUtils.getMessage("TOOLTIP_PBCL_PAGE") );
+    group.setToolTipText( ConsumptionUIMessages.TOOLTIP_PBCL_PAGE );
     PlatformUI.getWorkbench().getHelpSystem().setHelp( group, pluginId_ + "." + INFOPOP_PBCL_PAGE );
     
-    beanClassText_ = uiUtils.createText( group, "LABEL_BEAN_CLASS_NAME",
-                                         "TOOLTIP_PBCL_TEXT_BEAN_CLASS",
+    beanClassText_ = uiUtils.createText( group, ConsumptionUIMessages.LABEL_BEAN_CLASS_NAME,
+    		ConsumptionUIMessages.TOOLTIP_PBCL_TEXT_BEAN_CLASS,
                                          INFOPOP_PBCL_TEXT_BEAN_CLASS,
                                          SWT.SINGLE | SWT.BORDER);
     
-    beanClassBrowseButton_ = uiUtils.createPushButton( group, "BUTTON_BROWSE_CLASSES",
-                                                       "TOOLTIP_PBCL_BUTTON_BEAN_CLASS_BROWSE",
+    beanClassBrowseButton_ = uiUtils.createPushButton( group, ConsumptionUIMessages.BUTTON_BROWSE_CLASSES,
+    		ConsumptionUIMessages.TOOLTIP_PBCL_BUTTON_BEAN_CLASS_BROWSE,
                                                        INFOPOP_PBCL_BUTTON_BEAN_CLASS_BROWSE );
     beanClassBrowseButton_.addSelectionListener( new SelectionAdapter()
                                                  {
@@ -86,8 +86,8 @@ public class BeanClassWidget extends SimpleWidgetDataContributor
                                                    }
                                                  } );
     
-    beanResourceBrowseButton_ = uiUtils.createPushButton( group, "BUTTON_BROWSE_FILES",
-                                                          "TOOLTIP_PBCL_BUTTON_BEAN_RESOURCE_BROWSE",
+    beanResourceBrowseButton_ = uiUtils.createPushButton( group, ConsumptionUIMessages.BUTTON_BROWSE_FILES,
+    		ConsumptionUIMessages.TOOLTIP_PBCL_BUTTON_BEAN_RESOURCE_BROWSE,
                                                           INFOPOP_PBCL_BUTTON_BEAN_RESOURCE_BROWSE );
     beanResourceBrowseButton_.addSelectionListener( new SelectionAdapter()
                                                     {

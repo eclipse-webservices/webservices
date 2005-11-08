@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
@@ -24,6 +25,7 @@ import org.eclipse.jst.j2ee.ejb.EJBResource;
 import org.eclipse.jst.j2ee.ejb.Session;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -36,14 +38,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
 public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget
 {
-  private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
+
   private Combo earList;
   private EJBTableViewer beanList;
   private IVirtualComponent[] earComponents;
@@ -101,7 +102,6 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
 
   public WidgetDataEvents addControls(Composite parent, Listener statusListener)
   {
-    MessageUtils msgUtils = new MessageUtils(pluginId_ + ".plugin", this);
     statusListener_  = statusListener;
     Composite composite = new Composite(parent, SWT.NONE);
     GridLayout layout = new GridLayout();
@@ -115,7 +115,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
     layout.numColumns = 2;
     projectComposite.setLayout(layout);
     projectComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL));
-    new Label(projectComposite, SWT.NULL).setText(msgUtils.getMessage("LABEL_EAR_PROJECTS"));
+    new Label(projectComposite, SWT.NULL).setText(ConsumptionUIMessages.LABEL_EAR_PROJECTS);
     earList = new Combo(projectComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
     earList.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     earList.addSelectionListener(new SelectionAdapter()
@@ -129,13 +129,13 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
       }
     });
     addEARNamesToList();
-    earList.setToolTipText(msgUtils.getMessage("TOOLTIP_EAR_PROJECTS"));
+    earList.setToolTipText(ConsumptionUIMessages.TOOLTIP_EAR_PROJECTS);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(earList, INFOPOP_PEBD_EAR_PROJECTS);
     Group beanComposite = new Group(composite, SWT.NONE);
     layout = new GridLayout();
     beanComposite.setLayout(layout);
     beanComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL));
-    beanComposite.setText(msgUtils.getMessage("LABEL_EJB_BEAN_NAME"));
+    beanComposite.setText(ConsumptionUIMessages.LABEL_EJB_BEAN_NAME);
     beanList = new EJBTableViewer(beanComposite);
     Table beanTable = beanList.getTable();
     gd = new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
@@ -150,7 +150,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
         statusListener_.handleEvent(null);
       }
     });
-    beanTable.setToolTipText(msgUtils.getMessage("TOOLTIP_TABLE_BEAN_NAMES"));
+    beanTable.setToolTipText(ConsumptionUIMessages.TOOLTIP_TABLE_BEAN_NAMES);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(beanTable, INFOPOP_PEBD_TABLE_BEAN_NAMES);
     if (earComponents != null && earComponents.length > 0)
     {

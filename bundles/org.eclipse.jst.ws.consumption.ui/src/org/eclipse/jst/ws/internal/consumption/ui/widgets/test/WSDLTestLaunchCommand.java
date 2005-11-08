@@ -16,15 +16,16 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import java.util.List;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.wst.command.internal.env.core.ICommandFactory;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.IStatusHandler;
@@ -47,7 +48,6 @@ public class WSDLTestLaunchCommand extends AbstractDataModelOperation
   private String serverProject;
   private String serverModule;
   private String wsdlURI;
-  private MessageUtils msgUtils;
   private List endpoints;
   private IServer serviceExistingServer = null;
   private String serviceServerTypeID = null;
@@ -55,8 +55,6 @@ public class WSDLTestLaunchCommand extends AbstractDataModelOperation
 	
   public WSDLTestLaunchCommand()
   {
-  	String pluginId = "org.eclipse.jst.ws.consumption.ui";
-	msgUtils = new MessageUtils(pluginId + ".plugin", this);  	
   }
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -75,7 +73,7 @@ public class WSDLTestLaunchCommand extends AbstractDataModelOperation
     //Dont need to shut everything down because the wsdl test doesnt work
     if(status.getSeverity() != Status.OK){
       IStatusHandler sHandler = env.getStatusHandler();
-      IStatus infoStatus = StatusUtils.infoStatus( msgUtils.getMessage("MSG_ERROR_UNABLE_TO_LAUNCH_WSDL_TEST") );
+      IStatus infoStatus = StatusUtils.infoStatus( ConsumptionUIMessages.MSG_ERROR_UNABLE_TO_LAUNCH_WSDL_TEST );
       sHandler.reportInfo(infoStatus);
       return infoStatus;	
     }

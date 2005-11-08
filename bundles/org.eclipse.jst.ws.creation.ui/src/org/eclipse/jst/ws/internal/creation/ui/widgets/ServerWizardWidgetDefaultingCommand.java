@@ -26,6 +26,7 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
+  
     String type      = getScenarioContext().getWebServiceType();
     String runtime   = WebServiceRuntimeExtensionUtils2.getDefaultRuntimeValueFor( type );
 	

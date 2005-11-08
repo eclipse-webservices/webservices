@@ -10,18 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ProjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.RuntimeServerSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
@@ -32,9 +30,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
-import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -47,7 +42,6 @@ import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
  */
 public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 {
-  private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
   private String createPluginId_ = "org.eclipse.jst.ws.creation.ui";
   
   /* CONTEXT_ID PWRS0002 for the Wizard Scenario Service configuration of the Runtime Selection Page */
@@ -57,15 +51,14 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   private ProjectSelectionWidget       projectWidget_;
   private ClientRuntimeSelectionWidget clientWidget_;
   private TextModifyListener           textListener_;
-  private MessageUtils msgUtils_;
+
   private String serviceRuntimeId_;
   
   private boolean isClientWidgetVisible_ = true;
   
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
-    msgUtils_ = new MessageUtils( pluginId_ + ".plugin", this );
-    UIUtils      uiUtils  = new UIUtils(msgUtils_, createPluginId_ ); 
+    UIUtils      uiUtils  = new UIUtils( createPluginId_ ); 
     
     ScrolledComposite scroller = new ScrolledComposite( parent, SWT.H_SCROLL | SWT.V_SCROLL );
     scroller.setExpandHorizontal(true);
@@ -75,12 +68,12 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     scroller.setContent( root );
     
     Composite textComposite = uiUtils.createComposite( root, 1, 0, 0 );
-    createMessageText( textComposite, msgUtils_.getMessage("MSG_GENERAL_PROJECT_AND_EAR", new String[] { msgUtils_.getMessage("MSG_SERVICE_SUB")}));
-    createMessageText( textComposite, msgUtils_.getMessage("MSG_EAR_PROJECT_WILL_BE_CREATED") );
+    createMessageText( textComposite, NLS.bind(ConsumptionUIMessages.MSG_GENERAL_PROJECT_AND_EAR, new String[] {ConsumptionUIMessages.MSG_SERVICE_SUB}));
+    createMessageText( textComposite, ConsumptionUIMessages.MSG_EAR_PROJECT_WILL_BE_CREATED );
     
     Composite serverComp = uiUtils.createComposite( root, 1, 5, 0 );
     
-    Group serverGroup = uiUtils.createGroup( serverComp, "LABEL_SELECTION_VIEW_TITLE",
+    Group serverGroup = uiUtils.createGroup( serverComp, ConsumptionUIMessages.LABEL_SELECTION_VIEW_TITLE,
                                              null, INFOPOP_PWRS_GROUP_SERVICE,
 											 2, 5, 5);
     
@@ -315,7 +308,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
           {
         	//Construct the error message
         	String compTypeLabel = getCompTypeLabel(projectWidget_.getComponentType()); 
-        	finalStatus = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_INVALID_PROJECT_TYPE",new String[]{serviceProjName, compTypeLabel}) );        	        	
+        	finalStatus = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_INVALID_PROJECT_TYPE,new String[]{serviceProjName, compTypeLabel}) );        	        	
           }
         }
       }
@@ -332,14 +325,14 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 	    String warning_msg = getEARProjectWarningMessage(serviceEARName, clientEARName);
 	    
 		if (serviceComponentName.equalsIgnoreCase(clientComponentName)){
-			  String err_msg = msgUtils_.getMessage( "MSG_SAME_CLIENT_AND_SERVICE_COMPONENTS", new String[]{ "WEB" } );
+			  String err_msg = NLS.bind(ConsumptionUIMessages.MSG_SAME_CLIENT_AND_SERVICE_COMPONENTS, new String[]{ "WEB" } );
 			  finalStatus = StatusUtils.errorStatus( err_msg );				
 		}
 		
 	    if( clientProjName != null && serviceProjName != null && 
 	        clientProjName.equalsIgnoreCase( serviceProjName ))
 	    {
-		  String error_msg = msgUtils_.getMessage("MSG_SAME_CLIENT_AND_SERVICE_PROJECTS");
+		  String error_msg =ConsumptionUIMessages.MSG_SAME_CLIENT_AND_SERVICE_PROJECTS;
 		  finalStatus = StatusUtils.errorStatus( error_msg );
 	    }
 	    
@@ -370,7 +363,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     if (serviceEARName!=null && clientEARName!=null) {
     
       if (clientEARName.equalsIgnoreCase(serviceEARName) && clientEARName.length()>0) {
-        return msgUtils_.getMessage("MSG_SAME_CLIENT_AND_SERVICE_EARS", new String[]{ "EAR" });
+        return NLS.bind(ConsumptionUIMessages.MSG_SAME_CLIENT_AND_SERVICE_EARS, new String[]{ "EAR" });
       }
     }
 
@@ -385,19 +378,19 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   {
 	  if (typeId.equals(IModuleConstants.JST_WEB_MODULE))
 	  {
-		  return msgUtils_.getMessage("LABEL_CLIENT_COMP_TYPE_WEB");
+		  return ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_WEB;
 	  }
 	  else if (typeId.equals(IModuleConstants.JST_EJB_MODULE))
 	  {
-		  return msgUtils_.getMessage("LABEL_CLIENT_COMP_TYPE_EJB");
+		  return ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_EJB;
 	  }
 	  else if (typeId.equals(IModuleConstants.JST_APPCLIENT_MODULE))
 	  {
-		  return msgUtils_.getMessage("LABEL_CLIENT_COMP_TYPE_APP_CLIENT");
+		  return ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_APP_CLIENT;
 	  }
 	  else if (typeId.equals(IModuleConstants.JST_UTILITY_MODULE))
 	  {
-		  return msgUtils_.getMessage("LABEL_CLIENT_COMP_TYPE_CONTAINERLESS");
+		  return ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_CONTAINERLESS;
 	  }
 	  else
 	  {

@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.jst.ws.internal.plugin.WebServicePlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.jst.ws,
+Export-Package: org.eclipse.jst.ws.internal,
  org.eclipse.jst.ws.internal.command,
  org.eclipse.jst.ws.internal.common,
  org.eclipse.jst.ws.internal.context,

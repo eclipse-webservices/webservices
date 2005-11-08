@@ -11,11 +11,9 @@
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;

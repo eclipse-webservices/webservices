@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.jst.ws.axis.consumption.ui,
+Export-Package: org.eclipse.jst.ws.internal.axis.consumption.ui,
  org.eclipse.jst.ws.internal.axis.consumption.ui.command,
  org.eclipse.jst.ws.internal.axis.consumption.ui.plugin,
  org.eclipse.jst.ws.internal.axis.consumption.ui.task,

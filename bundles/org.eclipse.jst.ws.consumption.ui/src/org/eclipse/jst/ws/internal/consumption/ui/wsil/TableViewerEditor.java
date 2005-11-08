@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.wsil;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -25,7 +26,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.KeyEvent;
@@ -159,7 +160,7 @@ public class TableViewerEditor extends Composite
     buttonComposite.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
 
     add_ = new Button(buttonComposite, SWT.PUSH);
-    add_.setText(WebServiceConsumptionUIPlugin.getMessage("%LABEL_ADD"));
+    add_.setText(ConsumptionUIMessages.LABEL_ADD);
     add_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
     add_.addSelectionListener(
       new SelectionListener()
@@ -175,7 +176,7 @@ public class TableViewerEditor extends Composite
     );
 
     remove_ = new Button(buttonComposite, SWT.PUSH);
-    remove_.setText(WebServiceConsumptionUIPlugin.getMessage("%LABEL_REMOVE"));
+    remove_.setText(ConsumptionUIMessages.LABEL_REMOVE);
     remove_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
     remove_.addSelectionListener(
       new SelectionListener()

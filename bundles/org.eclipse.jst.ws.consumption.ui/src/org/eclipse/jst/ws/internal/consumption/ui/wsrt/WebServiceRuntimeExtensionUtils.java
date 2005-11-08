@@ -384,8 +384,8 @@ public class WebServiceRuntimeExtensionUtils
   
   public static LabelsAndIds getServiceTypeLabels()
   {
-    String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId + ".plugin", registry );
+    String       pluginId = "org.eclipse.jst.ws.internal.consumption.ui";
+    MessageUtils msgUtils = new MessageUtils( pluginId + ".ConsumptionUI", registry );
     
     LabelsAndIds labelIds = new LabelsAndIds();
     Iterator     iterator = registry.webServiceTypesList_.iterator();

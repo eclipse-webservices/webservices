@@ -22,16 +22,18 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.ClasspathUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
+import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.Utils;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -40,10 +42,6 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation {
 
-	private MessageUtils msgUtils_;
-	private MessageUtils coreMsgUtils_;
-	private MessageUtils conMsgUtils_;
-	
 	private JavaWSDLParameter javaWSDLParam_ = null;
 	private IProject serviceProject_;
 	private String javaBeanName_; // this needs to be set by the extension with initial selection
@@ -60,10 +58,6 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 
 	public DefaultsForServerJavaWSDLCommand( ) 
 	{
-		String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
-	    conMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.ui.plugin", this );
 	}
 	
 
@@ -76,7 +70,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 
 		IStatus status;
 		if (javaWSDLParam_ == null) {
-			status = StatusUtils.errorStatus( coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
+			status = StatusUtils.errorStatus( AxisConsumptionCoreMessages.MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET);
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
@@ -131,7 +125,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 			}
 
 		} catch (Exception e) {
-			status =  StatusUtils.errorStatus( conMsgUtils_.getMessage("MSG_ERROR_DEFAULT_BEAN"), e );
+			status =  StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_ERROR_DEFAULT_BEAN, e );
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
@@ -145,7 +139,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 		
 		}
 		catch(CoreException e){
-			status = StatusUtils.errorStatus( conMsgUtils_.getMessage("MSG_ERROR_WRITE_WSDL"), e );
+			status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_ERROR_WRITE_WSDL, e );
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
@@ -178,7 +172,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 
 		String projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_, serviceServerTypeID_);
 		if (projectURL == null) {
-			status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_PROJECT_URL"));
+			status = StatusUtils.errorStatus( AxisCreationUIMessages.MSG_ERROR_PROJECT_URL);
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}

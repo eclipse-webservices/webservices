@@ -12,11 +12,13 @@ package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
 import java.util.Hashtable;
 import java.util.Vector;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
@@ -193,24 +195,24 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     GridData gd;
     // Window title
     if (selectionMode_ == MODE_SERVICE)
-      thisShell.setText(getMessage("%PAGE_TITLE_WS_RUNTIME_SELECTION"));
+      thisShell.setText(ConsumptionUIMessages.PAGE_TITLE_WS_RUNTIME_SELECTION);
     else
-      thisShell.setText(getMessage("%PAGE_TITLE_WS_CLIENT_RUNTIME_SELECTION"));
+      thisShell.setText(ConsumptionUIMessages.PAGE_TITLE_WS_CLIENT_RUNTIME_SELECTION);
     
     IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
     
     helpSystem.setHelp(thisShell, INFOPOP_PWRS_DIALOG);
     // Dialog description banner
     messageBanner_ = new Text(composite, SWT.READ_ONLY | SWT.WRAP);
-    messageBanner_.setText(getMessage("%PAGE_DESC_WS_RUNTIME_SELECTION") + "\n" + "      "); // reserves a second line for message display
-    messageBanner_.setToolTipText(getMessage("%PAGE_DESC_WS_RUNTIME_SELECTION"));
+    messageBanner_.setText(ConsumptionUIMessages.PAGE_DESC_WS_RUNTIME_SELECTION + "\n" + "      "); // reserves a second line for message display
+    messageBanner_.setToolTipText(ConsumptionUIMessages.PAGE_DESC_WS_RUNTIME_SELECTION);
     gd = new GridData(GridData.FILL_HORIZONTAL);
     messageBanner_.setLayoutData(gd);
     //  -----------------------------------------------------------------------//
     new Label(composite, SWT.HORIZONTAL);
     //  -----------------------------------------------------------------------//
     // Selection
-    thisShell.setToolTipText(getMessage("%TOOLTIP_PWRS_PAGE"));
+    thisShell.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_PAGE);
     viewSelectionGroup_ = new Group(composite, SWT.NONE);
     gl = new GridLayout();
     gl.marginHeight = 0;
@@ -219,24 +221,24 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     gd = new GridData(GridData.FILL_HORIZONTAL);
     viewSelectionGroup_.setLayoutData(gd);
     if (selectionMode_ == MODE_SERVICE)
-      viewSelectionGroup_.setText(getMessage("%LABEL_SELECTION_VIEW_TITLE"));
+      viewSelectionGroup_.setText(ConsumptionUIMessages.LABEL_SELECTION_VIEW_TITLE);
     else
-      viewSelectionGroup_.setText(getMessage("%LABEL_CLIENT_SELECTION_VIEW_TITLE"));
+      viewSelectionGroup_.setText(ConsumptionUIMessages.LABEL_CLIENT_SELECTION_VIEW_TITLE);
     viewSelectionByServerButton_ = new Button(viewSelectionGroup_, SWT.RADIO);
-    viewSelectionByServerButton_.setText(getMessage("%LABEL_SELECTION_VIEW_SERVER"));
+    viewSelectionByServerButton_.setText(ConsumptionUIMessages.LABEL_SELECTION_VIEW_SERVER);
     viewSelectionByServerButton_.addListener(SWT.Selection, this);
-    viewSelectionByServerButton_.setToolTipText(getMessage("%TOOLTIP_PWRS_RADIO_SERVER"));
+    viewSelectionByServerButton_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_RADIO_SERVER);
     viewSelectionByServerButton_.setSelection(true);
     helpSystem.setHelp(viewSelectionByServerButton_, INFOPOP_PWRS_RADIO_SERVER);
     viewSelectionByRuntimeButton_ = new Button(viewSelectionGroup_, SWT.RADIO);
-    viewSelectionByRuntimeButton_.setText(getMessage("%LABEL_SELECTION_VIEW_RUNTIME"));
+    viewSelectionByRuntimeButton_.setText(ConsumptionUIMessages.LABEL_SELECTION_VIEW_RUNTIME);
     viewSelectionByRuntimeButton_.addListener(SWT.Selection, this);
-    viewSelectionByRuntimeButton_.setToolTipText(getMessage("%TOOLTIP_PWRS_RADIO_RUNTIME"));
+    viewSelectionByRuntimeButton_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_RADIO_RUNTIME);
     helpSystem.setHelp(viewSelectionByRuntimeButton_, INFOPOP_PWRS_RADIO_RUNTIME);
     viewSelectionByExploreButton_ = new Button(viewSelectionGroup_, SWT.RADIO);
-    viewSelectionByExploreButton_.setText(getMessage("%LABEL_SELECTION_VIEW_EXPLORE"));
+    viewSelectionByExploreButton_.setText(ConsumptionUIMessages.LABEL_SELECTION_VIEW_EXPLORE);
     viewSelectionByExploreButton_.addListener(SWT.Selection, this);
-    viewSelectionByExploreButton_.setToolTipText(getMessage("%TOOLTIP_PWRS_RADIO_EXPLORE"));
+    viewSelectionByExploreButton_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_RADIO_EXPLORE);
     helpSystem.setHelp(viewSelectionByExploreButton_, INFOPOP_PWRS_RADIO_EXPLORE);
     primaryGroup_ = new Composite(composite, SWT.NONE);
     gl = new GridLayout();
@@ -250,12 +252,12 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     runtimesGroup_.setLayout(gl);
     gd = new GridData(GridData.FILL_BOTH);
     runtimesGroup_.setLayoutData(gd);
-    runtimesGroup_.setText(getMessage("%LABEL_RUNTIMES_LIST"));
+    runtimesGroup_.setText(ConsumptionUIMessages.LABEL_RUNTIMES_LIST);
     runtimesList_ = new Tree(runtimesGroup_, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
     gd = new GridData(GridData.FILL_BOTH);
     runtimesList_.setLayoutData(gd);
     runtimesList_.addListener(SWT.Selection, this);
-    runtimesList_.setToolTipText(getMessage("%TOOLTIP_PWRS_LIST_RUNTIMES"));
+    runtimesList_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_LIST_RUNTIMES);
     helpSystem.setHelp(runtimesList_, INFOPOP_PWRS_LIST_RUNTIMES);
     //  Server labels control
     serversGroup_ = new Group(primaryGroup_, SWT.NONE);
@@ -263,11 +265,11 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     serversGroup_.setLayout(gl);
     gd = new GridData(GridData.FILL_BOTH);
     serversGroup_.setLayoutData(gd);
-    serversGroup_.setText(getMessage("%LABEL_SERVERS_LIST"));
+    serversGroup_.setText(ConsumptionUIMessages.LABEL_SERVERS_LIST);
     serverList_ = new Tree(serversGroup_, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
     serverList_.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL));
     serverList_.addListener(SWT.Selection, this);
-    serverList_.setToolTipText(getMessage("%TOOLTIP_PWRS_LIST_SERVERS"));
+    serverList_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_LIST_SERVERS);
     ServersList serverList = new ServersList();
     serverList.setServerTreeItems(serverList_);
     helpSystem.setHelp(serverList_, INFOPOP_PWRS_LIST_SERVERS);
@@ -282,7 +284,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     j2eeVersionComposite.setLayout(gl);
     j2eeVersionComposite.setLayoutData(gd);
     Label j2eeVersionLabel = new Label(j2eeVersionComposite, SWT.NONE);
-    j2eeVersionLabel.setText(getMessage("%LABEL_J2EE_VERSION"));
+    j2eeVersionLabel.setText(ConsumptionUIMessages.LABEL_J2EE_VERSION);
     j2eeVersionCombo = new Combo(j2eeVersionComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
     gl = new GridLayout();
     gl.marginHeight = 0;
@@ -291,7 +293,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     j2eeVersionCombo.setLayout(gl);
     j2eeVersionCombo.setLayoutData(gd);
     j2eeVersionCombo.addListener(SWT.Selection, this);
-    j2eeVersionCombo.setToolTipText(getMessage("%TOOLTIP_PWRS_J2EE_VERSION"));
+    j2eeVersionCombo.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_J2EE_VERSION);
     helpSystem.setHelp(j2eeVersionCombo, INFOPOP_PWRS_J2EE_VERSION);
     //  -----------------------------------------------------------------------//
     new Label(composite, SWT.HORIZONTAL);
@@ -334,7 +336,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
       if (label != null && label.length() >0)
         j2eeLabels[i] = J2EEUtils.getLabelFromJ2EEVersion(versions[i]);
       else
-        j2eeLabels[i] = getMessage("%LABEL_NA"); 
+        j2eeLabels[i] = ConsumptionUIMessages.LABEL_NA; 
     }
     j2eeVersionCombo.setItems(j2eeLabels);
   }
@@ -419,7 +421,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
 	      }
 	  // rskreg
       else {
-        setERRORStatusMessage("%MSG_INVALID_SRT_SELECTIONS");
+        setERRORStatusMessage(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS);
       }
       }
     }
@@ -437,7 +439,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
         //setERRORStatusMessage("%MSG_INVALID_SRT_SELECTIONS");
       //}
       if (selectedServerFactoryID_==null || selectedRuntime_ == null || !WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported(selectedServerFactoryID_, selectedRuntime_.getId(), clientId)) {
-	        setERRORStatusMessage("%MSG_INVALID_SRT_SELECTIONS");
+	        setERRORStatusMessage(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS);
 	  }	  
 	  // rskreg
       else {
@@ -470,14 +472,14 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   }
 
   private void setOKStatusMessage() {
-    messageBanner_.setText(getMessage("%PAGE_DESC_WS_RUNTIME_SELECTION"));
+    messageBanner_.setText(ConsumptionUIMessages.PAGE_DESC_WS_RUNTIME_SELECTION);
     Color black = new Color(thisShell.getDisplay(), 0x00, 0, 0);
     messageBanner_.setForeground(black);
     enableOKButton();
   }
 
   private void setERRORStatusMessage(String message) {
-    messageBanner_.setText(getMessage(message));
+    messageBanner_.setText(message);
     Color red = new Color(thisShell.getDisplay(), 0xFF, 0, 0);
     messageBanner_.setForeground(red);
     disableOKButton();
@@ -626,7 +628,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
         }
         else if (serverLabels_.containsKey(currentSelection)) {
           TreeItem parentItem = serverSel[0].getParentItem();
-          if (parentItem != null && !parentItem.getText().equalsIgnoreCase(getMessage("%LABEL_TREE_EXISTING_SERVERS"))) {
+          if (parentItem != null && !parentItem.getText().equalsIgnoreCase(ConsumptionUIMessages.LABEL_TREE_EXISTING_SERVERS)) {
             selectedServerLabel_ = currentSelection;
             selectedServer_ = null;
             selectedServerFactoryID_ = (String) serverLabels_.get(currentSelection);
@@ -635,7 +637,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
 
         // check if isExistingServer or new ServerType
         TreeItem parentItem = serverSel[0].getParentItem();
-        if (parentItem != null && parentItem.getText().equalsIgnoreCase(getMessage("%LABEL_TREE_EXISTING_SERVERS"))) {
+        if (parentItem != null && parentItem.getText().equalsIgnoreCase(ConsumptionUIMessages.LABEL_TREE_EXISTING_SERVERS)) {
           setIsExistingServer(true);
         }
         else {
@@ -652,9 +654,9 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     }
   }
 
-  private static String getMessage(String key) {
-    return WebServiceConsumptionUIPlugin.getMessage(key);
-  }
+//  private static String getMessage(String key) {
+//    return WebServiceConsumptionUIPlugin.getMessage(key);
+//  }
 
   private void setRuntimesGroup() {
     runtimesList_.removeAll();
@@ -717,7 +719,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
       existingServersTree = new TreeItem[1];
       TreeItem[] existingServerItems = new TreeItem[serverIds.length];
       existingServersTree[0] = new TreeItem(serverList, SWT.NONE);
-      existingServersTree[0].setText(getMessage("%LABEL_TREE_EXISTING_SERVERS"));
+      existingServersTree[0].setText(ConsumptionUIMessages.LABEL_TREE_EXISTING_SERVERS);
       ImageDescriptor id = WebServiceConsumptionUIPlugin.getImageDescriptor(EXISTING_SERVERS_ICON);
       if (id != null)
         existingServersTree[0].setImage(id.createImage());
@@ -744,7 +746,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
 
       TreeItem[] serverTypesTree = new TreeItem[1];
       serverTypesTree[0] = new TreeItem(serverList, SWT.NONE);
-      serverTypesTree[0].setText(getMessage("%LABEL_TREE_SERVER_TYPES"));
+      serverTypesTree[0].setText(ConsumptionUIMessages.LABEL_TREE_SERVER_TYPES);
       ImageDescriptor id = WebServiceConsumptionUIPlugin.getImageDescriptor(SERVER_TYPES_ICON);
       if (id != null)
         serverTypesTree[0].setImage(id.createImage());

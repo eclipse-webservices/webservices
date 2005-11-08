@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -28,11 +28,9 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 public class RefreshProjectCommand extends AbstractDataModelOperation
 {
 	private IProject project;
-	private MessageUtils msgUtils_;
 
 	public RefreshProjectCommand()
 	{
-		msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.ui.plugin", this );
 	}
 
 	/**
@@ -48,7 +46,7 @@ public class RefreshProjectCommand extends AbstractDataModelOperation
 		}
 		catch (CoreException e)
 		{
-		  IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_REFRESH_PROJECT"), e);
+		  IStatus status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_ERROR_REFRESH_PROJECT, e);
 		  env.getStatusHandler().reportError(status);
 		  return status;
 		}

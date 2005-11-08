@@ -13,10 +13,10 @@ package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofTypeVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanModelElementsFactory;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.ParameterElement;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -33,18 +33,13 @@ import org.eclipse.wst.ws.internal.datamodel.Element;
 public class JavaMofParameterVisitorAction extends JavaMofBeanVisitorAction 
 {
 
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
-  private MessageUtils msgUtils_;
-    
+
   /*
   *Constructor
   **/
   public JavaMofParameterVisitorAction(Element parentElement,String project, IEnvironment env)
   {
     super(parentElement,project, env);
-	String pluginId = "org.eclipse.jst.ws.consumption";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);    
   }
    
   /**
@@ -54,8 +49,8 @@ public class JavaMofParameterVisitorAction extends JavaMofBeanVisitorAction
   public IStatus visit (Object ijavaParameter)
   {
   	IStatus status = Status.OK_STATUS;
-  	Choice OKChoice = new Choice('O', msgUtils_.getMessage("LABEL_OK"), msgUtils_.getMessage("DESCRIPTION_OK"));
-  	Choice CancelChoice = new Choice('C', msgUtils_.getMessage("LABEL_CANCEL"), msgUtils_.getMessage("DESCRIPTION_CANCEL"));
+  	Choice OKChoice = new Choice('O',ConsumptionMessages.LABEL_OK, ConsumptionMessages.DESCRIPTION_OK);
+  	Choice CancelChoice = new Choice('C', ConsumptionMessages.LABEL_CANCEL, ConsumptionMessages.DESCRIPTION_CANCEL);
   	
     ParameterElement parameterElement = (ParameterElement)BeanModelElementsFactory.getBeanModelElement(ijavaParameter,fParentElement);
     JavaMofTypeVisitorAction typeVisitorAction = new JavaMofTypeVisitorAction(parameterElement,clientProject, env_);
@@ -75,7 +70,7 @@ public class JavaMofParameterVisitorAction extends JavaMofBeanVisitorAction
       if (result.getLabel().equals(CancelChoice.getLabel()))
       {
       	 //return an error status since the user canceled
-      	  return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
+      	  return StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_SAMPLE_CREATION_CANCELED );
       }
       	
     }

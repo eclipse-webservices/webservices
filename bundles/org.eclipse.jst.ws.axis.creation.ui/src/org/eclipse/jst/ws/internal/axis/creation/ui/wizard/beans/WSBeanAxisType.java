@@ -13,13 +13,14 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.wizard.beans;
 
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CheckAxisDeploymentDescriptorsTask;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
+import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BeanConfigWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionWidget;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
@@ -161,13 +162,11 @@ public class WSBeanAxisType implements CommandWidgetBinding
    */
   public void registerWidgetMappings(WidgetRegistry widgetRegistry) 
   {
-    String       pluginId_ = "org.eclipse.jst.ws.axis.creation.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    
+   
     /*
     widgetRegistry.add( "BeanSelection", 
-                        msgUtils.getMessage("PAGE_TITLE_WSBEAN_CLASS"),
-                        msgUtils.getMessage("PAGE_DESC_WSBEAN_CLASS"),
+                        AxisCreationUIMessages.PAGE_TITLE_WSBEAN_CLASS,
+                        AxisCreationUIMessages.PAGE_DESC_WSBEAN_CLASS,
                         new WidgetContributorFactory()
                         {
                           public WidgetContributor create()
@@ -178,8 +177,8 @@ public class WSBeanAxisType implements CommandWidgetBinding
     */
 
     widgetRegistry.add( "BeanConfig", 
-                        msgUtils.getMessage("PAGE_TITLE_WSBEAN_CONFIG"),
-                        msgUtils.getMessage("PAGE_DESC_WSBEAN_CONFIG"),
+                        AxisCreationUIMessages.PAGE_TITLE_WSBEAN_CONFIG,
+                        AxisCreationUIMessages.PAGE_DESC_WSBEAN_CONFIG,
                         new WidgetContributorFactory()
                         {
                           public WidgetContributor create()
@@ -188,12 +187,10 @@ public class WSBeanAxisType implements CommandWidgetBinding
                           }
                         } );
 
-    String       consPluginId_ = "org.eclipse.jst.ws.axis.consumption.ui";
-    MessageUtils consMsgUtils = new MessageUtils( consPluginId_ + ".plugin", this );
 
     widgetRegistry.add( "AxisServiceBeanMapping", 
-                        consMsgUtils.getMessage("PAGE_TITLE_WS_BEAN2XML"),
-                        consMsgUtils.getMessage("PAGE_DESC_P2N_MAPPINGS"),
+    		AxisConsumptionUIMessages.PAGE_TITLE_WS_BEAN2XML,
+    		AxisConsumptionUIMessages.PAGE_DESC_P2N_MAPPINGS,
                         new WidgetContributorFactory()
                         {
                           public WidgetContributor create()

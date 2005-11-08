@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
+import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -41,23 +41,21 @@ public class PreferencesSelectionWidget extends SimpleWidgetDataContributor
    */
   public WidgetDataEvents addControls( Composite parent, Listener statusListener)
   {
-    String       pluginId    = "org.eclipse.jst.ws.ui";
     String       conPluginId = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils    = new MessageUtils( pluginId + ".plugin", this );
-  	UIUtils      utils       = new UIUtils( msgUtils, conPluginId );
+  	UIUtils      utils       = new UIUtils( conPluginId );
   	
     Composite resourcesGroup = utils.createComposite( parent, 1 );
     
-    overwriteFilesCheckbox_ = utils.createCheckbox( resourcesGroup, "BUTTON_OVERWRITE_FILES",
-                                                    "TOOLTIP_PPRM_CHECKBOX_OVERWRITE_FILES", 
+    overwriteFilesCheckbox_ = utils.createCheckbox( resourcesGroup, WSUIPluginMessages.BUTTON_OVERWRITE_FILES,
+    		WSUIPluginMessages.TOOLTIP_PPRM_CHECKBOX_OVERWRITE_FILES, 
                                                     INFOPOP_PWPR_CHECKBOX_OVERWRITE_FILES );
                                                  
-    createFoldersCheckbox_ = utils.createCheckbox( resourcesGroup, "BUTTON_CREATE_FOLDERS",
-                                                   "TOOLTIP_PPRM_CHECKBOX_CREATE_FOLDERS" , 
+    createFoldersCheckbox_ = utils.createCheckbox( resourcesGroup, WSUIPluginMessages.BUTTON_CREATE_FOLDERS,
+    		WSUIPluginMessages.TOOLTIP_PPRM_CHECKBOX_CREATE_FOLDERS , 
                                                    INFOPOP_PWPR_CHECKBOX_CREATE_FOLDERS );
                                                       
-    checkoutFilesCheckbox_ = utils.createCheckbox( resourcesGroup, "BUTTON_CHECKOUT_FILES",
-                                                   "TOOLTIP_PPRM_CHECKBOX_CHECK_OUT", 
+    checkoutFilesCheckbox_ = utils.createCheckbox( resourcesGroup, WSUIPluginMessages.BUTTON_CHECKOUT_FILES,
+    		WSUIPluginMessages.TOOLTIP_PPRM_CHECKBOX_CHECK_OUT, 
                                                    INFOPOP_PWPR_CHECKBOX_CHECKOUT_FILES );
     
     return this;

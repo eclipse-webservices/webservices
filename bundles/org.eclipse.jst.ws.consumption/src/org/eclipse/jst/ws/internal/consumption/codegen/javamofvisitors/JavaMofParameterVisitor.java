@@ -12,14 +12,15 @@
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors;
 
 import java.util.List;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.Method;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -30,10 +31,6 @@ import org.eclipse.wst.common.environment.IEnvironment;
 * */
 public class JavaMofParameterVisitor implements Visitor 
 {
-
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
-  private MessageUtils msgUtils_;
   private IEnvironment env_;
 
   /*
@@ -41,8 +38,6 @@ public class JavaMofParameterVisitor implements Visitor
   **/
   public JavaMofParameterVisitor(IEnvironment env)
   {
-	String pluginId = "org.eclipse.jst.ws.consumption";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);  	
   	env_ = env;
   }
   
@@ -54,8 +49,8 @@ public class JavaMofParameterVisitor implements Visitor
   public IStatus run ( Object imethod, VisitorAction vAction)
   {
   	IStatus status = Status.OK_STATUS;
-  	Choice OKChoice = new Choice('O', msgUtils_.getMessage("LABEL_OK"), msgUtils_.getMessage("DESCRIPTION_OK"));
-  	Choice CancelChoice = new Choice('C', msgUtils_.getMessage("LABEL_CANCEL"), msgUtils_.getMessage("DESCRIPTION_CANCEL"));  	
+  	Choice OKChoice = new Choice('O', ConsumptionMessages.LABEL_OK, ConsumptionMessages.DESCRIPTION_OK);
+  	Choice CancelChoice = new Choice('C', ConsumptionMessages.LABEL_CANCEL, ConsumptionMessages.DESCRIPTION_CANCEL);  	
     Method method = (Method)imethod;
    
     JavaHelpers javaReturnParameter = method.getReturnType();
@@ -73,7 +68,7 @@ public class JavaMofParameterVisitor implements Visitor
       if (result.getLabel().equals(CancelChoice.getLabel()))
       {
       	 //return an error status since the user canceled
-      	  return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
+      	  return StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_SAMPLE_CREATION_CANCELED );
       }
       	
     }
@@ -97,7 +92,7 @@ public class JavaMofParameterVisitor implements Visitor
         if (result.getLabel().equals(CancelChoice.getLabel()))
         {
         	 //return an error status since the user canceled
-        	  return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
+        	  return StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_SAMPLE_CREATION_CANCELED );
         }
         	
       }

@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ImportWSILWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.AddWSDLToWSILWrapperCommand;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
@@ -72,12 +72,10 @@ public class ImportWSILWidgetBinding implements CommandWidgetBinding
    */
   public void registerWidgetMappings(WidgetRegistry widgetRegistry)
   {
-    String       pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
 
     widgetRegistry.add("ImportWSILWidget", 
-      msgUtils.getMessage("TITLE_WSIL_IMPORT"),
-      msgUtils.getMessage("DESC_WSIL_IMPORT"),
+      ConsumptionUIMessages.TITLE_WSIL_IMPORT,
+      ConsumptionUIMessages.DESC_WSIL_IMPORT,
       new WidgetContributorFactory()
       {
         public WidgetContributor create()

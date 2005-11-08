@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.common.WebServiceStartServerRegistry;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -28,8 +28,6 @@ import org.eclipse.wst.server.core.IServer;
 
 public class StartProjectCommand extends AbstractDataModelOperation 
 {
-
-private MessageUtils msgUtils_;
 
 private Boolean creationScenario_ = Boolean.TRUE;
 
@@ -41,22 +39,18 @@ private String sampleServerTypeID_;
 private IServer serviceExistingServer_;
 private IServer sampleExistingServer_;
 
-// rm private Model model_;
 
 /**
  * Default CTOR;
  */
 public StartProjectCommand( ) {
-	String pluginId = "org.eclipse.jst.ws.consumption";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
+
 }
 
 /**
  * Default CTOR;
  */
 public StartProjectCommand(boolean creationScenario ) {
-	String pluginId = "org.eclipse.jst.ws.consumption";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	creationScenario_ = new Boolean(creationScenario);
 }
 
@@ -68,7 +62,7 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
     IEnvironment env = getEnvironment();    
   
     IStatus status = Status.OK_STATUS;
-    ProgressUtils.report( monitor, msgUtils_.getMessage("PROGRESS_INFO_START_WEB_PROJECT"));
+    ProgressUtils.report( monitor, ConsumptionMessages.PROGRESS_INFO_START_WEB_PROJECT);
     
     
     IProject project = ((creationScenario_.booleanValue()) ? serviceProject_ : sampleProject_);
@@ -79,14 +73,14 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
     }
     if (project == null)
     {
-      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_PROJECT_NOT_FOUND") );  
+      status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_PROJECT_NOT_FOUND );  
       env.getStatusHandler().reportError(status);
       return status;
     }	
     IServer instance = ServerUtils.getServerForModule(ServerUtils.getModule(project), serverTypeID, server, true, monitor );
     if (instance == null)
     {
-      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_INSTANCE_NOT_FOUND") );
+      status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_INSTANCE_NOT_FOUND );
       env.getStatusHandler().reportError(status);
       return status;
     }
@@ -108,7 +102,7 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   	}
    catch (Exception e)
    	{
-       status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), e);
+       status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_SERVER, e);
        env.getStatusHandler().reportError(status);
    	   return status;
    	}

@@ -15,7 +15,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
@@ -26,15 +27,11 @@ public class CheckProjectOKCommand extends AbstractDataModelOperation
 
   private String serviceServerTypeId_;
 
-  private MessageUtils msgUtils_;
 
   /**
    * Default CTOR
    */
   public CheckProjectOKCommand() {
-    String pluginId = "org.eclipse.jst.ws.consumption";
-    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-
   }
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -61,7 +58,7 @@ public class CheckProjectOKCommand extends AbstractDataModelOperation
     }
 
     if (viewOpen) {
-      String errorMessage = msgUtils_.getMessage("MSG_ERROR_SERVER_VIEW_OPEN", new String[] { serverName});
+      String errorMessage = NLS.bind(ConsumptionMessages.MSG_ERROR_SERVER_VIEW_OPEN, new String[] { serverName});
       return StatusUtils.errorStatus( errorMessage );
       
     }

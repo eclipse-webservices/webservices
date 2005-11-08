@@ -14,7 +14,7 @@ package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.ResourceBundle;
+
 import org.apache.axis.AxisEngine;
 import org.apache.axis.server.AxisServer;
 import org.apache.axis.tools.ant.axis.AdminClientTask;
@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
@@ -48,7 +49,6 @@ public class GeronimoAxisDeployCommand extends AbstractDataModelOperation
 {
 
   private JavaWSDLParameter javaWSDLParam;
-  private ResourceBundle resource = ResourceBundle.getBundle("org.eclipse.jst.ws.axis.consumption.core.consumption"); //$NON-NLS-1$
 
   private String projectName_;
   private static final String AXIS_SERVER_CONFIG_FILE = "axis.ServerConfigFile";
@@ -69,21 +69,21 @@ public class GeronimoAxisDeployCommand extends AbstractDataModelOperation
 	IEnvironment environment = getEnvironment();
     if (javaWSDLParam == null)
     {
-      return StatusUtils.errorStatus(getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
+      return StatusUtils.errorStatus(AxisConsumptionCoreMessages.MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET);
     }
 
     if (javaWSDLParam.getProjectURL() == null || javaWSDLParam.getProjectURL().equals(""))
     { //$NON-NLS-1$
-      return StatusUtils.errorStatus(getMessage("MSG_ERROR_PROJECT_URL_PARAM_NOT_SET"));
+      return StatusUtils.errorStatus(AxisConsumptionCoreMessages.MSG_ERROR_PROJECT_URL_PARAM_NOT_SET);
     }
 
     if (javaWSDLParam.getDeploymentFiles() == null || javaWSDLParam.getDeploymentFiles().length == 0)
     {
       return StatusUtils.errorStatus(
-      getMessage("MSG_ERROR_DEPLOY_FILE_PARAM_NOT_SET"));
+      AxisConsumptionCoreMessages.MSG_ERROR_DEPLOY_FILE_PARAM_NOT_SET);
     }
 
-    ProgressUtils.report(monitor, getMessage("MSG_AXIS_DEPLOY"));
+    ProgressUtils.report(monitor, AxisConsumptionCoreMessages.MSG_AXIS_DEPLOY);
 
     IStatus status = executeAdminTask();
     if (status.getSeverity() == Status.ERROR)
@@ -160,16 +160,9 @@ public class GeronimoAxisDeployCommand extends AbstractDataModelOperation
         message = e.getCause().toString();
       }
       
-//      Status[] childStatus = new Status[1];
-//      childStatus[0] = new SimpleStatus("AxisDeployCommand", message, Status.ERROR);
-//      return new SimpleStatus("AxisDeployCommand", //$NON-NLS-1$
-//      getMessage("MSG_ERROR_AXIS_DEPLOY"), childStatus);
-//    }
-//    return new SimpleStatus("AxisDeployCommand", //$NON-NLS-1$
-//    getMessage("MSG_AXIS_DEPLOY_OK"), Status.OK);
       IStatus[] childStatus = new Status[1];
       childStatus[0] = StatusUtils.errorStatus( message);
-      return StatusUtils.multiStatus(getMessage("MSG_ERROR_AXIS_DEPLOY"), childStatus);
+      return StatusUtils.multiStatus(AxisConsumptionCoreMessages.MSG_ERROR_AXIS_DEPLOY, childStatus);
     }
     return Status.OK_STATUS; 
 
@@ -234,7 +227,7 @@ public class GeronimoAxisDeployCommand extends AbstractDataModelOperation
       
       IStatus[] childStatus = new Status[1];
       childStatus[0] = StatusUtils.errorStatus( message);
-      return StatusUtils.multiStatus(getMessage("MSG_ERROR_AXIS_DEPLOY"), childStatus);
+      return StatusUtils.multiStatus(AxisConsumptionCoreMessages.MSG_ERROR_AXIS_DEPLOY, childStatus);
     }
     
     return status;
@@ -270,19 +263,9 @@ public class GeronimoAxisDeployCommand extends AbstractDataModelOperation
 
       IStatus[] childStatus = new Status[1];
       childStatus[0] = StatusUtils.errorStatus( message);
-      return StatusUtils.multiStatus(getMessage("MSG_ERROR_AXIS_DEPLOY"), childStatus);
+      return StatusUtils.multiStatus(AxisConsumptionCoreMessages.MSG_ERROR_AXIS_DEPLOY, childStatus);
 
     }
-  }
-
-  /**
-   * Returns the message string identified by the given key from plugin.properties.
-   * 
-   * @return The String message.
-   */
-  public String getMessage(String key)
-  {
-    return resource.getString(key);
   }
 
   /**

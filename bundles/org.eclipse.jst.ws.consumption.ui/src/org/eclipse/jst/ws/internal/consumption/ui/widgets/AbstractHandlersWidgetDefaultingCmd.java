@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -21,7 +22,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -40,13 +41,11 @@ public abstract class AbstractHandlersWidgetDefaultingCmd extends AbstractDataMo
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     IEnvironment env = getEnvironment();
-    String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils_ = new MessageUtils( pluginId + ".plugin", this );    
     IStatus status = Status.OK_STATUS;
     
     IStructuredSelection selection = initialSelection_;
     if (selection == null) {
-      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED") );
+      status = StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED );
       env.getStatusHandler().reportError(status);
       return status;         
     }

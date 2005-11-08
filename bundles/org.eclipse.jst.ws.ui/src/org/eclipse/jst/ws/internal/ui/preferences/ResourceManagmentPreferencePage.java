@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.ui.preferences;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -56,19 +57,19 @@ public class ResourceManagmentPreferencePage extends PreferencePage implements I
     GridLayout layout = new GridLayout();
     layout.numColumns = 1;
     parent.setLayout( layout );
-    parent.setToolTipText(getMessage("%TOOLTIP_PPRM_PAGE"));
+    parent.setToolTipText(WSUIPluginMessages.TOOLTIP_PPRM_PAGE);
     helpSystem.setHelp(parent, INFOPOP_PPRM_PAGE);
 
-    overWriteFiles = createCheckBox(parent, WebServiceUIPlugin.getMessage("%BUTTON_OVERWRITE_FILES" ));
-    overWriteFiles.setToolTipText(getMessage("%TOOLTIP_PPRM_CHECKBOX_OVERWRITE_FILES"));
+    overWriteFiles = createCheckBox(parent, WSUIPluginMessages.BUTTON_OVERWRITE_FILES);
+    overWriteFiles.setToolTipText(WSUIPluginMessages.TOOLTIP_PPRM_CHECKBOX_OVERWRITE_FILES);
     helpSystem.setHelp(overWriteFiles, INFOPOP_PPRM_CHECKBOX_OVERWRITE_FILES);
 
-    createFolders  = createCheckBox(parent, WebServiceUIPlugin.getMessage("%BUTTON_CREATE_FOLDERS" ));
-    createFolders.setToolTipText(getMessage("%TOOLTIP_PPRM_CHECKBOX_CREATE_FOLDERS"));
+    createFolders  = createCheckBox(parent, WSUIPluginMessages.BUTTON_CREATE_FOLDERS);
+    createFolders.setToolTipText(WSUIPluginMessages.TOOLTIP_PPRM_CHECKBOX_CREATE_FOLDERS);
     helpSystem.setHelp(createFolders, INFOPOP_PPRM_CHECKBOX_CREATE_FOLDERS);
 
-    checkoutFiles = createCheckBox(parent, WebServiceUIPlugin.getMessage("%BUTTON_CHECKOUT_FILES" ));    
-    checkoutFiles.setToolTipText(getMessage("%TOOLTIP_PPRM_CHECKBOX_CHECK_OUT"));
+    checkoutFiles = createCheckBox(parent, WSUIPluginMessages.BUTTON_CHECKOUT_FILES);    
+    checkoutFiles.setToolTipText(WSUIPluginMessages.TOOLTIP_PPRM_CHECKBOX_CHECK_OUT);
     helpSystem.setHelp(checkoutFiles, INFOPOP_PPRM_CHECKBOX_CHECK_OUT);
 
     initializeValues();
@@ -77,11 +78,6 @@ public class ResourceManagmentPreferencePage extends PreferencePage implements I
     return parent;
   }
  
-  private String getMessage(String key) 
-  {
-  		return WebServiceUIPlugin.getMessage(key);
-  }
-
   private Button createCheckBox( Composite parent, String text )
   {
     Button button = new Button( parent, SWT.CHECK );

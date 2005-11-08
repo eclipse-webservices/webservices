@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -29,7 +29,6 @@ import org.eclipse.wst.server.core.IServer;
 public class PublishProjectCommand extends AbstractDataModelOperation 
 {
 
-private MessageUtils msgUtils_;
 
 private String project;
 private String serverTypeID;
@@ -40,8 +39,6 @@ private IServer existingServer;
  * Default CTOR;
  */
 public PublishProjectCommand() {
-  String pluginId = "org.eclipse.jst.ws.consumption";
-  msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 }
 
 /**
@@ -54,10 +51,10 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   IStatus status = Status.OK_STATUS;
   try
   {
-    ProgressUtils.report( monitor, msgUtils_.getMessage( "PROGRESS_INFO_PUBLISH_WEB_PROJECT" ) );
+    ProgressUtils.report( monitor, ConsumptionMessages.PROGRESS_INFO_PUBLISH_WEB_PROJECT );
     
     if (project == null){
-      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_PROJECT_NOT_FOUND") ); 
+      status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_PROJECT_NOT_FOUND ); 
       env.getStatusHandler().reportError(status);
       return status;
     }
@@ -66,7 +63,7 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
     IServer instance = ServerUtils.getServerForModule(ServerUtils.getModule(iProject), serverTypeID, existingServer, true, monitor);
     if (instance == null)
     {
-      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_INSTANCE_NOT_FOUND") );
+      status = StatusUtils.errorStatus(ConsumptionMessages.MSG_ERROR_INSTANCE_NOT_FOUND);
       env.getStatusHandler().reportError(status);
       return status;
     }
@@ -80,7 +77,7 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
       return status;
   }
   catch (Exception e) {
-    status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_PUBLISH"), e);
+    status = StatusUtils.errorStatus(ConsumptionMessages.MSG_ERROR_PUBLISH, e);
     env.getStatusHandler().reportError(status);
     return status;
 

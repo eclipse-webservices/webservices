@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
@@ -36,7 +37,9 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.PropertiesResourceFilter;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.ui.dialog.DialogUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.KeyEvent;
@@ -58,7 +61,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -108,9 +110,6 @@ public class TableViewerWidget extends SimpleWidgetDataContributor
   { 
     parent_         = parent;
     statusListener_ = statusListener;
-    
-    String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId + ".plugin", this );
     
 	Composite  composite = new Composite(parent, SWT.NONE);
 	GridLayout gl        = new GridLayout();
@@ -188,7 +187,7 @@ public class TableViewerWidget extends SimpleWidgetDataContributor
 	buttonComposite.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
 
 	import_ = new Button(buttonComposite, SWT.PUSH);
-	import_.setText(msgUtils.getMessage("LABEL_IMPORT"));
+	import_.setText(ConsumptionUIMessages.LABEL_IMPORT);
 	import_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 	import_.addSelectionListener(
 	  new SelectionListener()
@@ -204,7 +203,7 @@ public class TableViewerWidget extends SimpleWidgetDataContributor
 	);
 	
 	add_ = new Button(buttonComposite, SWT.PUSH);
-	add_.setText(msgUtils.getMessage("LABEL_ADD"));
+	add_.setText(ConsumptionUIMessages.LABEL_ADD);
 	add_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 	add_.addSelectionListener(
 	  new SelectionListener()
@@ -221,7 +220,7 @@ public class TableViewerWidget extends SimpleWidgetDataContributor
 
 	
 	remove_ = new Button(buttonComposite, SWT.PUSH);
-	remove_.setText(msgUtils.getMessage("LABEL_REMOVE"));
+	remove_.setText(ConsumptionUIMessages.LABEL_REMOVE);
 	remove_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 	remove_.addSelectionListener(
 	  new SelectionListener()
@@ -331,17 +330,15 @@ public class TableViewerWidget extends SimpleWidgetDataContributor
   private void checkMappingConstraints() {
 
 	HashMap map = new HashMap();
-    String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId + ".plugin", this );
-    
+   
 	for(int cnt=0; cnt<values_.size(); cnt++){
 		String[] value = (String[])values_.get(cnt);
 		if(map.containsKey(value[0]) && ((rescriction & 1)!=0)){
-			message = msgUtils.getMessage("MSG_MAPPING_DUPLICATE_ENTRIES", new String[]{columns_[0],columns_[1]});
+			message =NLS.bind(ConsumptionUIMessages.MSG_MAPPING_DUPLICATE_ENTRIES, new String[]{columns_[0],columns_[1]});
 			return;
 		}
 		if(map.containsValue(value[1]) && ((rescriction & 2)!=0)){
-			message = msgUtils.getMessage("MSG_MAPPING_DUPLICATE_ENTRIES", new String[]{columns_[1],columns_[0]});
+			message =NLS.bind(ConsumptionUIMessages.MSG_MAPPING_DUPLICATE_ENTRIES, new String[]{columns_[1],columns_[0]});
 			return;
 		}
 		map.put(value[0],value[1]);

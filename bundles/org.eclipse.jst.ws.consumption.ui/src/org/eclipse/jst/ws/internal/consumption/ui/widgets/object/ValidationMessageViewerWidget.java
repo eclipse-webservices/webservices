@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -32,7 +33,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -43,7 +43,6 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 {
   private int DEFAULT_TABLE_HEIGHT_HINT = 100;
   private TableViewer tableViewer_;
-  private MessageUtils msgUtils_;
   private Table table_;
   private String message = null;
   static final String columns_[] = {"severity", "line", "column", "message"};
@@ -53,13 +52,11 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 
   public ValidationMessageViewerWidget()
   {
-	  String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-	  msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
   }
 
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   { 
-    
+   
 	Composite  composite = new Composite(parent, SWT.NONE);
 	GridLayout gl        = new GridLayout();
 	
@@ -69,10 +66,10 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 	composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 	
     Label messageLabel = new Label( composite, SWT.WRAP);
-    messageLabel.setText( msgUtils_.getMessage("LABEL_VALIDATE_MESSAGES"));
-    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+    messageLabel.setText( ConsumptionUIMessages.LABEL_VALIDATE_MESSAGES);
+    GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
     messageLabel.setLayoutData(gd);
-    messageLabel.setToolTipText( msgUtils_.getMessage("TOOLTIP_VALIDATE_TEXT_MESSAGE") );
+    messageLabel.setToolTipText( ConsumptionUIMessages.TOOLTIP_VALIDATE_TEXT_MESSAGE );
 
 	table_ = new Table(composite, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
 	gd = new GridData(GridData.FILL_BOTH);
@@ -80,7 +77,7 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 	table_.setLayoutData(gd);
 	table_.setHeaderVisible(true);
 	table_.setLinesVisible(true);
-	table_.setToolTipText(msgUtils_.getMessage("TOOLTIP_TABLE_VALIDATE_MESSAGE") );
+	table_.setToolTipText(ConsumptionUIMessages.TOOLTIP_TABLE_VALIDATE_MESSAGE );
 	TableLayout tableLayout = new TableLayout();
 	for (int i = 0; i < columns_.length; i++)
 	{

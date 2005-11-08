@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.context.ProjectTopologyDefaults;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -67,12 +68,12 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     GridLayout layout = new GridLayout();
     layout.numColumns = 1;
     parent.setLayout( layout );
-    parent.setToolTipText(getMessage("%TOOLTIP_PTPP_PAGE"));
+    parent.setToolTipText(WSUIPluginMessages.TOOLTIP_PTPP_PAGE);
     parent.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
     PlatformUI.getWorkbench().getHelpSystem().setHelp(parent,INFOPOP_PTPP_PAGE);    
 
     Text clientTypeLabel = new Text(parent, SWT.READ_ONLY | SWT.WRAP);
-    clientTypeLabel.setText(getMessage("%LABEL_CLIENT_TYPE_NAME"));
+    clientTypeLabel.setText(WSUIPluginMessages.LABEL_CLIENT_TYPE_NAME);
     clientTypeLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL));
 
     Composite clientTypeComposite = new Composite(parent, SWT.NONE);
@@ -87,7 +88,7 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     GridData gd = new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
     gd.widthHint = 256;
     table.setLayoutData(gd);
-    table.setToolTipText(getMessage("%TOOLTIP_CLIENT_TYPE_TABLE_VIEWER"));
+    table.setToolTipText(WSUIPluginMessages.TOOLTIP_CLIENT_TYPE_TABLE_VIEWER);
 
     clientTypes_ = new Vector();
     clientTypeViewer_ = new TableViewer(table);
@@ -97,7 +98,7 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
 
     TableLayout tableLayout = new TableLayout();
     TableColumn tableColumn = new TableColumn(table, SWT.NONE);
-    tableColumn.setText(getMessage("%LABEL_CLIENT_TYPE"));
+    tableColumn.setText(WSUIPluginMessages.LABEL_CLIENT_TYPE_NAME);
     ColumnWeightData columnData = new ColumnWeightData(256, 256, false);
     tableLayout.addColumnData(columnData);
     table.setLayout(tableLayout);
@@ -110,20 +111,20 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     c.setLayout(gl);
 
     moveUp_ = new Button(c, SWT.PUSH);
-    moveUp_.setText(getMessage("%LABEL_MOVE_UP"));
+    moveUp_.setText(WSUIPluginMessages.LABEL_MOVE_UP);
     moveUp_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
     moveUp_.addSelectionListener(this);
-    moveUp_.setToolTipText(getMessage("%TOOLTIP_MOVE_UP"));
+    moveUp_.setToolTipText(WSUIPluginMessages.TOOLTIP_MOVE_UP);
 
     moveDown_ = new Button(c, SWT.PUSH);
-    moveDown_.setText(getMessage("%LABEL_MOVE_DOWN"));
+    moveDown_.setText(WSUIPluginMessages.LABEL_MOVE_DOWN);
     moveDown_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
     moveDown_.addSelectionListener(this);
-    moveDown_.setToolTipText(getMessage("%TOOLTIP_MOVE_DOWN"));
+    moveDown_.setToolTipText(WSUIPluginMessages.TOOLTIP_MOVE_DOWN);
 
     twoEAR_ = new Button(parent, SWT.CHECK | SWT.WRAP );
-    twoEAR_.setText(getMessage("%LABEL_ENABLE_TWO_EARS"));
-    twoEAR_.setToolTipText(getMessage("%TOOLTIP_ENABLE_TWO_EARS"));
+    twoEAR_.setText(WSUIPluginMessages.LABEL_ENABLE_TWO_EARS);
+    twoEAR_.setToolTipText(WSUIPluginMessages.TOOLTIP_ENABLE_TWO_EARS);
 
     initializeValues();
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);    
@@ -131,11 +132,6 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     return parent;
   }
   
-  private String getMessage(String key) 
-  {
-      	return WebServiceUIPlugin.getMessage(key);
-  }
-
   /**
    * Does anything necessary because the default button has been pressed.
    */

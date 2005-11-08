@@ -14,6 +14,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
@@ -26,11 +27,11 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.PublishProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.ILog;
@@ -47,13 +48,10 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
   public static String METHOD      = "Method.jsp";
 		
   private TestInfo testInfo;
-  private MessageUtils msgUtils;
   private String jspfolder;
   
   public GSTCLaunchCommand(TestInfo testInfo){
     this.testInfo = testInfo;
-	String pluginId = "org.eclipse.jst.ws.consumption.ui";
-	msgUtils = new MessageUtils(pluginId + ".plugin", this);
   }
 		
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -148,20 +146,20 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 		 }catch(PartInitException exc){
 			//TODO: change error message
 			env.getLog().log(ILog.WARNING, 5048, this, "launchSample", exc);
-			status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL") );
+			status = StatusUtils.warningStatus( ConsumptionUIMessages.MSG_ERROR_MALFORMED_URL );
 			try {
 				env.getStatusHandler().report(status);
 			} catch (StatusException e) {
-				status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), e );
+				status = StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_MALFORMED_URL, e );
 			}
 	    	return status;
 	    }catch(MalformedURLException exc){
 	    	env.getLog().log(ILog.WARNING, 5048, this, "launchSample", exc);
-			status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), exc );
+			status = StatusUtils.warningStatus( ConsumptionUIMessages.MSG_ERROR_MALFORMED_URL, exc );
 			try {
 				env.getStatusHandler().report(status);
 			} catch (StatusException e) {
-				status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), e );
+				status = StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_MALFORMED_URL, e );
 			}
 	    	return status;
 	    }

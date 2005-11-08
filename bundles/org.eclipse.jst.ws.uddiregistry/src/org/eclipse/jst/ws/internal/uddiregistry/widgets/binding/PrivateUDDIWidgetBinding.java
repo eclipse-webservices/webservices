@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.uddiregistry.widgets.binding;
 
-import org.eclipse.jst.ws.internal.uddiregistry.plugin.WebServiceUDDIRegistryPlugin;
+import org.eclipse.jst.ws.internal.uddiregistry.UDDIRegistryMessages;
 import org.eclipse.jst.ws.internal.uddiregistry.widgets.PrivateUDDISelectionCommand;
 import org.eclipse.jst.ws.internal.uddiregistry.widgets.PrivateUDDISelectionCommandFragment;
 import org.eclipse.jst.ws.internal.uddiregistry.widgets.PrivateUDDISelectionWidget;
 import org.eclipse.jst.ws.internal.uddiregistry.widgets.PrivateUDDISelectionWidgetConditionCommand;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
@@ -94,13 +93,12 @@ public class PrivateUDDIWidgetBinding implements CommandWidgetBinding
    */
   public void registerWidgetMappings(WidgetRegistry widgetRegistry)
   {
-    MessageUtils msgUtils = new MessageUtils(WebServiceUDDIRegistryPlugin.ID + ".plugin", this);
     this.widgetRegistry = widgetRegistry;
     privateUDDISelFragment.registerWidgetMappings(this.widgetRegistry);
 
     widgetRegistry.add("PrivateUDDISelectionWidget", 
-      msgUtils.getMessage("PAGE_TITLE_PRIVATE_UDDI_CONFIG"),
-      msgUtils.getMessage("PAGE_DESC_PRIVATE_UDDI_CONFIG"),
+      UDDIRegistryMessages.PAGE_TITLE_PRIVATE_UDDI_CONFIG,
+      UDDIRegistryMessages.PAGE_DESC_PRIVATE_UDDI_CONFIG,
 	  new WidgetContributorFactory()
       {
 	    public WidgetContributor create()

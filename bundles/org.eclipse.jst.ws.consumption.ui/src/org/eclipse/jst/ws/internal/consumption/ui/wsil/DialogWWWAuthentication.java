@@ -12,6 +12,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.wsil;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -81,7 +82,7 @@ public class DialogWWWAuthentication extends Dialog implements WWWAuthentication
   protected void configureShell(Shell shell)
   {
     super.configureShell(shell);
-    shell.setText(getMessage("%DIALOG_TITLE_HTTP_BASIC_AUTH"));
+    shell.setText(ConsumptionUIMessages.DIALOG_TITLE_HTTP_BASIC_AUTH);
   }
 
   /** 
@@ -103,7 +104,7 @@ public class DialogWWWAuthentication extends Dialog implements WWWAuthentication
     composite.setLayout(gl);
 
     Label label = new Label(composite, SWT.WRAP);
-    label.setText(getMessage("%LABEL_URL"));
+    label.setText(ConsumptionUIMessages.LABEL_URL);
     label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
     label = new Label(composite, SWT.WRAP);
@@ -111,30 +112,25 @@ public class DialogWWWAuthentication extends Dialog implements WWWAuthentication
     label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
     label = new Label(composite, SWT.WRAP);
-    label.setText(getMessage("%LABEL_HTTP_BASIC_AUTH_USERNAME"));
+    label.setText(ConsumptionUIMessages.LABEL_HTTP_BASIC_AUTH_USERNAME);
     label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
     username_ = new Text(composite, SWT.BORDER);
     username_.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    username_.setToolTipText(getMessage("%TOOLTIP_HTTP_BASIC_AUTH_USERNAME"));
+    username_.setToolTipText(ConsumptionUIMessages.TOOLTIP_HTTP_BASIC_AUTH_USERNAME);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(username_, INFOPOP_DBAS_USERNAME);
 
     label = new Label(composite, SWT.WRAP);
-    label.setText(getMessage("%LABEL_HTTP_BASIC_AUTH_PASSWORD"));
+    label.setText(ConsumptionUIMessages.LABEL_HTTP_BASIC_AUTH_PASSWORD);
     label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
     password_ = new Text(composite, SWT.BORDER);
     password_.setEchoChar('*');
     password_.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    password_.setToolTipText(getMessage("%TOOLTIP_HTTP_BASIC_AUTH_PASSWORD"));
+    password_.setToolTipText(ConsumptionUIMessages.TOOLTIP_HTTP_BASIC_AUTH_PASSWORD);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(username_, INFOPOP_DBAS_PASSWORD);
 
     return composite;
-  }
-
-  private String getMessage(String msgId)
-  {
-    return WebServiceConsumptionUIPlugin.getMessage(msgId);
   }
 
   public void handleWWWAuthentication(WWWAuthenticationException wwwae)

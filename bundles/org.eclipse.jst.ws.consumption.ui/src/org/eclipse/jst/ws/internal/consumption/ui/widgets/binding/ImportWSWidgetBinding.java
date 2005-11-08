@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishToPrivateUDDICommandFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishWSWidget;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
@@ -85,14 +85,12 @@ public class ImportWSWidgetBinding implements CommandWidgetBinding
    */
   public void registerWidgetMappings(WidgetRegistry widgetRegistry)
   {
-    String       pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
     this.widgetRegistry = widgetRegistry;
     publishToPrivateUDDICmdFrag.registerWidgetMappings(this.widgetRegistry);
 
     widgetRegistry.add("WSImport", 
-      msgUtils.getMessage("PAGE_TITLE_WS_FIND"),
-      msgUtils.getMessage("PAGE_DESC_WS_FIND"),
+    ConsumptionUIMessages.PAGE_TITLE_WS_FIND,
+    ConsumptionUIMessages.PAGE_DESC_WS_FIND,
       new WidgetContributorFactory()
       {
         public WidgetContributor create()

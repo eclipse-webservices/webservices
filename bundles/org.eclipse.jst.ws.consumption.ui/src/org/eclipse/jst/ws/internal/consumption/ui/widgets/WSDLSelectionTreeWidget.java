@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import java.util.List;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -22,6 +23,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -33,7 +35,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -46,8 +47,7 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 */
 public class WSDLSelectionTreeWidget extends SimpleWidgetDataContributor
 {
-  private String pluginId_;
-  private MessageUtils msgUtils_;
+  private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
 
   /*CONTEXT_ID PWWS0001 for the WSDL Selection Page*/
   private final String INFOPOP_PWWS_PAGE = ".PWWS0001";
@@ -66,18 +66,16 @@ public class WSDLSelectionTreeWidget extends SimpleWidgetDataContributor
   */
   public WSDLSelectionTreeWidget()
   {
-    pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-    msgUtils_ = new MessageUtils( pluginId_ + ".plugin", this );
   }
 
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
   	this.statusListener = statusListener;
-    parent.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWWS_PAGE"));
+    parent.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWWS_PAGE);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, pluginId_ + INFOPOP_PWWS_PAGE);
 
     Label wsdlLabel = new Label(parent, SWT.WRAP);
-    wsdlLabel.setText(msgUtils_.getMessage("LABEL_SELECT_WSDL"));
+    wsdlLabel.setText(ConsumptionUIMessages.LABEL_SELECT_WSDL);
     wsdlLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
     tree_ = new Tree(parent, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -185,7 +183,7 @@ public class WSDLSelectionTreeWidget extends SimpleWidgetDataContributor
   {
     WebServiceEntity wsEntity = getSelectionAsWebServiceEntity();
     if (wsEntity == null || wsEntity.getType() != WebServiceEntity.TYPE_WSDL)
-      return StatusUtils.errorStatus( msgUtils_.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL") );
+      return StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_SELECTION_MUST_BE_WSDL );
     else
       return Status.OK_STATUS;
   }

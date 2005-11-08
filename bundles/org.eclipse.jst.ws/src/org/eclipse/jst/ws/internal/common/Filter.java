@@ -20,9 +20,6 @@ import org.eclipse.core.runtime.IStatus;
 public interface Filter
 {
 
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
-
   /**
   * Returns the locale-specific name of this filter.
   * @return The locale-specific name of this filter.

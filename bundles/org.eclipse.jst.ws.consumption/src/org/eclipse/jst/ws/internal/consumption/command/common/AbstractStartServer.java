@@ -17,8 +17,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.server.core.IServer;
@@ -27,12 +27,10 @@ public abstract class AbstractStartServer {
  
 protected IProgressMonitor monitor;
 private ILog log_;
-private MessageUtils msgUtils_;
 
 public AbstractStartServer()
 {
 	log_ = EnvironmentService.getEclipseLog();
-    msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
 }
 
 /**
@@ -80,13 +78,13 @@ public void StartServer (IProject project, IServer server, IProgressMonitor moni
   	throw ce;
   	}
   catch (Exception e) {
-    throw new CoreException(new Status(IStatus.ERROR,WebServiceConsumptionPlugin.ID,0,msgUtils_.getMessage("MSG_ERROR_SERVER"),e));
+    throw new CoreException(new Status(IStatus.ERROR,WebServiceConsumptionPlugin.ID,0,ConsumptionMessages.MSG_ERROR_SERVER,e));
   }
 }
 
 protected void publishProject(IServer server) throws CoreException
 {
-      monitor.subTask( msgUtils_.getMessage( "PROGRESS_INFO_PUBLISHING_SERVER" ) );
+      monitor.subTask( ConsumptionMessages.PROGRESS_INFO_PUBLISHING_SERVER );
       IStatus status = server.publish(IServer.PUBLISH_INCREMENTAL, monitor);
       if (status.getSeverity() != IStatus.OK)
       	throw new CoreException(status);
@@ -97,13 +95,13 @@ protected void startProject(IServer server) throws CoreException
 {
   try
   {
-    monitor.subTask( msgUtils_.getMessage( "PROGRESS_INFO_STARTING_SERVER" ) );    
+    monitor.subTask( ConsumptionMessages.PROGRESS_INFO_STARTING_SERVER );    
     server.synchronousStart(ILaunchManager.RUN_MODE, monitor);
     log_.log(ILog.INFO, 5052, this, "startProject", "IServer="+server+", Start command completed");
     
   }
   catch (Exception e) {
-    throw new CoreException(new Status(IStatus.ERROR,WebServiceConsumptionPlugin.ID,0,msgUtils_.getMessage("MSG_ERROR_SERVER"),e));
+    throw new CoreException(new Status(IStatus.ERROR,WebServiceConsumptionPlugin.ID,0,ConsumptionMessages.MSG_ERROR_SERVER,e));
   }  
 }
 

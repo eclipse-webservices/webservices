@@ -24,7 +24,8 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -66,7 +67,7 @@ public class CreateJavaProjectCommand extends AbstractDataModelOperation
       }
       catch (CoreException ce)
       {
-        IStatus status = StatusUtils.errorStatus( WebServiceConsumptionPlugin.getMessage("MSG_ERROR_CANNOT_CREATE_JAVA_PROJECT", new String[] {projectName_}), ce);
+        IStatus status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_CANNOT_CREATE_JAVA_PROJECT, new String[] {projectName_}), ce);
         env.getStatusHandler().reportError(status);
         return status;
       }

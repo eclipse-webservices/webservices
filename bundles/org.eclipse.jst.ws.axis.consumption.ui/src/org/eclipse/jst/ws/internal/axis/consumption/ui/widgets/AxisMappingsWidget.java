@@ -13,8 +13,10 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.widgets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.TableViewerWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -23,7 +25,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
@@ -56,28 +57,27 @@ public class AxisMappingsWidget extends SimpleWidgetDataContributor
   
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
         
     // TODO The TOOLTIP_PWJM_PAGE key doesn't seem to exist anywhere???
 	//parent.setToolTipText( msgUtils.getMessage( "TOOLTIP_PWJM_PAGE" ) );
     PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId_ + "." + INFOPOP_PWJM_PAGE );
     
     Text mappingLabel = new Text( parent, SWT.READ_ONLY | SWT.WRAP );
-    mappingLabel.setText( msgUtils.getMessage( "LABEL_MAPPING_PAIRS" ) );
+    mappingLabel.setText( AxisConsumptionUIMessages.LABEL_MAPPING_PAIRS );
     mappingLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                                                
     List initValues = new ArrayList();
     
     if( mode_ == MODE_BEAN2XML || mode_ == MODE_EJB2XML) 
     {
-		String[] columns = { msgUtils.getMessage("TABLE_COLUMN_LABEL_PACKAGE"),
-		                     msgUtils.getMessage("TABLE_COLUMN_LABEL_NAMESPACE" )};
+		String[] columns = { AxisConsumptionUIMessages.TABLE_COLUMN_LABEL_PACKAGE,
+							AxisConsumptionUIMessages.TABLE_COLUMN_LABEL_NAMESPACE};
 		mappings_ = new TableViewerWidget( columns, initValues, new String[] {DEFAULT_PACKAGE, DEFAULT_NAMESPACE}, TableViewerWidget.MAP_ONE_TO_ONE); //$NON-NLS-1$
     }
 	else 
 	{
-      	String[] columns = { msgUtils.getMessage("TABLE_COLUMN_LABEL_NAMESPACE"),
-		                     msgUtils.getMessage("TABLE_COLUMN_LABEL_PACKAGE")};
+      	String[] columns = { AxisConsumptionUIMessages.TABLE_COLUMN_LABEL_NAMESPACE,
+      						AxisConsumptionUIMessages.TABLE_COLUMN_LABEL_PACKAGE};
 		mappings_ = new TableViewerWidget( columns, initValues, new String[] {DEFAULT_NAMESPACE, DEFAULT_PACKAGE }, TableViewerWidget.MAP_MANY_TO_ONE); //$NON-NLS-1$
 	}
     

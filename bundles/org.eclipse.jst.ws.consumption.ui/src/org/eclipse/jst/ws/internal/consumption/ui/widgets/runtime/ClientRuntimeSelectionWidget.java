@@ -12,21 +12,16 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
-import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -52,10 +47,9 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
   
   public WidgetDataEvents addControls( Composite parent, final Listener statusListener )
   {
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    UIUtils      uiUtils  = new UIUtils(msgUtils, pluginId_ ); 
+    UIUtils      uiUtils  = new UIUtils( pluginId_ ); 
     
-    clientGroup_ = uiUtils.createGroup( parent, "LABEL_CLIENT_SELECTION_VIEW_TITLE",
+    clientGroup_ = uiUtils.createGroup( parent, ConsumptionUIMessages.LABEL_CLIENT_SELECTION_VIEW_TITLE,
                                         null, INFOPOP_PWRS_GROUP_CLIENT, 2, 5, 5 );
     
     runtimeWidget_ = new RuntimeServerSelectionWidget( true );
@@ -243,7 +237,7 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
   
   private String[] getClientTypeLabels( String[] types )
   {
-	MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );	  
+  
     //ClientProjectTypeRegistry registry         = ClientProjectTypeRegistry.getInstance();
     String[]                  clientTypeLabels = new String[types.length];
     
@@ -253,19 +247,19 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
 	  String type = types[index];
 	  if (type.equals(IModuleConstants.JST_WEB_MODULE))
 	  {
-		  clientTypeLabels[index] = msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_WEB");
+		  clientTypeLabels[index] = ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_WEB;
 	  }
 	  else if (type.equals(IModuleConstants.JST_EJB_MODULE))
 	  {
-		  clientTypeLabels[index] = msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_EJB");
+		  clientTypeLabels[index] = ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_EJB;
 	  }
 	  else if (type.equals(IModuleConstants.JST_APPCLIENT_MODULE))
 	  {
-		  clientTypeLabels[index] = msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_APP_CLIENT");
+		  clientTypeLabels[index] = ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_APP_CLIENT;
 	  }
 	  else if (type.equals(IModuleConstants.JST_UTILITY_MODULE))
 	  {
-		  clientTypeLabels[index] = msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_CONTAINERLESS");
+		  clientTypeLabels[index] = ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_CONTAINERLESS;
 	  }
 	  else
 	  {

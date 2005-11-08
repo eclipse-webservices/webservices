@@ -20,10 +20,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -33,7 +34,6 @@ public class ValidateObjectSelectionCommand extends AbstractDataModelOperation
 {
   private String JAVA_EXTENSION = ".java"; //$NON-NLS-1$
   private String CLASS_EXTENSION = ".class"; //$NON-NLS-1$
-  private MessageUtils msgUtils_;
   private IStructuredSelection objectSelection;
   private String serviceProjectName;
 
@@ -44,8 +44,6 @@ public class ValidateObjectSelectionCommand extends AbstractDataModelOperation
   public ValidateObjectSelectionCommand()
   {
     super();
-    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
   }
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
@@ -70,7 +68,7 @@ public class ValidateObjectSelectionCommand extends AbstractDataModelOperation
       	  javaBeanName = getJavaBeanFromObjectSelection(objectSelection);
 		} catch (CoreException ce)
 		{
-		  IStatus errorStatus = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"));
+		  IStatus errorStatus = StatusUtils.errorStatus(AxisCreationUIMessages.MSG_ERROR_CANNOT_NO_JAVA_BEAN);
 		  environment.getStatusHandler().reportError(errorStatus);
 		  return errorStatus;			
 		}
@@ -79,7 +77,7 @@ public class ValidateObjectSelectionCommand extends AbstractDataModelOperation
     
     if (javaBeanName==null || javaBeanName.length()==0)
     {
-      IStatus errorStatus = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"));
+      IStatus errorStatus = StatusUtils.errorStatus(AxisCreationUIMessages.MSG_ERROR_CANNOT_NO_JAVA_BEAN);
       environment.getStatusHandler().reportError(errorStatus);
       return errorStatus;
     }
@@ -88,7 +86,7 @@ public class ValidateObjectSelectionCommand extends AbstractDataModelOperation
     IProject serviceProject = ProjectUtilities.getProject(serviceProjectName);
     if (serviceProject==null)
     {
-      IStatus errorStatus = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_NO_PROJECT"));
+      IStatus errorStatus = StatusUtils.errorStatus(AxisCreationUIMessages.MSG_ERROR_NO_PROJECT);
       environment.getStatusHandler().reportError(errorStatus);
       return errorStatus;      
     }
@@ -104,13 +102,13 @@ public class ValidateObjectSelectionCommand extends AbstractDataModelOperation
 	  JavaClass javaClass = JavaMOFUtils.getJavaClass(javaBeanName, serviceProject); 
 	  if (!javaClass.isExistingType()) 
 	  {		
-		IStatus errorStatus = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_CANNOT_LOAD_JAVA_BEAN", new String[] { javaBeanName, serviceProjectName }));
+		IStatus errorStatus = StatusUtils.errorStatus( NLS.bind(AxisCreationUIMessages.MSG_ERROR_CANNOT_LOAD_JAVA_BEAN, new String[] { javaBeanName, serviceProjectName }));
 		environment.getStatusHandler().reportError(errorStatus);
 		return errorStatus;
 	  }
     } catch (CoreException ce)
     {
-	  IStatus errorStatus = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_CANNOT_LOAD_JAVA_BEAN", new String[] { javaBeanName, serviceProjectName }));
+	  IStatus errorStatus = StatusUtils.errorStatus( NLS.bind(AxisCreationUIMessages.MSG_ERROR_CANNOT_LOAD_JAVA_BEAN, new String[] { javaBeanName, serviceProjectName }));
 	  environment.getStatusHandler().reportError(errorStatus);
       return errorStatus;      
     }

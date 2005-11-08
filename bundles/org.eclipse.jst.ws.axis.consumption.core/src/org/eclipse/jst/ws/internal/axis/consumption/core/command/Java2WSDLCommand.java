@@ -13,10 +13,9 @@ package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.ResourceBundle;
+
 import org.apache.axis.tools.ant.wsdl.Java2WsdlAntTask;
 import org.apache.axis.tools.ant.wsdl.NamespaceMapping;
 import org.apache.tools.ant.BuildException;
@@ -26,7 +25,9 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -42,7 +43,6 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 {
 
 	private JavaWSDLParameter javaWSDLParam_;
-	private ResourceBundle resource = ResourceBundle.getBundle("org.eclipse.jst.ws.axis.consumption.core.consumption"); //$NON-NLS-1$
 
 	public Java2WSDLCommand() {
 	}	
@@ -59,18 +59,18 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 		IEnvironment environment = getEnvironment();
 		IStatus status;
 		if (javaWSDLParam_ == null) {
-			status = StatusUtils.errorStatus(getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
+			status = StatusUtils.errorStatus(AxisConsumptionCoreMessages.MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET);
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
 
 		if (javaWSDLParam_.getBeanName() == null) {
-			status = StatusUtils.errorStatus(getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
+			status = StatusUtils.errorStatus(AxisConsumptionCoreMessages.MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET);
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
 
-		ProgressUtils.report(monitor, getMessage("MSG_GENERATE_WSDL", javaWSDLParam_.getBeanName() ));
+		ProgressUtils.report(monitor, NLS.bind(AxisConsumptionCoreMessages.MSG_GENERATE_WSDL, javaWSDLParam_.getBeanName() ));
 
 		return executeAntTask(environment);
 	}
@@ -139,7 +139,7 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 		} catch (BuildException e) {
 			environment.getLog().log(ILog.ERROR, 5018, this, "executeAntTask", e);
 			IStatus status = StatusUtils.errorStatus(
-			getMessage("MSG_ERROR_JAVA_WSDL_GENERATE") + " " //$NON-NLS-1$
+			AxisConsumptionCoreMessages.MSG_ERROR_JAVA_WSDL_GENERATE + " " //$NON-NLS-1$
 			+e.getCause().toString());
 			environment.getStatusHandler().reportError(status);
 			return status;
@@ -162,20 +162,6 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 	 */
 	public JavaWSDLParameter getJavaWSDLParam() {
 		return javaWSDLParam_;
-	}
-
-	private String getMessage(String messageId, String parm1) {
-		String message = resource.getString(messageId);
-		return MessageFormat.format(message, new String[] { parm1 });
-	}
-
-	/**
-	* Returns the message string identified by the given key from
-	* plugin.properties.
-	* @return The String message.
-	*/
-	public String getMessage(String key) {
-		return resource.getString(key);
 	}
 
 	public void setJavaWSDLParam(JavaWSDLParameter javaWSDLParm) {

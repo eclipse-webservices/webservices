@@ -28,10 +28,10 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSDLValidationContext;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
+import org.eclipse.wst.ws.internal.ui.WstWSUIPluginMessages;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 
 
@@ -39,7 +39,6 @@ import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 public class WSICompliancePreferencePage extends PreferencePage implements IWorkbenchPreferencePage, SelectionListener, Listener
 
 {
-  private MessageUtils msgUtils_;
 	  
   /*CONTEXT_ID PWSI0001 for the WS-I Preference Page*/
   private String INFOPOP_PWSI_PAGE = WSUIPlugin.ID + ".PWSI0000";
@@ -95,9 +94,7 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
    */
   protected Control createContents(Composite superparent)
   {
-  	String       pluginId = "org.eclipse.wst.ws.ui";
-    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-    
+   
     IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 	
     Composite   parent = new Composite( superparent, SWT.NONE );	
@@ -105,7 +102,7 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     layout.numColumns = 1;
     parent.setLayout( layout );
     parent.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-    parent.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_PAGE"));
+    parent.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_PAGE);
     helpSystem.setHelp(parent,INFOPOP_PWSI_PAGE);
 
     GridLayout gl = new GridLayout();
@@ -118,30 +115,30 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     wsi_Composite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
     
     wsi_ap_Label_ = new Label(wsi_Composite, SWT.NONE);
-    wsi_ap_Label_.setText(msgUtils_.getMessage("LABEL_WSI_AP"));
-    wsi_ap_Label_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_AP_LABEL"));
+    wsi_ap_Label_.setText(WstWSUIPluginMessages.LABEL_WSI_AP);
+    wsi_ap_Label_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_AP_LABEL);
     wsi_ap_Types_ = new Combo(wsi_Composite, SWT.DROP_DOWN | SWT.READ_ONLY);
     wsi_ap_Types_.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-    wsi_ap_Types_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_AP_COMBO"));
+    wsi_ap_Types_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_AP_COMBO);
     helpSystem.setHelp(wsi_ap_Types_,INFOPOP_PWSI_AP_COMBO_TYPE);
     
-    wsi_ap_Types_.add(msgUtils_.getMessage("STOP_NON_WSI"));
-    wsi_ap_Types_.add(msgUtils_.getMessage("WARN_NON_WSI"));
-    wsi_ap_Types_.add(msgUtils_.getMessage("IGNORE_NON_WSI"));
+    wsi_ap_Types_.add(WstWSUIPluginMessages.STOP_NON_WSI);
+    wsi_ap_Types_.add(WstWSUIPluginMessages.WARN_NON_WSI);
+    wsi_ap_Types_.add(WstWSUIPluginMessages.IGNORE_NON_WSI);
     
     wsi_ap_Types_.addSelectionListener(this);
     
     wsi_ssbp_Label_ = new Label(wsi_Composite, SWT.NONE);
-    wsi_ssbp_Label_.setText(msgUtils_.getMessage("LABEL_WSI_SSBP"));
-    wsi_ssbp_Label_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_SSBP_LABEL"));
+    wsi_ssbp_Label_.setText(WstWSUIPluginMessages.LABEL_WSI_SSBP);
+    wsi_ssbp_Label_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_SSBP_LABEL);
     wsi_ssbp_Types_ = new Combo(wsi_Composite, SWT.DROP_DOWN | SWT.READ_ONLY);
     wsi_ssbp_Types_.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-    wsi_ssbp_Types_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_SSBP_COMBO"));
+    wsi_ssbp_Types_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_SSBP_COMBO);
     helpSystem.setHelp(wsi_ssbp_Types_,INFOPOP_PWSI_SSBP_COMBO_TYPE);
     
-    wsi_ssbp_Types_.add(msgUtils_.getMessage("STOP_NON_WSI"));
-    wsi_ssbp_Types_.add(msgUtils_.getMessage("WARN_NON_WSI"));
-    wsi_ssbp_Types_.add(msgUtils_.getMessage("IGNORE_NON_WSI"));
+    wsi_ssbp_Types_.add(WstWSUIPluginMessages.STOP_NON_WSI);
+    wsi_ssbp_Types_.add(WstWSUIPluginMessages.WARN_NON_WSI);
+    wsi_ssbp_Types_.add(WstWSUIPluginMessages.IGNORE_NON_WSI);
   
     // WSDL validation preferences
     validationSelectionGroup_ = new Group(wsi_Composite, SWT.NONE);
@@ -153,38 +150,38 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     validationSelectionGroup_.setLayoutData(gd);
     
     wsdlValidationLabel_ = new Label(validationSelectionGroup_, SWT.NONE);
-    wsdlValidationLabel_.setText(msgUtils_.getMessage("LABEL_WSDLVAL"));
-    wsdlValidationLabel_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_WSDLVAL_LABEL"));
+    wsdlValidationLabel_.setText(WstWSUIPluginMessages.LABEL_WSDLVAL);
+    wsdlValidationLabel_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_WSDLVAL_LABEL);
     helpSystem.setHelp(wsdlValidationLabel_, INFOPOP_PWSI_WSDLVAL_LABEL);
     
     validateNoWsdlButton_ = new Button(validationSelectionGroup_, SWT.RADIO);
-    validateNoWsdlButton_.setText(msgUtils_.getMessage("LABEL_WSDLVAL_NONE"));
+    validateNoWsdlButton_.setText(WstWSUIPluginMessages.LABEL_WSDLVAL_NONE);
     validateNoWsdlButton_.addListener(SWT.Selection, this);
-    validateNoWsdlButton_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_RADIO_WSDLVAL_NONE"));
+    validateNoWsdlButton_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_RADIO_WSDLVAL_NONE);
     helpSystem.setHelp(validateNoWsdlButton_, INFOPOP_PWSI_RADIO_WSDLVAL_NONE);
     
     validateRemoteWsdlButton_ = new Button(validationSelectionGroup_, SWT.RADIO);
-    validateRemoteWsdlButton_.setText(msgUtils_.getMessage("LABEL_WSDLVAL_REMOTE"));
+    validateRemoteWsdlButton_.setText(WstWSUIPluginMessages.LABEL_WSDLVAL_REMOTE);
     validateRemoteWsdlButton_.addListener(SWT.Selection, this);
-    validateRemoteWsdlButton_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_RADIO_WSDLVAL_REMOTE"));
+    validateRemoteWsdlButton_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_RADIO_WSDLVAL_REMOTE);
     helpSystem.setHelp(validateRemoteWsdlButton_, INFOPOP_PWSI_RADIO_WSDLVAL_REMOTE);
     
     validateAllWsdlButton_ = new Button(validationSelectionGroup_, SWT.RADIO);
-    validateAllWsdlButton_.setText(msgUtils_.getMessage("LABEL_WSDLVAL_ALL"));
+    validateAllWsdlButton_.setText(WstWSUIPluginMessages.LABEL_WSDLVAL_ALL);
     validateAllWsdlButton_.addListener(SWT.Selection, this);
-    validateAllWsdlButton_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_RADIO_WSDLVAL_ALL"));
+    validateAllWsdlButton_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_RADIO_WSDLVAL_ALL);
     helpSystem.setHelp(validateAllWsdlButton_, INFOPOP_PWSI_RADIO_WSDLVAL_ALL);
     
     new Label(validationSelectionGroup_, SWT.NONE);;
     
     waitForWsdlValidationLabel_ = new Label(validationSelectionGroup_, SWT.NONE);
-    waitForWsdlValidationLabel_.setText(msgUtils_.getMessage("LABEL_WAIT_FOR_WSDLVAL"));
-    waitForWsdlValidationLabel_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_LABEL_WAIT_FOR_WSDLVAL"));
+    waitForWsdlValidationLabel_.setText(WstWSUIPluginMessages.LABEL_WAIT_FOR_WSDLVAL);
+    waitForWsdlValidationLabel_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_LABEL_WAIT_FOR_WSDLVAL);
     
     waitForWSDLValidationCheckbox_ = new Button(validationSelectionGroup_, SWT.CHECK);
-    waitForWSDLValidationCheckbox_.setText(msgUtils_.getMessage("BUTTON_WAIT_FOR_WSDLVAL"));            
+    waitForWSDLValidationCheckbox_.setText(WstWSUIPluginMessages.BUTTON_WAIT_FOR_WSDLVAL);            
     waitForWSDLValidationCheckbox_.addListener(SWT.Selection, this);
-    waitForWSDLValidationCheckbox_.setToolTipText(msgUtils_.getMessage("TOOLTIP_PWSI_BUTTON_WAIT_FOR_WSDLVAL"));
+    waitForWSDLValidationCheckbox_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_BUTTON_WAIT_FOR_WSDLVAL);
     helpSystem.setHelp(waitForWSDLValidationCheckbox_, INFOPOP_PWSI_BUTTON_WAIT_FOR_WSDLVAL);
     
     initializeValues();
@@ -229,8 +226,8 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
   {
     // force WSI compliance by default
     
-    wsi_ssbp_Types_.select(wsi_ssbp_Types_.indexOf(msgUtils_.getMessage("IGNORE_NON_WSI")));
-    int apSelection = wsi_ap_Types_.indexOf(msgUtils_.getMessage("IGNORE_NON_WSI"));
+    wsi_ssbp_Types_.select(wsi_ssbp_Types_.indexOf(WstWSUIPluginMessages.IGNORE_NON_WSI));
+    int apSelection = wsi_ap_Types_.indexOf(WstWSUIPluginMessages.IGNORE_NON_WSI);
     wsi_ap_Types_.select(apSelection);
     savedSSBPSetting_ = -1;  // do not restore saved SSBP setting
     processAPSelection(apSelection);
@@ -284,11 +281,11 @@ private String getWSISelection(PersistentWSIContext context)
   {
     
     String WSIvalue = context.getPersistentWSICompliance();
-    String WSIText = msgUtils_.getMessage("WARN_NON_WSI");
+    String WSIText = WstWSUIPluginMessages.WARN_NON_WSI;
     if (PersistentWSIContext.STOP_NON_WSI.equals(WSIvalue)) {
-		WSIText = msgUtils_.getMessage("STOP_NON_WSI");
+		WSIText = WstWSUIPluginMessages.STOP_NON_WSI;
 	} else if (PersistentWSIContext.IGNORE_NON_WSI.equals(WSIvalue)) {
-		WSIText = msgUtils_.getMessage("IGNORE_NON_WSI");
+		WSIText = WstWSUIPluginMessages.IGNORE_NON_WSI;
 	}
 	return WSIText;
   }

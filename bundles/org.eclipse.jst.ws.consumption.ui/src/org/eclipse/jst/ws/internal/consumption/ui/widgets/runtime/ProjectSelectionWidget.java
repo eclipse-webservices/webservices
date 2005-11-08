@@ -15,15 +15,15 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
-import org.eclipse.jst.ws.internal.consumption.ui.common.ServerSelectionUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -31,14 +31,10 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
-import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.server.core.IRuntime;
 
 public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 
@@ -64,8 +60,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   private Text messageText_;
 
   private boolean isClient_ = false;
-
-  private MessageUtils msgUtils;
 
   private byte CREATE_PROJECT = (byte) 1;
 
@@ -123,26 +117,26 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   }
 
   public WidgetDataEvents addControls(Composite parent, Listener statusListener) {
-    msgUtils = new MessageUtils(pluginId_ + ".plugin", this);
-    UIUtils uiUtils = new UIUtils(msgUtils, pluginId_);
+
+    UIUtils uiUtils = new UIUtils(pluginId_);
 
     statusListener_ = statusListener;
 		
     if (isClient_)
 	{
-      projectType_ = uiUtils.createCombo(parent, "LABEL_CLIENT_TYPE", "TOOLTIP_PWCR_COMBO_CLIENT_TYPE", INFOPOP_PWRS_COMBO_CLIENT_PROJECT_TYPE, SWT.SINGLE | SWT.BORDER);
-	  moduleProject_ = uiUtils.createCombo(parent, "LABEL_CLIENT_PROJECT", "LABEL_CLIENT_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );            
-      //module_ = uiUtils.createCombo(parent, "LABEL_CLIENT_MODULE", "LABEL_CLIENT_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
-	  earProject_ = uiUtils.createCombo(parent, "LABEL_CLIENT_EAR_PROJECT", "LABEL_CLIENT_EAR_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
-	  //earModule_ = uiUtils.createCombo(parent, "LABEL_CLIENT_EAR_MODULE", "LABEL_CLIENT_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER );
+      projectType_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_CLIENT_TYPE, ConsumptionUIMessages.TOOLTIP_PWCR_COMBO_CLIENT_TYPE, INFOPOP_PWRS_COMBO_CLIENT_PROJECT_TYPE, SWT.SINGLE | SWT.BORDER);
+	  moduleProject_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_CLIENT_PROJECT, ConsumptionUIMessages.LABEL_CLIENT_PROJECT, INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );            
+      //module_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_CLIENT_MODULE", ConsumptionUIMessages.LABEL_CLIENT_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
+	  earProject_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_CLIENT_EAR_PROJECT, ConsumptionUIMessages.LABEL_CLIENT_EAR_PROJECT, INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
+	  //earModule_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_CLIENT_EAR_MODULE", ConsumptionUIMessages.LABEL_CLIENT_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER );
     }
     else 
 	{
-      projectType_ = uiUtils.createCombo(parent, "LABEL_SERVICE_TYPE", "TOOLTIP_PWCR_COMBO_SERVICE_TYPE", INFOPOP_PWRS_COMBO_SERVICE_PROJECT_TYPE, SWT.SINGLE | SWT.BORDER);      
-	  moduleProject_ = uiUtils.createCombo(parent, "LABEL_SERVICE_PROJECT", "LABEL_SERVICE_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
-      //module_ = uiUtils.createCombo(parent, "LABEL_SERVICE_MODULE", "LABEL_SERVICE_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
-	  earProject_ = uiUtils.createCombo(parent, "LABEL_SERVICE_EAR_PROJECT", "LABEL_SERVICE_EAR_PROJECT", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
-	  //earModule_ = uiUtils.createCombo(parent, "LABEL_SERVICE_EAR_MODULE", "LABEL_SERVICE_EAR_MODULE", INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER );
+      projectType_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_SERVICE_TYPE, ConsumptionUIMessages.TOOLTIP_PWCR_COMBO_SERVICE_TYPE, INFOPOP_PWRS_COMBO_SERVICE_PROJECT_TYPE, SWT.SINGLE | SWT.BORDER);      
+	  moduleProject_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_SERVICE_PROJECT, ConsumptionUIMessages.LABEL_SERVICE_PROJECT, INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
+      //module_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_SERVICE_MODULE", ConsumptionUIMessages.LABEL_SERVICE_MODULE", INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
+	  earProject_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_SERVICE_EAR_PROJECT, ConsumptionUIMessages.LABEL_SERVICE_EAR_PROJECT, INFOPOP_PWRS_COMBO_PROJECT, SWT.SINGLE | SWT.BORDER );
+	  //earModule_ = uiUtils.createCombo(parent, ConsumptionUIMessages.LABEL_SERVICE_EAR_MODULE, ConsumptionUIMessages.LABEL_SERVICE_EAR_MODULE, INFOPOP_PWRS_COMBO_EAR, SWT.SINGLE | SWT.BORDER );
     }
     
     //Temporarily remove the listeners
@@ -183,7 +177,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
                              };
     */					  
     // message area
-    messageText_ = uiUtils.createText(parent, "LABEL_NO_LABEL", "LABEL_NO_LABEL", null, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY);
+    messageText_ = uiUtils.createText(parent, ConsumptionUIMessages.LABEL_NO_LABEL, ConsumptionUIMessages.LABEL_NO_LABEL, null, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY);
     setEarProjectItems();
   
     return this;
@@ -647,14 +641,14 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
         }
       }
       if (isClient_) {
-        messageText_.setText(getValidationMessage(result, msgUtils.getMessage("MSG_CLIENT_SUB")));
+        messageText_.setText(getValidationMessage(result, ConsumptionUIMessages.MSG_CLIENT_SUB));
       }
       else {
-        messageText_.setText(getValidationMessage(result, msgUtils.getMessage("MSG_SERVICE_SUB")));
+        messageText_.setText(getValidationMessage(result, ConsumptionUIMessages.MSG_SERVICE_SUB));
       }
     }
     catch (Exception e) {
-      return StatusUtils.errorStatus( msgUtils.getMessage("PAGE_MSG_VALIDATION_INTERNAL_ERROR"), e );
+      return StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_VALIDATION_INTERNAL_ERROR, e );
     }
     return status;
   }
@@ -666,21 +660,21 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
       return "";
     case 1:
     case 5:
-      msg = "MSG_PROJECT_WILL_BE_CREATED";
+      msg = ConsumptionUIMessages.MSG_PROJECT_WILL_BE_CREATED;
       break;
     case 2:
     case 6:
-      msg = "MSG_EAR_WILL_BE_CREATED";
+      msg = ConsumptionUIMessages.MSG_EAR_WILL_BE_CREATED;
       break;
     case 3:
     case 7:
-      msg = "MSG_PROJECT_AND_EAR_CREATED";
+      msg = ConsumptionUIMessages.MSG_PROJECT_AND_EAR_CREATED;
       break;
     case 4:
-      msg = "MSG_EAR_WILL_BE_ASSOCIATED";
+      msg = ConsumptionUIMessages.MSG_EAR_WILL_BE_ASSOCIATED;
       break;
     }
-    return msg != null ? msgUtils.getMessage(msg, new Object[] { serviceOrClient}) : "";
+    return msg != null ? NLS.bind(msg, new Object[] { serviceOrClient}) : "";
   }
 
   public IStatus getStatus() 
@@ -689,22 +683,21 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     handleSetMessageText();
     String projectText = moduleProject_.getText();
     String earText = earProject_.getText();
-    String moduleText = msgUtils.getMessage( "MSG_MODULE" );
     
     if (projectText==null || projectText.length()==0)
     {
       if (isClient_)
-        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_CLIENT_PROJECT_EMPTY", new String[]{""} ) );
+        return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_CLIENT_PROJECT_EMPTY, new String[]{""} ) );
       else
-        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_SERVICE_PROJECT_EMPTY", new String[]{""} ) );
+        return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_SERVICE_PROJECT_EMPTY, new String[]{""} ) );
     }
     
     if (needEAR_ && (earText==null || earText.length()==0))
     {
       if (isClient_)
-        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_CLIENT_EAR_EMPTY", new String[]{""} ) );
+        return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_CLIENT_EAR_EMPTY, new String[]{""} ) );
       else
-        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_SERVICE_EAR_EMPTY", new String[]{""} ) );      
+        return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_SERVICE_EAR_EMPTY, new String[]{""} ) );      
     }
     
 //  TODO:  Defect 107997 - Revisit prject and module creation logic
@@ -719,7 +712,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 //        
 //        if( !component.exists() && !moduleName.equals( projectText ) )
 //        {
-//          finalStatus = new SimpleStatus("",msgUtils.getMessage("MSG_MODULE_NAME_AND_PROJECT_NAME_NOT_THE_SAME" ),Status.ERROR);   	
+//          finalStatus = new SimpleStatus("",ConsumptionUIMessages.MSG_MODULE_NAME_AND_PROJECT_NAME_NOT_THE_SAME,Status.ERROR);   	
 //        }
 //      }
 //    }

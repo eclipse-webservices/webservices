@@ -13,9 +13,11 @@ package org.eclipse.jst.ws.internal.consumption.ui.common;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.Service;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -30,8 +32,8 @@ import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -43,15 +45,12 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
  */
 public class ValidationUtils
 {
-  MessageUtils msgUtils;
 
   /**
    * 
    */
   public ValidationUtils()
   {
-    String pluginId = WebServiceConsumptionUIPlugin.ID; //"org.eclipse.jst.ws.consumption.ui";
-    msgUtils = new MessageUtils( pluginId + ".plugin", this );
   }
   
   public IStatus validateProjectTargetAndJ2EE(String projectName, String compName, String earName, String earCompName, String serverFactoryId, String j2eeLevel)
@@ -108,7 +107,7 @@ public class ValidationUtils
         {
           if(!projectTargetId.equals(serverTargetId))
           { 
-            return StatusUtils.errorStatus( msgUtils.getMessage("MSG_SERVER_TARGET_MISMATCH",new String[]{p.getName()}) );
+            return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_SERVER_TARGET_MISMATCH,new String[]{p.getName()}) );
           }
         }
       }
@@ -130,7 +129,7 @@ public class ValidationUtils
 		    {
 		      if (!projectJ2EELevelString.equals(j2eeLevel))
 		      {
-		        return StatusUtils.errorStatus( msgUtils.getMessage("MSG_J2EE_MISMATCH",new String[]{p.getName()}) );
+		        return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_J2EE_MISMATCH,new String[]{p.getName()}) );
 		      }
 		    }
 		  }
@@ -168,7 +167,7 @@ public class ValidationUtils
     //Didn't find the project. Return an error.
     //Get the label for the client type id
     String clientTypeLabel = getClientTypeLabel(runtime2ClientTypes.getChoice().getList().getSelection());
-    String message = msgUtils.getMessage("MSG_WRONG_CLIENT_PROJECT_TYPE",new String[]{projectName, clientTypeLabel});
+    String message = NLS.bind(ConsumptionUIMessages.MSG_WRONG_CLIENT_PROJECT_TYPE,new String[]{projectName, clientTypeLabel});
     IStatus eStatus = StatusUtils.errorStatus( message );
     return eStatus;
     
@@ -179,19 +178,19 @@ public class ValidationUtils
   {	  
 	  if (type.equals(IModuleConstants.JST_WEB_MODULE))
 	  {
-		  return msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_WEB");
+		  return ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_WEB;
 	  }
 	  else if (type.equals(IModuleConstants.JST_EJB_MODULE))
 	  {
-		  return msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_EJB");
+		  return ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_EJB;
 	  }
 	  else if (type.equals(IModuleConstants.JST_APPCLIENT_MODULE))
 	  {
-		  return msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_APP_CLIENT");
+		  return ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_APP_CLIENT;
 	  }
 	  else if (type.equals(IModuleConstants.JST_UTILITY_MODULE))
 	  {
-		  return msgUtils.getMessage("LABEL_CLIENT_COMP_TYPE_CONTAINERLESS");
+		  return ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_CONTAINERLESS;
 	  }
 	  else
 	  {

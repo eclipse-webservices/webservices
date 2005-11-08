@@ -35,13 +35,13 @@ import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.ResultFileGener
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.TestClientFileGenerator;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.GeneratePageCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.command.JavaToModelCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.CopyWebServiceUtilsJarCommand;
 import org.eclipse.jst.ws.internal.ext.test.JavaProxyTestCommand;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.selection.BooleanSelection;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EnvironmentUtils;
@@ -59,8 +59,6 @@ public class WSSampleFinishCommand extends AbstractDataModelOperation implements
   public static String TEST_CLIENT = "TestClient.jsp";
   public static String RESULT      = "Result.jsp";
   public static String METHOD      = "Method.jsp";
-
-  private MessageUtils msgUtils;
   
   private Model proxyModel;
   private String sampleServerTypeID;
@@ -81,8 +79,6 @@ public class WSSampleFinishCommand extends AbstractDataModelOperation implements
   */
   public WSSampleFinishCommand ()
   {
-	String pluginId = "org.eclipse.jst.ws.consumption.ui";
-	msgUtils = new MessageUtils(pluginId + ".plugin", this);
   }
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -239,20 +235,20 @@ public class WSSampleFinishCommand extends AbstractDataModelOperation implements
 	 }catch(PartInitException exc){
 		//TODO: change error message
 		env.getLog().log(ILog.WARNING, 5048, this, "launchSample", exc);
-		status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), exc );
+		status = StatusUtils.warningStatus( ConsumptionUIMessages.MSG_ERROR_MALFORMED_URL, exc );
 		try {
 			env.getStatusHandler().report(status);
 		} catch (StatusException e) {
-			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), e );
+			status = StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_MALFORMED_URL, e );
 		}
     	return status;
     }catch(MalformedURLException exc){
     	env.getLog().log(ILog.WARNING, 5048, this, "launchSample", exc);
-		status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), exc );
+		status = StatusUtils.warningStatus( ConsumptionUIMessages.MSG_ERROR_MALFORMED_URL, exc );
 		try {
 			env.getStatusHandler().report(status);
 		} catch (StatusException e) {
-			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_MALFORMED_URL"), e );
+			status = StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_MALFORMED_URL, e );
 		}
     	return status;
     }

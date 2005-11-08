@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.axis.consumption.ui.wizard.client;
 
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.DefaultsForClientJavaWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand;
@@ -19,7 +20,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisProxyWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionOutputCommand;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
@@ -67,14 +67,10 @@ public class WebServiceClientAxisType implements CommandWidgetBinding
    */
   public void registerWidgetMappings(WidgetRegistry widgetRegistry) 
   {
-    String       pluginId_     = "org.eclipse.jst.ws.consumption.ui";
-    String       axisPluginId_ = "org.eclipse.jst.ws.axis.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    MessageUtils axisMsgUtils = new MessageUtils( axisPluginId_ + ".plugin", this );
-    
+   
     widgetRegistry.add( "AxisClientStart", 
-        axisMsgUtils.getMessage("PAGE_TITLE_WS_AXIS_PROXY"),
-        axisMsgUtils.getMessage("PAGE_DESC_WS_AXIS_PROXY"),
+        AxisConsumptionUIMessages.PAGE_TITLE_WS_AXIS_PROXY,
+        AxisConsumptionUIMessages.PAGE_DESC_WS_AXIS_PROXY,
         new WidgetContributorFactory()
         {
           public WidgetContributor create()
@@ -84,8 +80,8 @@ public class WebServiceClientAxisType implements CommandWidgetBinding
         } );
     
     widgetRegistry.add( "AxisClientBeanMapping", 
-        axisMsgUtils.getMessage("PAGE_TITLE_WS_XML2PROXY"),
-        msgUtils.getMessage("PAGE_DESC_N2P_MAPPINGS"),
+        AxisConsumptionUIMessages.PAGE_TITLE_WS_XML2PROXY,
+        AxisConsumptionUIMessages.LABEL_EXPLORE_MAPPINGS_XML2BEAN,
         new WidgetContributorFactory()
         {
           public WidgetContributor create()

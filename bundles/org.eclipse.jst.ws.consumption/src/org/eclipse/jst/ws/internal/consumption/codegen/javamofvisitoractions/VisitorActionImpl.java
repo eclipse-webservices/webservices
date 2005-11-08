@@ -12,10 +12,11 @@
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
 
 import java.util.Vector;
+
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.osgi.util.NLS;
 
 
 
@@ -30,13 +31,11 @@ public abstract class VisitorActionImpl implements VisitorAction
 
   private Vector beansVisited = null;
   private Vector messages = null;
-  private MessageUtils msgUtils_;
 
   public VisitorActionImpl( Vector messages, Vector beansVisited)
   	{
   	 this.messages = messages;
   	 this.beansVisited = beansVisited;
-     msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
   	}
   
   public void initialize(String resident)
@@ -84,12 +83,12 @@ public abstract class VisitorActionImpl implements VisitorAction
 
   protected void addMessage ( String key )
   {
-    getMessages().add(msgUtils_.getMessage(key));
+    getMessages().add(key);
   }
 
   protected void addMessage ( String key, Object[] args )
   {
-    getMessages().add(msgUtils_.getMessage(key,args));
+    getMessages().add(NLS.bind(key,args));
   }
 
 }

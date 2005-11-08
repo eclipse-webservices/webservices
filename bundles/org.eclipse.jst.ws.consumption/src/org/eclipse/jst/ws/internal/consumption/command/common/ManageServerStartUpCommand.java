@@ -16,23 +16,15 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 
-/**
- * @author sengpl
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 public class ManageServerStartUpCommand extends AbstractDataModelOperation
 {
 
-	private MessageUtils msgUtils_;
-	
 	private Boolean isStartServiceEnabled_;
 	private Boolean isTestServiceEnabled_;
 	
@@ -50,8 +42,7 @@ public class ManageServerStartUpCommand extends AbstractDataModelOperation
 	 * Default CTOR;
 	 */
 	public ManageServerStartUpCommand( ) {
-		String pluginId = "org.eclipse.jst.ws.consumption";
-		msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
+
 	}
 	
 	/**
@@ -61,7 +52,7 @@ public class ManageServerStartUpCommand extends AbstractDataModelOperation
   {
       IEnvironment env = getEnvironment();
 	    IStatus status = Status.OK_STATUS;
-	    ProgressUtils.report(monitor, msgUtils_.getMessage("PROGRESS_INFO_START_WEB_PROJECT"));
+	    ProgressUtils.report(monitor, ConsumptionMessages.PROGRESS_INFO_START_WEB_PROJECT);
 	 
 	    if (isStartServiceEnabled_.booleanValue() && serviceExistingServer_!=null){
 	    	//System.out.println("Calling service server start: "+serviceProject_+"  "+serviceServerTypeId_);
@@ -70,7 +61,7 @@ public class ManageServerStartUpCommand extends AbstractDataModelOperation
 	    	spc.setServiceServerTypeID(serviceServerTypeId_);
 	    	spc.setServiceExistingServer(serviceExistingServer_);
 	    	spc.setIsWebProjectStartupRequested(isWebProjectStartupRequested_);
-        spc.setEnvironment( env );
+	    	spc.setEnvironment( env );
 	    	spc.execute( null, null );
 	    }
 	    
@@ -81,7 +72,7 @@ public class ManageServerStartUpCommand extends AbstractDataModelOperation
 	    	spc.setSampleServerTypeID(sampleServerTypeId_);
 	    	spc.setSampleExistingServer(sampleExistingServer_);
 	    	spc.setCreationScenario(new Boolean("false"));
-        spc.setEnvironment( env );
+	    	spc.setEnvironment( env );
 	    	spc.execute( null, null );	    	
 	    }
 	    

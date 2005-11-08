@@ -22,7 +22,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.j2ee.datamodel.properties.IEarComponentCreationDataModelProperties;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.earcreation.EarComponentCreationDataModelProvider;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -47,7 +48,6 @@ public class CreateEARProjectCommand extends AbstractDataModelOperation
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     IEnvironment  env       = getEnvironment();
-	  MessageUtils msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
 	
     try
     {
@@ -83,7 +83,7 @@ public class CreateEARProjectCommand extends AbstractDataModelOperation
     }
     catch (ExecutionException ite)
     {
-      IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_CANNOT_CREATE_EAR_PROJECT", new String[] {earProjectName_}), ite);
+      IStatus status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_CANNOT_CREATE_EAR_PROJECT, new String[] {earProjectName_}), ite);
       env.getStatusHandler().reportError(status);
       return status;
     }

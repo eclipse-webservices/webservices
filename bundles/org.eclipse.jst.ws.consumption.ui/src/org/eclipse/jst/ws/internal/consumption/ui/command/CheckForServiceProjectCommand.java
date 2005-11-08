@@ -16,10 +16,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
-import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -32,7 +32,6 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
  */
 public class CheckForServiceProjectCommand extends AbstractDataModelOperation
 {
-  MessageUtils msgUtils;
   //SelectionListChoices runtime2ClientTypes;
   String clientProjectName;
   String wsdlURI;
@@ -40,8 +39,6 @@ public class CheckForServiceProjectCommand extends AbstractDataModelOperation
     
   public CheckForServiceProjectCommand()
   {
-    String pluginId = "org.eclipse.jst.ws.consumption.ui";
-    msgUtils = new MessageUtils(pluginId + ".plugin", this);  
   }
   
 
@@ -79,7 +76,7 @@ public class CheckForServiceProjectCommand extends AbstractDataModelOperation
     boolean isServiceProject = vu.isProjectServiceProject(clientProject, wsdlURI, webServicesParser);
     if (isServiceProject)
     {
-      IStatus wStatus = StatusUtils.warningStatus( msgUtils.getMessage("MSG_WARN_IS_SERVICE_PROJECT", new String[]{clientProjectName}) );
+      IStatus wStatus = StatusUtils.warningStatus( NLS.bind(ConsumptionUIMessages.MSG_WARN_IS_SERVICE_PROJECT, new String[]{clientProjectName}) );
       try
       {
         environment.getStatusHandler().report(wStatus);
@@ -87,7 +84,7 @@ public class CheckForServiceProjectCommand extends AbstractDataModelOperation
       catch (StatusException se)
       {
         //User decided to abort. Return an error status
-        IStatus eStatus = StatusUtils.errorStatus( msgUtils.getMessage("MSG_USER_ABORTED") );
+        IStatus eStatus = StatusUtils.errorStatus( ConsumptionUIMessages.MSG_USER_ABORTED );
         return eStatus;
       }
     }

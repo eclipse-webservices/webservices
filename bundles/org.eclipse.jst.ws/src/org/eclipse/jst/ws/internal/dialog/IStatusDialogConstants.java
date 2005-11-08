@@ -11,15 +11,10 @@
 
 package org.eclipse.jst.ws.internal.dialog;
 
-import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-
 /**
 * Constants for status dialogs
 */
 public interface IStatusDialogConstants {
-
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2002.";
 
   /*
   * Button ID for the "Yes" button
@@ -42,16 +37,4 @@ public interface IStatusDialogConstants {
   */
   public static final int DETAILS_ID = 13;
 
-  /*
-  * Button label for the "Yes" button
-  */
-  public static final String YES_LABEL = WebServicePlugin.getMessage("%STATUS_DIALOG_YES_LABEL");
-  /*
-  * Button label for the "Yes to all" button
-  */
-  public static final String YES_TO_ALL_LABEL = WebServicePlugin.getMessage("%STATUS_DIALOG_YES_TO_ALL_LABEL");
-  /*
-  * Button label for the "Cancel" button
-  */
-  public static final String CANCEL_LABEL = WebServicePlugin.getMessage("%STATUS_DIALOG_CANCEL_LABEL");
 }

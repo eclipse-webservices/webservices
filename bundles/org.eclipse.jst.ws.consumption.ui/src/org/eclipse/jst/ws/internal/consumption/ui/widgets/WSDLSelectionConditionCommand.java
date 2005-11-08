@@ -14,10 +14,11 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.DialogWWWAuthentication;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.Condition;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
@@ -28,8 +29,6 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class WSDLSelectionConditionCommand extends AbstractDataModelOperation implements Condition
 {
-  private String pluginId_;
-  private MessageUtils msgUtils_;
   private WebServicesParser webServicesParser;
   private String webServiceURI;
   private String httpBasicAuthUsername;
@@ -38,8 +37,6 @@ public class WSDLSelectionConditionCommand extends AbstractDataModelOperation im
   
   public WSDLSelectionConditionCommand()
   {
-    pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-    msgUtils_ = new MessageUtils( pluginId_ + ".plugin", this );
   }
 
   public void setWebServicesParser(WebServicesParser webServicesParser)
@@ -81,7 +78,7 @@ public class WSDLSelectionConditionCommand extends AbstractDataModelOperation im
         }
         catch (Throwable t)
         {
-          return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_URI_NOT_RESOLVABLE", new Object[] {webServiceURI}), t);
+          return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_ERROR_URI_NOT_RESOLVABLE, new Object[] {webServiceURI}), t);
         }
         finally
         {
@@ -92,7 +89,7 @@ public class WSDLSelectionConditionCommand extends AbstractDataModelOperation im
     }
     catch (Throwable t)
     {
-      return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_URI_NOT_RESOLVABLE", new Object[] {webServiceURI}), t);
+      return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_ERROR_URI_NOT_RESOLVABLE, new Object[] {webServiceURI}), t);
     }
     WebServiceEntity wsEntity = parser.getWebServiceEntityByURI(webServiceURI);
     if (wsEntity != null)

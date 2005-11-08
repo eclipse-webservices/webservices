@@ -17,9 +17,9 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidge
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidgetDefaultingCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ProjectName2IProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
@@ -144,13 +144,11 @@ public class WSWSDLAxisType implements CommandWidgetBinding
    */
   public void registerWidgetMappings(WidgetRegistry widgetRegistry) 
   {
-    String       pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    
+   
     /*
     widgetRegistry.add( "WSDLSelection", 
-                        msgUtils.getMessage("PAGE_TITLE_WS_SELECTION"),
-                        msgUtils.getMessage("PAGE_DESC_WS_SELECTION"),
+                        ConsumptionUIMessages.PAGE_TITLE_WS_SELECTION,
+                        ConsumptionUIMessages.PAGE_DESC_WS_SELECTION,
 		                new WidgetContributorFactory()
                         {
 		                  public WidgetContributor create()
@@ -160,8 +158,8 @@ public class WSWSDLAxisType implements CommandWidgetBinding
 		                } );
 
     widgetRegistry.add( "WSDLSelectionTreeWidget", 
-        msgUtils.getMessage("PAGE_TITLE_WSDL_SELECTION"),
-        msgUtils.getMessage("PAGE_DESC_WSDL_SELECTION"),
+        ConsumptionUIMessages.PAGE_TITLE_WSDL_SELECTION,
+        ConsumptionUIMessages.PAGE_DESC_WSDL_SELECTION,
         new WidgetContributorFactory()
         {
           public WidgetContributor create()
@@ -172,8 +170,8 @@ public class WSWSDLAxisType implements CommandWidgetBinding
     */
 
     widgetRegistry.add( "SkeletonConfig", 
-                        msgUtils.getMessage("PAGE_TITLE_WSSKEL_CONFIG"),
-                        msgUtils.getMessage("PAGE_DESC_WSSKEL_CONFIG"),
+                        ConsumptionUIMessages.PAGE_TITLE_WSSKEL_CONFIG,
+                        ConsumptionUIMessages.PAGE_DESC_WSSKEL_CONFIG,
                         new WidgetContributorFactory()
                         {
                           public WidgetContributor create()
@@ -183,8 +181,8 @@ public class WSWSDLAxisType implements CommandWidgetBinding
                         } );
 
     widgetRegistry.add( "AxisMappingsWidget", 
-                        msgUtils.getMessage("PAGE_TITLE_WS_XML2BEAN"),
-                        msgUtils.getMessage("PAGE_DESC_N2P_MAPPINGS"),
+                        ConsumptionUIMessages.PAGE_TITLE_WS_XML2BEAN,
+                        ConsumptionUIMessages.PAGE_DESC_N2P_MAPPINGS,
                         new WidgetContributorFactory()
                         {
                           public WidgetContributor create()

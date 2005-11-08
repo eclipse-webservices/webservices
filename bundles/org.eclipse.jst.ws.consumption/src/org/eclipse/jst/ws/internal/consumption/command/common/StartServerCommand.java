@@ -12,6 +12,7 @@
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -19,11 +20,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.EnvironmentService;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
@@ -36,18 +37,15 @@ import org.eclipse.wst.server.core.ServerCore;
  */
 public class StartServerCommand extends AbstractDataModelOperation
 {
-  private MessageUtils msgUtils_;
   private ILog log;
   private boolean forcePublish_;
   private boolean doAsyncPublish_;
   
-	private String serverInstanceId;
+  private String serverInstanceId;
 	
   
-	public StartServerCommand()
+  public StartServerCommand()
   {
-    String pluginId = "org.eclipse.jst.ws.consumption";
-    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     log             = EnvironmentService.getEclipseLog();
     forcePublish_   = false;
     doAsyncPublish_ = true;
@@ -69,7 +67,7 @@ public class StartServerCommand extends AbstractDataModelOperation
     IServer server = ServerCore.findServer(serverInstanceId);
     if (server == null)
     {
-      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_INSTANCE_NOT_FOUND") );
+      status = StatusUtils.errorStatus(ConsumptionMessages.MSG_ERROR_INSTANCE_NOT_FOUND);
       env.getStatusHandler().reportError(status);
       return status;
     }
@@ -179,7 +177,7 @@ public class StartServerCommand extends AbstractDataModelOperation
   {
     IStatus status = Status.OK_STATUS;
     final IStatus[] istatus = new IStatus[1]; 
-    monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_PUBLISHING_SERVER"));
+    monitor.subTask(ConsumptionMessages.PROGRESS_INFO_PUBLISHING_SERVER);
     IRunnableWithProgress runnable = new IRunnableWithProgress()
 	{
   		public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
@@ -227,13 +225,13 @@ public class StartServerCommand extends AbstractDataModelOperation
     IStatus status = Status.OK_STATUS;
     try
     {
-      monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
+      monitor.subTask(ConsumptionMessages.PROGRESS_INFO_STARTING_SERVER);
       server.synchronousRestart(ILaunchManager.RUN_MODE, monitor);
       log.log(ILog.INFO, 5052, this, "execute", "IServer=" + server + ", Restart command completed");
       return status;
     } catch (CoreException e)
     {
-      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), e);
+      status = StatusUtils.errorStatus(ConsumptionMessages.MSG_ERROR_SERVER, e);
       return status;
     }
 
@@ -244,13 +242,13 @@ public class StartServerCommand extends AbstractDataModelOperation
     IStatus status = Status.OK_STATUS;
     try
     {
-      monitor.subTask(msgUtils_.getMessage("PROGRESS_INFO_STARTING_SERVER"));
+      monitor.subTask(ConsumptionMessages.PROGRESS_INFO_STARTING_SERVER);
       server.synchronousStart(ILaunchManager.RUN_MODE, monitor);
       log.log(ILog.INFO, 5053, this, "execute", "IServer=" + server + ", Start command completed");
       return status;
     } catch (CoreException e)
     {
-      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SERVER"), e);
+      status = StatusUtils.errorStatus(ConsumptionMessages.MSG_ERROR_SERVER, e);
       return status;
     }
   }

@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -26,6 +25,7 @@ import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIAPContext;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSISSBPContext;
 import org.eclipse.wst.ws.internal.preferences.WSIComplianceUtils;
+import org.eclipse.wst.ws.internal.ui.WstWSUIPluginMessages;
 
 
 
@@ -33,12 +33,9 @@ public class WSINonCompliantRuntimeCommand extends AbstractDataModelOperation
 {
 
   private IProject serviceProject_;
-  private MessageUtils msgUtils_;
 	
   public WSINonCompliantRuntimeCommand()
   {
-    String       pluginId = "org.eclipse.wst.ws.ui";
-  	msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
   }
   
 
@@ -50,12 +47,12 @@ public class WSINonCompliantRuntimeCommand extends AbstractDataModelOperation
   	PersistentWSIAPContext wsiAPContext = WSPlugin.getInstance().getWSIAPContext(); 
     Vector statusSSBP = new Vector();
     statusSSBP.add( new Status( WSIComplianceUtils.getWSISeverity(serviceProject_, wsiSSBPContext), "id", 0,
-        msgUtils_.getMessage("WSI_SSBP_INCOMPLIANT_RUNTIME"), null ) );
+        WstWSUIPluginMessages.WSI_SSBP_INCOMPLIANT_RUNTIME, null ) );
     Status[] statusesSSBP = (Status[]) statusSSBP.toArray(new Status[statusSSBP.size()]);
     
     Vector statusAP = new Vector();
     statusAP.add( new Status( WSIComplianceUtils.getWSISeverity(serviceProject_, wsiAPContext), "id", 0, 
-    		msgUtils_.getMessage("WSI_AP_INCOMPLIANT_RUNTIME"), null ));
+    		WstWSUIPluginMessages.WSI_AP_INCOMPLIANT_RUNTIME, null ));
     Status[] statusesAP = (Status[]) statusAP.toArray(new Status[statusAP.size()]);
 
     if (WSIComplianceUtils.checkWSICompliance (environment.getStatusHandler(), statusesSSBP, serviceProject_, wsiSSBPContext)) 
@@ -66,12 +63,12 @@ public class WSINonCompliantRuntimeCommand extends AbstractDataModelOperation
     	} 
       else 
       {
-    		return StatusUtils.errorStatus(	msgUtils_.getMessage("NOT_OK") );
+    		return StatusUtils.errorStatus(	WstWSUIPluginMessages.NOT_OK );
     	}
     } 
     else 
     {
-		  return StatusUtils.errorStatus( msgUtils_.getMessage("NOT_OK") );
+		  return StatusUtils.errorStatus( WstWSUIPluginMessages.NOT_OK );
 		}
   }
   

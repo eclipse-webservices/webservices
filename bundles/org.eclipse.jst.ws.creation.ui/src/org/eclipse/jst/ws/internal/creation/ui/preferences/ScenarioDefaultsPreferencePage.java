@@ -39,7 +39,7 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
 	
 	protected Control createContents(Composite parent) 
 	{
-	  UIUtils utils = new UIUtils(null, null);
+	  UIUtils utils = new UIUtils(null);
 	  
 	  Composite page = utils.createComposite( parent, 1 );
 	  

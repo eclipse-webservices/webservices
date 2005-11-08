@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PreferencesSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WebServiceClientTypeWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
@@ -28,7 +29,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
@@ -83,8 +83,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
   {
     String       pluginId = "org.eclipse.jst.ws.consumption.ui";
     String       createPluginId = "org.eclipse.jst.ws.creation.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId + ".plugin", this );
-    UIUtils      utils    = new UIUtils( msgUtils, createPluginId );
+    UIUtils      utils    = new UIUtils( createPluginId );
     
     statusListener_ = statusListener;
     
@@ -92,15 +91,15 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
   	
   	Composite serverComposite = utils.createComposite( parent, 1 );
   	
-  	Group serviceGroup = utils.createGroup( serverComposite, "GROUP_SCENARIO_SERVICE",
-  	                                        "TOOLTIP_PWPR_GROUP_SCENARIO_SERVICE", 
+  	Group serviceGroup = utils.createGroup( serverComposite, ConsumptionUIMessages.GROUP_SCENARIO_SERVICE,
+  			ConsumptionUIMessages.TOOLTIP_PWPR_GROUP_SCENARIO_SERVICE, 
   	                                        INFOPOP_PWPR_GROUP_SCENARIO_SERVICE,
 											2, 10, 10);
   	
   	
   	// Create webservice combo box.
-    webserviceType_ = utils.createCombo( serviceGroup, "LABEL_WEBSERVICETYPE",
-                                         "TOOLTIP_PWPR_COMBO_TYPE",
+    webserviceType_ = utils.createCombo( serviceGroup, ConsumptionUIMessages.LABEL_WEBSERVICETYPE,
+    		ConsumptionUIMessages.TOOLTIP_PWPR_COMBO_TYPE,
                                          INFOPOP_PWPR_COMBO_TYPE, 
 										 SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     webserviceType_.addListener( SWT.Modify, statusListener );
@@ -111,8 +110,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
     buttonsGroup.setLayoutData( buttonGrid );
     
     // Create start service check box.
-    startService_ = utils.createCheckbox( buttonsGroup, "BUTTON_START_WEB_PROJECT",
-                                          "TOOLTIP_PWPR_CHECKBOX_START_WEB_PROJECT",
+    startService_ = utils.createCheckbox( buttonsGroup, ConsumptionUIMessages.BUTTON_START_WEB_PROJECT,
+    		ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_START_WEB_PROJECT,
                                           INFOPOP_PWPR_CHECKBOX_START_WEB_PROJECT );
     startService_.addSelectionListener( new SelectionAdapter()
                                         {
@@ -122,15 +121,15 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
                                           }
                                         });
     
-    launchUddi_ = utils.createCheckbox( buttonsGroup, "BUTTON_WS_PUBLISH",
-                                        "TOOLTIP_PWPR_CHECKBOX_LAUNCH_WS",
+    launchUddi_ = utils.createCheckbox( buttonsGroup, ConsumptionUIMessages.BUTTON_WS_PUBLISH,
+    		ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_LAUNCH_WS,
                                         INFOPOP_PWPR_CHECKBOX_LAUNCH_WS );
     
     Composite proxyComposite = utils.createComposite( serverComposite, 1, 5, 0 );
     
     // Create generate proxy check box.
-    generateProxy_ = utils.createCheckbox( proxyComposite, "BUTTON_GENERATE_PROXY",
-                                           "TOOLTIP_PWPR_CHECKBOX_GENERATE_PROXY",
+    generateProxy_ = utils.createCheckbox( proxyComposite, ConsumptionUIMessages.BUTTON_GENERATE_PROXY,
+    		ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_GENERATE_PROXY,
                                            INFOPOP_PWPR_CHECKBOX_GENERATE_PROXY );
     generateProxy_.addSelectionListener( new SelectionAdapter()
                                          {
@@ -147,12 +146,12 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
     Composite testGroup = utils.createComposite(serverComposite,1);
     
     //  Create test service check box.
-    testService_ = utils.createCheckbox( testGroup, "CHECKBOX_TEST_WEBSERVICE",
-                                         "TOOLTIP_PWPR_CHECKBOX_TEST_SERVICE",
+    testService_ = utils.createCheckbox( testGroup, ConsumptionUIMessages.CHECKBOX_TEST_WEBSERVICE,
+    		ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_TEST_SERVICE,
                                          INFOPOP_PWPR_CHECKBOX_TEST_SERVICE );
 
-    monitorService = utils.createCheckbox( testGroup, "CHECKBOX_MONITOR_WEBSERVICE",
-                                         "TOOLTIP_PWPR_CHECKBOX_MONITOR_SERVICE",
+    monitorService = utils.createCheckbox( testGroup, ConsumptionUIMessages.CHECKBOX_MONITOR_WEBSERVICE,
+    		ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_MONITOR_SERVICE,
                                          INFOPOP_PWPR_CHECKBOX_MONITOR_SERVICE );
     
     if( displayPreferences_ )

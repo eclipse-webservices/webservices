@@ -18,12 +18,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.PortType;
 import javax.wsdl.Service;
 import javax.wsdl.extensions.soap.SOAPAddress;
 import javax.xml.namespace.QName;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
@@ -33,8 +35,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -52,13 +54,9 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
   
   private IProject clientProject_;
   
-  private MessageUtils msgUtils_;
-
   public Stub2BeanCommand(){
 	  super();
 	  portTypes_ = new Vector();	  
-	  String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
-	  msgUtils_ = new MessageUtils(pluginId + ".plugin", this);	  
   }
 
   /**
@@ -97,7 +95,7 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
 		javaProject = JavaCore.create(clientProject_);    
 		if (javaProject == null)
 		{
-	 		   IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"));	
+	 		   IStatus status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_WARN_NO_JAVA_NATURE);	
 	 		   environment.getStatusHandler().reportError(status);
 	 		   return status;
 		}    	

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -19,7 +20,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
@@ -42,20 +42,19 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   public WidgetDataEvents addControls( Composite parent, Listener statusListener)
   {
     String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId + ".plugin", this );
-    UIUtils      utils    = new UIUtils( msgUtils, pluginId );
+    UIUtils      utils    = new UIUtils( pluginId );
   	
     Group clientGroup = utils.createGroup( parent, 
-                                           "GROUP_SCENARIO_CLIENT",
-                                           "TOOLTIP_PWPR_GROUP_SCENARIO_CLIENT", 
+    		ConsumptionUIMessages.GROUP_SCENARIO_CLIENT,
+    		ConsumptionUIMessages.TOOLTIP_PWPR_GROUP_SCENARIO_CLIENT, 
                                            INFOPOP_PWPR_GROUP_SCENARIO_CLIENT,
 										   2, 10, 10 );
                                              
     
     int comboStyle = SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY;
     clientTypeCombo_ = utils.createCombo( clientGroup, 
-                                          "LABEL_WEBSERVICECLIENTTYPE",
-                                          "TOOLTIP_PWPR_COMBO_CLIENTTYPE", 
+    		ConsumptionUIMessages.LABEL_WEBSERVICECLIENTTYPE,
+    		ConsumptionUIMessages.TOOLTIP_PWPR_COMBO_CLIENTTYPE, 
                                           INFOPOP_PWPR_COMBO_CLIENTTYPE, 
                                           comboStyle );
                                             

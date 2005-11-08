@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.GenerateHandlerSkeletonCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientHandlersWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientHandlersWidgetOutputCommand;
@@ -19,7 +20,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.HandlersDefaultingComm
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ServiceHandlersWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ServiceHandlersWidgetOutputCommand;
 import org.eclipse.wst.command.internal.env.core.common.Condition;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
@@ -108,19 +108,17 @@ public class ConfigureHandlersWidgetBinding implements CommandWidgetBinding {
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerWidgetMappings(org.eclipse.wst.command.env.ui.widgets.WidgetRegistry)
    */
   public void registerWidgetMappings(WidgetRegistry widgetRegistry) {
-    String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils(pluginId_ + ".plugin", this);
 
-    widgetRegistry.add("ConfigServiceHandlersTableWidget", msgUtils.getMessage("PAGE_TITLE_SERVICE_HDLR_CONFIG"), msgUtils
-        .getMessage("PAGE_DESC_SERVICE_HDLR_CONFIG"), new WidgetContributorFactory() {
+    widgetRegistry.add("ConfigServiceHandlersTableWidget", ConsumptionUIMessages.PAGE_TITLE_SERVICE_HDLR_CONFIG, 
+    		ConsumptionUIMessages.PAGE_DESC_SERVICE_HDLR_CONFIG, new WidgetContributorFactory() {
 
       public WidgetContributor create() {
         return new ConfigServiceHandlersTableWidget();
       }
     });
 
-    widgetRegistry.add("ConfigClientHandlersTableWidget", msgUtils.getMessage("PAGE_TITLE_CLIENT_HDLR_CONFIG"), msgUtils
-        .getMessage("PAGE_DESC_CLIENT_HDLR_CONFIG"), new WidgetContributorFactory() {
+    widgetRegistry.add("ConfigClientHandlersTableWidget", ConsumptionUIMessages.PAGE_TITLE_CLIENT_HDLR_CONFIG, 
+    		ConsumptionUIMessages.PAGE_DESC_CLIENT_HDLR_CONFIG, new WidgetContributorFactory() {
 
       public WidgetContributor create() {
         return new ConfigClientHandlersTableWidget();

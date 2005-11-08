@@ -15,6 +15,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.ComputeEndpointCom
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.ManageServerStartUpCommand;
 import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerInstToIServerTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
@@ -40,6 +41,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragmen
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WSDLTestLaunchCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceClientTestArrivalCommand;
+import org.eclipse.jst.ws.internal.creation.ui.CreationUIMessages;
 import org.eclipse.jst.ws.internal.creation.ui.extension.PreServiceDevelopCommand;
 import org.eclipse.jst.ws.internal.creation.ui.extension.ServiceRootFragment;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidget;
@@ -52,7 +54,6 @@ import org.eclipse.jst.ws.internal.creation.ui.widgets.test.ServiceTestFragment;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.test.ServiceTestWidget;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.test.WebServiceTestDefaultingCommand;
 import org.eclipse.wst.command.internal.env.core.common.Condition;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.BooleanFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
@@ -252,15 +253,13 @@ public class ServerWidgetBinding implements CommandWidgetBinding
    */
   public void registerWidgetMappings(WidgetRegistry widgetRegistry)
   {
-    String       pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    
+   
     widgetRegistry_ = widgetRegistry;
     publishToPrivateUDDICmdFrag.registerWidgetMappings(widgetRegistry_);
 
     widgetRegistry.add( "ServerWizardWidget", 
-                        msgUtils.getMessage("PAGE_TITLE_WS_PROJECT"),
-                        msgUtils.getMessage("PAGE_DESC_WS_PROJECT"),
+                        ConsumptionUIMessages.PAGE_TITLE_WS_PROJECT,
+                        ConsumptionUIMessages.PAGE_DESC_WS_PROJECT,
 				        new WidgetContributorFactory()
 				        {
 				          public WidgetContributor create()
@@ -269,10 +268,9 @@ public class ServerWidgetBinding implements CommandWidgetBinding
 				          }
 				        } );
 
-    MessageUtils creationUIMessageUtils = new MessageUtils("org.eclipse.jst.ws.creation.ui.plugin", this);
     widgetRegistry.add( "ObjectSelectionWidget", 
-                        creationUIMessageUtils.getMessage("PAGE_TITLE_OBJECT_SELECTION"),
-                        creationUIMessageUtils.getMessage("PAGE_DESC_OBJECT_SELECTION"),
+                        CreationUIMessages.PAGE_TITLE_OBJECT_SELECTION,
+                        CreationUIMessages.PAGE_DESC_OBJECT_SELECTION,
                         new WidgetContributorFactory()
                         {
                           public WidgetContributor create()
@@ -282,8 +280,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
                         });
 
     widgetRegistry.add( "ServerRuntimeSelectionWidget", 
-                        msgUtils.getMessage("PAGE_TITLE_WS_RUNTIME_SELECTION"),
-                        msgUtils.getMessage("PAGE_DESC_WS_RUNTIME_SELECTION"),
+                        ConsumptionUIMessages.PAGE_TITLE_WS_RUNTIME_SELECTION,
+                        ConsumptionUIMessages.PAGE_DESC_WS_RUNTIME_SELECTION,
 						new WidgetContributorFactory()
                         {
 						  public WidgetContributor create()
@@ -293,8 +291,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
 						} ); 
     
     widgetRegistry.add( "TestService", 
-                        msgUtils.getMessage("PAGE_TITLE_WSTEST"),
-                        msgUtils.getMessage("PAGE_DESC_WSTEST"),
+                        ConsumptionUIMessages.PAGE_TITLE_WSTEST,
+                        ConsumptionUIMessages.PAGE_DESC_WSTEST,
                         new WidgetContributorFactory()
                         {
                           public WidgetContributor create()
@@ -304,8 +302,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
                         } );
     
     widgetRegistry.add( "ClientTestWidget", 
-            msgUtils.getMessage("PAGE_TITLE_WS_SAMPLE"),
-            msgUtils.getMessage("PAGE_DESC_WS_SAMPLE"),
+            ConsumptionUIMessages.PAGE_TITLE_WS_SAMPLE,
+            ConsumptionUIMessages.PAGE_DESC_WS_SAMPLE,
             new WidgetContributorFactory()
             {
               public WidgetContributor create()
@@ -315,8 +313,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
             });
     
     widgetRegistry.add( "Publish", 
-                        msgUtils.getMessage("PAGE_TITLE_WS_PUBLISH"),
-                        msgUtils.getMessage("PAGE_DESC_WS_PUBLISH"),
+                        ConsumptionUIMessages.PAGE_TITLE_WS_PUBLISH,
+                        ConsumptionUIMessages.PAGE_DESC_WS_PUBLISH,
                         new WidgetContributorFactory()
                         {
                           public WidgetContributor create()

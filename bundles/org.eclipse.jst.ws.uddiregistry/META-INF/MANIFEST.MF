@@ -10,7 +10,7 @@ Export-Package: org.eclipse.jst.ws.internal.uddiregistry.plugin,
  org.eclipse.jst.ws.internal.uddiregistry.widgets,
  org.eclipse.jst.ws.internal.uddiregistry.widgets.binding,
  org.eclipse.jst.ws.internal.uddiregistry.wizard,
- org.eclipse.jst.ws.uddiregistry
+ org.eclipse.jst.ws.internal.uddiregistry
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jst.ws.ui,

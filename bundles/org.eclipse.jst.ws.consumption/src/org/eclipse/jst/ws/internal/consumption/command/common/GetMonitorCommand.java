@@ -18,17 +18,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.Service;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.http.HTTPAddress;
 import javax.wsdl.extensions.soap.SOAPAddress;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.StatusException;
@@ -129,7 +132,7 @@ public class GetMonitorCommand extends AbstractDataModelOperation
                     }
                     catch (Throwable t)
                     {
-                      IStatus warning = StatusUtils.warningStatus( WebServiceConsumptionPlugin.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[]{String.valueOf(port), endpoint}), t);
+                      IStatus warning = StatusUtils.warningStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_UNABLE_TO_START_MONITOR, new Object[]{String.valueOf(port), endpoint}), t);
                       try
                       {
                         if (env != null)
@@ -154,7 +157,7 @@ public class GetMonitorCommand extends AbstractDataModelOperation
                     }
                     catch (Throwable t)
                     {
-                      IStatus warning = StatusUtils.warningStatus( WebServiceConsumptionPlugin.getMessage("MSG_ERROR_UNABLE_TO_START_MONITOR", new Object[]{String.valueOf(port), endpoint}), t);
+                      IStatus warning = StatusUtils.warningStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_UNABLE_TO_START_MONITOR, new Object[]{String.valueOf(port), endpoint}), t);
                       try
                       {
                         if (env != null)

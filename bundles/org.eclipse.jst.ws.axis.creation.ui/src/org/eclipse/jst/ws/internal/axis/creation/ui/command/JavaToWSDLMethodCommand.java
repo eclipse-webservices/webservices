@@ -20,9 +20,13 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jem.internal.plugin.JavaEMFNature;
 import org.eclipse.jem.java.JavaClass;
+import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -41,14 +45,11 @@ public class JavaToWSDLMethodCommand extends AbstractDataModelOperation {
 	private String fbeanBaseName;
 	private JavaWSDLParameter javaWSDLParam_;
 	private IProject serviceProject_;
-	private MessageUtils msgUtils_;
 
 	/**
 	* Default CTOR
 	*/
 	public JavaToWSDLMethodCommand() {
-		String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 	}
 	/**
 	* Default CTOR
@@ -56,8 +57,6 @@ public class JavaToWSDLMethodCommand extends AbstractDataModelOperation {
 	public JavaToWSDLMethodCommand(
 		JavaWSDLParameter javaParameter,
 		IProject serviceProject) {
-		String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-	    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
 		javaWSDLParam_ = javaParameter;
 		serviceProject_ = serviceProject;
 
@@ -87,13 +86,12 @@ public class JavaToWSDLMethodCommand extends AbstractDataModelOperation {
 			JavaClass javaClass = JavaMOFUtils.getJavaClass(qName, serviceProject_);
 			
 			if (!javaClass.isExistingType()) {
-				environment.getLog().log(ILog.ERROR, 5022, this, "execute", msgUtils_.getMessage(
-						"MSG_ERROR_JAVA_MOF_REFLECT_FAILED",
+				environment.getLog().log(ILog.ERROR, 5022, this, "execute", 
+						NLS.bind(AxisCreationUIMessages.MSG_ERROR_JAVA_MOF_REFLECT_FAILED,
 						new String[] { qName }));
 				
 				status = StatusUtils.errorStatus(
-						msgUtils_.getMessage(
-					"MSG_ERROR_JAVA_MOF_REFLECT_FAILED",
+						NLS.bind(AxisCreationUIMessages.MSG_ERROR_JAVA_MOF_REFLECT_FAILED,
 					new String[] { qName }));
 				environment.getStatusHandler().reportError(status);
 				return status;
@@ -151,12 +149,9 @@ public class JavaToWSDLMethodCommand extends AbstractDataModelOperation {
 			return Status.OK_STATUS;
 
 		} catch (Exception e) {
-			environment.getLog().log(ILog.ERROR, 5023, this, "execute", msgUtils_.getMessage("MSG_ERROR_READ_BEAN"));
+			environment.getLog().log(ILog.ERROR, 5023, this, "execute", AxisCreationUIMessages.MSG_ERROR_READ_BEAN);
 		
-			status = StatusUtils.errorStatus(
-					msgUtils_.getMessage(
-				"MSG_ERROR_JAVA_TO_METHOD"),
-				 e);
+			status = StatusUtils.errorStatus(AxisCreationUIMessages.MSG_ERROR_JAVA_TO_METHOD, e);
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}

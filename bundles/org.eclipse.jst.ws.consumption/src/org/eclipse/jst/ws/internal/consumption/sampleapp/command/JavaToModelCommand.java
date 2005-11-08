@@ -17,10 +17,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions.JavaMofBeanVisitorAction;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofBeanVisitor;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.selection.BooleanSelection;
 import org.eclipse.wst.common.environment.Choice;
@@ -53,7 +53,7 @@ import org.eclipse.wst.ws.internal.datamodel.Model;
 */
 public class JavaToModelCommand extends AbstractDataModelOperation
 {
-  private MessageUtils msgUtils;
+
   private String clientProject;
   private BooleanSelection[] methods;
   private String proxyBean;
@@ -63,8 +63,6 @@ public class JavaToModelCommand extends AbstractDataModelOperation
   
   public JavaToModelCommand ()
   {
-	String pluginId = "org.eclipse.jst.ws.consumption";
-	msgUtils = new MessageUtils(pluginId + ".plugin", this);  	
   }
 
   
@@ -96,8 +94,8 @@ public class JavaToModelCommand extends AbstractDataModelOperation
   public IStatus buildModelFromMof (IEnvironment env) throws CoreException
   {
   	
-  	Choice OKChoice = new Choice('O', msgUtils.getMessage("LABEL_OK"), msgUtils.getMessage("DESCRIPTION_OK"));
-  	Choice CancelChoice = new Choice('C', msgUtils.getMessage("LABEL_CANCEL"), msgUtils.getMessage("DESCRIPTION_CANCEL"));
+  	Choice OKChoice = new Choice('O', ConsumptionMessages.LABEL_OK, ConsumptionMessages.DESCRIPTION_OK);
+  	Choice CancelChoice = new Choice('C', ConsumptionMessages.LABEL_CANCEL, ConsumptionMessages.DESCRIPTION_CANCEL);
   	
     // we could have one of three cases:
     //1. The model is null meaning we want and the parent element is null, meaning we want to
@@ -124,7 +122,7 @@ public class JavaToModelCommand extends AbstractDataModelOperation
            if (result.getLabel().equals(CancelChoice.getLabel()))
            {
            	 //return an error status since the user canceled
-           	  return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
+           	  return StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_SAMPLE_CREATION_CANCELED );
            }
            	
          }
@@ -148,7 +146,7 @@ public class JavaToModelCommand extends AbstractDataModelOperation
            if (result.getLabel().equals(CancelChoice.getLabel()))
            {
            	 //return an error status since the user canceled
-           	  return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
+           	  return StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_SAMPLE_CREATION_CANCELED );
            }
            	
          }
@@ -171,7 +169,7 @@ public class JavaToModelCommand extends AbstractDataModelOperation
            if (result.getLabel().equals(CancelChoice.getLabel()))
            {
            	 //return an error status since the user canceled
-           	  return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
+           	  return StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_SAMPLE_CREATION_CANCELED );
            }
            	
          }

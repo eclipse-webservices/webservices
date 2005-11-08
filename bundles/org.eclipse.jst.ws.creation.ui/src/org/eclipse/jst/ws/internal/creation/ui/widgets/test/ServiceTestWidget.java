@@ -12,6 +12,8 @@ package org.eclipse.jst.ws.internal.creation.ui.widgets.test;
 
 import java.util.List;
 import java.util.Vector;
+
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WSDLTestLaunchCommand;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -22,7 +24,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -31,18 +32,16 @@ import org.eclipse.wst.common.environment.IEnvironment;
 
 public class ServiceTestWidget extends SimpleWidgetDataContributor
 {
-  private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
   private String createPluginId_ = "org.eclipse.jst.ws.creation.ui";
 
   private Combo testTypeCombo_;
   /*CONTEXT_ID PSTP0001 for the Test Type Combo box of the Service Test Page*/
   private final String INFOPOP_PSTP_COMBOBOX_TEST = "PSTP0001";
-  private final String TOOLTIP_PSTP_COMBOBOX_TEST = "TOOLTIP_PSTP_COMBOBOX_TEST";
 
   private Button launchButton_;
   /*CONTEXT_ID PSTP0002 for the launch button of the Service Test Page*/
   private final String INFOPOP_PSTP_LAUNCH_BUTTON = "PSTP0002";
-  private final String TOOLTIP_PSTP_LAUNCH_BUTTON = "TOOLTIP_PSTP_LAUNCH_BUTTON";
+
   
   private SelectionList facilities_;
   
@@ -50,18 +49,17 @@ public class ServiceTestWidget extends SimpleWidgetDataContributor
   
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    UIUtils      uiUtils  = new UIUtils(msgUtils, createPluginId_ );
+    UIUtils      uiUtils  = new UIUtils(createPluginId_ );
         
     Composite testComposite = uiUtils.createComposite( parent, 3, 0, 0 );
     
-    testTypeCombo_ = uiUtils.createCombo( testComposite, "LABEL_TEST_TYPES",
-                                          TOOLTIP_PSTP_COMBOBOX_TEST,
+    testTypeCombo_ = uiUtils.createCombo( testComposite, ConsumptionUIMessages.LABEL_TEST_TYPES,
+    									ConsumptionUIMessages.TOOLTIP_PSTP_COMBOBOX_TEST,
                                           INFOPOP_PSTP_COMBOBOX_TEST,
                                           SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     
-    launchButton_ = uiUtils.createPushButton( testComposite, "BUTTON_LAUNCH_SERVICE_TEST",
-                                          TOOLTIP_PSTP_LAUNCH_BUTTON,
+    launchButton_ = uiUtils.createPushButton( testComposite, ConsumptionUIMessages.BUTTON_LAUNCH_SERVICE_TEST,
+    									ConsumptionUIMessages.TOOLTIP_PSTP_LAUNCH_BUTTON,
                                           INFOPOP_PSTP_LAUNCH_BUTTON );
     launchButton_.addSelectionListener( new SelectionAdapter()
                                         {

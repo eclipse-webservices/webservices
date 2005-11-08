@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -31,10 +31,9 @@ public class AssociateModuleWithEARCommand extends AbstractDataModelOperation
 	private String earProject_;
 	private String ear_;
 	
-	private MessageUtils msgUtils_;
-  
+
   public AssociateModuleWithEARCommand(){
-	    msgUtils_ = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
+
   }
   
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -59,7 +58,7 @@ public class AssociateModuleWithEARCommand extends AbstractDataModelOperation
 		
 		// ensure modules are associated otherwise report error
 		if (!J2EEUtils.isComponentAssociated(earProject, moduleProject)){
-			status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_UNABLE_TO_ASSOCIATE", new String[]{module_, ear_}) );
+			status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_UNABLE_TO_ASSOCIATE, new String[]{module_, ear_}) );
 			if (env!=null)
 				env.getStatusHandler().reportError(status);
 		    return status; 

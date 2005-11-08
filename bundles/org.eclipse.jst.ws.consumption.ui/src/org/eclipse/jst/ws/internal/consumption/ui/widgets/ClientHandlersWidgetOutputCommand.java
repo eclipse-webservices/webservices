@@ -29,8 +29,8 @@ import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
 import org.eclipse.jst.j2ee.webservice.wsclient.Webservice_clientFactory;
 import org.eclipse.jst.j2ee.webservice.wsclient.internal.impl.Webservice_clientFactoryImpl;
 import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.internal.emf.utilities.EtoolsCopyUtility;
@@ -62,8 +62,6 @@ public class ClientHandlersWidgetOutputCommand extends AbstractDataModelOperatio
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    String pluginId = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
     IStatus status = Status.OK_STATUS;
 
     try {
@@ -139,7 +137,7 @@ public class ClientHandlersWidgetOutputCommand extends AbstractDataModelOperatio
     }
     catch (Exception e) 
     {
-      return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_TASK_EXCEPTED"), e);
+      return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED, e);
     }
     finally {
       if (editModel_ != null) 

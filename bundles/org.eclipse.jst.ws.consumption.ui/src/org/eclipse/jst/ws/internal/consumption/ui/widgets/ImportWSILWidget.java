@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
@@ -22,6 +23,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.Arguments;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.TableViewerEditor;
@@ -39,7 +41,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -70,22 +71,18 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
   private Button browse_;
   private TableViewerEditor wsdls_;
   
-  private MessageUtils msgUtils;
-
   /**
   * Constructs a new page.
   */
   public ImportWSILWidget()
   {
-    msgUtils = new MessageUtils(WebServiceConsumptionUIPlugin.ID + ".plugin", this);
-    //super(msgUtils.getMessage("PAGE_WSIL_IMPORT"), msgUtils.getMessage("TITLE_WSIL_IMPORT"), msgUtils.getMessage("DESC_WSIL_IMPORT"));
   }
 
   public WidgetDataEvents addControls(Composite parent, Listener statusListener)
   {
   	IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
   	
-    parent.setToolTipText(msgUtils.getMessage("TOOLTIP_WSIL_IMPORT_PAGE"));
+    parent.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSIL_IMPORT_PAGE);
     helpSystem.setHelp(parent, INFOPOP_WSIL_IMPORT_PAGE);
 
     Composite composite = new Composite(parent, SWT.NONE);
@@ -98,7 +95,7 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
     composite.setLayoutData(gd);
 
     Label label = new Label(composite, SWT.WRAP);
-    label.setText(msgUtils.getMessage("LABEL_WSIL_URI"));
+    label.setText(ConsumptionUIMessages.LABEL_WSIL_URI);
     label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
     wsil_ = new Text(composite, SWT.WRAP | SWT.SINGLE | SWT.BORDER);
@@ -106,11 +103,11 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
     gd.widthHint = 256;
     wsil_.setLayoutData(gd);
     wsil_.addListener(SWT.Modify, statusListener);
-    wsil_.setToolTipText(msgUtils.getMessage("TOOLTIP_WSIL_TEXT_WSIL"));
+    wsil_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSIL_TEXT_WSIL);
     helpSystem.setHelp(wsil_, INFOPOP_WSIL_TEXT_WSIL);
 
     browse_ = new Button(composite, SWT.PUSH);
-    browse_.setText(msgUtils.getMessage("LABEL_BROWSE"));
+    browse_.setText(ConsumptionUIMessages.LABEL_BROWSE);
     browse_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
     browse_.addListener(SWT.Selection,
       new Listener()
@@ -121,7 +118,7 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
         }
       }
     );
-    browse_.setToolTipText(msgUtils.getMessage("TOOLTIP_WSIL_BUTTON_BROWSE_WSIL"));
+    browse_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSIL_BUTTON_BROWSE_WSIL);
     helpSystem.setHelp(browse_, INFOPOP_WSIL_BUTTON_BROWSE_WSIL);
 
     Composite wsdlComposite = new Composite(composite, SWT.NONE);
@@ -130,11 +127,11 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
     gd.horizontalSpan = 3;
     wsdlComposite.setLayoutData(gd);
     label = new Label(wsdlComposite, SWT.WRAP);
-    label.setText(msgUtils.getMessage("LABEL_WSDL"));
+    label.setText(ConsumptionUIMessages.LABEL_WSDL);
     label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-    String[] columns = {msgUtils.getMessage("LABEL_WSDL_URI")};
+    String[] columns = {ConsumptionUIMessages.LABEL_WSDL_URI};
     wsdls_ = new TableViewerEditor(wsdlComposite, columns, new ArrayList(), "http://");
-    wsdls_.setToolTipText(msgUtils.getMessage("TOOLTIP_WSIL_TABLE_WSDL"));
+    wsdls_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSIL_TABLE_WSDL);
     wsdls_.setInfopop(INFOPOP_WSIL_TABLE_WSDL);
     return this;
   }
@@ -156,7 +153,7 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
   public IStatus getStatus()
   {
     if (!wsil_.getText().endsWith(".wsil"))
-      return StatusUtils.errorStatus( msgUtils.getMessage("PAGE_MSG_INVALID_WSIL_FILE_NAME") );
+      return StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_INVALID_WSIL_FILE_NAME );
     else
       return Status.OK_STATUS;
   }

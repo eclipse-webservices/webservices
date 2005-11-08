@@ -15,6 +15,7 @@ import java.util.Vector;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.Method;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofParameterVisitor;
 
 
@@ -70,7 +71,7 @@ public class DetectNonJavaCharsMethodVisitorAction extends VisitorActionImpl
   {
   	 // in a service bean check if any method starts with upper case letter
 	 if ( Character.isUpperCase(name.charAt(0)))
-    		addMessage("MSG_WARN_JAVA_METHOD_START_WITH_UPPER_CASE", new String[]{name, className});  
+    		addMessage(ConsumptionMessages.MSG_WARN_JAVA_METHOD_START_WITH_UPPER_CASE, new String[]{name, className});  
 
   }
 
@@ -82,7 +83,7 @@ public class DetectNonJavaCharsMethodVisitorAction extends VisitorActionImpl
 	 while(underScoreIndex !=-1) {
 		tempName = tempName.substring(underScoreIndex+1);
 		if ( Character.isLowerCase(tempName.charAt(0))) {
-    		addMessage("MSG_WARN_METHOD_NAME_INVALID", new String[]{name, className});  
+    		addMessage(ConsumptionMessages.MSG_WARN_METHOD_NAME_INVALID, new String[]{name, className});  
      		break;
 		}
 		else
@@ -98,7 +99,7 @@ public class DetectNonJavaCharsMethodVisitorAction extends VisitorActionImpl
      		if ( Character.isDigit(name.charAt(i)))
      			{
      				if (Character.isLowerCase(name.charAt(i+1))) {
-			    		addMessage("MSG_WARN_METHOD_NAME_INVALID", new String[]{name, className});  
+			    		addMessage(ConsumptionMessages.MSG_WARN_METHOD_NAME_INVALID, new String[]{name, className});  
 			     		break;
  					}
 		}
@@ -109,7 +110,7 @@ public class DetectNonJavaCharsMethodVisitorAction extends VisitorActionImpl
   		if (!serviceBean && method.getName().startsWith("get") && 
   			(method.getReturnType().getName().equals("boolean") ||
   			 method.getReturnType().getName().equals("java.lang.Boolean")))
-  			addMessage("MSG_WARN_BOOLEAN_PROPERTY_ACCESSORS", new String[]{method.getName(), className});  
+  			addMessage(ConsumptionMessages.MSG_WARN_BOOLEAN_PROPERTY_ACCESSORS, new String[]{method.getName(), className});  
   	}
 
 }

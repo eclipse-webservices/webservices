@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -31,7 +32,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jst.j2ee.webservice.wsdd.PortComponent;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
-import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
@@ -50,7 +51,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
@@ -61,7 +61,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributor {
 
   private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-  private MessageUtils msgUtils_ = null;
   private Composite parent_;
   private boolean isGenSkeletonEnabled_;
   private String outputLocation_;
@@ -86,19 +85,15 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
   // ----TOOLTIPS Section----
   /* CONTEXT_ID SHLD0001 for the Handler Config Page */
   private final String INFOPOP_HDLR_WS_HANDLERS = "SHDL0001"; //$NON-NLS-1$
-  private final String TOOLTIP_EDIT_WS_HANDLERS = "TOOLTIP_EDIT_WS_HANDLERS";
 
   /* CONTEXT_ID SHDL0002 for the Handler Config Page */
   private final String INFOPOP_HDLR_GEN_SKELETON = "SHDL0002"; //$NON-NLS-1$
-  private final String TOOLTIP_BUTTON_GEN_SKELETON = "TOOLTIP_BUTTON_GEN_SKELETON";
 
   /* CONTEXT_ID SHDL0003 for the Handler Config Page */
   private final String INFOPOP_COMBO_SOURCE_LOC = "SHDL0003"; //$NON-NLS-1$
-  private final String TOOLTIP_COMBO_SOURCE_LOC = "TOOLTIP_COMBO_SOURCE_LOC";
 
   /* CONTEXT_ID SHDL0004 for the Handler Config Page */
   private final String INFOPOP_WS_SERVICE_DESC = "SHDL0004"; //$NON-NLS-1$
-  private final String TOOLTIP_WS_SERVICE_DESC = "TOOLTIP_WS_SERVICE_DESC";
 
   // ------------------------
 
@@ -107,14 +102,14 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
   }
 
   public WidgetDataEvents addControls(Composite parent, Listener statusListener) {
-    msgUtils_ = new MessageUtils(WebServiceConsumptionUIPlugin.ID + ".plugin", this);
-    UIUtils uiUtils = new UIUtils(msgUtils_, pluginId_);
+    UIUtils uiUtils = new UIUtils( pluginId_);
 
     parent_ = parent;
 
     // Web service reference combo
     Composite webServiceRefComp = uiUtils.createComposite(parent_, 2);
-    webServiceDescCombo_ = uiUtils.createCombo(webServiceRefComp, "LABEL_COMBO_WS_SERVICE_DESC", TOOLTIP_WS_SERVICE_DESC, INFOPOP_WS_SERVICE_DESC,
+    webServiceDescCombo_ = uiUtils.createCombo(webServiceRefComp, ConsumptionUIMessages.LABEL_COMBO_WS_SERVICE_DESC, 
+    		ConsumptionUIMessages.TOOLTIP_WS_SERVICE_DESC, INFOPOP_WS_SERVICE_DESC,
         SWT.READ_ONLY);
     webServiceDescCombo_.addSelectionListener(new SelectionAdapter() {
 
@@ -140,12 +135,12 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     buttonsComp.setLayoutData(griddata);
 
     Text handlersText = new Text(handlersComp, SWT.READ_ONLY);
-    handlersText.setText(msgUtils_.getMessage("LABEL_HANDLERS_CONFIG"));
+    handlersText.setText(ConsumptionUIMessages.LABEL_HANDLERS_CONFIG);
     GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
     gd.horizontalSpan = 2;
     handlersText.setLayoutData(gd);
 
-    handlersTable_ = uiUtils.createTable(handlersComp, TOOLTIP_EDIT_WS_HANDLERS, INFOPOP_HDLR_WS_HANDLERS, SWT.MULTI | SWT.FULL_SELECTION);
+    handlersTable_ = uiUtils.createTable(handlersComp, ConsumptionUIMessages.TOOLTIP_EDIT_WS_HANDLERS, INFOPOP_HDLR_WS_HANDLERS, SWT.MULTI | SWT.FULL_SELECTION);
     handlersTable_.setHeaderVisible(true);
     handlersTable_.setLinesVisible(true);
 
@@ -155,7 +150,7 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     gd.horizontalSpan = 2;
     wsLabel.setLayoutData(gd);
 
-    Button moveUpButton = uiUtils.createPushButton(buttonsComp, "LABEL_BUTTON_MOVE_UP", null, null);
+    Button moveUpButton = uiUtils.createPushButton(buttonsComp, ConsumptionUIMessages.LABEL_BUTTON_MOVE_UP, null, null);
     griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
     moveUpButton.setLayoutData(griddata);
     moveUpButton.addSelectionListener(new SelectionListener() {
@@ -168,7 +163,7 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
       }
     });
 
-    Button moveDownButton = uiUtils.createPushButton(buttonsComp, "LABEL_BUTTON_MOVE_DOWN", null, null);
+    Button moveDownButton = uiUtils.createPushButton(buttonsComp, ConsumptionUIMessages.LABEL_BUTTON_MOVE_DOWN, null, null);
     griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
     moveDownButton.setLayoutData(griddata);
     moveDownButton.addSelectionListener(new SelectionListener() {
@@ -187,7 +182,7 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     gd.horizontalSpan = 2;
     wsLabel.setLayoutData(gd);
 
-    addButton_ = uiUtils.createPushButton(buttonsComp, "LABEL_BUTTON_ADD", null, null);
+    addButton_ = uiUtils.createPushButton(buttonsComp, ConsumptionUIMessages.LABEL_BUTTON_ADD, null, null);
     griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
     addButton_.setLayoutData(griddata);
     addButton_.addSelectionListener(new SelectionListener() {
@@ -200,7 +195,7 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
       }
     });
 
-    removeButton_ = uiUtils.createPushButton(buttonsComp, "LABEL_BUTTON_REMOVE", null, null);
+    removeButton_ = uiUtils.createPushButton(buttonsComp, ConsumptionUIMessages.LABEL_BUTTON_REMOVE, null, null);
     griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
     removeButton_.setLayoutData(griddata);
     removeButton_.addSelectionListener(new SelectionListener() {
@@ -215,8 +210,8 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     enableRemove(false);
 
     // table stuff here
-    String[] columns_ = new String[] { msgUtils_.getMessage("LABEL_HANDLER_NAME"), msgUtils_.getMessage("LABLE_HANDLER_CLASS"),
-        msgUtils_.getMessage("LABEL_HANDLER_PORT")};
+    String[] columns_ = new String[] {ConsumptionUIMessages.LABEL_HANDLER_NAME, ConsumptionUIMessages.LABLE_HANDLER_CLASS,
+    		ConsumptionUIMessages.LABEL_HANDLER_PORT};
 
     for (int i = 0; i < columns_.length; i++) {
       TableColumn tableColumn = new TableColumn(handlersTable_, i);
@@ -246,7 +241,7 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
       }
     });
 
-    genSkeletonRadioButton_ = uiUtils.createCheckbox(parent_, "LABEL_BUTTON_GEN_SKELETON", TOOLTIP_BUTTON_GEN_SKELETON, INFOPOP_HDLR_GEN_SKELETON);
+    genSkeletonRadioButton_ = uiUtils.createCheckbox(parent_, ConsumptionUIMessages.LABEL_BUTTON_GEN_SKELETON, ConsumptionUIMessages.TOOLTIP_BUTTON_GEN_SKELETON, INFOPOP_HDLR_GEN_SKELETON);
     genSkeletonRadioButton_.addSelectionListener(new SelectionAdapter() {
 
       public void widgetSelected(SelectionEvent evt) {
@@ -255,7 +250,7 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     });
 
     Composite sourceLocationComp = uiUtils.createComposite(parent_, 2);
-    sourceLocationCombo_ = uiUtils.createCombo(sourceLocationComp, "LABEL_COMBO_SOURCE_LOC", TOOLTIP_COMBO_SOURCE_LOC, INFOPOP_COMBO_SOURCE_LOC,
+    sourceLocationCombo_ = uiUtils.createCombo(sourceLocationComp, ConsumptionUIMessages.LABEL_COMBO_SOURCE_LOC, ConsumptionUIMessages.TOOLTIP_COMBO_SOURCE_LOC, INFOPOP_COMBO_SOURCE_LOC,
         SWT.READ_ONLY);
     sourceLocationCombo_.addSelectionListener(new SelectionAdapter() {
 

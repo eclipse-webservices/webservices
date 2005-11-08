@@ -11,6 +11,8 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import java.util.Vector;
+
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.PrivateUDDIRegistryTypeRegistry;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.PublicUDDIRegistryTypeRegistry;
@@ -27,7 +29,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.ws.internal.explorer.LaunchOption;
@@ -44,14 +45,12 @@ public class PublishWSWidget extends SimpleWidgetDataContributor
   private Button launchPrivateUDDICheckbox_;
   private Label pubilcUDDIRegComboLabel_;
   private Combo publicUDDIRegCombo_;
-  private MessageUtils msgUtils;
   private Listener statusListener;
   private Boolean publish;
 
   public PublishWSWidget(boolean publish)
   {
-    msgUtils = new MessageUtils(WebServiceConsumptionUIPlugin.ID + ".plugin", this);
-    this.publish = new Boolean(publish);
+	  this.publish = new Boolean(publish);
   }
 
   public WidgetDataEvents addControls(Composite parent, Listener statusListener)
@@ -64,23 +63,23 @@ public class PublishWSWidget extends SimpleWidgetDataContributor
         handleSelectionEvent(event);
       }
     };
-    parent.setToolTipText(msgUtils.getMessage("TOOLTIP_PWPB_PAGE"));
+    parent.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWPB_PAGE);
     IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
     helpSystem.setHelp(parent, INFOPOP_PWPB_PAGE);
     launchPrivateUDDICheckbox_ = new Button(parent, SWT.CHECK);
     if (publish.booleanValue())
-      launchPrivateUDDICheckbox_.setText(msgUtils.getMessage("BUTTON_WS_PUBLISH_PRIVATE_UDDI"));
+      launchPrivateUDDICheckbox_.setText(ConsumptionUIMessages.BUTTON_WS_PUBLISH_PRIVATE_UDDI);
     else
-      launchPrivateUDDICheckbox_.setText(msgUtils.getMessage("BUTTON_WS_FIND_PRIVATE_UDDI"));
-    launchPrivateUDDICheckbox_.setToolTipText(msgUtils.getMessage("TOOLTIP_PWPB_CHECKBOX_WS_LAUNCH"));
+      launchPrivateUDDICheckbox_.setText(ConsumptionUIMessages.BUTTON_WS_FIND_PRIVATE_UDDI);
+    launchPrivateUDDICheckbox_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWPB_CHECKBOX_WS_LAUNCH);
     launchPrivateUDDICheckbox_.addListener(SWT.Selection, selListener);
     helpSystem.setHelp(launchPrivateUDDICheckbox_, INFOPOP_PWPB_CHECKBOX_WS_LAUNCH);
     launchUDDICheckbox_ = new Button(parent, SWT.CHECK);
     if (publish.booleanValue())
-      launchUDDICheckbox_.setText(msgUtils.getMessage("BUTTON_WS_PUBLISH"));
+      launchUDDICheckbox_.setText(ConsumptionUIMessages.BUTTON_WS_PUBLISH);
     else
-      launchUDDICheckbox_.setText(msgUtils.getMessage("BUTTON_WS_FIND"));
-    launchUDDICheckbox_.setToolTipText(msgUtils.getMessage("TOOLTIP_PWPB_CHECKBOX_WS_LAUNCH"));
+      launchUDDICheckbox_.setText(ConsumptionUIMessages.BUTTON_WS_FIND);
+    launchUDDICheckbox_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWPB_CHECKBOX_WS_LAUNCH);
     launchUDDICheckbox_.addListener(SWT.Selection, selListener);
     helpSystem.setHelp(launchUDDICheckbox_, INFOPOP_PWPB_CHECKBOX_WS_LAUNCH);
     Composite c = new Composite(parent, SWT.NONE);
@@ -93,7 +92,7 @@ public class PublishWSWidget extends SimpleWidgetDataContributor
     c.setLayoutData(gd);
     new Label(c, SWT.WRAP);
     pubilcUDDIRegComboLabel_ = new Label(c, SWT.WRAP);
-    pubilcUDDIRegComboLabel_.setText(msgUtils.getMessage("LABEL_PUBLIC_UDDI_REGISTRIES"));
+    pubilcUDDIRegComboLabel_.setText(ConsumptionUIMessages.LABEL_PUBLIC_UDDI_REGISTRIES);
     publicUDDIRegCombo_ = new Combo(c, SWT.DROP_DOWN | SWT.READ_ONLY);
     publicUDDIRegCombo_.setEnabled(false);
     initPublicUDDI();

@@ -12,10 +12,13 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -29,7 +32,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -37,8 +39,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
 public class BeanConfigWidget extends SimpleWidgetDataContributor 
 {
-  private String pluginId_ = "org.eclipse.jst.ws.axis.creation.ui";
-  
+
   private Button   rpcEncodedButton_;
   private Button   rpcLiteralButton_;
   private Button   docLiteralButton_;
@@ -49,37 +50,30 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
   
   /* CONTEXT_ID PBCF0001 for the Bean Config Page */
   private final String INFOPOP_PBCF_PAGE = "PBCF0001"; //$NON-NLS-1$
-  private final String TOOLTIP_PBCF_PAGE = "TOOLTIP_PBCF_PAGE";
 	
   private Text uriText_;
   /* CONTEXT_ID PBCF0002 for the URI field of the Bean Config Page */
   private final String INFOPOP_PBCF_TEXT_URI = "PBCF0002"; //$NON-NLS-1$
-  private final String TOOLTIP_PBCF_TEXT_URI = "TOOLTIP_PBCF_TEXT_URI";
 	
   private Text wsdlFolderText_;
   /* CONTEXT_ID PBCF0006 for the WSDL Folder field in the Bean Config Page */
   private final String INFOPOP_PBCF_TEXT_WSDL_FOLDER = "PBCF0006"; //$NON-NLS-1$
-  private final String TOOLTIP_PBCF_TEXT_WSDL_FOLDER = "TOOLTIP_PBCF_TEXT_WSDL_FOLDER";
 	
   private Text wsdlFileText_;
   /* CONTEXT_ID PBCF0007 for the WSDL File field of the Bean Config Page */
   private final String INFOPOP_PBCF_TEXT_WSDL_FILE = "PBCF0007"; //$NON-NLS-1$
-  private final String TOOLTIP_PBCF_TEXT_WSDL_FILE = "TOOLTIP_PBCF_TEXT_WSDL_FILE";
 	
   private Tree methodsTree_;
   /* CONTEXT_ID PBME0002 for the Methods tree of the Bean Methods Page */
   private final String INFOPOP_PBME_TREE_METHODS = "PBME0002"; //$NON-NLS-1$
-  private final String TOOLTIP_PBME_TREE_METHODS = "TOOLTIP_PBME_TREE_METHODS";
 	
   private Button selectAllMethodsButton_;
   /* CONTEXT_ID PBME0010 for the Select All button of the Bean Methods Page */
   private final String INFOPOP_PBME_BUTTON_SELECT_ALL = "PBME0010"; //$NON-NLS-1$
-  private final String TOOLTIP_PBME_BUTTON_SELECT_ALL = "TOOLTIP_PBME_BUTTON_SELECT_ALL";
 	
   private Button deselectAllMethodsButton_;
   /* CONTEXT_ID PBME0011 for the Deselect All button of the Bean Methods Page */
   private final String INFOPOP_PBME_BUTTON_DESELECT_ALL = "PBME0011"; //$NON-NLS-1$
-  private final String TOOLTIP_PBME_BUTTON_DESELECT_ALL = "TOOLTIP_PBME_BUTTON_DESELECT_ALL";
 	
   private Button showMappingsCheckbox_;
   /* CONTEXT_ID PBCF0016 for the Show Mappings checkbox of the Bean Methods Page */   
@@ -87,30 +81,29 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
 
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
-    String       baseConPluginId = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils     = new MessageUtils( pluginId_ + ".plugin", this );
-    MessageUtils baseConUtils = new MessageUtils( baseConPluginId + ".plugin", this );
-    UIUtils      uiUtils        = new UIUtils(msgUtils, pluginId_ );
-    UIUtils      baseConUiUtils = new UIUtils( baseConUtils, pluginId_ );
+	String pluginId_ = "org.eclipse.jst.ws.axis.creation.ui";	  
+
+    UIUtils      uiUtils        = new UIUtils( pluginId_ );
+    UIUtils      baseConUiUtils = new UIUtils( pluginId_ );
     
     statusListener_ = statusListener;    
-	parent.setToolTipText( msgUtils.getMessage( TOOLTIP_PBCF_PAGE ) );
+	parent.setToolTipText( AxisCreationUIMessages.TOOLTIP_PBCF_PAGE  );
 	PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId_ + "." + INFOPOP_PBCF_PAGE );
     
     Composite configGroup = uiUtils.createComposite( parent, 2 );
     
-    uriText_ = uiUtils.createText( configGroup, "LABEL_URI",
-                                   TOOLTIP_PBCF_TEXT_URI,
+    uriText_ = uiUtils.createText( configGroup, AxisCreationUIMessages.LABEL_URI,
+    		AxisCreationUIMessages.TOOLTIP_PBCF_TEXT_URI,
                                    INFOPOP_PBCF_TEXT_URI,
                                    SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     
-    wsdlFolderText_ = uiUtils.createText( configGroup, "LABEL_OUTPUT_FOLDER_NAME",
-                                          TOOLTIP_PBCF_TEXT_WSDL_FOLDER,
+    wsdlFolderText_ = uiUtils.createText( configGroup, AxisCreationUIMessages.LABEL_OUTPUT_FOLDER_NAME,
+    		AxisCreationUIMessages.TOOLTIP_PBCF_TEXT_WSDL_FOLDER,
                                           INFOPOP_PBCF_TEXT_WSDL_FOLDER,
                                           SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     
-    wsdlFileText_ = uiUtils.createText( configGroup, "LABEL_OUTPUT_FILE_NAME",
-                                        TOOLTIP_PBCF_TEXT_WSDL_FILE,
+    wsdlFileText_ = uiUtils.createText( configGroup, AxisCreationUIMessages.LABEL_OUTPUT_FILE_NAME,
+    		AxisCreationUIMessages.TOOLTIP_PBCF_TEXT_WSDL_FILE,
                                         INFOPOP_PBCF_TEXT_WSDL_FILE,
                                         SWT.SINGLE | SWT.BORDER  );
     wsdlFileText_.addListener( SWT.Modify, statusListener );
@@ -118,7 +111,7 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
     uiUtils.createHorizontalSeparator( parent, 6 );
     
     // TODO this group has no TOOLTIP or INFOPOP.
-    Group    methodsGroup = baseConUiUtils.createGroup( parent, "LABEL_METHODS", null, null );
+    Group    methodsGroup = baseConUiUtils.createGroup( parent, ConsumptionUIMessages.LABEL_METHODS, null, null );
 	methodsGroup.setLayoutData( uiUtils.createFillAll() );
 	
 	GridLayout layout = new GridLayout();
@@ -126,16 +119,16 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
 	layout.marginWidth = 0;
 	methodsGroup.setLayout( layout );
 	
-	methodsTree_ = uiUtils.createTree( methodsGroup, TOOLTIP_PBME_TREE_METHODS, 
-	                                   INFOPOP_PBME_TREE_METHODS,
+	methodsTree_ = uiUtils.createTree( methodsGroup, AxisCreationUIMessages.TOOLTIP_PBME_TREE_METHODS, 
+										INFOPOP_PBME_TREE_METHODS,
 	                   				   SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL	| SWT.CHECK );
 	methodsTree_.addListener( SWT.Selection, statusListener );
 
     Composite selectButtons = uiUtils.createComposite( methodsGroup, 2 );
     
     selectAllMethodsButton_ 
-      = baseConUiUtils.createPushButton( selectButtons, "BUTTON_SELECT_ALL", 
-                                  TOOLTIP_PBME_BUTTON_SELECT_ALL,
+      = baseConUiUtils.createPushButton( selectButtons, ConsumptionUIMessages.BUTTON_SELECT_ALL, 
+    		  ConsumptionUIMessages.TOOLTIP_PBME_BUTTON_SELECT_ALL,
                                   INFOPOP_PBME_BUTTON_SELECT_ALL );
     selectAllMethodsButton_.addSelectionListener( new SelectionAdapter() 
                                                   {
@@ -146,8 +139,8 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
                                                   });
     
     deselectAllMethodsButton_ 
-      = baseConUiUtils.createPushButton( selectButtons, "BUTTON_DESELECT_ALL", 
-                                  TOOLTIP_PBME_BUTTON_DESELECT_ALL,
+      = baseConUiUtils.createPushButton( selectButtons, ConsumptionUIMessages.BUTTON_DESELECT_ALL, 
+    		  ConsumptionUIMessages.TOOLTIP_PBME_BUTTON_DESELECT_ALL,
                                   INFOPOP_PBME_BUTTON_DESELECT_ALL );
     deselectAllMethodsButton_.addSelectionListener( new SelectionAdapter() 
                                                     {
@@ -158,15 +151,15 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
                                                     });
     
     // TODO this group has no TOOLTIP or INFOPOP.
-    Group styleGroup = uiUtils.createGroup( parent, "LABEL_STYLE_USE", null, null );
+    Group styleGroup = uiUtils.createGroup( parent, AxisCreationUIMessages.LABEL_STYLE_USE, null, null );
     
     // TODO radio buttons have no TOOLTIP or INFOPOP.
-    docLiteralButton_ = uiUtils.createRadioButton( styleGroup, "STYLE_DOC_LITERAL", null, null );
-    rpcLiteralButton_ = uiUtils.createRadioButton( styleGroup, "STYLE_RPC_LITERAL", null, null );
-    rpcEncodedButton_ = uiUtils.createRadioButton( styleGroup, "STYLE_RPC_ENCODED", null, null );
+    docLiteralButton_ = uiUtils.createRadioButton( styleGroup, AxisCreationUIMessages.STYLE_DOC_LITERAL, null, null );
+    rpcLiteralButton_ = uiUtils.createRadioButton( styleGroup, AxisCreationUIMessages.STYLE_RPC_LITERAL, null, null );
+    rpcEncodedButton_ = uiUtils.createRadioButton( styleGroup, AxisCreationUIMessages.STYLE_RPC_ENCODED, null, null );
     
-    showMappingsCheckbox_ = uiUtils.createCheckbox( parent, "LABEL_EXPLORE_MAPPINGS_BEAN2XML",
-                                                    "TOOLTIP_P2N_SHOW_MAPPINGS",
+    showMappingsCheckbox_ = uiUtils.createCheckbox( parent, AxisCreationUIMessages.LABEL_EXPLORE_MAPPINGS_BEAN2XML,
+    		AxisCreationUIMessages.TOOLTIP_P2N_SHOW_MAPPINGS,
                                                     INFOPOP_P2N_SHOW_MAPPINGS );
                                             
     return this;
@@ -298,11 +291,10 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
   public IStatus getStatus() 
   {
     IStatus       result   = null;
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
     
     if( wsdlFileText_.getText().equals( "" ) )
     {
-      result = StatusUtils.errorStatus( msgUtils.getMessage( "PAGE_MSG_NO_FILE_SPECIFIED" ) ); 
+      result = StatusUtils.errorStatus( AxisCreationUIMessages.PAGE_MSG_NO_FILE_SPECIFIED ); 
     }
     else
     {
@@ -320,7 +312,7 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
       
       if( !itemSelected )
       {
-        result = StatusUtils.errorStatus( msgUtils.getMessage( "PAGE_MSG_NO_METHOD_SELECTED" )); 
+        result = StatusUtils.errorStatus( AxisCreationUIMessages.PAGE_MSG_NO_METHOD_SELECTED ); 
       }
     }
     

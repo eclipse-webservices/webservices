@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -30,12 +31,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.wst.command.internal.env.EnvironmentMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.Choice;
-import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.common.environment.IStatusHandler;
+import org.eclipse.wst.common.environment.StatusException;
 
 
 
@@ -53,7 +55,7 @@ public final class FileResourceUtils
   //
   private static IWorkspaceRoot root_ = null;
   
-  private static MessageUtils msg_ = new MessageUtils( "org.eclipse.wst.command.internal.env.common.environment", new FileResourceUtils() );
+//  private static MessageUtils msg_ = new MessageUtils( "org.eclipse.wst.command.internal.env.common.environment", new FileResourceUtils() );
 
 
  /**
@@ -96,9 +98,9 @@ public final class FileResourceUtils
   {
     Vector choices = new Vector();
     
-    choices.add(new Choice( 'Y', msg_.getMessage("LABEL_YES")));
-    choices.add(new Choice( 'A', msg_.getMessage("LABEL_YES_TO_ALL")));
-    choices.add(new Choice( 'C', msg_.getMessage("LABEL_CANCEL")));
+    choices.add(new Choice( 'Y', EnvironmentMessages.LABEL_YES));
+    choices.add(new Choice( 'A', EnvironmentMessages.LABEL_YES_TO_ALL));
+    choices.add(new Choice( 'C', EnvironmentMessages.LABEL_CANCEL));
     
     return (Choice[])choices.toArray(new Choice[choices.size()]);
   }
@@ -206,7 +208,7 @@ public final class FileResourceUtils
        throw new CoreException(new Status(IStatus.ERROR,
                                plugin.getBundle().getSymbolicName(),
                                0,
-                               msg_.getMessage("MSG_ERROR_IO"),e));
+                               EnvironmentMessages.MSG_ERROR_IO,e));
      }
    }
    
@@ -229,7 +231,7 @@ public final class FileResourceUtils
       if (!resourceContext.isOverwriteFilesEnabled())
       {
         IStatus status 
-          = StatusUtils.warningStatus( msg_.getMessage( "MSG_ERROR_FILE_OVERWRITE_DISABLED",
+          = StatusUtils.warningStatus( NLS.bind(EnvironmentMessages.MSG_ERROR_FILE_OVERWRITE_DISABLED,
                                                         new Object[]{ file.getParent().getFullPath().toString(),
                                                                       file.getName()}) );
                             
@@ -247,7 +249,7 @@ public final class FileResourceUtils
         if (!resourceContext.isCheckoutFilesEnabled())
         {
           IStatus status 
-            = StatusUtils.warningStatus( msg_.getMessage( "MSG_ERROR_FILE_CHECKOUT_DISABLED",
+            = StatusUtils.warningStatus( NLS.bind(EnvironmentMessages.MSG_ERROR_FILE_CHECKOUT_DISABLED,
                                                           new Object[]{ file.getParent().getFullPath().toString(),
                                                                         file.getName()}) );
           
@@ -346,15 +348,15 @@ public final class FileResourceUtils
   {    
     if (!absolutePath.isAbsolute())
     {
-      throw new CoreException(new Status(IStatus.ERROR, "ResourceUtils",0,msg_.getMessage("MSG_ERROR_PATH_NOT_ABSOLUTE",new Object[] {absolutePath.toString()}),null));
+      throw new CoreException(new Status(IStatus.ERROR, "ResourceUtils",0,NLS.bind(EnvironmentMessages.MSG_ERROR_PATH_NOT_ABSOLUTE,new Object[] {absolutePath.toString()}),null));
     }
     if (absolutePath.segmentCount() < 1)
     {
-      throw new CoreException(new Status(IStatus.ERROR,"ResourceUtils",0,msg_.getMessage("MSG_ERROR_PATH_EMPTY",new Object[] {absolutePath.toString()}),null));
+      throw new CoreException(new Status(IStatus.ERROR,"ResourceUtils",0,NLS.bind(EnvironmentMessages.MSG_ERROR_PATH_EMPTY,new Object[] {absolutePath.toString()}),null));
     }
     if (absolutePath.segmentCount() < 2)
     {
-      throw new CoreException(new Status(IStatus.ERROR,"ResourceUtils",0,msg_.getMessage("MSG_ERROR_PATH_NOT_FOLDER",new Object[] {absolutePath.toString()}),null));
+      throw new CoreException(new Status(IStatus.ERROR,"ResourceUtils",0,NLS.bind(EnvironmentMessages.MSG_ERROR_PATH_NOT_FOLDER,new Object[] {absolutePath.toString()}),null));
     }
     IContainer parent   = makeFolderPath(resourceContext, absolutePath.removeLastSegments(1), progressMonitor, statusHandler);
     String     fileName = absolutePath.lastSegment();
@@ -522,7 +524,7 @@ public final class FileResourceUtils
       {
         result = statusHandler.report(
                 StatusUtils.warningStatus(
-        	                      msg_.getMessage("MSG_ERROR_FOLDER_CREATION_DISABLED",
+                		NLS.bind(EnvironmentMessages.MSG_ERROR_FOLDER_CREATION_DISABLED,
         	                      new Object[]{ parent.getFullPath().toString(), folderName} ) ), 
                 getThreeStateFileOptions() );
         
@@ -550,7 +552,7 @@ public final class FileResourceUtils
         new Status( IStatus.ERROR, 
                     "ResourceUtils",
                     0, 
-					msg_.getMessage( "MSG_ERROR_RESOURCE_NOT_FOLDER",
+                    NLS.bind(EnvironmentMessages.MSG_ERROR_RESOURCE_NOT_FOLDER,
 					                 new Object[]{ parent.getFullPath().append(folderName).toString() }),
 			null ) );
     }
@@ -580,7 +582,7 @@ public final class FileResourceUtils
         if( !resourceContext.isOverwriteFilesEnabled() )   
         {
           result = statusHandler.report( 
-                StatusUtils.warningStatus( msg_.getMessage( "MSG_ERROR_FILE_OVERWRITE_DISABLED",
+                StatusUtils.warningStatus( NLS.bind(EnvironmentMessages.MSG_ERROR_FILE_OVERWRITE_DISABLED,
                                            new Object[] {parent.getFullPath().toString(),fileName}) ),					  		    
                 getThreeStateFileOptions() );
           
@@ -600,7 +602,7 @@ public final class FileResourceUtils
           if( !resourceContext.isCheckoutFilesEnabled() ) 
           {            
             result = statusHandler.report( 
-                         StatusUtils.errorStatus( msg_.getMessage( "MSG_ERROR_FILE_CHECKOUT_DISABLED",
+                         StatusUtils.errorStatus( NLS.bind(EnvironmentMessages.MSG_ERROR_FILE_CHECKOUT_DISABLED,
                                                   new Object[]{ parent.getFullPath().toString(),fileName} ) ), 
                          getThreeStateFileOptions() );
             
@@ -642,7 +644,7 @@ public final class FileResourceUtils
           new Status( IStatus.ERROR,
                       "ResourceUtils",
                       0, 
-				      msg_.getMessage( "MSG_ERROR_RESOURCE_NOT_FILE",
+                      NLS.bind(EnvironmentMessages.MSG_ERROR_RESOURCE_NOT_FILE,
 				                       new Object[] {parent.getFullPath().append(fileName)}),
 					  null ) );
       }

@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -41,8 +41,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   public WidgetDataEvents addControls( Composite parent, Listener statusListener)
   {
     String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId + ".plugin", this );
-    UIUtils      utils    = new UIUtils( msgUtils, pluginId );
+    UIUtils      utils    = new UIUtils( pluginId );
     
     PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId + "." +  INFOPOP_PWPR_PAGE );
   	
@@ -55,12 +54,14 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
     //  Create test service check box.
     Composite testGroup = utils.createComposite(clientComposite,1);
     
-    testService_ = utils.createCheckbox( testGroup, "CHECKBOX_TEST_WEBSERVICE",
-                                         "TOOLTIP_PWPR_CHECKBOX_TEST_SERVICE",
-                                         INFOPOP_PWPR_CHECKBOX_TEST_SERVICE );
+    testService_ = utils.createCheckbox( testGroup, ConsumptionUIMessages.CHECKBOX_TEST_WEBSERVICE,
+    									ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_TEST_SERVICE,
+                                        INFOPOP_PWPR_CHECKBOX_TEST_SERVICE );
     
     // Create monitor service check box.
-    monitorService = utils.createCheckbox(testGroup, "CHECKBOX_MONITOR_WEBSERVICE", "TOOLTIP_PWPR_CHECKBOX_MONITOR_SERVICE", INFOPOP_PWPR_CHECKBOX_MONITOR_SERVICE);
+    monitorService = utils.createCheckbox(testGroup, ConsumptionUIMessages.CHECKBOX_MONITOR_WEBSERVICE,
+    									ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_MONITOR_SERVICE,
+    									INFOPOP_PWPR_CHECKBOX_MONITOR_SERVICE);
 
     // Create the preferences controls.
     preferencesWidget_ = new PreferencesSelectionWidget();

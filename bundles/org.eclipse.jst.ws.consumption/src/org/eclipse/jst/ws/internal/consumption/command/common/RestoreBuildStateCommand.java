@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
@@ -25,7 +25,6 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 public class RestoreBuildStateCommand extends AbstractDataModelOperation
 {
 
-  private MessageUtils msgUtils_;
   private ValidationManager manager_;
   
   /**
@@ -33,8 +32,6 @@ public class RestoreBuildStateCommand extends AbstractDataModelOperation
    */
   public RestoreBuildStateCommand()
   {
-    String pluginId = "org.eclipse.jst.ws.consumption";
-    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
   }
 
   /**
@@ -42,7 +39,7 @@ public class RestoreBuildStateCommand extends AbstractDataModelOperation
    */
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    ProgressUtils.report( monitor, msgUtils_.getMessage("TASK_DESC_WEBSERVICE_RESTORE_BUILD"));
+    ProgressUtils.report( monitor, ConsumptionMessages.TASK_DESC_WEBSERVICE_RESTORE_BUILD);
 
     manager_.restoreAutoBuild();
 

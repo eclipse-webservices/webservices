@@ -12,9 +12,11 @@
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
 
 import java.util.Vector;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofMethodVisitor;
 
 
@@ -64,7 +66,7 @@ public class DetectNonJavaCharsBeanVisitorAction extends VisitorActionImpl
 	 
 	 // check if the bean starts with a lower case
 	 if ( Character.isLowerCase(beanName.charAt(0)))
-    	addMessage("WARN_BEAN_NAME_STARTS_WITH_LOWER_CASE", new String[]{beanName});  
+    	addMessage(ConsumptionMessages.WARN_BEAN_NAME_STARTS_WITH_LOWER_CASE, new String[]{beanName});  
 
 	
      //check if the name has an underscore, then next letter should be upper case
@@ -73,7 +75,7 @@ public class DetectNonJavaCharsBeanVisitorAction extends VisitorActionImpl
 	 while(underScoreIndex !=-1) {
 		tempName = tempName.substring(underScoreIndex+1);
 		if ( Character.isLowerCase(tempName.charAt(0))) {
-      		addMessage("MSG_WARN_METHOD_NAME_INVALID", new String[] { beanName });  
+      		addMessage(ConsumptionMessages.MSG_WARN_METHOD_NAME_INVALID, new String[] { beanName });  
       		break;
 			}
 		else
@@ -84,6 +86,6 @@ public class DetectNonJavaCharsBeanVisitorAction extends VisitorActionImpl
 	private void checkPackageName(String packageName, String beanName)
 		{
 			if (!packageName.equals(packageName.toLowerCase()))
-				addMessage("MSG_WARN_PACKAGE_NAME_HAS_UPPER_CASE", new String[] { packageName, beanName });
+				addMessage(ConsumptionMessages.MSG_WARN_PACKAGE_NAME_HAS_UPPER_CASE, new String[] { packageName, beanName });
 		}
  }

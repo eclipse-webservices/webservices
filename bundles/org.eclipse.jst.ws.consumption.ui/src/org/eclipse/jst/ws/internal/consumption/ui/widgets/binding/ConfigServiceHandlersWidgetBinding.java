@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.GenerateHandlerSkeletonCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.OpenJavaEditorCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ConfigServiceHandlersTableWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ServiceHandlersWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ServiceHandlersWidgetOutputCommand;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
@@ -43,12 +43,9 @@ public class ConfigServiceHandlersWidgetBinding implements CommandWidgetBinding 
    */
   public void registerWidgetMappings(WidgetRegistry widgetRegistry) {
 
-    String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils(pluginId_ + ".plugin", this);
-    
     widgetRegistry.add("ConfigServiceHandlersTableWidget", 
-        msgUtils.getMessage("PAGE_TITLE_SERVICE_HDLR_CONFIG"), 
-        msgUtils.getMessage("PAGE_DESC_SERVICE_HDLR_CONFIG"), 
+   		ConsumptionUIMessages.PAGE_TITLE_SERVICE_HDLR_CONFIG, 
+   		ConsumptionUIMessages.PAGE_DESC_SERVICE_HDLR_CONFIG, 
         new WidgetContributorFactory() {
 
       	public WidgetContributor create() {

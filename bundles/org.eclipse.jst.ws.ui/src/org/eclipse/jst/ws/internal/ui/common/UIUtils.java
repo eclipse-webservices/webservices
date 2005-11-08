@@ -22,17 +22,14 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 
 
 public class UIUtils 
 {
   String       infoPopid_;
-  MessageUtils msgUtils_;
   
-  public UIUtils( MessageUtils msgUtils, String infoPopid )
+  public UIUtils( String infoPopid )
   {
-    msgUtils_  = msgUtils;
     infoPopid_ = infoPopid;
   }
   
@@ -56,8 +53,8 @@ public class UIUtils
     Button button = new Button( parent, kind );
     
     tooltip = tooltip == null ? labelName : tooltip;
-    button.setText( msgUtils_.getMessage( labelName ) );
-    button.setToolTipText( msgUtils_.getMessage( tooltip ) );
+    button.setText( labelName );
+    button.setToolTipText( tooltip );
     
     if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( button, infoPopid_ + "." + infopop );
     
@@ -71,15 +68,15 @@ public class UIUtils
     if( labelName != null )
     {
       Label label = new Label( parent, SWT.WRAP);
-      label.setText( msgUtils_.getMessage( labelName ) );
-      label.setToolTipText( msgUtils_.getMessage( tooltip ) );
+      label.setText( labelName );
+      label.setToolTipText( tooltip );
     }
     
     Combo combo = new Combo( parent, style );
     GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
      
     combo.setLayoutData( griddata );
-    combo.setToolTipText( msgUtils_.getMessage(tooltip));
+    combo.setToolTipText( tooltip );
     
     if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( combo, infoPopid_ + "." + infopop );
     
@@ -93,15 +90,15 @@ public class UIUtils
     if( labelName != null )
     {
       Label label = new Label( parent, SWT.WRAP);
-      label.setText( msgUtils_.getMessage( labelName ) );
-      label.setToolTipText( msgUtils_.getMessage( tooltip ) );
+      label.setText(  labelName  );
+      label.setToolTipText(  tooltip );
     }
     
     Text text = new Text( parent, style );
     GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
     
     text.setLayoutData( griddata );
-    text.setToolTipText( msgUtils_.getMessage(tooltip));
+    text.setToolTipText( tooltip);
     
     if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( text, infoPopid_ + "." + infopop );
     
@@ -148,9 +145,9 @@ public class UIUtils
         
     tooltip = tooltip == null ? groupName : tooltip;
     newGroup.setLayout( gridlayout );
-    newGroup.setText( msgUtils_.getMessage( groupName ) );
+    newGroup.setText(  groupName  );
     newGroup.setLayoutData( griddata );
-    newGroup.setToolTipText( msgUtils_.getMessage( tooltip ));
+    newGroup.setToolTipText(  tooltip );
     
     if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp(newGroup, infoPopid_ + "." + infopop);
     
@@ -165,7 +162,7 @@ public class UIUtils
     Tree tree = new Tree( parent, style );
      
     tree.setLayoutData( createFillAll() );
-    tree.setToolTipText( msgUtils_.getMessage(tooltip));
+    tree.setToolTipText( tooltip);
     
     if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( tree, infoPopid_ + "." + infopop );
     
@@ -181,7 +178,7 @@ public class UIUtils
     Table table = new Table( parent, style );
      
     //table.setLayoutData( createFillAll() );
-    table.setToolTipText( msgUtils_.getMessage(tooltip));
+    table.setToolTipText( tooltip);
     
     if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( table, infoPopid_ + "." + infopop );
     

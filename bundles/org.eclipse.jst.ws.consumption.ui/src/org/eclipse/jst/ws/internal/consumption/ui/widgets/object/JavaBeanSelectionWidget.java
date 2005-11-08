@@ -29,6 +29,7 @@ import org.eclipse.jst.j2ee.webservice.wsdd.internal.impl.PortComponentImpl;
 import org.eclipse.jst.j2ee.webservice.wsdd.internal.impl.ServiceImplBeanImpl;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.JavaResourceFilter;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.jst.ws.internal.ui.dialog.DialogUtils;
 import org.eclipse.swt.SWT;
@@ -42,14 +43,12 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
 public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget
 {
-  private String             pluginId_ = "org.eclipse.jst.ws.consumption.ui";
   private IProject           serverProject_ = null;
   private String             serverComponentName_ = null;
   private Composite          parent_ = null;
@@ -74,19 +73,19 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
    
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
+	String       pluginId_ = "org.eclipse.jst.ws.consumption.ui";	  
     this.statusListener = statusListener;
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    UIUtils      uiUtils  = new UIUtils(msgUtils, pluginId_ ); 
+    UIUtils      uiUtils  = new UIUtils( pluginId_ ); 
     
     parent_ = parent;
     
     Composite group = uiUtils.createComposite( parent, 4 );
     
-    group.setToolTipText( msgUtils.getMessage("TOOLTIP_PBCL_PAGE") );
+    group.setToolTipText( ConsumptionUIMessages.TOOLTIP_PBCL_PAGE );
     PlatformUI.getWorkbench().getHelpSystem().setHelp( group, pluginId_ + "." + INFOPOP_PBCL_PAGE );
     
-    beanClassText_ = uiUtils.createText( group, "LABEL_BEAN_CLASS_NAME",
-                                         "TOOLTIP_PBCL_TEXT_BEAN_CLASS",
+    beanClassText_ = uiUtils.createText( group, ConsumptionUIMessages.LABEL_BEAN_CLASS_NAME,
+    		ConsumptionUIMessages.TOOLTIP_PBCL_TEXT_BEAN_CLASS,
                                          INFOPOP_PBCL_TEXT_BEAN_CLASS,
                                          SWT.SINGLE | SWT.BORDER);
     beanClassText_.addModifyListener(
@@ -99,8 +98,8 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
       }
     );
     
-    beanClassBrowseButton_ = uiUtils.createPushButton( group, "BUTTON_BROWSE_CLASSES",
-                                                       "TOOLTIP_PBCL_BUTTON_BEAN_CLASS_BROWSE",
+    beanClassBrowseButton_ = uiUtils.createPushButton( group, ConsumptionUIMessages.BUTTON_BROWSE_CLASSES,
+    		ConsumptionUIMessages.TOOLTIP_PBCL_BUTTON_BEAN_CLASS_BROWSE,
                                                        INFOPOP_PBCL_BUTTON_BEAN_CLASS_BROWSE );
     beanClassBrowseButton_.addSelectionListener( new SelectionAdapter()
                                                  {
@@ -110,8 +109,8 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
                                                    }
                                                  } );
     
-    beanResourceBrowseButton_ = uiUtils.createPushButton( group, "BUTTON_BROWSE_FILES",
-                                                          "TOOLTIP_PBCL_BUTTON_BEAN_RESOURCE_BROWSE",
+    beanResourceBrowseButton_ = uiUtils.createPushButton( group, ConsumptionUIMessages.BUTTON_BROWSE_FILES,
+    		ConsumptionUIMessages.TOOLTIP_PBCL_BUTTON_BEAN_RESOURCE_BROWSE,
                                                           INFOPOP_PBCL_BUTTON_BEAN_RESOURCE_BROWSE );
     beanResourceBrowseButton_.addSelectionListener( new SelectionAdapter()
                                                     {
@@ -265,8 +264,7 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
     String beanClassName = beanClassText_.getText().trim();
     if (beanClassName == null || beanClassName.length() <= 0)
     {
-      MessageUtils msgUtils = new MessageUtils(pluginId_ + ".plugin", this);
-      return StatusUtils.errorStatus( msgUtils.getMessage("PAGE_MSG_BEAN_CANNOT_BE_EMPTY") );
+      return StatusUtils.errorStatus(ConsumptionUIMessages.PAGE_MSG_BEAN_CANNOT_BE_EMPTY);
     }
     return Status.OK_STATUS;
   }

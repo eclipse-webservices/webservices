@@ -30,8 +30,8 @@ import org.eclipse.jst.j2ee.project.datamodel.properties.IFlexibleJavaProjectCre
 import org.eclipse.jst.j2ee.web.datamodel.properties.IWebComponentCreationDataModelProperties;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -58,10 +58,7 @@ public class CreateModuleCommand extends AbstractDataModelOperation
 	private IEnvironment env;
     private IProgressMonitor monitor_;
 	
-	private MessageUtils msgUtils;
-	
 	public CreateModuleCommand(){
-		msgUtils = new MessageUtils(WebServiceConsumptionPlugin.ID + ".plugin", this);
 	}
 	
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -97,7 +94,7 @@ public class CreateModuleCommand extends AbstractDataModelOperation
           }
         }
 		else {
-			return StatusUtils.errorStatus(msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{projectName, moduleName}) );
+			return StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_COMPONENT_CREATION, new String[]{projectName, moduleName}) );
 		}        
         
 		// create the component according to the component type specified
@@ -117,7 +114,7 @@ public class CreateModuleCommand extends AbstractDataModelOperation
 			break;
 
 		default:
-			return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{moduleName}) );			
+			return StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_COMPONENT_CREATION, new String[]{moduleName}) );			
 		}
 		
 	
@@ -127,7 +124,7 @@ public class CreateModuleCommand extends AbstractDataModelOperation
 	private IStatus checkDataReady(){
 		
 		if (projectName==null || serverFactoryId==null){
-			return StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_COMPONENT_CREATION", new String[]{projectName, moduleName}) );
+			return StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_COMPONENT_CREATION, new String[]{projectName, moduleName}) );
 		}
 		
 		return Status.OK_STATUS;
@@ -215,7 +212,7 @@ public class CreateModuleCommand extends AbstractDataModelOperation
 		}
 		catch (Exception e)
 		{
-			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_CREATE_EJB_COMPONENT", new String[]{projectName}), e);
+			status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_CREATE_EJB_COMPONENT, new String[]{projectName}), e);
 		}
 		return status;		
 	}
@@ -245,7 +242,7 @@ public class CreateModuleCommand extends AbstractDataModelOperation
 		}
 		catch (Exception e)
 		{
-			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_CREATE_APPCIENT_PROJET", new String[]{projectName}), e);
+			status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_CREATE_APPCLIENT_COMPONENT, new String[]{projectName}), e);
 		}
 		return status;		
 	}
@@ -289,7 +286,7 @@ public class CreateModuleCommand extends AbstractDataModelOperation
 		}
 		catch (Exception e)
 		{
-			status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_CREATE_FLEX_PROJET", new String[]{projectName}), e);
+			status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_CREATE_FLEX_PROJET, new String[]{projectName}), e);
 		}
 		return status;		
 	}

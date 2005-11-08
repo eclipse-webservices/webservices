@@ -12,8 +12,10 @@
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 
 import java.util.ArrayList;
+
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -27,7 +29,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 
 
@@ -37,7 +38,6 @@ import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 public class ServerRuntimePreferencePage extends PreferencePage implements IWorkbenchPreferencePage, Listener 
 {
 	private String pluginId_= "org.eclipse.jst.ws.consumption.ui";
-	private MessageUtils msgUtils_;
 	
 	/* CONTEXT_ID SRPF0001 for server preference on the server runtime preference page */
 	private String INFOPOP_SRPF_SERVER_PREF = pluginId_ + ".SRPF0001";
@@ -59,9 +59,7 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	 */
 	protected Control createContents(Composite parent) 
 	{
-	  
-	  msgUtils_ = new MessageUtils(pluginId_ + ".plugin", this);
-	  UIUtils uiUtils = new UIUtils(msgUtils_, pluginId_);
+	  UIUtils uiUtils = new UIUtils(pluginId_);
 	  
 	  Composite page = new Composite(parent, SWT.NONE);
 	  GridLayout gl = new GridLayout();
@@ -70,18 +68,18 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	  GridData gd = new GridData(GridData.VERTICAL_ALIGN_FILL | GridData.HORIZONTAL_ALIGN_FILL);
 	  page.setLayoutData(gd);
 	  
-	  server_ = uiUtils.createCombo(page,"LABEL_SERVERS_LIST",
-	  		                        "TOOLTIP_SRPF_COMBO_SERVER",
+	  server_ = uiUtils.createCombo(page,ConsumptionUIMessages.LABEL_SERVERS_LIST,
+			  ConsumptionUIMessages.TOOLTIP_SRPF_COMBO_SERVER,
 									INFOPOP_SRPF_SERVER_PREF,
 									SWT.SINGLE|SWT.BORDER|SWT.READ_ONLY);
 	  
-	  runtime_ = uiUtils.createCombo(page,"LABEL_RUNTIMES_LIST",
-	  		                         "TOOLTIP_SRPF_COMBO_RUNTIME",
+	  runtime_ = uiUtils.createCombo(page,ConsumptionUIMessages.LABEL_RUNTIMES_LIST,
+			  ConsumptionUIMessages.TOOLTIP_SRPF_COMBO_RUNTIME,
 									 INFOPOP_SRPF_RUNTIME_PREF,
 									 SWT.SINGLE|SWT.BORDER|SWT.READ_ONLY);
 	  
-	  j2eeVersion_ = uiUtils.createCombo(page,"LABEL_J2EE_VERSION",
-                                         "TOOLTIP_SRPF_COMBO_J2EE",
+	  j2eeVersion_ = uiUtils.createCombo(page,ConsumptionUIMessages.LABEL_J2EE_VERSION,
+			  ConsumptionUIMessages.TOOLTIP_SRPF_COMBO_J2EE,
 			                             INFOPOP_SRPF_J2EE_PREF,
 			                             SWT.SINGLE|SWT.BORDER|SWT.READ_ONLY);	  
 
@@ -306,7 +304,7 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
           if (label != null && label.length()>0)
             j2eeLabels[i] = label;
           else
-            j2eeLabels[i] = msgUtils_.getMessage("LABEL_NA");
+            j2eeLabels[i] = ConsumptionUIMessages.LABEL_NA;
         }
         j2eeVersion_.setItems(j2eeLabels);
         

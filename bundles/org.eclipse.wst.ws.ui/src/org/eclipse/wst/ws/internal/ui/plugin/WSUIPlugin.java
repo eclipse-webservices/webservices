@@ -16,9 +16,6 @@ import java.net.URL;
 import java.text.MessageFormat;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.wst.ws.internal.preferences.PersistentWSIAPContext;
-import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
-import org.eclipse.wst.ws.internal.preferences.PersistentWSISSBPContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 
@@ -31,9 +28,6 @@ import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 */
 public class WSUIPlugin extends AbstractUIPlugin
 {
-	// Copyright
-	public static final String copyright =
-		"(c) Copyright IBM Corporation 2000, 2002.";
 
  /**
  * The identifier of the descriptor of this plugin in plugin.xml.

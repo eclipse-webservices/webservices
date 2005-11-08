@@ -15,8 +15,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.datamodel.Model;
@@ -24,15 +24,14 @@ import org.eclipse.wst.ws.internal.datamodel.Model;
 
 public class DisableBuildCommand extends AbstractDataModelOperation 
 {
-  private MessageUtils msgUtils_;
+
   private ValidationManager manager_;
   /**
    * CTOR;
    */
   public DisableBuildCommand()
   {
-    String pluginId = "org.eclipse.jst.ws.consumption";
-    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
+
   }
 
   /**
@@ -42,7 +41,7 @@ public class DisableBuildCommand extends AbstractDataModelOperation
   {    
     IStatus status = Status.OK_STATUS;
 
-    ProgressUtils.report( monitor, msgUtils_.getMessage("TASK_DESC_WEBSERVICE_DISABLE_BUILD"));
+    ProgressUtils.report( monitor, ConsumptionMessages.TASK_DESC_WEBSERVICE_DISABLE_BUILD);
 
     if (manager_!=null) {
       manager_.disableAutoBuild();

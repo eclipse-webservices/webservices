@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import java.util.Vector;
+
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -18,24 +19,22 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 
 public class EJBTableViewer extends TableViewer
 {
-  private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
   private Vector beanNames;
   private Vector projectNames;
 
   public EJBTableViewer(Composite parent)
   {
     super(parent, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-    MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
-    String columnProperties[] = {msgUtils.getMessage("TABLE_TITLE_EJB_BEAN_NAMES"), msgUtils.getMessage("TABLE_TITLE_EJB_PROJECT_NAME")};
+    String columnProperties[] = {ConsumptionUIMessages.TABLE_TITLE_EJB_BEAN_NAMES, ConsumptionUIMessages.TABLE_TITLE_EJB_PROJECT_NAME};
     Table table = getTable();
     table.setHeaderVisible(true);
     table.setLinesVisible(true);

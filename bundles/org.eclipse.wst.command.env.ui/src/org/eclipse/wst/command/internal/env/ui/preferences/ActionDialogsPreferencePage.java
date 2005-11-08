@@ -12,6 +12,7 @@ package org.eclipse.wst.command.internal.env.ui.preferences;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
@@ -28,8 +29,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.context.PersistentActionDialogsContext;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.preferences.ActionDialogPreferenceType;
+import org.eclipse.wst.command.internal.env.ui.EnvironmentUIMessages;
 
 
 /**
@@ -80,8 +81,7 @@ public class ActionDialogsPreferencePage extends PreferencePage implements IWork
    */
   protected Control createContents(Composite superparent)
   {
-    MessageUtils msgUtils = new MessageUtils( "org.eclipse.wst.command.env.ui.environmentui", this );
-    
+   
     checkBoxes_ = new Hashtable();
     addOptionalDialogsCheckBoxes (superparent);
 	new Label(superparent, SWT.HORIZONTAL);
@@ -90,19 +90,19 @@ public class ActionDialogsPreferencePage extends PreferencePage implements IWork
     GridLayout layout = new GridLayout();
     layout.numColumns = 2;
     parent.setLayout( layout );
-    parent.setToolTipText(msgUtils.getMessage("TOOLTIP_PPAD_PAGE"));
+    parent.setToolTipText(EnvironmentUIMessages.TOOLTIP_PPAD_PAGE);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, INFOPOP_PPAD_PAGE );
 	
     showAll = new Button(parent, SWT.NONE);
-    showAll.setText(msgUtils.getMessage("BUTTON_SHOW_ALL_DIALOGS"));
+    showAll.setText(EnvironmentUIMessages.BUTTON_SHOW_ALL_DIALOGS);
     showAll.addListener(SWT.Selection, this);
-    showAll.setToolTipText(msgUtils.getMessage("TOOLTIP_PPAD_BUTTON_SHOW_ALL"));
+    showAll.setToolTipText(EnvironmentUIMessages.TOOLTIP_PPAD_BUTTON_SHOW_ALL);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(showAll, INFOPOP_PPAD_BUTTON_SHOW_ALL );
    
     hideAll = new Button(parent, SWT.NONE);
-    hideAll.setText(msgUtils.getMessage("BUTTON_HIDE_ALL_DIALOGS"));
+    hideAll.setText(EnvironmentUIMessages.BUTTON_HIDE_ALL_DIALOGS);
     hideAll.addListener ( SWT.Selection, this);
-    hideAll.setToolTipText(msgUtils.getMessage("TOOLTIP_PPAD_BUTTON_HIDE_ALL"));
+    hideAll.setToolTipText(EnvironmentUIMessages.TOOLTIP_PPAD_BUTTON_HIDE_ALL);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(hideAll, INFOPOP_PPAD_BUTTON_HIDE_ALL );
 
     initializeValues();

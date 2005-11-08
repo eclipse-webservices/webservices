@@ -12,7 +12,7 @@ package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
 
 import java.io.File;
-import java.util.ResourceBundle;
+
 import org.apache.axis.tools.ant.axis.AdminClientTask;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -35,8 +36,7 @@ public class AxisDeployCommand extends AbstractDataModelOperation
   protected static final String SERVICE_EXT = "/services/AdminService"; //$NON-NLS-1$
 
   private JavaWSDLParameter javaWSDLParam;
-  private ResourceBundle resource = ResourceBundle.getBundle("org.eclipse.jst.ws.axis.consumption.core.consumption"); //$NON-NLS-1$
-
+  
   /**
    * Constructor for AxisDeployCommand.
    * @param String description
@@ -52,20 +52,20 @@ public class AxisDeployCommand extends AbstractDataModelOperation
     IEnvironment environment = getEnvironment();
     if (javaWSDLParam == null)
     {     
-      return StatusUtils.errorStatus(getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
+      return StatusUtils.errorStatus(AxisConsumptionCoreMessages.MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET);
     }
 
     if (javaWSDLParam.getProjectURL() == null || javaWSDLParam.getProjectURL().equals(""))
     { //$NON-NLS-1$
-      return StatusUtils.errorStatus(getMessage("MSG_ERROR_PROJECT_URL_PARAM_NOT_SET"));
+      return StatusUtils.errorStatus(AxisConsumptionCoreMessages.MSG_ERROR_PROJECT_URL_PARAM_NOT_SET);
     }
 
     if (javaWSDLParam.getDeploymentFiles() == null || javaWSDLParam.getDeploymentFiles().length == 0)
     {
-      return StatusUtils.errorStatus(getMessage("MSG_ERROR_DEPLOY_FILE_PARAM_NOT_SET"));
+      return StatusUtils.errorStatus(AxisConsumptionCoreMessages.MSG_ERROR_DEPLOY_FILE_PARAM_NOT_SET);
     }
 
-    ProgressUtils.report(monitor, getMessage("MSG_AXIS_DEPLOY"));
+    ProgressUtils.report(monitor, AxisConsumptionCoreMessages.MSG_AXIS_DEPLOY);
 
     IStatus status = executeAntTask();
     if (status.getSeverity() == Status.ERROR)
@@ -139,19 +139,9 @@ public class AxisDeployCommand extends AbstractDataModelOperation
       
       IStatus[] childStatus = new Status[1];
       childStatus[0] = StatusUtils.errorStatus( message);
-      return StatusUtils.multiStatus(getMessage("MSG_ERROR_AXIS_DEPLOY"), childStatus);
+      return StatusUtils.multiStatus(AxisConsumptionCoreMessages.MSG_ERROR_AXIS_DEPLOY, childStatus);
     }
     return Status.OK_STATUS; 
-  }
-
-  /**
-   * Returns the message string identified by the given key from plugin.properties.
-   * 
-   * @return The String message.
-   */
-  public String getMessage(String key)
-  {
-    return resource.getString(key);
   }
 
   /**

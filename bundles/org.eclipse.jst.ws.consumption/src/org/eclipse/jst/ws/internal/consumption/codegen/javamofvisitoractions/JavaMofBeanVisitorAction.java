@@ -14,6 +14,7 @@ package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
@@ -21,6 +22,7 @@ import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.command.NullStatusMonitor;
 import org.eclipse.jst.ws.internal.command.StatusMonitor;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.codegen.Visitor;
 import org.eclipse.jst.ws.internal.consumption.codegen.VisitorAction;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofAttributeVisitor;
@@ -28,7 +30,6 @@ import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofFi
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofMethodVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanModelElementsFactory;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.selection.BooleanSelection;
 import org.eclipse.wst.common.environment.Choice;
@@ -45,13 +46,7 @@ import org.eclipse.wst.ws.internal.datamodel.Model;
 public class JavaMofBeanVisitorAction implements VisitorAction
 {
 
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
-
-  private MessageUtils msgUtils_;
   protected IEnvironment env_;
- // protected BeanElement fBeanElement;
-
   protected Visitor fVisitor;
 
   /*
@@ -92,8 +87,6 @@ public class JavaMofBeanVisitorAction implements VisitorAction
   {
     this.clientProject = clientProject;
     fMethodsSelected = methods;
-	String pluginId = "org.eclipse.jst.ws.consumption";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", this); 
 	env_ = env;
   }
 
@@ -108,8 +101,6 @@ public class JavaMofBeanVisitorAction implements VisitorAction
   {
     this.clientProject = clientProject;
     fModel = model;
-    String pluginId = "org.eclipse.jst.ws.consumption";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	env_ = env;
   }
 
@@ -122,8 +113,6 @@ public class JavaMofBeanVisitorAction implements VisitorAction
   {
     fParentElement = parentElement;
     this.clientProject = clientProject;
-    String pluginId = "org.eclipse.jst.ws.consumption";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	env_ = env;
   }
 
@@ -134,8 +123,8 @@ public class JavaMofBeanVisitorAction implements VisitorAction
   **/
   public IStatus visit (Object javaclass)
   {
-  	Choice OKChoice = new Choice('O', msgUtils_.getMessage("LABEL_OK"), msgUtils_.getMessage("DESCRIPTION_OK"));
-  	Choice CancelChoice = new Choice('C', msgUtils_.getMessage("LABEL_CANCEL"), msgUtils_.getMessage("DESCRIPTION_CANCEL"));
+  	Choice OKChoice = new Choice('O', ConsumptionMessages.LABEL_OK, ConsumptionMessages.DESCRIPTION_OK);
+  	Choice CancelChoice = new Choice('C', ConsumptionMessages.LABEL_CANCEL, ConsumptionMessages.DESCRIPTION_CANCEL);
   	IStatus status = Status.OK_STATUS;
     JavaClass javaClass = (JavaClass)javaclass;
     
@@ -154,7 +143,7 @@ public class JavaMofBeanVisitorAction implements VisitorAction
        while(e.hasMoreElements()){
           String name = (String)e.nextElement();
           if(name.equals(javaClass.getName())){
-          	status = StatusUtils.warningStatus( msgUtils_.getMessage("MSG_ERROR_JTS_CYCLIC_BEAN" ) );
+          	status = StatusUtils.warningStatus( ConsumptionMessages.MSG_ERROR_JTS_CYCLIC_BEAN );
             //getStatusMonitor().reportStatus(new Status(IStatus.WARNING,WebServiceConsumptionPlugin.ID,0,
             			//WebServiceConsumptionPlugin.getMessage( "%MSG_ERROR_JTS_CYCLIC_BEAN" ),null));
             return status;
@@ -183,7 +172,7 @@ public class JavaMofBeanVisitorAction implements VisitorAction
          if (result.getLabel().equals(CancelChoice.getLabel()))
          {
          	 //return an error status since the user canceled
-         	  return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
+         	  return StatusUtils.errorStatus(ConsumptionMessages.MSG_ERROR_SAMPLE_CREATION_CANCELED );
          }
          	
        }
@@ -209,7 +198,7 @@ public class JavaMofBeanVisitorAction implements VisitorAction
          if (result.getLabel().equals(CancelChoice.getLabel()))
          {
          	 //return an error status since the user canceled
-         	  return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
+         	  return StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_SAMPLE_CREATION_CANCELED );
          }
          	
        }
@@ -244,7 +233,7 @@ public class JavaMofBeanVisitorAction implements VisitorAction
         if (result.getLabel().equals(CancelChoice.getLabel()))
         {
         	 //return an error status since the user canceled
-        	  return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
+        	  return StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_SAMPLE_CREATION_CANCELED );
         }
         	
       }
@@ -256,7 +245,7 @@ public class JavaMofBeanVisitorAction implements VisitorAction
       //first no methods
       if (!methodVisitorAction.wereMethodsProcessed()){
         //this has to be done to insure the dialog is an error
-      	status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_JTS_NO_PROXY_METHODS_PROCESSED") );
+      	status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_JTS_NO_PROXY_METHODS_PROCESSED );
       	return status;
         //getStatusMonitor().reportStatus( new Status(IStatus.ERROR,WebServiceConsumptionPlugin.ID,0,
         //		WebServiceConsumptionPlugin.getMessage( "%MSG_ERROR_JTS_NO_PROXY_METHODS_PROCESSED" ),null));
@@ -264,10 +253,10 @@ public class JavaMofBeanVisitorAction implements VisitorAction
       //now methods omitted
       else if(methodVisitorAction.wereMethodsOmitted()){
         //The dialog is already a warning so we just need to set the overall message
-      	status = StatusUtils.warningStatus( msgUtils_.getMessage("MSG_WARN_JTS_PROXY_METHODS_OMITTED") );
+      	status = StatusUtils.warningStatus( ConsumptionMessages.MSG_WARN_JTS_PROXY_METHODS_OMITTED );
       	return status;
         //getStatusMonitor().reportStatus( new Status(IStatus.WARNING,WebServiceConsumptionPlugin.ID,0,
-        //		WebServiceConsumptionPlugin.getMessage( "%MSG_WARN_JTS_PROXY_METHODS_OMITTED" ),null));
+        //		ConsumptionMessages.MSG_WARN_JTS_PROXY_METHODS_OMITTED,null));
       }	
     }
     return status;
@@ -298,9 +287,9 @@ public class JavaMofBeanVisitorAction implements VisitorAction
      // first check for a method
      Iterator m=javaClass.getPublicMethods().iterator();
      if (!m.hasNext()){
-     	status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_JTS_PROXY_HAS_NO_METHODS") );
+     	status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_JTS_PROXY_HAS_NO_METHODS );
        //getStatusMonitor().reportStatus( new Status(IStatus.ERROR,WebServiceConsumptionPlugin.ID,0,
-       //			WebServiceConsumptionPlugin.getMessage( "%MSG_ERROR_JTS_PROXY_HAS_NO_METHODS" ),null));
+       //			ConsumptionMessages.MSG_ERROR_JTS_PROXY_HAS_NO_METHODS,null));
        return false;
      }	
      //now check for a default constructor
@@ -311,9 +300,9 @@ public class JavaMofBeanVisitorAction implements VisitorAction
           JavaParameter javaParameter[] = method.listParametersWithoutReturn();
           if (javaParameter.length > 0){
              //then we have no default constructor
-          	 status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_JTS_PROXY_HAS_NO_DEFAULT") );
+          	 status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_JTS_PROXY_HAS_NO_DEFAULT );
              //getStatusMonitor().reportStatus( new Status(IStatus.ERROR,WebServiceConsumptionPlugin.ID,0,
-             		//WebServiceConsumptionPlugin.getMessage( "%MSG_ERROR_JTS_PROXY_HAS_NO_DEFAULT" ),null));
+             		//ConsumptionMessages.MSG_ERROR_JTS_PROXY_HAS_NO_DEFAULT,null));
              return false;
           }
        }

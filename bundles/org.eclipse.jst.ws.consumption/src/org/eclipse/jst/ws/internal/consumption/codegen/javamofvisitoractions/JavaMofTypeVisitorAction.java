@@ -15,10 +15,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofBeanVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanModelElementsFactory;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -36,18 +36,12 @@ import org.eclipse.wst.ws.internal.datamodel.Element;
 public class JavaMofTypeVisitorAction extends JavaMofBeanVisitorAction
 {
 
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
-  private MessageUtils msgUtils_;
-
   /*
   *Constructor
   **/
   public JavaMofTypeVisitorAction(Element parentElement,String project, IEnvironment env)
   {
     super(parentElement,project, env);
-	String pluginId = "org.eclipse.jst.ws.consumption";
-	msgUtils_ = new MessageUtils(pluginId + ".plugin", this);    
   }
 
   /**
@@ -57,8 +51,8 @@ public class JavaMofTypeVisitorAction extends JavaMofBeanVisitorAction
   public IStatus visit (Object typeNavigator)
   {
   	 IStatus status = Status.OK_STATUS;
-   	 Choice OKChoice = new Choice('O', msgUtils_.getMessage("LABEL_OK"), msgUtils_.getMessage("DESCRIPTION_OK"));
-  	 Choice CancelChoice = new Choice('C', msgUtils_.getMessage("LABEL_CANCEL"), msgUtils_.getMessage("DESCRIPTION_CANCEL"));  	 
+   	 Choice OKChoice = new Choice('O', ConsumptionMessages.LABEL_OK, ConsumptionMessages.DESCRIPTION_OK);
+  	 Choice CancelChoice = new Choice('C', ConsumptionMessages.LABEL_CANCEL, ConsumptionMessages.DESCRIPTION_CANCEL);  	 
 
      //if bean
 	 JavaClass javaClass = null;
@@ -78,9 +72,9 @@ public class JavaMofTypeVisitorAction extends JavaMofBeanVisitorAction
      }	
      else{
 	    if(TypeFactory.isUnSupportedType((JavaHelpers)typeNavigator)){
-	      status = StatusUtils.warningStatus( msgUtils_.getMessage("MSG_WARN_JTS_UNSUPPORTED_TYPE") + ((JavaHelpers)typeNavigator).getJavaName() );	    	
+	      status = StatusUtils.warningStatus( ConsumptionMessages.MSG_WARN_JTS_UNSUPPORTED_TYPE + ((JavaHelpers)typeNavigator).getJavaName() );	    	
 	      //getStatusMonitor().reportStatus( new Status(IStatus.WARNING,WebServiceConsumptionPlugin.ID,0,
-              //WebServiceConsumptionPlugin.getMessage( "%MSG_WARN_JTS_UNSUPPORTED_TYPE" ) + ((JavaHelpers)typeNavigator).getJavaName(),null));
+              //ConsumptionMessages.MSG_WARN_JTS_UNSUPPORTED_TYPE + ((JavaHelpers)typeNavigator).getJavaName(),null));
 	      return status;
 	    }	
 	    
@@ -110,7 +104,7 @@ public class JavaMofTypeVisitorAction extends JavaMofBeanVisitorAction
        if (result.getLabel().equals(CancelChoice.getLabel()))
        {
        	 //return an error status since the user canceled
-       	  return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_SAMPLE_CREATION_CANCELED") );
+       	  return StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_SAMPLE_CREATION_CANCELED );
        }
        	
      }

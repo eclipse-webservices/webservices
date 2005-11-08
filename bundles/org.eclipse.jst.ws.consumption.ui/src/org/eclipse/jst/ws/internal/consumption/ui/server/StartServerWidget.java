@@ -22,7 +22,9 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartServerCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -35,7 +37,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.TransientResourceContext;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
@@ -54,7 +55,6 @@ public class StartServerWidget extends SimpleWidgetDataContributor
   private JobChangeAdapter    jobChangeAdapter_;
   private Text                serverStateText_;
   private ProgressMonitorPart progressMonitor_;
-  private MessageUtils        msgUtils_;
   private String              pluginId_;
   private Composite           buttonGroup_;
     
@@ -64,7 +64,6 @@ public class StartServerWidget extends SimpleWidgetDataContributor
   public StartServerWidget( IServer server )
   {
 	pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-	msgUtils_ = new MessageUtils( pluginId_ + ".plugin", this );
 		
     server_ = server;
     
@@ -92,36 +91,36 @@ public class StartServerWidget extends SimpleWidgetDataContributor
   {
 	statusListener_ = statusListener;
 	
-	UIUtils      uiUtils     = new UIUtils( msgUtils_, pluginId_ );
+	UIUtils      uiUtils     = new UIUtils( pluginId_ );
 	Composite    group       = uiUtils.createComposite( parent, 1 );
 	
 	Text         text1        = uiUtils.createText( group, null, null, null, SWT.READ_ONLY );
-	text1.setText( msgUtils_.getMessage( "LABEL_START_SERVER_TEXT1", new String[]{ server_.getName() } ));
+	text1.setText( NLS.bind(ConsumptionUIMessages.LABEL_START_SERVER_TEXT1, new String[]{ server_.getName() } ));
 	
 	Text         text2        = uiUtils.createText( group, null, null, null, SWT.READ_ONLY );
-	text2.setText( msgUtils_.getMessage( "LABEL_START_SERVER_TEXT2", new String[]{ server_.getName() } ));
+	text2.setText( NLS.bind(ConsumptionUIMessages.LABEL_START_SERVER_TEXT2, new String[]{ server_.getName() } ));
 	
 	Text         text3        = uiUtils.createText( group, null, null, null, SWT.READ_ONLY );
-	text3.setText( msgUtils_.getMessage( "LABEL_START_SERVER_TEXT3", new String[]{ server_.getName() } ));
+	text3.setText( NLS.bind(ConsumptionUIMessages.LABEL_START_SERVER_TEXT3, new String[]{ server_.getName() } ));
 	
 	Text         text4        = uiUtils.createText( group, null, null, null, SWT.READ_ONLY );
-	text4.setText( msgUtils_.getMessage( "LABEL_START_SERVER_TEXT4", new String[]{ server_.getName() } )); 
+	text4.setText( NLS.bind(ConsumptionUIMessages.LABEL_START_SERVER_TEXT4, new String[]{ server_.getName() } )); 
 	
 	buttonGroup_ = uiUtils.createComposite( group, 2,-1, 0 );
 	serverStateText_ = uiUtils.createText( buttonGroup_, null, null, null, SWT.READ_ONLY );
 	serverStateText_.setLayoutData( new GridData() );
 		
 	button_ = uiUtils.createPushButton( buttonGroup_, 
-	                                    "LABEL_START_SERVER_BUTTON",
-			                            "TOOLTIP_START_SERVER_BUTTON",
+			ConsumptionUIMessages.LABEL_START_SERVER_BUTTON,
+			ConsumptionUIMessages.TOOLTIP_START_SERVER_BUTTON,
 			                            INFOPOP_SSWP_SERVER_BUTTON );
 	
 	button_.addSelectionListener( new SelectionAdapter()
 			                      {
 									 public void widgetSelected( SelectionEvent evt )
 		                             {
-			                       	   serverStateText_.setText( getStateMessage( "TEXT_SERVER_STATUS", "TEXT_SERVER_STARTING" ) );
-			                    	   progressMonitor_.beginTask( getStateMessage( "TEXT_SERVER_MSG", "TEXT_SERVER_STARTING" ), IProgressMonitor.UNKNOWN );
+			                       	   serverStateText_.setText( getStateMessage( ConsumptionUIMessages.TEXT_SERVER_STATUS, ConsumptionUIMessages.TEXT_SERVER_STARTING ) );
+			                    	   progressMonitor_.beginTask( getStateMessage( ConsumptionUIMessages.TEXT_SERVER_MSG, ConsumptionUIMessages.TEXT_SERVER_STARTING ), IProgressMonitor.UNKNOWN );
 			                    	   button_.setEnabled( false );
 			                    	   buttonGroup_.pack();
 		                               startServerJob();
@@ -150,7 +149,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	  {
 		status_ = Status.OK_STATUS;
 		button_.setEnabled( false );
-		serverStateText_.setText( getStateMessage( "TEXT_SERVER_STATUS", "TEXT_SERVER_STARTED" ) );
+		serverStateText_.setText( getStateMessage( ConsumptionUIMessages.TEXT_SERVER_STATUS, ConsumptionUIMessages.TEXT_SERVER_STARTED ) );
 		
 	    break;	  
 	  }
@@ -159,8 +158,8 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	  {
 		status_ = StatusUtils.errorStatus( "" );
 		button_.setEnabled( false );  
-		serverStateText_.setText( getStateMessage( "TEXT_SERVER_STATUS", "TEXT_SERVER_STARTING" ) );
-		progressMonitor_.beginTask( getStateMessage( "TEXT_SERVER_MSG", "TEXT_SERVER_STARTING" ), IProgressMonitor.UNKNOWN );
+		serverStateText_.setText( getStateMessage( ConsumptionUIMessages.TEXT_SERVER_STATUS, ConsumptionUIMessages.TEXT_SERVER_STARTING ) );
+		progressMonitor_.beginTask( getStateMessage( ConsumptionUIMessages.TEXT_SERVER_MSG, ConsumptionUIMessages.TEXT_SERVER_STARTING ), IProgressMonitor.UNKNOWN );
 		
 		// The server is still starting so we need to reconnect to the job
 		// that is starting it.
@@ -172,7 +171,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	  {
 		status_ = StatusUtils.errorStatus( "" );
         button_.setEnabled( true );
-		serverStateText_.setText( getStateMessage( "TEXT_SERVER_STATUS", "TEXT_SERVER_STOPPED" ) );
+		serverStateText_.setText( getStateMessage( ConsumptionUIMessages.TEXT_SERVER_STATUS, ConsumptionUIMessages.TEXT_SERVER_STOPPED ) );
 		break;  
 	  }
 	};
@@ -183,7 +182,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
   
   private String getStateMessage( String mainKey, String subKey )
   {
-	return msgUtils_.getMessage( mainKey, new String[]{ msgUtils_.getMessage( subKey ) } );
+	return NLS.bind( mainKey, new String[]{ subKey } );
   }
   
   // Connect to an existing server thread otherwise start a new one.

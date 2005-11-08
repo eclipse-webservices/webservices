@@ -11,7 +11,7 @@ Export-Package: org.eclipse.wst.ws.internal.ui.wsrt,
  org.eclipse.wst.ws.internal.ui.preferences,
  org.eclipse.wst.ws.internal.ui.wsi.preferences,
  org.eclipse.wst.ws.internal.ui.wsi.properties,
- org.eclipse.wst.ws.ui
+ org.eclipse.wst.ws.internal.ui
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,

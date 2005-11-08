@@ -16,9 +16,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+
 import javax.wsdl.Definition;
 import javax.wsdl.Import;
 import javax.wsdl.xml.WSDLWriter;
+
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
@@ -26,9 +28,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -41,15 +44,14 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
  */
 public class CopyClientWSDLCommand extends AbstractDataModelOperation
 {
-  private String pluginId_ = "org.eclipse.jst.ws.axis.consumption.ui";
-  private MessageUtils msgUtils_;  
+  
   private String wsdlURL_;
   private String clientWSDLPathName_;
   private WebServicesParser wsParser_;
   
   public CopyClientWSDLCommand()
   {
-    msgUtils_ = new MessageUtils(pluginId_ + ".plugin", this);    
+   
   }
   
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
@@ -59,7 +61,7 @@ public class CopyClientWSDLCommand extends AbstractDataModelOperation
     Definition def = wsParser_.getWSDLDefinition(wsdlURL_);
     if(def==null)
     {
-      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WSDL_NO_DEFINITION",new String[]{wsdlURL_}));
+      status = StatusUtils.errorStatus( NLS.bind(AxisConsumptionUIMessages.MSG_ERROR_WSDL_NO_DEFINITION, new String[]{wsdlURL_}));
       env.getStatusHandler().reportError(status);
       return status;
     }
@@ -90,7 +92,7 @@ public class CopyClientWSDLCommand extends AbstractDataModelOperation
 							0,
 							wsdlPath.toString().lastIndexOf("/") + 1);	 //$NON-NLS-1$
 					if (isInvalidImportWSDL(importDef.getLocationURI())) {
-					    return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_IMPORT_WSDL",new String[]{importDef.getLocationURI()}));
+					    return StatusUtils.errorStatus( NLS.bind(AxisConsumptionUIMessages.MSG_ERROR_IMPORT_WSDL,new String[]{importDef.getLocationURI()}));
 					}
 					IPath newPath =
 						new Path(newPathString + importDef.getLocationURI());
@@ -102,7 +104,7 @@ public class CopyClientWSDLCommand extends AbstractDataModelOperation
 				}
 			}
 		} catch (Exception e) {
-		    return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WRITE_WSDL",new String[] { wsdlPath.toString() }), e);
+		    return StatusUtils.errorStatus( NLS.bind(AxisConsumptionUIMessages.MSG_ERROR_WRITE_WSDL,new String[] { wsdlPath.toString() }), e);
 		}
 		return Status.OK_STATUS;
 	}

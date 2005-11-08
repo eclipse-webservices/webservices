@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.consumption.datamodel.validate.ValidationManager;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -52,60 +52,23 @@ public class BUAxisDefaultingCommand extends AbstractDataModelOperation
   private String sampleServerTypeID_ = null;
   private IServer sampleExistingServer_ = null;
   
-  private MessageUtils msgUtils_;
-  
-	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
-	{
-		IEnvironment environment = getEnvironment();
+ 
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+  {
+	IEnvironment environment = getEnvironment();
     
-  	String       pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
-    
-//    if (serviceIds_.getServerInstanceId() != null) { // server exists
-//    	serviceExistingServer_ = ServerCore.findServer(serviceIds_.getServerInstanceId());
-//    }
-//    if (serviceExistingServer_ != null)
-//    {
-//      serviceServerTypeID_ = serviceExistingServer_.getServerType().getId();
-//    }
-//    else
-//    {
-//    	serviceServerTypeID_ = serviceIds_.getServerId();
-//      // server will be created in ServerDeployableConfigurationCommand
-//    }
-    
-    //javaWSDLParam
-    javaWSDLParam_ = new JavaWSDLParameter();
-     
-//    if (initialSelection_ == null) {
-//    	Status status = new SimpleStatus("BUAxisDefaultingCommand", //$NON-NLS-1$
-//				msgUtils_.getMessage("MSG_ERROR_INITIAL_SELECTION"), Status.ERROR);
-//		env.getStatusHandler().reportError(status);
-//		return status;
-//    }
+	//javaWSDLParam
+	javaWSDLParam_ = new JavaWSDLParameter();
     
 	if (javaBeanName_ == null) {
 		IStatus status = StatusUtils.errorStatus(
-				msgUtils_.getMessage("MSG_ERROR_CANNOT_NO_JAVA_BEAN"));
+				AxisCreationUIMessages.MSG_ERROR_CANNOT_NO_JAVA_BEAN);
 		environment.getStatusHandler().reportError(status);
 		return status;
 	}
-//    try {
-//		
-//		javaBeanName_ = getJavaBeanFromInitialSelection(environment);
-//		
-//	} catch (CoreException e) {
-//		Status status = new SimpleStatus("BUAxisDefaultingCommand", //$NON-NLS-1$
-//				msgUtils_.getMessage("MSG_ERROR_INITIAL_SELECTION") + " " //$NON-NLS-1$
-//				+e.getCause().toString(), Status.ERROR);
-//		environment.getStatusHandler().reportError(status);
-//		return status;
-//	}
     
     //parser
     parser_ = new WebServicesParserExt();
-    
-    
     
     //validationManager
     validationManager_ = new ValidationManager();

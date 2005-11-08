@@ -11,12 +11,13 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import java.util.Map;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -104,19 +105,18 @@ public class WSDLSelectionOutputCommand extends AbstractDataModelOperation
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     IEnvironment env = getEnvironment();
-    
-    MessageUtils msgUtils = new MessageUtils("org.eclipse.jst.ws.consumption.ui.plugin", this);    
+       
     if (wsdlURI != null && getWebServicesParser().getWSDLDefinition(wsdlURI) != null) {
       IStatus status = Status.OK_STATUS;     
       Map services = getWebServicesParser().getWSDLDefinition(wsdlURI).getServices();
       if (services.isEmpty()){
         if (testService==true){
             testService = false;
-            status = StatusUtils.warningStatus( msgUtils.getMessage("MSG_WARNING_NO_SERVICE_ELEMENT") );
+            status = StatusUtils.warningStatus( ConsumptionUIMessages.MSG_WARNING_NO_SERVICE_ELEMENT );
             try{
               env.getStatusHandler().report(status);
             }catch(Exception e){
-              status = StatusUtils.errorStatus( msgUtils.getMessage("MSG_WARNING_NO_SERVICE_ELEMENT") );
+              status = StatusUtils.errorStatus( ConsumptionUIMessages.MSG_WARNING_NO_SERVICE_ELEMENT );
             }
         }
       }    
@@ -124,7 +124,7 @@ public class WSDLSelectionOutputCommand extends AbstractDataModelOperation
   }
     else
     {
-      IStatus status = StatusUtils.errorStatus( msgUtils.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL") );
+      IStatus status = StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_SELECTION_MUST_BE_WSDL );
       env.getStatusHandler().reportError(status);
       return status;
     }

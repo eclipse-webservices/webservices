@@ -20,7 +20,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -32,16 +33,13 @@ import org.eclipse.wst.server.core.ServerUtil;
 
 public class AddModuleToServerCommand extends AbstractDataModelOperation
 {
-  private MessageUtils msgUtils_;
-	  
+  
   private String serverInstanceId;
-	private String project;
-	private String module;
+  private String project;
+  private String module;
 	
 	public AddModuleToServerCommand()
 	{
-	  String pluginId = "org.eclipse.jst.ws.consumption";
-	  msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
 	}
 	
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -53,7 +51,7 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	    IServer server = ServerCore.findServer(serverInstanceId);
 	    if (server == null)
 	    {
-	      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_INSTANCE_NOT_FOUND") );
+	      status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_INSTANCE_NOT_FOUND );
 	      env.getStatusHandler().reportError(status);
 	      return status;
 	    }
@@ -77,7 +75,7 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	    }
 	    } catch (CoreException e)
 	    {
-	      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_ADD_MODULE", new String[]{module}) );
+	      status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_ADD_MODULE, new String[]{module}) );
 	      env.getStatusHandler().reportError(status);
 	      return status;      
 	    } finally
@@ -90,7 +88,7 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	        }
 	      } catch (CoreException ce)
 	      {
-	        status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_ADD_MODULE", new String[] { module }) );
+	        status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_ADD_MODULE, new String[] { module }) );
 	        env.getStatusHandler().reportError(status);
 	        return status;
 	      }      

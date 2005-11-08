@@ -23,9 +23,6 @@ package org.eclipse.wst.command.internal.env.commandline;
 public final class FlagMessages
 {
 
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
-
   public static final String PARSER_ERROR_FLAG_NOT_FOUND = "PARSER_ERROR_FLAG_NOT_FOUND";
 
   public static final String PARSER_ERROR_AMBIGUOUS_FLAG = "PARSER_ERROR_AMBIGUOUS_FLAG";

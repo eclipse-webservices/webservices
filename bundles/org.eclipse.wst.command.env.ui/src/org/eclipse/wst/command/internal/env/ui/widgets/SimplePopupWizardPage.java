@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.context.PersistentActionDialogsContext;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.ui.EnvironmentUIMessages;
 
 
 
@@ -37,7 +37,6 @@ public class SimplePopupWizardPage extends SimpleWizardPage
   public void createControl( Composite parent ) 
   {
   	      Composite                      composite = new Composite( parent, SWT.NONE );
-  	      MessageUtils                   msgUtils  = new MessageUtils("org.eclipse.wst.command.env.ui.environmentui", this );
   	final PersistentActionDialogsContext context   = PersistentActionDialogsContext.getInstance();
   	
     GridLayout gridlayout   = new GridLayout();
@@ -54,11 +53,11 @@ public class SimplePopupWizardPage extends SimpleWizardPage
   	if( pageManager_.getCurrentPage() == null && context.showCheckbox(id_) )
   	{
       final  Button button  = new Button( composite, SWT.CHECK );
-      String label   = msgUtils.getMessage( "CHECKBOX_DO_NOT_SHOW_DIALOG_AGAIN" );
+      String label   = EnvironmentUIMessages.CHECKBOX_DO_NOT_SHOW_DIALOG_AGAIN;
       
       /*CONTEXT_ID TWP0001 for the show/hide check box*/
       String infopop =	"org.eclipse.wst.command.env.ui.TWP0001";
-      String tooltip = msgUtils.getMessage( "TOOLTIP_DO_NOT_SHOW_DIALOG_AGAIN" );
+      String tooltip = EnvironmentUIMessages.TOOLTIP_DO_NOT_SHOW_DIALOG_AGAIN;
       
       button.setText( label );
       button.setToolTipText( tooltip );

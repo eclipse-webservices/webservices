@@ -14,6 +14,7 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -26,7 +27,7 @@ import org.eclipse.jst.j2ee.webapplication.ServletMapping;
 import org.eclipse.jst.j2ee.webapplication.ServletType;
 import org.eclipse.jst.j2ee.webapplication.WebApp;
 import org.eclipse.jst.j2ee.webapplication.WebapplicationFactory;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -35,13 +36,10 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 
-	private MessageUtils msgUtils_;
 	private IProject serverProject;
 
   public UpdateWEBXMLCommand( )
   {
-    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-    msgUtils_ = new MessageUtils( pluginId + ".plugin", this );
   }
 
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
@@ -152,7 +150,7 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 		} catch (Exception e) {
 
 			return StatusUtils.errorStatus(
-					msgUtils_.getMessage("MSG_ERROR_UPDATE_WEB_XML"),
+					AxisCreationUIMessages.MSG_ERROR_UPDATE_WEB_XML,
 					e);
 		}
 		finally{

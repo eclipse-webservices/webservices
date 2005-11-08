@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -29,11 +30,12 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
@@ -57,8 +59,6 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
   };
   public static String PATH_TO_JARS_IN_PLUGIN = "lib/";
 
-  private MessageUtils msgUtils_;
-  private MessageUtils baseConMsgUtils_;
   private IProject project;
   private Boolean projectRestartRequired_ = Boolean.FALSE;
   
@@ -66,9 +66,6 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
    * Default CTOR;
    */
   public CopyAxisJarCommand( ) {
-    String pluginId = "org.eclipse.jst.ws.axis.consumption.ui";
-    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-    baseConMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.consumption.plugin", this );
   }
 
   /**
@@ -78,7 +75,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 	{
 		IEnvironment env = getEnvironment();
     IStatus status = Status.OK_STATUS;
-    ProgressUtils.report(monitor, msgUtils_.getMessage("PROGRESS_INFO_COPY_AXIS_CFG"));
+    ProgressUtils.report(monitor, AxisConsumptionUIMessages.PROGRESS_INFO_COPY_AXIS_CFG);
     
     ModuleCoreNature mn = ModuleCoreNature.getModuleCoreNature(project);
     if (mn!=null)
@@ -102,7 +99,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
  		 }
  		 else
  		 {
- 		   status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_WARN_NO_JAVA_NATURE"));	
+ 		   status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_WARN_NO_JAVA_NATURE);	
  		   env.getStatusHandler().reportError(status);
  		   return status;
  		 }
@@ -117,7 +114,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 //    IPath webModulePath = ResourceUtils.getWebModuleServerRoot(project).getFullPath();
 	IPath webModulePath = J2EEUtils.getWebContentPath( project );
     if (webModulePath == null) {
-      status = StatusUtils.errorStatus( baseConMsgUtils_.getMessage("MSG_ERROR_PROJECT_NOT_FOUND"));
+      status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_PROJECT_NOT_FOUND);
       env.getStatusHandler().reportError(status);
       return;
     }
@@ -135,7 +132,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
    */
   private void copyIFile(String source, IPath targetPath, String targetFile, IStatus status, IEnvironment env, IProgressMonitor monitor) {
     IPath target = targetPath.append(new Path(targetFile));
-    ProgressUtils.report(monitor, baseConMsgUtils_.getMessage("PROGRESS_INFO_COPYING_FILE"));
+    ProgressUtils.report(monitor,ConsumptionMessages.PROGRESS_INFO_COPYING_FILE);
 
     try {
       ResourceContext context = new TransientResourceContext();
@@ -154,7 +151,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
       }
     }
     catch (Exception e) {
-      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_FILECOPY"), e);
+      status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_ERROR_FILECOPY, e);
       env.getStatusHandler().reportError(status);
 
     }
@@ -196,7 +193,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
       oldClasspath = javaProject_.getRawClasspath();
     } catch (JavaModelException jme)
     {
-      status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), jme);
+      status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_ERROR_BAD_BUILDPATH, jme);
       // env.getStatusHandler().reportError(status);
       return status;
     }
@@ -244,7 +241,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
         }
       } catch (CoreException e)
       {
-        status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), e);
+        status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_ERROR_BAD_BUILDPATH, e);
         return status;
       }
 
@@ -256,7 +253,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
         javaProject_.setRawClasspath(newClasspath, monitor);
       } catch (JavaModelException e)
       {
-        status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_BAD_BUILDPATH"), e);
+        status = StatusUtils.errorStatus(AxisConsumptionUIMessages.MSG_ERROR_BAD_BUILDPATH, e);
         return status;
       }
     }
@@ -272,9 +269,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 			throws CoreException {
 			try {
 				if (pluginId != null) {
-					URL localURL =
-						Platform.asLocalURL(
-              BundleUtils.getURLFromBundle( pluginId, theJar ) );
+					URL localURL =	Platform.asLocalURL(BundleUtils.getURLFromBundle( pluginId, theJar ) );
 					return new Path(localURL.getFile());
 				} else {
 					return new Path(theJar);
@@ -285,7 +280,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 						IStatus.WARNING,
 						WebServiceAxisConsumptionUIPlugin.ID,
 						0,
-						msgUtils_.getMessage("MSG_BAD_AXIS_JAR_URL"),
+						AxisConsumptionUIMessages.MSG_ERROR_BAD_BUILDPATH,
 						e));
 			} catch (IOException e) {
 				throw new CoreException(
@@ -293,7 +288,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 						IStatus.WARNING,
 						WebServiceAxisConsumptionUIPlugin.ID,
 						0,
-						msgUtils_.getMessage("MSG_BAD_AXIS_JAR_URL"),
+						AxisConsumptionUIMessages.MSG_ERROR_BAD_BUILDPATH,
 						e));
 			}
 		}  

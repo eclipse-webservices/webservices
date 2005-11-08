@@ -27,7 +27,7 @@ import org.eclipse.jem.util.emf.workbench.nature.EMFNature;
 import org.eclipse.jem.workbench.utility.JemProjectUtilities;
 import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
@@ -94,7 +94,7 @@ public class JavaMofReflectionCommand extends AbstractDataModelOperation
   	IProject clientIProject = (IProject)ResourceUtils.findResource(clientProject);
   	processQName();
   	if(clientProject == null || qname == null)
-  	  return StatusUtils.warningStatus( WebServiceConsumptionPlugin.getMessage("%MSG_WARN_UNABLE_TO_FIND_PROXY") );
+  	  return StatusUtils.warningStatus( ConsumptionMessages.MSG_WARN_UNABLE_TO_FIND_PROXY );
   	
     try {
 		EMFNature nature = JemProjectUtilities.getJEM_EMF_Nature(clientIProject, true);

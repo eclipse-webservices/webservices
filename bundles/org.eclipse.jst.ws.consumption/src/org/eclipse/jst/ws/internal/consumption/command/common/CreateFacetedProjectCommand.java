@@ -24,12 +24,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.server.core.FacetUtil;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
-import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
@@ -53,15 +53,12 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
   
   private org.eclipse.wst.common.project.facet.core.runtime.IRuntime facetRuntime;
   
-  private MessageUtils msgUtils;
-  private IEnvironment env;
   private IProgressMonitor monitor_;
   
   
   public IStatus execute(IProgressMonitor monitor, IAdaptable info)
   {
     monitor_ = monitor;
-    this.env = getEnvironment();    
     IStatus status = Status.OK_STATUS;
     
     // check if data ready
@@ -112,7 +109,7 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
       } catch (CoreException ce)
       {
         System.out.println("Exception occurred when creating a faceted project.");
-        return StatusUtils.errorStatus(msgUtils.getMessage("MSG_ERROR_PROJECT_CREATION", new String[] { projectName }));
+        return StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }));
       }
     }
     else
@@ -127,8 +124,7 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
 
     if (projectName == null || serverFactoryId == null)
     {
-      return StatusUtils.errorStatus(msgUtils
-          .getMessage("MSG_ERROR_PROJECT_CREATION", new String[] {projectName}));
+      return StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] {projectName}));
     }
 
     return Status.OK_STATUS;

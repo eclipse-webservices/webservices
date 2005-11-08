@@ -13,12 +13,12 @@ package org.eclipse.wst.command.internal.env.ui.eclipse;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.wst.command.internal.env.core.EnvironmentCoreMessages;
 import org.eclipse.wst.command.internal.env.ui.dialog.MessageDialog;
 import org.eclipse.wst.command.internal.env.ui.dialog.StatusDialogConstants;
 import org.eclipse.wst.common.environment.Choice;
-import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.common.environment.IStatusHandler;
+import org.eclipse.wst.common.environment.StatusException;
 
 
 /**
@@ -27,7 +27,6 @@ import org.eclipse.wst.common.environment.IStatusHandler;
 public class EclipseStatusHandler implements IStatusHandler
 {
   private Shell        shell_;
-  private MessageUtils msg_;
   
   public EclipseStatusHandler()
   {
@@ -36,7 +35,6 @@ public class EclipseStatusHandler implements IStatusHandler
 
   public EclipseStatusHandler(Shell shell)
   {
-    msg_   = new MessageUtils( "org.eclipse.wst.command.internal.env.common.environment", this );
     shell_ = shell;
   }
   
@@ -48,7 +46,7 @@ public class EclipseStatusHandler implements IStatusHandler
     int result =
     MessageDialog.openMessage(
         shell_,
-        msg_.getMessage("TITLE_WARNING"),
+        EnvironmentCoreMessages.TITLE_WARNING,
 				null,
 				status,
 				choices);
@@ -98,7 +96,7 @@ public class EclipseStatusHandler implements IStatusHandler
     int userResponse =
       MessageDialog.openMessage(
         shell_,
-        msg_.getMessage("TITLE_WARNING"),
+        EnvironmentCoreMessages.TITLE_WARNING,
         null,
         status);
     return (userResponse == StatusDialogConstants.OK_ID);
@@ -108,7 +106,7 @@ public class EclipseStatusHandler implements IStatusHandler
   {
     MessageDialog.openMessage(
       shell_,
-      msg_.getMessage("TITLE_ERROR"),
+      EnvironmentCoreMessages.TITLE_ERROR,
       null,
       status);
     return false;
@@ -129,7 +127,7 @@ public class EclipseStatusHandler implements IStatusHandler
   {
     MessageDialog.openMessage(
         shell_,
-        msg_.getMessage("TITLE_INFO"),
+        EnvironmentCoreMessages.TITLE_INFO,
         null,
         status);
   }

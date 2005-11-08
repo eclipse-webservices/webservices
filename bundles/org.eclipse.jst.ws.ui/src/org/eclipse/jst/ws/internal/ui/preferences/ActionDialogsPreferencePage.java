@@ -28,6 +28,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
+import org.eclipse.wst.command.internal.env.ui.EnvironmentUIMessages;
 
 ;
 
@@ -62,19 +63,19 @@ public class ActionDialogsPreferencePage extends PreferencePage implements IWork
     GridLayout layout = new GridLayout();
     layout.numColumns = 2;
     parent.setLayout( layout );
-    parent.setToolTipText(getMessage("%TOOLTIP_PPAD_PAGE"));
+    parent.setToolTipText(EnvironmentUIMessages.TOOLTIP_PPAD_PAGE);
     helpSystem.setHelp(parent,INFOPOP_PPAD_PAGE);
 	
     showAll = new Button(parent, SWT.NONE);
-    showAll.setText(getMessage("%BUTTON_SHOW_ALL_DIALOGS"));
+    showAll.setText(EnvironmentUIMessages.BUTTON_SHOW_ALL_DIALOGS);
     showAll.addListener(SWT.Selection, this);
-    showAll.setToolTipText(getMessage("%TOOLTIP_PPAD_BUTTON_SHOW_ALL"));
+    showAll.setToolTipText(EnvironmentUIMessages.TOOLTIP_PPAD_BUTTON_SHOW_ALL);
     helpSystem.setHelp(showAll,INFOPOP_PPAD_BUTTON_SHOW_ALL);
    
     hideAll = new Button(parent, SWT.NONE);
-    hideAll.setText(getMessage("%BUTTON_HIDE_ALL_DIALOGS"));
+    hideAll.setText(EnvironmentUIMessages.BUTTON_HIDE_ALL_DIALOGS);
     hideAll.addListener ( SWT.Selection, this);
-    hideAll.setToolTipText(getMessage("%TOOLTIP_PPAD_BUTTON_HIDE_ALL"));
+    hideAll.setToolTipText(EnvironmentUIMessages.TOOLTIP_PPAD_BUTTON_HIDE_ALL);
     helpSystem.setHelp(hideAll,INFOPOP_PPAD_BUTTON_HIDE_ALL);
 
     initializeValues();

@@ -12,14 +12,17 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
 
 import java.io.File;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -28,17 +31,10 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 public class MoveJavaFilesTask extends AbstractDataModelOperation {
 
 	private JavaWSDLParameter javaWSDLParam_;
-	private MessageUtils msgUtils_;
-	private MessageUtils coreMsgUtils_;
 	private IProject serviceProject_;
     private String serviceServerTypeID_;    
 	
-	// rm private Model model_;
-
 	public MoveJavaFilesTask() {
-	    String pluginId = "org.eclipse.jst.ws.axis.creation.ui";
-	    msgUtils_ = new MessageUtils(pluginId + ".plugin", this);
-	    coreMsgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.core.consumption", this );
 	}	
 
 	/**
@@ -50,7 +46,7 @@ public class MoveJavaFilesTask extends AbstractDataModelOperation {
 	  IStatus status = Status.OK_STATUS;
 	  
 		if (javaWSDLParam_ == null) {
-		  status = StatusUtils.errorStatus(coreMsgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
+		  status = StatusUtils.errorStatus(AxisConsumptionCoreMessages.MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET);
 		  environment.getStatusHandler().reportError(status);
 		  return status;		  
 		}
@@ -67,7 +63,7 @@ public class MoveJavaFilesTask extends AbstractDataModelOperation {
 		//String projectURL = ResourceUtils.getEncodedWebProjectURL(project);
 		String projectURL = ServerUtils.getEncodedWebComponentURL(project, serviceServerTypeID_);
 		if (projectURL == null) {
-		    status = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_PROJECT_URL",new String[] {project.toString()}));
+		    status = StatusUtils.errorStatus(NLS.bind(AxisCreationUIMessages.MSG_ERROR_PROJECT_URL,new String[] {project.toString()}));
 		    environment.getStatusHandler().reportError(status);
 		    return status;		  
 
@@ -98,7 +94,7 @@ public class MoveJavaFilesTask extends AbstractDataModelOperation {
 				source.delete();
 			}
 		} catch (Exception e) {
-		  status = StatusUtils.errorStatus(msgUtils_.getMessage("MSG_ERROR_MOVE_RESOURCE",new String[]{e.getLocalizedMessage()}), e);
+		  status = StatusUtils.errorStatus(NLS.bind(AxisCreationUIMessages.MSG_ERROR_MOVE_RESOURCE,new String[]{e.getLocalizedMessage()}), e);
 		  environment.getStatusHandler().reportError(status);
 		  return status;		  
 		}

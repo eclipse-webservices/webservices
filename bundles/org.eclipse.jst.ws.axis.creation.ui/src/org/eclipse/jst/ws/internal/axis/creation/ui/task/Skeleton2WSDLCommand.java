@@ -16,11 +16,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
+
 import javax.wsdl.Binding;
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.Service;
 import javax.wsdl.extensions.soap.SOAPAddress;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -32,17 +34,19 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
+import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CopyWSDLCommand;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
-import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -58,10 +62,8 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
   private JavaWSDLParameter javaWSDLParam;
   private IProject serverProject;
   private String serviceServerTypeID_;  
-  private MessageUtils msgUtils_;
 
   public Skeleton2WSDLCommand( ) {
-	msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.creation.ui.plugin", this );
   }
 
   /**
@@ -70,18 +72,12 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
 		IEnvironment environment = getEnvironment();
-    if (!(environment instanceof EclipseEnvironment))
-    {
-      IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_NOT_IN_ECLIPSE_ENVIRONMENT", new String[] {"Skeleton2WSDLCommand"}));
-      environment.getStatusHandler().reportError(status);
-      return status;
-    }
-    if (javaWSDLParam == null)
-    {
-      IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET"));
-      environment.getStatusHandler().reportError(status);
-      return status;
-    }
+		if (javaWSDLParam == null)
+		{
+			IStatus status = StatusUtils.errorStatus(AxisConsumptionCoreMessages.MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET);
+			environment.getStatusHandler().reportError(status);
+			return status;
+		}
 
   // Read WSDL
   Definition definition = null;
@@ -122,14 +118,14 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
       }
     } 
     else {
-      IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WSDL_NO_DEFINITION", new String[] {wsdlURL}));
+      IStatus status = StatusUtils.errorStatus( NLS.bind(AxisConsumptionUIMessages.MSG_ERROR_WSDL_NO_DEFINITION, new String[] {wsdlURL}));
       environment.getStatusHandler().reportError(status);
       return status;
     }
 
     // Modify WSDL endpoint
     if (port == null) {
-      IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WSDL_NO_PORT", new String[] {wsdlURL}));
+      IStatus status = StatusUtils.errorStatus( NLS.bind(AxisConsumptionUIMessages.MSG_ERROR_WSDL_NO_PORT, new String[] {wsdlURL}));
       environment.getStatusHandler().reportError(status);
       return status;
     }
@@ -196,7 +192,7 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
      }
     } 
     catch (Exception e) {
-      IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WRITE_WSDL", new String[] { wsdlLocation }), e);
+      IStatus status = StatusUtils.errorStatus( NLS.bind(AxisConsumptionUIMessages.MSG_ERROR_WRITE_WSDL, new String[] { wsdlLocation }), e);
       environment.getStatusHandler().reportError(status);
       return status;
     }
@@ -221,7 +217,7 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
 //      String projectURL = ResourceUtils.getEncodedWebProjectURL(serverProject);
 	  String projectURL = ServerUtils.getEncodedWebComponentURL(serverProject, serviceServerTypeID_);
       if (projectURL == null)
-        return StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_PROJECT_URL", new String[] {serverProject.toString()}));
+        return StatusUtils.errorStatus( NLS.bind(AxisCreationUIMessages.MSG_ERROR_PROJECT_URL, new String[] {serverProject.toString()}));
       StringBuffer serviceURL = new StringBuffer(projectURL);
       serviceURL.append(SERVICE_EXT).append(port.getName());
       javaWSDLParam.setUrlLocation(serviceURL.toString());

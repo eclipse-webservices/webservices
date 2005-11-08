@@ -14,7 +14,7 @@ package org.eclipse.jst.ws.internal.common;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
-
+import org.eclipse.jst.ws.internal.WSPluginMessages;
 
 /**
 * This is a kind of {@link Filter} that accepts all objects,
@@ -22,9 +22,6 @@ import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 */
 public class AnyFilter implements Filter
 {
-
-  // Copyright
-  public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
 
   /**
   * Constructs a new <code>AnyFilter</code>.
@@ -39,7 +36,7 @@ public class AnyFilter implements Filter
   */
   public String getName ()
   {
-    return WebServicePlugin.getMessage("%ANY_FILTER_NAME");
+    return WSPluginMessages.ANY_FILTER_NAME;
   }
 
   /**
@@ -48,7 +45,7 @@ public class AnyFilter implements Filter
   */
   public String getDescription ()
   {
-    return WebServicePlugin.getMessage("%ANY_FILTER_DESC");
+    return WSPluginMessages.ANY_FILTER_DESC;
   }
 
   /**

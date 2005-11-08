@@ -12,6 +12,7 @@ package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
@@ -24,17 +25,18 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.core.common.Condition;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.ui.EnvironmentUIMessages;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.osgi.framework.Bundle;
 
@@ -178,8 +180,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
         
     if( wizardElement_ == null )
     {
-      MessageUtils msg = new MessageUtils( "org.eclipse.wst.command.env.ui.widgets.environment", this );
-      Status status = new Status( Status.ERROR, "id", 0, msg.getMessage( "MSG_ERROR_WIZARD_ID_NOT_FOUND", new String[]{ wizardId}) , null );
+      Status status = new Status( Status.ERROR, "id", 0, NLS.bind(EnvironmentUIMessages.MSG_ERROR_WIZARD_ID_NOT_FOUND, new String[]{ wizardId}) , null );
       throw new CoreException( status );
     }
   }

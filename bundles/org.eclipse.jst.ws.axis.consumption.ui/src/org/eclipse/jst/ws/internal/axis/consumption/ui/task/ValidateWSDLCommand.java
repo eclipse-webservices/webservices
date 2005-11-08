@@ -12,11 +12,13 @@
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
 import javax.wsdl.Definition;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -36,23 +38,21 @@ public class ValidateWSDLCommand extends AbstractDataModelOperation
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
 		IEnvironment environment = getEnvironment();
-	MessageUtils msgUtils_ = new MessageUtils( "org.eclipse.jst.ws.axis.consumption.ui.plugin", this );
-	
-    if (wsdlURI != null && wsdlURI.length() > 0)
-    {
-      Definition definition = webServicesParser.getWSDLDefinition(wsdlURI);
-      if (definition != null)
-      {
-        int numServices = definition.getServices().size();
-        if (numServices < 1)
-        {
-          IStatus status = StatusUtils.errorStatus( msgUtils_.getMessage("MSG_ERROR_WSDL_HAS_NO_SERVICE_ELEMENT", new Object[] {wsdlURI}), null);
-          environment.getStatusHandler().reportError(status);
-          return status;
-        }
-      }
-    }
-    return Status.OK_STATUS;
+		if (wsdlURI != null && wsdlURI.length() > 0)
+		{
+			Definition definition = webServicesParser.getWSDLDefinition(wsdlURI);
+			if (definition != null)
+			{
+				int numServices = definition.getServices().size();
+				if (numServices < 1)
+				{
+					IStatus status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_ERROR_WSDL_HAS_NO_SERVICE_ELEMENT, new Object[] {wsdlURI}), null);
+					environment.getStatusHandler().reportError(status);
+					return status;
+				}
+			}
+		}
+		return Status.OK_STATUS;
   }
 
   /**

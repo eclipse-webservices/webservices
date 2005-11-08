@@ -32,11 +32,13 @@ import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionConditionCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionTreeWidget;
 import org.eclipse.jst.ws.internal.ui.common.DialogResourceBrowser;
 import org.eclipse.jst.ws.internal.ui.common.FileExtensionFilter;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -50,7 +52,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -65,7 +66,6 @@ import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget, Runnable
 {
   private String              pluginId_;
-  private MessageUtils        msgUtils_;
   private FileExtensionFilter wsFilter_;
   private WebServicesParser webServicesParser;
 
@@ -94,7 +94,6 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   public WSDLSelectionWidget()
   {
     pluginId_ = "org.eclipse.jst.ws.consumption.ui";
-    msgUtils_ = new MessageUtils( pluginId_ + ".plugin", this );
     wsFilter_ = new FileExtensionFilter(new String[] {"wsdl", "wsil", "html"});
     webServicesParser = WSDLParserFactory.getWSDLParser();
     
@@ -120,23 +119,25 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
-    UIUtils uiUtils  = new UIUtils( msgUtils_, pluginId_ );
+    UIUtils uiUtils  = new UIUtils( pluginId_ );
     parent_          = parent;
     statusListener_  = statusListener;
 
-	  parent.setToolTipText( msgUtils_.getMessage( "TOOLTIP_PCON_PAGE" ) );
+	  parent.setToolTipText( ConsumptionUIMessages.TOOLTIP_PCON_PAGE );
 	  PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId_ + "." + INFOPOP_PCON_PAGE );
     
     Composite wsdlGroup = uiUtils.createComposite( parent, 2, 5, 0 );
     
     Label wsLabel = new Label( wsdlGroup, SWT.WRAP);
-    wsLabel.setText( msgUtils_.getMessage("LABEL_WS_SELECTION"));
+    wsLabel.setText( ConsumptionUIMessages.LABEL_WS_SELECTION);
     GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
     gd.horizontalSpan = 2;
     wsLabel.setLayoutData(gd);
-    wsLabel.setToolTipText( msgUtils_.getMessage("TOOLTIP_PCON_TEXT_WS") );
+    wsLabel.setToolTipText( ConsumptionUIMessages.TOOLTIP_PCON_TEXT_WS );
     
-    webServiceURI = uiUtils.createText( wsdlGroup, null, "TOOLTIP_PCON_TEXT_WS", INFOPOP_PCON_TEXT_WSDL, SWT.SINGLE | SWT.BORDER );
+    webServiceURI = uiUtils.createText( wsdlGroup, null, 
+    						ConsumptionUIMessages.TOOLTIP_PCON_TEXT_WS, 
+    						INFOPOP_PCON_TEXT_WSDL, SWT.SINGLE | SWT.BORDER );
     webServiceURI.addModifyListener(
       new ModifyListener()
       {
@@ -147,7 +148,9 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       });
 //    webServiceURI.addListener( SWT.Modify, statusListener );
 
-    wsBrowseButton_ = uiUtils.createPushButton( wsdlGroup, "BUTTON_BROWSE", "TOOLTIP_PCON_BUTTON_BROWSE_WS", INFOPOP_PCON_BUTTON_BROWSE_WSDL );
+    wsBrowseButton_ = uiUtils.createPushButton( wsdlGroup, ConsumptionUIMessages.BUTTON_BROWSE, 
+    								ConsumptionUIMessages.TOOLTIP_PCON_BUTTON_BROWSE_WS, 
+    								INFOPOP_PCON_BUTTON_BROWSE_WSDL );
     wsBrowseButton_.addSelectionListener(
       new SelectionListener()
       {
@@ -173,7 +176,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     validationSummaryText_.setEditable(false);
     GridData gd1 = new GridData(GridData.FILL_BOTH);
     validationSummaryText_.setLayoutData(gd1);
-    validationSummaryText_.setToolTipText( msgUtils_.getMessage("TOOLTIP_VALIDATE_TEXT_MESSAGE_SUMMARY") );
+    validationSummaryText_.setToolTipText( ConsumptionUIMessages.TOOLTIP_VALIDATE_TEXT_MESSAGE_SUMMARY );
     
     validationSummaryText2_ = new Text( parent, SWT.WRAP);
     validationSummaryText2_.setEditable(false);
@@ -184,13 +187,13 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   }
   
   private void setMessageSummary() {
-	  String validationMessageSummary = msgUtils_.getMessage("MESSAGE_VALIDATE_NO_WSDL");
+	  String validationMessageSummary = ConsumptionUIMessages.MESSAGE_VALIDATE_NO_WSDL;
 	  PersistentWSDLValidationContext wsdlValidationContext = WSPlugin.getInstance().getWSDLValidationContext();
 	  String validationSelection = wsdlValidationContext.getPersistentWSDLValidation();
 	  if (PersistentWSDLValidationContext.VALIDATE_REMOTE_WSDL.equals(validationSelection)) {
-		  validationMessageSummary = msgUtils_.getMessage("MESSAGE_VALIDATE_REMOTE_WSDL");
+		  validationMessageSummary = ConsumptionUIMessages.MESSAGE_VALIDATE_REMOTE_WSDL;
 	  } else if (PersistentWSDLValidationContext.VALIDATE_ALL_WSDL.equals(validationSelection)) {
-		  validationMessageSummary = msgUtils_.getMessage("MESSAGE_VALIDATE_ALL_WSDL");
+		  validationMessageSummary = ConsumptionUIMessages.MESSAGE_VALIDATE_ALL_WSDL;
 	  }
 	  validationSummaryText_.setText( validationMessageSummary );
 	  validationSummaryText2_.setText(" ");
@@ -251,24 +254,24 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     /*
      * Commenting out because we don't want to block fast typers from hitting Next/Finish 
     if (Timer.isRunning())
-      return new SimpleStatus("", msgUtils_.getMessage("PAGE_MSG_LOADING_WEB_SERVICE_URI"), Status.ERROR);
+      return new SimpleStatus("", ConsumptionUIMessages.PAGE_MSG_LOADING_WEB_SERVICE_URI, Status.ERROR);
     */
 	
     // Validate the String representation of the Web service URI
     // For example, is it pointing to an existing resource in the workspace?
     String wsPath  = webServiceURI.getText();
     if( wsPath == null || wsPath.length() <= 0 )
-      return StatusUtils.errorStatus( msgUtils_.getMessage("PAGE_MSG_INVALID_WEB_SERVICE_URI") );
+      return StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_INVALID_WEB_SERVICE_URI );
     else if( wsPath.indexOf(':') < 0 )
     {
       IResource res = ResourceUtils.findResource(wsPath);
       if( res == null ) {
     	  msgViewer_.clearInput();
-        return StatusUtils.errorStatus( msgUtils_.getMessage("PAGE_MSG_NO_SUCH_FILE", new Object[] {wsPath}) );
+        return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.PAGE_MSG_NO_SUCH_FILE, new Object[] {wsPath}) );
       }
       else if( res.getType() != IResource.FILE ) {
     	  msgViewer_.clearInput();
-        return StatusUtils.errorStatus( msgUtils_.getMessage("PAGE_MSG_INVALID_WEB_SERVICE_URI") );
+        return StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_INVALID_WEB_SERVICE_URI );
       }
     }
 
@@ -294,7 +297,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
           String wsdlURI = iFile2URI((IFile)ResourceUtils.findResource(wsPath));
           if (webServicesParser.getWSDLDefinition(wsdlURI) == null) {
         	  msgViewer_.clearInput();
-            return StatusUtils.errorStatus(msgUtils_.getMessage("PAGE_MSG_SELECTION_MUST_BE_WSDL") );
+            return StatusUtils.errorStatus(ConsumptionUIMessages.PAGE_MSG_SELECTION_MUST_BE_WSDL );
           }
         }
     }
@@ -337,7 +340,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 		  ValidateWSDLJob existingValidateWSDLJob = null;
 		  
 		  boolean startWSDLValidation = true;
-		  validationSummaryText_.setText( msgUtils_.getMessage("MESSAGE_VALIDATE_IN_PROGRESS") );
+		  validationSummaryText_.setText( ConsumptionUIMessages.MESSAGE_VALIDATE_IN_PROGRESS );
 		  validationSummaryText2_.setText(" ");
 		  if( jobs.length > 0 )
 		  {
@@ -376,15 +379,15 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   	
   	switch (messageSeverity) {
   	case IValidationMessage.SEV_ERROR:
-		validationSummaryText_.setText(msgUtils_.getMessage("ERROR_MESSAGES_IN_VALIDATION"));
-		validationSummaryText2_.setText(msgUtils_.getMessage("WARNING_IF_CONTINUE"));
+		validationSummaryText_.setText(ConsumptionUIMessages.ERROR_MESSAGES_IN_VALIDATION);
+		validationSummaryText2_.setText(ConsumptionUIMessages.WARNING_IF_CONTINUE);
 		break;
 	case IValidationMessage.SEV_WARNING:
-		validationSummaryText_.setText(msgUtils_.getMessage("WARNING_MESSAGES_IN_VALIDATION"));
-		validationSummaryText2_.setText(msgUtils_.getMessage("WARNING_IF_CONTINUE"));
+		validationSummaryText_.setText(ConsumptionUIMessages.WARNING_MESSAGES_IN_VALIDATION);
+		validationSummaryText2_.setText(ConsumptionUIMessages.WARNING_IF_CONTINUE);
 		break;
 	default:
-		validationSummaryText_.setText(msgUtils_.getMessage("VALIDATION_COMPLETED"));
+		validationSummaryText_.setText(ConsumptionUIMessages.VALIDATION_COMPLETED);
 		validationSummaryText2_.setText(" ");
 		break;
 	}

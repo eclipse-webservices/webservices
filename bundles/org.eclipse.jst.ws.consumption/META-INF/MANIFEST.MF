@@ -8,7 +8,7 @@ Bundle-ClassPath: wsc.jar,
 Bundle-Activator: org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.jst.ws.consumption,
+Export-Package: org.eclipse.jst.ws.internal.consumption,
  org.eclipse.jst.ws.internal.consumption.codegen,
  org.eclipse.jst.ws.internal.consumption.codegen.bean,
  org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions,

@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -23,7 +24,7 @@ import org.eclipse.jem.java.Method;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.selection.BooleanSelection;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -41,7 +42,6 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
   public static final String DEFAULT_WEB_MODULE_ROOT = "WebContent";
   public static final String DEFAULT_SAMPLE_WEB_PROJECT_EXT = "Sample";
 
-  private MessageUtils msgUtils;
   public static String SAMPLE_DIR = "sample";
   
   private String clientProject;
@@ -65,8 +65,7 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
   */
   public WebServiceClientTestArrivalCommand ()
   {
-  	String pluginId = "org.eclipse.jst.ws.consumption.ui";
-	msgUtils = new MessageUtils(pluginId + ".plugin", this);  	
+
   }
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -93,7 +92,7 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
     */
     if(proxyBean == null){
       IStatusHandler sHandler = env.getStatusHandler();
-      IStatus errorStatus = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_JTS_PROXY_NOT_COMPILED") );
+      IStatus errorStatus = StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_JTS_PROXY_NOT_COMPILED );
       sHandler.reportError(errorStatus);
       return errorStatus;
       
@@ -113,7 +112,7 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
       	return mofStatus;
     }catch(Exception exc){
     	IStatusHandler sHandler = env.getStatusHandler();
-        IStatus errorStatus = StatusUtils.errorStatus( msgUtils.getMessage("MSG_ERROR_JTS_PROXY_NOT_COMPILED") );
+        IStatus errorStatus = StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_JTS_PROXY_NOT_COMPILED );
         sHandler.reportError(errorStatus);
         return errorStatus;
     }  

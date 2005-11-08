@@ -12,7 +12,6 @@
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
@@ -34,7 +33,6 @@ import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
-import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 import org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager;
@@ -419,8 +417,8 @@ public class WebServiceRuntimeExtensionUtils2
   
   public static LabelsAndIds getServiceTypeLabels()
   {
-    String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId + ".plugin", registry );
+    String       pluginId = "org.eclipse.jst.ws.internal.consumption.ui";
+    MessageUtils msgUtils = new MessageUtils( pluginId + ".ConsumptionUI", registry );
     
     LabelsAndIds labelIds = new LabelsAndIds();
     Iterator     iterator = registry.webServiceTypesList_.iterator();
