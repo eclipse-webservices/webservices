@@ -3,3 +3,4 @@ build.xml
 temp.folder
 wsc-ui.jar
 @dot
+src.zip
