@@ -8,17 +8,18 @@
  * Contributors:
  *   IBM - Initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.wsi.ui.internal;
+package org.eclipse.wst.wsi.internal.core.log;
 
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.wst.internet.monitor.core.internal.provisional.Request;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.ToolInfo;
 import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
@@ -28,6 +29,7 @@ import org.eclipse.wst.wsi.internal.core.log.Log;
 import org.eclipse.wst.wsi.internal.core.log.LogWriter;
 import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
 import org.eclipse.wst.wsi.internal.core.log.MimeParts;
+import org.eclipse.wst.wsi.internal.core.log.RequestHandler;
 import org.eclipse.wst.wsi.internal.core.log.impl.LogImpl;
 import org.eclipse.wst.wsi.internal.core.log.impl.LogWriterImpl;
 import org.eclipse.wst.wsi.internal.core.log.impl.MessageEntryImpl;
@@ -39,8 +41,8 @@ import org.eclipse.wst.wsi.internal.core.monitor.config.impl.ManInTheMiddleImpl;
 import org.eclipse.wst.wsi.internal.core.util.Utils;
 
 /**
- * Given a list of RequestResponses from a TCPIP Monitor, 
- * this class builds a WS-I compliant Message Log file.
+ * Given a list of RequestHandlers, this class builds a 
+ * WS-I compliant Message Log file.
  * 
  * @author David Lauzon, IBM
  */
@@ -57,11 +59,6 @@ public class LogBuilder
    * IDs to uniquely identify each and every message within the log file.
    */
   protected int id = 1;
-
-  /**
-   * The list of RequestResponces from a TCPIP Monitor used to generate the log file.
-   */
-  protected Request[] requestResponses;
 
   /**
    * The actual log object.
@@ -101,17 +98,15 @@ public class LogBuilder
    * @param requestResponses: a list of messages in the form of request-response pairs.
    * @return a log based on a list of request-response pairs.
    */
-  public Log buildLog(Request[] requestResponses)
+  public Log buildLog(List requestResponses)
   {
-    this.requestResponses = requestResponses;
-
     log = new LogImpl();
     logMonitorInformation();
 
     // log the messages
-    for (int i=0; i<requestResponses.length; i++)
+    for (Iterator i = requestResponses.iterator(); i.hasNext();)
     {
-      Request rr = requestResponses[i];
+      RequestHandler rr = (RequestHandler)i.next();
       if ((rr != null) && (!omitRequestResponse(rr)))
       {
         logRequestResponse(rr);
@@ -131,15 +126,15 @@ public class LogBuilder
    * Log the request-response pair.
    *@param rr: a request-response pair.
    */
-  protected void logRequestResponse(Request rr)
+  protected void logRequestResponse(RequestHandler rr)
   {
     if (rr != null)
     {
-      String requestHeader = new String(rr.getRequest(Request.TRANSPORT));
-      String responseHeader = new String(rr.getResponse(Request.TRANSPORT));
+      String requestHeader = new String(rr.getRequestHeader());
+      String responseHeader = new String(rr.getResponseHeader());
       
-      byte[] unchunkedRequestBody = rr.getRequest(Request.CONTENT);
-      byte[] unchunkedResponseBody = rr.getResponse(Request.CONTENT);
+      byte[] unchunkedRequestBody = rr.getRequestContent();
+      byte[] unchunkedResponseBody = rr.getResponseContent();
  
       long timestamp = rr.getDate().getTime();
       String localHostAndPort = "localhost:" + rr.getLocalPort();
@@ -315,12 +310,12 @@ public class LogBuilder
    * @param rr: a request-response pair.
    * @return true if the request-response pair should be omitted from the log.
    */
-  private boolean omitRequestResponse(Request rr) 
+  private boolean omitRequestResponse(RequestHandler rr) 
   {
     boolean omit = false;
     if (rr != null)
     {
-      String request = rr.getRequest(Request.TRANSPORT).toString();
+      String request = rr.getRequestHeader().toString();
       if ((request != null) &&
           ((request.startsWith("CONNECT")) ||
            (request.startsWith("TRACE")) || 

@@ -9,7 +9,6 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.wst.wsi.ui.internal,
  org.eclipse.wst.wsi.ui.internal.actions,
  org.eclipse.wst.wsi.ui.internal.actions.actionDelegates,
- org.eclipse.wst.wsi.ui.internal.actions.icons,
  org.eclipse.wst.wsi.ui.internal.wizards
 Require-Bundle: org.eclipse.jface.text,
  org.eclipse.core.resources,

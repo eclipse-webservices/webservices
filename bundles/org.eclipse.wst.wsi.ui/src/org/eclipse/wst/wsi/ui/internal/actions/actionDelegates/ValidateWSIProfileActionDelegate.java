@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.ui.internal.actions.actionDelegates;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -25,7 +26,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.wst.internet.monitor.core.internal.provisional.Request;
 import org.eclipse.wst.internet.monitor.ui.internal.provisional.MonitorUICore;
-import org.eclipse.wst.wsi.ui.internal.LogBuilder;
+import org.eclipse.wst.wsi.internal.core.log.LogBuilder;
+import org.eclipse.wst.wsi.internal.core.log.RequestHandler;
 import org.eclipse.wst.wsi.ui.internal.Messages;
 import org.eclipse.wst.wsi.ui.internal.wizards.ValidationWizard;
 import org.eclipse.wst.wsi.ui.internal.WSIValidator;
@@ -157,7 +159,7 @@ public class ValidateWSIProfileActionDelegate implements IViewActionDelegate
 
           IFile file = validateWizard.getFile();
           LogBuilder builder = new LogBuilder(file);
-          Log log = builder.buildLog(requestResponses);
+          Log log = builder.buildLog(getRequestHandlers(requestResponses));
 
           builder.writeLog(log);
           file.refreshLocal(1, progressMonitor);
@@ -190,6 +192,19 @@ public class ValidateWSIProfileActionDelegate implements IViewActionDelegate
     {
       e.printStackTrace();
     }
+  }
+
+  private List getRequestHandlers(Request[] requestResponses) 
+  {
+	List requestHandlers = new ArrayList();
+	int size = requestResponses.length;
+	for (int i = 0; i<size; i++)
+	{
+	  Request request = requestResponses[i];
+	  RequestHandler handler = new RequestHandlerImpl(request);
+	  requestHandlers.add(handler);
+	}
+	return requestHandlers;
   }
 
   /**
