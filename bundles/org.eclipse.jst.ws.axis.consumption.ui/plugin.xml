@@ -21,5 +21,54 @@
              insertBeforeCommandId="org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand"
              class="org.eclipse.jst.ws.internal.axis.consumption.ui.wsrt.AxisClientConfigWidgetFactory"/>
     </extension> 
+          <extension
+           point="org.eclipse.wst.command.env.antDataMapping">
+        <map
+              key="ClientProject"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
+              property="ClientProject"
+              transform="org.eclipse.jst.ws.internal.common.String2IProjectTransformer"/>
+        <map
+              key="WsdlURL"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
+              property="WsdlURL"/>
+        <map
+              key="ClientServer"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
+              property="ClientServer"/>
+        <map
+              key="GenerateProxy"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
+              property="GenerateProxy"/>      
+        <map
+              key="CustomizeClientMappings"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
+              property="CustomizeClientMappings"/>                    
+             
+ 		<map
+              key="IsClientScenario"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
+              property="IsClientScenario"/>
+ 		<map
+              key="Mappings"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
+ 		<map
+              key="Mappings"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.DefaultsForClientJavaWSDLCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
+ 		<map
+              key="Mappings"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
+ 		<map
+              key="Mappings"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
 
+  </extension> 
 </plugin>

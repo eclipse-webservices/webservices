@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<project default="main" basedir=".">
+
+<echo message="pulling in property file"/>
+<property file="test.properties"/>
+
+<echo message="calling the ant task class"/>
+ <target name="main" >
+  	 <wsgen/>
+  </target>
+  
+</project>

@@ -40,6 +40,8 @@ public class JavaWSDLParameter {
 	// The input location of the WSDL file
 	private String urlLocation = null; // The URL location of the web service
 	private Hashtable methods = null; // The array of method names
+	private String methodString_ = ""; //$NON-NLS-1$
+	 //The string representation of the method array
 	private String style = null;
 	// The style (RPC | DOCUMENT | WRAPPED) attribute for the generated WSDL
 	private String use = null;
@@ -124,23 +126,33 @@ public class JavaWSDLParameter {
 	 * @return String
 	 */
 	public String getMethodString() {
-		String methodString = ""; //$NON-NLS-1$
-		Enumeration e = methods.keys();
- 		for (int i=0; e.hasMoreElements(); i++)
-    	{
-
-			String signature = (String) e.nextElement();
-			if (((Boolean) methods.get(signature)).booleanValue()){
-							int index = signature.indexOf('(');
-							String name = signature.substring(0, index);
-							methodString += name;
-			}
-	    	if (i != methods.size() -1) // this is not the last array item	
-			{
-				methodString += ",";
+		if (methodString_.equals(""))
+		{		
+			Enumeration e = methods.keys();
+	 		for (int i=0; e.hasMoreElements(); i++)
+	    	{
+	
+				String signature = (String) e.nextElement();
+				if (((Boolean) methods.get(signature)).booleanValue()){
+								int index = signature.indexOf('(');
+								String name = signature.substring(0, index);
+								methodString_ += name;
+				}
+		    	if (i != methods.size() -1) // this is not the last array item	
+				{
+					methodString_ += ",";
+				}
 			}
 		}
-		return methodString;
+		return methodString_;
+	}
+	
+	/**
+	 * Sets a comma separated string of methods	 *
+	 */
+	public void setMethodString(String methods)
+	{
+		methodString_ = methods;
 	}
 
 	/**

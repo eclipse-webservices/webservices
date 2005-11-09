@@ -7,6 +7,7 @@ Bundle-Activator: org.eclipse.jst.ws.internal.creation.ui.plugin.WebServiceCreat
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
 Export-Package: org.eclipse.jst.ws.internal.creation.ui,
+ org.eclipse.jst.ws.internal.creation.ui.ant,
  org.eclipse.jst.ws.internal.creation.ui.extension,
  org.eclipse.jst.ws.internal.creation.ui.plugin,
  org.eclipse.jst.ws.internal.creation.ui.preferences,

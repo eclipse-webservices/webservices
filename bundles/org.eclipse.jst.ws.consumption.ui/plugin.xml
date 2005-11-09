@@ -709,6 +709,164 @@
              id="StartClientServer"
              insertBeforeCommandId="org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientRunCommand"
              class="org.eclipse.jst.ws.internal.consumption.ui.server.StartClientWidgetFactory"/>
-    </extension> 
-    	
+    </extension>
+    
+    <extension point="org.eclipse.wst.command.env.antScenario">
+        <antScenario
+            class="org.eclipse.jst.ws.internal.consumption.ui.ant.AntClientRootCommandFragment"
+            scenarioType="client"/>
+     </extension>
+     
+     <extension
+           point="org.eclipse.wst.command.env.antDataMapping">
+        <map
+              key="InitialSelection"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand"
+              property="InitialInitialSelection"
+              transform="org.eclipse.wst.command.env.ant.String2SelectionTransformer"/>
+        <map
+              key="InitialSelection"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionWidgetDefaultingCommand"
+              property="InitialSelection"
+              transform="org.eclipse.wst.command.env.ant.String2SelectionTransformer"/>
+
+        <map
+              key="Client.RuntimeId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand"
+              property="ClientTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+
+        <map
+              key="Client.ServerId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand"
+              property="ClientTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+
+        <map
+              key="Client.TypeId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand"
+              property="ClientTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+        <map
+              key="TestService"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand"
+              property="TestService"/>
+
+        <map
+              key="MonitorService"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand"
+              property="MonitorService"/>              
+
+        <map
+              key="Client.RuntimeId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand"
+              property="ClientTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+        <map
+              key="Client.ServerId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand"
+              property="ClientTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>     
+        <map
+              key="Client.TypeId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand"
+              property="ClientTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>        
+        <map
+              key="ClientProjectName"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand"
+              property="ClientProjectName"/>  
+        <map
+              key="ClientEarProjectName"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand"
+              property="ClientEarProjectName"/>         
+        <map
+              key="ClientComponentType"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand"
+              property="ClientComponentType"/>
+        <map
+              key="ClientNeedEAR"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand"
+              property="ClientNeedEAR"/>  
+        <map
+              key="Client.RuntimeId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionFragment"
+              property="ClientTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>                
+        <map
+              key="Client.ServerId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionFragment"
+              property="ClientTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>                
+        <map
+              key="Client.TypeId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionFragment"
+              property="ClientTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>                
+        <map
+              key="TestFacility"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestDelegateCommand"
+              property="TestFacility"
+              transform="org.eclipse.jst.ws.internal.common.String2TestFacilityListTransformer"/>                
+		<map
+              key="Folder"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestDelegateCommand"
+              property="Folder"/>     
+		<map
+              key="JspFolder"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestDelegateCommand"
+              property="JspFolder"/>           
+		<map
+              key="RunClientTest"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestDelegateCommand"
+              property="RunClientTest"/>           
+		<map
+              key="WsdlURI"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionOutputCommand"
+              property="WsdlURI"/>           
+		<map
+              key="ComponentName"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionOutputCommand"
+              property="ComponentName"/>           
+		<map
+              key="Project"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionOutputCommand"
+              property="Project"
+              transform="org.eclipse.jst.ws.internal.common.String2IProjectTransformer"/> 
+		<map
+              key="TestService"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
+              property="TestService"/>  
+        <map
+              key="TestID"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
+              property="TestID"/>  
+        <map
+              key="IsTestWidget"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
+              property="IsTestWidget"/>  
+
+        <map
+              key="WsRefsToHandlers"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientHandlersWidgetOutputCommand"
+              property="HandlersTable"
+              transform="org.eclipse.wst.command.env.ant.String2HandlerTableTransformer"/>  
+
+		<map
+              key="SourceOutputLocation"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.command.GenerateHandlerSkeletonCommand"
+              property="OutputLocation"
+              transform="org.eclipse.wst.command.env.ant.String2PathTransformer"/>  
+
+		<map
+              key="HandlerClassNames"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.command.GenerateHandlerSkeletonCommand"
+              property="HandlerNames"
+              transform="org.eclipse.wst.command.env.ant.String2HandlerArrayTransformer"/>  
+
+		<map
+              key="GenSkeletonEnabled"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.command.GenerateHandlerSkeletonCommand"
+              property="GenSkeletonEnabled"/>                              
+  </extension> 
 </plugin>

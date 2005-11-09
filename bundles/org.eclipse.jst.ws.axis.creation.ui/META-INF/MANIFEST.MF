@@ -10,6 +10,8 @@ Export-Package: org.eclipse.jst.ws.internal.axis.creation.ui,
  org.eclipse.jst.ws.internal.axis.creation.ui.command,
  org.eclipse.jst.ws.internal.axis.creation.ui.plugin,
  org.eclipse.jst.ws.internal.axis.creation.ui.task,
+ org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean,
+ org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton,
  org.eclipse.jst.ws.internal.axis.creation.ui.wizard.beans,
  org.eclipse.jst.ws.internal.axis.creation.ui.wizard.wsdl,
  org.eclipse.jst.ws.internal.axis.creation.ui.wsrt

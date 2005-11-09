@@ -241,5 +241,189 @@
              insertBeforeCommandId="org.eclipse.jst.ws.internal.creation.ui.extension.PreServiceRunCommand"
              class="org.eclipse.jst.ws.internal.creation.ui.server.StartServerWidgetFactory"/>
     </extension> 
+    
+     <extension point="org.eclipse.wst.command.env.antScenario">
+        <antScenario
+            class="org.eclipse.jst.ws.internal.creation.ui.ant.AntServiceRootCommandFragment"
+            scenarioType="service"/>
+     </extension>    
+    
+     <extension
+           point="org.eclipse.wst.command.env.antDataMapping">
+        <map
+              key="InitialSelection"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetDefaultingCommand"
+              property="InitialSelection"
+              transform="org.eclipse.wst.command.env.ant.String2SelectionTransformer"/>
+        <map
+              key="InitialSelection"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand"
+              property="ObjectSelection"
+              transform="org.eclipse.wst.command.env.ant.String2SelectionTransformer"/>              
+		<map
+              key="Project"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand"
+              property="Project"
+              transform="org.eclipse.jst.ws.internal.common.String2IProjectTransformer"/>
+        <map
+              key="ComponentName"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand"
+              property="ComponentName"/>
+        <map
+              key="Service.RuntimeId"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
+              property="ServiceTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+        <map
+              key="Service.ServerId"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
+              property="ServiceTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+        <map
+              key="Service.TypeId"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
+              property="ServiceTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>             
+        <map
+              key="StartService"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
+              property="StartService"/>
+        <map
+              key="TestService"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
+              property="TestService"/>
+        <map
+              key="PublishService"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
+              property="PublishService"/>
+        <map
+              key="GenerateProxy"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
+              property="GenerateProxy"/>
 
+        <map
+              key="MonitorService"
+              operation="org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand"
+              property="MonitorService"/>
+              
+      <map
+              key="MonitorService"
+              operation="org.eclipse.jst.ws.internal.consumption.command.common.ComputeEndpointCommand"
+              property="MonitorService"/>
+      <map
+              key="Service.RuntimeId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
+              property="ServiceTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+     <map
+              key="Service.ServerId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
+              property="ServiceTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+      <map
+              key="Service.TypeId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
+              property="ServiceTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+      <map
+              key="ServiceJ2EEVersion"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
+              property="ServiceJ2EEVersion"/>
+
+      <map
+              key="ServiceProjectName"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
+              property="ServiceProjectName"/>
+              
+      <map
+              key="ServiceComponentName"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
+              property="ServiceComponentName"/>
+
+      <map
+              key="ServiceEarProjectName"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
+              property="ServiceEarProjectName"/>
+              
+      <map
+              key="ServiceEarComponentName"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
+              property="ServiceEarComponentName"/>
+              
+      <map
+              key="ServiceNeedEAR"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
+              property="ServiceNeedEAR"/>
+      <map
+              key="Service.RuntimeId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionFragment"
+              property="ServiceTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+      <map
+              key="Service.ServerId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionFragment"
+              property="ServiceTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+      <map
+              key="Service.TypeId"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionFragment"
+              property="ServiceTypeRuntimeServer"
+              transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+      <map
+              key="LaunchedServiceTestName"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
+              property="LaunchedServiceTestName"/>
+
+      <map
+              key="LaunchedServiceTestName"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment"
+              property="LaunchedServiceTestName"/>
+
+      <map
+              key="TestService"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
+              property="TestService"/>
+      <map
+              key="TestID"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
+              property="TestID"/>
+      <map
+              key="PublishToPrivateUDDI"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishToPrivateUDDICommandFragment"
+              property="PublishToPrivateUDDI"/>
+
+      <map
+              key="PublishToPrivateUDDI"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.test.LaunchFragment.LaunchFragment"
+              property="PublishToPrivateUDDI"/>
+      <map
+              key="PublishToPublicUDDI"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.test.LaunchFragment.LaunchFragment"
+              property="PublishToPublicUDDI"/>
+
+<!--complex type. pointer to a file that can be processed by a command....-->
+      <map
+              key="WsDescToHandlers"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.ServiceHandlersWidgetOutputCommand"
+              property="WsDescToHandlers"
+              transform="org.eclipse.wst.command.env.ant.String2HandlerTableTransformer"/>
+
+      <map
+              key="SourceOutputLocation"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.command.GenerateHandlerSkeletonCommand"
+              property="OutputLocation"
+              transform="org.eclipse.wst.command.env.ant.String2PathTransformer"/>
+
+<!--complex type. pointer to a file that can be processed by a command....-->
+      <map
+              key="HandlerClassNames"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.command.GenerateHandlerSkeletonCommand"
+              property="HandlerNames"
+              transform="org.eclipse.wst.command.env.ant.String2HandlerArrayTransformer"/>
+    
+          <map
+              key="GenSkeletonEnabled"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.command.GenerateHandlerSkeletonCommand"
+              property="GenSkeletonEnabled"/>
+     </extension>
 </plugin>
