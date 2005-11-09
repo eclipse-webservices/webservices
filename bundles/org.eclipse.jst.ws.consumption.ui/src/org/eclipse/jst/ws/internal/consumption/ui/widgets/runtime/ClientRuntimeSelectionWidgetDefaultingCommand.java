@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
+import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
@@ -21,8 +22,10 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.dom.rewrite.ITrackedNodePosition;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -46,7 +49,9 @@ import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
+import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -61,11 +66,6 @@ import org.eclipse.wst.ws.internal.wsrt.WebServiceState;
 
 public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataModelOperation
 {   
-
-  // clientRuntimeJ2EEType contains the default client runtime and J2EE level based on the initial selection.
-  // If the initialSeleciton does not result in a valid client runtime and J2EE level, clientRuntimeJ2EEType
-  // should remain null for the life of this instance.  
-  private WSRuntimeJ2EEType    clientRuntimeJ2EEType_; //usage is internal to this class
   
   private TypeRuntimeServer    clientIds_;
   private String clientRuntimeId_;
@@ -250,57 +250,313 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     //Choose an existing server the module is already associated with if possible
     IProject clientProject = ProjectUtilities.getProject(clientProjectName_);
     IServer[] configuredServers = ServerUtil.getServersByModule(ServerUtils.getModule(clientProject), null);
-    IServer firstSupportedServer = getFirstSupportedServer(configuredServers, clientRuntimeId_, clientProject);
-    if (firstSupportedServer != null)
-    {
-      clientIds_.setServerId(firstSupportedServer.getServerType().getId());
-      clientIds_.setServerInstanceId(firstSupportedServer.getId());
-      return Status.OK_STATUS;        
-    }    
     
-    
-    //Choose any suitable existing server
-    IServer[] servers = ServerCore.getServers();
-    IServer supportedServer = getFirstSupportedServer(servers, clientRuntimeId_, clientProject);
-    if (supportedServer != null)
+    if (configuredServers!=null && configuredServers.length>0)
     {
-      clientIds_.setServerId(supportedServer.getServerType().getId());
-      clientIds_.setServerInstanceId(supportedServer.getId());
-      return Status.OK_STATUS;        
-    }        
+      clientIds_.setServerId(configuredServers[0].getServerType().getId());
+      clientIds_.setServerInstanceId(configuredServers[0].getId());
+      return Status.OK_STATUS;            	
+    }
     
-    //No suitable existing server was found. Choose a suitable server type
-    String[] serverTypes = WebServiceRuntimeExtensionUtils2.getServerFactoryIdsByClientRuntime(clientRuntimeId_);
-    if (serverTypes!=null && serverTypes.length>0)
+    //If the project exists, choose a suitable server or server type based on the existing project's runtime or facets
+    if (clientProject.exists())
     {
-      //TODO give priority to a server type that corresponds to the runtime associated with
-      //this project, if any.
-      clientIds_.setServerId(serverTypes[0]);
+      IServer server = getServerFromProject(clientProjectName_, clientFacetMatcher_);
+      if (server != null)
+      {
+        clientIds_.setServerId(server.getServerType().getId());
+        clientIds_.setServerInstanceId(server.getId());
+        return Status.OK_STATUS;
+      }
+      else
+      {
+        IServerType serverType = getServerTypeFromProject(clientProjectName_, clientFacetMatcher_);
+        if (serverType != null)
+        {
+          clientIds_.setServerId(serverType.getId());
+          return Status.OK_STATUS;
+        }
+      }
+    }
+
+    //Haven't picked a server/server type on the basis of the project. Pick a server/server type
+    //that is compatible with the clientRuntimeId.
+    IServer server = getServerFromClientRuntimeId();
+    if (server!=null)
+    {
+      clientIds_.setServerId(server.getServerType().getId());
+      clientIds_.setServerInstanceId(server.getId());
       return Status.OK_STATUS;
     }
     
+    IServerType serverType = getServerTypeFromClientRuntimeId();
+    if (serverType != null)
+    {
+      clientIds_.setServerId(serverType.getId());
+      return Status.OK_STATUS;
+    }    
+    
     //No suitable server was found. Popup an error.
     String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(clientIds_.getRuntimeId());
-    String serverLabels = getServerLabels(clientIds_.getRuntimeId());    
+    String serverLabels = getServerLabels(clientRuntimeId_);    
     IStatus status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME, new String[]{runtimeLabel, serverLabels}) );
     return status;
   }
   
-  private IServer getFirstSupportedServer(IServer[] servers, String clientRuntimeId, IProject clientProject)
+  private IServer getServerFromClientRuntimeId()
   {
+    IServer[] servers = ServerCore.getServers();
     if (servers != null && servers.length > 0) {
       for (int i = 0; i < servers.length; i++)
       {
         String serverFactoryId = servers[i].getServerType().getId();
-        if (WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportServer(clientRuntimeId, serverFactoryId))
+        if (WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportServer(clientRuntimeId_, serverFactoryId))
         {
-          //TODO check if the server type supports the project before returning.
           return servers[i];
         }
       }
     }
+    return null;    
+  }
+  
+  private IServerType getServerTypeFromClientRuntimeId()
+  {
+    String[] serverTypes = WebServiceRuntimeExtensionUtils2.getServerFactoryIdsByClientRuntime(clientRuntimeId_);
+    if (serverTypes!=null && serverTypes.length>0)
+    {
+      //Return the preferred one if it is in the list
+      PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
+      String preferredServerFactoryId = context.getServerFactoryId();
+      for (int i=0; i<serverTypes.length; i++)
+      {
+        if (serverTypes[i].equals(preferredServerFactoryId))
+        {
+          return ServerCore.findServerType(serverTypes[i]);
+        }
+      }
+      
+      return ServerCore.findServerType(serverTypes[0]);
+    }    
+    
     return null;
-  }    
+  }
+  
+  protected IServer getServerFromProject(String projectName, FacetMatcher facetMatcher)
+  {
+    IServer server = null;
+    
+    IProject project = ProjectUtilities.getProject(projectName);
+    IServer[] servers = ServerCore.getServers();
+    
+    if (servers.length > 0)
+    {
+      // Get the runtime.
+      org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = null;
+      IFacetedProject fProject = null;
+
+      if (project != null && project.exists())
+      {
+        try
+        {
+          fProject = ProjectFacetsManager.create(project);
+          fRuntime = fProject.getRuntime();
+        } catch (CoreException ce)
+        {
+
+        }
+      }
+
+      if (fRuntime != null)
+      {
+        // Get an existing server that has the same runtime.
+        IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
+        for (int i = 0; i < servers.length; i++)
+        {
+          IServer thisServer = servers[i];
+          if (thisServer.getRuntime().getId().equals(sRuntime.getId()))
+          {
+            server = thisServer;
+            break;
+          }
+        }
+      }
+
+      // If an existing server could not be chosen on the basis of the project's
+      // runtime,
+      // try to find an existing server using the project's facets and the
+      // facetsToAdd.
+      if (server == null)
+      {
+        if (fProject != null) // We have a faceted project!!
+        {
+          Set facets = fProject.getProjectFacets();
+          if (facetMatcher.getFacetsToAdd() != null)
+          {
+            Iterator itr = facetMatcher.getFacetsToAdd().iterator();
+            while (itr.hasNext())
+            {
+              facets.add(itr.next());  
+            }            
+          }
+          server = getServerFromFacets(facets);
+        } else
+        {
+          // TODO handle this for the Java project case.
+        }
+      }
+    }
+    return server;
+  }
+  
+  protected IServer getServerFromFacets(Set facets)
+  {
+    IServer server = null;
+    Set runtimes = FacetUtils.getRuntimes(new Set[]{facets});
+    Iterator itr = runtimes.iterator();
+    IServer[] servers = ServerCore.getServers();
+    
+    outer:
+    while(itr.hasNext())
+    {
+      org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = (org.eclipse.wst.common.project.facet.core.runtime.IRuntime)itr.next();
+      IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
+      for (int i=0; i<servers.length; i++)
+      {
+        IServer thisServer = servers[i];
+        if (thisServer.getRuntime().getId().equals(sRuntime.getId()))
+        {
+          server = thisServer;
+          break outer;
+        }
+      }      
+    }
+
+    return server;
+  }
+  
+  protected IServerType getServerTypeFromProject(String projectName, FacetMatcher facetMatcher)
+  {
+    IServerType serverType = null;
+    
+    IProject project = ProjectUtilities.getProject(projectName);
+    IServerType[] serverTypes = ServerCore.getServerTypes();
+    
+    //Get the runtime.
+    org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = null;
+    IFacetedProject fProject = null;
+    
+    if (project != null && project.exists())
+    {
+      try
+      {
+        fProject = ProjectFacetsManager.create(project);
+        fRuntime = fProject.getRuntime();        
+      } catch (CoreException ce)
+      {
+        
+      }
+    }
+    
+    if (fRuntime != null)
+    {
+      //Get a server type that has the same runtime type.
+      IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
+      for (int i=0; i<serverTypes.length; i++)
+      {
+        IServerType thisServerType = serverTypes[i];
+        if (thisServerType.getRuntimeType().getId().equals(sRuntime.getRuntimeType().getId()))
+        {
+          serverType = thisServerType;
+          break;
+        }
+      }
+    }
+
+    //If a server type could not be chosen on the basis of the project's runtime,
+    //try to find a server type using the project's facets and the facetsToAdd.
+    if (serverType == null)
+    {
+      if (fProject != null) //We have a faceted project!!
+      {
+        Set facets = fProject.getProjectFacets();
+        if (facetMatcher.getFacetsToAdd() != null)
+        {
+          Iterator itr = facetMatcher.getFacetsToAdd().iterator();
+          while (itr.hasNext())
+          {
+            facets.add(itr.next());  
+          }            
+        }
+        serverType = getServerTypeFromFacets(facets);
+      }
+      else
+      {
+        //TODO handle this for the Java project case. 
+      }
+    }
+    
+    return serverType;
+  }
+  
+  protected IServerType getServerTypeFromFacets(Set facets)
+  {
+    IServerType serverType = null;
+    Set runtimes = FacetUtils.getRuntimes(new Set[]{facets});
+    Iterator itr = runtimes.iterator();
+    IServerType[] serverTypes = ServerCore.getServerTypes();
+    
+    outer:
+    while(itr.hasNext())
+    {
+      org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = (org.eclipse.wst.common.project.facet.core.runtime.IRuntime)itr.next();
+      IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
+      for (int i=0; i<serverTypes.length; i++)
+      {
+        IServerType thisServerType = serverTypes[i];
+        if (thisServerType.getRuntimeType().getId().equals(sRuntime.getRuntimeType().getId()))
+        {
+          serverType = thisServerType;
+          break outer;
+        }
+      }      
+    }
+
+    return serverType;
+  }  
+  
+  protected IServer getServerFromProjectType(String templateId, FacetMatcher facetMatcher)
+  {
+    IServer server = null;
+    Set facets = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
+    if (facetMatcher.getFacetsToAdd() != null)
+    {
+      Iterator itr = facetMatcher.getFacetsToAdd().iterator();
+      while (itr.hasNext())
+      {
+        facets.add(itr.next());  
+      }            
+    }
+    server = getServerFromFacets(facets);
+    return server;
+  }
+  
+  protected IServerType getServerTypeFromProjectType(String templateId, FacetMatcher facetMatcher)
+  {
+    IServerType serverType = null;
+    Set facets = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
+    if (facetMatcher.getFacetsToAdd() != null)
+    {
+      Iterator itr = facetMatcher.getFacetsToAdd().iterator();
+      while (itr.hasNext())
+      {
+        facets.add(itr.next());  
+      }            
+    }
+    //TODO Instead of passing in a single set of facets, pass in multiple sets, if the
+    //jst.java facet is one of them and the clientRuntimeId allows newer.
+    serverType = getServerTypeFromFacets(facets);
+    return serverType;    
+  }
   
   private String getDefaultClientProjectTemplate()
   {
@@ -1164,7 +1420,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     return status;
   }  
   */
-  protected String getServerLabels(String clientRuntimeId)
+  private String getServerLabels(String clientRuntimeId)
   {
         String[] validServerFactoryIds = WebServiceRuntimeExtensionUtils2.getServerFactoryIdsByClientRuntime(clientRuntimeId);
 	    //String[] validServerLabels = new String[validServerFactoryIds.length];

@@ -11,7 +11,7 @@
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
 import java.util.Set;
-
+import java.util.Vector;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
@@ -31,15 +31,19 @@ import org.eclipse.jst.ws.internal.consumption.ui.common.ServerSelectionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ClientRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceType;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeInfo;
 import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -47,6 +51,7 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
@@ -237,35 +242,51 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     //Choose an existing server the module is already associated with if possible
     IProject serviceProject = ProjectUtilities.getProject(serviceProjectName_);
     IServer[] configuredServers = ServerUtil.getServersByModule(ServerUtils.getModule(serviceProject), null);
-    IServer firstSupportedServer = getFirstSupportedServer(configuredServers, serviceRuntimeId_, serviceProject);
-    if (firstSupportedServer != null)
+    if (configuredServers!=null && configuredServers.length>0)
     {
-      serviceIds_.setServerId(firstSupportedServer.getServerType().getId());
-      serviceIds_.setServerInstanceId(firstSupportedServer.getId());
-      return Status.OK_STATUS;        
-    }    
+      serviceIds_.setServerId(configuredServers[0].getServerType().getId());
+      serviceIds_.setServerInstanceId(configuredServers[0].getId());
+      return Status.OK_STATUS;              
+    }
     
-    
-    //Choose any suitable existing server
-    IServer[] servers = ServerCore.getServers();
-    IServer supportedServer = getFirstSupportedServer(servers, serviceRuntimeId_, serviceProject);
-    if (supportedServer != null)
+    //If the project exists, choose a suitable server or server type based on the existing project's runtime or facets
+    if (serviceProject.exists())
     {
-      serviceIds_.setServerId(supportedServer.getServerType().getId());
-      serviceIds_.setServerInstanceId(supportedServer.getId());
-      return Status.OK_STATUS;        
-    }        
+      IServer server = getServerFromProject(serviceProjectName_, serviceFacetMatcher_);
+      if (server != null)
+      {
+        serviceIds_.setServerId(server.getServerType().getId());
+        serviceIds_.setServerInstanceId(server.getId());
+        return Status.OK_STATUS;
+      }
+      else
+      {
+        IServerType serverType = getServerTypeFromProject(serviceProjectName_, serviceFacetMatcher_);
+        if (serverType != null)
+        {
+          serviceIds_.setServerId(serverType.getId());
+          return Status.OK_STATUS;
+        }
+      }
+    }
     
-    //No suitable existing server was found. Choose a suitable server type
-    String[] serverTypes = WebServiceRuntimeExtensionUtils2.getServerFactoryIdsByServiceRuntime(serviceRuntimeId_);
-    if (serverTypes!=null && serverTypes.length>0)
+    //Haven't picked a server/server type on the basis of the project. Pick a server/server type
+    //that is compatible with the serviceRuntimeId.
+    IServer server = getServerFromServiceRuntimeId();
+    if (server!=null)
     {
-      //TODO give priority to a server type that corresponds to the runtime associated with
-      //this project, if any.
-      serviceIds_.setServerId(serverTypes[0]);
+      serviceIds_.setServerId(server.getServerType().getId());
+      serviceIds_.setServerInstanceId(server.getId());
       return Status.OK_STATUS;
     }
     
+    IServerType serverType = getServerTypeFromServiceRuntimeId();
+    if (serverType != null)
+    {
+      serviceIds_.setServerId(serverType.getId());
+      return Status.OK_STATUS;
+    }    
+
     //No suitable server was found. Popup an error.
     String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(serviceIds_.getRuntimeId());
     String serverLabels = getServerLabels(serviceIds_.getRuntimeId());    
@@ -273,6 +294,45 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     return status;
   }  
   
+  private IServer getServerFromServiceRuntimeId()
+  {
+    IServer[] servers = ServerCore.getServers();
+    if (servers != null && servers.length > 0) {
+      for (int i = 0; i < servers.length; i++)
+      {
+        String serverFactoryId = servers[i].getServerType().getId();
+        if (WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportServer(serviceRuntimeId_, serverFactoryId))
+        {
+          return servers[i];
+        }
+      }
+    }
+    return null;    
+  }
+  
+  private IServerType getServerTypeFromServiceRuntimeId()
+  {
+    String[] serverTypes = WebServiceRuntimeExtensionUtils2.getServerFactoryIdsByServiceRuntime(serviceRuntimeId_);
+    if (serverTypes!=null && serverTypes.length>0)
+    {
+      //Return the preferred one if it is in the list
+      PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
+      String preferredServerFactoryId = context.getServerFactoryId();
+      for (int i=0; i<serverTypes.length; i++)
+      {
+        if (serverTypes[i].equals(preferredServerFactoryId))
+        {
+          return ServerCore.findServerType(serverTypes[i]);
+        }
+      }
+      
+      return ServerCore.findServerType(serverTypes[0]);
+    }    
+    
+    return null;
+  }  
+  
+  /*
   private IServer getFirstSupportedServer(IServer[] servers, String serviceRuntimeId, IProject serviceProject)
   {
     if (servers != null && servers.length > 0) {
@@ -287,8 +347,26 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       }
     }
     return null;
-  }      
+  }
+  */
   
+  private String getServerLabels(String serviceRuntimeId)
+  {
+        String[] validServerFactoryIds = WebServiceRuntimeExtensionUtils2.getServerFactoryIdsByServiceRuntime(serviceRuntimeId);
+        //String[] validServerLabels = new String[validServerFactoryIds.length];
+        StringBuffer validServerLabels = new StringBuffer(); 
+        for (int i=0; i<validServerFactoryIds.length; i++)
+        {
+            if (i>0)
+            {
+                validServerLabels.append(", ");
+            }
+            validServerLabels.append(WebServiceRuntimeExtensionUtils.getServerLabelById(validServerFactoryIds[i]));
+            
+        }
+        return validServerLabels.toString();
+  }
+
   private String getDefaultServiceProjectTemplate()
   {
     String[] templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(serviceIds_.getTypeId(), serviceIds_.getRuntimeId());

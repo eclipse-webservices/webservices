@@ -112,15 +112,16 @@ public class FacetUtils
     { 
       IProjectFacet facet = (IProjectFacet) itr2.next(); 
       IProjectFacetVersion highestFacetVersion = null;
-      if (isJavaFacet(facet)) //special case the java facet because 1.4 is a better default than 5.0 for now.
-      {
-        highestFacetVersion = facet.getVersion("1.4");
-      }
       try {
-		highestFacetVersion = facet.getLatestVersion();
-	} catch (VersionFormatException e) {
-	} catch (CoreException e) {
-	} 
+    	  if (isJavaFacet(facet)) //special case the java facet because 1.4 is a better default than 5.0 for now.
+    	  {
+    		  highestFacetVersion = facet.getVersion("1.4");
+    	  } else {
+    		  highestFacetVersion = facet.getLatestVersion();
+    	  }
+      } catch (VersionFormatException e) {
+      } catch (CoreException e) {
+      }
       initial.add(highestFacetVersion); 
     }             
     
