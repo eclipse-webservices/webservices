@@ -62,7 +62,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   private Button viewSelectionByRuntimeButton_;
   private Button viewSelectionByServerButton_;
   private Button viewSelectionByExploreButton_;
-  private Combo j2eeVersionCombo;
+
   /*
    * CONTEXT_ID PWRS0001 for the selection of runtime, server and project combination
    */
@@ -98,20 +98,14 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
    */
   private String INFOPOP_PWRS_J2EE_VERSION = WebServiceConsumptionUIPlugin.ID + ".PWRS0009";
 
-  // rskreg
-  //private WebServiceServerRuntimeTypeRegistry wssrtRegistry;
-  //private WebServiceClientTypeRegistry wsctRegistry;
-  // rskreg
   private Hashtable serverLabels_;
   private Hashtable existingServersTable_;
   private String defaultServer_;
   private String defaultRuntime_;
   private String typeId_;
-  // rskreg
-  //private IWebServiceRuntime selectedRuntime_;
-  //private WebServiceRuntimeInfo selectedRuntime_;
+
   private RuntimeDescriptor selectedRuntime_;
-  // rskreg
+
   private IServer selectedServer_;
   private String selectedServerLabel_;
   private String selectedServerFactoryID_;
@@ -121,7 +115,6 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   private final byte MODE_SERVICE = (byte) 0;
   private final String SERVER_TYPES_ICON = "icons/servers/servers_obj.gif";
   private final String EXISTING_SERVERS_ICON = "icons/servers/existing_server_obj.gif";
-  private String j2eeVersion;
   private String serverInstanceID_;
 
   public RuntimeServerSelectionDialog(Shell shell, byte mode, TypeRuntimeServer ids, String j2eeVersion) {
@@ -134,11 +127,6 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     setIsExistingServer(ids.getServerInstanceId() != null);
     serverLabels_ = new Hashtable();
     existingServersTable_ = new Hashtable();
-	// rskreg
-    //wsctRegistry = WebServiceClientTypeRegistry.getInstance();
-    //wssrtRegistry = WebServiceServerRuntimeTypeRegistry.getInstance();
-	// rskreg
-    this.j2eeVersion = j2eeVersion;
   }
 
   public TypeRuntimeServer getTypeRuntimeServer() {
@@ -164,10 +152,6 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     }
     
     return ids;
-  }
-
-  public String getJ2EEVersion() {
-    return j2eeVersion;
   }
 
   private boolean getIsExistingServer() {
@@ -274,174 +258,35 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     serverList.setServerTreeItems(serverList_);
     helpSystem.setHelp(serverList_, INFOPOP_PWRS_LIST_SERVERS);
     setRuntimesGroup();
-    // J2EE version
-    Composite j2eeVersionComposite = new Composite(composite, SWT.NONE);
-    gl = new GridLayout();
-    gl.marginHeight = 0;
-    gl.marginWidth = 0;
-    gl.numColumns = 2;
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    j2eeVersionComposite.setLayout(gl);
-    j2eeVersionComposite.setLayoutData(gd);
-    Label j2eeVersionLabel = new Label(j2eeVersionComposite, SWT.NONE);
-    j2eeVersionLabel.setText(ConsumptionUIMessages.LABEL_J2EE_VERSION);
-    j2eeVersionCombo = new Combo(j2eeVersionComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-    gl = new GridLayout();
-    gl.marginHeight = 0;
-    gl.marginWidth = 0;
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    j2eeVersionCombo.setLayout(gl);
-    j2eeVersionCombo.setLayoutData(gd);
-    j2eeVersionCombo.addListener(SWT.Selection, this);
-    j2eeVersionCombo.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_J2EE_VERSION);
-    helpSystem.setHelp(j2eeVersionCombo, INFOPOP_PWRS_J2EE_VERSION);
     //  -----------------------------------------------------------------------//
     new Label(composite, SWT.HORIZONTAL);
     validateOn_ = true;
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(parent);
-    setJ2EEVersions();
     return composite;
   }
 
-  private void setJ2EEVersions() {
-    j2eeVersionCombo.setEnabled(true);
-    j2eeVersionCombo.removeAll();
-    String[] versions = null;
-	// rskreg
-    //if (selectedRuntime_ != null)
-      //versions = selectedRuntime_.getJ2EEVersions();
-    if (selectedRuntime_ != null)
-	      versions = selectedRuntime_.getJ2eeLevels();
-	// rskreg	
-    if (versions != null) {
-      //j2eeVersionCombo.setItems(versions);
-      setJ2EEComboItems(versions);
-      j2eeVersionCombo.select(0);
-      if (j2eeVersion != null) {
-        int i = j2eeVersionCombo.indexOf(J2EEUtils.getLabelFromJ2EEVersion(j2eeVersion));
-        if (i > 0)
-          j2eeVersionCombo.select(i);
-      }
-    }
-    else
-      j2eeVersionCombo.setEnabled(false);
-  }
 
-  private void setJ2EEComboItems(String[] versions)
-  {
-    String[] j2eeLabels = new String[versions.length];
-    for (int i = 0; i < versions.length; i++)
-    {
-      String label = J2EEUtils.getLabelFromJ2EEVersion(versions[i]);
-      if (label != null && label.length() >0)
-        j2eeLabels[i] = J2EEUtils.getLabelFromJ2EEVersion(versions[i]);
-      else
-        j2eeLabels[i] = ConsumptionUIMessages.LABEL_NA; 
-    }
-    j2eeVersionCombo.setItems(j2eeLabels);
-  }
-
-  private void setJ2EEVersionBasedOnServer()
-  {
-    //Get the list of J2EE versions
-    String[] versions = null;
-    if (selectedRuntime_ == null || selectedServerFactoryID_== null)
-      return;
-   
-	// rskreg
-    //versions = selectedRuntime_.getJ2EEVersions();
-	versions = selectedRuntime_.getJ2eeLevels();
-	// rskreg
-    if (versions==null)
-      return;
-    
-    //Pick the first version that the selected server supports
-    for (int i=0; i<versions.length; i++)
-    {
-      if (isServerValid(selectedServerFactoryID_, versions[i]))
-      {
-        //Set the j2ee level to this version
-        String label = J2EEUtils.getLabelFromJ2EEVersion(versions[i]);
-        j2eeVersionCombo.setText(label);
-        setJ2EEVersionFromJ2EEVersionCombo();
-      }
-    }      
-  }
-
-  
-  private boolean isServerValid(String serverFactoryId, String j2eeVersion)
-  {
-    String stJ2EEVersion = ServerUtils.getServerTargetJ2EEVersion(j2eeVersion);
-    if (stJ2EEVersion == null)
-      return false;
-    
-    IServerType serverType = ServerCore.findServerType(serverFactoryId);
-    if (serverType!=null)
-    {
-      IRuntimeType serverRuntime = serverType.getRuntimeType();
-      IModuleType[] mTypes = serverRuntime.getModuleTypes();
-      for (int i=0; i<mTypes.length; i++)      
-      {
-        IModuleType mType = mTypes[i];
-        String type = mType.getId();
-        String moduleVersion = mType.getVersion();
-        if (type.equals(IServerTargetConstants.WEB_TYPE) && moduleVersion.equals(stJ2EEVersion))
-        {
-          //Found a match, return true!
-          return true;
-        }
-      }
-    }
-    //no match found or the server type was null. Return false.
-    return false;
-  }
-  
   private void validateServerRuntimeSelection() {
     // Check if the extension exists
     if (selectionMode_ == MODE_SERVICE) {
       if (selectedServerFactoryID_!=null && selectedRuntime_!=null) {
-		  // rskreg
-      //WebServiceServerRuntimeType wssrt = wssrtRegistry.getWebServiceServerRuntimeType(selectedServerFactoryID_, selectedRuntime_.getId(), typeId_);
-		  // rskreg
-      // rm WebServiceServerRuntimeType wssrt =
-      // wssrtRegistry.getWebServiceServerRuntimeType(selectedServerFactoryID_,
-      // selectedRuntime_.getId(), wse.getWebServiceType());
-      // rm if (wssrt!=null &&
-      // wssrtRegistry.isServerSupportedForChosenType(wse.getWebServiceType(),selectedServerFactoryID_))
-      // {
-		  
-		  //rskreg
-      boolean wssrtSupported = WebServiceRuntimeExtensionUtils2.isServerRuntimeTypeSupported(selectedServerFactoryID_,selectedRuntime_.getId(),typeId_);		  
-      //if (wssrt != null && wssrtRegistry.isServerSupportedForChosenType(typeId_, selectedServerFactoryID_)) {
-        //setOKStatusMessage();
-      //}
+
+      boolean wssrtSupported = WebServiceRuntimeExtensionUtils2.isServerRuntimeTypeSupported(selectedServerFactoryID_,selectedRuntime_.getId(),typeId_);
 	  
       if (wssrtSupported && WebServiceRuntimeExtensionUtils2.isServerSupportedForChosenServiceType(typeId_, selectedServerFactoryID_)) {
 	        setOKStatusMessage();
-	      }
-	  // rskreg
+	      }	  
       else {
         setERRORStatusMessage(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS);
       }
       }
     }
     else {
-      // rm String clientId =
-      // wsctRegistry.getClientTypeIdByName(clientScenarioId_);
-      String clientId = typeId_;
-      // rm String clientId =
-      // wsctRegistry.getClientTypeIdByName(wse.getProxySelected());
-	  // rskreg
-	  
-      //WebServiceServer wss = wsctRegistry.getWebServiceServerByFactoryId(selectedServerFactoryID_);
 
-      //if (wss == null || selectedRuntime_ == null || !wsctRegistry.webServiceClientRuntimeTypeExists(wss.getId(), selectedRuntime_.getId(), clientId)) {
-        //setERRORStatusMessage("%MSG_INVALID_SRT_SELECTIONS");
-      //}
+      String clientId = typeId_;
       if (selectedServerFactoryID_==null || selectedRuntime_ == null || !WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported(selectedServerFactoryID_, selectedRuntime_.getId(), clientId)) {
 	        setERRORStatusMessage(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS);
 	  }	  
-	  // rskreg
       else {
         setOKStatusMessage();
       }
@@ -496,26 +341,10 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   }
 
   protected void okPressed() {
-    setJ2EEVersionFromJ2EEVersionCombo();
-    //j2eeVersion = (j2eeVersionCombo.getEnabled()) ? j2eeVersionCombo.getText() : null;
     setReturnCode(OK);
     close();
   }
 
-  private void setJ2EEVersionFromJ2EEVersionCombo()
-  {
-    if (j2eeVersionCombo.getEnabled())
-    {
-      String j2eeLabel = j2eeVersionCombo.getText();
-      String j2eeVersionString = J2EEUtils.getJ2EEVersionFromLabel(j2eeLabel);
-      if (j2eeVersionString != null && j2eeVersionString.length() > 0)
-        j2eeVersion = j2eeVersionString;
-      else
-        j2eeVersion = null;
-    }
-    else
-      j2eeVersion = null;    
-  }
   /**
    * Called when an event occurs on the page. Handles the event and revalidates the page.
    * 
@@ -538,22 +367,14 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
       handleExploreViewSelectionEvent();
       return;
     }
-    else if (j2eeVersionCombo == event.widget) {
-      setJ2EEVersionFromJ2EEVersionCombo();
-      //j2eeVersion = (j2eeVersionCombo.getEnabled()) ? j2eeVersionCombo.getText() : null;
-      return;
-    }
     else if (runtimesList_ == event.widget) {
       TreeItem[] runtimeSel = runtimesList_.getSelection();
       processRuntimeListSelection(runtimeSel[0].getText());
       validateServerRuntimeSelection();
-      setJ2EEVersions();
-      setJ2EEVersionBasedOnServer();
     }
     else if (serverList_ == event.widget) {
       processServerListSelection();
       validateServerRuntimeSelection();
-      setJ2EEVersionBasedOnServer();
     }
   }
 
