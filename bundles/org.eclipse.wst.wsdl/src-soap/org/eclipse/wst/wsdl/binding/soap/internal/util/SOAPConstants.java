@@ -35,6 +35,7 @@ public final class SOAPConstants
   public static final String ENCODING_STYLE_ATTRIBUTE ="encodingStyle";
   public static final String MESSAGE_ATTRIBUTE ="message";
   public static final String PART_ATTRIBUTE ="part";
+  public static final String PARTS_ATTRIBUTE ="parts";
   
   public static String getAttribute(Element element, String attributeName)
   {

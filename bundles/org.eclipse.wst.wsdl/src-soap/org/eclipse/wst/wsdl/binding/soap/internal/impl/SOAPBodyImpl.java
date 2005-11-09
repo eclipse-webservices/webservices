@@ -21,6 +21,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
@@ -28,12 +29,17 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOutput;
+import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
 import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
 import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDTypeDefinition;
 import org.w3c.dom.Element;
 
 /**
@@ -219,38 +225,12 @@ public void setEncodingStyles(List list)
     if (parts == null)
     {
       parts = new EObjectResolvingEList(Part.class, this, SOAPPackage.SOAP_BODY__PARTS);
+      return getImplicitParts();
     }
     
     if (parts.size() == 0)
     {
-      List implicitParts = new java.util.Vector();
-      
-      // Try to find an implicit one.
-      if(eContainer() instanceof BindingInput)
-      {
-      	Message message = ((BindingInput)eContainer()).getEInput().getEMessage();
-      	if(message.getEParts().size() > 0)
-      	{
-      	  implicitParts.addAll(message.getEParts());
-      	}
-      }
-      if(eContainer() instanceof BindingOutput)
-      {
-      	Message message = ((BindingOutput)eContainer()).getEOutput().getEMessage();
-      	if(message.getEParts().size() > 0)
-      	{
-      	  implicitParts.addAll(message.getEParts());
-      	}
-      }
-      if(eContainer() instanceof BindingFault)
-      {
-      	Message message = ((BindingFault)eContainer()).getEFault().getEMessage();
-      	if(message.getEParts().size() > 0)
-      	{
-      	  implicitParts.addAll(message.getEParts());
-      	}
-      }
-      return implicitParts;
+      return getImplicitParts();
     }
     
     return parts;
@@ -432,7 +412,28 @@ public void setEncodingStyles(List list)
   
   public void reconcileReferences(boolean deep)
   {
-    // TBD - resolve Parts reference here.
+    if (element != null && element.hasAttribute(SOAPConstants.PARTS_ATTRIBUTE))
+    // Synchronize 'parts' variable from element's attribute.
+    {
+      Message message = getMessage();
+      if (message == null)
+        return;
+      
+      String partNames = element.getAttribute(SOAPConstants.PARTS_ATTRIBUTE);
+      StringTokenizer parser = new StringTokenizer(partNames," ");
+      String partName = null;
+      Part newPart = null;
+      getParts().clear();
+      while(parser.hasMoreTokens())
+      {
+        partName = parser.nextToken();
+        newPart = (message != null) ? (Part) message.getPart(partName) : null;
+        if (newPart != null)
+          // Do not use getParts() here since it will return a list of
+          // implicitly collected parts.
+          parts.add(newPart);
+      }
+    }
     super.reconcileReferences(deep);
   }
 
@@ -471,6 +472,34 @@ public void setEncodingStyles(List list)
     }
   }
   
+  protected void changeReference(EReference eReference)
+  {
+    if (isReconciling)
+      return;
+
+    super.changeReference(eReference);
+    //
+    // Update the element's "parts" attribute value.
+    //
+    Element theElement = getElement();
+    if (theElement != null)
+    {
+      if (eReference == null || eReference == SOAPPackage.eINSTANCE.getSOAPBody_Parts())
+      {
+        Part part;
+        String partNames = "";
+        Iterator iter = getParts().iterator();
+        while (iter.hasNext())
+        {
+          part = (Part)iter.next();
+          partNames = partNames + " " + part.getName();
+        } 
+        partNames.trim();
+        niceSetAttribute(theElement, SOAPConstants.PARTS_ATTRIBUTE, partNames);
+      }     
+    }
+  } 
+  
   /*
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
   {
@@ -494,4 +523,39 @@ public void setEncodingStyles(List list)
       elementType = new QName(SOAPConstants.SOAP_NAMESPACE_URI, SOAPConstants.BODY_ELEMENT_TAG);
     return elementType;
   } 
+ 
+  private List getImplicitParts()
+  {
+    List implicitParts = new java.util.Vector();
+    Message message = getMessage();
+    if(message != null && message.getEParts().size() > 0)
+    {
+      implicitParts.addAll(message.getEParts());
+    }
+    return implicitParts;
+  }
+  
+  private Message getMessage()
+  {
+    Message message = null;
+    
+    if(eContainer() instanceof BindingInput)
+    {
+      if(((BindingInput)eContainer()).getEInput() != null)
+  	    message = ((BindingInput)eContainer()).getEInput().getEMessage();
+    }
+    if(eContainer() instanceof BindingOutput)
+    {
+      if (((BindingOutput)eContainer()).getEOutput() != null)
+  	  message = ((BindingOutput)eContainer()).getEOutput().getEMessage();
+    }
+    if(eContainer() instanceof BindingFault)
+    {
+      if(((BindingFault)eContainer()).getEFault() != null)
+  	  message = ((BindingFault)eContainer()).getEFault().getEMessage();
+    }
+    return message;
+  }
+
+
 } //SOAPBodyImpl
