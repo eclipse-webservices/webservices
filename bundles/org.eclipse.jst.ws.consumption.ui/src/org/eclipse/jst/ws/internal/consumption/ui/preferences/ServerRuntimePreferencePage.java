@@ -48,8 +48,10 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	private Combo runtime_;	
 
 	/* CONTEXT_ID SRPF0003 for J2EE version preference on the server runtime preference page */
+    /*
 	private String INFOPOP_SRPF_J2EE_PREF = pluginId_ + ".SRPF0003";
 	private Combo j2eeVersion_;
+    */
 	
 	SelectionListChoices serverToRuntimeToJ2EE_;
 	
@@ -77,11 +79,13 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 			  ConsumptionUIMessages.TOOLTIP_SRPF_COMBO_RUNTIME,
 									 INFOPOP_SRPF_RUNTIME_PREF,
 									 SWT.SINGLE|SWT.BORDER|SWT.READ_ONLY);
-	  
+
+/*
 	  j2eeVersion_ = uiUtils.createCombo(page,ConsumptionUIMessages.LABEL_J2EE_VERSION,
 			  ConsumptionUIMessages.TOOLTIP_SRPF_COMBO_J2EE,
 			                             INFOPOP_SRPF_J2EE_PREF,
 			                             SWT.SINGLE|SWT.BORDER|SWT.READ_ONLY);	  
+*/
 
 	  initializeValues();
 	  startListening();
@@ -102,13 +106,7 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		setRuntimeItems(serverToRuntimeToJ2EE_.getChoice().getList().getList());
 		String defaultRuntimeText = context.getRuntimeId();
 		serverToRuntimeToJ2EE_.getChoice().getList().setSelectionValue(defaultRuntimeText);
-		setRuntimeSelection(defaultRuntimeText);
-		
-		setJ2EEItems(serverToRuntimeToJ2EE_.getChoice().getChoice().getList().getList());
-		String defaultJ2EEVersion = context.getJ2EEVersion();
-		serverToRuntimeToJ2EE_.getChoice().getChoice().getList().setSelectionValue(defaultJ2EEVersion);
-		setJ2EESelection(defaultJ2EEVersion);
-		
+		setRuntimeSelection(defaultRuntimeText);			
 	}
 	
 	public void handleEvent(Event event)
@@ -121,10 +119,6 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		{
 			handleRuntimeSelected();
 		}
-		else if (j2eeVersion_ == event.widget)
-		{			
-			handleJ2EESelected();
-		}			
 	}
 
 	private void handleServerSelected()
@@ -141,23 +135,7 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		
 		String newRuntimeText = serverToRuntimeToJ2EE_.getChoice().getList().getSelection();
 		if (newRuntimeText!=null && newRuntimeText.length()>0)
-			setRuntimeSelection(newRuntimeText);
-		
-		//Update the j2ee version -------------------------------
-		if (newRuntimeText!=null && newRuntimeText.length()>0)
-		{
-		  setJ2EEItems(serverToRuntimeToJ2EE_.getChoice().getChoice().getList().getList());
-		  if (serverToRuntimeToJ2EE_.getChoice().getChoice().getList().getList().length > 0)
-			  serverToRuntimeToJ2EE_.getChoice().getChoice().getList().setIndex(0);
-			
-			String newJ2EEText = serverToRuntimeToJ2EE_.getChoice().getChoice().getList().getSelection();
-			if (newJ2EEText!=null && newJ2EEText.length()>0)
-				setJ2EESelection(newJ2EEText);
-		}
-		else
-		{
-		  setJ2EEItems(new String[0]);
-		}
+			setRuntimeSelection(newRuntimeText);		
 		
 		startListening();
 	}
@@ -167,29 +145,11 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		stopListening();
 		
 		String selectedText = getRuntimeSelection();
-		serverToRuntimeToJ2EE_.getChoice().getList().setSelectionValue(selectedText);
-		
-		//Update the j2ee version -------------------------------
-		setJ2EEItems(serverToRuntimeToJ2EE_.getChoice().getChoice().getList().getList());
-		if (serverToRuntimeToJ2EE_.getChoice().getChoice().getList().getList().length > 0)
-		  serverToRuntimeToJ2EE_.getChoice().getChoice().getList().setIndex(0);
-		
-		String newJ2EEText = serverToRuntimeToJ2EE_.getChoice().getChoice().getList().getSelection();
-		if (newJ2EEText!=null && newJ2EEText.length()>0)
-			setJ2EESelection(newJ2EEText);
-				
+		serverToRuntimeToJ2EE_.getChoice().getList().setSelectionValue(selectedText);						
 		startListening();		
 	}
 	
-	private void handleJ2EESelected()
-	{
-		stopListening();
-		
-		String selectedText = getJ2EESelection();
-		serverToRuntimeToJ2EE_.getChoice().getChoice().getList().setSelectionValue(selectedText);
-		
-		startListening();
-	}
+
     /**
 	 * Does anything necessary because the default button has been pressed.
 	*/
@@ -211,11 +171,6 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		String defaultRuntimeText = context.getDefaultRuntimeId();
 		serverToRuntimeToJ2EE_.getChoice().getList().setSelectionValue(defaultRuntimeText);
 		setRuntimeSelection(defaultRuntimeText);
-		
-		setJ2EEItems(serverToRuntimeToJ2EE_.getChoice().getChoice().getList().getList());
-		String defaultJ2EEVersion = context.getDefaultJ2EEVersion();
-		serverToRuntimeToJ2EE_.getChoice().getChoice().getList().setSelectionValue(defaultJ2EEVersion);
-		setJ2EESelection(defaultJ2EEVersion);		
 	}
 
 	/**
@@ -232,8 +187,7 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	{
       PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
       context.setServerFactoryId(getServerSelection());
-      context.setRuntimeId(getRuntimeSelection());
-      context.setJ2EEVersion(getJ2EESelection());
+      context.setRuntimeId(getRuntimeSelection());      
 	}
 	
 	protected void performApply()
@@ -246,14 +200,12 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	{
 	  server_.addListener(SWT.Selection,this);
 	  runtime_.addListener(SWT.Selection,this);
-	  j2eeVersion_.addListener(SWT.Selection,this);
 	}
 
 	private void stopListening()
 	{
 	  server_.removeListener(SWT.Selection, this);
 	  runtime_.removeListener(SWT.Selection, this);
-	  j2eeVersion_.removeListener(SWT.Selection, this);
 	}
 
 	private void setServerItems(String[] factoryIds)
@@ -293,6 +245,7 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		
 	}
 	
+    /*
     private void setJ2EEItems(String[] versions)
     {
       if (versions != null)
@@ -316,6 +269,7 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
       }
         
     }
+    */
 	
 	private String getServerSelection()
 	{
@@ -331,11 +285,13 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
       return WebServiceRuntimeExtensionUtils2.getRuntimeId(runtimeLabel);
 	}
 	
+    /*
 	private String getJ2EESelection()
 	{
 	  String j2eeLabel = j2eeVersion_.getText();
 	  return J2EEUtils.getJ2EEVersionFromLabel(j2eeLabel);		
 	}
+    */
 	
 	private void setServerSelection(String factoryId)
 	{
@@ -351,11 +307,13 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		setSelection(runtime_,label);		
 	}
 	
+    /*
 	private void setJ2EESelection(String version)
 	{
 	  String label = J2EEUtils.getLabelFromJ2EEVersion(version);
       setSelection(j2eeVersion_, label);
 	}
+    */
 	
 	private void setSelection(Combo combo, String s)
 	{

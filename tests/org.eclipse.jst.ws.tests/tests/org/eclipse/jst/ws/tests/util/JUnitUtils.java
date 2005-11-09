@@ -292,10 +292,9 @@ public class JUnitUtils {
 	  
 	}
 	
-	public static void setJ2EEWSRuntimeServer(String j2eeLevel,String wsRuntimeId,String serverTypeId)
+	public static void setWSRuntimeServer(String wsRuntimeId,String serverTypeId)
 	{
 		PersistentServerRuntimeContext serverRuntimeCtx = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
-		serverRuntimeCtx.setJ2EEVersion(j2eeLevel);
 		serverRuntimeCtx.setRuntimeId(wsRuntimeId);
 		serverRuntimeCtx.setServerFactoryId(serverTypeId);		
 	}

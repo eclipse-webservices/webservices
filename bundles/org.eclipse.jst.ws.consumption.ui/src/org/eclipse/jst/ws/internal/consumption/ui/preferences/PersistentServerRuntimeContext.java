@@ -22,11 +22,10 @@ public class PersistentServerRuntimeContext extends PersistentContext {
 	
 	private String PREFERENCE_SERVER = "PREFERENCE_SERVER";
 	private String PREFERENCE_RUNTIME = "PREFERENCE_RUNTIME";
-	private String PREFERENCE_J2EE_VERSION = "PREFERENCE_J2EE_VERSION";
+	//private String PREFERENCE_J2EE_VERSION = "PREFERENCE_J2EE_VERSION";
 	
 	private String SERVER_FACTORY_ID_DEFAULT = "org.eclipse.jst.server.tomcat.50";
 	private String RUNTIME_ID_DEFAULT = "org.eclipse.jst.ws.axis.creation.axisWebServiceRT";
-	private String J2EE_VERSION_DEFAULT = "14";
 	
 	public PersistentServerRuntimeContext()
 	{
@@ -50,13 +49,6 @@ public class PersistentServerRuntimeContext extends PersistentContext {
 		{
 		  setDefault(PREFERENCE_RUNTIME, RUNTIME_ID_DEFAULT);
 		}
-
-		String j2eeDefault = getDefaultString(PREFERENCE_J2EE_VERSION);
-		if (j2eeDefault==null || j2eeDefault.length()==0)
-		{
-		  setDefault(PREFERENCE_J2EE_VERSION, J2EE_VERSION_DEFAULT);
-		}
-
 				
 	}
 	
@@ -68,11 +60,6 @@ public class PersistentServerRuntimeContext extends PersistentContext {
 	public String getDefaultRuntimeId()
 	{
 		return getDefaultString(PREFERENCE_RUNTIME);
-	}
-
-	public String getDefaultJ2EEVersion()
-	{
-		return getDefaultString(PREFERENCE_J2EE_VERSION);
 	}
 
 	public String getServerFactoryId()
@@ -101,18 +88,6 @@ public class PersistentServerRuntimeContext extends PersistentContext {
 		return value;		
 	}
 	
-	public String getJ2EEVersion()
-	{
-		String value = getValueAsString(PREFERENCE_J2EE_VERSION);
-		/*
-		if (value==null || value.length()==0)
-		{
-			value = J2EE_VERSION_DEFAULT; 
-			setJ2EEVersion(value);
-		}
-		*/
-		return value;		
-	}
 	
 	public void setServerFactoryId(String id)
 	{
@@ -122,10 +97,5 @@ public class PersistentServerRuntimeContext extends PersistentContext {
 	public void setRuntimeId(String id)
 	{
 		setValue(PREFERENCE_RUNTIME, id);
-	}
-	
-	public void setJ2EEVersion(String version)
-	{
-		setValue(PREFERENCE_J2EE_VERSION, version);
 	}
 }
