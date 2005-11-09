@@ -11,8 +11,11 @@
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
@@ -21,6 +24,7 @@ import javax.wsdl.Service;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
@@ -29,15 +33,28 @@ import org.eclipse.jst.j2ee.webservice.internal.WebServiceConstants;
 import org.eclipse.jst.j2ee.webservice.wsdd.PortComponent;
 import org.eclipse.jst.j2ee.webservice.wsdd.WSDLPort;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
+import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
+import org.eclipse.wst.common.project.facet.core.IProjectFacet;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
+import org.eclipse.wst.common.project.facet.core.VersionFormatException;
 import org.eclipse.wst.server.core.IRuntime;
+import org.eclipse.wst.server.core.IServerType;
+import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 /**
@@ -51,6 +68,113 @@ public class ValidationUtils
    */
   public ValidationUtils()
   {
+  }
+  
+  public boolean doesServerSupportProject(String serverFactoryId, String projectName)
+  {
+    IProject project = ProjectUtilities.getProject(projectName);
+    IFacetedProject fProject = null;
+    if (project.exists())
+    {
+      try
+      {
+        fProject = ProjectFacetsManager.create(project);
+      } catch (CoreException ce)
+      {
+
+      }
+      
+      if (fProject != null)
+      {
+        Set facets = fProject.getProjectFacets();
+        return doesServerSupportFacets(serverFactoryId, facets);
+      }
+      else
+      {
+        //If it's not a faceted project, we have nothing to compare to - assume it's good.
+        return true;
+      }
+    }
+    else
+    {
+      //If the project doesn't exist, we have nothing to compare to - assume it's good.
+      return true;      
+    }
+    
+  }
+
+  public boolean doesServerSupportFacets(String serverFactoryId, Set facets)
+  {
+    Set runtimes = FacetUtils.getRuntimes(new Set[]{facets});
+    Iterator itr = runtimes.iterator();
+    IServerType st = ServerCore.findServerType(serverFactoryId);        
+    String runtimeTypeId = st.getRuntimeType().getId();
+    while (itr.hasNext())
+    {
+      org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = (org.eclipse.wst.common.project.facet.core.runtime.IRuntime)itr.next();
+      IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
+      if (runtimeTypeId.equals(sRuntime.getRuntimeType().getId()))
+      {
+        //found a match
+        return true;
+      }
+    }
+    
+    return false;    
+  }
+  
+  public boolean doesServerSupportTemplate(String serverFactoryId, String templateId)
+  {
+    IFacetedProjectTemplate template = ProjectFacetsManager.getTemplate(templateId);
+    Set templateFacets = template.getFixedProjectFacets();
+    Iterator templateFacetsItr = templateFacets.iterator();
+    while (templateFacetsItr.hasNext())
+    {
+      boolean serverSupportsThisOne = false;
+      IProjectFacet fixedFacet = (IProjectFacet)templateFacetsItr.next();      
+      List versions = null;
+      try
+      {
+        versions = fixedFacet.getSortedVersions(true);
+      } catch (VersionFormatException e)
+      {
+        Set versionSet = fixedFacet.getVersions();
+        Iterator itr = versionSet.iterator();
+        versions = new ArrayList();
+        while (itr.hasNext())
+        {
+            versions.add(itr.next());
+        }            
+      } catch (CoreException e)
+      {
+        Set versionSet = fixedFacet.getVersions();
+        Iterator itr = versionSet.iterator();
+        versions = new ArrayList();
+        while (itr.hasNext())
+        {
+            versions.add(itr.next());
+        }            
+      } 
+      Iterator versionsItr = versions.iterator();
+      while(versionsItr.hasNext())
+      {
+        IProjectFacetVersion pfv = (IProjectFacetVersion)versionsItr.next();
+        Set pfvs = new HashSet();
+        pfvs.add(pfv);
+        if (doesServerSupportFacets(serverFactoryId, pfvs))
+        {
+          serverSupportsThisOne = true;
+          break;
+        }        
+      }
+      
+      if (!serverSupportsThisOne)
+      {
+        return false;
+      }
+    }
+    
+    return true;
   }
   
   public IStatus validateProjectTargetAndJ2EE(String projectName, String compName, String earName, String earCompName, String serverFactoryId, String j2eeLevel)

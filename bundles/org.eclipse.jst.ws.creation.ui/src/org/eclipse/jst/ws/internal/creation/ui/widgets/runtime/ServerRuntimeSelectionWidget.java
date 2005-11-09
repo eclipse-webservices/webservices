@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ProjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.RuntimeServerSelectionWidget;
@@ -30,6 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -114,6 +119,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     runtimeWidget_.removeModifyListener( textListener_ );
     runtimeWidget_.setTypeRuntimeServer( ids );  
     projectWidget_.setTypeRuntimeServer(ids);
+    projectWidget_.refreshProjectItems();
     runtimeWidget_.addModifyListener( textListener_ );
   }
   
@@ -252,6 +258,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 		
 		//Set the current server selection and J2EE level on the ProjectSelectionWidget
 		projectWidget_.setTypeRuntimeServer(runtimeWidget_.getTypeRuntimeServer());
+        projectWidget_.refreshProjectItems();
   	}
   }
  
@@ -265,7 +272,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     IStatus projectStatus = projectWidget_.getStatus();
     IStatus clientStatus  = clientWidget_.getStatus();    
     IStatus finalStatus   = Status.OK_STATUS;
-    /*
+    
     
     // call child widgets' getStatus()
     if( serviceStatus.getSeverity() == Status.ERROR )
@@ -281,6 +288,71 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
       finalStatus = projectStatus;
     }
     
+    String projectName = projectWidget_.getProjectName();
+    if (projectName != null && projectName.length()>0)
+    {
+      //If the project exists, ensure that it is suitable for the selected runtime
+      //and server.
+      ValidationUtils valUtils = new ValidationUtils();
+      IProject project = ProjectUtilities.getProject(projectName);
+      String typeId = getServiceTypeRuntimeServer().getTypeId();
+      String runtimeId = getServiceTypeRuntimeServer().getRuntimeId();
+      String serverFactoryId = getServiceTypeRuntimeServer().getServerId();
+      
+      if (project.exists())
+      {
+        //Check if the runtime supports it.
+        if (!WebServiceRuntimeExtensionUtils2.doesServiceTypeAndRuntimeSupportProject(typeId, runtimeId, projectName))
+        {
+          String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeId);
+          finalStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_SERVICE_RUNTIME_DOES_NOT_SUPPORT_PROJECT, new String[]{runtimeLabel, projectName}));
+        }
+        
+        //Check if the server supports it.
+
+        if (serverFactoryId!=null && serverFactoryId.length()>0)
+        {
+          if (!valUtils.doesServerSupportProject(serverFactoryId, projectName))
+          {
+            String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverFactoryId);
+            finalStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_PROJECT, new String[]{serverLabel, projectName}));
+          }
+        }          
+      }
+      else
+      {
+        //Look at the project type to ensure that it is suitable for the selected runtime
+        //and server.
+        
+        String templateId = getServiceComponentType();
+
+        if (templateId != null && templateId.length()>0)
+        {
+          //Check if the runtime supports it.            
+          if (!WebServiceRuntimeExtensionUtils2.doesServiceTypeAndRuntimeSupportTemplate(typeId, runtimeId, templateId))
+          {
+            String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeId);
+            String templateLabel = FacetUtils.getTemplateLabelById(templateId);
+            finalStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_SERVICE_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE, new String[]{runtimeLabel, templateLabel}));
+          }
+          
+          //Check if the server supports it.
+          if (serverFactoryId!=null && serverFactoryId.length()>0)
+          {
+            if (!valUtils.doesServerSupportTemplate(serverFactoryId, templateId))
+            {
+              String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverFactoryId);
+              String templateLabel = FacetUtils.getTemplateLabelById(templateId);
+              finalStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_TEMPLATE, new String[]{serverLabel, templateLabel}));
+            }
+          }
+        }
+        
+        
+        
+      }
+    }    
+    /*
     //Validate service side server target and J2EE level
 	ValidationUtils valUtils = new ValidationUtils();
 	String serviceEARName  = projectWidget_.getEarProjectName();
@@ -313,21 +385,22 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
         }
       }
     }
-    
+    */
     if (isClientWidgetVisible_) 
     {
 	    String clientEARName   = clientWidget_.getClientEarProjectName();
 	    String clientProjName  = clientWidget_.getClientProjectName();
-	
-  		String clientComponentName = clientWidget_.getClientComponentName();
+        String serviceProjName = projectWidget_.getProjectName();
+	    String serviceEarName  = projectWidget_.getEarProjectName();
+  		//String clientComponentName = clientWidget_.getClientComponentName();
 		
 	    // check same EAR-ness -----
-	    String warning_msg = getEARProjectWarningMessage(serviceEARName, clientEARName);
+	    String warning_msg = getEARProjectWarningMessage(serviceEarName, clientEARName);
 	    
-		if (serviceComponentName.equalsIgnoreCase(clientComponentName)){
-			  String err_msg = NLS.bind(ConsumptionUIMessages.MSG_SAME_CLIENT_AND_SERVICE_COMPONENTS, new String[]{ "WEB" } );
-			  finalStatus = StatusUtils.errorStatus( err_msg );				
-		}
+		//if (serviceComponentName.equalsIgnoreCase(clientComponentName)){
+			  //String err_msg = NLS.bind(ConsumptionUIMessages.MSG_SAME_CLIENT_AND_SERVICE_COMPONENTS, new String[]{ "WEB" } );
+			  //finalStatus = StatusUtils.errorStatus( err_msg );				
+		//}
 		
 	    if( clientProjName != null && serviceProjName != null && 
 	        clientProjName.equalsIgnoreCase( serviceProjName ))
@@ -343,7 +416,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 	    }         
       
     }
-    */
+    
     return finalStatus;
   }
   

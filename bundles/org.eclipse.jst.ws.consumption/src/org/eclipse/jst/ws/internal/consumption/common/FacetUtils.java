@@ -155,6 +155,12 @@ public class FacetUtils
     return "";
   }
   
+  public static String getTemplateLabelById(String templateId)
+  {
+    IFacetedProjectTemplate template = ProjectFacetsManager.getTemplate(templateId);
+    return template.getLabel();
+  }
+  
   public static Set getInstallActions(Set projectFacetVersions)
   {
     HashSet actions = new HashSet();

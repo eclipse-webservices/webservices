@@ -75,10 +75,9 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 
   //private String   componentType_;
   
+  private ModifyListener projectTypeListener_;
   private ModifyListener moduleProjectListener_;
-  private ModifyListener moduleListener_;
   private ModifyListener earProjectListener_;
-  private ModifyListener earModuleListener_;
 
   private String initialModuleName_;
   
@@ -141,6 +140,14 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     
     //Temporarily remove the listeners
     
+    projectTypeListener_ = new ModifyListener()
+    {
+      public void modifyText(ModifyEvent evt) 
+      {
+        statusListener_.handleEvent( null );
+      }
+    };    
+    
 	moduleProjectListener_ = new ModifyListener()
 	                         {
 	                           public void modifyText(ModifyEvent evt) 
@@ -149,33 +156,15 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 					             statusListener_.handleEvent( null );
 		                       }
 	                         };
-    /*
-	moduleListener_ = new ModifyListener()
-                      {
-                        public void modifyText(ModifyEvent evt) 
-			            {
-			              handleModuleChanged();
-				          statusListener_.handleEvent( null );
-	                    }
-                      };
-	
+    
 	earProjectListener_ = new ModifyListener()
                           {
                             public void modifyText(ModifyEvent evt) 
 				            {
-				              handleEarProjectChanged();
 				              statusListener_.handleEvent( null );
 	                        }
                           };
-                        
-    earModuleListener_ = new ModifyListener()
-                             {
-                               public void modifyText(ModifyEvent evt) 
-				               {
-				                 statusListener_.handleEvent( null );
-	                           }
-                             };
-    */					  
+  					  
     // message area
     messageText_ = uiUtils.createText(parent, ConsumptionUIMessages.LABEL_NO_LABEL, ConsumptionUIMessages.LABEL_NO_LABEL, null, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY);
     setEarProjectItems();
@@ -185,14 +174,16 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   private void listenersOn()
   {
+    projectType_.addModifyListener(projectTypeListener_);
 	moduleProject_.addModifyListener( moduleProjectListener_ );
-	//earProject_.addModifyListener( earModuleListener_ );
+	earProject_.addModifyListener( earProjectListener_ );
   }
   
   private void listenersOff()
   {
+    projectType_.removeModifyListener(projectTypeListener_);
     moduleProject_.removeModifyListener( moduleProjectListener_ );
-	//earModule_.removeModifyListener( earModuleListener_ );
+    earProject_.removeModifyListener( earProjectListener_ );
   }
   
   /*
@@ -385,7 +376,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   public String getComponentType()
   {
     int idx = projectType_.getSelectionIndex();
-    if (templates_ != null)
+    if (templates_ != null && idx > -1)
     {
       return templates_[idx];
     }
@@ -699,23 +690,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
       else
         return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_SERVICE_EAR_EMPTY, new String[]{""} ) );      
     }
-    
-//  TODO:  Defect 107997 - Revisit prject and module creation logic
-//    if( !FlexibleJavaProjectPreferenceUtil.getMultipleModulesPerProjectProp() )
-//    {
-//      IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectText);
-//        
-//      if( project != null && project.exists() )
-//      {
-//    	String            moduleName = module_.getText();
-//        IVirtualComponent component  = J2EEUtils.getVirtualComponent( project, moduleName );  
-//        
-//        if( !component.exists() && !moduleName.equals( projectText ) )
-//        {
-//          finalStatus = new SimpleStatus("",ConsumptionUIMessages.MSG_MODULE_NAME_AND_PROJECT_NAME_NOT_THE_SAME,Status.ERROR);   	
-//        }
-//      }
-//    }
     
     return finalStatus;
   }

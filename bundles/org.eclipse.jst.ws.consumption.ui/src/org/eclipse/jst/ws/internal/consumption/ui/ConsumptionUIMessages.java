@@ -89,6 +89,14 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String MSG_INVALID_PROJECT_TYPE;
 	public static String MSG_MODULE;
 	public static String MSG_MODULE_NAME_AND_PROJECT_NAME_NOT_THE_SAME;
+    public static String MSG_SERVICE_RUNTIME_DOES_NOT_SUPPORT_PROJECT;
+    public static String MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_PROJECT;
+    public static String MSG_SERVICE_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE;
+    public static String MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_TEMPLATE;
+    public static String MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_PROJECT;
+    public static String MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT;
+    public static String MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE;
+    public static String MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_TEMPLATE;
 	public static String MSG_SAME_CLIENT_AND_SERVICE_EARS;
 	public static String MSG_SAME_CLIENT_AND_SERVICE_COMPONENTS;
 	public static String MSG_SAME_CLIENT_AND_SERVICE_PROJECTS;

@@ -10,9 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -22,6 +27,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -279,10 +285,12 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
    */
   public IStatus getStatus() 
   {
+    //MessageUtils msgUtils = new MessageUtils( pluginId_ + ".plugin", this );
+    ValidationUtils valUtils = new ValidationUtils();
     //Return OK all the time for now.
     IStatus finalStatus   = Status.OK_STATUS;
     
-    /*
+    
     IStatus projectStatus = projectWidget_.getStatus();
     IStatus runtimeStatus = runtimeWidget_.getStatus();
     
@@ -296,6 +304,71 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
     }
     else
     {
+      String projectName = projectWidget_.getProjectName();
+      if (projectName != null && projectName.length()>0)
+      {
+        //If the project exists, ensure that it is suitable for the selected runtime
+        //and server.
+        
+        IProject project = ProjectUtilities.getProject(projectName);
+        String typeId = getClientTypeRuntimeServer().getTypeId();
+        String runtimeId = getClientTypeRuntimeServer().getRuntimeId();
+        String serverFactoryId = getClientTypeRuntimeServer().getServerId();
+        
+        if (project.exists())
+        {
+          //Check if the runtime supports it.
+          if (!WebServiceRuntimeExtensionUtils2.doesClientTypeAndRuntimeSupportProject(typeId, runtimeId, projectName))
+          {
+            String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeId);
+            finalStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_PROJECT, new String[]{runtimeLabel, projectName}));
+          }
+          
+          //Check if the server supports it.
+
+          if (serverFactoryId!=null && serverFactoryId.length()>0)
+          {
+            if (!valUtils.doesServerSupportProject(serverFactoryId, projectName))
+            {
+              String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverFactoryId);
+              finalStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT, new String[]{serverLabel, projectName}));
+            }
+          }          
+        }
+        else
+        {
+          //Look at the project type to ensure that it is suitable for the selected runtime
+          //and server.
+          
+          String templateId = getClientComponentType();
+
+          if (templateId != null && templateId.length()>0)
+          {
+            //Check if the runtime supports it.            
+            if (!WebServiceRuntimeExtensionUtils2.doesClientTypeAndRuntimeSupportTemplate(typeId, runtimeId, templateId))
+            {
+              String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeId);
+              String templateLabel = FacetUtils.getTemplateLabelById(templateId);
+              finalStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE, new String[]{runtimeLabel, templateLabel}));
+            }
+            
+            //Check if the server supports it.
+            if (serverFactoryId!=null && serverFactoryId.length()>0)
+            {
+              if (!valUtils.doesServerSupportTemplate(serverFactoryId, templateId))
+              {
+                String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverFactoryId);
+                String templateLabel = FacetUtils.getTemplateLabelById(templateId);
+                finalStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_TEMPLATE, new String[]{serverLabel, templateLabel}));
+              }
+            }
+          }
+          
+          
+          
+        }
+      }
+      /*
       SelectionListChoices clientProjects = getProjectSelectionWidget().getProjectChoices();
       ValidationUtils valUtils = new ValidationUtils();
       if (clientProjects != null)
@@ -313,11 +386,11 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
         String clientEARCompName = projectWidget_.getEarComponentName();
 
         //Validate that the selected client project is of the type indicated by client project type.
-        IStatus clientProjectTypeStatus = valUtils.validateProjectType(clientProjName, runtime2ClientTypes_);
-        if (clientProjectTypeStatus.getSeverity() == Status.ERROR)
-        {
-          finalStatus = clientProjectTypeStatus;
-        }
+        //IStatus clientProjectTypeStatus = valUtils.validateProjectType(clientProjName, runtime2ClientTypes_);
+        //if (clientProjectTypeStatus.getSeverity() == Status.ERROR)
+        //{
+          //finalStatus = clientProjectTypeStatus;
+        //}
         
         //Validate client side server targets and J2EE levels
         String clientServerFactoryId = getClientTypeRuntimeServer().getServerId();
@@ -330,8 +403,9 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
           finalStatus = clientProjectStatus;
         }
       }
+    */  
     }
-    */
+    
     return finalStatus;    
   }
 }

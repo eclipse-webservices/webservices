@@ -628,6 +628,47 @@ public class WebServiceRuntimeExtensionUtils2
     
   }
   
+  public static boolean doesServiceTypeAndRuntimeSupportProject(String typeId, String runtimeId, String projectName)
+  {
+    String[] descs = getServiceRuntimesByServiceType(typeId);
+    IProject[] projects = FacetUtils.getAllProjects();
+    
+    for (int i=0; i<projects.length;i++)
+    {
+      //if this is the test project, check if this project suits any of the service runtimes
+      if (projects[i].getName().equals(projectName))
+      {
+        for (int j = 0; j < descs.length; j++)
+        {
+          ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(descs[j]);
+          RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
+          try
+          {
+            IFacetedProject fproject = ProjectFacetsManager.create(projects[i]);
+            if (fproject != null)
+            {
+              Set facetVersions = fproject.getProjectFacets();
+              FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+              if (fm.isMatch())
+              {
+                //found a match. done.
+                return true;
+              }
+            } else
+            {
+              // TODO Handle the plain-old Java projects
+            }
+          } catch (CoreException ce)
+          {
+
+          }
+        }
+      }
+    }
+    
+    return false;
+    
+  }  
   public static boolean doesServiceRuntimeSupportProject(String serviceRuntimeId, String projectName)
   {
     IProject project = ProjectUtilities.getProject(projectName);
@@ -703,6 +744,42 @@ public class WebServiceRuntimeExtensionUtils2
     return (String[])templateIdList.toArray(new String[]{});    
   }
 
+  public static boolean doesServiceTypeAndRuntimeSupportTemplate(String typeId, String runtimeId, String templateId)
+  {
+    String[] srIds = getServiceRuntimesByServiceType(typeId);
+    if (srIds == null)
+    {
+      return false;
+    }
+
+    ArrayList templateIdList = new ArrayList();
+    for (int i = 0; i < srIds.length; i++)
+    {
+      ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(srIds[i]);
+      String thisRuntimeId = desc.getRuntime().getId();
+      if (thisRuntimeId.equals(runtimeId))
+      {
+        //Get the templates for this service runtime
+        Set templateIds = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+        
+        //Check if any of the template ids match the given one.
+        Iterator itr = templateIds.iterator();
+        while (itr.hasNext())
+        {
+          IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
+          if (template.getId().equals(templateId))
+          {
+            return true;
+          }
+
+        }
+      }
+      
+    }  
+    
+    return false;    
+  }
+  
   public static boolean doesServiceRuntimeSupportTemplate(String serviceRuntimeId, String templateId)
   {
     ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(serviceRuntimeId);
@@ -1095,6 +1172,43 @@ public class WebServiceRuntimeExtensionUtils2
   
   public static boolean doesClientTypeAndRuntimeSupportTemplate(String clientImplId, String runtimeId, String templateId)
   {
+    String[] crIds = getClientRuntimesByType(clientImplId);
+    if (crIds == null)
+    {
+      return false;
+    }
+
+    ArrayList templateIdList = new ArrayList();
+    for (int i = 0; i < crIds.length; i++)
+    {
+      ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(crIds[i]);
+      String thisRuntimeId = desc.getRuntime().getId();
+      if (thisRuntimeId.equals(runtimeId))
+      {
+        //Get the templates for this client runtime
+        Set templateIds = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+        
+        //Check if the template ids contains the template we're checking for
+        Iterator itr = templateIds.iterator();
+        while (itr.hasNext())
+        {
+          IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
+          if (template.getId().equals(templateId))
+          {
+            return true;
+          }
+        }
+      }
+      
+    }  
+    
+    return false;    
+  }  
+  
+  
+  /*
+  public static boolean doesClientTypeAndRuntimeSupportTemplate(String clientImplId, String runtimeId, String templateId)
+  {
     String[] templateIds = getClientProjectTemplates(clientImplId, runtimeId);
     if (templateIds!=null)
     {
@@ -1108,7 +1222,8 @@ public class WebServiceRuntimeExtensionUtils2
     }
     
     return false;
-  } 
+  }
+  */ 
   
   public static boolean doesClientRuntimeSupportTemplate(String clientRuntimeId, String templateId)
   {
@@ -1224,6 +1339,49 @@ public class WebServiceRuntimeExtensionUtils2
     return (String[])validProjects.toArray(new String[0]);
     
   }  
+  
+  public static boolean doesClientTypeAndRuntimeSupportProject(String typeId, String runtimeId, String projectName)
+  {
+    String[] descs = getClientRuntimesByType(typeId);
+    IProject[] projects = FacetUtils.getAllProjects();
+    ArrayList validProjects = new ArrayList();
+    
+    for (int i=0; i<projects.length;i++)
+    {
+      // check if this projects suits any of the client runtimes
+      if (projects[i].getName().equals(projectName))
+      {
+        for (int j = 0; j < descs.length; j++)
+        {
+          ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(descs[j]);
+          RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
+          try
+          {
+            IFacetedProject fproject = ProjectFacetsManager.create(projects[i]);
+            if (fproject != null)
+            {
+              Set facetVersions = fproject.getProjectFacets();
+              FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+              if (fm.isMatch())
+              {
+                return true;
+              }
+            } else
+            {
+              // TODO Handle the plain-old Java projects
+            }
+          } catch (CoreException ce)
+          {
+
+          }
+        }
+      }
+    }
+    
+    return false;
+    
+  }  
+  
   
   public static boolean doesClientRuntimeSupportProject(String clientRuntimeId, String projectName)
   {
