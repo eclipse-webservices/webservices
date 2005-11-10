@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.wsdl.OperationType;
-import javax.xml.namespace.QName;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -39,7 +38,6 @@ import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.internal.util.WSDLUtil;
