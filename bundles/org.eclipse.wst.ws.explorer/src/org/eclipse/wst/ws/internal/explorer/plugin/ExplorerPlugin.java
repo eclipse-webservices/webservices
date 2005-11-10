@@ -14,7 +14,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Hashtable;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -66,9 +65,6 @@ public class ExplorerPlugin extends AbstractUIPlugin
 
   /**
    * Called once by the platform when this plugin is first loaded.
-   * 
-   * @throws CoreException
-   *             If this plugin fails to start.
    */
   public void start(BundleContext bundle) throws Exception
   {
@@ -79,9 +75,6 @@ public class ExplorerPlugin extends AbstractUIPlugin
 
   /**
    * Called once by the platform when this plugin is unloaded.
-   * 
-   * @throws CoreException
-   *             If this plugin fails to shutdown.
    */
   public void stop(BundleContext bundle) throws Exception
   {
