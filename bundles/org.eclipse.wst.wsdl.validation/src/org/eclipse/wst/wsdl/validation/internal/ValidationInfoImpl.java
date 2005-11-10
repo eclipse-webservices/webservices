@@ -18,7 +18,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
-import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 

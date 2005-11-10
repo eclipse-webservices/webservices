@@ -31,7 +31,6 @@ import org.apache.xerces.jaxp.SAXParserFactoryImpl;
 import org.apache.xerces.parsers.SAXParser;
 import org.apache.xerces.parsers.StandardParserConfiguration;
 import org.apache.xerces.xni.XNIException;
-import org.apache.xerces.xni.parser.XMLInputSource;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult;
