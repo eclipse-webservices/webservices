@@ -15,10 +15,6 @@ Export-Package: org.eclipse.wst.ws.internal.ui.wsrt,
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
- org.eclipse.jdt.core,
- org.eclipse.wst.command.env.core,
- org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.ui,
- org.eclipse.wst.ws,
- org.eclipse.wst.common.environment
+ org.eclipse.wst.ws
 Eclipse-AutoStart: true
