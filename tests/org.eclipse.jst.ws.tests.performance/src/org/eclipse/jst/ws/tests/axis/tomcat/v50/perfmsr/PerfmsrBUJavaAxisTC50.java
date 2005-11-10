@@ -27,9 +27,6 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
     private final String WS_RUNTIMEID_AXIS =  WSJUnitConstants.WS_RUNTIMEID_AXIS; 
 	private final String PROJECT_NAME = WSJUnitConstants.BU_PROJECT_NAME;
     
-	/* could be removed later */
-	private final String WEB_MODULE_NAME = "TestBUWebModule";
-
 	private IFile sourceFile_;
 	
   /**
@@ -39,27 +36,6 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
    */
 	protected void installInputData() throws Exception
 	{
-		// Create a Web project (TestWeb) targetted to Tomcat 5.0
-		/*
-		IStatus s = JUnitUtils.createWebModule(PROJECT_NAME, WEB_MODULE_NAME, SERVERTYPEID_TC50, String.valueOf(J2EEVersionConstants.J2EE_1_3_ID), env_, null);
-		if (s.getSeverity() != Status.OK) {
-		  System.out.println("Error: "+s.getMessage());
-			throw new Exception(s.getException());
-		}
-		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
-		assertTrue(webProject.exists());
-		*/
-		
-		// Copy the contents of data/<test name> to the Web project's source folder.
-		// <Web Project>/JavaSource/foo/Echo.java
-		//IFolder destFolder = JUnitUtils.getSourceFolderForWebProject(WEB_PROJECT_NAME);
-		/*
-        IPath destPath = ResourceUtils.getJavaSourceLocation(webProject);
-        IFolder folder = (IFolder)ResourceUtils.findResource(destPath);
-		JUnitUtils.copyTestData("BUJava/src",folder,env_, null);
-		sourceFile_ = folder.getFile(new Path("foo/Echo.java"));
-		assertTrue(sourceFile_.exists());
-		*/
 		
 		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
         IPath destPath = ResourceUtils.getJavaSourceLocation(webProject);

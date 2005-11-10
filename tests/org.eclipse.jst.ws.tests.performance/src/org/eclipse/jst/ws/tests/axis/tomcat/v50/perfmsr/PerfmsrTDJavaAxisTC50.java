@@ -26,9 +26,6 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
   
   private final String PROJECT_NAME = WSJUnitConstants.TD_PROJECT_NAME;
   
-  /*module name to be removed later */
-  private final String WEB_MODULE_NAME = "TestTDWebModule"; 
-  
   private IFile sourceFile_;
 	
 
@@ -39,21 +36,6 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
    */  
 	protected void installInputData() throws Exception {
 
-		/*
-		// Create an associated Web project (TestWeb) targetted to Tomcat 5.0
-		IStatus s = JUnitUtils.createWebModule(PROJECT_NAME, WEB_MODULE_NAME, SERVERTYPEID_TC50, String.valueOf(J2EEVersionConstants.J2EE_1_4_ID), env_, null);
-		if (s.getSeverity() != Status.OK)
-			throw new Exception(s.getException());
-    
-		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
-		assertTrue(webProject.exists());
-
-		IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);		
-		JUnitUtils.copyTestData("TDJava",destFolder,env_, null);
-		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));
-		assertTrue(sourceFile_.exists());
-		*/
-		
 		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);		
 		IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
 		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));

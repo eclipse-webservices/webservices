@@ -69,23 +69,6 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
       
     }
   
-    private void createWebModule(String projectNm, String componentName, int j2eeVersion){
-
-      CreateModuleCommand cmc = new CreateModuleCommand();
-      cmc.setJ2eeLevel(new Integer(j2eeVersion).toString());
-      cmc.setModuleName(componentName);
-      cmc.setModuleType(CreateModuleCommand.WEB);
-      cmc.setProjectName(projectNm);
-      cmc.setServerFactoryId(SERVERTYPEID_TC50);
-      cmc.execute(null, null );
-      
-      System.out.println("Done creating Web component..."+projectNm);      
-      IProject p = ResourceUtils.getWorkspaceRoot().getProject(projectNm);
-      IVirtualComponent vc = ComponentCore.createComponent(p);
-      assertTrue(vc.exists());      
-      
-    }
-    
     public void dtestCreateEJBModule(){
      
       CreateModuleCommand cmc = new CreateModuleCommand();

@@ -11,12 +11,13 @@
 package org.eclipse.jst.ws.tests.util;
 
 import java.util.Vector;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
-import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.common.environment.IStatusHandler;
+import org.eclipse.wst.common.environment.StatusException;
 
 public class AccumulateStatusHandler implements IStatusHandler {
 	  Vector statusList_;
