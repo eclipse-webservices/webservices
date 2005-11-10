@@ -84,16 +84,6 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
    * CONTEXT_ID PWRS0007 for the explore view radio button of the runtime selection dialog
    */
   private String INFOPOP_PWRS_RADIO_EXPLORE = WebServiceConsumptionUIPlugin.ID + ".PWRS0007";
-  /*
-   * CONTEXT_ID PWRS0008 for the Web Project combo box of the runtime selection dialog
-   */
-  //  private String INFOPOP_PWRS_COMBO_PROJECT =
-  // WebServiceConsumptionUIPlugin.ID + ".PWRS0008";
-  /*
-   * CONTEXT_ID PWRS0009 for the J2EE version combo box of the runtime selection dialog
-   */
-  private String INFOPOP_PWRS_J2EE_VERSION = WebServiceConsumptionUIPlugin.ID + ".PWRS0009";
-
   private Hashtable serverLabels_;
   private Hashtable existingServersTable_;
   private String defaultServer_;

@@ -11,9 +11,9 @@
       id="actionDialogPreferenceType"
       name="%PLUGIN_XP_POPUP_DIALOGS"/>
 
-   <extension-point id="antDataMapping" name="antDataMapping" schema="schema/antdatamapping.exsd"/>
-   <extension-point id="antScenario" name="antScenario" schema="schema/antScenario.exsd"/>
-   
+   <extension-point id="antDataMapping" name="%XP_antDataMapping" schema="schema/antdatamapping.exsd"/>
+   <extension-point id="antScenario" name="%XP_antScenario" schema="schema/antScenario.exsd"/>
+     
    <!-- Note that if you set the plug-in compiler to give error on 
    "References to Unknown Resources", you will get 2 errors for 
    missing resources for ant-lib/anttasks.jar.  

@@ -616,22 +616,17 @@
    </extension>
    
 
-   <extension-point id="wsImpl" name="Web service implementations"/>
-   <extension-point id="wsClientImpl" name="Web service client implementations"/>
-   
+   <extension-point id="wsImpl" name="%XP_wsImpl"/>
+   <extension-point id="wsClientImpl" name="%XP_wsClientImpl"/>
+   <extension-point id="runtimes" name="%XP_runtimes" />
+   <extension-point id="serviceRuntimes" name="%XP_serviceRuntimes" />
+   <extension-point id="clientRuntimes" name="%XP_clientRuntimes" />
+   <extension-point id="tester" name="%XP_tester"/>
+
    <!-- serviceType, clientType, and webServiceRuntime are to be deleted in WTP 1.0 M9 -->
    <extension-point id="serviceType" name="Extensions that provide unique combinations of service implementations, scenarios, and module types "/>
    <extension-point id="clientType" name="Extensions that provide unique combinations of client implementations and module types"/>
    <extension-point id="webServiceRuntime" name="Web service runtimes"/>
-   
-   
-   <extension-point id="runtimes" name="Web service runtimes" />
-   <extension-point id="serviceRuntimes" name="Combination of a Web service runime, service implementation type, and required facets" />
-   <extension-point id="clientRuntimes" name="Combination of a Web service runime, client implementation type, and required facets" />
-
-   <extension-point id="tester" name="Web service test facilities"/>
-
-
 
 <!-- Test Extensions beginning  -->
 

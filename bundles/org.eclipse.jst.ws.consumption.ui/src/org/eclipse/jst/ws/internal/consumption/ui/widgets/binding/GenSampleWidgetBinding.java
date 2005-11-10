@@ -141,7 +141,6 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	private String            earProject_;
 	private String            ear_;
 	private IWebServiceClient webServiceClient_;
-	private String            j2eeLevel_;
 	private String            wsdlURI_;
     
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -255,11 +254,6 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
       typeRuntimeServer_ = typeRuntimeServer;  
 	}
 	  
-	public void setClientJ2EEVersion( String j2eeLevel )
-	{
-	  j2eeLevel_ = j2eeLevel;  
-	}
-	
 	public void setModule( String module )
 	{
 	  module_ = module;

@@ -35,7 +35,6 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
-import org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
@@ -752,7 +751,6 @@ public class WebServiceRuntimeExtensionUtils2
       return false;
     }
 
-    ArrayList templateIdList = new ArrayList();
     for (int i = 0; i < srIds.length; i++)
     {
       ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(srIds[i]);
@@ -943,17 +941,15 @@ public class WebServiceRuntimeExtensionUtils2
   
   public static String[] getAllClientServerFactoryIds() 
   {    
-    ArrayList serverFactoryIds = new ArrayList();
     Iterator iter = registry.clientRuntimes_.values().iterator();
     while (iter.hasNext())   
     {
-      ClientRuntimeDescriptor desc = (ClientRuntimeDescriptor)iter.next();
-      Set runtimes = getRuntimes(desc.getRequiredFacetVersions());
-      IServerType[] allServerTypes = ServerCore.getServerTypes();
       //TODO iterate over all the server types and see if their runtime types have an
       //id that matches the runtime type of any of the runtimes.            
+      // ClientRuntimeDescriptor desc = (ClientRuntimeDescriptor)iter.next();
+      // Set runtimes = getRuntimes(desc.getRequiredFacetVersions());
+      // IServerType[] allServerTypes = ServerCore.getServerTypes();
     }
-    
     //return (String[])serverFactoryIds.toArray(new String[]{});
     //Temporarily return all server types
     return getAllServerFactoryIdsWithRuntimes();    
@@ -1178,7 +1174,6 @@ public class WebServiceRuntimeExtensionUtils2
       return false;
     }
 
-    ArrayList templateIdList = new ArrayList();
     for (int i = 0; i < crIds.length; i++)
     {
       ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(crIds[i]);
@@ -1344,7 +1339,6 @@ public class WebServiceRuntimeExtensionUtils2
   {
     String[] descs = getClientRuntimesByType(typeId);
     IProject[] projects = FacetUtils.getAllProjects();
-    ArrayList validProjects = new ArrayList();
     
     for (int i=0; i<projects.length;i++)
     {
@@ -1581,13 +1575,6 @@ public class WebServiceRuntimeExtensionUtils2
   }    
   
     
-  private static Set getRuntimes(Set facets)
-  {
-    //Return all the runtimes in the dummy implementation
-    //return RuntimeManager.getRuntimes();
-    return RuntimeManager.getRuntimes(facets);
-  }
-  
   private static Set getRuntimes(RequiredFacetVersion[] requiredFacetVersions)
   {
     return FacetUtils.getRuntimes(requiredFacetVersions);

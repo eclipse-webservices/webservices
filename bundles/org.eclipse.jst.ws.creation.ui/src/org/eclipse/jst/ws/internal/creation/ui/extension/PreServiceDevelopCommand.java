@@ -19,17 +19,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
-import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.wsrt.IContext;
@@ -47,10 +43,10 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
   private String            serviceRuntimeId_;
   private IContext          context_;
   private ISelection        selection_;
-	private String						project_;
+  private String			project_;
   private String            module_;
-  private String			      moduleType_;
-	private String						earProject_;
+  private String			moduleType_;
+  private String			earProject_;
   private String            ear_;
 	
   private IWebService       webService_;
@@ -165,47 +161,6 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 		  IStatus status = command.execute( monitor, null);
 */
 	  return status;				
-  }
-  
-  private String getJ2EELevelFromExistingProject()
-  {
-    IProject project = ProjectUtilities.getProject(project_);
-    if (project != null && project.exists())
-    {
-          //If the project has the "jst.web", "jst.ejb", or "jst.appclient" facet, deduce a J2EE version.
-          int j2eeLevelInt = J2EEUtils.getJ2EEVersion(project);
-          if (j2eeLevelInt != -1)
-          {
-            return String.valueOf(j2eeLevelInt);                    
-          }
-    }
-    
-    //TODO Figure out the J2EE version from the facets to add to a project.
-    return String.valueOf(J2EEVersionConstants.J2EE_1_4_ID); //for now, just return something
-  }
-  
-  private int convertModuleType(String type)
-  {
-	  if (type.equals(IModuleConstants.JST_WEB_MODULE))
-	  {
-		  return CreateModuleCommand.WEB;
-	  }
-	  else if (type.equals(IModuleConstants.JST_EJB_MODULE))
-	  {
-		  return CreateModuleCommand.EJB;
-	  }
-	  else if (type.equals(IModuleConstants.JST_APPCLIENT_MODULE))
-	  {
-		  return CreateModuleCommand.APPCLIENT;
-	  }
-	  else if (type.equals(IModuleConstants.JST_EAR_MODULE))
-	  {
-		  return CreateModuleCommand.EAR;
-	  }	  
-	  else
-	  {
-		  return -1;
-	  }
   }
   
   public void setServiceTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )

@@ -40,9 +40,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 
 
   
-  private final String EAR_PERMITTED_PROJECT_TYPE = "EAR_PERMITTED_PROJECT_TYPE";
-  //private final String JAVA_PROJECT_TYPE_ID = "org.eclipse.jst.ws.consumption.ui.clientProjectType.Containerless";
-  
   private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
   
   //private SelectionListChoices projects_;
@@ -50,10 +47,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   private boolean needEAR_;
   
   private TypeRuntimeServer trsIds_;
-
-  //private String j2eeVersion_;
-  
-  private String projectTypeId_ = EAR_PERMITTED_PROJECT_TYPE;
 
   private Listener statusListener_;
 
@@ -79,10 +72,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   private ModifyListener moduleProjectListener_;
   private ModifyListener earProjectListener_;
 
-  private String initialModuleName_;
-  
-  
-
   /*
    * CONTEXT_ID PWRS0006 for the service-side Web project combo box of the
    * runtime selection Page
@@ -91,9 +80,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 
   //private Combo module_;
 
-  /* CONTEXT_ID PWRS0012 for the EAR combo box of the runtime selection Page */
-  private String INFOPOP_PWRS_COMBO_EAR = pluginId_ + ".PWRS0012";
-  
   /* CONTEXT_ID PWRS0018 for the client project type combo box of the runtime selection Page */
   private String INFOPOP_PWRS_COMBO_CLIENT_PROJECT_TYPE = pluginId_ + ".PWRS0018";
   
@@ -351,7 +337,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   {
 	listenersOff();
     moduleProject_.setText( name );
-    initialModuleName_ = name;
     handleProjectChanged();
 	listenersOn();
   }
@@ -417,24 +402,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     listenersOn();
   }
   
-  public void setProjectTypeId(String id)
-  {
-    projectTypeId_ = id;
-  }
-  
-  private String[] getProjects()
-  {
-	IProject[] projects     = J2EEUtils.getAllFlexibleProjects();
-	String[]   projectNames = new String[projects.length];
-	
-	for( int index = 0; index < projects.length; index++ )
-	{
-	  projectNames[index] = projects[index].getName();	
-	}
-	
-	return projectNames;
-  }
-
   public void refreshProjectItems()
   {
     listenersOff();

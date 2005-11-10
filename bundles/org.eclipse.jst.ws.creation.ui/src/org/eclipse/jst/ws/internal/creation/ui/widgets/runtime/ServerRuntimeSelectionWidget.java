@@ -37,7 +37,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 
 /*
  *
@@ -57,8 +56,6 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   private ClientRuntimeSelectionWidget clientWidget_;
   private TextModifyListener           textListener_;
 
-  private String serviceRuntimeId_;
-  
   private boolean isClientWidgetVisible_ = true;
   
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
@@ -135,7 +132,8 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   
   public void setServiceRuntimeId(String id)
   {
-    serviceRuntimeId_ = id;
+	//TODO This method and any mappings to it
+	// should be deleted if no longer required.
   }
   
   public String getServiceRuntimeId()
@@ -150,7 +148,8 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   
   public void setClientRuntimeId(String id)
   {
-    clientWidget_.setClientRuntimeId(id);
+    //TODO This method and any mappings to it
+	// should be deleted if no longer required.
   }
   
   public String getClientRuntimeId()
@@ -442,33 +441,5 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 
     return null;
 
-  }
-  
-  //Returns a label corresponding to the componentTypeId. This is hard-coded for now.
-  //This is something the flexible project framework should provide. Enhancement 106785 has been
-  //opened.
-  private String getCompTypeLabel(String typeId)
-  {
-	  if (typeId.equals(IModuleConstants.JST_WEB_MODULE))
-	  {
-		  return ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_WEB;
-	  }
-	  else if (typeId.equals(IModuleConstants.JST_EJB_MODULE))
-	  {
-		  return ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_EJB;
-	  }
-	  else if (typeId.equals(IModuleConstants.JST_APPCLIENT_MODULE))
-	  {
-		  return ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_APP_CLIENT;
-	  }
-	  else if (typeId.equals(IModuleConstants.JST_UTILITY_MODULE))
-	  {
-		  return ConsumptionUIMessages.LABEL_CLIENT_COMP_TYPE_CONTAINERLESS;
-	  }
-	  else
-	  {
-		  //No known label, return the typeId itself. 
-		  return typeId;
-	  }	  
   }
 }
