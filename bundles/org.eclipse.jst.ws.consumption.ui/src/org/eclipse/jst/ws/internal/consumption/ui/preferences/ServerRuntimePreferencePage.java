@@ -14,7 +14,6 @@ package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 import java.util.ArrayList;
 
 import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
