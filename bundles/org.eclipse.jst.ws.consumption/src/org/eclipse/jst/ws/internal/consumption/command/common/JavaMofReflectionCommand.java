@@ -19,13 +19,10 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jem.util.emf.workbench.nature.EMFNature;
 import org.eclipse.jem.workbench.utility.JemProjectUtilities;
-import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -46,7 +43,6 @@ public class JavaMofReflectionCommand extends AbstractDataModelOperation
   private static String CLASS_EXTENSION = ".class";
   
   private String clientProject;
-  private ResourceSet resourceSet;
   private JavaHelpers javaClass;
   private String qname;
   private String proxyBean;

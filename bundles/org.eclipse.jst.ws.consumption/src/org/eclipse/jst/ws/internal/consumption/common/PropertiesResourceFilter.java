@@ -15,14 +15,13 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.AnyFilter;
-import org.eclipse.jst.ws.internal.common.Filter;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin;
 import org.eclipse.osgi.util.NLS;
 
 
 /**
-* This is a kind of {@link Filter} that accepts only objects
+* This is a kind of Filter that accepts only objects
 * which indicate a Java resource. In particular, any
 * {@link org.eclipse.core.resources.IResource} whose
 * pathname, or any object whose string representation as
@@ -65,7 +64,6 @@ public class PropertiesResourceFilter extends AnyFilter
   * Returns an {@link org.eclipse.core.runtime.IStatus}
   * describing the <code>Filter</code>'s assessment of
   * the given <code>object</code>.
-  * See {@link Filter#statusOf} for general comments.
   * @param object The object to filter.
   * @return An {@link org.eclipse.core.runtime.IStatus}
   * indicating whether or not if the given <code>object</code>
