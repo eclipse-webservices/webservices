@@ -57,10 +57,10 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	pageTable_          = new Hashtable();  
   	registry_           = registry;
   	wizard_             = wizard;
-	widgetTable_        = new Hashtable();
-	widgetFactoryTable_ = new Hashtable();
-	widgetRegistry_     = WidgetRegistry.instance();
-	widgetStackStack_   = new Stack();
+	  widgetTable_        = new Hashtable();
+	  widgetFactoryTable_ = new Hashtable();
+	  widgetRegistry_     = WidgetRegistry.instance();
+	  widgetStackStack_   = new Stack();
   }
   
   public IStatus runForwardToNextStop()
@@ -90,7 +90,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
     
 	try
 	{
-  	  nextPage_ = getNextPageInGroup( widgetFactory_, false );
+  	nextPage_ = getNextPageInGroup( widgetFactory_, false );
 		
 	  if( nextPage_ == null )
 	  {
@@ -109,10 +109,10 @@ public class WizardPageManager extends SimpleCommandEngineManager
   public IWizardPage getNextPage()
   {  	
 	try
-	{
-  	  // Need to externalize the data for the current page so that
-  	  // when we move forward below the data is available.
-  	  if( currentPage_ != null ) currentPage_.getDataEvents().externalize();
+	{    
+  	// Need to externalize the data for the current page so that
+  	// when we move forward below the data is available.
+  	if( currentPage_ != null ) currentPage_.getDataEvents().externalize();
   	
 	  nextPage_ = getNextPageInGroup( widgetFactory_, true );
 	
@@ -121,18 +121,18 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	    widgetFactory_ = null;
 	    widgetStack_   = null;
 		
-  	    IStatus status = runForwardToNextStop();
+  	  IStatus status = runForwardToNextStop();
   	
-  	    if( status.getSeverity() == IStatus.ERROR )
-  	    {
-  	      // An error has occured so we need undo to the previous stop point.
-  	      undoToLastPage();
-  	    }
+  	  if( status.getSeverity() == IStatus.ERROR )
+  	  {
+  	    // An error has occured so we need undo to the previous stop point.
+  	    undoToLastPage();
+  	  }
 	  }
 	
-  	  if( nextPage_ != null ) nextPage_.setWizard( wizard_ );
+  	if( nextPage_ != null ) nextPage_.setWizard( wizard_ );
   	  	
-  	  return nextPage_;
+  	return nextPage_;
 	}
 	catch( Throwable exc )
 	{
@@ -162,32 +162,32 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	  //       we are basically just leaving the current page without retrieving its state and
   	  //       moving to the previous page which already has its state set.
 	
-	  if( widgetFactory_ != null )
-	  {
-		if( widgetStack_.size() > 0 )
-		{
-		  widgetStack_.pop();
-		}
+	    if( widgetFactory_ != null )
+	    {
+		    if( widgetStack_.size() > 0 )
+		    {
+		      widgetStack_.pop();
+		    }
 		
-		if( widgetStack_.size() == 0 )
-		{
-		  widgetFactory_ = null;
-		  widgetStack_ = null;
-		  widgetStackStack_.pop();
-		}
-	  }
+		    if( widgetStack_.size() == 0 )
+		    {
+		      widgetFactory_ = null;
+		      widgetStack_ = null;
+		      widgetStackStack_.pop();
+		    }
+	    }
 	  
-	  if( widgetFactory_ == null )
-	  {
+	    if( widgetFactory_ == null )
+	    {
   	    undoToLastPage();
-	  }
+	    }
 	  
   	  currentPage_ = page;
   	}	
   	else if( isPageVisible )
   	{
-	  try
-	  {
+	    try
+	    {
   	    // We are moving forward one page.
   	    WidgetDataEvents dataEvents = page.getDataEvents();
   	  
@@ -195,19 +195,19 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	    dataEvents.internalize();
   	  
   	    page.validatePageToStatus();  	  
-	  }
-	  catch( Throwable exc )
-	  {
-		exc.printStackTrace();
-	  }
-	  finally
-	  {
-	  	if( currentPage_ != null ) page.setPreviousPage( currentPage_ );
+	    }
+	    catch( Throwable exc )
+	    {
+		    exc.printStackTrace();
+	    }
+	    finally
+	    {
+	  	  if( currentPage_ != null ) page.setPreviousPage( currentPage_ );
 	    	  
-	  	if( firstPage_ == null ) firstPage_ = page;
+	  	  if( firstPage_ == null ) firstPage_ = page;
 	  	  
-	  	currentPage_ = page;  
-	  }
+	  	  currentPage_ = page;  
+	    }
   	}
   }
   
@@ -270,15 +270,15 @@ public class WizardPageManager extends SimpleCommandEngineManager
     // Check to see if this fragment is in our page table.
     nextPage_ = getPage( fragment );
           	
-	if( nextPage_ == null )
-	{
-	  INamedWidgetContributorFactory factory = getWidgetFactory( fragment.getId() );
-	  
-	  if( factory != null )
+	  if( nextPage_ == null )
 	  {
-		nextPage_ = getNextPageInGroup( factory, false );  
+	    INamedWidgetContributorFactory factory = getWidgetFactory( fragment.getId() );
+	  
+	    if( factory != null )
+	    {
+		    nextPage_ = getNextPageInGroup( factory, false );  
+	    }
 	  }
-	}
 	
     return nextPage_ == null;
   }
@@ -297,24 +297,34 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	}
   	else
   	{
-	  widgetFactory_ = getWidgetFactory( fragment.getId() );
+	    widgetFactory_ = getWidgetFactory( fragment.getId() );
 	  
-	  if( widgetFactory_ != null )
-	  {
-		widgetStack_ = new Stack();
+	    if( widgetFactory_ != null )
+	    {
+		    widgetStack_ = new Stack();
+        
+        nextPage_ = getNextPageInGroup( widgetFactory_, true );
 		
-		StackEntry entry = new StackEntry();
+        if( nextPage_ == null )
+        {
+          // We found a widget contributor for this fragment, but no page was delivered for it.
+          // We will therefore, not put it on our stack of widget stacks.
+          widgetStack_ = null;
+          widgetFactory_ = null;
+        }
+        else
+        {
+		      StackEntry entry = new StackEntry();
 		
-		entry.factory_ = widgetFactory_;
-		entry.stack_   = widgetStack_;
-		widgetStackStack_.push( entry );
-		
-		nextPage_ = getNextPageInGroup( widgetFactory_, true );
-	  }
-	  else
-	  {
+		      entry.factory_ = widgetFactory_;
+		      entry.stack_   = widgetStack_;
+		      widgetStackStack_.push( entry );
+        }
+	    }
+	    else
+	    {
   	    nextPage_ = getPage( fragment );
-	  }
+	    }
   	}  	  	
   	
     return nextPage_ == null;
@@ -330,75 +340,75 @@ public class WizardPageManager extends SimpleCommandEngineManager
   
   private PageWizardDataEvents getNextPageInGroup( INamedWidgetContributorFactory factory, boolean pushNewWidget )
   {
-	PageWizardDataEvents page = null;
+	  PageWizardDataEvents page = null;
 	
-	if( factory != null )
-	{	  
-	  INamedWidgetContributor newWidget = null;
+	  if( factory != null )
+	  {	  
+	    INamedWidgetContributor newWidget = null;
 		  
-	  if( widgetStack_ == null || widgetStack_.size() == 0 )
-	  {
-		newWidget = factory.getFirstNamedWidget();   
-	  }
-	  else
-	  {
-		INamedWidgetContributor currentWidget = (INamedWidgetContributor)widgetStack_.peek();
-		newWidget = factory.getNextNamedWidget( currentWidget ); 
-	  }
+	    if( widgetStack_ == null || widgetStack_.size() == 0 )
+	    {
+		    newWidget = factory.getFirstNamedWidget();   
+	    }
+	    else
+	    {
+		    INamedWidgetContributor currentWidget = (INamedWidgetContributor)widgetStack_.peek();
+		    newWidget = factory.getNextNamedWidget( currentWidget ); 
+	    }
 		  
-	  if( newWidget != null )
-	  {
-		page = getPage( newWidget );
+	    if( newWidget != null )
+	    {
+		    page = getPage( newWidget );
 		
-		if( pushNewWidget )
-		{
-		  widgetStack_.push( newWidget );
-		}
+		    if( pushNewWidget )
+		    {
+		      widgetStack_.push( newWidget );
+		    }
+	    }
 	  }
-	}
 		
-	return page;  
+	  return page;  
   }
   
   private void undoToLastPage()
   {
     boolean stackEmpty  = false;
-	boolean doneUndoing = false;
+	  boolean doneUndoing = false;
     
-	while( !doneUndoing )
-	{
-	  stackEmpty = engine_.undoToLastStop();
-	  
-	  IWizardPage page = null;
-	  
-	  if( lastUndoFragment_ != null )
+	  while( !doneUndoing )
 	  {
-	    page = getPage( lastUndoFragment_ );
-		
-	    if( page == null )
-	    {
-		  // Check to see if a group page fragment was found.
-		  INamedWidgetContributorFactory factory = getWidgetFactory( lastUndoFragment_.getId() );
-		  
-		  if( factory != null )
-		  {
-		    StackEntry entry = (StackEntry)widgetStackStack_.peek();
-			
-		    widgetFactory_ = entry.factory_;
-		    widgetStack_   = entry.stack_;	
-			
-		    if( widgetStack_ != null && !widgetStack_.empty() )
-		    {
-		      INamedWidgetContributor currentWidget = (INamedWidgetContributor)widgetStack_.peek();
-			
-		      page = getPage( currentWidget );
-		    }
-		  }
-	    }
-	  }
+	    stackEmpty = engine_.undoToLastStop();
 	  
-	  doneUndoing = page != null || stackEmpty;
-	}
+	    IWizardPage page = null;
+	  
+	    if( lastUndoFragment_ != null )
+	    {
+	      page = getPage( lastUndoFragment_ );
+		
+	      if( page == null )
+	      {
+		      // Check to see if a group page fragment was found.
+		      INamedWidgetContributorFactory factory = getWidgetFactory( lastUndoFragment_.getId() );
+		  
+		      if( factory != null )
+		      {
+		        StackEntry entry = (StackEntry)widgetStackStack_.peek();
+			
+		        widgetFactory_ = entry.factory_;
+		        widgetStack_   = entry.stack_;	
+			
+		        if( widgetStack_ != null && !widgetStack_.empty() )
+		        {
+		          INamedWidgetContributor currentWidget = (INamedWidgetContributor)widgetStack_.peek();
+			
+		          page = getPage( currentWidget );
+		        }
+		      }
+	      }
+	    }
+	  
+	    doneUndoing = page != null || stackEmpty;
+	  }
   }
   
   private PageWizardDataEvents getPage( CommandFragment fragment )
@@ -424,46 +434,46 @@ public class WizardPageManager extends SimpleCommandEngineManager
   
   private PageWizardDataEvents getPage( INamedWidgetContributor widget )
   {
-	PageWizardDataEvents page = (PageWizardDataEvents)widgetTable_.get( widget );
+	  PageWizardDataEvents page = (PageWizardDataEvents)widgetTable_.get( widget );
 
-	if( page == null )
-	{
-	  PageInfo pageInfo = new PageInfo(widget.getTitle(), widget.getDescription(), widget.getWidgetContributorFactory() );
+	  if( page == null )
+	  {
+	    PageInfo pageInfo = new PageInfo(widget.getTitle(), widget.getDescription(), widget.getWidgetContributorFactory() );
 	  
-	  page = pageFactory_.getPage( pageInfo, this );
-	  widgetTable_.put( widget, page );
-	}
+	    page = pageFactory_.getPage( pageInfo, this );
+	    widgetTable_.put( widget, page );
+	  }
 	
-	return page;
+	  return page;
   }
   
   private INamedWidgetContributorFactory getWidgetFactory( String id )
   {
-	INamedWidgetContributorFactory factory = (INamedWidgetContributorFactory)widgetFactoryTable_.get( id );
+	  INamedWidgetContributorFactory factory = (INamedWidgetContributorFactory)widgetFactoryTable_.get( id );
 	
-	if( factory == null )
-	{
-	  // The factory is not in our table so we will try the registry.
-	  factory = widgetRegistry_.getFactory( id );
-	  
-	  if( factory != null )
+	  if( factory == null )
 	  {
-	    widgetFactoryTable_.put( id, factory );
-	    factory.registerDataMappings( dataManager_.getMappingRegistry() );
-		dataManager_.process( factory );
+	    // The factory is not in our table so we will try the registry.
+	    factory = widgetRegistry_.getFactory( id );
+	  
+	    if( factory != null )
+	    {
+	      widgetFactoryTable_.put( id, factory );
+	      factory.registerDataMappings( dataManager_.getMappingRegistry() );
+		    dataManager_.process( factory );
+	    }
 	  }
-	}
-	else
-	{
-	  dataManager_.process( factory );
-	}
+	  else
+	  {
+	    dataManager_.process( factory );
+	  }
 	
-	return factory;
+	  return factory;
   }
   
   private class StackEntry
   {
     INamedWidgetContributorFactory factory_;
-	Stack                          stack_;
+	  Stack                          stack_;
   }
 }
