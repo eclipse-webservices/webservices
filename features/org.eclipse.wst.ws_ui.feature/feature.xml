@@ -28,12 +28,6 @@
          id="org.eclipse.wst.ws_userdoc.feature"
          version="0.0.0"/>
 
-   <requires>
-      <import feature="org.eclipse.wst.xml_ui.feature" version="1.0.0"/>
-      <import feature="org.eclipse.wst.ws_core.feature" version="1.0.0"/>
-      <import feature="org.apache.xerces.feature" version="2.7.0"/>
-   </requires>
-
    <plugin
          id="org.eclipse.wst.ws.infopop"
          download-size="0"
