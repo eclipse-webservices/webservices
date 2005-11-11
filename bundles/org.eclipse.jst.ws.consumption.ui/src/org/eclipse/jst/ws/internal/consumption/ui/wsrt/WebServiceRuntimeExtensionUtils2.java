@@ -941,15 +941,15 @@ public class WebServiceRuntimeExtensionUtils2
   
   public static String[] getAllClientServerFactoryIds() 
   {    
-    Iterator iter = registry.clientRuntimes_.values().iterator();
-    while (iter.hasNext())   
-    {
+    //Iterator iter = registry.clientRuntimes_.values().iterator();
+    //while (iter.hasNext())   
+    //{
       //TODO iterate over all the server types and see if their runtime types have an
       //id that matches the runtime type of any of the runtimes.            
       // ClientRuntimeDescriptor desc = (ClientRuntimeDescriptor)iter.next();
       // Set runtimes = getRuntimes(desc.getRequiredFacetVersions());
       // IServerType[] allServerTypes = ServerCore.getServerTypes();
-    }
+    //}
     //return (String[])serverFactoryIds.toArray(new String[]{});
     //Temporarily return all server types
     return getAllServerFactoryIdsWithRuntimes();    
