@@ -123,13 +123,6 @@ public class UDDIPerspective extends Perspective
           geoModel.setTModelKey(TModel.ISO_CH_TMODEL_KEY);
           commonCategoryModels.put(TModel.ISO_CH_TMODEL_KEY,geoModel);
           
-          CategoryModel dWCommunityModel = new CategoryModel();
-          dWCommunityModel.setServletContext(application);
-          dWCommunityModel.setDefaultDataFile("/uddi/data/dWCommunity-data.txt");
-          dWCommunityModel.setDisplayName(getMessage("FORM_OPTION_CATEGORY_DWCOMMUNITY"));
-          dWCommunityModel.setTModelKey("UUID:8F497C50-EB05-11D6-B618-000629DC0A53");
-          commonCategoryModels.put("UUID:8F497C50-EB05-11D6-B618-000629DC0A53",dWCommunityModel);
-          
           application.setAttribute("commonCategoryModels",commonCategoryModels);
         }
       }
