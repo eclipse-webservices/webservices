@@ -14,16 +14,7 @@
    <extension-point id="antDataMapping" name="%XP_antDataMapping" schema="schema/antdatamapping.exsd"/>
    <extension-point id="antScenario" name="%XP_antScenario" schema="schema/antScenario.exsd"/>
      
-   <!-- Note that if you set the plug-in compiler to give error on 
-   "References to Unknown Resources", you will get 2 errors for 
-   missing resources for ant-lib/anttasks.jar.  
-   To workaround the problem, change the plug-in compiler setting for 
-   "References to Unknown Resources" to warning, then generate build.xml
-   from the plugin.xml and run the resulting build.xml to generate the 
-   ant-lib/anttasks.jar.  We did not check in ant-lib/anttasks.jar since we 
-   want it to be rebuild from ant-src.
-   -->  
-     <extension
+   <extension
          id="wsgen"
          name="wsgen"
          point="org.eclipse.ant.core.antTasks">
