@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.consumption.command.common;
+package org.eclipse.jst.ws.internal.consumption.ui.command;
 
 import java.lang.reflect.InvocationTargetException;
 
