@@ -11,7 +11,11 @@
 
 package org.eclipse.wst.command.internal.env.ui.plugin;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -35,4 +39,17 @@ public class EnvUIPlugin extends Plugin {
 	public static EnvUIPlugin getInstance() {
 		return instance;
 	}
+	 public static ImageDescriptor getImageDescriptor ( String name )
+	  {
+	    try
+	    {
+	      URL installURL = instance.getBundle().getEntry("/");
+	      URL imageURL = new URL(installURL,name);
+	      return ImageDescriptor.createFromURL(imageURL);
+	    }
+	    catch (MalformedURLException e)
+	    {
+	      return null;
+	    }
+	  }
 }

@@ -28,6 +28,11 @@ public final class EnvironmentUIMessages extends NLS {
 	public static String TOOLTIP_PPAD_BUTTON_SHOW_ALL;
 	public static String TOOLTIP_PPAD_BUTTON_HIDE_ALL;
 	public static String MSG_ERROR_WIZARD_ID_NOT_FOUND;
+	public static String WIZARD_TITLE_ANT;
+	public static String WIZARD_PAGE_TITLE_ANT;
+	public static String WIZARD_PAGE_DESC_ANT;
+	public static String MSG_STATUS_COPYING_ANT_FILES;
+	public static String MSG_ERR_COPYING_ANT_FILES;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, EnvironmentUIMessages.class);

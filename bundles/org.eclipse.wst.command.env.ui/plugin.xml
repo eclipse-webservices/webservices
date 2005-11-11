@@ -3,5 +3,19 @@
 
 <plugin>
 
+<extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            name="Ant Files"
+            icon="icons/full/obj16/ant_buildfile.gif"
+            category="org.eclipse.jst.ws.ui.new"
+            class="org.eclipse.wst.command.internal.env.ui.dialog.AntFileImportWizard"
+            id="org.eclipse.wst.command.env.ui.AntFileImportWizard">
+         <description>
+              Create Ant script and properties files in the workspace.
+         </description>
+      </wizard>
+   </extension>
+
      <extension-point id="widgetRegistry" name="%WIDGET_REGISTRY_NAME" schema="schema/widgetRegistry.exsd"/>   
 </plugin>
