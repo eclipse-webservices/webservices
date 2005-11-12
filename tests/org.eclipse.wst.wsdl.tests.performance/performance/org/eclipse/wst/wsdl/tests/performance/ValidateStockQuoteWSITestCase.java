@@ -20,7 +20,7 @@ import org.eclipse.test.performance.PerformanceTestCase;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
-import org.eclipse.wst.wsdl.validation.internal.ui.eclipse.WSDLValidator;
+import org.eclipse.wst.wsdl.validation.internal.eclipse.WSDLValidator;
 
 public class ValidateStockQuoteWSITestCase extends PerformanceTestCase
 {

@@ -3,14 +3,18 @@ package org.eclipse.wst.wsdl.tests.performance;
 import java.io.File;
 import java.io.FileFilter;
 import java.net.MalformedURLException;
+
 import javax.wsdl.WSDLException;
+
 import junit.framework.Assert;
+
 import org.eclipse.test.performance.Dimension;
 import org.eclipse.test.performance.PerformanceTestCase;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
-import org.eclipse.wst.wsdl.validation.internal.ui.eclipse.WSDLValidator;
+import org.eclipse.wst.wsdl.validation.internal.eclipse.WSDLValidator;
+
 
 public class ValidateOAGISWSDLTestcase extends PerformanceTestCase
 {
