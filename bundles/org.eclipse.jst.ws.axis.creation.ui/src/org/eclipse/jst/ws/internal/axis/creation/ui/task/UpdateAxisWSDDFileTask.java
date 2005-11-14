@@ -22,6 +22,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
@@ -36,6 +37,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -60,7 +62,7 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 	* Execute UpdateAxisWSDDFileTask
 	*/
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
-	{
+	{    
 		IEnvironment environment = getEnvironment();
 	    IStatus status = Status.OK_STATUS;		
 		if (javaWSDLParam_ == null) {
@@ -91,7 +93,7 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 				&& javaWSDLParam_.getDeploymentFiles().length > 0) {
 
 				String wsdd_deploy = javaWSDLParam_.getDeploymentFiles()[0];
-				Path deployPath = new Path(wsdd_deploy);
+				IPath deployPath = new Path(wsdd_deploy);
 				String deployBackup =
 					deployPath
 						.removeLastSegments(1)
@@ -111,10 +113,29 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 
 				// Use the Transformer to apply the associated Templates object to an XML document
 				// (foo.xml) and write the output to a file (foo.out).
-				transformer.transform(
-					new StreamSource(deployBackup),
-					new StreamResult(new FileOutputStream(wsdd_deploy)));
-
+        FileOutputStream wsddStream = new FileOutputStream( wsdd_deploy );
+        
+        try
+        {
+				  transformer.transform( new StreamSource(deployBackup), new StreamResult(wsddStream) );
+        }
+        finally
+        {
+          wsddStream.close();
+        }
+        
+        IPath     eclipseWebContentPath = J2EEUtils.getWebContentContainer( project ).getFullPath();        
+        IPath     eclipseDeployPath     = findPathFromFilePath( eclipseWebContentPath, deployPath );
+        
+        if( eclipseDeployPath != null )
+        {
+          IResource deployFile = ResourceUtils.findResource( eclipseDeployPath );
+          
+          if( deployFile != null )
+          {
+            deployFile.refreshLocal( IResource.DEPTH_ZERO, monitor );
+          }
+        }
 			}
 
 		} catch (Exception e) {
@@ -127,6 +148,27 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 		return status;
 	}
 
+  // This method attempts to search a file path that is relative to a file system
+  // for a path that starts with the startPath parameter.  The result should be
+  // a Path that is relative to the Eclipse workspace instead of the file system.
+  private IPath findPathFromFilePath( IPath startPath, IPath filePath )
+  {
+    IPath result = null;
+    
+    while( filePath.segmentCount() > 0 )
+    {
+      if( filePath.matchingFirstSegments( startPath ) == startPath.segmentCount() )
+      {
+        result = filePath.setDevice( null );
+        break;
+      }
+      
+      filePath = filePath.removeFirstSegments( 1 );
+    }
+    
+    return result;
+  }
+  
 	private IPath getPluginFilePath(String pluginfileName)
 		throws CoreException {
 		try {
