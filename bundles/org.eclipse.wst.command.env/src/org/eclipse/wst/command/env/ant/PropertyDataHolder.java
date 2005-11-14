@@ -10,6 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.command.env.ant;
 
+/**
+ * Simple class to hold data mapping information once retrieved from Ant property file.
+ * Map is used for many to one mappings involving mapping of multiple properties to a bean.
+ * In this case, the key_ and value_ should be set to an empty string and all key value pairs
+ * for properties put into the map instead.  The transformation for this case would be a modifier
+ * which will set the properties onto the bean.
+ */
+ 
 import java.util.Map;
 
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;

@@ -33,10 +33,22 @@ import org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetDefault
 import org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.runtime.ServerRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.creation.ui.widgets.test.ServiceTestFragment;
+import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
-import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
-     
+ 
+/**
+ * 
+ * Command fragment for generating web service top down or bottom up using Ant task.
+ * Run headless Eclipse or within workspace using Run as Ant Build.  This fragment eliminates any UI specific 
+ * commands and data mappings between commands and widgets.  Widget to command mappings are
+ * replaced by Ant property file to command mappings which are enabled by a antDataMapping extension 
+ * point in the org.eclipse.wst.command.env plugin.
+ * 
+ * @author joan
+ *
+ */
+
 public class AntServiceRootCommandFragment extends SequenceFragment
 {
 	
@@ -46,30 +58,31 @@ public class AntServiceRootCommandFragment extends SequenceFragment
   public AntServiceRootCommandFragment()
   { 
 
-    add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));   //ok
-    add( new SimpleFragment( new ServerWizardWidgetDefaultingCommand(), ""));   //somewhere to hold initial data/calc defaults
+    add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));   
+    add( new SimpleFragment( new ServerWizardWidgetDefaultingCommand(), ""));   
     
-    add( new SimpleFragment( new ServerWizardWidgetOutputCommand(), "" ));  //data holder  
-    add( new ObjectSelectionFragment() );  //data holder
+    add( new SimpleFragment( new ServerWizardWidgetOutputCommand(), "" ));    
+    add( new ObjectSelectionFragment() );  
     
-    add( new SimpleFragment( new CheckWSDLValidationCommand(), ""));  //need? 
+    add( new SimpleFragment( new CheckWSDLValidationCommand(), ""));   
     
     add( new SimpleFragment( new ServerRuntimeSelectionWidgetDefaultingCommand(), ""));
     add( new SimpleFragment( new ServerExtensionDefaultingCommand(), ""));
     
-    add( new ServiceRootFragment() );  //***
+    add( new ServiceRootFragment() );  
     
     add( new SimpleFragment( new ServerExtensionOutputCommand(), "" ));
-    add(new SimpleFragment(new CreateMonitorCommand(), ""));  //need?
+    add(new SimpleFragment(new CreateMonitorCommand(), ""));  
     add(new SimpleFragment(new ComputeEndpointCommand(), ""));
     add( new ServiceTestFragment( "TestService") );
     add( new SimpleFragment(new TestDefaultingFragment(),""));
     add( new SimpleFragment( "Publish") );
     
-    publishToPrivateUDDICmdFrag = new PublishToPrivateUDDICommandFragment();  //need?
+    publishToPrivateUDDICmdFrag = new PublishToPrivateUDDICommandFragment();  
     add(publishToPrivateUDDICmdFrag);  
     
-    //?? jvh - no class def found....  add(new LaunchFragment());
+    //?? jvh - no class def found....  
+    //add(new LaunchFragment());
     
     add(new FinishFragment());
     add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));

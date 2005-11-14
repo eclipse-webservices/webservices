@@ -16,11 +16,22 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.StructuredSelection;
 
+/**
+ * Transforms a string value representing a workspace resource path into a StructuredSelection object
+ * 
+ * @author joan
+ *
+ */
+
 public class String2SelectionTransformer implements Transformer {
 
 	public Object transform(Object value) {
-		IResource resource = FileResourceUtils.getWorkspaceRoot().findMember(new Path(value.toString())); 
-		StructuredSelection selection = new StructuredSelection(resource);
+		StructuredSelection selection = null;
+		IResource resource = FileResourceUtils.getWorkspaceRoot().findMember(new Path(value.toString()));
+		if (resource != null)
+		{
+			selection = new StructuredSelection(resource);			
+		}		
 		return selection;
 	}
 

@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.wst.command.internal.env.EnvironmentMessages;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.core.CommandManager;
@@ -24,9 +25,18 @@ import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.core.data.BeanModifier;
 import org.eclipse.wst.command.internal.env.core.data.ClassEntry;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
+/**
+ * 
+ * Access to status handler, log, resource context and command manager.  
+ * Initializes data for commands from Ant property files based on antDataMapping extensions. 
+ * 
+ * @author joan
+ *
+ */
 
 public class AntEnvironment extends EclipseEnvironment{
 	
@@ -111,8 +121,7 @@ public class AntEnvironment extends EclipseEnvironment{
 								mappingComplete_ = callSetterConstructor(mapping);
 								break;
 								
-							default:
-								//jvh: fail out here...write message to the log - no mapping for operation.prop pair
+							default:								
 								return INIT_OPERATION_DATA_FAIL;
 							}
 						   step++;
@@ -122,8 +131,8 @@ public class AntEnvironment extends EclipseEnvironment{
                 operationDataRecord_.put(qualifiedClassName, "");
 			}			
 			catch (Exception e)
-			{		
-				//jvh: add message to the log
+			{
+				e.printStackTrace();
 				return INIT_OPERATION_DATA_FAIL;
 			}
 
@@ -246,8 +255,8 @@ public class AntEnvironment extends EclipseEnvironment{
 				}
 				catch (Exception exc)
 				{
+                    getLog().log(ILog.ERROR, "ws_ant", 9999, this, "transformAndSet", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_DATA_TRANSFORM, mapping.key_, mapping.transform_));                    
 					return false;
-					// jvh: write data mapping transformation not found error to the log...
 				}				
 			}
 			return false;
@@ -330,7 +339,7 @@ public class AntEnvironment extends EclipseEnvironment{
 				if (method.getName().equals(setterMethodName))
 				{                                        
 			       Class[] paramTypes = method.getParameterTypes();
-			       if (paramTypes.length == 1)
+			       if (paramTypes.length == 1 && param != null)
 			       {
 			          if (paramTypes[0].isAssignableFrom(param.getClass()))
 			          {
@@ -339,7 +348,7 @@ public class AntEnvironment extends EclipseEnvironment{
 			     			 return true;
 			     		 }
 			     		 catch(Exception cex){
-			     			 //jvh: add message to the log
+			     			getLog().log(ILog.ERROR, "ws_ant", 9999, this, "callSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, setterMethodName));
 			     		 }  
 			          }
 			       }  
@@ -399,7 +408,9 @@ public class AntEnvironment extends EclipseEnvironment{
 				    		element.invoke(mapping.operation_, new Object[]{setterParm});
 					    	return true;	
 				    	}
-				    	catch(Exception e){}
+				    	catch(Exception e){
+				    		getLog().log(ILog.ERROR, "ws_ant", 9999, this, "callPrimitiveSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, element.getName()));
+				    	}
 				    }			
 				}
 		    }   
@@ -424,7 +435,7 @@ public class AntEnvironment extends EclipseEnvironment{
 					}
 					catch (Exception exc)
 					{
-						//jvh: write msg to log
+						getLog().log(ILog.ERROR, "ws_ant", 9999, this, "callSetterConstructor", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, element.getName()));
 						return false;
 					}
 				}
@@ -460,13 +471,12 @@ public class AntEnvironment extends EclipseEnvironment{
 		
 					if (obj instanceof org.eclipse.wst.command.internal.env.core.fragment.CommandFragment)
 					{
-						System.out.println("have command fragment " + obj.toString());
 						return (org.eclipse.wst.command.internal.env.core.fragment.CommandFragment)obj;
 					}
 				 }
 				 catch (Exception exception)
 				 {
-					 System.out.println("exception creating scenario class from extension " + exception.toString());					 
+					 getLog().log(ILog.ERROR, "ws_ant", 9999, this, "getRootCommandFragment", EnvironmentMessages.MSG_ERR_ANT_CMD_FRAGMENT);					 
 				 }				 
 			  }    	   
            }

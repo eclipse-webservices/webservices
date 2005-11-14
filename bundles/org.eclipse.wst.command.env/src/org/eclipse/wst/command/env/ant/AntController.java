@@ -22,6 +22,14 @@ import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.FragmentListener;
 import org.eclipse.wst.common.environment.NullStatusHandler;
 
+/**
+ * 
+ * Central point of control for web service Ant tasks.
+ * Constructs Ant environment, root fragment and command manager.  Starts execution of the command stack.
+ * 
+ * @author joan
+ *
+ */
 
 public class AntController {
 	

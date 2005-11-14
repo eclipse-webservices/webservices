@@ -17,12 +17,14 @@ import org.eclipse.wst.command.env.ant.AntController;
 public class WebServiceGenerationAntTask extends Task {
 	
 		public void execute()
-		{
+		{			
 			//get properties set in the Ant file
 			Project proj = getProject();
-			
-			// call the AntController to kick off generation
-			new AntController(proj.getProperties());			
+            if (proj != null)
+            {
+                //call the AntController to kick off generation
+    			new AntController(proj.getProperties());
+            }           		
 		}		
 	}
 

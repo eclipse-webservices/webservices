@@ -2,10 +2,12 @@
 
 <project default="main" basedir=".">
 
-<echo message="pulling in property file"/>
-<property file="test.properties"/>
-
-<echo message="calling the ant task class"/>
+<echo message="pulling in property files"/>
+<!-- add additional property files	here -->
+<property file="axisservice.properties"/>
+<property file="axisclient.properties"/>
+	
+<echo message="calling the web services generation ant task: wsgen"/>
  <target name="main" >
   	 <wsgen/>
   </target>

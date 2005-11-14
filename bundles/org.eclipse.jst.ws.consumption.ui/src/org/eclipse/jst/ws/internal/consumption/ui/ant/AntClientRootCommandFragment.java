@@ -41,10 +41,19 @@ import org.eclipse.wst.ws.internal.extensions.DevelopClientFragment;
 import org.eclipse.wst.ws.internal.extensions.InstallClientFragment;
 import org.eclipse.wst.ws.internal.extensions.RunClientFragment;
 
-public class AntClientRootCommandFragment extends SequenceFragment{     
+/**
+ * 
+ * Command fragment for generating a web service client using Ant task.
+ * Run headless Eclipse or within workspace using Run as Ant Build.  This fragment eliminates any UI specific 
+ * commands and data mappings between commands and widgets.  Widget to command mappings are
+ * replaced by Ant property file to command mappings which are enabled by a antDataMapping extension 
+ * point in the org.eclipse.wst.command.env plugin.
+ * 
+ * @author joan
+ *
+ */
 
-	
-	boolean genProxy_ = false;
+public class AntClientRootCommandFragment extends SequenceFragment{
 	
   public AntClientRootCommandFragment()
   {	 
@@ -151,8 +160,7 @@ public class AntClientRootCommandFragment extends SequenceFragment{
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientEarProjectName", ClientTestDelegateCommand.class);
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientEarComponentName", ClientTestDelegateCommand.class);
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProject",ClientTestDelegateCommand.class);
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", ClientTestDelegateCommand.class);
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServer", ClientTestDelegateCommand.class);
+      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", ClientTestDelegateCommand.class);      
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "WsdlURI", ClientTestDelegateCommand.class);
       
       // Map ClientExtensionOutputCommand command.

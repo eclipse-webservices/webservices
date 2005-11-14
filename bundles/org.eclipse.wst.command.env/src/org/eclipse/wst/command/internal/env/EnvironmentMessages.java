@@ -31,6 +31,10 @@ public final class EnvironmentMessages extends NLS {
 	public static String MSG_ERROR_FOLDER_HAS_CHILDREN;
 	public static String MSG_ERROR_IO;
 	public static String MSG_ERROR_FILE_OVERWRITE_DISABLED;
+	public static String MSG_ERROR_UNEXPECTED_ERROR;
+	public static String MSG_ERR_ANT_DATA_TRANSFORM;
+	public static String MSG_ERR_ANT_CALL_SETTER;
+	public static String MSG_ERR_ANT_CMD_FRAGMENT;
 	public static String LABEL_YES;
 	public static String LABEL_YES_TO_ALL;
 	public static String LABEL_CANCEL;

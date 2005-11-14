@@ -13,8 +13,16 @@ package org.eclipse.wst.command.env.ant;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
 
-public class String2PathTransformer implements Transformer {
+/**
+ * 
+ * Transforms a input String to a Path
+ * 
+ * @author joan
+ *
+ */
 
+public class String2PathTransformer implements Transformer {
+	
 	public Object transform(Object value) {				 
 		Path path = new Path(value.toString());
 		return path;		 

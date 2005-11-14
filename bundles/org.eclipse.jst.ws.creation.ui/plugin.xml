@@ -326,11 +326,6 @@
               property="ServiceTypeRuntimeServer"
               transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
       <map
-              key="ServiceJ2EEVersion"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
-              property="ServiceJ2EEVersion"/>
-
-      <map
               key="ServiceProjectName"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
               property="ServiceProjectName"/>
@@ -348,12 +343,7 @@
       <map
               key="ServiceEarComponentName"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
-              property="ServiceEarComponentName"/>
-              
-      <map
-              key="ServiceNeedEAR"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
-              property="ServiceNeedEAR"/>
+              property="ServiceEarComponentName"/>              
       <map
               key="Service.RuntimeId"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionFragment"
@@ -370,12 +360,12 @@
               property="ServiceTypeRuntimeServer"
               transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
       <map
-              key="LaunchedServiceTestName"
+              key="TestID"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
               property="LaunchedServiceTestName"/>
 
       <map
-              key="LaunchedServiceTestName"
+              key="TestID"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment"
               property="LaunchedServiceTestName"/>
 
@@ -394,36 +384,16 @@
 
       <map
               key="PublishToPrivateUDDI"
-              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.test.LaunchFragment.LaunchFragment"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.test.LaunchFragment"
               property="PublishToPrivateUDDI"/>
       <map
               key="PublishToPublicUDDI"
-              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.test.LaunchFragment.LaunchFragment"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.test.LaunchFragment"
               property="PublishToPublicUDDI"/>
-
-<!--complex type. pointer to a file that can be processed by a command....-->
       <map
-              key="WsDescToHandlers"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.ServiceHandlersWidgetOutputCommand"
-              property="WsDescToHandlers"
-              transform="org.eclipse.wst.command.env.ant.String2HandlerTableTransformer"/>
+              key="LaunchOptions"
+              operation="org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand"
+              property="LaunchOptions"/>
 
-      <map
-              key="SourceOutputLocation"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.command.GenerateHandlerSkeletonCommand"
-              property="OutputLocation"
-              transform="org.eclipse.wst.command.env.ant.String2PathTransformer"/>
-
-<!--complex type. pointer to a file that can be processed by a command....-->
-      <map
-              key="HandlerClassNames"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.command.GenerateHandlerSkeletonCommand"
-              property="HandlerNames"
-              transform="org.eclipse.wst.command.env.ant.String2HandlerArrayTransformer"/>
-    
-          <map
-              key="GenSkeletonEnabled"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.command.GenerateHandlerSkeletonCommand"
-              property="GenSkeletonEnabled"/>
      </extension>
 </plugin>

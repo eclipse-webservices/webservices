@@ -24,31 +24,18 @@
           <extension
            point="org.eclipse.wst.command.env.antDataMapping">
         <map
-              key="ClientProject"
+              key="ClientProjectName"
               operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
               property="ClientProject"
               transform="org.eclipse.jst.ws.internal.common.String2IProjectTransformer"/>
         <map
-              key="WsdlURL"
+              key="InitialSelection"
               operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
               property="WsdlURL"/>
         <map
-              key="ClientServer"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
-              property="ClientServer"/>
-        <map
-              key="GenerateProxy"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
-              property="GenerateProxy"/>      
-        <map
               key="CustomizeClientMappings"
               operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
-              property="CustomizeClientMappings"/>                    
-             
- 		<map
-              key="IsClientScenario"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
-              property="IsClientScenario"/>
+              property="CustomizeClientMappings"/>                                 
  		<map
               key="Mappings"
               operation="org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand"
@@ -69,6 +56,5 @@
               operation="org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand"
               property="JavaWSDLParam"
               transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
-
   </extension> 
 </plugin>

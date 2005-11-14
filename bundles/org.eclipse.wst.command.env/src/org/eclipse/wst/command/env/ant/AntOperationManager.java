@@ -10,31 +10,32 @@
  *******************************************************************************/
 package org.eclipse.wst.command.env.ant;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
-import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
-	
-import org.eclipse.wst.command.internal.env.core.fragment.FragmentListener;
-import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import java.util.Stack;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
-
+import org.eclipse.wst.command.internal.env.EnvironmentMessages;
 import org.eclipse.wst.command.internal.env.core.CommandFactory;
 import org.eclipse.wst.command.internal.env.core.CommandManager;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
+import org.eclipse.wst.command.internal.env.core.fragment.FragmentListener;
+import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
-	
-//jvh - this class is almost identical to the CommandFragmentEngine
-//  problem for re-use - I want to override the runCommand method so I can initialize the
-//  data from the Ant task & unfortunately it's private in the CommandFragmentEngine...
+/**
+ * Manages the execution of commands in the root fragment passed to the constructor.
+ * 
+ * @author joan
+ *
+ */	
 
-	public class AntOperationManager implements CommandManager {
+public class AntOperationManager implements CommandManager {
 		
 	  private Stack            commandStack_;
 	  private FragmentListener undoFragmentListener_;
@@ -339,28 +340,31 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 	  	  entry.command_ = cmd;
 	  	    
 	  	  if( cmd != null )
-	  	  {
-	  		System.out.println("-------------dataManager_process() for " + cmd.getClass() );
+	  	  {	  		
+	  		// order is critical here - data mappings must be made before initialization so that
+	  		//  existing beans can be picked up for transformation
 	  		dataManager_.process( cmd );
-	  		System.out.println("calling init data for " + cmd.getClass() );
-	  		environment_.initOperationData(cmd);	  	    
+	  		
+	  		// picks up properties from the Ant properties file and initializes the command data
+	  		int initStatus = environment_.initOperationData(cmd);
+	  		if (initStatus == AntEnvironment.INIT_OPERATION_DATA_FAIL)
+	  		{
+	  			environment_.getLog().log(ILog.INFO, "ws_ant", 9999, this, "runCommand", "Initializing data for: " + cmd.getClass().getName());
+	  		}
 	  	  	  
 	  	    try
 	  	    {
-	  	      environment_.getLog().log(ILog.INFO, "command", 5001, this, "runCommand", "Executing: " + cmd.getClass().getName());
+	  	      environment_.getLog().log(ILog.INFO, "ws_ant", 9999, this, "runCommand", "Executing: " + cmd.getClass().getName());
 	  	  	    
-	 	        cmd.setEnvironment( environment_ );
-	 	       System.out.println("calling execute for " + cmd.getClass() );
-	          status = cmd.execute( monitor, null );
-	          System.out.println("-------------execute complete for " + cmd.getClass() );
-			      entry.beforeExecute_ = false;
+	 	      cmd.setEnvironment( environment_ );	 	       
+	          status = cmd.execute( monitor, null );	          
+			  entry.beforeExecute_ = false;
 	  	    }
 	  	    catch( Throwable exc )
 	  	    {
-	  	      MessageUtils utils           = new MessageUtils( "org.eclipse.wst.command.env.core.environment", this );
 	  	      IStatus      unexpectedError = StatusUtils.errorStatus( exc );
 	          MultiStatus  parentStatus    = new MultiStatus( "id", 0, new IStatus[]{unexpectedError}, 
-	                                                          utils.getMessage( "MSG_ERROR_UNEXPECTED_ERROR" ), null );
+	                                                          EnvironmentMessages.MSG_ERROR_UNEXPECTED_ERROR, null );
 	  	      environment_.getStatusHandler().reportError( parentStatus );
 	  	    }
 	  	    finally
@@ -372,7 +376,7 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 	  	        message = "Error: " + status.getMessage(); 
 	  	      }
 	  	      
-		      environment_.getLog().log(ILog.INFO, "command", 5001, this, "runCommand", "Execution status: " + message );
+		      environment_.getLog().log(ILog.INFO, "ws_ant", 9999, this, "runCommand", "Execution status: " + message );
 	  	    }
 	  	  }
 	  	}
