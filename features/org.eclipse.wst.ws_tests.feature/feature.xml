@@ -14,10 +14,6 @@
       %license
    </license>
 
-   <requires>
-      <import feature="org.eclipse.test"/>
-   </requires>
-
    <plugin
          id="org.eclipse.wst.ws.tests"
          download-size="0"
