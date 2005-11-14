@@ -124,8 +124,7 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
           wsddStream.close();
         }
         
-        IPath     eclipseWebContentPath = J2EEUtils.getWebContentContainer( project ).getFullPath();        
-        IPath     eclipseDeployPath     = findPathFromFilePath( eclipseWebContentPath, deployPath );
+        IPath eclipseDeployPath = findPathFromFilePath( deployPath );
         
         if( eclipseDeployPath != null )
         {
@@ -148,22 +147,18 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 		return status;
 	}
 
-  // This method attempts to search a file path that is relative to a file system
-  // for a path that starts with the startPath parameter.  The result should be
-  // a Path that is relative to the Eclipse workspace instead of the file system.
-  private IPath findPathFromFilePath( IPath startPath, IPath filePath )
+  // This method attempts to convert a path that is relative to a file system to a path
+  // that is relative to the workspace.
+  private IPath findPathFromFilePath( IPath filePath )
   {
     IPath result = null;
     
-    while( filePath.segmentCount() > 0 )
+    IPath installLocation = Platform.getLocation();
+    
+    if( installLocation.matchingFirstSegments( filePath ) == installLocation.segmentCount() )
     {
-      if( filePath.matchingFirstSegments( startPath ) == startPath.segmentCount() )
-      {
-        result = filePath.setDevice( null );
-        break;
-      }
-      
-      filePath = filePath.removeFirstSegments( 1 );
+      filePath = filePath.removeFirstSegments( installLocation.segmentCount() );
+      result = filePath.setDevice( null );
     }
     
     return result;
