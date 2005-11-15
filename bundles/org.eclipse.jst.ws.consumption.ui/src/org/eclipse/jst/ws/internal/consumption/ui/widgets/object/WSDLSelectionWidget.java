@@ -72,7 +72,6 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   private Composite parent_;
   private Listener  statusListener_;
   private WSDLSelectionTreeWidget tree;
-  private ValidationMessageViewerWidget msgViewer_;
   
   /*CONTEXT_ID PCON0001 for the WSDL Selection Page*/
   private final String INFOPOP_PCON_PAGE = "PCON0001";
@@ -85,8 +84,12 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   private final String INFOPOP_PCON_BUTTON_BROWSE_WSDL = "PCON0003";
   private Button wsBrowseButton_;
   
+  /*CONTEXT_ID PCON0004 for the Wizard WSDL Validation table of the WSDL Selection Page*/
+  private ValidationMessageViewerWidget msgViewer_;
   private ValidateWSDLJob validateWSDLJob_;
   private JobChangeAdapter    jobChangeAdapter_;
+  
+  /*CONTEXT_ID PCON0005 for the Wizard WSDL Validation summary message of the WSDL Selection Page*/
   private Text validationSummaryText_;
   private Text validationSummaryText2_;
 
