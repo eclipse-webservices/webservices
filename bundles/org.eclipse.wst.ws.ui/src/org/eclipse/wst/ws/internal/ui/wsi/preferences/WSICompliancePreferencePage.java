@@ -47,9 +47,9 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
   private Label wsi_ssbp_Label_;
   private Combo wsi_ssbp_Types_;
   
-  /*CONTEXT_ID PWSI0004 for the WS-I SSBP type combo box on the WS-I AP Non compliance Preference Page*/
+  /*CONTEXT_ID PWSI0004 for the WS-I SSBP type combo box on the Profile Compliance and Validation page*/
   private String INFOPOP_PWSI_SSBP_COMBO_TYPE = WSUIPlugin.ID + ".PWSI0004";
-  /*CONTEXT_ID PWSI0008 for the WS-I AP type combo box on the WS-I AP Non compliance Preference Page*/
+  /*CONTEXT_ID PWSI0008 for the WS-I AP type combo box on the Profile Compliance and Validation page*/
   private String INFOPOP_PWSI_AP_COMBO_TYPE = WSUIPlugin.ID + ".PWSI0008";
       
   private Label wsi_ap_Label_;
@@ -60,10 +60,14 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
   private Group validationSelectionGroup_;
   
   private Label wsdlValidationLabel_;
+  /*CONTEXT_ID PWSI0009 for the No Wizard WSDL validation button on the Profile Compliance and Validation page*/
   private Button validateNoWsdlButton_;
+  /*CONTEXT_ID PWSI00010 for the Wizard WSDL validation for remote files only button on the Profile Compliance and Validation page*/
   private Button validateRemoteWsdlButton_;
+  /*CONTEXT_ID PWSI00011 for the Wizard WSDL validation for all files button on the Profile Compliance and Validation page*/
   private Button validateAllWsdlButton_;
   private Label waitForWsdlValidationLabel_;
+  /*CONTEXT_ID PWSI00012 for the Wait for pending WSDL validation to complete checkbox on the Profile Compliance and Validation page*/
   private Button waitForWSDLValidationCheckbox_;
   
 
