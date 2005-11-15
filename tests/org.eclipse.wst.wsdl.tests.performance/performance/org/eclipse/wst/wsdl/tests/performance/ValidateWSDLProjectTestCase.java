@@ -74,7 +74,7 @@ public class ValidateWSDLProjectTestCase extends PerformanceTestCase {
 
 			IWorkspaceRunnable myRunnable = new OneValidatorOperation(
 					project,
-					"org.eclipse.wst.wsdl.validation.internal.ui.eclipse.Validator",
+					"org.eclipse.wst.wsdl.ui.internal.validation.Validator",
 					true, 
 					false);
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
