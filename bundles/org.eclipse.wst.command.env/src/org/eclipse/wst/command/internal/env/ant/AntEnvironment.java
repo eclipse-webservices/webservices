@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.env.ant;
+package org.eclipse.wst.command.internal.env.ant;
 
 import java.lang.reflect.*;
 import java.util.*;

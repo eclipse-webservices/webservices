@@ -9,7 +9,7 @@ set JAVAEXE="C:\j2sdk1.4.2_07\jre\bin\java.exe"
 REM The Eclipse startup.jar - target workspace/wtp workspace
 set STARTUPJAR="D:\wtp0929\eclipse\startup.jar"
 
-REM The location of your workspace (does not need to exist)
+REM The location of your workspace
 set WORKSPACE=D:\workspaces\ant_task
 
 REM ****************************************************

@@ -81,7 +81,7 @@
               key="InitialSelection"
               operation="org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand"
               property="ObjectSelection"
-              transform="org.eclipse.wst.command.env.ant.String2SelectionTransformer"/>
+              transform="org.eclipse.wst.command.internal.env.ant.String2SelectionTransformer"/>
         <map
               key="ShowMapping"
               operation="org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsFragment"

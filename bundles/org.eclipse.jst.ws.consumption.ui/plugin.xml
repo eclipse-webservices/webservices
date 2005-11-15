@@ -718,12 +718,12 @@
               key="InitialSelection"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand"
               property="InitialInitialSelection"
-              transform="org.eclipse.wst.command.env.ant.String2SelectionTransformer"/>
+              transform="org.eclipse.wst.command.internal.env.ant.String2SelectionTransformer"/>
         <map
               key="InitialSelection"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionWidgetDefaultingCommand"
               property="InitialSelection"
-              transform="org.eclipse.wst.command.env.ant.String2SelectionTransformer"/>
+              transform="org.eclipse.wst.command.internal.env.ant.String2SelectionTransformer"/>
 
         <map
               key="Client.RuntimeId"

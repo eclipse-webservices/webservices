@@ -12,7 +12,7 @@ package ws.ant.task;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
-import org.eclipse.wst.command.env.ant.AntController;
+import org.eclipse.wst.command.internal.env.ant.AntController;
 
 public class WebServiceGenerationAntTask extends Task {
 	

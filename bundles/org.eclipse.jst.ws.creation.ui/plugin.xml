@@ -254,12 +254,12 @@
               key="InitialSelection"
               operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetDefaultingCommand"
               property="InitialSelection"
-              transform="org.eclipse.wst.command.env.ant.String2SelectionTransformer"/>
+              transform="org.eclipse.wst.command.internal.env.ant.String2SelectionTransformer"/>
         <map
               key="InitialSelection"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand"
               property="ObjectSelection"
-              transform="org.eclipse.wst.command.env.ant.String2SelectionTransformer"/>              
+              transform="org.eclipse.wst.command.internal.env.ant.String2SelectionTransformer"/>              
 		<map
               key="Project"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand"

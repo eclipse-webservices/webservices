@@ -7,7 +7,7 @@ Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.wst.command.internal.env.plugin.EnvPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.wst.command.env.ant,
+Export-Package: org.eclipse.wst.command.internal.env.ant,
  org.eclipse.wst.command.internal.env,
  org.eclipse.wst.command.internal.env.commandline,
  org.eclipse.wst.command.internal.env.common,
