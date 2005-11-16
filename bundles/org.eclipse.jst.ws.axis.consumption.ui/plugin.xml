@@ -29,10 +29,6 @@
               property="ClientProject"
               transform="org.eclipse.jst.ws.internal.common.String2IProjectTransformer"/>
         <map
-              key="InitialSelection"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
-              property="WsdlURL"/>
-        <map
               key="CustomizeClientMappings"
               operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
               property="CustomizeClientMappings"/>                                 
