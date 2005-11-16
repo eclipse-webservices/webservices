@@ -30,6 +30,7 @@
       <import plugin="org.eclipse.wst.ws"/>
       <import plugin="org.eclipse.wst.command.env"/>
       <import plugin="org.eclipse.wst.command.env.core"/>
+      <import plugin="org.eclipse.wst.common.tests.performance"/>
    </requires>
 
 </plugin>

@@ -116,6 +116,103 @@
     <antcall target="OpenStockQuoteWSDLSetup"/>
   	<antcall target="OpenStockQuoteWSDLSetup"/>
 
+  	<antcall target="Open1KBFileTestCase"/>
+  	<antcall target="Open1KBFileTestCase"/>
+  	<antcall target="Open1KBFileTestCase"/>
+
+  	<antcall target="Open10KBFileTestCase"/>
+  	<antcall target="Open10KBFileTestCase"/>
+  	<antcall target="Open10KBFileTestCase"/>
+
+  	<antcall target="Open100KBFileTestCase"/>
+  	<antcall target="Open100KBFileTestCase"/>
+  	<antcall target="Open100KBFileTestCase"/>
+
+  	<antcall target="Open200KBFileTestCase"/>
+  	<antcall target="Open200KBFileTestCase"/>
+  	<antcall target="Open200KBFileTestCase"/>
+
+  	<antcall target="Open500KBFileTestCase"/>
+  	<antcall target="Open500KBFileTestCase"/>
+  	<antcall target="Open500KBFileTestCase"/>
+
+  	<antcall target="Open1MBFileTestCase"/>
+  	<antcall target="Open1MBFileTestCase"/>
+  	<antcall target="Open1MBFileTestCase"/>
+
+  	<antcall target="Validate1KBFileTestCase"/>
+  	<antcall target="Validate1KBFileTestCase"/>
+	<antcall target="Validate1KBFileTestCase"/>
+
+  	<antcall target="Validate10KBFileTestCase"/>
+  	<antcall target="Validate10KBFileTestCase"/>
+	<antcall target="Validate10KBFileTestCase"/>
+	
+  	<antcall target="Validate100KBFileTestCase"/>
+  	<antcall target="Validate100KBFileTestCase"/>
+	<antcall target="Validate100KBFileTestCase"/>
+  	
+  	<antcall target="Validate200KBFileTestCase"/>
+  	<antcall target="Validate200KBFileTestCase"/>
+	<antcall target="Validate200KBFileTestCase"/>
+  	
+  	<antcall target="Validate500KBFileTestCase"/>
+  	<antcall target="Validate500KBFileTestCase"/>
+	<antcall target="Validate500KBFileTestCase"/>
+	
+  	<antcall target="Validate1MBFileTestCase"/>
+  	<antcall target="Validate1MBFileTestCase"/>
+	<antcall target="Validate1MBFileTestCase"/>
+
+	<antcall target="RepeatOpenEditorx1TestCase"/>
+  	<antcall target="RepeatOpenEditorx1TestCase"/>
+  	<antcall target="RepeatOpenEditorx1TestCase"/>
+  
+  	<antcall target="RepeatOpenEditorx10TestCase"/>
+  	<antcall target="RepeatOpenEditorx10TestCase"/>
+  	<antcall target="RepeatOpenEditorx10TestCase"/>
+  	
+  	<antcall target="RepeatOpenEditorx25TestCase"/>
+  	<antcall target="RepeatOpenEditorx25TestCase"/>
+  	<antcall target="RepeatOpenEditorx25TestCase"/>
+
+  	<antcall target="RepeatOpenEditorx50TestCase"/>
+  	<antcall target="RepeatOpenEditorx50TestCase"/>
+  	<antcall target="RepeatOpenEditorx50TestCase"/>
+  	
+  	<antcall target="RepeatOpenEditorx75TestCase"/>
+  	<antcall target="RepeatOpenEditorx75TestCase"/>
+  	<antcall target="RepeatOpenEditorx75TestCase"/>
+ 
+  	<!--
+  	<antcall target="RepeatOpenEditorx100TestCase"/>
+  	<antcall target="RepeatOpenEditorx100TestCase"/>
+  	<antcall target="RepeatOpenEditorx100TestCase"/>
+  	-->
+
+  	<antcall target="RepeatValidatex1TestCase"/>
+  	<antcall target="RepeatValidatex1TestCase"/>
+  	<antcall target="RepeatValidatex1TestCase"/>
+
+  	<antcall target="RepeatValidatex10TestCase"/>
+  	<antcall target="RepeatValidatex10TestCase"/>
+  	<antcall target="RepeatValidatex10TestCase"/>
+  	
+  	<antcall target="RepeatValidatex25TestCase"/>
+  	<antcall target="RepeatValidatex25TestCase"/>
+  	<antcall target="RepeatValidatex25TestCase"/>
+  	
+  	<antcall target="RepeatValidatex50TestCase"/>
+  	<antcall target="RepeatValidatex50TestCase"/>
+  	<antcall target="RepeatValidatex50TestCase"/>
+  	
+  	<antcall target="RepeatValidatex75TestCase"/>
+  	<antcall target="RepeatValidatex75TestCase"/>
+  	<antcall target="RepeatValidatex75TestCase"/>
+
+  	<antcall target="RepeatValidatex100TestCase"/>
+  	<antcall target="RepeatValidatex100TestCase"/>
+  	<antcall target="RepeatValidatex100TestCase"/>
   </target>
 
   <target name="readOAGISWSDLTestcase">
@@ -217,6 +314,246 @@
       <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.OpenStockQuoteWSDLTestCase"/>
     </ant>
   </target>
+
+	  <target name="Open1KBFileTestCase">
+	    <delete dir="${workspace}" quiet="true"/>
+	    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+	      <property name="data-dir" value="${workspace}"/>
+	      <property name="plugin-name" value="${plugin-name}"/>
+	      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Open1KBFileTestCase"/>
+	      <property name="extraVMargs" value="${extraVMargs}"/>
+	    </ant>
+	  </target>
+
+		  <target name="Open10KBFileTestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Open10KBFileTestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="Open100KBFileTestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Open100KBFileTestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="Open200KBFileTestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Open200KBFileTestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="Open500KBFileTestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Open500KBFileTestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="Open1MBFileTestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Open1MBFileTestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="Validate1KBFileTestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate1KBFileTestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="Validate10KBFileTestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate10KBFileTestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="Validate100KBFileTestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate100KBFileTestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="Validate200KBFileTestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate200KBFileTestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="Validate500KBFileTestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate500KBFileTestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="Validate1MBFileTestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate1MBFileTestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="RepeatOpenEditorx1TestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.RepeatOpenEditorx1TestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="RepeatOpenEditorx10TestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.RepeatOpenEditorx10TestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="RepeatOpenEditorx25TestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.RepeatOpenEditorx25TestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="RepeatOpenEditorx50TestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.RepeatOpenEditorx50TestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="RepeatOpenEditorx75TestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.RepeatOpenEditorx75TestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="RepeatOpenEditorx100TestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.RepeatOpenEditorx100TestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="RepeatValidatex1TestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.RepeatValidatex1TestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="RepeatValidatex10TestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.RepeatValidatex10TestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="RepeatValidatex25TestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.RepeatValidatex25TestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="RepeatValidatex50TestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.RepeatValidatex50TestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="RepeatValidatex75TestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.RepeatValidatex75TestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
+
+		  <target name="RepeatValidatex100TestCase">
+		    <delete dir="${workspace}" quiet="true"/>
+		    <ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+		      <property name="data-dir" value="${workspace}"/>
+		      <property name="plugin-name" value="${plugin-name}"/>
+		      <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.RepeatValidatex100TestCase"/>
+		      <property name="extraVMargs" value="${extraVMargs}"/>
+		    </ant>
+		  </target>
 
   <!-- This target holds code to cleanup the testing environment after -->
   <!-- after all of the tests have been run. You can use this target to -->
