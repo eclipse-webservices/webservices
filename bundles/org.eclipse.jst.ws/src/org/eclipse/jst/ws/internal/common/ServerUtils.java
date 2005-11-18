@@ -30,6 +30,7 @@ import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
 import org.eclipse.jst.ws.internal.WSPluginMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.server.core.IModule;
@@ -667,7 +668,7 @@ public final class ServerUtils {
 		if (runtimeTargetId == null)
 			return false;
 
-		String earModuleType = IServerTargetConstants.EAR_TYPE;
+		String earModuleType = IModuleConstants.JST_EAR_MODULE;
 		String stJ2EEVersion = ServerUtils.getServerTargetJ2EEVersion(j2eeVersion);
         List runtimes = Arrays.asList(ServerUtil.getRuntimes(earModuleType, stJ2EEVersion));
 		for (int i = 0; i < runtimes.size(); i++) {
