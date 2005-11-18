@@ -14,13 +14,11 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.explorer;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import org.eclipse.core.resources.IProject;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
 import org.eclipse.jst.ws.internal.ext.test.WSDLTestFinishCommand;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -35,9 +33,6 @@ public class ExplorerServiceTestCommand extends AbstractDataModelOperation imple
 
   private boolean externalBrowser = true;
   private String wsdlServiceURL;
-  private String serviceServerTypeID;
-  private IServer serviceExistingServer;
-  private String serviceProject;
   private List endpoints;
   
   /**
@@ -53,18 +48,6 @@ public class ExplorerServiceTestCommand extends AbstractDataModelOperation imple
     
   	IStatus status = Status.OK_STATUS;
     
-    StartProjectCommand spc = new StartProjectCommand( true );
-    spc.setServiceServerTypeID(serviceServerTypeID);
-    spc.setServiceExistingServer(serviceExistingServer);
-    IProject project = (IProject) ResourceUtils.findResource(serviceProject);
-    spc.setServiceProject(project);
-    spc.setIsWebProjectStartupRequested(true);
-    spc.setEnvironment( env );
-    
-    status = spc.execute( monitor, null );
-    if (status.getSeverity() == Status.ERROR)
-    	return status;
-
     WSExplorerLauncherCommand launchCommand = new WSExplorerLauncherCommand();
     launchCommand.setForceLaunchOutsideIDE(externalBrowser);
     Vector launchOptionVector = new Vector();
@@ -94,17 +77,17 @@ public class ExplorerServiceTestCommand extends AbstractDataModelOperation imple
   
   public void setServerTypeID(String serviceServerTypeID)
   {
-  	this.serviceServerTypeID = serviceServerTypeID;
+    //TODO: Type mappings to this property should be removed.
   }
   
   public void setExistingServer(IServer serviceExistingServer)
   {
-  	this.serviceExistingServer = serviceExistingServer;
+    //TODO: Type mappings to this property should be removed.
   }
   
   public void setServiceProject(String serviceProject)
   {
-    this.serviceProject = serviceProject;
+    //TODO: Type mappings to this property should be removed.
   }
   
   public void setEndpoint(List endpoints)

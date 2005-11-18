@@ -13,13 +13,11 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.explorer;
 
 import java.util.Iterator;
 import java.util.Vector;
-import org.eclipse.core.resources.IProject;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.explorer.LaunchOption;
@@ -43,18 +41,6 @@ public class WSEGenerateCommand extends AbstractDataModelOperation
     
   	IStatus status = Status.OK_STATUS;
     
-    StartProjectCommand spc = new StartProjectCommand( true );
-    spc.setServiceServerTypeID(testInfo.getServiceServerTypeID());
-    spc.setServiceExistingServer(testInfo.getServiceExistingServer());
-    IProject project = (IProject) ProjectUtilities.getProject(testInfo.getServiceProject());
-    spc.setServiceProject(project);
-    spc.setIsWebProjectStartupRequested(true);
-    spc.setEnvironment( env );
-    
-    status = spc.execute( monitor, null );
-    if (status.getSeverity() == Status.ERROR)
-    	return status;
-
     WSExplorerLauncherCommand launchCommand = new WSExplorerLauncherCommand();
     launchCommand.setForceLaunchOutsideIDE(false);
     Vector launchOptionVector = new Vector();
