@@ -132,7 +132,8 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(WSDLSelectionWidgetWrapper.class, "WebServicesParser", WSDLSelectionOutputCommand.class);
     dataRegistry.addMapping(WSDLSelectionWidgetWrapper.class, "Project", WSDLSelectionOutputCommand.class);
     dataRegistry.addMapping(WSDLSelectionWidgetWrapper.class, "ComponentName", WSDLSelectionOutputCommand.class);
-        
+	dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy",TestDefaultingFragment.class);
+	
     // Before Client Test widget.
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService",FinishTestFragment.class);
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", ClientTestWidget.class );
@@ -334,9 +335,8 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       // Map ClientExtensionOutputCommand command.
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", WebServiceClientTestArrivalCommand.class);      
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", ClientTestDelegateCommand.class);      
-      dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestFragment.class);
+	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestFragment.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", FinishTestFragment.class);
-      dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "SetEndpointMethod", ClientTestDelegateCommand.class);
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ServerInstanceId", FinishDefaultCommand.class);
 

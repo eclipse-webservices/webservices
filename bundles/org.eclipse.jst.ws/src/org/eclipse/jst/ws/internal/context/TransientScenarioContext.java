@@ -14,7 +14,7 @@ package org.eclipse.jst.ws.internal.context;
 public class TransientScenarioContext implements ScenarioContext
 {
   private String[] webServiceTestTypes;
-  private String   nonJavaTestService;
+  private String[] nonJavaTestService;
   private String   webServiceType_;
   private boolean  startWebService_;
   private boolean  launchWebServiceExplorer_;
@@ -28,12 +28,12 @@ public class TransientScenarioContext implements ScenarioContext
  
   public TransientScenarioContext () {}
 
-  public String getNonJavaTestService()
+  public String[] getNonJavaTestService()
   {
     return nonJavaTestService;
   }
  
-  public void setNonJavaTestService(String nonJavaTestService)
+  public void setNonJavaTestService(String[] nonJavaTestService)
   {
     this.nonJavaTestService = nonJavaTestService;	
   }

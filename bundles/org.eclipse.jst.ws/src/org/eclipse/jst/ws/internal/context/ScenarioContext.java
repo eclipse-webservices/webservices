@@ -35,7 +35,7 @@ public interface ScenarioContext
   public String[] getWebServiceTestTypes();
   public void setWebServiceTestTypes(String[] testTypes);
   
-  public String getNonJavaTestService();
+  public String[] getNonJavaTestService();
   
   public String getWebServiceType();
   public String getWebServiceTypeDefault();

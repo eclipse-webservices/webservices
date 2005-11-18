@@ -40,7 +40,7 @@ public class WebServiceTestDefaultingCommand extends AbstractDataModelOperation
 {
   
   private SelectionList serviceTestFacilities;	
-  private String testID;
+  private String[] testID;
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
@@ -79,7 +79,7 @@ public class WebServiceTestDefaultingCommand extends AbstractDataModelOperation
   	return serviceTestFacilities;
   }
 
-  public String getTestID()
+  public String[] getTestID()
   {
   	return testID;
   }

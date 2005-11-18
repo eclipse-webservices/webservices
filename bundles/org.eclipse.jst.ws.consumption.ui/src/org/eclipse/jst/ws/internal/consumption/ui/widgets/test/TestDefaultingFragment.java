@@ -38,6 +38,7 @@ public class TestDefaultingFragment extends AbstractDataModelOperation
   private SelectionList testFacilities;
   private String launchedServiceTestName;
   private ScenarioContext scenarioContext;	
+  private boolean generateProxy;
   
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -70,8 +71,11 @@ public class TestDefaultingFragment extends AbstractDataModelOperation
     //put it on the bottom
     String[] testTypes = scenarioContext.getWebServiceTestTypes();	  
     String[] newTestTypes = new String[testTypes.length];
-    boolean launched = false;
-    int j = 0;
+	String[] wsdlCases = scenarioContext.getNonJavaTestService();
+	boolean launched = false;
+    
+	int j = 0;
+	
     for(int i = 0;i<testTypes.length;i++){
 	  if(testTypes[i].equals(launchedServiceTestName))
 	    launched = true;
@@ -83,13 +87,22 @@ public class TestDefaultingFragment extends AbstractDataModelOperation
 	   	
     if(launched)
 	  newTestTypes[testTypes.length - 1] = launchedServiceTestName;
-	  	
-    testFacilities = new SelectionList(newTestTypes,0);	
+    
+	
+	if(!generateProxy)
+      testFacilities = new SelectionList(wsdlCases,0);	
+	else
+	  testFacilities = new SelectionList(newTestTypes,0);	
   }
 
   public void setLaunchedServiceTestName(String launchedServiceTestName)
   {
   	this.launchedServiceTestName = launchedServiceTestName;
+  }
+  
+  public void setGenerateProxy(boolean generateProxy)
+  {
+  	this.generateProxy = generateProxy;
   }
   
 }

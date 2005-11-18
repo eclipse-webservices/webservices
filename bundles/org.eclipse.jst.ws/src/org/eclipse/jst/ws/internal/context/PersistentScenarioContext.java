@@ -11,7 +11,10 @@
 
 package org.eclipse.jst.ws.internal.context;
 
+import java.util.Enumeration;
 import java.util.StringTokenizer;
+import java.util.Vector;
+
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
@@ -49,17 +52,27 @@ public class PersistentScenarioContext extends PersistentContext implements Scen
     setDefaultBooleanIfNoDefault(PREFERENCE_LAUNCH_SAMPLE, defaults.launchSample() );
   }
 
-  public String getNonJavaTestService()
+  public String[] getNonJavaTestService()
   {
     WebServiceTestRegistry registry = WebServiceTestRegistry.getInstance();
     String[] testTypes = getWebServiceTestTypes();
-    for (int i = 0; i < testTypes.length; i++)
+    Vector newTestCases = new Vector();
+	for (int i = 0; i < testTypes.length; i++)
     {
       WebServiceTestExtension wse = (WebServiceTestExtension) registry
           .getWebServiceExtensionsByName(testTypes[i]);
-      if (wse.testWSDL()) return testTypes[i];
+      if (wse.testWSDL()) 
+		  newTestCases.addElement(testTypes[i]);
     }
-    return "";
+	String[] wsdlTestArray = new String[newTestCases.size()];
+	Enumeration e = newTestCases.elements();
+	int i = 0;
+	while(e.hasMoreElements()){
+	  wsdlTestArray[i] = (String)e.nextElement();
+	  i++;
+	}
+	
+	return wsdlTestArray;
   }
   
   public void setWebServiceTestTypes(String[] ids)

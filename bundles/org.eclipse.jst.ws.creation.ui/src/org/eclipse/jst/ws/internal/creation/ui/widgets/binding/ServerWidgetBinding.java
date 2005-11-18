@@ -136,7 +136,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     // Before ObjectSelectionWidget
     dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestService", ClientTestWidget.class );
     dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestService",FinishTestFragment.class);
-    
+	dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "GenerateProxy", TestDefaultingFragment.class);
     // Before ServerRuntimeSelectionWidget
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "GenerateProxy", ServerRuntimeSelectionWidget.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceProjectName", ServerRuntimeSelectionWidget.class);
