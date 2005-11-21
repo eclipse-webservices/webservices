@@ -37,6 +37,7 @@ public class XSDValidator
   protected final String SCHEMA_FULL_CHECKING_FEATURE_ID =
     "http://apache.org/xml/features/validation/schema-full-checking";
   protected final String CONTINUE_AFTER_FATAL_ERROR_ID = "http://apache.org/xml/features/continue-after-fatal-error";
+  protected final String HONOUR_ALL_SCHEMA_LOCATIONS_FEATURE_ID = "http://apache.org/xml/features/honour-all-schemaLocations";
   protected final String FILE_PREFIX = "file:";
   protected final String XMLNS = "xmlns";
   protected final String TARGETNAMESPACE = "targetNamespace";
@@ -121,6 +122,16 @@ public class XSDValidator
     try
     {
 		XMLGrammarPreparser grammarPreparser = new XMLGrammarPreparser();
+		grammarPreparser.registerPreparser(XMLGrammarDescription.XML_SCHEMA,null/*schemaLoader*/);
+		// TODO: Reenable through preference.
+//	    try
+//	  	{
+//	  	  grammarPreparser.setFeature(HONOUR_ALL_SCHEMA_LOCATIONS_FEATURE_ID, true);
+//	  	}
+//	    catch (Exception e)
+//	  	{
+//	       // Catch the exception and ignore if the property cannot be set.
+//	  	}
 		XMLGrammarPool grammarPool = new XMLGrammarPoolImpl();
 		grammarPreparser.setGrammarPool(grammarPool);
 	 
@@ -149,7 +160,6 @@ public class XSDValidator
           is = new XMLInputSource(null,schema,schema);
         }
         
-        grammarPreparser.registerPreparser(XMLGrammarDescription.XML_SCHEMA,null/*schemaLoader*/);
         XMLGrammarLoader schemaLoader = grammarPreparser.getLoader(XMLGrammarDescription.XML_SCHEMA);
 
 		XSGrammar grammar = (XSGrammar)grammarPreparser.preparseGrammar(XMLGrammarDescription.XML_SCHEMA,is);

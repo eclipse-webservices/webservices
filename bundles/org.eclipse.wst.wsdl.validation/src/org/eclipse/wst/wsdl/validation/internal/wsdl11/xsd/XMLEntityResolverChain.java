@@ -34,6 +34,14 @@ public class XMLEntityResolverChain implements XMLEntityResolver
   public XMLInputSource resolveEntity(XMLResourceIdentifier xmlResourceIdentifier) throws XNIException, IOException
   {
     XMLInputSource is = null;
+    
+    // TODO: This fix should be removed once this problem is fixed in Xerces.
+    // Xerces currently (version 2.7) has a problem when the honour all schema locations
+    // property is set and the same schema is imported by two different files and one
+    // of the imports uses \ and another uses / in part of the location.
+    if(xmlResourceIdentifier.getLiteralSystemId() != null)
+    	xmlResourceIdentifier.setLiteralSystemId(xmlResourceIdentifier.getLiteralSystemId().replace('\\','/'));
+    
     Iterator entityResolverIter = entityResolvers.iterator();
     while (entityResolverIter.hasNext())
     {
