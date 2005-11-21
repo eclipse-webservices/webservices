@@ -126,6 +126,11 @@ public class WSDLDocument
     WSDLFactory factory =
       (factoryImplName != null) ? WSDLFactory.newInstance(factoryImplName) : WSDLFactory.newInstance();
     def = factory.newDefinition();
+    // Fix for WSDL4J adding default WSDL namespace when no default
+    // namespace has been declared.
+    // TODO: Remove this fix once fixed in WSDL4J.
+    if(def.getNamespace("") != null)
+    	def.getNamespaces().remove("");
 
     if (extReg != null)
     {
@@ -1277,13 +1282,13 @@ public class WSDLDocument
             boolean inputNamesEqual = false;
             boolean outputNamesEqual = false;
             Operation oper = (Operation)iOperations.next();
-            if (oper.getName().equalsIgnoreCase(name))
+            if (oper.getName().equals(name))
             {
               Input opInput = oper.getInput();
               if (opInput != null && input != null)
               {
                 String opInputName = opInput.getName();
-                if (opInputName != null && inputName != null && opInputName.equalsIgnoreCase(inputName))
+                if (opInputName != null && inputName != null && opInputName.equals(inputName))
                 {
                   inputNamesEqual = true;
                 }
@@ -1300,7 +1305,7 @@ public class WSDLDocument
               if (opOutput != null && output != null)
               {
                 String opOutputName = opOutput.getName();
-                if (opOutputName != null && outputName != null && opOutputName.equalsIgnoreCase(outputName))
+                if (opOutputName != null && outputName != null && opOutputName.equals(outputName))
                 {
                   outputNamesEqual = true;
                 }
