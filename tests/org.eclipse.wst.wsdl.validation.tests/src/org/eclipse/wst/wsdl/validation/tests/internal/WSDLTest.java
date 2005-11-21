@@ -299,6 +299,19 @@ public class WSDLTest extends BaseTestCase
   }
   
   /**
+   * Test /WSDL/Import/ImportWithIncorrectSlash/ImportWithIncorrectSlash.wsdl
+   */
+  public void testImportWithIncorrectSlash()
+  {
+    String testname = "ImportWithIncorrectSlash";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/ImportWithIncorrectSlash/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/ImportWithIncorrectSlash/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/ImportWithIncorrectSlash/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
    * CYCLIC TESTS
    */
   
@@ -493,6 +506,19 @@ public class WSDLTest extends BaseTestCase
     String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "ServiceElement/NoAddress/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "ServiceElement/NoAddress/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "ServiceElement/NoAddress/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/CaseInsensitiveOperationNames/CaseInsensitiveOperationNames.wsdl
+   */
+  public void testCaseInsensitiveOperationNames()
+  {
+    String testname = "CaseInsensitiveOperationNames";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "CaseInsensitiveOperationNames/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "CaseInsensitiveOperationNames/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "CaseInsensitiveOperationNames/" + testname + ".wsdl-log";
     
     runTest(testfile, loglocation, idealloglocation);
   }
