@@ -38,9 +38,6 @@ public final class EnvironmentMessages extends NLS {
 	public static String LABEL_YES;
 	public static String LABEL_YES_TO_ALL;
 	public static String LABEL_CANCEL;
-	public static String TITLE_WARNING;
-	public static String TITLE_ERROR;
-	public static String TITLE_INFO;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, EnvironmentMessages.class);
