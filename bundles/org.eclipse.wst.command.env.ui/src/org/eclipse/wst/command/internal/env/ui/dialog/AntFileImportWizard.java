@@ -166,7 +166,7 @@ public class AntFileImportWizard extends Wizard implements INewWizard {
      * </p>
      */
     protected void initializeDefaultPageImageDescriptor() {
-    	ImageDescriptor desc = EnvUIPlugin.getImageDescriptor("icons/full/wizban/webservices_wiz.gif");//$NON-NLS-1$
+    	ImageDescriptor desc = EnvUIPlugin.getImageDescriptor("icons/full/wizban/newantfiles_wiz.gif");//$NON-NLS-1$
         setDefaultPageImageDescriptor(desc);
     }
 
