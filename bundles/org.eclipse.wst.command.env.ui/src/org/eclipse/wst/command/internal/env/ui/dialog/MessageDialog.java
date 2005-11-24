@@ -208,7 +208,8 @@ public class MessageDialog extends Dialog
     GridLayout gl = new GridLayout();
     gl.numColumns = 2;
     imageAndLabel.setLayout(gl);
-    composite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ));
+    imageAndLabel.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+    composite.setLayoutData( new GridData( GridData.FILL_BOTH ));
     
     // create image
     Image image = getDialogImage();
