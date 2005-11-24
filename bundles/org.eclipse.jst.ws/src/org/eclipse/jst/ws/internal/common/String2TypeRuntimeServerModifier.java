@@ -17,6 +17,13 @@ import org.eclipse.wst.command.internal.env.core.data.BeanModifier;
 
 public class String2TypeRuntimeServerModifier implements BeanModifier {
 
+	private String SERVICE_RT_ID_KEY = "Service.RuntimeId";  //$NON-NLS-N$
+	private String RUNTIME_ID = "RuntimeId";  //$NON-NLS-N$
+	private String SERVICE_SRV_ID_KEY = "Service.ServerId";  //$NON-NLS-N$
+	private String SERVER_ID = "ServerId";  //$NON-NLS-N$
+	private String SERVICE_PREFIX = "Service.";  //$NON-NLS-N$
+	private String CLIENT_PREFIX = "Client.";  //$NON-NLS-N$
+	
 	/**
 	 * Modifies the supplied TypeRuntimeServer bean with properties in holder.
 	 * If the bean is null, construct a new one and set its properties.
@@ -41,15 +48,23 @@ public class String2TypeRuntimeServerModifier implements BeanModifier {
 			Map typesMap = (Map)holder;
 			String prefix = "";
 			
-			if (typesMap.containsKey("Service.TypeId")||typesMap.containsKey("Service.RuntimeId")||
-					typesMap.containsKey("Service.ServerId"))
-			  	prefix = "Service.";
-			else
-				prefix = "Client.";
 			
-			types.setTypeId((String)typesMap.get(prefix+"TypeId"));
-			types.setRuntimeId((String)typesMap.get(prefix+"RuntimeId"));
-			types.setServerId((String)typesMap.get(prefix+"ServerId"));			
+			if (typesMap.containsKey(SERVICE_RT_ID_KEY)||typesMap.containsKey(SERVICE_SRV_ID_KEY))
+			{
+				prefix = SERVICE_PREFIX;
+			}			  	
+			else
+			{
+				prefix = CLIENT_PREFIX;
+			}
+			
+			String runtimeID = (String)typesMap.get(prefix+RUNTIME_ID);
+			if (runtimeID != null)
+				types.setRuntimeId(runtimeID);		
+			
+			String serverID = (String)typesMap.get(prefix+SERVER_ID);
+			if (serverID  != null)				
+				types.setServerId(serverID);			
 		}
   }
 

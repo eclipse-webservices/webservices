@@ -13,6 +13,7 @@ package org.eclipse.wst.command.internal.env.ant;
 import java.lang.reflect.*;
 import java.util.*;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -121,8 +122,9 @@ public class AntEnvironment extends EclipseEnvironment{
 								mappingComplete_ = callSetterConstructor(mapping);
 								break;
 								
-							default:								
-								return INIT_OPERATION_DATA_FAIL;
+							default:
+								mappingComplete_ = true;
+								break;								
 							}
 						   step++;
 						}					
@@ -175,7 +177,7 @@ public class AntEnvironment extends EclipseEnvironment{
 		   //go to ext registry and get all antMapping extensions
 		   IExtensionRegistry reg = Platform.getExtensionRegistry();
 		   IExtensionPoint extPt = reg.getExtensionPoint(EXT_PT_NAMESPACE, MAPPER_EXT_PT);
-		   Hashtable dataTable = new Hashtable();
+		   Hashtable dataTable = new Hashtable(25);
 		   
 		   IConfigurationElement[] elements = extPt.getConfigurationElements();
 		   
@@ -186,69 +188,83 @@ public class AntEnvironment extends EclipseEnvironment{
 			 // look for mappings for this operation
 			 if (obj.equals(operationName))
 			 {				 
-				 String property = ce.getAttribute(MAPPER_PROPERTY_ATTRIBUTE);
 				 String key = ce.getAttribute(MAPPER_KEY_ATTRIBUTE);
-				 String transform = ce.getAttribute(MAPPER_TRANSFORM_ATTRIBUTE);
 				 String value = getProperty(key);
 				 
 				 //check to see if the property for this extension is already in the data table
 				 // if so, there is a m:1 mapping
-				 if (dataTable.containsKey(property))
+				 if (value != null)  //only do a mapping if there is an Ant property value passed in...
 				 {
-					 //get the PropertyDataHolder from the table
-					 PropertyDataHolder holder = (PropertyDataHolder)dataTable.get(property);
-					 //if already have a map - add the current key, value pair
-					 if (holder.map_ != null)
-					 {						
-						holder.map_.put(key, value);
-					 }
-					 // add a new map to the data holder and put first & current key, values into the map
-					 else 
+				
+					 String property = ce.getAttribute(MAPPER_PROPERTY_ATTRIBUTE);
+					 Object transform = null;
+					 try
 					 {
-						holder.map_ = new HashMap();
-						holder.map_.put(holder.key_, holder.value_);
-						holder.key_ = "";
-						holder.value_ = "";	
-						holder.map_.put(key, value);															
+						 transform = ce.createExecutableExtension(MAPPER_TRANSFORM_ATTRIBUTE);	 
 					 }
-				 }
-				 else  //add the extension info to the data table
-				 {
-					 PropertyDataHolder holder = new PropertyDataHolder();
-					 holder.operation_ = operation;
-					 holder.key_ = key;
-					 holder.property_ = property;
-					 holder.transform_ = transform;
-					 holder.value_ = value;
-					 dataTable.put(property, holder);
+					 catch (CoreException cex) {
+					   getLog().log(ILog.ERROR, "ws_ant", 9999, this, "getMappingExtensions", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_DATA_TRANSFORM, key, transform));                  
+					 }
+					 
+					 if (transform != null && transform instanceof BeanModifier/*dataTable.containsKey(property)*/)
+					 {
+						 //get the PropertyDataHolder from the table
+						 PropertyDataHolder holder = (PropertyDataHolder)dataTable.get(property);
+						 if (holder == null)
+						 {
+							 holder = new PropertyDataHolder();
+							 holder.key_ = "";
+							 holder.value_ = "";	
+							 holder.transform_ = transform;
+							 holder.operation_ = operation;
+							 holder.property_ = property;
+							 holder.map_ = new HashMap();
+							 holder.map_.put(key, value);
+							 dataTable.put(property, holder);
+						 }						 
+						 else
+						 {						
+							holder.map_.put(key, value);
+						 }					
+					 }
+					 else  //plain property mapping not a bean
+					 {
+						 PropertyDataHolder holder = new PropertyDataHolder();
+						 holder.operation_ = operation;
+						 holder.key_ = key;
+						 holder.property_ = property;
+						 holder.transform_ = transform;
+						 holder.value_ = value;
+						 dataTable.put(property, holder);
+					 }			 
 				 }			 
-			 }			 
-		  }    	   
+		      }    	 
+		  }
 		   return dataTable.elements();
 		}     
 	   
 	   private boolean transformAndSet(PropertyDataHolder mapping, String setterMethodName)
 	   {
-			String transform = mapping.transform_;
+			Object transform = mapping.transform_;
 			if (transform != null)
 			{
 				// get transform class & create setter parameters		
 				try
 				{
-					Object classObject = Class.forName(transform).newInstance();
+					//Object classObject = Class.forName(transform).newInstance();
 					Object param = new Object();
-					if (classObject instanceof Transformer)
+					if (transform instanceof Transformer)
 					{
-						Transformer transformer = (Transformer)classObject;						
+						Transformer transformer = (Transformer)transform;						
 						// transform the property value
 						param = transformer.transform(mapping.value_);						
 					}
-					else if (mapping.map_ != null && classObject instanceof BeanModifier)
+					else if (mapping.map_ != null && transform instanceof BeanModifier)
 					{
-						  BeanModifier modifier = (BeanModifier)classObject;		
+						  BeanModifier modifier = (BeanModifier)transform;		
                           Method getter = getGetterMethod(mapping);
 						  param = getter.invoke(mapping.operation_, new Object[]{});						  
-						  modifier.modify(mapping.map_, param);
+						  modifier.modify(param, mapping.map_);
 					}												
 					return callSetter(mapping.operation_, param, setterMethodName);
 					

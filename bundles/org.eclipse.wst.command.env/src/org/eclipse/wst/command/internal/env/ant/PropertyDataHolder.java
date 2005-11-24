@@ -24,7 +24,7 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public class PropertyDataHolder {
 	   public AbstractDataModelOperation operation_;
-	   public String transform_;
+	   public Object transform_;
 	   public String key_;
 	   public String property_;
 	   public String value_;		
