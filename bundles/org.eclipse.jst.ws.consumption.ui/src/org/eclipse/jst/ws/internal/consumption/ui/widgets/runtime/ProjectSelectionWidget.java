@@ -355,7 +355,13 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   public void setComponentType( String type )
   {
-	projectType_.setText(type);
+    if (type != null && type.length()>0)
+    {
+      String label = FacetUtils.getTemplateLabelById(type);
+	  projectType_.setText(label);
+    }
+    else
+      projectType_.setText("");
   }
   
   public String getComponentType()
