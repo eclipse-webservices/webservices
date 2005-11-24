@@ -37,9 +37,10 @@ public class CommandFragmentEngine implements CommandManager
   private Stack            commandStack_;
   private FragmentListener undoFragmentListener_;
   private FragmentListener nextFragmentListener_;
+  private FragmentListener afterExecuteFragmentListener_;
   private FragmentListener peekFragmentListener_;
   private DataFlowManager  dataManager_;
-  private IEnvironment      environment_;
+  private IEnvironment     environment_;
   private IStatus          lastStatus_;
   
   /**
@@ -96,6 +97,11 @@ public class CommandFragmentEngine implements CommandManager
   public void setNextFragmentListener( FragmentListener listener )
   {
     nextFragmentListener_ = listener;
+  }
+  
+  public void setAfterExecuteFragmentListener( FragmentListener listener )
+  {
+    afterExecuteFragmentListener_ = listener;
   }
   
   /**
@@ -232,7 +238,16 @@ public class CommandFragmentEngine implements CommandManager
   {    
   	CommandListEntry topEntry = (CommandListEntry)commandStack_.lastElement();	
   	
-	// Always undo the top element.
+	  if( topEntry.fragmentStopped_ && !topEntry.beforeExecute_ )
+    {
+      // Normally the command at the top of the stack has not been executed.  If
+      // it has been execute, it means that we tried to execute and it failed.
+      // The first command in the command stack failed.  Therefore, we should
+      // only undo this command.
+      performUndo( topEntry );
+      return topEntry.parentIndex_ == 0;
+    }
+    
   	performUndo( topEntry );
   		
     while( topEntry.parentIndex_ != 0 )
@@ -311,7 +326,23 @@ public class CommandFragmentEngine implements CommandManager
    
   	  lastStatus_ = runCommand( entry, monitor );
   	  
-  	  if( lastStatus_.getSeverity() == IStatus.ERROR ) continueNavigate = false;
+      if( afterExecuteFragmentListener_ != null )
+      {
+        continueNavigate = afterExecuteFragmentListener_.notify( entry.fragment_ );  
+        
+        if( !continueNavigate )
+        {
+          // The after execution listener has indicated that execution should stop.
+          // Therefore, we will upgrade the severity of the last status to ERROR.
+          lastStatus_ = new Status( IStatus.ERROR, 
+                                    lastStatus_.getPlugin(), 
+                                    lastStatus_.getCode(), 
+                                    lastStatus_.getMessage(),
+                                    lastStatus_.getException() );
+        }
+      }
+      
+  	  if( continueNavigate && lastStatus_.getSeverity() == IStatus.ERROR ) continueNavigate = false;
   	}
   	
    	if( !continueNavigate ) entry.fragmentStopped_ = true;
@@ -323,6 +354,11 @@ public class CommandFragmentEngine implements CommandManager
   {
     CommandListEntry entry = new CommandListEntry( fragment, parentIndex );
     commandStack_.push( entry );
+  }
+  
+  // Subclasses can do initialization before the execution of a command here
+  protected void initBeforeExecute( AbstractDataModelOperation operation )
+  {  
   }
   
   private IStatus runCommand( CommandListEntry entry, IProgressMonitor monitor )
@@ -342,6 +378,8 @@ public class CommandFragmentEngine implements CommandManager
   	  	  
   	    try
   	    {
+          initBeforeExecute( cmd );
+          
   	      environment_.getLog().log(ILog.INFO, "command", 5001, this, "runCommand", "Executing: " + cmd.getClass().getName());
   	  	    
  	        cmd.setEnvironment( environment_ );

@@ -26,7 +26,8 @@ import org.eclipse.wst.common.environment.StatusException;
  */
 public class EclipseStatusHandler implements IStatusHandler
 {
-  private Shell        shell_;
+  private Shell   shell_;
+  private IStatus worstStatus = Status.OK_STATUS;
   
   public EclipseStatusHandler()
   {
@@ -38,11 +39,23 @@ public class EclipseStatusHandler implements IStatusHandler
     shell_ = shell;
   }
   
+  public IStatus getStatus()
+  {
+    return worstStatus;
+  }
+  
+  public void resetStatus()
+  {
+    worstStatus = Status.OK_STATUS;  
+  }
+  
   /**
    * @see org.eclipse.env.common.IStatusHandler#report(org.eclipse.env.common.Status, org.eclipse.env.common.Choice[])
    */
   public Choice report(IStatus status, Choice[] choices) 
   {
+    checkStatus( status );
+    
     int result =
     MessageDialog.openMessage(
         shell_,
@@ -65,6 +78,8 @@ public class EclipseStatusHandler implements IStatusHandler
   public void report(IStatus status) throws StatusException
   {
     boolean userOk = false;
+    
+    checkStatus( status );
     
     switch (status.getSeverity())
     {
@@ -112,11 +127,20 @@ public class EclipseStatusHandler implements IStatusHandler
     return false;
   }
   
+  private void checkStatus( IStatus status )
+  {
+    if( status.getSeverity() > worstStatus.getSeverity() )
+    {
+      worstStatus = status;
+    }
+  }
+  
   /**
    * @see org.eclipse.wst.command.internal.env.core.common.IStatusHandler#reportError(org.eclipse.wst.command.internal.env.core.common.Status)
    */
   public void reportError(IStatus status)
   {
+    checkStatus( status );
     reportErrorStatus( status );
   }
   

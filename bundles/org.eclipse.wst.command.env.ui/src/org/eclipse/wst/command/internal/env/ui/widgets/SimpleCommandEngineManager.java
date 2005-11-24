@@ -20,6 +20,7 @@ import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentEngine;
 import org.eclipse.wst.command.internal.env.core.fragment.FragmentListener;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.common.environment.ILog;
 
 
@@ -58,7 +59,7 @@ public class SimpleCommandEngineManager
   {
   	engine_ = new CommandFragmentEngine( root, dataManager_, environment_ );
 	
-	environment_.setCommandManager( engine_ );
+	  environment_.setCommandManager( engine_ );
   	
     engine_.setPeekFragmentListener( 
       new FragmentListener()
@@ -77,8 +78,17 @@ public class SimpleCommandEngineManager
           return nextFragment( fragment );
         }
       } );  
+    
+    engine_.setAfterExecuteFragmentListener( 
+        new FragmentListener()
+        {
+          public  boolean notify( CommandFragment fragment )
+          {
+            return afterExecuteNextFragment( fragment );
+          }
+        } );  
                                                              
-	engine_.setUndoFragmentListener(
+	  engine_.setUndoFragmentListener(
       new FragmentListener()
       {
         public boolean notify( CommandFragment fragment )
@@ -86,6 +96,38 @@ public class SimpleCommandEngineManager
           return undoFragment( fragment );
         }
       } );               
+  }
+
+  protected boolean afterExecuteNextFragment( CommandFragment fragment )
+  {
+    boolean              continueExecute = true;
+    EclipseStatusHandler statusHandler   = (EclipseStatusHandler)environment_.getStatusHandler();
+    IStatus              commandStatus   = engine_.getLastStatus();
+    IStatus              handlerStatus   = statusHandler.getStatus();
+    
+    if( commandStatus.getSeverity() == IStatus.ERROR &&
+        handlerStatus.getSeverity() != IStatus.ERROR )
+    {
+      // The command returned an error status for the engine to stop,
+      // but the status handler did not have report and error.
+      // Therefore, we will report this status returned by the command
+      // if there is a message to display.  
+      String errorMessage = commandStatus.getMessage();
+      
+      if( errorMessage != null && errorMessage.length() > 0 )
+      {
+        statusHandler.reportError( commandStatus );
+      }
+    }
+    else if( commandStatus.getSeverity() != IStatus.ERROR &&
+             handlerStatus.getSeverity() == IStatus.ERROR )
+    {
+      // The last command didn't return an error, but the status handler
+      // did report and error.  Therefore, we should stop.
+      continueExecute = false;   
+    }
+    
+    return continueExecute;
   }
   
   /**
@@ -196,12 +238,15 @@ public class SimpleCommandEngineManager
     IRunnableWithProgress operation = new IRunnableWithProgress()
     {
       public void run( IProgressMonitor monitor )
-    //WorkspaceModifyOperation operation = new WorkspaceModifyOperation()
-    //{
-    //  public void execute( IProgressMonitor monitor )
       {
         environment_.getLog().log(ILog.INFO, "command", 5002, this, "getTransactionOperation", "Start of transaction");
+        
+        EclipseStatusHandler statusHandler = (EclipseStatusHandler)environment_.getStatusHandler();
+        
+        statusHandler.resetStatus();
         engine_.moveForwardToNextStop( monitor );
+        
+        
         environment_.getLog().log(ILog.INFO, "command", 5003, this, "getTransactionOperation", "End of transaction");
       }
     };
@@ -216,6 +261,10 @@ public class SimpleCommandEngineManager
       public void run( IProgressMonitor monitor )
       {
         environment_.getLog().log(ILog.INFO, "command", 5085, this, "getNoTransactionOperation", "Start of NON transaction");
+        
+        EclipseStatusHandler statusHandler = (EclipseStatusHandler)environment_.getStatusHandler();
+        
+        statusHandler.resetStatus();
         engine_.moveForwardToNextStop( monitor );
         environment_.getLog().log(ILog.INFO, "command", 5086, this, "getNoTransactionOperation", "End of NON transaction");
       }
