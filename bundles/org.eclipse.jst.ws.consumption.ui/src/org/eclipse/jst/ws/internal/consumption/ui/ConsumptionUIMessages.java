@@ -308,6 +308,11 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String TEXT_SERVER_STARTED;
 	public static String TEXT_SERVER_STARTING;
 	public static String TEXT_SERVER_STOPPED;
+	public static String MSG_INFO_ANT_RUNTIME_HEADING;
+	public static String MSG_INFO_ANT_SERVER_RUNTIME;
+	public static String MSG_INFO_ANT_CLIENT_RUNTIME;
+	public static String MSG_INFO_ANT_SERVER_HEADING;
+	public static String MSG_INFO_ANT_SERVER;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, ConsumptionUIMessages.class);

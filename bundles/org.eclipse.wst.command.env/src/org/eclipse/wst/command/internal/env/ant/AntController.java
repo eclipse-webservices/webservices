@@ -20,7 +20,6 @@ import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.FragmentListener;
-import org.eclipse.wst.common.environment.NullStatusHandler;
 
 /**
  * 
@@ -42,7 +41,7 @@ public class AntController {
 	   // --maintains link to property table plus any other environment properties
 	   // --code to access extension point mappings for operations to retrieve data from property table
 	   PersistentResourceContext  resourceContext = PersistentResourceContext.getInstance();
-	   NullStatusHandler handler         = new NullStatusHandler();
+	   AntStatusHandler handler         = new AntStatusHandler();
 	   AntEnvironment environment = new AntEnvironment(this, resourceContext, handler, properties);
        
 	   // construct data manager for maintaining state across operations

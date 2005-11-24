@@ -795,7 +795,7 @@
               property="ClientTypeRuntimeServer"
               transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>                
         <map
-              key="TestID"
+              key="TestId"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestDelegateCommand"
               property="TestFacility"
               transform="org.eclipse.jst.ws.internal.common.String2TestFacilityListTransformer"/>                
@@ -808,8 +808,23 @@
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
               property="TestService"/>  
         <map
-              key="TestID"
+              key="TestId"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
               property="TestID"/>  
+              
+         <!-- mappings for listing options -->
+        <map
+              key="ListRuntimes"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.command.ListOptionsCommand"
+              property="ListRuntimes"
+              transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"
+              /> 
+
+  		<map
+              key="ListServers"
+              operation="org.eclipse.jst.ws.internal.consumption.ui.command.ListOptionsCommand"
+              property="ListServers"
+              transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"
+              />  	
       </extension> 
 </plugin>

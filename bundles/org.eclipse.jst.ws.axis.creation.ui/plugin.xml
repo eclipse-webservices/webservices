@@ -83,10 +83,6 @@
               property="ObjectSelection"
               transform="org.eclipse.wst.command.internal.env.ant.String2SelectionTransformer"/>
         <map
-              key="ShowMapping"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsFragment"
-              property="ShowMapping"/>                    
-        <map
               key="JavaOutput"
               operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand"
               property="JavaWSDLParam"

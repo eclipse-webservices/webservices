@@ -340,17 +340,14 @@ public class AntEnvironment extends EclipseEnvironment{
 				{                                        
 			       Class[] paramTypes = method.getParameterTypes();
 			       if (paramTypes.length == 1 && param != null)
-			       {
-			          if (paramTypes[0].isAssignableFrom(param.getClass()))
-			          {
+			       {			  
 			        	 try{			      			
 			     			 method.invoke(op, new Object[]{param});
 			     			 return true;
 			     		 }
 			     		 catch(Exception cex){
 			     			getLog().log(ILog.ERROR, "ws_ant", 9999, this, "callSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, setterMethodName));
-			     		 }  
-			          }
+			     		 }
 			       }  
 				}
 			}

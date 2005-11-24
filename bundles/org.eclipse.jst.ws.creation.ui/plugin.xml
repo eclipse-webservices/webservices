@@ -360,12 +360,12 @@
               property="ServiceTypeRuntimeServer"
               transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
       <map
-              key="TestID"
+              key="TestId"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
               property="LaunchedServiceTestName"/>
 
       <map
-              key="TestID"
+              key="TestId"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment"
               property="LaunchedServiceTestName"/>
 
@@ -374,7 +374,7 @@
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
               property="TestService"/>
       <map
-              key="TestID"
+              key="TestId"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
               property="TestID"/>
       <map
@@ -393,7 +393,7 @@
       <map
               key="LaunchOptions"
               operation="org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand"
-              property="LaunchOptions"/>
+              property="LaunchOptions"/>                            
 
      </extension>
 </plugin>

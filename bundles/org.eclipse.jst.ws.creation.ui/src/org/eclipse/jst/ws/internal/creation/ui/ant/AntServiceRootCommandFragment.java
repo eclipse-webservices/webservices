@@ -15,6 +15,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.ComputeEndpointCom
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.ManageServerStartUpCommand;
 import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.command.ListOptionsCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.selection.SelectionTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.CheckWSDLValidationCommand;
@@ -58,7 +59,9 @@ public class AntServiceRootCommandFragment extends SequenceFragment
   public AntServiceRootCommandFragment()
   { 
 
-    add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));   
+    add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
+    add( new SimpleFragment(new ListOptionsCommand(), ""));
+    
     add( new SimpleFragment( new ServerWizardWidgetDefaultingCommand(), ""));   
     
     add( new SimpleFragment( new ServerWizardWidgetOutputCommand(), "" ));    
@@ -81,7 +84,7 @@ public class AntServiceRootCommandFragment extends SequenceFragment
     publishToPrivateUDDICmdFrag = new PublishToPrivateUDDICommandFragment();  
     add(publishToPrivateUDDICmdFrag);  
     
-    //?? jvh - no class def found....  
+    //TODO jvh - no class def found....  
     //add(new LaunchFragment());
     
     add(new FinishFragment());

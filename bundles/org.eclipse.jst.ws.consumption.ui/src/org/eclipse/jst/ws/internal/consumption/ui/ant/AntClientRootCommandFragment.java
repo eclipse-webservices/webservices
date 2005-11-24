@@ -14,6 +14,7 @@ import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForServiceProjectCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.command.ListOptionsCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
@@ -59,6 +60,8 @@ public class AntClientRootCommandFragment extends SequenceFragment{
   {	 
 	    
   add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
+  
+  add( new SimpleFragment(new ListOptionsCommand(), ""));
   
   add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(), "" ) );
   add( new SimpleFragment( new ClientWizardWidgetOutputCommand(), "" ));
