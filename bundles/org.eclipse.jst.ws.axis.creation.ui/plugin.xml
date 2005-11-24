@@ -70,11 +70,23 @@
         runtimeId="org.eclipse.jst.ws.axis.creation.axisWebServiceRT"
         class="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebServiceRuntime">
 
-        <required-facet-version facet="jst.web" version="2.3" allow-newer="true"/>
+        <required-facet-version facet="jst.utility" version="1.0" allow-newer="true"/>
 
       </clientRuntime>
     </extension>    
     
+    <!-- define support for Axis Java clients in Web projects -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.clientRuntimes">
+      <clientRuntime
+        id="org.eclipse.jst.ws.axis.consumption.web"
+        clientImplementationTypeId="org.eclipse.jst.ws.client.type.java"
+        runtimeId="org.eclipse.jst.ws.axis.creation.axisWebServiceRT"
+        class="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebServiceRuntime">
+
+        <required-facet-version facet="jst.web" version="2.3" allow-newer="true"/>
+
+      </clientRuntime>
+    </extension>        
       <extension
            point="org.eclipse.wst.command.env.antDataMapping">
         <map

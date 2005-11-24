@@ -616,9 +616,8 @@ public final class ResourceUtils {
 	 * @return A build source location of the <code>project</code> or null if
 	 *         the project has no Java nature or if the project's build
 	 *         classpath contains no folders local to the project.
-	 * @deprecated use getJavaSourceLocation(IProject project, String compName)
 	 */
-/*
+
 	public static IPath getJavaSourceLocation(IProject project) {
 		IPath sourceLocation = null;
 		IPackageFragmentRoot[] fragmentRoots = getJavaPackageFragmentRoots(project);
@@ -641,18 +640,19 @@ public final class ResourceUtils {
 		
 		return sourceLocation;
 	}
-*/
+
 	
 	/**
 	 * Returns the "JavaSource" folder
 	 * @param project
 	 * @return
 	 */
+    /*
 	public static IPath getJavaSourceLocation(IProject project){
 		IVirtualComponent component = ComponentCore.createComponent(project);
 		return getJavaSourceLocation(component);			
 	}
-	
+	*/
 	/**
 	 * Returns the JavaSource location folder
 	 * @param comp

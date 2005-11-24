@@ -14,6 +14,7 @@ package org.eclipse.jst.ws.internal.common;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -21,9 +22,12 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationDataModelProvider;
@@ -39,6 +43,7 @@ import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
@@ -46,6 +51,9 @@ import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -1029,8 +1037,15 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean isEJBComponent(IProject project) {
-    IVirtualComponent vc = ComponentCore.createComponent(project);
-    return isEJBComponent(vc);
+      IVirtualComponent vc = ComponentCore.createComponent(project);
+      if (vc != null)
+      {
+        return isEJBComponent(vc);
+      }
+      else
+      { 
+        return false;
+      }
 	}
 
 	public static boolean isEJBComponent(IVirtualComponent comp){
@@ -1115,8 +1130,49 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean isJavaComponent(IProject project) {
-	IVirtualComponent vc = ComponentCore.createComponent(project);
-	return isJavaComponent(vc);
+	  IVirtualComponent vc = ComponentCore.createComponent(project);
+      if (vc != null)
+      {
+	    return isJavaComponent(vc);
+      }
+      else
+      {
+        //check if it's a faceted project with only the Java facet.
+        try
+        {
+          if (project.exists())
+          {
+            IFacetedProject fProject = ProjectFacetsManager.create(project);
+            if (fProject != null)
+            {
+              Set facets = fProject.getProjectFacets();
+              if (facets.size()==1)
+              {
+                IProjectFacetVersion pfv = (IProjectFacetVersion)facets.iterator().next();
+                if (pfv.getProjectFacet().getId().equals(IModuleConstants.JST_JAVA))
+                {
+                  return true;
+                }
+              }                            
+            }
+            else
+            {
+              //This is not a faceted project. Check if this is a simple Java project.
+              IJavaProject javaProject = null;    
+              javaProject = JavaCore.create(project);    
+              if (javaProject != null)
+              {
+                return true;
+              }        
+            }
+          }
+        } catch (CoreException ce)
+        {
+          
+        }                        
+      }
+      
+      return false;
 	}
 
 	/**
@@ -1125,8 +1181,15 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean isWebComponent(IProject project) {
-	IVirtualComponent vc = ComponentCore.createComponent(project);
-	return isWebComponent(vc);
+	  IVirtualComponent vc = ComponentCore.createComponent(project);
+      if (vc != null)
+      {
+        return isWebComponent(vc);  
+      }
+      else
+      {
+        return false;
+      }	
 	}
 
 	/**
@@ -1135,8 +1198,15 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean isAppClientComponent(IProject project) {
-	IVirtualComponent vc = ComponentCore.createComponent(project);
-	return isAppClientComponent(vc);
+	  IVirtualComponent vc = ComponentCore.createComponent(project);
+      if (vc != null)
+      {
+	  return isAppClientComponent(vc);
+      }
+      else
+      {
+        return false;
+      }
 	}
 
 	/**
@@ -1145,8 +1215,15 @@ public final class J2EEUtils {
 	 * @return
 	 */
 	public static boolean isEARComponent(IProject project){
-	IVirtualComponent vc = ComponentCore.createComponent(project);
-	return isEARComponent(vc);
+	  IVirtualComponent vc = ComponentCore.createComponent(project);
+      if (vc != null)
+      {
+	  return isEARComponent(vc);
+      }
+      else
+      {
+        return false;
+      }
 	}
 	
 	public static IFolder getOutputContainerRoot (IVirtualComponent component) {

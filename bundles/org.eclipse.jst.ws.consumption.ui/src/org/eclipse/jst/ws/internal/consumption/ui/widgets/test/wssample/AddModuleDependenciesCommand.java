@@ -168,6 +168,21 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 	      env.getStatusHandler().reportError(status);     
 	    }  
 	   }
+       else
+       {
+         // If no EAR is needed, the sample project needs to be added to
+         // to the server directly.
+        AddModuleToServerCommand addToServer = new AddModuleToServerCommand();
+        addToServer.setModule(testInfo.getGenerationProject());
+        addToServer.setProject(testInfo.getGenerationProject());
+        addToServer.setServerInstanceId(testInfo.getClientExistingServer().getId());
+        addToServer.setEnvironment( env );
+        status = addToServer.execute( monitor, null );
+        if (status.getSeverity()==Status.ERROR)
+        {
+          env.getStatusHandler().reportError(status);     
+        }              
+       }
 		
 		StartServerCommand startServer = new StartServerCommand(false, true);
 		startServer.setServerInstanceId(testInfo.getClientExistingServer().getId());

@@ -18,7 +18,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.server.core.FacetUtil;
@@ -31,7 +30,6 @@ import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
@@ -599,27 +597,16 @@ public class WebServiceRuntimeExtensionUtils2
       {
         ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(descs[j]);
         RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
-        try
+        Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
+        if (facetVersions != null)
         {
-          IFacetedProject fproject = ProjectFacetsManager.create(projects[i]);
-          if (fproject != null)
+          FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+          if (fm.isMatch())
           {
-            Set facetVersions = fproject.getProjectFacets();
-            FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-            if (fm.isMatch())
-            {
-              validProjects.add(projects[i].getName());
-              break;
-            }            
+            validProjects.add(projects[i].getName());
+            break;
           }
-          else
-          {
-            //TODO Handle the plain-old Java projects            
-          }
-        } catch (CoreException ce)
-        {
-          
-        }        
+        }
       }
     }
     
@@ -641,25 +628,15 @@ public class WebServiceRuntimeExtensionUtils2
         {
           ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(descs[j]);
           RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
-          try
+          Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
+          if (facetVersions != null)
           {
-            IFacetedProject fproject = ProjectFacetsManager.create(projects[i]);
-            if (fproject != null)
+            FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+            if (fm.isMatch())
             {
-              Set facetVersions = fproject.getProjectFacets();
-              FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-              if (fm.isMatch())
-              {
-                //found a match. done.
-                return true;
-              }
-            } else
-            {
-              // TODO Handle the plain-old Java projects
+              // found a match. done.
+              return true;
             }
-          } catch (CoreException ce)
-          {
-
           }
         }
       }
@@ -675,29 +652,16 @@ public class WebServiceRuntimeExtensionUtils2
       return false;
     
     ServiceRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId);
-    RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();    
-    
-    try
+    RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions(); 
+    Set facetVersions = FacetUtils.getFacetsForProject(projectName);
+    if (facetVersions != null)
     {
-      IFacetedProject fproject = ProjectFacetsManager.create(project);
-      if (fproject != null)
+      FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+      if (fm.isMatch())
       {
-        Set facetVersions = fproject.getProjectFacets();
-        FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-        if (fm.isMatch())
-        {
-          return true;
-        }            
+        return true;
       }
-      else
-      {
-        //TODO Handle the plain-old Java projects            
-      }
-    } catch (CoreException ce)
-    {
-      
-    }    
-    
+    }
     return false;
   }  
   
@@ -868,7 +832,9 @@ public class WebServiceRuntimeExtensionUtils2
     while (iter.hasNext())   
     {
       ClientRuntimeDescriptor desc = (ClientRuntimeDescriptor)iter.next();
-      runtimeIds.add(desc.getRuntime().getId());
+      String thisRuntimeId = desc.getRuntime().getId(); 
+      if (!runtimeIds.contains(thisRuntimeId))
+      runtimeIds.add(thisRuntimeId);
     }      
     return (String[])runtimeIds.toArray(new String[]{});
   }
@@ -1307,27 +1273,16 @@ public class WebServiceRuntimeExtensionUtils2
       {
         ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(descs[j]);
         RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
-        try
+        Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
+        if (facetVersions != null)
         {
-          IFacetedProject fproject = ProjectFacetsManager.create(projects[i]);
-          if (fproject != null)
+          FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+          if (fm.isMatch())
           {
-            Set facetVersions = fproject.getProjectFacets();
-            FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-            if (fm.isMatch())
-            {
-              validProjects.add(projects[i].getName());
-              break;
-            }            
+            validProjects.add(projects[i].getName());
+            break;
           }
-          else
-          {
-            //TODO Handle the plain-old Java projects            
-          }
-        } catch (CoreException ce)
-        {
-          
-        }        
+        }
       }
     }
     
@@ -1349,24 +1304,14 @@ public class WebServiceRuntimeExtensionUtils2
         {
           ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(descs[j]);
           RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
-          try
+          Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
+          if (facetVersions != null)
           {
-            IFacetedProject fproject = ProjectFacetsManager.create(projects[i]);
-            if (fproject != null)
+            FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+            if (fm.isMatch())
             {
-              Set facetVersions = fproject.getProjectFacets();
-              FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-              if (fm.isMatch())
-              {
-                return true;
-              }
-            } else
-            {
-              // TODO Handle the plain-old Java projects
+              return true;
             }
-          } catch (CoreException ce)
-          {
-
           }
         }
       }
@@ -1384,29 +1329,16 @@ public class WebServiceRuntimeExtensionUtils2
       return false;
     
     ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId);
-    RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();    
-    
-    try
+    RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
+    Set facetVersions = FacetUtils.getFacetsForProject(projectName);
+    if (facetVersions != null)
     {
-      IFacetedProject fproject = ProjectFacetsManager.create(project);
-      if (fproject != null)
+      FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+      if (fm.isMatch())
       {
-        Set facetVersions = fproject.getProjectFacets();
-        FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-        if (fm.isMatch())
-        {
-          return true;
-        }            
+        return true;
       }
-      else
-      {
-        //TODO Handle the plain-old Java projects            
-      }
-    } catch (CoreException ce)
-    {
-      
-    }    
-    
+    }   
     return false;
   }
   

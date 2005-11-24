@@ -40,7 +40,6 @@ import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.core.context.TransientResourceContext;
-import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.common.BundleUtils;
@@ -77,18 +76,14 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
     IStatus status = Status.OK_STATUS;
     ProgressUtils.report(monitor, AxisConsumptionUIMessages.PROGRESS_INFO_COPY_AXIS_CFG);
     
-    ModuleCoreNature mn = ModuleCoreNature.getModuleCoreNature(project);
-    if (mn!=null)
+    if (J2EEUtils.isWebComponent(project))
     {
     	copyAxisJarsToProject(project, status, env, monitor);	
     }
     else
     {
     	//Check if it's a plain old Java project
-    	IJavaProject javaProject = null;
-  
- 		 javaProject = JavaCore.create(project);    
- 		 if (javaProject != null)
+ 		 if (J2EEUtils.isJavaComponent(project))
  		 {
  			status = addAxisJarsToBuildPath(project, env, monitor);
  			if (status.getSeverity()==Status.ERROR)

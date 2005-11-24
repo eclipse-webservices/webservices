@@ -23,6 +23,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
@@ -75,6 +78,44 @@ public class FacetUtils
       }      
     }
     return (IProject[])validProjects.toArray(new IProject[]{});
+  }
+  
+  /*
+   * @returns the set of project facets currently installed on this project. If the project
+   * is not a faceted project but is a Java project, facets are inferred from the Java project. 
+   *   (element type: {@see IProjectFacetVersion}) 
+   */
+  public static Set getFacetsForProject(String projectName)
+  {
+    Set facetVersions = null;
+    IProject project = ProjectUtilities.getProject(projectName);
+    if (project!=null && project.exists())
+    {
+      try
+      {
+        IFacetedProject fproject = ProjectFacetsManager.create(project);
+        if (fproject != null)
+        {
+          facetVersions = fproject.getProjectFacets();
+        } else
+        {
+          //If this is not a faceted project, it may still be okay if it is a Java project
+          //and the client runtime supports a Java project.
+          IJavaProject javaProject = null;
+          javaProject = JavaCore.create(project);    
+          if (javaProject != null)
+          {
+            facetVersions = FacetUtils.getFacetsForJavaProject(javaProject);
+          }
+        }
+      } catch (CoreException ce)
+      {
+
+      }      
+    }
+    
+    return facetVersions;
+    
   }
   
   public static Set getTemplates(RequiredFacetVersion[] requiredFacetVersions)
@@ -257,6 +298,62 @@ public class FacetUtils
     return fm;
   }
   
+  
+  public static Set getFacetsForJavaProject(IJavaProject javaProject)
+  {
+    Set facets = new HashSet();
+    String jdkComplianceLevel = null;
+    if (javaProject!=null)
+    {
+      jdkComplianceLevel = javaProject.getOption("org.eclipse.jdt.core.compiler.compliance", false);
+      if (jdkComplianceLevel == null)
+      {
+        jdkComplianceLevel = (String)JavaCore.getDefaultOptions().get("org.eclipse.jdt.core.compiler.compliance");
+        if (jdkComplianceLevel == null)
+        {
+          jdkComplianceLevel = "1.4";
+        }
+      }
+    }
+    
+    IProjectFacet javaFacet = ProjectFacetsManager.getProjectFacet(IModuleConstants.JST_JAVA);
+    IProjectFacetVersion javaFacetVersion = null;
+    if (jdkComplianceLevel.equals("1.3"))
+    {
+      javaFacetVersion = javaFacet.getVersion("1.3");
+    }
+    else if (jdkComplianceLevel.equals("1.4"))
+    {
+      javaFacetVersion = javaFacet.getVersion("1.4");
+    }
+    else if (jdkComplianceLevel.equals("1.5"))
+    {
+      javaFacetVersion = javaFacet.getVersion("5.0");
+    }
+    else
+    {
+      javaFacetVersion = javaFacet.getVersion("1.4");
+    }
+ 
+    facets.add(javaFacetVersion);
+    IProjectFacet utilityFacet = ProjectFacetsManager.getProjectFacet(IModuleConstants.JST_UTILITY_MODULE);
+    IProjectFacetVersion utilityFacetVersion = null;
+    try
+    {
+      utilityFacetVersion = utilityFacet.getLatestVersion();
+    }
+    catch (CoreException ce)
+    {
+      
+    }
+    if (utilityFacetVersion != null)
+    {
+      facets.add(utilityFacetVersion);
+    }
+    return facets;
+  }
+  
+  
   //Methods related to facet runtimes.
   
   public static Set getRuntimes(RequiredFacetVersion[] requiredFacetVersions)
@@ -406,6 +503,63 @@ public class FacetUtils
       return true;
     else
       return false;
+  }
+  
+  public static boolean isJavaProject(IProject project)
+  {
+    //Check if it's a faceted project
+    try
+    {
+      IFacetedProject fProject = ProjectFacetsManager.create(project);
+      if (fProject != null)
+      {
+        //Return true if it's a utility project
+        if (J2EEUtils.isJavaComponent(project))
+        {
+          return true;
+        }
+        else
+        {
+          //See if the java facet is the only one it has.
+          Set facets = fProject.getProjectFacets();
+          if (facets.size()==1)
+          {
+            IProjectFacetVersion pfv = (IProjectFacetVersion)facets.iterator().next();
+            if (isJavaFacet(pfv.getProjectFacet()))
+            {
+              return true;
+            }
+          }
+        }
+      }
+      else
+      {
+        IJavaProject javaProject = null;    
+        javaProject = JavaCore.create(project);    
+        if (javaProject != null)
+        {
+          return true;
+        }        
+      }
+    } catch (CoreException ce)
+    {
+      
+    }
+
+    return false;
+  }
+  
+  public static boolean isUtilityTemplate(String templateId)
+  {
+    if (ProjectFacetsManager.isTemplateDefined(templateId))
+    {
+      if (templateId.equals("template.jst.utility"))
+      {
+        return true;
+      }
+    }
+    
+    return false;
   }
   
 }

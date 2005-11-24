@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -40,8 +39,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
@@ -133,23 +130,40 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 
   private void setDefaultServiceEarProject()
   {
-    
-    //Determine if an ear selection is needed based on the server type.
-    boolean serviceNeedEAR_ = true;
-    String serverId = serviceIds_.getServerId();
-    if (serverId != null)
+    //Don't need an ear if this is a Java project, or if the selected template is jst.utility
+    IProject serviceProject = ProjectUtilities.getProject(serviceProjectName_);
+    if (serviceProject.exists())
     {
-        //Use the server type
+      serviceNeedEAR_ = !(FacetUtils.isJavaProject(serviceProject));
+    }
+    else
+    {
+      serviceNeedEAR_ = !(FacetUtils.isUtilityTemplate(serviceComponentType_));  
+    }    
+    
+    //If serviceNeedEAR_ is still true, it means that we're not dealing with a Java project
+    //or Java project type. Check the server.
+    
+    
+    if (serviceNeedEAR_)
+    {
+      
+      // Determine if an ear selection is needed based on the server type.      
+      String serverId = serviceIds_.getServerId();
+      if (serverId != null)
+      {
+        // Use the server type
         String serverTargetId = ServerUtils.getRuntimeTargetIdFromFactoryId(serverId);
-        if (serverTargetId!=null && serverTargetId.length()>0)
+        if (serverTargetId != null && serverTargetId.length() > 0)
         {
-          if (!ServerUtils.isTargetValidForEAR(serverTargetId,"13"))
+          if (!ServerUtils.isTargetValidForEAR(serverTargetId, "13"))
           {
-            //Default the EAR selection to be empty
+            // Default the EAR selection to be empty
             serviceNeedEAR_ = false;
           }
         }
-    }    
+      }
+    }
     
     if (serviceNeedEAR_)
     {
@@ -406,26 +420,15 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     //Check each project for compatibility with the serviceRuntime
     for (int i=0; i<projects.length; i++)
     {
-      try
+      Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
+      if (facetVersions != null)
       {
-        IFacetedProject fproject = ProjectFacetsManager.create(projects[i]);
-        if (fproject != null)
+        FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+        if (fm.isMatch())
         {
-          Set facetVersions = fproject.getProjectFacets();
-          FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-          if (fm.isMatch())
-          {
-            serviceFacetMatcher_ = fm;
-            return projects[i].getName();
-          }            
-        }
-        else
-        {
-          //TODO Handle the plain-old Java projects            
-        }
-      } catch (CoreException ce)
-      {
-        
+          serviceFacetMatcher_ = fm;
+          return projects[i].getName();
+        }                    
       }
     }
     
@@ -458,28 +461,17 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       if (project != null && project.exists())
       {
         RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(preferredServiceRuntimeId).getRequiredFacetVersions();
-        try
+        Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
+        if (facetVersions != null)
         {
-          IFacetedProject fproject = ProjectFacetsManager.create(project);
-          if (fproject != null)
+          FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+          if (fm.isMatch())
           {
-            Set facetVersions = fproject.getProjectFacets();
-            FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
-            if (fm.isMatch())
-            {
-              serviceFacetMatcher_ = fm;
-              serviceProjectName_ = project.getName();
-              return preferredServiceRuntimeId;
-            }            
-          }
-          else
-          {
-            //TODO Handle the plain-old Java projects            
-          }
-        } catch (CoreException ce)
-        {
-          
-        }        
+            serviceFacetMatcher_ = fm;
+            serviceProjectName_ = project.getName();
+            return preferredServiceRuntimeId;
+          }                      
+        }
       }
     }
     
@@ -496,27 +488,16 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       for (int i=0; i<serviceRuntimes.length; i++)
       {
         RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimes[i]).getRequiredFacetVersions();
-        try
+        Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
+        if (facetVersions != null)
         {
-          IFacetedProject fproject = ProjectFacetsManager.create(project);
-          if (fproject != null)
+          FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+          if (fm.isMatch())
           {
-            Set facetVersions = fproject.getProjectFacets();
-            FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
-            if (fm.isMatch())
-            {
-              serviceFacetMatcher_ = fm;
-              serviceProjectName_ = project.getName();
-              return serviceRuntimes[i];
-            }            
-          }
-          else
-          {
-            //TODO Handle the plain-old Java projects            
-          }
-        } catch (CoreException ce)
-        {
-          
+            serviceFacetMatcher_ = fm;
+            serviceProjectName_ = project.getName();
+            return serviceRuntimes[i];
+          }                      
         }
       }
     }

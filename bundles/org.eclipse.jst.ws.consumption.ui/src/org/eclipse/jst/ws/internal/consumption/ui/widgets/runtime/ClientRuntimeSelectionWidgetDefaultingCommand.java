@@ -209,24 +209,39 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   }
   
   private void setDefaultClientEarProject()
-  {
-    
-    //Determine if an ear selection is needed based on the server type.
-    boolean clientNeedEAR_ = true;
-    String serverId = clientIds_.getServerId();
-    if (serverId != null)
+  {    
+    //Don't need an ear if this is a Java project, or if the selected template is jst.utility
+    IProject clientProject = ProjectUtilities.getProject(clientProjectName_);
+    if (clientProject.exists())
     {
-        //Use the server type
+      clientNeedEAR_ = !(FacetUtils.isJavaProject(clientProject));
+    }
+    else
+    {
+      clientNeedEAR_ = !(FacetUtils.isUtilityTemplate(clientComponentType_));  
+    }
+    
+    //If clientNeedEAR_ is still true, it means that we're not dealing with a Java project
+    //or Java project type. Check the server.
+    if (clientNeedEAR_)
+    {
+      // Determine if an ear selection is needed based on the server type.
+
+      String serverId = clientIds_.getServerId();
+      if (serverId != null)
+      {
+        // Use the server type
         String serverTargetId = ServerUtils.getRuntimeTargetIdFromFactoryId(serverId);
-        if (serverTargetId!=null && serverTargetId.length()>0)
+        if (serverTargetId != null && serverTargetId.length() > 0)
         {
-          if (!ServerUtils.isTargetValidForEAR(serverTargetId,"13"))
+          if (!ServerUtils.isTargetValidForEAR(serverTargetId, "13"))
           {
-            //Default the EAR selection to be empty
+            // Default the EAR selection to be empty
             clientNeedEAR_ = false;
           }
         }
-    }    
+      }
+    }
     
     if (clientNeedEAR_)
     {
@@ -352,7 +367,10 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
         try
         {
           fProject = ProjectFacetsManager.create(project);
-          fRuntime = fProject.getRuntime();
+          if (fProject != null)
+          {
+            fRuntime = fProject.getRuntime();
+          }
         } catch (CoreException ce)
         {
 
@@ -380,21 +398,21 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       // facetsToAdd.
       if (server == null)
       {
-        if (fProject != null) // We have a faceted project!!
+        if (project!=null && project.exists())
         {
-          Set facets = fProject.getProjectFacets();
-          if (facetMatcher.getFacetsToAdd() != null)
+          Set facets = FacetUtils.getFacetsForProject(project.getName());
+          if (facets != null)
           {
-            Iterator itr = facetMatcher.getFacetsToAdd().iterator();
-            while (itr.hasNext())
+            if (facetMatcher.getFacetsToAdd() != null)
             {
-              facets.add(itr.next());  
-            }            
+              Iterator itr = facetMatcher.getFacetsToAdd().iterator();
+              while (itr.hasNext())
+              {
+                facets.add(itr.next());  
+              }            
+            }
+            server = getServerFromFacets(facets);            
           }
-          server = getServerFromFacets(facets);
-        } else
-        {
-          // TODO handle this for the Java project case.
         }
       }
     }
@@ -443,7 +461,10 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       try
       {
         fProject = ProjectFacetsManager.create(project);
-        fRuntime = fProject.getRuntime();        
+        if (fProject != null)
+        {
+          fRuntime = fProject.getRuntime();
+        }
       } catch (CoreException ce)
       {
         
@@ -469,22 +490,21 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     //try to find a server type using the project's facets and the facetsToAdd.
     if (serverType == null)
     {
-      if (fProject != null) //We have a faceted project!!
+      if (project != null && project.exists())
       {
-        Set facets = fProject.getProjectFacets();
-        if (facetMatcher.getFacetsToAdd() != null)
+        Set facets = FacetUtils.getFacetsForProject(project.getName());
+        if (facets != null)
         {
-          Iterator itr = facetMatcher.getFacetsToAdd().iterator();
-          while (itr.hasNext())
+          if (facetMatcher.getFacetsToAdd() != null)
           {
-            facets.add(itr.next());  
-          }            
+            Iterator itr = facetMatcher.getFacetsToAdd().iterator();
+            while (itr.hasNext())
+            {
+              facets.add(itr.next());  
+            }            
+          }
+          serverType = getServerTypeFromFacets(facets);          
         }
-        serverType = getServerTypeFromFacets(facets);
-      }
-      else
-      {
-        //TODO handle this for the Java project case. 
       }
     }
     
@@ -606,26 +626,15 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     //Check each project for compatibility with the clientRuntime
     for (int i=0; i<projects.length; i++)
     {
-      try
+      Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
+      if (facetVersions != null)
       {
-        IFacetedProject fproject = ProjectFacetsManager.create(projects[i]);
-        if (fproject != null)
+        FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+        if (fm.isMatch())
         {
-          Set facetVersions = fproject.getProjectFacets();
-          FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-          if (fm.isMatch())
-          {
-            clientFacetMatcher_ = fm;
-            return projects[i].getName();
-          }            
-        }
-        else
-        {
-          //TODO Handle the plain-old Java projects            
-        }
-      } catch (CoreException ce)
-      {
-        
+          clientFacetMatcher_ = fm;
+          return projects[i].getName();
+        }                    
       }
     }
     
@@ -660,26 +669,16 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       {
         RequiredFacetVersion[] prfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(preferredClientRuntimeId)
             .getRequiredFacetVersions();
-        try
+        Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
+        if (facetVersions != null)
         {
-          IFacetedProject fproject = ProjectFacetsManager.create(project);
-          if (fproject != null)
+          FacetMatcher fm = FacetUtils.match(prfv, facetVersions);
+          if (fm.isMatch())
           {
-            Set facetVersions = fproject.getProjectFacets();
-            FacetMatcher fm = FacetUtils.match(prfv, facetVersions);
-            if (fm.isMatch())
-            {
-              clientFacetMatcher_ = fm;
-              clientProjectName_ = project.getName();
-              return preferredClientRuntimeId;
-            }
-          } else
-          {
-            // TODO Handle the plain-old Java projects
-          }
-        } catch (CoreException ce)
-        {
-
+            clientFacetMatcher_ = fm;
+            clientProjectName_ = project.getName();
+            return preferredClientRuntimeId;
+          }          
         }
       }
     }
@@ -696,27 +695,16 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       for (int i=0; i<clientRuntimes.length; i++)
       {
         RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimes[i]).getRequiredFacetVersions();
-        try
+        Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
+        if (facetVersions != null)
         {
-          IFacetedProject fproject = ProjectFacetsManager.create(project);
-          if (fproject != null)
+          FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+          if (fm.isMatch())
           {
-            Set facetVersions = fproject.getProjectFacets();
-            FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
-            if (fm.isMatch())
-            {
-              clientFacetMatcher_ = fm;
-              clientProjectName_ = project.getName();
-              return clientRuntimes[i];
-            }            
+            clientFacetMatcher_ = fm;
+            clientProjectName_ = project.getName();
+            return clientRuntimes[i];
           }
-          else
-          {
-            //TODO Handle the plain-old Java projects            
-          }
-        } catch (CoreException ce)
-        {
-          
         }
       }
     }
