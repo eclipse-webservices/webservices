@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.command.internal.env.core.data.BeanModifier;
@@ -61,14 +60,14 @@ public class JavaWSDLParamModifier implements BeanModifier {
 	private HashMap readMappingsFromFile(String filename)
 	  {
 		HashMap hashmap = new HashMap();
-		IResource resource = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(filename));
+		IFile resource = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filename));
 		
-		if (resource != null && resource instanceof IFile)
+		if (resource != null )
 		{
 		  try
 		  {
 			Properties props = new Properties();
-			props.load(((IFile)resource).getContents());			
+			props.load(resource.getContents());			
 			hashmap.putAll(props);						
 		  }
 		  catch (Exception e)
