@@ -100,7 +100,7 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new WSDL2JavaCommand());
 			commands.add(new MoveJavaFilesTask());
 			commands.add(new UpdateAxisWSDDFileTask());
-			commands.add(new UpdateWEBXMLCommand());
+			commands.add(new UpdateWEBXMLCommand(getWebServiceInfo()));
 			commands.add(new RefreshProjectCommand());
 			commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
@@ -120,7 +120,7 @@ public class AxisWebService extends AbstractWebService
 		    commands.add(new WSDL2JavaCommand());
 		    commands.add(new MoveDeploymentFilesTask());
 		    commands.add(new Skeleton2WSDLCommand());
-		    commands.add(new UpdateWEBXMLCommand());
+		    commands.add(new UpdateWEBXMLCommand(getWebServiceInfo()));
 		    commands.add(new RefreshProjectCommand());
 		    commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));

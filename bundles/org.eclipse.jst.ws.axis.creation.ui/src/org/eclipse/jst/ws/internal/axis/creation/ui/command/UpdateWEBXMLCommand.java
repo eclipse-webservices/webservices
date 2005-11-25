@@ -21,25 +21,36 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.jst.j2ee.webapplication.Servlet;
 import org.eclipse.jst.j2ee.webapplication.ServletMapping;
 import org.eclipse.jst.j2ee.webapplication.ServletType;
 import org.eclipse.jst.j2ee.webapplication.WebApp;
 import org.eclipse.jst.j2ee.webapplication.WebapplicationFactory;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
 
 public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 
 	private IProject serverProject;
+    private WebServiceInfo wsInfo;
 
   public UpdateWEBXMLCommand( )
   {
+  }
+
+  public UpdateWEBXMLCommand(WebServiceInfo wsInfo)
+  {
+    this.wsInfo = wsInfo;
   }
 
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
@@ -47,7 +58,7 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 		IEnvironment environment = getEnvironment();
 		if (serverProject != null) {
 			IStatus status = null;
-			status = addServlet(serverProject, getAxisServletDescriptor());
+			status = addServlet(serverProject, getAxisServletDescriptor(), monitor, false);
 			if (status.getSeverity() == Status.ERROR) {
 				environment.getStatusHandler().reportError(status);
 				return status;
@@ -56,7 +67,7 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 				environment.getStatusHandler().reportError(status);
 				return status;
 			}
-			addServlet(serverProject, getAdmintServletDescriptor());
+			addServlet(serverProject, getAdmintServletDescriptor(), monitor, true);
 			if (status.getSeverity() == Status.ERROR) {
 				environment.getStatusHandler().reportError(status);
 				return status;
@@ -87,9 +98,17 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 		return sd;
 	}
 
-	public IStatus addServlet(
+    public IStatus addServlet(
+        IProject webProject,
+        ServletDescriptor servletDescriptor) {
+      return addServlet(webProject, servletDescriptor, new NullProgressMonitor(), false);
+    }
+
+	private IStatus addServlet(
 		IProject webProject,
-		ServletDescriptor servletDescriptor) {
+		ServletDescriptor servletDescriptor,
+        IProgressMonitor monitor,
+        boolean restart) {
 
 		WebArtifactEdit webEdit = null;		
 		try {
@@ -145,6 +164,35 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 			   
 			   webEdit.save(new NullProgressMonitor());
 			}
+
+            // TODO: The following snippet of code is to restart the server
+            // after web.xml gets updated with the Axis Admin servlet.
+            // Ideally, we do NOT need this because the base framework should
+            // handle the restart for us. However, we found that the Tomcat
+            // server is over reporting whether it needs to be restarted or not.
+            // For example, if you put a .java file in a Web module, Tomcat
+            // will say, I need to be restarted. To prevent restarting of
+            // servers every time we generate a Web service, the base framewrok
+            // made the restart condition to be more restrictive. That is,
+            // not only does the server has to say it needs to be restarted, it
+            // also have to say it needs to be re-published. A side effect of the
+            // more restrictive condition is that, web.xml changes will not
+            // cause a server restart. The following piece of code is to
+            // workaround the problem. For more information, see comments
+            // in org.eclipse.jst.ws.internal.consumption.ui.command.StartServerCommand
+            if (restart && wsInfo != null)
+            {
+              String serverInstanceId = wsInfo.getServerInstanceId();
+              if (serverInstanceId != null)
+              {
+                IServer server = ServerCore.findServer(serverInstanceId);
+                if (server != null && server.getServerState() == IServer.STATE_STARTED && server.getServerRestartState())
+                {
+                  server.publish(IServer.PUBLISH_INCREMENTAL, monitor);
+                  server.synchronousRestart(ILaunchManager.RUN_MODE, monitor);
+                }
+              }
+            }
 
 			return Status.OK_STATUS;
 		} catch (Exception e) {
