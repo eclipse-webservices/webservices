@@ -58,16 +58,6 @@
      </webServiceImpl>
     </extension>    
     
-<extension point="org.eclipse.jst.ws.consumption.ui.serviceType">
-  <serviceType
-            id="org.eclipse.jst.ws.serviceType.ejb"
-            implId="org.eclipse.jst.ws.wsImpl.ejb"
-            buModuleTypesInclude="jst.ejb"
-            buModuleTypesExclude=""
-            tdModuleTypesInclude="jst.ejb"
-            tdModuleTypesExclude="">
-  </serviceType>
-</extension>   
 
             
    

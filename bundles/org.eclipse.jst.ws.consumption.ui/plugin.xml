@@ -623,11 +623,6 @@
    <extension-point id="clientRuntimes" name="%XP_clientRuntimes" />
    <extension-point id="tester" name="%XP_tester"/>
 
-   <!-- serviceType, clientType, and webServiceRuntime are to be deleted in WTP 1.0 M9 -->
-   <extension-point id="serviceType" name="Extensions that provide unique combinations of service implementations, scenarios, and module types "/>
-   <extension-point id="clientType" name="Extensions that provide unique combinations of client implementations and module types"/>
-   <extension-point id="webServiceRuntime" name="Web service runtimes"/>
-
 <!-- Test Extensions beginning  -->
 
 <extension point="org.eclipse.jst.ws.consumption.ui.tester">
@@ -670,34 +665,6 @@
             label="Java Proxy">
   </webServiceClientImpl>
 </extension>   
-<extension point="org.eclipse.jst.ws.consumption.ui.serviceType">
-  <serviceType
-            id="org.eclipse.jst.ws.serviceType.java"
-            implId="org.eclipse.jst.ws.wsImpl.java"
-            buModuleTypesInclude="jst.web"
-            buModuleTypesExclude=""
-            tdModuleTypesInclude="jst.web"
-            tdModuleTypesExclude="">
-  </serviceType>
-</extension>   
-
-<extension point="org.eclipse.jst.ws.consumption.ui.clientType">
-  <clientType
-            id="org.eclipse.jst.ws.clientType.java.webOnly"
-            implId="org.eclipse.jst.ws.client.type.java"
-            moduleTypesInclude="jst.web"
-			moduleTypesExclude="">
-  </clientType>
-</extension>
-
-<extension point="org.eclipse.jst.ws.consumption.ui.clientType">
-  <clientType
-            id="org.eclipse.jst.ws.clientType.java.j2ee"
-            implId="org.eclipse.jst.ws.client.type.java"
-            moduleTypesInclude="jst.web jst.ejb jst.appclient jst.utility"
-			moduleTypesExclude="">
-  </clientType>
-</extension>
 
    	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
        <widgetFactory   
