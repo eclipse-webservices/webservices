@@ -22,6 +22,5 @@ Require-Bundle: org.eclipse.wst.command.env.core,
  org.eclipse.core.commands,
  org.eclipse.wst.common.environment,
  org.apache.ant,
- org.eclipse.ant.core,
- org.eclipse.jface
+ org.eclipse.ant.core
 Eclipse-AutoStart: true

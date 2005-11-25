@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.command.internal.env.ant;
+package org.eclipse.jst.ws.internal.common;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
