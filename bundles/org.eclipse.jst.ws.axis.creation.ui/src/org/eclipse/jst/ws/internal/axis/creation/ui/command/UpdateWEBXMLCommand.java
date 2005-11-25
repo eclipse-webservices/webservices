@@ -28,7 +28,6 @@ import org.eclipse.jst.j2ee.webapplication.ServletMapping;
 import org.eclipse.jst.j2ee.webapplication.ServletType;
 import org.eclipse.jst.j2ee.webapplication.WebApp;
 import org.eclipse.jst.j2ee.webapplication.WebapplicationFactory;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
@@ -178,7 +177,7 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
             // also have to say it needs to be re-published. A side effect of the
             // more restrictive condition is that, web.xml changes will not
             // cause a server restart. The following piece of code is to
-            // workaround the problem. For more information, see comments
+            // workaround the problem reported in bug 118099. For more information, see comments
             // in org.eclipse.jst.ws.internal.consumption.ui.command.StartServerCommand
             if (restart && wsInfo != null)
             {
