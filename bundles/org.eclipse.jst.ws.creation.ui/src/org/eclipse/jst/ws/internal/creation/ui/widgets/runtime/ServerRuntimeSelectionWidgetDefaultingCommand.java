@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
@@ -50,6 +51,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   private boolean           generateProxy_;
   
   private TypeRuntimeServer serviceIds_;
+  private boolean serviceIdsFixed_ = false;
   private String serviceRuntimeId_;
   private String serviceProjectName_;
   private String serviceEarProjectName_;
@@ -76,15 +78,23 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
        return clientSideStatus;
      }
      
-     // Set the runtime based on the initial selection
-     serviceRuntimeId_ = getDefaultServiceRuntime(initialProject_);
-     if (serviceRuntimeId_ == null)
+     if (serviceIdsFixed_)
      {
-       // return and error.
+       //Set the serviceRuntime based on the runtime, server, and initial selection. 
+       serviceRuntimeId_ = getDefaultServiceRuntimeForFixedRuntimeAndServer(initialProject_);
      }
-     serviceIds_.setRuntimeId(WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_).getRuntime()
+     else
+     {
+       // Set the runtime based on the initial selection
+       serviceRuntimeId_ = getDefaultServiceRuntime(initialProject_);
+       if (serviceRuntimeId_ == null)
+       {
+         // return and error.
+       }
+       serviceIds_.setRuntimeId(WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_).getRuntime()
          .getId());
-
+     }
+     
      // Set the project
      if (serviceProjectName_ == null)
      {
@@ -106,12 +116,15 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 
      updateClientProject(serviceProjectName_, serviceIds_.getTypeId());
 
-     // Set the server
-     IStatus serverStatus = setServiceDefaultServer();
-     if (serverStatus.getSeverity() == Status.ERROR)
+     if (!serviceIdsFixed_)
      {
-       env.getStatusHandler().reportError(serverStatus);
-       return serverStatus;
+       // Set the server
+       IStatus serverStatus = setServiceDefaultServer();
+       if (serverStatus.getSeverity() == Status.ERROR)
+       {
+         env.getStatusHandler().reportError(serverStatus);
+         return serverStatus;
+       }
      }
      
      setDefaultServiceEarProject();
@@ -437,6 +450,53 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     
   }  
   
+  private String getDefaultServiceRuntimeForFixedRuntimeAndServer(IProject project)
+  {
+    String[] serviceRuntimes = WebServiceRuntimeExtensionUtils2.getServiceRuntimesByServiceType(serviceIds_.getTypeId());
+    ArrayList validServiceRuntimes = new ArrayList();
+    for (int i=0; i<serviceRuntimes.length; i++ )
+    {
+      ServiceRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimes[i]);
+      if (desc.getRuntime().getId().equals(serviceIds_.getRuntimeId()))
+      {
+        //Check if this service runtime supports the server
+        if (WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportServer(desc.getId(), serviceIds_.getServerId()))
+        {
+          validServiceRuntimes.add(desc.getId());
+          if (project != null && project.exists())
+          {
+            RequiredFacetVersion[] rfv = desc.getRequiredFacetVersions();
+            Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
+            if (facetVersions != null)
+            {
+              FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+              if (fm.isMatch())
+              {
+                serviceFacetMatcher_ = fm;
+                serviceProjectName_ = project.getName();
+                return desc.getId();
+              }                      
+            }
+          }
+          
+        }
+      }
+      
+    }
+    
+    if (validServiceRuntimes.size() > 0)
+    {
+      //We couldn't match to the initially selected project so return the first valid runtime.
+      return ((String[])validServiceRuntimes.toArray(new String[0]))[0];
+    }
+    else
+    {
+      //There are no service runtimes that match the fixed runtime and server. Fall back to original algorithm
+      serviceIdsFixed_ = false;
+      return getDefaultServiceRuntime(project);
+    }
+  }
+  
   private String getDefaultServiceRuntime(IProject project)
   {
 
@@ -551,6 +611,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   public void setServiceTypeRuntimeServer( TypeRuntimeServer ids )
   {
     serviceIds_ = ids;
+  }
+  
+  public void setServiceIdsFixed(boolean b)
+  {
+    serviceIdsFixed_ = b;  
   }
   
   public TypeRuntimeServer getServiceTypeRuntimeServer()

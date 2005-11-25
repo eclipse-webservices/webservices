@@ -15,6 +15,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.ComputeEndpointCom
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.ManageServerStartUpCommand;
 import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.command.AntDefaultingFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.command.ListOptionsCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.selection.SelectionTransformer;
@@ -61,7 +62,7 @@ public class AntServiceRootCommandFragment extends SequenceFragment
 
     add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
     add( new SimpleFragment(new ListOptionsCommand(), ""));
-    
+    add (new AntDefaultingFragment());
     add( new SimpleFragment( new ServerWizardWidgetDefaultingCommand(), ""));   
     
     add( new SimpleFragment( new ServerWizardWidgetOutputCommand(), "" ));    
@@ -126,6 +127,10 @@ public class AntServiceRootCommandFragment extends SequenceFragment
     dataRegistry.addMapping(ServerExtensionOutputCommand.class, "WsdlURI", WSDLTestLaunchCommand.class);
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProject", WSDLTestLaunchCommand.class);
      
+    //Map AntDefaultingFragment
+    dataRegistry.addMapping(AntDefaultingFragment.class, "ServiceIdsFixed", ServerRuntimeSelectionWidgetDefaultingCommand.class);
+    dataRegistry.addMapping(AntDefaultingFragment.class, "ClientIdsFixed", ServerRuntimeSelectionWidgetDefaultingCommand.class);
+    
     // Map ServerRuntimeSelectionWidgetDefaultingCommand
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerExtensionDefaultingCommand.class);    
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceProjectName", ServerExtensionDefaultingCommand.class);
@@ -134,6 +139,7 @@ public class AntServiceRootCommandFragment extends SequenceFragment
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceEarComponentName", ServerExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceJ2EEVersion", ServerExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceNeedEAR", ServerExtensionDefaultingCommand.class);
+    
     
     // Map ServerExtensionDefaultingCommand
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerExtensionFragment.class);

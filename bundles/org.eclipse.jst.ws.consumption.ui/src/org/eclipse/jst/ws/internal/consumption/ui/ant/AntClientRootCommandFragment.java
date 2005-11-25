@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.internal.consumption.ui.ant;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.command.AntDefaultingFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForServiceProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.ListOptionsCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
@@ -62,6 +63,7 @@ public class AntClientRootCommandFragment extends SequenceFragment{
   add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
   
   add( new SimpleFragment(new ListOptionsCommand(), ""));
+  add (new AntDefaultingFragment());  
   
   add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(), "" ) );
   add( new SimpleFragment( new ClientWizardWidgetOutputCommand(), "" ));
@@ -116,6 +118,9 @@ public class AntClientRootCommandFragment extends SequenceFragment{
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientJ2EEVersion", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientNeedEAR", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "Runtime2ClientTypes", CheckForServiceProjectCommand.class);
+      
+      //Map AntDefaultingFragment      
+      dataRegistry.addMapping(AntDefaultingFragment.class, "ClientIdsFixed", ClientRuntimeSelectionWidgetDefaultingCommand.class);
       
       // Map WSDLSelectionWidgetDefaultingCommand command.
       dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "GenWSIL", ClientExtensionDefaultingCommand.class);

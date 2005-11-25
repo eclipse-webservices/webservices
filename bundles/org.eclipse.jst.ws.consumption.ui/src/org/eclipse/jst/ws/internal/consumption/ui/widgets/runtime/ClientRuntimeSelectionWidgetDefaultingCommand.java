@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
@@ -67,6 +68,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 {   
   
   private TypeRuntimeServer    clientIds_;
+  private boolean clientIdsFixed_ = false;
   private String clientRuntimeId_;
   private String clientProjectName_;
   private String clientEarProjectName_;
@@ -106,6 +108,11 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   public TypeRuntimeServer getClientTypeRuntimeServer()
   {
     return clientIds_; 
+  }
+  
+  public void setClientIdsFixed(boolean b)
+  {
+    clientIdsFixed_ = b;  
   }
   
   public String getClientRuntimeId()
@@ -155,15 +162,25 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 
     try
     {
-      // Set the runtime based on the initial selection
-      clientRuntimeId_ = getDefaultClientRuntime(clientInitialProject_);
-      if (clientRuntimeId_ == null)
+      
+      if (clientIdsFixed_)
       {
-        // return and error.
+        // Set the clientRuntime based on the runtime, server, and initial
+        // selection.
+        clientRuntimeId_ = getDefaultClientRuntimeForFixedRuntimeAndServer(clientInitialProject_);
+      } 
+      else
+      {
+        // Set the runtime based on the initial selection
+        clientRuntimeId_ = getDefaultClientRuntime(clientInitialProject_);
+        if (clientRuntimeId_ == null)
+        {
+          // return and error.
+        }
+        clientIds_.setRuntimeId(WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRuntime()
+            .getId());
       }
-      clientIds_.setRuntimeId(WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRuntime()
-          .getId());
-
+      
       // Set the project
       if (clientProjectName_ == null)
       {
@@ -185,13 +202,16 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 
 
       // Set the server
-      IStatus serverStatus = setClientDefaultServer();
-      if (serverStatus.getSeverity() == Status.ERROR)
+      if (!clientIdsFixed_)
       {
-        env.getStatusHandler().reportError(serverStatus);
-        return serverStatus;
+        IStatus serverStatus = setClientDefaultServer();
+        if (serverStatus.getSeverity() == Status.ERROR)
+        {
+          env.getStatusHandler().reportError(serverStatus);
+          return serverStatus;
+        }
       }
-
+      
       setDefaultClientEarProject();      
       // Calculate default IWebServiceClient
       setDefaultsForExtension(env);
@@ -642,6 +662,53 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     return ResourceUtils.getDefaultWebProjectName();
     
   }
+  
+  private String getDefaultClientRuntimeForFixedRuntimeAndServer(IProject project)
+  {
+    String[] clientRuntimes = WebServiceRuntimeExtensionUtils2.getClientRuntimesByType(clientIds_.getTypeId());
+    ArrayList validClientRuntimes = new ArrayList();
+    for (int i=0; i<clientRuntimes.length; i++ )
+    {
+      ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimes[i]);
+      if (desc.getRuntime().getId().equals(clientIds_.getRuntimeId()))
+      {
+        //Check if this client runtime supports the server
+        if (WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportServer(desc.getId(), clientIds_.getServerId()))
+        {
+          validClientRuntimes.add(desc.getId());
+          if (project != null && project.exists())
+          {
+            RequiredFacetVersion[] rfv = desc.getRequiredFacetVersions();
+            Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
+            if (facetVersions != null)
+            {
+              FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+              if (fm.isMatch())
+              {
+                clientFacetMatcher_ = fm;
+                clientProjectName_ = project.getName();
+                return desc.getId();
+              }                      
+            }
+          }
+          
+        }
+      }
+      
+    }
+    
+    if (validClientRuntimes.size() > 0)
+    {
+      //We couldn't match to the initially selected project so return the first valid runtime.
+      return ((String[])validClientRuntimes.toArray(new String[0]))[0];
+    }
+    else
+    {
+      //There are no client runtimes that match the fixed runtime and server. Fall back to original algorithm
+      clientIdsFixed_ = false;
+      return getDefaultClientRuntime(project);
+    }
+  }  
   
   private String getDefaultClientRuntime(IProject project)
   {
