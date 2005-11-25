@@ -38,7 +38,7 @@ public class WSPlugin extends Plugin {
 	private PersistentWSDLValidationContext wsdlValidationContext_;
 	private PersistentWaitForWSDLValidationContext waitForWsdlValidationContext_;
 
-	public static final String ID = "org.eclipse.wst.ws.ui";
+	public static final String ID = "org.eclipse.wst.ws";
 	
 	/**
 	 * The constructor.
