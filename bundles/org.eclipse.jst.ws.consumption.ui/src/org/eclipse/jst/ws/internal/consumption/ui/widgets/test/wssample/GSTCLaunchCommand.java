@@ -12,6 +12,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.eclipse.core.resources.IProject;
@@ -101,11 +102,11 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 	if (status.getSeverity() == Status.ERROR) return status;
 	
 	IProject sampleProject = ProjectUtilities.getProject(testInfo.getGenerationProject());
-	IPath newPath = new Path(ServerUtils.getWebComponentURL(sampleProject, testInfo.getClientServerTypeID(),testInfo.getClientExistingServer()));
+	String   newPath = ServerUtils.getWebComponentURL(sampleProject, testInfo.getClientServerTypeID(),testInfo.getClientExistingServer());
 	int count = J2EEUtils.getWebContentPath(sampleProject).segmentCount();
 	
-	newPath = newPath.append(fDestinationFolderPath.removeFirstSegments(count).makeAbsolute());
-	StringBuffer urlString = new StringBuffer(newPath.append(TEST_CLIENT).toString());
+	newPath = newPath + "/" + fDestinationFolderPath.removeFirstSegments(count);
+	StringBuffer urlString = new StringBuffer( newPath + "/" + TEST_CLIENT );
 	if (testInfo.getEndpoint() != null && !testInfo.getEndpoint().isEmpty())
 	{
 	  urlString.append("?endpoint=");
@@ -115,16 +116,23 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 	try{
 	      URL url;
 	      url = new URL(urlString.toString());
+        
+        InputStream resultStream = null;
+        InputStream methodStream = null;
+        InputStream inputStream  = null;
+        InputStream clientStream = null;
 
 	      for( int retries = 0; retries < 10; retries++ )
 	      {
 	        try
 	        {
 	          // Test the URLs
-	          (new URL(newPath.append(RESULT).toString())).openStream();
-	          (new URL(newPath.append(METHOD).toString())).openStream();
-	          (new URL(newPath.append(INPUT).toString())).openStream();
-	          (new URL(newPath.append(TEST_CLIENT).toString())).openStream();
+            
+	          resultStream = new URL(newPath + "/" + RESULT).openStream();
+	          methodStream = new URL(newPath + "/" + METHOD).openStream();
+	          inputStream  = new URL(newPath + "/" + INPUT).openStream();
+	          clientStream = new URL(newPath + "/" + TEST_CLIENT).openStream();
+            
 	          // Looks good, exit loop
 	          break;
 	        }
@@ -136,6 +144,19 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 	          }
 	          catch (InterruptedException ie) {} 	  	          
 	        }
+          finally
+          {
+            try
+            {
+              if( resultStream != null ) resultStream.close();
+              if( methodStream != null ) methodStream.close();
+              if( inputStream != null ) inputStream.close();
+              if( clientStream != null ) clientStream.close();
+            }
+            catch( IOException exc )
+            {
+            }
+          }
 	      }
 
 			IWorkbenchBrowserSupport browserSupport = WebServiceConsumptionUIPlugin.getInstance().getWorkbench().getBrowserSupport();
