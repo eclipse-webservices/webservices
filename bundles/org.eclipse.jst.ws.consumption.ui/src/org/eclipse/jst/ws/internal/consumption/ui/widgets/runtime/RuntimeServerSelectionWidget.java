@@ -228,7 +228,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
 
 		if (!WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported( ids_.getServerId(), ids_.getRuntimeId(), ids_.getTypeId())) 
 		{
-			status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[]{ scenario } ) );		  
+			status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[]{ serverLabel, runtimeLabel } ) );		  
 		}
 
 	}    
@@ -238,7 +238,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     {
 
 	  if (!WebServiceRuntimeExtensionUtils2.isServerRuntimeTypeSupported(ids_.getServerId(), ids_.getRuntimeId(), ids_.getTypeId())) {	  
-        status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[]{ scenario } ) );      
+        status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[]{ serverLabel, runtimeLabel } ) );      
       }
 
     }

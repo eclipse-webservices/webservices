@@ -15,8 +15,13 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -435,7 +440,41 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
 
   public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
   {
-    return Status.OK_STATUS;
+    IEnvironment env = getEnvironment();
+    //Do some basic validation to ensure the server/runtime/type combination is supported.
+    //This is needed to catch problems in the defaulting
+    //when the user clicks Finish prior to page 3 of the wizard.
+    
+    IStatus status = Status.OK_STATUS;
+    String scenario = ConsumptionUIMessages.MSG_CLIENT_SUB;
+
+    //Ensure server and runtime are non-null
+    String runtimeId = clientIds_.getRuntimeId();
+    String serverId = clientIds_.getServerId();
+    String typeId = clientIds_.getTypeId();
+    
+    if( runtimeId == null || runtimeId.length()==0)
+    {
+      status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_NO_RUNTIME, new String[]{ scenario } ) );
+      env.getStatusHandler().reportError(status);
+    }
+    
+    if( serverId == null || serverId.length()==0)
+    {
+      status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_NO_SERVER, new String[]{ scenario } ) );
+      env.getStatusHandler().reportError(status);
+    }
+    
+    //ensure the server, runtime, and type are compatible
+    if (!WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported(serverId, runtimeId, typeId)) 
+    {    
+      String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId);
+      String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeId);
+      status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[]{ serverLabel, runtimeLabel } ) );
+      env.getStatusHandler().reportError(status);
+    }
+    
+    return status;
   }
   
   
