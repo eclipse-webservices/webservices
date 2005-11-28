@@ -283,7 +283,7 @@ public class RegistryService
 	 * @return An OuptutStream to write to.
 	 * @throws IOException If the stream could not be opened.
 	 */
-	private static OutputStream getOutputStreamFor ( URL url ) throws IOException
+	static OutputStream getOutputStreamFor ( URL url ) throws IOException
 	{
 		OutputStream outputStream = null;
 		if ("platform".equals(url.getProtocol()))
@@ -331,7 +331,7 @@ public class RegistryService
 	 * @return An InputStream to read from.
 	 * @throws IOException If the stream could not be opened.
 	 */
-	private static InputStream getInputStreamFor ( URL url ) throws IOException
+	static InputStream getInputStreamFor ( URL url ) throws IOException
 	{
 		return url.openStream();
 	}
