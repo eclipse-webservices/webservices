@@ -12,12 +12,20 @@ package org.eclipse.wst.wsdl.tests;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Vector;
 
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLPackage;
@@ -47,7 +55,10 @@ public class LoadAndSerializationTest extends TestCase
   }
   
   private String PLUGIN_ABSOLUTE_PATH = WSDLTestsPlugin.getInstallURL();
-  static private File[] wsdls;
+  private String TEST_DATA_DIR;
+  
+  //static private File[] wsdls;
+  private Vector wsdlFiles = new Vector();
   static private Definition definition = null;
 	
   /**
@@ -77,7 +88,7 @@ public class LoadAndSerializationTest extends TestCase
         }
       }
     );
-    /* suite.addTest // wtp bug 79326
+    suite.addTest // wtp bug 79326
     (new LoadAndSerializationTest("Compare") 
       {
         protected void runTest() 
@@ -85,7 +96,7 @@ public class LoadAndSerializationTest extends TestCase
           testCompare();
         }
       }
-    ); */
+    );
     return suite;
   } 
 
@@ -94,27 +105,28 @@ public class LoadAndSerializationTest extends TestCase
    */
   public void testLoadAndStore()
   {
-    File dir = new File(PLUGIN_ABSOLUTE_PATH + "samples");
+	String TEST_DATA_DIR = System.getProperty("testDataDir");
+	//Assert.assertNotNull(testDataDir);
+	File dir = null;
+	if (TEST_DATA_DIR != null)
+		dir = new File(TEST_DATA_DIR);
+	else	
+		// KB: if you are here, fix text.xml
+        dir = new File(PLUGIN_ABSOLUTE_PATH + "samples"); // fallback
+	
     if (dir.exists() && dir.isDirectory())
     {
-      wsdls = dir.listFiles
-      (
-        new FileFilter()
-        {
-          public boolean accept(File pathname)
-          {
-            return pathname.getName().endsWith(".wsdl");
-          }
-        }
-      );
+      listDataFiles(dir);
 
       try 
       {
-        for (int i = 0; i < wsdls.length; i++)
+        File myFile = null;
+        for (int i = 0; i < wsdlFiles.size(); i++)
         {
-          System.out.println(wsdls[i].toURL().toString());
-          load(wsdls[i].toString());
-          print(wsdls[i].toString() + ".out");
+          myFile = (File)wsdlFiles.elementAt(i);
+          System.out.println(myFile.toURL().toString());
+          load(myFile.toString());
+          print(myFile.toString() + ".out");
         }
       }
       catch (Exception e)
@@ -126,6 +138,47 @@ public class LoadAndSerializationTest extends TestCase
       fail(dir.toString());
 
   }
+  
+	private void listDataFiles(File src)  
+	{
+		if (!src.isDirectory())
+			return; // Assertion failed
+		
+		filterWSDLFiles(src); // Add WSDL files in the src directory
+		
+		File[] children = src.listFiles();
+		File myFile;
+		for (int i = 0; i < children.length; i++) 
+		{
+			myFile = children[i];			
+			if (myFile.isDirectory()) 
+			{
+				if ("CVS".equals(myFile.getName()))
+				  continue;
+				
+				listDataFiles(myFile); // Visit sub-directories recursively
+			} 
+		}
+	}
+	
+	private void filterWSDLFiles(File dir)
+	{
+		File[] wsdls = dir.listFiles
+	      (
+	        new FileFilter()
+	        {
+	          public boolean accept(File pathname)
+	          {
+	            return pathname.getName().endsWith(".wsdl");
+	          }
+	        }
+	      );
+		
+		for (int j=0; j<wsdls.length; j++)
+		{
+			wsdlFiles.add(wsdls[j]);
+		}
+	}
   
   /*
    * Load from the WSDL definitions file.
@@ -182,8 +235,12 @@ public class LoadAndSerializationTest extends TestCase
     XMLDiff xmldiff = new XMLDiff();
     try
     {
-      for (int i = 0; i < wsdls.length; i++)
-        Assert.assertTrue(xmldiff.diff(wsdls[i].toString(),wsdls[i].toString() + ".out")); 
+      File myFile = null;
+      for (int i = 0; i < wsdlFiles.size(); i++)
+      {
+    	myFile = (File)wsdlFiles.elementAt(i);
+        Assert.assertTrue(xmldiff.diff(myFile.toString(),myFile.toString() + ".out")); 
+      }
     }
     catch (Exception e)
     {

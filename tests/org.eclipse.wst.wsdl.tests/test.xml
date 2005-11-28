@@ -5,12 +5,13 @@
 	<!-- Set a meaningful default value for when it is not. -->
 	<!-- <property name="eclipse-home" value="${basedir}\..\.." /> -->
 		
-		<echo message="basedir ${basedir}" />
-		<echo message="eclipse place ${eclipse-home}" />
+	<echo message="basedir ${basedir}" />
+	<echo message="eclipse place ${eclipse-home}" />
 	
 	<!-- sets the properties plugin-name, and library-file -->
 	<property name="plugin-name" value="org.eclipse.wst.wsdl.tests" />
 	<property name="library-file" value="${eclipse-home}/plugins/org.eclipse.test_3.1.0/library.xml" />
+	<property name="extraVMargs" value="-DtestDataDir=${eclipse-home}/plugins/${plugin-name}/samples -Xmx256M"/>
 
 	<!-- This target holds all initialization code that needs to be done for -->
 	<!-- all tests that are to be run. Initialization for individual tests -->
