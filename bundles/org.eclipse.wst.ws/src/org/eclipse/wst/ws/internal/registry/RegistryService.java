@@ -277,6 +277,102 @@ public class RegistryService
 	}
 
 	/**
+	 * Constructs and returns a new Registry model configured
+	 * to reference the given <code>registry</code>.
+	 * <p>
+	 * The given <code>registry</code> can be either a full
+	 * model as signified by having a non-null, non-empty
+	 * identifier (<code>registry.getId()</code>), or a
+	 * reference itself as signified by having a non-null,
+	 * non-empty reference (<code>registry.getRef()</code>).
+	 * <p>
+	 * If the given <code>registry</code> is a full model,
+	 * then a new <code>Registry</code> is returned such that
+	 * <ul>
+	 * <li><code>getRef()</code> equals <code>registry.getId()</code></li>
+	 * <li><code>getLocation()</code> is null</li>
+	 * <li><code>getId()</code> is null</li>
+	 * </ul>
+	 * <p>
+	 * In the given <code>registry</code> is itself a reference,
+	 * then a new <code>Registry</code> is returned such that
+	 * <ul>
+	 * <li><code>getRef()</code> equals <code>registry.getRef()</code></li>
+	 * <li><code>getLocation()</code> equals <code>registry.getLocation()</code></li>
+	 * <li><code>getId()</code> is null</li>
+	 * </ul>
+	 * 
+	 * @param registry The <code>Registry</code> model to clone or
+	 * refer to depending on whether the given <code>registry</code>
+	 * is a full model or a reference.
+	 * @return A new <code>Registry</code>, guaranteed to be a reference.
+	 */
+	public Registry newRegistryReference ( Registry registry )
+	{
+		String id = registry.getId();
+		String ref = registry.getRef();
+		Registry registryRef = newRegistry();
+		if (ref == null || "".equals(ref))
+		{
+			registryRef.setRef(id);
+		}
+		else
+		{
+			registryRef.setRef(ref);
+			registryRef.setLocation(registry.getLocation());
+		}
+		return registryRef;
+	}
+
+	/**
+	 * Constructs and returns a new Taxonomy model configured
+	 * to reference the given <code>taxonomy</code>.
+	 * <p>
+	 * The given <code>taxonomy</code> can be either a full
+	 * model as signified by having a non-null, non-empty
+	 * identifier (<code>taxonomy.getId()</code>), or a
+	 * reference itself as signified by having a non-null,
+	 * non-empty reference (<code>taxonomy.getRef()</code>).
+	 * <p>
+	 * If the given <code>taxonomy</code> is a full model,
+	 * then a new <code>Taxonomy</code> is returned such that
+	 * <ul>
+	 * <li><code>getRef()</code> equals <code>taxonomy.getId()</code></li>
+	 * <li><code>getLocation()</code> is null</li>
+	 * <li><code>getId()</code> is null</li>
+	 * </ul>
+	 * <p>
+	 * In the given <code>taxonomy</code> is itself a reference,
+	 * then a new <code>Taxonomy</code> is returned such that
+	 * <ul>
+	 * <li><code>getRef()</code> equals <code>taxonomy.getRef()</code></li>
+	 * <li><code>getLocation()</code> equals <code>taxonomy.getLocation()</code></li>
+	 * <li><code>getId()</code> is null</li>
+	 * </ul>
+	 * 
+	 * @param taxonomy The <code>Taxonomy</code> model to clone or
+	 * refer to depending on whether the given <code>taxonomy</code>
+	 * is a full model or a reference.
+	 * @return A new <code>Taxonomy</code>, guaranteed to be a reference.
+	 */
+	public Taxonomy newTaxonomyReference ( Taxonomy taxonomy )
+	{
+		String id = taxonomy.getId();
+		String ref = taxonomy.getRef();
+		Taxonomy taxonomyRef = newTaxonomy();
+		if (ref == null || "".equals(ref))
+		{
+			taxonomyRef.setRef(id);
+		}
+		else
+		{
+			taxonomyRef.setRef(ref);
+			taxonomyRef.setLocation(taxonomy.getLocation());
+		}
+		return taxonomyRef;
+	}
+
+	/**
 	 * Opens an <code>OutputStream</code> for writing to
 	 * the given <code>url</code>.
 	 * @param url The URL of the resource to write.
