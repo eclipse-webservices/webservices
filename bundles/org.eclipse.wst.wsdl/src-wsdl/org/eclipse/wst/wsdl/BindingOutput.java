@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@ package org.eclipse.wst.wsdl;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Binding Output</b></em>'.
+ * @since 1.0
+ * @ignore
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
@@ -87,7 +89,11 @@ public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutp
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * This method is same as getEOutput() and compatible with the JWSDL API.
+   * @see #getEOutput()
+   * @return the value of the '<em>EOutput</em>' reference.
+   * @ignore
+   * <!-- end-user-doc -->
    * @model parameters=""
    * @generated
    */
@@ -95,7 +101,11 @@ public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutp
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * This method is same as setEOutput(Output) and compatible with the JWSDL API.
+   * @see #setEOutput(Output)
+   * @param output the new value of the '<em>EOutput</em>' reference.
+   * @ignore
+   * <!-- end-user-doc -->
    * @model 
    * @generated
    */

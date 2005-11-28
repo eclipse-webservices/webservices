@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,8 @@ import java.util.List;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Types</b></em>'.
+ * @since 1.0
+ * @ignore
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
@@ -29,18 +31,28 @@ import java.util.List;
 public interface Types extends ExtensibleElement, javax.wsdl.Types{
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * Returns a List of inline XSDSchema instances in this Types. 
+   * @return List of XSDSchema instances.
+   * @see org.eclipse.xsd.XSDSchema
+   * @ignore
+   * <!-- end-user-doc -->
    * @model parameters=""
    * @generated
    */
-	List getSchemas();
+  List getSchemas();
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * Returns a List of inline XSDSchema instances in this Types. The targetNamespace of
+   * the schemas are the same as namespaceURI argument value.
+   * @param namespaceURI targetNamespace of the schemas to be searched for.
+   * @return List of XSDSchema instances.
+   * @see org.eclipse.xsd.XSDSchema
+   * @ignore
+   * <!-- end-user-doc -->
    * @model 
    * @generated
    */
-	List getSchemas(String namespaceURI);
+  List getSchemas(String namespaceURI);
 
 } // Types

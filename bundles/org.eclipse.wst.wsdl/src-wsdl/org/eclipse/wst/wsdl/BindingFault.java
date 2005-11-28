@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.wst.wsdl;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Binding Fault</b></em>'.
+ * @since 1.0
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
@@ -78,7 +79,7 @@ public interface BindingFault extends ExtensibleElement, javax.wsdl.BindingFault
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.BindingFault#getEFault <em>EFault</em>}' reference.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>EFault</em>' reference.
    * @see #getEFault()
    * @generated
@@ -87,7 +88,11 @@ public interface BindingFault extends ExtensibleElement, javax.wsdl.BindingFault
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * This method is same as getEFault() and compatible with the JWSDL API.
+   * @see #getEFault()
+   * @return the value of the '<em>EFault</em>' reference.
+   * @ignore
+   * <!-- end-user-doc -->
    * @model parameters=""
    * @generated
    */
@@ -95,7 +100,11 @@ public interface BindingFault extends ExtensibleElement, javax.wsdl.BindingFault
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * This method is same as setEFault(Fault) and compatible with the JWSDL API.
+   * @see #setEFault(Fault)
+   * @param fault the new value of the '<em>EFault</em>' reference.
+   * @ignore
+   * <!-- end-user-doc -->
    * @model 
    * @generated
    */

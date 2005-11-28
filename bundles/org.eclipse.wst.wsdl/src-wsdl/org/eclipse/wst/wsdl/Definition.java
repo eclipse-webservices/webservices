@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import org.w3c.dom.Document;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Definition</b></em>'.
+ * @since 1.0
+ * @ignore
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
@@ -274,18 +276,24 @@ public interface Definition extends ExtensibleElement, javax.wsdl.Definition{
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * Returns a W3C DOM Document built from the input WSDL document.
+   * @return W3C DOM Document.
+   * @ignore
+   * <!-- end-user-doc -->
    * @model dataType="org.eclipse.wsdl.DOMDocument" parameters=""
    * @generated
    */
-	Document getDocument();
+  Document getDocument();
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * Sets a W3C DOM Document to be used when building up a DOM Element tree for the WSDL model.
+   * @param document W3C DOM Document.
+   * @ignore
+   * <!-- end-user-doc -->
    * @model parameters="org.eclipse.wsdl.DOMDocument"
    * @generated
    */
-	void setDocument(Document document);
+  void setDocument(Document document);
 
 } // Definition

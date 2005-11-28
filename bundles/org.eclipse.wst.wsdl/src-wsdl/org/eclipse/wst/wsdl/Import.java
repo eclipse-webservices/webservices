@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,8 @@ import org.eclipse.xsd.XSDSchema;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Import</b></em>'.
+ * @since 1.0
+ * @ignore
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
@@ -142,18 +144,26 @@ public interface Import extends WSDLElement, javax.wsdl.Import{
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * This method is same as getESchema().
+   * @see #getESchema()
+   * @return the value of the '<em>ESchema</em>' reference.
+   * @ignore
+   * <!-- end-user-doc -->
    * @model parameters=""
    * @generated
    */
-	XSDSchema getSchema();
+  XSDSchema getSchema();
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * This method is same as setESchema(XSDSchema).
+   * @see #setESchema(XSDSchema)
+   * @param schema the new value of the '<em>ESchema</em>' reference.
+   * @ignore
+   * <!-- end-user-doc -->
    * @model 
    * @generated
    */
-	void setSchema(XSDSchema schema);
+  void setSchema(XSDSchema schema);
 
 } // Import

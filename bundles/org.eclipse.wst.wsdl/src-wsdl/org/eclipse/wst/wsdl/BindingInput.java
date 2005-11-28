@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.wst.wsdl;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Binding Input</b></em>'.
+ * @since 1.0
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
@@ -87,7 +88,11 @@ public interface BindingInput extends ExtensibleElement, javax.wsdl.BindingInput
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * This method is same as getEInput() and compatible with the JWSDL API.
+   * @see #getEInput()
+   * @return the value of the '<em>EInput</em>' reference.
+   * @ignore
+   * <!-- end-user-doc -->
    * @model parameters=""
    * @generated
    */
@@ -95,7 +100,11 @@ public interface BindingInput extends ExtensibleElement, javax.wsdl.BindingInput
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * This method is same as setEInput(Input) and compatible with the JWSDL API.
+   * @see #setEInput(Input)
+   * @param input the new value of the '<em>EInput</em>' reference.
+   * @ignore
+   * <!-- end-user-doc -->
    * @model 
    * @generated
    */
