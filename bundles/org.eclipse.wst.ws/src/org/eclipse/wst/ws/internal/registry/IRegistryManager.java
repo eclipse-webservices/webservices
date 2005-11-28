@@ -14,6 +14,7 @@ package org.eclipse.wst.ws.internal.registry;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.ws.internal.model.v10.registry.Registry;
 import org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy;
 
@@ -109,10 +110,13 @@ public interface IRegistryManager
 	 * referenced <code>Taxonomy</code> models) to save.
 	 * @return The URI identifier of the registry as returned by
 	 * <code>registry.getId()</code>.
+	 * @throws CoreException If the operation fails for any reason,
+	 * including but not limited to malformed location URIs in the
+	 * index or general input/output error conditions.
 	 * @see Registry
 	 * @see #addTaxonomyFinder(String, ITaxonomyFinder)
 	 */
-	public String saveRegistry ( Registry registry );
+	public String saveRegistry ( Registry registry ) throws CoreException;
 
 	/**
 	 * Loads a <code>Registry</code> from a registry XML document
@@ -122,9 +126,12 @@ public interface IRegistryManager
 	 * @param uri The URI identifier of the registry as returned by
 	 * <code>registry.getId()</code>.
 	 * @return The <code>Registry</code> model.
+	 * @throws CoreException If the operation fails for any reason,
+	 * including but not limited to malformed location URIs in the
+	 * index or general input/output error conditions.
 	 * @see Registry
 	 */
-	public Registry loadRegistry ( String uri );
+	public Registry loadRegistry ( String uri ) throws CoreException;
 
 	/**
 	 * Returns an array of URI identifiers to <code>Registry</code>
@@ -132,9 +139,12 @@ public interface IRegistryManager
 	 * 
 	 * @return An array of URI identifiers, possibly empty but never null,
 	 * to registered <code>Registry</code> models.
+	 * @throws CoreException If the operation fails for any reason,
+	 * including but not limited to malformed location URIs in the
+	 * index or general input/output error conditions.
 	 * @see Registry
 	 */
-	public String[] getRegistryURIs ();
+	public String[] getRegistryURIs () throws CoreException;
 
 	/**
 	 * Removes the <code>Registry</code> model identified by the
@@ -146,11 +156,14 @@ public interface IRegistryManager
 	 * @param deleteDocument Either <code>KEEP_DOCUMENT</code>
 	 * or <code>DELETE_DOCUMENT</code> depending on whether the
 	 * model document should be kept or deleted.
+	 * @throws CoreException If the operation fails for any reason,
+	 * including but not limited to malformed location URIs in the
+	 * index or general input/output error conditions.
 	 * @see Registry
 	 * @see #KEEP_DOCUMENT
 	 * @see #DELETE_DOCUMENT
 	 */
-	public void removeRegistry ( String uri, boolean deleteDocument );
+	public void removeRegistry ( String uri, boolean deleteDocument ) throws CoreException;
 
 	/**
 	 * Saves a <code>Taxonomy</code> model to an XML document
@@ -168,9 +181,12 @@ public interface IRegistryManager
 	 * @param taxonomy The <code>Taxonomy</code> model to save.
 	 * @return The URI identifier of the taxonomy as returned by
 	 * <code>taxonomy.getId()</code>.
+	 * @throws CoreException If the operation fails for any reason,
+	 * including but not limited to malformed location URIs in the
+	 * index or general input/output error conditions.
 	 * @see Taxonomy
 	 */
-	public String saveTaxonomy ( Taxonomy taxonomy );
+	public String saveTaxonomy ( Taxonomy taxonomy ) throws CoreException;
 
 	/**
 	 * Loads a <code>Taxonomy</code> from a taxonomy XML document
@@ -185,9 +201,12 @@ public interface IRegistryManager
 	 * @param uri The URI identifier of the taxonomy as returned by
 	 * <code>taxonomy.getId()</code>.
 	 * @return The <code>Taxonomy</code> model.
+	 * @throws CoreException If the operation fails for any reason,
+	 * including but not limited to malformed location URIs in the
+	 * index or general input/output error conditions.
 	 * @see Taxonomy
 	 */
-	public Taxonomy loadTaxonomy ( String uri );
+	public Taxonomy loadTaxonomy ( String uri ) throws CoreException;
 
 	/**
 	 * Returns an array of URI identifiers to <code>Taxonomy</code>
@@ -195,9 +214,12 @@ public interface IRegistryManager
 	 * 
 	 * @return An array of URI identifiers, possibly empty but never null,
 	 * to registered <code>Taxonomy</code> models.
+	 * @throws CoreException If the operation fails for any reason,
+	 * including but not limited to malformed location URIs in the
+	 * index or general input/output error conditions.
 	 * @see Taxonomy
 	 */
-	public String[] getTaxonomyURIs ();
+	public String[] getTaxonomyURIs () throws CoreException;
 
 	/**
 	 * Removes the <code>Taxonomy</code> model identified by the
@@ -209,9 +231,12 @@ public interface IRegistryManager
 	 * @param deleteDocument Either <code>KEEP_DOCUMENT</code>
 	 * or <code>DELETE_DOCUMENT</code> depending on whether the
 	 * model document should be kept or deleted.
+	 * @throws CoreException If the operation fails for any reason,
+	 * including but not limited to malformed location URIs in the
+	 * index or general input/output error conditions.
 	 * @see Taxonomy
 	 * @see #KEEP_DOCUMENT
 	 * @see #DELETE_DOCUMENT
 	 */
-	public void removeTaxonomy ( String uri, boolean deleteDocument );
+	public void removeTaxonomy ( String uri, boolean deleteDocument ) throws CoreException;
 }
