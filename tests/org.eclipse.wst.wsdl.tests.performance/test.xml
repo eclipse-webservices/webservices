@@ -9,7 +9,7 @@
   <property name="plugin-name" value="org.eclipse.wst.wsdl.tests.performance"/>
   <property name="library-file" value="${eclipse-home}/plugins/org.eclipse.test_3.1.0/library.xml"/>
   <property name="perf-tests-file" value="${testDir}/performance-tests.xml"/>
-  <property name="extraVMargs" value="-Doagis80Dir=${testDir} -DprojectDir=${testDir}/OAGIS8.0 -Xmx256M"/>
+  <property name="extraVMargs" value="-Doagis80Dir=${testDir} -DprojectDir=${testDir}/OAGIS8.0 -Xmx512M"/>
 
   <property name="workspace" value="${eclipse-home}/workspace_wsdl_performance"/>
 
