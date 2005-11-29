@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.common;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -47,12 +48,21 @@ public class String2SelectionTransformer implements Transformer {
 			try{				
 				ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(ejbComponents[0]);				
 	            EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
-	            EJBJar ejbJar = ejbRes.getEJBJar();
-	            String resourceFilename =resource.getName(); 
-	            String javaClassName = resourceFilename.substring(resourceFilename.indexOf('.'));
-	            JavaClass javaClass = JavaMOFUtils.getJavaClass(javaClassName, resProject);
+	            EJBJar ejbJar = ejbRes.getEJBJar();	            
+	            IPath path = resource.getFullPath();
+	            String resourcePath = ResourceUtils.getJavaResourcePackageName(path);
+	            String javaClassName = resource.getName();
+	            // strip off file extension if necessary
+	            if (javaClassName.lastIndexOf('.')>-1)
+	            {	
+	              javaClassName = javaClassName.substring(0, javaClassName.lastIndexOf('.'));	              
+	            } 
+	            JavaClass javaClass = JavaMOFUtils.getJavaClass(resourcePath, javaClassName, resProject);
 	            EnterpriseBean ejb = ejbJar.getEnterpriseBeanWithReference(javaClass);
-	            selection = new StructuredSelection(ejb.getName());
+	            if (ejb != null)
+	            {
+	            	selection = new StructuredSelection(ejb.getName());	
+	            }
 			}
 			catch (Exception exc)
 			{
@@ -63,7 +73,8 @@ public class String2SelectionTransformer implements Transformer {
 	                ejbEdit.dispose();
 	            }
 		}		
-		else if (resource != null)
+		
+		if (resource != null)
 		{
 			selection = new StructuredSelection(resource);			
 		}		
