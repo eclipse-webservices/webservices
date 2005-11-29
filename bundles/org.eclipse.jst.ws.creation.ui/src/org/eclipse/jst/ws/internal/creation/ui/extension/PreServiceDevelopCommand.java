@@ -83,8 +83,6 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 	  IWebServiceRuntime wsrt   = WebServiceRuntimeExtensionUtils2.getServiceRuntime( serviceRuntimeId_ );
 	  WebServiceInfo     wsInfo = new WebServiceInfo();
 
-	  System.out.println( "In Pre service develop command." );
-	
 	  wsInfo.setServerFactoryId( typeRuntimeServer_.getServerId() );
       wsInfo.setServerInstanceId( typeRuntimeServer_.getServerInstanceId());
 	  wsInfo.setState( WebServiceState.UNKNOWN_LITERAL );

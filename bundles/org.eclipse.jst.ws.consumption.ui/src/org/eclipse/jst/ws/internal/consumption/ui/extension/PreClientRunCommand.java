@@ -26,9 +26,8 @@ public class PreClientRunCommand extends AbstractDataModelOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    IEnvironment environment = getEnvironment();
+    IEnvironment environment = getEnvironment();   
     
-    System.out.println("In Pre client run command.");
     StartServerCommand command = new StartServerCommand();
     command.setServerInstanceId(webServiceClient_.getWebServiceClientInfo().getServerInstanceId());
     command.setEnvironment( environment );

@@ -34,8 +34,6 @@ public class PreClientAssembleCommand extends AbstractDataModelOperation
   {
     IEnvironment environment = getEnvironment();
     
-    System.out.println("In Pre client assemble command.");
-
 	// Check if EAR module is req'd, ie. !=null
 	if (earProject_==null)
 		return Status.OK_STATUS;

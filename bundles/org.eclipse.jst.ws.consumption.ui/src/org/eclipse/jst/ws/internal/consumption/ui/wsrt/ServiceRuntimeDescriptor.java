@@ -45,9 +45,6 @@ public class ServiceRuntimeDescriptor
     this.elem = elem;
     this.allWebServiceImpls = allWebServiceImpls;
     this.allRuntimes = allRuntimes;
-    
-    System.out.println("bottomUp = "+elem.getAttribute("bottomUp"));
-    System.out.println("bottomUp = "+elem.getAttribute("topDown"));
 
     bottomUp = (Boolean.valueOf(elem.getAttribute("bottomUp"))).booleanValue();
     topDown = (Boolean.valueOf(elem.getAttribute("topDown"))).booleanValue();    

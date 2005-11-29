@@ -21,8 +21,6 @@ public class PreServiceDeployCommand extends AbstractDataModelOperation
 {
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-	  System.out.println( "In Pre service deploy command." );
-
 	  return Status.OK_STATUS;
   }
 }

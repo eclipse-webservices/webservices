@@ -27,8 +27,6 @@ public class PreServiceRunCommand extends AbstractDataModelOperation
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
       IEnvironment environment = getEnvironment();
-      
-		  System.out.println( "In Pre service run command." );
 			
 			StartServerCommand command = new StartServerCommand();
 			command.setServerInstanceId(webService_.getWebServiceInfo().getServerInstanceId());

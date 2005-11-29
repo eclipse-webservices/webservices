@@ -74,12 +74,10 @@ public class WebServiceRuntimeExtensionRegistry2
     
     for(int idx=0; idx<wsImplExts.length; idx++) 
     {
-      IConfigurationElement elem = wsImplExts[idx];
-        System.out.println("element name = "+elem.getName());
+      IConfigurationElement elem = wsImplExts[idx];        
         if (elem.getName().equals("webServiceImpl"))
         {
-          WebServiceImpl wsimpl = new WebServiceImpl(elem);
-          System.out.println(elem.getAttribute("id"));
+          WebServiceImpl wsimpl = new WebServiceImpl(elem);          
           webServiceImpls_.put(elem.getAttribute("id"), wsimpl);
         }        
     }

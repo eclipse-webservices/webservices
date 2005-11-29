@@ -31,10 +31,8 @@ public class PreServiceInstallCommand extends AbstractDataModelOperation
 		
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-      IEnvironment environment = getEnvironment();
-      
-		  System.out.println( "In Pre service install command." );
-			
+      IEnvironment environment = getEnvironment();      
+		  			
 			if (webService_.getWebServiceInfo().getServerInstanceId()==null)
 			{
 				CreateServerCommand createServerCommand = new CreateServerCommand();
