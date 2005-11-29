@@ -6,13 +6,13 @@
 <extension
          point="org.eclipse.ui.newWizards">
       <wizard
-            name="Ant Files"
+            name="%PLUGIN_XP_ANT_WIZARD_NAME"
             icon="icons/full/obj16/ant_buildfile.gif"
             category="org.eclipse.jst.ws.ui.new"
             class="org.eclipse.wst.command.internal.env.ui.dialog.AntFileImportWizard"
             id="org.eclipse.wst.command.env.ui.AntFileImportWizard">
          <description>
-              Create Ant script and properties files in the workspace.
+            %PLUGIN_XP_ANT_WIZARD_DESC
          </description>
       </wizard>
    </extension>
