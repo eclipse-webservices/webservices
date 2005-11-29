@@ -179,7 +179,7 @@ public class SOAPContentGenerator implements ContentGenerator
 	SOAPFault soapFault = soapFactory.createSOAPFault();
 	soapFault.setUse((getUseOption(bindingFault) == USE_ENCODED) ? "encoded" : "literal");
 	soapFault.setName(fault.getName());
-	soapFault.setNamespaceURI(getNamespace(bindingFault));
+//	soapFault.setNamespaceURI(getNamespace(bindingFault));
 
 	if (getUseOption(bindingFault) == USE_ENCODED && getStyleOption(bindingFault) == STYLE_RPC)
     {
