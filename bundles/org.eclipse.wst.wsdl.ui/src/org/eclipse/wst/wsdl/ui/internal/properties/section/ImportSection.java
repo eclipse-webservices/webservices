@@ -31,6 +31,7 @@ import org.eclipse.wst.common.ui.properties.internal.provisional.ITabbedProperty
 import org.eclipse.wst.common.ui.properties.internal.provisional.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Import;
+import org.eclipse.wst.wsdl.internal.impl.ImportImpl;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
@@ -257,8 +258,9 @@ public class ImportSection extends AbstractSection
 				  return;  // what to do with no namespace docs?
 			  }
 			  
-			  importElement.setAttribute("location", location); //$NON-NLS-1$
-			  importElement.setAttribute("namespace", importTargetNamespace); //$NON-NLS-1$
+			  importObj.setLocationURI(location);
+			  importObj.setNamespaceURI(importTargetNamespace);
+			  ((ImportImpl) importObj).importDefinitionOrSchema();
 			  
 			  definitionElement.setAttribute("xmlns:" + uniquePrefix, importTargetNamespace); //$NON-NLS-1$
 			  

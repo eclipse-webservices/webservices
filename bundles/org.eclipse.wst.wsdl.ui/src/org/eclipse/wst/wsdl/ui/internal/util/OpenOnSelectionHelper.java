@@ -256,19 +256,42 @@ public class OpenOnSelectionHelper extends WSDLSwitch
 
   public Object caseImport(Import theImport)
   {
-    Object result = theImport.getEDefinition();
-    if (result == null)
-    {
-      result = theImport.getESchema();
-      if (result == null)
-      {
-        // Need to resolve imports because the model doesn't automatically
-        // do it for us
-        ((ImportImpl)theImport).importDefinitionOrSchema();
-        result = theImport.getESchema();
-      }
-    }
-    return result;
+		Object result = null;
+		
+		// For now, look at the file extension.  When bugzilla 118293 is fixed, look at
+		// the Import's eDefinition and eSchema instead.
+		Path importPath = new Path(theImport.getLocationURI());
+		String extension = importPath.getFileExtension();
+		if (extension.equalsIgnoreCase("xsd")) {
+			if (theImport.getESchema() == null) {
+				((ImportImpl)theImport).importDefinitionOrSchema();
+			}
+			
+			result = theImport.getESchema();
+		}
+		else if (extension.equalsIgnoreCase("wsdl")) {
+			if (theImport.getEDefinition() == null) {
+				((ImportImpl)theImport).importDefinitionOrSchema();
+			}
+			
+			result = theImport.getEDefinition();
+		}
+		
+		
+//		if (theImport.getESchema() != null) {
+//			result = theImport.getESchema();
+//		}
+//		else if (theImport.getEDefinition() != null) {
+//			result = theImport.getEDefinition();
+//		}
+//		else {
+//	        // Need to resolve imports because the model doesn't automatically
+//	        // do it for us
+//	        ((ImportImpl)theImport).importDefinitionOrSchema();
+//	        result = theImport.getESchema();
+//	    }
+		
+		return result;
   }
 
   public Object caseWSDLElement(WSDLElement wsdlElement)
