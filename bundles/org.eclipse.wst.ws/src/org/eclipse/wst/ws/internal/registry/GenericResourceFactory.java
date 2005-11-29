@@ -18,16 +18,32 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
 
+/**
+ * Patterned after the ResourceFactory classes generated
+ * by the EMF tools, this generic factory handles creation
+ * of EMF resources for XML documents in general.
+ */
 public class GenericResourceFactory extends XMLResourceFactoryImpl
 {
+	/**
+	 * Holds an instance of <code>ExtendedMetaData</code>
+	 * for associating extended metadata with the
+	 * <code>Resource</code> returned by <code>createResource</code>.
+	 */
 	protected ExtendedMetaData extendedMetaData;
 
+	/**
+	 * Constructs a new <code>GenericResourceFactory</code>.
+	 */
 	public GenericResourceFactory()
 	{
 		super();
 		extendedMetaData = ExtendedMetaData.INSTANCE;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.emf.ecore.resource.Resource$Factory#createResource(org.eclipse.emf.common.util.URI)
+	 */
 	public Resource createResource(URI uri)
 	{
 		XMLResource result = new XMLResourceImpl(uri);
