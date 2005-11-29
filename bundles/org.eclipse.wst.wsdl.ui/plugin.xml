@@ -190,12 +190,6 @@
 		<contentOutlineConfiguration
 			class="org.eclipse.wst.wsdl.ui.internal.outline.WSDLContentOutlineConfiguration"
 			target="org.eclipse.wst.wsdl.wsdlsource" />
-		<!--
-			<propertySheetConfiguration
-			class="org.eclipse.wst.wsdl.ui.internal.properties.WSDLPropertySheetConfiguration"
-			target="org.eclipse.wst.wsdl.ui.internal.WSDLTextEditor">
-			</propertySheetConfiguration>
-		-->
 	</extension>
 
 	<extension
