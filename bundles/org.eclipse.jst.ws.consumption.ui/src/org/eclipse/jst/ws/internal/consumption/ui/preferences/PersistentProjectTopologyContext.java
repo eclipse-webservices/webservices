@@ -9,21 +9,23 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.context;
+package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 
 import java.util.StringTokenizer;
-import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.wst.command.internal.env.context.PersistentContext;
 
 
 public class PersistentProjectTopologyContext extends PersistentContext implements ProjectTopologyContext
 {
 
-public PersistentProjectTopologyContext () 
-{
-	super( WebServicePlugin.getInstance());
-}
- public void load() {
+  public PersistentProjectTopologyContext () 
+  {
+	  super( WebServiceConsumptionUIPlugin.getInstance());
+  }
+  
+  public void load() 
+  {
     String[] ids = ProjectTopologyDefaults.getClientTypes();
     StringBuffer sb = new StringBuffer();
     for (int i = 0; i < ids.length; i++)

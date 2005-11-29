@@ -264,8 +264,8 @@
       <page
             name="%PREFERENCE_CATEGORY_PROJECT_TOPOLOGY"
             category="org.eclipse.wst.ws.internal.ui.preferences.name"
-            class="org.eclipse.jst.ws.internal.ui.preferences.ProjectTopologyPreferencePage"
-            id="org.eclipse.jst.ws.internal.ui.preferences.ProjectTopologyPreferencePage">
+            class="org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyPreferencePage"
+            id="org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyPreferencePage">
       </page>
       
    </extension>

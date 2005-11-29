@@ -9,22 +9,15 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.context;
+package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 
 public class ProjectTopologyDefaults
 {
   public static final String[] getClientTypes()
   {
-    IExtensionRegistry reg = Platform.getExtensionRegistry();
-    IConfigurationElement[] elements = reg.getConfigurationElementsFor("org.eclipse.jst.ws.consumption.ui", "clientProjectType");
-    String[] types = new String[elements.length];
-    for (int i = 0; i < types.length; i++)
-      types[i] = elements[i].getAttribute("id");
-    return types;
+    return WebServiceRuntimeExtensionUtils2.getAllClientProjectTypes();
   }
 
   public static final boolean isUseTwoEARs()

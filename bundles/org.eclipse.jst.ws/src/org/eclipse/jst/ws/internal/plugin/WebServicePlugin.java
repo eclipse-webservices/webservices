@@ -14,10 +14,8 @@ package org.eclipse.jst.ws.internal.plugin;
 import java.text.MessageFormat;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.jst.ws.internal.context.PersistentProjectTopologyContext;
 import org.eclipse.jst.ws.internal.context.PersistentScenarioContext;
 import org.eclipse.jst.ws.internal.context.PersistentUDDIPreferenceContext;
-import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.context.UDDIPreferenceContext;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
@@ -45,7 +43,6 @@ public class WebServicePlugin extends Plugin
 
   private PersistentResourceContext resourceContext_;
   private PersistentScenarioContext scenarioContext_;
-  private PersistentProjectTopologyContext projectTopologyContext_;
   private PersistentUDDIPreferenceContext uddiPreferenceContext;
   
   /**
@@ -68,7 +65,6 @@ public class WebServicePlugin extends Plugin
 
   protected void initializeDefaultPluginPreferences() 
   {
-  		((PersistentProjectTopologyContext) getProjectTopologyContext()).load();
   		((PersistentUDDIPreferenceContext) getUDDIPreferenceContext()).load();
   }
 
@@ -89,14 +85,6 @@ public class WebServicePlugin extends Plugin
 
 		return scenarioContext_;
   }
-
-  public ProjectTopologyContext getProjectTopologyContext()
-  {
-    if (projectTopologyContext_ == null)
-      projectTopologyContext_ = new PersistentProjectTopologyContext();
-    return projectTopologyContext_;
-  }
-
   
   public UDDIPreferenceContext getUDDIPreferenceContext()
   {

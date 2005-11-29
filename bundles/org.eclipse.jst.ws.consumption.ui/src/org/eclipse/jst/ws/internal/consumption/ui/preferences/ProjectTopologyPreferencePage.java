@@ -9,13 +9,9 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.ui.preferences;
+package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 
 import java.util.Vector;
-
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -23,9 +19,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jst.ws.internal.context.ProjectTopologyContext;
-import org.eclipse.jst.ws.internal.context.ProjectTopologyDefaults;
-import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
 import org.eclipse.swt.SWT;
@@ -43,6 +37,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 
 
@@ -168,18 +164,22 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
   {
     clientTypes_.clear();
     String[] types = ProjectTopologyDefaults.getClientTypes();
+    
     for (int i = 0; i < types.length; i++)
+    {
       clientTypes_.add(types[i]);
+    }
+    
     clientTypeViewer_.refresh();
     twoEAR_.setSelection(true);
   }
-
+  
   /**
    * Initializes states of the controls from the preference helper.
    */
   private void initializeValues()
   {
-    ProjectTopologyContext context = WebServicePlugin.getInstance().getProjectTopologyContext();
+    ProjectTopologyContext context = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
     String[] types = context.getClientTypes();
     for (int i = 0; i < types.length; i++)
       clientTypes_.add(types[i]);
@@ -210,7 +210,7 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
    */
   private void storeValues()
   {
-    ProjectTopologyContext context = WebServicePlugin.getInstance().getProjectTopologyContext();
+    ProjectTopologyContext context = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
     String[] types = new String[clientTypes_.size()];
     clientTypes_.copyInto(types);
     context.setClientTypes(types);
@@ -268,20 +268,8 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
 
   private class ClientTypeLabelProvider extends LabelProvider
   {
-    private IConfigurationElement[] configElements_;
-
     public ClientTypeLabelProvider()
     {
-      IExtensionRegistry reg = Platform.getExtensionRegistry();
-      configElements_ = reg.getConfigurationElementsFor("org.eclipse.jst.ws.consumption.ui", "clientProjectType");
-    }
-
-    private IConfigurationElement getElementByAttribute(String name, String value)
-    {
-      for (int i = 0; i < configElements_.length; i++)
-        if (configElements_[i].getAttribute(name).equals(value))
-          return configElements_[i];
-      return null;
     }
 
     /**
@@ -297,7 +285,9 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
      */
     public String getText(Object value) 
     {
-      return getElementByAttribute("id", value.toString()).getAttribute("label"); 
+      IFacetedProjectTemplate template = ProjectFacetsManager.getTemplate( (String)value );
+      
+      return template.getLabel();
     }
   }
 }

@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.jst.ws.internal.context;
+package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 
 
 public class TransientProjectTopologyContext implements ProjectTopologyContext

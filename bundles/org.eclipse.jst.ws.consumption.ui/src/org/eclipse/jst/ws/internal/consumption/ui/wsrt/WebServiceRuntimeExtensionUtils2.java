@@ -54,6 +54,34 @@ public class WebServiceRuntimeExtensionUtils2
     return null;        
   }
   
+  public static String[] getAllClientProjectTypes()
+  {
+    ArrayList finalTemplateIdList = new ArrayList();
+    Iterator iter = registry.clientRuntimes_.values().iterator();
+
+    //Loop through all the clientRuntimes
+    while (iter.hasNext())   
+    {
+      ClientRuntimeDescriptor desc = (ClientRuntimeDescriptor)iter.next();
+      
+      //Get the templates for this client runtime
+      Set templateIds = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+      
+      //Add the template ids to the list if they have not already been added
+      Iterator itr = templateIds.iterator();
+      while (itr.hasNext())
+      {
+        IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
+        if (!finalTemplateIdList.contains(template.getId()))
+        {
+          finalTemplateIdList.add(template.getId());
+        }
+      }            
+    }
+    
+    return (String[])finalTemplateIdList.toArray(new String[]{});
+  }
+  
   public static String getRuntimeLabelById(String runtimeId) 
   {
     RuntimeDescriptor desc = getRuntimeById(runtimeId);

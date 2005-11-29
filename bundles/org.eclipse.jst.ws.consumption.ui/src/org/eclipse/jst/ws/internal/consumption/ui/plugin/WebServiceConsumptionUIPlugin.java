@@ -15,7 +15,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentProjectTopologyContext;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
+import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 
@@ -40,6 +42,7 @@ public class WebServiceConsumptionUIPlugin extends AbstractUIPlugin
   private static WebServiceConsumptionUIPlugin instance_;
 
   private PersistentServerRuntimeContext serverRuntimeContext_;
+  private PersistentProjectTopologyContext projectTopologyContext_;
   
   /**
   * Constructs a runtime plugin object for this plugin.
@@ -119,6 +122,17 @@ public class WebServiceConsumptionUIPlugin extends AbstractUIPlugin
     {
       return null;
     }
+  }
+
+  public ProjectTopologyContext getProjectTopologyContext()
+  {
+    if (projectTopologyContext_ == null)
+    {
+      projectTopologyContext_ = new PersistentProjectTopologyContext();
+      projectTopologyContext_.load();
+    }
+    
+    return projectTopologyContext_;
   }
 
   public PersistentServerRuntimeContext getServerRuntimeContext() 
