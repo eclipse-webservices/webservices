@@ -12,6 +12,7 @@ package org.eclipse.wst.command.internal.env.ui.eclipse;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wst.command.internal.env.core.EnvironmentCoreMessages;
 import org.eclipse.wst.command.internal.env.ui.dialog.MessageDialog;
@@ -26,17 +27,16 @@ import org.eclipse.wst.common.environment.StatusException;
  */
 public class EclipseStatusHandler implements IStatusHandler
 {
-  private Shell   shell_;
   private IStatus worstStatus = Status.OK_STATUS;
-  
+  private Shell   shell       = null;
+    
   public EclipseStatusHandler()
-  {
-    this( new Shell() );
+  {  
   }
-
-  public EclipseStatusHandler(Shell shell)
+  
+  public EclipseStatusHandler( Shell theShell )
   {
-    shell_ = shell;
+    shell = theShell;  
   }
   
   public IStatus getStatus()
@@ -52,20 +52,30 @@ public class EclipseStatusHandler implements IStatusHandler
   /**
    * @see org.eclipse.env.common.IStatusHandler#report(org.eclipse.env.common.Status, org.eclipse.env.common.Choice[])
    */
-  public Choice report(IStatus status, Choice[] choices) 
+  public Choice report( final IStatus status, final Choice[] choices) 
   {
+    final int[] result = new int[1];
+    
     checkStatus( status );
     
-    int result =
-    MessageDialog.openMessage(
-        shell_,
-        EnvironmentCoreMessages.TITLE_WARNING,
-				null,
-				status,
-				choices);
+    Runnable runnable = new Runnable()
+    {
+      public void run()
+      {
+        result[0] =
+          MessageDialog.openMessage( getShell(),
+                                     EnvironmentCoreMessages.TITLE_WARNING, //TODO: Should be inferred from status' severity.
+				                             null,
+				                             status,
+				                             choices);
+      }
+    };
+    
+    Display.getDefault().syncExec( runnable );
+    
     for (int i = 0; i < choices.length; i++)
      {
-      if (choices[i].getShortcut() == result)
+      if (choices[i].getShortcut() == result[0] )
         return choices[i];
     }
     
@@ -106,24 +116,42 @@ public class EclipseStatusHandler implements IStatusHandler
     if( !userOk ) throw new StatusException( status );
   }
   
-  private boolean reportWarning(IStatus status)
+  private boolean reportWarning( final IStatus status )
   {
-    int userResponse =
-      MessageDialog.openMessage(
-        shell_,
-        EnvironmentCoreMessages.TITLE_WARNING,
-        null,
-        status);
-    return (userResponse == StatusDialogConstants.OK_ID);
+    final int userResponse[] = new int[1];
+    
+    Runnable runnable = new Runnable()
+    {
+      public void run()
+      {
+        userResponse[0] =
+          MessageDialog.openMessage( getShell(),
+                                     EnvironmentCoreMessages.TITLE_WARNING,
+                                     null,
+                                     status);
+      }
+    };
+    
+    Display.getDefault().syncExec( runnable );
+    
+    return (userResponse[0] == StatusDialogConstants.OK_ID);
   }
 
-  private boolean reportErrorStatus(IStatus status)
+  private boolean reportErrorStatus(final IStatus status)
   {
-    MessageDialog.openMessage(
-      shell_,
-      EnvironmentCoreMessages.TITLE_ERROR,
-      null,
-      status);
+    Runnable runnable = new Runnable()
+    {
+      public void run()
+      {
+        MessageDialog.openMessage( getShell(),
+                                   EnvironmentCoreMessages.TITLE_ERROR,
+                                   null,
+                                   status);
+      }
+    };
+    
+    Display.getDefault().syncExec( runnable );
+    
     return false;
   }
   
@@ -147,12 +175,28 @@ public class EclipseStatusHandler implements IStatusHandler
   /**
    * @see org.eclipse.wst.command.internal.env.core.common.IStatusHandler#reportInfo(org.eclipse.wst.command.internal.env.core.common.Status)
    */
-  public void reportInfo(IStatus status)
+  public void reportInfo(final IStatus status)
   {
-    MessageDialog.openMessage(
-        shell_,
-        EnvironmentCoreMessages.TITLE_INFO,
-        null,
-        status);
+    Runnable runnable = new Runnable()
+    {
+      public void run()
+      {
+        MessageDialog.openMessage( getShell(),
+                                   EnvironmentCoreMessages.TITLE_INFO,
+                                   null,
+                                   status);
+      }
+    };
+    
+    Display.getDefault().syncExec( runnable );
+  }
+  
+  private Shell getShell()
+  {
+    if( shell != null ) return shell;
+    
+    Display display = Display.getDefault();
+    
+    return display == null ? null : display.getActiveShell();
   }
 }

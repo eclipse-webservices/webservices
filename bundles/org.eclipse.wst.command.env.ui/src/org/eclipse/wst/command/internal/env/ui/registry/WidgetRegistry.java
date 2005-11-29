@@ -29,13 +29,18 @@ public class WidgetRegistry
   
   public static WidgetRegistry instance()
   {
-    if( registry_ == null )
+	if (registry_ == null)
 	{
-	  registry_ = new WidgetRegistry();
-	  registry_.load();
+		registry_ = new WidgetRegistry();
+		registry_.load();
 	}
-	
+
 	return registry_;
+  }
+  
+  public static void initialize()
+  {
+    registry_ = null;  
   }
   
   /**

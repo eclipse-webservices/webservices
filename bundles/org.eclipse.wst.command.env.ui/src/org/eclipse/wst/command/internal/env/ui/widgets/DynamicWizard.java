@@ -38,6 +38,7 @@ import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.EnvironmentUIMessages;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
+import org.eclipse.wst.command.internal.env.ui.registry.WidgetRegistry;
 import org.osgi.framework.Bundle;
 
 
@@ -378,13 +379,14 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
    */
   private void cleanup()
   {
-	iconBannerName_       = null;;
-	bundle_               = null;;
-	canFinishRegistry_    = null; 
-	pageManager_          = null;
-	wizardTitle_          = null;
-	dataObjectCommand_    = null;
-	startPage_            = null;
-	commandWidgetBinding_ = null;  
+	  iconBannerName_       = null;
+	  bundle_               = null;
+	  canFinishRegistry_    = null; 
+	  pageManager_          = null;
+	  wizardTitle_          = null;
+	  dataObjectCommand_    = null;
+	  startPage_            = null;
+	  commandWidgetBinding_ = null;
+	  WidgetRegistry.initialize();
   }
 }
