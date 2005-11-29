@@ -3,10 +3,12 @@
 
 <plugin>
 
-     <extension-point
+   <!-- The following extension point is internal and likely to change. -->
+   <extension-point
       id="dynamicWizard"
       name="%PLUGIN_XP_DYNAMIC_WIZARD"/>
-   
+
+   <!-- The following extension point is internal and likely to change. -->   
    <extension-point
       id="actionDialogPreferenceType"
       name="%PLUGIN_XP_POPUP_DIALOGS"/>
