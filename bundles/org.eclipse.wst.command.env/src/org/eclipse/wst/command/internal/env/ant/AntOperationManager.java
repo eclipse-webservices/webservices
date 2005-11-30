@@ -33,7 +33,7 @@ public class AntOperationManager extends CommandFragmentEngine
       
       if (initStatus == AntEnvironment.INIT_OPERATION_DATA_FAIL)
       {
-        environment_.getLog().log(ILog.INFO, "ws_ant", 9999, this, "runCommand", "Initializing data for: " + operation.getClass().getName());
+        environment_.getLog().log(ILog.INFO, "ws_ant", 5098, this, "runCommand", "Initializing data for: " + operation.getClass().getName());
       }
     }
 

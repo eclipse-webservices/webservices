@@ -203,7 +203,7 @@ public class AntEnvironment extends EclipseEnvironment{
 						 transform = ce.createExecutableExtension(MAPPER_TRANSFORM_ATTRIBUTE);	 
 					 }
 					 catch (CoreException cex) {
-					   getLog().log(ILog.ERROR, "ws_ant", 9999, this, "getMappingExtensions", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_DATA_TRANSFORM, key, transform));                  
+					   getLog().log(ILog.ERROR, "ws_ant", 5092, this, "getMappingExtensions", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_DATA_TRANSFORM, key, transform));                  
 					 }
 					 
 					 if (transform != null && transform instanceof BeanModifier/*dataTable.containsKey(property)*/)
@@ -271,7 +271,7 @@ public class AntEnvironment extends EclipseEnvironment{
 				}
 				catch (Exception exc)
 				{
-                    getLog().log(ILog.ERROR, "ws_ant", 9999, this, "transformAndSet", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_DATA_TRANSFORM, mapping.key_, mapping.transform_));                    
+                    getLog().log(ILog.ERROR, "ws_ant", 5093, this, "transformAndSet", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_DATA_TRANSFORM, mapping.key_, mapping.transform_));                    
 					return false;
 				}				
 			}
@@ -362,7 +362,7 @@ public class AntEnvironment extends EclipseEnvironment{
 			     			 return true;
 			     		 }
 			     		 catch(Exception cex){
-			     			getLog().log(ILog.ERROR, "ws_ant", 9999, this, "callSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, setterMethodName));
+			     			getLog().log(ILog.ERROR, "ws_ant", 5094, this, "callSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, setterMethodName));
 			     		 }
 			       }  
 				}
@@ -422,7 +422,7 @@ public class AntEnvironment extends EclipseEnvironment{
 					    	return true;	
 				    	}
 				    	catch(Exception e){
-				    		getLog().log(ILog.ERROR, "ws_ant", 9999, this, "callPrimitiveSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, element.getName()));
+				    		getLog().log(ILog.ERROR, "ws_ant", 5095, this, "callPrimitiveSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, element.getName()));
 				    	}
 				    }			
 				}
@@ -448,7 +448,7 @@ public class AntEnvironment extends EclipseEnvironment{
 					}
 					catch (Exception exc)
 					{
-						getLog().log(ILog.ERROR, "ws_ant", 9999, this, "callSetterConstructor", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, element.getName()));
+						getLog().log(ILog.ERROR, "ws_ant", 5096, this, "callSetterConstructor", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, element.getName()));
 						return false;
 					}
 				}
@@ -489,7 +489,7 @@ public class AntEnvironment extends EclipseEnvironment{
 				 }
 				 catch (Exception exception)
 				 {
-					 getLog().log(ILog.ERROR, "ws_ant", 9999, this, "getRootCommandFragment", EnvironmentMessages.MSG_ERR_ANT_CMD_FRAGMENT);					 
+					 getLog().log(ILog.ERROR, "ws_ant", 5097, this, "getRootCommandFragment", EnvironmentMessages.MSG_ERR_ANT_CMD_FRAGMENT);					 
 				 }				 
 			  }    	   
            }
