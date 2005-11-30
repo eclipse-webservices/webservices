@@ -42,7 +42,7 @@
    <topic label="Importing and creating resources used by Web services">
       <link toc="../org.eclipse.wst.wsdl.ui.doc.user/wswsdleditort_toc.xml"/>
    </topic>
-   <topic label="Creating Web services" href="/tasks/toverws.html">
+   <topic label="Creating Web services" href="tasks/toverws.html">
       <topic label="Creating top-down Web services" href="concepts/cwstopdown.html">
          <topic label="Creating a Web service and Java bean skeleton from WSDL" href="../org.eclipse.jst.ws.axis.ui.doc.user/tasks/tsklwsdla.html"/>
       </topic>
