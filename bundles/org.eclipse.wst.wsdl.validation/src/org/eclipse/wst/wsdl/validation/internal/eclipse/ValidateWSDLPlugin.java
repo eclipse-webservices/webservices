@@ -12,7 +12,6 @@
 package org.eclipse.wst.wsdl.validation.internal.eclipse;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -24,8 +23,6 @@ import org.eclipse.wst.wsdl.validation.internal.Constants;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog;
-import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalogEntityHolder;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -56,8 +53,6 @@ public class ValidateWSDLPlugin extends Plugin
     wsdlValidatorResourceBundle = ResourceBundle.getBundle(Constants.WSDL_VALIDATOR_PROPERTIES_FILE);
     resourcebundle = ResourceBundle.getBundle(PROPERTIES_FILE);
 
-    // Configure the XML catalog.
-    new ExtXMLCatalogPluginRegistryReader().readRegistry();
     new WSDLValidatorPluginRegistryReader(
       "extvalidator",
       "extvalidator",
@@ -366,146 +361,6 @@ class WSDL11ValidatorPluginRegistryReader
   }
 }
 
-/**
- * This class reads the plugin manifests and registers each WSDLExtensionValidator
- */
-class ExtXMLCatalogPluginRegistryReader
-{
-  protected static final String PLUGIN_ID = "org.eclipse.wst.wsdl.validation";
-  protected static final String EXTENSION_POINT_ID = "xmlcatalog";
-  
-  /**
-   * The xmlcatalog element allow adding an extension XML Catalog such as
-   * <xmlcatalog class="org.eclipse.wsdl.validate.ExtXMLCatalog">
-   */
-  protected static final String EXT_CATALOG_TAG_NAME = "xmlcatalog";
-  protected static final String ATT_CLASS = "class";
-  
-  /**
-   * The entity element allows adding specific XML catalog entities such as
-   * <entity
-   *   publicid="http://schemas.xmlsoap.org/wsdl/" 
-   *   systemid="xsd/wsdl.xsd" />
-   */
-  protected static final String ENTITY_TAG_NAME = "entity";
-  protected static final String ATT_PUBLIC_ID = "publicId";
-  protected static final String ATT_SYSTEM_ID = "location";
-  
-  /**
-   * The schemadir element allows adding a director of schemas to the XML catalog such as
-   * <schemadir location="c:\myschemadir" />
-   * Note: It is more expensive to use this method then the entity method
-   * of adding schemas to the catalog as this method requires that all of
-   * the schemas be read.
-   */
-  protected static final String SCHEMA_DIR_TAG_NAME = "schemadir";
-  protected static final String ATT_LOCATION = "location";
-  protected String pluginId, extensionPointId;
-
-  /**
-   * read from plugin registry and parse it.
-   */
-  public void readRegistry()
-  {
-    IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
-    IExtensionPoint point = extensionRegistry.getExtensionPoint(PLUGIN_ID, EXTENSION_POINT_ID);
-    if (point != null)
-    {
-      IConfigurationElement[] elements = point.getConfigurationElements();
-      for (int i = 0; i < elements.length; i++)
-      {
-        readElement(elements[i]);
-      }
-    }
-  }
-
-  /**
-   * readElement() - parse and deal with an extension like:
-   *
-   * <extension point="com.ibm.etools.validate.wsdl.WSDLExtensionValidator"
-   *            id="soapValidator"
-   *            name="SOAP Validator">>
-   *   <validator>
-   *        <run class=" com.ibm.etools.validate.wsdl.soap.SOAPValidator"/>
-   *   </validator>
-   *   <attribute name="namespace" value="http://schemas.xmlsoap.org/wsdl/soap/"/>
-   * </extension>
-   */
-  protected void readElement(IConfigurationElement element)
-  {
-    String elementname = element.getName();
-    // Extension XML Catalogs.
-    if (elementname.equals(EXT_CATALOG_TAG_NAME))
-    {
-      String xmlCatalogClass = element.getAttribute(ATT_CLASS);
-
-      if (xmlCatalogClass != null)
-      {
-        try
-        {
-          // modified to resolve certain situations where the plugin has not been initialized
-          ClassLoader pluginLoader =
-            element.getDeclaringExtension().getDeclaringPluginDescriptor().getPluginClassLoader();
-          //					ClassLoader pluginLoader =
-          //						element.getDeclaringExtension().getDeclaringPluginDescriptor().getPlugin().getClass().getClassLoader();
-          XMLCatalog.setExtensionXMLCatalog(xmlCatalogClass, pluginLoader);
-        }
-        catch (Exception e)
-        {
-          System.out.println(e);
-        }
-      }
-    }
-    // XML Catalog entites.
-    else if(elementname.equals(ENTITY_TAG_NAME))
-    {
-      String publicid = element.getAttribute(ATT_PUBLIC_ID);
-      String systemid = element.getAttribute(ATT_SYSTEM_ID);
-      if(publicid == null || systemid == null)
-      {
-        return;
-      }
-      Bundle bundle = Platform.getBundle(element.getDeclaringExtension().getNamespace());
-      systemid = getAbsoluteLocation(systemid, bundle);
-      
-      XMLCatalog.addEntity(new XMLCatalogEntityHolder(publicid, systemid));
-    }
-    // Schema directories for the XML Catalog.
-    else if(elementname.equals(SCHEMA_DIR_TAG_NAME))
-    {
-      String location = element.getAttribute(ATT_LOCATION);
-      if(location != null)
-      {
-        Bundle bundle = Platform.getBundle(element.getDeclaringExtension().getNamespace());
-        location = getAbsoluteLocation(location, bundle);
-        XMLCatalog.addSchemaDir(location);
-      }
-    }
-  }
-
-  private String getAbsoluteLocation(String location, Bundle bundle)
-  {
-    URL url = null;
-    if(bundle != null)
-    {
-      url = bundle.getEntry(location);
-    }
-    
-    if(url != null)
-    {
-      try
-      {
-        url = Platform.resolve(url);
-        return url.toExternalForm();
-      }
-      catch(IOException e)
-      {
-        //Unable to register the schema.
-      }
-    }
-    return location;
-  }
-}
 
 
 
