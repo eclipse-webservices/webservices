@@ -28,10 +28,12 @@ import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapter;
 import org.eclipse.wst.wsdl.ui.internal.model.ModelAdapterListener;
 import org.eclipse.wst.wsdl.ui.internal.model.WSDLModelAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
+import org.eclipse.wst.xsd.ui.internal.graph.model.XSDModelAdapterFactory;
+import org.eclipse.xsd.XSDComponent;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public class WSDLTabbedPropertySheetPage extends TabbedPropertySheetPage implements ISelectionChangedListener, INodeSelectionListener, ModelAdapterListener
+public class WSDLTabbedPropertySheetPage extends TabbedPropertySheetPage implements ISelectionChangedListener, INodeSelectionListener, ModelAdapterListener, org.eclipse.wst.xsd.ui.internal.graph.model.ModelAdapterListener 
 {
   private WSDLSelectionManager fViewerSelectionManager;
   private WSDLEditor wsdlEditor;
@@ -125,6 +127,17 @@ public class WSDLTabbedPropertySheetPage extends TabbedPropertySheetPage impleme
     	adapter.addListener(this);
     	currentObject = object;
     }
+    else if (object instanceof XSDComponent && XSDModelAdapterFactory.getAdapter(object) != null) {
+    	// Maybe it's an XSD Object
+    	if (currentObject != null) {
+    		org.eclipse.wst.xsd.ui.internal.graph.model.ModelAdapter xsdAdapter = (org.eclipse.wst.xsd.ui.internal.graph.model.ModelAdapter)XSDModelAdapterFactory.getAdapter(currentObject);
+    	  if (xsdAdapter != null)
+    		xsdAdapter.removeListener(this);
+    	}
+   	
+    	XSDModelAdapterFactory.getAdapter(object).addListener(this);
+    	currentObject = object;
+    }
   } 
   
   protected void removeListener(Object object)
@@ -135,6 +148,11 @@ public class WSDLTabbedPropertySheetPage extends TabbedPropertySheetPage impleme
     {
       adapter.removeListener(this);
       currentObject = null;
+    }
+    else if (object instanceof XSDComponent && XSDModelAdapterFactory.getAdapter(object) != null) {
+    	// Maybe it's an XSD Object
+    	XSDModelAdapterFactory.getAdapter(object).removeListener(this);
+    	currentObject = null;
     }
   }
 	public void dispose() {
@@ -147,7 +165,7 @@ public class WSDLTabbedPropertySheetPage extends TabbedPropertySheetPage impleme
 		if (currentObject != null) {
 			removeListener(currentObject);
 		}
-		
+
 		super.dispose();
 	}
 

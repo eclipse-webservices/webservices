@@ -108,6 +108,14 @@ public class ExtensibleOutlineProvider implements ITreeContentProvider, ILabelPr
 	public void dispose() {
 		// TODO... call dispose dispose the created label and content
 		// providers
+		
+		for (int i = 0; i < treeContentProviders.length; i++) {
+			treeContentProviders[i].dispose();
+		}
+
+		for (int i = 0; i < labelProviderExtensions.length; i++) {
+			labelProviders[i].dispose();
+		}		
 	}
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {

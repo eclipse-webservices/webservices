@@ -351,7 +351,7 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 			return fPropertySheetPage;
 		}
 		else if (IContentOutlinePage.class.equals(key)) {
-			if (fContentOutlinePage == null) {
+			if (fContentOutlinePage == null || fContentOutlinePage.getControl() == null || fContentOutlinePage.getControl().isDisposed()) {
 				fContentOutlinePage = (IContentOutlinePage) super.getAdapter(key);
 				if (fContentOutlinePage != null) {
 					fOutlineTreeListener = new OutlineTreeSelectionChangeListener();
