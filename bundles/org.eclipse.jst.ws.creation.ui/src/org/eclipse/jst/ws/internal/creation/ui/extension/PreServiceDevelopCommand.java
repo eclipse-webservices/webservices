@@ -53,6 +53,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
   private String            j2eeLevel_;
   private ResourceContext   resourceContext_;
   
+  private boolean install_;
   private boolean run_;
   private boolean client_;
   private boolean test_;
@@ -106,7 +107,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
       wsInfo.setWsdlURL(wsdlURL);      
 		}
 	
-		context_     = new SimpleContext(true, true, true, true, run_, client_, test_, publish_, 
+		context_     = new SimpleContext(true, true, true, install_, run_, client_, test_, publish_, 
 																		scenario, 
 																		resourceContext_.isOverwriteFilesEnabled(),
 																		resourceContext_.isCreateFoldersEnabled(),
@@ -240,6 +241,11 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
   {
 	  ear_ = ear;  
   }
+  
+  public void setInstallService(boolean installService)
+	{
+		install_ = installService;
+	}
   
 	public void setStartService(boolean startService)
 	{

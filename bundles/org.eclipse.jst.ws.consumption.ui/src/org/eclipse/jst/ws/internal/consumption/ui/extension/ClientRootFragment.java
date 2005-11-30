@@ -98,11 +98,13 @@ public class ClientRootFragment extends SequenceFragment
     
     registry.addMapping( PreClientDevelopCommand.class, "WebService", PreClientInstallCommand.class );
     registry.addMapping( PreClientDevelopCommand.class, "Project", PreClientInstallCommand.class );
+    registry.addMapping( PreClientDevelopCommand.class, "Context", PreClientInstallCommand.class );
     registry.addMapping( PreClientDevelopCommand.class, "Module", PreClientInstallCommand.class );
     registry.addMapping( PreClientDevelopCommand.class, "EarProject", PreClientInstallCommand.class );
     registry.addMapping( PreClientDevelopCommand.class, "Ear", PreClientInstallCommand.class );   
 
     registry.addMapping( PreClientDevelopCommand.class, "WebService", PreClientRunCommand.class );    
+    registry.addMapping( PreClientDevelopCommand.class, "Context", PreClientRunCommand.class );
 	
   }
 }

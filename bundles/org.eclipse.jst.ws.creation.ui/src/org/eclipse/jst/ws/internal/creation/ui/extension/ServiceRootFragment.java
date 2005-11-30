@@ -103,9 +103,11 @@ public class ServiceRootFragment extends SequenceFragment
 		registry.addMapping( PreServiceDevelopCommand.class, "Project", PreServiceInstallCommand.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Module", PreServiceInstallCommand.class );
 		registry.addMapping( PreServiceDevelopCommand.class, "EarProject", PreServiceInstallCommand.class );
-  	registry.addMapping( PreServiceDevelopCommand.class, "Ear", PreServiceInstallCommand.class );		
+  	registry.addMapping( PreServiceDevelopCommand.class, "Ear", PreServiceInstallCommand.class );
+  	registry.addMapping( PreServiceDevelopCommand.class, "Context", PreServiceInstallCommand.class );
 
   	registry.addMapping( PreServiceDevelopCommand.class, "WebService", PreServiceRunCommand.class );
+  	registry.addMapping( PreServiceDevelopCommand.class, "Context", PreServiceRunCommand.class );
 	
   }
 }

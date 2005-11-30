@@ -19,6 +19,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerC
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateServerCommand;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
 
 public class PreClientInstallCommand extends AbstractDataModelOperation 
@@ -28,54 +29,57 @@ public class PreClientInstallCommand extends AbstractDataModelOperation
   private String            module_;
   private String            earProject_;
   private String            ear_;
+  private IContext			context_;
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
-  {
-      IEnvironment environment = getEnvironment();
-      
-      if (webServiceClient_.getWebServiceClientInfo().getServerInstanceId()==null)
-      {
-        CreateServerCommand createServerCommand = new CreateServerCommand();
-        createServerCommand.setServerFactoryid(webServiceClient_.getWebServiceClientInfo().getServerFactoryId());
-        createServerCommand.setEnvironment( environment );
-        IStatus createServerStatus = createServerCommand.execute(null, null);
-        if (createServerStatus.getSeverity()==Status.OK)
-        {
-          webServiceClient_.getWebServiceClientInfo().setServerInstanceId(createServerCommand.getServerInstanceId());
-        }
-        else
-        {
-          if (createServerStatus.getSeverity()==Status.ERROR)
-          {
-            environment.getStatusHandler().reportError( createServerStatus );
-          }               
-          return createServerStatus;
-        }
-      }
-        
-      
-      
-      AddModuleToServerCommand command = new AddModuleToServerCommand();
-      command.setServerInstanceId(webServiceClient_.getWebServiceClientInfo().getServerInstanceId());
-      if (earProject_ != null && earProject_.length()>0 && ear_!= null && ear_.length()>0)
-      {
-        command.setProject(earProject_);
-        command.setModule(ear_);
-      }
-      else
-      {
-        command.setProject(project_);
-        command.setModule(module_);       
-      }
-
-      command.setEnvironment( environment );
-      IStatus status = command.execute( null, null );
-      if (status.getSeverity()==Status.ERROR)
-      {
-        environment.getStatusHandler().reportError( status );
-      }     
-      return status;
-	  }
+  {	  
+	  if (context_.getInstall())
+	  {  
+	      IEnvironment environment = getEnvironment();
+	      
+	      if (webServiceClient_.getWebServiceClientInfo().getServerInstanceId()==null)
+	      {
+	        CreateServerCommand createServerCommand = new CreateServerCommand();
+	        createServerCommand.setServerFactoryid(webServiceClient_.getWebServiceClientInfo().getServerFactoryId());
+	        createServerCommand.setEnvironment( environment );
+	        IStatus createServerStatus = createServerCommand.execute(null, null);
+	        if (createServerStatus.getSeverity()==Status.OK)
+	        {
+	          webServiceClient_.getWebServiceClientInfo().setServerInstanceId(createServerCommand.getServerInstanceId());
+	        }
+	        else
+	        {
+	          if (createServerStatus.getSeverity()==Status.ERROR)
+	          {
+	            environment.getStatusHandler().reportError( createServerStatus );
+	          }               
+	          return createServerStatus;
+	        }
+	      }
+	      
+	      AddModuleToServerCommand command = new AddModuleToServerCommand();
+	      command.setServerInstanceId(webServiceClient_.getWebServiceClientInfo().getServerInstanceId());
+	      if (earProject_ != null && earProject_.length()>0 && ear_!= null && ear_.length()>0)
+	      {
+	        command.setProject(earProject_);
+	        command.setModule(ear_);
+	      }
+	      else
+	      {
+	        command.setProject(project_);
+	        command.setModule(module_);       
+	      }
+	
+	      command.setEnvironment( environment );
+	      IStatus status = command.execute( null, null );
+	      if (status.getSeverity()==Status.ERROR)
+	      {
+	        environment.getStatusHandler().reportError( status );
+	      }     
+	      return status;
+	   }
+	   return Status.OK_STATUS;
+	}
 
     public void setProject( String project )
     {
@@ -101,4 +105,9 @@ public class PreClientInstallCommand extends AbstractDataModelOperation
     {
       webServiceClient_ = webServiceClient;  
     }    
+    
+    public void setContext(IContext context)
+    {
+    	context_ = context;
+    }
 }

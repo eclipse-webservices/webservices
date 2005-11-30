@@ -18,29 +18,43 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.ui.command.StartServerCommand;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
 
 public class PreClientRunCommand extends AbstractDataModelOperation 
 {
   private IWebServiceClient webServiceClient_;
+  private IContext context_;
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    IEnvironment environment = getEnvironment();   
-    
-    StartServerCommand command = new StartServerCommand();
-    command.setServerInstanceId(webServiceClient_.getWebServiceClientInfo().getServerInstanceId());
-    command.setEnvironment( environment );
-    IStatus status = command.execute( monitor, null );
-    if (status.getSeverity()==Status.ERROR)
-    {
-      environment.getStatusHandler().reportError( status );       
-    }     
-    return status;    
+	  IStatus status = Status.OK_STATUS;
+	 
+	  if (context_.getRun())
+	  {
+	    IEnvironment environment = getEnvironment();   
+	    
+	    StartServerCommand command = new StartServerCommand();
+	    command.setServerInstanceId(webServiceClient_.getWebServiceClientInfo().getServerInstanceId());
+	    command.setEnvironment( environment );
+	    status = command.execute( monitor, null );
+	    if (status.getSeverity()==Status.ERROR)
+	    {
+	      environment.getStatusHandler().reportError( status );       
+	    } 
+	  }
+	  
+    return status;	  
   }
+	  
 
   public void setWebService( IWebServiceClient webServiceClient )
   {
     webServiceClient_ = webServiceClient;  
+  }
+  
+  public void setContext(IContext context)
+  {
+	  context_=context;
   }
 }

@@ -15,9 +15,13 @@ import java.util.Vector;
 
 import org.eclipse.wst.command.internal.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.env.core.SimpleCommandFactory;
+import org.eclipse.wst.ws.internal.wsrt.IContext;
 
 public class RunServiceFragment extends AbstractServiceFragment 
 {
+	
+	private IContext context_;
+	
   public RunServiceFragment()
   {
   }
@@ -36,7 +40,7 @@ public class RunServiceFragment extends AbstractServiceFragment
   {
 	ICommandFactory factory = null;
 	
-	if( webService_ == null )
+	if( webService_ == null || !context_.getRun())
 	{
 	  factory = new SimpleCommandFactory( new Vector() );
 	}
@@ -46,5 +50,10 @@ public class RunServiceFragment extends AbstractServiceFragment
 	}
 	
 	return factory;
+  }
+  
+  public void setContext(IContext context)
+  {
+	  context_=context;	  
   }
 }

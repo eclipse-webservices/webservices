@@ -81,8 +81,6 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
         .getClientRuntime(clientRuntimeId_);
     WebServiceClientInfo wsInfo = new WebServiceClientInfo();
 
-    System.out.println("In Pre client develop command.");
-
     wsInfo.setServerFactoryId(typeRuntimeServer_.getServerId());
     wsInfo.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
     wsInfo.setState(WebServiceState.UNKNOWN_LITERAL);
