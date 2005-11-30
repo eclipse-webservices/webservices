@@ -71,10 +71,25 @@ public final class FileResourceUtils
     return root_;
   }
 
+  /**
+   * If the input path begins with the workspace root, the IPath that's relative to workspace root is returned.
+   * If the input path does not contain workspace root, the original path is returned.
+   * @param path input path to convert
+   * @return The workspace relative path.
+   */
+   public static IPath getWorkspaceRootRelativePath(IPath path) {
+		IPath rootPath = getWorkspaceRoot().getLocation();
+		if (path.matchingFirstSegments(rootPath) == rootPath.segmentCount()) {
+			path = path.removeFirstSegments(rootPath.segmentCount());
+		}
+		return path;
+	}
+   
  /**
-  * Returns the IWorkspace object.
-  * @return The IWorkspace object.
-  */
+	 * Returns the IWorkspace object.
+	 * 
+	 * @return The IWorkspace object.
+	 */
   public static IWorkspace getWorkspace ()
   {
     if (workspace_ == null)
