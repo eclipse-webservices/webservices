@@ -91,19 +91,23 @@ public interface WSDLElement extends EObject{
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * Returns the Definition that contains this WSDL element.
+   * @return the Definition that contains this WSDL element.
+   * <!-- end-user-doc -->
    * @model parameters=""
    * @generated
    */
-	Definition getEnclosingDefinition();
+  Definition getEnclosingDefinition();
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * Sets the enclosing definition of this WSDL element.
+   * @param definition the Definition that contains this WSDL element.
+   * <!-- end-user-doc -->
    * @model 
    * @generated
    */
-	void setEnclosingDefinition(Definition definition);
+  void setEnclosingDefinition(Definition definition);
 
   /**
    * Ensures that the underlying DOM {@link #getElement element} both exists and is up-to-date with respect to the model,
@@ -138,6 +142,7 @@ public interface WSDLElement extends EObject{
    * the element should typically be the same as the one returned {@link #getElement}.
    * It is expected that clients will not call this themselves 
    * since the DOM event listeners attached to the underlying DOM will invoke these automatically.
+   * @param changedElement the DOM element changed for this instance.
    */
   void elementChanged(Element changedElement);
 
