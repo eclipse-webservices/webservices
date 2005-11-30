@@ -14,4 +14,14 @@ public class AntDefaultingFragment extends SequenceFragment{
 	{
 		return true;
 	}
+	
+	public boolean getStartService()
+	{
+		return false;	
+	}
+	
+	public boolean getInstallService()
+	{
+		return false;
+	}
 }

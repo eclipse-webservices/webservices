@@ -67,6 +67,8 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
       serverWidget_.setClientTypeRuntimeServer( clientIds );
       serverWidget_.setGenerateProxy( new Boolean(context.getGenerateProxy()) );
       serverWidget_.setPublishService( new Boolean(context.getLaunchWebServiceExplorer()) );
+      serverWidget_.setInstallService( new Boolean(context.getInstallWebService()) );
+      serverWidget_.setInstallClient( new Boolean(context.getInstallClient()) );
       serverWidget_.setStartService( new Boolean(context.getStartWebService()) );
       serverWidget_.setTestService( new Boolean(context.getTestWebService()) );
       serverWidget_.setMonitorService(new Boolean(context.getMonitorWebService()));
@@ -97,6 +99,8 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
       serverWidget_.setClientTypeRuntimeServer( clientIds );
       serverWidget_.setGenerateProxy( new Boolean(context.getGenerateProxyDefault()) );
       serverWidget_.setPublishService( new Boolean(context.getLaunchWebServiceExplorerDefault()) );
+      serverWidget_.setInstallService( new Boolean(context.getInstallWebServiceDefault()) );
+      serverWidget_.setInstallClient( new Boolean(context.getInstallClientDefault()) );
       serverWidget_.setStartService( new Boolean(context.getStartWebServiceDefault()) );
       serverWidget_.setTestService( new Boolean(context.getTestWebServiceDefault()) );
       serverWidget_.setMonitorService(new Boolean(context.getMonitorWebServiceDefault()));
@@ -124,6 +128,8 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
       context.setClientWebServiceType( clientIds.getTypeId() );
       context.setGenerateProxy( serverWidget_.getGenerateProxy().booleanValue() );
       context.setLaunchWebServiceExplorer( serverWidget_.getPublishService().booleanValue() );
+      context.setInstallWebService( serverWidget_.getInstallService().booleanValue() );
+      context.setInstallClient( serverWidget_.getInstallClient().booleanValue() );
       context.setStartWebService( serverWidget_.getStartService().booleanValue() );
       context.setTestWebService( serverWidget_.getTestService().booleanValue() );
       context.setMonitorWebService(serverWidget_.getMonitorService().booleanValue());

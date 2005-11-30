@@ -65,6 +65,16 @@ public class ScenarioDefaults
     return true;
   }
   
+  public boolean installWebserviceDefault()
+  {
+    return true;
+  }
+  
+  public boolean installClientDefault()
+  {
+    return false;
+  }
+  
   public boolean launchWebserviceExplorerDefault()
   {
     return false;

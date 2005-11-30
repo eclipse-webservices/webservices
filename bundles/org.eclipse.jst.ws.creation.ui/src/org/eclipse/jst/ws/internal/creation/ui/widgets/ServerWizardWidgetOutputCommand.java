@@ -18,6 +18,7 @@ import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCommand
 {    
   private TypeRuntimeServer typeRuntimeServer_;
+  private boolean           installService_;
   private boolean           startService_;
   private boolean           testService_;
   private boolean           publishService_;
@@ -28,6 +29,11 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
   public TypeRuntimeServer getServiceTypeRuntimeServer()
   { 
     return typeRuntimeServer_;
+  }
+
+  public boolean getInstallService()
+  {
+    return installService_;  
   }
 
   public boolean getStartService()
@@ -68,6 +74,13 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
   public void setPublishService(boolean publishService_)
   {
     this.publishService_ = publishService_;
+  }
+  /**
+   * @param installService_ The installService_ to set.
+   */
+  public void setInstallService(boolean installService_)
+  {
+    this.installService_ = installService_;
   }
   /**
    * @param startService_ The startService_ to set.

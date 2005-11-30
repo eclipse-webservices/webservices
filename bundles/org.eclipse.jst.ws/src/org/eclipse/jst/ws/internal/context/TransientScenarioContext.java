@@ -16,6 +16,8 @@ public class TransientScenarioContext implements ScenarioContext
   private String[] webServiceTestTypes;
   private String[] nonJavaTestService;
   private String   webServiceType_;
+  private boolean  installWebService_;
+  private boolean  installClient_;
   private boolean  startWebService_;
   private boolean  launchWebServiceExplorer_;
   private boolean  generateProxy_;
@@ -57,6 +59,8 @@ public class TransientScenarioContext implements ScenarioContext
 	context.setClientWebServiceType( getClientWebServiceType() );
 	context.setGenerateProxy( getGenerateProxy() );
 	context.setLaunchWebServiceExplorer( getLaunchWebServiceExplorer() );
+	context.setInstallWebService( getInstallWebService() );
+	context.setInstallClient( getInstallClient() );
 	context.setStartWebService( getStartWebService() );
 	context.setTestWebService( getTestWebService() );
 	context.setMonitorWebService(getMonitorWebService());
@@ -93,6 +97,28 @@ public class TransientScenarioContext implements ScenarioContext
   }
   
   public boolean getLaunchWebServiceExplorerDefault(){ return defaults.launchWebserviceExplorerDefault(); }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.jst.ws.internal.context.ScenarioContext#getInstallWebService()
+   */
+  public boolean getInstallWebService()
+  {
+    return installWebService_;
+  }
+  
+  public boolean getInstallWebServiceDefault(){ return defaults.installWebserviceDefault(); }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.jst.ws.internal.context.ScenarioContext#getInstallWebService()
+   */
+  public boolean getInstallClient()
+  {
+    return installClient_;
+  }
+  
+  public boolean getInstallClientDefault(){ return defaults.installClientDefault(); }
+  
+  
   
   /* (non-Javadoc)
    * @see org.eclipse.jst.ws.internal.context.ScenarioContext#getStartWebService()
@@ -146,6 +172,22 @@ public class TransientScenarioContext implements ScenarioContext
   public void setLaunchWebServiceExplorer(boolean value)
   {
     launchWebServiceExplorer_ = value;
+  }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.jst.ws.internal.context.ScenarioContext#setInstallWebService(boolean)
+   */
+  public void setInstallWebService(boolean value)
+  {
+    installWebService_ = value;
+  }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.jst.ws.internal.context.ScenarioContext#setInstallWebService(boolean)
+   */
+  public void setInstallClient(boolean value)
+  {
+    installClient_ = value;
   }
   
   /* (non-Javadoc)

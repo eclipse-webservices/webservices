@@ -54,6 +54,7 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
   private String            j2eeLevel_;
   private ResourceContext   resourceContext_;
   private boolean						test_;
+  private boolean						install_;
   private String            wsdlURI_;
   private Object            dataObject_;
 
@@ -89,7 +90,7 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
     
     webServiceClient_ = wsrt.getWebServiceClient(wsInfo);
     WebServiceScenario scenario = WebServiceScenario.CLIENT_LITERAL;
-    context_ = new SimpleContext(true, true, true, true, true, true, test_,
+    context_ = new SimpleContext(true, true, true, install_, true, true, test_,
         false, scenario, resourceContext_.isOverwriteFilesEnabled(),
         resourceContext_.isCreateFoldersEnabled(), resourceContext_
             .isCheckoutFilesEnabled());
@@ -229,6 +230,11 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
 	ear_ = ear;  
   }
 	
+  public void setInstallClient(boolean installClient)
+  {
+	install_ = installClient;
+  }	
+  
   public void setTestService(boolean testService)
   {
 	test_ = testService;

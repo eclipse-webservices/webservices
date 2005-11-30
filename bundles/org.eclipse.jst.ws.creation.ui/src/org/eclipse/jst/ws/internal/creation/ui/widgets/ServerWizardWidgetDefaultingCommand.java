@@ -58,6 +58,11 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
     return typeRuntimeServer_;
   }
 
+  public Boolean getInstallService()
+  {
+    return new Boolean( getScenarioContext().getInstallWebService() );  
+  }
+  
   public Boolean getStartService()
   {
     return new Boolean( getScenarioContext().getStartWebService() );  

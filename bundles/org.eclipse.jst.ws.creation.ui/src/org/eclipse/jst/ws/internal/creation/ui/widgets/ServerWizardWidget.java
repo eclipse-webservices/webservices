@@ -59,6 +59,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
   private String INFOPOP_PWPR_GROUP_SCENARIO_SERVICE = "PWPR0011";
   private Button startService_;
   
+  private Button installService_;
+  
   /*CONTEXT_ID PWPR0009 for the Start Web Project check box check box of the Project Page*/
   private String INFOPOP_PWPR_CHECKBOX_START_WEB_PROJECT = "PWPR0009";
   
@@ -108,6 +110,19 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
     GridData  buttonGrid   = new GridData();
     buttonGrid.horizontalSpan = 2;
     buttonsGroup.setLayoutData( buttonGrid );
+    
+    // Create install service check box.
+    // TODO: add correct infopop here
+    installService_ = utils.createCheckbox( buttonsGroup, ConsumptionUIMessages.BUTTON_INSTALL_SERVICE_WEB_PROJECT,
+    		ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_INSTALL_SERVICE_WEB_PROJECT,
+                                          INFOPOP_PWPR_CHECKBOX_START_WEB_PROJECT );
+    installService_ .addSelectionListener( new SelectionAdapter()
+                                        {
+                                          public void widgetSelected( SelectionEvent evt )
+                                          {
+                                        	  handleInstallPressed();
+                                          }
+                                        });
     
     // Create start service check box.
     startService_ = utils.createCheckbox( buttonsGroup, ConsumptionUIMessages.BUTTON_START_WEB_PROJECT,
@@ -164,6 +179,18 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
     return this;
   }
 
+  private void handleInstallPressed()
+  {
+    boolean enabled = installService_.getSelection();
+    
+    startService_.setEnabled(enabled);
+    testService_.setEnabled( enabled );
+    monitorService.setEnabled(enabled);
+    launchUddi_.setEnabled( enabled );
+    generateProxy_.setEnabled( enabled );
+    clientWidget_.enableWidget( getGenerateProxy().booleanValue() );
+  }
+  
   private void handleStartPressed()
   {
     boolean enabled = startService_.getSelection();
@@ -183,6 +210,16 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
   public TypeRuntimeServer getClientTypeRuntimeServer()
   {
     return clientWidget_.getTypeRuntimeServer();  
+  }
+  
+  public void setInstallClient( Boolean install)
+  {
+    clientWidget_.setInstallClient( install );
+  }
+  
+  public Boolean getInstallClient()
+  {
+    return clientWidget_.getInstallClient();  
   }
   
   public void setServiceTypeRuntimeServer( TypeRuntimeServer ids )
@@ -223,7 +260,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
   
   public Boolean getStartService()
   {
-    return new Boolean( startService_.getSelection() );  
+    return new Boolean( startService_.getSelection() && installService_.getSelection());  
   }
   
   public void setStartService( Boolean value )
@@ -231,6 +268,16 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
     startService_.setSelection( value.booleanValue() );
   }
 
+  public Boolean getInstallService()
+  {
+    return new Boolean( installService_.getSelection() );  
+  }
+  
+  public void setInstallService( Boolean value )
+  {
+    installService_.setSelection( value.booleanValue() );
+  }
+  
   public Boolean getTestService()
   {
     return new Boolean( testService_.getSelection() && startService_.getSelection() );
@@ -283,6 +330,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
 
   public void internalize()
   {
+	handleInstallPressed();  
     handleStartPressed();  
   }
   

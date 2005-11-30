@@ -46,6 +46,8 @@ public class PersistentScenarioContext extends PersistentContext implements Scen
     setDefaultStringIfNoDefault(PREFERENCE_WEBSERVICE_TYPE, defaults.webserviceTypeIdDefault() );
     setDefaultBooleanIfNoDefault(PREFERENCE_GENERATE_PROXY, defaults.generateProxyDefault() );
     setDefaultBooleanIfNoDefault(PREFERENCE_LAUNCH_WEBSERVICE_EXPLORER, defaults.launchWebserviceExplorerDefault() );
+    setDefaultBooleanIfNoDefault(PREFERENCE_INSTALL_WEBSERVICE, defaults.installWebserviceDefault() );
+    setDefaultBooleanIfNoDefault(PREFERENCE_INSTALL_CLIENT, defaults.installClientDefault() );
     setDefaultBooleanIfNoDefault(PREFERENCE_START_WEBSERVICE, defaults.startWebserviceDefault() );
     setDefaultBooleanIfNoDefault(PREFERENCE_TEST_WEBSERVICE, defaults.testWebserviceDefault() );
     setDefaultBooleanIfNoDefault(PREFERENCE_MONITOR_WEBSERVICE, defaults.getMonitorWebServiceDefault());
@@ -167,6 +169,32 @@ public class PersistentScenarioContext extends PersistentContext implements Scen
   }
   
   /* (non-Javadoc)
+   * @see org.eclipse.jst.ws.internal.context.ScenarioContext#getInstallWebService()
+   */
+  public boolean getInstallWebService()
+  {
+    return getValueAsBoolean(PREFERENCE_INSTALL_WEBSERVICE);
+  }
+  
+  public boolean getInstallWebServiceDefault()
+  {
+    return getDefaultBoolean(PREFERENCE_INSTALL_WEBSERVICE);
+  }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.jst.ws.internal.context.ScenarioContext#getInstallWebService()
+   */
+  public boolean getInstallClient()
+  {
+    return getValueAsBoolean(PREFERENCE_INSTALL_CLIENT);
+  }
+  
+  public boolean getInstallClientDefault()
+  {
+    return getDefaultBoolean(PREFERENCE_INSTALL_CLIENT);
+  }
+  
+  /* (non-Javadoc)
    * @see org.eclipse.jst.ws.internal.context.ScenarioContext#getTestWebService()
    */
   public boolean getTestWebService()
@@ -214,6 +242,22 @@ public class PersistentScenarioContext extends PersistentContext implements Scen
   public void setLaunchWebServiceExplorer(boolean value)
   {
     setValue( PREFERENCE_LAUNCH_WEBSERVICE_EXPLORER, value);
+  }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.jst.ws.internal.context.ScenarioContext#setInstallWebService(boolean)
+   */
+  public void setInstallWebService(boolean value)
+  {
+    setValue( PREFERENCE_INSTALL_WEBSERVICE, value);
+  }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.jst.ws.internal.context.ScenarioContext#setInstallWebService(boolean)
+   */
+  public void setInstallClient(boolean value)
+  {
+    setValue( PREFERENCE_INSTALL_CLIENT, value);
   }
   
   /* (non-Javadoc)

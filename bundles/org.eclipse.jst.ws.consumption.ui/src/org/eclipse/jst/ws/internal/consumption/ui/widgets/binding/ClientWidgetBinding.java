@@ -85,12 +85,14 @@ public class ClientWidgetBinding implements CommandWidgetBinding
   {    
     // Before ClientWizardWidget
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientWizardWidget.class);
+    dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "InstallClient", ClientWizardWidget.class );
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "TestService", ClientWizardWidget.class );
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "MonitorService", ClientWizardWidget.class);
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ResourceContext", ClientWizardWidget.class );
     
     // After ClientWizardWidget
     dataRegistry.addMapping(ClientWizardWidget.class, "ClientTypeRuntimeServer", ClientWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "InstallClient", ClientWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "TestService", ClientWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "MonitorService", ClientWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "ResourceContext", ClientWizardWidgetOutputCommand.class);
@@ -253,6 +255,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       
       // Map ClientWizardWidgetDefaultingCommand command.
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "InstallClient", ClientWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "TestService", ClientWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "MonitorService", ClientWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ResourceContext", ClientWizardWidgetOutputCommand.class);
@@ -260,8 +263,11 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       // Map ClientWizardWidgetOutputCommand command.
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ClientTypeRuntimeServer", ClientRuntimeSelectionWidgetDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "TestService", WSDLSelectionOutputCommand.class);
-      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "TestService", ClientExtensionDefaultingCommand.class);   
-      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "TestService", ClientRuntimeSelectionWidgetDefaultingCommand.class);           
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "InstallClient", ClientExtensionDefaultingCommand.class);
+            
+      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "TestService", ClientExtensionDefaultingCommand.class);      
+      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "TestService", ClientRuntimeSelectionWidgetDefaultingCommand.class);       
+      
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ResourceContext", ClientRuntimeSelectionWidgetDefaultingCommand.class);      
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ResourceContext", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "MonitorService", GetMonitorCommand.class);
@@ -301,6 +307,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
 	  
 	  // Setup the PreClientDevelopCommand.
 			//
+      dataRegistry.addMapping( ClientWizardWidgetOutputCommand.class, "InstallClient", PreClientDevelopCommand.class);
       dataRegistry.addMapping( ClientWizardWidgetOutputCommand.class, "TestService", PreClientDevelopCommand.class);           
       dataRegistry.addMapping( ClientWizardWidgetOutputCommand.class, "ResourceContext", PreClientDevelopCommand.class);						
 			//

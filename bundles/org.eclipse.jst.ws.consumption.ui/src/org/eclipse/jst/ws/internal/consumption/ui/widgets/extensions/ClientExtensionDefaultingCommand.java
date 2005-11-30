@@ -33,6 +33,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
   private TypeRuntimeServer    clientIds_;
   private String               clientRuntimeId_;
   private Boolean              testService;
+  private Boolean              installClient;
   private ResourceContext      resourceContext;
   
   // ClientRuntimeSelectionWidget
@@ -273,6 +274,23 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
     this.testService = testService;
   }
 
+  /**
+   * @return Returns the installClient.
+   */
+  public Boolean getInstallClient()
+  {
+    return installClient;
+  }
+
+  /**
+   * @param testProxySelected
+   *            The testProxySelected to set.
+   */
+  public void setInstallClient(Boolean installClient)
+  {
+    this.installClient = installClient;
+  }
+  
   /**
    * @return Returns the wsdlURI.
    */

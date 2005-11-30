@@ -45,6 +45,8 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String PAGE_TITLE_WS_PROJECT;
 	public static String PAGE_DESC_WS_PROJECT;
 	public static String BUTTON_START_WEB_PROJECT;
+	public static String BUTTON_INSTALL_SERVICE_WEB_PROJECT;
+	public static String BUTTON_INSTALL_CLIENT_WEB_PROJECT;
 	public static String GROUP_SCENARIO_SERVICE;
 	public static String GROUP_SCENARIO_CLIENT;
 	public static String LABEL_WEBSERVICECLIENTTYPE;
@@ -185,6 +187,8 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String TOOLTIP_PWPR_GROUP_SCENARIO_SERVICE;
 	public static String TOOLTIP_PWPR_CHECKBOX_GENERATE_PROXY;
 	public static String TOOLTIP_PWPR_CHECKBOX_START_WEB_PROJECT;
+	public static String TOOLTIP_PWPR_CHECKBOX_INSTALL_SERVICE_WEB_PROJECT;
+	public static String TOOLTIP_PWPR_CHECKBOX_INSTALL_CLIENT_WEB_PROJECT;
 	public static String TOOLTIP_PWPR_CHECKBOX_LAUNCH_WS;
 	public static String TOOLTIP_PWPR_CHECKBOX_TEST_SERVICE;
 	public static String TOOLTIP_PWPR_CHECKBOX_MONITOR_SERVICE;

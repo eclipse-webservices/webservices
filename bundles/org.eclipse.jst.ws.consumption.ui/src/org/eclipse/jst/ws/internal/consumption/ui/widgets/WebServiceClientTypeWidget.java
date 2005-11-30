@@ -16,6 +16,8 @@ import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -32,6 +34,8 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   /*CONTEXT_ID PWPR0014 for the Web Service Client Type combo box of the Project Page*/
   private String INFOPOP_PWPR_COMBO_CLIENTTYPE = "PWPR0014";
   private Combo  clientTypeCombo_;
+  
+  private Button installClient_;
       
   private TypeRuntimeServer ids_;
   private LabelsAndIds      labelIds_;
@@ -48,8 +52,8 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
     		ConsumptionUIMessages.GROUP_SCENARIO_CLIENT,
     		ConsumptionUIMessages.TOOLTIP_PWPR_GROUP_SCENARIO_CLIENT, 
                                            INFOPOP_PWPR_GROUP_SCENARIO_CLIENT,
-										   2, 10, 10 );
-                                             
+										   2, 10, 10 );                                             
+    
     
     int comboStyle = SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY;
     clientTypeCombo_ = utils.createCombo( clientGroup, 
@@ -57,7 +61,17 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
     		ConsumptionUIMessages.TOOLTIP_PWPR_COMBO_CLIENTTYPE, 
                                           INFOPOP_PWPR_COMBO_CLIENTTYPE, 
                                           comboStyle );
-                                            
+           
+    Composite buttonGroup = utils.createComposite( clientGroup, 1 );
+    GridData  buttonGrid   = new GridData();
+    buttonGrid.horizontalSpan = 2;
+    buttonGroup.setLayoutData( buttonGrid );
+    
+//  TODO: add correct infopop here
+    installClient_ = utils.createCheckbox( buttonGroup, ConsumptionUIMessages.BUTTON_INSTALL_CLIENT_WEB_PROJECT,
+			ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_INSTALL_CLIENT_WEB_PROJECT,
+			INFOPOP_PWPR_COMBO_CLIENTTYPE );
+    
     
     
     return this;
@@ -66,6 +80,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   public void enableWidget( boolean enable )
   {
     clientTypeCombo_.setEnabled( enable );
+    installClient_.setEnabled( enable );
   }
 
   public void setTypeRuntimeServer( TypeRuntimeServer ids )
@@ -105,5 +120,15 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
     return ids_;  
   }
       
+  public Boolean getInstallClient()
+  {
+    return new Boolean( installClient_.getSelection() );
+  }
   
+  public void setInstallClient( Boolean value )
+  {
+    installClient_.setSelection( value.booleanValue() );  
+  }
+  
+
 }

@@ -90,6 +90,16 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
     return clientWidget_.getTypeRuntimeServer();  
   }
   
+  public void setInstallClient( Boolean install)
+  {
+    clientWidget_.setInstallClient( install );
+  }
+  
+  public Boolean getInstallClient()
+  {
+    return clientWidget_.getInstallClient();  
+  }
+  
   public Boolean getTestService()
   {
     return new Boolean( testService_.getSelection() );

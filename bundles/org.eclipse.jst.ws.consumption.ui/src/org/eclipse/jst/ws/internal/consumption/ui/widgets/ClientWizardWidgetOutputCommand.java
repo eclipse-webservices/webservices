@@ -26,6 +26,7 @@ public class ClientWizardWidgetOutputCommand extends AbstractDataModelOperation
   private boolean monitorService;
   private ResourceContext   resourceContext_;
   private TypeRuntimeServer clientIds_;
+  private boolean installClient_;
   
   public boolean getTestService()
   {
@@ -35,6 +36,16 @@ public class ClientWizardWidgetOutputCommand extends AbstractDataModelOperation
   public void setTestService( boolean testService )
   {
     testService_ = testService;  
+  }
+  
+  public void setInstallClient( boolean installClient)
+  {
+    installClient_ = installClient;  
+  }
+  
+  public boolean getInstallClient()
+  {
+	return installClient_;  
   }
   
   public boolean getMonitorService()

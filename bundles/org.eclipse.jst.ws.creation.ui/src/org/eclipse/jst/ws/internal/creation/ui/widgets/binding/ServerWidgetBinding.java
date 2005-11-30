@@ -113,6 +113,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     // Before ServerWizardWidget
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "StartService", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InstallService", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "TestService", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "MonitorService", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "MonitorService", CreateMonitorCommand.class);
@@ -124,6 +125,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     
     // After ServerWizardWidget
     dataRegistry.addMapping(ServerWizardWidget.class, "ServiceTypeRuntimeServer", ServerWizardWidgetOutputCommand.class );
+    dataRegistry.addMapping(ServerWizardWidget.class, "InstallService", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "StartService", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "TestService", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "MonitorService", CreateMonitorCommand.class);
@@ -133,7 +135,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerWizardWidget.class, "ClientTypeRuntimeServer", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "ResourceContext", ServerWizardWidgetOutputCommand.class);
     
-    // Before ObjectSelectionWidget
+    // Before ObjectSelectionWidget    
     dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestService", ClientTestWidget.class );
     dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestService",FinishTestFragment.class);
 	dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "GenerateProxy", TestDefaultingFragment.class);
@@ -367,8 +369,10 @@ public class ServerWidgetBinding implements CommandWidgetBinding
 	  
       
       // Setup the PreClientDevelopCommand.
+	  dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "InstallClient", PreClientDevelopCommand.class);
       dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "TestService", PreClientDevelopCommand.class);           
-      dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "ResourceContext", PreClientDevelopCommand.class);            
+      dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "ResourceContext", PreClientDevelopCommand.class);
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "InstallClient", PreClientDevelopCommand.class );
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", PreClientDevelopCommand.class );
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientRuntimeId", PreClientDevelopCommand.class );      
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", PreClientDevelopCommand.class);
@@ -436,7 +440,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       // Map ServerWizardWidgetDefaultingCommand
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerWizardWidgetOutputCommand.class);
-      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "GenerateProxy", ServerWizardWidgetOutputCommand.class);    
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "GenerateProxy", ServerWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InstallService", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "StartService", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "TestService", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "PublishService", ServerWizardWidgetOutputCommand.class);
@@ -447,6 +452,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "ServiceTypeRuntimeServer", ObjectSelectionFragment.class, "TypeRuntimeServer", null);
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "ClientTypeRuntimeServer", ServerRuntimeSelectionWidgetDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "ServiceTypeRuntimeServer", ServerRuntimeSelectionWidgetDefaultingCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "InstallService", ServerExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "StartService", ServerExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestService", ServerExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "PublishService", ServerExtensionDefaultingCommand.class);
@@ -496,6 +502,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
 	  
 	    // Setup the PreServiceDevelopCommand.
 			//
+      dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "InstallService", PreServiceDevelopCommand.class);
       dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "StartService", PreServiceDevelopCommand.class);
       dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "TestService", PreServiceDevelopCommand.class);
       dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "PublishService", PreServiceDevelopCommand.class);      

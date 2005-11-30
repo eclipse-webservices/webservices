@@ -28,6 +28,7 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
 {
+  private Boolean              installService;
   private Boolean              startService;
   private Boolean              testService;
   private Boolean              publishService;
@@ -162,6 +163,22 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
   public String getServiceScenarioId()
   {
     return serviceIds_.getTypeId();
+  }
+
+  /**
+   * @return Returns the installService.
+   */
+  public Boolean getInstallService()
+  {
+    return installService;
+  }
+  /**
+   * @param installService
+   *            Specifies if service should be installed.
+   */
+  public void setInstallService(Boolean installService)
+  {
+    this.installService = installService;
   }
 
   /**

@@ -20,6 +20,10 @@ public interface ScenarioContext
   
   public final String PREFERENCE_START_WEBSERVICE = "startWebService";
   
+  public final String PREFERENCE_INSTALL_WEBSERVICE = "installWebService";
+  
+  public final String PREFERENCE_INSTALL_CLIENT = "installClient";
+  
   public final String PREFERENCE_LAUNCH_WEBSERVICE_EXPLORER = "launchWebServiceExplorer";
   
   public final String PREFERENCE_GENERATE_PROXY = "generateProxy";
@@ -41,6 +45,14 @@ public interface ScenarioContext
   public String getWebServiceTypeDefault();
   public void   setWebServiceType( String value );
   
+  public boolean getInstallWebService();
+  public boolean getInstallWebServiceDefault();
+  public void    setInstallWebService( boolean value );
+  
+  public boolean getInstallClient();
+  public boolean getInstallClientDefault();
+  public void    setInstallClient( boolean value );
+    
   public boolean getStartWebService();
   public boolean getStartWebServiceDefault();
   public void    setStartWebService( boolean value );
