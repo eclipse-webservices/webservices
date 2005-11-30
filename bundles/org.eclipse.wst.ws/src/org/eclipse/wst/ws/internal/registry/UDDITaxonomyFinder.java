@@ -11,14 +11,13 @@
 
 package org.eclipse.wst.ws.internal.registry;
 
-import java.util.Iterator;
-
 import org.eclipse.wst.ws.internal.model.v10.registry.Registry;
+import org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy;
 import org.eclipse.wst.ws.internal.model.v10.uddiregistry.UDDIRegistry;
 
 /**
  * This <code>ITaxonomyFinder</code> for UDDI registries
- * returns an iterator over the set of <code>Taxonomy</code>
+ * returns an array of <code>Taxonomy</code>
  * models used (supported by) the registry.
  * @author gilberta@ca.ibm.com
  * @see UDDIRegistry
@@ -28,12 +27,12 @@ public class UDDITaxonomyFinder implements ITaxonomyFinder
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.ws.internal.registry.ITaxonomyFinder#taxonomies(org.eclipse.wst.ws.internal.model.v10.registry.Registry)
 	 */
-	public Iterator taxonomies ( Registry registry )
+	public Taxonomy[] taxonomies ( Registry registry )
 	{
 		if ( registry instanceof UDDIRegistry )
 		{
 			UDDIRegistry uddiRegistry = (UDDIRegistry)registry;	  
-			return uddiRegistry.getTaxonomies().getTaxonomy().iterator();
+			return (Taxonomy[])uddiRegistry.getTaxonomies().getTaxonomy().toArray(new Taxonomy[0]);
 		}
 		return null;
 	}

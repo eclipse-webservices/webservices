@@ -11,9 +11,8 @@
 
 package org.eclipse.wst.ws.internal.registry;
 
-import java.util.Iterator;
-
 import org.eclipse.wst.ws.internal.model.v10.registry.Registry;
+import org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy;
 
 /**
  * An <code>ITaxonomyFinder</code> computes the set of
@@ -25,14 +24,12 @@ import org.eclipse.wst.ws.internal.model.v10.registry.Registry;
 public interface ITaxonomyFinder
 {
 	/**
-	 * Returns an iterator over the set of taxonomies used
-	 * by the given <code>registry</code>. This method may
-	 * return an empty iterator or <b>null</b> if the
-	 * <code>Registry</code> does not reference any taxonomies.
+	 * Returns an array taxonomies used by the given
+	 * <code>registry</code>. This method never returns null.
 	 *
 	 * @param registry The <code>Registry</code> for which
 	 * a set of taxonomies might be found.
-	 * @return An iterator of taxonomies or <b>null</b>.
+	 * @return The array of taxonomies, possibly empty.
 	 */
-	public Iterator taxonomies ( Registry registry );	
+	public Taxonomy[] taxonomies ( Registry registry );	
 }

@@ -212,17 +212,14 @@ public class RegistryManager implements IRegistryManager
 			ITaxonomyFinder finder = (ITaxonomyFinder)taxonomyFinders_.get(registry.getClass().getName());
 			if (finder != null)
 			{
-				Iterator it = finder.taxonomies(registry);
-				if (it != null)
+				Taxonomy[] taxonomies = finder.taxonomies(registry);
+				for (int i=0; i<taxonomies.length; i++)
 				{
-					while (it.hasNext())
-					{
-						Taxonomy taxonomy = (Taxonomy)it.next();	
-						url = getURL(TAXONOMY + taxonomy.getId());
-						Taxonomy taxonomyRef = registryService.newTaxonomyReference(taxonomy);
-						registryService.saveTaxonomy(url,taxonomy);
-						addTaxonomyToIndex(taxonomyRef);
-					}
+					url = getURL(TAXONOMY + taxonomies[i].getId());
+					registryService.saveTaxonomy(url,taxonomies[i]);
+					Taxonomy taxonomyRef = registryService.newTaxonomyReference(taxonomies[i]);
+					taxonomyRef.setLocation(url.toString());
+					addTaxonomyToIndex(taxonomyRef);
 				}
 			}
 		    saveIndex();
