@@ -3,19 +3,23 @@
 
 <plugin>
 
-     <extension-point
+   <!-- The following extension point is internal and likely to be removed in a future release. -->
+   <extension-point
       id="publicUDDIRegistryType"
       name="%XP_PUBLIC_UDDI_REGISTRY_TYPES"/>
 
+   <!-- The following extension point is internal and likely to be removed in a future release. -->
    <extension-point
       id="privateUDDIRegistryType"
       name="%XP_PRIVATE_UDDI_REGISTRY_TYPES"/>
 
+   <!-- The following extension point is internal and likely to be removed in a future release. -->
    <extension-point
       id="webServiceTest"
       name="%XP_WEB_SERVICE_TEST"
       schema="schema/webServiceTest.exsd"/>
 
+   <!-- The following extension point is internal, though likely to be made public with changes in a future release. -->
    <extension-point
       id="objectSelectionWidget"
       name="%XP_OBJECT_SELECTION_WIDGET"
@@ -615,12 +619,22 @@
       </objectSelectionWidget>
    </extension>
    
-
+   <!-- The following extension point is internal, though likely to be made public with changes in a future release. -->
    <extension-point id="wsImpl" name="%XP_wsImpl"/>
+
+   <!-- The following extension point is internal, though likely to be made public with changes in a future release. -->
    <extension-point id="wsClientImpl" name="%XP_wsClientImpl"/>
+
+   <!-- The following extension point is internal, though likely to be made public with changes in a future release. -->
    <extension-point id="runtimes" name="%XP_runtimes" />
+
+   <!-- The following extension point is internal, though likely to be made public with changes in a future release. -->
    <extension-point id="serviceRuntimes" name="%XP_serviceRuntimes" />
+
+   <!-- The following extension point is internal, though likely to be made public with changes in a future release. -->
    <extension-point id="clientRuntimes" name="%XP_clientRuntimes" />
+
+   <!-- The following extension point is internal, though likely to be made public with changes in a future release. -->
    <extension-point id="tester" name="%XP_tester"/>
 
 <!-- Test Extensions beginning  -->

@@ -2,6 +2,8 @@
 <?eclipse version="3.0"?>
 
 <plugin>
+
+   <!-- The following extension point is internal, though likely to be promoted for public use, possibly with changes, in a future release. -->
    <extension-point id="locator" name="%XP_WEB_SERVICE_LOCATOR" schema="schema/webServiceLocator.exsd"/>
    <extension
          point="org.eclipse.wst.ws.locator">

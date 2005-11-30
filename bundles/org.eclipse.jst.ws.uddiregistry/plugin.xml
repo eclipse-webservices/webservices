@@ -3,13 +3,8 @@
 
 <plugin>
 
-   
-<!--
-  <description>
-  %PLUGIN_DESC
-  </description>
-  -->
-    <extension-point id="privateUDDIRegistryType" name="%XP_PRIVATE_UDDI_REGISTRY_TYPES"/>
+   <!-- The following extension point is internal and likely to be removed in a future release. -->
+   <extension-point id="privateUDDIRegistryType" name="%XP_PRIVATE_UDDI_REGISTRY_TYPES"/>
 
    <extension
          point="org.eclipse.jst.ws.consumption.ui.privateUDDIRegistryType">

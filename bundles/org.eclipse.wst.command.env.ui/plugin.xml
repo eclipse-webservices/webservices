@@ -17,5 +17,7 @@
       </wizard>
    </extension>
 
-     <extension-point id="widgetRegistry" name="%WIDGET_REGISTRY_NAME" schema="schema/widgetRegistry.exsd"/>   
+   <!-- The following extension point is internal and likely to be removed in a future release. -->
+   <extension-point id="widgetRegistry" name="%WIDGET_REGISTRY_NAME" schema="schema/widgetRegistry.exsd"/>
+
 </plugin>

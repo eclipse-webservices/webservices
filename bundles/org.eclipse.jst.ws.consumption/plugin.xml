@@ -3,15 +3,17 @@
 
 <plugin>
 
-     <extension-point
+   <!-- The following extension point is internal and likely to be removed in a future release. -->
+   <extension-point
       id="wsfinder"
       name="%XP_WSFINDER"/>
 
-   <!-- The following extension point will be removed. -->
+   <!-- The following extension point is internal and likely to be removed in a future release. -->
    <extension-point
       id="webServiceStartServerType"
       name="%XP_WEB_SERVICE_START_SERVER_TYPE"/>
 
+   <!-- The following extension point is internal and likely to be removed in a future release. -->
    <extension-point
       id="serverDefaulter"
       name="%XP_SERVER_DEFAULTER"/>
