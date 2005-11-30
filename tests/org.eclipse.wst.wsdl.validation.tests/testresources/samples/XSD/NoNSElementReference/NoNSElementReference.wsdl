@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="NoNSElementReference" targetNamespace="http://www.example.org/NoNSElementReference/" xmlns:tns="http://www.example.org/NoNSElementReference/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>
+	This WSDL file demonstrates a message referring to an element that is defined
+	by an inline schema with no target namespace.
+  </wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:element name="NewOperationRequest" type="xsd:string"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="NewOperationRequest">
+    <wsdl:part name="NewOperationRequest" element="NewOperationRequest"/>
+  </wsdl:message>
+</wsdl:definitions>

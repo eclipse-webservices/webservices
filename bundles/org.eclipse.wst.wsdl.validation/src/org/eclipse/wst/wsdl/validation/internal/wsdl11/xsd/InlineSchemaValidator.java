@@ -40,12 +40,28 @@ import com.ibm.wsdl.Constants;
  */
 public class InlineSchemaValidator implements IWSDL11Validator
 {
+  /**
+   * Property to allow the WSDL validator to use the target namespace
+   * defined on the WSDL document for schemas with no target namespace.
+   * This property will allow clients who depend on this functionality
+   * to continue to use it and should be removed post 1.5.
+   */
+  private boolean USE_WSDL_TARGETNAMESPACE = false;
+  
   private final String _WARN_OLD_SCHEMA_NAMESPACE = "_WARN_OLD_SCHEMA_NAMESPACE";
   private final String _WARN_SOAPENC_IMPORTED_SCHEMA = "_WARN_SOAPENC_IMPORTED_SCHEMA";
   private final String EMPTY_STRING = "";
   private final String QUOTE = "'";
   MessageGenerator messagegenerator = null;
   
+  public InlineSchemaValidator()
+  {
+	String useNS = System.getProperty("use.wsdl.targetnamespace");
+	if(useNS != null && useNS.equals("true"))
+	{
+	  USE_WSDL_TARGETNAMESPACE = true;
+	}
+  }
   /**
    * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.WSDL11ValidationInfo)
    */
@@ -66,7 +82,7 @@ public class InlineSchemaValidator implements IWSDL11Validator
 	String targetNamespace = w3celement.getAttribute(Constants.ATTR_TARGET_NAMESPACE);
 	// if the targetNamespace hasn't been defined for the schema use the 
 	// targetNamespace of the definitions element
-	if(targetNamespace == null || targetNamespace.equals(EMPTY_STRING))
+	if(USE_WSDL_TARGETNAMESPACE && (targetNamespace == null || targetNamespace.equals(EMPTY_STRING)))
 	 {
 	  targetNamespace = wsdlDefinition.getTargetNamespace();
 	  w3celement.setAttribute(Constants.ATTR_TARGET_NAMESPACE,targetNamespace);
@@ -226,7 +242,6 @@ public class InlineSchemaValidator implements IWSDL11Validator
 
     String XMLNS = Constants.ATTR_XMLNS;
     
-    String schemaLocation = "";
     while (nameSpaces.hasNext())
     {
       String nsprefix = XMLNS;
