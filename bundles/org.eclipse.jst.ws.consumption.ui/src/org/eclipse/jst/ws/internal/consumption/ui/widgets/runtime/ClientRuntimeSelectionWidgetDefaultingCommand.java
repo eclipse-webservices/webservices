@@ -35,6 +35,7 @@ import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
+import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ClientRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
@@ -596,27 +597,35 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     String[] templates = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(clientIds_.getTypeId(), clientIds_.getRuntimeId());
     RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRequiredFacetVersions();
     
-    //Pick the Web one if it's there, otherwise pick the first one.    
-    for (int i=0; i<templates.length; i++)
+    //Pick the Web one if it's there, otherwise pick the first one.
+    //Walk the list of client project types in the project topology preference
+    ProjectTopologyContext ptc= WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
+    String[] preferredTemplateIds = ptc.getClientTypes();
+    for (int j=0; j<preferredTemplateIds.length; j++)
     {
-      String templateId = templates[i];
-      if (templateId.indexOf("web") != -1)
+      for (int i=0; i<templates.length; i++)
       {
-        //Calculate the facet matcher for the template so that we know 
-        //what to create and what to add during module creation.
-        
-        Set facetVersions = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
-        FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
-        if (fm.isMatch())
+        String templateId = templates[i];
+        if (templateId.equals(preferredTemplateIds[j]))
         {
-          clientFacetMatcher_ = fm;
-          return templates[i];  
-        }
-        
-      }                                    
+          //Calculate the facet matcher for the template so that we know 
+          //what to create and what to add during module creation.
+          
+          Set facetVersions = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
+          FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+          if (fm.isMatch())
+          {
+            clientFacetMatcher_ = fm;
+            return templates[i];  
+          }
+          
+        }                                    
+      }      
     }
+
     
-    //Didn't find a "web" type. Return the first one that is a match. Calculate the facet matcher for the template
+    //Didn't find a template id in the preferred list that worked. 
+    //Return the first one that is a match. Calculate the facet matcher for the template
     //so that we know what to create and what to add during module creation.
     for (int j = 0; j < templates.length; j++)
     {

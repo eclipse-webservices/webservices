@@ -20,6 +20,8 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -474,6 +476,9 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   private void populateProjectTypeCombo()
   {
+    //Get the old value if there was one.
+    String oldTemplateId = getComponentType();
+    
     String[] templates = null;
     if (isClient_)
     {
@@ -487,21 +492,72 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     String[] templateLabels = FacetUtils.getTemplateLabels(templates);
     projectType_.setItems(templateLabels);
     templates_ = templates;
-  
+      
     if (templates.length > 0)
     {
-      //If a "..web.." template is there, pick that as the default.
-      int webTemplateIndex = getWebTemplateIndex(templates);
-      if (webTemplateIndex > -1)
+      
+      //Select the previous template selection if that one is in the list.
+      int idx = getIndexOfTemplateId(templates, oldTemplateId);
+      if (idx > -1)        
       {
-        projectType_.select(webTemplateIndex); 
+        projectType_.select(idx);
       }
       else
       {
-        projectType_.select(0);  
+
+        if (isClient_)
+        {
+          // Select the preferred client project type.
+          ProjectTopologyContext ptc = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
+          String[] preferredTemplateIds = ptc.getClientTypes();
+          boolean selected = false;
+          outer: for (int j = 0; j < preferredTemplateIds.length; j++)
+          {
+            for (int i = 0; i < templates.length; i++)
+            {
+              String templateId = templates[i];
+              if (templateId.equals(preferredTemplateIds[j]))
+              {
+                projectType_.select(i);
+                selected = true;
+                break outer;
+              }
+            }
+          }
+
+          if (!selected)
+          {
+            projectType_.select(0);
+          }
+
+        } else
+        {
+          // If a "..web.." template is there, pick that as the default.
+          int webTemplateIndex = getWebTemplateIndex(templates);
+          if (webTemplateIndex > -1)
+          {
+            projectType_.select(webTemplateIndex);
+          } else
+          {
+            projectType_.select(0);
+          }
+        }
       }
-      
     }
+  }
+  
+
+  private int getIndexOfTemplateId(String[] templateIds, String templateId)
+  {
+    for (int i=0; i<templateIds.length; i++)
+    {
+      if (templateIds[i].equals(templateId))
+      {
+        return i;
+      }
+    }
+    
+    return -1;    
   }
   
   private int getWebTemplateIndex(String[] templateIds)
@@ -581,6 +637,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   	
   	return true;    
   }
+  
   
   private IStatus handleSetMessageText() {
     IStatus status = Status.OK_STATUS;
