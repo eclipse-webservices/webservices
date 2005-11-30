@@ -373,6 +373,39 @@ public class RegistryService
 	}
 
 	/**
+	 * Returns true if and only if the given URL identifies
+	 * a resource that exists and is a file.
+	 * @param url The URL of the resource to check for existence.
+	 * @return True if the URL resource exists and is a file,
+	 * or false otherwise.
+	 */
+	static boolean exists ( URL url )
+	{
+		if ("platform".equals(url.getProtocol()))
+		{
+			String urlFile = url.getFile().trim();
+			IPath path = new Path(urlFile).removeFirstSegments(1);
+			if (path.segmentCount() <= 1)
+			{
+				return false;
+			}
+			IPath osPath = ResourcesPlugin.getWorkspace().getRoot().getFile(path).getLocation();
+			if (osPath == null)
+			{
+				return false;
+			}
+			File file = new File(osPath.toString());
+			return (file.exists() && !file.isDirectory());
+		}
+		else if ("file".equals(url.getProtocol()))
+		{
+			File file = new File(url.getFile().trim());
+			return (file.exists() && !file.isDirectory());
+		}
+		return false;
+	}
+
+	/**
 	 * Opens an <code>OutputStream</code> for writing to
 	 * the given <code>url</code>.
 	 * @param url The URL of the resource to write.

@@ -11,6 +11,7 @@
 
 package org.eclipse.wst.ws.internal.registry;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,7 +27,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.ws.internal.model.v10.registry.Registry;
 import org.eclipse.wst.ws.internal.model.v10.rtindex.Index;
 import org.eclipse.wst.ws.internal.model.v10.rtindex.RTIndexFactory;
-import org.eclipse.wst.ws.internal.model.v10.rtindex.impl.RTIndexFactoryImpl;
 import org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
@@ -37,8 +37,8 @@ import org.eclipse.wst.ws.internal.plugin.WSPlugin;
  */
 public class RegistryManager implements IRegistryManager
 {
-	private static String REGISTRY = "registry";
-	private static String TAXONOMY = "taxonomy";
+	private static String REGISTRY = "Registry";
+	private static String TAXONOMY = "Taxonomy";
 	private static String XML = "xml";
 	private Hashtable taxonomyFinders_;
 	private Index index_;
@@ -75,113 +75,80 @@ public class RegistryManager implements IRegistryManager
 	{
 		if (registryURL_ == null)
 		{
-			registryURL_ = new URL(registryPathname_);
+			registryURL_ = new File(registryPathname_).toURI().toURL();
 		}
 		return registryURL_;
 	}
 
 	/**
-	 * TODO: Document me. 
-	 * @param id
-	 * @return
-	 * @throws MalformedURLException
+	 * Returns an absolute URL computed from the absolute URL of the
+	 * index XML document managed by this <code>RegistryManager</code>
+	 * and the given <code>id</code>. This method is used to determine
+	 * a reasonable location URL for registry and taxonomy documents
+	 * when references to them are first to be added to the index XML
+	 * document. This method is idempotent insofar as it will always
+	 * compute the same URL for a given <code>RegistryManager</code>
+	 * and a given <code>id</code>.
+	 * 
+	 * @param id The id of the referenced registry or taxonomy document. 
+	 * @return The absolute URL to the referenced document.
+	 * @throws MalformedURLException If a viable absolute URL cannot
+	 * be computed.
 	 */
 	private URL getURL ( String id ) throws MalformedURLException
 	{
 		String baseUrl = ""; 
-		try {
-			URL indexUrl = getURL();
-			String indexString = indexUrl.toString();
-			int index = indexString.indexOf("/"); //TODO: Shouldn't this be lastIndexOf?
-			baseUrl = indexString.substring(0,index);
-		} catch ( MalformedURLException me ) {
-			//TODO: Why are we suppressing this exception?
-		}
+		URL indexUrl = getURL();
+		String indexString = indexUrl.toString();
+		int index = indexString.lastIndexOf("/"); 
+		baseUrl = indexString.substring(0,index + 1);
 		String urlString = baseUrl + id + "." + XML;
 		return new URL(urlString);
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#addTaxonomyFinder(java.lang.String, org.eclipse.wst.ws.internal.registry.ITaxonomyFinder)
-	 */
-	public void addTaxonomyFinder(String className, ITaxonomyFinder taxonomyFinder)
-	{
-		taxonomyFinders_.put(className,taxonomyFinder);
-	}
-	
+
 	/**
-	 * TODO: Document me!
-	 * @param registry
+	 * Caches and returns the index model. On first call,
+	 * if an index document exists, the index is loaded
+	 * from it, otherwise, a new index is returned.
+	 * @return The index.
+	 * @throws CoreException If the index cannot be loaded for any reason.
 	 */
-	private void addRegistryToIndex(Registry registry)
+	private Index getIndex () throws CoreException
 	{
-		EList list = index_.getRegistry();	
-		if(!list.contains(registry.getId())){
-			list.add(registry.getId());
-			//TODO: The following line should not be necessary. Also, new code should never use deprecated stuff.
-			index_.eSet(RTIndexFactoryImpl.getPackage().getIndex_Registry(),list);
-		}
-	}
-	
-	/**
-	 * TODO: Document me!
-	 * @param taxonomy
-	 */
-	private void addTaxonomyToIndex(Taxonomy taxonomy)
-	{
-		EList list = index_.getTaxonomy();	
-		if(!list.contains(taxonomy.getId())){
-			list.add(taxonomy.getId());
-			//TODO: The following line should not be necessary. Also, new code should never use deprecated stuff.
-			index_.eSet(RTIndexFactoryImpl.getPackage().getIndex_Taxonomy(),list);
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#saveRegistry(org.eclipse.wst.ws.internal.model.v10.registry.Registry)
-	 */
-	public String saveRegistry ( Registry registry )
-	{
-		ITaxonomyFinder finder = (ITaxonomyFinder)taxonomyFinders_.get(registry.getClass().getName());
-		RegistryService registryService = RegistryService.instance();
-		try
+		if (index_ == null)
 		{
-			URL url = getURL(REGISTRY + registry.getId());
-			registryService.saveRegistry(url,registry);
-			addRegistryToIndex(registry);
-			Iterator it = finder.taxonomies(registry);
-			if (it != null)
+			try
 			{
-				while (it.hasNext())
+				URL indexURL = getURL();
+				if (RegistryService.exists(indexURL))
 				{
-					Taxonomy taxonomy = (Taxonomy)it.next();	
-					url = null; //TODO: Seems like dead code.
-					url = getURL(TAXONOMY + taxonomy.getId());
-					registryService.saveTaxonomy(url,taxonomy);
-					addTaxonomyToIndex(taxonomy);
+					Resource resource = resourceFactory_.createResource(URI.createURI("*.xml"));
+					resource.load(RegistryService.getInputStreamFor(indexURL),null);
+					org.eclipse.wst.ws.internal.model.v10.rtindex.DocumentRoot document = (org.eclipse.wst.ws.internal.model.v10.rtindex.DocumentRoot)resource.getContents().get(0);
+					index_ = document.getIndex();
+				}
+				else
+				{
+					index_ = RTIndexFactory.eINSTANCE.createIndex();
 				}
 			}
-		    saveIndex();
+			catch (IOException e)
+			{
+				//TODO: Need a message for this Status.
+				throw new CoreException(new Status(IStatus.ERROR,WSPlugin.ID,0,"",e));
+			}
 		}
-		catch ( MalformedURLException me )
-		{
-			//TODO: Why are we suppressing this exception?
-		}
-		catch ( CoreException ce )
-		{
-			//TODO: Why are we suppressing this exception?
-		}	
-		return registry.getId();
+		return index_;
 	}
 
 	/**
 	 * Saves the index model to an XML document.	
-	 * @throws CoreException If the save failes for any reason.
+	 * @throws CoreException If the save fails for any reason.
 	 */
 	private void saveIndex () throws CoreException
 	{
 		org.eclipse.wst.ws.internal.model.v10.rtindex.DocumentRoot document = RTIndexFactory.eINSTANCE.createDocumentRoot();
-		document.setIndex(index_);
+		document.setIndex(getIndex());
 		Resource resource = resourceFactory_.createResource(URI.createURI("*.xml"));
 		resource.getContents().add(document);
 		try
@@ -194,42 +161,151 @@ public class RegistryManager implements IRegistryManager
 			throw new CoreException(new Status(IStatus.ERROR,WSPlugin.ID,0,"",e));
 		}
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#loadRegistry(java.lang.String)
+	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#addTaxonomyFinder(java.lang.String, org.eclipse.wst.ws.internal.registry.ITaxonomyFinder)
 	 */
-	public Registry loadRegistry ( String uri )
+	public void addTaxonomyFinder(String className, ITaxonomyFinder taxonomyFinder)
+	{
+		taxonomyFinders_.put(className,taxonomyFinder);
+	}
+	
+	/**
+	 * Adds the given <code>registry</code> to the index only
+	 * if a registry of the same ID is not already stored there.
+	 * @param registry The registry to add.
+	 */
+	private void addRegistryToIndex(Registry registry) throws CoreException
+	{
+		if (getRegistry(registry.getId()) == null)
+		{
+			getIndex().getRegistry().add(registry);
+		}
+	}
+	
+	/**
+	 * Adds the given <code>taxonomy</code> to the index only
+	 * if a taxonomy of the same ID is not already stored there.
+	 * @param taxonomy The taxonomy to add.
+	 */
+	private void addTaxonomyToIndex(Taxonomy taxonomy) throws CoreException
+	{
+		if (getTaxonomy(taxonomy.getId()) == null)
+		{
+		 	getIndex().getTaxonomy().add(taxonomy);	
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#saveRegistry(org.eclipse.wst.ws.internal.model.v10.registry.Registry)
+	 */
+	public String saveRegistry ( Registry registry ) throws CoreException
 	{
 		RegistryService registryService = RegistryService.instance();
 		try
 		{
-			//TODO: The location URL should be looked up in the index.
-			URL url = getURL(REGISTRY + uri);
+			URL url = getURL(REGISTRY + registry.getId());
+			registryService.saveRegistry(url,registry);
+			Registry registryRef = registryService.newRegistryReference(registry);
+			registryRef.setLocation(url.toString());
+			addRegistryToIndex(registryRef);
+			ITaxonomyFinder finder = (ITaxonomyFinder)taxonomyFinders_.get(registry.getClass().getName());
+			if (finder != null)
+			{
+				Iterator it = finder.taxonomies(registry);
+				if (it != null)
+				{
+					while (it.hasNext())
+					{
+						Taxonomy taxonomy = (Taxonomy)it.next();	
+						url = getURL(TAXONOMY + taxonomy.getId());
+						Taxonomy taxonomyRef = registryService.newTaxonomyReference(taxonomy);
+						registryService.saveTaxonomy(url,taxonomy);
+						addTaxonomyToIndex(taxonomyRef);
+					}
+				}
+			}
+		    saveIndex();
+		}
+		catch ( MalformedURLException me )
+		{
+			//TODO: Message text required.
+			throw new CoreException(new Status(IStatus.ERROR,WSPlugin.ID,0,"",me));
+		}
+		return registry.getId();
+	}
+
+	/**
+	 * Returns the Registry from the index with the given id,
+	 * or null if no such entry exists in the index. 
+	 * @param uri id name of the Registry
+	 */
+    private Registry getRegistry(String uri) throws CoreException
+    {
+		EList list = getIndex().getRegistry();	
+		Iterator it = list.iterator();
+		while(it.hasNext()){
+			Registry registryRef = (Registry)it.next();
+			if(registryRef.getId().equals(uri)){
+				return registryRef;  
+			}
+		}	
+        return null;
+    }
+	
+	/**
+	 * Returns the Taxonomy from the index with the given id,
+	 * or null if no such entry exists in the index. 
+	 * @param uri id name of the Taxonomy
+	 */
+    private Taxonomy getTaxonomy(String uri) throws CoreException
+    {
+		EList list = getIndex().getTaxonomy();	
+		Iterator it = list.iterator();
+		while(it.hasNext()){
+			Taxonomy taxonomyRef = (Taxonomy)it.next();
+			if(taxonomyRef.getId().equals(uri)){
+				return taxonomyRef;
+			}
+		}	
+        return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#loadRegistry(java.lang.String)
+	 */
+	public Registry loadRegistry ( String uri ) throws CoreException
+	{
+		RegistryService registryService = RegistryService.instance();
+		try
+		{
+			Registry registryRef = getRegistry(uri);
+			if(registryRef == null) return null;
+			String urlString = registryRef.getLocation();
+			if(urlString == null) return null;
+			URL url = new URL(urlString);
 			return registryService.loadRegistry(url);
 		}
 		catch ( MalformedURLException me )
 		{
-			//TODO: Why are we suppressing this exception?
+			//TODO: Message text required.
+			throw new CoreException(new Status(IStatus.ERROR,WSPlugin.ID,0,"",me));
 		}
-		catch ( CoreException ce )
-		{
-			//TODO: Why are we suppressing this exception?
-		}	
-		return null;
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#getRegistryURIs()
 	 */
-	public String[] getRegistryURIs ()
+	public String[] getRegistryURIs () throws CoreException
 	{
-		EList list = index_.getRegistry();
+		EList list = getIndex().getRegistry();
 		String[] registryURI = new String[list.size()];
 		Iterator iterator = list.iterator();
 		int i = 0;
 		while(iterator.hasNext())
 		{
-			registryURI[i] = (String)iterator.next();  	
+			Registry registry = (Registry)iterator.next();  	
+			registryURI[i] = registry.getId();	
 			i++;  
 		}
 		return registryURI;
@@ -238,12 +314,13 @@ public class RegistryManager implements IRegistryManager
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#removeRegistry(java.lang.String, boolean)
 	 */
-	public void removeRegistry ( String uri, boolean deleteDocument )
+	public void removeRegistry ( String uri, boolean deleteDocument ) throws CoreException
 	{
-		EList list = index_.getRegistry();
-		list.remove(uri);
-		//TODO: The following line should not be necessary. Also, new code should never use deprecated stuff.
-		index_.eSet(RTIndexFactoryImpl.getPackage().getIndex_Registry(),list);
+		EList list = getIndex().getRegistry();
+		Registry registryRef = getRegistry(uri);
+		if(registryRef == null) return;
+		list.remove(registryRef);
+		saveIndex();
 		if(deleteDocument)
 		{
 			//TODO: Implement me.
@@ -253,62 +330,61 @@ public class RegistryManager implements IRegistryManager
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#saveTaxonomy(org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy)
 	 */
-	public String saveTaxonomy ( Taxonomy taxonomy )
+	public String saveTaxonomy ( Taxonomy taxonomy ) throws CoreException
 	{
 		RegistryService registryService = RegistryService.instance();
 		try
 		{
 			URL	url = getURL(TAXONOMY + taxonomy.getId());
 		    registryService.saveTaxonomy(url,taxonomy);
-		    addTaxonomyToIndex(taxonomy);
+			Taxonomy taxonomyRef = registryService.newTaxonomyReference(taxonomy);
+			taxonomyRef.setLocation(url.toString());
+			addTaxonomyToIndex(taxonomyRef);
 			saveIndex();
 		}
 		catch ( MalformedURLException me )
 		{
-			//TODO: Why are we suppressing this exception?
+			//TODO: Message text required.
+			throw new CoreException(new Status(IStatus.ERROR,WSPlugin.ID,0,"",me));
 		}
-		catch ( CoreException ce )
-		{
-			//TODO: Why are we suppressing this exception?
-		}	
 		return taxonomy.getId();
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#loadTaxonomy(java.lang.String)
 	 */
-	public Taxonomy loadTaxonomy ( String uri )
+	public Taxonomy loadTaxonomy ( String uri ) throws CoreException
 	{
 		RegistryService registryService = RegistryService.instance();
 		try
 		{
-			//TODO: The location URL should be looked up in the index.
-			URL url = getURL(TAXONOMY + uri);
+			Taxonomy taxonomyRef = getTaxonomy(uri);
+			if(taxonomyRef == null) return null;
+			String urlString = taxonomyRef.getLocation();
+			if(urlString == null) return null;
+			URL url = new URL(urlString);
 			return registryService.loadTaxonomy(url);
 		}
 		catch ( MalformedURLException me )
 		{
-			//TODO: Why are we suppressing this exception?
+			//TODO: Message text required.
+			throw new CoreException(new Status(IStatus.ERROR,WSPlugin.ID,0,"",me));
 		}
-		catch ( CoreException ce )
-		{
-			//TODO: Why are we suppressing this exception?
-		}	
-		return null;
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#getTaxonomyURIs()
 	 */
-	public String[] getTaxonomyURIs ()
+	public String[] getTaxonomyURIs () throws CoreException
 	{
-		EList list = index_.getTaxonomy();
+		EList list = getIndex().getTaxonomy();
 		String[] taxonomyURIs = new String[list.size()];
 		Iterator iterator = list.iterator();
 		int i = 0;
 		while(iterator.hasNext())
 		{
-			taxonomyURIs[i] = (String)iterator.next();  	
+			Taxonomy taxonomy = (Taxonomy)iterator.next(); 
+			taxonomyURIs[i] = taxonomy.getId();  	
 			i++;  
 		}	
 		return taxonomyURIs;
@@ -317,12 +393,13 @@ public class RegistryManager implements IRegistryManager
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#removeTaxonomy(java.lang.String, boolean)
 	 */
-	public void removeTaxonomy ( String uri, boolean deleteDocument )
+	public void removeTaxonomy ( String uri, boolean deleteDocument ) throws CoreException
 	{
-		EList list = index_.getTaxonomy();
-		list.remove(uri);
-		//TODO: The following line should not be necessary. Also, new code should never use deprecated stuff.
-		index_.eSet(RTIndexFactoryImpl.getPackage().getIndex_Taxonomy(),list);
+		EList list = getIndex().getTaxonomy();
+		Taxonomy taxonomyRef = getTaxonomy(uri);
+		if(taxonomyRef == null) return;
+		list.remove(taxonomyRef);
+		saveIndex();
 		if(deleteDocument)
 		{
 			//TODO: Implement me.
