@@ -9,6 +9,7 @@
 		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 			elementFormDefault="qualified"
 			targetNamespace="http://tempuri.org/OneErrorForInlineXSDRefInvalidInlineXSD/2">
+		  <xsd:import namespace="http://tempuri.org/OneErrorForInlineXSDRefInvalidInlineXSD/1"/>
 		  <xsd:complexType name="NewComplexType">
             <xsd:sequence>
               <xsd:element ref="xsd1:NewGlobalElement"></xsd:element>

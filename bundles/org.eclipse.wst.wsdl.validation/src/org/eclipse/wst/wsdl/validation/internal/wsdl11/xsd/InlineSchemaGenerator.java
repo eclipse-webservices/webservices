@@ -33,6 +33,15 @@ import com.ibm.wsdl.Constants;
  */
 public class InlineSchemaGenerator
 {
+  /**
+   * Generating import statements for inline schema references is 
+   * invalid according to the WSDL spec. As some older clients (WSVT) may
+   * depend on this functionality the option to allow this is left
+   * in. This should be removed post 1.5.
+   * TODO: Review removing this preference.
+   */
+  protected static boolean GENERATE_INLINE_IMPORTS = false;
+  
   protected static final String SOAP_ENCODING_URI = "http://schemas.xmlsoap.org/soap/encoding/";
   protected static final String FILE_PREFIX = "file:///";
   protected static final String XMLNS = "xmlns";
@@ -54,6 +63,11 @@ public class InlineSchemaGenerator
    */
   protected InlineSchemaGenerator()
   {
+	String genInlineImports = System.getProperty("wsdl.require.inline.imports");
+	if(genInlineImports != null && genInlineImports.equals("false"))
+	{
+	  GENERATE_INLINE_IMPORTS = true;
+	}
   }
 
   /**
@@ -107,10 +121,17 @@ public class InlineSchemaGenerator
     List reqns = schemaGenerator.getNamespacePrefixes(element);
     Hashtable reqNSDecl = schemaGenerator.resolveNamespaces(reqns, nsResolver, parentNSs);
     //Hashtable reqNSDecl = schemaGenerator.getRequiredNSDeclarations(reqns, nsResolver, parentNSs);
-    List importNS = schemaGenerator.getImportNamespaces(element);
-    reqns = schemaGenerator.removeImports(reqns, importNS);
-    reqns = schemaGenerator.removeLocalNamespaces(reqns, element);
-	reqns = schemaGenerator.restrictImports(reqns, validImportNSs);
+    if(GENERATE_INLINE_IMPORTS)
+    {
+      List importNS = schemaGenerator.getImportNamespaces(element);
+      reqns = schemaGenerator.removeImports(reqns, importNS);
+      reqns = schemaGenerator.removeLocalNamespaces(reqns, element);
+	  reqns = schemaGenerator.restrictImports(reqns, validImportNSs);
+    }
+    else
+    {
+      reqns.clear();
+    }
     return schemaGenerator.createXSDStringRecursively(element, elements, reqns, reqNSDecl, filelocation);
   }
   /**

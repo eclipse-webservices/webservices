@@ -78,6 +78,19 @@ public class XSDTest extends BaseTestCase
   }
   
   /**
+   * Test /XSD/ReferToAnotherInlineType/ReferToAnotherInlineTypeNoImport.wsdl
+   */
+  public void testReferToAnotherInlineTypeNoImport()
+  {
+    String testname = "ReferToAnotherInlineTypeNoImport";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "ReferToAnotherInlineType/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "ReferToAnotherInlineType/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "ReferToAnotherInlineType/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
    * Test /XSD/InlineSchemaGeneratedImports/NoImportForUnprefixedAttribute.wsdl
    */
   public void testNoImportForUnprefixedAttribute()

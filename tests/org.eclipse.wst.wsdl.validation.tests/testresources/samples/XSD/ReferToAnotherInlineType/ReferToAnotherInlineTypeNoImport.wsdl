@@ -5,7 +5,6 @@
 			elementFormDefault="qualified"
 			targetNamespace="http://tempuri.org/ReferToAnotherInlineType1/"
             xmlns:two="http://tempuri.org/ReferToAnotherInlineType2/">
-          <xsd:import namespace="http://tempuri.org/ReferToAnotherInlineType2/"/>
           <xsd:simpleType name="NewSimpleType">
             <xsd:restriction base="xsd:string">
               <xsd:minLength value="1"/>
@@ -17,7 +16,6 @@
 			elementFormDefault="qualified"
 			targetNamespace="http://tempuri.org/ReferToAnotherInlineType2/"
             xmlns:one="http://tempuri.org/ReferToAnotherInlineType1/">
-		  <xsd:import namespace="http://tempuri.org/ReferToAnotherInlineType1/"/>
 		  <xsd:simpleType name="NewSimpleType">
             <xsd:restriction base="xsd:string">
               <xsd:minLength value="1"/>
