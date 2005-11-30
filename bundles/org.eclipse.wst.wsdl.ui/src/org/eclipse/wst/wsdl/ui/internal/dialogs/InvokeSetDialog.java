@@ -31,6 +31,7 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.types.WSDLComponentSelectionDialog;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.types.WSDLComponentSelectionProvider;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.types.WSDLSetComponentHelper;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 
 public class InvokeSetDialog
@@ -84,14 +85,14 @@ public class InvokeSetDialog
             property = ""; 
             String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_TYPE");
             
-            provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLConstants.TYPE, validExtensions);
+            provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLEditorUtil.TYPE, validExtensions);
             dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, provider);
         }
         else {
             property = ""; 
             String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_ELEMENT");
             
-            provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLConstants.ELEMENT, validExtensions);
+            provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLEditorUtil.ELEMENT, validExtensions);
             dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, provider);
         }
         provider.setDialog(dialog);

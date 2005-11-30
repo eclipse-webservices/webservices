@@ -34,6 +34,9 @@ public class WSDLEditorUtil extends WSDLConstants
   protected NodeAssociationManager nodeAssociationManager = new NodeAssociationManager();
 
   protected HashMap elementNameToTypeMap = new HashMap();
+  
+  public static final int ELEMENT = 14;
+  public static final int TYPE = 15;
 
   public static WSDLEditorUtil getInstance()
   {

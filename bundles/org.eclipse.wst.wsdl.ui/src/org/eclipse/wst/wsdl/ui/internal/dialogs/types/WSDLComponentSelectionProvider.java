@@ -31,6 +31,7 @@ import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSelectionDi
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSelectionProvider;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSpecification;
 import org.eclipse.wst.xsd.ui.internal.util.XSDDOMHelper;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDImport;
@@ -86,7 +87,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
 			list.add("/definitions/message");
 			break;
 		}   
-		case WSDLConstants.TYPE :
+		case WSDLEditorUtil.TYPE :
 		{
 			list.add("/definitions/types/schema/simpleType");
 			list.add("/definitions/types/schema/complexType");
@@ -94,7 +95,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
 			list.add("/schema/simpleType");
 			break;
 		}
-		case WSDLConstants.ELEMENT :
+		case WSDLEditorUtil.ELEMENT :
 		{
 			list.add("/definitions/types/schema/element");
 			list.add("/schema/element");
@@ -537,11 +538,11 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
 		{
 			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_MATCHING_MESSAGES");
 		}   
-		case WSDLConstants.TYPE :
+		case WSDLEditorUtil.TYPE :
 		{
 			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_MATCHING_TYPES");
 		}
-		case WSDLConstants.ELEMENT :
+		case WSDLEditorUtil.ELEMENT :
 		{
 			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_MATCHING_ELEMENTS");
 		}
@@ -564,11 +565,11 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
 		{
 			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_MESSAGE_NAME");
 		}   
-		case WSDLConstants.TYPE :
+		case WSDLEditorUtil.TYPE :
 		{
 			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_TYPE_NAME");
 		}
-		case WSDLConstants.ELEMENT :
+		case WSDLEditorUtil.ELEMENT :
 		{
 			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_ELEMENT_NAME");
 		}

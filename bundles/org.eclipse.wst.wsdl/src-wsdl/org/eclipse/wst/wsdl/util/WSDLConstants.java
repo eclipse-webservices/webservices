@@ -103,10 +103,6 @@ public class WSDLConstants
    */
   public static final int TYPES = 13;
   
-  public static final int ELEMENT = 14;
-  public static final int TYPE = 15;
-  public static final int EXTENSIBILITY_ELEMENT = 24;
-
   /**
    * The element tag is <code>"binding"</code>.
    * @see #nodeType(String localName).
