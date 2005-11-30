@@ -33,7 +33,6 @@ import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.JavaVisibilityKind;
 import org.eclipse.jem.java.Method;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
@@ -77,8 +76,7 @@ public class Stub2BeanInfo
   
   public void setPackage(String pkgName)
   {
-    if (pkgName != null && pkgName.length() > 0)
-      package_ = manglePackageName(pkgName);
+	  package_ = pkgName;
   }
 
   public void addImports(String pkgName, String className)
@@ -106,16 +104,15 @@ public class Stub2BeanInfo
 
   public void setClass(String className)
   {
-    if (className != null && className.length() > 0)
-      class_ = mangleClassName(className);
+	  class_ = className;
   }
 
   private String toFullyQualifiedClassName(String pkgName, String className)
   {
     StringBuffer sb = new StringBuffer();
-    sb.append(manglePackageName(pkgName));
+    sb.append(pkgName);
     sb.append(".");
-    sb.append(mangleClassName(className));
+    sb.append(className);
     return sb.toString();
   }
 
@@ -135,36 +132,6 @@ public class Stub2BeanInfo
       return qname.substring(index+1, qname.length());
     else
       return qname;
-  }
-
-  private String manglePackageName(String s)
-  {
-    return replaceInvalidJavaChars(s);
-  }
-
-  private String mangleClassName(String s)
-  {
-    s = firstCharToUpperCase(WSDLUtils.resolveDotInPortName(s));
-    return replaceInvalidJavaChars(s);
-  }
-
-  private String replaceInvalidJavaChars(String s)
-  {
-    char[] c = s.toCharArray();
-    for (int i = 0; i < c.length; i++)
-    {
-      if (!Character.isJavaIdentifierPart(c[i]))
-        c[i] = '.';
-    }
-    return new String(c);
-  }
-
-  private String firstCharToUpperCase(String s)
-  {
-    StringBuffer sb = new StringBuffer();
-    sb.append(s.substring(0, 1).toUpperCase());
-    sb.append(s.substring(1, s.length()));
-    return sb.toString();
   }
 
   private String firstCharToLowerCase(String s)
@@ -391,7 +358,7 @@ public class Stub2BeanInfo
       w.write(" = (new ");
       w.write(serviceTokens.nextToken());
       w.write("Locator()).get");
-      w.write(replaceInvalidJavaChars(WSDLUtils.resolveDotInPortName(portTokens.nextToken())));
+      w.write(portTokens.nextToken());
       w.write("();");
       newLine(w);
       w.write("if (");

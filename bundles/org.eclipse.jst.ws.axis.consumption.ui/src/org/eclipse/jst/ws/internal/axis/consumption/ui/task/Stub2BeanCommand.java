@@ -35,8 +35,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.consumption.core.common.NameMappingUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -106,7 +106,7 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
     for (Iterator it = services.values().iterator(); it.hasNext();)
     {
       Service service = (Service)it.next();
-      String servicePkgName = WSDLUtils.getPackageName(service, pkg2nsMapping);
+      String servicePkgName = NameMappingUtils.getPackageName(service.getQName().getNamespaceURI(), pkg2nsMapping);
       String serviceClassName = computeClassName(service.getQName().getLocalPart());
       String jndiName = serviceClassName;
       Map ports = service.getPorts();
@@ -150,14 +150,14 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
             portTypes_.add(portTypeID.toString());
             Stub2BeanInfo stub2BeanInfo = new Stub2BeanInfo();
             stub2BeanInfo.setClientProject(clientProject_);
-            String portTypePkgName = WSDLUtils.getPackageName(portType, pkg2nsMapping);
+            String portTypePkgName = NameMappingUtils.getPackageName(portType.getQName().getNamespaceURI(), pkg2nsMapping);
             String portTypeClassName = computeClassName(portTypeQName.getLocalPart());
             stub2BeanInfo.setPackage(portTypePkgName);
             stub2BeanInfo.setClass(portTypeClassName + "Proxy");
             proxyBean_ = portTypePkgName+"."+portTypeClassName+"Proxy";
             if (jndiName.equals(portTypeClassName))
               portTypeClassName = portTypeClassName + "_PortType";
-            stub2BeanInfo.addSEI(portTypePkgName, portTypeClassName, servicePkgName, serviceClassName, jndiName, port.getName());
+            stub2BeanInfo.addSEI(portTypePkgName, portTypeClassName, servicePkgName, serviceClassName, jndiName, NameMappingUtils.getPortName(port.getName()));
             try
             {              
               stub2BeanInfo.write( monitor, environment.getStatusHandler() );
@@ -179,46 +179,10 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
     }
     return Status.OK_STATUS;
   }
-  
-  private final char UNDERSCORE = '_';
 
   private String computeClassName(String className)
   {
-    String classNameCopy = className;
-    int i = classNameCopy.indexOf(UNDERSCORE);
-    while (i != -1)
-    {
-      char c = classNameCopy.charAt(i+1);
-      if (Character.isLowerCase(c))
-      {
-        StringBuffer sb = new StringBuffer();
-        sb.append(classNameCopy.substring(0, i+1));
-        sb.append(Character.toUpperCase(c));
-        sb.append(classNameCopy.substring(i+2, classNameCopy.length()));
-        classNameCopy = sb.toString();
-      }
-      i = classNameCopy.indexOf(UNDERSCORE, i+1);
-    }
-    char[] cArray = new char[classNameCopy.length()];
-    boolean foundDigit = false;
-    for (int j = 0; j < cArray.length; j++)
-    {
-      char c = classNameCopy.charAt(j);
-      if (Character.isDigit(c))
-      {
-        cArray[j] = c;
-        foundDigit = true;
-      }
-      else
-      {
-        if (foundDigit)
-          cArray[j] = Character.toUpperCase(c);
-        else
-          cArray[j] = c;
-        foundDigit = false;
-      }
-    }
-    return new String(cArray);
+	  return NameMappingUtils.xmlNameToJavaClass(className);
   }
 
   /**
