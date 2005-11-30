@@ -12,6 +12,7 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
 
 import java.util.Vector;
+
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.AxisDeployCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.GeronimoAxisDeployCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand;
@@ -29,8 +30,6 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.UpdateWEBXMLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.BUCheckAxisDeploymentDescriptors;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.task.MoveDeploymentFilesTask;
-import org.eclipse.jst.ws.internal.axis.creation.ui.task.MoveJavaFilesTask;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.Skeleton2WSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.TDCheckAxisDeploymentDescriptors;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.UpdateAxisWSDDFileTask;
@@ -98,7 +97,6 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new Java2WSDLCommand());
 			commands.add(new RefreshProjectCommand());
 			commands.add(new WSDL2JavaCommand());
-			commands.add(new MoveJavaFilesTask());
 			commands.add(new UpdateAxisWSDDFileTask());
 			commands.add(new UpdateWEBXMLCommand(getWebServiceInfo()));
 			commands.add(new RefreshProjectCommand());
@@ -118,7 +116,6 @@ public class AxisWebService extends AbstractWebService
 		    commands.add(new TDCheckAxisDeploymentDescriptors());
 			commands.add(new CopyAxisJarCommand());
 		    commands.add(new WSDL2JavaCommand());
-		    commands.add(new MoveDeploymentFilesTask());
 		    commands.add(new Skeleton2WSDLCommand());
 		    commands.add(new UpdateWEBXMLCommand(getWebServiceInfo()));
 		    commands.add(new RefreshProjectCommand());
@@ -212,13 +209,8 @@ public class AxisWebService extends AbstractWebService
 	    registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", WSDL2JavaCommand.class);
 	    
 
-	    //MoveJavaFilesTask
-	    registry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", MoveJavaFilesTask.class);
-	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", MoveJavaFilesTask.class, "ServiceProject", new StringToIProjectTransformer());
-        registry.addMapping(BUAxisInputCommand.class, "ServiceServerTypeID", MoveJavaFilesTask.class);        
-	    
 	    //UpdateAxisWSDDFileTask
-	    registry.addMapping(MoveJavaFilesTask.class, "JavaWSDLParam", UpdateAxisWSDDFileTask.class);
+	    registry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", UpdateAxisWSDDFileTask.class);
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", UpdateAxisWSDDFileTask.class, "ServiceProject", new StringToIProjectTransformer());
         registry.addMapping(BUAxisInputCommand.class, "ServiceServerTypeID", UpdateAxisWSDDFileTask.class);
 	    
@@ -278,6 +270,7 @@ public class AxisWebService extends AbstractWebService
 	    // SkeletonConfigWidgetDefaultingCommand
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", SkeletonConfigWidgetDefaultingCommand.class);
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WsdlURI", SkeletonConfigWidgetDefaultingCommand.class);
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServiceServerTypeID", SkeletonConfigWidgetDefaultingCommand.class);
 	    
 	    // CheckAxisDeploymentDescriptorsTask
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", TDCheckAxisDeploymentDescriptors.class, "ServerProject", projectTransformer);
@@ -289,11 +282,6 @@ public class AxisWebService extends AbstractWebService
 //		WSDL2JavaCommand
 	  	dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "JavaWSDLParam", WSDL2JavaCommand.class);
 		
-	    // MoveDeploymentFilesTask
-	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", MoveDeploymentFilesTask.class, "ServerProject", projectTransformer);
-        dataRegistry.addMapping(TDAxisInputCommand.class, "ServiceServerTypeID", MoveDeploymentFilesTask.class);        
-	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", MoveDeploymentFilesTask.class);
-
 	    // CopyAxisJarCommand
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", projectTransformer);
 

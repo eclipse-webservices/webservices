@@ -175,7 +175,6 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
     catch (MalformedURLException murle)
     {
     }
-    javaWSDLParam.setOutput(root + wsdlFolderText_.getText());
     javaWSDLParam.setJavaOutput(root + skeletonFolderText_.getText());
 	  return javaWSDLParam;
   }

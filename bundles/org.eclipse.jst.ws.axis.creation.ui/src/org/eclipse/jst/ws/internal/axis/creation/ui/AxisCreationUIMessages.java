@@ -26,7 +26,6 @@ public final class AxisCreationUIMessages extends NLS {
 	public static String MSG_ERROR_CANNOT_LOAD_JAVA_BEAN;
 	public static String MSG_ERROR_JAVA_MOF_REFLECT_FAILED;
 	public static String MSG_ERROR_READ_BEAN;
-	public static String MSG_ERROR_MOVE_RESOURCE;
 	public static String MSG_ERROR_UPDATE_AXIS_WSDD;
 	public static String MSG_ERROR_JAVA_TO_METHOD;
 	public static String MSG_ERROR_UPDATE_WEB_XML;

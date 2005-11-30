@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton;
 
 import java.io.File;
 import java.net.MalformedURLException;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
@@ -20,8 +21,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public class SkeletonConfigWidgetDefaultingCommand extends AbstractDataModelOperation
@@ -29,6 +35,7 @@ public class SkeletonConfigWidgetDefaultingCommand extends AbstractDataModelOper
   private String wsdlURI;
   private IProject serverProject;
   private JavaWSDLParameter javaWSDLParam;
+  private String serviceServerTypeID_;
 
   public SkeletonConfigWidgetDefaultingCommand( )
   {
@@ -36,9 +43,24 @@ public class SkeletonConfigWidgetDefaultingCommand extends AbstractDataModelOper
   
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
+		IEnvironment environment = getEnvironment();
+		IStatus status = Status.OK_STATUS;
+		
     String root = getRootURL();
-    javaWSDLParam.setOutput( root + getOutputWSDLFolder());
-    javaWSDLParam.setJavaOutput(root + getOutputJavaFolder());  
+    String outputDir =	ResourceUtils.findResource(J2EEUtils.getWebInfPath( serverProject )).getLocation().toString();
+    javaWSDLParam.setOutput( outputDir );
+    javaWSDLParam.setJavaOutput(root + getOutputJavaFolder()); 
+	
+	String projectURL = ServerUtils.getEncodedWebComponentURL(serverProject, serviceServerTypeID_);
+	
+	if (projectURL == null) {
+	    status = StatusUtils.errorStatus(NLS.bind(AxisCreationUIMessages.MSG_ERROR_PROJECT_URL, new String[] { serverProject.toString()}));
+	    environment.getStatusHandler().reportError(status);
+	    return status;		  
+	} else {
+		javaWSDLParam.setProjectURL(projectURL);
+	}
+	
     return Status.OK_STATUS;
     
   }
@@ -122,4 +144,12 @@ public class SkeletonConfigWidgetDefaultingCommand extends AbstractDataModelOper
     
     return rootURL;
   }
+
+public String getServiceServerTypeID() {
+	return serviceServerTypeID_;
+}
+
+public void setServiceServerTypeID(String serviceServerTypeID) {
+	this.serviceServerTypeID_ = serviceServerTypeID;
+}
 }

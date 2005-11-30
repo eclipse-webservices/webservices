@@ -29,6 +29,8 @@ public final class AxisConsumptionCoreMessages extends NLS {
 	public static String MSG_PARSING_WSDL;
 	public static String MSG_ERROR_WSDL_JAVA_GENERATE;
 	public static String MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET;
+	public static String MSG_ERROR_MOVE_RESOURCE;
+	public static String MSG_ERROR_CREATE_TEMP_DIR;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, AxisConsumptionCoreMessages.class);

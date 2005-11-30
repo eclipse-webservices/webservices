@@ -12,6 +12,8 @@ package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,16 +24,23 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Target;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.consumption.core.plugin.WebServiceAxisConsumptionCorePlugin;
+import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.ILog;
+import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
@@ -43,6 +52,9 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 {
 
 	private JavaWSDLParameter javaWSDLParam_;
+	private File tempOutputWsdlFile;
+	private final String TEMP = "temp"; //$NON-NLS-1$
+	private final String WSDL_EXT = ".wsdl"; //$NON-NLS-1$
 
 	public Java2WSDLCommand() {
 	}	
@@ -72,10 +84,10 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 
 		ProgressUtils.report(monitor, NLS.bind(AxisConsumptionCoreMessages.MSG_GENERATE_WSDL, javaWSDLParam_.getBeanName() ));
 
-		return executeAntTask(environment);
+		return executeAntTask(environment, monitor);
 	}
 
-	protected IStatus executeAntTask(IEnvironment environment) {
+	protected IStatus executeAntTask(IEnvironment environment, IProgressMonitor monitor) {
 
 		final class Emitter extends Java2WsdlAntTask {
 			public Emitter() {
@@ -87,6 +99,7 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 			}
 		}
 
+		IStatus status = Status.OK_STATUS;
 		Emitter emitter = new Emitter();
 		emitter.createClasspath().setPath(javaWSDLParam_.getClasspath());
 		environment.getLog().log(ILog.INFO, 5008, this, "executeAntTask", "Class Path = "+ javaWSDLParam_.getClasspath());
@@ -108,8 +121,20 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 		
 		emitter.setUse(javaWSDLParam_.getUse());
 		environment.getLog().log(ILog.INFO, 5014, this, "executeAntTask", "Use = "+ javaWSDLParam_.getUse());
+				
+		// create temporary directory to use as output directory for java2wsdl
+		IPath pluginStateLoc = WebServiceAxisConsumptionCorePlugin.getInstance().getStateLocation();
+		File tempDir = new File(pluginStateLoc.toString());
+		File newTempFile = null;
+		try {
+			newTempFile = File.createTempFile(TEMP, WSDL_EXT, tempDir);
+			tempOutputWsdlFile = newTempFile;
+		} catch (Exception e) {
+			tempOutputWsdlFile = new File (pluginStateLoc.append(TEMP+WSDL_EXT).toString());
+		}
+
+		emitter.setOutput(tempOutputWsdlFile);
 		
-		emitter.setOutput(new File(javaWSDLParam_.getOutputWsdlLocation()));
 		environment.getLog().log(ILog.INFO, 5015, this, "executeAntTask", "WSDL Location = "+ javaWSDLParam_.getOutputWsdlLocation());
 		
 		emitter.setNamespace(javaWSDLParam_.getNamespace());
@@ -136,16 +161,53 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 	
 		try {
 			emitter.execute();
+			status = moveGeneratedWSDL(environment, monitor);
 		} catch (BuildException e) {
 			environment.getLog().log(ILog.ERROR, 5018, this, "executeAntTask", e);
-			IStatus status = StatusUtils.errorStatus(
+			status = StatusUtils.errorStatus(
 			AxisConsumptionCoreMessages.MSG_ERROR_JAVA_WSDL_GENERATE + " " //$NON-NLS-1$
 			+e.getCause().toString());
 			environment.getStatusHandler().reportError(status);
 			return status;
+	} finally {
+		if (tempOutputWsdlFile.exists()) {
+			tempOutputWsdlFile.delete();
 		}
-		return Status.OK_STATUS;
+	}
+		return status;
 
+	}
+	
+	public IStatus moveGeneratedWSDL(IEnvironment environment,
+			IProgressMonitor monitor) {
+		IStatus status = Status.OK_STATUS;
+		FileInputStream finStream = null;
+		
+		ResourceContext context = WebServicePlugin.getInstance().getResourceContext();
+		IStatusHandler statusHandler = environment.getStatusHandler();
+		
+		String outputWsdlLocation = javaWSDLParam_.getOutputWsdlLocation();
+		IPath targetPath = FileResourceUtils
+		.getWorkspaceRootRelativePath(new Path(outputWsdlLocation));
+		try {
+			finStream = new FileInputStream(tempOutputWsdlFile);
+			
+			FileResourceUtils.createFile(context, targetPath.makeAbsolute(), finStream,
+					monitor, statusHandler);
+		} catch (Exception e) {
+			try {
+				finStream.close();
+			} catch (IOException e1) {
+			}
+			status = StatusUtils.errorStatus(NLS.bind(AxisConsumptionCoreMessages.MSG_ERROR_MOVE_RESOURCE,new String[]{e.getLocalizedMessage()}), e);
+			environment.getStatusHandler().reportError(status);
+		} finally {
+			try {
+				finStream.close();
+			} catch (IOException e) {
+			}
+		}
+		return status;
 	}
 	
 	public Status undo(IEnvironment environment) {
