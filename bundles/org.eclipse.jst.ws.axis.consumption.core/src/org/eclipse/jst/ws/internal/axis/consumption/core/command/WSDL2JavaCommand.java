@@ -186,17 +186,19 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 				deployFile = (String) iterator.next();
 				File source = new File(deployFile);
 				finStream = new FileInputStream(source);
-				if (deployFile.startsWith(tempOutputDir)) {
-					fileName = deployFile.substring(tempOutputDir.length());
-					targetPath = outputPath.append(fileName).makeAbsolute();
-					FileResourceUtils.createFile(context,  
-							targetPath,
-							finStream,
-							monitor,
-							statusHandler);
-					movedDeployFiles[i++]= ResourceUtils.findResource(targetPath).getLocation().toString();
+				if (finStream != null) {
+					if (deployFile.startsWith(tempOutputDir)) {
+						fileName = deployFile.substring(tempOutputDir.length());
+						targetPath = outputPath.append(fileName).makeAbsolute();
+						FileResourceUtils.createFile(context,  
+								targetPath,
+								finStream,
+								monitor,
+								statusHandler);
+						movedDeployFiles[i++]= ResourceUtils.findResource(targetPath).getLocation().toString();
+					}
+					finStream.close();
 				}
-				finStream.close();
 			}
 			
 			javaWSDLParam.setDeploymentFiles(movedDeployFiles);
@@ -213,21 +215,24 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 				javaFile = (String) iterator.next();
 				File source = new File(javaFile);
 				finStream = new FileInputStream(source);
-				// for the case Java2WSDL-WSDL2Java, no need to move Java files, just delete them
-				if (!javaWSDLParam.isMetaInfOnly()) {
-					// for the case WSDL2Java, move Java files to Java output directory
-					if (javaFile.startsWith(tempOutputDir)) {
-						fullClassName = javaFile.substring(tempOutputDir.length());
-						targetPath = javaOutputPath.append(fullClassName).makeAbsolute();
-						FileResourceUtils.createFile(context,  
-								targetPath,
-								finStream,
-								monitor,
-								statusHandler);
-						movedJavaFiles[i++]= ResourceUtils.findResource(targetPath).getLocation().toString();
+				if (finStream != null) {
+					// for the case Java2WSDL-WSDL2Java, no need to move Java files, just delete them
+					if (!javaWSDLParam.isMetaInfOnly()) {
+						// for the case WSDL2Java, move Java files to Java output directory
+						if (javaFile.startsWith(tempOutputDir)) {
+							fullClassName = javaFile.substring(tempOutputDir.length());
+							targetPath = javaOutputPath.append(fullClassName).makeAbsolute();
+							FileResourceUtils.createFile(context,  
+									targetPath,
+									finStream,
+									monitor,
+									statusHandler);
+							movedJavaFiles[i++]= ResourceUtils.findResource(targetPath).getLocation().toString();
+						}
 					}
+					
+					finStream.close();
 				}
-				finStream.close();
 			}
 			javaWSDLParam.setJavaFiles(movedJavaFiles);
 			

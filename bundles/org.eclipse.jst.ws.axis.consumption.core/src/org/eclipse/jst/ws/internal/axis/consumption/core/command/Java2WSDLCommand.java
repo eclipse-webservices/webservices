@@ -191,19 +191,19 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 		.getWorkspaceRootRelativePath(new Path(outputWsdlLocation));
 		try {
 			finStream = new FileInputStream(tempOutputWsdlFile);
-			
-			FileResourceUtils.createFile(context, targetPath.makeAbsolute(), finStream,
-					monitor, statusHandler);
-		} catch (Exception e) {
-			try {
+			if (finStream != null) {
+				FileResourceUtils.createFile(context, targetPath.makeAbsolute(), finStream,
+						monitor, statusHandler);
 				finStream.close();
-			} catch (IOException e1) {
 			}
+		} catch (Exception e) {
 			status = StatusUtils.errorStatus(NLS.bind(AxisConsumptionCoreMessages.MSG_ERROR_MOVE_RESOURCE,new String[]{e.getLocalizedMessage()}), e);
 			environment.getStatusHandler().reportError(status);
 		} finally {
 			try {
-				finStream.close();
+				if (finStream != null) {
+					finStream.close();
+				}
 			} catch (IOException e) {
 			}
 		}
