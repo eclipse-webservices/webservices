@@ -18,6 +18,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.core.command.GeronimoAxisDep
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisOutputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisRunInputCommand;
@@ -94,11 +95,11 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new CopyAxisJarCommand());
 			commands.add(new WaitForAutoBuildCommand());
 			commands.add(new Java2WSDLCommand());
-//			commands.add(new RefreshProjectCommand());
+			commands.add(new RefreshProjectCommand());
 			commands.add(new WSDL2JavaCommand());
 			commands.add(new UpdateAxisWSDDFileTask());
 			commands.add(new UpdateWEBXMLCommand(getWebServiceInfo()));
-//			commands.add(new RefreshProjectCommand());
+			commands.add(new RefreshProjectCommand());
 			commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
 			
@@ -117,7 +118,7 @@ public class AxisWebService extends AbstractWebService
 		    commands.add(new WSDL2JavaCommand());
 		    commands.add(new Skeleton2WSDLCommand());
 		    commands.add(new UpdateWEBXMLCommand(getWebServiceInfo()));
-//		    commands.add(new RefreshProjectCommand());
+		    commands.add(new RefreshProjectCommand());
 		    commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
 			
@@ -154,7 +155,7 @@ public class AxisWebService extends AbstractWebService
 			    commands.add(new AxisDeployCommand());
 			}
 			commands.add( new CopyDeploymentFileCommand( project ) );
-//			commands.add(new RefreshProjectCommand());
+			commands.add(new RefreshProjectCommand());
 			if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
 				commands.add(new ComputeAxisSkeletonBeanCommand());
 				commands.add(new OpenJavaEditorCommand());
@@ -202,7 +203,7 @@ public class AxisWebService extends AbstractWebService
 	    registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", Java2WSDLCommand.class);
 	    
 	    //RefreshProjectCommand
-//	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", new StringToIProjectTransformer());
+	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", new StringToIProjectTransformer());
 	    
 	    //WSDL2JavaCommand
 	    registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", WSDL2JavaCommand.class);
@@ -243,7 +244,7 @@ public class AxisWebService extends AbstractWebService
 	    registry.addMapping(AxisRunInputCommand.class, "JavaWSDLParam", AxisDeployCommand.class);
 		
 	    //RefreshProjectCommand
-//	    registry.addMapping(AxisRunInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", new StringToIProjectTransformer());
+	    registry.addMapping(AxisRunInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", new StringToIProjectTransformer());
 
 	    
 	    
@@ -294,7 +295,7 @@ public class AxisWebService extends AbstractWebService
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", UpdateWEBXMLCommand.class, "ServerProject", projectTransformer);
 
 	    // RefreshProjectCommand
-//	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", projectTransformer);
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", projectTransformer);
 	    
 	    // BuildProjectCommand
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", BuildProjectCommand.class, "Project", projectTransformer);
