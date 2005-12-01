@@ -123,19 +123,19 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			}
 			environment.getLog().log(ILog.INFO, 5020, this, "execute", "WSDL Location = " + javaWSDLParam.getInputWsdlLocation());
 			
-			// The default timeout for wsdl2java is 45 seconds.  
+			// If timeout is not set, the default timeout for wsdl2java is 45 seconds.  
 			// The user can change the timeout value by setting 
 			// "-DAxisWsdl2JavaTimeout=<timeout value in seconds>" as VM argument
 			// For example, enter "-DAxisWsdl2JavaTimeout=300" 
 			// to change the timeout to 300 seconds.
 			
-			long timeout=45;
 			String wsdl2JavaTimeoutProperty = System.getProperty("AxisWsdl2JavaTimeout");
 			if (wsdl2JavaTimeoutProperty != null) {
+				long timeout;
 				timeout = new Integer(wsdl2JavaTimeoutProperty).longValue();
+				wsdl2Java.setTimeout(timeout);
+				environment.getLog().log(ILog.INFO, 5091, this, "execute", "Timeout = " + timeout);
 			}
-			wsdl2Java.setTimeout(timeout);
-			environment.getLog().log(ILog.INFO, 5091, this, "execute", "Timeout = " + timeout);
 			
 			ProgressUtils.report(monitor, NLS.bind(AxisConsumptionCoreMessages.MSG_PARSING_WSDL, javaWSDLParam.getInputWsdlLocation() ) );
 			
