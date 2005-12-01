@@ -72,7 +72,7 @@ public class ScenarioDefaults
   
   public boolean installClientDefault()
   {
-    return false;
+    return true;
   }
   
   public boolean launchWebserviceExplorerDefault()
