@@ -230,8 +230,8 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
   {
     // force WSI compliance by default
     
-    wsi_ssbp_Types_.select(wsi_ssbp_Types_.indexOf(WstWSUIPluginMessages.IGNORE_NON_WSI));
-    int apSelection = wsi_ap_Types_.indexOf(WstWSUIPluginMessages.IGNORE_NON_WSI);
+    wsi_ssbp_Types_.select(wsi_ssbp_Types_.indexOf(WstWSUIPluginMessages.WARN_NON_WSI));
+    int apSelection = wsi_ap_Types_.indexOf(WstWSUIPluginMessages.WARN_NON_WSI);
     wsi_ap_Types_.select(apSelection);
     savedSSBPSetting_ = -1;  // do not restore saved SSBP setting
     processAPSelection(apSelection);
