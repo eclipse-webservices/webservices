@@ -13,9 +13,10 @@ package org.eclipse.jst.ws.internal.axis.consumption.ui.util;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Vector;
 
-import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -24,9 +25,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
@@ -80,7 +84,6 @@ public class ClasspathUtils {
 		String[] moduleClasspath = new String[0];
 		ArrayList projectClasspath = new ArrayList();
 		boolean needJavaClasspath = false;
-		IFolder webModuleServerRoot = null;
 		
 		IVirtualComponent comp = ComponentCore.createComponent(project);
 		if (comp != null) {
@@ -88,17 +91,37 @@ public class ClasspathUtils {
 			
 			if (J2EEUtils.isEARComponent(comp)) {
 				moduleClasspath = getClasspathForEARProject(project, comp.getName());
+//				 add module classpath to project classpath
+				for (int j = 0; j < moduleClasspath.length; j++) {
+					projectClasspath.add(moduleClasspath[j]);
+				}
 			} else if (J2EEUtils.isWebComponent(comp) || J2EEUtils.isJavaComponent(comp)) {
 				needJavaClasspath = true;
-				webModuleServerRoot = J2EEUtils.getOutputContainerRoot(comp);
-				if (webModuleServerRoot != null) { 
-					moduleClasspath = new String[] { webModuleServerRoot.getLocation().toOSString() };
+				
+				IContainer outputContainer = null;
+				IResource fragmentRoot = null;
+				IPackageFragmentRoot[] pkgFragmentRoot = ResourceUtils.getJavaPackageFragmentRoots(project);
+				ArrayList webModuleClasspath = new ArrayList();
+				try {
+					for (int i = 0; i < pkgFragmentRoot.length; i++) {
+						fragmentRoot = pkgFragmentRoot[i].getCorrespondingResource();
+						if (fragmentRoot != null
+								&& (fragmentRoot.getProject().equals(project))
+								&& (fragmentRoot.getType() != IResource.FILE)) {					
+							outputContainer = J2EEProjectUtilities.getOutputContainer(project, pkgFragmentRoot[i]);
+							if (outputContainer != null) { 
+								webModuleClasspath.add(outputContainer.getLocation().toOSString());
+							}
+						}
+					}
+				} catch (JavaModelException e) {
 				}
-			}
-			
-			// add module classpath to project classpath
-			for (int j = 0; j < moduleClasspath.length; j++) {
-				projectClasspath.add(moduleClasspath[j]);
+				
+				// add Web module classpath to project classpath
+				Iterator iter = webModuleClasspath.iterator();
+				while (iter.hasNext()) {
+					projectClasspath.add((String) iter.next());
+				}		
 			}
 			
 			if (!isDependent) {
