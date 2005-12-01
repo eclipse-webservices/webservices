@@ -12,8 +12,6 @@ package org.eclipse.wst.wsdl.tests;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Vector;
 
 import junit.framework.Assert;
@@ -21,21 +19,14 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
-import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
-
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.tests.util.XMLDiff;
-
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Element;

@@ -11,10 +11,6 @@
 
 package org.eclipse.wst.wsdl.validation.internal.eclipse;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
 
 /**
