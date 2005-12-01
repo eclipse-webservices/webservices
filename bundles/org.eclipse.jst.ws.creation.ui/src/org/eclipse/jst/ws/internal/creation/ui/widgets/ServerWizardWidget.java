@@ -59,9 +59,11 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
   private String INFOPOP_PWPR_GROUP_SCENARIO_SERVICE = "PWPR0011";
   private Button startService_;
   
+  /*CONTEXT_ID PWPR0017 for the Install Service check box of the Scenario page of Service wizard*/
+  private String INFOPOP_PWPR_CHECKBOX_INSTALL_SERVICE = "PWPR0017";
   private Button installService_;
   
-  /*CONTEXT_ID PWPR0009 for the Start Web Project check box check box of the Project Page*/
+  /*CONTEXT_ID PWPR0009 for the Start Web Project check box of the Project Page*/
   private String INFOPOP_PWPR_CHECKBOX_START_WEB_PROJECT = "PWPR0009";
   
   /*CONTEXT_ID PWPR0013 for the test service checkbox of the project page*/  
@@ -112,10 +114,9 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor
     buttonsGroup.setLayoutData( buttonGrid );
     
     // Create install service check box.
-    // TODO: add correct infopop here
     installService_ = utils.createCheckbox( buttonsGroup, ConsumptionUIMessages.BUTTON_INSTALL_SERVICE_WEB_PROJECT,
     		ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_INSTALL_SERVICE_WEB_PROJECT,
-                                          INFOPOP_PWPR_CHECKBOX_START_WEB_PROJECT );
+                                          INFOPOP_PWPR_CHECKBOX_INSTALL_SERVICE );
     installService_ .addSelectionListener( new SelectionAdapter()
                                         {
                                           public void widgetSelected( SelectionEvent evt )

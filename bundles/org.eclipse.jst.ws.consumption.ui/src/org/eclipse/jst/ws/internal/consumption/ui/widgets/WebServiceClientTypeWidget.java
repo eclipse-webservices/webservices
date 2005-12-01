@@ -33,6 +33,10 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   
   /*CONTEXT_ID PWPR0014 for the Web Service Client Type combo box of the Project Page*/
   private String INFOPOP_PWPR_COMBO_CLIENTTYPE = "PWPR0014";
+
+  /*CONTEXT_ID PWPR0016 for the Install Client check box of the Scenario page of Service and Client wizards*/
+  private String INFOPOP_PWPR_CHECKBOX_INSTALL_CLIENT = "PWPR0016";
+  
   private Combo  clientTypeCombo_;
   
   private Button installClient_;
@@ -67,10 +71,9 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
     buttonGrid.horizontalSpan = 2;
     buttonGroup.setLayoutData( buttonGrid );
     
-//  TODO: add correct infopop here
     installClient_ = utils.createCheckbox( buttonGroup, ConsumptionUIMessages.BUTTON_INSTALL_CLIENT_WEB_PROJECT,
 			ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_INSTALL_CLIENT_WEB_PROJECT,
-			INFOPOP_PWPR_COMBO_CLIENTTYPE );
+			INFOPOP_PWPR_CHECKBOX_INSTALL_CLIENT );
     
     
     
