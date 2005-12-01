@@ -120,12 +120,14 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "MonitorService", ComputeEndpointCommand.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "PublishService", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "GenerateProxy", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InstallClient", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ResourceContext", ServerWizardWidget.class);
     
     // After ServerWizardWidget
     dataRegistry.addMapping(ServerWizardWidget.class, "ServiceTypeRuntimeServer", ServerWizardWidgetOutputCommand.class );
     dataRegistry.addMapping(ServerWizardWidget.class, "InstallService", ServerWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServerWizardWidget.class, "InstallClient", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "StartService", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "TestService", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "MonitorService", CreateMonitorCommand.class);
@@ -458,6 +460,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "PublishService", ServerExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "PublishService", PublishWSWidget.class, "PublishToPublicUDDI", null);
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "GenerateProxy", ServerRuntimeSelectionWidgetDefaultingCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "InstallClient", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestService", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "ResourceContext", ClientExtensionDefaultingCommand.class);
       

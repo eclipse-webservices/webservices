@@ -35,7 +35,7 @@ public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperat
     return new Boolean( getScenarioContext().getMonitorWebService());
   }
   
-  public Boolean getInstallService()
+  public Boolean getInstallClient()
   {
     return new Boolean( getScenarioContext().getInstallClient() );  
   }
