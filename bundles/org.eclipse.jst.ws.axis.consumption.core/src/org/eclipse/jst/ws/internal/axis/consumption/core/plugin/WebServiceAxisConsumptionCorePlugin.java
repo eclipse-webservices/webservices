@@ -47,7 +47,6 @@ public class WebServiceAxisConsumptionCorePlugin extends Plugin
 	*/
 	public WebServiceAxisConsumptionCorePlugin() {
 		super();
-		System.out.println("WebServiceAxisConsumptionCorePlugin");
 		if (instance_ == null) {
 			instance_ = this;
 		}

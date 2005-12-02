@@ -430,7 +430,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     
     moduleProject_.setItems(projectNames);
     moduleProject_.setText(selectedModuleProject);
-    System.out.println("moduleProject_ = "+moduleProject_.getText()+"..");
     handleProjectChanged();
     listenersOn();
   }
