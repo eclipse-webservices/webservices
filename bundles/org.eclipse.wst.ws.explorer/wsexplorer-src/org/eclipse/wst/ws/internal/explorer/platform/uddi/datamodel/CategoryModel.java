@@ -23,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.Vector;
 import javax.servlet.ServletContext;
@@ -31,6 +32,8 @@ import org.eclipse.wst.ws.internal.datamodel.Element;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.util.HTMLUtils;
+import org.eclipse.wst.ws.internal.model.v10.taxonomy.Category;
+import org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy;
 import org.uddi4j.util.KeyedReference;
 
 public class CategoryModel extends BasicModel
@@ -164,6 +167,31 @@ public class CategoryModel extends BasicModel
   private final boolean isEnclosedInQuotes(String string)
   {
     return string.startsWith("\"") && string.endsWith("\"");
+  }
+
+  public final void loadFromTaxonomy(Taxonomy taxonomy)
+  {
+    String name = taxonomy.getName();
+    CategoryElement root = new CategoryElement(name,null,this);
+    setRootElement(root);
+    categoryElements_ = new Hashtable();
+    for (Iterator it = taxonomy.getCategory().iterator(); it.hasNext();)
+    {
+      addCategory(root, (Category)it.next());
+    }
+  }
+
+  private void addCategory(CategoryElement parent, Category category)
+  {
+    String keyName = category.getName();
+    String keyValue = category.getCode();
+    CategoryElement child = new CategoryElement(keyName,new KeyedReference(keyName,keyValue,tModelKey_),this);
+    parent.connect(child,UDDIModelConstants.REL_SUBCATEGORIES,ModelConstants.REL_OWNER);
+    categoryElements_.put(keyValue, child);   
+    for (Iterator it = category.getCategory().iterator(); it.hasNext();)
+    {
+      addCategory(child, (Category)it.next());
+    }
   }
 
   public final byte loadFromDefaultDataFile()

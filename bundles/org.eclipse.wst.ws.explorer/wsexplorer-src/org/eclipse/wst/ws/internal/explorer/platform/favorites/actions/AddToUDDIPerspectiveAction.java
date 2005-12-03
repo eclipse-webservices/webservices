@@ -14,6 +14,7 @@ package org.eclipse.wst.ws.internal.explorer.platform.favorites.actions;
 import java.io.File;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Vector;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
@@ -23,6 +24,7 @@ import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.Favorit
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUDDIRegistryFolderElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUDDIServiceFolderElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUDDIServiceInterfaceFolderElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUserDefUDDIRegistryFolderElement;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
@@ -34,6 +36,8 @@ import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.RegistryNo
 import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.UDDIMainNode;
 import org.eclipse.wst.ws.internal.explorer.platform.util.URLUtils;
 import org.eclipse.wst.ws.internal.explorer.platform.util.Validator;
+import org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy;
+import org.eclipse.wst.ws.internal.model.v10.uddiregistry.Taxonomies;
 
 public abstract class AddToUDDIPerspectiveAction extends MultipleLinkAction {
     public AddToUDDIPerspectiveAction(Controller controller) {
@@ -64,8 +68,13 @@ public abstract class AddToUDDIPerspectiveAction extends MultipleLinkAction {
         return "favorites/actions/FavoritesAddToUDDIPerspectiveActionJSP.jsp";
     }
 
-    protected boolean createRegistryInUDDIPerspective(String inquiryAPI, String publishAPI, String registryName, String registrationURL,boolean useExisting) {
-        Vector registryNodes = getRegistryNodesByInquiryURL(inquiryAPI);
+    protected boolean createRegistryInUDDIPerspective(String inquiryAPI, String publishAPI, String registryName, String registrationURL, boolean useExisting)
+    {
+      return createRegistryInUDDIPerspective(inquiryAPI, publishAPI, registryName, registrationURL, null, null, null, useExisting);
+    }
+
+    protected boolean createRegistryInUDDIPerspective(String inquiryAPI, String publishAPI, String registryName, String registrationURL, String defaultLogin, String defaultPassword, Taxonomies taxonomies, boolean useExisting) {
+      Vector registryNodes = getRegistryNodesByInquiryURL(inquiryAPI);
         if (registryNodes != null)
         {
           if (useExisting)
@@ -97,6 +106,12 @@ public abstract class AddToUDDIPerspectiveAction extends MultipleLinkAction {
 
         if (Validator.validateURL(registrationURL))
             propertyTable.put(UDDIActionInputs.REGISTRATION_URL,registrationURL);
+
+        if (defaultLogin != null)
+          propertyTable.put(UDDIActionInputs.UDDI_USERNAME, defaultLogin);
+
+        if (defaultPassword != null)
+          propertyTable.put(UDDIActionInputs.UDDI_PASSWORD, defaultPassword);
             
         // If user-defined category metadata exists, search and make the associations.
         StringBuffer directoryBuffer = new StringBuffer();
@@ -113,6 +128,25 @@ public abstract class AddToUDDIPerspectiveAction extends MultipleLinkAction {
         // run the action
         if (!openRegAction.run())
             return false;
+        
+        if (taxonomies != null)
+        {
+          Hashtable taxonomyTable = new Hashtable();
+          for (Iterator it = taxonomies.getTaxonomy().iterator(); it.hasNext();)
+          {
+            Taxonomy taxonomy = (Taxonomy)it.next();
+            String name = taxonomy.getName();
+            String tmodelKey = taxonomy.getTmodelKey();
+            CategoryModel catModel = new CategoryModel();
+            catModel.setDisplayName(name);
+            catModel.setCategoryKey(name);
+            catModel.setTModelKey(tmodelKey);
+            catModel.loadFromTaxonomy(taxonomy);
+            taxonomyTable.put(name, catModel);
+          }
+          RegistryElement regElement = (RegistryElement)(controller_.getUDDIPerspective().getNavigatorManager().getSelectedNode().getTreeElement());
+          regElement.setUserDefinedCategories(taxonomyTable);
+        }
         
         if (categoryFiles != null && categoryFiles.length > 0)
         {
@@ -203,6 +237,8 @@ public abstract class AddToUDDIPerspectiveAction extends MultipleLinkAction {
         // favorites folder element being selected.
         if (favoritesFolderElement instanceof FavoritesUDDIRegistryFolderElement)
             return new AddRegistryToUDDIPerspectiveAction(controller);
+        else if (favoritesFolderElement instanceof FavoritesUserDefUDDIRegistryFolderElement)
+            return new AddUserDefRegistryToUDDIPerspectiveAction(controller);
         else if (favoritesFolderElement instanceof FavoritesUDDIBusinessFolderElement)
             return new AddBusinessToUDDIPerspectiveAction(controller);
         else if (favoritesFolderElement instanceof FavoritesUDDIServiceFolderElement)

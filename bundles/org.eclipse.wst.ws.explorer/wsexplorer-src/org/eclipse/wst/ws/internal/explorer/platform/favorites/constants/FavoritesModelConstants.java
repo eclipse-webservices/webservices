@@ -19,12 +19,14 @@ public class FavoritesModelConstants {
     public final static String REL_UDDI_BUSINESS_FOLDER_NODE = "relUDDIBusinessFolderNode";
     public final static String REL_UDDI_SERVICE_INTERFACE_FOLDER_NODE = "relUDDIServiceInterfaceFolderNode";
     public final static String REL_UDDI_REGISTRY_FOLDER_NODE = "relUDDIRegistryFolerNode";
+    public final static String REL_USER_DEF_UDDI_REGISTRY_FOLDER_NODE = "relUserDefUDDIRegistryFolderNode";
     public final static String REL_WSIL_NODE = "relWSILNode";
     public final static String REL_WSDL_SERVICE_NODE = "relWSDLServiceNode";
     public final static String REL_UDDI_SERVICE_NODE = "relUDDIServiceNode";
     public final static String REL_UDDI_BUSINESS_NODE = "relUDDIBusinessNode";
     public final static String REL_UDDI_SERVICE_INTERFACE_NODE = "relUDDIServiceInterfaceNode";
     public final static String REL_UDDI_REGISTRY_NODE = "relUDDIRegistryNode";
+    public final static String REL_USER_DEF_UDDI_REGISTRY_NODE = "relUserDefUDDIRegistryNode";
 
     // Properties
     public final static String PROP_PLUGIN_METADATA_DIRECTORY = "pluginMetadataDirectory";

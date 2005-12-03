@@ -859,53 +859,53 @@
     var table = getTable(tableContainerId);
     var tableBody = table.getElementsByTagName("TBODY").item(0);
     var newRow = document.createElement("tr");
-    var column0 = document.createElement("td");
+    //var column0 = document.createElement("td");
     var column1 = document.createElement("td");
-    var column2 = document.createElement("td");
-    var column3 = document.createElement("td");
-    var column4 = document.createElement("td");
+    //var column2 = document.createElement("td");
+    //var column3 = document.createElement("td");
+    //var column4 = document.createElement("td");
     
-    column0.className = "checkboxcells";
+    //column0.className = "checkboxcells";
     column1.className = "tablecells";
     column1.width = "15%";
-    column2.className = "tablecells";
-    column2.width = "10%";
-    column3.className = "tablecells";
-    column3.width = "70%";
-    column4.className = "tablecells";
+    //column2.className = "tablecells";
+    //column2.width = "10%";
+    //column3.className = "tablecells";
+    //column3.width = "70%";
+    //column4.className = "tablecells";
     
-    var rowCheckbox = createRowCheckbox();
-    column0.appendChild(rowCheckbox);
+    //var rowCheckbox = createRowCheckbox();
+    //column0.appendChild(rowCheckbox);
     
-    column1.appendChild(createHiddenElement("",fileName));  <%// original file name%>
-    column1.appendChild(createHiddenElement("",hasError));  <%// mode%>
-    column1.appendChild(createHiddenElement("",tModelKey)); <%// tModelKey%>
+    //column1.appendChild(createHiddenElement("",fileName));  <%// original file name%>
+    //column1.appendChild(createHiddenElement("",hasError));  <%// mode%>
+    //column1.appendChild(createHiddenElement("",tModelKey)); <%// tModelKey%>
     column1.appendChild(document.createTextNode(categoryName));
     
-    column2.appendChild(document.createTextNode(isChecked));
+    //column2.appendChild(document.createTextNode(isChecked));
     
-    if (hasError)
-    {
-      column3.appendChild(createHiddenElement("<%=UDDIActionInputs.CATEGORY_TMODEL_KEY%>",tModelKey));
-      var fileInput = document.createElement("input");
-      fileInput.setAttribute("name","<%=UDDIActionInputs.CATEGORY_FILENAME%>");
-      fileInput.setAttribute("type","file");
-      fileInput.title = "<%=HTMLUtils.JSMangle(uddiPerspective.getMessage("FORM_CONTROL_TITLE_CATEGORY_FILE"))%>";
-      fileInput.className = "tablefilebrowse";
-      column3.appendChild(fileInput);
-      addDetailsUserDefinedCategoryRowCancelLink(tableContainerId,column4,table.rows.length);
-    }
-    else
-    {
-      column3.appendChild(document.createTextNode(fileName));
-      addDetailsUserDefinedCategoryRowEditLink(tableContainerId,column4,table.rows.length);
-    }
+    //if (hasError)
+    //{
+    //  column3.appendChild(createHiddenElement("<%=UDDIActionInputs.CATEGORY_TMODEL_KEY%>",tModelKey));
+    //  var fileInput = document.createElement("input");
+    //  fileInput.setAttribute("name","<%=UDDIActionInputs.CATEGORY_FILENAME%>");
+    //  fileInput.setAttribute("type","file");
+    //  fileInput.title = "<%=HTMLUtils.JSMangle(uddiPerspective.getMessage("FORM_CONTROL_TITLE_CATEGORY_FILE"))%>";
+    //  fileInput.className = "tablefilebrowse";
+    //  column3.appendChild(fileInput);
+    //  addDetailsUserDefinedCategoryRowCancelLink(tableContainerId,column4,table.rows.length);
+    //}
+    //else
+    //{
+    //  column3.appendChild(document.createTextNode(fileName));
+    //  addDetailsUserDefinedCategoryRowEditLink(tableContainerId,column4,table.rows.length);
+    //}
     
-    newRow.appendChild(column0);
+    //newRow.appendChild(column0);
     newRow.appendChild(column1);
-    newRow.appendChild(column2);
-    newRow.appendChild(column3);
-    newRow.appendChild(column4);
+    //newRow.appendChild(column2);
+    //newRow.appendChild(column3);
+    //newRow.appendChild(column4);
     
     tableBody.appendChild(newRow);
   }

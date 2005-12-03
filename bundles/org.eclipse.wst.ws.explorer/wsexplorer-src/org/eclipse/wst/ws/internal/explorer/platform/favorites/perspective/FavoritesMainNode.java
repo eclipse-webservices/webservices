@@ -19,6 +19,7 @@ import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.Favorit
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUDDIRegistryFolderElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUDDIServiceFolderElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUDDIServiceInterfaceFolderElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesUserDefUDDIRegistryFolderElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesWSDLServiceFolderElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesWSILFolderElement;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
@@ -35,6 +36,14 @@ public class FavoritesMainNode extends FavoritesNavigatorNode {
         addChild(favUDDIRegistryFolderNode);
         favUDDIRegistryFolderNode.setVisibilityOfChildren(false);
         favUDDIRegistryFolderElement.init((FavoritesMainElement)treeElement);
+
+        // Create User defined UDDI Registry Folder Node
+        FavoritesUserDefUDDIRegistryFolderElement favUserDefUDDIFolderElement = new FavoritesUserDefUDDIRegistryFolderElement(getMessage("FAVORITES_USER_DEF_UDDI_REGISTRIES_FOLDER_NODE"), treeElement.getModel(), nodeManager);
+        treeElement.connect(favUserDefUDDIFolderElement, FavoritesModelConstants.REL_USER_DEF_UDDI_REGISTRY_FOLDER_NODE, ModelConstants.REL_OWNER);
+        FavoritesUserDefUDDIRegistryFolderNode favUserDefUDDIFolderNode = new FavoritesUserDefUDDIRegistryFolderNode(favUserDefUDDIFolderElement, nodeManager, nodeDepth_ + 1);
+        addChild(favUserDefUDDIFolderNode);
+        favUserDefUDDIFolderNode.setVisibilityOfChildren(false);
+        favUserDefUDDIFolderElement.init((FavoritesMainElement)treeElement);
 
         // Create UDDI Business Folder Node
         FavoritesUDDIBusinessFolderElement favUDDIBusinessFolderElement = new FavoritesUDDIBusinessFolderElement(getMessage("FAVORITES_UDDI_BUSINESSES_FOLDER_NODE"), treeElement.getModel(), nodeManager);

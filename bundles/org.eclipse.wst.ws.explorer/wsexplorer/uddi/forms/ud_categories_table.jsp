@@ -27,12 +27,14 @@
     <td height=40 valign="bottom" align="left" nowrap class="labels">
       <strong><%=uddiPerspective.getMessage("FORM_LABEL_USER_DEFINED_CATEGORIES")%></strong>
     </td>
+    <!--
     <td height=40 valign="bottom" align="left" nowrap class="labels">
       <a href="javascript:editSelectedDetailsUserDefinedCategoryRows('<%=tableContainerId%>')"><%=uddiPerspective.getMessage("FORM_LINK_EDIT")%></a>
     </td>
     <td height=40 valign="bottom" align="left" nowrap class="labels">
       <a href="javascript:cancelSelectedDetailsUserDefinedCategoryRows('<%=tableContainerId%>')"><%=uddiPerspective.getMessage("FORM_LINK_CANCEL")%></a>
     </td>
+    -->
     <td nowrap width="90%">&nbsp;</td>
   </tr>
 </table>
@@ -46,11 +48,15 @@
 <div id="<%=tableContainerId%>" style="display:'';">
   <table width="95%" cellpadding=3 cellspacing=0 class="tableborder">
     <tr>
+      <!--
       <th class="checkboxcells" width=10><input type="checkbox" onClick="handleCheckAllClick('<%=tableContainerId%>',this)" title="<%=controller.getMessage("FORM_CONTROL_TITLE_SELECT_ALL_CHECK_BOX")%>"></th>
+      -->
       <th class="headercolor" width="15%"><%=uddiPerspective.getMessage("FORM_LABEL_NAME")%></th>
+      <!--
       <th class="headercolor" width="10%"><%=uddiPerspective.getMessage("FORM_LABEL_CHECKED")%></th>
       <th class="headercolor" width="70%"><%=uddiPerspective.getMessage("FORM_LABEL_FILE")%></th>
       <th class="headercolor" width="*"><%=controller.getMessage("FORM_LABEL_ACTIONS")%></th>
+      -->
     </tr>
   </table>
 </div>  
