@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: UDDIRegistry.java,v 1.1 2005/11/25 21:54:35 cbrealey Exp $
+ * $Id: UDDIRegistry.java,v 1.2 2005/12/03 04:06:49 cbrealey Exp $
  */
 package org.eclipse.wst.ws.internal.model.v10.uddiregistry;
 
@@ -69,7 +69,7 @@ public interface UDDIRegistry extends Registry {
 	 * @return the value of the '<em>Discovery URL</em>' attribute.
 	 * @see #setDiscoveryURL(String)
 	 * @see org.eclipse.wst.ws.internal.model.v10.uddiregistry.UDDIRegistryPackage#getUDDIRegistry_DiscoveryURL()
-	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI"
+	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI" required="true"
 	 * @generated
 	 */
 	String getDiscoveryURL();
@@ -95,7 +95,7 @@ public interface UDDIRegistry extends Registry {
 	 * @return the value of the '<em>Publication URL</em>' attribute.
 	 * @see #setPublicationURL(String)
 	 * @see org.eclipse.wst.ws.internal.model.v10.uddiregistry.UDDIRegistryPackage#getUDDIRegistry_PublicationURL()
-	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI"
+	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI" required="true"
 	 * @generated
 	 */
 	String getPublicationURL();
@@ -121,7 +121,7 @@ public interface UDDIRegistry extends Registry {
 	 * @return the value of the '<em>Secured Discovery URL</em>' attribute.
 	 * @see #setSecuredDiscoveryURL(String)
 	 * @see org.eclipse.wst.ws.internal.model.v10.uddiregistry.UDDIRegistryPackage#getUDDIRegistry_SecuredDiscoveryURL()
-	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI"
+	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI" required="true"
 	 * @generated
 	 */
 	String getSecuredDiscoveryURL();
@@ -147,7 +147,7 @@ public interface UDDIRegistry extends Registry {
 	 * @return the value of the '<em>Secured Publication URL</em>' attribute.
 	 * @see #setSecuredPublicationURL(String)
 	 * @see org.eclipse.wst.ws.internal.model.v10.uddiregistry.UDDIRegistryPackage#getUDDIRegistry_SecuredPublicationURL()
-	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI"
+	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI" required="true"
 	 * @generated
 	 */
 	String getSecuredPublicationURL();
@@ -173,7 +173,7 @@ public interface UDDIRegistry extends Registry {
 	 * @return the value of the '<em>Default Login</em>' attribute.
 	 * @see #setDefaultLogin(String)
 	 * @see org.eclipse.wst.ws.internal.model.v10.uddiregistry.UDDIRegistryPackage#getUDDIRegistry_DefaultLogin()
-	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
 	String getDefaultLogin();
@@ -199,7 +199,7 @@ public interface UDDIRegistry extends Registry {
 	 * @return the value of the '<em>Default Password</em>' attribute.
 	 * @see #setDefaultPassword(String)
 	 * @see org.eclipse.wst.ws.internal.model.v10.uddiregistry.UDDIRegistryPackage#getUDDIRegistry_DefaultPassword()
-	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
 	String getDefaultPassword();

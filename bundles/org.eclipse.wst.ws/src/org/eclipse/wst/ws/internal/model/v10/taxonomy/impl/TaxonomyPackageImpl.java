@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: TaxonomyPackageImpl.java,v 1.1 2005/11/25 21:54:35 cbrealey Exp $
+ * $Id: TaxonomyPackageImpl.java,v 1.2 2005/12/03 04:06:48 cbrealey Exp $
  */
 package org.eclipse.wst.ws.internal.model.v10.taxonomy.impl;
 
@@ -356,6 +356,15 @@ public class TaxonomyPackageImpl extends EPackageImpl implements TaxonomyPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getTaxonomy_TmodelKey() {
+		return (EAttribute)taxonomyEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public TaxonomyFactory getTaxonomyFactory() {
 		return (TaxonomyFactory)getEFactoryInstance();
 	}
@@ -404,6 +413,7 @@ public class TaxonomyPackageImpl extends EPackageImpl implements TaxonomyPackage
 		createEAttribute(taxonomyEClass, TAXONOMY__LOCATION);
 		createEAttribute(taxonomyEClass, TAXONOMY__NAME);
 		createEAttribute(taxonomyEClass, TAXONOMY__REF);
+		createEAttribute(taxonomyEClass, TAXONOMY__TMODEL_KEY);
 	}
 
 	/**
@@ -456,10 +466,11 @@ public class TaxonomyPackageImpl extends EPackageImpl implements TaxonomyPackage
 		initEClass(taxonomyEClass, Taxonomy.class, "Taxonomy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTaxonomy_Nlname(), this.getName_(), null, "nlname", null, 0, -1, Taxonomy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTaxonomy_Category(), this.getCategory(), null, "category", null, 0, -1, Taxonomy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTaxonomy_Id(), theXMLTypePackage.getAnyURI(), "id", null, 1, 1, Taxonomy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTaxonomy_Id(), theXMLTypePackage.getAnyURI(), "id", null, 0, 1, Taxonomy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTaxonomy_Location(), theXMLTypePackage.getAnyURI(), "location", null, 0, 1, Taxonomy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTaxonomy_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, Taxonomy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTaxonomy_Ref(), theXMLTypePackage.getAnyURI(), "ref", null, 0, 1, Taxonomy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTaxonomy_TmodelKey(), theXMLTypePackage.getString(), "tmodelKey", null, 1, 1, Taxonomy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -634,6 +645,13 @@ public class TaxonomyPackageImpl extends EPackageImpl implements TaxonomyPackage
 		   new String[] {
 			 "kind", "attribute",
 			 "name", "ref"
+		   });		
+		addAnnotation
+		  (getTaxonomy_TmodelKey(), 
+		   source, 
+		   new String[] {
+			 "kind", "attribute",
+			 "name", "tmodelKey"
 		   });
 	}
 

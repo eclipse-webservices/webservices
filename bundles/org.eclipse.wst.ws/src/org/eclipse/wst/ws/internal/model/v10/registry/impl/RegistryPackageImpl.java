@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: RegistryPackageImpl.java,v 1.1 2005/11/25 21:54:34 cbrealey Exp $
+ * $Id: RegistryPackageImpl.java,v 1.2 2005/12/03 04:06:47 cbrealey Exp $
  */
 package org.eclipse.wst.ws.internal.model.v10.registry.impl;
 
@@ -130,20 +130,20 @@ public class RegistryPackageImpl extends EPackageImpl implements RegistryPackage
 		XMLTypePackageImpl.init();
 
 		// Obtain or create and register interdependencies
-		TaxonomyPackageImpl theTaxonomyPackage = (TaxonomyPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(TaxonomyPackage.eNS_URI) instanceof TaxonomyPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(TaxonomyPackage.eNS_URI) : TaxonomyPackageImpl.eINSTANCE);
 		RTIndexPackageImpl theRTIndexPackage = (RTIndexPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RTIndexPackage.eNS_URI) instanceof RTIndexPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RTIndexPackage.eNS_URI) : RTIndexPackageImpl.eINSTANCE);
+		TaxonomyPackageImpl theTaxonomyPackage = (TaxonomyPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(TaxonomyPackage.eNS_URI) instanceof TaxonomyPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(TaxonomyPackage.eNS_URI) : TaxonomyPackageImpl.eINSTANCE);
 		UDDIRegistryPackageImpl theUDDIRegistryPackage = (UDDIRegistryPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(UDDIRegistryPackage.eNS_URI) instanceof UDDIRegistryPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(UDDIRegistryPackage.eNS_URI) : UDDIRegistryPackageImpl.eINSTANCE);
 
 		// Create package meta-data objects
 		theRegistryPackage.createPackageContents();
-		theTaxonomyPackage.createPackageContents();
 		theRTIndexPackage.createPackageContents();
+		theTaxonomyPackage.createPackageContents();
 		theUDDIRegistryPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theRegistryPackage.initializePackageContents();
-		theTaxonomyPackage.initializePackageContents();
 		theRTIndexPackage.initializePackageContents();
+		theTaxonomyPackage.initializePackageContents();
 		theUDDIRegistryPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
@@ -423,7 +423,7 @@ public class RegistryPackageImpl extends EPackageImpl implements RegistryPackage
 		initEClass(registryEClass, org.eclipse.wst.ws.internal.model.v10.registry.Registry.class, "Registry", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getRegistry_Name(), this.getName_(), null, "name", null, 1, -1, org.eclipse.wst.ws.internal.model.v10.registry.Registry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRegistry_Description(), this.getDescription(), null, "description", null, 1, -1, org.eclipse.wst.ws.internal.model.v10.registry.Registry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getRegistry_Id(), theXMLTypePackage.getAnyURI(), "id", null, 1, 1, org.eclipse.wst.ws.internal.model.v10.registry.Registry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRegistry_Id(), theXMLTypePackage.getAnyURI(), "id", null, 0, 1, org.eclipse.wst.ws.internal.model.v10.registry.Registry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRegistry_Location(), theXMLTypePackage.getAnyURI(), "location", null, 0, 1, org.eclipse.wst.ws.internal.model.v10.registry.Registry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRegistry_Ref(), theXMLTypePackage.getAnyURI(), "ref", null, 0, 1, org.eclipse.wst.ws.internal.model.v10.registry.Registry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

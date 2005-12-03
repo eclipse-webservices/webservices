@@ -15,10 +15,11 @@ targetNamespace="http://eclipse.org/wst/ws/internal/model/v10/taxonomy">
 			<xsd:element name="nlname" type="tax:Name" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="category" type="tax:Category" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
-		<xsd:attribute name="id" type="xsd:anyURI" use="required"/>
+		<xsd:attribute name="id" type="xsd:anyURI" use="optional"/>
 		<xsd:attribute name="ref" type="xsd:anyURI" use="optional"/>
 		<xsd:attribute name="location" type="xsd:anyURI" use="optional"/>
 		<xsd:attribute name="name" type="xsd:string" use="optional"/>
+		<xsd:attribute name="tmodelKey" type="xsd:string" use="required"/>
 	</xsd:complexType>
 
 	<xsd:element name="category" type="tax:Category"/>

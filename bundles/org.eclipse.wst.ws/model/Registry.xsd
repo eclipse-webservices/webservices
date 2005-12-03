@@ -15,7 +15,7 @@ targetNamespace="http://eclipse.org/wst/ws/internal/model/v10/registry">
 			<xsd:element name="name" type="reg:Name" minOccurs="1" maxOccurs="unbounded"/>
 			<xsd:element name="description" type="reg:Description" minOccurs="1" maxOccurs="unbounded"/>
 		</xsd:sequence>
-		<xsd:attribute name="id" type="xsd:anyURI" use="required"/>
+		<xsd:attribute name="id" type="xsd:anyURI" use="optional"/>
 		<xsd:attribute name="ref" type="xsd:anyURI" use="optional"/>
 		<xsd:attribute name="location" type="xsd:anyURI" use="optional"/>
 	</xsd:complexType>

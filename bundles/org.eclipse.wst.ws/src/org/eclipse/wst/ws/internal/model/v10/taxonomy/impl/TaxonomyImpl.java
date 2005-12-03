@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: TaxonomyImpl.java,v 1.1 2005/11/25 21:54:35 cbrealey Exp $
+ * $Id: TaxonomyImpl.java,v 1.2 2005/12/03 04:06:48 cbrealey Exp $
  */
 package org.eclipse.wst.ws.internal.model.v10.taxonomy.impl;
 
@@ -41,6 +41,7 @@ import org.eclipse.wst.ws.internal.model.v10.taxonomy.TaxonomyPackage;
  *   <li>{@link org.eclipse.wst.ws.internal.model.v10.taxonomy.impl.TaxonomyImpl#getLocation <em>Location</em>}</li>
  *   <li>{@link org.eclipse.wst.ws.internal.model.v10.taxonomy.impl.TaxonomyImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.wst.ws.internal.model.v10.taxonomy.impl.TaxonomyImpl#getRef <em>Ref</em>}</li>
+ *   <li>{@link org.eclipse.wst.ws.internal.model.v10.taxonomy.impl.TaxonomyImpl#getTmodelKey <em>Tmodel Key</em>}</li>
  * </ul>
  * </p>
  *
@@ -146,6 +147,26 @@ public class TaxonomyImpl extends EObjectImpl implements Taxonomy {
 	 * @ordered
 	 */
 	protected String ref = REF_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getTmodelKey() <em>Tmodel Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTmodelKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String TMODEL_KEY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getTmodelKey() <em>Tmodel Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTmodelKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected String tmodelKey = TMODEL_KEY_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -278,6 +299,27 @@ public class TaxonomyImpl extends EObjectImpl implements Taxonomy {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getTmodelKey() {
+		return tmodelKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setTmodelKey(String newTmodelKey) {
+		String oldTmodelKey = tmodelKey;
+		tmodelKey = newTmodelKey;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TaxonomyPackage.TAXONOMY__TMODEL_KEY, oldTmodelKey, tmodelKey));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, Class baseClass, NotificationChain msgs) {
 		if (featureID >= 0) {
 			switch (eDerivedStructuralFeatureID(featureID, baseClass)) {
@@ -311,6 +353,8 @@ public class TaxonomyImpl extends EObjectImpl implements Taxonomy {
 				return getName();
 			case TaxonomyPackage.TAXONOMY__REF:
 				return getRef();
+			case TaxonomyPackage.TAXONOMY__TMODEL_KEY:
+				return getTmodelKey();
 		}
 		return eDynamicGet(eFeature, resolve);
 	}
@@ -342,6 +386,9 @@ public class TaxonomyImpl extends EObjectImpl implements Taxonomy {
 			case TaxonomyPackage.TAXONOMY__REF:
 				setRef((String)newValue);
 				return;
+			case TaxonomyPackage.TAXONOMY__TMODEL_KEY:
+				setTmodelKey((String)newValue);
+				return;
 		}
 		eDynamicSet(eFeature, newValue);
 	}
@@ -371,6 +418,9 @@ public class TaxonomyImpl extends EObjectImpl implements Taxonomy {
 			case TaxonomyPackage.TAXONOMY__REF:
 				setRef(REF_EDEFAULT);
 				return;
+			case TaxonomyPackage.TAXONOMY__TMODEL_KEY:
+				setTmodelKey(TMODEL_KEY_EDEFAULT);
+				return;
 		}
 		eDynamicUnset(eFeature);
 	}
@@ -394,6 +444,8 @@ public class TaxonomyImpl extends EObjectImpl implements Taxonomy {
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case TaxonomyPackage.TAXONOMY__REF:
 				return REF_EDEFAULT == null ? ref != null : !REF_EDEFAULT.equals(ref);
+			case TaxonomyPackage.TAXONOMY__TMODEL_KEY:
+				return TMODEL_KEY_EDEFAULT == null ? tmodelKey != null : !TMODEL_KEY_EDEFAULT.equals(tmodelKey);
 		}
 		return eDynamicIsSet(eFeature);
 	}
@@ -415,6 +467,8 @@ public class TaxonomyImpl extends EObjectImpl implements Taxonomy {
 		result.append(name);
 		result.append(", ref: ");
 		result.append(ref);
+		result.append(", tmodelKey: ");
+		result.append(tmodelKey);
 		result.append(')');
 		return result.toString();
 	}

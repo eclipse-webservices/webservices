@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/RegistryModel2/src"
+    editDirectory="/RegistryModel2.edit/src" editorDirectory="/RegistryModel2.editor/src"
+    modelPluginID="RegistryModel2" runtimeJar="true" modelName="RT" editPluginClass="org.eclipse.wst.ws.internal.model.v10.rtindex.provider.RTEditPlugin"
+    editorPluginClass="org.eclipse.wst.ws.internal.model.v10.rtindex.presentation.RTEditorPlugin"
+    runtimeCompatibility="false">
+  <foreignModel>Index.xsd</foreignModel>
+  <foreignModel>Registry.xsd</foreignModel>
+  <foreignModel>UDDIRegistry.xsd</foreignModel>
+  <foreignModel>Taxonomy.xsd</foreignModel>
+  <genPackages prefix="RTIndex" basePackage="org.eclipse.wst.ws.internal.model.v10"
+      resource="XML" ecorePackage="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#/">
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Description">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Description/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Description/lang"/>
+    </genClasses>
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//DocumentRoot">
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//DocumentRoot/description"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//DocumentRoot/index"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//DocumentRoot/name"/>
+    </genClasses>
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Index">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Index/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Index/description"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Index/registry"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Index/taxonomy"/>
+    </genClasses>
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Name">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Name/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Name/lang"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Taxonomy" basePackage="org.eclipse.wst.ws.internal.model.v10"
+      resource="XML" ecorePackage="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#/">
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Category">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Category/nlname"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Category/category"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Category/code"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Category/name"/>
+    </genClasses>
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//DocumentRoot">
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//DocumentRoot/category"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//DocumentRoot/name"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//DocumentRoot/taxonomy"/>
+    </genClasses>
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Name">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Name/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Name/lang"/>
+    </genClasses>
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/nlname"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/category"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/location"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/ref"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/tmodelKey"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Registry" basePackage="org.eclipse.wst.ws.internal.model.v10"
+      resource="XML" ecorePackage="org.eclipse.wst.ws.internal.model.v10.registry.ecore#/">
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Description">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Description/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Description/lang"/>
+    </genClasses>
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//DocumentRoot">
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.registry.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.registry.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.registry.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.registry.ecore#//DocumentRoot/description"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.registry.ecore#//DocumentRoot/name"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.registry.ecore#//DocumentRoot/registry"/>
+    </genClasses>
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Name">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Name/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Name/lang"/>
+    </genClasses>
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Registry">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Registry/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Registry/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Registry/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Registry/location"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Registry/ref"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="UDDIRegistry" basePackage="org.eclipse.wst.ws.internal.model.v10"
+      resource="XML" ecorePackage="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#/">
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//DocumentRoot">
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//DocumentRoot/taxonomies"/>
+      <genFeatures property="None" notify="false" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//DocumentRoot/uddiRegistry"/>
+    </genClasses>
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//Taxonomies">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//Taxonomies/taxonomy"/>
+    </genClasses>
+    <genClasses ecoreClass="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/discoveryURL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/publicationURL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/securedDiscoveryURL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/securedPublicationURL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/defaultLogin"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/defaultPassword"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/taxonomies"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

@@ -15,8 +15,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -171,26 +173,32 @@ public class RegistryManager implements IRegistryManager
 	}
 	
 	/**
-	 * Adds the given <code>registry</code> to the index only
-	 * if a registry of the same ID is not already stored there.
+	 * Adds the given <code>registry</code> as-is, whether full model
+	 * or reference, to the index only if a registry with the same ID
+	 * or reference is not already stored there.
 	 * @param registry The registry to add.
 	 */
 	private void addRegistryToIndex(Registry registry) throws CoreException
 	{
-		if (getRegistry(registry.getId()) == null)
+		String id = registry.getId();
+		if (id == null) id = registry.getRef();
+		if (id != null && getRegistry(id) == null)
 		{
 			getIndex().getRegistry().add(registry);
 		}
 	}
 	
 	/**
-	 * Adds the given <code>taxonomy</code> to the index only
-	 * if a taxonomy of the same ID is not already stored there.
+	 * Adds the given <code>taxonomy</code> as-is, whether full model
+	 * or reference, to the index only if a taxonomy with the same ID
+	 * or reference is not already stored there.
 	 * @param taxonomy The taxonomy to add.
 	 */
 	private void addTaxonomyToIndex(Taxonomy taxonomy) throws CoreException
 	{
-		if (getTaxonomy(taxonomy.getId()) == null)
+		String id = taxonomy.getId();
+		if (id == null) id = taxonomy.getRef();
+		if (id != null && getTaxonomy(id) == null)
 		{
 		 	getIndex().getTaxonomy().add(taxonomy);	
 		}
@@ -199,75 +207,66 @@ public class RegistryManager implements IRegistryManager
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#saveRegistry(org.eclipse.wst.ws.internal.model.v10.registry.Registry)
 	 */
-	public String saveRegistry ( Registry registry ) throws CoreException
+	public Registry saveRegistry ( Registry registry ) throws CoreException
 	{
 		RegistryService registryService = RegistryService.instance();
+		Registry registryRef = null;
 		try
 		{
 			URL url = getURL(REGISTRY + registry.getId());
 			registryService.saveRegistry(url,registry);
-			Registry registryRef = registryService.newRegistryReference(registry);
+			registryRef = registryService.newRegistryReference(registry);
 			registryRef.setLocation(url.toString());
 			addRegistryToIndex(registryRef);
+			saveIndex();
+			/*
+			 * TODO: The following pile of code is commented out
+			 * since there isn't a reliable way under the current
+			 * design to save taxonomy models held in a registry model
+			 * 
 			ITaxonomyFinder finder = (ITaxonomyFinder)taxonomyFinders_.get(registry.getClass().getName());
 			if (finder != null)
 			{
 				Taxonomy[] taxonomies = finder.taxonomies(registry);
 				for (int i=0; i<taxonomies.length; i++)
 				{
-					url = getURL(TAXONOMY + taxonomies[i].getId());
-					registryService.saveTaxonomy(url,taxonomies[i]);
-					Taxonomy taxonomyRef = registryService.newTaxonomyReference(taxonomies[i]);
-					taxonomyRef.setLocation(url.toString());
-					addTaxonomyToIndex(taxonomyRef);
+					String id = taxonomies[i].getId();
+					String ref = taxonomies[i].getRef();
+					if (id != null)
+					{
+						URL taxonomyURL = getURL(TAXONOMY + id);
+						registryService.saveTaxonomy(taxonomyURL,taxonomies[i]);
+						Taxonomy taxonomyRef = registryService.newTaxonomyReference(taxonomies[i]);
+						taxonomyRef.setLocation(taxonomyURL.toString());
+						addTaxonomyToIndex(taxonomyRef);
+					}
+					else if (ref != null)
+					{
+						if (taxonomies[i].getLocation() == null)
+						{
+							String location = null;
+							Taxonomy taxonomy = getTaxonomy(ref);
+							if (taxonomy != null) location = taxonomy.getLocation();
+							if (location == null) location = getURL(TAXONOMY + ref).toString();
+							taxonomies[i].setLocation(location);
+							if (taxonomy == null)
+							{
+								addTaxonomyToIndex(registryService.newTaxonomyReference(taxonomies[i]));
+							}
+						}
+					}
 				}
 			}
-		    saveIndex();
+		    */
 		}
 		catch ( MalformedURLException me )
 		{
 			//TODO: Message text required.
 			throw new CoreException(new Status(IStatus.ERROR,WSPlugin.ID,0,"",me));
 		}
-		return registry.getId();
+		return registryService.newRegistryReference(registryRef);
 	}
 
-	/**
-	 * Returns the Registry from the index with the given id,
-	 * or null if no such entry exists in the index. 
-	 * @param uri id name of the Registry
-	 */
-    private Registry getRegistry(String uri) throws CoreException
-    {
-		EList list = getIndex().getRegistry();	
-		Iterator it = list.iterator();
-		while(it.hasNext()){
-			Registry registryRef = (Registry)it.next();
-			if(registryRef.getId().equals(uri)){
-				return registryRef;  
-			}
-		}	
-        return null;
-    }
-	
-	/**
-	 * Returns the Taxonomy from the index with the given id,
-	 * or null if no such entry exists in the index. 
-	 * @param uri id name of the Taxonomy
-	 */
-    private Taxonomy getTaxonomy(String uri) throws CoreException
-    {
-		EList list = getIndex().getTaxonomy();	
-		Iterator it = list.iterator();
-		while(it.hasNext()){
-			Taxonomy taxonomyRef = (Taxonomy)it.next();
-			if(taxonomyRef.getId().equals(uri)){
-				return taxonomyRef;
-			}
-		}	
-        return null;
-	}
-	
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#loadRegistry(java.lang.String)
 	 */
@@ -276,10 +275,17 @@ public class RegistryManager implements IRegistryManager
 		RegistryService registryService = RegistryService.instance();
 		try
 		{
-			Registry registryRef = getRegistry(uri);
-			if(registryRef == null) return null;
-			String urlString = registryRef.getLocation();
-			if(urlString == null) return null;
+			Registry registry = getRegistry(uri);
+			if (registry == null) return null;
+
+			// If the Registry has an ID, it's a full model
+			// inlined within the Index and is returned as-is.
+			if (registry.getId() != null) return registry;
+
+			// Otherwise it's a reference to a full model
+			// which we load from the reference's location.
+			String urlString = registry.getLocation();
+			if (urlString == null) return null;
 			URL url = new URL(urlString);
 			return registryService.loadRegistry(url);
 		}
@@ -291,21 +297,45 @@ public class RegistryManager implements IRegistryManager
 	}
 	
 	/* (non-Javadoc)
+	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#loadRegistries(java.lang.String[])
+	 */
+	public Registry[] loadRegistries ( String[] uris ) throws CoreException
+	{
+		List list = new ArrayList(uris.length);
+		for (int i=0; i<uris.length; i++)
+		{
+			Registry registry = loadRegistry(uris[i]);
+			if (registry != null)
+			{
+				list.add(registry);
+			}
+		}
+		return (Registry[])list.toArray(new Registry[0]);
+	}
+
+	/* (non-Javadoc)
 	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#getRegistryURIs()
 	 */
 	public String[] getRegistryURIs () throws CoreException
 	{
 		EList list = getIndex().getRegistry();
-		String[] registryURI = new String[list.size()];
+		List registryURIs = new ArrayList(list.size());
 		Iterator iterator = list.iterator();
-		int i = 0;
 		while(iterator.hasNext())
 		{
-			Registry registry = (Registry)iterator.next();  	
-			registryURI[i] = registry.getId();	
-			i++;  
-		}
-		return registryURI;
+			// Each Registry found in the index may be
+			// either a full model or a reference to one.
+			Registry registry = (Registry)iterator.next();
+			if (registry.getId() != null)
+			{
+				registryURIs.add(registry.getId());
+			}
+			else if (registry.getRef() != null)
+			{
+				registryURIs.add(registry.getRef());
+			}
+		}	
+		return (String[])registryURIs.toArray(new String[0]);
 	}
 
 	/* (non-Javadoc)
@@ -314,27 +344,33 @@ public class RegistryManager implements IRegistryManager
 	public void removeRegistry ( String uri, boolean deleteDocument ) throws CoreException
 	{
 		EList list = getIndex().getRegistry();
-		Registry registryRef = getRegistry(uri);
-		if(registryRef == null) return;
-		list.remove(registryRef);
-		saveIndex();
-		if(deleteDocument)
+		Registry registry = getRegistry(uri);
+		if (registry != null)
 		{
-			//TODO: Implement me.
+			list.remove(registry);
+			saveIndex();
+			// The identified Registry may be either a full model
+			// (ie. inlined in the Index) or a reference to one.
+			// Only in the latter case is there a file to delete.
+			if (deleteDocument && registry.getLocation() != null)
+			{
+				//TODO: Implement me.
+			}
 		}
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#saveTaxonomy(org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy)
 	 */
-	public String saveTaxonomy ( Taxonomy taxonomy ) throws CoreException
+	public Taxonomy saveTaxonomy ( Taxonomy taxonomy ) throws CoreException
 	{
 		RegistryService registryService = RegistryService.instance();
+		Taxonomy taxonomyRef = null;
 		try
 		{
 			URL	url = getURL(TAXONOMY + taxonomy.getId());
 		    registryService.saveTaxonomy(url,taxonomy);
-			Taxonomy taxonomyRef = registryService.newTaxonomyReference(taxonomy);
+			taxonomyRef = registryService.newTaxonomyReference(taxonomy);
 			taxonomyRef.setLocation(url.toString());
 			addTaxonomyToIndex(taxonomyRef);
 			saveIndex();
@@ -344,7 +380,7 @@ public class RegistryManager implements IRegistryManager
 			//TODO: Message text required.
 			throw new CoreException(new Status(IStatus.ERROR,WSPlugin.ID,0,"",me));
 		}
-		return taxonomy.getId();
+		return registryService.newTaxonomyReference(taxonomyRef);
 	}
 	
 	/* (non-Javadoc)
@@ -355,10 +391,17 @@ public class RegistryManager implements IRegistryManager
 		RegistryService registryService = RegistryService.instance();
 		try
 		{
-			Taxonomy taxonomyRef = getTaxonomy(uri);
-			if(taxonomyRef == null) return null;
-			String urlString = taxonomyRef.getLocation();
-			if(urlString == null) return null;
+			Taxonomy taxonomy = getTaxonomy(uri);
+			if (taxonomy == null) return null;
+
+			// If the Taxonomy has an ID, it's a full model
+			// inlined within the Index and is returned as-is.
+			if (taxonomy.getId() != null) return taxonomy;
+
+			// Otherwise it's a reference to a full model
+			// which we load from the reference's location.
+			String urlString = taxonomy.getLocation();
+			if (urlString == null) return null;
 			URL url = new URL(urlString);
 			return registryService.loadTaxonomy(url);
 		}
@@ -370,21 +413,45 @@ public class RegistryManager implements IRegistryManager
 	}
 	
 	/* (non-Javadoc)
+	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#loadTaxonomies(java.lang.String[])
+	 */
+	public Taxonomy[] loadTaxonomies ( String[] uris ) throws CoreException
+	{
+		List list = new ArrayList(uris.length);
+		for (int i=0; i<uris.length; i++)
+		{
+			Taxonomy taxonomy = loadTaxonomy(uris[i]);
+			if (taxonomy != null)
+			{
+				list.add(taxonomy);
+			}
+		}
+		return (Taxonomy[])list.toArray(new Taxonomy[0]);
+	}
+
+	/* (non-Javadoc)
 	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#getTaxonomyURIs()
 	 */
 	public String[] getTaxonomyURIs () throws CoreException
 	{
 		EList list = getIndex().getTaxonomy();
-		String[] taxonomyURIs = new String[list.size()];
+		List taxonomyURIs = new ArrayList(list.size());
 		Iterator iterator = list.iterator();
-		int i = 0;
 		while(iterator.hasNext())
 		{
-			Taxonomy taxonomy = (Taxonomy)iterator.next(); 
-			taxonomyURIs[i] = taxonomy.getId();  	
-			i++;  
+			// Each Taxonomy found in the index may be
+			// either a full model or a reference to one.
+			Taxonomy taxonomy = (Taxonomy)iterator.next();
+			if (taxonomy.getId() != null)
+			{
+				taxonomyURIs.add(taxonomy.getId());
+			}
+			else if (taxonomy.getRef() != null)
+			{
+				taxonomyURIs.add(taxonomy.getRef());
+			}
 		}	
-		return taxonomyURIs;
+		return (String[])taxonomyURIs.toArray(new String[0]);
 	}
 
 	/* (non-Javadoc)
@@ -393,13 +460,60 @@ public class RegistryManager implements IRegistryManager
 	public void removeTaxonomy ( String uri, boolean deleteDocument ) throws CoreException
 	{
 		EList list = getIndex().getTaxonomy();
-		Taxonomy taxonomyRef = getTaxonomy(uri);
-		if(taxonomyRef == null) return;
-		list.remove(taxonomyRef);
-		saveIndex();
-		if(deleteDocument)
+		Taxonomy taxonomy = getTaxonomy(uri);
+		if (taxonomy != null)
 		{
-			//TODO: Implement me.
+			list.remove(taxonomy);
+			saveIndex();
+			// The identified Taxonomy may be either a full model
+			// (ie. inlined in the Index) or a reference to one.
+			// Only in the latter case is there a file to delete.
+			if (deleteDocument && taxonomy.getLocation() != null)
+			{
+				//TODO: Implement me.
+			}
 		}
+	}
+
+	/**
+	 * Returns the Registry from the index whose ID or Reference
+	 * matches the given URI. As such, this method may return a
+	 * full model or a reference to a full model.
+	 * @param uri The URI identifier of the Registry
+	 * @return The <code>Registry</code> object whose ID or reference
+	 * matches the given <code>uri</code>, or null if none match.
+	 */
+    private Registry getRegistry ( String uri ) throws CoreException
+    {
+		EList list = getIndex().getRegistry();	
+		Iterator it = list.iterator();
+		while (it.hasNext()){
+			Registry registry = (Registry)it.next();
+			if (uri.equals(registry.getId()) || uri.equals(registry.getRef())){
+				return registry;  
+			}
+		}	
+        return null;
+    }
+	
+	/**
+	 * Returns the Taxonomy from the index whose ID or Reference
+	 * matches the given URI. As such, this method may return a
+	 * full model or a reference to a full model.
+	 * @param uri The URI identifier of the Taxonomy
+	 * @return The <code>Taxonomy</code> object whose ID or reference
+	 * matches the given <code>uri</code>, or null if none match.
+	 */
+    private Taxonomy getTaxonomy ( String uri ) throws CoreException
+    {
+		EList list = getIndex().getTaxonomy();	
+		Iterator it = list.iterator();
+		while (it.hasNext()){
+			Taxonomy taxonomy = (Taxonomy)it.next();
+			if (uri.equals(taxonomy.getId()) || uri.equals(taxonomy.getRef())){
+				return taxonomy;
+			}
+		}	
+        return null;
 	}
 }

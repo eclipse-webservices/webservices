@@ -89,49 +89,58 @@ public interface IRegistryManager
 	public void addTaxonomyFinder ( String className, ITaxonomyFinder taxonomyFinder );
 
 	/**
-	 * Saves a <code>Registry</code> and any <code>Taxonomy</code>
-	 * models it references to a set of XML documents located
-	 * relative to the index XML document as identified by
+	 * Saves a <code>Taxonomy</code> model to an XML document
+	 * located relative to the index XML document as identified by
 	 * <code>getURL()</code>, and updates the index XML document
-	 * with references to the saved registry and taxonomy documents.
-	 * Relative pathnames to the registry and taxonomy XML documents
-	 * are computed by the <code>IRegistryManager</code> and cannot
+	 * with references to the saved taxonomy document.
+	 * The relative pathname to the taxonomy XML document is
+	 * computed by the <code>IRegistryManager</code> and cannot
 	 * be influenced by the caller.
-	 * <p>
-	 * The set of referenced <code>Taxonomy</code> models, if any,
-	 * is determined by looking up an <code>ITaxonomyFinder</code>
-	 * for the class name of the given <code>registry</code> and
-	 * calling its <code>taxonomies</code> method.
-	 * If no <code>ITaxonomyFinder</code> exists for the given
-	 * <code>registry</code>, then no <code>Taxonomy</code> models
-	 * will be saved.  
 	 * 
 	 * @param registry The <code>Registry</code> model (and
 	 * referenced <code>Taxonomy</code> models) to save.
-	 * @return The URI identifier of the registry as returned by
-	 * <code>registry.getId()</code>.
+	 * @return A <code>Registry</code> reference.
 	 * @throws CoreException If the operation fails for any reason,
 	 * including but not limited to malformed location URIs in the
 	 * index or general input/output error conditions.
 	 * @see Registry
 	 * @see #addTaxonomyFinder(String, ITaxonomyFinder)
 	 */
-	public String saveRegistry ( Registry registry ) throws CoreException;
+	public Registry saveRegistry ( Registry registry ) throws CoreException;
 
 	/**
-	 * Loads a <code>Registry</code> from a registry XML document
-	 * identified by the given URI in the index XML document at the
-	 * location returned by <code>getURL()</code>.
+	 * Loads as necessary and returns a full <code>Registry</code>
+	 * model as identified by the given URI and referenced from
+	 * the index XML document located at <code>getURL()</code>.
 	 * 
-	 * @param uri The URI identifier of the registry as returned by
-	 * <code>registry.getId()</code>.
-	 * @return The <code>Registry</code> model.
+	 * @param uri The URI identifier of the registry.
+	 * @return The <code>Registry</code> model
+	 * or null if no such model can be found.
 	 * @throws CoreException If the operation fails for any reason,
 	 * including but not limited to malformed location URIs in the
 	 * index or general input/output error conditions.
 	 * @see Registry
 	 */
 	public Registry loadRegistry ( String uri ) throws CoreException;
+
+	/**
+	 * Loads as necessary and returns an array of full <code>Registry</code>
+	 * models as identified by the given array of URIs and referenced from
+	 * the index XML document located at <code>getURL()</code>.
+	 * Useful in conjunction with <code>getRegistryURIs()</code>.
+	 * Note that the length of the returned array may be less than
+	 * the length of the array of URIs in cases where one or more
+	 * URIs fail to resolve to a loadable model.
+	 * 
+	 * @param uris The URI identifiers of the registries.
+	 * @return The array of <code>Registry</code> models,
+	 * never null, but possibly empty.
+	 * @throws CoreException If the operation fails for any reason,
+	 * including but not limited to malformed location URIs in the
+	 * index or general input/output error conditions.
+	 * @see Registry
+	 */
+	public Registry[] loadRegistries ( String[] uris ) throws CoreException;
 
 	/**
 	 * Returns an array of URI identifiers to <code>Registry</code>
@@ -173,40 +182,49 @@ public interface IRegistryManager
 	 * The relative pathname to the taxonomy XML document is
 	 * computed by the <code>IRegistryManager</code> and cannot
 	 * be influenced by the caller.
-	 * <p>
-	 * Note that <code>Taxonomy</code> models referenced by a
-	 * <code>Registry</code> model will be saved as a side effect
-	 * of calling <code>saveRegistry</code> on that model. 
 	 * 
 	 * @param taxonomy The <code>Taxonomy</code> model to save.
-	 * @return The URI identifier of the taxonomy as returned by
-	 * <code>taxonomy.getId()</code>.
+	 * @return A <code>Taxonomy</code> reference.
 	 * @throws CoreException If the operation fails for any reason,
 	 * including but not limited to malformed location URIs in the
 	 * index or general input/output error conditions.
 	 * @see Taxonomy
 	 */
-	public String saveTaxonomy ( Taxonomy taxonomy ) throws CoreException;
+	public Taxonomy saveTaxonomy ( Taxonomy taxonomy ) throws CoreException;
 
 	/**
-	 * Loads a <code>Taxonomy</code> from a taxonomy XML document
-	 * identified by the given URI in the index XML document at the
-	 * location returned by <code>getURL()</code>.
-	 * <p>
-	 * Note that <code>Taxonomy</code> models referenced by a
-	 * <code>Registry</code> model will be loaded as a side effect
-	 * of calling <code>loadRegistry()</code> followed by
-	 * <code>UDDIRegistryService.getTaxonomies(Registry)</code>.
+	 * Loads as necessary and returns a full <code>Taxonomy</code>
+	 * model as identified by the given URI and referenced from
+	 * the index XML document located at <code>getURL()</code>.
 	 * 
-	 * @param uri The URI identifier of the taxonomy as returned by
-	 * <code>taxonomy.getId()</code>.
-	 * @return The <code>Taxonomy</code> model.
+	 * @param uri The URI identifier of the taxonomy.
+	 * @return The <code>Taxonomy</code> model
+	 * or null if no such model can be found.
 	 * @throws CoreException If the operation fails for any reason,
 	 * including but not limited to malformed location URIs in the
 	 * index or general input/output error conditions.
 	 * @see Taxonomy
 	 */
 	public Taxonomy loadTaxonomy ( String uri ) throws CoreException;
+
+	/**
+	 * Loads as necessary and returns an array of full <code>Taxonomy</code>
+	 * models as identified by the given array of URIs and referenced from
+	 * the index XML document located at <code>getURL()</code>.
+	 * Useful in conjunction with <code>getTaxonomyURIs()</code>.
+	 * Note that the length of the returned array may be less than
+	 * the length of the array of URIs in cases where one or more
+	 * URIs fail to resolve to a loadable model. 
+	 * 
+	 * @param uris The URI identifiers of the taxonomies.
+	 * @return The array of <code>Taxonomy</code> models,
+	 * never null, but possibly empty.
+	 * @throws CoreException If the operation fails for any reason,
+	 * including but not limited to malformed location URIs in the
+	 * index or general input/output error conditions.
+	 * @see Registry
+	 */
+	public Taxonomy[] loadTaxonomies ( String[] uris ) throws CoreException;
 
 	/**
 	 * Returns an array of URI identifiers to <code>Taxonomy</code>

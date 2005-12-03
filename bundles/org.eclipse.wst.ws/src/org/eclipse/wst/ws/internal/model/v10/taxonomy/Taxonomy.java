@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: Taxonomy.java,v 1.1 2005/11/25 21:54:35 cbrealey Exp $
+ * $Id: Taxonomy.java,v 1.2 2005/12/03 04:06:49 cbrealey Exp $
  */
 package org.eclipse.wst.ws.internal.model.v10.taxonomy;
 
@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy#getLocation <em>Location</em>}</li>
  *   <li>{@link org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy#getRef <em>Ref</em>}</li>
+ *   <li>{@link org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy#getTmodelKey <em>Tmodel Key</em>}</li>
  * </ul>
  * </p>
  *
@@ -75,7 +76,7 @@ public interface Taxonomy extends EObject {
 	 * @return the value of the '<em>Id</em>' attribute.
 	 * @see #setId(String)
 	 * @see org.eclipse.wst.ws.internal.model.v10.taxonomy.TaxonomyPackage#getTaxonomy_Id()
-	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI" required="true"
+	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI"
 	 * @generated
 	 */
 	String getId();
@@ -167,5 +168,31 @@ public interface Taxonomy extends EObject {
 	 * @generated
 	 */
 	void setRef(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Tmodel Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Tmodel Key</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Tmodel Key</em>' attribute.
+	 * @see #setTmodelKey(String)
+	 * @see org.eclipse.wst.ws.internal.model.v10.taxonomy.TaxonomyPackage#getTaxonomy_TmodelKey()
+	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
+	 * @generated
+	 */
+	String getTmodelKey();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy#getTmodelKey <em>Tmodel Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Tmodel Key</em>' attribute.
+	 * @see #getTmodelKey()
+	 * @generated
+	 */
+	void setTmodelKey(String value);
 
 } // Taxonomy

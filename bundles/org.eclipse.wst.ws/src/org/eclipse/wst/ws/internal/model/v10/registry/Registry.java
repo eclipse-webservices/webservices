@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: Registry.java,v 1.1 2005/11/25 21:54:36 cbrealey Exp $
+ * $Id: Registry.java,v 1.2 2005/12/03 04:06:49 cbrealey Exp $
  */
 package org.eclipse.wst.ws.internal.model.v10.registry;
 
@@ -74,7 +74,7 @@ public interface Registry extends EObject {
 	 * @return the value of the '<em>Id</em>' attribute.
 	 * @see #setId(String)
 	 * @see org.eclipse.wst.ws.internal.model.v10.registry.RegistryPackage#getRegistry_Id()
-	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI" required="true"
+	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI"
 	 * @generated
 	 */
 	String getId();

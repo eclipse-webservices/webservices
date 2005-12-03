@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: TaxonomyPackage.java,v 1.1 2005/11/25 21:54:35 cbrealey Exp $
+ * $Id: TaxonomyPackage.java,v 1.2 2005/12/03 04:06:49 cbrealey Exp $
  */
 package org.eclipse.wst.ws.internal.model.v10.taxonomy;
 
@@ -371,13 +371,22 @@ public interface TaxonomyPackage extends EPackage {
 	int TAXONOMY__REF = 5;
 
 	/**
+	 * The feature id for the '<em><b>Tmodel Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TAXONOMY__TMODEL_KEY = 6;
+
+	/**
 	 * The number of structural features of the the '<em>Taxonomy</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TAXONOMY_FEATURE_COUNT = 6;
+	int TAXONOMY_FEATURE_COUNT = 7;
 
 
 	/**
@@ -617,6 +626,17 @@ public interface TaxonomyPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getTaxonomy_Ref();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy#getTmodelKey <em>Tmodel Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Tmodel Key</em>'.
+	 * @see org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy#getTmodelKey()
+	 * @see #getTaxonomy()
+	 * @generated
+	 */
+	EAttribute getTaxonomy_TmodelKey();
 
 	/**
 	 * Returns the factory that creates the instances of the model.

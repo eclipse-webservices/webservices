@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xsd2ecore:XSD2EcoreMappingRoot xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsd2ecore="http://www.eclipse.org/emf/2002/XSD2Ecore" inputs="Index.xsd#/ http://www.w3.org/2001/xml.xsd#/ Taxonomy.xsd#/ Registry.xsd#/ UDDIRegistry.xsd#/"
+    outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#/ org.eclipse.wst.ws.internal.model.v10.registry.ecore#/ org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#/ org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#/"
+    topToBottom="true">
+  <nested inputs="http://www.w3.org/2001/xml.xsd#//base;XSDAttributeDeclaration=2"
+      outputs="http://www.w3.org/XML/1998/namespace#//XMLNamespaceDocumentRoot/base"/>
+  <nested inputs="http://www.w3.org/2001/xml.xsd#//id;XSDAttributeDeclaration=3" outputs="http://www.w3.org/XML/1998/namespace#//XMLNamespaceDocumentRoot/id"/>
+  <nested inputs="http://www.w3.org/2001/xml.xsd#//lang;XSDAttributeDeclaration" outputs="http://www.w3.org/XML/1998/namespace#//XMLNamespaceDocumentRoot/lang"/>
+  <nested inputs="http://www.w3.org/2001/xml.xsd#//lang;XSDAttributeDeclaration/XSDSimpleTypeDefinition"
+      outputs="http://www.eclipse.org/emf/2003/XMLType#//Language"/>
+  <nested inputs="http://www.w3.org/2001/xml.xsd#//space;XSDAttributeDeclaration=1"
+      outputs="http://www.w3.org/XML/1998/namespace#//XMLNamespaceDocumentRoot/space"/>
+  <nested inputs="http://www.w3.org/2001/xml.xsd#//space;XSDAttributeDeclaration=1/XSDSimpleTypeDefinition"
+      outputs="http://www.w3.org/XML/1998/namespace#//SpaceType"/>
+  <nested inputs="bundleentry://1839/cache/www.w3.org/2001/XMLSchema.xsd#//string;XSDSimpleTypeDefinition=7"
+      outputs="http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  <nested inputs="Taxonomy.xsd#//Name;XSDComplexTypeDefinition=2" outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Name">
+    <nested inputs="Taxonomy.xsd#//Name;XSDComplexTypeDefinition=2/XSDAttributeUse"
+        outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Name/lang"/>
+  </nested>
+  <nested inputs="Taxonomy.xsd#//Category;XSDComplexTypeDefinition=1" outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Category">
+    <nested inputs="Taxonomy.xsd#//Category;XSDComplexTypeDefinition=1/XSDParticle/XSDModelGroup/XSDParticle"
+        outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Category/nlname"/>
+    <nested inputs="Taxonomy.xsd#//Category;XSDComplexTypeDefinition=1/XSDParticle/XSDModelGroup/XSDParticle=1"
+        outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Category/category"/>
+    <nested inputs="Taxonomy.xsd#//Category;XSDComplexTypeDefinition=1/XSDAttributeUse=1"
+        outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Category/code"/>
+    <nested inputs="Taxonomy.xsd#//Category;XSDComplexTypeDefinition=1/XSDAttributeUse"
+        outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Category/name"/>
+  </nested>
+  <nested inputs="Taxonomy.xsd#//category;XSDElementDeclaration=1" outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//DocumentRoot/category"/>
+  <nested inputs="Registry.xsd#//Description;XSDComplexTypeDefinition=2" outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Description">
+    <nested inputs="Registry.xsd#//Description;XSDComplexTypeDefinition=2/XSDAttributeUse"
+        outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Description/lang"/>
+  </nested>
+  <nested inputs="Registry.xsd#//description;XSDElementDeclaration=2" outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//DocumentRoot/description"/>
+  <nested inputs="Index.xsd#//Description;XSDComplexTypeDefinition=2" outputs="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Description">
+    <nested inputs="Index.xsd#//Description;XSDComplexTypeDefinition=2/XSDAttributeUse"
+        outputs="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Description/lang"/>
+  </nested>
+  <nested inputs="Index.xsd#//description;XSDElementDeclaration=2" outputs="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//DocumentRoot/description"/>
+  <nested inputs="Index.xsd#//Name;XSDComplexTypeDefinition=1" outputs="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Name">
+    <nested inputs="Index.xsd#//Name;XSDComplexTypeDefinition=1/XSDAttributeUse" outputs="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Name/lang"/>
+  </nested>
+  <nested inputs="Registry.xsd#//Name;XSDComplexTypeDefinition=1" outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Name">
+    <nested inputs="Registry.xsd#//Name;XSDComplexTypeDefinition=1/XSDAttributeUse"
+        outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Name/lang"/>
+  </nested>
+  <nested inputs="bundleentry://1839/cache/www.w3.org/2001/XMLSchema.xsd#//anyURI;XSDSimpleTypeDefinition=23"
+      outputs="http://www.eclipse.org/emf/2003/XMLType#//AnyURI"/>
+  <nested inputs="Registry.xsd#//Registry;XSDComplexTypeDefinition" outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Registry">
+    <nested inputs="Registry.xsd#//Registry;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle"
+        outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Registry/name"/>
+    <nested inputs="Registry.xsd#//Registry;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle=1"
+        outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Registry/description"/>
+    <nested inputs="Registry.xsd#//Registry;XSDComplexTypeDefinition/XSDAttributeUse"
+        outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Registry/id"/>
+    <nested inputs="Registry.xsd#//Registry;XSDComplexTypeDefinition/XSDAttributeUse=2"
+        outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Registry/location"/>
+    <nested inputs="Registry.xsd#//Registry;XSDComplexTypeDefinition/XSDAttributeUse=1"
+        outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//Registry/ref"/>
+  </nested>
+  <nested inputs="Taxonomy.xsd#//Taxonomy;XSDComplexTypeDefinition" outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy">
+    <nested inputs="Taxonomy.xsd#//Taxonomy;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle"
+        outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/nlname"/>
+    <nested inputs="Taxonomy.xsd#//Taxonomy;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle=1"
+        outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/category"/>
+    <nested inputs="Taxonomy.xsd#//Taxonomy;XSDComplexTypeDefinition/XSDAttributeUse"
+        outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/id"/>
+    <nested inputs="Taxonomy.xsd#//Taxonomy;XSDComplexTypeDefinition/XSDAttributeUse=2"
+        outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/location"/>
+    <nested inputs="Taxonomy.xsd#//Taxonomy;XSDComplexTypeDefinition/XSDAttributeUse=3"
+        outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/name"/>
+    <nested inputs="Taxonomy.xsd#//Taxonomy;XSDComplexTypeDefinition/XSDAttributeUse=1"
+        outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/ref"/>
+    <nested inputs="Taxonomy.xsd#//Taxonomy;XSDComplexTypeDefinition/XSDAttributeUse=4"
+        outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//Taxonomy/tmodelKey"/>
+  </nested>
+  <nested inputs="Index.xsd#//Index;XSDComplexTypeDefinition" outputs="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Index">
+    <nested inputs="Index.xsd#//Index;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle"
+        outputs="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Index/name"/>
+    <nested inputs="Index.xsd#//Index;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle=1"
+        outputs="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Index/description"/>
+    <nested inputs="Index.xsd#//Index;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle=2"
+        outputs="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Index/registry"/>
+    <nested inputs="Index.xsd#//Index;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle=3"
+        outputs="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//Index/taxonomy"/>
+  </nested>
+  <nested inputs="Index.xsd#//index;XSDElementDeclaration" outputs="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//DocumentRoot/index"/>
+  <nested inputs="Registry.xsd#//name;XSDElementDeclaration=1" outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//DocumentRoot/name"/>
+  <nested inputs="Index.xsd#//name;XSDElementDeclaration=1" outputs="org.eclipse.wst.ws.internal.model.v10.rtindex.ecore#//DocumentRoot/name"/>
+  <nested inputs="Taxonomy.xsd#//name;XSDElementDeclaration=2" outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//DocumentRoot/name"/>
+  <nested inputs="Registry.xsd#//registry;XSDElementDeclaration" outputs="org.eclipse.wst.ws.internal.model.v10.registry.ecore#//DocumentRoot/registry"/>
+  <nested inputs="Taxonomy.xsd#//taxonomy;XSDElementDeclaration" outputs="org.eclipse.wst.ws.internal.model.v10.taxonomy.ecore#//DocumentRoot/taxonomy"/>
+  <nested inputs="UDDIRegistry.xsd#//Taxonomies;XSDComplexTypeDefinition=1" outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//Taxonomies">
+    <nested inputs="UDDIRegistry.xsd#//Taxonomies;XSDComplexTypeDefinition=1/XSDParticle/XSDModelGroup/XSDParticle"
+        outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//Taxonomies/taxonomy"/>
+  </nested>
+  <nested inputs="UDDIRegistry.xsd#//taxonomies;XSDElementDeclaration=1" outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//DocumentRoot/taxonomies"/>
+  <nested inputs="UDDIRegistry.xsd#//UDDIRegistry;XSDComplexTypeDefinition" outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry">
+    <nested inputs="UDDIRegistry.xsd#//UDDIRegistry;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle"
+        outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/version"/>
+    <nested inputs="UDDIRegistry.xsd#//UDDIRegistry;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle=1"
+        outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/discoveryURL"/>
+    <nested inputs="UDDIRegistry.xsd#//UDDIRegistry;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle=2"
+        outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/publicationURL"/>
+    <nested inputs="UDDIRegistry.xsd#//UDDIRegistry;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle=3"
+        outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/securedDiscoveryURL"/>
+    <nested inputs="UDDIRegistry.xsd#//UDDIRegistry;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle=4"
+        outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/securedPublicationURL"/>
+    <nested inputs="UDDIRegistry.xsd#//UDDIRegistry;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle=5"
+        outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/defaultLogin"/>
+    <nested inputs="UDDIRegistry.xsd#//UDDIRegistry;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle=6"
+        outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/defaultPassword"/>
+    <nested inputs="UDDIRegistry.xsd#//UDDIRegistry;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle=7"
+        outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//UDDIRegistry/taxonomies"/>
+  </nested>
+  <nested inputs="UDDIRegistry.xsd#//uddiRegistry;XSDElementDeclaration" outputs="org.eclipse.wst.ws.internal.model.v10.uddiregistry.ecore#//DocumentRoot/uddiRegistry"/>
+</xsd2ecore:XSD2EcoreMappingRoot>

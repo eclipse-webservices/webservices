@@ -25,12 +25,12 @@ targetNamespace="http://eclipse.org/wst/ws/internal/model/v10/uddiregistry">
 			<xsd:extension base="reg:Registry">
 				<xsd:sequence>
 					<xsd:element name="version" type="xsd:string" minOccurs="1"/>
-					<xsd:element name="discoveryURL" type="xsd:anyURI" minOccurs="0"/>
-					<xsd:element name="publicationURL" type="xsd:anyURI" minOccurs="0"/>
-					<xsd:element name="securedDiscoveryURL" type="xsd:anyURI" minOccurs="0"/>
-					<xsd:element name="securedPublicationURL" type="xsd:anyURI" minOccurs="0"/>
-					<xsd:element name="defaultLogin" type="xsd:string" minOccurs="0"/>
-					<xsd:element name="defaultPassword" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="discoveryURL" type="xsd:anyURI" minOccurs="1"/>
+					<xsd:element name="publicationURL" type="xsd:anyURI" minOccurs="1"/>
+					<xsd:element name="securedDiscoveryURL" type="xsd:anyURI" minOccurs="1"/>
+					<xsd:element name="securedPublicationURL" type="xsd:anyURI" minOccurs="1"/>
+					<xsd:element name="defaultLogin" type="xsd:string" minOccurs="1"/>
+					<xsd:element name="defaultPassword" type="xsd:string" minOccurs="1"/>
 					<xsd:element name="taxonomies" type="urg:Taxonomies" minOccurs="0"/>
 				</xsd:sequence>
 			</xsd:extension>

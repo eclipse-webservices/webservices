@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: UDDIRegistryPackageImpl.java,v 1.1 2005/11/25 21:54:36 cbrealey Exp $
+ * $Id: UDDIRegistryPackageImpl.java,v 1.2 2005/12/03 04:06:50 cbrealey Exp $
  */
 package org.eclipse.wst.ws.internal.model.v10.uddiregistry.impl;
 
@@ -123,20 +123,20 @@ public class UDDIRegistryPackageImpl extends EPackageImpl implements UDDIRegistr
 		XMLTypePackageImpl.init();
 
 		// Obtain or create and register interdependencies
-		TaxonomyPackageImpl theTaxonomyPackage = (TaxonomyPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(TaxonomyPackage.eNS_URI) instanceof TaxonomyPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(TaxonomyPackage.eNS_URI) : TaxonomyPackageImpl.eINSTANCE);
 		RTIndexPackageImpl theRTIndexPackage = (RTIndexPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RTIndexPackage.eNS_URI) instanceof RTIndexPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RTIndexPackage.eNS_URI) : RTIndexPackageImpl.eINSTANCE);
+		TaxonomyPackageImpl theTaxonomyPackage = (TaxonomyPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(TaxonomyPackage.eNS_URI) instanceof TaxonomyPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(TaxonomyPackage.eNS_URI) : TaxonomyPackageImpl.eINSTANCE);
 		RegistryPackageImpl theRegistryPackage = (RegistryPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RegistryPackage.eNS_URI) instanceof RegistryPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RegistryPackage.eNS_URI) : RegistryPackageImpl.eINSTANCE);
 
 		// Create package meta-data objects
 		theUDDIRegistryPackage.createPackageContents();
-		theTaxonomyPackage.createPackageContents();
 		theRTIndexPackage.createPackageContents();
+		theTaxonomyPackage.createPackageContents();
 		theRegistryPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theUDDIRegistryPackage.initializePackageContents();
-		theTaxonomyPackage.initializePackageContents();
 		theRTIndexPackage.initializePackageContents();
+		theTaxonomyPackage.initializePackageContents();
 		theRegistryPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
@@ -391,12 +391,12 @@ public class UDDIRegistryPackageImpl extends EPackageImpl implements UDDIRegistr
 
 		initEClass(uddiRegistryEClass, UDDIRegistry.class, "UDDIRegistry", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getUDDIRegistry_Version(), theXMLTypePackage.getString(), "version", null, 1, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getUDDIRegistry_DiscoveryURL(), theXMLTypePackage.getAnyURI(), "discoveryURL", null, 0, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getUDDIRegistry_PublicationURL(), theXMLTypePackage.getAnyURI(), "publicationURL", null, 0, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getUDDIRegistry_SecuredDiscoveryURL(), theXMLTypePackage.getAnyURI(), "securedDiscoveryURL", null, 0, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getUDDIRegistry_SecuredPublicationURL(), theXMLTypePackage.getAnyURI(), "securedPublicationURL", null, 0, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getUDDIRegistry_DefaultLogin(), theXMLTypePackage.getString(), "defaultLogin", null, 0, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getUDDIRegistry_DefaultPassword(), theXMLTypePackage.getString(), "defaultPassword", null, 0, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getUDDIRegistry_DiscoveryURL(), theXMLTypePackage.getAnyURI(), "discoveryURL", null, 1, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getUDDIRegistry_PublicationURL(), theXMLTypePackage.getAnyURI(), "publicationURL", null, 1, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getUDDIRegistry_SecuredDiscoveryURL(), theXMLTypePackage.getAnyURI(), "securedDiscoveryURL", null, 1, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getUDDIRegistry_SecuredPublicationURL(), theXMLTypePackage.getAnyURI(), "securedPublicationURL", null, 1, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getUDDIRegistry_DefaultLogin(), theXMLTypePackage.getString(), "defaultLogin", null, 1, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getUDDIRegistry_DefaultPassword(), theXMLTypePackage.getString(), "defaultPassword", null, 1, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUDDIRegistry_Taxonomies(), this.getTaxonomies(), null, "taxonomies", null, 0, 1, UDDIRegistry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
