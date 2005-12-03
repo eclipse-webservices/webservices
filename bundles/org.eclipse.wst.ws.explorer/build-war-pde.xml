@@ -47,6 +47,9 @@
 		<javac destdir="${wsexplorerDir}/WEB-INF/classes" includeAntRuntime="false">
 			<src path="${wsexplorerDir}"/>
 			<classpath>
+				<dirset dir="${buildDirectory}">
+					<include name="*/@dot" />
+				</dirset>
 				<fileset dir="${buildDirectory}">
 					<include name="**/*.jar" /> 
 				</fileset>
