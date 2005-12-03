@@ -1,14 +1,15 @@
 package org.eclipse.wst.ws.tests.unittest;
 
 import java.io.File;
-import java.net.MalformedURLException;
 
+import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.ws.internal.model.v10.registry.Name;
+import org.eclipse.wst.ws.internal.model.v10.registry.Registry;
 import org.eclipse.wst.ws.internal.model.v10.registry.RegistryFactory;
 import org.eclipse.wst.ws.internal.model.v10.taxonomy.Category;
 import org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy;
@@ -19,7 +20,6 @@ import org.eclipse.wst.ws.internal.model.v10.uddiregistry.UDDIRegistryFactory;
 import org.eclipse.wst.ws.internal.registry.IRegistryManager;
 import org.eclipse.wst.ws.internal.registry.RegistryService;
 import org.eclipse.wst.ws.internal.registry.UDDIRegistryService;
-import org.eclipse.wst.ws.internal.registry.UDDITaxonomyFinder;
 
 public class RegistryTests extends TestCase
 {
@@ -36,7 +36,7 @@ public class RegistryTests extends TestCase
 	 */
 	public void test_RegistryService_saveTaxonomy ()
 	{
-		System.out.println("test_RegistryService_saveTaxonomy starting");
+		System.out.println("STARTING test_RegistryService_saveTaxonomy");
 		try
 		{
 			System.out.println("Creating RegistryService and Taxonomy");
@@ -71,7 +71,7 @@ public class RegistryTests extends TestCase
 		}
 		finally
 		{
-			System.out.println("test_RegistryService_saveTaxonomy finished");
+			System.out.println("FINISHED test_RegistryService_saveTaxonomy\n");
 		}
 	}
 
@@ -83,7 +83,7 @@ public class RegistryTests extends TestCase
 	 */
 	public void test_RegistryService_saveRegistry ()
 	{
-		System.out.println("test_RegistryService_saveRegistry starting");
+		System.out.println("STARTING test_RegistryService_saveRegistry");
 		try
 		{
 			System.out.println("Creating RegistryService, UDDIRegistryService and Registry");
@@ -94,6 +94,9 @@ public class RegistryTests extends TestCase
 			System.out.println("Building a simple Registry model");
 			uddiRegistry.setId("my.registry");
 			uddiRegistry.setVersion("2.0");
+			uddiRegistry.setDiscoveryURL("http://some.discovery.url");
+			uddiRegistry.setPublicationURL("http://some.publication.url");
+			uddiRegistry.setDefaultLogin("hockeyfanatic");
 			Name name = RegistryFactory.eINSTANCE.createName();
 			name.setValue("My Registry");
 			uddiRegistry.getName().add(name);
@@ -119,7 +122,7 @@ public class RegistryTests extends TestCase
 		}
 		finally
 		{
-			System.out.println("test_RegistryService_saveRegistry finished");
+			System.out.println("FINISHED test_RegistryService_saveRegistry\n");
 		}
 	}
 
@@ -132,23 +135,16 @@ public class RegistryTests extends TestCase
 	 */
 	public void test_RegistryManager_saveRegistry()
 	{
-		System.out.println("test_RegistryManager_saveRegistry starting");
+		System.out.println("STARTING test_RegistryManager_saveRegistry");
 		try {
 			System.out.println("Creating RegistryService and Getting RegistryManager");	
 			RegistryService registryService = RegistryService.instance();	
 			IRegistryManager regManager = registryService.getDefaultRegistryManager();
-
-			try{
-				System.out.println("The location of the default index is....." + regManager.getURL());
-			}catch(MalformedURLException me){
-				me.printStackTrace();
-				fail("Unexpected MalformedURLException ["+me.getMessage()+"]");
-			}
+			System.out.println("The location of the default index is " + regManager.getURL());
 
 			//build the hockey taxonomy
-			Taxonomy hockeyTaxonomy = registryService.newTaxonomy();
-
 			System.out.println("Building the hockey Taxonomy model");
+			Taxonomy hockeyTaxonomy = registryService.newTaxonomy();
 			hockeyTaxonomy.setId("hockey.taxonomy");
 			hockeyTaxonomy.setName("hockey Taxonomy");
 			EList list = hockeyTaxonomy.getCategory();
@@ -176,43 +172,104 @@ public class RegistryTests extends TestCase
 			list.add(category2);
 			list.add(category3);
 			list.add(category4);
+			
+			//save the hockey taxonomy
+			Taxonomy hockeyTaxonomyRef = regManager.saveTaxonomy(hockeyTaxonomy);
 
 			//make the hockey registry
-
+			System.out.println("Building the hockey Registry model");
 			UDDIRegistryService uddiRegistryService = UDDIRegistryService.instance();			
 			UDDIRegistry uddiRegistry = uddiRegistryService.newUDDIRegistry();
-
-			System.out.println("Building the hockey Registry model");
 			uddiRegistry.setId("hockey.registry");
 			uddiRegistry.setVersion("2.0");
+			uddiRegistry.setDefaultLogin("hockeyfanatic");
+			uddiRegistry.setDiscoveryURL("http://some.discovery.url");
+			uddiRegistry.setPublicationURL("http://some.publication.url");
 			Name name = RegistryFactory.eINSTANCE.createName();
 			name.setValue("Hockey Registry");
 			uddiRegistry.getName().add(name);
-			Taxonomies t = uddiRegistry.getTaxonomies();
-			if (t == null)
-			{
-				t = UDDIRegistryFactory.eINSTANCE.createTaxonomies();
-				uddiRegistry.setTaxonomies(t);
-			}	
-			EList e = t.getTaxonomy();
-			e.add(hockeyTaxonomy);
 
-			//First we have to add the uddiTaxonomyFinder
+			// Add the reference to the taxonomy (saved above) to the registry.  
+			uddiRegistryService.addTaxonomy(uddiRegistry,hockeyTaxonomyRef);
+
+			/*
 			UDDITaxonomyFinder UITFinder = new UDDITaxonomyFinder();
 			regManager.addTaxonomyFinder(uddiRegistry.getClass().getName(),UITFinder);
-
-			//now test the registry manager
+			*/
+			// Save the thing.
 			System.out.println("Saving the hockey Registry model");
-			try{
-				regManager.saveRegistry(uddiRegistry);
-			}catch(Throwable exc){
-				exc.printStackTrace();
-				fail("Unexpected Throwable ["+exc.getMessage()+"]");
-			}
+			regManager.saveRegistry(uddiRegistry);
+		}
+		catch (Throwable exc)
+		{
+			exc.printStackTrace();
+			fail("Unexpected Throwable ["+exc.getMessage()+"]");
 		}
 		finally
 		{
-			System.out.println("test_RegistryManager_saveRegistry finished");
+			System.out.println("FINISHED test_RegistryManager_saveRegistry\n");
+		}
+	}
+
+	/**
+	 * Loads the registry and taxonomy in the index created in
+	 * test_RegistryManager_saveRegistry, then asserts that the
+	 * content of the model is what we expect.
+	 */
+	public void test_RegistryManager_loadRegistry()
+	{
+		System.out.println("STARTING test_RegistryManager_loadRegistry");
+		try {
+			// Setup
+			System.out.println("Creating RegistryService and Getting RegistryManager");	
+			RegistryService registryService = RegistryService.instance();	
+			IRegistryManager regManager = registryService.getDefaultRegistryManager();
+			
+			// Get the one registry URI we expect, and load the registry.
+			String[] registries = regManager.getRegistryURIs();
+			assertEquals("Unexpected number of registries "+registries.length,registries.length,1);
+			String uri = registries[0];
+			System.out.println("Loading registry " + uri);
+			Registry registry = regManager.loadRegistry(uri);
+			System.out.println("Found registry " + registry.getId());
+			assertEquals("Did not find hockey registry","hockey.registry",registry.getId());
+			
+			// It's supposed to be a UDDI registry. Verify it and check its values.
+			assertTrue("Registry is not a UDDIRegistry",(registry instanceof UDDIRegistry));
+			UDDIRegistry uddiRegistry = (UDDIRegistry)registry;
+			assertEquals(uddiRegistry.getVersion(),"2.0");
+			assertEquals(uddiRegistry.getDefaultLogin(),"hockeyfanatic");
+			assertEquals(uddiRegistry.getDiscoveryURL(),"http://some.discovery.url");
+			assertEquals(uddiRegistry.getPublicationURL(),"http://some.publication.url");
+			
+			// Load the taxonomies used the UDDI registry.
+			UDDIRegistryService uddiRegistryService = UDDIRegistryService.instance();
+			Taxonomy[] taxonomies = regManager.loadTaxonomies(uddiRegistryService.getTaxonomyURIs(uddiRegistry));
+			assertEquals("Unexpected number of taxonomies "+taxonomies.length,taxonomies.length,1);
+			Taxonomy taxonomy = taxonomies[0];
+			System.out.println("Found taxonomy " + taxonomy.getId());
+			Assert.assertEquals("Did not find hockey taxonomy","hockey.taxonomy",taxonomy.getId());
+			
+			// Dump out the values (no assertions here).
+			EList cList = taxonomy.getCategory();
+			for(int i = 0;i<cList.size();i++){
+				Category category = (Category)cList.get(i);
+				System.out.println("Found category " + category.getName());
+				EList c2List = category.getCategory();
+				for(int j = 0;j<c2List.size();j++){
+					Category iCategory = (Category)c2List.get(j);
+					System.out.println("Found subcategory " + iCategory.getName());
+				}
+			}					
+		}
+		catch(Throwable t)
+		{
+			t.printStackTrace();
+			fail("Unexpected Throwable ["+t.getMessage()+"]");
+		}
+		finally
+		{
+			System.out.println("FINISHED test_RegistryManager_loadRegistry\n");
 		}
 	}
 }
