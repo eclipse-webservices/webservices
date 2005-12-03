@@ -12,8 +12,9 @@
 package org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel;
 
 import java.util.List;
+
 import org.eclipse.wst.ws.internal.datamodel.Model;
-import org.eclipse.wst.ws.internal.model.v10.uddiregistry.Taxonomies;
+import org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy;
 
 public class FavoritesUserDefUDDIRegistryElement extends FavoritesElement
 {
@@ -26,7 +27,7 @@ public class FavoritesUserDefUDDIRegistryElement extends FavoritesElement
   private String publishURL;
   private String secureInquiryURL;
   private String securePublishURL;
-  private Taxonomies taxonomies;
+  private Taxonomy[] taxonomies;
 
   public String getDefaultLogin()
   {
@@ -48,12 +49,12 @@ public class FavoritesUserDefUDDIRegistryElement extends FavoritesElement
     this.defaultPassword = defaultPassword;
   }
 
-  public Taxonomies getTaxonomies()
+  public Taxonomy[] getTaxonomies()
   {
     return taxonomies;
   }
 
-  public void setTaxonomies(Taxonomies taxonomies)
+  public void setTaxonomies(Taxonomy[] taxonomies)
   {
     this.taxonomies = taxonomies;
   }

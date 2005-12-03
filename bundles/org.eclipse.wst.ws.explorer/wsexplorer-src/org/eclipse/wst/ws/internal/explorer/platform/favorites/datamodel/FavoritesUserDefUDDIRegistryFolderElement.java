@@ -13,6 +13,7 @@ package org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
@@ -20,9 +21,11 @@ import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.Favorit
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 import org.eclipse.wst.ws.internal.model.v10.registry.Name;
 import org.eclipse.wst.ws.internal.model.v10.registry.Registry;
+import org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy;
 import org.eclipse.wst.ws.internal.model.v10.uddiregistry.UDDIRegistry;
 import org.eclipse.wst.ws.internal.registry.IRegistryManager;
 import org.eclipse.wst.ws.internal.registry.RegistryService;
+import org.eclipse.wst.ws.internal.registry.UDDIRegistryService;
 
 /**
  * The data model element that represents a WSIL document
@@ -59,7 +62,8 @@ public class FavoritesUserDefUDDIRegistryFolderElement extends FavoritesFolderEl
           favUserDefUDDIRegElement.setPublishURL(uddiReg.getPublicationURL());
           favUserDefUDDIRegElement.setSecureInquiryURL(uddiReg.getSecuredDiscoveryURL());
           favUserDefUDDIRegElement.setSecurePublishURL(uddiReg.getSecuredPublicationURL());
-          favUserDefUDDIRegElement.setTaxonomies(uddiReg.getTaxonomies());
+          Taxonomy[] taxonomies = regManager.loadTaxonomies(UDDIRegistryService.instance().getTaxonomyURIs(uddiReg));
+          favUserDefUDDIRegElement.setTaxonomies(taxonomies);
           connect(favUserDefUDDIRegElement, FavoritesModelConstants.REL_USER_DEF_UDDI_REGISTRY_NODE, ModelConstants.REL_OWNER);
         }
       }

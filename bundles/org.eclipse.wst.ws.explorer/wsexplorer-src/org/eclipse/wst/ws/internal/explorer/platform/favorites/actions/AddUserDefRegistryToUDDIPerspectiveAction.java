@@ -18,7 +18,7 @@ import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.Favor
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Node;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
-import org.eclipse.wst.ws.internal.model.v10.uddiregistry.Taxonomies;
+import org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy;
 
 public class AddUserDefRegistryToUDDIPerspectiveAction extends AddToUDDIPerspectiveAction
 {
@@ -40,7 +40,7 @@ public class AddUserDefRegistryToUDDIPerspectiveAction extends AddToUDDIPerspect
     String publishAPI = regElement.getPublishURL();
     String defaultLogin = regElement.getDefaultLogin();
     String defaultPassword = regElement.getDefaultPassword();
-    Taxonomies taxonomies = regElement.getTaxonomies();
+    Taxonomy[] taxonomies = regElement.getTaxonomies();
     if (!createRegistryInUDDIPerspective(inquiryAPI, publishAPI, registryName, null, defaultLogin, defaultPassword, taxonomies, false))
       return false;
     favPerspective.getMessageQueue().addMessage(favPerspective.getMessage("MSG_INFO_ADD_TO_UDDI_PERSPECTIVE_SUCCESSFUL", registryName));

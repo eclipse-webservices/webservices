@@ -14,8 +14,8 @@ package org.eclipse.wst.ws.internal.explorer.platform.favorites.actions;
 import java.io.File;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Vector;
+
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.FavoritesElement;
@@ -37,7 +37,6 @@ import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.UDDIMainNo
 import org.eclipse.wst.ws.internal.explorer.platform.util.URLUtils;
 import org.eclipse.wst.ws.internal.explorer.platform.util.Validator;
 import org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy;
-import org.eclipse.wst.ws.internal.model.v10.uddiregistry.Taxonomies;
 
 public abstract class AddToUDDIPerspectiveAction extends MultipleLinkAction {
     public AddToUDDIPerspectiveAction(Controller controller) {
@@ -73,7 +72,7 @@ public abstract class AddToUDDIPerspectiveAction extends MultipleLinkAction {
       return createRegistryInUDDIPerspective(inquiryAPI, publishAPI, registryName, registrationURL, null, null, null, useExisting);
     }
 
-    protected boolean createRegistryInUDDIPerspective(String inquiryAPI, String publishAPI, String registryName, String registrationURL, String defaultLogin, String defaultPassword, Taxonomies taxonomies, boolean useExisting) {
+    protected boolean createRegistryInUDDIPerspective(String inquiryAPI, String publishAPI, String registryName, String registrationURL, String defaultLogin, String defaultPassword, Taxonomy[] taxonomies, boolean useExisting) {
       Vector registryNodes = getRegistryNodesByInquiryURL(inquiryAPI);
         if (registryNodes != null)
         {
@@ -132,9 +131,9 @@ public abstract class AddToUDDIPerspectiveAction extends MultipleLinkAction {
         if (taxonomies != null)
         {
           Hashtable taxonomyTable = new Hashtable();
-          for (Iterator it = taxonomies.getTaxonomy().iterator(); it.hasNext();)
+          for (int i=0; i<taxonomies.length; i++)
           {
-            Taxonomy taxonomy = (Taxonomy)it.next();
+            Taxonomy taxonomy = taxonomies[i];
             String name = taxonomy.getName();
             String tmodelKey = taxonomy.getTmodelKey();
             CategoryModel catModel = new CategoryModel();

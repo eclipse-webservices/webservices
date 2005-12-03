@@ -268,34 +268,30 @@
      %>
      
      <%
-     Taxonomies taxonomies = regElement.getTaxonomies();
-     if (taxonomies != null)
+     Taxonomy[] taxonomies = regElement.getTaxonomies();
+     if (taxonomies != null && taxonomies.length > 0)
      {
-       List t = taxonomies.getTaxonomy();
-       if (t != null && !t.isEmpty())
-       {
-       %>
-         <br>
-         <table width="95%" border=0 cellpadding=3 cellspacing=0 class="tableborder">
-           <tr>
-             <th class="singleheadercolor" height=20 valign="bottom" align="left">
-               <%=favPerspective.getMessage("FORM_LABEL_TAXONOMY")%>
-             </th>
-           </tr>
-           <%
-           for (Iterator it = t.iterator(); it.hasNext();)
-           {
-             Taxonomy taxonomy = (Taxonomy)it.next();
-           %>
-           <tr>
-             <td class="tablecells"><%=taxonomy.getName()%></td>
-           </tr>
-           <%
-           }
-           %>
-         </table>
+     %>
+       <br>
+       <table width="95%" border=0 cellpadding=3 cellspacing=0 class="tableborder">
+         <tr>
+           <th class="singleheadercolor" height=20 valign="bottom" align="left">
+             <%=favPerspective.getMessage("FORM_LABEL_TAXONOMY")%>
+           </th>
+         </tr>
          <%
-       }
+         for (int i=0; i<taxonomies.length; i++)
+         {
+           Taxonomy taxonomy = taxonomies[i];
+         %>
+         <tr>
+           <td class="tablecells"><%=taxonomy.getName()%></td>
+         </tr>
+         <%
+         }
+         %>
+       </table>
+       <%
      }
      %>
 
