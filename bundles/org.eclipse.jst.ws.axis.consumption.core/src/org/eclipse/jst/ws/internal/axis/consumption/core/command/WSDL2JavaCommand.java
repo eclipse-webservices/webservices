@@ -125,9 +125,14 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			
 			// If timeout is not set, the default timeout for wsdl2java is 45 seconds.  
 			// The user can change the timeout value by setting 
-			// "-DAxisWsdl2JavaTimeout=<timeout value in seconds>" as VM argument
-			// For example, enter "-DAxisWsdl2JavaTimeout=300" 
-			// to change the timeout to 300 seconds.
+			// "-DAxisWsdl2JavaTimeout=<timeout_value_in_milliseconds>" as VM argument
+			// when starting the Eclipse workbench.
+			//
+			// For example, enter the following command to start the Eclipse workbench 
+			// in order to set the Axis WSDL to Java emitter timeout to 60 seconds:
+			//
+			// 		eclipse -vmargs "-DAxisWsdl2JavaTimeout=60000"
+			//
 			
 			String wsdl2JavaTimeoutProperty = System.getProperty("AxisWsdl2JavaTimeout");
 			if (wsdl2JavaTimeoutProperty != null) {
