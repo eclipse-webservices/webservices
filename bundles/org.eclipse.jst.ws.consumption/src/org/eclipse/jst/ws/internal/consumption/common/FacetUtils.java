@@ -20,11 +20,16 @@ import java.util.StringTokenizer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
@@ -298,6 +303,66 @@ public class FacetUtils
     return fm;
   }
   
+  public static IStatus addRequiredFacetsToProject(IProject project, RequiredFacetVersion[] rfvs, IProgressMonitor monitor)
+  {
+    IStatus status = Status.OK_STATUS;
+    
+    Set facetsToAdd = null;
+    try
+    {
+      IFacetedProject fProject = ProjectFacetsManager.create(project);
+      if (fProject != null)
+      {
+        Set projectFacetVersions = fProject.getProjectFacets();
+        FacetMatcher projectFacetMatcher = FacetUtils.match(rfvs, projectFacetVersions);
+        if (projectFacetMatcher.isMatch())
+        {
+          facetsToAdd = projectFacetMatcher.getFacetsToAdd();
+          if (facetsToAdd.size() > 0)
+          {
+            Set actions = FacetUtils.getInstallActions(facetsToAdd);
+            fProject.modify(actions, monitor);
+          }
+        }            
+      }
+    } catch (CoreException ce)
+    {
+      //Display an appropriate error message to the user.
+      //A CoreException could have been thrown for any of the following three reasons
+      //1. The project does not exist
+      //2. The project is not open
+      //3. There was a problem adding the facets to the project.
+      
+      if (!project.exists())
+      {
+        status = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_DOES_NOT_EXIST, new String[] { project.getName()}));            
+      }
+      else if (!project.isOpen())
+      {
+        status = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_IS_NOT_OPEN, new String[] { project.getName()}));            
+      }
+      else
+      { 
+        //Iterate over facets to add to form error message
+        Iterator itr = facetsToAdd.iterator();
+        int size = facetsToAdd.size();
+        if (size > 0)
+        {          
+          IProjectFacetVersion firstProjectFacetVersion = (IProjectFacetVersion)itr.next();
+          String facetList = firstProjectFacetVersion.getProjectFacet().getLabel();
+          while (itr.hasNext())
+          {
+            IProjectFacetVersion pfv = (IProjectFacetVersion)itr.next();
+            String pfvLabel = pfv.getProjectFacet().getLabel();
+            facetList = NLS.bind(ConsumptionMessages.MSG_FACETS, new String[] {facetList, pfvLabel});
+          }
+          status = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_ADDING_FACETS_TO_PROJECT, new String[] { project.getName(), facetList}));
+        }            
+      }
+    }
+    
+    return status;
+  }
   
   public static Set getFacetsForJavaProject(IJavaProject javaProject)
   {

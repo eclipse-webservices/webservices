@@ -82,14 +82,6 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
         
         //Set up the install actions.
         Set actions = FacetUtils.getInstallActions(facetsToAdd);
-        /*
-        IProjectFacetVersion webFacet24 = ProjectFacetsManager.getProjectFacet("jst.web").getVersion("2.4");
-        IProjectFacetVersion javaFacet14 = ProjectFacetsManager.getProjectFacet("jst.java").getVersion("1.4");
-        Set facetsToAdd = new HashSet();
-        facetsToAdd.add(webFacet24);
-        facetsToAdd.add(javaFacet14);
-        actions = FacetUtils.getInstallActions(facetsToAdd);
-        */
         fproject.modify(actions, monitor_);
         
         Set newFacetVersions = fproject.getProjectFacets();
@@ -110,13 +102,8 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
  
       } catch (CoreException ce)
       {
-        System.out.println("Exception occurred when creating a faceted project.");
         return StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }));
       }
-    }
-    else
-    {
-      //TODO Just add the facets you need.
     }
     return status;
   }

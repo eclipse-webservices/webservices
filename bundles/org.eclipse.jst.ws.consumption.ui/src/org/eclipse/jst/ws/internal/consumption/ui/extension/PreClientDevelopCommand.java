@@ -118,35 +118,19 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
         if (status.getSeverity() == Status.ERROR)
         {
           environment.getStatusHandler().reportError( status );
+          return status;
         }        
       }            
     }
-    else
+
+    //The project should now exist. Add facets if needed.
+    RequiredFacetVersion[] rfvs = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRequiredFacetVersions();
+    status = FacetUtils.addRequiredFacetsToProject(project, rfvs, monitor);
+    if (status.getSeverity() == Status.ERROR)
     {
-      //TODO add the necessary facets
-    }
-    
-    
-	//int intModuleType = convertModuleType(moduleType_);
-
-	//CreateModuleCommand command = new CreateModuleCommand();
-	//command.setProjectName(project_);
-	//command.setModuleName(module_);
-	//command.setModuleType(intModuleType);
-	//command.setServerFactoryId(typeRuntimeServer_.getServerId());
-	//command.setJ2eeLevel(j2eeLevel_);
-    //command.setEnvironment( environment );
-	//IStatus status = command.execute( null, null );		
-
-    // rsk todo -- once the clientProjectType extension is gone, determination
-    // of what type of module to create will have to be done.
-    //if (moduleType_.equals(ID_WEB)) command.setModuleType(CreateModuleCommand.WEB);
-    //if (moduleType_.equals(ID_EJB)) command.setModuleType(CreateModuleCommand.EJB);
-    //if (moduleType_.equals(ID_APP_CLIENT)) command.setModuleType(CreateModuleCommand.APPCLIENT);
-    
-    //command.setServerInstanceId( typeRuntimeServer_.getServerInstanceId() );
-
-
+      environment.getStatusHandler().reportError( status );
+      return status;
+    }              
 
     return status;
   }

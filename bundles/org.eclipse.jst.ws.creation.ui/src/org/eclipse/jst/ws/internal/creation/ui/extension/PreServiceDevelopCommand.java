@@ -130,35 +130,24 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
             command.setRequiredFacetVersions(rfv);
             command.setServerFactoryId(typeRuntimeServer_.getServerId());
             command.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
-            //command.setFacetMatcher(fm);
             status = command.execute( monitor, adaptable );
             if (status.getSeverity() == Status.ERROR)
             {
               environment.getStatusHandler().reportError( status );
+              return status;
             }        
           }            
         }
-        else
-        {
-          //TODO add the necessary facets
-        }        
-        
-        //Create the service module
-		//rsk todo -- pick the correct module type based on the Web service type, it's hard coded to WEB for now.
-/*        
-		int intModuleType = convertModuleType(moduleType_);
-		
 
-	      CreateModuleCommand command = new CreateModuleCommand();
-		  command.setProjectName(project_);
-		  command.setModuleName(module_);			
-		  command.setModuleType(intModuleType);
-		  command.setServerFactoryId(typeRuntimeServer_.getServerId());
-		  command.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
-		  command.setJ2eeLevel(j2eeLevel_);
-      command.setEnvironment(environment);
-		  IStatus status = command.execute( monitor, null);
-*/
+        //The project should now exist. Add facets if needed.        
+        RequiredFacetVersion[] rfvs = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_).getRequiredFacetVersions();
+        status = FacetUtils.addRequiredFacetsToProject(project, rfvs, monitor);
+        if (status.getSeverity() == Status.ERROR)
+        {
+          environment.getStatusHandler().reportError( status );
+          return status;
+        }                      
+
 	  return status;				
   }
   

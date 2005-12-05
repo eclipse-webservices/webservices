@@ -99,6 +99,10 @@ public final class ConsumptionMessages extends NLS {
 	public static String MSG_ERROR_CREATE_APPCLIENT_COMPONENT;
 	public static String MSG_ERROR_COMPONENT_CREATION;
 	public static String MSG_ERROR_PROJECT_CREATION;
+    public static String MSG_ERROR_PROJECT_DOES_NOT_EXIST;
+    public static String MSG_ERROR_PROJECT_IS_NOT_OPEN;
+    public static String MSG_ERROR_ADDING_FACETS_TO_PROJECT;
+    public static String MSG_FACETS;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, ConsumptionMessages.class);
