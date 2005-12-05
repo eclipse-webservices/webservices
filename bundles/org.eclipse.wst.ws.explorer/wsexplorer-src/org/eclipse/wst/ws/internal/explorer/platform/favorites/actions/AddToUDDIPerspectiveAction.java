@@ -141,7 +141,7 @@ public abstract class AddToUDDIPerspectiveAction extends MultipleLinkAction {
             catModel.setCategoryKey(name);
             catModel.setTModelKey(tmodelKey);
             catModel.loadFromTaxonomy(taxonomy);
-            taxonomyTable.put(name, catModel);
+            taxonomyTable.put(tmodelKey, catModel);
           }
           RegistryElement regElement = (RegistryElement)(controller_.getUDDIPerspective().getNavigatorManager().getSelectedNode().getTreeElement());
           regElement.setUserDefinedCategories(taxonomyTable);
