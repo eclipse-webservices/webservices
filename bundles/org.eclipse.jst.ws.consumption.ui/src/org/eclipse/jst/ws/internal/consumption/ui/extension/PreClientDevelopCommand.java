@@ -55,6 +55,7 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
   private ResourceContext   resourceContext_;
   private boolean						test_;
   private boolean						install_;
+  private boolean						run_;
   private String            wsdlURI_;
   private Object            dataObject_;
 
@@ -90,7 +91,7 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
     
     webServiceClient_ = wsrt.getWebServiceClient(wsInfo);
     WebServiceScenario scenario = WebServiceScenario.CLIENT_LITERAL;
-    context_ = new SimpleContext(true, true, true, install_, true, true, test_,
+    context_ = new SimpleContext(true, true, true, install_, run_, true, test_,
         false, scenario, resourceContext_.isOverwriteFilesEnabled(),
         resourceContext_.isCreateFoldersEnabled(), resourceContext_
             .isCheckoutFilesEnabled());
@@ -239,6 +240,11 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
   {
 	test_ = testService;
   }		
+  
+  public void setStartService(boolean startService)
+  {
+	  run_ = startService;
+  }
   
   public void setWsdlURI(String uri)
   {

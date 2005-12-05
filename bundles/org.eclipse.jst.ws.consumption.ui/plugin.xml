@@ -775,23 +775,6 @@
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionFragment"
               property="ClientTypeRuntimeServer"
               transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>                
-        <map
-              key="TestId"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestDelegateCommand"
-              property="TestFacility"
-              transform="org.eclipse.jst.ws.internal.common.String2TestFacilityListTransformer"/>                
-		<map
-              key="Folder"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestDelegateCommand"
-              property="Folder"/>     
-		<map
-              key="TestService"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
-              property="TestService"/>  
-        <map
-              key="TestId"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
-              property="TestID"/>  
               
          <!-- mappings for listing options -->
         <map

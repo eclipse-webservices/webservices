@@ -285,31 +285,9 @@
               property="ServiceTypeRuntimeServer"
               transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>             
         <map
-              key="StartService"
-              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
-              property="StartService"/>
-        <map
-              key="TestService"
-              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
-              property="TestService"/>
-        <map
-              key="PublishService"
-              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
-              property="PublishService"/>
-        <map
               key="GenerateProxy"
               operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
               property="GenerateProxy"/>
-
-        <map
-              key="MonitorService"
-              operation="org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand"
-              property="MonitorService"/>
-              
-      <map
-              key="MonitorService"
-              operation="org.eclipse.jst.ws.internal.consumption.command.common.ComputeEndpointCommand"
-              property="MonitorService"/>
       <map
               key="Service.RuntimeId"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
@@ -359,41 +337,5 @@
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionFragment"
               property="ServiceTypeRuntimeServer"
               transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
-      <map
-              key="TestId"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
-              property="LaunchedServiceTestName"/>
-
-      <map
-              key="TestId"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment"
-              property="LaunchedServiceTestName"/>
-
-      <map
-              key="TestService"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
-              property="TestService"/>
-      <map
-              key="TestId"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragment"
-              property="TestID"/>
-      <map
-              key="PublishToPrivateUDDI"
-              operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishToPrivateUDDICommandFragment"
-              property="PublishToPrivateUDDI"/>
-
-      <map
-              key="PublishToPrivateUDDI"
-              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.test.LaunchFragment"
-              property="PublishToPrivateUDDI"/>
-      <map
-              key="PublishToPublicUDDI"
-              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.test.LaunchFragment"
-              property="PublishToPublicUDDI"/>
-      <map
-              key="LaunchOptions"
-              operation="org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand"
-              property="LaunchOptions"/>                            
-
      </extension>
 </plugin>
