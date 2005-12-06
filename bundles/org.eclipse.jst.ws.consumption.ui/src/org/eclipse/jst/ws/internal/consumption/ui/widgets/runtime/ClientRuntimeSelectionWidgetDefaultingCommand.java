@@ -728,42 +728,43 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     //Check if the preferred Web service runtime works with the initially selected project.
     PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
     String runtimeId = context.getRuntimeId();
-    String preferredClientRuntimeId = null;
+    ArrayList preferredClientRuntimeIdsList = new ArrayList();
     for (int k=0; k<clientRuntimes.length; k++ )
     {
       ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimes[k]);
       if (desc.getRuntime().getId().equals(runtimeId))
       {
-        preferredClientRuntimeId = desc.getId();
-        break;
+        preferredClientRuntimeIdsList.add(desc.getId());
       }
     }
+    String[] preferredClientRuntimeIds = (String[])preferredClientRuntimeIdsList.toArray(new String[0]);
     
-    if (preferredClientRuntimeId != null)
+    
+    if (project != null && project.exists())
     {
-      if (project != null && project.exists())
+      Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
+      if (facetVersions != null)
       {
-        RequiredFacetVersion[] prfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(preferredClientRuntimeId)
-            .getRequiredFacetVersions();
-        Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
-        if (facetVersions != null)
+        for (int p = 0; p < preferredClientRuntimeIds.length; p++)
         {
+          RequiredFacetVersion[] prfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(
+              preferredClientRuntimeIds[p]).getRequiredFacetVersions();
           FacetMatcher fm = FacetUtils.match(prfv, facetVersions);
           if (fm.isMatch())
           {
             clientFacetMatcher_ = fm;
             clientProjectName_ = project.getName();
-            return preferredClientRuntimeId;
-          }          
+            return preferredClientRuntimeIds[p];
+          }
         }
       }
     }
     
     //Either there was no initially selected project or the preferred
-    //runtime did not work with the initially selected project. 
+    //runtimes did not work with the initially selected project. 
     //If possible, pick a Web service runtime that works with the initially selected project.
-    //If the initially selected project does not work with any of the Web service runtimes, pick the 
-    //preferred Web service runtime.
+    //If the initially selected project does not work with any of the Web service runtimes, choose
+    //a runtime based on the preferred client project types.
     
 
     if (project != null && project.exists())
@@ -786,14 +787,35 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     }
     
     //Haven't returned yet so this means that the intitially selected project cannot be used
-    //to influence the selection of the runtime. Pick the preferred Web service runtime if it is 
-    //not null.
-    if (preferredClientRuntimeId != null)
+    //to influence the selection of the runtime. Use the preferred client project types to
+    //influence the selection of a runtime.
+    ProjectTopologyContext ptc = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
+    String[] preferredTemplateIds = ptc.getClientTypes();
+    
+    for (int n=0; n<preferredTemplateIds.length; n++)
     {
-      return preferredClientRuntimeId;
+      String preferredTemplateId = preferredTemplateIds[n];
+      Set facetVersions = FacetUtils.getInitialFacetVersionsFromTemplate(preferredTemplateId);
+
+      for (int m=0; m<preferredClientRuntimeIds.length; m++)
+      {
+        //If this clientRuntime supports this template, choose it and exit.        
+        ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(preferredClientRuntimeIds[m]);
+        RequiredFacetVersion[] rfv = desc.getRequiredFacetVersions();
+        FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+        if (fm.isMatch())
+        {
+          return preferredClientRuntimeIds[m];
+        }        
+      }
+    }
+    
+    //Still haven't returned. Returned the first preferred client runtime id.
+    if (preferredClientRuntimeIds.length > 0)
+    {
+      return preferredClientRuntimeIds[0];
     }
       
-    
     if (clientRuntimes.length > 0)
       return WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimes[0]).getId();
     else
@@ -883,6 +905,11 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   }
   
   
+  /*
+   * Update the client project, client project type and clientRuntime as needed.
+   * Used by ServerRuntimeSelectionWidgetDefaultingCommand to update client side
+   * stuff based on service side defaults.
+   */
   protected void updateClientProject(String projectName, String serviceTypeId)
   {
     boolean isEJB = false;
@@ -890,8 +917,41 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     isEJB = (implId.equals("org.eclipse.jst.ws.wsImpl.ejb"));
     String[] updatedNames = ResourceUtils.getClientProjectComponentName(projectName, projectName, isEJB);
     clientProjectName_ = updatedNames[0];
-    clientComponentType_ = getDefaultClientProjectTemplate();
     
+    IProject clientProject = ProjectUtilities.getProject(clientProjectName_);
+    if (clientProject.exists())
+    {
+      clientComponentType_ = "";
+      clientRuntimeId_ = WebServiceRuntimeExtensionUtils2.getClientRuntimeId(clientIds_, projectName, clientComponentType_);
+      
+    }
+    else
+    {
+      //Pick a client project type based on project topology preferences. Modify the clientRuntimeId_
+      //as needed.
+      String[] templateIds = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(clientIds_.getTypeId(), clientIds_.getRuntimeId());
+      ProjectTopologyContext ptc = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
+      String[] preferredTemplateIds = ptc.getClientTypes();
+      outer: 
+      for (int j = 0; j < preferredTemplateIds.length; j++)
+      {
+        for (int i = 0; i < templateIds.length; i++)
+        {
+          String templateId = templateIds[i];
+          if (templateId.equals(preferredTemplateIds[j]))
+          {
+            //Get a clientRuntimeId for this template
+            String newClientRuntimeId = WebServiceRuntimeExtensionUtils2.getClientRuntimeId(clientIds_, clientProjectName_, templateId);
+            if (newClientRuntimeId.length() > 0)
+            {
+              clientRuntimeId_ = newClientRuntimeId;
+              clientComponentType_ = templateId;
+              break outer;
+            }
+          }
+        }
+      }            
+    }    
   }
   
   
