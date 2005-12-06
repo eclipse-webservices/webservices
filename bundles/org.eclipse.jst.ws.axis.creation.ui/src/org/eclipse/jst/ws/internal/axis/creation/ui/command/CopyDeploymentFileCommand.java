@@ -11,19 +11,35 @@
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.ServerUtil;
+import org.eclipse.wst.server.core.internal.IModulePublishHelper;
 
 /**
  * 
@@ -33,7 +49,10 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public class CopyDeploymentFileCommand extends AbstractDataModelOperation
 {
-  private String projectName_;
+	private final String WEB_INF = "WEB-INF";
+	private final String SERVER_CONFIG = "server-config.wsdd";
+    private String projectName_;
+	private String serverInstanceId_;
   
   /**
    * Constructor for CopyDeploymentFileCommand.
@@ -46,37 +65,71 @@ public class CopyDeploymentFileCommand extends AbstractDataModelOperation
     projectName_   = projectName;
   }
 
-	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
-	{
-    IStatus            status         = Status.OK_STATUS;
-    
-    try
-    {
-      IVirtualComponent component      = J2EEUtils.getVirtualComponent( projectName_ );
-      IFolder           root           = J2EEUtils.getOutputContainerRoot( component );
-      IPath             path           = new Path( "WEB-INF" ).append( "server-config.wsdd" );
-      IFile             descriptorFile = root.getFile( path );
-      IVirtualFile      newLocation    = component.getRootFolder().getFile( path );
-      IPath             targetPath     = newLocation.getWorkspaceRelativePath();
-      IFile             targetFile     = (IFile)ResourceUtils.findResource( targetPath );
-        
-      descriptorFile.refreshLocal( 0, null );
-      
-      if( targetFile != null && targetFile.exists() )
-      {
-        // The target file already exists so we will just overwrite its contents.
-    	targetFile.setContents( descriptorFile.getContents(), true, false, null );
-      }
-      else
-      {
-    	// The target file doesn't exist so we will copy it.
-        descriptorFile.copy( targetPath, true, null );
-      }
-    }
-    catch( Throwable exc )
-    {
-    }
-    
-    return status;
+  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
+  {
+	  IStatus status = Status.OK_STATUS;
+	  IEnvironment environment = getEnvironment();
+	  
+	  FileInputStream finStream = null;
+	  try
+	  {
+		  
+		  IVirtualComponent component = J2EEUtils.getVirtualComponent( projectName_ );
+		  IServer server = ServerCore.findServer( serverInstanceId_ );
+		  IProject project = ProjectUtilities.getProject(projectName_);
+		  IModule projectModule = ServerUtil.getModule(project);
+		  
+		  if (server != null && component != null && projectModule != null) {
+			  IModulePublishHelper publishHelper = (IModulePublishHelper) 
+			  	server.loadAdapter(IModulePublishHelper.class, monitor);
+			  if (publishHelper != null) {
+				  IPath publishDirPath = publishHelper.getPublishDirectory(new IModule [] {projectModule});
+				  if (publishDirPath != null) {
+					  IPath path = new Path( WEB_INF ).append( SERVER_CONFIG );
+					  IPath serverConfigPath = publishDirPath.append(path);
+					  if (serverConfigPath != null) {
+						  IVirtualFolder rootFolder = component.getRootFolder();
+						  if (rootFolder != null) {			  
+							  IVirtualFile newLocation = rootFolder.getFile(path);
+							  IPath targetPath = newLocation.getWorkspaceRelativePath();
+							  
+							  if (targetPath != null) {
+								  finStream = new FileInputStream(serverConfigPath.toString());
+								  if (finStream != null) {
+									  IStatusHandler statusHandler = environment.getStatusHandler();
+									  ResourceContext context = WebServicePlugin.getInstance().getResourceContext();
+									  FileResourceUtils.createFile(context,  
+											  targetPath,
+											  finStream,
+											  monitor,
+											  statusHandler);
+									  finStream.close();
+								  }
+							  }
+						  }
+					  }
+				  }
+			  } 	  		  
+		  }	  
+	  }
+	  catch( Throwable e )
+	  {
+		  status = StatusUtils.errorStatus(NLS.bind(AxisConsumptionCoreMessages.MSG_ERROR_MOVE_RESOURCE, new String[]{e.getLocalizedMessage()}), e);
+		  environment.getStatusHandler().reportError(status);
+	  } finally {
+		  if (finStream != null) {
+			  try {
+				  finStream.close();
+			  } catch (IOException e) {
+			  }
+		  }			
+	  }
+	  
+	  return status;
+	  
   }
+
+	public void setServerInstanceId(String serverInstanceId) {
+		this.serverInstanceId_ = serverInstanceId;
+	}
 }

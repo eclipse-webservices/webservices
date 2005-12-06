@@ -23,6 +23,7 @@ public class AxisRunInputCommand extends AbstractDataModelOperation{
 	private AxisWebService ws_;
 	private JavaWSDLParameter javaWSDLParam_;
 	private String serverProject_; 
+	private String serverInstanceId_; 
 	
 	public AxisRunInputCommand() {
 	}
@@ -35,6 +36,7 @@ public class AxisRunInputCommand extends AbstractDataModelOperation{
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
 	 	javaWSDLParam_ = ws_.getAxisWebServiceInfo().getJavaWSDLParameter();
+	 	serverInstanceId_ = ws_.getWebServiceInfo().getServerInstanceId();
 		
 		return Status.OK_STATUS;
 	  }
@@ -50,6 +52,9 @@ public class AxisRunInputCommand extends AbstractDataModelOperation{
 	public JavaWSDLParameter getJavaWSDLParam() {
 		return javaWSDLParam_;
 	}
-	
+
+	public String getServerInstanceId() {
+		return serverInstanceId_;
+	}	
 	
 }

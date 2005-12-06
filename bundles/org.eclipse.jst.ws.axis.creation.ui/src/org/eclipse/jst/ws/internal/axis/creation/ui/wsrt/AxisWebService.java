@@ -243,6 +243,9 @@ public class AxisWebService extends AbstractWebService
 		//AxisDeployCommand
 	    registry.addMapping(AxisRunInputCommand.class, "JavaWSDLParam", AxisDeployCommand.class);
 		
+	    // CopyDeploymentFileCommand
+	    registry.addMapping(AxisRunInputCommand.class, "ServerInstanceId", CopyDeploymentFileCommand.class);
+	    
 	    //RefreshProjectCommand
 	    registry.addMapping(AxisRunInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", new StringToIProjectTransformer());
 
@@ -305,6 +308,10 @@ public class AxisWebService extends AbstractWebService
 	    
 	    // AxisDeployCommand
 	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", AxisDeployCommand.class);
+	    
+	    // CopyDeploymentFileCommand
+	    dataRegistry.addMapping(AxisRunInputCommand.class, "ServerInstanceId", CopyDeploymentFileCommand.class);
+
 	    
 	    // AxisOutputCommand
 	    dataRegistry.addMapping(Skeleton2WSDLCommand.class, "WsdlURI", AxisOutputCommand.class);
