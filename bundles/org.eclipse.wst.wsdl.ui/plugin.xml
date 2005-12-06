@@ -17,49 +17,41 @@
 
 	<extension-point
 		id="internalEditorExtensions"
-		name="Internal Editor Extensions" />
+		name="Internal Editor Extensions"
+		schema="schema/internalEditorExtensions.exsd" />
+		
 	<extension-point
 		id="extensibilityItemTreeProviders"
-		name="Extensibility Item Tree Providers" />
-	<extension-point
-		id="propertySourceProvider"
-		name="Property Source Providers" />
+		name="Extensibility Item Tree Providers"
+		schema="schema/extensibilityItemTreeProviders.exsd" />
 
 	<!-- This extension point is used to suplement WSDL 1.1 schemas in order to   -->
 	<!-- constrain the extensiblity elements that are allowed at the 'wsdl' level -->
 	<extension-point
 		id="extensibilityElementFilter"
-		name="Extensiblity Element Filter" />
+		name="Extensiblity Element Filter"
+		schema="schema/extensibilityElementFilter.exsd" />
 
 	<extension-point
 		id="propertyDescriptorProvider"
-		name="Property Descriptor Provider" />
-
-	<extension-point
-		id="detailsViewerProviders"
-		name="Details Viewer Providers" />
+		name="Property Descriptor Provider"
+		schema="schema/propertyDescriptorProvider.exsd" />
 
 	<extension
 		point="org.eclipse.wst.wsdl.ui.extensibilityItemTreeProviders">
 		<extensibilityItemTreeProvider
-			id="org.eclipse.wst.wsdl.ui.internal.extensibilityItemTreeProviders.http"
 			namespace="http://schemas.xmlsoap.org/wsdl/http/"
 			labelProviderClass="org.eclipse.wst.wsdl.ui.internal.outline.HTTPLabelProvider">
 		</extensibilityItemTreeProvider>
 	</extension>
 
-
 	<extension
 		point="org.eclipse.wst.wsdl.ui.extensibilityItemTreeProviders">
 		<extensibilityItemTreeProvider
-			id="org.eclipse.wst.wsdl.ui.extensibilityItemTreeProviders.soap"
 			namespace="http://schemas.xmlsoap.org/wsdl/soap/"
 			labelProviderClass="org.eclipse.wst.wsdl.ui.internal.outline.SOAPLabelProvider">
 		</extensibilityItemTreeProvider>
 	</extension>
-
-
-
 
 	<extension
 		point="org.eclipse.wst.wsdl.ui.extensibilityElementFilter">
@@ -262,7 +254,6 @@
 	<extension
 		point="org.eclipse.wst.wsdl.ui.extensibilityItemTreeProviders">
 		<extensibilityItemTreeProvider
-			id="org.eclipse.wst.wsdl.ui.extensibilityItemTreeProviders.xsd"
 			namespace="http://www.w3.org/2001/XMLSchema"
 			labelProviderClass="org.eclipse.wst.wsdl.ui.internal.xsd.XSDLabelProvider">
 		</extensibilityItemTreeProvider>
