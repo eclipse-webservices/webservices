@@ -361,6 +361,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
       // Map ClientExtensionOutputCommand command.
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", WebServiceClientTestArrivalCommand.class);      
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", ClientTestDelegateCommand.class);      
+	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", TestDefaultingFragment.class);
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestFragment.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", FinishTestFragment.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestDelegateCommand.class);
