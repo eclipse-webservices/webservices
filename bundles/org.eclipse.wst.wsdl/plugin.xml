@@ -4,10 +4,12 @@
 
 	<extension-point
 		id="extensibilityElementFactories"
-		name="%xpExtensibilityElementFactories" />
+		name="%xpExtensibilityElementFactories" 
+		schema="schema/extensibilityElementFactories.exsd"/>
 	<extension-point
 		id="contentGenerators"
-		name="%xpPortAndBindingContentGenerators" />
+		name="%xpPortAndBindingContentGenerators" 
+		schema="schema/contentGenerators.exsd"/>
 
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package
