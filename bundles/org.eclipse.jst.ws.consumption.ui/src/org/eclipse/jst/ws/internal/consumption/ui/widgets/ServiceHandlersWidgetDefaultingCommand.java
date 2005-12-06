@@ -14,13 +14,16 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.internal.webservice.WebServiceNavigatorGroupType;
 import org.eclipse.jst.j2ee.internal.webservice.helper.WebServicesManager;
@@ -78,16 +81,9 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
       wsDescToHandlers_ = new Hashtable();
       serviceDescNameToDescObj_ = new Hashtable();
       
-//      WebServiceEditModel wsed = getWebServiceEditModel();
-  //    if (wsed == null)
-        wsddResource_ = getWsddResourceFromSelection();
-  //    else
-  //      wsddResource_ = wsed.getWebServicesXmlResource();
-
+      wsddResource_ = getWsddResourceFromSelection();
       if (wsddResource_ == null) {
-        IStatus status = StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED );
-        env.getStatusHandler().reportError(status);
-        return status;
+          return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_ERROR_WSDD_NOT_FOUND);
       }
 
       WebServices webServices = wsddResource_.getWebServices();
@@ -128,6 +124,10 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
 
         handlers_ = (HandlerTableItem[]) handlers.toArray(new HandlerTableItem[0]);
       }
+      else {
+          //report no Web service is available
+          return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_ERROR_WEB_SERVICES_NOT_FOUND);        
+      }      
     }
     catch (Exception e) 
     {
@@ -195,6 +195,13 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
         descriptionName_ = service.getQName().getLocalPart();        
         project_ = ProjectUtilities.getProject(service);
         return webServicesManager_.getWsddResource(service);
+      }
+      else if (obj instanceof IFile){
+    	  // webservices.xml file
+    	  Resource res = WorkbenchResourceHelperBase.getResource((IFile)obj, true);
+    	  WsddResource wsddRes = (WsddResource)res;
+    	  project_ = ProjectUtilities.getProject(res);
+    	  return wsddRes;
       }
     }
     

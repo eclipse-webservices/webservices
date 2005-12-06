@@ -16,18 +16,28 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.j2ee.applicationclient.componentcore.util.AppClientArtifactEdit;
+import org.eclipse.jst.j2ee.client.ApplicationClient;
+import org.eclipse.jst.j2ee.client.ApplicationClientResource;
+import org.eclipse.jst.j2ee.ejb.EJBJar;
+import org.eclipse.jst.j2ee.ejb.EJBResource;
+import org.eclipse.jst.j2ee.ejb.internal.modulecore.util.EJBArtifactEditUtilities;
 import org.eclipse.jst.j2ee.internal.webservice.WebServiceNavigatorGroupType;
 import org.eclipse.jst.j2ee.internal.webservice.helper.WebServicesManager;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.jst.j2ee.webapplication.WebApp;
+import org.eclipse.jst.j2ee.webapplication.WebAppResource;
 import org.eclipse.jst.j2ee.webservice.wsclient.Handler;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
@@ -53,14 +63,10 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
 
   private Hashtable refNameToServiceRefObj_;
 
-//  private WebServiceEditModel wsEditModel_;
-
   private WebServicesManager webServicesManager_;
 
   private IProject project_;
   
-  private WebServicesResource wsClientRes_;
-
   private String serviceRefName_ = null;
   
   private Collection wsServiceRefs_;
@@ -70,7 +76,7 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
     IEnvironment env = getEnvironment();
     IStatus status = Status.OK_STATUS;
 
-    webServicesManager_ = new WebServicesManager();
+    webServicesManager_ = WebServicesManager.getInstance();
 
     IStructuredSelection selection = getInitialSelection();
     if (selection == null) {
@@ -90,38 +96,40 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
       wsRefsToHandlersTable_ = new Hashtable();
       refNameToServiceRefObj_ = new Hashtable();
 
-//      wsEditModel_ = getWebServiceEditModel();
-
       wsServiceRefs_ = getWSServiceRefsFromSelection();
 
-      if (wsServiceRefs_ != null) {
+      if (wsServiceRefs_ != null && wsServiceRefs_.size()>0) {
         Iterator wsRefsIter = wsServiceRefs_.iterator();
         for (int i = 0; i < wsServiceRefs_.size(); i++) {
 
           ServiceRef wsServiceRef = (ServiceRef) wsRefsIter.next();
-
-          List wsHandlers = wsServiceRef.getHandlers();
-          HandlerTableItem[] handlerItems = new HandlerTableItem[wsHandlers.size()];
-          for (int k = 0; k < wsHandlers.size(); k++) {
-
-            Handler wsHandler = (Handler) wsHandlers.get(k);
-
-            HandlerTableItem handlerItem = new HandlerTableItem();
-            handlerItem.setHandler(wsHandler);
-            handlerItem.setHandlerName(wsHandler.getHandlerName());
-            handlerItem.setHandlerClassName(wsHandler.getHandlerClass().getQualifiedName());
-            handlerItem.setWsDescRef(wsServiceRef);
-            handlerItems[k] = handlerItem;
-            handlers.add(handlerItem);
+          if (serviceRefName_== null || wsServiceRef.getServiceRefName().equalsIgnoreCase(serviceRefName_)) {
+              List wsHandlers = wsServiceRef.getHandlers();
+              HandlerTableItem[] handlerItems = new HandlerTableItem[wsHandlers.size()];
+              for (int k = 0; k < wsHandlers.size(); k++) {
+    
+                Handler wsHandler = (Handler) wsHandlers.get(k);
+    
+                HandlerTableItem handlerItem = new HandlerTableItem();
+                handlerItem.setHandler(wsHandler);
+                handlerItem.setHandlerName(wsHandler.getHandlerName());
+                handlerItem.setHandlerClassName(wsHandler.getHandlerClass().getQualifiedName());
+                handlerItem.setWsDescRef(wsServiceRef);
+                handlerItems[k] = handlerItem;
+                handlers.add(handlerItem);
+              }
+              String wsServiceRefName = wsServiceRef.getServiceRefName();
+              wsRefsToHandlersTable_.put(wsServiceRefName, handlerItems);
+              refNameToServiceRefObj_.put(wsServiceRefName, wsServiceRef);
           }
-          String wsServiceRefName = wsServiceRef.getServiceRefName();
-          wsRefsToHandlersTable_.put(wsServiceRefName, handlerItems);
-          refNameToServiceRefObj_.put(wsServiceRefName, wsServiceRef);
-
         }
 
         handlers_ = (HandlerTableItem[]) handlers.toArray(new HandlerTableItem[0]);
       }
+      else if (wsServiceRefs_==null || wsServiceRefs_.isEmpty()){
+            //report no Web service client is available
+          return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_ERROR_WEB_SERVICE_CLIENTS_NOT_FOUND);
+        }      
     }
     catch (Exception e) {
       return StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED, e);
@@ -158,19 +166,8 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
     return locations;
   }
 
-  /**
-   * @return Returns the wsEditModel.
-   */
-//  public WebServiceEditModel getWsEditModel() {
-//    return wsEditModel_;
-//  }
-
   public String getServiceRefName() {
     return this.serviceRefName_;
-  }
-
-  public WebServicesResource getWsClientResource() {
-    return wsClientRes_;
   }
 
   public IProject getClientProject() {
@@ -195,7 +192,45 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
         serviceRefName_ = serviceRef.getServiceRefName();
         project_ = ProjectUtilities.getProject(serviceRef);
       }
+      else if (obj instanceof IFile){
+          Resource res = WorkbenchResourceHelperBase.getResource((IFile)obj, true);
+          Collection serviceRefs = null;
+          if (res instanceof WebServicesResource) {
+              // webservicesclient.xml for J2EE 1.3
+              WebServicesResource wsRes = (WebServicesResource)res;
+              serviceRefs = wsRes.getWebServicesClient().getServiceRefs();
+              ServiceRef ref = (ServiceRef)((List)serviceRefs).get(0);
+              serviceRefName_ = ref.getServiceRefName();
+              project_ = ProjectUtilities.getProject(ref);
+              return serviceRefs;
+          }
+          else {
+              if(res instanceof WebAppResource){
+                  // web.xml for J2EE 1.4
+                  WebAppResource webAppRes = (WebAppResource)res;
+                  serviceRefs = webAppRes.getWebApp().getServiceRefs();
 
+              }
+              else if (res instanceof EJBResource){
+                  EJBResource ejbRes = (EJBResource)res;
+                  serviceRefs = webServicesManager_.getServiceRefs(ejbRes.getEJBJar());
+                  
+              }
+              else if (res instanceof ApplicationClientResource){
+                  ApplicationClientResource appClientRes = (ApplicationClientResource)res;
+                  serviceRefs = webServicesManager_.getServiceRefs(appClientRes.getApplicationClient());//appClientRes.getApplicationClient().getServiceRefs();
+              }
+              if (serviceRefs!=null && serviceRefs.size()>0) {
+                  ServiceRef ref = (ServiceRef)((List)serviceRefs).get(0);
+                  serviceRefName_ = ref.getServiceRefName();
+                  project_ = ProjectUtilities.getProject(ref); 
+              }
+              return serviceRefs;              
+          }
+      }
+
+      // This section is for obtaining all the serviceRefs from the project, given that the initial selection
+      // was from the J2EE view (ServiceRef or WebServiceNavigatorGroupType), it will select the right serviceRef
       if (project_==null){
         project_ = getProject();
       }
@@ -203,10 +238,6 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
         return null;
       }     
        
-      List clientWSResourceList = webServicesManager_.get13ServiceRefs(project_);
-      if (!clientWSResourceList.isEmpty())
-        wsClientRes_ = (WebServicesResource)clientWSResourceList.get(0);
-
       if (J2EEUtils.isWebComponent(project_)) {
         WebArtifactEdit webEdit = null;
         try {
@@ -225,25 +256,32 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
             webEdit.dispose();
         }
       }
-      //TODO Remove old Nature refs
-//      else if (J2EEUtils.isAppClientComponent(project_, componentName_)){
-//        ApplicationClientNatureRuntime rt = ApplicationClientNatureRuntime.getRuntime(project_);
-//        if (rt!=null) {
-//          ApplicationClient appClient = rt.getApplicationClient();
-//          if (appClient != null){
-//            return webServicesManager_.getServiceRefs(appClient);
-//          }
-//        }
-//      }
-//      else if (J2EEUtils.isEJBComponent(project_, componentName_)){
-//        EJBNatureRuntime rt = EJBNatureRuntime.getRuntime(project_);
-//        if(rt!=null){
-//          EJBJar ejbJar = rt.getEJBJar();
-//          if (ejbJar !=null){
-//            return webServicesManager_.getServiceRefs(ejbJar);
-//          }
-//        }
-//      }
+      else if (J2EEUtils.isEJBComponent(project_)){
+
+    	IVirtualComponent vc = ComponentCore.createComponent(project_);
+    	EJBJar ejbJar = EJBArtifactEditUtilities.getEJBJar(vc);
+        if (ejbJar!=null) {
+            return webServicesManager_.getServiceRefs(ejbJar);
+        }
+      }
+      else if (J2EEUtils.isAppClientComponent(project_)){
+    	  IVirtualComponent vc = ComponentCore.createComponent(project_);
+    	  AppClientArtifactEdit appEdit = null;
+          try {
+              appEdit = AppClientArtifactEdit.getAppClientArtifactEditForRead(vc);
+          if (appEdit!=null){
+              ApplicationClient appClient = appEdit.getApplicationClient();
+              if (appClient !=null){
+                  return webServicesManager_.getServiceRefs(appClient);
+              }
+          }
+          }
+          finally{
+              if(appEdit!=null){
+                  appEdit.dispose();
+              }
+          }
+      }
 
     
     }

@@ -144,7 +144,6 @@ public class ConfigureHandlersWidgetBinding implements CommandWidgetBinding {
       dataRegistry.addMapping(HandlersDefaultingCommand.class, "IsClientHandler", ClientHandlersFragment.class, "ClientHandlersEnabled", null);
       dataRegistry.addMapping(HandlersDefaultingCommand.class, "IsServiceHandler", ServiceHandlersFragment.class, "ServiceHandlersEnabled", null);
 
-      dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"WsClientResource", ClientHandlersWidgetOutputCommand.class);
       dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"WsServiceRefs", ClientHandlersWidgetOutputCommand.class);      
       dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"ClientProject", ClientHandlersWidgetOutputCommand.class);
      
@@ -191,7 +190,6 @@ public class ConfigureHandlersWidgetBinding implements CommandWidgetBinding {
     public void registerDataMappings(DataMappingRegistry dataRegistry) {
       dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", ClientHandlersWidgetDefaultingCommand.class);
 
-      dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class, "WsClientResource", ClientHandlersWidgetOutputCommand.class);
       dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class, "ClientProject", ClientHandlersWidgetOutputCommand.class);
 
     }

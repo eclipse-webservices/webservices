@@ -63,8 +63,6 @@ public class ConfigClientHandlersWidgetBinding implements CommandWidgetBinding
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry) {
     
-    
-//    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"AllHandlers", ConfigClientHandlersTableWidget.class);
     dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"Handlers", ConfigClientHandlersTableWidget.class,"WsRefsToHandlers", null);
     
     dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"GenSkeletonEnabled", ConfigClientHandlersTableWidget.class);
@@ -72,7 +70,6 @@ public class ConfigClientHandlersWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"ServiceRefName", ConfigClientHandlersTableWidget.class);
     dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"RefNameToServiceRef", ConfigClientHandlersTableWidget.class);
     
-    //dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"AllHandlersList", ClientHandlersWidgetOutputCommand.class);
     dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"WsRefsToHandlers", ClientHandlersWidgetOutputCommand.class,"HandlersTable",null);
     
     dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"SourceOutputLocation", GenerateHandlerSkeletonCommand.class,"OutputLocation",null);
@@ -126,7 +123,6 @@ public class ConfigClientHandlersWidgetBinding implements CommandWidgetBinding
     {
       dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", ClientHandlersWidgetDefaultingCommand.class);
       
-      dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"WsClientResource", ClientHandlersWidgetOutputCommand.class);
       dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"WsServiceRefs", ClientHandlersWidgetOutputCommand.class);      
       dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"ClientProject", ClientHandlersWidgetOutputCommand.class);
     }

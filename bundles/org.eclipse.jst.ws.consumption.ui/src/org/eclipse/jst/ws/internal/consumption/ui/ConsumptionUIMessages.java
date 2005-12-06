@@ -317,6 +317,9 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String MSG_INFO_ANT_CLIENT_RUNTIME;
 	public static String MSG_INFO_ANT_SERVER_HEADING;
 	public static String MSG_INFO_ANT_SERVER;
+    public static String MSG_ERROR_WEB_SERVICE_CLIENTS_NOT_FOUND;
+    public static String MSG_ERROR_WEB_SERVICES_NOT_FOUND;
+    public static String MSG_ERROR_WSDD_NOT_FOUND;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, ConsumptionUIMessages.class);

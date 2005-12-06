@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.runtime.IPath;
@@ -34,10 +32,14 @@ import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -121,9 +123,9 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     displayComp.setLayout(gridlayout);
     displayComp.setLayoutData(uiUtils.createFillAll());
 
-    Composite handlersComp = uiUtils.createComposite(displayComp, 1);
-    GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING
-        | GridData.VERTICAL_ALIGN_FILL);
+    final Composite handlersComp = uiUtils.createComposite(displayComp, 1);
+    GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL |GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING 
+            | GridData.VERTICAL_ALIGN_FILL | GridData.GRAB_VERTICAL | GridData.FILL_VERTICAL);
     handlersComp.setLayoutData(griddata);
     handlersComp.setSize(130, 600);
 
@@ -137,7 +139,7 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     gd.horizontalSpan = 2;
     handlersText.setLayoutData(gd);
 
-    handlersTable_ = uiUtils.createTable(handlersComp, ConsumptionUIMessages.TOOLTIP_EDIT_WS_HANDLERS, INFOPOP_HDLR_WS_HANDLERS, SWT.MULTI | SWT.FULL_SELECTION);
+    handlersTable_ = uiUtils.createTable(handlersComp, ConsumptionUIMessages.TOOLTIP_EDIT_WS_HANDLERS, INFOPOP_HDLR_WS_HANDLERS, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER);
     handlersTable_.setHeaderVisible(true);
     handlersTable_.setLinesVisible(true);
 
@@ -209,14 +211,46 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     // table stuff
     String[] columns_ = new String[] { ConsumptionUIMessages.LABEL_HANDLER_NAME, ConsumptionUIMessages.LABLE_HANDLER_CLASS};
 
+    final TableColumn[] tableCols = new TableColumn[columns_.length];
     for (int i = 0; i < columns_.length; i++) {
       TableColumn tableColumn = new TableColumn(handlersTable_, i);
       tableColumn.setText(columns_[i]);
       tableColumn.setAlignment(SWT.LEFT);
       tableColumn.setWidth(DEFAULT_COLUMN_WIDTH);
       tableColumn.setResizable(true);
+      tableCols[i] = tableColumn;
     }
 
+    handlersComp.addControlListener(new ControlAdapter() {
+        public void controlResized(ControlEvent e) {
+          Rectangle area = handlersComp.getClientArea();
+          Point preferredSize = handlersTable_.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+          int width = area.width - 2*handlersTable_.getBorderWidth()-10;
+          if (preferredSize.y > area.height + handlersTable_.getHeaderHeight()) {
+            // Subtract the scrollbar width from the total column width
+            // if a vertical scrollbar will be required
+            Point vBarSize = handlersTable_.getVerticalBar().getSize();
+            width -= vBarSize.x;
+          }
+          Point oldSize = handlersTable_.getSize();
+          if (oldSize.x > area.width) {
+            // table is getting smaller so make the columns 
+            // smaller first and then resize the table to
+            // match the client area width
+            tableCols[0].setWidth(width/2);
+            tableCols[1].setWidth(width - tableCols[0].getWidth());
+            handlersTable_.setSize(area.width, area.height);
+          } else {
+            // table is getting bigger so make the table 
+            // bigger first and then make the columns wider
+            // to match the client area width
+              handlersTable_.setSize(area.width, area.height);
+              tableCols[0].setWidth(width/2);
+              tableCols[1].setWidth(width - tableCols[0].getWidth());
+          }
+        }
+      });    
+    
     tableViewer_ = new TableViewer(handlersTable_);
     Control control = tableViewer_.getControl();
 
@@ -296,17 +330,6 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
       e.printStackTrace();
     }
 
-  }
-
-  /**
-   * @return Returns the handlers.
-   */
-  public List getAllHandlersList() {
-    // convert to a ArrayList and return as List
-    List list = new ArrayList();
-    if (orderedHandlers_ != null && !orderedHandlers_.isEmpty()) list.addAll(orderedHandlers_);
-
-    return list;
   }
 
   /*

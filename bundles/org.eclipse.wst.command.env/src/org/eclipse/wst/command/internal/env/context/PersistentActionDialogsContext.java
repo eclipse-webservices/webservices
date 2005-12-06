@@ -67,8 +67,22 @@ public class PersistentActionDialogsContext extends PersistentContext
   {
     ActionDialogPreferenceType dialog = registry.getActionDialogsPrefrence( id );    
    
-    return (dialog.getShowCheckbox() && !dialog.getAlwaysHide() && !isActionDialogEnabled( id )) ||
-            !dialog.getShowCheckbox() && !dialog.getAlwaysHide();
+    // We are trying to determine if the popup wizard should be displayed
+    // or not with this logic.  If the dialog variable is null then
+    // there was no popup extension point point defined for this wizard.  In
+    // this case we will assume that the popup should always be displayed.
+    // In the case where the extension says that the show check box control
+    // should be displayed we need to ensure that wizard should not always
+    // be hidden, as well we need to check the current setting of the check
+    // box via the isActionDialogEnabled call.  If the show check box state
+    // defined in the extension is false, but always hide is also false then
+    // we will display the pop wizard.
+    return dialog == null ||
+           ( ( dialog.getShowCheckbox() && 
+               !dialog.getAlwaysHide() && 
+               !isActionDialogEnabled( id ) ) ||
+             ( !dialog.getShowCheckbox() && 
+               !dialog.getAlwaysHide() ) );
   }
   
   public boolean showCheckbox( String id )

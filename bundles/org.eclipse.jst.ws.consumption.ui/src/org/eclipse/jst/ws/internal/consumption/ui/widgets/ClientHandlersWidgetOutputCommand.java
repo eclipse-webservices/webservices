@@ -23,18 +23,21 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
+import org.eclipse.jst.j2ee.applicationclient.componentcore.util.AppClientArtifactEdit;
+import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
+import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.jst.j2ee.webservice.wsclient.Handler;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
-import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
 import org.eclipse.jst.j2ee.webservice.wsclient.Webservice_clientFactory;
 import org.eclipse.jst.j2ee.webservice.wsclient.internal.impl.Webservice_clientFactoryImpl;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.common.componentcore.ArtifactEdit;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.internal.emf.utilities.EtoolsCopyUtility;
-import org.eclipse.wst.common.internal.emfworkbench.integration.EditModel;
 
 /*
  * Provide a way to externalize the edited fields and create new handlers
@@ -43,22 +46,15 @@ import org.eclipse.wst.common.internal.emfworkbench.integration.EditModel;
 public class ClientHandlersWidgetOutputCommand extends AbstractDataModelOperation 
 {
 
-  //private List handlerTableItems_;
   private Hashtable oldWSServiceRefsToHandlersTable_;
 
   private Hashtable newWSServiceRefsToHandlersTable_;
-
-//  private WebServiceEditModel wsEditModel_;
 
   private Hashtable handlersTable_;
 
   private IProject project_;
 
   private Collection wsServiceRefs_;
-
-  private EditModel editModel_;
-
-  private Object accessorKey_;
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
@@ -122,40 +118,50 @@ public class ClientHandlersWidgetOutputCommand extends AbstractDataModelOperatio
 
         // add handlers to ports
         addHandlersToServiceRefs();
-        getJ2EEEditModel();
-        
-        // save the resource
-        //TODO Remove old Nature refs
-//        if (J2EEUtils.getJ2EEVersion(project_) == J2EEVersionConstants.J2EE_1_4_ID) {
-//          editModel_.save(accessorKey_);
-//        }
-//        else {
-//          if (wsClientRes_!=null)
-//            wsClientRes_.save(new HashMap());
-//        }
+        // save the artifact edit model
+        saveEditModel();
+
       }
     }
     catch (Exception e) 
     {
       return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED, e);
     }
-    finally {
-      if (editModel_ != null) 
-        editModel_.releaseAccess(accessorKey_);
-    }
+
     return status;
   }
 
+  private void saveEditModel() {
+      ArtifactEdit artifactEdit = null;
+      try {
+          if (J2EEUtils.isWebComponent(project_)) {
+                artifactEdit = WebArtifactEdit.getWebArtifactEditForWrite(project_);
+          }
+          else if (J2EEUtils.isEJBComponent(project_)){
+                artifactEdit = EJBArtifactEdit.getEJBArtifactEditForWrite(project_);
+            }
+          else if (J2EEUtils.isAppClientComponent(project_)){
+                artifactEdit = AppClientArtifactEdit.getAppClientArtifactEditForWrite(project_);
+          }
+      }
+      finally {
+          if (artifactEdit!=null) {
+              artifactEdit.save(null);
+              artifactEdit.dispose();
+          }
+      }
+  }
+  
   private void addHandlersToServiceRefs() {
     try {
       Enumeration refsToHandlers = newWSServiceRefsToHandlersTable_.keys();
       while (refsToHandlers.hasMoreElements()) {
         ServiceRef serviceRef = (ServiceRef) refsToHandlers.nextElement();
         if (serviceRef != null) {
-
           List handlers = (List) newWSServiceRefsToHandlersTable_.get(serviceRef);
           List modelHandlers = (List) oldWSServiceRefsToHandlersTable_.get(serviceRef);
           modelHandlers.clear();
+          //wsServiceRefs_.addAll(handlers);
           modelHandlers.addAll(handlers);
         }
       }
@@ -166,56 +172,19 @@ public class ClientHandlersWidgetOutputCommand extends AbstractDataModelOperatio
   }
 
   /**
+   * The new handlerTableItems to set.
    * @param handlerTableItems
-   *          The handlerTableItems to set.
    */
-  //  public void setAllHandlersList(List handlerTableItems) {
-  //    this.handlerTableItems_ = handlerTableItems;
-  //  }
   public void setHandlersTable(Hashtable handlersTable) {
     this.handlersTable_ = handlersTable;
   }
-
-  /**
-   * @param wsEditModel
-   *          The wsEditModel to set.
-   */
-//  public void setWsEditModel(WebServiceEditModel wsEditModel) {
-//    this.wsEditModel_ = wsEditModel;
-//  }
 
   public void setClientProject(IProject project) {
     this.project_ = project;
   }
 
-  public void setWsClientResource(WebServicesResource wsRes) {
-  }
-
   public void setWsServiceRefs(Collection wsRefs) {
     this.wsServiceRefs_ = wsRefs;
-  }
-
-  public void getJ2EEEditModel() {
-	//TODO Remove old Nature refs
-//  	accessorKey_ = new Object();
-//    if (ResourceUtils.isWebProject(project_)) {
-//      J2EEWebNatureRuntime rt = J2EEWebNatureRuntime.getRuntime(project_);
-//      if (rt != null) {
-//        editModel_ = rt.getWebAppEditModelForWrite(accessorKey_);
-//      }
-//    }
-//    else if (ResourceUtils.isAppClientProject(project_)){
-//      ApplicationClientNatureRuntime rt = ApplicationClientNatureRuntime.getRuntime(project_);
-//      if (rt!=null) {
-//        editModel_ = rt.getAppClientEditModelForWrite(accessorKey_);
-//      }
-//    }
-//    else if (ResourceUtils.isEJBProject(project_)){
-//      EJBNatureRuntime rt = EJBNatureRuntime.getRuntime(project_);
-//      if(rt!=null){
-//        editModel_ = rt.getEJBEditModelForWrite(accessorKey_);
-//      }
-//    }
   }
 
 }

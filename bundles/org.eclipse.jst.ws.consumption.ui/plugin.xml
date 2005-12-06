@@ -163,7 +163,8 @@
       </dynamicWizard>
    </extension>
 
-   <!-- extension
+   <!-- Handler extensions -->
+   <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
             iconbanner="icons/config_handler_wiz.gif"
@@ -171,9 +172,9 @@
             title="%LABEL_HANDLERS_CONFIG"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.service">
       </dynamicWizard>
-   </extension -->
+   </extension>
 
-   <!-- extension
+   <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
             iconbanner="icons/config_handler_wiz.gif"
@@ -181,9 +182,9 @@
             title="%LABEL_HANDLERS_CONFIG"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.client">
       </dynamicWizard>
-   </extension -->
+   </extension>
 
-   <!-- extension
+   <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
             iconbanner="icons/config_handler_wiz.gif"
@@ -191,7 +192,7 @@
             title="%LABEL_HANDLERS_CONFIG"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers">
       </dynamicWizard>
-   </extension -->   
+   </extension>   
 
    <extension
          point="org.eclipse.ui.importWizards">
@@ -428,7 +429,7 @@
          </action>
       </objectContribution>
 
-      <!-- objectContribution
+      <objectContribution
             objectClass="org.eclipse.core.resources.IFile"
             nameFilter="webservices.xml"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.editor">
@@ -486,7 +487,7 @@
             nameFilter="webservicesclient.xml"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.editor">
          <action
-               label="%POPUP_ADD_HANDLERS"
+               label="%POPUP_CONFIG_CLIENT_HANDLERS"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
                menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.client">
@@ -498,7 +499,7 @@
             nameFilter="ejb-jar.xml"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.editor">
          <action
-               label="%POPUP_ADD_HANDLERS"
+               label="%POPUP_CONFIG_CLIENT_HANDLERS"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
                menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.client">
@@ -510,7 +511,7 @@
             nameFilter="web.xml"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.editor">
          <action
-               label="%POPUP_ADD_HANDLERS"
+               label="%POPUP_CONFIG_CLIENT_HANDLERS"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
                menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.client">
@@ -522,7 +523,7 @@
             nameFilter="application-client.xml"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.editor">
          <action
-               label="%POPUP_ADD_HANDLERS"
+               label="%POPUP_CONFIG_CLIENT_HANDLERS"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
                menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.client">
@@ -534,12 +535,12 @@
             nameFilter="*"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.editor">
          <action
-               label="%POPUP_ADD_HANDLERS"
+               label="%POPUP_CONFIG_CLIENT_HANDLERS"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
                menubarPath="additions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.client">
          </action>
-      </objectContribution -->      
+      </objectContribution>      
       
       <objectContribution
             objectClass="org.eclipse.wst.wsdl.util.WSDLResourceImpl"
