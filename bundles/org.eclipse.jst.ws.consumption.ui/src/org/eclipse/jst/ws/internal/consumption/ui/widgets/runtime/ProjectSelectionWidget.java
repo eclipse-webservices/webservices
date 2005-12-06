@@ -357,6 +357,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   public void setComponentType( String type )
   {
+    listenersOff();
     if (type != null && type.length()>0)
     {
       String label = FacetUtils.getTemplateLabelById(type);
@@ -364,6 +365,8 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     }
     else
       projectType_.setText("");
+    
+    listenersOn();
   }
   
   public String getComponentType()
@@ -389,6 +392,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   public void setNeedEAR(boolean b)
   {
+    listenersOff();
     needEAR_ = b;
     if (needEAR_)
     {
@@ -400,6 +404,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
       earProject_.setEnabled(false);
       earProject_.setText("");
     }
+    listenersOn();
   }    
 
   public void setTypeRuntimeServer(TypeRuntimeServer trs)
