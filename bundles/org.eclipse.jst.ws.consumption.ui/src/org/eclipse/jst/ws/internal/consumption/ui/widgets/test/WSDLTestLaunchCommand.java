@@ -48,6 +48,7 @@ public class WSDLTestLaunchCommand extends AbstractDataModelOperation
   private String serverProject;
   private String serverModule;
   private String wsdlURI;
+  private boolean externalBrowser;
   private List endpoints;
   private IServer serviceExistingServer = null;
   private String serviceServerTypeID = null;
@@ -131,6 +132,7 @@ public class WSDLTestLaunchCommand extends AbstractDataModelOperation
     testInfo.setServiceServerTypeID(serviceServerTypeID);
 	testInfo.setServiceProject(serverProject);
 	testInfo.setWsdlServiceURL(wsdlURI);
+	testInfo.setExternalBrowser(externalBrowser);
 	testInfo.setEndpoint(endpoints);
 	return testInfo;
 	
@@ -164,6 +166,7 @@ public class WSDLTestLaunchCommand extends AbstractDataModelOperation
 
   public void setExternalBrowser(boolean externalBrowser)
   {
+	  this.externalBrowser = externalBrowser;
   }
   
   public void setEndpoint(List endpoints)

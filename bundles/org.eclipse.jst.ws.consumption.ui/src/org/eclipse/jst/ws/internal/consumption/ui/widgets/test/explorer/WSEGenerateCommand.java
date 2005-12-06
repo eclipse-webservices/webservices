@@ -42,7 +42,7 @@ public class WSEGenerateCommand extends AbstractDataModelOperation
   	IStatus status = Status.OK_STATUS;
     
     WSExplorerLauncherCommand launchCommand = new WSExplorerLauncherCommand();
-    launchCommand.setForceLaunchOutsideIDE(false);
+    launchCommand.setForceLaunchOutsideIDE(testInfo.getExternalBrowser());
     Vector launchOptionVector = new Vector();
 	String stateLocation = ExplorerPlugin.getInstance().getPluginStateLocation();
 	String defaultFavoritesLocation = ExplorerPlugin.getInstance().getDefaultFavoritesLocation();

@@ -153,12 +153,11 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
       }
 	}
 	
-    
-	
 	TestInfo testInfo = new TestInfo();  
 	testInfo.setClientExistingServer(sampleExistingServer);
 	testInfo.setClientServerTypeID(sampleServerTypeID);
 	testInfo.setJspFolder(jspFolder);
+	testInfo.setExternalBrowser(false);
 	testInfo.setEndpoint(endpoints);
 	testInfo.setGenerationProject(sampleP);
 	testInfo.setProxyBean(proxyBean);

@@ -38,7 +38,7 @@ public class TestInfo {
   private IServer clientExistingServer;
   private List endpoints;
   private String wsdlServiceURL;
-    
+  private boolean externalBrowser;  
 
   /**
   * This is the folder the user has chosen to generate any jsps 
@@ -242,11 +242,24 @@ public class TestInfo {
    */
   public boolean getClientNeedEAR() {
 		return clientNeedEAR;
-	}
+  }
 
-	public void setClientNeedEAR(boolean clientNeedEAR) {
+  public void setClientNeedEAR(boolean clientNeedEAR) {
 		this.clientNeedEAR = clientNeedEAR;
-	}
+  }
+
+  /**
+   * external browser
+   */
+  public boolean getExternalBrowser() 
+  {
+	  return externalBrowser;
+  }
+
+  public void setExternalBrowser(boolean externalBrowser) {
+	  this.externalBrowser = externalBrowser;
+  }
 
 
+	
 }
