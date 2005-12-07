@@ -66,9 +66,14 @@ public abstract class WSDL4JDefinitionVisitor extends TestCase
   
   protected void visitDefinition(Definition def)
   {
-    Iterator iterator = def.getImports().entrySet().iterator();
+    java.util.Map imports = def.getImports();
+    Iterator iterator = imports.keySet().iterator();
+    Import myImport = null;
     while (iterator.hasNext())
-      visitImport((Import)iterator.next());
+    {
+      myImport = (Import)((java.util.ArrayList)imports.get(iterator.next())).get(0);
+      visitImport(myImport);
+    }
     
     Types types = def.getTypes();
     if (types != null)
@@ -123,10 +128,15 @@ public abstract class WSDL4JDefinitionVisitor extends TestCase
     
     Output output = operation.getOutput();
     visitOutput((Output)output); 
-    
-    Iterator iterator = operation.getFaults().entrySet().iterator();
+
+    java.util.Map faults = operation.getFaults();
+    Iterator iterator = faults.keySet().iterator();
+    Fault fault = null;
     while (iterator.hasNext())
-      visitFault((Fault)iterator.next());
+    {
+      fault = (Fault)faults.get(iterator.next());
+      visitFault(fault);
+    }
   }
   
   protected abstract void visitInput(Input input);
@@ -153,10 +163,15 @@ public abstract class WSDL4JDefinitionVisitor extends TestCase
     
     BindingOutput output = operation.getBindingOutput();
     visitBindingOutput((BindingOutput)output); 
-    
-    Iterator iterator = operation.getBindingFaults().entrySet().iterator();
+ 
+    java.util.Map bindingFaults = operation.getBindingFaults();
+    Iterator iterator = bindingFaults.keySet().iterator();
+    BindingFault bindingFault = null;
     while (iterator.hasNext())
-      visitBindingFault((BindingFault)iterator.next());
+    {
+      bindingFault = (BindingFault)bindingFaults.get(iterator.next());
+      visitBindingFault(bindingFault);
+    }
     
     iterator = operation.getExtensibilityElements().iterator();
     while (iterator.hasNext())
