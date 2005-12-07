@@ -2,18 +2,6 @@
 <?eclipse version="3.0"?>
 
 <plugin>
-
-   <!-- J2EE Service Reference Generator -->
-      
-   <extension
-         point="org.eclipse.jst.j2ee.WebServiceClientGenerator">
-     <generator
-           className="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientGenerator">
-        <runtime
-              serverTarget="Generic J2EE Container">
-        </runtime>         
-     </generator>
-   </extension>
    
 	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
        <widgetFactory   
