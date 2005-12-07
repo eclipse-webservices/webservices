@@ -12,7 +12,7 @@
  *******************************************************************************/ -->
 <toc label="wsmaintoc" topic="concepts/cws.html">
    <topic label="Web services overview" href="concepts/cws.html">
-      <topic label="Technologies">
+      <topic label="Web services standards" href="concepts/cwsstandards.html">
          <topic label="Web Services Description Language (WSDL)" href="concepts/cwsdl.html">
             <topic label="Web Services Description Language (WSDL) reference" href="ref/rwsdl.html"/>
          </topic>

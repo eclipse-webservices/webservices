@@ -7,7 +7,6 @@
    <topic label="Exploring WSDL using the WSDL Explorer" href="tasks/twsdlexp.html"/>
    <topic label="Testing WSDL documents and Web services using the WSDL Explorer" href="tasks/ttestwsdl.html"/>
    <topic label="Generating a Java client proxy and a sample application from a WSDL document using the IBM SOAP run-time environment" href="tasks/tsampapp.html"/>
-   <topic label="Creating a Web service proxy using Faces" href="tasks/twsdisc.html"/>
    <topic label="Publishing Web services and business entities" href="tasks/tuddiexp.html">
       <topic label="Launching the Web Services Explorer" href="tasks/tstrtexp.html"/>
       <topic label="Registering with a UDDI registry" href="tasks/treg.html"/>
