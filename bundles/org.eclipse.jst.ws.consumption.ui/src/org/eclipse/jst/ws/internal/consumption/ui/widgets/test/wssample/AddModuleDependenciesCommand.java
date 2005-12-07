@@ -11,6 +11,8 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
 import java.io.IOException;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
@@ -25,13 +27,21 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.commonarchivecore.internal.helpers.ArchiveManifest;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.jst.j2ee.project.facet.IJavaProjectMigrationDataModelProperties;
+import org.eclipse.jst.j2ee.project.facet.JavaProjectMigrationDataModelProvider;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.StartServerCommand;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
+import org.eclipse.wst.common.componentcore.internal.operation.CreateReferenceComponentsDataModelProvider;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.ws.internal.wsrt.TestInfo;
 
 public class AddModuleDependenciesCommand extends AbstractDataModelOperation
@@ -66,7 +76,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
       {
         String uri = clientIProject.getName() + ".jar";
 		if (J2EEUtils.isJavaComponent(clientIProject))
-          addJavaProjectAsUtilityJar(clientIProject, sampleEARIProject, uri);
+          addJavaProjectAsUtilityJar(clientIProject, sampleEARIProject, uri,monitor);
         addJAROrModuleDependency(sampleIProject, uri);
         addBuildPath(sampleIProject, clientIProject);
       }
@@ -80,11 +90,26 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
     return Status.OK_STATUS;
   }
 
-  private void addJavaProjectAsUtilityJar(IProject javaProject, IProject earProject, String uri)
+  private void addJavaProjectAsUtilityJar(IProject javaProject, IProject earProject, String uri,IProgressMonitor monitor)
   {
-		//  TODO  Remove refs to old command
-//    AddUtilityJARMapCommand cmd = new AddUtilityJARMapCommand(earProject, uri, javaProject);
-//    cmd.execute();
+	  try {
+		  IDataModel migrationdm = DataModelFactory.createDataModel(new JavaProjectMigrationDataModelProvider());
+		  migrationdm.setProperty(IJavaProjectMigrationDataModelProperties.PROJECT_NAME, javaProject.getName());
+		  migrationdm.getDefaultOperation().execute(monitor, null);
+ 
+ 
+		  IDataModel refdm = DataModelFactory.createDataModel(new CreateReferenceComponentsDataModelProvider());
+		  List targetCompList = (List) refdm.getProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST);
+ 
+		  IVirtualComponent targetcomponent = ComponentCore.createComponent(javaProject);
+		  targetCompList.add(targetcomponent);
+ 
+		  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.SOURCE_COMPONENT, earProject);
+		  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST, targetCompList);
+		  refdm.getDefaultOperation().execute(monitor, null);
+	  }catch (Exception e) {
+		  
+	  }
   }
 
   private void addJAROrModuleDependency(IProject project, String uri) throws IOException, CoreException
@@ -99,9 +124,6 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
   
   private void createSampleProjects(IEnvironment env, IProgressMonitor monitor )
   {
-	  
-	  
-	  
 	  sampleIProject = ProjectUtilities.getProject(testInfo.getGenerationProject());
 	  clientIProject = ProjectUtilities.getProject(testInfo.getClientProject());
 	  
@@ -123,7 +145,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 	    createEAR.setServerFactoryId(testInfo.getClientServerTypeID());
 	    createEAR.setModuleType(CreateModuleCommand.EAR);
 	    createEAR.setJ2eeLevel(J2EEUtils.getJ2EEVersionAsString(clientIProject));
-      createEAR.setEnvironment( env );
+		createEAR.setEnvironment( env );
 		  IStatus status = createEAR.execute( monitor, null );
 	    if (status.getSeverity()==Status.ERROR)
         {
@@ -134,7 +156,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 		modToServer.setModule(sampleEARModule);
 		modToServer.setProject(sampleEARProject);
 		modToServer.setServerInstanceId(testInfo.getClientExistingServer().getId());
-    modToServer.setEnvironment( env );
+		modToServer.setEnvironment( env );
 		status = modToServer.execute( monitor, null );
 		if (status.getSeverity()==Status.ERROR)
 	    {
@@ -161,7 +183,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 	    associateCommand.setProject(testInfo.getGenerationProject());
 	    associateCommand.setEARProject(sampleEARProject);
 	    associateCommand.setEar(sampleEARModule);
-      associateCommand.setEnvironment( env );
+		associateCommand.setEnvironment( env );
 	    status = associateCommand.execute( monitor, null );
 	    if (status.getSeverity()==Status.ERROR)
 	    {
@@ -186,7 +208,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 		
 		StartServerCommand startServer = new StartServerCommand(false, true);
 		startServer.setServerInstanceId(testInfo.getClientExistingServer().getId());
-    startServer.setEnvironment( env );
+		startServer.setEnvironment( env );
 		status = startServer.execute( monitor, null );
 	    if (status.getSeverity()==Status.ERROR)
 	    {
