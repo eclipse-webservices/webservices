@@ -2,7 +2,18 @@
   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-us" xml:lang="en-us">
 <head>
-<link rel="stylesheet" type="text/css" href="../../org.eclipse.wst.doc.user/common.css" />
+<!-- /*******************************************************************************
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/ -->
+ <link rel="stylesheet" type="text/css" href="../../org.eclipse.wtp.doc.user/common.css" />
+
 <title>Generating a Java client proxy and a sample application from
 a WSDL document using the Axis run-time environment</title>
 </head>
@@ -91,7 +102,30 @@ information, and click  <strong>Go</strong>. The result will display in the Stat
 </ul>
 <p>For more information on creating a Web project, refer to the Web application
 development documentation.</p>
-</div>
+</div><p> <span class="uicontrol">Note:</span>
+<ul>
+<li>You may encounter the following error when running the Web Service client wizard:
+<br>
+<samp>
+IWAB0399E Error in generating Java from WSDL java.io.IOException: WSDL2Java
+emitter timed out (this often means the WSDL at the specified URL is
+inaccessible)!</samp>
+<br>
+You might be accessing a WSDL file that requires a timeout setting of more than
+the default 45 seconds (for example, trying to access a large WSDL file or a
+WSDL file on a slow machine).  You could change the timeout value for the Axis
+WSDL to Java emitter by starting the Eclipse workbench with the
+<samp>AxisWsdl2JavaTimeout</samp> virtual machine argument.  The timeout value is
+specified in milliseconds.  Use a timeout value of <samp>-1</samp> if you want the emitter to never
+time out.
+<br>
+For example, to set the timeout to 60 seconds, use the following command to
+start the Eclipse workbench:
+<br>
+<samp>eclipse -vmargs "-DAxisWsdl2JavaTimeout=60000"</samp>
+</li>
+</ul>
+</p>
 </div>
 <div>
 <div class="familylinks">
@@ -102,7 +136,7 @@ development documentation.</p>
 
 <div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.html"> Tools for Web services development</a></div>
 <div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cws.html">Web services development</a></div>
-<div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cruntime.html"> Web services run-time environments</a></div></div>
+</div>
 
 <div class="linklist"><strong>Related Tasks</strong><br />
 
@@ -112,8 +146,6 @@ development documentation.</p>
 
 <div><a href="../../org.eclipse.jst.ws.doc.user/ref/rwsdl.html">WSDL documents</a></div></div>
 </div>
-<p>
-		(C) Copyright IBM Corporation 2000, 2005. All Rights Reserved.
-		</p> 
+
 </body>
 </html>
