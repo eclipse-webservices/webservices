@@ -20,12 +20,14 @@ import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaComman
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisCheckCompilerLevelCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisOutputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisRunInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.ComputeAxisSkeletonBeanCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.CopyDeploymentFileCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.PublishServerCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.UpdateWEBXMLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
@@ -83,6 +85,7 @@ public class AxisWebService extends AbstractWebService
 			registerBUDataMappings( environment.getCommandManager().getMappingRegistry());
 			
 			commands.add(new BUAxisInputCommand(this, project));
+			commands.add(new AxisCheckCompilerLevelCommand());
 //			commands.add(new ValidateObjectSelectionCommand());
 			commands.add(new BUAxisDefaultingCommand());
 			commands.add(new DefaultsForServerJavaWSDLCommand());
@@ -119,6 +122,7 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new AxisOutputCommand(this));
 			
 		} else {
+			//TODO: Remove println and reassess this "error".
 			System.out.println("Error - WebServiceScenario should not be Client for AxisWebService");
 			return null;
 		}
@@ -137,10 +141,11 @@ public class AxisWebService extends AbstractWebService
 			String project, String earProject)
 	{
 		Vector commands = new Vector();
+        commands.add(new PublishServerCommand(getWebServiceInfo()));
 
 		if (ctx.getScenario().getValue() == WebServiceScenario.CLIENT) {
-			System.out
-					.println("Error - WebServiceScenario should not be Client for AxisWebService");
+			//TODO: Remove println and reassess this "error".
+			System.out.println("Error - WebServiceScenario should not be Client for AxisWebService");
 			return null;
 		} else {// For BOTTOM_UP and TOP_DOWN
 			commands.add(new AxisRunInputCommand(this, project));
@@ -174,6 +179,9 @@ public class AxisWebService extends AbstractWebService
 //	    registry.addMapping(SelectionCommand.class, "InitialSelection", BUAxisDefaultingCommand.class );
 //KSC   registry.addMapping(BUAxisInputCommand.class, "ServiceTypeRuntimeServer", BUAxisDefaultingCommand.class );
 	    	    
+		// AxisCheckCompilerLevelCommand
+		registry.addMapping(BUAxisInputCommand.class, "ServerProject", AxisCheckCompilerLevelCommand.class);
+		
 	    //BUAxisCommands2 - these run after BeanClassWidget
 	    //DefaultsForServerJavaWSDLCommand
 	    registry.addMapping(BUAxisDefaultingCommand.class, "JavaWSDLParam", DefaultsForServerJavaWSDLCommand.class);

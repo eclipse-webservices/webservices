@@ -51,6 +51,7 @@ public final class AxisCreationUIMessages extends NLS {
 	public static String STYLE_RPC_LITERAL;
 	public static String STYLE_DOC_LITERAL;
 	public static String STYLE_RPC_ENCODED;
+	public static String MSG_ERROR_COMPILER_LEVEL_NOT_COMPATIBLE;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, AxisCreationUIMessages.class);
