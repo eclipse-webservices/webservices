@@ -11,6 +11,9 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,6 +29,7 @@ import javax.wsdl.WSDLException;
 import javax.wsdl.extensions.UnknownExtensibilityElement;
 import javax.xml.namespace.QName;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.util.Validator;
@@ -48,6 +52,7 @@ public class WSDLElement extends WSDLCommonElement
   private String wsdlUrl_;
   private Definition definition_;
   private Vector schemaList_;
+  private Vector schemaURI_;
 
   private static Vector w3SchemaQNameList_;
   private static Vector constantSchemaList_;
@@ -83,6 +88,7 @@ public class WSDLElement extends WSDLCommonElement
     wsdlUrl_ = wsdlUrl;
     definition_ = null;
     schemaList_ = new Vector();
+	schemaURI_ = new Vector();
   }
 
   public void setWsdlUrl(String wsdlUrl) {
@@ -154,7 +160,8 @@ public class WSDLElement extends WSDLCommonElement
 
       for (int i=0;i<constantSchemaList_.size();i++)
         schemaList_.addElement(constantSchemaList_.elementAt(i));
-    }
+      
+	}
     return errorMessages;
   }
 
@@ -175,17 +182,21 @@ public class WSDLElement extends WSDLCommonElement
             if (isW3SchemaElementType(schemaElement.getElementType()))
             {
               XSDSchema xsdSchema = XSDSchemaImpl.createSchema(schemaElement.getElement());
-              schemaList_.addElement(xsdSchema);
-              gatherSchemaDirective(xsdSchema, definitionURL);
-            }
-          }
+			  if(!checkSchemaURI(definitionURL)){
+				  schemaList_.addElement(xsdSchema);
+				  gatherSchemaDirective(xsdSchema, definitionURL);
+              }
+          	}
+          } 	
           else if (obj instanceof XSDSchemaExtensibilityElementImpl)
           {
             XSDSchemaExtensibilityElementImpl schemaElement = (XSDSchemaExtensibilityElementImpl)obj;
             XSDSchema xsdSchema = XSDSchemaImpl.createSchema(schemaElement.getElement());
-            schemaList_.addElement(xsdSchema);
-            gatherSchemaDirective(xsdSchema, definitionURL);
-          }
+			if(!checkSchemaURI(definitionURL)){
+				schemaList_.addElement(xsdSchema);
+				gatherSchemaDirective(xsdSchema, definitionURL);
+			}
+		  }
         }
       }
     }
@@ -226,14 +237,52 @@ public class WSDLElement extends WSDLCommonElement
             resolvedSchema = getSchema(xsdSchemaDirectiveURL.toString());
           if (resolvedSchema != null)
           {
-            schemaList_.addElement(resolvedSchema);
-            gatherSchemaDirective(resolvedSchema, xsdSchemaDirectiveURL.toString());
-          }
+			if(!checkSchemaURI(xsdSchemaDirectiveURL.toString())){
+				schemaList_.addElement(resolvedSchema);
+				gatherSchemaDirective(resolvedSchema, xsdSchemaDirectiveURL.toString());
+      		}
+      	  }
         }
-      }
+	  }
     }
   }
 
+  private boolean checkSchemaURI(String schemaURI){
+	  	boolean found = false;
+	  	 	
+		
+		schemaURI = normalize(schemaURI); 
+		if(schemaURI.equals(normalize(wsdlUrl_)))return false;
+		Enumeration e = schemaURI_.elements();
+		while(e.hasMoreElements()){
+			String uri = (String)e.nextElement();	
+			if(schemaURI.equals(uri)){ 
+				found = true;
+				break;
+			}	
+		}
+		
+	    if (!found){
+	    	schemaURI_.addElement(schemaURI);
+	    }
+	    return found;
+	  
+	  }
+	  
+  private String normalize(String uri )
+  {
+	  try {
+		  String encodedURI = URIEncoder.encode(uri,"UTF-8");
+		  URI normalizedURI = new URI(encodedURI);
+		  normalizedURI = normalizedURI.normalize();
+		  return normalizedURI.toString();
+	  } catch (URISyntaxException e) {
+		  return uri;
+	  } catch (UnsupportedEncodingException e) {
+		  return uri;
+	  }
+  }
+  
   private final boolean isW3SchemaElementType(QName qname)
   {
     for (int i=0;i<w3SchemaQNameList_.size();i++)
