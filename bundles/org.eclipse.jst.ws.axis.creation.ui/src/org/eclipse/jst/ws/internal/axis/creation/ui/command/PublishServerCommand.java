@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.internal.Server;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
 
 public class PublishServerCommand extends AbstractDataModelOperation
@@ -39,7 +40,9 @@ public class PublishServerCommand extends AbstractDataModelOperation
         IServer server = ServerCore.findServer(serverInstanceId);
         if (server != null)
         {
-          return server.publish(IServer.PUBLISH_INCREMENTAL, monitor);
+        	if (((Server)server).shouldPublish()) {
+        		return server.publish(IServer.PUBLISH_INCREMENTAL, monitor);
+        	}
         }
       }
     }
