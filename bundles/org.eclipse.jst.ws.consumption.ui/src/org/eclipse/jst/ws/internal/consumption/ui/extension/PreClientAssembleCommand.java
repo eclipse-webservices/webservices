@@ -47,7 +47,7 @@ public class PreClientAssembleCommand extends AbstractDataModelOperation
     command.setServerInstanceId( webServiceClient_.getWebServiceClientInfo().getServerInstanceId() );
     command.setJ2eeLevel(j2eeLevel_);
     command.setEnvironment( environment );
-    IStatus status = command.execute( null, null );
+    IStatus status = command.execute( monitor, adaptable );
     if (status.getSeverity()==Status.ERROR)
     {
       environment.getStatusHandler().reportError( status );
@@ -62,7 +62,7 @@ public class PreClientAssembleCommand extends AbstractDataModelOperation
     associateCommand.setEARProject(earProject_);
     associateCommand.setEar(ear_);
     associateCommand.setEnvironment( environment );
-    status = associateCommand.execute( null, null );
+    status = associateCommand.execute( monitor, adaptable );
     if (status.getSeverity()==Status.ERROR)
     {
       environment.getStatusHandler().reportError(  status );     
