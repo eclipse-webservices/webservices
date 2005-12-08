@@ -50,7 +50,7 @@ public static int getWSISeverity (IProject project, PersistentWSIContext context
  */
 public static boolean checkWSICompliance ( IStatusHandler monitor, Status[] status, IProject project, PersistentWSIContext context)
 {
-	String pluginId = "org.eclipse.wst.ws.ui";
+	String pluginId = "org.eclipse.wst.ws";
     msgUtils_ = new MessageUtils(pluginId + ".plugin", WSPlugin.getInstance()); 
 	
   	if (context.projectStopNonWSICompliances(project))
