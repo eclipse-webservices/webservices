@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.consumption.command.common.PublishProjectCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.command.PublishProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.InputFileGenerator;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.MethodFileGenerator;
