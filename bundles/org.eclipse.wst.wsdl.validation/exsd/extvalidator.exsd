@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.wst.wsdl.validation" id="extvalidator" name="WSDL Extension Validator"/>
       </appInfo>
       <documentation>
-         The WSDL Extension Validator extension point allows clients to contribute a validator that provides custom validation logic for WSDL 1.1 documents. 
+         The WSDL Extension Validator extension point allows clients to contribute a validator that provides custom validation logic for WSDL 1.1 documents.
       </documentation>
    </annotation>
 
@@ -71,7 +71,6 @@
       </appInfo>
       <documentation>
          &lt;b&gt;This extension point is part of an interim API that is still under development and expected to change significantly before reaching stability. It is being made available at this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses this API will almost certainly be broken (repeatedly) as the API evolves.&lt;/b&gt;
-
       </documentation>
    </annotation>
 
@@ -82,16 +81,16 @@
       <documentation>
          The following is an example of a WSDL Extension Validator contribution:
 &lt;pre&gt;
-&lt;extension
-  id=&quot;wsdlWSIValidator&quot;
-  name=&quot;WSDL WS-I Validator&quot;
-  point=&quot;org.eclipse.wst.wsdl.validation.extvalidator&quot;&gt;
-  &lt;extvalidator
-     namespace=&quot;http://schemas.xmlsoap.org/wsdl/&quot;
-     class=&quot;org.eclipse.wst.wsi.internal.validate.wsdl.WSDLValidator&quot;
-     resourcebundle=&quot;wsivalidate&quot;&gt;
-  &lt;/extvalidator&gt;
-&lt;/extension&gt;
+   &lt;extension
+         id=&quot;wsdlWSIValidator&quot;
+         name=&quot;WSDL WS-I Validator&quot;
+         point=&quot;org.eclipse.wst.wsdl.validation.extvalidator&quot;&gt;
+      &lt;extvalidator
+            namespace=&quot;http://schemas.xmlsoap.org/wsdl/&quot;
+            class=&quot;org.eclipse.wst.wsi.internal.validate.wsdl.WSDLValidator&quot;
+            resourcebundle=&quot;wsivalidate&quot;&gt;
+      &lt;/extvalidator&gt;
+   &lt;/extension&gt;
 &lt;/pre&gt;
       </documentation>
    </annotation>

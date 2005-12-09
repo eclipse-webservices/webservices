@@ -73,11 +73,11 @@
       <documentation>
          The following is an example of an Internal Editor Extension contribution:
 &lt;pre&gt;
- &lt;extension
-  point=&quot;org.eclipse.wst.wsdl.ui.internalEditorExtensions&quot;&gt;
-  &lt;internalEditorExtension
-   class=&quot;org.eclipse.wst.wsdl.ui.internal.xsd.XSDExtension&quot; /&gt;
- &lt;/extension&gt;
+   &lt;extension
+         point=&quot;org.eclipse.wst.wsdl.ui.internalEditorExtensions&quot;&gt;
+      &lt;internalEditorExtension
+            class=&quot;org.eclipse.wst.wsdl.ui.internal.xsd.XSDExtension&quot; /&gt;
+   &lt;/extension&gt;
 &lt;/pre&gt;
       </documentation>
    </annotation>

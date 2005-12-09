@@ -80,13 +80,12 @@
       <documentation>
          The following is an example of an Extensibility Item Tree Provider contribution:
 &lt;pre&gt;
- &lt;extension
-  point=&quot;org.eclipse.wst.wsdl.ui.extensibilityItemTreeProviders&quot;&gt;
-  &lt;extensibilityItemTreeProvider
-   namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
-   labelProviderClass=&quot;org.eclipse.wst.wsdl.ui.internal.outline.SOAPLabelProvider&quot;&gt;
-  &lt;/extensibilityItemTreeProvider&gt;
- &lt;/extension&gt;
+   &lt;extension
+         point=&quot;org.eclipse.wst.wsdl.ui.extensibilityItemTreeProviders&quot;&gt;
+      &lt;extensibilityItemTreeProvider
+            namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
+            labelProviderClass=&quot;org.eclipse.wst.wsdl.ui.internal.outline.SOAPLabelProvider&quot;/&gt;
+   &lt;/extension&gt;
 &lt;/pre&gt;
       </documentation>
    </annotation>

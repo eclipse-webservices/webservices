@@ -87,7 +87,7 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         [Enter extension point usage example here.]
+         
       </documentation>
    </annotation>
 
@@ -96,7 +96,7 @@
          <meta.section type="apiInfo"/>
       </appInfo>
       <documentation>
-         Extenders should implement AbstractWebServiceLocator.  The WebServiceLocatorRegistry uses this extension point to retrieve all locators.
+         Extenders should implement &lt;code&gt;org.eclipse.wst.ws.internal.wsfinder.AbstractWebServiceLocator&lt;/code&gt;.  The WebServiceLocatorRegistry uses this extension point to retrieve all locators.
       </documentation>
    </annotation>
 
@@ -105,7 +105,7 @@
          <meta.section type="implementation"/>
       </appInfo>
       <documentation>
-         [Enter information about supplied implementation of this extension point.]
+         
       </documentation>
    </annotation>
 

@@ -92,13 +92,13 @@
       <documentation>
          The following is an example of a content generator contribution:
 &lt;pre&gt;
-  &lt;extension point=&quot;org.eclipse.wst.wsdl.contentGenerators&quot;&gt;
-    &lt;contentGenerator
-      name=&quot;SOAP&quot;
-      namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
-      class=&quot;org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator&quot;&gt;
-    &lt;/contentGenerator&gt;
-  &lt;/extension&gt;
+   &lt;extension
+         point=&quot;org.eclipse.wst.wsdl.contentGenerators&quot;&gt;
+      &lt;contentGenerator
+            name=&quot;SOAP&quot;
+            namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
+            class=&quot;org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator&quot;/&gt;
+   &lt;/extension&gt;
 &lt;/pre&gt;
       </documentation>
    </annotation>

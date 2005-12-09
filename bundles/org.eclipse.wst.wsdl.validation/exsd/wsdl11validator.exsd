@@ -71,7 +71,6 @@
       </appInfo>
       <documentation>
          &lt;b&gt;This extension point is part of an interim API that is still under development and expected to change significantly before reaching stability. It is being made available at this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses this API will almost certainly be broken (repeatedly) as the API evolves.&lt;/b&gt;
-
       </documentation>
    </annotation>
 
@@ -82,13 +81,13 @@
       <documentation>
          The following is an example of a WSDL 1.1 Extension Validator contribution:
 &lt;pre&gt;
-&lt;extension
-  point=&quot;org.eclipse.wst.wsdl.validation.wsdl11validator&quot;&gt;
-  &lt;wsdl11validator
-    class=&quot;org.eclipse.wst.wsdl.validation.internal.wsdl11.http.HTTPValidator&quot;
-    namespace=&quot;http://schemas.xmlsoap.org/wsdl/http/&quot;
-    resourcebundle=&quot;validatewsdlhttp&quot;/&gt;
-&lt;/extension&gt;
+   &lt;extension
+         point=&quot;org.eclipse.wst.wsdl.validation.wsdl11validator&quot;&gt;
+      &lt;wsdl11validator
+            class=&quot;org.eclipse.wst.wsdl.validation.internal.wsdl11.http.HTTPValidator&quot;
+            namespace=&quot;http://schemas.xmlsoap.org/wsdl/http/&quot;
+            resourcebundle=&quot;validatewsdlhttp&quot;/&gt;
+   &lt;/extension&gt;
 &lt;/pre&gt;
       </documentation>
    </annotation>

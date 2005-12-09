@@ -80,11 +80,12 @@
       <documentation>
          The following is an example of an extensibility element factory contribution:
 &lt;pre&gt;
-  &lt;extension point=&quot;org.eclipse.wst.wsdl.extensibilityElementFactories&quot;&gt;
-    &lt;extensibilityElementFactory
-      namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
-      class=&quot;org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPExtensibilityElementFactory&quot; /&gt;
-  &lt;/extension&gt;
+   &lt;extension
+         point=&quot;org.eclipse.wst.wsdl.extensibilityElementFactories&quot;&gt;
+      &lt;extensibilityElementFactory
+            namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
+            class=&quot;org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPExtensibilityElementFactory&quot;/&gt;
+   &lt;/extension&gt;
 &lt;/pre&gt;
       </documentation>
    </annotation>

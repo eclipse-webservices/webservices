@@ -80,13 +80,12 @@
       <documentation>
          The following is an example of an Extensibility Element Filter contribution:
 &lt;pre&gt;
- &lt;extension
-  point=&quot;org.eclipse.wst.wsdl.ui.extensibilityElementFilter&quot;&gt;
-  &lt;extensibilityElementFilter
-   namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
-   class=&quot;org.eclipse.wst.wsdl.ui.internal.filter.SoapExtensiblityElementFilter&quot;&gt;
-  &lt;/extensibilityElementFilter&gt;
- &lt;/extension&gt;
+   &lt;extension
+         point=&quot;org.eclipse.wst.wsdl.ui.extensibilityElementFilter&quot;&gt;
+      &lt;extensibilityElementFilter
+            namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
+            class=&quot;org.eclipse.wst.wsdl.ui.internal.filter.SoapExtensiblityElementFilter&quot;/&gt;
+   &lt;/extension&gt;
 &lt;/pre&gt;
       </documentation>
    </annotation>

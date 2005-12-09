@@ -69,7 +69,7 @@
          <meta.section type="since"/>
       </appInfo>
       <documentation>
-         &lt;b&gt;This extension point is internal and should not be used by any other plugins.&lt;/b&gt; 
+         &lt;b&gt;This extension point is internal and should not be used by any other plugins.&lt;/b&gt;
       </documentation>
    </annotation>
 
@@ -80,13 +80,12 @@
       <documentation>
          The following is an example of an  contribution:
 &lt;pre&gt;
- &lt;extension
-  point=&quot;org.eclipse.wst.wsdl.ui.propertyDescriptorProvider&quot;&gt;
-  &lt;propertyDescriptorProvider
-   namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
-   class=&quot;org.eclipse.wst.wsdl.ui.internal.example.ExamplePropertyDescriptor&quot;&gt;
-  &lt;/propertyDescriptorProvider&gt;
- &lt;/extension&gt;
+   &lt;extension
+         point=&quot;org.eclipse.wst.wsdl.ui.propertyDescriptorProvider&quot;&gt;
+      &lt;propertyDescriptorProvider
+            namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
+            class=&quot;org.eclipse.wst.wsdl.ui.internal.example.ExamplePropertyDescriptor&quot;/&gt;
+   &lt;/extension&gt;
 &lt;/pre&gt;
       </documentation>
    </annotation>
