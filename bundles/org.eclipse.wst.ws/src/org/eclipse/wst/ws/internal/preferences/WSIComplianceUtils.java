@@ -14,17 +14,14 @@ package org.eclipse.wst.ws.internal.preferences;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.ws.internal.WstWSPluginMessages;
-import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
 
 public class WSIComplianceUtils
 {
-private static MessageUtils msgUtils_;
 
 /**
  * @param project
@@ -50,21 +47,18 @@ public static int getWSISeverity (IProject project, PersistentWSIContext context
  */
 public static boolean checkWSICompliance ( IStatusHandler monitor, Status[] status, IProject project, PersistentWSIContext context)
 {
-	String pluginId = "org.eclipse.wst.ws";
-    msgUtils_ = new MessageUtils(pluginId + ".plugin", WSPlugin.getInstance()); 
-	
   	if (context.projectStopNonWSICompliances(project))
   		{
       
   			// emit an error message and return false
-  			IStatus status_ = StatusUtils.multiStatus( msgUtils_.getMessage(context.getError()), status );
-			  monitor.reportError(status_);
+  			IStatus status_ = StatusUtils.multiStatus( context.getError(), status );
+			monitor.reportError(status_);
   			return false;
   		}
   	else if (context.projectWarnNonWSICompliances(project))
   		{
   			// give a warning message with the options to stop, ignore this one, or ignore all coming messages
-  			IStatus status_ = StatusUtils.multiStatus( msgUtils_.getMessage(context.getWarning()), status);
+  			IStatus status_ = StatusUtils.multiStatus( context.getWarning(), status);
 
   			Choice ignoreChoice = new Choice('I', WstWSPluginMessages.IGNORE_LABEL, WstWSPluginMessages.IGNORE_DESCRIPTION);
   			Choice ignoreAllChoice = new Choice('A', WstWSPluginMessages.IGNORE_ALL_LABEL, WstWSPluginMessages.IGNORE_ALL_DESCRIPTION);

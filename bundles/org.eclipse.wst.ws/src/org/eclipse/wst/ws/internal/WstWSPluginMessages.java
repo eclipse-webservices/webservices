@@ -27,6 +27,13 @@ public final class WstWSPluginMessages extends NLS {
 	public static String IGNORE_ALL_DESCRIPTION;
 	public static String CANCEL_LABEL;
 	public static String CANCEL_DESCRIPTION;
+	public static String WSI_SSBP_ERROR;
+	public static String WSI_SSBP_WARNING;
+	public static String WSI_SSBP_INCOMPLIANT_RUNTIME;
+	public static String WSI_AP_ERROR;
+	public static String WSI_AP_WARNING;	
+	public static String WSI_AP_INCOMPLIANT_RUNTIME;
+	public static String NOT_OK;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, WstWSPluginMessages.class);

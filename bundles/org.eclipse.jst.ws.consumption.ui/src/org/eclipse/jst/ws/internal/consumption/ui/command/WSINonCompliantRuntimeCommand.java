@@ -21,11 +21,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.ws.internal.WstWSPluginMessages;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIAPContext;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSISSBPContext;
 import org.eclipse.wst.ws.internal.preferences.WSIComplianceUtils;
-import org.eclipse.wst.ws.internal.ui.WstWSUIPluginMessages;
 
 
 
@@ -36,7 +36,7 @@ public class WSINonCompliantRuntimeCommand extends AbstractDataModelOperation
 	
   public WSINonCompliantRuntimeCommand()
   {
-  }
+  } 
   
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -47,29 +47,29 @@ public class WSINonCompliantRuntimeCommand extends AbstractDataModelOperation
   	PersistentWSIAPContext wsiAPContext = WSPlugin.getInstance().getWSIAPContext(); 
     Vector statusSSBP = new Vector();
     statusSSBP.add( new Status( WSIComplianceUtils.getWSISeverity(serviceProject_, wsiSSBPContext), "id", 0,
-        WstWSUIPluginMessages.WSI_SSBP_INCOMPLIANT_RUNTIME, null ) );
+        WstWSPluginMessages.WSI_SSBP_INCOMPLIANT_RUNTIME, null ) );
     Status[] statusesSSBP = (Status[]) statusSSBP.toArray(new Status[statusSSBP.size()]);
     
     Vector statusAP = new Vector();
     statusAP.add( new Status( WSIComplianceUtils.getWSISeverity(serviceProject_, wsiAPContext), "id", 0, 
-    		WstWSUIPluginMessages.WSI_AP_INCOMPLIANT_RUNTIME, null ));
+    		WstWSPluginMessages.WSI_AP_INCOMPLIANT_RUNTIME, null ));
     Status[] statusesAP = (Status[]) statusAP.toArray(new Status[statusAP.size()]);
 
-    if (WSIComplianceUtils.checkWSICompliance (environment.getStatusHandler(), statusesSSBP, serviceProject_, wsiSSBPContext)) 
+    if (WSIComplianceUtils.checkWSICompliance (environment.getStatusHandler(), statusesAP, serviceProject_, wsiAPContext)) 
     {
-    	if (WSIComplianceUtils.checkWSICompliance (environment.getStatusHandler(), statusesAP, serviceProject_, wsiAPContext)) 
+    	if (WSIComplianceUtils.checkWSICompliance (environment.getStatusHandler(), statusesSSBP, serviceProject_, wsiSSBPContext)) 
       {
     		return Status.OK_STATUS;
     	} 
       else 
       {
-    		return StatusUtils.errorStatus(	WstWSUIPluginMessages.NOT_OK );
+    		return StatusUtils.errorStatus( WstWSPluginMessages.NOT_OK );
     	}
     } 
     else 
     {
-		  return StatusUtils.errorStatus( WstWSUIPluginMessages.NOT_OK );
-		}
+		  return StatusUtils.errorStatus( WstWSPluginMessages.NOT_OK );
+	}
   }
   
   public void setServiceProject(IProject serviceProject) {

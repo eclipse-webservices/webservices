@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.command.internal.env.context.PersistentContext;
 import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.ILog;
+import org.eclipse.wst.ws.internal.WstWSPluginMessages;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
 
@@ -41,8 +42,8 @@ public PersistentWSIContext ()
 //  NOTE:  name, wsiWarning_ and wsiError_ should be set in the subclasses.  This is providing defaulting only.
 	non_wsi_compliance = NON_WSI_SSBP_COMPLIANCE;
 	name = new QualifiedName(WSPlugin.ID , non_wsi_compliance);
-	wsiWarning_ = "WSI_SSBP_WARNING";
-	wsiError_ = "WSI_SSBP_ERROR";
+	wsiWarning_ = WstWSPluginMessages.WSI_SSBP_WARNING;
+	wsiError_ = WstWSPluginMessages.WSI_SSBP_ERROR;
 }
 
 public void load() 

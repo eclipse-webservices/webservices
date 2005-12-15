@@ -12,6 +12,7 @@
 package org.eclipse.wst.ws.internal.preferences;
 
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.wst.ws.internal.WstWSPluginMessages;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
 
@@ -25,8 +26,8 @@ public PersistentWSISSBPContext ()
 	super();
 	non_wsi_compliance = NON_WSI_SSBP_COMPLIANCE;
 	name = new QualifiedName(WSPlugin.ID , non_wsi_compliance);
-	wsiWarning_ = "WSI_SSBP_WARNING";
-	wsiError_ = "WSI_SSBP_ERROR";
+	wsiWarning_ = WstWSPluginMessages.WSI_SSBP_WARNING;
+	wsiError_ = WstWSPluginMessages.WSI_SSBP_ERROR;
 }
 
 }
