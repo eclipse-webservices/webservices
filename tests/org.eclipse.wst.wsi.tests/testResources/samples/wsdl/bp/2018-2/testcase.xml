@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<testcase name="2018-1">
-  <description>
-    This is an example of a conformant wsdl containing a documentation
-    element and 2 import elements preceding the types element. 
-  </description>
-  <expectedFailures/>
-</testcase>
