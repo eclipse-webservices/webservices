@@ -66,7 +66,6 @@ import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.tests.util.DefinitionVisitor;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.xsd.XSDPackage;
-import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Element;
 
