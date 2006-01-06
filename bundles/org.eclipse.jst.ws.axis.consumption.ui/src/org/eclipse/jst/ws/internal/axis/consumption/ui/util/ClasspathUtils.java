@@ -159,20 +159,24 @@ public class ClasspathUtils {
 
 	// Need to get all modules in the project. If there's a EAR module, get the utility JARs 
 	private String[] getUtilityJarClasspath(IProject project) {
+		String[] utilityJarString = new String[0];
 		String[] moduleClasspath = new String[0];
 		ArrayList utilityJarsClasspath = new ArrayList();
 		
 		String module;
 		IVirtualComponent comp = ComponentCore.createComponent(project);
-		module = comp.getName();
-		if (J2EEUtils.isEARComponent(comp)) {
-			moduleClasspath = getClasspathForEARProject(project, module);
-			for (int j = 0; j < moduleClasspath.length; j++) {
-				utilityJarsClasspath.add(moduleClasspath[j]);
+		if (comp != null) {
+			module = comp.getName();
+			if (J2EEUtils.isEARComponent(comp)) {
+				moduleClasspath = getClasspathForEARProject(project, module);
+				for (int j = 0; j < moduleClasspath.length; j++) {
+					utilityJarsClasspath.add(moduleClasspath[j]);
+				}
+				utilityJarString = (String[]) utilityJarsClasspath.toArray(new String[utilityJarsClasspath.size()]);
 			}
-		}
+		} 
 
-		return (String[]) utilityJarsClasspath.toArray(new String[utilityJarsClasspath.size()]);
+		return utilityJarString;
 	}
 	
 	private String[] getClasspathForEARProject(IProject project, String module) {
