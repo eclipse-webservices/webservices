@@ -187,12 +187,11 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 		IStatusHandler statusHandler = environment.getStatusHandler();
 		
 		String outputWsdlLocation = javaWSDLParam_.getOutputWsdlLocation();
-		IPath targetPath = FileResourceUtils
-		.getWorkspaceRootRelativePath(new Path(outputWsdlLocation));
+		IPath targetPath = new Path(outputWsdlLocation);
 		try {
 			finStream = new FileInputStream(tempOutputWsdlFile);
 			if (finStream != null) {
-				FileResourceUtils.createFile(context, targetPath.makeAbsolute(), finStream,
+				FileResourceUtils.createFileAtLocation(context, targetPath.makeAbsolute(), finStream,
 						monitor, statusHandler);
 				finStream.close();
 			}

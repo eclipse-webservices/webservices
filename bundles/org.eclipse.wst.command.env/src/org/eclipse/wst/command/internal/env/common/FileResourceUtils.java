@@ -72,20 +72,6 @@ public final class FileResourceUtils
   }
 
   /**
-   * If the input path begins with the workspace root, the IPath that's relative to workspace root is returned.
-   * If the input path does not contain workspace root, the original path is returned.
-   * @param path input path to convert
-   * @return The workspace relative path.
-   */
-   public static IPath getWorkspaceRootRelativePath(IPath path) {
-		IPath rootPath = getWorkspaceRoot().getLocation();
-		if (path.matchingFirstSegments(rootPath) == rootPath.segmentCount()) {
-			path = path.removeFirstSegments(rootPath.segmentCount());
-		}
-		return path;
-	}
-   
- /**
 	 * Returns the IWorkspace object.
 	 * 
 	 * @return The IWorkspace object.
@@ -673,4 +659,117 @@ public final class FileResourceUtils
       return file;
     }
   }
+
+ 
+ /**
+   * Creates a file of the given <code>absolutePath</code>
+   * and returns its handle as an <code>IFile</code>.
+   * If the file cannot be created, a
+   * <code>CoreException</code> containing an
+   * <code>IStatus</code> object is thrown.
+   * @param absolutePath The absolute path of the file to create.
+   * The project at the beginning of the path must already exist,
+   * that is, this method cannot be used to create projects.
+   * @param progressMonitor The progress monitor for the operation, or null.
+   * @return The {@link org.eclipse.core.resources.IFile IFile}
+   * handle of the file.
+   * @throws CoreException An exception containing an
+   * {@link org.eclipse.core.runtime.IStatus IStatus}
+   * with a severity of <code>IStatus.ERROR</code> and a
+   * locale-specific description of the cause.
+   */
+   public static IFile createFileAtLocation (
+     ResourceContext resourceContext,
+     IPath           absolutePath,
+     InputStream     inputStream,
+     IProgressMonitor progressMonitor,
+     IStatusHandler   statusHandler )
+
+     throws CoreException 
+   {    
+     if (!absolutePath.isAbsolute())
+     {
+       throw new CoreException(new Status(IStatus.ERROR, "ResourceUtils",0,NLS.bind(EnvironmentMessages.MSG_ERROR_PATH_NOT_ABSOLUTE,new Object[] {absolutePath.toString()}),null));
+     }
+     if (absolutePath.segmentCount() < 1)
+     {
+       throw new CoreException(new Status(IStatus.ERROR,"ResourceUtils",0,NLS.bind(EnvironmentMessages.MSG_ERROR_PATH_EMPTY,new Object[] {absolutePath.toString()}),null));
+     }
+     if (absolutePath.segmentCount() < 2)
+     {
+       throw new CoreException(new Status(IStatus.ERROR,"ResourceUtils",0,NLS.bind(EnvironmentMessages.MSG_ERROR_PATH_NOT_FOLDER,new Object[] {absolutePath.toString()}),null));
+     }
+     IContainer parent   = makeFolderPathAtLocation(resourceContext, absolutePath.removeLastSegments(1), progressMonitor, statusHandler);
+     String     fileName = absolutePath.lastSegment();
+     
+     return makeFile(resourceContext, parent, fileName, inputStream, progressMonitor, statusHandler);
+   }
+
+/**
+  * Creates a path of folders using absolute filenames.
+  * Do not call with an absolutePath of less than one segment.
+  * @param resourceContext the resource context for making folders.
+  * @param resource the resource that will be created.
+  * @param progressMonitor the progress monitor to be used.
+  * @param statusHandler the status handler.
+  * @return returns the IContainer of the created folder.
+  */
+ public static IContainer makeFolderPathAtLocation (
+   ResourceContext  resourceContext,
+   IContainer       resource,
+   IProgressMonitor progressMonitor,
+   IStatusHandler   statusHandler )
+ 
+   throws CoreException
+   {
+	 if (resource.exists())
+	 {
+		 if (resource instanceof IContainer)
+		 {
+			 return (IContainer) resource;
+		 }
+		 else
+		 {
+			 throw new CoreException(
+					 new Status( IStatus.ERROR, 
+							 "ResourceUtils",
+							 0, 
+							 NLS.bind(EnvironmentMessages.MSG_ERROR_RESOURCE_NOT_FOLDER,
+									 new Object[]{ resource.getFullPath().toString() }),
+									 null ) );
+		 }
+	 }
+	 else
+	 {
+		 IContainer parent = makeFolderPathAtLocation(resourceContext, resource.getParent(), progressMonitor, statusHandler );
+		 String folderName = resource.getName();
+		 
+		 return makeFolder(resourceContext, parent, folderName, progressMonitor , statusHandler );
+	 }
+ }
+ 
+ /**
+  * Creates a path of folders.
+  * Do not call with an absolutePath of less than one segment.
+  * @param resourceContext the resource context for making folders.
+  * @param absolutePath the path of folders that will be created.
+  * @param progressMonitor the progress monitor to be used.
+  * @param statusHandler the status handler.
+  * @return returns the IContainer of the created folder.
+  */
+ public static IContainer makeFolderPathAtLocation (
+   ResourceContext  resourceContext,
+   IPath            absolutePath,
+   IProgressMonitor progressMonitor,
+   IStatusHandler    statusHandler )
+ 
+   throws CoreException
+ {
+ 	return makeFolderPathAtLocation(resourceContext,
+ 		getWorkspaceRoot().getContainerForLocation(absolutePath),
+ 		progressMonitor, statusHandler);
+ }
+ 
+ 
+
 }

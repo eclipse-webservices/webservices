@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton;
 
-import java.io.File;
-import java.net.MalformedURLException;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
@@ -46,10 +43,14 @@ public class SkeletonConfigWidgetDefaultingCommand extends AbstractDataModelOper
 		IEnvironment environment = getEnvironment();
 		IStatus status = Status.OK_STATUS;
 		
-    String root = getRootURL();
-    String outputDir =	ResourceUtils.findResource(J2EEUtils.getWebInfPath( serverProject )).getLocation().toString();
-    javaWSDLParam.setOutput( outputDir );
-    javaWSDLParam.setJavaOutput(root + getOutputJavaFolder()); 
+		String outputDir =	ResourceUtils.findResource(J2EEUtils.getWebInfPath( serverProject )).getLocation().toString();
+		javaWSDLParam.setOutput( outputDir );
+//		Do not base Java output directory on workspace root since the project could be not physically located in the workspace root
+//		javaWSDLParam.setJavaOutput(getRootURL() + getOutputJavaFolder()); 
+		String javaOutput =	ResourceUtils.findResource(getOutputJavaFolder()).getLocation().toString();
+		javaWSDLParam.setJavaOutput(javaOutput);
+
+
 	
 	String projectURL = ServerUtils.getEncodedWebComponentURL(serverProject, serviceServerTypeID_);
 	
@@ -120,29 +121,6 @@ public class SkeletonConfigWidgetDefaultingCommand extends AbstractDataModelOper
   public JavaWSDLParameter getJavaWSDLParam()
   {
     return javaWSDLParam;
-  }
-  
-  private String getRootURL()
-  {
-    String rootURL = ResourcesPlugin.getWorkspace().getRoot().getLocation().removeTrailingSeparator().toString(); 
-    File   file    = new File( rootURL );
-    
-    try
-    {
-      rootURL = file.toURL().toString();
-      
-      char lastChar = rootURL.charAt(rootURL.length()-1);
-      
-      if (lastChar == '/' || lastChar == '\\')
-      {
-        rootURL = rootURL.substring(0, rootURL.length()-1);
-      }
-    }
-    catch (MalformedURLException murle)
-    {
-    }
-    
-    return rootURL;
   }
 
 public String getServiceServerTypeID() {

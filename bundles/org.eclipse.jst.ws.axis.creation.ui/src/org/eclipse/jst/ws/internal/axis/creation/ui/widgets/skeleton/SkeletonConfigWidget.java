@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton;
 
-import java.io.File;
-import java.net.MalformedURLException;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -66,6 +63,8 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
   private Button showMappingsCheckbox_;
   /* CONTEXT_ID PBSC0016 for the Show Mappings checkbox of the Bean Methods Page  */
   private String INFOPOP_N2P_SHOW_MAPPINGS = "PBSC0016"; //$NON-NLS-1$
+  
+  private IProject serverProject_;
 	
   public WidgetDataEvents addControls( Composite parent, Listener statusListener)
   {
@@ -163,19 +162,17 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
    * @return Returns the javaWSDLParam.
    */
   public JavaWSDLParameter getJavaWSDLParam() {
-    String root = getWorkspaceRootLocation();
-    File file = new File(root);
-    try
-    {
-      root = file.toURL().toString();
-      char lastChar = root.charAt(root.length()-1);
-      if (lastChar == '/' || lastChar == '\\')
-        root = root.substring(0, root.length()-1);
-    }
-    catch (MalformedURLException murle)
-    {
-    }
-    javaWSDLParam.setJavaOutput(root + skeletonFolderText_.getText());
+
+//	  Do not base Java output directory on workspace root since the project could be not 
+//	  physically located in the workspace root, get the project specific root instead
+	  
+	  String projectSpecificRoot = serverProject_.getLocation().toString();
+	  String skeletonFolder = skeletonFolderText_.getText();
+	  String projectPathString = serverProject_.getFullPath().toString();
+	  if (skeletonFolder.startsWith(projectPathString)) {
+		  skeletonFolder = skeletonFolder.substring(projectPathString.length());
+	  }
+	  javaWSDLParam.setJavaOutput(projectSpecificRoot + skeletonFolder);
 	  return javaWSDLParam;
   }
 
@@ -188,6 +185,7 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
   
   public void setServerProject(IProject serviceProject)
   {
+	  serverProject_ = serviceProject;
     String originalSkeletonFolder = skeletonFolderText_.getText();
     skeletonFolderText_.removeAll();
     IPath[] paths = ResourceUtils.getAllJavaSourceLocations(serviceProject);

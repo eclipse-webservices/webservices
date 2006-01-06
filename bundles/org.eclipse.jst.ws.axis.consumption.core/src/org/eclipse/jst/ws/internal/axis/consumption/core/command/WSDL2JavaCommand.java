@@ -192,7 +192,6 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			ResourceContext context = WebServicePlugin.getInstance().getResourceContext();				
 			
 			IPath outputPath = new Path (outputDir);
-			outputPath = FileResourceUtils.getWorkspaceRootRelativePath(outputPath);
 			
 			String fileName;
 			IPath targetPath=null;
@@ -211,13 +210,13 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 				if (finStream != null) {
 					if (deployFile.startsWith(tempOutputDir)) {
 						fileName = deployFile.substring(tempOutputDir.length());
-						targetPath = outputPath.append(fileName).makeAbsolute();
-						FileResourceUtils.createFile(context,  
+						targetPath = outputPath.append(fileName).makeAbsolute();  
+						FileResourceUtils.createFileAtLocation(context,  
 								targetPath,
 								finStream,
 								monitor,
 								statusHandler);
-						movedDeployFiles[i++]= ResourceUtils.findResource(targetPath).getLocation().toString();
+						movedDeployFiles[i++]= ResourceUtils.getWorkspaceRoot().getFileForLocation(targetPath).getLocation().toString();
 					}
 					finStream.close();
 				}
@@ -226,7 +225,6 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			javaWSDLParam.setDeploymentFiles(movedDeployFiles);
 			
 			IPath javaOutputPath = new Path (javaOutput);
-			javaOutputPath = FileResourceUtils.getWorkspaceRootRelativePath(javaOutputPath);
 			
 			String javaFile;
 			String fullClassName = null;
@@ -243,13 +241,13 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 						// for the case WSDL2Java, move Java files to Java output directory
 						if (javaFile.startsWith(tempOutputDir)) {
 							fullClassName = javaFile.substring(tempOutputDir.length());
-							targetPath = javaOutputPath.append(fullClassName).makeAbsolute();
-							FileResourceUtils.createFile(context,  
+							targetPath = javaOutputPath.append(fullClassName).makeAbsolute(); 
+							FileResourceUtils.createFileAtLocation(context,  
 									targetPath,
 									finStream,
 									monitor,
 									statusHandler);
-							movedJavaFiles[i++]= ResourceUtils.findResource(targetPath).getLocation().toString();
+							movedJavaFiles[i++]= ResourceUtils.getWorkspaceRoot().getFileForLocation(targetPath).getLocation().toString();
 						}
 					}
 					
