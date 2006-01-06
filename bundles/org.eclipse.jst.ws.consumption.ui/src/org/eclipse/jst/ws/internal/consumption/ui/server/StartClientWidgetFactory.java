@@ -17,17 +17,19 @@ import org.eclipse.wst.command.internal.env.ui.widgets.INamedWidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.INamedWidgetContributorFactory;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
 
 public class StartClientWidgetFactory implements INamedWidgetContributorFactory 
 {
   private IWebServiceClient webserviceClient_;
+  private IContext context_;
   
   public INamedWidgetContributor getFirstNamedWidget() 
   {
     IServer server = null;
     
-    if( webserviceClient_ != null )
+    if( webserviceClient_ != null  && context_.getInstall())
     {
       server = ServerCore.findServer(webserviceClient_.getWebServiceClientInfo().getServerInstanceId() );
     }
@@ -48,10 +50,16 @@ public class StartClientWidgetFactory implements INamedWidgetContributorFactory
   public void registerDataMappings(DataMappingRegistry dataRegistry) 
   {
 	dataRegistry.addMapping( PreClientDevelopCommand.class, "WebService", StartClientWidgetFactory.class );
+	dataRegistry.addMapping( PreClientDevelopCommand.class, "Context", StartClientWidgetFactory.class );
   }
   
   public void setWebService( IWebServiceClient webserviceClient )
   {
     webserviceClient_ = webserviceClient;  
+  }
+  
+  public void setContext ( IContext context )
+  {
+    context_ = context;  
   }
 }
