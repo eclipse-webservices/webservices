@@ -35,6 +35,7 @@ public class AxisSkeletonDefaultingCommand extends AbstractDataModelOperation
     javaWSDLParam.setServerSide(JavaWSDLParameter.SERVER_SIDE_BEAN);
     javaWSDLParam.setSkeletonDeploy(true);
     javaWSDLParam.setMetaInfOnly(false);
+    javaWSDLParam.setInputWsdlLocation(wsdlURI_);
     return Status.OK_STATUS;
     
   }

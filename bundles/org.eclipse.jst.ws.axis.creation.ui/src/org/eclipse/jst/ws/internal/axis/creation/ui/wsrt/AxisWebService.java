@@ -31,6 +31,7 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.command.PublishServerCommand
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.UpdateWEBXMLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.BUCheckAxisDeploymentDescriptors;
+import org.eclipse.jst.ws.internal.axis.creation.ui.task.BackupSkelImplCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.Skeleton2WSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.TDCheckAxisDeploymentDescriptors;
@@ -118,6 +119,7 @@ public class AxisWebService extends AbstractWebService
 //			commands.add(new SimpleFragment( "AxisMappingsWidget" ));
 		    commands.add(new TDCheckAxisDeploymentDescriptors());
 			commands.add(new CopyAxisJarCommand());
+			commands.add(new BackupSkelImplCommand());
 		    commands.add(new WSDL2JavaCommand());
 		    commands.add(new Skeleton2WSDLCommand());
 		    commands.add(new UpdateWEBXMLCommand(getWebServiceInfo()));
@@ -296,6 +298,10 @@ public class AxisWebService extends AbstractWebService
 	    // CopyAxisJarCommand
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", projectTransformer);
 
+	    // BackupSkelImplCommand
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", BackupSkelImplCommand.class);      
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "JavaWSDLParam", BackupSkelImplCommand.class);
+	    
 	    // Skeleton2WSDLCommand
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", Skeleton2WSDLCommand.class);
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", Skeleton2WSDLCommand.class, "ServerProject", projectTransformer);

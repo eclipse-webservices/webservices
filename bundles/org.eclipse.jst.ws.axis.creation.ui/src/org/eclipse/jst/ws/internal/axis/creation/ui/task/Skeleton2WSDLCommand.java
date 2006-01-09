@@ -17,7 +17,6 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.wsdl.Binding;
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.Service;
@@ -53,10 +52,9 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class Skeleton2WSDLCommand extends AbstractDataModelOperation
 {
-  private static final String IMPL = "Impl";	//$NON-NLS-1$
+
   private static final String SERVICE_EXT = "/services/";	//$NON-NLS-1$
   private static final String WSDL_EXT = "wsdl";	//$NON-NLS-1$
-  private static final String DOT = ".";	//$NON-NLS-1$
   private final String WSDL_FOLDER = "wsdl"; //$NON-NLS-1$
   private WebServicesParser webServicesParser;
   private JavaWSDLParameter javaWSDLParam;
@@ -97,25 +95,15 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
     Service service = null;
     Port port = null;
     if (definition != null) {
-      StringBuffer beanName = new StringBuffer();
-      beanName.append(WSDLUtils.getPackageName(definition));
-      beanName.append(DOT);
-      try{
-      service = (Service) definition.getServices().values().iterator().next();
-      port = (Port) service.getPorts().values().iterator().next();
-      Binding binding = port.getBinding();
-      beanName.append(binding.getQName().getLocalPart());
-      beanName.append(IMPL);
-      javaWSDLParam.setBeanName(beanName.toString());
+    	
+    	// beanName and beanPackageName are now set in BackupSkelImplCommand
+    	
+    	service = (Service) definition.getServices().values().iterator().next();
+    	port = (Port) service.getPorts().values().iterator().next();
+    	
+    	javaWSDLParam.setPortTypeName(WSDLUtils.getPortTypeName(definition));
+    	javaWSDLParam.setServiceName(WSDLUtils.getServiceElementName(definition));
 
-      javaWSDLParam.setPortTypeName(WSDLUtils.getPortTypeName(definition));
-      javaWSDLParam.setServiceName(
-        WSDLUtils.getServiceElementName(definition));
-      javaWSDLParam.setBeanPackage(WSDLUtils.getPackageName(definition));
-      }
-      catch(Throwable e){
-      	e.printStackTrace();
-      }
     } 
     else {
       IStatus status = StatusUtils.errorStatus( NLS.bind(AxisConsumptionUIMessages.MSG_ERROR_WSDL_NO_DEFINITION, new String[] {wsdlURL}));

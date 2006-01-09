@@ -14,6 +14,7 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.wizard.wsdl;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsFragment;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
+import org.eclipse.jst.ws.internal.axis.creation.ui.task.BackupSkelImplCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidgetDefaultingCommand;
@@ -125,6 +126,9 @@ public class WSWSDLAxisType implements CommandWidgetBinding
     dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "OutputJavaFolder", SkeletonConfigWidget.class);
     dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "ShowMapping", SkeletonConfigWidget.class);
 
+    //  BackupSkelImplCommand     
+    dataRegistry.addMapping(SkeletonConfigWidget.class, "JavaWSDLParam", BackupSkelImplCommand.class);
+    
     // AxisMappingsFragment
     dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "ShowMapping", AxisMappingsFragment.class);
     dataRegistry.addMapping(SkeletonConfigWidget.class, "ShowMapping", AxisMappingsFragment.class);
