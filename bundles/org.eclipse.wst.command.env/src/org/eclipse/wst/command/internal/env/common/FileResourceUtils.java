@@ -7,6 +7,8 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     yyyymmdd	bug #	email					comment
+ *     20060112	[121199] jesper@selskabet.org 	- Jesper S Moller contributed patch for createFileAtLocation and makeFolderPathAtLocation
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.common;
 
