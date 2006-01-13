@@ -34,6 +34,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
   // why they are not initialized in the constructor.
   private PageWizardDataEvents currentPage_;
   private PageWizardDataEvents nextPage_;
+  private PageWizardDataEvents nextPeekPage_;
   private PageWizardDataEvents firstPage_;
   private CommandFragment      lastUndoFragment_;
   private boolean              firstFragment_;
@@ -86,13 +87,13 @@ public class WizardPageManager extends SimpleCommandEngineManager
   public boolean hasNextPage()
   {	
 	 
-    nextPage_ = null;
+    nextPeekPage_ = null;
     
 	try
 	{
-  	nextPage_ = getNextPageInGroup( widgetFactory_, false );
+  	nextPeekPage_ = getNextPageInGroup( widgetFactory_, false );
 		
-	  if( nextPage_ == null )
+	  if( nextPeekPage_ == null )
 	  {
 	    // If a page is found nextPage_ will be set to its value in the method below.
   	    engine_.peekForwardToNextStop();
@@ -103,7 +104,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	  exc.printStackTrace();
 	}
   	
-    return nextPage_ != null;
+    return nextPeekPage_ != null;
   }
   
   public IWizardPage getNextPage()
@@ -268,19 +269,19 @@ public class WizardPageManager extends SimpleCommandEngineManager
   protected boolean peekFragment( CommandFragment fragment )
   {     	
     // Check to see if this fragment is in our page table.
-    nextPage_ = getPage( fragment );
+    nextPeekPage_ = getPage( fragment );
           	
-	  if( nextPage_ == null )
+	  if( nextPeekPage_ == null )
 	  {
 	    INamedWidgetContributorFactory factory = getWidgetFactory( fragment.getId() );
 	  
 	    if( factory != null )
 	    {
-		    nextPage_ = getNextPageInGroup( factory, false );  
+		    nextPeekPage_ = getNextPageInGroup( factory, false );  
 	    }
 	  }
 	
-    return nextPage_ == null;
+    return nextPeekPage_ == null;
   }
   
   protected boolean nextFragment( CommandFragment fragment )
