@@ -3,7 +3,7 @@ Bundle-ClassPath: env.jar
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.command.env; singleton:=true
-Bundle-Version: 1.0.1
+Bundle-Version: 1.0.1.qualifer
 Bundle-Activator: org.eclipse.wst.command.internal.env.plugin.EnvPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
