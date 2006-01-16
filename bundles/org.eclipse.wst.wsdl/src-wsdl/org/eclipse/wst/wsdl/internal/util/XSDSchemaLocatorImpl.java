@@ -29,7 +29,11 @@ public class XSDSchemaLocatorImpl extends AdapterImpl implements XSDSchemaLocato
     {
       XSDSchema resolvedSchema = null;
 
-      if (namespaceURI != null)
+      // Bugzilla 122624:  WSDL model does not resolve <import> of inline schema with no namespace.
+      // KB: We are not resolving <import>ed or <include>d schemas from the root inline schemas.
+      // In other words, since we are resolving only between multiple root inline schemas,
+      // do not attempt to resolve if "rawSchemaLocationURI" is not null. 
+      if (namespaceURI != null && rawSchemaLocationURI == null)
       {
         Definition definition = null;
 
