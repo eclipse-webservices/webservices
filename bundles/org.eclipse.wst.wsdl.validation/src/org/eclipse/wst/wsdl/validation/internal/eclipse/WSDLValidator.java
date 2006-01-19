@@ -11,7 +11,6 @@
 
 package org.eclipse.wst.wsdl.validation.internal.eclipse;
 
-import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
 
 /**
  * An Eclipse WSDL validator. This validator is the default validator
@@ -31,7 +30,8 @@ public class WSDLValidator extends org.eclipse.wst.wsdl.validation.internal.WSDL
 	private WSDLValidator()
 	{
       super();
-      URIResolverDelegate resolver = new URIResolverDelegate("org.eclipse.wst.wsdl.validation.internal.eclipse.URIResolverWrapper", ValidateWSDLPlugin.getInstance().getDescriptor().getPluginClassLoader());
+      URIResolverWrapper resolver = new URIResolverWrapper();
+      addURIResolver(resolver);
 	}
 	
 	/**
