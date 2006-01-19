@@ -17,17 +17,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.consumption.ui.command.PublishProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.command.PublishProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.StartServerCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.ui.PartInitException;
@@ -86,9 +88,19 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
   
   private IStatus launchSample (IEnvironment env, IProgressMonitor monitor ) {
     IStatus status = Status.OK_STATUS;
-	  IPath fDestinationFolderPath = new Path(jspfolder);
-	  fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
-    PublishProjectCommand ppc = new PublishProjectCommand();
+	IPath fDestinationFolderPath = new Path(jspfolder);
+	fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
+	 try 
+	 {
+	   Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+	 } 
+	 catch( InterruptedException exc ) 
+	 {
+	   // UISynchronizer.syncExec seems to interrupt the UI tread when the autobuilder is done.  Not sure, why.
+	   // I'm assuming here that the autobuilder has actually completed its stuff. 
+	 }
+
+	PublishProjectCommand ppc = new PublishProjectCommand();
     ppc.setServerTypeID(testInfo.getClientServerTypeID());
     ppc.setExistingServer(testInfo.getClientExistingServer());
     ppc.setProject(testInfo.getGenerationProject());
@@ -97,7 +109,7 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 
 	StartServerCommand serverCommand = new StartServerCommand( true, true );
 	serverCommand.setServerInstanceId( testInfo.getClientExistingServer().getId() );
-  serverCommand.setEnvironment( env );
+	serverCommand.setEnvironment( env );
 	
 	status = serverCommand.execute(monitor, null);
 	if (status.getSeverity() == Status.ERROR) return status;
