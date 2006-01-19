@@ -63,10 +63,10 @@
      }
    }
 
-   Enumeration enum = soapEnvelopeNamespaceTable.keys();
-   while (enum.hasMoreElements())
+   Enumeration enm = soapEnvelopeNamespaceTable.keys();
+   while (enm.hasMoreElements())
    {
-     String uri = (String)enum.nextElement();
+     String uri = (String)enm.nextElement();
      String prefix = (String)soapEnvelopeNamespaceTable.get(uri);
      String value = SoapHelper.encodeNamespaceDeclaration(prefix, uri);
      %>

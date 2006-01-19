@@ -145,6 +145,10 @@ public class XSDElementFragment extends XSDDelegationFragment implements IXSDEle
     if (config.getPartEncoding() == FragmentConstants.ENCODING_LITERAL)
     {
       XSDElementDeclaration xsdElement = (XSDElementDeclaration)config.getXSDComponent();
+      // Try to resolve the element, since an element with a ref can never be global
+      if (xsdElement.getResolvedElementDeclaration() != null)
+        xsdElement = xsdElement.getResolvedElementDeclaration();
+      
       if (xsdElement.isGlobal())
         return true;
       else
