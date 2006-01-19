@@ -29,6 +29,7 @@ import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.internal.Server;
 
 public class PublishProjectCommand extends AbstractDataModelOperation 
 {
@@ -72,12 +73,14 @@ public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
       return status;
     }
 
+    if (((Server)instance).shouldPublish()) {
       IStatus returnedStatus = publish(instance,IServer.PUBLISH_INCREMENTAL, monitor);
       status = returnedStatus;
       
       //getStatusMonitor().reportStatus (instance.publish(getProgressMonitor()));
       env.getLog().log(ILog.OK, 5026, this, "execute", new String("project="+project+" successfully published"));
       //ILog.write(PublishProjectCommand.class,"execute",ILog.OK,"project="+project+" successfully published");
+    }
       return status;
   }
   catch (Exception e) {

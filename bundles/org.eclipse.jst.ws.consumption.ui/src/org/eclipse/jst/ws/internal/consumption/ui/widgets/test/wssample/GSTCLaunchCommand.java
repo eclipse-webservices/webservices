@@ -107,7 +107,7 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
     ppc.setEnvironment( env );
 	status = ppc.execute( monitor, null );
 
-	StartServerCommand serverCommand = new StartServerCommand( true, true );
+	StartServerCommand serverCommand = new StartServerCommand( true );
 	serverCommand.setServerInstanceId( testInfo.getClientExistingServer().getId() );
 	serverCommand.setEnvironment( env );
 	

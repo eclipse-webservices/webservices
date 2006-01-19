@@ -29,6 +29,7 @@ import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.internal.Server;
 
 /**
  * (Re)Starts and publishes the server specifed by the serverInstanceId attribute.
@@ -38,7 +39,6 @@ import org.eclipse.wst.server.core.ServerCore;
 public class StartServerCommand extends AbstractDataModelOperation
 {
   private ILog log;
-  private boolean forcePublish_;
   private boolean doAsyncPublish_;
   
   private String serverInstanceId;
@@ -47,15 +47,13 @@ public class StartServerCommand extends AbstractDataModelOperation
   public StartServerCommand()
   {
     log             = EnvironmentService.getEclipseLog();
-    forcePublish_   = false;
     doAsyncPublish_ = true;
   }
 	 
-  public StartServerCommand( boolean forcePublish, boolean doAsyncPublish )
+  public StartServerCommand( boolean doAsyncPublish )
   {
     this();
     
-    forcePublish_   = forcePublish;
     doAsyncPublish_ = doAsyncPublish;
   }
 
@@ -73,69 +71,22 @@ public class StartServerCommand extends AbstractDataModelOperation
     }
 
     int serverState = server.getServerState();
-    int publishState = server.getServerPublishState();
-    
-    //Publish if required
-    switch (publishState)
-    {
-      case IServer.PUBLISH_STATE_INCREMENTAL:
-        if (server.canPublish().getSeverity() == IStatus.OK)
-        {
-          status = publish(server, IServer.PUBLISH_INCREMENTAL, monitor );
-          if (status.getSeverity() == Status.ERROR)
-          {
-            env.getStatusHandler().reportError(status);
-            return status;
-          }
-        }    
-        break;
-      case IServer.PUBLISH_STATE_FULL:
-        if (server.canPublish().getSeverity() == IStatus.OK)
-        {
-          status = publish(server, IServer.PUBLISH_FULL, monitor );
-          if (status.getSeverity() == Status.ERROR)
-          {
-            env.getStatusHandler().reportError(status);
-            return status;
-          }
-        }
-        break;
-        
-      case IServer.PUBLISH_STATE_UNKNOWN:
-        if (server.canPublish().getSeverity() == IStatus.OK)
-        {
-          status = publish(server, IServer.PUBLISH_INCREMENTAL, monitor );
-          if (status.getSeverity() == Status.ERROR)
-          {
-            env.getStatusHandler().reportError(status);
-            return status;
-          }
-        }
-        break;  
 
-        //TODO: Reassess need for this, since Tomcat should know
-        // whether it needs to be published or not (or publish should
-        // simply always be driven by us.
-        case IServer.PUBLISH_STATE_NONE:
+    //  Publish if required
+    if (((Server)server).shouldPublish()) {
+    	if (server.canPublish().getSeverity() == IStatus.OK)
         {
-          if( forcePublish_ )
+          status = publish(server, IServer.PUBLISH_INCREMENTAL, monitor );
+          if (status.getSeverity() == Status.ERROR)
           {
-            status = publish(server, IServer.PUBLISH_INCREMENTAL, monitor );
-            
-            if (status.getSeverity() == Status.ERROR)
-            {
-              env.getStatusHandler().reportError(status);
-              return status;
-            }  
+            env.getStatusHandler().reportError(status);
+            return status;
           }
-          
-    	  break;  
         }
-      
-        default:
     }
-
-
+    
+    //  start/restart server if required
+    	
     switch (serverState)
     {
       case IServer.STATE_STOPPED:
@@ -150,16 +101,9 @@ public class StartServerCommand extends AbstractDataModelOperation
         }
         break;
       case IServer.STATE_STARTED:    	
-    	boolean shouldRestart = server.getServerRestartState();    	
-    	//TODO Ideally getServerRestartState() returning true should be a sufficient
-    	//condition for us to restart. However, getServerRestartState() seems to 
-    	//sometimes pessimistically return true when it doesn't need to for Tomcat 
-    	//servers. In order to curb the number of restarts, we will only 
-    	//restart if a publish was required earlier in this execute method AND 
-    	//getServerRestartState() returns true. 
-    	//A publish is normally required when a module is added to the server.
+    	boolean shouldRestart = ((Server)server).shouldRestart();    	
     	
-    	if (publishState != IServer.PUBLISH_STATE_NONE && shouldRestart && server.canRestart(ILaunchManager.RUN_MODE).getSeverity()==IStatus.OK)    	  
+    	if (shouldRestart && server.canRestart(ILaunchManager.RUN_MODE).getSeverity()==IStatus.OK)
         {
           status = restart(server, monitor );
           if (status.getSeverity() == Status.ERROR)

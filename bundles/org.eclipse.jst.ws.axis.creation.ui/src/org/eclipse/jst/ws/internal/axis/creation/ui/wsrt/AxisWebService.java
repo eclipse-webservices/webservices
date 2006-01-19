@@ -27,7 +27,6 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.ComputeAxisSkeletonBeanCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.CopyDeploymentFileCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.command.PublishServerCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.UpdateWEBXMLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.BUCheckAxisDeploymentDescriptors;
@@ -102,7 +101,7 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new RefreshProjectCommand());
 			commands.add(new WSDL2JavaCommand());
 			commands.add(new UpdateAxisWSDDFileTask());
-			commands.add(new UpdateWEBXMLCommand(getWebServiceInfo()));
+			commands.add(new UpdateWEBXMLCommand());
 			commands.add(new RefreshProjectCommand());
 			commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
@@ -122,7 +121,7 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new BackupSkelImplCommand());
 		    commands.add(new WSDL2JavaCommand());
 		    commands.add(new Skeleton2WSDLCommand());
-		    commands.add(new UpdateWEBXMLCommand(getWebServiceInfo()));
+		    commands.add(new UpdateWEBXMLCommand());
 		    commands.add(new RefreshProjectCommand());
 		    commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
@@ -147,7 +146,6 @@ public class AxisWebService extends AbstractWebService
 			String project, String earProject)
 	{
 		Vector commands = new Vector();
-        commands.add(new PublishServerCommand(getWebServiceInfo()));
 
 		if (ctx.getScenario().getValue() == WebServiceScenario.CLIENT) {
 			//TODO: Remove println and reassess this "error".

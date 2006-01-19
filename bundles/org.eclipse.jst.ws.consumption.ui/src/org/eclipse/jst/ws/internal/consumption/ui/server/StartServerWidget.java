@@ -295,7 +295,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 	    NullStatusHandler        handler         = new NullStatusHandler();
 	    TransientResourceContext resourceContext = new TransientResourceContext();
 	    EclipseEnvironment       environment     = new EclipseEnvironment( null,resourceContext, handler );
-	    StartServerCommand       serverCommand   = new StartServerCommand( false, false );
+	    StartServerCommand       serverCommand   = new StartServerCommand( false );
 	    
 	    serverCommand.setServerInstanceId( server_.getId() );
       serverCommand.setEnvironment( environment );

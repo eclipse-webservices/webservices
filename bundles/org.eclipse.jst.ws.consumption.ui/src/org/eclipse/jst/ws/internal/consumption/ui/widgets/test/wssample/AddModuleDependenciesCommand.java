@@ -206,7 +206,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
         }              
        }
 		
-		StartServerCommand startServer = new StartServerCommand(false, true);
+		StartServerCommand startServer = new StartServerCommand(true);
 		startServer.setServerInstanceId(testInfo.getClientExistingServer().getId());
 		startServer.setEnvironment( env );
 		status = startServer.execute( monitor, null );
