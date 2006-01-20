@@ -13,7 +13,7 @@
    <element name="extension">
       <complexType>
          <sequence>
-            <element ref="wsdl11validator"/>
+            <element ref="validator"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -39,7 +39,7 @@
       </complexType>
    </element>
 
-   <element name="wsdl11validator">
+   <element name="validator">
       <complexType>
          <attribute name="class" type="string" use="required">
             <annotation>
@@ -83,7 +83,7 @@
 &lt;pre&gt;
    &lt;extension
          point=&quot;org.eclipse.wst.wsdl.validation.wsdl11validator&quot;&gt;
-      &lt;wsdl11validator
+      &lt;validator
             class=&quot;org.eclipse.wst.wsdl.validation.internal.wsdl11.http.HTTPValidator&quot;
             namespace=&quot;http://schemas.xmlsoap.org/wsdl/http/&quot;
             resourcebundle=&quot;validatewsdlhttp&quot;/&gt;
