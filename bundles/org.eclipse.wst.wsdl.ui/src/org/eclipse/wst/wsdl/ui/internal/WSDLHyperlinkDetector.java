@@ -57,7 +57,7 @@ public class WSDLHyperlinkDetector implements IHyperlinkDetector {
 						if (modelAdapter == null) {
 							modelAdapter = new WSDLModelAdapter();
 							domDoc.addAdapter(modelAdapter);
-							modelAdapter.createDefinition(domDoc.getDocumentElement());
+							modelAdapter.createDefinition(domDoc.getDocumentElement(), domDoc);
 						}
 
 						definition = modelAdapter.getDefinition();

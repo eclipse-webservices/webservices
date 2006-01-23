@@ -23,8 +23,10 @@ import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.ui.internal.typesystem.ExtensibleTypeSystemProvider;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLModelLocatorAdapterFactory;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xsd.ui.internal.util.XSDSchemaLocationResolverAdapterFactory;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class WSDLModelAdapter implements INodeAdapter
@@ -51,15 +53,20 @@ public class WSDLModelAdapter implements INodeAdapter
   {
   }
 
-  public Definition createDefinition(Element element)
+  public Definition createDefinition(Element element, Document document)
   {     
     try
-    {
+    {    	
       IDOMNode domNode = (IDOMNode)element;
-      String baseLocation = domNode.getModel().getBaseLocation();
+      String baseLocation = "blankWSDL.wsdl";
+      if (domNode != null) {
+    	  baseLocation = domNode.getModel().getBaseLocation();
+      }
+      else if (document instanceof IDOMNode){
+    	  IDOMModel domModel = ((IDOMNode) document).getModel();
+    	  baseLocation = domModel.getBaseLocation();
+      }
           
-      definition = WSDLFactory.eINSTANCE.createDefinition();
-               
       resourceSet = new ResourceSetImpl();
       resourceSet.getAdapterFactories().add(new WSDLModelLocatorAdapterFactory());
       resourceSet.getAdapterFactories().add(new XSDSchemaLocationResolverAdapterFactory());
@@ -78,6 +85,7 @@ public class WSDLModelAdapter implements INodeAdapter
       
       definition = WSDLFactory.eINSTANCE.createDefinition();
       definition.setDocumentBaseURI(uri.toString());
+      definition.setDocument(document);
       definition.setElement(element);
       
       WSDLResourceFactoryImpl resourceFactory = new WSDLResourceFactoryImpl();
@@ -89,7 +97,7 @@ public class WSDLModelAdapter implements INodeAdapter
                  
       // attach an adapter to keep the WSDL model and DOM in sync
       //
-      new WSDLModelReconcileAdapter(element.getOwnerDocument(), definition);
+      new WSDLModelReconcileAdapter(document, definition);
 
       // TODO... CS : revisit this line
       // currently this is used to associate a 'type' system with the definition      
