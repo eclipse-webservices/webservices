@@ -24,6 +24,7 @@ import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.ui.internal.extension.ITypeSystemProvider;
+import org.eclipse.wst.wsdl.ui.internal.typesystem.ExtensibleTypeSystemProvider;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -107,15 +108,19 @@ public class WSDLEditorUtil extends WSDLConstants
 
   // Provide a mapping between Definitions and ITypeSystemProviders
   private Hashtable typeSystemProviders = new Hashtable();
+  private ITypeSystemProvider typeSystemProvider;
   
   public ITypeSystemProvider getTypeSystemProvider(Definition definition)
   {
-    return (ITypeSystemProvider)typeSystemProviders.get(definition);
+	  if (typeSystemProvider == null) {
+		  typeSystemProvider = new ExtensibleTypeSystemProvider();
+	  }
+	  return typeSystemProvider;
   }
 
   public void setTypeSystemProvider(Definition definition, ITypeSystemProvider typeSystemProvider)
   {
-    typeSystemProviders.put(definition,typeSystemProvider);
+ //   typeSystemProviders.put(definition,typeSystemProvider);
   }
 
   public static QName createQName(Definition definition, String prefixedName)
