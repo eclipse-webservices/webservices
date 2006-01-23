@@ -146,7 +146,7 @@ public class WSDLContentOutlineConfiguration extends ContentOutlineConfiguration
 				if (modelAdapter == null) {
 					modelAdapter = new WSDLModelAdapter();
 					domDoc.addAdapter(modelAdapter);
-					modelAdapter.createDefinition(domDoc.getDocumentElement());
+					modelAdapter.createDefinition(domDoc.getDocumentElement(), domDoc);
 				}
 
 				definition = modelAdapter.getDefinition();

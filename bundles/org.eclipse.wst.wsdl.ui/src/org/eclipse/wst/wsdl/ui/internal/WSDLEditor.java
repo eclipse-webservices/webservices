@@ -440,7 +440,12 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 			// get the type of page and set the active page to show
 			int pageIndexToShow = getDefaultPageIndex();
 			setActivePage(pageIndexToShow);
-			getSelectionManager().setSelection(new StructuredSelection(getDefinition()));
+			Definition definition = getDefinition();
+            if (definition != null) {
+                getSelectionManager().setSelection(new StructuredSelection(definition));
+            } else {
+              getSelectionManager().setSelection(new StructuredSelection());
+            }
 
 			// added selection listeners after setting selection to avoid
 			// navigation exception
@@ -473,7 +478,7 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 				if (modelAdapter == null) {
 					modelAdapter = new WSDLModelAdapter();
 					notifier.addAdapter(modelAdapter);
-					modelAdapter.createDefinition(document.getDocumentElement());
+                    modelAdapter.createDefinition(document.getDocumentElement(), document);
 				}
 			}
 		}

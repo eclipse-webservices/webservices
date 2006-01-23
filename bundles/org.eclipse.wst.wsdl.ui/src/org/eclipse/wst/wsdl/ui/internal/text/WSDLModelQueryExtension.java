@@ -164,7 +164,7 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
       {
         adapter = new WSDLModelAdapter();
         notifier.addAdapter(adapter);
-        adapter.createDefinition(document.getDocumentElement());
+        adapter.createDefinition(document.getDocumentElement(), document);
       }
       definition = adapter.getDefinition();
     }

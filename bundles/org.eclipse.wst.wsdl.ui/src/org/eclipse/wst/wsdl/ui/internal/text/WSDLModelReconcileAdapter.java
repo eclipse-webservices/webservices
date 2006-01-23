@@ -52,7 +52,7 @@ class WSDLModelReconcileAdapter extends DocumentAdapter
         Element newDocumentElement = (Element)newValue;
         String wsdlPrefix = newDocumentElement.getPrefix();
         if (wsdlPrefix == null) wsdlPrefix = "";
-        String ns = definition.getNamespace(wsdlPrefix);
+        String ns = definition != null ? definition.getNamespace(wsdlPrefix) : "";
         if (ns != null && ns.equals(WSDLConstants.WSDL_NAMESPACE_URI)
            && newDocumentElement.getLocalName().equals(WSDLConstants.DEFINITION_ELEMENT_TAG)) // &&
            // !isValidDefinition)
@@ -100,6 +100,11 @@ class WSDLModelReconcileAdapter extends DocumentAdapter
           {
 //            isValidDefinition = true;
 //            System.out.println("VALID DEFINITION ELEMENT");
+            WSDLModelAdapter modelAdapter = (WSDLModelAdapter) notifier.getAdapterFor(WSDLModelAdapter.class);
+            if (modelAdapter != null) {
+              definition = modelAdapter.getDefinition();
+              if (definition == null) definition = modelAdapter.createDefinition(definitionElement, document);
+            }
             ((DefinitionImpl)definition).elementChanged(definitionElement);
           }
           else
@@ -147,7 +152,7 @@ abstract class DocumentAdapter implements INodeAdapter
   {
     this.document = document;
     ((INodeNotifier)document).addAdapter(this);
-    adapt(document.getDocumentElement());
+    if (document.getDocumentElement() != null) adapt(document.getDocumentElement());
   }
 
   public void adapt(Element element)
