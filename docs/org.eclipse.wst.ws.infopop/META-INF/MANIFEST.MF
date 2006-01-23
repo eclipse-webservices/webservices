@@ -1,7 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Web services UI
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.wst.ws.infopop; singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Bundle-Localization: plugin
 Eclipse-AutoStart: true
+Bundle-Vendor: %providerName
