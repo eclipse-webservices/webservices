@@ -452,7 +452,7 @@ public class BindingGenerator extends BaseGenerator {
 
 	protected void generateBindingContent(Binding binding) {
 		if (contentGenerator != null) {
-			if (binding.getEExtensibilityElements().size() == 0) {
+			if (getOverwrite() || binding.getEExtensibilityElements().size() == 0) {
 				contentGenerator.generateBindingContent(binding, (PortType) binding.getEPortType());
 			}
 		}
