@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="sample" targetNamespace="http://www.example.org/sample895" xmlns:tns="http://www.example.org/sample895" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:types>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/sample895">
+<xsd:element name="NewOperationResponse" type="xsd:string"/><xsd:element name="NewOperationRequest" type="xsd:string"/></xsd:schema>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.org/sample895"><xsd:import namespace="http://www.sample.org/46" schemaLocation="sample46.xsd"/>
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="NewOperationResponse">
+<wsdl:part name="NewOperationResponse" element="tns:NewOperationResponse"/>
+</wsdl:message>
+<wsdl:message name="NewOperationRequest">
+<wsdl:part name="NewOperationRequest" element="tns:NewOperationRequest"/>
+</wsdl:message>
+<wsdl:portType name="sample">
+<wsdl:operation name="NewOperation">
+<wsdl:input message="tns:NewOperationRequest"/>
+<wsdl:output message="tns:NewOperationResponse"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="sampleSOAP" type="tns:sample">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="NewOperation">
+<soap:operation soapAction="http://www.example.org/sample/NewOperation"/>
+<wsdl:input>
+<soap:body use="literal" parts=" NewOperationRequest"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal" parts=" NewOperationResponse"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="sample">
+<wsdl:port name="sampleSOAP" binding="tns:sampleSOAP">
+<soap:address location="http://www.example.org/"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

@@ -213,6 +213,44 @@
   	<antcall target="RepeatValidatex100TestCase"/>
   	<antcall target="RepeatValidatex100TestCase"/>
   	<antcall target="RepeatValidatex100TestCase"/>
+  	
+  	<antcall target="Validate1000WSDLsXSDDependsTestCase"/>
+  	<antcall target="Validate1000WSDLsXSDDependsTestCase"/>
+  	<antcall target="Validate1000WSDLsXSDDependsTestCase"/>
+ 	
+  	<antcall target="Validate100WSDLsXSDDependsTestCase"/>
+  	<antcall target="Validate100WSDLsXSDDependsTestCase"/>
+  	<antcall target="Validate100WSDLsXSDDependsTestCase"/>
+  	
+  	<antcall target="Validate10WSDLsXSDDependsTestCase"/>
+  	<antcall target="Validate10WSDLsXSDDependsTestCase"/>
+  	<antcall target="Validate10WSDLsXSDDependsTestCase"/>
+  	
+  	<antcall target="Validate1000WSDLsCrossDependsTestCase"/>
+  	<antcall target="Validate1000WSDLsCrossDependsTestCase"/>
+  	<antcall target="Validate1000WSDLsCrossDependsTestCase"/>
+ 	
+  	<antcall target="Validate100WSDLsCrossDependsTestCase"/>
+  	<antcall target="Validate100WSDLsCrossDependsTestCase"/>
+  	<antcall target="Validate100WSDLsCrossDependsTestCase"/>
+  	
+  	<antcall target="Validate10WSDLsCrossDependsTestCase"/>
+  	<antcall target="Validate10WSDLsCrossDependsTestCase"/>
+  	<antcall target="Validate10WSDLsCrossDependsTestCase"/>
+  	
+  	<antcall target="Validate1000WSDLsNoDependsTestCase"/>
+  	<antcall target="Validate1000WSDLsNoDependsTestCase"/>
+  	<antcall target="Validate1000WSDLsNoDependsTestCase"/>
+ 	
+  	<antcall target="Validate100WSDLsNoDependsTestCase"/>
+  	<antcall target="Validate100WSDLsNoDependsTestCase"/>
+  	<antcall target="Validate100WSDLsNoDependsTestCase"/>
+  	
+  	<antcall target="Validate10WSDLsNoDependsTestCase"/>
+  	<antcall target="Validate10WSDLsNoDependsTestCase"/>
+  	<antcall target="Validate10WSDLsNoDependsTestCase"/>
+  	
+  	
   </target>
 
   <target name="readOAGISWSDLTestcase">
@@ -554,6 +592,96 @@
 		      <property name="extraVMargs" value="${extraVMargs}"/>
 		    </ant>
 		  </target>
+	
+		  <target name="Validate1000WSDLsXSDDependsTestCase">
+			<delete dir="${workspace}" quiet="true"/>
+			<ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+			  <property name="data-dir" value="${workspace}"/>
+			  <property name="plugin-name" value="${plugin-name}"/>
+			  <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate1000WSDLsXSDDependsTestCase"/>
+			  <property name="extraVMargs" value="${extraVMargs}"/>
+			</ant>
+	      </target>
+
+		  <target name="Validate100WSDLsXSDDependsTestCase">
+			<delete dir="${workspace}" quiet="true"/>
+			<ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+			  <property name="data-dir" value="${workspace}"/>
+			  <property name="plugin-name" value="${plugin-name}"/>
+			  <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate100WSDLsXSDDependsTestCase"/>
+			  <property name="extraVMargs" value="${extraVMargs}"/>
+			</ant>
+	      </target>
+	
+		  <target name="Validate10WSDLsXSDDependsTestCase">
+			<delete dir="${workspace}" quiet="true"/>
+			<ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+			  <property name="data-dir" value="${workspace}"/>
+			  <property name="plugin-name" value="${plugin-name}"/>
+			  <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate10WSDLsXSDDependsTestCase"/>
+			  <property name="extraVMargs" value="${extraVMargs}"/>
+			</ant>
+	      </target>
+	
+		  <target name="Validate1000WSDLsCrossDependsTestCase">
+			<delete dir="${workspace}" quiet="true"/>
+			<ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+			  <property name="data-dir" value="${workspace}"/>
+			  <property name="plugin-name" value="${plugin-name}"/>
+			  <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate1000WSDLsCrossDependsTestCase"/>
+			  <property name="extraVMargs" value="${extraVMargs}"/>
+			</ant>
+	      </target>
+
+		  <target name="Validate100WSDLsCrossDependsTestCase">
+			<delete dir="${workspace}" quiet="true"/>
+			<ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+			  <property name="data-dir" value="${workspace}"/>
+			  <property name="plugin-name" value="${plugin-name}"/>
+			  <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate100WSDLsCrossDependsTestCase"/>
+			  <property name="extraVMargs" value="${extraVMargs}"/>
+			</ant>
+	      </target>
+	
+		  <target name="Validate10WSDLsCrossDependsTestCase">
+			<delete dir="${workspace}" quiet="true"/>
+			<ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+			  <property name="data-dir" value="${workspace}"/>
+			  <property name="plugin-name" value="${plugin-name}"/>
+			  <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate10WSDLsCrossDependsTestCase"/>
+			  <property name="extraVMargs" value="${extraVMargs}"/>
+			</ant>
+	      </target>
+	
+		  <target name="Validate1000WSDLsNoDependsTestCase">
+			<delete dir="${workspace}" quiet="true"/>
+			<ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+			  <property name="data-dir" value="${workspace}"/>
+			  <property name="plugin-name" value="${plugin-name}"/>
+			  <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate1000WSDLsNoDependsTestCase"/>
+			  <property name="extraVMargs" value="${extraVMargs}"/>
+			</ant>
+	      </target>
+	
+		  <target name="Validate100WSDLsNoDependsTestCase">
+			<delete dir="${workspace}" quiet="true"/>
+			<ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+			  <property name="data-dir" value="${workspace}"/>
+			  <property name="plugin-name" value="${plugin-name}"/>
+			  <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate100WSDLsNoDependsTestCase"/>
+			  <property name="extraVMargs" value="${extraVMargs}"/>
+			</ant>
+	      </target>
+	
+		  <target name="Validate10WSDLsNoDependsTestCase">
+			<delete dir="${workspace}" quiet="true"/>
+			<ant target="ui-test" antfile="${perf-tests-file}" dir="${eclipse-home}">
+			  <property name="data-dir" value="${workspace}"/>
+			  <property name="plugin-name" value="${plugin-name}"/>
+			  <property name="classname" value="org.eclipse.wst.wsdl.tests.performance.scalability.Validate10WSDLsNoDependsTestCase"/>
+			  <property name="extraVMargs" value="${extraVMargs}"/>
+			</ant>
+	      </target>
 
   <!-- This target holds code to cleanup the testing environment after -->
   <!-- after all of the tests have been run. You can use this target to -->
