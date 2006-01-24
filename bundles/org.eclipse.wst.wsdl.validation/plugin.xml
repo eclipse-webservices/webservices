@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
-<plugin>
-
-   <extension-point id="extvalidator" name="WSDL Extension Validator" schema="exsd/extvalidator.exsd"/>
-   
-   <extension-point id="wsdl11validator" name="WSDL 1.1 Extension Validator" schema="exsd/wsdl11validator.exsd"/>
-
-</plugin>
