@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.apache.xerces.xni.grammars.XMLGrammarPool;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -27,6 +28,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.wsdl.validation.internal.Constants;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
@@ -52,6 +54,8 @@ public class ValidateWSDLAction extends ValidateAction
 
   private InputStream inputStream = null;
   
+  private XMLGrammarPool schemaGrammarPool = null;
+  
   private static ResourceBundle wsdlActionRB = ResourceBundle.getBundle("org.eclipse.wst.wsdl.ui.internal.validation.validatewsdlui");
   /**
    * Constructor.
@@ -62,6 +66,11 @@ public class ValidateWSDLAction extends ValidateAction
   public ValidateWSDLAction(IFile file, boolean showDialog)
   {
   	super(file, showDialog);
+  }
+  
+  public void setSchemaGrammarPool(XMLGrammarPool grammarPool)
+  {
+	this.schemaGrammarPool = grammarPool;
   }
 
 
@@ -79,6 +88,7 @@ public class ValidateWSDLAction extends ValidateAction
       public void run(IProgressMonitor progressMonitor) throws CoreException
       {
         WSDLValidator wsdlValidator = WSDLValidator.getInstance();
+        wsdlValidator.setAttribute(Constants.XMLSCHEMA_CACHE_ATTRIBUTE, schemaGrammarPool);
         clearMarkers(file);
         IValidationReport valReport = null;
 
@@ -100,6 +110,9 @@ public class ValidateWSDLAction extends ValidateAction
         {
           valReport = wsdlValidator.validate(FILE_PROTOCOL + location, inputStream);
         }
+        // Need to remove the grammar pool when finished validating.
+        wsdlValidator.setAttribute(Constants.XMLSCHEMA_CACHE_ATTRIBUTE, null);
+        
         validationOutcome.isWSDLValid = valReport.isWSDLValid();
         validationOutcome.isValid = !valReport.hasErrors();
         if (valReport.getValidationMessages().length == 0)
