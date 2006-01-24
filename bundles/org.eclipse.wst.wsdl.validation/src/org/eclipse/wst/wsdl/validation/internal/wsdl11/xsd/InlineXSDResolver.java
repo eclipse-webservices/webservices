@@ -12,7 +12,6 @@
 package org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.Hashtable;
 import java.util.Set;
@@ -52,7 +51,6 @@ public class InlineXSDResolver implements XMLEntityResolver
 	String publicId = resourceIdentifier.getPublicId();	
 	String namespace = resourceIdentifier.getNamespace();
 	XMLInputSource is = null;
-	Reader reader = null;
 	String schema = null;
 	if (systemId == null)
 	{

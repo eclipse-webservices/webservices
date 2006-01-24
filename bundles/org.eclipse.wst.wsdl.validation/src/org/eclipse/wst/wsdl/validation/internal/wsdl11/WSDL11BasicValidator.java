@@ -11,7 +11,6 @@
 
 package org.eclipse.wst.wsdl.validation.internal.wsdl11;
 
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -96,7 +95,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
     //this.validatorcontroller = validatorcontroller;
     //setDefaultResourceBundleIfNeeded(validatorcontroller);
     Definition wsdlDefinition = (Definition)element;
-    //validateTypes(wsdlDefinition, valInfo);
+    validateTypes(wsdlDefinition, valInfo);
     validateServices(wsdlDefinition, valInfo);
     validateBindings(wsdlDefinition, valInfo);
     validatePortTypes(wsdlDefinition, valInfo);
@@ -173,7 +172,6 @@ public class WSDL11BasicValidator implements IWSDL11Validator
     {
       List parents = new Vector();
       parents.add(wsdlDefinition);
-      Object extensibleElements[] = types.getExtensibilityElements().toArray();
       parents.add(0, types);
       validateExtensibilityElementList(parents, types.getExtensibilityElements(), valInfo);
       parents.remove(0);
@@ -215,8 +213,6 @@ public class WSDL11BasicValidator implements IWSDL11Validator
       Service s = (Service)services[i];
       parents.add(0, s);
       Object ports[] = s.getPorts().values().toArray();
-      HashSet portInputs = new HashSet();
-      HashSet portOutputs = new HashSet();
       for (int j = 0; j < ports.length; j++)
       {
         Port p = (Port)ports[j];
@@ -661,7 +657,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
         String soapEnc = valInfo.getURIResolver().resolve(null, SOAP_ENCODING_URI, null).getPhysicalLocation();
         if(soapEnc != null)
         {
-          xsdVal.validate(soapEnc, null);
+          xsdVal.validate(soapEnc, null, valInfo.getSchemaCache());
           // sanity check in case something goes wrong
           if (xsdVal.isValid())
           {

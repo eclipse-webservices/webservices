@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.validation.internal.wsdl11;
 
 import java.util.Hashtable;
 
+import org.apache.xerces.xni.grammars.XMLGrammarPool;
 import org.apache.xerces.xs.XSModel;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 
@@ -110,5 +111,12 @@ public interface IWSDL11ValidationInfo
    * @return The URI resolver handler.
    */
   public URIResolver getURIResolver();
+  
+  /**
+   * Get the schema cache if one is specified.
+   * 
+   * @return The schema cache if one is specified, null otherwise.
+   */
+  public XMLGrammarPool getSchemaCache();
 }
 

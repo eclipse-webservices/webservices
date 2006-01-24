@@ -113,7 +113,7 @@ public class InlineSchemaValidator implements IWSDL11Validator
     String xsd = InlineSchemaGenerator.createXSDString(w3celement, elements, baseLocation, parentnamespaces, inlineEntityResolver.getInlineSchemaNSs()); 
 
 	
-    schemav.validateInlineSchema(xsd, targetNamespace, baseLocation, entityResolverChain, inlineEntityResolver);
+    schemav.validateInlineSchema(xsd, targetNamespace, baseLocation, entityResolverChain, inlineEntityResolver, valInfo.getSchemaCache());
     
 //	check if the SOAP Encoding namespace is required but not imported
 		 if (InlineSchemaGenerator.soapEncodingRequiredNotImported(elem.getElement(), baseLocation, parentnamespaces))

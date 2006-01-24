@@ -35,4 +35,10 @@ public interface Constants
    * The MIME namespace.
    */
   public final static String NS_MIME = "http://schemas.xmlsoap.org/wsdl/mime/";
+  
+  /**
+   * The WSDL schema cache attribute allows an XMLGrammarPool object to be set for use in 
+   * inline schema validation.
+   */
+  public final static String XMLSCHEMA_CACHE_ATTRIBUTE = "http://www.eclipse.org/webtools/wsdl/schemacache";
 }

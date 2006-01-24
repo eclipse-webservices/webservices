@@ -11,6 +11,11 @@
 
 package org.eclipse.wst.wsdl.validation.internal.eclipse;
 
+import org.apache.xerces.util.XMLGrammarPoolImpl;
+import org.apache.xerces.xni.grammars.Grammar;
+import org.apache.xerces.xni.grammars.XMLGrammarDescription;
+import org.eclipse.wst.wsdl.validation.internal.Constants;
+
 
 /**
  * An Eclipse WSDL validator. This validator is the default validator
@@ -47,27 +52,5 @@ public class WSDLValidator extends org.eclipse.wst.wsdl.validation.internal.WSDL
 		}
 		return instance;
 	}
-	
-//	/**
-//	 * Validate the specified WSDL file.
-//	 * 
-//	 * @param fileURI The URI of the WSDL file.
-//	 * @return A validation report with the validation results.
-//	 */
-//	public IValidationReport validate(String fileURI)
-//	{
-//		return wsdlValidator.validate(fileURI);
-//	}
-//  /**
-//	 * Validate the given WSDL InputStream
-//	 * 
-//	 * @param fileURI The URI of the WSDL file.
-//	 * @param inputStream the InputStream to validate
-//	 * @return A validation report with the validation results.
-//	 */
-//	public IValidationReport validate(String fileURI, InputStream inputStream)
-//  {
-//    return wsdlValidator.validate(fileURI, inputStream);
-//  }
 
 }

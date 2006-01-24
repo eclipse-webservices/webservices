@@ -41,11 +41,12 @@ public class ValidateErrorHandler implements XMLErrorHandler
   /**
    * Create a validation message from the exception and severity.
    * 
+   * @param key The Xerces error key.
    * @param error The error.
    * @param severity The severity.
    * @return An error message.
    */
-  protected ErrorMessage createValidationMessageForException(XMLParseException error, int severity)
+  protected ErrorMessage createValidationMessageForException(String key, XMLParseException error, int severity)
   {
     String uri = error.getLiteralSystemId();
     if(uri == null)
@@ -64,24 +65,24 @@ public class ValidateErrorHandler implements XMLErrorHandler
   /**
    * @see org.apache.xerces.xni.parser.XMLErrorHandler#error(java.lang.String, java.lang.String, org.apache.xerces.xni.parser.XMLParseException)
    */
-  public void error(String arg0, String arg1, XMLParseException exception) throws XNIException
+  public void error(String domain, String key, XMLParseException exception) throws XNIException
   {
-    errorList.add(createValidationMessageForException(exception, DOMError.SEVERITY_ERROR));
+    errorList.add(createValidationMessageForException(key, exception, DOMError.SEVERITY_ERROR));
   }
 
   /**
    * @see org.apache.xerces.xni.parser.XMLErrorHandler#fatalError(java.lang.String, java.lang.String, org.apache.xerces.xni.parser.XMLParseException)
    */
-  public void fatalError(String arg0, String arg1, XMLParseException exception) throws XNIException
+  public void fatalError(String domain, String key, XMLParseException exception) throws XNIException
   {
-    errorList.add(createValidationMessageForException(exception, DOMError.SEVERITY_FATAL_ERROR));
+    errorList.add(createValidationMessageForException(key, exception, DOMError.SEVERITY_FATAL_ERROR));
   }
 
   /**
    * @see org.apache.xerces.xni.parser.XMLErrorHandler#warning(java.lang.String, java.lang.String, org.apache.xerces.xni.parser.XMLParseException)
    */
-  public void warning(String arg0, String arg1, XMLParseException exception) throws XNIException
+  public void warning(String domain, String key, XMLParseException exception) throws XNIException
   {
-    errorList.add(createValidationMessageForException(exception, DOMError.SEVERITY_WARNING));
+    errorList.add(createValidationMessageForException(key, exception, DOMError.SEVERITY_WARNING));
   }
 }

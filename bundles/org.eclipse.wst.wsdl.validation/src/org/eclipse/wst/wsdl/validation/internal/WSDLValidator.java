@@ -64,10 +64,10 @@ public class WSDLValidator
     registerWSDL11Validator(org.eclipse.wst.wsdl.validation.internal.Constants.NS_MIME, delegate1);
    
     // The WSDL 1.1 schema validator is a special case as it is registered for three namespaces.
-    delegate1 = new WSDL11ValidatorDelegate(InlineSchemaValidator.class.getName(), VALIDATOR_RESOURCE_BUNDLE, getClass().getClassLoader());
-    registerWSDL11Validator(Constants.NS_URI_XSD_1999, delegate1);
-    registerWSDL11Validator(Constants.NS_URI_XSD_2000, delegate1);
-    registerWSDL11Validator(Constants.NS_URI_XSD_2001, delegate1);
+//    delegate1 = new WSDL11ValidatorDelegate(InlineSchemaValidator.class.getName(), VALIDATOR_RESOURCE_BUNDLE, getClass().getClassLoader());
+//    registerWSDL11Validator(Constants.NS_URI_XSD_1999, delegate1);
+//    registerWSDL11Validator(Constants.NS_URI_XSD_2000, delegate1);
+//    registerWSDL11Validator(Constants.NS_URI_XSD_2001, delegate1);
   }
   
   /**
@@ -112,14 +112,21 @@ public class WSDLValidator
    * be defined for any validator, built in or an extension.
    * Extension validators can probe the attributes set on
    * the WSDL validator to customize the way in which they
-   * validate.
+   * validate. A null value will unset an attribute.
    * 
    * @param name The attribute identifier.
    * @param value The attribute itself.
    */
   public void setAttribute(String name, Object value)
   {
-  	attributes.put(name, value);
+	if(value == null)
+	{
+	  attributes.remove(name);
+	}
+	else
+	{
+  	  attributes.put(name, value);
+	}
   }
   
   /**

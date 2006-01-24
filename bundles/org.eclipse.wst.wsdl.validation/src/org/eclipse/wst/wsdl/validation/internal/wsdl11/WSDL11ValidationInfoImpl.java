@@ -15,7 +15,9 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.xerces.xni.grammars.XMLGrammarPool;
 import org.apache.xerces.xs.XSModel;
+import org.eclipse.wst.wsdl.validation.internal.Constants;
 import org.eclipse.wst.wsdl.validation.internal.IValidationInfo;
 import org.eclipse.wst.wsdl.validation.internal.ValidationInfoImpl;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
@@ -166,4 +168,14 @@ public class WSDL11ValidationInfoImpl implements IWSDL11ValidationInfo
   {
 	return valinfo.getURIResolver();
   }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo#getSchemaCache()
+   */
+  public XMLGrammarPool getSchemaCache() 
+  {
+	XMLGrammarPool grammarPool = (XMLGrammarPool)valinfo.getAttribute(Constants.XMLSCHEMA_CACHE_ATTRIBUTE);
+	return grammarPool;
+  }
+  
 }

@@ -11,8 +11,12 @@
 
 package org.eclipse.wst.wsdl.validation.internal.wsdl11;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 
 /**
@@ -61,7 +65,12 @@ public class ValidatorRegistry
     }
 
     // add the validator to the hashtable
-    validatorReg.put(namespace, valDelegate);
+    if(!validatorReg.containsKey(namespace))
+    {
+      validatorReg.put(namespace, new WSDL11ValidatorDelegateContainer());
+    }
+    ((WSDL11ValidatorDelegateContainer)validatorReg.get(namespace)).addValidator(valDelegate);
+    //validatorReg.put(namespace, valDelegate);
   }
 
   /**
@@ -78,12 +87,7 @@ public class ValidatorRegistry
     {
       namespace = "";
     }
-    WSDL11ValidatorDelegate delegate = (WSDL11ValidatorDelegate)validatorReg.get(namespace);
-    if(delegate != null)
-    {  
-      return delegate.getValidator();
-    }
-    return null;
+    return (IWSDL11Validator)validatorReg.get(namespace);
   }
 
   /**
@@ -99,5 +103,31 @@ public class ValidatorRegistry
       return true;
     }
     return false;
+  }
+  
+  public class WSDL11ValidatorDelegateContainer implements IWSDL11Validator
+  {
+	private List validatorDelegates = new ArrayList();
+	
+	public void addValidator(WSDL11ValidatorDelegate delegate)
+	{
+	  validatorDelegates.add(delegate);
+	}
+
+	public void setResourceBundle(ResourceBundle rb) {
+		//Nothing to do
+		
+	}
+
+	public void validate(Object element, List parents, IWSDL11ValidationInfo valInfo) {
+		Iterator valDelIter = validatorDelegates.iterator();
+		while(valDelIter.hasNext())
+		{
+		  WSDL11ValidatorDelegate delegate = (WSDL11ValidatorDelegate)valDelIter.next();
+		  delegate.getValidator().validate(element, parents, valInfo);
+		}
+		
+	}
+	  
   }
 }

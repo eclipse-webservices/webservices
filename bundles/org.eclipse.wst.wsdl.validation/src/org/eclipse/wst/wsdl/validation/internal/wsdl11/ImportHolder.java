@@ -255,7 +255,6 @@ public class ImportHolder implements Comparable
     }
     
     String locationURI = location;
-    String namespaceURI = namespace;
     //Import importDef = importingDef.createImport();
     
     //  Allow locating WSDL documents using any registered URI resolver.
@@ -448,7 +447,7 @@ public class ImportHolder implements Comparable
     importDef = getNewImport();
     XSDValidator xsdvalidator = new XSDValidator();
 
-    xsdvalidator.validate(location, XMLCatalogResolver.getInstance());
+    xsdvalidator.validate(location, XMLCatalogResolver.getInstance(), valinfo.getSchemaCache());
     if (xsdvalidator.isValid())
     {
       XSModel schema = xsdvalidator.getXSModel();
