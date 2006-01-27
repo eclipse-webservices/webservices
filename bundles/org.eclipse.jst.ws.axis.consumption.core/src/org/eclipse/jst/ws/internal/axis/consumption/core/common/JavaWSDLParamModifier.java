@@ -1,8 +1,10 @@
 package org.eclipse.jst.ws.internal.axis.consumption.core.common;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -44,7 +46,15 @@ public class JavaWSDLParamModifier implements BeanModifier {
 			{
 				//get Method list from the map
 				String methodList = (String)propertyMap.get("Methods");
-				javaWSDLParam.setMethodString(methodList);				
+				
+				//tokenize the method list
+				StringTokenizer tok = new StringTokenizer(methodList, " ");
+				Hashtable methods = new Hashtable();
+				while (tok.hasMoreTokens())
+				{
+					methods.put(tok.nextToken(), new Boolean(true));
+				}				
+				javaWSDLParam.setMethods(methods);
 			}
 			if (propertyMap.containsKey("Mappings"))
 			{
