@@ -14,58 +14,82 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.wst.common.core.search.SearchEngine;
+import org.eclipse.wst.common.core.search.SearchMatch;
+import org.eclipse.wst.common.core.search.SearchParticipant;
+import org.eclipse.wst.common.core.search.SearchPlugin;
+import org.eclipse.wst.common.core.search.pattern.QualifiedName;
+import org.eclipse.wst.common.core.search.pattern.SearchPattern;
+import org.eclipse.wst.common.core.search.scope.ProjectSearchScope;
+import org.eclipse.wst.common.core.search.scope.SearchScope;
+import org.eclipse.wst.common.core.search.scope.WorkspaceSearchScope;
+import org.eclipse.wst.common.core.search.util.CollectingSearchRequestor;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
+import org.eclipse.wst.xml.core.internal.search.XMLComponentDeclarationPattern;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentFinder;
-import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLQuickScan;
+import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSpecification;
 
 public class WSDLComponentFinder extends XMLComponentFinder {
-    List lookupTagPaths;
+	QualifiedName metaName;
+    public WSDLComponentFinder(QualifiedName metaName) {
+    	this.metaName = metaName;
+    }
     
-    public WSDLComponentFinder(List tagPaths) {
-        lookupTagPaths = new ArrayList();
-        lookupTagPaths.addAll(tagPaths);
+    
+    protected void findComponents(SearchEngine searchEngine, List list, int scope)
+    {      
+      SearchScope searchScope = new WorkspaceSearchScope();
+      if (scope == ENCLOSING_PROJECT_SCOPE)
+      {
+        searchScope = new ProjectSearchScope(currentIFile.getProject().getLocation());
+      }       
+      try {
+          CollectingSearchRequestor requestor = new CollectingSearchRequestor();
+          
+          XMLComponentDeclarationPattern pattern = new XMLComponentDeclarationPattern(new QualifiedName("*", "*"), metaName, SearchPattern.R_PATTERN_MATCH);
+          String participantId = metaName.getNamespace().equals(WSDLConstants.WSDL_NAMESPACE_URI) ?
+              "org.eclipse.wst.wsdl.search.WSDLSearchParticipant" :
+              "org.eclipse.wst.xsd.search.XSDSearchParticipant";
+        		  
+          SearchParticipant particpant = SearchPlugin.getDefault().getSearchParticipant(participantId);
+          
+          // for now we assume that we only want to include the xsd related participant
+          // that way we don't get SearchMatches for things withing WSDL files
+          // TODO... rethink this... since folks should be capable of changing the 'xsd' search participant impl
+          // without killing this logic
+          SearchParticipant[] participants = { particpant };          
+          searchEngine.search(pattern, requestor, participants, searchScope, new NullProgressMonitor());
+          
+          for (Iterator i = requestor.getResults().iterator(); i.hasNext(); )
+          {
+            SearchMatch match = (SearchMatch)i.next();
+            XMLComponentSpecification spec = new XMLComponentSpecification(metaName);
+            spec.setFileLocation(match.getFile().getLocation().toString());
+            Object o = match.map.get("name");
+            if (o != null && o instanceof QualifiedName)
+            {  
+              QualifiedName qualifiedName = (QualifiedName)o;
+              if (qualifiedName.getLocalName() != null)
+              {  
+                spec.addAttributeInfo("name", qualifiedName.getLocalName());
+                spec.setTargetNamespace(qualifiedName.getNamespace());
+                list.add(spec);
+              }  
+            }  
+          }  
+      } catch (CoreException e) {
+        e.printStackTrace();
+          //status.add(e.getStatus());
+      }      
     }
     
     public List getWorkbenchResourceComponents(int scope) {
-        List components = new ArrayList();
-        List filePaths = new ArrayList();
-        
-        // We don't want to search through the current file we're working on.
-        if (currentIFile != null) {
-            excludeFiles.add(currentIFile.getLocation().toOSString());
-        }
-        
-        // Find files matching the search criteria specified in List extensions and
-        // List excludeFiles.
-        switch (scope) {
-        case ENCLOSING_PROJECT_SCOPE:
-            filePaths = getEnclosingProjectFiles();
-            break;
-            
-        case ENTIRE_WORKSPACE_SCOPE:
-            filePaths = getWorkspaceFiles();
-            break;
-            
-        default:            
-            break;
-        }
-        
-        // Search for the components in each of the files specified in the path.
-        List attributes = new ArrayList();
-        String[] nameAttr = new String[1];
-        nameAttr[0] = "name";
-        attributes.add(nameAttr);
-        attributes.add(nameAttr);
-        attributes.add(nameAttr);
-        attributes.add(nameAttr);
 
-        Iterator pathsIterator = filePaths.iterator();
-        while (pathsIterator.hasNext()) {
-//           String stringPath = ((Path) pathsIterator.next()).toOSString();
-           String stringPath = ((Path) pathsIterator.next()).toString();
-           components.addAll(XMLQuickScan.getTagInfo(stringPath, lookupTagPaths, attributes));
-        }
-        
-        return components;
+        List list = new ArrayList();
+        SearchEngine searchEngine = new SearchEngine();
+        findComponents(searchEngine, list, scope);    
+        return list;       
     }
 }

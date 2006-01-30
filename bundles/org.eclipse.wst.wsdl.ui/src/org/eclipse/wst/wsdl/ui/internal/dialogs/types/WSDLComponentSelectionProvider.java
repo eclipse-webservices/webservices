@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.wst.common.core.search.pattern.QualifiedName;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.WSDLElement;
@@ -30,7 +31,9 @@ import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentFinder;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSelectionDialog;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSelectionProvider;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSpecification;
+import org.eclipse.wst.xsd.ui.internal.search.IXSDSearchConstants;
 import org.eclipse.wst.xsd.ui.internal.util.XSDDOMHelper;
+import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -49,7 +52,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
     private WSDLComponentSelectionDialog dialog;
     private WSDLComponentLabelProvider labelProvider;
     private Definition definition;
-    private List lookupTagPaths;
+    private QualifiedName metaName;
     private int kind;
     
     /*
@@ -59,55 +62,46 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
     	this.kind = kind;
         List validExt = new ArrayList(1);
         validExt.add("wsdl");
-        this.lookupTagPaths = getLookupTagPath();
-        wsdlComponentFinder = new WSDLComponentFinder(lookupTagPaths);
+        this.metaName = getQualifiedName(kind);
+        wsdlComponentFinder = new WSDLComponentFinder(metaName);
         wsdlComponentFinder.setFile(file);
-        wsdlComponentFinder.setValidExtensions(validExt);
+        //wsdlComponentFinder.setValidExtensions(validExt);
         this.definition = definition;
         labelProvider = new WSDLComponentLabelProvider();
     }
     
-    protected List getLookupTagPath()
-    {    	
-    	List list = new ArrayList();
+    protected QualifiedName getQualifiedName(int kind)
+    {    	 
     	switch (kind)
 		{
 		case WSDLConstants.BINDING :
 		{
-			list.add("/definitions/binding");
-			break;
+			return IWSDLSearchConstants.BINDING_META_NAME;
 		}
 		case WSDLConstants.PORT_TYPE :
 		{
-			list.add("/definitions/portType");
-			break;
+			return IWSDLSearchConstants.PORT_TYPE_META_NAME;
 		}	
 		case WSDLConstants.MESSAGE :
 		{
-			list.add("/definitions/message");
-			break;
+			return IWSDLSearchConstants.MESSAGE_META_NAME;
 		}   
 		case WSDLEditorUtil.TYPE :
 		{
-			list.add("/definitions/types/schema/simpleType");
-			list.add("/definitions/types/schema/complexType");
-			list.add("/schema/complexType");
-			list.add("/schema/simpleType");
-			break;
+			// TODO... need to combine complex and simple into a single meta name
+			return IXSDSearchConstants.COMPLEX_TYPE_META_NAME;
 		}
 		case WSDLEditorUtil.ELEMENT :
 		{
-			list.add("/definitions/types/schema/element");
-			list.add("/schema/element");
-			break;
+			return IXSDSearchConstants.ELEMENT_META_NAME;
 		}
 		}    	
-    	return list;
+    	return null;
     }
 
     public WSDLComponentSelectionProvider(IFile file, Definition definition, int kind, List validExt) {
         this(file, definition, kind);
-        wsdlComponentFinder.setValidExtensions(validExt);
+        //wsdlComponentFinder.setValidExtensions(validExt);
     }
     
     public void setDialog(WSDLComponentSelectionDialog dialog) {
@@ -118,11 +112,11 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         return null;
     }
     
-    private void createWSDLComponentObjects(IComponentList list, List inputComponents, String tagPath) {
+    private void createWSDLComponentObjects(IComponentList list, List inputComponents, QualifiedName metaName) {
         Iterator it = inputComponents.iterator();
         while (it.hasNext()) {
             WSDLElement wsdlElement = (WSDLElement) it.next();
-            XMLComponentSpecification spec = new XMLComponentSpecification(tagPath); 
+            XMLComponentSpecification spec = new XMLComponentSpecification(metaName); 
             spec.addAttributeInfo("name", wsdlElement.getElement().getAttribute("name"));
             spec.setTargetNamespace(wsdlElement.getEnclosingDefinition().getTargetNamespace());
             
@@ -133,11 +127,11 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         }
     }
     
-    private void createXSDComponentObjects(IComponentList list, List inputComponents, String tagPath) {
+    private void createXSDComponentObjects(IComponentList list, List inputComponents, QualifiedName metaName) {
         Iterator it = inputComponents.iterator();
         while (it.hasNext()) {
             XSDNamedComponent xsdElement = (XSDNamedComponent) it.next();
-            XMLComponentSpecification spec = new XMLComponentSpecification(tagPath); 
+            XMLComponentSpecification spec = new XMLComponentSpecification(metaName); 
             spec.addAttributeInfo("name", xsdElement.getName());
             spec.setTargetNamespace(xsdElement.getTargetNamespace());
             
@@ -150,10 +144,10 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         
     public void getComponents(IComponentList list, boolean quick) {
         if (quick) {
-            Iterator tags = lookupTagPaths.iterator();
-            while (tags.hasNext()) {
-                getComponentsQuick(list, (String) tags.next());
-            }
+            //Iterator tags = lookupTagPaths.iterator();
+            //while (tags.hasNext()) {
+                getComponentsQuick(list, metaName);
+            //}
         }
         else {
             // Grab components from workspace locations
@@ -178,11 +172,11 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         }
     }
     
-    private void getComponentsQuick(IComponentList list, String tagPath) {
+    private void getComponentsQuick(IComponentList list, QualifiedName metaName) {
         // Grab components within the file
-        if (tagPath.equals("/definitions/binding")) {
+        if (metaName == IWSDLSearchConstants.BINDING_META_NAME) {
             // Grab explictly defined components
-            createWSDLComponentObjects(list, definition.getEBindings(), tagPath);
+            createWSDLComponentObjects(list, definition.getEBindings(), metaName);
             
             // Grab directly imported components
             Iterator importsIt = getWSDLFileImports(definition.getEImports()).iterator();
@@ -191,12 +185,12 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
                 Definition importDefinition = importItem.getEDefinition();
                 List importedComponents = importDefinition.getEBindings();
                 
-                createWSDLComponentObjects(list, importedComponents, tagPath);
+                createWSDLComponentObjects(list, importedComponents, metaName);
             }
         }
-        else if (tagPath.equals("/definitions/portType")) {
+        else if (metaName == IWSDLSearchConstants.PORT_TYPE_META_NAME) {
             // Grab explictly defined components
-            createWSDLComponentObjects(list, definition.getEPortTypes(), tagPath);
+            createWSDLComponentObjects(list, definition.getEPortTypes(), metaName);
             
             // Grab directly imported components
             Iterator importsIt = getWSDLFileImports(definition.getEImports()).iterator();
@@ -205,12 +199,12 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
                 Definition importDefinition = importItem.getEDefinition();
                 List importedComponents = importDefinition.getEPortTypes();
                 
-                createWSDLComponentObjects(list, importedComponents, tagPath);
+                createWSDLComponentObjects(list, importedComponents, metaName);
             }
         }
-        else if (tagPath.equals("/definitions/message")) {
+        else if (metaName == IWSDLSearchConstants.MESSAGE_META_NAME) {
             // Grab explictly defined components
-            createWSDLComponentObjects(list, definition.getEMessages(), tagPath);
+            createWSDLComponentObjects(list, definition.getEMessages(), metaName);
             
             // Grab directly imported components
             Iterator importsIt = getWSDLFileImports(definition.getEImports()).iterator();
@@ -219,31 +213,32 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
                 Definition importDefinition = importItem.getEDefinition();
                 List importedComponents = importDefinition.getEMessages();
                 
-                createWSDLComponentObjects(list, importedComponents, tagPath);
+                createWSDLComponentObjects(list, importedComponents, metaName);
             }
         }
-        else if (tagPath.equals("/definitions/types/schema/complexType")) {
-            createXSDInlineTypesObjects(list, tagPath);
+        /*TODO... fix these cases
+        else if (metaName == IXSDSearchConstants.COMPLEX_TYPE_META_NAME) {
+            createXSDInlineTypesObjects(list, metaName);
         }
-        else if (tagPath.equals("/definitions/types/schema/simpleType")) {
-            createXSDInlineTypesObjects(list, tagPath);
-        }
-        else if (tagPath.equals("/definitions/types/schema/element")) {
-            createXSDElementObjects(list, tagPath);
+        else if (metaName.equals("/definitions/types/schema/simpleType")) {
+            createXSDInlineTypesObjects(list, metaName);
+        }*/
+        else if (metaName == IXSDSearchConstants.ELEMENT_META_NAME) {
+            createXSDElementObjects(list, metaName);
             createRegularImportXSDElementObjects(list);
         }
-        else if (tagPath.equals("/schema/complexType")) {
-            createXSDInlineWrapperTypeObjects(list, tagPath);
+        else if (metaName == IXSDSearchConstants.COMPLEX_TYPE_META_NAME){
+            createXSDInlineWrapperTypeObjects(list, metaName);
             
             createXSDBuiltInTypeObjects(list);
             createRegularImportXSDTypeObjects(list);
         }
-        else if (tagPath.equals("/schema/simpleType")) {
-            createXSDInlineWrapperTypeObjects(list, tagPath);
+        else if (metaName == IXSDSearchConstants.SIMPLE_TYPE_META_NAME) {
+            createXSDInlineWrapperTypeObjects(list, metaName);
         }
-        else if (tagPath.equals("/schema/element")) {
-            createXSDInlineWrapperElementObjects(list, tagPath);
-        }
+        //else if (metaName.equals("/schema/element")) {
+        //    createXSDInlineWrapperElementObjects(list, metaName);
+        //}
     }
     
     private List getWSDLFileImports(List wsdlImports) {
@@ -263,7 +258,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
     private void createXSDBuiltInTypeObjects(IComponentList list) { 
         for (int i = 0; i < XSDDOMHelper.dataType.length; i++) {
             String builtIn = XSDDOMHelper.dataType[i][0];
-            XMLComponentSpecification spec = new XMLComponentSpecification(BUILT_IN_TYPE); 
+            XMLComponentSpecification spec = new XMLComponentSpecification(null);//BUILT_IN_TYPE); 
             spec.addAttributeInfo("name", builtIn);
             spec.setTargetNamespace(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001);
 
@@ -321,8 +316,8 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
                         }
                     }
                     
-                    createXSDComponentObjects(list, complexList, complexPath);
-                    createXSDComponentObjects(list, simpleList, simplePath);
+                    createXSDComponentObjects(list, complexList, IXSDSearchConstants.COMPLEX_TYPE_META_NAME);
+                    createXSDComponentObjects(list, simpleList, IXSDSearchConstants.SIMPLE_TYPE_META_NAME);
                 }
             }
         }
@@ -359,13 +354,13 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
                 Iterator schemaIt = schemas.iterator();
                 while (schemaIt.hasNext()) {
                     List elementList = ((XSDSchema) schemaIt.next()).getElementDeclarations();
-                    createXSDComponentObjects(list, elementList, path);
+                    createXSDComponentObjects(list, elementList, IXSDSearchConstants.ELEMENT_META_NAME);
                 }
             }
         }
     }
     
-    private void createXSDInlineTypesObjects(IComponentList list, String tagPath) {
+    private void createXSDInlineTypesObjects(IComponentList list, QualifiedName tagPath) {
         // Handle inline schemas
     	if (definition.getETypes() == null) {
     		return;
@@ -403,7 +398,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         }
     }
 
-    private void createXSDElementObjects(IComponentList list, String tagPath) {
+    private void createXSDElementObjects(IComponentList list, QualifiedName tagPath) {
     	if (definition.getETypes() == null) {
     		return;
     	}
@@ -428,7 +423,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         }
     }
     
-    private void createXSDInlineWrapperTypeObjects(IComponentList list, String tagPath) {
+    private void createXSDInlineWrapperTypeObjects(IComponentList list, QualifiedName tagPath) {
         // Handle inline schemas
     	if (definition.getETypes() == null) {
     		return;
@@ -474,7 +469,7 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         }
     }
     
-    private void createXSDInlineWrapperElementObjects(IComponentList list, String tagPath) {
+    private void createXSDInlineWrapperElementObjects(IComponentList list, QualifiedName tagPath) {
     	if (definition.getETypes() == null) {
     		return;
     	}
@@ -580,26 +575,26 @@ public class WSDLComponentSelectionProvider extends XMLComponentSelectionProvide
         public Image getImage(Object element) {
             XMLComponentTreeObject specification = (XMLComponentTreeObject) element;
             XMLComponentSpecification spec = (XMLComponentSpecification) specification.getXMLComponentSpecification().get(0);
-            if (spec.getTagPath().equals("/definitions/binding")) {
+            if (spec.getMetaName() == IWSDLSearchConstants.BINDING_META_NAME) {
                 return WSDLEditorPlugin.getInstance().getImage("icons/binding_obj.gif");
             }
-            else if (spec.getTagPath().equals("/definitions/portType")) {
-                return WSDLEditorPlugin.getInstance().getImage("icons/port_obj.gif");
+            else if (spec.getMetaName() == IWSDLSearchConstants.PORT_TYPE_META_NAME) {
+                return WSDLEditorPlugin.getInstance().getImage("icons/portType_obj.gif");
             }
-            else if (spec.getTagPath().equals("/definitions/message")) {
+            else if (spec.getMetaName() == IWSDLSearchConstants.MESSAGE_META_NAME) {
                 return WSDLEditorPlugin.getInstance().getImage("icons/message_obj.gif");
             }
-            else if (spec.getTagPath().equals("/definitions/types/schema/complexType") ||
-                     spec.getTagPath().equals("/schema/complexType")) {
+            else if (spec.getMetaName() == IXSDSearchConstants.COMPLEX_TYPE_META_NAME){
+            	//|| spec.getMetaName() == ("/schema/complexType"))             	
                 return XSDEditorPlugin.getXSDImage("icons/XSDComplexType.gif");
             }
-            else if (spec.getTagPath().equals("/definitions/types/schema/simpleType") ||
-                     spec.getTagPath().equals("/schema/simpleType") ||
-                     spec.getTagPath().equals("BUILT_IN_TYPE")) {
+            else if (spec.getMetaName() == IXSDSearchConstants.SIMPLE_TYPE_META_NAME ||
+                     //spec.getMetaName() == ("/schema/simpleType") ||
+                     spec.getMetaName() == null /*BUILT_IN_TYPE*/){ 
                 return XSDEditorPlugin.getXSDImage("icons/XSDSimpleType.gif");
             }
-            else if (spec.getTagPath().equals("/definitions/types/schema/element") ||
-                     spec.getTagPath().equals("/schema/element")) {
+            else if (spec.getMetaName() == IXSDSearchConstants.ELEMENT_META_NAME){
+            		// ||spec.getMetaName() == ("/schema/element"))
                 return XSDEditorPlugin.getXSDImage("icons/XSDElement.gif");
             }
     

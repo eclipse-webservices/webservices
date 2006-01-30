@@ -56,7 +56,7 @@ public class WSDLSetComponentHelper {
     }
     
     public void setXSDTypeComponent(Part part, XMLComponentSpecification spec) {
-        if (!spec.getTagPath().equals(WSDLComponentSelectionProvider.BUILT_IN_TYPE)) {
+        if (spec.getMetaName() != null) {
             addImportIfNecessary(spec);
         }
         String componentObject = getPrefixedComponentName(spec);
