@@ -10,23 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.commonarchivecore.internal.helpers.ArchiveManifest;
-import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.project.facet.IJavaProjectMigrationDataModelProperties;
 import org.eclipse.jst.j2ee.project.facet.JavaProjectMigrationDataModelProvider;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
@@ -37,6 +28,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.command.StartServerCommand;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
 import org.eclipse.wst.common.componentcore.internal.operation.CreateReferenceComponentsDataModelProvider;
+import org.eclipse.wst.common.componentcore.internal.util.ComponentUtilities;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -67,30 +59,21 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     IEnvironment env = getEnvironment();
-    try
-    {
       createSampleProjects(env, monitor );
 	  clientIProject = ProjectUtilities.getProject(testInfo.getClientProject());
 	        
       if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject))
       {
-        String uri = clientIProject.getName() + ".jar";
-		if (J2EEUtils.isJavaComponent(clientIProject))
-          addJavaProjectAsUtilityJar(clientIProject, sampleEARIProject, uri,monitor);
-        addJAROrModuleDependency(sampleIProject, uri);
-        addBuildPath(sampleIProject, clientIProject);
-      }
-    }
-    catch (IOException ioe)
-    {
-    }
-    catch (CoreException ce)
-    {
-    }
+        if (J2EEUtils.isJavaComponent(clientIProject)){
+          addJavaProjectAsUtilityJar(clientIProject, sampleEARIProject,monitor);
+          addJavaProjectAsUtilityJar(clientIProject, sampleIProject,monitor);
+		}
+	  }
+    
     return Status.OK_STATUS;
   }
 
-  private void addJavaProjectAsUtilityJar(IProject javaProject, IProject earProject, String uri,IProgressMonitor monitor)
+  private void addJavaProjectAsUtilityJar(IProject javaProject, IProject earProject,IProgressMonitor monitor)
   {
 	  try {
 		  IDataModel migrationdm = DataModelFactory.createDataModel(new JavaProjectMigrationDataModelProvider());
@@ -102,23 +85,19 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 		  List targetCompList = (List) refdm.getProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST);
  
 		  IVirtualComponent targetcomponent = ComponentCore.createComponent(javaProject);
+		  IVirtualComponent sourcecomponent = ComponentUtilities.getComponent(earProject.getName());
 		  targetCompList.add(targetcomponent);
  
-		  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.SOURCE_COMPONENT, earProject);
+		  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.SOURCE_COMPONENT,sourcecomponent );
 		  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST, targetCompList);
+		  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENTS_DEPLOY_PATH,  "/WEB-INF/lib");
 		  refdm.getDefaultOperation().execute(monitor, null);
 	  }catch (Exception e) {
 		  
 	  }
   }
 
-  private void addJAROrModuleDependency(IProject project, String uri) throws IOException, CoreException
-  {
-     ArchiveManifest manifest = J2EEProjectUtilities.readManifest(project);
-     manifest.mergeClassPath(new String[]{uri});
-     J2EEProjectUtilities.writeManifest(project, manifest);
-    
-  }
+ 
 
   public static final String DEFAULT_SAMPLE_EAR_PROJECT_EXT = "EAR";
   
@@ -217,20 +196,6 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 		
 	  }
 	  
-  }
-  
-  private void addBuildPath(IProject referencingProject, IProject referencedProject) throws JavaModelException
-  {
-    IJavaProject javaProject = JavaCore.create(referencingProject);
-    if (javaProject != null)
-    {
-      IClasspathEntry[] oldCp = javaProject.getRawClasspath();
-	  IClasspathEntry[] newCp = new IClasspathEntry[oldCp.length + 1];
-	  for (int i = 0; i < oldCp.length; i++)
-        newCp[i] = oldCp[i];
-	  newCp[newCp.length - 1] = JavaCore.newProjectEntry(referencedProject.getFullPath());
-	  javaProject.setRawClasspath(newCp, new NullProgressMonitor());
-    }
   }
 
    
