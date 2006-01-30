@@ -78,7 +78,7 @@ public class AntEnvironment extends EclipseEnvironment{
 	{
 		Object property = antProperties_.get(key);
 		if (property != null)
-			return property.toString();
+			return property.toString().trim();
 		return null;
 	}
 	
