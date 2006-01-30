@@ -50,7 +50,7 @@ public class WSDLComponentFinder extends XMLComponentFinder {
           
           XMLComponentDeclarationPattern pattern = new XMLComponentDeclarationPattern(new QualifiedName("*", "*"), metaName, SearchPattern.R_PATTERN_MATCH);
           String participantId = metaName.getNamespace().equals(WSDLConstants.WSDL_NAMESPACE_URI) ?
-              "org.eclipse.wst.wsdl.search.WSDLSearchParticipant" :
+              "org.eclipse.wst.wsdl.ui.internal.search.WSDLSearchParticipant" :
               "org.eclipse.wst.xsd.search.XSDSearchParticipant";
         		  
           SearchParticipant particpant = SearchPlugin.getDefault().getSearchParticipant(participantId);
