@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ant;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentEngine;
@@ -27,14 +29,19 @@ public class AntOperationManager extends CommandFragmentEngine
 {	
 	  private AntEnvironment environment_;
 	  
-	  protected void initBeforeExecute( AbstractDataModelOperation operation )
-    {
-      int initStatus = environment_.initOperationData( operation );
-      
-      if (initStatus == AntEnvironment.INIT_OPERATION_DATA_FAIL)
+	  protected IStatus initBeforeExecute( AbstractDataModelOperation operation )
+    {      
+      environment_.getLog().log(ILog.INFO, "ws_ant", 5098, this, "initBeforeExecute", "Initializing data for: " + operation.getClass().getName());
+      IStatus initStatus = Status.OK_STATUS;
+      try
       {
-        environment_.getLog().log(ILog.INFO, "ws_ant", 5098, this, "runCommand", "Initializing data for: " + operation.getClass().getName());
+    	  initStatus = environment_.initOperationData( operation );  
       }
+      catch (Exception e)
+      {
+    	 throw new IllegalArgumentException(e.getMessage());  
+      }        
+      return initStatus;
     }
 
     /**

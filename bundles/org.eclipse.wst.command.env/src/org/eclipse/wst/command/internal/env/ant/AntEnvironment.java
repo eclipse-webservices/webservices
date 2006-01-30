@@ -10,22 +10,30 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ant;
 
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Vector;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.env.EnvironmentMessages;
-import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
-import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.core.CommandManager;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.core.data.BeanModifier;
 import org.eclipse.wst.command.internal.env.core.data.ClassEntry;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
+import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
+import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -45,9 +53,6 @@ public class AntEnvironment extends EclipseEnvironment{
 	private Hashtable operationDataRecord_ = new Hashtable();
 	private boolean mappingComplete_;
 	private ClassEntry classEntry;	
-	
-	public static int INIT_OPERATION_DATA_SUCCESS = 1;
-	public static int INIT_OPERATION_DATA_FAIL = -1;
 	
 	// extensionPoint names and namespace
 	private static String MAPPER_EXT_PT = "antDataMapping";  //$NON-NLS-1$
@@ -83,15 +88,15 @@ public class AntEnvironment extends EclipseEnvironment{
 	}
 	
 	// call from engine prior to executing the operation 
-	public int initOperationData(AbstractDataModelOperation op)
+	public IStatus initOperationData(AbstractDataModelOperation op)
 	{
 		//check to see if data has already been primed for this operation 
 		String qualifiedClassName = op.getClass().getName();
 		if (operationDataRecord_.get(qualifiedClassName) == null)
 		{
 			classEntry = new ClassEntry();
-			try {			
 			
+			try {
 				//extension lookup for the bean - may be more than one property for it
 				Enumeration operationData = getMappingExtensions(op);					
 				classEntry.setterList_= getSetterList(op);		
@@ -133,13 +138,12 @@ public class AntEnvironment extends EclipseEnvironment{
                 operationDataRecord_.put(qualifiedClassName, "");
 			}			
 			catch (Exception e)
-			{
-				e.printStackTrace();
-				return INIT_OPERATION_DATA_FAIL;
+			{					                                
+				throw new IllegalArgumentException(e.getMessage());
 			}
 
 		}
-		return INIT_OPERATION_DATA_SUCCESS;
+		return Status.OK_STATUS;
 	}
 
 	/**
@@ -171,7 +175,7 @@ public class AntEnvironment extends EclipseEnvironment{
 	    * @param operationName The name of the operation that is being initialized.
 	    * @return A collection of PropertyDataHolder objects. Returns null if there are no extensions matching the operationName.
 	    */
-	   private Enumeration getMappingExtensions(AbstractDataModelOperation operation)
+	   private Enumeration getMappingExtensions(AbstractDataModelOperation operation) throws CoreException
 	   {	   		   
 		   String operationName = operation.getClass().getName();
 		   //go to ext registry and get all antMapping extensions
@@ -203,7 +207,10 @@ public class AntEnvironment extends EclipseEnvironment{
 						 transform = ce.createExecutableExtension(MAPPER_TRANSFORM_ATTRIBUTE);	 
 					 }
 					 catch (CoreException cex) {
-					   getLog().log(ILog.ERROR, "ws_ant", 5092, this, "getMappingExtensions", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_DATA_TRANSFORM, key, transform));                  
+					   Status errorStatus = new Status(Status.ERROR, "ws_ant", 5092, cex.getMessage(), cex);
+					   getStatusHandler().reportError(errorStatus);
+					   getLog().log(ILog.ERROR, "ws_ant", 5092, this, "getMappingExtensions", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_DATA_TRANSFORM, key, transform));
+					   throw new CoreException(errorStatus);
 					 }
 					 
 					 if (transform != null && transform instanceof BeanModifier/*dataTable.containsKey(property)*/)
@@ -271,8 +278,9 @@ public class AntEnvironment extends EclipseEnvironment{
 				}
 				catch (Exception exc)
 				{
-                    getLog().log(ILog.ERROR, "ws_ant", 5093, this, "transformAndSet", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_DATA_TRANSFORM, mapping.key_, mapping.transform_));                    
-					return false;
+					getStatusHandler().reportError(new Status(Status.ERROR, "ws_ant", 5093, exc.getMessage(), exc));
+                    getLog().log(ILog.ERROR, "ws_ant", 5093, this, "transformAndSet", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_DATA_TRANSFORM, mapping.key_, mapping.transform_));
+                    throw new IllegalArgumentException(exc.getMessage());
 				}				
 			}
 			return false;
@@ -347,7 +355,7 @@ public class AntEnvironment extends EclipseEnvironment{
 	     return result;
 	   }   
        
-	   private boolean callSetter(AbstractDataModelOperation op, Object param, String setterMethodName)
+	   private boolean callSetter(AbstractDataModelOperation op, Object param, String setterMethodName) throws CoreException
 	   {
 		   for (Iterator iterator = classEntry.setterList_.iterator(); iterator.hasNext();) 
 		   {
@@ -362,7 +370,10 @@ public class AntEnvironment extends EclipseEnvironment{
 			     			 return true;
 			     		 }
 			     		 catch(Exception cex){
+			     			Status errorStatus = new Status(Status.ERROR, "ws_ant", 5094, cex.getMessage(), cex);
+			     			getStatusHandler().reportError(errorStatus);
 			     			getLog().log(ILog.ERROR, "ws_ant", 5094, this, "callSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, setterMethodName));
+			     			throw new CoreException(errorStatus);
 			     		 }
 			       }  
 				}
@@ -372,7 +383,7 @@ public class AntEnvironment extends EclipseEnvironment{
 	   
 	
 	   // look for setter with primitive type parameter - if find one, convert String propertyValue and call it
-	   private boolean callPrimitiveSetter(PropertyDataHolder mapping)
+	   private boolean callPrimitiveSetter(PropertyDataHolder mapping) throws CoreException
 	   {			
 			for (Iterator iterator = classEntry.setterList_.iterator(); iterator.hasNext();) {
 				Method element = (Method) iterator.next();
@@ -422,7 +433,10 @@ public class AntEnvironment extends EclipseEnvironment{
 					    	return true;	
 				    	}
 				    	catch(Exception e){
+				    		Status errorStatus = new Status(Status.ERROR, "ws_ant", 5095, e.getMessage(), e);
+				    		getStatusHandler().reportError(errorStatus);
 				    		getLog().log(ILog.ERROR, "ws_ant", 5095, this, "callPrimitiveSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, element.getName()));
+				    		throw new CoreException(errorStatus);
 				    	}
 				    }			
 				}
@@ -432,7 +446,7 @@ public class AntEnvironment extends EclipseEnvironment{
 		
 		//check for setter with parameter type that takes a String to construct
 		// construct the parameter using String & call the setter  
-	   private boolean callSetterConstructor(PropertyDataHolder mapping)
+	   private boolean callSetterConstructor(PropertyDataHolder mapping) throws CoreException
 	   {	
 			for (Iterator iterator = classEntry.setterList_.iterator(); iterator.hasNext();) {
 				Method element = (Method) iterator.next();
@@ -448,8 +462,10 @@ public class AntEnvironment extends EclipseEnvironment{
 					}
 					catch (Exception exc)
 					{
+						Status errorStatus = new Status(Status.ERROR, "ws_ant", 5096, exc.getMessage(), exc);
+						getStatusHandler().reportError(errorStatus);
 						getLog().log(ILog.ERROR, "ws_ant", 5096, this, "callSetterConstructor", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, element.getName()));
-						return false;
+						throw new CoreException(errorStatus);
 					}
 				}
 	        }			
@@ -463,7 +479,7 @@ public class AntEnvironment extends EclipseEnvironment{
 		   return controller_.getOperationManager();
 	   } 
 	   
-	   public CommandFragment getRootCommandFragment()
+	   public CommandFragment getRootCommandFragment() 
        {
     	   
     	   //look up the commandFragment in the scenarioRegistry extension point with an ID corresponding to the scenario property in the propertytable
@@ -489,6 +505,8 @@ public class AntEnvironment extends EclipseEnvironment{
 				 }
 				 catch (Exception exception)
 				 {
+					 Status errorStatus = new Status(Status.ERROR, "ws_ant", 5097, exception.getMessage(), exception);
+					 getStatusHandler().reportError(errorStatus);
 					 getLog().log(ILog.ERROR, "ws_ant", 5097, this, "getRootCommandFragment", EnvironmentMessages.MSG_ERR_ANT_CMD_FRAGMENT);					 
 				 }				 
 			  }    	   

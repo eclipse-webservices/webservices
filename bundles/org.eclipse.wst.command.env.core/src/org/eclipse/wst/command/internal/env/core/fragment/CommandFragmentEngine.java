@@ -357,8 +357,9 @@ public class CommandFragmentEngine implements CommandManager
   }
   
   // Subclasses can do initialization before the execution of a command here
-  protected void initBeforeExecute( AbstractDataModelOperation operation )
+  protected IStatus initBeforeExecute( AbstractDataModelOperation operation )
   {  
+	  return Status.OK_STATUS;
   }
   
   private IStatus runCommand( CommandListEntry entry, IProgressMonitor monitor )
@@ -378,7 +379,7 @@ public class CommandFragmentEngine implements CommandManager
   	  	  
   	    try
   	    {
-          initBeforeExecute( cmd );
+          status = initBeforeExecute( cmd );
           
   	      environment_.getLog().log(ILog.INFO, "command", 5001, this, "runCommand", "Executing: " + cmd.getClass().getName());
   	  	    
@@ -393,6 +394,7 @@ public class CommandFragmentEngine implements CommandManager
           MultiStatus  parentStatus    = new MultiStatus( "id", 0, new IStatus[]{unexpectedError}, 
                                                           EnvironmentCoreMessages.MSG_ERROR_UNEXPECTED_ERROR, null );
   	      environment_.getStatusHandler().reportError( parentStatus );
+  	      status = unexpectedError;
   	    }
   	    finally
   	    {

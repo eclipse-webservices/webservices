@@ -20,6 +20,7 @@ import org.eclipse.jst.j2ee.ejb.EJBJar;
 import org.eclipse.jst.j2ee.ejb.EJBResource;
 import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
+import org.eclipse.jst.ws.internal.WSPluginMessages;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -37,47 +38,50 @@ public class String2SelectionTransformer implements Transformer {
 		
 		StructuredSelection selection = null;
 		IResource resource = FileResourceUtils.getWorkspaceRoot().findMember(new Path(value.toString()));
-		IProject resProject = resource.getProject();
-		
-		// check if resource is part of an EJB
-		if (J2EEUtils.isEJBComponent(resProject))
-		{
-			// if resource is part of EJB need to get the EnterpriseBean as the selection
-			IVirtualComponent[] ejbComponents = J2EEUtils.getEJBComponents(resProject);
-			EJBArtifactEdit  ejbEdit = null;			
-			try{				
-				ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(ejbComponents[0]);				
-	            EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
-	            EJBJar ejbJar = ejbRes.getEJBJar();	            
-	            IPath path = resource.getFullPath();
-	            String resourcePath = ResourceUtils.getJavaResourcePackageName(path);
-	            String javaClassName = resource.getName();
-	            // strip off file extension if necessary
-	            if (javaClassName.lastIndexOf('.')>-1)
-	            {	
-	              javaClassName = javaClassName.substring(0, javaClassName.lastIndexOf('.'));	              
-	            } 
-	            JavaClass javaClass = JavaMOFUtils.getJavaClass(resourcePath, javaClassName, resProject);
-	            EnterpriseBean ejb = ejbJar.getEnterpriseBeanWithReference(javaClass);
-	            if (ejb != null)
-	            {
-	            	selection = new StructuredSelection(ejb.getName());	
-	            }
-			}
-			catch (Exception exc)
-			{
-				
-			}
-			finally {
-	              if (ejbEdit!=null)
-	                ejbEdit.dispose();
-	            }
-		}		
-		
 		if (resource != null)
 		{
+			IProject resProject = resource.getProject();			
+			// check if resource is part of an EJB
+			if (J2EEUtils.isEJBComponent(resProject))
+			{
+				// if resource is part of EJB need to get the EnterpriseBean as the selection
+				IVirtualComponent[] ejbComponents = J2EEUtils.getEJBComponents(resProject);
+				EJBArtifactEdit  ejbEdit = null;			
+				try{				
+					ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(ejbComponents[0]);				
+		            EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
+		            EJBJar ejbJar = ejbRes.getEJBJar();	            
+		            IPath path = resource.getFullPath();
+		            String resourcePath = ResourceUtils.getJavaResourcePackageName(path);
+		            String javaClassName = resource.getName();
+		            // strip off file extension if necessary
+		            if (javaClassName.lastIndexOf('.')>-1)
+		            {	
+		              javaClassName = javaClassName.substring(0, javaClassName.lastIndexOf('.'));	              
+		            } 
+		            JavaClass javaClass = JavaMOFUtils.getJavaClass(resourcePath, javaClassName, resProject);
+		            EnterpriseBean ejb = ejbJar.getEnterpriseBeanWithReference(javaClass);
+		            if (ejb != null)
+		            {
+		            	selection = new StructuredSelection(ejb.getName());	
+		            }
+				}
+				catch (Exception exc)
+				{
+					
+				}
+				finally {
+		              if (ejbEdit!=null)
+		                ejbEdit.dispose();
+		        }
+			}
 			selection = new StructuredSelection(resource);			
-		}		
+		}
+		else
+		{
+			// string doesn't return resource - error condition
+			throw new IllegalArgumentException(WSPluginMessages.ERROR_SELECTION_TRANSFORM);
+		}
 		return selection;
 	}
 

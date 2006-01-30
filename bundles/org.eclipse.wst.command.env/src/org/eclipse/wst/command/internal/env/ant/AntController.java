@@ -13,7 +13,10 @@ package org.eclipse.wst.command.internal.env.ant;
 
 import java.util.Hashtable;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.wst.command.internal.env.EnvironmentMessages;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.core.CommandManager;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
@@ -49,14 +52,23 @@ public class AntController {
        
 	   //  set up operation fragments - conditional on options by user... service or client
 	   //  also need to initialize the "selection" or input file (WSDL, Java) here
+	   
 	   CommandFragment rootFragment =  environment.getRootCommandFragment();
 	   
-	   // construct the engine - manages execution of operations
-	   createOperationManager(rootFragment, dataManager, environment);
-	   
-	   DataMappingRegistryImpl    dataRegistry_   = new DataMappingRegistryImpl();
-	   rootFragment.registerDataMappings(dataRegistry_);
-	   
+	   if (rootFragment != null)
+	   {		   
+	       //construct the engine - manages execution of operations
+		   createOperationManager(rootFragment, dataManager, environment);
+		   
+		   DataMappingRegistryImpl    dataRegistry_   = new DataMappingRegistryImpl();
+		   rootFragment.registerDataMappings(dataRegistry_);		   
+	   }
+	   else  //problem getting the root fragment - scenario type is likely missing
+	   {
+		   handler.reportError(new Status(IStatus.ERROR, "ws_ant", 9999, EnvironmentMessages.MSG_ERR_ANT_SCENARIO_TYPE, null));
+		   return;
+	   }
+	      
 	   //ready to start running operations
  	   ((AntOperationManager)getOperationManager()).moveForwardToNextStop(new NullProgressMonitor());
    }

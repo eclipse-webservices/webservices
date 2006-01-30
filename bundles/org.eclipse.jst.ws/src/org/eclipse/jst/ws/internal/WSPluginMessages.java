@@ -23,6 +23,7 @@ public final class WSPluginMessages extends NLS {
 	public static String MSG_ERROR_SERVER;
 	public static String ANY_FILTER_NAME;
 	public static String ANY_FILTER_DESC;
+	public static String ERROR_SELECTION_TRANSFORM;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, WSPluginMessages.class);

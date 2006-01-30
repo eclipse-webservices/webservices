@@ -22,7 +22,10 @@ public class SelectionTransformer implements Transformer
 	IStructuredSelection inSelection  = (IStructuredSelection)value;
 	Selection            outSelection = new Selection();
 	
-	outSelection.setSelection( inSelection.toArray() );
+	if (inSelection != null)
+	{
+		outSelection.setSelection( inSelection.toArray() );	
+	}
 	
 	return outSelection;
   }
