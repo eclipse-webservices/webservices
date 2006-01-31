@@ -445,7 +445,7 @@ public class HTTPTransport
         }
         // remove XML namespace declaration
         if (soapEnvelope != null)
-          return new BufferedReader(new InputStreamReader(new ByteArrayInputStream(XMLUtils.serialize(soapEnvelope, true).getBytes(DEFAULT_SOAP_ENCODING))));
+          return new BufferedReader(new InputStreamReader(new ByteArrayInputStream(XMLUtils.serialize(soapEnvelope, true).getBytes(DEFAULT_SOAP_ENCODING)), DEFAULT_SOAP_ENCODING));
       }
       catch (Throwable t)
       {
