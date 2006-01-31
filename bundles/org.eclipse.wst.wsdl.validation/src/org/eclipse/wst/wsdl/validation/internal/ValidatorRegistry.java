@@ -105,7 +105,6 @@ public class ValidatorRegistry
    */
   public WSDLValidatorDelegate[] queryValidatorRegistry(String namespace, Integer type)
   {
-    IWSDLValidator wsdlval = null;
     // if the namespace is null allow it and treat it as the empty string
     if (namespace == null)
     {

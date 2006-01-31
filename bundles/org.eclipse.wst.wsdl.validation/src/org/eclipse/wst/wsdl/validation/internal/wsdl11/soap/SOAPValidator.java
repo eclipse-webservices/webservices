@@ -30,8 +30,8 @@ import javax.wsdl.extensions.soap.SOAPOperation;
 import javax.xml.namespace.QName;
 
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
-import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator;
 
 import com.ibm.wsdl.BindingFaultImpl;
 import com.ibm.wsdl.BindingImpl;
@@ -67,7 +67,7 @@ public class SOAPValidator implements IWSDL11Validator
   private final String _ERROR_INVALID_OPERATION_STYLE = "_ERROR_INVALID_OPERATION_STYLE";
   private final String _ERROR_NO_SOAPBINDING_FOR_OPERATION = "_ERROR_NO_SOAPBINDING_FOR_OPERATION";
   private final String _ERROR_INVALID_BODY_ENCODING_STYLE = "_ERROR_INVALID_BODY_ENCODING_STYLE";
-  private final String _ERROR_INVALID_BODY_NAMESPACE_FOR_ENCODED = "_ERROR_INVALID_BODY_NAMESPACE_FOR_ENCODED";
+  //private final String _ERROR_INVALID_BODY_NAMESPACE_FOR_ENCODED = "_ERROR_INVALID_BODY_NAMESPACE_FOR_ENCODED";
   private final String _ERROR_INVALID_BODY_USE = "_ERROR_INVALID_BODY_USE";
   private final String _ERROR_INVALID_BODY_PART_NOT_TYPE = "_ERROR_INVALID_BODY_PART_NOT_TYPE";
   private final String _ERROR_INVALID_BODY_PART_UNDEFINED = "_ERROR_INVALID_BODY_PART_UNDEFINED";
@@ -84,8 +84,8 @@ public class SOAPValidator implements IWSDL11Validator
   private final String _ERROR_HEADERFAULT_ENCODINGSTYLE_UNDEFINED = "_ERROR_HEADERFAULT_ENCODINGSTYLE_UNDEFINED";
   private final String _ERROR_HEADERFAULT_NAMESPACE_UNDEFINED = "_ERROR_HEADERFAULT_NAMESPACE_UNDEFINED";
   private final String _ERROR_INVALID_FAULT_NAME = "_ERROR_INVALID_FAULT_NAME";
-  private final String _ERROR_INVALID_FAULT_ENCODING_STYLE = "_ERROR_INVALID_FAULT_ENCODING_STYLE";
-  private final String _ERROR_INVALID_FAULT_NAMESPACE_FOR_ENCODED = "_ERROR_INVALID_FAULT_NAMESPACE_FOR_ENCODED";
+  //private final String _ERROR_INVALID_FAULT_ENCODING_STYLE = "_ERROR_INVALID_FAULT_ENCODING_STYLE";
+  //private final String _ERROR_INVALID_FAULT_NAMESPACE_FOR_ENCODED = "_ERROR_INVALID_FAULT_NAMESPACE_FOR_ENCODED";
   
   private final String ENCODED = "encoded";
   private final String LITERAL = "literal";

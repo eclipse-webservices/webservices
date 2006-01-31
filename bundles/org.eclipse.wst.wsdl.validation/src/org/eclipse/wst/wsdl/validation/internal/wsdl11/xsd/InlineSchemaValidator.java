@@ -23,12 +23,11 @@ import javax.wsdl.Definition;
 import javax.wsdl.Types;
 import javax.wsdl.extensions.UnknownExtensibilityElement;
 
-import org.apache.xerces.xni.parser.XMLEntityResolver;
 import org.apache.xerces.xs.XSModel;
 import org.eclipse.wst.wsdl.validation.internal.util.ErrorMessage;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
-import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -105,7 +104,7 @@ public class InlineSchemaValidator implements IWSDL11Validator
     //	add in the external XSD Catalog to resolve schemas offline
     XMLEntityResolverChain entityResolverChain = new XMLEntityResolverChain();
     entityResolverChain.addEntityResolver(inlineEntityResolver);
-    entityResolverChain.addEntityResolver((XMLEntityResolver)valInfo.getURIResolver());
+    entityResolverChain.addEntityResolver(valInfo.getURIResolver());
     //entityResolverChain.addEntityResolver(XMLCatalogResolver.getInstance());
     entityResolverChain.addEntityResolver(new FileEntityResolver());
 	

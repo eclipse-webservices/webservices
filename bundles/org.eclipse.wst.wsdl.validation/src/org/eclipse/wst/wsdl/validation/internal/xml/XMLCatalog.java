@@ -38,15 +38,15 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XMLCatalog implements IXMLCatalog
 {
-  private final static String _APACHE_FEATURE_CONTINUE_AFTER_FATAL_ERROR = "http://apache.org/xml/features/continue-after-fatal-error";
+  //private final static String _APACHE_FEATURE_CONTINUE_AFTER_FATAL_ERROR = "http://apache.org/xml/features/continue-after-fatal-error";
 
   private final static String _APACHE_FEATURE_NAMESPACE_PREFIXES = "http://xml.org/sax/features/namespace-prefixes";
 
   private final static String _APACHE_FEATURE_NAMESPACES = "http://xml.org/sax/features/namespaces";
 
-  private final static String _APACHE_FEATURE_VALIDATION = "http://xml.org/sax/features/validation";
+  //private final static String _APACHE_FEATURE_VALIDATION = "http://xml.org/sax/features/validation";
 
-  private final static String _APACHE_FEATURE_VALIDATION_SCHEMA = "http://apache.org/xml/features/validation/schema";
+  //private final static String _APACHE_FEATURE_VALIDATION_SCHEMA = "http://apache.org/xml/features/validation/schema";
   
   private final static String FILE_PROTOCOL = "file:///";
 

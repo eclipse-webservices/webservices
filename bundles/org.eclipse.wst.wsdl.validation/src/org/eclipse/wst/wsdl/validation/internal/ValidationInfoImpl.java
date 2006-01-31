@@ -33,7 +33,7 @@ public class ValidationInfoImpl implements IValidationReport, ControllerValidati
   private URL validating_file_url = null;
   private boolean wsdlValid = false;
   private List messages = new Vector();
-  private List schemas = new Vector();
+  //private List schemas = new Vector();
   private List nsNoVals = new Vector();
   private MessageGenerator messagegenerator = null;
   private boolean haserrors = false;

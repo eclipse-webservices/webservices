@@ -130,7 +130,7 @@ public class ValidationController
         validateExtensionValidators(wsdldoc, valInfo, wsdlns);
       }
     }
-    return (IValidationReport)valInfo;
+    return valInfo;
   }
 
   /**

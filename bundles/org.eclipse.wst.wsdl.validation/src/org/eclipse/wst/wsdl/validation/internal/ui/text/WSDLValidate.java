@@ -56,7 +56,7 @@ public class WSDLValidate
   private static final String _UI_INVALID = "_UI_INVALID";
   private static final String _UI_ERROR_MARKER = "_UI_ERROR_MARKER";
   private static final String _UI_WARNING_MARKER = "_UI_WARNING_MARKER";
-  private static final String _ERROR_UNABLE_TO_LOAD_EXT_VALIDATOR = "_ERROR_UNABLE_TO_LOAD_EXT_VALIDATOR";
+  //private static final String _ERROR_UNABLE_TO_LOAD_EXT_VALIDATOR = "_ERROR_UNABLE_TO_LOAD_EXT_VALIDATOR";
   
   private static final String PARAM_WSDL11VAL = "-wsdl11v";
   private static final String PARAM_EXTVAL = "-extv";

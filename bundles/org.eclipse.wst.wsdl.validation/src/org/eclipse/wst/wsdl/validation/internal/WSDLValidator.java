@@ -23,7 +23,6 @@ import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.http.HTTPValidator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.mime.MIMEValidator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.soap.SOAPValidator;
-import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.InlineSchemaValidator;
 
 import com.ibm.wsdl.Constants;
 

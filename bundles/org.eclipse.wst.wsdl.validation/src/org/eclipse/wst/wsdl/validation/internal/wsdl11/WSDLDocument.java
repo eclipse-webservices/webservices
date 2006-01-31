@@ -640,8 +640,8 @@ public class WSDLDocument
     {
       BindingInput bindingInput = bindingOperation.getBindingInput();
       BindingOutput bindingOutput = bindingOperation.getBindingOutput();
-      String inputName = (bindingInput != null ? bindingInput.getName() : null);
-      String outputName = (bindingOutput != null ? bindingOutput.getName() : null);
+      //String inputName = (bindingInput != null ? bindingInput.getName() : null);
+      //String outputName = (bindingOutput != null ? bindingOutput.getName() : null);
 
       // hack code to get at operations that are defined with the same name but different
       // inputs and outputs 

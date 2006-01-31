@@ -11,10 +11,6 @@
 
 package org.eclipse.wst.wsdl.validation.internal.eclipse;
 
-import org.apache.xerces.util.XMLGrammarPoolImpl;
-import org.apache.xerces.xni.grammars.Grammar;
-import org.apache.xerces.xni.grammars.XMLGrammarDescription;
-import org.eclipse.wst.wsdl.validation.internal.Constants;
 
 
 /**

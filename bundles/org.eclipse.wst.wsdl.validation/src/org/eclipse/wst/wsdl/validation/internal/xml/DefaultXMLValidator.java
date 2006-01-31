@@ -263,7 +263,7 @@ public class DefaultXMLValidator implements IXMLValidator
       parserfactory.setFeature(_APACHE_FEATURE_NAMESPACES, true);
 
       saxParser = parserfactory.newSAXParser();
-      SchemaStringHandler handler = new SchemaStringHandler(uri);
+      SchemaStringHandler handler = new SchemaStringHandler();
       
       saxParser.parse(inputSource, handler);
     }
@@ -491,12 +491,7 @@ public class DefaultXMLValidator implements IXMLValidator
   {
     private final String XMLNS = "xmlns";
 	  private final String TARGETNAMESPACE = "targetNamespace";
-    private String baselocation = null;
-
-    public SchemaStringHandler(String baselocation)
-    {
-      this.baselocation = baselocation;
-    }
+	  
     /**
      * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
      *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
