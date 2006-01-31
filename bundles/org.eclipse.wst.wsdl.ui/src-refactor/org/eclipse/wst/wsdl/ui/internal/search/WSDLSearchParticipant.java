@@ -30,12 +30,21 @@ public class WSDLSearchParticipant extends XMLSearchParticipant {
 	private static String ID = "org.eclipse.wst.wsdl.search.WSDLSearchParticipant";
 	private static String XSD_PARTICIPANNT_ID = "org.eclipse.wst.xsd.search.XSDSearchParticipant";
 
-
 	
-	public  boolean initialize(SearchPattern pattern, String[] contentTypes){
-		
-		super.initialize(pattern, contentTypes);
-		id = ID;
+	public WSDLSearchParticipant()
+	{
+	  super();
+      id = ID;
+	}
+	
+	public String[] getSupportedContentTypes()
+	{
+	  String[] result = { "org.eclipse.wst.wsdl.wsdlsource" };
+	  return result;
+	}
+	
+	public boolean isApplicable(SearchPattern pattern)
+	{
 		if(pattern instanceof XMLComponentSearchPattern ){
 			XMLComponentSearchPattern componentPattern = (XMLComponentSearchPattern)pattern;
 			String namespace = componentPattern.getMetaName().getNamespace();
@@ -45,9 +54,8 @@ public class WSDLSearchParticipant extends XMLSearchParticipant {
 			}
 		}
 		return false;
-	}
-
-
+	}	
+	
 	public ComponentSearchContributor getSearchContributor() {
 
 		return new WSDLSearchContributor();
