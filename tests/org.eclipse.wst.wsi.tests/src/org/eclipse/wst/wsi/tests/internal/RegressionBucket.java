@@ -9,6 +9,12 @@
 *******************************************************************************/
 package org.eclipse.wst.wsi.tests.internal;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 /**
@@ -22,10 +28,29 @@ public class RegressionBucket extends TestSuite {
 	  public static Test suite() 
 	  {
 	    TestSuite suite= new TestSuite("Regression Bucket");
-	    suite.addTest(new TestSuite(WSDLConformanceSSBPTest.class));
-	    suite.addTest(new TestSuite(WSDLConformanceAPTest.class));
+	    if (tadIsAvailable(WSITestToolsProperties.SSBP_ASSERTION_FILE))
+	      suite.addTest(new TestSuite(WSDLConformanceSSBPTest.class));
+	    if (tadIsAvailable(WSITestToolsProperties.AP_ASSERTION_FILE))
+	      suite.addTest(new TestSuite(WSDLConformanceAPTest.class));
 	    
 	    return suite;
+	  }
+	  
+	  public static boolean tadIsAvailable(String tadURI)
+	  {
+		boolean result = true;
+		InputStream is = null;
+		try
+		{
+		  URL url = new URL(tadURI);
+		  is = url.openStream();
+		  is.close();
+		}
+		catch (IOException e)
+		{
+		  result = false;
+		}
+	    return result;
 	  }
 
 }
