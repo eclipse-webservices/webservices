@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.ws.explorer; singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.1.qualifier
 Bundle-ClassPath: explorer.jar,
  wsexplorer-properties.jar
 Bundle-Activator: org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin
