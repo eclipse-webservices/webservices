@@ -117,8 +117,6 @@ public class TypeFactory
     if (javaHelpers.isArray()||
     		javaHelpers.getJavaName().equals(MAP_NAME)||
     		javaHelpers.getJavaName().equals(VECTOR_NAME)||
-    		//TODO: Delete the following line when all of 108995 is fixed.
-    		javaHelpers.getJavaName().equals(SOAP_ELEMENT_NAME)||
     		javaHelpers.getJavaName().equals("java.lang.class")	) return true;
     
     return false;
@@ -203,8 +201,7 @@ public class TypeFactory
     else if (type.equals(STRING_NAME))               datatype = new StringType(); 
     else if (type.equals(VOID_NAME))                 datatype = new VoidType();
     else if (type.equals(DOM_ELEMENT_NAME))          datatype = new DomElementType();
-    //TODO: Uncomment the following line when all of 108995 is fixed.
-    //else if (type.equals(SOAP_ELEMENT_NAME))         datatype = new SOAPElementType();  
+    else if (type.equals(SOAP_ELEMENT_NAME))         datatype = new SOAPElementType();  
     else if (type.equals(BIG_DECIMAL_NAME))          datatype = new BigDecimalType();
     else if (type.equals(BIG_INTEGER_NAME))          datatype = new BigIntegerType();
     else if (type.equals(DATE_NAME))                  datatype = new DateType();
