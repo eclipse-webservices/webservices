@@ -7,14 +7,15 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
@@ -27,17 +28,15 @@ import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
+import org.eclipse.jst.ws.internal.consumption.common.FacetSetsByTemplateCache;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
-import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
-import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
-import org.eclipse.wst.common.project.facet.core.VersionFormatException;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
@@ -125,68 +124,54 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
    */
   private Set getFacetsToAdd()
   {
-    Set facets = new HashSet();
+    Set facets = null;
     
     //Set the facet runtime.
     setFacetRuntime();
+    Set[] allCombinations = FacetSetsByTemplateCache.getInstance().getFacetVersionCombinationsFromTemplate(templateId);
+    int n = allCombinations.length;
     if (facetRuntime != null)
     {
-      IFacetedProjectTemplate template = ProjectFacetsManager.getTemplate(templateId);
-      Set templateFacets = template.getFixedProjectFacets();
-      Iterator templateFacetsItr = templateFacets.iterator();
-      while (templateFacetsItr.hasNext())
+      for (int i=n-1; i>=0; i--)
       {
-        IProjectFacet fixedFacet = (IProjectFacet)templateFacetsItr.next();
-        List versions = null;
-        //IProjectFacetVersion[] versions = FacetUtils.getOrderedVersions(fixedFacet);
-        try {
-			versions = fixedFacet.getSortedVersions(false);
-		} catch (VersionFormatException e) {
-			Set versionSet = fixedFacet.getVersions();
-			Iterator itr = versionSet.iterator();
-			versions = new ArrayList();
-			while (itr.hasNext())
-			{
-				versions.add(itr.next());
-			}            
-		} catch (CoreException e) {
-			Set versionSet = fixedFacet.getVersions();
-			Iterator itr = versionSet.iterator();
-			versions = new ArrayList();
-			while (itr.hasNext())
-			{
-				versions.add(itr.next());
-			}            
-		} 
-        Iterator versionsItr = versions.iterator();
-        while(versionsItr.hasNext())
-        //for (int i=0; i<versions.length; i++)
+        //Check this template combination to see if it is compatible with both the 
+        //service/client runtime and the server runtime. If it is, choose it.
+        Set combination = allCombinations[i];
+        FacetMatcher fm = FacetUtils.match(requiredFacetVersions, combination);
+        if (fm.isMatch())
         {
-          IProjectFacetVersion pfv = (IProjectFacetVersion)versionsItr.next();
-          Set pfvs = new HashSet();
-          pfvs.add(pfv);
-          
-          //Check against RequiredFacetVersions
-          FacetMatcher fm = FacetUtils.match(requiredFacetVersions, pfvs);
-          if (fm.isMatch())
+          //Check against Runtime
+          if (FacetUtils.doesRuntimeSupportFacets(facetRuntime, combination))
           {
-            //Check against Runtime
-            if (FacetUtils.doesRuntimeSupportFacets(facetRuntime, pfvs))
-            {
-              //We have a match. Add this one to the master set.
-              facets.add(pfv);
-              break;
-            }
-          }          
-        }
+            //We have a match. Use this combination of facet versions for project creation.
+            facets = combination;
+            break;
+          }
+        }                
       }
     }
     else
     {
+      for (int i=n-1; i>=0; i--)
+      {
+        //Check this template combination to see if it is compatible with both the 
+        //service/client runtime and the server runtime. If it is, choose it.
+        Set combination = allCombinations[i];
+        FacetMatcher fm = FacetUtils.match(requiredFacetVersions, combination);
+        if (fm.isMatch())
+        {
+            //We have a match. Use this combination of facet versions for project creation.
+            facets = combination;
+            break;
+        }                
+      }      
+    }
+   
+    if (facets == null)
+    {
       facets = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
     }
- 
-    
+     
     return facets;
   }
 

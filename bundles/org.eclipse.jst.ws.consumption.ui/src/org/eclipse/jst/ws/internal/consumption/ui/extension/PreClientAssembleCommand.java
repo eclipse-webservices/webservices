@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner          
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -15,8 +18,10 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
-import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
+import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
+import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
@@ -28,7 +33,6 @@ public class PreClientAssembleCommand extends AbstractDataModelOperation
   private String                  module_;
   private String                  earProject_;
   private String                  ear_;
-  private String                  j2eeLevel_;
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
@@ -38,22 +42,24 @@ public class PreClientAssembleCommand extends AbstractDataModelOperation
 	if (earProject_==null)
 		return Status.OK_STATUS;
 	
-    //Create the client EAR module
-    CreateModuleCommand command = new CreateModuleCommand();
+    //  Create the client EAR module
+    CreateFacetedProjectCommand command = new CreateFacetedProjectCommand();
     command.setProjectName(earProject_);
-    command.setModuleName(ear_);
-    command.setModuleType(CreateModuleCommand.EAR);
+    command.setTemplateId(IJ2EEModuleConstants.JST_EAR_TEMPLATE);
+    
+    // RequiredFacetVersions is set to an empty array because we don't need to impose any additional constraints.
+    // We just want to create the highest level of EAR project that the selected server supports.
+    command.setRequiredFacetVersions(new RequiredFacetVersion[0]); 
+    
     command.setServerFactoryId(webServiceClient_.getWebServiceClientInfo().getServerFactoryId());
-    command.setServerInstanceId( webServiceClient_.getWebServiceClientInfo().getServerInstanceId() );
-    command.setJ2eeLevel(j2eeLevel_);
-    command.setEnvironment( environment );
+    command.setServerInstanceId(webServiceClient_.getWebServiceClientInfo().getServerInstanceId());
     IStatus status = command.execute( monitor, adaptable );
-    if (status.getSeverity()==Status.ERROR)
+    if (status.getSeverity() == Status.ERROR)
     {
       environment.getStatusHandler().reportError( status );
       return status;
-    }     
-    
+    }        
+
     
     //Associate the client module and service EAR
     AssociateModuleWithEARCommand associateCommand = new AssociateModuleWithEARCommand();
@@ -89,12 +95,6 @@ public class PreClientAssembleCommand extends AbstractDataModelOperation
   public void setEar( String ear )
   {
     ear_ = ear;  
-  }
-  
- 
-  public void setJ2eeLevel( String j2eeLevel )
-  {
-    j2eeLevel_ = j2eeLevel;  
   }
   
   public void setWebService( IWebServiceClient webServiceClient )

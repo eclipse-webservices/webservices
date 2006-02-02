@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -14,6 +17,7 @@ package org.eclipse.jst.ws.internal.consumption.common;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -123,30 +127,106 @@ public class FacetUtils
     
   }
   
-  public static Set getTemplates(RequiredFacetVersion[] requiredFacetVersions)
+  public static IRuntime getFacetRuntimeForProject(String projectName)
   {
-    
-    //Get the templates that support the actions
-    Set templates = new HashSet();
-    
-    for( Iterator itr = ProjectFacetsManager.getTemplates().iterator(); itr.hasNext(); )
+    IProject project = ProjectUtilities.getProject(projectName);
+    if (project!=null && project.exists())
     {
-        final IFacetedProjectTemplate template = (IFacetedProjectTemplate) itr.next();
-        String templateId = template.getId();
-        if (templateId.indexOf("ear") == -1 && templateId.indexOf("wst.web") == -1) //Don't include the EARs!!
+      try
+      {
+        IFacetedProject fproject = ProjectFacetsManager.create(project);
+        if (fproject != null)
         {
-          //TODO final Set initial = template.getInitialProjectFacets(); 
-          Set initial = getInitialFacetVersionsFromTemplate(templateId);         
-          FacetMatcher fm = match(requiredFacetVersions, initial);
-          if (fm.isMatch())
+          return fproject.getRuntime();
+        }
+      } catch (CoreException ce)
+      {
+      }
+    }
+    
+    return null;    
+  }
+  
+  
+  /*
+   * Return the set of all possible combinations of IProjectFacetVersions. For example,
+   * If arrayOfProjectFacetVersionArrays represents an array of IProjectFacetVersions that has
+   * a structure like this:
+   * FacetA_version1, FacetA_version2
+   * FacetB_version1
+   * FacetC_version1, FacetC_version2
+   * 
+   * Then the following 4 combinations of IProjectFacetVersions will be returned:
+   * [FacetA_version1, FacetB_version1, FacetC_version1]
+   * [FacetA_version2, FacetB_version1, FacetC_version1]
+   * [FacetA_version1, FacetB_version1, FacetC_version2]
+   * [FacetA_version2, FacetB_version1, FacetC_version2]
+   * 
+   * If returnValidOnly is false, all combinations are returned. Otherwise, only valid combinations
+   * are returned.
+   */
+  public static Set[] getFacetCombinations(IProjectFacetVersion[][] arrayOfProjectFacetVersionArrays, boolean returnValidOnly)  
+  {
+    ArrayList allCombinations = new ArrayList();
+    //maxCount contains the number of versions in each array of IProjectFacetVersions.
+    //initialize counter, which will be used to navigate arrayOfProjectFacetVersionArrays.
+    int n = arrayOfProjectFacetVersionArrays.length;
+    int[] maxCount = new int[n];
+    int[] counter = new int[n];
+    for (int i=0; i<n; i++)
+    {
+      maxCount[i] = arrayOfProjectFacetVersionArrays[i].length - 1;
+      counter[i] = 0;
+    }      
+    
+    //Navigate arrayOfProjectFacetVersionArrays to create all possible combinations.
+    boolean done = false;
+    while (!done)
+    {
+      //Create a combination of size n using current values in counter.
+      //Add it to the list of all combinations, checking first for validity if returnValidOnly is true.
+      Set combination = new HashSet();
+      for (int j=0; j<n; j++)
+      {
+        IProjectFacetVersion pfv = arrayOfProjectFacetVersionArrays[j][counter[j]];
+        combination.add(pfv);
+      }
+      
+      //Check if valid.
+      if (returnValidOnly)
+      {
+        Set actions = getInstallActions(combination);
+        if( ProjectFacetsManager.check( new HashSet(), actions ).getSeverity() == IStatus.OK )        
+        {
+          allCombinations.add((combination));
+        }
+      }
+      else
+      {
+        allCombinations.add((combination));
+      }
+      
+      //Update the counters.
+      for (int p=0; p<n; p++)
+      {
+        if ( (counter[p] + 1) <= maxCount[p])
+        {
+          (counter[p])++;
+          break;
+        }
+        else
+        {
+          counter[p] = 0;
+          if (p == n-1)
           {
-            templates.add(template);
+            done = true;
           }
         }
-    }    
+      }
+    }
     
-    return templates;
-    
+    Set[] allCombinationsArray = (Set[])allCombinations.toArray(new Set[0]);    
+    return allCombinationsArray;    
   }
   
   public static Set getInitialFacetVersionsFromTemplate(String templateId)
@@ -226,7 +306,9 @@ public class FacetUtils
   public static FacetMatcher match(RequiredFacetVersion[] requiredFacetVersions, Set projectFacetVersions)
   {
     FacetMatcher fm = new FacetMatcher();
+    fm.setFacetsTested(projectFacetVersions);
     HashSet facetsToAdd = new HashSet();
+    HashSet requiredFacetVersionsToAdd = new HashSet();
     HashSet facetsThatMatched = new HashSet();
     for (int i=0; i<requiredFacetVersions.length; i++)
     {
@@ -272,29 +354,58 @@ public class FacetUtils
       if (!facetPresent)
       {
         facetsToAdd.add(rpfv);
+        requiredFacetVersionsToAdd.add(rfv);
       }
       
     }
     
     //Check if the facetsToAdd can be added
-    if (facetsToAdd.size() > 0)
+    if (requiredFacetVersionsToAdd.size() > 0)
     {
-      Set actions = getInstallActions(facetsToAdd);
-      if( ProjectFacetsManager.check( projectFacetVersions, actions ).getSeverity() == IStatus.OK )
+      //Test all possible combinations of the facets that need to be added
+      //Create an array of arrays. Each element of the array will contain the array
+      //of the permitted IProjectFacetVersions for each required facet.
+      boolean facetsCanBeAdded = false;
+      Iterator itr = requiredFacetVersionsToAdd.iterator();
+      ArrayList projectFacetVersionArrays = new ArrayList();      
+
+      while (itr.hasNext())
       {
-        //Facets can be added so there is a match
-        fm.setMatch(true);
-        fm.setFacetsThatMatched(facetsThatMatched);
-        fm.setFacetsToAdd(facetsToAdd);        
+        RequiredFacetVersion reqFacetVersion = (RequiredFacetVersion) itr.next();
+        IProjectFacetVersion[] versions = reqFacetVersion.getAllowedProjectFacetVersions();
+        if (versions != null && versions.length > 0)
+        {          
+          //Add the array of versions to the list of arrays.
+          projectFacetVersionArrays.add(versions);
+        }
       }
-      else
+      
+      IProjectFacetVersion[][] arrayOfProjectFacetVersionArrays = (IProjectFacetVersion[][])projectFacetVersionArrays.toArray(new IProjectFacetVersion[0][0]);
+      Set[] combinations = getFacetCombinations(arrayOfProjectFacetVersionArrays, false);
+      for (int i=0; i<combinations.length; i++)
+      {
+        //Check if the set can be added. If so, this is a match. Update the facet matcher and break.
+        Set actions = getInstallActions(combinations[i]);
+        if( ProjectFacetsManager.check( projectFacetVersions, actions ).getSeverity() == IStatus.OK )
+        {
+          //Facets can be added so there is a match
+          facetsCanBeAdded=true;
+          fm.setMatch(true);
+          fm.setFacetsThatMatched(facetsThatMatched);
+          fm.setFacetsToAdd(combinations[i]);
+          break;
+        }                
+      }
+      
+      
+      if (!facetsCanBeAdded)
       {
         fm.setMatch(false);
       }      
     }
     else
     {
-      //Facets can be added so there is a match
+      //There are no facets to add.
       fm.setMatch(true);
       fm.setFacetsThatMatched(facetsThatMatched);
       fm.setFacetsToAdd(facetsToAdd);
@@ -307,7 +418,8 @@ public class FacetUtils
   {
     IStatus status = Status.OK_STATUS;
     
-    Set facetsToAdd = null;
+    Set missingFacets = null;
+    Set facetsToAdd = new HashSet();
     try
     {
       IFacetedProject fProject = ProjectFacetsManager.create(project);
@@ -317,9 +429,92 @@ public class FacetUtils
         FacetMatcher projectFacetMatcher = FacetUtils.match(rfvs, projectFacetVersions);
         if (projectFacetMatcher.isMatch())
         {
-          facetsToAdd = projectFacetMatcher.getFacetsToAdd();
-          if (facetsToAdd.size() > 0)
+          missingFacets = projectFacetMatcher.getFacetsToAdd();
+          if (missingFacets.size() > 0)
           {
+            IRuntime fRuntime = null;
+            fRuntime = FacetUtils.getFacetRuntimeForProject(project.getName());
+            if (fRuntime != null)
+            {  
+              //Add the highest version supported by the runtime the project is bound to.
+              Iterator missingFacetsItr = missingFacets.iterator();
+              while (missingFacetsItr.hasNext())
+              {
+                IProjectFacet facet = ((IProjectFacetVersion)missingFacetsItr.next()).getProjectFacet();
+                //Get the highest level of this facet supported by the runtime.
+                List versions = null;
+                try {
+                    versions = facet.getSortedVersions(false);
+                } catch (VersionFormatException e) {
+                    Set versionSet = facet.getVersions();
+                    Iterator itr = versionSet.iterator();
+                    versions = new ArrayList();
+                    while (itr.hasNext())
+                    {
+                        versions.add(itr.next());
+                    }            
+                } catch (CoreException e) {
+                    Set versionSet = facet.getVersions();
+                    Iterator itr = versionSet.iterator();
+                    versions = new ArrayList();
+                    while (itr.hasNext())
+                    {
+                        versions.add(itr.next());
+                    }            
+                }
+                
+                //Iterate over the versions in descending order and pick the 
+                //first one that fRuntime supports.
+                Iterator versionsItr = versions.iterator();
+                while(versionsItr.hasNext())
+                {
+                  boolean match = false;
+                  IProjectFacetVersion pfv = (IProjectFacetVersion)versionsItr.next();
+                  Set pfvs = new HashSet();
+                  pfvs.add(pfv);
+                  
+                  //Check the required facets to see if this version of this facet is supported.
+                  for (int j=0; j<rfvs.length; j++)
+                  {
+                    RequiredFacetVersion rfv = rfvs[j];
+                    IProjectFacetVersion rpfv = rfv.getProjectFacetVersion();
+                    if (rpfv.getProjectFacet().getId().equals(pfv.getProjectFacet().getId()))
+                    {
+                      if (rpfv.getVersionString().equals(pfv.getVersionString()))
+                      {
+                        match = true;
+                      }
+                      else
+                      {
+                        if (rfv.getAllowNewer())
+                        {
+                          if (greaterThan(pfv.getVersionString(), rpfv.getVersionString()))
+                          {
+                            match = true;
+                          }
+                        }
+                      }
+                    }
+                  }
+                  
+                  if (match)
+                  {
+                    //Check against Runtime
+                    if (FacetUtils.doesRuntimeSupportFacets(fRuntime, pfvs))
+                    {
+                      //We have a match. Add this one to the master set.
+                      facetsToAdd.add(pfv);
+                      break;
+                    }
+                  }                            
+                }              
+              }
+            }
+            else
+            {
+              facetsToAdd = missingFacets;
+            }
+
             Set actions = FacetUtils.getInstallActions(facetsToAdd);
             fProject.modify(actions, monitor);
           }
@@ -491,6 +686,22 @@ public class FacetUtils
     return getRuntimes((Set[])listOfFacetSets.toArray(new Set[0]));
     
   }  
+  
+  public static boolean isFacetRuntimeSupported(RequiredFacetVersion[] requiredFacetVersions, String fRuntimeName)
+  {
+    Set fRuntimes = getRuntimes(requiredFacetVersions);
+    Iterator itr = fRuntimes.iterator();
+    while (itr.hasNext())
+    {
+      IRuntime runtime = (IRuntime)itr.next();
+      if (runtime.getName().equals(fRuntimeName))
+      {
+        return true;
+      }      
+    }
+    
+    return false;
+  }
     
   public static Set getRuntimes(Set[] facetSets)  
   {
@@ -533,7 +744,7 @@ public class FacetUtils
    * @param versionA version number of the form 1.2.3
    * @return boolean returns whether versionA is greater than versionB
    */
-  private static boolean greaterThan(String versionA, String versionB)
+  public static boolean greaterThan(String versionA, String versionB)
   {
     StringTokenizer stA = new StringTokenizer(versionA, ".");
     StringTokenizer stB = new StringTokenizer(versionB, ".");

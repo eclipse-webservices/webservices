@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -65,10 +68,10 @@ public class WebServiceRuntimeExtensionUtils2
       ClientRuntimeDescriptor desc = (ClientRuntimeDescriptor)iter.next();
       
       //Get the templates for this client runtime
-      Set templateIds = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+      Set templates = FacetMatchCache.getInstance().getTemplatesForClientRuntime(desc.getId());
       
       //Add the template ids to the list if they have not already been added
-      Iterator itr = templateIds.iterator();
+      Iterator itr = templates.iterator();
       while (itr.hasNext())
       {
         IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
@@ -614,28 +617,15 @@ public class WebServiceRuntimeExtensionUtils2
   
   public static String[] getProjectsForServiceTypeAndRuntime(String typeId, String runtimeId)
   {
-    String[] descs = getServiceRuntimesByServiceType(typeId);
     IProject[] projects = FacetUtils.getAllProjects();
     ArrayList validProjects = new ArrayList();
     
     for (int i=0; i<projects.length;i++)
     {
-      //check if this projects suits any of the service runtimes
-      for (int j=0; j<descs.length; j++)
+      if (doesServiceTypeAndRuntimeSupportProject(typeId, runtimeId, projects[i].getName()))
       {
-        ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(descs[j]);
-        RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
-        Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
-        if (facetVersions != null)
-        {
-          FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-          if (fm.isMatch())
-          {
-            validProjects.add(projects[i].getName());
-            break;
-          }
-        }
-      }
+        validProjects.add(projects[i].getName());        
+      }      
     }
     
     return (String[])validProjects.toArray(new String[0]);
@@ -645,52 +635,32 @@ public class WebServiceRuntimeExtensionUtils2
   public static boolean doesServiceTypeAndRuntimeSupportProject(String typeId, String runtimeId, String projectName)
   {
     String[] descs = getServiceRuntimesByServiceType(typeId);
-    IProject[] projects = FacetUtils.getAllProjects();
-    
-    for (int i=0; i<projects.length;i++)
+    for (int j = 0; j < descs.length; j++)
     {
-      //if this is the test project, check if this project suits any of the service runtimes
-      if (projects[i].getName().equals(projectName))
+      ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(descs[j]);
+      if (desc.getRuntime().getId().equals(runtimeId))
       {
-        for (int j = 0; j < descs.length; j++)
+        if (doesServiceRuntimeSupportProject(descs[j], projectName))
         {
-          ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(descs[j]);
-          RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
-          Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
-          if (facetVersions != null)
-          {
-            FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-            if (fm.isMatch())
-            {
-              // found a match. done.
-              return true;
-            }
-          }
+          return true;
         }
       }
     }
     
-    return false;
+    return false;    
     
   }  
   public static boolean doesServiceRuntimeSupportProject(String serviceRuntimeId, String projectName)
   {
-    IProject project = ProjectUtilities.getProject(projectName);
-    if (project==null || !project.exists())
-      return false;
-    
-    ServiceRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId);
-    RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions(); 
-    Set facetVersions = FacetUtils.getFacetsForProject(projectName);
-    if (facetVersions != null)
+    FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(false, serviceRuntimeId, projectName);
+    if (fm != null)
     {
-      FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-      if (fm.isMatch())
-      {
-        return true;
-      }
+      return fm.isMatch();
     }
-    return false;
+    else
+    {
+      return false;
+    }    
   }  
   
   /*
@@ -716,10 +686,10 @@ public class WebServiceRuntimeExtensionUtils2
       if (thisRuntimeId.equals(runtimeId))
       {
         //Get the templates for this client runtime
-        Set templateIds = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+        Set templates = FacetMatchCache.getInstance().getTemplatesForServiceRuntime(desc.getId());
         
         //Add the template ids to the list if they have not already been added
-        Iterator itr = templateIds.iterator();
+        Iterator itr = templates.iterator();
         while (itr.hasNext())
         {
           IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
@@ -750,10 +720,10 @@ public class WebServiceRuntimeExtensionUtils2
       if (thisRuntimeId.equals(runtimeId))
       {
         //Get the templates for this service runtime
-        Set templateIds = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+        Set templates = FacetMatchCache.getInstance().getTemplatesForServiceRuntime(srIds[i]);
         
         //Check if any of the template ids match the given one.
-        Iterator itr = templateIds.iterator();
+        Iterator itr = templates.iterator();
         while (itr.hasNext())
         {
           IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
@@ -772,9 +742,8 @@ public class WebServiceRuntimeExtensionUtils2
   
   public static boolean doesServiceRuntimeSupportTemplate(String serviceRuntimeId, String templateId)
   {
-    ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(serviceRuntimeId);
-    //Get the templates for this client runtime
-    Set templates = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+    //Get the templates for this service runtime
+    Set templates = FacetMatchCache.getInstance().getTemplatesForServiceRuntime(serviceRuntimeId);
     IFacetedProjectTemplate checkingTemplate = ProjectFacetsManager.getTemplate(templateId);
     return templates.contains(checkingTemplate);
   }  
@@ -1119,6 +1088,30 @@ public class WebServiceRuntimeExtensionUtils2
   }    
   
   /*
+   * Returns a set of templates supported by th given client runtime
+   * @returns Set (type: IFacetedProjectTemplate)
+   */
+  /*
+  private static Set getTemplatesForClientRuntime(String clientRuntimeId)
+  {
+    Set templates = (Set)registry.templatesByClientRuntimeId_.get(clientRuntimeId);
+    if (templates != null)
+    {
+      //Return the cached set of templates.
+      return templates;
+    }
+    else
+    {
+      //Calculate the templates, cache them for later use, and return them.
+      ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(clientRuntimeId);
+      //Set validTemplates = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+      Set validTemplates = FacetMatchCache.getInstance().getTemplates(desc.getRequiredFacetVersions());
+      registry.templatesByClientRuntimeId_.put(clientRuntimeId, validTemplates);
+      return validTemplates;
+    }
+  }
+  */
+  /*
    * Returns a list of valid faceted project template ids
    * @param clientImplId id of a WebServiceClientImpl
    * @param runtimeId id of a RuntimeDescriptor
@@ -1141,10 +1134,10 @@ public class WebServiceRuntimeExtensionUtils2
       if (thisRuntimeId.equals(runtimeId))
       {
         //Get the templates for this client runtime
-        Set templateIds = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+        Set templates = FacetMatchCache.getInstance().getTemplatesForClientRuntime(desc.getId());
         
         //Add the template ids to the list if they have not already been added
-        Iterator itr = templateIds.iterator();
+        Iterator itr = templates.iterator();
         while (itr.hasNext())
         {
           IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
@@ -1175,10 +1168,10 @@ public class WebServiceRuntimeExtensionUtils2
       if (thisRuntimeId.equals(runtimeId))
       {
         //Get the templates for this client runtime
-        Set templateIds = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+        Set templates = FacetMatchCache.getInstance().getTemplatesForClientRuntime(crIds[i]);
         
         //Check if the template ids contains the template we're checking for
-        Iterator itr = templateIds.iterator();
+        Iterator itr = templates.iterator();
         while (itr.hasNext())
         {
           IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
@@ -1194,31 +1187,13 @@ public class WebServiceRuntimeExtensionUtils2
     return false;    
   }  
   
-  
-  /*
-  public static boolean doesClientTypeAndRuntimeSupportTemplate(String clientImplId, String runtimeId, String templateId)
-  {
-    String[] templateIds = getClientProjectTemplates(clientImplId, runtimeId);
-    if (templateIds!=null)
-    {
-      for (int i=0; i<templateIds.length; i++)
-      {
-       if (templateIds[i].equals(templateId))
-       {
-         return true;
-       }
-      }
-    }
-    
-    return false;
-  }
-  */ 
-  
+
   public static boolean doesClientRuntimeSupportTemplate(String clientRuntimeId, String templateId)
   {
-    ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(clientRuntimeId);
+    //ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(clientRuntimeId);
+
     //Get the templates for this client runtime
-    Set templates = FacetUtils.getTemplates(desc.getRequiredFacetVersions());
+    Set templates = FacetMatchCache.getInstance().getTemplatesForClientRuntime(clientRuntimeId);
     IFacetedProjectTemplate checkingTemplate = ProjectFacetsManager.getTemplate(templateId);
     return templates.contains(checkingTemplate);
   }
@@ -1290,28 +1265,16 @@ public class WebServiceRuntimeExtensionUtils2
   
   public static String[] getProjectsForClientTypeAndRuntime(String typeId, String runtimeId)
   {
-    String[] descs = getClientRuntimesByType(typeId);
+    //String[] descs = getClientRuntimesByType(typeId);
     IProject[] projects = FacetUtils.getAllProjects();
     ArrayList validProjects = new ArrayList();
     
     for (int i=0; i<projects.length;i++)
     {
-      //check if this projects suits any of the client runtimes
-      for (int j=0; j<descs.length; j++)
+      if (doesClientTypeAndRuntimeSupportProject(typeId, runtimeId, projects[i].getName()))
       {
-        ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(descs[j]);
-        RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
-        Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
-        if (facetVersions != null)
-        {
-          FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-          if (fm.isMatch())
-          {
-            validProjects.add(projects[i].getName());
-            break;
-          }
-        }
-      }
+        validProjects.add(projects[i].getName());        
+      }      
     }
     
     return (String[])validProjects.toArray(new String[0]);
@@ -1321,53 +1284,35 @@ public class WebServiceRuntimeExtensionUtils2
   public static boolean doesClientTypeAndRuntimeSupportProject(String typeId, String runtimeId, String projectName)
   {
     String[] descs = getClientRuntimesByType(typeId);
-    IProject[] projects = FacetUtils.getAllProjects();
-    
-    for (int i=0; i<projects.length;i++)
+    for (int j = 0; j < descs.length; j++)
     {
-      // check if this projects suits any of the client runtimes
-      if (projects[i].getName().equals(projectName))
+      ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(descs[j]);
+      if (desc.getRuntime().getId().equals(runtimeId))
       {
-        for (int j = 0; j < descs.length; j++)
+        if (doesClientRuntimeSupportProject(descs[j], projectName))
         {
-          ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(descs[j]);
-          RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
-          Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
-          if (facetVersions != null)
-          {
-            FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-            if (fm.isMatch())
-            {
-              return true;
-            }
-          }
+          return true;
         }
       }
     }
     
     return false;
     
+    
   }  
   
   
   public static boolean doesClientRuntimeSupportProject(String clientRuntimeId, String projectName)
   {
-    IProject project = ProjectUtilities.getProject(projectName);
-    if (project==null || !project.exists())
-      return false;
-    
-    ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId);
-    RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
-    Set facetVersions = FacetUtils.getFacetsForProject(projectName);
-    if (facetVersions != null)
+    FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(true, clientRuntimeId, projectName);
+    if (fm != null)
     {
-      FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-      if (fm.isMatch())
-      {
-        return true;
-      }
-    }   
-    return false;
+      return fm.isMatch();
+    }
+    else
+    {
+      return false;
+    }
   }
   
   //Utilities used by the ServerRuntimePreferencePage

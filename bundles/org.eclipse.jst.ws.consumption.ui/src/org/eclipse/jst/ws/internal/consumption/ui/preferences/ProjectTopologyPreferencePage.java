@@ -66,7 +66,7 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     parent.setLayout( layout );
     parent.setToolTipText(WSUIPluginMessages.TOOLTIP_PTPP_PAGE);
     parent.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-    PlatformUI.getWorkbench().getHelpSystem().setHelp(parent,INFOPOP_PTPP_PAGE);    
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(parent,INFOPOP_PTPP_PAGE);  
 
     Text clientTypeLabel = new Text(parent, SWT.READ_ONLY | SWT.WRAP);
     clientTypeLabel.setText(WSUIPluginMessages.LABEL_CLIENT_TYPE_NAME);

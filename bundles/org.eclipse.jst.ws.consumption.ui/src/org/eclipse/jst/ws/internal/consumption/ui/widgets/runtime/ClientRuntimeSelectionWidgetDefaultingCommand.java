@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -37,6 +40,8 @@ import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUI
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ClientRuntimeDescriptor;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.FacetMatchCache;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -168,12 +173,19 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       {
         // Set the clientRuntime based on the runtime, server, and initial
         // selection.
-        clientRuntimeId_ = getDefaultClientRuntimeForFixedRuntimeAndServer(clientInitialProject_);
+        DefaultRuntimeTriplet drt = getDefaultClientRuntimeForFixedRuntimeAndServer(clientInitialProject_);
+        clientFacetMatcher_ = drt.getFacetMatcher();
+        clientProjectName_ = drt.getProjectName();
+        clientRuntimeId_ = drt.getRuntimeId();        
       } 
       else
       {
         // Set the runtime based on the initial selection
-        clientRuntimeId_ = getDefaultClientRuntime(clientInitialProject_);
+        DefaultRuntimeTriplet drt = getDefaultRuntime(clientInitialProject_, clientIds_.getTypeId(), true);
+        clientFacetMatcher_ = drt.getFacetMatcher();
+        clientProjectName_ = drt.getProjectName();
+        clientRuntimeId_ = drt.getRuntimeId();
+
         if (clientRuntimeId_ == null)
         {
           // return and error.
@@ -595,7 +607,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   private String getDefaultClientProjectTemplate()
   {
     String[] templates = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(clientIds_.getTypeId(), clientIds_.getRuntimeId());
-    RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRequiredFacetVersions();
     
     //Pick the Web one if it's there, otherwise pick the first one.
     //Walk the list of client project types in the project topology preference
@@ -608,35 +619,27 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
         String templateId = templates[i];
         if (templateId.equals(preferredTemplateIds[j]))
         {
-          //Calculate the facet matcher for the template so that we know 
-          //what to create and what to add during module creation.
           
-          Set facetVersions = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
-          FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
-          if (fm.isMatch())
+          boolean matches = WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportTemplate(clientRuntimeId_, templateId);
+          if (matches)
           {
-            clientFacetMatcher_ = fm;
-            return templates[i];  
+            return templates[i];            
           }
-          
         }                                    
       }      
     }
 
     
     //Didn't find a template id in the preferred list that worked. 
-    //Return the first one that is a match. Calculate the facet matcher for the template
-    //so that we know what to create and what to add during module creation.
+    //Return the first one that is a match.
     for (int j = 0; j < templates.length; j++)
     {
       String templateId = templates[j];
-      Set facetVersions = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
-      FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
-      if (fm.isMatch())
+      boolean matches = WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportTemplate(clientRuntimeId_, templateId);
+      if (matches)
       {
-        clientFacetMatcher_ = fm;
-        return templates[j];  
-      }      
+        return templates[j];            
+      }
     }
     
     //Still nothing, return the first one if available.
@@ -652,14 +655,31 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_);
     RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
     
-    //Check each project for compatibility with the clientRuntime
+    //Check each project and its facetRuntime for compatibility with the clientRuntime
     for (int i=0; i<projects.length; i++)
     {
+
       Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
+      org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = null;
+      String fRuntimeName = null;
+      fRuntime = FacetUtils.getFacetRuntimeForProject(projects[i].getName());
+      if (fRuntime != null)
+      {
+        fRuntimeName = fRuntime.getName();        
+      }              
+
       if (facetVersions != null)
       {
-        FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-        if (fm.isMatch())
+
+        //FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+        FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(true, clientRuntimeId_, projects[i].getName());
+        boolean facetRuntimeMatches = true;
+        if (fRuntimeName != null)
+        {
+          facetRuntimeMatches = FacetUtils.isFacetRuntimeSupported(rfvs, fRuntimeName);  
+        }
+        
+        if (fm.isMatch() && facetRuntimeMatches)
         {
           clientFacetMatcher_ = fm;
           return projects[i].getName();
@@ -672,7 +692,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     
   }
   
-  private String getDefaultClientRuntimeForFixedRuntimeAndServer(IProject project)
+  private DefaultRuntimeTriplet getDefaultClientRuntimeForFixedRuntimeAndServer(IProject project)
   {
     String[] clientRuntimes = WebServiceRuntimeExtensionUtils2.getClientRuntimesByType(clientIds_.getTypeId());
     ArrayList validClientRuntimes = new ArrayList();
@@ -687,16 +707,19 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
           validClientRuntimes.add(desc.getId());
           if (project != null && project.exists())
           {
-            RequiredFacetVersion[] rfv = desc.getRequiredFacetVersions();
+            //RequiredFacetVersion[] rfv = desc.getRequiredFacetVersions();
             Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
             if (facetVersions != null)
             {
-              FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+              //FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+              FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(true, clientRuntimes[i], project.getName());
               if (fm.isMatch())
               {
-                clientFacetMatcher_ = fm;
-                clientProjectName_ = project.getName();
-                return desc.getId();
+                DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+                drt.setFacetMatcher(fm);
+                drt.setProjectName(project.getName());
+                drt.setRuntimeId(desc.getId());
+                return drt;                
               }                      
             }
           }
@@ -709,119 +732,235 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     if (validClientRuntimes.size() > 0)
     {
       //We couldn't match to the initially selected project so return the first valid runtime.
-      return ((String[])validClientRuntimes.toArray(new String[0]))[0];
+      DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+      drt.setFacetMatcher(null);
+      drt.setProjectName(null);
+      drt.setRuntimeId(((String[])validClientRuntimes.toArray(new String[0]))[0]);
+      return drt;            
     }
     else
     {
       //There are no client runtimes that match the fixed runtime and server. Fall back to original algorithm
       clientIdsFixed_ = false;
-      return getDefaultClientRuntime(project);
+      return getDefaultRuntime(project, clientIds_.getTypeId(), true);
     }
   }  
-  
-  private String getDefaultClientRuntime(IProject project)
+    
+  protected DefaultRuntimeTriplet getDefaultRuntime(IProject project, String typeId, boolean isClient)
   {
-    
-
-    String[] clientRuntimes = WebServiceRuntimeExtensionUtils2.getClientRuntimesByType(clientIds_.getTypeId());
-    
-    //Check if the preferred Web service runtime works with the initially selected project.
-    PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
-    String runtimeId = context.getRuntimeId();
-    ArrayList preferredClientRuntimeIdsList = new ArrayList();
-    for (int k=0; k<clientRuntimes.length; k++ )
+    String[] runtimes = null;
+    if (isClient)
     {
-      ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimes[k]);
-      if (desc.getRuntime().getId().equals(runtimeId))
+      runtimes = WebServiceRuntimeExtensionUtils2.getClientRuntimesByType(typeId);
+    }
+    else
+    {
+      runtimes = WebServiceRuntimeExtensionUtils2.getServiceRuntimesByServiceType(typeId);
+    }
+        
+    //Split the array of service/client runtimes into one containing the preferred set and one containing the rest.
+    PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
+    String preferredRuntimeId = context.getRuntimeId();
+    ArrayList preferredRuntimeIdsList = new ArrayList();
+    ArrayList otherRuntimeIdsList = new ArrayList();
+    for (int k=0; k<runtimes.length; k++ )
+    {
+      String descRuntimeId = null;
+      if (isClient)
       {
-        preferredClientRuntimeIdsList.add(desc.getId());
+        ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(runtimes[k]);
+        descRuntimeId = desc.getRuntime().getId();
+      }
+      else
+      {
+        ServiceRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(runtimes[k]);
+        descRuntimeId = desc.getRuntime().getId();
+      }
+      
+      if (descRuntimeId.equals(preferredRuntimeId))
+      {
+        preferredRuntimeIdsList.add(runtimes[k]);
+      }
+      else
+      {
+        otherRuntimeIdsList.add(runtimes[k]);
       }
     }
-    String[] preferredClientRuntimeIds = (String[])preferredClientRuntimeIdsList.toArray(new String[0]);
+    String[] preferredRuntimeIds = (String[])preferredRuntimeIdsList.toArray(new String[0]);
+    String[] otherRuntimeIds = (String[])otherRuntimeIdsList.toArray(new String[0]);
     
+    Set facetVersions = null;
+    org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = null;
+    String fRuntimeName = null;
     
+    //If the initially selected project exists and facets can be inferred from it, look for
+    //a service/client runtime that matches the project's facets and also, if possible, its facet runtime.
+    //Preference should be given to the preferred service/client runtimes. 
     if (project != null && project.exists())
     {
-      Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
+      facetVersions = FacetUtils.getFacetsForProject(project.getName());
+      fRuntime = FacetUtils.getFacetRuntimeForProject(project.getName());
+      fRuntimeName = null;
+      if (fRuntime != null)
+      {
+        fRuntimeName = fRuntime.getName();        
+      }
+      
       if (facetVersions != null)
       {
-        for (int p = 0; p < preferredClientRuntimeIds.length; p++)
+        //1. First check to see if one of the preferred service/client runtimes matches the existing
+        //project's facets and runtime.
+        for (int p = 0; p < preferredRuntimeIds.length; p++)
         {
-          RequiredFacetVersion[] prfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(
-              preferredClientRuntimeIds[p]).getRequiredFacetVersions();
-          FacetMatcher fm = FacetUtils.match(prfv, facetVersions);
-          if (fm.isMatch())
+          RequiredFacetVersion[] prfv = null;
+          if (isClient)
           {
-            clientFacetMatcher_ = fm;
-            clientProjectName_ = project.getName();
-            return preferredClientRuntimeIds[p];
+            prfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(preferredRuntimeIds[p]).getRequiredFacetVersions();
+          }
+          else
+          {
+            prfv = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(preferredRuntimeIds[p]).getRequiredFacetVersions();
+          }
+          
+          //FacetMatcher fm = FacetUtils.match(prfv, facetVersions);
+          FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(isClient, preferredRuntimeIds[p], project.getName());
+          boolean facetRuntimeMatches = true;
+          if (fRuntimeName != null)
+          {
+            facetRuntimeMatches = FacetUtils.isFacetRuntimeSupported(prfv, fRuntimeName);  
+          }          
+          
+          if (fm.isMatch() && facetRuntimeMatches)
+          {
+            DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+            drt.setFacetMatcher(fm);
+            drt.setProjectName(project.getName());
+            drt.setRuntimeId(preferredRuntimeIds[p]);
+            return drt;
           }
         }
-      }
-    }
-    
-    //Either there was no initially selected project or the preferred
-    //runtimes did not work with the initially selected project. 
-    //If possible, pick a Web service runtime that works with the initially selected project.
-    //If the initially selected project does not work with any of the Web service runtimes, choose
-    //a runtime based on the preferred client project types.
-    
-
-    if (project != null && project.exists())
-    {
-      for (int i=0; i<clientRuntimes.length; i++)
-      {
-        RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimes[i]).getRequiredFacetVersions();
-        Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
-        if (facetVersions != null)
-        {
-          FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
-          if (fm.isMatch())
+        
+        //2. Second, check to see if one of the other clientRuntimes matches the existing
+        //project's facets and runtime.        
+        for (int i=0; i<otherRuntimeIds.length; i++)
+        {        
+          RequiredFacetVersion[] rfv = null;
+          if (isClient)
           {
-            clientFacetMatcher_ = fm;
-            clientProjectName_ = project.getName();
-            return clientRuntimes[i];
+            rfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(otherRuntimeIds[i]).getRequiredFacetVersions();  
           }
+          else
+          {
+            rfv = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(otherRuntimeIds[i]).getRequiredFacetVersions();
+          }
+          
+          FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(isClient, otherRuntimeIds[i], project.getName());
+          boolean facetRuntimeMatches = true;
+          if (fRuntimeName != null)
+          {
+            facetRuntimeMatches = FacetUtils.isFacetRuntimeSupported(rfv, fRuntimeName);  
+          }                      
+          if (fm.isMatch() && facetRuntimeMatches)
+          {
+            DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+            drt.setFacetMatcher(fm);
+            drt.setProjectName(project.getName());
+            drt.setRuntimeId(otherRuntimeIds[i]);
+            return drt;
+          }                              
         }
-      }
+        
+        //3. Third, check to see if one of the preferred clientRuntimes matches the existing
+        //project's facets.
+        for (int p = 0; p < preferredRuntimeIds.length; p++)
+        {
+            FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(isClient, preferredRuntimeIds[p], project.getName()); 
+            if (fm.isMatch())
+            {
+              DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+              drt.setFacetMatcher(fm);
+              drt.setProjectName(project.getName());
+              drt.setRuntimeId(preferredRuntimeIds[p]);
+              return drt;
+            }         
+        }
+        
+        //4. Fourth, check to see if the one the other clientRuntimes matches the existing
+        //project's facets.        
+        for (int i=0; i<otherRuntimeIds.length; i++)
+        {
+            FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(isClient, otherRuntimeIds[i], project.getName()); 
+            if (fm.isMatch())
+            {
+              DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+              drt.setFacetMatcher(fm);
+              drt.setProjectName(project.getName());
+              drt.setRuntimeId(otherRuntimeIds[i]);
+              return drt;
+            }        
+        }        
+      }            
     }
     
     //Haven't returned yet so this means that the intitially selected project cannot be used
-    //to influence the selection of the runtime. Use the preferred client project types to
-    //influence the selection of a runtime.
-    ProjectTopologyContext ptc = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
-    String[] preferredTemplateIds = ptc.getClientTypes();
+    //to influence the selection of the service/client runtime. 
     
-    for (int n=0; n<preferredTemplateIds.length; n++)
+    //If this is client defaulting, use the preferred client project types to
+    //influence the selection of a runtime.
+    if (isClient)
     {
-      String preferredTemplateId = preferredTemplateIds[n];
-      Set facetVersions = FacetUtils.getInitialFacetVersionsFromTemplate(preferredTemplateId);
-
-      for (int m=0; m<preferredClientRuntimeIds.length; m++)
+      ProjectTopologyContext ptc = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
+      String[] preferredTemplateIds = ptc.getClientTypes();
+    
+      for (int n=0; n<preferredTemplateIds.length; n++)
       {
-        //If this clientRuntime supports this template, choose it and exit.        
-        ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(preferredClientRuntimeIds[m]);
-        RequiredFacetVersion[] rfv = desc.getRequiredFacetVersions();
-        FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
-        if (fm.isMatch())
+        String preferredTemplateId = preferredTemplateIds[n];
+        //Set templateFacetVersions = FacetUtils.getInitialFacetVersionsFromTemplate(preferredTemplateId);
+
+        for (int m=0; m<preferredRuntimeIds.length; m++)
         {
-          return preferredClientRuntimeIds[m];
-        }        
+          //If this clientRuntime supports this template, choose it and exit.        
+          //ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(preferredRuntimeIds[m]);
+          boolean matches = WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportTemplate(preferredRuntimeIds[m], preferredTemplateId);
+          if (matches)
+          {
+            DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+            drt.setFacetMatcher(null);
+            drt.setProjectName(null);            
+            drt.setRuntimeId(preferredRuntimeIds[m]);
+            return drt;            
+          }        
+        }
       }
     }
     
-    //Still haven't returned. Returned the first preferred client runtime id.
-    if (preferredClientRuntimeIds.length > 0)
+    //Still haven't returned. Return the first preferred service/client runtime id.
+    if (preferredRuntimeIds.length > 0)
     {
-      return preferredClientRuntimeIds[0];
+      DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+      drt.setFacetMatcher(null);
+      drt.setProjectName(null);
+      drt.setRuntimeId(preferredRuntimeIds[0]);
+      return drt;      
     }
       
-    if (clientRuntimes.length > 0)
-      return WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimes[0]).getId();
+    if (runtimes.length > 0)
+    {
+      DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+      drt.setFacetMatcher(null);
+      drt.setProjectName(null);
+      drt.setRuntimeId(runtimes[0]);
+      return drt;
+    }
     else
-      return null;
+    {
+      DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+      drt.setFacetMatcher(null);
+      drt.setProjectName(null);
+      drt.setRuntimeId(null);
+      return drt;
+    }    
   }
-   
   /**
  * 
  * @param project
@@ -1067,63 +1206,63 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     
   }
   
-  /**
-   * This inner class is being used to pass around Web service runtime
-   * and J2EE level information.
-   * 
-   */
-  protected class WSRuntimeJ2EEType
+  protected class FacetRuntimeMatcher
   {
-    private String wsrId_;
-    private String j2eeVersionId_;
-    private String clientProjectTypeId; //only used for client-side defaulting
+    FacetMatcher facetMatcher;
+    boolean runtimeMatches;
     
-    public WSRuntimeJ2EEType()
+    public FacetMatcher getFacetMatcher()
     {
-     //making this ctor public so that subclasses can instantiate. 
-    }    
-    /**
-     * @return Returns the j2eeVersionId_.
-     */
-    public String getJ2eeVersionId()
-    {
-      return j2eeVersionId_;
+      return facetMatcher;
     }
-    /**
-     * @param versionId_ The j2eeVersionId_ to set.
-     */
-    public void setJ2eeVersionId(String versionId_)
+    public void setFacetMatcher(FacetMatcher facetMatcher)
     {
-      j2eeVersionId_ = versionId_;
+      this.facetMatcher = facetMatcher;
     }
-    /**
-     * @return Returns the wsrId_.
-     */
-    public String getWsrId()
+    public boolean isRuntimeMatches()
     {
-      return wsrId_;
+      return runtimeMatches;
     }
-    /**
-     * @param wsrId_ The wsrId_ to set.
-     */
-    public void setWsrId(String wsrId_)
+    public void setRuntimeMatches(boolean runtimeMatches)
     {
-      this.wsrId_ = wsrId_;
-    }    
+      this.runtimeMatches = runtimeMatches;
+    }   
+  }
+  
+  protected class DefaultRuntimeTriplet
+  {
+    FacetMatcher facetMatcher_;
+    String projectName_;
+    String runtimeId_;
     
-    /**
-     * @return Returns the clientProjectTypeId.
-     */
-    public String getClientProjectTypeId()
+    
+    public DefaultRuntimeTriplet()
     {
-      return clientProjectTypeId;
     }
-    /**
-     * @param clientProjectTypeId The clientProjectTypeId to set.
-     */
-    public void setClientProjectTypeId(String clientProjectTypeId)
+    
+    public FacetMatcher getFacetMatcher()
     {
-      this.clientProjectTypeId = clientProjectTypeId;
+      return facetMatcher_;
     }
+    public void setFacetMatcher(FacetMatcher facetMatcher_)
+    {
+      this.facetMatcher_ = facetMatcher_;
+    }
+    public String getProjectName()
+    {
+      return projectName_;
+    }
+    public void setProjectName(String projectName_)
+    {
+      this.projectName_ = projectName_;
+    }
+    public String getRuntimeId()
+    {
+      return runtimeId_;
+    }
+    public void setRuntimeId(String runtimeId_)
+    {
+      this.runtimeId_ = runtimeId_;
+    }        
   }
 }

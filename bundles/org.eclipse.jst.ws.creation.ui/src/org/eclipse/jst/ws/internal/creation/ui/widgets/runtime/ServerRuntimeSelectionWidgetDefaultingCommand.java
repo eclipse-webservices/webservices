@@ -7,11 +7,15 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
 import java.util.ArrayList;
 import java.util.Set;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,6 +34,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUI
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.FacetMatchCache;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
@@ -79,12 +84,19 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      if (serviceIdsFixed_)
      {
        //Set the serviceRuntime based on the runtime, server, and initial selection. 
-       serviceRuntimeId_ = getDefaultServiceRuntimeForFixedRuntimeAndServer(initialProject_);
+        DefaultRuntimeTriplet drt = getDefaultServiceRuntimeForFixedRuntimeAndServer(initialProject_);
+        serviceFacetMatcher_ = drt.getFacetMatcher();
+        serviceProjectName_ = drt.getProjectName();
+        serviceRuntimeId_ = drt.getRuntimeId(); 
      }
      else
      {
        // Set the runtime based on the initial selection
-       serviceRuntimeId_ = getDefaultServiceRuntime(initialProject_);
+       DefaultRuntimeTriplet drt = getDefaultRuntime(initialProject_, serviceIds_.getTypeId(), false);
+       serviceFacetMatcher_ = drt.getFacetMatcher();
+       serviceProjectName_ = drt.getProjectName();
+       serviceRuntimeId_ = drt.getRuntimeId();       
+
        if (serviceRuntimeId_ == null)
        {
          // return and error.
@@ -377,8 +389,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 
   private String getDefaultServiceProjectTemplate()
   {
-    String[] templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(serviceIds_.getTypeId(), serviceIds_.getRuntimeId());
-    RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_).getRequiredFacetVersions();    
+    String[] templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(serviceIds_.getTypeId(), serviceIds_.getRuntimeId());    
     
     //Pick the Web one if it's there, otherwise pick the first one.    
     for (int i=0; i<templates.length; i++)
@@ -386,17 +397,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       String templateId = templates[i];
       if (templateId.indexOf("web") != -1)
       {
-        //Calculate the facet matcher for the template so that we know 
-        //what to create and what to add during module creation.
-        
-        Set facetVersions = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
-        FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
-        if (fm.isMatch())
+        boolean matches = WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportTemplate(serviceRuntimeId_, templateId);
+        if (matches)
         {
-          serviceFacetMatcher_ = fm;
-          return templates[i];  
-        }
-        
+          return templates[i];
+        }        
       }                                    
     }
     
@@ -405,13 +410,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     for (int j = 0; j < templates.length; j++)
     {
       String templateId = templates[j];
-      Set facetVersions = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
-      FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
-      if (fm.isMatch())
+      boolean matches = WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportTemplate(serviceRuntimeId_, templateId);
+      if (matches)
       {
-        serviceFacetMatcher_ = fm;
-        return templates[j];  
-      }      
+        return templates[j];
+      }
     }
     
     //Still nothing, return the first one if available.
@@ -432,10 +435,24 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     for (int i=0; i<projects.length; i++)
     {
       Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
+      org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = null;
+      String fRuntimeName = null;
+      fRuntime = FacetUtils.getFacetRuntimeForProject(projects[i].getName());
+      if (fRuntime != null)
+      {
+        fRuntimeName = fRuntime.getName();        
+      }              
+      
       if (facetVersions != null)
       {
-        FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-        if (fm.isMatch())
+        FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(false, serviceRuntimeId_, projects[i].getName());
+        boolean facetRuntimeMatches = true;
+        if (fRuntimeName != null)
+        {
+          facetRuntimeMatches = FacetUtils.isFacetRuntimeSupported(rfvs, fRuntimeName);  
+        }
+        
+        if (fm.isMatch() && facetRuntimeMatches)
         {
           serviceFacetMatcher_ = fm;
           return projects[i].getName();
@@ -448,7 +465,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     
   }  
   
-  private String getDefaultServiceRuntimeForFixedRuntimeAndServer(IProject project)
+  private DefaultRuntimeTriplet getDefaultServiceRuntimeForFixedRuntimeAndServer(IProject project)
   {
     String[] serviceRuntimes = WebServiceRuntimeExtensionUtils2.getServiceRuntimesByServiceType(serviceIds_.getTypeId());
     ArrayList validServiceRuntimes = new ArrayList();
@@ -463,16 +480,17 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
           validServiceRuntimes.add(desc.getId());
           if (project != null && project.exists())
           {
-            RequiredFacetVersion[] rfv = desc.getRequiredFacetVersions();
             Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
             if (facetVersions != null)
             {
-              FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
+              FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(false, serviceRuntimes[i], project.getName());
               if (fm.isMatch())
               {
-                serviceFacetMatcher_ = fm;
-                serviceProjectName_ = project.getName();
-                return desc.getId();
+                DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+                drt.setFacetMatcher(fm);
+                drt.setProjectName(project.getName());
+                drt.setRuntimeId(desc.getId());
+                return drt;
               }                      
             }
           }
@@ -485,93 +503,19 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     if (validServiceRuntimes.size() > 0)
     {
       //We couldn't match to the initially selected project so return the first valid runtime.
-      return ((String[])validServiceRuntimes.toArray(new String[0]))[0];
+      DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+      drt.setFacetMatcher(null);
+      drt.setProjectName(null);
+      drt.setRuntimeId(((String[])validServiceRuntimes.toArray(new String[0]))[0]);
+      return drt;      
     }
     else
     {
-      //There are no service runtimes that match the fixed runtime and server. Fall back to original algorithm
+      //There are no service runtimes that match the fixed runtime and server. Fall back to original algorithm.
       serviceIdsFixed_ = false;
-      return getDefaultServiceRuntime(project);
+      return getDefaultRuntime(project, serviceIds_.getTypeId(), false);
     }
   }
-  
-  private String getDefaultServiceRuntime(IProject project)
-  {
-
-    String[] serviceRuntimes = WebServiceRuntimeExtensionUtils2.getServiceRuntimesByServiceType(serviceIds_.getTypeId());
-    
-    //Check if the preferred Web service runtime works with the initially selected project.
-    PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
-    String runtimeId = context.getRuntimeId();
-    String preferredServiceRuntimeId = null;
-    for (int k=0; k<serviceRuntimes.length; k++ )
-    {
-      ServiceRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimes[k]);
-      if (desc.getRuntime().getId().equals(runtimeId))
-      {
-        preferredServiceRuntimeId = desc.getId();
-        break;
-      }
-    }    
-    
-    if (preferredServiceRuntimeId != null)
-    {
-      if (project != null && project.exists())
-      {
-        RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(preferredServiceRuntimeId).getRequiredFacetVersions();
-        Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
-        if (facetVersions != null)
-        {
-          FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
-          if (fm.isMatch())
-          {
-            serviceFacetMatcher_ = fm;
-            serviceProjectName_ = project.getName();
-            return preferredServiceRuntimeId;
-          }                      
-        }
-      }
-    }
-    
-    
-    //Either there was no initially selected project or the preferred
-    //runtime did not work with the initially selected project.
-    //If possible, pick a Web service runtime that works with the initially selected project.
-    //If the initially selected project does not work with any of the Web service runtimes, pick the 
-    //preferred Web service runtime.
-    
-
-    if (project != null && project.exists())
-    {
-      for (int i=0; i<serviceRuntimes.length; i++)
-      {
-        RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimes[i]).getRequiredFacetVersions();
-        Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
-        if (facetVersions != null)
-        {
-          FacetMatcher fm = FacetUtils.match(rfv, facetVersions);
-          if (fm.isMatch())
-          {
-            serviceFacetMatcher_ = fm;
-            serviceProjectName_ = project.getName();
-            return serviceRuntimes[i];
-          }                      
-        }
-      }
-    }
-    
-    //Haven't returned yet so this means that the intitially selected project cannot be used
-    //to influence the selection of the runtime. Pick the preferred Web service runtime.
-    if (preferredServiceRuntimeId != null)
-    {
-      return preferredServiceRuntimeId;
-    }
-    
-    if (serviceRuntimes.length > 0)
-      return WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimes[0]).getId();
-    else
-      return null;
-  }  
   
   private IProject getUniqueClientEAR(String earProject, String serviceProject, String clientProjectName) {
 

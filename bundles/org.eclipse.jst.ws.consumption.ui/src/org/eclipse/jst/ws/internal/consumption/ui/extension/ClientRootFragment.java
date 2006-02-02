@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner          
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -93,8 +96,7 @@ public class ClientRootFragment extends SequenceFragment
     registry.addMapping( PreClientDevelopCommand.class, "Project", PreClientAssembleCommand.class );
     registry.addMapping( PreClientDevelopCommand.class, "Module", PreClientAssembleCommand.class );
     registry.addMapping( PreClientDevelopCommand.class, "EarProject", PreClientAssembleCommand.class );
-    registry.addMapping( PreClientDevelopCommand.class, "Ear", PreClientAssembleCommand.class );    
-    registry.addMapping( PreClientDevelopCommand.class, "J2eeLevel", PreClientAssembleCommand.class );
+    registry.addMapping( PreClientDevelopCommand.class, "Ear", PreClientAssembleCommand.class );
     
     registry.addMapping( PreClientDevelopCommand.class, "WebService", PreClientInstallCommand.class );
     registry.addMapping( PreClientDevelopCommand.class, "Project", PreClientInstallCommand.class );

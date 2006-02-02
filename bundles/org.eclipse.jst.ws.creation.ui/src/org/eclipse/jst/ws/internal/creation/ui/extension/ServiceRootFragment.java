@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -96,8 +99,7 @@ public class ServiceRootFragment extends SequenceFragment
 		registry.addMapping( PreServiceDevelopCommand.class, "Project", PreServiceAssembleCommand.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Module", PreServiceAssembleCommand.class );
 		registry.addMapping( PreServiceDevelopCommand.class, "EarProject", PreServiceAssembleCommand.class );
-  	registry.addMapping( PreServiceDevelopCommand.class, "Ear", PreServiceAssembleCommand.class );		
-		registry.addMapping( PreServiceDevelopCommand.class, "J2eeLevel", PreServiceAssembleCommand.class );
+  	registry.addMapping( PreServiceDevelopCommand.class, "Ear", PreServiceAssembleCommand.class );
 		
   	registry.addMapping( PreServiceDevelopCommand.class, "WebService", PreServiceInstallCommand.class );
 		registry.addMapping( PreServiceDevelopCommand.class, "Project", PreServiceInstallCommand.class );

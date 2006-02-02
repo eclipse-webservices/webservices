@@ -16,6 +16,7 @@ import java.util.Set;
 public class FacetMatcher
 {
   private boolean match;
+  private Set facetsTested;
   private Set facetsThatMatched;
   private Set facetsToAdd;
   
@@ -43,6 +44,15 @@ public class FacetMatcher
   {
     this.match = match;
   }
+  public Set getFacetsTested()
+  {
+    return facetsTested;
+  }
+  public void setFacetsTested(Set facetsTested)
+  {
+    this.facetsTested = facetsTested;
+  }
+  
   
 
   
