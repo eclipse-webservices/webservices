@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.xerces.util.XMLGrammarPoolImpl;
 import org.apache.xerces.xni.grammars.XMLGrammarPool;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.validation.internal.core.ValidationException;
@@ -46,10 +47,11 @@ public class Validator implements IValidator
 //    validateAction.run();
 //  }
   
-  protected void validate(IFile file, InputStream inputStream, IReporter reporter, XMLGrammarPool schemaGrammarPool)
+  protected void validate(IFile file, InputStream inputStream, IReporter reporter, XMLGrammarPool xmlGrammarPool, XMLGrammarPool xsdGrammarPool)
   {
     ValidateWSDLAction validateAction = new ValidateWSDLAction(file, false);
-    validateAction.setSchemaGrammarPool(schemaGrammarPool);
+    validateAction.setSchemaGrammarPool(xsdGrammarPool);
+    validateAction.setXMLGrammarPool(xsdGrammarPool);
     validateAction.setValidator(this);
     validateAction.setReporter(reporter);
     validateAction.setInputStream(inputStream);
@@ -61,7 +63,8 @@ public class Validator implements IValidator
    */
   public void validate(IValidationContext helper, IReporter reporter) throws ValidationException
   {
-	XMLGrammarPool grammarPool = new InlineSchemaModelGrammarPoolImpl();
+	XMLGrammarPool xsdGrammarPool = new InlineSchemaModelGrammarPoolImpl();
+	XMLGrammarPool xmlGrammarPool = new XMLGrammarPoolImpl();
 	String[] changedFiles = helper.getURIs();
     if (changedFiles != null && changedFiles.length > 0)
     {
@@ -72,7 +75,7 @@ public class Validator implements IValidator
         Object[] parms = { fileName };
         IFile file = (IFile) helper.loadModel(Helper.GET_FILE, parms);
         
-        validate(file, streamToValidate, reporter, grammarPool);
+        validate(file, streamToValidate, reporter, xmlGrammarPool, xsdGrammarPool);
         
       } else
       { for (int i = 0; i < changedFiles.length; i++)
@@ -85,7 +88,7 @@ public class Validator implements IValidator
             IFile file = (IFile) helper.loadModel(Helper.GET_FILE, parms);
             if (file != null)
             {
-              validateIfNeeded(file, helper, reporter, grammarPool);
+              validateIfNeeded(file, helper, reporter, xmlGrammarPool, xsdGrammarPool);
             }
           }
         }
@@ -98,11 +101,13 @@ public class Validator implements IValidator
       while (iter.hasNext())
       {
         IFile file = (IFile) iter.next();
-        validateIfNeeded(file, helper, reporter, grammarPool);
+        validateIfNeeded(file, helper, reporter, xmlGrammarPool, xsdGrammarPool);
       }
     }
-    grammarPool.clear();
-    grammarPool = null;
+    xsdGrammarPool.clear();
+    xmlGrammarPool.clear();
+    xsdGrammarPool = null;
+    xmlGrammarPool = null;
   }
 
   /**
@@ -110,10 +115,11 @@ public class Validator implements IValidator
    * @param reporter
    * @param ruleGroup
    */
-  protected void validate(IFile file, IReporter reporter, int ruleGroup, XMLGrammarPool schemaGrammarPool)
+  protected void validate(IFile file, IReporter reporter, int ruleGroup, XMLGrammarPool xmlGrammarPool, XMLGrammarPool xsdGrammarPool)
   {
     ValidateWSDLAction validateAction = new ValidateWSDLAction(file, false);
-    validateAction.setSchemaGrammarPool(schemaGrammarPool);
+    validateAction.setSchemaGrammarPool(xsdGrammarPool);
+    validateAction.setXMLGrammarPool(xmlGrammarPool);
     validateAction.setValidator(this);
     validateAction.run();
   }
@@ -165,14 +171,14 @@ public class Validator implements IValidator
    * @param reporter
    *          The reporter to report the validation messages.
    */
-  protected void validateIfNeeded(IFile file, IValidationContext helper, IReporter reporter, XMLGrammarPool schemaGrammarPool)
+  protected void validateIfNeeded(IFile file, IValidationContext helper, IReporter reporter, XMLGrammarPool xmlGrammarPool, XMLGrammarPool xsdGrammarPool)
   {
     //ValidatorManager mgr = ValidatorManager.getManager();
     // Pass in a "null" so that loadModel doesn't attempt to cast the result into a RefObject.
     Integer ruleGroupInt = (Integer) helper.loadModel(IRuleGroup.PASS_LEVEL, null); 
     int ruleGroup = (ruleGroupInt == null) ? IRuleGroup.PASS_FULL : ruleGroupInt.intValue();
 
-    validate(file, reporter, ruleGroup, schemaGrammarPool);
+    validate(file, reporter, ruleGroup, xmlGrammarPool, xsdGrammarPool);
   }
 
   /*
