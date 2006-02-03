@@ -24,6 +24,7 @@ import org.apache.xerces.impl.XMLErrorReporter;
 import org.apache.xerces.parsers.DOMParser;
 import org.apache.xerces.parsers.StandardParserConfiguration;
 import org.apache.xerces.xni.XNIException;
+import org.apache.xerces.xni.grammars.XMLGrammarPool;
 import org.eclipse.wst.wsdl.validation.internal.exception.ValidateWSDLException;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
@@ -124,10 +125,14 @@ public class ValidationController
     if (validateXML(valInfo, xmlValidateStream))
     {
       Document wsdldoc = getDocument(uri, wsdlValidateStream);
+
       String wsdlns = getWSDLNamespace(wsdldoc);
-      if (validateWSDL(wsdldoc, valInfo, wsdlns))
+      if(wsdlns != null)
       {
-        validateExtensionValidators(wsdldoc, valInfo, wsdlns);
+        if (validateWSDL(wsdldoc, valInfo, wsdlns))
+        {
+          validateExtensionValidators(wsdldoc, valInfo, wsdlns);
+        }
       }
     }
     return valInfo;
@@ -147,6 +152,9 @@ public class ValidationController
     if (xmlValidator instanceof DefaultXMLValidator)
     {
         ((DefaultXMLValidator)xmlValidator).setInputStream(inputStream);
+        XMLGrammarPool grammarPool = (XMLGrammarPool)valInfo.getAttribute(Constants.XML_CACHE_ATTRIBUTE);
+        if(grammarPool != null)
+          ((DefaultXMLValidator)xmlValidator).setGrammarPool(grammarPool);
     }
     //xmlValidator.setValidationInfo(valInfo);
     xmlValidator.run();
@@ -360,10 +368,10 @@ public class ValidationController
     String wsdlns = null;
     if(doc != null)
     {
-      Element definitions = doc.getDocumentElement();
-      if(definitions.getLocalName().equals("definitions"))
+      Element rootdoc = doc.getDocumentElement();
+      if(rootdoc != null)
       {
-        wsdlns = definitions.getNamespaceURI();
+        wsdlns = rootdoc.getNamespaceURI();
       }
     }
     return wsdlns;

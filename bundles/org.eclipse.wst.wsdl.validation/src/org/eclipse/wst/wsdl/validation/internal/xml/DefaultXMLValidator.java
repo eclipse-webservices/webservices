@@ -19,28 +19,28 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
-import javax.xml.parsers.FactoryConfigurationError;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.xerces.impl.XMLErrorReporter;
-import org.apache.xerces.jaxp.SAXParserFactoryImpl;
 import org.apache.xerces.parsers.SAXParser;
 import org.apache.xerces.parsers.StandardParserConfiguration;
+import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.apache.xerces.xni.XNIException;
+import org.apache.xerces.xni.grammars.XMLGrammarPool;
+import org.apache.xerces.xni.parser.XMLEntityResolver;
+import org.apache.xerces.xni.parser.XMLErrorHandler;
+import org.apache.xerces.xni.parser.XMLInputSource;
+import org.apache.xerces.xni.parser.XMLParseException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
+import org.w3c.dom.DOMError;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.ibm.wsdl.Constants;
@@ -50,21 +50,6 @@ import com.ibm.wsdl.Constants;
  */
 public class DefaultXMLValidator implements IXMLValidator
 {
-  private final String _APACHE_FEATURE_CONTINUE_AFTER_FATAL_ERROR =
-    "http://apache.org/xml/features/continue-after-fatal-error";
-  private final String _APACHE_FEATURE_NAMESPACE_PREFIXES = "http://xml.org/sax/features/namespace-prefixes";
-  private final String _APACHE_FEATURE_NAMESPACES = "http://xml.org/sax/features/namespaces";
-  private final String _APACHE_FEATURE_VALIDATION = "http://xml.org/sax/features/validation";
-  private final String _APACHE_FEATURE_VALIDATION_SCHEMA = "http://apache.org/xml/features/validation/schema";
-  private final String _APACHE_PROPERTY_EXTERNAL_SCHEMALOCATION =
-    "http://apache.org/xml/properties/schema/external-schemaLocation";
-  private final String DEFINITIONS = "definitions";
-  
-  protected static final String IGNORE_ALWAYS = "IGNORE_ALWAYS";
-  protected static final String PREMATURE_EOF = "PrematureEOF";
-  
-  protected Hashtable ingoredErrorKeyTable = new Hashtable();
-
   protected String uri;
   protected URIResolver uriResolver = null;
   protected List errors = new ArrayList();
@@ -77,10 +62,7 @@ public class DefaultXMLValidator implements IXMLValidator
   protected Object[] currentMessageArguments = null;
   
   protected boolean isChildOfDoc = false;
-//  protected String wsdlNamespace = null;
-
-
-
+  protected XMLGrammarPool grammarPool = null; 
 
 /**
    * Constructor.
@@ -92,8 +74,6 @@ public class DefaultXMLValidator implements IXMLValidator
     ignoredNamespaceList.add(Constants.NS_URI_XSD_1999);
     ignoredNamespaceList.add(Constants.NS_URI_XSD_2000);
     ignoredNamespaceList.add(Constants.NS_URI_XSD_2001);
-    
-    ingoredErrorKeyTable.put(PREMATURE_EOF, IGNORE_ALWAYS);
   }
 
   /**
@@ -108,6 +88,11 @@ public class DefaultXMLValidator implements IXMLValidator
   {
   	this.uriResolver = uriResolver;
   }
+  
+  public void setGrammarPool(XMLGrammarPool grammarPool)
+  {
+	this.grammarPool = grammarPool;
+  }
 
   /**
    * @see org.eclipse.validate.wsdl.xmlconformance.IXMLValidatorAction#run()
@@ -117,8 +102,7 @@ public class DefaultXMLValidator implements IXMLValidator
     // Validate the XML file.
     try
     {
-      Reader reader1 = null; // Used for the preparse.
-      Reader reader2 = null; // Used for validation parse.
+      Reader reader1 = null; // Used for validation parse.
       
       InputSource validateInputSource; 
      
@@ -129,85 +113,31 @@ public class DefaultXMLValidator implements IXMLValidator
 
         String string = createStringForInputStream(inputStream);
         reader1 = new StringReader(string);
-        reader2 = new StringReader(string); 
           
         validateInputSource = new InputSource(inputStream);
-        validateInputSource.setCharacterStream(reader2);
+        validateInputSource.setCharacterStream(reader1);
       } else
       { validateInputSource = new InputSource(uri);
       }
       
-      preparse(uri, reader1);
-      
-      SAXParser saxparser = createSAXParser();
-      XMLConformanceDefaultHandler handler = new XMLConformanceDefaultHandler();
-
-      saxparser.setErrorHandler(handler);
-	  saxparser.setEntityResolver(handler);
-	  saxparser.setContentHandler(handler);
-      
-      saxparser.parse(validateInputSource);
-//      wsdlNamespace = handler.getWSDLNamespace();
+      XMLReader reader = createXMLReader();
+      reader.parse(validateInputSource);
     }
     catch (SAXParseException e)
     {
-      addError(e.getMessage(), e.getLineNumber(), e.getColumnNumber(), uri);
+      // No need to add an error here. SAXParseExceptions are reported by the error reporter.
     }
     catch (IOException e)
     {
+      // TODO: Log exception.
+      // System.out.println(e);
     }
     catch (Exception e)
     {
+      // TODO: Log exception.
       //System.out.println(e);
     }
   }
-
-  /**
-   * Create and configure a SAX parser.
-   * 
-   * @return The new SAX parser.
-   */
-  protected SAXParser createSAXParser()
-  {
-    SAXParser saxParser = null;
-    try
-    {
-      //SAXParserFactory parserfactory = new SAXParserFactoryImpl();
-      try
-      { MyStandardParserConfiguration configuration = new MyStandardParserConfiguration();
-        saxParser = new org.apache.xerces.parsers.SAXParser(configuration);
-        saxParser.setFeature(_APACHE_FEATURE_CONTINUE_AFTER_FATAL_ERROR, true);
-        saxParser.setFeature(_APACHE_FEATURE_NAMESPACE_PREFIXES, true);
-        saxParser.setFeature(_APACHE_FEATURE_NAMESPACES, true);
-        saxParser.setFeature(_APACHE_FEATURE_VALIDATION, true);
-        saxParser.setFeature(_APACHE_FEATURE_VALIDATION_SCHEMA, true);
-      }
-      catch (SAXNotRecognizedException e)
-      {
-      }
-      catch (SAXNotSupportedException e)
-      {
-      }
-      if (schemaLocationString.length() > 0)
-      {
-        saxParser.setProperty(_APACHE_PROPERTY_EXTERNAL_SCHEMALOCATION, schemaLocationString.toString());
-      }
-    }
-    catch (FactoryConfigurationError e)
-    {
-    }
-    catch (SAXNotRecognizedException e)
-    {
-    }
-    catch (SAXNotSupportedException e)
-    {
-    }
-//    catch (SAXException e)
-//    {
-//    }
-    return saxParser;
-  }
-
   
   final String createStringForInputStream(InputStream inputStream)
   {
@@ -232,60 +162,6 @@ public class DefaultXMLValidator implements IXMLValidator
     }
     return fileString.toString();
   }
-  
-  /**
-   * Preparse the file to find all of the namespaces that are defined in order
-   * to specify the schemalocation.
-   * 
-   * @param uri The uri of the file to parse.
-   */
-  protected void preparse(String uri, Reader characterStream)
-  {
-      javax.xml.parsers.SAXParser saxParser = null;
-    try
-    {
-        
-      InputSource inputSource; 
-      
-      if (characterStream != null)
-      {   
-          inputSource = new InputSource(uri);
-          inputSource.setCharacterStream(characterStream);
-      }
-      else
-      {
-          inputSource = new InputSource(uri);
-      }
-      
-      SAXParserFactory parserfactory = new SAXParserFactoryImpl();
-
-      parserfactory.setFeature(_APACHE_FEATURE_NAMESPACE_PREFIXES, true);
-      parserfactory.setFeature(_APACHE_FEATURE_NAMESPACES, true);
-
-      saxParser = parserfactory.newSAXParser();
-      SchemaStringHandler handler = new SchemaStringHandler();
-      
-      saxParser.parse(inputSource, handler);
-    }
-    catch (FactoryConfigurationError e)
-    {
-    }
-    catch (SAXNotRecognizedException e)
-    {
-    }
-    catch (ParserConfigurationException e)
-    {
-    }
-    catch (SAXNotSupportedException e)
-    {
-    }
-    catch (SAXException e)
-    {
-    }
-    catch (IOException e)
-    {
-    }
-  }
 
   /**
    * @see org.eclipse.validate.wsdl.xmlconformance.IXMLValidatorAction#hasErrors()
@@ -302,18 +178,10 @@ public class DefaultXMLValidator implements IXMLValidator
   {
     return errors;
   }
-
-  /**
-   * Add an error message.
-   * 
-   * @param error The error message to add.
-   * @param line The line location of the error.
-   * @param column The column location of the error.
-   * @param uri The URI of the file containing the error.
-   */
-  protected void addError(String error, int line, int column, String uri)
+  
+  public void addError(String message, int line, int column, String uri)
   {
-    errors.add(new ValidationMessageImpl(error, line, column, ValidationMessageImpl.SEV_ERROR, uri, currentErrorKey, currentMessageArguments));
+	  errors.add(new ValidationMessageImpl(message, line, column, ValidationMessageImpl.SEV_WARNING, uri, currentErrorKey, currentMessageArguments));
   }
 
   /**
@@ -393,7 +261,7 @@ public class DefaultXMLValidator implements IXMLValidator
       publicId = systemId;
     }
       
-    IURIResolutionResult result = uriResolver.resolve(null, publicId, systemId);
+    IURIResolutionResult result = uriResolver.resolve("", publicId, systemId);
     String uri = result.getPhysicalLocation();
     if (uri != null && !uri.equals(""))
     {
@@ -483,54 +351,101 @@ public class DefaultXMLValidator implements IXMLValidator
 
     return newUri.toString();
   }
-
-  /**
-   * A handler used in preparsing to get the schemaLocation string.
-   */
-  protected class SchemaStringHandler extends DefaultHandler
-  {
-    private final String XMLNS = "xmlns";
-	  private final String TARGETNAMESPACE = "targetNamespace";
-	  
-    /**
-     * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-     *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-     */
-    public void startElement(String uri, String localname, String arg2, Attributes attributes) throws SAXException
-    {
-      if (localname.equals(DEFINITIONS))
-      {
-        String targetNamespace = attributes.getValue(TARGETNAMESPACE);
-        int numAtts = attributes.getLength();
-        for (int i = 0; i < numAtts; i++)
-        {
-
-          String attname = attributes.getQName(i);
-          if (attname.startsWith(XMLNS))
-          {
-            String namespace = attributes.getValue(i);
-            if(!(namespace.equals(targetNamespace) || ignoredNamespaceList.contains(namespace)))
-            {
-              String resolvedURI = namespace;
-              setSchemaLocation(namespace, resolvedURI);
-            }
-          }
-        }
-
-      }
-      super.startElement(uri, localname, arg2, attributes);
-
-    }
-  }
-
   
-  protected class MyStandardParserConfiguration extends StandardParserConfiguration
+  protected class XMLValidatorParserConfiguration extends StandardParserConfiguration
   {
-    public MyStandardParserConfiguration()
+    public XMLErrorHandler getErrorHandler() 
     {
-    }
+	  return new XMLValidatorErrorHandler();
+	}
 
-    /* (non-Javadoc)
+	public XMLEntityResolver getEntityResolver() {
+    	return new XMLEntityResolver()
+    	  {
+
+    	   
+    	    
+    	    /* (non-Javadoc)
+    	     * @see org.apache.xerces.xni.parser.XMLEntityResolver#resolveEntity(org.apache.xerces.xni.XMLResourceIdentifier)
+    	     */
+    	    public XMLInputSource resolveEntity(XMLResourceIdentifier rid) throws XNIException, IOException
+    	    {
+//    	      XMLInputSource result = null;     
+//    	      
+//    	      // TODO cs : Lawrence's XMLConformanceDefaultHandler seems to need to ingore some entities
+//    	      // that are part of documentation etc.  I think this resolver needs to do that
+//    	      // since the XMLConformanceDefaultHandler resolver is no longer active.
+//    	      if (uriResolver != null)
+//    	      {         
+//    	        String pid = rid.getPublicId() != null ? rid.getPublicId() : rid.getNamespace();
+//    	        String systemId = uriResolver.resolve(rid.getBaseSystemId(), pid, rid.getLiteralSystemId());
+//    	        result = new XMLInputSource(rid.getPublicId(), systemId, rid.getBaseSystemId());               
+//    	      }
+//    	      return result;
+    	      
+//    	    If we're currently examining a subelement of the 
+    		  // WSDL or schema documentation element we don't want to resolve it
+    		  // as anything is allowed as a child of documentation.
+    		  if(isChildOfDoc)
+    		  {
+    		    return new XMLInputSource(rid);
+    		  }
+    		  String systemId = rid.getLiteralSystemId();
+    		  if(systemId == null)
+    		  {
+    			systemId = rid.getNamespace();
+    		  }
+    		  String publicId = rid.getPublicId();
+    	    if(publicId == null)
+    	    {
+    	      publicId = systemId;
+    	    }
+    	      
+    	    IURIResolutionResult result = uriResolver.resolve("", publicId, systemId);
+    	    String uri = result.getPhysicalLocation();
+    	    if (uri != null && !uri.equals(""))
+    	    {
+    		  try
+    		  {
+//    		    String entity = systemId;
+//    			if(publicId != null)
+//    			{
+//    			  entity = publicId;
+//    			 }
+    			URL entityURL = new URL(uri);
+    	        XMLInputSource is = new XMLInputSource(rid.getPublicId(), systemId, result.getLogicalLocation());
+    			is.setByteStream(entityURL.openStream());
+    	        if (is != null)
+    	        {
+    	          return is;
+    	        }
+    		  }
+    		  catch(Exception e)
+    		  {
+    			 // Do nothing.
+    		  }
+    	    }
+    	      // This try/catch block with the IOException is here to handle a difference
+    	      // between different versions of the EntityResolver interface.
+//    	      try
+//    	      {
+//    	        InputSource is = super.resolveEntity(publicId, systemId);
+//    	        if(is == null)
+//    	        {
+//    	          throw new IOException();
+//    	        }
+//    	        return is;
+//    	      }
+//    	      catch(IOException e)
+//    	      {
+//    	      }
+    	      return null;
+    	    }
+    	    
+    	  }; 
+	}
+
+	/* (non-Javadoc)
      * @see org.apache.xerces.parsers.DTDConfiguration#createErrorReporter()
      */
     protected XMLErrorReporter createErrorReporter()
@@ -550,6 +465,174 @@ public class DefaultXMLValidator implements IXMLValidator
       };
     }
   }
+  
+  /**
+   * Create an XML Reader.
+   * 
+   * @return The newly created XML reader or null if unsuccessful.
+   * @throws Exception
+   */
+  protected XMLReader createXMLReader() throws Exception
+  {     
+    SAXParser reader = null;
+    try
+    {
+      reader = new org.apache.xerces.parsers.SAXParser(new XMLValidatorParserConfiguration());
+      
+      XMLConformanceDefaultHandler conformanceDefaultHandler = new XMLConformanceDefaultHandler();
+      reader.setErrorHandler(conformanceDefaultHandler);
+      reader.setContentHandler(conformanceDefaultHandler);
+      
+      reader.setProperty(org.apache.xerces.impl.Constants.XERCES_PROPERTY_PREFIX + org.apache.xerces.impl.Constants.XMLGRAMMAR_POOL_PROPERTY, grammarPool);
+      reader.setProperty(org.apache.xerces.impl.Constants.XERCES_PROPERTY_PREFIX + org.apache.xerces.impl.Constants.ENTITY_RESOLVER_PROPERTY, new MyEntityResolver(uriResolver));
+      reader.setFeature(org.apache.xerces.impl.Constants.XERCES_FEATURE_PREFIX + org.apache.xerces.impl.Constants.CONTINUE_AFTER_FATAL_ERROR_FEATURE, false);
+      reader.setFeature(org.apache.xerces.impl.Constants.SAX_FEATURE_PREFIX + org.apache.xerces.impl.Constants.NAMESPACES_FEATURE, true);
+      reader.setFeature(org.apache.xerces.impl.Constants.SAX_FEATURE_PREFIX + org.apache.xerces.impl.Constants.NAMESPACE_PREFIXES_FEATURE, true);
+	  reader.setFeature(org.apache.xerces.impl.Constants.SAX_FEATURE_PREFIX + org.apache.xerces.impl.Constants.VALIDATION_FEATURE, true);
+	  reader.setFeature(org.apache.xerces.impl.Constants.XERCES_FEATURE_PREFIX + org.apache.xerces.impl.Constants.SCHEMA_VALIDATION_FEATURE, true);
+    } 
+    catch(Exception e)
+    { 
+      // TODO: Log error.
+      //e.printStackTrace();
+    }
+    return reader;
+  } 
+  
+  /**
+   * A custom entity resolver that uses the URI resolver specified to resolve entities.
+   */
+  protected class MyEntityResolver implements XMLEntityResolver 
+  {
+    private URIResolver uriResolver;
+    
+    /**
+     * Constructor.
+     * 
+     * @param uriResolver The URI resolver to use with this entity resolver.
+     */
+    public MyEntityResolver(URIResolver uriResolver)
+    {
+      this.uriResolver = uriResolver;
+    }
+    
+    /* (non-Javadoc)
+     * @see org.apache.xerces.xni.parser.XMLEntityResolver#resolveEntity(org.apache.xerces.xni.XMLResourceIdentifier)
+     */
+    public XMLInputSource resolveEntity(XMLResourceIdentifier rid) throws XNIException, IOException
+    {
+      // If we're currently examining a subelement of the 
+	  // WSDL or schema documentation element we don't want to resolve it
+	  // as anything is allowed as a child of documentation.
+	  if(isChildOfDoc)
+	  {
+	    return new XMLInputSource(rid);
+	  }
+	  
+	  String ns = rid.getNamespace();
+	  if(ns != null && ignoredNamespaceList.contains(ns))
+	  {
+		return new XMLInputSource(rid);
+	  }
+	  
+	  String systemId = rid.getLiteralSystemId();
+	  if(systemId == null)
+	  {
+		systemId = ns;
+	  }
+	  String publicId = rid.getPublicId();
+      if(publicId == null)
+      {
+        publicId = systemId;
+      }
+      
+      IURIResolutionResult result = uriResolver.resolve("", publicId, systemId);
+      String uri = result.getPhysicalLocation();
+      if (uri != null && !uri.equals(""))
+      {
+	    try
+	    {
+		  URL entityURL = new URL(uri);
+          XMLInputSource is = new XMLInputSource(rid.getPublicId(), systemId, result.getLogicalLocation());
+		  is.setByteStream(entityURL.openStream());
+          if (is != null)
+          {
+            return is;
+          }
+	    }
+	    catch(Exception e)
+	    {
+		  // No need to report this error. Simply continue below.
+	    }
+      }
+      return null;
+    }
+  }  
+  
+  protected class XMLValidatorErrorHandler implements XMLErrorHandler
+  {
+	  
+	/**
+	   * Add an error message.
+	   * 
+	   * @param error The error message to add.
+	   * @param line The line location of the error.
+	   * @param column The column location of the error.
+	   * @param uri The URI of the file containing the error.
+	   */
+	private void addValidationMessage(String key, XMLParseException exception, int severity)
+	{
+		if (severity == DOMError.SEVERITY_WARNING)
+        {
+			errors.add(new ValidationMessageImpl(exception.getLocalizedMessage(), exception.getLineNumber(), exception.getColumnNumber(), ValidationMessageImpl.SEV_WARNING, uri, key, currentMessageArguments));
+        }
+        else
+        {
+        	errors.add(new ValidationMessageImpl(exception.getLocalizedMessage(), exception.getLineNumber(), exception.getColumnNumber(), ValidationMessageImpl.SEV_ERROR, uri, key, currentMessageArguments));
+        }
+	  
+	}
+
+	public void error(String domain, String key, XMLParseException exception) throws XNIException 
+	{
+		addValidationMessage(key, exception, DOMError.SEVERITY_ERROR);
+		
+	}
+
+	public void fatalError(String domain, String key, XMLParseException exception) throws XNIException 
+	{
+		addValidationMessage(key, exception, DOMError.SEVERITY_FATAL_ERROR);
+		
+	}
+
+	public void warning(String domain, String key, XMLParseException exception) throws XNIException 
+	{
+		addValidationMessage(key, exception, DOMError.SEVERITY_WARNING);
+		
+	}
+	  
+  }
+  
+  protected class MyXMLErrorReporter extends XMLErrorReporter
+  {
+
+	public XMLErrorHandler getErrorHandler() {
+		// TODO Auto-generated method stub
+		return new XMLValidatorErrorHandler();
+	}
+
+	/* (non-Javadoc)
+       * @see org.apache.xerces.impl.XMLErrorReporter#reportError(java.lang.String, java.lang.String, java.lang.Object[], short)
+       */
+      public void reportError(String domain, String key, Object[] arguments,
+          short severity) throws XNIException
+      {
+        currentErrorKey = key;
+        currentMessageArguments = arguments;
+        super.reportError(domain, key, arguments, severity);
+      }
+    }
+    
   
   
 }

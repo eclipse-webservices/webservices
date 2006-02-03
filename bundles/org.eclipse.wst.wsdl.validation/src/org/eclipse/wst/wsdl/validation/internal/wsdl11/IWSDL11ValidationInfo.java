@@ -118,5 +118,12 @@ public interface IWSDL11ValidationInfo
    * @return The schema cache if one is specified, null otherwise.
    */
   public XMLGrammarPool getSchemaCache();
+  
+  /**
+   * Get the XML cache if one is specified.
+   * 
+   * @return The XML cache if one is specified, null otherwise.
+   */
+  public XMLGrammarPool getXMLCache();
 }
 

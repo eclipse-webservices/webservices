@@ -23,6 +23,7 @@ import javax.wsdl.Definition;
 import javax.wsdl.Import;
 import javax.wsdl.WSDLException;
 
+import org.apache.xerces.xni.grammars.XMLGrammarPool;
 import org.apache.xerces.xs.XSModel;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult;
@@ -30,6 +31,7 @@ import org.eclipse.wst.wsdl.validation.internal.util.ErrorMessage;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.XSDValidator;
 import org.eclipse.wst.wsdl.validation.internal.xml.AbstractXMLConformanceFactory;
+import org.eclipse.wst.wsdl.validation.internal.xml.DefaultXMLValidator;
 import org.eclipse.wst.wsdl.validation.internal.xml.IXMLValidator;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalogResolver;
 import org.w3c.dom.Document;
@@ -152,7 +154,14 @@ public class ImportHolder implements Comparable
   {
     IXMLValidator xmlValidator = AbstractXMLConformanceFactory.getInstance().getXMLValidator();
     xmlValidator.setFile(uri);
+    xmlValidator.setURIResolver(valinfo.getURIResolver());
     //xmlValidator.setValidationInfo(valInfo);
+    if(xmlValidator instanceof DefaultXMLValidator)
+    {
+    	XMLGrammarPool grammarPool = valinfo.getXMLCache();
+        if(grammarPool != null)
+          ((DefaultXMLValidator)xmlValidator).setGrammarPool(grammarPool);
+    }
     xmlValidator.run();
     // if there are no xml conformance problems go on to check the wsdl stuff
     if (xmlValidator.hasErrors())

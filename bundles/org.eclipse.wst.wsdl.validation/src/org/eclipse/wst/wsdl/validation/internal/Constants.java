@@ -41,4 +41,10 @@ public interface Constants
    * inline schema validation.
    */
   public final static String XMLSCHEMA_CACHE_ATTRIBUTE = "http://www.eclipse.org/webtools/wsdl/schemacache";
+  
+  /**
+   * The WSDL schema cache attribute allows an XMLGrammarPool object to be set for use in 
+   * XML conformance validation.
+   */
+  public final static String XML_CACHE_ATTRIBUTE = "http://www.eclipse.org/webtools/wsdl/xmlcache";
 }

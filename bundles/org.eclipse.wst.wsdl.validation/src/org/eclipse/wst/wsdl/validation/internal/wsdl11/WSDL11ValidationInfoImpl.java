@@ -178,4 +178,13 @@ public class WSDL11ValidationInfoImpl implements IWSDL11ValidationInfo
 	return grammarPool;
   }
   
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo#getXMLCache()
+   */
+  public XMLGrammarPool getXMLCache() 
+  {
+	XMLGrammarPool grammarPool = (XMLGrammarPool)valinfo.getAttribute(Constants.XML_CACHE_ATTRIBUTE);
+	return grammarPool;
+  }
+  
 }
