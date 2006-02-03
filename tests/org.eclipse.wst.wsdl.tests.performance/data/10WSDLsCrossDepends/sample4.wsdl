@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="sample" targetNamespace="http://www.example.org/sample4" xmlns:tns="http://www.example.org/sample4" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
 <wsdl:import namespace="http://www.example.org/sample2" location="sample2.wsdl"/>
-<wsdl:import namespace="http://www.example.org/sample2" location="./sample2.wsdl"/>
+<wsdl:import namespace="http://www.example.org/sample3" location="./sample3.wsdl"/>
 <wsdl:import namespace="http://www.example.org/sample7" location=".\sample7.wsdl"/>
 <wsdl:types>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/sample4">

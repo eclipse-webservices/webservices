@@ -2,7 +2,7 @@
 <wsdl:definitions name="sample" targetNamespace="http://www.example.org/sample1" xmlns:tns="http://www.example.org/sample1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
 <wsdl:import namespace="http://www.example.org/sample8" location="sample8.wsdl"/>
 <wsdl:import namespace="http://www.example.org/sample7" location="./sample7.wsdl"/>
-<wsdl:import namespace="http://www.example.org/sample8" location=".\sample8.wsdl"/>
+<wsdl:import namespace="http://www.example.org/sample9" location=".\sample9.wsdl"/>
 <wsdl:types>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/sample1">
 <xsd:element name="NewOperationResponse" type="xsd:string"/><xsd:element name="NewOperationRequest" type="xsd:string"/></xsd:schema>
