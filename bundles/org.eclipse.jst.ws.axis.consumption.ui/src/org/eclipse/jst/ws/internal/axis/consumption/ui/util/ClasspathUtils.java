@@ -48,11 +48,7 @@ public class ClasspathUtils {
 	
 	// workaround for Axis-2146 - lower case list of JARs that may include javax.activation.DataHandler
 	private static String[] JARLIST = new String[] {
-		  "activation.jar",
-		  "geronimo-spec-activation-1.0.2-rc3.jar",
-		  "geronimo-spec-j2ee-1.4-rc3.jar",
-		  "geronimo-spec-activation-1.0.2-rc4.jar",
-		  "geronimo-spec-j2ee-1.4-rc4.jar"
+		  "activation.jar"
 	  };
 
 	private ClasspathUtils() {
