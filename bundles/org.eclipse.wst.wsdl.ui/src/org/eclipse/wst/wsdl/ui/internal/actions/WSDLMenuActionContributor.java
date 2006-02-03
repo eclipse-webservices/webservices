@@ -58,6 +58,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.CreateWSDLElementHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
+import org.eclipse.wst.wsdl.ui.internal.widgets.NewComponentDialog;
 import org.eclipse.wst.wsdl.ui.internal.widgets.NewComponentWithChildDialog;
 import org.eclipse.wst.wsdl.ui.internal.wizards.BindingWizard;
 import org.eclipse.wst.wsdl.ui.internal.wizards.PortWizard;
@@ -334,7 +335,15 @@ public class WSDLMenuActionContributor implements IMenuActionContributor
 		menu.add(deleteAtion);
 		deleteAtion.setEnabled(isEditable);
     }
-       
+    
+    // Allow Rename through a dialog mechanism.....  This should be changed when
+    // direct editing is ready
+    if (object instanceof WSDLElement && isEditable) {
+    	RenameDialogAction renameDialog = new RenameDialogAction((WSDLElement) object);
+    	if (renameDialog.showRenameDialog())
+    		menu.add(renameDialog);
+    }
+    
     // insertion point for popupMenus extension
     menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
   }
@@ -1144,5 +1153,104 @@ class GenerateBindingContentAction extends Action
 		WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
 		wizardDialog.create();
 		wizardDialog.open();	
+	}
+}
+
+//This is a temporary class to allow renaming.  This should be replaced when direct
+//renaming is ready
+class RenameDialogAction extends Action {
+	private WSDLElement element;
+	private String defaultName = "NewName";
+	private List usedNames = new ArrayList();
+	private boolean useSmartRename = false;
+	private boolean showDialog = false;
+	
+	public RenameDialogAction(WSDLElement selection) {
+		setText(WSDLEditorPlugin.getWSDLString("_UI_ACTION_RENAME"));
+		element = selection;
+		initialize();
+	}
+	
+	public void run() {
+		String result;
+
+		NewComponentDialog dialog = new NewComponentDialog(WSDLEditorPlugin.getShell(), WSDLEditorPlugin.getWSDLString("_UI_ACTION_RENAME"), defaultName, usedNames);
+		int rc = dialog.createAndOpen();
+		if (rc == IDialogConstants.OK_ID)
+		{
+		  result = dialog.getName();
+		  if (useSmartRename) {
+		  	SmartRenameAction smartRename = new SmartRenameAction(element, result);	
+		  	smartRename.run();
+		  }
+		  else {
+		  	RenameAction rename = new RenameAction(element, result);
+		  	rename.run();
+		  }
+		}
+	}
+	
+	public void initialize() {
+		if (element instanceof Fault) {
+			usedNames = NameUtil.getUsedFaultNames((Operation) ((Fault) element).eContainer());
+			defaultName = ((Fault) element).getName();
+			
+			showDialog = true;
+			useSmartRename = true;
+		}
+		else if (element instanceof Message) {
+			usedNames = NameUtil.getUsedMessageNames(element.getEnclosingDefinition());
+			defaultName = ((Message) element).getQName().getLocalPart();
+			
+			showDialog = true;
+			useSmartRename = true;
+		}
+		else if (element instanceof Operation) {
+			usedNames = NameUtil.getUsedOperationNames((PortType) ((Operation) element).eContainer());		
+			defaultName = ((Operation) element).getName();
+			
+			showDialog = true;
+			useSmartRename = true;
+		}
+		else if (element instanceof Part) {
+			usedNames = NameUtil.getUsedPartNames((Message) ((Part) element).eContainer());			
+			defaultName = ((Part) element).getName();
+			
+			showDialog = true;
+			useSmartRename = true;
+		}
+		else if (element instanceof PortType) {
+			usedNames = NameUtil.getUsedPortTypeNames(element.getEnclosingDefinition());
+			defaultName = ((PortType) element).getQName().getLocalPart();
+			
+			showDialog = true;
+			useSmartRename = false;
+		}
+		else if (element instanceof Port) {
+			usedNames = NameUtil.getUsedPortNames((Service) ((Port) element).eContainer());
+			defaultName = ((Port) element).getName();
+			
+			showDialog = true;
+			useSmartRename = true;
+		}
+		else if (element instanceof Binding) {
+			usedNames = NameUtil.getUsedBindingNames(element.getEnclosingDefinition());			
+			defaultName = ((Binding) element).getQName().getLocalPart();
+			
+			showDialog = true;
+			useSmartRename = false;
+		}
+		else if (element instanceof Service) {
+			usedNames = NameUtil.getUsedServiceNames(element.getEnclosingDefinition());
+			defaultName = ((Service) element).getQName().getLocalPart();
+			
+			showDialog = true;
+			useSmartRename = false;
+		}
+		usedNames.remove(defaultName);
+	}
+	
+	public boolean showRenameDialog() {
+		return showDialog;
 	}
 }

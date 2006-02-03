@@ -55,6 +55,7 @@ public class ValidateWSDLAction extends ValidateAction
   private InputStream inputStream = null;
   
   private XMLGrammarPool schemaGrammarPool = null;
+  private XMLGrammarPool xmlGrammarPool = null;
   
   private static ResourceBundle wsdlActionRB = ResourceBundle.getBundle("org.eclipse.wst.wsdl.ui.internal.validation.validatewsdlui");
   /**
@@ -71,6 +72,11 @@ public class ValidateWSDLAction extends ValidateAction
   public void setSchemaGrammarPool(XMLGrammarPool grammarPool)
   {
 	this.schemaGrammarPool = grammarPool;
+  }
+  
+  public void setXMLGrammarPool(XMLGrammarPool grammarPool)
+  {
+	this.xmlGrammarPool = grammarPool;
   }
 
 
@@ -89,6 +95,7 @@ public class ValidateWSDLAction extends ValidateAction
       {
         WSDLValidator wsdlValidator = WSDLValidator.getInstance();
         wsdlValidator.setAttribute(Constants.XMLSCHEMA_CACHE_ATTRIBUTE, schemaGrammarPool);
+        wsdlValidator.setAttribute(Constants.XML_CACHE_ATTRIBUTE, xmlGrammarPool);
         clearMarkers(file);
         IValidationReport valReport = null;
 
@@ -112,6 +119,7 @@ public class ValidateWSDLAction extends ValidateAction
         }
         // Need to remove the grammar pool when finished validating.
         wsdlValidator.setAttribute(Constants.XMLSCHEMA_CACHE_ATTRIBUTE, null);
+        wsdlValidator.setAttribute(Constants.XML_CACHE_ATTRIBUTE, null);
         
         validationOutcome.isWSDLValid = valReport.isWSDLValid();
         validationOutcome.isValid = !valReport.hasErrors();
