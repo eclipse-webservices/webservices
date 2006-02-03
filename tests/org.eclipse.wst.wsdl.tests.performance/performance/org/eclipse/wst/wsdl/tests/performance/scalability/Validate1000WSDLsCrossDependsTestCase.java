@@ -13,6 +13,8 @@ package org.eclipse.wst.wsdl.tests.performance.scalability;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.wst.common.tests.performance.internal.scalability.RunValidatorTestCase;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 
 public class Validate1000WSDLsCrossDependsTestCase extends RunValidatorTestCase
 {
@@ -28,6 +30,8 @@ public class Validate1000WSDLsCrossDependsTestCase extends RunValidatorTestCase
 	
 	protected void setUp() throws Exception
 	{
+		WSPlugin.getDefault().getWSIAPContext().updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
+		WSPlugin.getDefault().getWSISSBPContext().updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
 	    IProject project = createProject("sp");
 	    String bundleId = getBundleId();
 	    for(int i = 1; i < 1000; i++)
