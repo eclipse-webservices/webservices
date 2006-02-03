@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060202   119780 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
@@ -34,7 +37,7 @@ public class PersistentProjectTopologyContext extends PersistentContext implemen
         sb.append(" ");
       sb.append(ids[i]);
     }
-    setDefault(PREFERENCE_CLIENT_TYPES, sb.toString());
+    setDefaultStringIfNoDefault(PREFERENCE_CLIENT_TYPES, sb.toString());
     setDefault(PREFERENCE_USE_TWO_EARS, ProjectTopologyDefaults.isUseTwoEARs());
  }
 
