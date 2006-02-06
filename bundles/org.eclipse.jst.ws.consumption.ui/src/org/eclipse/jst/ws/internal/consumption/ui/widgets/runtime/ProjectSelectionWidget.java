@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060204 124143   rsinha@ca.ibm.com - Rupam Kuehner          
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -598,29 +601,26 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   {
     earProject_.removeAll();
     String projectName = moduleProject_.getText();
+    setEarProjectItems();
     if (projectName != null && projectName.length() > 0)
     {
       IProject proj = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+      
       if (proj.exists())
       {
+        
         IVirtualComponent[] ears = J2EEUtils.getReferencingEARComponents(proj);
         if (ears != null && ears.length > 0)
         {
-          for (int i = 0; i < ears.length; i++)
-          {
-            earProject_.add(ears[i].getName());
-          }
-          earProject_.select(0);
+          earProject_.setText(ears[0].getName());
           return;
         }
+        
       }
       
+     
       String earName = projectName + "EAR";
       earProject_.setText(earName);      
-    }
-    else
-    {
-      setEarProjectItems();
     }
   }
 
@@ -720,9 +720,39 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     if (needEAR_ && (earText==null || earText.length()==0))
     {
       if (isClient_)
+      {
         return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_CLIENT_EAR_EMPTY, new String[]{""} ) );
+      }
       else
-        return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_SERVICE_EAR_EMPTY, new String[]{""} ) );      
+      {
+        return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_SERVICE_EAR_EMPTY, new String[]{""} ) );
+      }      
+    }
+    
+    //If the project and EAR both exist and the project is not already associated with the EAR, ensure
+    //they can be associated.
+    if (needEAR_)
+    {
+      IProject p = ProjectUtilities.getProject(projectText.trim());
+      IProject ep = ProjectUtilities.getProject(earText.trim());
+      if (p.exists() && ep.exists())
+      {
+        if (!J2EEUtils.isComponentAssociated(ep,p))
+        {
+          IStatus associateStatus = J2EEUtils.canAssociateProjectToEAR(p, ep);
+          if (associateStatus.getSeverity() == IStatus.ERROR)
+          {
+            if (isClient_)
+            {
+              return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_CLIENT_CANNOT_ASSOCIATE, new String[]{p.getName(), ep.getName(), associateStatus.getMessage()} ) );
+            }
+            else
+            {
+              return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_SERVICE_CANNOT_ASSOCIATE, new String[]{p.getName(), ep.getName(), associateStatus.getMessage()} ) );
+            }                  
+          }
+        }
+      }
     }
     
     return finalStatus;

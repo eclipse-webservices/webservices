@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner          
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -238,6 +241,16 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     clientWidget_.setClientEarProjectName(name);  
   }    
   
+  public void setInstallService(boolean b)
+  {
+    runtimeWidget_.setInstall(b);
+  }  
+  
+  public void setInstallClient(boolean b)
+  {
+    clientWidget_.setInstallClient(b);
+  }  
+  
   private class TextModifyListener implements ModifyListener 
   {
   	public void modifyText(ModifyEvent e)
@@ -285,7 +298,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     }
     else if ( projectStatus.getSeverity()== Status.ERROR) {
       finalStatus = projectStatus;
-    }
+    }    
     
     String projectName = projectWidget_.getProjectName();
     if (projectName != null && projectName.length()>0)
@@ -351,40 +364,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
         
       }
     }    
-    /*
-    //Validate service side server target and J2EE level
-	ValidationUtils valUtils = new ValidationUtils();
-	String serviceEARName  = projectWidget_.getEarProjectName();
-	String serviceProjName = projectWidget_.getProjectName();
-	String serviceServerFactoryId = runtimeWidget_.getTypeRuntimeServer().getServerId();
-	String serviceJ2EElevel = runtimeWidget_.getJ2EEVersion();
-  String serviceComponentName = projectWidget_.getComponentName();
-  String serviceEARComponentName = projectWidget_.getEarComponentName();
-	IStatus serviceProjectStatus = valUtils.validateProjectTargetAndJ2EE(serviceProjName,serviceComponentName, serviceEARName, serviceEARComponentName, serviceServerFactoryId, serviceJ2EElevel);
-	if(serviceProjectStatus.getSeverity()==Status.ERROR)
-	{
-		finalStatus = serviceProjectStatus;
-	}
-    
-    //Ensure the service project type (Web/EJB) is valid
-    if (serviceProjName!=null && serviceProjName.length()>0)
-    {
-      IProject serviceProj = ProjectUtilities.getProject(serviceProjName);
-      if (serviceProj.exists())
-      {
-        if (serviceComponentName!=null && serviceComponentName.length()>0)
-        {
-          String compTypeId = J2EEUtils.getComponentTypeId(serviceProj);
-          if (!compTypeId.equals(projectWidget_.getComponentType()))
-          {
-        	//Construct the error message
-        	String compTypeLabel = getCompTypeLabel(projectWidget_.getComponentType()); 
-        	finalStatus = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_INVALID_PROJECT_TYPE,new String[]{serviceProjName, compTypeLabel}) );        	        	
-          }
-        }
-      }
-    }
-    */
+
     if (isClientWidgetVisible_) 
     {
 	    String clientEARName   = clientWidget_.getClientEarProjectName();
@@ -415,7 +395,20 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
 	    }         
       
     }
-    
+
+    //If finalStatus is still OK, check if there are any warnings.
+    if (finalStatus.getSeverity()!=Status.ERROR)
+    {
+      if( serviceStatus.getSeverity() == Status.WARNING )
+      {
+        finalStatus = serviceStatus;
+      }
+      else if (clientStatus.getSeverity() == Status.WARNING)
+      {
+        finalStatus = serviceStatus;
+      }        
+    }
+
     return finalStatus;
   }
   

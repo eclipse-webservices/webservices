@@ -7,6 +7,9 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060204  124143   rsinha@ca.ibm.com - Rupam Kuehner     
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -24,8 +28,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
@@ -39,7 +45,9 @@ import org.eclipse.jst.j2ee.ejb.SessionType;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
+import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
@@ -52,6 +60,7 @@ import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.server.core.IModule;
@@ -925,14 +934,150 @@ public final class J2EEUtils {
 		}
             
 	}
+    
+    /*
+     * Determines whether project can be associated with earProject.
+     * @returns IStatus of OK if the project is a Web project, EJB project, or AppClient
+     * project that can be associated with the EAR project. 
+     * Returns IStatus with an ERROR severity if the project is a Web project, 
+     * EJB project, or AppClient project that cannot be associated with the EAR project. 
+     * When an IStatus of severity ERROR is returned, the IStatus' message will contain the 
+     * lowest J2EE level that this project requires on an EAR.
+     * Returns an IStatus with severity OK if project is not recognized as a Web, EJB, or
+     * AppClient project or if earProject is not recognized as an EAR project.
+     */
+    public static IStatus canAssociateProjectToEAR(IProject project, IProject earProject)
+    {
+      //If project contains the web, ejb, or appclient facet, and earProject contains the 
+      //ear facet, return whether or not the facet versions are such that the project
+      //can be added to the ear.      
+
+      IStatus status = Status.OK_STATUS;
+      boolean isWeb = isWebComponent(project);
+      boolean isEJB = isEJBComponent(project);
+      boolean isAppClient = isAppClientComponent(project);
+      boolean isEAR = isEARComponent(earProject);
+      if ((isWeb || isEJB || isAppClient) && isEAR)
+      {        
+        try
+        {
+          IFacetedProject fProject = ProjectFacetsManager.create(project);
+          IFacetedProject fEarProject = ProjectFacetsManager.create(earProject);
+          
+          IProjectFacet earPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_EAR_MODULE);
+          IProjectFacetVersion earPfv = fEarProject.getInstalledVersion(earPf);
+          String earVersion = earPfv.getVersionString();
+          
+          String webVersion = null;
+          String ejbVersion = null;
+          String acVersion = null;
+            
+          if (isWeb)
+          {
+            IProjectFacet webPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_WEB_MODULE);
+            IProjectFacetVersion webPfv = fProject.getInstalledVersion(webPf);
+            webVersion = webPfv.getVersionString();
+          }
+          else if (isEJB)            
+          {
+            IProjectFacet ejbPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_EJB_MODULE);
+            IProjectFacetVersion ejbPfv = fProject.getInstalledVersion(ejbPf);
+            ejbVersion = ejbPfv.getVersionString();
+          }
+          else if (isAppClient)
+          {
+            IProjectFacet acPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_APPCLIENT_MODULE);
+            IProjectFacetVersion acPfv = fProject.getInstalledVersion(acPf);
+            acVersion = acPfv.getVersionString();
+          } 
+          
+          if ((isWeb && webVersion.equals(J2EEVersionConstants.VERSION_2_2_TEXT)) ||
+              (isEJB && ejbVersion.equals(J2EEVersionConstants.VERSION_1_1_TEXT)) ||
+              (isAppClient && acVersion.equals(J2EEVersionConstants.VERSION_1_2_TEXT))
+              )
+          {
+            if (!greaterThanOrEqualTo(earVersion, J2EEVersionConstants.VERSION_1_2_TEXT))
+            {
+              status = StatusUtils.errorStatus(J2EEVersionConstants.VERSION_1_2_TEXT);
+            }            
+          }
+          else if ((isWeb && webVersion.equals(J2EEVersionConstants.VERSION_2_3_TEXT)) ||
+              (isEJB && ejbVersion.equals(J2EEVersionConstants.VERSION_2_0_TEXT)) ||
+              (isAppClient && acVersion.equals(J2EEVersionConstants.VERSION_1_3_TEXT))
+                )
+            {
+              if (!greaterThanOrEqualTo(earVersion, J2EEVersionConstants.VERSION_1_3_TEXT))
+              {
+                status = StatusUtils.errorStatus(J2EEVersionConstants.VERSION_1_3_TEXT);
+              }            
+            }          
+          else if ((isWeb && webVersion.equals(J2EEVersionConstants.VERSION_2_4_TEXT)) ||
+              (isEJB && ejbVersion.equals(J2EEVersionConstants.VERSION_2_1_TEXT)) ||
+              (isAppClient && acVersion.equals(J2EEVersionConstants.VERSION_1_4_TEXT))
+                )
+            {
+              if (!greaterThanOrEqualTo(earVersion, J2EEVersionConstants.VERSION_1_4_TEXT))
+              {
+                status = StatusUtils.errorStatus(J2EEVersionConstants.VERSION_1_4_TEXT);
+              }            
+            }                    
+        } catch (CoreException ce)
+        {
+          //If facet API throws a CoreException when trying to create an IFacetedProject from 
+          //an IProject, an OK Status will be returned and clients of this utility method
+          //won't raise a validation error.
+        }         
+      }
+
+      return status;
+    }
 
 	
+    /*
+     * @param versionA version number of the form 1.2.3
+     * @param versionA version number of the form 1.2.3
+     * @return boolean returns whether versionA is greater than or equal to versionB
+     */
+    private static boolean greaterThanOrEqualTo(String versionA, String versionB)
+    {
+      if (versionA.equals(versionB))
+      {
+        return true;
+      }
+      else
+      {
+        StringTokenizer stA = new StringTokenizer(versionA, ".");
+        StringTokenizer stB = new StringTokenizer(versionB, ".");
 
+        int sizeA = stA.countTokens();
+        int sizeB = stB.countTokens();
+
+        int size;
+        if (sizeA < sizeB)
+        {
+          size = sizeA;
+        } 
+        else
+          size = sizeB;
+
+        for (int i = 0; i < size; i++)
+        {
+          int a = Integer.parseInt(stA.nextToken());
+          int b = Integer.parseInt(stB.nextToken());
+          if (a != b)
+          {
+            return a > b;
+          }
+        }
+
+        return sizeA > sizeB;
+      }
+    }
 	
 	/**
-	 * @param project
-	 * @return
-	 */
+   * @param project
+   * @return
+   */
 	public static IPath getWebInfPath(IProject project){
 		
 		IVirtualComponent component = ComponentCore.createComponent(project);

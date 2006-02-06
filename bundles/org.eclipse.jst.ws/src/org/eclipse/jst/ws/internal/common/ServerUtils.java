@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060204  124408   rsinha@ca.ibm.com - Rupam Kuehner          
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -743,4 +746,37 @@ public final class ServerUtils {
       
     }      			
 	}
+    
+  /*
+   * Returns a non-stub runtime if one is available for the the given server type.
+   * @param serverFactoryId - server type id
+   * @returns IRuntime Returns a non-stub runtime if one is available for the the given server type.
+   * Returns null otherwise.
+   */
+  public static IRuntime getNonStubRuntime(String serverFactoryId)
+  {
+    //Find a Runtime which is not a stub
+    IServerType serverType = ServerCore.findServerType(serverFactoryId);
+    IRuntime nonStubRuntime = null;
+    if (serverType != null)
+    {
+      //boolean foundNonStubRuntime = false;
+      IRuntime[] runtimes = ServerUtil.getRuntimes(null, null);
+      String serverRuntimeTypeId = serverType.getRuntimeType().getId();
+      for (int i = 0; i < runtimes.length; i++)
+      {
+        IRuntime runtime = runtimes[i];
+        String thisRuntimeTypeId = runtime.getRuntimeType().getId();
+        if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub())
+        {
+          // Found an appropriate IRuntime that is not a stub
+          //foundNonStubRuntime = true;
+          nonStubRuntime = runtime;
+          break;
+        }
+      }
+    }
+    
+    return nonStubRuntime;
+  }
 }

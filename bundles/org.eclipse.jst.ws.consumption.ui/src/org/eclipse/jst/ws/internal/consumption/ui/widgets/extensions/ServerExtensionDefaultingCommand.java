@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner          
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -15,6 +18,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -22,6 +26,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
@@ -319,6 +324,15 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
       env.getStatusHandler().reportError(status);
     }
     
+    //Determine if the selected server type has only stub runtimes associated with it.
+    //If so, set install, run, and test to false in the context.
+    IRuntime nonStubRuntime = ServerUtils.getNonStubRuntime(serverId);
+    if (nonStubRuntime == null)
+    {
+      installService = Boolean.FALSE;
+      startService = Boolean.FALSE;
+      testService = Boolean.FALSE;
+    }
     return status;
   }
 }

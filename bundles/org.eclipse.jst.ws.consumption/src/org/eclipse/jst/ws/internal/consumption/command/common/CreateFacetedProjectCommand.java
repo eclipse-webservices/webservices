@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
+ * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner      
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -26,6 +27,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.server.core.FacetUtil;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
 import org.eclipse.jst.ws.internal.consumption.common.FacetSetsByTemplateCache;
@@ -186,17 +188,27 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
     }
     else
     {
-      IServerType st = ServerCore.findServerType(serverFactoryId);
-      String runtimeTypeId = st.getRuntimeType().getId();   
-      //Find the facet runtime
-      IRuntime[] runtimes = ServerCore.getRuntimes();
-      for (int i=0; i<runtimes.length; i++)
+      //Find a non Stub runtime that matches this server type
+      IRuntime serverRuntime = ServerUtils.getNonStubRuntime(serverFactoryId);
+      if (serverRuntime != null)
       {
-        IRuntime sRuntime = runtimes[i];
-        if ( !sRuntime.isStub() && sRuntime.getRuntimeType().getId().equals(runtimeTypeId))
+        facetRuntime = FacetUtil.getRuntime(serverRuntime);
+      }
+      else
+      {
+        //Accept stub runtime.
+        IServerType st = ServerCore.findServerType(serverFactoryId);
+        String runtimeTypeId = st.getRuntimeType().getId();   
+        //Find the facet runtime
+        IRuntime[] runtimes = ServerCore.getRuntimes();
+        for (int i=0; i<runtimes.length; i++)
         {
-          facetRuntime = FacetUtil.getRuntime(sRuntime);
-        }
+          IRuntime sRuntime = runtimes[i];
+          if (sRuntime.getRuntimeType().getId().equals(runtimeTypeId))
+          {
+            facetRuntime = FacetUtil.getRuntime(sRuntime);
+          }
+        }                
       }
     }
   }

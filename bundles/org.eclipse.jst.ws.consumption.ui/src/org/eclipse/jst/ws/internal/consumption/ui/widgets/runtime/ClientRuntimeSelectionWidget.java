@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner          
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -143,6 +146,11 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
   {
 	projectWidget_.setComponentType( type );  
   }
+  
+  public void setInstallClient(boolean b)
+  {
+    runtimeWidget_.setInstall(b);
+  }
 
   private void handleUpdateProjectWidget()
   {
@@ -179,7 +187,7 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
       finalStatus = projectStatus;
     }
     else
-    {
+    {      
       String projectName = projectWidget_.getProjectName();
       if (projectName != null && projectName.length()>0)
       {
@@ -244,8 +252,17 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
           
         }
       }
+      
+      //If finalStatus is still OK, check if there are any warnings.
+      if (finalStatus.getSeverity()!=Status.ERROR)
+      {
+        if( runtimeStatus.getSeverity() == Status.WARNING )
+        {
+          finalStatus = runtimeStatus;
+        }
+      }
     }
-    
+        
     return finalStatus;    
   }
 }

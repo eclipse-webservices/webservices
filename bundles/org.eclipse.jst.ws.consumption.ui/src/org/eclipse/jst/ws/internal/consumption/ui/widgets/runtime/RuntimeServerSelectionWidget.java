@@ -7,12 +7,16 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner          
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.RuntimeServerSelectionDialog;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
@@ -34,7 +38,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
-import org.eclipse.wst.server.core.ServerUtil;
 
 
 
@@ -47,6 +50,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
   private Composite         parent_;
   private boolean           isClientContext_;
   private TypeRuntimeServer ids_;
+  private boolean           install_;
 
   private Listener           statusListener_;
   
@@ -106,6 +110,11 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
   {
     ids_ = ids;
     setLabels();
+  }
+  
+  public void setInstall(boolean b)
+  {
+    install_ = b;
   }
   
   private void setLabels()
@@ -190,35 +199,6 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     {
       status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_NO_SERVER, new String[]{ scenario } ) );      
     }
-
-    //Check if only stub runtime is available for the selected server type
-    
-    String serverFactoryId = ids_.getServerId();
-    //
-    IServerType serverType = ServerCore.findServerType(serverFactoryId);
-	if (serverType!=null) {
-		
-		//Find a Runtime which is not a stub
-		//IRuntime nonStubRuntime = null;
-		boolean foundNonStubRuntime = false;
-		IRuntime[] runtimes = ServerUtil.getRuntimes(null, null);
-		String serverRuntimeTypeId = serverType.getRuntimeType().getId();
-		for (int i = 0; i < runtimes.length; i++) {
-			IRuntime runtime = runtimes[i];
-			String thisRuntimeTypeId = runtime.getRuntimeType().getId();
-			if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub()) {
-		        //Found an appropriate IRuntime that is not a stub
-				foundNonStubRuntime=true;
-				break;
-			}
-		}				
-		
-		if (!foundNonStubRuntime)
-		{	
-			String servertypeLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverFactoryId);
-			status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_ERROR_STUB_ONLY,new String[]{servertypeLabel}) );					
-		}
-	}		
     
     //
     
@@ -242,9 +222,28 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
       }
 
     }
-	
-    
-    
+
+    if (status.getSeverity() != Status.ERROR)
+    {
+      // Check if only stub runtime is available for the selected server type
+
+      String serverFactoryId = ids_.getServerId();
+      //
+      IServerType serverType = ServerCore.findServerType(serverFactoryId);
+      if (serverType != null)
+      {
+
+        // Find a Runtime which is not a stub
+        IRuntime nonStubRuntime = ServerUtils.getNonStubRuntime(serverFactoryId);
+        if (install_ && nonStubRuntime == null)
+        {
+          String servertypeLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverFactoryId);
+          status = StatusUtils.warningStatus(NLS
+              .bind(ConsumptionUIMessages.MSG_WARN_STUB_ONLY, new String[] { servertypeLabel }));
+        }
+      }
+    }
+            
     return status;
   }
 }

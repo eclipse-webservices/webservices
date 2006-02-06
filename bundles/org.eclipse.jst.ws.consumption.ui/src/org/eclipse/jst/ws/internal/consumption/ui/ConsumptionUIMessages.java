@@ -7,6 +7,10 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060204 124143   rsinha@ca.ibm.com - Rupam Kuehner          
+ * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner     
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -80,6 +84,7 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String MSG_NO_RUNTIME;
 	public static String MSG_NO_SERVER;
 	public static String MSG_ERROR_STUB_ONLY;
+	public static String MSG_WARN_STUB_ONLY;
 	public static String MSG_SERVER_TARGET_MISMATCH;
 	public static String MSG_J2EE_MISMATCH;
 	public static String MSG_SERVICE_PROJECT_EMPTY;
@@ -320,6 +325,8 @@ public final class ConsumptionUIMessages extends NLS {
     public static String MSG_ERROR_WEB_SERVICE_CLIENTS_NOT_FOUND;
     public static String MSG_ERROR_WEB_SERVICES_NOT_FOUND;
     public static String MSG_ERROR_WSDD_NOT_FOUND;
+    public static String MSG_CLIENT_CANNOT_ASSOCIATE;
+    public static String MSG_SERVICE_CANNOT_ASSOCIATE;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, ConsumptionUIMessages.class);

@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner      *     
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -567,17 +570,27 @@ public class CreateModuleCommand extends AbstractDataModelOperation
         }
         else
         {
-          IServerType st = ServerCore.findServerType(serverFactoryId);
-          String runtimeTypeId = st.getRuntimeType().getId();   
-          //Find the facet runtime
-          IRuntime[] runtimes = ServerCore.getRuntimes();
-          for (int i=0; i<runtimes.length; i++)
+          //Find a non Stub runtime that matches this server type
+          IRuntime serverRuntime = ServerUtils.getNonStubRuntime(serverFactoryId);
+          if (serverRuntime != null)
           {
-            IRuntime sRuntime = runtimes[i];
-            if ( !sRuntime.isStub() && sRuntime.getRuntimeType().getId().equals(runtimeTypeId))
+            facetRuntime = FacetUtil.getRuntime(serverRuntime);
+          }
+          else
+          {
+            //Accept stub runtime.
+            IServerType st = ServerCore.findServerType(serverFactoryId);
+            String runtimeTypeId = st.getRuntimeType().getId();   
+            //Find the facet runtime
+            IRuntime[] runtimes = ServerCore.getRuntimes();
+            for (int i=0; i<runtimes.length; i++)
             {
-              facetRuntime = FacetUtil.getRuntime(sRuntime);
-            }
+              IRuntime sRuntime = runtimes[i];
+              if (sRuntime.getRuntimeType().getId().equals(runtimeTypeId))
+              {
+                facetRuntime = FacetUtil.getRuntime(sRuntime);
+              }
+            }                
           }
         }
       }      
