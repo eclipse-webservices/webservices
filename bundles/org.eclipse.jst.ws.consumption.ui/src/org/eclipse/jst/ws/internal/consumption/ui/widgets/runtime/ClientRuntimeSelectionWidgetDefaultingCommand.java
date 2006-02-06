@@ -10,10 +10,12 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060206 126408   rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
@@ -436,15 +438,17 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
           Set facets = FacetUtils.getFacetsForProject(project.getName());
           if (facets != null)
           {
+            Set facetsClone = new HashSet();
+            facetsClone.addAll(facets);            
             if (facetMatcher.getFacetsToAdd() != null)
             {
               Iterator itr = facetMatcher.getFacetsToAdd().iterator();
               while (itr.hasNext())
               {
-                facets.add(itr.next());  
+                facetsClone.add(itr.next());  
               }            
             }
-            server = getServerFromFacets(facets);            
+            server = getServerFromFacets(facetsClone);            
           }
         }
       }
@@ -528,15 +532,17 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
         Set facets = FacetUtils.getFacetsForProject(project.getName());
         if (facets != null)
         {
+          Set facetsClone = new HashSet();
+          facetsClone.addAll(facets);          
           if (facetMatcher.getFacetsToAdd() != null)
           {
             Iterator itr = facetMatcher.getFacetsToAdd().iterator();
             while (itr.hasNext())
             {
-              facets.add(itr.next());  
+              facetsClone.add(itr.next());  
             }            
           }
-          serverType = getServerTypeFromFacets(facets);          
+          serverType = getServerTypeFromFacets(facetsClone);          
         }
       }
     }
