@@ -18,15 +18,15 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.common.core.search.SearchEngine;
 import org.eclipse.wst.common.core.search.SearchMatch;
-import org.eclipse.wst.common.core.search.SearchParticipant;
-import org.eclipse.wst.common.core.search.SearchPlugin;
+//import org.eclipse.wst.common.core.search.SearchParticipant;
+//import org.eclipse.wst.common.core.search.SearchPlugin;
 import org.eclipse.wst.common.core.search.pattern.QualifiedName;
 import org.eclipse.wst.common.core.search.pattern.SearchPattern;
 import org.eclipse.wst.common.core.search.scope.ProjectSearchScope;
 import org.eclipse.wst.common.core.search.scope.SearchScope;
 import org.eclipse.wst.common.core.search.scope.WorkspaceSearchScope;
 import org.eclipse.wst.common.core.search.util.CollectingSearchRequestor;
-import org.eclipse.wst.wsdl.util.WSDLConstants;
+//import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.internal.search.XMLComponentDeclarationPattern;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentFinder;
 import org.eclipse.wst.xsd.ui.internal.dialogs.types.xml.XMLComponentSpecification;
@@ -49,18 +49,19 @@ public class WSDLComponentFinder extends XMLComponentFinder {
           CollectingSearchRequestor requestor = new CollectingSearchRequestor();
           
           XMLComponentDeclarationPattern pattern = new XMLComponentDeclarationPattern(new QualifiedName("*", "*"), metaName, SearchPattern.R_PATTERN_MATCH);
-          String participantId = metaName.getNamespace().equals(WSDLConstants.WSDL_NAMESPACE_URI) ?
-              "org.eclipse.wst.wsdl.ui.internal.search.WSDLSearchParticipant" :
-              "org.eclipse.wst.xsd.search.XSDSearchParticipant";
-        		  
-          SearchParticipant particpant = SearchPlugin.getDefault().getSearchParticipant(participantId);
           
-          // for now we assume that we only want to include the xsd related participant
-          // that way we don't get SearchMatches for things withing WSDL files
-          // TODO... rethink this... since folks should be capable of changing the 'xsd' search participant impl
-          // without killing this logic
-          SearchParticipant[] participants = { particpant };          
-          searchEngine.search(pattern, requestor, participants, searchScope, new NullProgressMonitor());
+          // TODO (cs) rethink the commented out code below.  Is there some reason for narrowing to list of search particpants?
+          // It seems the only benefit may be to filter our xsd component declarations that aren't defined
+          // in stand alone wsdl documents.  Perhaps it's best to do this with an additional property arg on the
+          // declaration pattern or perhaps simply doing some 'post' filtering.
+          //
+          //String participantId = metaName.getNamespace().equals(WSDLConstants.WSDL_NAMESPACE_URI) ?
+          //    "org.eclipse.wst.wsdl.search.WSDLSearchParticipant" :
+          //    "org.eclipse.wst.xsd.search.XSDSearchParticipant";        		  
+          //SearchParticipant particpant = SearchPlugin.getDefault().getSearchParticipant(participantId);         
+          //SearchParticipant[] participants = { particpant };     
+          
+          searchEngine.search(pattern, requestor, searchScope, new NullProgressMonitor());
           
           for (Iterator i = requestor.getResults().iterator(); i.hasNext(); )
           {
