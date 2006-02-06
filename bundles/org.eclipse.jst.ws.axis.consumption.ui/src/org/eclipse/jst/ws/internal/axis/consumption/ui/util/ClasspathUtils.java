@@ -48,11 +48,6 @@ public class ClasspathUtils {
 	private static String DOT_JAR = ".jar"; //$NON-NLS-1$
 	private static String JAR = "jar"; //$NON-NLS-1$
 	private static String WEBINF_LIB = "/WEB-INF/lib"; //$NON-NLS-1$
-	
-	// workaround for Axis-2146 - lower case list of JARs that may include javax.activation.DataHandler
-	private static String[] JARLIST = new String[] {
-		  "activation.jar"
-	  };
 
 	private ClasspathUtils() {
 	}
@@ -236,8 +231,7 @@ public class ClasspathUtils {
 						buildPath[i],
 						javaProject.getProject());
 				for (int j = 0; j < buildPathString.length; j++) {
-					if (!excludeJar(buildPathString[j]))
-						projectClasspath.add(buildPathString[j]);
+					projectClasspath.add(buildPathString[j]);
 				}
 			}
 		} catch (JavaModelException jme) {
@@ -254,19 +248,6 @@ public class ClasspathUtils {
 		}
 
 		return (String[]) projectClasspath.toArray(new String[projectClasspath.size()]);
-	}
-
-	// workaround for Axis-2146 - exclude JARs which may include javax.activation.DataHandler 
-	// from the classpath passed to Axis emitter
-	
-	private boolean excludeJar(String buildPathString) {
-		
-		for (int i=0; i<JARLIST.length; i++) {
-			if (buildPathString.toLowerCase().endsWith(JARLIST[i])) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private String[] classpathEntry2String(

@@ -171,7 +171,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			environment.getLog().log(ILog.ERROR, 5021, this, "execute", e);
 			status = StatusUtils.errorStatus(
 					AxisConsumptionCoreMessages.MSG_ERROR_WSDL_JAVA_GENERATE + " " //$NON-NLS-1$
-					+ e.toString());
+					+ e.toString(), e);
 			environment.getStatusHandler().reportError(status);
 		} finally {
 			deleteDir(tempOutputFile); 			

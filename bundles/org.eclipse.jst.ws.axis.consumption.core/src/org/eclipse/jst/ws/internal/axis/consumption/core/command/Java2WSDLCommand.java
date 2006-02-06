@@ -166,7 +166,7 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 			environment.getLog().log(ILog.ERROR, 5018, this, "executeAntTask", e);
 			status = StatusUtils.errorStatus(
 			AxisConsumptionCoreMessages.MSG_ERROR_JAVA_WSDL_GENERATE + " " //$NON-NLS-1$
-			+e.getCause().toString());
+			+e.getCause().toString(), e.getCause());
 			environment.getStatusHandler().reportError(status);
 			return status;
 	} finally {
