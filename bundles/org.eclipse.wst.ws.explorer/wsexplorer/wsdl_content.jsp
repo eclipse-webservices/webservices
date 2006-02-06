@@ -94,6 +94,8 @@
       var x=0;
 <%
          String platformProtocol = "platform:/resource";
+         String httpProtocol = "http://";
+         String httpsProtocol = "https://";
          wsdlURLs_.removeAllElements();
          
          Iterator ws = WebServiceFinder.instance().getWebServices();  
@@ -103,8 +105,8 @@
             WebServiceInfo wsInfo = (WebServiceInfo)ws.next();
             String url = wsInfo.getWsdlURL();
             
-           // filter wsdl URLs with same project name as selected project
-           // only look at workspace URLs returned from the web service finder
+          // filter wsdl URLs with same project name as selected project
+          // only look at workspace URLs returned from the web service finder
           if (url.startsWith(platformProtocol))
           {
              //strip off platformProtocol to look at the workspace path
@@ -115,6 +117,11 @@
              {
                wsdlURLs_.add(url);
              }
+          }
+          // also add any http or https URLs returned
+          else if (url.startsWith(httpProtocol) || url.startsWith(httpsProtocol))
+          {
+               wsdlURLs_.add(url);
           }
          }
          if (wsdlType == ActionInputs.WSDL_TYPE_SERVICE_INTERFACE)
