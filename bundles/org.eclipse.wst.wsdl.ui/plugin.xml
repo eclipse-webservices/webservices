@@ -328,7 +328,7 @@
 	 <extension   
 		point="org.eclipse.wst.common.core.searchParticipants">
 		<searchParticipant
-			id="org.eclipse.wst.wsdl.ui.internal.search.WSDLSearchParticipant"
+			id="org.eclipse.wst.wsdl.search.WSDLSearchParticipant"
 			class="org.eclipse.wst.wsdl.ui.internal.search.WSDLSearchParticipant">
 			<enablement>
 			   <or>
@@ -348,7 +348,7 @@
 	<extension
 		point="org.eclipse.ltk.core.refactoring.renameParticipants">
 		<renameParticipant
-			name="WSDL Rename Particpant"
+			name="WSDL Rename Particpant"           
 			class="org.eclipse.wst.wsdl.ui.internal.refactor.WSDLComponentRenameParticipant"
 			id="org.eclipse.wst.wsdl.ui.refactoring.WSDLComponentRenameParticipant">
 			<enablement>
