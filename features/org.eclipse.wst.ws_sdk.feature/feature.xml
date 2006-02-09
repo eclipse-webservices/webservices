@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.wst.ws_sdk.feature"
       label="org.eclipse.wst.ws_sdk.feature"
-      version="1.0.0">
+      version="1.0.100.qualifier">
 
    <description>
       %description
