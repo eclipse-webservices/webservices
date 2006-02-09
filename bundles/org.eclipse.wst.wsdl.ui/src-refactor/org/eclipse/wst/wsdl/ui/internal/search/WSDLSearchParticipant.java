@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.search;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.wst.common.core.search.SearchParticipant;
 import org.eclipse.wst.common.core.search.SearchPlugin;
@@ -43,7 +44,7 @@ public class WSDLSearchParticipant extends XMLSearchParticipant {
 	  return result;
 	}
 	
-	public boolean isApplicable(SearchPattern pattern)
+	public boolean isApplicable(SearchPattern pattern, Map searchOptions)
 	{
 		if(pattern instanceof XMLComponentSearchPattern ){
 			XMLComponentSearchPattern componentPattern = (XMLComponentSearchPattern)pattern;
@@ -61,9 +62,9 @@ public class WSDLSearchParticipant extends XMLSearchParticipant {
 		return new WSDLSearchContributor();
 	}
 	
-  public void beginSearching(SearchPattern pattern) {
+  public void beginSearching(SearchPattern pattern, Map searchOptions) {
 		
-		super.beginSearching(pattern);
+		super.beginSearching(pattern, searchOptions);
 		List patterns = new ArrayList();
 		if(pattern instanceof XMLComponentDeclarationPattern){
 			

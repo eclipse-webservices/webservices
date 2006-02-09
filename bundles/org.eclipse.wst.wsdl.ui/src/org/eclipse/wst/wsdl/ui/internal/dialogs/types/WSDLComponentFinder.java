@@ -61,7 +61,9 @@ public class WSDLComponentFinder extends XMLComponentFinder {
           //SearchParticipant particpant = SearchPlugin.getDefault().getSearchParticipant(participantId);         
           //SearchParticipant[] participants = { particpant };     
           
-          searchEngine.search(pattern, requestor, searchScope, new NullProgressMonitor());
+          // TODO (cs) I'm betting we'll need to provide some hook here to allow extenders to configure
+          // the search options.  Currently we just pass in null.
+          searchEngine.search(pattern, requestor, searchScope, null, new NullProgressMonitor());
           
           for (Iterator i = requestor.getResults().iterator(); i.hasNext(); )
           {

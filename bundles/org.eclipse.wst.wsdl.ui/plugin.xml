@@ -337,8 +337,6 @@
 				  </with>
 				</or>
 			</enablement>
-			 <contentTypeBinding
-                contentTypeId="org.eclipse.wst.wsdl.wsdlsource" />
 		</searchParticipant>
 	 </extension>
 	
