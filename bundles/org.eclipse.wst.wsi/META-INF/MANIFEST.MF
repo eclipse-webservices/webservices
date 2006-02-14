@@ -13,7 +13,7 @@ Export-Package: org.eclipse.wst.wsi.internal,
  org.eclipse.wst.wsi.internal.core.wsdl,
  org.eclipse.wst.wsi.internal.core.xml,
  org.eclipse.wst.wsi.internal.report
-Require-Bundle:  org.eclipse.wst.command.env,
+Require-Bundle: org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.core,
  org.eclipse.wst.common.uriresolver,
  org.eclipse.core.resources,
@@ -22,5 +22,6 @@ Require-Bundle:  org.eclipse.wst.command.env,
  org.wsdl4j,
  org.uddi4j,
  org.eclipse.core.runtime;bundle-version="2.1.0",
- org.apache.axis
+ org.apache.axis,
+ com.ibm.icu
 Eclipse-AutoStart: true

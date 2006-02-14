@@ -15,11 +15,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
 import sun.net.www.MessageHeader;
+
+import com.ibm.icu.text.SimpleDateFormat;
 
 /**
  * This class checks HTTP request headers about RFC 2616.

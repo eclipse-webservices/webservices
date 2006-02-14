@@ -25,14 +25,12 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
-import java.util.TimeZone;
 import java.util.Vector;
 
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
@@ -43,6 +41,9 @@ import org.eclipse.wst.wsi.internal.core.log.impl.MimePartImpl;
 import org.eclipse.wst.wsi.internal.core.log.impl.MimePartsImpl;
 import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertions;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
+
+import com.ibm.icu.text.SimpleDateFormat;
+import com.ibm.icu.util.TimeZone;
 
 /**
  * General set of utilities.

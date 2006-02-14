@@ -13,23 +13,16 @@ package org.eclipse.wst.wsi.internal.core.log;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.ToolInfo;
+import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
 import org.eclipse.wst.wsi.internal.core.common.impl.AddStyleSheetImpl;
 import org.eclipse.wst.wsi.internal.core.document.DocumentFactory;
-import org.eclipse.wst.wsi.internal.core.log.Log;
-import org.eclipse.wst.wsi.internal.core.log.LogWriter;
-import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
-import org.eclipse.wst.wsi.internal.core.log.MimeParts;
-import org.eclipse.wst.wsi.internal.core.log.RequestHandler;
 import org.eclipse.wst.wsi.internal.core.log.impl.LogImpl;
 import org.eclipse.wst.wsi.internal.core.log.impl.LogWriterImpl;
 import org.eclipse.wst.wsi.internal.core.log.impl.MessageEntryImpl;
@@ -39,6 +32,9 @@ import org.eclipse.wst.wsi.internal.core.monitor.config.MonitorConfig;
 import org.eclipse.wst.wsi.internal.core.monitor.config.impl.CommentImpl;
 import org.eclipse.wst.wsi.internal.core.monitor.config.impl.ManInTheMiddleImpl;
 import org.eclipse.wst.wsi.internal.core.util.Utils;
+
+import com.ibm.icu.text.SimpleDateFormat;
+import com.ibm.icu.util.TimeZone;
 
 /**
  * Given a list of RequestHandlers, this class builds a 
