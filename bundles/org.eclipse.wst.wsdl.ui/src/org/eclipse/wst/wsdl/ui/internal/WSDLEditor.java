@@ -282,7 +282,18 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 
 			if (object instanceof Node) {
 				node = (Node) object;
-			}
+			} 
+            else if (object instanceof String){
+              // The string is expected to be a URI fragment used to identify a WSDL element.
+              // The URI fragment should be relative to the definition being edited in this editor.
+              
+              String uriFragment = (String)object;
+              EObject eObject = getDefinition().eResource().getEObject(uriFragment);
+
+              if (eObject != null) {
+                node = ((WSDLElement)eObject).getElement();
+              }
+            }
 			else {
 				node = WSDLEditorUtil.getInstance().getNodeForObject(object);
 			}
@@ -663,14 +674,7 @@ public class WSDLEditor extends WSDLMultiPageEditorPart implements INavigationLo
 		}
 	}
 
-	public void openOnSelection(String specification) {
-		EObject eObject = getDefinition().eResource().getEObject(specification);
-		if (eObject != null) {
-			getSelectionManager().setSelection(new StructuredSelection(eObject));
-		}
-	}
-
-	public INavigationLocation createEmptyNavigationLocation() {
+    public INavigationLocation createEmptyNavigationLocation() {
 		return new InternalTextSelectionNavigationLocation(textEditor, false);
 	}
 

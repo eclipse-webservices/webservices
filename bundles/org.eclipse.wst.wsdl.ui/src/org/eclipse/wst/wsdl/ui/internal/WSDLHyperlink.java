@@ -8,97 +8,112 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.wsdl.ui.internal;
 
-import java.lang.reflect.Method;
+package org.eclipse.wst.wsdl.ui.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
+import org.eclipse.wst.xsd.ui.internal.Logger;
 
 /**
- * WSDL Hyperlink that knows how to open links from wsdl files
+ * WSDLHyperlink knows how to open links from wsdl files.
+ * 
+ * @see WSDLHyperlinkDetector
  */
-public class WSDLHyperlink implements IHyperlink {
-	private IRegion fRegion;
-	private String fResource;
-	private String fSpec;
+public class WSDLHyperlink implements IHyperlink
+{
+  private IRegion fRegion;
+  private String fResource;
+  private String fSpec;
 
-	public WSDLHyperlink(IRegion region, String resource, String spec) {
-		fRegion = region;
-		fResource = resource;
-		fSpec = spec;
-	}
+  public WSDLHyperlink(IRegion region, String resource, String spec)
+  {
+    fRegion = region;
+    fResource = resource;
+    fSpec = spec;
+  }
 
-	public IRegion getHyperlinkRegion() {
-		return fRegion;
-	}
+  public IRegion getHyperlinkRegion()
+  {
+    return fRegion;
+  }
 
-	public String getTypeLabel() {
-		return null;
-	}
+  public String getTypeLabel()
+  {
+    return null;
+  }
 
-	public String getHyperlinkText() {
-		return null;
-	}
+  public String getHyperlinkText()
+  {
+    return null;
+  }
 
-	public void open() {
-		/*
-		 * ISSUE: There are cleaner ways to find the right file based on a URI
-		 * string and cleaner ways to find which editor to open for the file.
-		 * See other IHyperlink and IHyperlinkDetector implementors for
-		 * examples.
-		 */
-		String pattern = "platform:/resource";
-		if (fResource != null && fResource.startsWith(pattern)) {
-			try {
-				Path path = new Path(fResource.substring(pattern.length()));
-				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+  public void open()
+  {
+    /*
+     * ISSUE: There are cleaner ways to find the right file based on a URI
+     * string and cleaner ways to find which editor to open for the file. See
+     * other IHyperlink and IHyperlinkDetector implementors for examples.
+     */
+    String pattern = "platform:/resource";
+    if (fResource != null && fResource.startsWith(pattern))
+    {
+      Path path = new Path(fResource.substring(pattern.length()));
+      IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 
-				IWorkbenchPage workbenchPage = WSDLEditorPlugin.getInstance().getWorkbench().getActiveWorkbenchWindow().getActivePage();
-				IEditorPart editorPart = workbenchPage.getActiveEditor();
+      IWorkbenchPage workbenchPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-				if (editorPart.getEditorInput() instanceof IFileEditorInput && ((IFileEditorInput) editorPart.getEditorInput()).getFile().equals(file)) {
-					workbenchPage.getNavigationHistory().markLocation(editorPart);
-				}
-				else {
-					try {
-						if (fResource.endsWith("xsd")) {
-							editorPart = workbenchPage.openEditor(new FileEditorInput(file), WSDLEditorPlugin.XSD_EDITOR_ID);
-						}
-						else {
-							// Since we are already in the wsdleditor
-							editorPart = workbenchPage.openEditor(new FileEditorInput(file), editorPart.getEditorSite().getId());
-						}
-					}
-					catch (PartInitException initEx) {
-					}
-				}
+      IEditorPart editorPart = workbenchPage.getActiveEditor();
 
-				/*
-				 * ISSUE: This just does not look like a safe thing to do. One
-				 * simple solution would be to have an interface for
-				 * openOnSelection that your editors can implement. Or, java
-				 * editor has something like a utility that is able to find
-				 * the offset/location for a given element in a file. Once you
-				 * have offset/location, you can just call setSelection.
-				 */
-				Class theClass = editorPart.getClass();
-				Class[] methodArgs = {String.class};
-				Method method = theClass.getMethod("openOnSelection", methodArgs);
-				Object args[] = {fSpec};
-				method.invoke(editorPart, args);
-				workbenchPage.getNavigationHistory().markLocation(editorPart);
-			}
-			catch (Exception e) {
-			}
-		}
-	}
+      // When using the cursor or the mouse to move around in the text
+      // editor, the location history is not updated, so we make sure we keep
+      // a reference to where we are. If we use other navigation means, like the
+      // outline view, this call will not add a new location history entry, as
+      // it is the same as the last location set through the outline driven
+      // navigation.
+
+      boolean sameEditor = editorPart.getEditorInput() instanceof IFileEditorInput && ((IFileEditorInput) editorPart.getEditorInput()).getFile().equals(file);
+
+      workbenchPage.getNavigationHistory().markLocation(editorPart);
+
+      if (!sameEditor)
+      {
+        try
+        {
+          // The target is in a different file, so open the target's enclosing
+          // resource in it's own editor. Let the workbench decide what editor
+          // to open based on the file's content type.
+
+          editorPart = IDE.openEditor(workbenchPage, file, true);
+        }
+        catch (PartInitException e)
+        {
+          Logger.log(Logger.WARNING_DEBUG, e.getMessage(), e);
+          return;
+        }
+      }
+
+      // Attempt to retrieve the target editor's selection manager and try to
+      // change the selection to the thing (schema component, wsdl element, etc)
+      // pointed to by fSpec.
+
+      ISelectionProvider selectionProvider = (ISelectionProvider) editorPart.getAdapter(ISelectionProvider.class);
+
+      if (selectionProvider != null)
+      {
+        selectionProvider.setSelection(new StructuredSelection(fSpec));
+      }
+    }
+  }
 }

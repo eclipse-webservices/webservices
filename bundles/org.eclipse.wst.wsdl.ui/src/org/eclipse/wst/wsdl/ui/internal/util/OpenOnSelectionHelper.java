@@ -202,12 +202,12 @@ public class OpenOnSelectionHelper extends WSDLSwitch
       }
       else if (isMatchingAttribute(WSDLConstants.ELEMENT_ATTRIBUTE))
       {
-        result = part.getElement();
+        result = part.getElementDeclaration();
       }
     }
     else if (part.getEnclosingDefinition() == definition)
     {
-      result = part.getTypeDefinition() != null ? (Object)part.getTypeDefinition() : (Object)part.getElement();
+      result = part.getTypeDefinition() != null ? (Object)part.getTypeDefinition() : (Object)part.getElementDeclaration();
     }
     return result;
   }

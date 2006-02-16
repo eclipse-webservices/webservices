@@ -8,122 +8,100 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.wsdl.ui.internal;
 
-import java.util.ArrayList;
-import java.util.List;
+package org.eclipse.wst.wsdl.ui.internal;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
-import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelAdapter;
 import org.eclipse.wst.wsdl.ui.internal.util.OpenOnSelectionHelper;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
-import org.w3c.dom.Node;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
+import org.eclipse.wst.xsd.ui.internal.BaseHyperlinkDetector;
 
 /**
- * Detects hyperlinks for WSDL files
+ * Detects hyperlinks for WSDL files. Used by the WSDL text editor to provide a
+ * "Go to declaration" functionality similar with the one provided by the Java
+ * editor.
  */
-public class WSDLHyperlinkDetector implements IHyperlinkDetector {
-	/**
-	 * Gets the definition from document
-	 * 
-	 * @param document
-	 * @return Definition
-	 */
-	private Definition getDefinition(IDocument document) {
-		Definition definition = null;
-		IStructuredModel model = StructuredModelManager.getModelManager().getExistingModelForRead(document);
-		if (model != null) {
-			try {
-				if (model instanceof IDOMModel) {
-					IDOMDocument domDoc = ((IDOMModel) model).getDocument();
-					if (domDoc != null) {
-						WSDLModelAdapter modelAdapter = (WSDLModelAdapter) domDoc.getAdapterFor(WSDLModelAdapter.class);
+public class WSDLHyperlinkDetector extends BaseHyperlinkDetector
+{
+  /*
+   * (non-Javadoc)
+   */
+  protected IHyperlink createHyperlink(IDocument document, IDOMNode node, IRegion region)
+  {
+    // Here we're trying to find the target component's resource and spec.
 
-						/*
-						 * ISSUE: if adapter does not already exist for domDoc
-						 * getAdapterFor will create one. So why is this null
-						 * check/creation needed?
-						 */
-						if (modelAdapter == null) {
-							modelAdapter = new WSDLModelAdapter();
-							domDoc.addAdapter(modelAdapter);
-							modelAdapter.createDefinition(domDoc.getDocumentElement(), domDoc);
-						}
+    Definition definition = getDefinition(document);
+    OpenOnSelectionHelper helper = new OpenOnSelectionHelper(definition);
+    String[] targetData = helper.computeSpecification(node);
 
-						definition = modelAdapter.getDefinition();
-					}
-				}
-			}
-			finally {
-				model.releaseFromRead();
-			}
-		}
-		return definition;
-	}
+    if (targetData != null)
+    {
+      String resource = targetData[0];
+      String spec = targetData[1];
+      return new WSDLHyperlink(region, resource, spec);
+    }
 
-	public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region, boolean canShowMultipleHyperlinks) {
-		// for now, only capable of creating 1 hyperlink
-		List hyperlinks = new ArrayList(0);
+    return null;
+  }
 
-		if (region != null && textViewer != null) {
-			IDocument document = textViewer.getDocument();
-			Node node = getCurrentNode(document, region.getOffset());
+  /**
+   * Gets the definition from document
+   * 
+   * @param document
+   * @return Definition
+   */
+  private Definition getDefinition(IDocument document)
+  {
+    Definition definition = null;
+    IStructuredModel model = StructuredModelManager.getModelManager().getExistingModelForRead(document);
+    if (model != null)
+    {
+      try
+      {
+        if (model instanceof IDOMModel)
+        {
+          IDOMDocument domDoc = ((IDOMModel) model).getDocument();
+          if (domDoc != null)
+          {
+            WSDLModelAdapter modelAdapter = (WSDLModelAdapter) domDoc.getAdapterFor(WSDLModelAdapter.class);
+            // ISSUE: if adapter does not already exist for domDoc getAdapterFor
+            // will create one. So why is this null check/creation needed?
+            if (modelAdapter == null)
+            {
+              modelAdapter = new WSDLModelAdapter();
+              domDoc.addAdapter(modelAdapter);
+              modelAdapter.createDefinition(domDoc.getDocumentElement(), domDoc);
+            }
+            definition = modelAdapter.getDefinition();
+          }
+        }
+      }
+      finally
+      {
+        model.releaseFromRead();
+      }
+    }
+    return definition;
+  }
 
-			if (node != null) {
-				Definition definition = getDefinition(textViewer.getDocument());
-				OpenOnSelectionHelper helper = new OpenOnSelectionHelper(definition);
-				String[] array = helper.computeSpecification(node);
-				if (array != null) {
-					IRegion nodeRegion = region;
-					if (node instanceof IndexedRegion) {
-						IndexedRegion indexed = (IndexedRegion) node;
-						nodeRegion = new Region(indexed.getStartOffset(), indexed.getLength());
-					}
-					hyperlinks.add(new WSDLHyperlink(nodeRegion, array[0], array[1]));
-				}
-			}
-		}
-		if (hyperlinks.size() == 0)
-			return null;
-		return (IHyperlink[]) hyperlinks.toArray(new IHyperlink[0]);
-	}
-
-	/**
-	 * Returns the node the cursor is currently on in the document. null if no
-	 * node is selected
-	 * 
-	 * @param offset
-	 * @return Node either element, doctype, text, or null
-	 */
-	private Node getCurrentNode(IDocument document, int offset) {
-		// get the current node at the offset (returns either: element,
-		// doctype, text)
-		IndexedRegion inode = null;
-		IStructuredModel sModel = null;
-		try {
-			sModel = StructuredModelManager.getModelManager().getExistingModelForRead(document);
-			inode = sModel.getIndexedRegion(offset);
-			if (inode == null)
-				inode = sModel.getIndexedRegion(offset - 1);
-		}
-		finally {
-			if (sModel != null)
-				sModel.releaseFromRead();
-		}
-
-		if (inode instanceof Node) {
-			return (Node) inode;
-		}
-		return null;
-	}
+  /*
+   * (non-Javadoc)
+   */
+  protected boolean isLinkableAttribute(String name)
+  {
+    boolean isLinkable = name.equals(WSDLConstants.BINDING_ATTRIBUTE) || 
+    name.equals(WSDLConstants.ELEMENT_ATTRIBUTE) || 
+    name.equals(WSDLConstants.TYPE_ATTRIBUTE) || 
+    name.equals(WSDLConstants.MESSAGE_ATTRIBUTE); 
+    return isLinkable;
+  }
 }
