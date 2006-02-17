@@ -130,7 +130,6 @@ public class DefaultXMLValidator implements IXMLValidator
     catch (IOException e)
     {
       // TODO: Log exception.
-      // System.out.println(e);
     }
     catch (Exception e)
     {
@@ -483,7 +482,11 @@ public class DefaultXMLValidator implements IXMLValidator
       reader.setErrorHandler(conformanceDefaultHandler);
       reader.setContentHandler(conformanceDefaultHandler);
       
-      reader.setProperty(org.apache.xerces.impl.Constants.XERCES_PROPERTY_PREFIX + org.apache.xerces.impl.Constants.XMLGRAMMAR_POOL_PROPERTY, grammarPool);
+      // Older Xerces versions will thrown a NPE if a null grammar pool is set.
+      if(grammarPool != null)
+      {
+        reader.setProperty(org.apache.xerces.impl.Constants.XERCES_PROPERTY_PREFIX + org.apache.xerces.impl.Constants.XMLGRAMMAR_POOL_PROPERTY, grammarPool);
+      }
       reader.setProperty(org.apache.xerces.impl.Constants.XERCES_PROPERTY_PREFIX + org.apache.xerces.impl.Constants.ENTITY_RESOLVER_PROPERTY, new MyEntityResolver(uriResolver));
       reader.setFeature(org.apache.xerces.impl.Constants.XERCES_FEATURE_PREFIX + org.apache.xerces.impl.Constants.CONTINUE_AFTER_FATAL_ERROR_FEATURE, false);
       reader.setFeature(org.apache.xerces.impl.Constants.SAX_FEATURE_PREFIX + org.apache.xerces.impl.Constants.NAMESPACES_FEATURE, true);
