@@ -39,7 +39,7 @@
             name="%PLUGIN_EXPORT_WIZARD_NAME_WS"
             icon="icons/export_ws.gif"
             class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
-            id="wsexport">
+            id="org.eclipse.jst.ws.consumption.ui.wsexport">
          <description>
             %PLUGIN_EXPORT_WIZARD_DESC_WS
          </description>
@@ -52,7 +52,7 @@
             iconbanner="icons/export_ws_wiz.gif"
             name="%PLUGIN_EXPORT_WIZARD_NAME_WS"
             class="org.eclipse.jst.ws.internal.creation.ui.widgets.binding.ExportWSWidgetBinding"
-            id="wsexport">
+            id="org.eclipse.jst.ws.consumption.ui.wsexport">
       </dynamicWizard>
    </extension>
 

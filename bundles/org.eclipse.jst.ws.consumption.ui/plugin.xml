@@ -200,7 +200,7 @@
             name="%PLUGIN_IMPORT_WIZARD_NAME_WS"
             icon="icons/import_ws.gif"
             class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
-            id="wsimport">
+            id="org.eclipse.jst.ws.consumption.ui.wsimport">
          <description>
                %PLUGIN_IMPORT_WIZARD_DESC_WS
          </description>
@@ -213,7 +213,7 @@
             iconbanner="icons/import_ws_wiz.gif"
             name="%PLUGIN_IMPORT_WIZARD_NAME_WS"
             class="org.eclipse.jst.ws.internal.consumption.ui.widgets.binding.ImportWSWidgetBinding"
-            id="wsimport">
+            id="org.eclipse.jst.ws.consumption.ui.wsimport">
       </dynamicWizard>
    </extension>
 
@@ -223,7 +223,7 @@
             name="%IMPORT_WIZARD_NAME_WSIL"
             icon="icons/wsil/import_wsil.gif"
             class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
-            id="wsilimport">
+            id="org.eclipse.jst.ws.consumption.ui.wsilimport">
          <description>
                %IMPORT_WIZARD_DESC_WSIL
          </description>
@@ -236,7 +236,7 @@
             iconbanner="icons/wsil/import_wiz_banner_wsil.gif"
             name="%IMPORT_WIZARD_NAME_WSIL"
             class="org.eclipse.jst.ws.internal.consumption.ui.widgets.binding.ImportWSILWidgetBinding"
-            id="wsilimport">
+            id="org.eclipse.jst.ws.consumption.ui.wsilimport">
       </dynamicWizard>
    </extension>
 
@@ -262,8 +262,8 @@
       <page
             name="%PREFERENCE_CATEGORY_TEST_FACILITY"
             category="org.eclipse.wst.ws.internal.ui.preferences.name"
-            class="org.eclipse.jst.ws.internal.ui.preferences.ScenarioDefaultsPreferencePage"
-            id="org.eclipse.jst.ws.internal.ui.preferences.ScenarioDefaultsPreferencePage">
+            class="org.eclipse.jst.ws.internal.ui.preferences.TestFacilityDefaultsPreferencePage"
+            id="org.eclipse.jst.ws.internal.ui.preferences.TestFacilityDefaultsPreferencePage">
       </page>
 
       <page
@@ -353,7 +353,7 @@
                label="%POPUP_GENERATE_WSIL"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
                menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
-               id="wsilimport">
+               id="org.eclipse.jst.ws.consumption.ui.wsilimport">
          </action>
       </objectContribution>
 
@@ -425,7 +425,7 @@
                label="%POPUP_GENERATE_WSIL"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
                menubarPath="additions"
-               id="wsilimport">
+               id="org.eclipse.jst.ws.consumption.ui.wsilimport">
          </action>
       </objectContribution>
 
@@ -574,7 +574,7 @@
                label="%POPUP_GENERATE_WSIL"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
                menubarPath="additions"
-               id="wsilimport">
+               id="org.eclipse.jst.ws.consumption.ui.wsilimport">
          </action>
       </objectContribution>
 
@@ -586,7 +586,7 @@
             label="%POPUP_GENERATE_WSIL"
             class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
             menubarPath="additions"
-            id="wsilimport">
+            id="org.eclipse.jst.ws.consumption.ui.wsilimport">
          </action>
       </objectContribution>
    </extension>

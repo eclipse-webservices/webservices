@@ -36,7 +36,7 @@ public class LaunchImportWizardAction implements IActionDelegate
       
       try
       {
-        wizard.setInitialData( "wsimport" );
+        wizard.setInitialData( "org.eclipse.jst.ws.consumption.ui.wsimport" );
         wizard.init( PlatformUI.getWorkbench(), selection_ );
       }
       catch( CoreException exc )

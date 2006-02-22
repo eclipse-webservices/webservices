@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060217   113169 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060222   118711 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.preferences;
 
@@ -45,7 +46,7 @@ import org.eclipse.ui.PlatformUI;
 
 
 
-public class ScenarioDefaultsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage, SelectionListener
+public class TestFacilityDefaultsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage, SelectionListener
 {
   
   private TableViewer webServiceTestTypeViewer_; 
