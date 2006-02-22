@@ -57,5 +57,6 @@ Require-Bundle: org.eclipse.jem,
  org.eclipse.wst.common.environment,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.jst.server.core,
- com.ibm.icu
+ com.ibm.icu,
+ org.eclipse.ui
 Eclipse-AutoStart: true

@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner      *     
+ * 20060217   126757 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -173,9 +174,15 @@ public class CreateModuleCommand extends AbstractDataModelOperation
       IStatus status = Status.OK_STATUS;      
       
       try
-      {
-        IFacetedProject fproject = ProjectFacetsManager.create(projectName, null, monitor_);
-
+      {        
+        status = FacetUtils.createNewFacetedProject(projectName);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }        
+        IProject createdProject = ProjectUtilities.getProject(projectName);
+        IFacetedProject fproject = ProjectFacetsManager.create(createdProject);        
+        
         //Decide which facets to install based on the templateId and the selected server. 
         Set facetsToAdd = getFacetsToAdd(WEB_TEMPLATE); 
         Set facetsToAddModified = facetsToAdd;
@@ -202,9 +209,11 @@ public class CreateModuleCommand extends AbstractDataModelOperation
           }
         }
         
-        //Set up the install actions.
-        Set actions = FacetUtils.getInstallActions(facetsToAddModified);
-        fproject.modify(actions, monitor_);
+        status = FacetUtils.addFacetsToProject(fproject, facetsToAddModified);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }                
         
         Set newFacetVersions = fproject.getProjectFacets();
         Set fixedFacets = new HashSet();
@@ -212,21 +221,25 @@ public class CreateModuleCommand extends AbstractDataModelOperation
             IProjectFacetVersion facetVersion = (IProjectFacetVersion) iter.next();
             fixedFacets.add(facetVersion.getProjectFacet());
         }
-        fproject.setFixedProjectFacets(fixedFacets);
         
+        status = FacetUtils.setFixedFacetsOnProject(fproject, fixedFacets);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }                        
         
         //Set the runtime        
         if (facetRuntime != null)
         {
-          fproject.setRuntime(facetRuntime, monitor_);
+          status = FacetUtils.setFacetRuntimeOnProject(fproject, facetRuntime);
         }        
         
       } catch (CoreException ce)
       {
-        System.out.println("Exception occurred when creating a faceted project.");
         return StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }), ce);
       }
-		return status;
+      
+      return status;
       		
 	}
 	
@@ -239,7 +252,13 @@ public class CreateModuleCommand extends AbstractDataModelOperation
       
       try
       {
-        IFacetedProject fproject = ProjectFacetsManager.create(projectName, null, monitor_);
+        status = FacetUtils.createNewFacetedProject(projectName);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }        
+        IProject createdProject = ProjectUtilities.getProject(projectName);
+        IFacetedProject fproject = ProjectFacetsManager.create(createdProject);        
 
         //Decide which facets to install based on the templateId and the selected server. 
         Set facetsToAdd = getFacetsToAdd(EAR_TEMPLATE); 
@@ -267,9 +286,11 @@ public class CreateModuleCommand extends AbstractDataModelOperation
           }
         }
         
-        //Set up the install actions.
-        Set actions = FacetUtils.getInstallActions(facetsToAddModified);
-        fproject.modify(actions, monitor_);
+        status = FacetUtils.addFacetsToProject(fproject, facetsToAddModified);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }                
         
         Set newFacetVersions = fproject.getProjectFacets();
         Set fixedFacets = new HashSet();
@@ -277,21 +298,25 @@ public class CreateModuleCommand extends AbstractDataModelOperation
             IProjectFacetVersion facetVersion = (IProjectFacetVersion) iter.next();
             fixedFacets.add(facetVersion.getProjectFacet());
         }
-        fproject.setFixedProjectFacets(fixedFacets);
         
+        status = FacetUtils.setFixedFacetsOnProject(fproject, fixedFacets);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }                        
         
         //Set the runtime        
         if (facetRuntime != null)
         {
-          fproject.setRuntime(facetRuntime, monitor_);
+          status = FacetUtils.setFacetRuntimeOnProject(fproject, facetRuntime);
         }        
         
       } catch (CoreException ce)
-      {
-        System.out.println("Exception occurred when creating a faceted project.");
+      {        
         return StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }), ce);
       }
-        return status;
+        
+      return status;
 	}
 	
 	/**
@@ -303,7 +328,13 @@ public class CreateModuleCommand extends AbstractDataModelOperation
       
       try
       {
-        IFacetedProject fproject = ProjectFacetsManager.create(projectName, null, monitor_);
+        status = FacetUtils.createNewFacetedProject(projectName);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }        
+        IProject createdProject = ProjectUtilities.getProject(projectName);
+        IFacetedProject fproject = ProjectFacetsManager.create(createdProject);        
 
         //Decide which facets to install based on the templateId and the selected server. 
         Set facetsToAdd = getFacetsToAdd(EJB_TEMPLATE); 
@@ -331,9 +362,11 @@ public class CreateModuleCommand extends AbstractDataModelOperation
           }
         }
         
-        //Set up the install actions.
-        Set actions = FacetUtils.getInstallActions(facetsToAddModified);
-        fproject.modify(actions, monitor_);
+        status = FacetUtils.addFacetsToProject(fproject, facetsToAddModified);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }                
         
         Set newFacetVersions = fproject.getProjectFacets();
         Set fixedFacets = new HashSet();
@@ -341,21 +374,25 @@ public class CreateModuleCommand extends AbstractDataModelOperation
             IProjectFacetVersion facetVersion = (IProjectFacetVersion) iter.next();
             fixedFacets.add(facetVersion.getProjectFacet());
         }
-        fproject.setFixedProjectFacets(fixedFacets);
-        
+
+        status = FacetUtils.setFixedFacetsOnProject(fproject, fixedFacets);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }                        
         
         //Set the runtime        
         if (facetRuntime != null)
         {
-          fproject.setRuntime(facetRuntime, monitor_);
+          status = FacetUtils.setFacetRuntimeOnProject(fproject, facetRuntime);
         }        
         
       } catch (CoreException ce)
       {
-        System.out.println("Exception occurred when creating a faceted project.");
         return StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_CREATE_EJB_COMPONENT, new String[] { projectName }), ce);
       }
-        return status;      
+      
+      return status;      
 
 	}
 	
@@ -369,7 +406,13 @@ public class CreateModuleCommand extends AbstractDataModelOperation
       
       try
       {
-        IFacetedProject fproject = ProjectFacetsManager.create(projectName, null, monitor_);
+        status = FacetUtils.createNewFacetedProject(projectName);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }        
+        IProject createdProject = ProjectUtilities.getProject(projectName);
+        IFacetedProject fproject = ProjectFacetsManager.create(createdProject);        
 
         //Decide which facets to install based on the templateId and the selected server. 
         Set facetsToAdd = getFacetsToAdd(APPCLIENT_TEMPLATE); 
@@ -397,9 +440,11 @@ public class CreateModuleCommand extends AbstractDataModelOperation
           }
         }
         
-        //Set up the install actions.
-        Set actions = FacetUtils.getInstallActions(facetsToAddModified);
-        fproject.modify(actions, monitor_);
+        status = FacetUtils.addFacetsToProject(fproject, facetsToAddModified);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }                
         
         Set newFacetVersions = fproject.getProjectFacets();
         Set fixedFacets = new HashSet();
@@ -407,48 +452,25 @@ public class CreateModuleCommand extends AbstractDataModelOperation
             IProjectFacetVersion facetVersion = (IProjectFacetVersion) iter.next();
             fixedFacets.add(facetVersion.getProjectFacet());
         }
-        fproject.setFixedProjectFacets(fixedFacets);
-        
+
+        status = FacetUtils.setFixedFacetsOnProject(fproject, fixedFacets);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }                        
         
         //Set the runtime        
         if (facetRuntime != null)
         {
-          fproject.setRuntime(facetRuntime, monitor_);
+          status = FacetUtils.setFacetRuntimeOnProject(fproject, facetRuntime);
         }        
         
       } catch (CoreException ce)
       {
-        System.out.println("Exception occurred when creating a faceted project.");
         return StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_CREATE_APPCLIENT_COMPONENT, new String[] { projectName }), ce);
       }
-        return status;      
-      
-        /*
-		IStatus status = Status.OK_STATUS;
         
-		try
-		{
-		  IDataModel projectInfo = DataModelFactory.createDataModel(new AppClientComponentCreationDataModelProvider());
-		  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.PROJECT_NAME,projectName);
-          if (moduleName!=null)      
-		      projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_NAME, moduleName);
-		  if (j2eeLevel!=null)		  
-			  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.COMPONENT_VERSION, Integer.valueOf(j2eeLevel));
-		  
-		  //Don't create an EAR. The ADD_TO_EAR property gets defaulted to TRUE for everything except Web projects.
-		  projectInfo.setProperty(IAppClientComponentCreationDataModelProperties.ADD_TO_EAR, Boolean.FALSE);
-		  
-		  IDataModelOperation op = projectInfo.getDefaultOperation();
-
-			op.execute( monitor_, null);
-		}
-		catch (Exception e)
-		{
-			status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_CREATE_APPCLIENT_COMPONENT, new String[]{projectName}), e);
-		}
-        
-		return status;
-        */		
+      return status;      
 	}
 	
 	/**

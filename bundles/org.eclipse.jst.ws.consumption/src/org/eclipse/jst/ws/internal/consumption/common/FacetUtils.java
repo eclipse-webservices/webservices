@@ -10,11 +10,12 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
- * 20060216   127138 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060217   126757 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -30,9 +31,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
@@ -414,7 +417,7 @@ public class FacetUtils
     
     return fm;
   }
-  
+    
   public static IStatus addRequiredFacetsToProject(IProject project, RequiredFacetVersion[] rfvs, IProgressMonitor monitor)
   {
     IStatus status = Status.OK_STATUS;
@@ -516,8 +519,7 @@ public class FacetUtils
               facetsToAdd = missingFacets;
             }
 
-            Set actions = FacetUtils.getInstallActions(facetsToAdd);
-            fProject.modify(actions, monitor);
+            status = addFacetsToProject(fProject, facetsToAdd);
           }
         }            
       }
@@ -539,25 +541,283 @@ public class FacetUtils
       }
       else
       { 
-        //Iterate over facets to add to form error message
-        Iterator itr = facetsToAdd.iterator();
-        int size = facetsToAdd.size();
-        if (size > 0)
-        {          
-          IProjectFacetVersion firstProjectFacetVersion = (IProjectFacetVersion)itr.next();
-          String facetList = firstProjectFacetVersion.getProjectFacet().getLabel();
-          while (itr.hasNext())
-          {
-            IProjectFacetVersion pfv = (IProjectFacetVersion)itr.next();
-            String pfvLabel = pfv.getProjectFacet().getLabel();
-            facetList = NLS.bind(ConsumptionMessages.MSG_FACETS, new String[] {facetList, pfvLabel});
-          }
-          status = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_ADDING_FACETS_TO_PROJECT, new String[] { project.getName(), facetList}));
-        }            
+        status = getErrorStatusForAddingFacets(project.getName(), facetsToAdd, ce);
       }
     }
     
     return status;
+  }
+  
+
+  /**
+   * Adds the set of project facet versions to the faceted project
+   * 
+   * @param fproject A faceted project which exists in the workspace
+   * @param projectFacetVersions A set containing elements of type {@link IProjectFacetVersion}
+   * @return An IStatus with a severity of IStatus.OK if the project facet 
+   * versions were added successfully. Otherwise, an IStatus with a severity of
+   * IStatus.ERROR. 
+   */
+  public static IStatus addFacetsToProject(final IFacetedProject fproject, final Set projectFacetVersions)
+  {
+    final IStatus[] status = new IStatus[1];
+    status[0] = Status.OK_STATUS;
+    final Set actions = getInstallActions(projectFacetVersions);
+    
+    // Create a runnable that applies the install actions to the faceted project
+    IRunnableWithProgress runnable = new IRunnableWithProgress()
+    {
+      public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
+      {
+        try
+        {
+          fproject.modify(actions, shellMonitor);
+        } catch (CoreException e)
+        {
+          status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, e);
+        }
+      }
+    };    
+        
+    // Run the runnable in another thread.
+    try
+    {
+      PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
+    } catch (InvocationTargetException ite)
+    {
+      status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, ite);
+    } catch (InterruptedException ie)
+    {
+      status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, ie);
+    }    
+    
+    return status[0];
+  }
+  
+  /**
+   * Returns an error status indicating that the project facet versions could not be
+   * added to the faceted project
+   * 
+   * @param projectName a project name to insert in the error message in the IStatus
+   * @param projectFacetVersions a set containing elements of type {@link IProjectFacetVersion}.
+   * The facets in this set will be listed in the error message in the IStatus.
+   * @param t a Throwable which will be inserted in the IStatus
+   * @return an IStatus with severity IStatus.ERROR
+   */
+  private static IStatus getErrorStatusForAddingFacets(String projectName, Set projectFacetVersions, Throwable t)
+  {
+    IStatus status = Status.OK_STATUS;
+    int size = projectFacetVersions.size();
+    if (size > 0)
+    {          
+      Set facets = new HashSet();
+      //Iterate over projectFacetVersions to form a set of IProjectFacets
+      Iterator itr = projectFacetVersions.iterator();
+      while (itr.hasNext())
+      {
+        IProjectFacetVersion projectFacet = (IProjectFacetVersion)itr.next();
+        IProjectFacet facet = projectFacet.getProjectFacet();
+        facets.add(facet);
+      }
+      String facetList = getFacetListMessageString(facets);
+      status = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_ADDING_FACETS_TO_PROJECT, new String[] { projectName, facetList}), t);
+    }
+    
+    return status;
+  }
+  
+  /**
+   * Creates a new faceted project with the provided name
+   * @param projectName A String containing the name of the project to be created
+   * @return An IStatus with a severity of IStatus.OK if the faceted project
+   * was created successfully or if a project of the provided name already
+   * exists in the workspace. Otherwise, an IStatus with severity of
+   * IStatus.ERROR. 
+   */
+  public static IStatus createNewFacetedProject(final String projectName)
+  {
+    final IStatus[] status = new IStatus[1];
+    status[0] = Status.OK_STATUS;
+    IProject project = ProjectUtilities.getProject(projectName);
+    if (!project.exists())
+    {
+      // Create a runnable that creates a new faceted project.
+      IRunnableWithProgress runnable = new IRunnableWithProgress()
+      {
+        public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
+        {
+          try
+          {
+            IFacetedProject fProject = ProjectFacetsManager.create(projectName, null, shellMonitor);
+            if (fProject == null)
+            {
+              status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }));
+            }
+          } catch (CoreException e)
+          {
+            status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }), e);
+          }
+        }
+      };
+
+      // Run the runnable in another thread.
+      try
+      {
+        PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
+      } catch (InvocationTargetException ite)
+      {
+        status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }), ite);
+      } catch (InterruptedException ie)
+      {
+        status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }), ie);
+      }
+    }
+
+    return status[0];
+  }
+  
+  /**
+   * Sets the provided set of project facets as fixed on the faceted project
+   * 
+   * @param fProject A faceted project which exists in the workspace
+   * @param fixedFacets A set containing elements of type {@link IProjectFacet}
+   * @return An IStatus with a severity of IStatus.OK if the project facets 
+   * were successfully set as fixed facets on the faceted project. 
+   * Otherwise, an IStatus with a severity of IStatus.ERROR.
+   * 
+   * @see IFacetedProject#setFixedProjectFacets
+   */
+  public static IStatus setFixedFacetsOnProject(final IFacetedProject fProject, final Set fixedFacets)
+  {
+    final IStatus[] status = new IStatus[1];
+    status[0] = Status.OK_STATUS;
+
+    //Create a runnable that sets the fixed facets on the faceted project
+    IRunnableWithProgress runnable = new IRunnableWithProgress()
+    {
+      public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
+      {
+        try
+        {
+          fProject.setFixedProjectFacets(fixedFacets);
+        } catch (CoreException e)
+        {
+          status[0] = getErrorStatusForSettingFixedFacets(fProject.getProject().getName(), fixedFacets, e);
+        }
+      }
+    };
+
+    // Run the runnable in another thread.
+    try
+    {
+      PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
+    } catch (InvocationTargetException ite)
+    {
+      status[0] = getErrorStatusForSettingFixedFacets(fProject.getProject().getName(), fixedFacets, ite);
+    } catch (InterruptedException ie)
+    {
+      status[0] = getErrorStatusForSettingFixedFacets(fProject.getProject().getName(), fixedFacets, ie);
+    }    
+    
+    return status[0];
+  }
+  
+  /**
+   * Returns an error status indicating that the project facets could not be
+   * set as fixed facets on the faceted project
+   * 
+   * @param projectName a project name to insert in the error message in the IStatus
+   * @param facets a set containing elements of type {@link IProjectFacet}.
+   * The facets in this set will be listed in the error message in the IStatus.
+   * @param t a Throwable which will be inserted in the IStatus
+   * @return an IStatus with severity IStatus.ERROR
+   */
+  private static IStatus getErrorStatusForSettingFixedFacets(String projectName, Set facets, Throwable t)
+  {
+    IStatus status = Status.OK_STATUS;
+    int size = facets.size();
+    if (size > 0)
+    {          
+      String facetList = getFacetListMessageString(facets);      
+      status = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_FIXED_FACETS, new String[] { projectName, facetList}), t);
+    }
+    
+    return status;
+  }  
+  
+  
+  /**
+   * Binds the faceted project to the facet runtime
+   * 
+   * @param fProject A faceted project which exists in the workspace
+   * @param fRuntime A facet runtime
+   * @return An IStatus with a severity of IStatus.OK if the faceted project
+   * was bound to the facet runtime successfully. Otherwise, an IStatus with severity of
+   * IStatus.ERROR. 
+   */
+  public static IStatus setFacetRuntimeOnProject(final IFacetedProject fProject, final IRuntime fRuntime)
+  {
+    final IStatus[] status = new IStatus[1];
+    status[0] = Status.OK_STATUS;
+
+    //Create a runnable that sets the facet runtime on the faceted project
+    IRunnableWithProgress runnable = new IRunnableWithProgress()
+    {
+      public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
+      {
+        try
+        {
+          fProject.setRuntime(fRuntime, shellMonitor);
+        } catch (CoreException e)
+        {
+          status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), e);
+        }
+      }
+    };
+
+    // Run the runnable in another thread.
+    try
+    {
+      PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
+    } catch (InvocationTargetException ite)
+    {
+      status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), ite);
+    } catch (InterruptedException ie)
+    {
+      status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), ie);
+    }    
+    
+    return status[0];
+  }
+  
+  /**
+   * Returns a translatable delimited list of facet labels derived from the provided
+   * set of facets
+   * 
+   * @param facets a set containing elements of type {@link IProjectFacet}
+   * @return String a delimited list of facet labels
+   */
+  private static String getFacetListMessageString(Set facets)
+  {
+    String facetListMessage = "";
+    int size = facets.size();
+    if (size > 0)
+    {
+      Iterator itr = facets.iterator();
+      IProjectFacet firstProjectFacet = (IProjectFacet)itr.next();
+      facetListMessage = firstProjectFacet.getLabel();
+      
+      //Continue appending to facetListMessage until all the facet labels
+      //are in the list.
+      while (itr.hasNext())
+      {
+        IProjectFacet projectFacet = (IProjectFacet)itr.next();
+        String pfLabel = projectFacet.getLabel();
+        facetListMessage = NLS.bind(ConsumptionMessages.MSG_FACETS, new String[] {facetListMessage, pfLabel});
+      }            
+    }    
+    
+    return facetListMessage;
   }
   
   public static Set getFacetsForJavaProject(IJavaProject javaProject)
