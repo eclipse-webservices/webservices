@@ -88,6 +88,7 @@ public class HTTPTransport
   private final int DEFAULT_HTTPS_PORT = 443;
   private final String DEFAULT_SOAP_ENCODING = "UTF-8";
   private final String DEFAULT_HTTP_HEADER_ENCODING = "iso-8859-1";
+  private final boolean DEFAULT_CASE_SENSITIVE_FOR_HOST_NAME = false;
 
   private String httpBasicAuthUsername;
   private String httpBasicAuthPassword;
@@ -480,16 +481,16 @@ public class HTTPTransport
     int proxyPort = Integer.getInteger(SYS_PROP_HTTP_PROXY_PORT, DEFAULT_HTTP_PORT).intValue();
     
     String nonProxyHosts = System.getProperty(SYS_PROP_HTTP_NON_PROXY_HOSTS);
-    String nonProxyHostsPattern = createPatternFromString(nonProxyHosts);
-//  String proxyUserName = System.getProperty(SYS_PROP_HTTP_PROXY_USER_NAME);
-//  String proxyPassword = System.getProperty(SYS_PROP_HTTP_PROXY_PASSWORD);
+
+    //  String proxyUserName = System.getProperty(SYS_PROP_HTTP_PROXY_USER_NAME);
+    //  String proxyPassword = System.getProperty(SYS_PROP_HTTP_PROXY_PASSWORD);
     if (url.getProtocol().equalsIgnoreCase(HTTPS))
     {
       proxyHost = System.getProperty(SYS_PROP_HTTPS_PROXY_HOST);
       proxyPort = Integer.getInteger(SYS_PROP_HTTPS_PROXY_PORT, DEFAULT_HTTPS_PORT).intValue();
       nonProxyHosts = System.getProperty(SYS_PROP_HTTPS_NON_PROXY_HOSTS);
-      nonProxyHostsPattern = createPatternFromString(nonProxyHosts);
-      if (proxyHost != null && proxyHost.length() > 0 && !host.matches(nonProxyHostsPattern))
+
+      if (proxyHost != null && proxyHost.length() > 0 && !isHostInNonProxyHosts(host, nonProxyHosts, DEFAULT_CASE_SENSITIVE_FOR_HOST_NAME))
       {
         // TODO:
         // SSL with proxy server
@@ -503,11 +504,17 @@ public class HTTPTransport
       // as demonstrated in the following (original) line of code:
       //  s = SSLUtils.buildSSLSocket(host, (port > 0 ? port : DEFAULT_HTTPS_PORT), proxyHost, proxyPort, proxyUserName, proxyPassword);
     }
-    else if (proxyHost != null && proxyHost.length() > 0 && !host.matches(nonProxyHostsPattern))
+    else if (proxyHost != null && proxyHost.length() > 0 && !isHostInNonProxyHosts(host, nonProxyHosts, DEFAULT_CASE_SENSITIVE_FOR_HOST_NAME))
       s = new Socket(proxyHost, proxyPort);
     else
       s = new Socket(host, (port > 0 ? port : DEFAULT_HTTP_PORT));
     return s;
+  }
+  
+  private boolean isHostInNonProxyHosts(String host, String nonProxyHosts, boolean caseSensitive)
+  {
+  	if (caseSensitive) return host.matches(createPatternFromString(nonProxyHosts));
+  	else return host.toLowerCase().matches(createPatternFromString(nonProxyHosts.toLowerCase()));  
   }
   
   /*
@@ -538,6 +545,13 @@ public class HTTPTransport
    */
   private String createPatternFromString(String str) 
   {
+    /* This is the same as following more understandable way:
+	 * return str.replace(".", "\\.").replace("*", "\\w*");
+	 * But, replace(CharSequence target, CharSequence replacement) can only be 
+	 * supported after j2se 1.5, on the other hand, 
+	 * replaceAll(String regex, String replacement) can be supported before 
+	 * j2se 1.5.
+	 */
     return str == null ? null : str.replaceAll("\\.", "\\.").replaceAll("\\*", "\\w*");
   }
 }
