@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner          
+ * 20060221   100190 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -282,7 +283,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
   {
     IStatus serviceStatus = runtimeWidget_.getStatus();
     IStatus projectStatus = projectWidget_.getStatus();
-    IStatus clientStatus  = clientWidget_.getStatus();    
+    IStatus clientStatus  = isClientWidgetVisible_ ? clientWidget_.getStatus() : Status.OK_STATUS;    
     IStatus finalStatus   = Status.OK_STATUS;
     
     
@@ -293,8 +294,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
     }
     else if( clientStatus.getSeverity() == Status.ERROR )
     {
-      if (isClientWidgetVisible_)
-        finalStatus = clientStatus;
+      finalStatus = clientStatus;
     }
     else if ( projectStatus.getSeverity()== Status.ERROR) {
       finalStatus = projectStatus;
