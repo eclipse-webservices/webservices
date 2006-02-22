@@ -6,7 +6,11 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060222   125574 zina@ca.ibm.com - Zina Mostafia
+ * 20060222   225574 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 /*
  * Created on May 8, 2004
@@ -16,6 +20,7 @@ package org.eclipse.jst.ws.internal.common;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -41,19 +46,38 @@ public class J2EEActionAdapterFactory {
   }
    
   //has to be under the webcontent
-  public static String WEB_CONTENT = "WebContent";
+  public static final String EJB_MODULE = "ejbModule";
+  public static final String APPCLIENT_MODULE = "appClientModule";
+  public static final String WEB_MODULE = "WebContent";
+
   public static String getWSDLURI(ServiceRef serviceImpl)
   {
-  	IProject project = ProjectUtilities.getProject(serviceImpl);
-  	IPath path = project.getLocation().addTrailingSeparator();
-  	path = path.append(WEB_CONTENT).addTrailingSeparator();
-  	path = path.append(serviceImpl.getWsdlFile());
-  	File file = new File(path.toString());
-  	try{
-  	  URL url = file.toURL();
-  	  return url.toString();
-  	}catch(MalformedURLException e){return null;}
-  	
+  	 String moduleRoot = null;
+	 IProject project = ProjectUtilities.getProject(serviceImpl);
+	 if(J2EEUtils.isWebComponent(project))
+	 {
+	   moduleRoot = WEB_MODULE;
+	 }
+     else if (J2EEUtils.isEJBComponent(project))
+	 {
+	   moduleRoot = EJB_MODULE;
+	 }
+	 else if (J2EEUtils.isAppClientComponent(project))
+	 {
+	   moduleRoot = APPCLIENT_MODULE;
+	 }
+	 IPath path = project.getLocation().addTrailingSeparator();
+	 path = path.append(moduleRoot).addTrailingSeparator();
+	 path = path.append(serviceImpl.getWsdlFile());
+	 File file = new File(path.toString());
+	 try{
+	   URL url = file.toURL();
+	   return url.toString();
+	 }catch(MalformedURLException e){return null;}
+	 
+  
+	  
+	
  }
   
   public static String getWSDLURI(WSDLResourceImpl wsdlRI)
