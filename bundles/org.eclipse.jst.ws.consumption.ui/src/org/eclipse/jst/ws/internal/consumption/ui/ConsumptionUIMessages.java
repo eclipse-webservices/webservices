@@ -1,16 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060204 124143   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner     
+ * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -85,6 +86,8 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String MSG_NO_SERVER;
 	public static String MSG_ERROR_STUB_ONLY;
 	public static String MSG_WARN_STUB_ONLY;
+    public static String MSG_WARN_NO_SERVICE_SERVER;
+    public static String MSG_WARN_NO_CLIENT_SERVER;
 	public static String MSG_SERVER_TARGET_MISMATCH;
 	public static String MSG_J2EE_MISMATCH;
 	public static String MSG_SERVICE_PROJECT_EMPTY;
@@ -327,6 +330,8 @@ public final class ConsumptionUIMessages extends NLS {
     public static String MSG_ERROR_WSDD_NOT_FOUND;
     public static String MSG_CLIENT_CANNOT_ASSOCIATE;
     public static String MSG_SERVICE_CANNOT_ASSOCIATE;
+    public static String MSG_PROJECT_MUST_EXIST;
+
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, ConsumptionUIMessages.class);

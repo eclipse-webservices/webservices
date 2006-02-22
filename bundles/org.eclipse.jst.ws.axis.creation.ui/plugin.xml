@@ -44,7 +44,8 @@
     <extension point="org.eclipse.jst.ws.consumption.ui.runtimes">
       <runtime
         id="org.eclipse.jst.ws.axis.creation.axisWebServiceRT"
-        label="%LABEL_RUNTIME_AXIS_11"/>
+        label="%LABEL_RUNTIME_AXIS_11"
+        serverRequired="false"/>
     </extension>
 
     <!-- define support for Axis Java bean bottom up and top-down support in web projects -->

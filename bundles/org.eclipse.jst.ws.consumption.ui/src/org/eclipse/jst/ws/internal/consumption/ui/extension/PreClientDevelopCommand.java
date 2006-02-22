@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
+ * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -53,6 +54,7 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
   private IWebServiceClient webServiceClient_;
   private String            j2eeLevel_;
   private ResourceContext   resourceContext_;
+  private boolean                       deploy_;
   private boolean						test_;
   private boolean						install_;
   private boolean						run_;
@@ -91,7 +93,7 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
     
     webServiceClient_ = wsrt.getWebServiceClient(wsInfo);
     WebServiceScenario scenario = WebServiceScenario.CLIENT_LITERAL;
-    context_ = new SimpleContext(true, true, true, install_, run_, true, test_,
+    context_ = new SimpleContext(true, true, deploy_, install_, run_, true, test_,
         false, scenario, resourceContext_.isOverwriteFilesEnabled(),
         resourceContext_.isCreateFoldersEnabled(), resourceContext_
             .isCheckoutFilesEnabled());
@@ -211,6 +213,11 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
   public void setEar( String ear )
   {
 	ear_ = ear;  
+  }
+  
+  public void setDeployClient(boolean deployClient)
+  {
+      deploy_ = deployClient;
   }
 	
   public void setInstallClient(boolean installClient)

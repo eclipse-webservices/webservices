@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -170,7 +173,16 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 		javaWSDLParam_.setStyle(JavaWSDLParameter.STYLE_WRAPPED);
 		javaWSDLParam_.setUse(JavaWSDLParameter.USE_LITERAL);
 
-		String projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_, serviceServerTypeID_);
+        String projectURL = null;
+        if (serviceServerTypeID_ != null && serviceServerTypeID_.length()>0)
+        {
+		  projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_, serviceServerTypeID_);          
+        }
+        else
+        {
+          projectURL = "http://tempuri.org/";          
+        }
+        
 		if (projectURL == null) {
 			status = StatusUtils.errorStatus( AxisCreationUIMessages.MSG_ERROR_PROJECT_URL);
 			environment.getStatusHandler().reportError(status);

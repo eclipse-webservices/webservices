@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner          
+ * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -19,6 +20,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.RuntimeServerSelectionDialog;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -194,10 +196,14 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     if( ids_.getRuntimeId() == null || runtimeLabel == null || runtimeLabel.equals("" ))
     {
       status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_NO_RUNTIME, new String[]{ scenario } ) );
-    }
+    }    
     else if( ids_.getServerId() == null || serverLabel.equals( "" ))
     {
-      status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_NO_SERVER, new String[]{ scenario } ) );      
+      RuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getRuntimeById(ids_.getRuntimeId());
+      if (desc.getServerRequired())
+      {
+        status = StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_NO_SERVER, new String[]{ scenario } ) );
+      }
     }
     
     //
@@ -223,23 +229,39 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
 
     }
 
+    //If no errors for detected, check for warnings    
     if (status.getSeverity() != Status.ERROR)
     {
-      // Check if only stub runtime is available for the selected server type
-
+      
+      // Check if server type is null and the user opted to install on page 1.
       String serverFactoryId = ids_.getServerId();
-      //
-      IServerType serverType = ServerCore.findServerType(serverFactoryId);
-      if (serverType != null)
+      if (serverFactoryId == null || serverFactoryId.length() == 0)
+      {
+        if (isClientContext_)
+        {
+          status = StatusUtils.warningStatus(NLS.bind(ConsumptionUIMessages.MSG_WARN_NO_CLIENT_SERVER, new String[0]));
+        } else
+        {
+          status = StatusUtils.warningStatus(NLS.bind(ConsumptionUIMessages.MSG_WARN_NO_SERVICE_SERVER, new String[0]));
+        }
+
+      }
+      else
       {
 
-        // Find a Runtime which is not a stub
-        IRuntime nonStubRuntime = ServerUtils.getNonStubRuntime(serverFactoryId);
-        if (install_ && nonStubRuntime == null)
+        // Check if only stub runtime is available for the selected server type
+        IServerType serverType = ServerCore.findServerType(serverFactoryId);
+        if (serverType != null)
         {
-          String servertypeLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverFactoryId);
-          status = StatusUtils.warningStatus(NLS
-              .bind(ConsumptionUIMessages.MSG_WARN_STUB_ONLY, new String[] { servertypeLabel }));
+
+          // Find a Runtime which is not a stub
+          IRuntime nonStubRuntime = ServerUtils.getNonStubRuntime(serverFactoryId);
+          if (install_ && nonStubRuntime == null)
+          {
+            String servertypeLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverFactoryId);
+            status = StatusUtils.warningStatus(NLS.bind(ConsumptionUIMessages.MSG_WARN_STUB_ONLY,
+                new String[] { servertypeLabel }));
+          }
         }
       }
     }

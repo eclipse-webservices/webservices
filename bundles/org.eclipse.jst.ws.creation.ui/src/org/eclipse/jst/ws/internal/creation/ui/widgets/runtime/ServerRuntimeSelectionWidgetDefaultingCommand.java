@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
+ * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -35,8 +36,8 @@ import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRu
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.FacetMatchCache;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.osgi.util.NLS;
@@ -308,10 +309,15 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     }    
 
     //No suitable server was found. Popup an error.
-    String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(serviceIds_.getRuntimeId());
-    String serverLabels = getServerLabels(serviceIds_.getRuntimeId());    
-    IStatus status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME, new String[]{runtimeLabel, serverLabels}) );
-    return status;
+    RuntimeDescriptor runtimeDescriptor = WebServiceRuntimeExtensionUtils2.getRuntimeById(serviceIds_.getRuntimeId());
+    if (runtimeDescriptor.getServerRequired())
+    {    
+      String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(serviceIds_.getRuntimeId());    
+      IStatus status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME, new String[]{runtimeLabel}) );
+      return status;
+    }
+    
+    return Status.OK_STATUS;
   }  
   
   private IServer getServerFromServiceRuntimeId()
@@ -352,41 +358,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     return null;
   }  
   
-  /*
-  private IServer getFirstSupportedServer(IServer[] servers, String serviceRuntimeId, IProject serviceProject)
-  {
-    if (servers != null && servers.length > 0) {
-      for (int i = 0; i < servers.length; i++)
-      {
-        String serverFactoryId = servers[i].getServerType().getId();
-        if (WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportServer(serviceRuntimeId, serverFactoryId))
-        {
-          //TODO check if the server type supports the project before returning.
-          return servers[i];
-        }
-      }
-    }
-    return null;
-  }
-  */
   
-  private String getServerLabels(String serviceRuntimeId)
-  {
-        String[] validServerFactoryIds = WebServiceRuntimeExtensionUtils2.getServerFactoryIdsByServiceRuntime(serviceRuntimeId);
-        //String[] validServerLabels = new String[validServerFactoryIds.length];
-        StringBuffer validServerLabels = new StringBuffer(); 
-        for (int i=0; i<validServerFactoryIds.length; i++)
-        {
-            if (i>0)
-            {
-                validServerLabels.append(", ");
-            }
-            validServerLabels.append(WebServiceRuntimeExtensionUtils.getServerLabelById(validServerFactoryIds[i]));
-            
-        }
-        return validServerLabels.toString();
-  }
-
   private String getDefaultServiceProjectTemplate()
   {
     String[] templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(serviceIds_.getTypeId(), serviceIds_.getRuntimeId());    

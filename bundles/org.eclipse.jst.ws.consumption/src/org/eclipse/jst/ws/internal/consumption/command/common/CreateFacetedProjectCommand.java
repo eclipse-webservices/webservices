@@ -11,7 +11,8 @@
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner      
- * 20060217   126757 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060217 126757   rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060221 119111   rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -123,7 +124,7 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
   private IStatus checkDataReady()
   {
 
-    if (projectName == null || serverFactoryId == null)
+	if (projectName == null)
     {
       return StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] {projectName}));
     }
@@ -191,37 +192,40 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
   private void setFacetRuntime()
   {
     
-    if (serverInstanceId != null && serverInstanceId.length()>0)
-    {
-      IServer server = ServerCore.findServer(serverInstanceId);
-      IRuntime sRuntime = server.getRuntime();
-      facetRuntime = FacetUtil.getRuntime(sRuntime);      
-    }
-    else
-    {
-      //Find a non Stub runtime that matches this server type
-      IRuntime serverRuntime = ServerUtils.getNonStubRuntime(serverFactoryId);
-      if (serverRuntime != null)
-      {
-        facetRuntime = FacetUtil.getRuntime(serverRuntime);
-      }
-      else
-      {
-        //Accept stub runtime.
-        IServerType st = ServerCore.findServerType(serverFactoryId);
-        String runtimeTypeId = st.getRuntimeType().getId();   
-        //Find the facet runtime
-        IRuntime[] runtimes = ServerCore.getRuntimes();
-        for (int i=0; i<runtimes.length; i++)
-        {
-          IRuntime sRuntime = runtimes[i];
-          if (sRuntime.getRuntimeType().getId().equals(runtimeTypeId))
-          {
-            facetRuntime = FacetUtil.getRuntime(sRuntime);
-          }
-        }                
-      }
-    }
+	  if (serverInstanceId != null && serverInstanceId.length()>0)
+	  {
+		  IServer server = ServerCore.findServer(serverInstanceId);
+		  IRuntime sRuntime = server.getRuntime();
+		  facetRuntime = FacetUtil.getRuntime(sRuntime);      
+	  }
+	  else
+	  {
+		  if (serverFactoryId != null && serverFactoryId.length() > 0)
+		  {
+			  //Find a non Stub runtime that matches this server type
+			  IRuntime serverRuntime = ServerUtils.getNonStubRuntime(serverFactoryId);
+			  if (serverRuntime != null)
+			  {
+				  facetRuntime = FacetUtil.getRuntime(serverRuntime);
+			  }
+			  else
+			  {
+				  //Accept stub runtime.
+				  IServerType st = ServerCore.findServerType(serverFactoryId);
+				  String runtimeTypeId = st.getRuntimeType().getId();   
+				  //Find the facet runtime
+				  IRuntime[] runtimes = ServerCore.getRuntimes();
+				  for (int i=0; i<runtimes.length; i++)
+				  {
+					  IRuntime sRuntime = runtimes[i];
+					  if (sRuntime.getRuntimeType().getId().equals(runtimeTypeId))
+					  {
+						  facetRuntime = FacetUtil.getRuntime(sRuntime);
+					  }
+				  }                
+			  }
+		  }
+	  }
   }
   
   /*

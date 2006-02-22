@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner          
+ * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -221,33 +222,43 @@ public class ClientRuntimeSelectionWidget extends SimpleWidgetDataContributor
         }
         else
         {
-          //Look at the project type to ensure that it is suitable for the selected runtime
-          //and server.
-          
-          String templateId = getClientComponentType();
-
-          if (templateId != null && templateId.length()>0)
+          //Non-existing project is only permitted if there is a server selected.
+          if (serverFactoryId==null || serverFactoryId.length()==0)
           {
-            //Check if the runtime supports it.            
-            if (!WebServiceRuntimeExtensionUtils2.doesClientTypeAndRuntimeSupportTemplate(typeId, runtimeId, templateId))
+            finalStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_PROJECT_MUST_EXIST, new String[]{projectName}));
+          }
+          else
+          {
+            // Look at the project type to ensure that it is suitable for the
+            // selected runtime and server.
+            String templateId = getClientComponentType();
+
+            if (templateId != null && templateId.length() > 0)
             {
-              String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeId);
-              String templateLabel = FacetUtils.getTemplateLabelById(templateId);
-              finalStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE, new String[]{runtimeLabel, templateLabel}));
-            }
-            
-            //Check if the server supports it.
-            if (serverFactoryId!=null && serverFactoryId.length()>0)
-            {
-              if (!valUtils.doesServerSupportTemplate(serverFactoryId, templateId))
+              // Check if the runtime supports it.
+              if (!WebServiceRuntimeExtensionUtils2.doesClientTypeAndRuntimeSupportTemplate(typeId, runtimeId, templateId))
               {
-                String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverFactoryId);
+                String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeId);
                 String templateLabel = FacetUtils.getTemplateLabelById(templateId);
-                finalStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_TEMPLATE, new String[]{serverLabel, templateLabel}));
+                finalStatus = StatusUtils.errorStatus(NLS.bind(
+                    ConsumptionUIMessages.MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE, new String[] { runtimeLabel,
+                        templateLabel }));
+              }
+
+              // Check if the server supports it.
+              if (serverFactoryId != null && serverFactoryId.length() > 0)
+              {
+                if (!valUtils.doesServerSupportTemplate(serverFactoryId, templateId))
+                {
+                  String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverFactoryId);
+                  String templateLabel = FacetUtils.getTemplateLabelById(templateId);
+                  finalStatus = StatusUtils.errorStatus(NLS.bind(
+                      ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_TEMPLATE, new String[] { serverLabel,
+                          templateLabel }));
+                }
               }
             }
           }
-          
           
           
         }

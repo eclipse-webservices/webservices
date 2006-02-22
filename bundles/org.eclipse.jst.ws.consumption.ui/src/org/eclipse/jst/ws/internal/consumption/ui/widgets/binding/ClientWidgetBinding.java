@@ -1,16 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060204 124408    rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060204 121605    rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -311,6 +312,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WebServicesParser", CheckForServiceProjectCommand.class);      
 	  
 	  // Setup the PreClientDevelopCommand.
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "DeployClient", PreClientDevelopCommand.class);
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "InstallClient", PreClientDevelopCommand.class);
       
       //Always start the client if it is installed.      

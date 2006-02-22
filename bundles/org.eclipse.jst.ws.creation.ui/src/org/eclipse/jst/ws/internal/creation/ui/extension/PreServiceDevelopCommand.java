@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -53,6 +54,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
   private String            j2eeLevel_;
   private ResourceContext   resourceContext_;
   
+  private boolean deploy_;
   private boolean install_;
   private boolean run_;
   private boolean client_;
@@ -107,7 +109,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
       wsInfo.setWsdlURL(wsdlURL);      
 		}
 	
-		context_     = new SimpleContext(true, true, true, install_, run_, client_, test_, publish_, 
+		context_     = new SimpleContext(true, true, deploy_, install_, run_, client_, test_, publish_, 
 																		scenario, 
 																		resourceContext_.isOverwriteFilesEnabled(),
 																		resourceContext_.isCreateFoldersEnabled(),
@@ -234,6 +236,11 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 	{
 		install_ = installService;
 	}
+
+  public void setDeployService(boolean deployService)
+    {
+        deploy_ = deployService;
+    }
   
 	public void setStartService(boolean startService)
 	{

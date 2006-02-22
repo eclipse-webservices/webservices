@@ -1,16 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner
  * 20060206 126408   rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -43,8 +44,8 @@ import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRu
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ClientRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.FacetMatchCache;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.osgi.util.NLS;
@@ -339,11 +340,18 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       return Status.OK_STATUS;
     }    
     
-    //No suitable server was found. Popup an error.
-    String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(clientIds_.getRuntimeId());
-    String serverLabels = getServerLabels(clientRuntimeId_);    
-    IStatus status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME, new String[]{runtimeLabel, serverLabels}) );
-    return status;
+    // No suitable server was found. Popup an error if the default Web service
+    // runtime requires a server.
+    RuntimeDescriptor runtimeDescriptor = WebServiceRuntimeExtensionUtils2.getRuntimeById(clientIds_.getRuntimeId());
+    if (runtimeDescriptor.getServerRequired())
+    {
+      String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(clientIds_.getRuntimeId());
+      IStatus status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME, new String[] {
+          runtimeLabel}));
+      return status;
+    }
+    
+    return Status.OK_STATUS;
   }
   
   private IServer getServerFromClientRuntimeId()
@@ -1030,26 +1038,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       return ResourceUtils.getDefaultClientEARProjectName();
     }    
   }
-    
-    
-  private String getServerLabels(String clientRuntimeId)
-  {
-        String[] validServerFactoryIds = WebServiceRuntimeExtensionUtils2.getServerFactoryIdsByClientRuntime(clientRuntimeId);
-	    //String[] validServerLabels = new String[validServerFactoryIds.length];
-	    StringBuffer validServerLabels = new StringBuffer(); 
-	    for (int i=0; i<validServerFactoryIds.length; i++)
-	    {
-	    	if (i>0)
-	    	{
-	    		validServerLabels.append(", ");
-	    	}
-	    	validServerLabels.append(WebServiceRuntimeExtensionUtils.getServerLabelById(validServerFactoryIds[i]));
-	    	
-	    }
-	    return validServerLabels.toString();
-  }
-  
-  
+      
   /*
    * Update the client project, client project type and clientRuntime as needed.
    * Used by ServerRuntimeSelectionWidgetDefaultingCommand to update client side

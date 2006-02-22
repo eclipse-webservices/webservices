@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
+ * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -186,17 +187,21 @@ public class WebServiceRuntimeExtensionUtils2
   
   public static String getServiceRuntimeId(TypeRuntimeServer trs, String projectName, String templateId)
   {
-    //Find the first client runtime that supports the implementation type, runtime, server, and project
+    boolean serverSelected = (trs.getServerId() != null) && (trs.getServerId().length() > 0); 
+    //Find the first service runtime that supports the implementation type, runtime, server, and project
     String[] descs = getServiceRuntimesByServiceType(trs.getTypeId());
     for (int i=0; i<descs.length; i++)
     {
       ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(descs[i]);      
       if (desc.getRuntime().getId().equals(trs.getRuntimeId()))
       {
-        boolean supportsServer = doesServiceRuntimeSupportServer(desc.getId(), trs.getServerId());
-        if (!supportsServer)
+        if (serverSelected)
         {
-          continue;
+          boolean supportsServer = doesServiceRuntimeSupportServer(desc.getId(), trs.getServerId());
+          if (!supportsServer)
+          {
+            continue;
+          }
         }
         
         IProject project = ProjectUtilities.getProject(projectName);
@@ -505,7 +510,7 @@ public class WebServiceRuntimeExtensionUtils2
   public static String getDefaultServerValueFor(String typeId)
   {
     String[] fIds = getServerFactoryIdsByServiceType(typeId);
-    if (fIds==null)
+    if (fIds==null || fIds.length==0)
       return null;
     
     return fIds[0];
@@ -783,6 +788,7 @@ public class WebServiceRuntimeExtensionUtils2
   
   public static String getClientRuntimeId(TypeRuntimeServer trs, String projectName, String templateId)
   {
+    boolean serverSelected = (trs.getServerId()!=null) && (trs.getServerId().length()>0);
     //Find the first client runtime that supports the implementation type, runtime, server, and project
     String[] descs = getClientRuntimesByType(trs.getTypeId());
     for (int i=0; i<descs.length; i++)
@@ -790,10 +796,13 @@ public class WebServiceRuntimeExtensionUtils2
       ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(descs[i]);      
       if (desc.getRuntime().getId().equals(trs.getRuntimeId()))
       {
-        boolean supportsServer = doesClientRuntimeSupportServer(desc.getId(), trs.getServerId());
-        if (!supportsServer)
+        if (serverSelected)
         {
-          continue;
+          boolean supportsServer = doesClientRuntimeSupportServer(desc.getId(), trs.getServerId());
+          if (!supportsServer)
+          {
+            continue;
+          }
         }
         
         IProject project = ProjectUtilities.getProject(projectName);
@@ -873,7 +882,10 @@ public class WebServiceRuntimeExtensionUtils2
       //Check if this serviceRuntime supports the implementation type
       if (desc.getClientImplementationType().getId().equals(clientImplId))
       {
-        runtimeIds.add(desc.getRuntime().getId());
+        if (!runtimeIds.contains(desc.getRuntime().getId()))
+        {
+          runtimeIds.add(desc.getRuntime().getId());
+        }
       }
     }
     
