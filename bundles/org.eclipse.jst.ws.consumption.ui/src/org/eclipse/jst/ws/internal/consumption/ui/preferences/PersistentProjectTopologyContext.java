@@ -10,13 +10,14 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060202   119780 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060216   127138 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 
-import java.util.StringTokenizer;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.wst.command.internal.env.context.PersistentContext;
+import com.ibm.icu.util.StringTokenizer;
 
 
 public class PersistentProjectTopologyContext extends PersistentContext implements ProjectTopologyContext

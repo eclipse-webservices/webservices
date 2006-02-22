@@ -1,12 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060216   127138 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
@@ -17,28 +21,22 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.Vector;
-
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.JavaVisibilityKind;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
-import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.environment.IStatusHandler;
+import com.ibm.icu.util.StringTokenizer;
 
 public class Stub2BeanInfo
 {
@@ -56,6 +54,7 @@ public class Stub2BeanInfo
   private Vector usedNames;
   
   private IProject clientProject_;
+  private String   outputFolder_;
   
   public Stub2BeanInfo()
   {
@@ -72,6 +71,11 @@ public class Stub2BeanInfo
 
   public void setClientProject(IProject clientProject) {
   	this.clientProject_ =  clientProject;
+  }
+  
+  public void setOutputFolder( String outputFolder )
+  {
+  	outputFolder_ = outputFolder;
   }
   
   public void setPackage(String pkgName)
@@ -169,35 +173,10 @@ public class Stub2BeanInfo
     sb.append(".java");
 
     ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-    IPath sourceFolderPath = null;
-    IPath filePath = null;
-    ModuleCoreNature mn = ModuleCoreNature.getModuleCoreNature(clientProject_);
-    if (mn!=null)
-    {
-    	sourceFolderPath = ResourceUtils.getJavaSourceLocation(clientProject_);
-        IFolder sourceFolder = (IFolder)ResourceUtils.findResource(sourceFolderPath);
-        filePath = sourceFolder.getFile(new Path(sb.toString())).getFullPath();    	
-    }
-    else
-    {
-        // It's a plain old Java project
-    	JavaCore.create(clientProject_);
-
-		sourceFolderPath = ResourceUtils.getJavaSourceLocation(clientProject_);
-		IResource sourceFolderResource = ResourceUtils.findResource(sourceFolderPath);
-		if (sourceFolderResource instanceof IFolder) 
-		{
-				IFolder sourceFolder = (IFolder) sourceFolderResource;
-				filePath = sourceFolder.getFile(new Path(sb.toString())).getFullPath();
-		} else 
-		{
-			// The source must be going directly in the project
-			filePath = clientProject_.getFile(new Path(sb.toString())).getFullPath();
-		}
-		
-    }
-
-    FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), filePath, bais, progressMonitor, statusMonitor);
+    
+    IPath newFilePath = new Path(outputFolder_).append( sb.toString() );
+    
+    FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), newFilePath, bais, progressMonitor, statusMonitor);
   }
 
   private void writePackage(Writer w) throws IOException

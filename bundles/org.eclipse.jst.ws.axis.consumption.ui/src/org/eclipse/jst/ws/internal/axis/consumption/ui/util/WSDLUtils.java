@@ -1,22 +1,23 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060216   127138 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.util;
 
-import java.text.Collator;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.StringTokenizer;
 import javax.wsdl.Binding;
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
@@ -28,6 +29,8 @@ import javax.wsdl.xml.WSDLReader;
 import javax.xml.namespace.QName;
 import org.apache.axis.wsdl.toJava.Utils;
 import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
+import com.ibm.icu.text.Collator;
+import com.ibm.icu.util.StringTokenizer;
 
 public class WSDLUtils {
 

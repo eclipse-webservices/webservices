@@ -67,5 +67,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.common.frameworks,
  org.eclipse.wst.common.frameworks.ui,
  org.eclipse.wst.common.environment,
- org.eclipse.wst.common.uriresolver
+ org.eclipse.wst.common.uriresolver,
+ com.ibm.icu
 Eclipse-AutoStart: true

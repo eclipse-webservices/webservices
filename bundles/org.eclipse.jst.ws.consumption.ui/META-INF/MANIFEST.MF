@@ -71,5 +71,6 @@ Require-Bundle: org.eclipse.wst.ws.parser,
  org.eclipse.wst.common.environment,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.jst.server.core,
- org.eclipse.debug.core
+ org.eclipse.debug.core,
+ com.ibm.icu
 Eclipse-AutoStart: true
