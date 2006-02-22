@@ -34,6 +34,13 @@
    HttpSession currentSession = (HttpSession)application.getAttribute(sessionId);
    Controller controller = (Controller)currentSession.getAttribute("controller");
    int wsdlType = controller.getWSDLType();
+   
+   Iterator wsIterator = WebServiceFinder.instance().getWebServices();    
+   Vector allWebServices = new Vector();
+   while (wsIterator.hasNext())
+   {
+     allWebServices.add(wsIterator.next());
+   }
 %>
 <html>
 <head>
@@ -97,8 +104,8 @@
          String httpProtocol = "http://";
          String httpsProtocol = "https://";
          wsdlURLs_.removeAllElements();
-         
-         Iterator ws = WebServiceFinder.instance().getWebServices();  
+
+		 Iterator ws = allWebServices.iterator();        
 
          while (ws.hasNext())
          {
