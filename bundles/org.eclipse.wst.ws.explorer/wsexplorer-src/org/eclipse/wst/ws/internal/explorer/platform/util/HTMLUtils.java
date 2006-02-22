@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060222   127443 jesper@selskabet.org - Jesper S Moller
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.util;
@@ -146,6 +149,9 @@ public final class HTMLUtils
 
   /**
   * Replace special characters with HTML entities representing these characters.
+  * Note that this will also convert normal spaces into non-breaking spaces, which may be good for
+  * presentation but not for editing.
+  * 
   * @return String The converted String. Note: Order is important so that corrected entity references are not re-mangled.
   */
   public static final String charactersToHTMLEntities(String s) {
@@ -156,6 +162,18 @@ public final class HTMLUtils
     s = stringReplace(s, QUOTATION, QUOTATION_HTML_ENTITY);
     return s;
   }
+
+  /**
+   * Replace special characters with HTML entities representing these characters
+   * @return String The converted String. Note: Order is important so that corrected entity references are not re-mangled.
+   */
+   public static final String charactersToHTMLEntitiesStrict(String s) {
+     s = stringReplace(s, AMPERSAND, AMPERSAND_HTML_ENTITY);
+     s = stringReplace(s, LESS_THAN, LESS_THAN_HTML_ENTITY);
+     s = stringReplace(s, GREATER_THAN, GREATER_THAN_HTML_ENTITY);
+     s = stringReplace(s, QUOTATION, QUOTATION_HTML_ENTITY);
+     return s;
+   }
 
   /**
   * Replace HTML character entities with their associated characters.

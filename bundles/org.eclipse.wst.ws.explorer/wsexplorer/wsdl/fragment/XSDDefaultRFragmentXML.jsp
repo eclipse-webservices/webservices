@@ -1,3 +1,18 @@
+<%
+/*******************************************************************************
+ * Copyright (c) 2002, 2004 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060222   127443 jesper@selskabet.org - Jesper S Moller
+ *******************************************************************************/
+%>
 <%@ page contentType="text/xml; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.*,
@@ -81,7 +96,7 @@ if (sb == null)
   for (int i = 0; i < instanceDocuments.length; i++) {
     if (instanceDocuments[i] == null)
       continue;
-    sb.append(HTMLUtils.charactersToHTMLEntities(XMLUtils.serialize(instanceDocuments[i], true)));
+    sb.append(HTMLUtils.charactersToHTMLEntitiesStrict(XMLUtils.serialize(instanceDocuments[i], true)));
   }
 %>
 <%=sb.toString()%>

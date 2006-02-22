@@ -7,7 +7,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060222   127443 jesper@selskabet.org - Jesper S Moller
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -49,7 +52,7 @@ String param = frag.getParameterValue(frag.getID(), 0);
 <table cellpadding=3 cellspacing=0 class="<%=(xsdConfig.getIsWSDLPart() ? "fixfragtable" : "innerfixfragtable")%>">
   <tr>
     <td>
-      <textarea id="<%=frag.getID()%>" name="<%=frag.getID()%>" class="textareaenter"><%=((param != null) ? param : "")%></textarea>
+      <textarea id="<%=frag.getID()%>" name="<%=frag.getID()%>" class="textareaenter"><%=((param != null) ? HTMLUtils.charactersToHTMLEntitiesStrict(param) : "")%></textarea>
     </td>
   </tr>
 </table>

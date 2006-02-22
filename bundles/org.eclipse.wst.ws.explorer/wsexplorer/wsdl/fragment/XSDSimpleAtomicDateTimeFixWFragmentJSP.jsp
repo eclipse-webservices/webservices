@@ -7,7 +7,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060222   127443 jesper@selskabet.org - Jesper S Moller
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -65,7 +68,7 @@ XSDTypeDefinition xsdBuiltInType = XSDTypeDefinitionUtil.resolveToXSDBuiltInType
       <%
       String value = frag.getParameterValue(frag.getID(), i);
       %>
-      <input type="text" id="<%=frag.getID()%>" name="<%=fragIDString%>" value="<%=((value != null) ? value : "")%>" size="50" class="tabletextenter">
+      <input type="text" id="<%=frag.getID()%>" name="<%=fragIDString%>" value="<%=((value != null) ? HTMLUtils.charactersToHTMLEntitiesStrict(value) : "")%>" size="50" class="tabletextenter">
     </td>
     <td valign="center" align="left" nowrap>
       <a href="javascript:openCalendarBrowser(<%=request.getParameter(ActionInputs.CALENDAR_TYPE)%>,'contentborder','<%=fragIDString%>',<%=i%>)"><%=controller.getMessage("FORM_LINK_BROWSE")%></a>

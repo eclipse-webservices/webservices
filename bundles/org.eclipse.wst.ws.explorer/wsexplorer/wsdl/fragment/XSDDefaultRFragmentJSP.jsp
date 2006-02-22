@@ -7,7 +7,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060222   127443 jesper@selskabet.org - Jesper S Moller
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -55,7 +58,7 @@ for (int i = 0; i < instanceDocuments.length; i++) {
 <table cellpadding=3 cellspacing=0 class="<%=(xsdConfig.getIsWSDLPart() ? "fixfragtable" : "innerfixfragtable")%>">
   <tr>
     <td>
-      <textarea id="<%=frag.getID()%>" name="<%=frag.getID()%>" class="textareaenter" readonly><%=sb.toString()%></textarea>
+      <textarea id="<%=frag.getID()%>" name="<%=frag.getID()%>" class="textareaenter" readonly><%=HTMLUtils.charactersToHTMLEntitiesStrict(sb.toString())%></textarea>
 <%
       /*
       StringBuffer url = new StringBuffer();
