@@ -34,11 +34,13 @@ public class HTTPTransport
 {
   private final String SYS_PROP_HTTPS_PROXY_HOST = "https.proxyHost";
   private final String SYS_PROP_HTTPS_PROXY_PORT = "https.proxyPort";
+  private final String SYS_PROP_HTTPS_NON_PROXY_HOSTS = "https.nonProxyHosts";
   private final String SYS_PROP_HTTP_PROXY_HOST = "http.proxyHost";
   private final String SYS_PROP_HTTP_PROXY_PORT = "http.proxyPort";
   private final String SYS_PROP_HTTP_PROXY_USER_NAME = "http.proxyUserName";
   private final String SYS_PROP_HTTP_PROXY_PASSWORD = "http.proxyPassword";
-
+  private final String SYS_PROP_HTTP_NON_PROXY_HOSTS = "http.nonProxyHosts";
+  
   private final String HTTP_METHOD = "POST";
   private final String HTTP_VERSION = "HTTP/1.1";
   private final String HTTP_HEADER_SOAP_ACTION = "SOAPAction";
@@ -472,13 +474,18 @@ public class HTTPTransport
     int port = url.getPort();
     String proxyHost = System.getProperty(SYS_PROP_HTTP_PROXY_HOST);
     int proxyPort = Integer.getInteger(SYS_PROP_HTTP_PROXY_PORT, DEFAULT_HTTP_PORT).intValue();
-//    String proxyUserName = System.getProperty(SYS_PROP_HTTP_PROXY_USER_NAME);
-//    String proxyPassword = System.getProperty(SYS_PROP_HTTP_PROXY_PASSWORD);
+    
+    String nonProxyHosts = System.getProperty(SYS_PROP_HTTP_NON_PROXY_HOSTS);
+    String nonProxyHostsPattern = createPatternFromString(nonProxyHosts);
+//  String proxyUserName = System.getProperty(SYS_PROP_HTTP_PROXY_USER_NAME);
+//  String proxyPassword = System.getProperty(SYS_PROP_HTTP_PROXY_PASSWORD);
     if (url.getProtocol().equalsIgnoreCase(HTTPS))
     {
       proxyHost = System.getProperty(SYS_PROP_HTTPS_PROXY_HOST);
       proxyPort = Integer.getInteger(SYS_PROP_HTTPS_PROXY_PORT, DEFAULT_HTTPS_PORT).intValue();
-      if (proxyHost != null && proxyHost.length() > 0)
+      nonProxyHosts = System.getProperty(SYS_PROP_HTTPS_NON_PROXY_HOSTS);
+      nonProxyHostsPattern = createPatternFromString(nonProxyHosts);
+      if (proxyHost != null && proxyHost.length() > 0 && !host.matches(nonProxyHostsPattern))
       {
         // TODO:
         // SSL with proxy server
@@ -492,10 +499,41 @@ public class HTTPTransport
       // as demonstrated in the following (original) line of code:
       //  s = SSLUtils.buildSSLSocket(host, (port > 0 ? port : DEFAULT_HTTPS_PORT), proxyHost, proxyPort, proxyUserName, proxyPassword);
     }
-    else if (proxyHost != null && proxyHost.length() > 0)
+    else if (proxyHost != null && proxyHost.length() > 0 && !host.matches(nonProxyHostsPattern))
       s = new Socket(proxyHost, proxyPort);
     else
       s = new Socket(host, (port > 0 ? port : DEFAULT_HTTP_PORT));
     return s;
+  }
+  
+  /*
+   * This method is used to generate a valid regular expression for a 
+   * normal java String used in the proxy mechanism. 
+   * For example, the http.nonProxyHosts contains following String: 
+   * "192.168.2.*|localhost|*.ibm.com" . It would be 
+   * transformed into: "192\.168\.2\.\w*|localhost|\w*\.ibm\.com"
+   * Thus, following host string would match above pattern:
+   * 192.168.2.5 192.168.2. 192.168.2.666 192.168.2.w
+   * localhost
+   * torolab.ibm.com .ibm.com 123.ibm.com
+   * 
+   * Two transformations are done:
+   * 1. replace all "." into "\." As in regular expression, '.' represents 
+   *    any charater.  "\.' represents the real character '.'
+   * 2. In order to get the real meaning of "*" used in property 
+   *    http.nonProxyHosts, "\w*" is used to replace "*"
+   *    "\w" represent a word character: [a-zA-Z_0-9]
+   *    
+   * Restriction:
+   * The validity of address is not checked. 
+   * (192.168.2.555 and 192.168.2.com are OK)
+   * 
+   * TODO check whether * occurs in address or hostname.
+   * if it occuus in address representation, replace "*" with "\d*"
+   * and check: value < 256 ?
+   */
+  private String createPatternFromString(String str) 
+  {
+    return str == null ? null : str.replaceAll("\\.", "\\.").replaceAll("\\*", "\\w*");
   }
 }
