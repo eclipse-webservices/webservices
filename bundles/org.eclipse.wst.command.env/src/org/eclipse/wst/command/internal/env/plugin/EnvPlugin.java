@@ -22,6 +22,11 @@ public class EnvPlugin extends Plugin {
 	private static EnvPlugin instance;
 
 	/**
+	  * The identifier of the descriptor of this plugin in plugin.xml.
+	  */
+	  public static final String ID = "org.eclipse.wst.command.env";	
+	
+	/**
 	 * The constructor.
 	 */
 	public EnvPlugin() {

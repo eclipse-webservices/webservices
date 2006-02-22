@@ -65,7 +65,7 @@ public class AntController {
 	   }
 	   else  //problem getting the root fragment - scenario type is likely missing
 	   {
-		   handler.reportError(new Status(IStatus.ERROR, "ws_ant", 9999, EnvironmentMessages.MSG_ERR_ANT_SCENARIO_TYPE, null));
+		   handler.reportError(new Status(IStatus.ERROR, "ws_ant", 9999, EnvironmentMessages.MSG_ERROR_ANT_SCENARIO_TYPE, null));
 		   return;
 	   }
 	      

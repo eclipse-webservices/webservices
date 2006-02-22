@@ -34,6 +34,7 @@ import org.eclipse.wst.command.internal.env.core.data.ClassEntry;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.plugin.EnvPlugin;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -53,7 +54,7 @@ public class AntEnvironment extends EclipseEnvironment{
 	private Hashtable operationDataRecord_ = new Hashtable();
 	private boolean mappingComplete_;
 	private ClassEntry classEntry;	
-	
+		
 	// extensionPoint names and namespace
 	private static String MAPPER_EXT_PT = "antDataMapping";  //$NON-NLS-1$
 	private static String SCENARIO_EXT_PT = "antScenario";  //$NON-NLS-1$
@@ -64,11 +65,16 @@ public class AntEnvironment extends EclipseEnvironment{
 	private static final String MAPPER_KEY_ATTRIBUTE= "key"; //$NON-NLS-1$
 	private static final String MAPPER_PROPERTY_ATTRIBUTE= "property"; //$NON-NLS-1$
 	private static final String MAPPER_TRANSFORM_ATTRIBUTE= "transform"; //$NON-NLS-1$
-	
+	private static final String MAPPER_REQUIRED_ATTRIBUTE= "required"; //$NON-NLS-1$
+		
 	// antScenario extension point attributes
 	private static final String SCENARIO_TYPE_ATTRIBUTE = "scenarioType"; //$NON-NLS-1$
 	private static final String SCENARIO_CLASS_ATTRIBUTE = "class"; //$NON-NLS-1$
 
+	// Ant property IDs
+	private static final String VERBOSE_PROPERTY = "Verbose"; //$NON-NLS-1$
+	private static final String SCENARIO_TYPE_PROPERTY = "ScenarioType"; //$NON-NLS-1$
+	
     private AntController controller_;
 	
 	public AntEnvironment(AntController controller, ResourceContext context, IStatusHandler handler, Hashtable properties)
@@ -78,11 +84,24 @@ public class AntEnvironment extends EclipseEnvironment{
 	   controller_ = controller;	   
 	}
 	
+	public boolean verbose()
+	{
+	  String verbose=getProperty(VERBOSE_PROPERTY);		
+	  
+	  if (verbose != null)
+	  {
+		  verbose = verbose.toLowerCase();
+		  if (verbose.equals("true"))
+			  return true;
+	  }		  
+	  return false;
+	}
+	
 	// returns String since the property table built by Ant is property value pairs where the value is a String
 	private String getProperty(String key)
 	{
 		Object property = antProperties_.get(key);
-		if (property != null)
+		if (property != null && (!property.toString().equals("")))
 			return property.toString().trim();
 		return null;
 	}
@@ -209,7 +228,7 @@ public class AntEnvironment extends EclipseEnvironment{
 					 catch (CoreException cex) {
 					   Status errorStatus = new Status(Status.ERROR, "ws_ant", 5092, cex.getMessage(), cex);
 					   getStatusHandler().reportError(errorStatus);
-					   getLog().log(ILog.ERROR, "ws_ant", 5092, this, "getMappingExtensions", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_DATA_TRANSFORM, key, transform));
+					   getLog().log(ILog.ERROR, "ws_ant", 5092, this, "getMappingExtensions", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERROR_ANT_DATA_TRANSFORM, key, transform));
 					   throw new CoreException(errorStatus);
 					 }
 					 
@@ -244,7 +263,29 @@ public class AntEnvironment extends EclipseEnvironment{
 						 holder.value_ = value;
 						 dataTable.put(property, holder);
 					 }			 
-				 }			 
+				 }
+				 else if(ce.getAttribute(MAPPER_REQUIRED_ATTRIBUTE)!=null && ce.getAttribute(MAPPER_REQUIRED_ATTRIBUTE).equals("true"))
+				 {				
+					 String msg = EnvironmentMessages.bind(EnvironmentMessages.MSG_ERROR_ANT_REQUIRED_PROPERTY, key.toString());
+					 Status statusObj = new Status(IStatus.ERROR, 
+								EnvPlugin.ID,
+								IStatus.ERROR,
+								msg, 
+								null);
+					 getStatusHandler().reportError(statusObj);
+	                 getLog().log(ILog.ERROR, "ws_ant", 9999, this, "getMappingExtensions", msg);					 
+				 }
+				 else if (verbose())
+				 {
+					 String msg = EnvironmentMessages.bind(EnvironmentMessages.MSG_INFO_ANT__PROPERTY_DEFAULT, key.toString());
+					 Status statusObj = new Status(IStatus.INFO, 
+								EnvPlugin.ID,
+								IStatus.INFO,
+								msg, 
+								null);
+					 getStatusHandler().reportInfo(statusObj);
+					 getLog().log(ILog.INFO, "ws_ant", 9999, this, "getMappingExtensions", msg);					 
+				 }
 		      }    	 
 		  }
 		   return dataTable.elements();
@@ -279,7 +320,7 @@ public class AntEnvironment extends EclipseEnvironment{
 				catch (Exception exc)
 				{
 					getStatusHandler().reportError(new Status(Status.ERROR, "ws_ant", 5093, exc.getMessage(), exc));
-                    getLog().log(ILog.ERROR, "ws_ant", 5093, this, "transformAndSet", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_DATA_TRANSFORM, mapping.key_, mapping.transform_));
+                    getLog().log(ILog.ERROR, "ws_ant", 5093, this, "transformAndSet", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERROR_ANT_DATA_TRANSFORM, mapping.key_, mapping.transform_));
                     throw new IllegalArgumentException(exc.getMessage());
 				}				
 			}
@@ -372,7 +413,7 @@ public class AntEnvironment extends EclipseEnvironment{
 			     		 catch(Exception cex){
 			     			Status errorStatus = new Status(Status.ERROR, "ws_ant", 5094, cex.getMessage(), cex);
 			     			getStatusHandler().reportError(errorStatus);
-			     			getLog().log(ILog.ERROR, "ws_ant", 5094, this, "callSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, setterMethodName));
+			     			getLog().log(ILog.ERROR, "ws_ant", 5094, this, "callSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERROR_ANT_CALL_SETTER, setterMethodName));
 			     			throw new CoreException(errorStatus);
 			     		 }
 			       }  
@@ -435,7 +476,7 @@ public class AntEnvironment extends EclipseEnvironment{
 				    	catch(Exception e){
 				    		Status errorStatus = new Status(Status.ERROR, "ws_ant", 5095, e.getMessage(), e);
 				    		getStatusHandler().reportError(errorStatus);
-				    		getLog().log(ILog.ERROR, "ws_ant", 5095, this, "callPrimitiveSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, element.getName()));
+				    		getLog().log(ILog.ERROR, "ws_ant", 5095, this, "callPrimitiveSetter", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERROR_ANT_CALL_SETTER, element.getName()));
 				    		throw new CoreException(errorStatus);
 				    	}
 				    }			
@@ -464,7 +505,7 @@ public class AntEnvironment extends EclipseEnvironment{
 					{
 						Status errorStatus = new Status(Status.ERROR, "ws_ant", 5096, exc.getMessage(), exc);
 						getStatusHandler().reportError(errorStatus);
-						getLog().log(ILog.ERROR, "ws_ant", 5096, this, "callSetterConstructor", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERR_ANT_CALL_SETTER, element.getName()));
+						getLog().log(ILog.ERROR, "ws_ant", 5096, this, "callSetterConstructor", EnvironmentMessages.bind(EnvironmentMessages.MSG_ERROR_ANT_CALL_SETTER, element.getName()));
 						throw new CoreException(errorStatus);
 					}
 				}
@@ -483,7 +524,7 @@ public class AntEnvironment extends EclipseEnvironment{
        {
     	   
     	   //look up the commandFragment in the scenarioRegistry extension point with an ID corresponding to the scenario property in the propertytable
-    	   String scenarioProperty = (String)getProperty(SCENARIO_TYPE_ATTRIBUTE);
+    	   String scenarioProperty = (String)getProperty(SCENARIO_TYPE_PROPERTY);
     	   IExtensionRegistry reg = Platform.getExtensionRegistry();
 		   IExtensionPoint extPt = reg.getExtensionPoint(EXT_PT_NAMESPACE, SCENARIO_EXT_PT);
 		   
@@ -507,7 +548,7 @@ public class AntEnvironment extends EclipseEnvironment{
 				 {
 					 Status errorStatus = new Status(Status.ERROR, "ws_ant", 5097, exception.getMessage(), exception);
 					 getStatusHandler().reportError(errorStatus);
-					 getLog().log(ILog.ERROR, "ws_ant", 5097, this, "getRootCommandFragment", EnvironmentMessages.MSG_ERR_ANT_CMD_FRAGMENT);					 
+					 getLog().log(ILog.ERROR, "ws_ant", 5097, this, "getRootCommandFragment", EnvironmentMessages.MSG_ERROR_ANT_CMD_FRAGMENT);					 
 				 }				 
 			  }    	   
            }
