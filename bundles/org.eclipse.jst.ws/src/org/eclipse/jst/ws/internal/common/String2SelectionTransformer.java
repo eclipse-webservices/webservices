@@ -75,7 +75,11 @@ public class String2SelectionTransformer implements Transformer {
 		                ejbEdit.dispose();
 		        }
 			}
-			selection = new StructuredSelection(resource);			
+			// if selection not already set - create it from the resource object
+			if (selection == null)
+			{
+			  selection = new StructuredSelection(resource);
+			}
 		}
 		else
 		{
