@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
@@ -18,14 +21,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.PortType;
 import javax.wsdl.Service;
 import javax.wsdl.extensions.soap.SOAPAddress;
 import javax.xml.namespace.QName;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
@@ -51,6 +52,7 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
   private String discoveredWsdlPortElementName;
   private Vector portTypes_;
   private String proxyBean_;
+  private String outputFolder_;
   
   private IProject clientProject_;
   
@@ -150,6 +152,7 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
             portTypes_.add(portTypeID.toString());
             Stub2BeanInfo stub2BeanInfo = new Stub2BeanInfo();
             stub2BeanInfo.setClientProject(clientProject_);
+            stub2BeanInfo.setOutputFolder( outputFolder_ );
             String portTypePkgName = NameMappingUtils.getPackageName(portType.getQName().getNamespaceURI(), pkg2nsMapping);
             String portTypeClassName = computeClassName(portTypeQName.getLocalPart());
             stub2BeanInfo.setPackage(portTypePkgName);
@@ -237,4 +240,9 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
 	public String getProxyBean() {
 		return proxyBean_;
 	}	
+	
+	public void setOutputFolder( String outputFolder )
+	{
+		outputFolder_ = outputFolder;
+	}
 }

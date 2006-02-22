@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.wizard.client;
 
@@ -49,10 +52,12 @@ public class WebServiceClientAxisType implements CommandWidgetBinding
     dataRegistry.addMapping( AxisClientDefaultingCommand.class, "ProxyProjectFolder", AxisProxyWidget.class, "ProxyFolder", null );
     dataRegistry.addMapping( AxisClientDefaultingCommand.class, "GenerateProxy", AxisProxyWidget.class);    
     dataRegistry.addMapping( AxisClientDefaultingCommand.class, "IsClientScenario", AxisProxyWidget.class);    
+    dataRegistry.addMapping( AxisClientDefaultingCommand.class, "ClientProject", AxisProxyWidget.class );
     dataRegistry.addMapping( AxisClientDefaultingCommand.class, "JavaWSDLParam", AxisMappingsWidget.class, "JavaParameter", null);
     
     // AxisProxyWidget
     dataRegistry.addMapping( AxisProxyWidget.class, "GenerateProxy", ClientExtensionOutputCommand.class );
+    dataRegistry.addMapping( AxisProxyWidget.class, "OutputFolder", DefaultsForClientJavaWSDLCommand.class );
     
     //AxisMappingsWidget
 	dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", DefaultsForHTTPBasicAuthCommand.class, "JavaWSDLParam", null); //OK

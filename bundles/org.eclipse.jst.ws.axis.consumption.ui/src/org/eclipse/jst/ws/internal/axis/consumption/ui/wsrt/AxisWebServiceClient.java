@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.wsrt;
@@ -143,6 +146,7 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		registry.addMapping(AxisClientDefaultingCommand.class, "JavaWSDLParam", Stub2BeanCommand.class);
 		registry.addMapping(AxisClientDefaultingCommand.class, "WebServicesParser", Stub2BeanCommand.class);
 		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", Stub2BeanCommand.class);
+		registry.addMapping(DefaultsForClientJavaWSDLCommand.class, "OutputFolder", Stub2BeanCommand.class );
 		// BuildProjectCommand()
 		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", BuildProjectCommand.class, "Project", null);
 		registry.addMapping(AxisClientDefaultingCommand.class, "ForceBuild", BuildProjectCommand.class);

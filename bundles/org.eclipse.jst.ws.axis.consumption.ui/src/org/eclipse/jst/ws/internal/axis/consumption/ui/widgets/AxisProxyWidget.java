@@ -1,24 +1,30 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.widgets;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -31,7 +37,7 @@ public class AxisProxyWidget extends SimpleWidgetDataContributor
   /*CONTEXT_ID PWJB0001 for the WSDL to Java Bindings Page*/
   private final String INFOPOP_PWJB_PAGE = "PWJB0001";	//$NON-NLS-1$
 		
-  private Text folderText_;
+  private Combo outputFolderCombo_;
   /*CONTEXT_ID PWJB0003 for the Folder field of the WSDL to Java Bindings Page*/
   private final String INFOPOP_PWJB_TEXT_FOLDER = "PWJB0003";	//$NON-NLS-1$
 
@@ -54,7 +60,6 @@ public class AxisProxyWidget extends SimpleWidgetDataContributor
     											AxisConsumptionUIMessages.TOOLTIP_PWJB_CHECKBOX_GENPROXY,
                                                 INFOPOP_PWJB_CHECKBOX_GENPROXY );
     genProxyCheckbox_.addListener( SWT.Selection, statusListener );
-    
     genProxyCheckbox_.addSelectionListener( new SelectionAdapter()
                                             {
                                               public void widgetSelected( SelectionEvent evt )
@@ -65,11 +70,10 @@ public class AxisProxyWidget extends SimpleWidgetDataContributor
     
     Composite textGroup = uiUtils.createComposite( parent, 2, 5, 0 );
     
-    folderText_ = uiUtils.createText( textGroup, AxisConsumptionUIMessages.LABEL_FOLDER_NAME,
+    outputFolderCombo_ = uiUtils.createCombo( textGroup, AxisConsumptionUIMessages.LABEL_FOLDER_NAME,
     									AxisConsumptionUIMessages.TOOLTIP_PWJB_TEXT_FOLDER,
     									INFOPOP_PWJB_TEXT_FOLDER,
     									SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
-    folderText_.addListener( SWT.Modify, statusListener );
     
     showMappingsCheckbox_ = uiUtils.createCheckbox( parent, AxisConsumptionUIMessages.LABEL_EXPLORE_MAPPINGS_XML2BEAN,
     									AxisConsumptionUIMessages.TOOLTIP_N2P_SHOW_MAPPINGS,
@@ -85,20 +89,30 @@ public class AxisProxyWidget extends SimpleWidgetDataContributor
   {
     boolean enabled = genProxyCheckbox_.getSelection();
     
-    folderText_.setEnabled( enabled );
+    outputFolderCombo_.setEnabled( enabled );
     showMappingsCheckbox_.setEnabled( enabled );
   }
   
-  public void setProxyFolder( String proxyFolder )
-  {
-    folderText_.setText( proxyFolder );  
+  public void setClientProject(IProject clientProject)
+  {  	
+    IPath[] paths = ResourceUtils.getAllJavaSourceLocations(clientProject);
+    
+    for (int i = 0; i < paths.length ; i++)
+    {
+      outputFolderCombo_.add(paths[i].toString());
+    }
+    
+    if( paths.length > 0 )
+    {
+    	outputFolderCombo_.select(0);
+    }
   }
   
-  public String getProxyFolder()
+  public String getOutputFolder()
   {
-     return folderText_.getText();  
+  	return outputFolderCombo_.getText();
   }
-  
+        
   public void setGenerateProxy( Boolean genProxy )
   {
     genProxyCheckbox_.setSelection( genProxy.booleanValue() );
