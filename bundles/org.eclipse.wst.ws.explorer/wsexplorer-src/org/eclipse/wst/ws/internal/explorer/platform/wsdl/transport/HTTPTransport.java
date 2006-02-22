@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060131   125777 jesper@selskabet.org - Jesper S Moller
  * 20060222   118019 andyzhai@ca.ibm.com - Andy Zhai
+ * 20060222   128564 jesper@selskabet.org - Jesper S Moller
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport;
 
@@ -167,9 +168,9 @@ public class HTTPTransport
     return getHTTPHeader(HTTP_HEADER_CONTENT_TYPE, CONTENT_TYPE_VALUE);
   }
   
-  private String getContentLength(String payload)
+  private String getContentLength(byte[] payloadAsBytes)
   {
-    return getHTTPHeader(HTTP_HEADER_CONTENT_LENGTH, String.valueOf(payload.length()));
+    return getHTTPHeader(HTTP_HEADER_CONTENT_LENGTH, String.valueOf(payloadAsBytes.length));
   }
 
   private String getSOAPAction(String soapAction)
@@ -291,11 +292,13 @@ public class HTTPTransport
 
   public void send(URL url, String soapAction, String payload) throws UnknownHostException, IOException
   {
+    byte[] payloadAsUTF8 = payload.getBytes(DEFAULT_SOAP_ENCODING);
+       
     StringBuffer httpHeader = new StringBuffer();
     httpHeader.append(getMethod(url));
     httpHeader.append(getHost(url));
     httpHeader.append(getContentType());
-    httpHeader.append(getContentLength(payload));
+    httpHeader.append(getContentLength(payloadAsUTF8));
     httpHeader.append(getAccept());
     httpHeader.append(getUserAgent());
     httpHeader.append(getCacheControl());
@@ -311,7 +314,7 @@ public class HTTPTransport
     InputStream is = socket.getInputStream();
     OutputStream os = socket.getOutputStream();
     os.write(httpHeader.toString().getBytes(DEFAULT_HTTP_HEADER_ENCODING));
-    os.write(payload.getBytes(DEFAULT_SOAP_ENCODING));
+    os.write(payloadAsUTF8);
     os.flush();
     httpResponse = new HTTPResponse();
     readHTTPResponseHeader(is, httpResponse);
