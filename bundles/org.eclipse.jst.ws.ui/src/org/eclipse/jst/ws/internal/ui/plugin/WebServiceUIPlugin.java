@@ -13,9 +13,7 @@ package org.eclipse.jst.ws.internal.ui.plugin;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
-
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jst.ws.internal.ui.preferences.PersistentActionDialogsContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
 
@@ -39,8 +37,6 @@ public class WebServiceUIPlugin extends AbstractUIPlugin
   */
   private static WebServiceUIPlugin instance_;
 
-  private PersistentActionDialogsContext actionDialogsContext_;
-  
   /**
    * Constructs a runtime plugin object for this plugin.
    */
@@ -57,17 +53,6 @@ public class WebServiceUIPlugin extends AbstractUIPlugin
   static public WebServiceUIPlugin getInstance() {
     return instance_;
   }
-
-
-  public PersistentActionDialogsContext getActionDialogsContext() 
-  	{
-  	  if (actionDialogsContext_ == null)
-  	  	{
-  	  		actionDialogsContext_ = new PersistentActionDialogsContext();
-  	  		actionDialogsContext_.load();
-  	  	}
-  	  return actionDialogsContext_;
-  	}
 		
   /**
   * Returns the message string identified by the given key from
