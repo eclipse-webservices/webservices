@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131   125777 jesper@selskabet.org - Jesper S Moller
+ * 20060222   118019 andyzhai@ca.ibm.com - Andy Zhai
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport;
 
