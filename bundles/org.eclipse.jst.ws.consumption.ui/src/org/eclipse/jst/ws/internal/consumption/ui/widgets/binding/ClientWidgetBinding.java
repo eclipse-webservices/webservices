@@ -12,6 +12,7 @@
  * 20060204 124408    rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060204 121605    rsinha@ca.ibm.com - Rupam Kuehner
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060223   129020 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -113,7 +114,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     //dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "Runtime2ClientTypes", ClientRuntimeSelectionWidget.class);
     //dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentName", ClientRuntimeSelectionWidget.class);
     //dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarComponentName", ClientRuntimeSelectionWidget.class);
-    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientNeedEAR", ClientRuntimeSelectionWidget.class,"NeedEAR",null);
+    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientNeedEAR", ClientRuntimeSelectionWidget.class);
     
     // After ClientRuntimeSelectionWidget
     dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientTypeRuntimeServer", ClientExtensionDefaultingCommand.class);

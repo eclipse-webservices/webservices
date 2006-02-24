@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060204 124143   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060221   122661 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060223   129020 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -132,6 +133,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     {
       public void modifyText(ModifyEvent evt) 
       {
+        handleProjectTypeChanged();
         statusListener_.handleEvent( null );
       }
     };    
@@ -173,163 +175,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     moduleProject_.removeModifyListener( moduleProjectListener_ );
     earProject_.removeModifyListener( earProjectListener_ );
   }
-  
-  /*
-  private void handleModuleProjectChanged(String moduleName)
-  {
-	String   projectName = moduleProject_.getText(); 
-	IProject project     = null;
-	
-	if( projectName.equals( "" ) ) 
-	{
-	  module_.setItems( new String[0] );
-	  
-	  return;
-	}
-			
-	project = ProjectUtilities.getProject( projectName );
-	
-	
-	IVirtualComponent[] components = J2EEUtils.getComponentsByType( project, componentType_ );
-	String[] modules = new String[components.length];
-	
-	for( int index = 0; index < components.length; index++ )
-	{
-	  modules[index] = components[index].getName();	
-	}
-	
-	module_.setItems( modules );
-	
-	  if( modules.length > 0 )
-	  {
-      if (moduleName != null)
-      {
-       module_.setText(moduleName); 
-      }
-      else
-      {
-	      module_.setText( modules[0] );
-      }
-       
-	  }
-	  else
-	  {
-	    module_.setText( projectName );
-	  }
-  
-  }
-  */
-  
-  /*
-  private void handleModuleChanged()
-  {
-	IVirtualComponent component = getEarModuleForModule();
-	
-	if( component != null )
-	{
-	  String earProject    = component.getProject().getName();
-	  String componentName = component.getName();
-	
-      // This will cause the module list to be update via a listener.
-	  earProject_.setText( earProject );  
-	  earModule_.setText( componentName );
-	}
-	else
-	{
-	  earProject_.setText( "" );  
-	  earModule_.setText( "" );
-	}
-	
-	updateEAREnabledState();
-  }
-  */
-
-  /*
-  private void handleEarProjectChanged()
-  {
-	
-	String   projectName = earProject_.getText(); 
-	
-	if( projectName != null && !projectName.equals( "" ))
-	{
-	  IProject project     = ProjectUtilities.getProject( projectName );
-	
-	  IVirtualComponent[] components = J2EEUtils.getComponentsByType( project, J2EEUtils.EAR );
-	  String[] earModules = new String[components.length];
-	
-	  for( int index = 0; index < components.length; index++ )
-	  {
-	    earModules[index] = components[index].getName();	
-	  }
-	
-	  earModule_.setItems( earModules );
-	
-	  if( earModules.length > 0 )
-	  {
-	    earModule_.setText( earModules[0] );	
-	  }
-	  else
-	  {
-	    earModule_.setText( projectName );	
-	  }
-	}
-	else
-	{
-	  earModule_.setItems( new String[0] );	
-	}
-  }
-  */
-  
-  /*
-  private IVirtualComponent getEarModuleForModule()
-  {
-	String   projectName = moduleProject_.getText(); 
-	
-	if( projectName.equals( "" ) )
-	{
-	  return null;	
-	}
-	
-	IProject project     = ProjectUtilities.getProject( projectName );
-	
-	IVirtualComponent[] components = J2EEUtils.getReferencingEARComponents( project );
-	
-	return components.length == 0 ? null : components[0];
-  }
-  */
-  
-  /*
-  public void setProjectChoices(SelectionListChoices projects) 
-  {
-	listenersOff();
-	
-    projects_ = projects;
-	
-	String   selectedModuleProject    = projects.getList().getSelection();
-	String   selectedEarModuleProject = projects.getChoice().getList().getSelection();
-	String[] projectNames             = getProjects();
-	
-	moduleProject_.setItems( projectNames );
-	moduleProject_.setText( selectedModuleProject );
-	earProject_.setItems( projectNames );
-	earProject_.setText( selectedEarModuleProject );
-		
-	handleModuleProjectChanged(initialModuleName_);
-  handleModuleChanged();
-	updateEAREnabledState();	
-    listenersOn();
-  }
-  */
-  
-
-
-  /*
-  public SelectionListChoices getProjectChoices() 
-  {
-    return projects_;
-  }
-  */
-  
+    
   public String getProjectName()
   {
 	return moduleProject_.getText();
@@ -340,6 +186,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	listenersOff();
     moduleProject_.setText( name );
     handleProjectChanged();
+    updateEARState();
 	listenersOn();
   }
   
@@ -366,6 +213,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     else
       projectType_.setText("");
     
+    handleProjectTypeChanged();
     listenersOn();
   }
   
@@ -436,6 +284,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     moduleProject_.setItems(projectNames);
     moduleProject_.setText(selectedModuleProject);
     handleProjectChanged();
+    updateEARState();
     listenersOn();
   }
   
@@ -453,10 +302,14 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
       earProject_.select(0);
   }
   
+  private void handleProjectTypeChanged()
+  {
+    updateEARState();    
+  }
+  
   private void handleProjectChanged()
-  {  
-    updateEARState();
-    updateTemplates();
+  { 
+    updateTemplates(); 
   }
   
   private void updateTemplates()
@@ -474,7 +327,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
       {
         populateProjectTypeCombo();
         projectType_.setEnabled(true);
-      }
+      }      
     }
   }
   
@@ -623,7 +476,34 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 
   private boolean projectNeedsEAR(String projectName)
   {
-	//Use the server type
+    //If the project is a simple Java project or the project type is 
+    //Java utility return false.
+    if (projectName != null && projectName.length()>0)
+    {
+      IProject project = ProjectUtilities.getProject(projectName);
+      if (project.exists())
+      {
+        if (FacetUtils.isJavaProject(project))
+        {
+          return false;
+        }
+      }
+    }
+
+    //Project didn't rule out the need for an EAR
+    //so check the proect type
+    String templateId = getComponentType();
+    if (templateId != null && templateId.length()>0)
+    {
+      if (FacetUtils.isUtilityTemplate(templateId))
+      {
+        return false;
+      }
+    }
+    
+        
+	//Project or project type didn't rule out the need for an EAR
+    //so check the server type.
     if (trsIds_ != null && trsIds_.getServerId() != null)
     {
       String targetId = ServerUtils.getRuntimeTargetIdFromFactoryId(trsIds_.getServerId());
@@ -635,7 +515,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   	    }
   	  }
     }
-  	
+  	 
   	return true;    
   }
   
