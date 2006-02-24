@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060222   115834 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -22,17 +25,23 @@ import javax.wsdl.Port;
 import javax.wsdl.Service;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.internal.webservice.helper.WebServicesManager;
+import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.webservice.internal.WebServiceConstants;
 import org.eclipse.jst.j2ee.webservice.wsdd.PortComponent;
 import org.eclipse.jst.j2ee.webservice.wsdd.WSDLPort;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
+import org.eclipse.jst.j2ee.webservice.wsdd.WebServices;
+import org.eclipse.jst.j2ee.webservice.wsdd.WsddResource;
 import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
@@ -42,7 +51,9 @@ import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
+import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
@@ -337,11 +348,16 @@ public class ValidationUtils
       return false;
     
     
-      //Make a list of all the wsdl-port's in webservices.xml
-    WebServicesManager wsm = WebServicesManager.getInstance();
-    //WebServiceEditModel wsEditModel = wsm.getWSEditModel(p);
-    //WebServices ws = wsEditModel.getWebServices();
-    Iterator wsDescs = wsm.getInternalWebServicesDescriptions().iterator();
+    //Make a list of all the wsdl-port's in webservices.xml
+    if (!(wsXML instanceof IFile))
+    {
+      return false;
+    }
+     
+    Resource res = WorkbenchResourceHelperBase.getResource((IFile)wsXML, true);
+    WsddResource wsddRes = (WsddResource)res;    
+    WebServices webServices = wsddRes.getWebServices();
+    Iterator wsDescs = webServices.getWebServiceDescriptions().iterator();
     ArrayList wsdlPortList = new ArrayList();
     while(wsDescs.hasNext())
     {
@@ -378,40 +394,51 @@ public class ValidationUtils
   }
   
   /**
-   * @deprecated
    * 
    */
   private IResource getWebServcesXML(IProject p)
   {
-	  // 
-//    J2EENature nature = (J2EENature) J2EENature.getRegisteredRuntime(p);
-//    if (nature == null)
-//      return null;
-
-//    IResource moduleRoot = nature.getModuleServerRoot();
-//	IResource moduleRoot = ResourceUtils.getWebModuleServerRoot(p);
-	IResource moduleRoot = J2EEUtils.getFirstWebContentContainer(p);  
+    //Get the module root.    
+    IResource moduleRoot = getModuleRoot(p);
     if (!(moduleRoot instanceof IContainer))
       return null;
 
-    IResource webServicesXML=null;
-//    if (nature instanceof J2EEWebNatureRuntime)
-	if (ResourceUtils.isWebProject(p))
+    IResource webServicesXML = null;
+    if (J2EEProjectUtilities.isDynamicWebProject(p))
     {
       StringBuffer wsPath = new StringBuffer();
       wsPath.append("WEB-INF/");
       wsPath.append(WebServiceConstants.WEBSERVICE_DD_SHORT_NAME);
-      webServicesXML = ((IContainer)moduleRoot).findMember(wsPath.toString()); 
+      webServicesXML = ((IContainer) moduleRoot).findMember(wsPath.toString());
     }
-    else //Must be an Application Client Module or an EJB Module
+    else
     {
       StringBuffer wsPath = new StringBuffer();
       wsPath.append("META-INF/");
       wsPath.append(WebServiceConstants.WEBSERVICE_DD_SHORT_NAME);
-      webServicesXML = ((IContainer)moduleRoot).findMember(wsPath.toString());     
+      webServicesXML = ((IContainer) moduleRoot).findMember(wsPath.toString());      
     }
-    
     return webServicesXML;
+  }
+  
+  private IResource getModuleRoot(IProject p)
+  {
+    IPath modulePath = null;
+    try 
+    {
+      IVirtualComponent vc = ComponentCore.createComponent(p);
+      if (vc != null) 
+      {
+        modulePath = vc.getRootFolder().getWorkspaceRelativePath();
+      }
+    }
+    catch(Exception ex)
+    {
+      
+    } 
+    
+    IResource res = ResourceUtils.findResource(modulePath);
+    return res;
   }
   
   private ArrayList getPortNamesFromWsdl(String wsdlURL, WebServicesParser parser)

@@ -12,6 +12,7 @@
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner
  * 20060206 126408   rsinha@ca.ibm.com - Rupam Kuehner
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060222   115834 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -39,6 +40,7 @@ import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
@@ -91,18 +93,18 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   private ResourceContext   resourceContext_;
   private boolean           test_;
   
-  //A note on initialSelections ...
-  //The difference between clientInitialProject/Component_ and initialInitialSelection is that
-  //clientInitialProject/Component_ comes from the ObjectSelectionOutputCommand while initialInitialSelection
-  //is the actual thing that was selected before the wizard was launched. In the runtime/j2ee/project 
-  //defaulting algorithm, clientInitialSelection will be given first priority. If, however, it is 
-  //deemed that clientInitialProject is not a valid initial selection, initialInitialSelection
-  //will be given second priority. Things that could make an initialSelection invalid include
-  //1. The containing project contains the Web service for which we are trying to create a client
-  //2. The containing project has a J2EE level, server target, and project type combination which
-  //   is not supported by any of the registered Web service runtimes.
-  private IProject clientInitialProject_;
+  //A note on initial projects ...
+  //The difference between clientInitialProject_ and initialProject_ is that
+  //clientInitialProject_ comes from the ObjectSelectionOutputCommand while initialProject_
+  //comes from SelectionCommand (i.e. it is the project containing the thing that was selected before 
+  //the wizard was launched). In the defaulting algorithm, clientInitialProject_ will 
+  //be given first priority. If, however, it is deemed that clientInitialProject_ is not a valid project 
+  //because it contains the J2EE Web service for which we are trying to create a client, initialProject_
+  //will be given second priority.
+  private IProject initialProject_; //This is the project containing the selection prior to the wizard being launched.
+  private IProject clientInitialProject_; //This is the project containing the object selection from page 2.
   private String wsdlURI_;
+  private WebServicesParser parser_;  
 
   public ClientRuntimeSelectionWidgetDefaultingCommand()
   {
@@ -183,14 +185,45 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       } 
       else
       {
-        // Set the runtime based on the initial selection
-        DefaultRuntimeTriplet drt = getDefaultRuntime(clientInitialProject_, clientIds_.getTypeId(), true);
-        clientFacetMatcher_ = drt.getFacetMatcher();
-        clientProjectName_ = drt.getProjectName();
-        clientRuntimeId_ = drt.getRuntimeId();
+        ValidationUtils vu = new ValidationUtils();
+        
+        // Set the runtime based on the project containing the object selection/initial selection.
+        DefaultRuntimeTriplet drt = null;
+        
+        if (!vu.isProjectServiceProject(clientInitialProject_, wsdlURI_, parser_))
+        {
+          //If clientIntialProject_ does not contain the J2EE Web service, choose a clientRuntime based on it.
+          drt = getDefaultRuntime(clientInitialProject_, clientIds_.getTypeId(), true);
+          clientFacetMatcher_ = drt.getFacetMatcher();
+          clientProjectName_ = drt.getProjectName();
+          clientRuntimeId_ = drt.getRuntimeId();          
+        }
+        else
+        {
+          //clientInitialProject_ contains the J2EE Web service so don't use it.
+          //Try using the initalProject_ instead.
+          if (!vu.isProjectServiceProject(initialProject_, wsdlURI_, parser_))
+          {
+            //If intialProject_ does not contain the J2EE Web service, choose a clientRuntime based on it.
+            drt = getDefaultRuntime(initialProject_, clientIds_.getTypeId(), true);
+            clientFacetMatcher_ = drt.getFacetMatcher();
+            clientProjectName_ = drt.getProjectName();
+            clientRuntimeId_ = drt.getRuntimeId();            
+          }
+          else
+          {
+            //Both clientIntialProject_ and initialProject_ contain the J2EE Web service
+            //and cannot be used to influence clientRuntime defaulting.
+            //Choose a clientRuntime but don't choose clientInitialProject_
+            //as the clientProject.
+            drt = getDefaultRuntime(null, clientIds_.getTypeId(), true);
+            clientRuntimeId_ = drt.getRuntimeId();                      
+          }
+        }
 
         if (clientRuntimeId_ == null)
         {
+        	// TODO:
           // return and error.
         }
         clientIds_.setRuntimeId(WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRuntime()
@@ -665,6 +698,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   
   private String getDefaultClientProjectName()
   {
+    ValidationUtils vu = new ValidationUtils();
     IProject[] projects = FacetUtils.getAllProjects();
     ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_);
     RequiredFacetVersion[] rfvs = desc.getRequiredFacetVersions();
@@ -672,32 +706,34 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     //Check each project and its facetRuntime for compatibility with the clientRuntime
     for (int i=0; i<projects.length; i++)
     {
-
-      Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
-      org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = null;
-      String fRuntimeName = null;
-      fRuntime = FacetUtils.getFacetRuntimeForProject(projects[i].getName());
-      if (fRuntime != null)
+      if (!vu.isProjectServiceProject(projects[i], wsdlURI_, parser_))
       {
-        fRuntimeName = fRuntime.getName();        
-      }              
-
-      if (facetVersions != null)
-      {
-
-        //FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
-        FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(true, clientRuntimeId_, projects[i].getName());
-        boolean facetRuntimeMatches = true;
-        if (fRuntimeName != null)
+        Set facetVersions = FacetUtils.getFacetsForProject(projects[i].getName());
+        org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = null;
+        String fRuntimeName = null;
+        fRuntime = FacetUtils.getFacetRuntimeForProject(projects[i].getName());
+        if (fRuntime != null)
         {
-          facetRuntimeMatches = FacetUtils.isFacetRuntimeSupported(rfvs, fRuntimeName);  
+          fRuntimeName = fRuntime.getName();
         }
-        
-        if (fm.isMatch() && facetRuntimeMatches)
+
+        if (facetVersions != null)
         {
-          clientFacetMatcher_ = fm;
-          return projects[i].getName();
-        }                    
+
+          // FacetMatcher fm = FacetUtils.match(rfvs, facetVersions);
+          FacetMatcher fm = FacetMatchCache.getInstance().getMatchForProject(true, clientRuntimeId_, projects[i].getName());
+          boolean facetRuntimeMatches = true;
+          if (fRuntimeName != null)
+          {
+            facetRuntimeMatches = FacetUtils.isFacetRuntimeSupported(rfvs, fRuntimeName);
+          }
+
+          if (fm.isMatch() && facetRuntimeMatches)
+          {
+            clientFacetMatcher_ = fm;
+            return projects[i].getName();
+          }
+        }
       }
     }
     
@@ -1130,8 +1166,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
    */
   public void setInitialInitialSelection(IStructuredSelection initialInitialSelection)
   {
-    // TODO Delete this method and corresponding mappings
-	// if no longer required.
+    initialProject_ = getProjectFromInitialSelection(initialInitialSelection);
   }
   
   public boolean getClientNeedEAR()
@@ -1143,8 +1178,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
    * @param parser_ The parser_ to set.
    */
   public void setWebServicesParser(WebServicesParser parser) {
-    // TODO Delete this method and corresponding mappings
-	// if no longer required.
+    parser_ = parser;
   }
   
   public void setWsdlURI(String wsdlURI)
