@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060224   122752 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective;
@@ -36,8 +39,8 @@ public class OpenRegistryTool extends FormTool
   {
     controller_ = toolManager_.getNode().getNodeManager().getController();
     UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
-    setProperty(UDDIActionInputs.REGISTRY_NAME,uddiPerspective.getMessage("DEFAULT_REGISTRY_NAME"));
-    setProperty(UDDIActionInputs.INQUIRY_URL,uddiPerspective.getIBMPublicUDDITestRegistry().getInquiryURL());
+    setProperty(UDDIActionInputs.REGISTRY_NAME,uddiPerspective.getDefaultUDDIRegistry().getName());
+    setProperty(UDDIActionInputs.INQUIRY_URL,uddiPerspective.getDefaultUDDIRegistry().getInquiryURL());
   }
 
   public String getSelectToolActionHref(boolean forHistory)

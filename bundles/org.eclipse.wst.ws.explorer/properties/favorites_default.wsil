@@ -6,34 +6,6 @@
   <abstract xml:lang="en-US">v5_0_1_0</abstract>
 
   <link referencedNamespace="urn:uddi-org:api">
-    <abstract xml:lang="en-US">%PUBLICUDDIREGISTRYTYPE_NAME_IBM_TEST</abstract>
-    <abstract xml:lang="en-US">http://uddi.ibm.com/testregistry/inquiryapi</abstract>
-    <abstract xml:lang="en-US">https://uddi.ibm.com/testregistry/publishapi</abstract>
-    <abstract xml:lang="en-US">http://uddi.ibm.com/testregistry/registry.html</abstract>
-  </link>
-
-  <link referencedNamespace="urn:uddi-org:api">
-    <abstract xml:lang="en-US">%PUBLICUDDIREGISTRYTYPE_NAME_IBM</abstract>
-    <abstract xml:lang="en-US">http://uddi.ibm.com/ubr/inquiryapi</abstract>
-    <abstract xml:lang="en-US">https://uddi.ibm.com/ubr/publishapi</abstract>
-    <abstract xml:lang="en-US">http://uddi.ibm.com/ubr/registry.html</abstract>
-  </link>
-
-  <link referencedNamespace="urn:uddi-org:api">
-    <abstract xml:lang="en-US">%PUBLICUDDIREGISTRYTYPE_NAME_MICROSOFT_TEST</abstract>
-    <abstract xml:lang="en-US">http://test.uddi.microsoft.com/inquire</abstract>
-    <abstract xml:lang="en-US">https://test.uddi.microsoft.com/publish</abstract>
-    <abstract xml:lang="en-US">https://test.uddi.microsoft.com/register.aspx</abstract>
-  </link>
-
-  <link referencedNamespace="urn:uddi-org:api">
-    <abstract xml:lang="en-US">%PUBLICUDDIREGISTRYTYPE_NAME_MICROSOFT</abstract>
-    <abstract xml:lang="en-US">http://uddi.microsoft.com/inquire</abstract>
-    <abstract xml:lang="en-US">https://uddi.microsoft.com/publish</abstract>
-    <abstract xml:lang="en-US">https://uddi.microsoft.com/register.aspx</abstract>
-  </link>
-
-  <link referencedNamespace="urn:uddi-org:api">
     <abstract xml:lang="en-US">%PUBLICUDDIREGISTRYTYPE_NAME_SAP_TEST</abstract>
     <abstract xml:lang="en-US">http://udditest.sap.com/UDDI/api/inquiry/</abstract>
     <abstract xml:lang="en-US">https://udditest.sap.com/UDDI/api/publish/</abstract>

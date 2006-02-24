@@ -30,42 +30,6 @@
    <extension
          point="org.eclipse.jst.ws.consumption.ui.publicUDDIRegistryType">
       <publicUDDIRegistryType
-            name="%PUBLICUDDIREGISTRYTYPE_NAME_IBM_TEST"
-            class="org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistryIBMTest"
-            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistryIBMTest">
-      </publicUDDIRegistryType>
-   </extension>
-
-   <extension
-         point="org.eclipse.jst.ws.consumption.ui.publicUDDIRegistryType">
-      <publicUDDIRegistryType
-            name="%PUBLICUDDIREGISTRYTYPE_NAME_IBM"
-            class="org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistryIBM"
-            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistryIBM">
-      </publicUDDIRegistryType>
-   </extension>
-
-   <extension
-         point="org.eclipse.jst.ws.consumption.ui.publicUDDIRegistryType">
-      <publicUDDIRegistryType
-            name="%PUBLICUDDIREGISTRYTYPE_NAME_MICROSOFT_TEST"
-            class="org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistryMicrosoftTest"
-            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistryMicrosoftTest">
-      </publicUDDIRegistryType>
-   </extension>
-
-   <extension
-         point="org.eclipse.jst.ws.consumption.ui.publicUDDIRegistryType">
-      <publicUDDIRegistryType
-            name="%PUBLICUDDIREGISTRYTYPE_NAME_MICROSOFT"
-            class="org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistryMicrosoft"
-            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistryMicrosoft">
-      </publicUDDIRegistryType>
-   </extension>
-
-   <extension
-         point="org.eclipse.jst.ws.consumption.ui.publicUDDIRegistryType">
-      <publicUDDIRegistryType
             name="%PUBLICUDDIREGISTRYTYPE_NAME_SAP_TEST"
             class="org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistrySAPTest"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistrySAPTest">

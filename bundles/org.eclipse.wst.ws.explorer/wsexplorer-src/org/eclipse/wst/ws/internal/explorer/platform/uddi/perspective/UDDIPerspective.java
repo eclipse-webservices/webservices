@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060224   122752 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective;
 
@@ -47,7 +50,7 @@ import org.uddi4j.datatype.tmodel.TModel;
 public class UDDIPerspective extends Perspective
 {
   private Hashtable knownRegistries_;
-  private IFavoritesUDDIRegistry ibmPublicUDDITestRegistry_;
+  private IFavoritesUDDIRegistry defaultUDDIRegistry_;
   private Model navigatorModel_;
   private NodeManager navigatorManager_;
   private int wsdlType_;
@@ -59,9 +62,6 @@ public class UDDIPerspective extends Perspective
   private String savedPerspectiveContentFramesetCols_;
   private String actionsContainerFramesetRows_;
   private String savedActionsContainerFramesetRows_;
-
-  private final String IBM_TEST_REG_INQUIRY_URL = "http://uddi.ibm.com/testregistry/inquiryapi";
-  private final String IBM_TEST_REG_PUBLISH_URL = "https://uddi.ibm.com/testregistry/publishapi";
 
   public UDDIPerspective(Controller controller)
   {
@@ -76,12 +76,10 @@ public class UDDIPerspective extends Perspective
     knownRegistries_ = new Hashtable();
     for (int i=0;i<favRegistriesDefault.length;i++)
     {
-      if (favRegistriesDefault[i].getInquiryURL().equals(IBM_TEST_REG_INQUIRY_URL) && favRegistriesDefault[i].getPublishURL().equals(IBM_TEST_REG_PUBLISH_URL))
-        ibmPublicUDDITestRegistry_ = favRegistriesDefault[i];
       knownRegistries_.put(favRegistriesDefault[i].getInquiryURL(),favRegistriesDefault[i]);
     }
-    if (ibmPublicUDDITestRegistry_ == null && favRegistriesDefault.length > 0)
-      ibmPublicUDDITestRegistry_ = favRegistriesDefault[0];
+    if (favRegistriesDefault.length > 0)
+      defaultUDDIRegistry_ = favRegistriesDefault[0];
     
     navigatorModel_ = new BasicModel("uddiModel");
     UDDIMainElement uddiMainElement = new UDDIMainElement(getMessage("NODE_NAME_UDDI_MAIN"),navigatorModel_);
@@ -179,9 +177,9 @@ public class UDDIPerspective extends Perspective
     return null;    
   }
 
-  public final IFavoritesUDDIRegistry getIBMPublicUDDITestRegistry()
+  public final IFavoritesUDDIRegistry getDefaultUDDIRegistry()
   {
-    return ibmPublicUDDITestRegistry_;
+    return defaultUDDIRegistry_;
   }
   
   public final void preloadUDDIRegistries(String[] inquiryURLs, String[] publishURLs)

@@ -11,10 +11,6 @@ public class PluginMessages extends NLS
     NLS.initializeMessages(BUNDLE_NAME, PluginMessages.class);
   }
 
-  public static String PUBLICUDDIREGISTRYTYPE_NAME_IBM;
-  public static String PUBLICUDDIREGISTRYTYPE_NAME_IBM_TEST;
-  public static String PUBLICUDDIREGISTRYTYPE_NAME_MICROSOFT;
-  public static String PUBLICUDDIREGISTRYTYPE_NAME_MICROSOFT_TEST;
   public static String PUBLICUDDIREGISTRYTYPE_NAME_SAP;
   public static String PUBLICUDDIREGISTRYTYPE_NAME_SAP_TEST;
   public static String PUBLICUDDIREGISTRYTYPE_NAME_XMETHODS;
