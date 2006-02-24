@@ -3,13 +3,32 @@
 
 <plugin>
 
-     <extension point="org.eclipse.jst.ws.consumption.wsfinder">
+   <extension point="org.eclipse.jst.ws.consumption.wsfinder">
       <wsfinder
             id="org.eclipse.jst.ws.internal.axis.consumption.core.wsfinder.WSFinderAxis"
             name="org.eclipse.jst.ws.internal.axis.consumption.core.wsfinder.WSFinderAxis"
             description="org.eclipse.jst.ws.internal.axis.consumption.core.wsfinder.WSFinderAxis"
             class="org.eclipse.jst.ws.internal.axis.consumption.core.wsfinder.WSFinderAxis">
       </wsfinder>
+   </extension>
+   
+   <!-- define a wsdd file type for Axis Web Service Deployment Descriptors -->
+   <extension point="org.eclipse.team.core.fileTypes">
+      <fileTypes
+            type="text"
+            extension="wsdd">
+      </fileTypes>
+   </extension>
+   
+   <!-- define a wsdd content type for Axis Web Service Deployment Descriptors -->
+   <extension point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            priority="high"
+            name="%xpWSDDContentType"
+            id="wsddsource"
+            base-type="org.eclipse.core.runtime.xml"
+            default-charset="UTF-8"
+            file-extensions="wsdd" />
    </extension>
 
 </plugin>
