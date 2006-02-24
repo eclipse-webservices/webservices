@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -20,6 +23,7 @@ import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.registry.WidgetRegistry;
+import org.eclipse.wst.common.environment.ILog;
 
 
 
@@ -62,6 +66,16 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	  widgetFactoryTable_ = new Hashtable();
 	  widgetRegistry_     = WidgetRegistry.instance();
 	  widgetStackStack_   = new Stack();
+  }
+  
+  public  IWizardPage getStartingPage()
+  {
+    if( firstPage_ == null )
+    {
+      firstPage_ = (PageWizardDataEvents)getNextPage();
+    }
+    
+    return firstPage_;
   }
   
   public IStatus runForwardToNextStop()
@@ -115,6 +129,11 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	// when we move forward below the data is available.
   	if( currentPage_ != null ) currentPage_.getDataEvents().externalize();
   	
+    if( environment_.getLog().isEnabled() )
+    {
+      environment_.getLog().log(ILog.INFO, "ws_dt_cmd_engine", 5010, this, "Cmd stack dump:", engine_ );
+    }
+    
 	  nextPage_ = getNextPageInGroup( widgetFactory_, true );
 	
 	  if( nextPage_ == null )
@@ -205,8 +224,6 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	    {
 	  	  if( currentPage_ != null ) page.setPreviousPage( currentPage_ );
 	    	  
-	  	  if( firstPage_ == null ) firstPage_ = page;
-	  	  
 	  	  currentPage_ = page;  
 	    }
   	}

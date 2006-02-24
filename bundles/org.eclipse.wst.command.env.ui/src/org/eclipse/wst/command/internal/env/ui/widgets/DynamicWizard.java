@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -94,11 +97,10 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   private   String                  iconBannerName_;
   private   Bundle                  bundle_;
   private   SimpleCanFinishRegistry canFinishRegistry_; 
-  private   WizardPageManager       pageManager_;
   private   String                  wizardTitle_;
   private   DataObjectCommand       dataObjectCommand_ = null;
-
-  protected IWizardPage             startPage_ = null;
+  private   WizardPageManager       pageManager_;
+  
   protected IConfigurationElement   wizardElement_;
   protected IConfigurationElement   originalElement_;
   protected CommandWidgetBinding    commandWidgetBinding_;
@@ -217,7 +219,6 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
     }
     
 	dataObjectCommand_ = new DataObjectCommand();
-    startPage_         = null;
     canFinishRegistry_ = new SimpleCanFinishRegistry(); 
     pageManager_       = new WizardPageManager( widgetRegistry_, 
                                                 getWizardPageFactory(), 
@@ -309,12 +310,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   **/
   public IWizardPage getStartingPage()
   {
-  	if( startPage_ == null )
-  	{
-  		startPage_ = pageManager_.getNextPage();
-  	}
-  	
-    return startPage_;
+    return pageManager_.getStartingPage();
   }
 
   /**
@@ -385,7 +381,6 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
 	  pageManager_          = null;
 	  wizardTitle_          = null;
 	  dataObjectCommand_    = null;
-	  startPage_            = null;
 	  commandWidgetBinding_ = null;
 	  WidgetRegistry.initialize();
   }

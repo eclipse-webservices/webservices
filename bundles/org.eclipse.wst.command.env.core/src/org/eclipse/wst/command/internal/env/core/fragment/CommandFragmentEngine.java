@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.core.fragment;
 
@@ -63,6 +66,27 @@ public class CommandFragmentEngine implements CommandManager
   	dataManager_ = dataManager;
   	environment_ = environment;
   } 
+  
+  public String toString()
+  {
+    String      newline = System.getProperty("line.separator");    
+    StringBuffer buffer = new StringBuffer();
+    
+    buffer.append(newline);
+    buffer.append("Command stack start:");
+    buffer.append(newline);
+    
+    for( int index = 0; index < commandStack_.size(); index++ )
+    {
+      CommandListEntry entry = (CommandListEntry)commandStack_.elementAt(index);
+      entry.dump(buffer, index);
+    }
+    
+    buffer.append("Command start end:");
+    buffer.append(newline);
+    
+    return buffer.toString();
+  }
   
   /**
    * @return returns the Data mapping registry.
@@ -427,6 +451,14 @@ public class CommandFragmentEngine implements CommandManager
   	public CommandFragment fragment_;
   	public int             parentIndex_;
   	public boolean         fragmentStopped_;
-	public boolean         beforeExecute_;
+  	public boolean         beforeExecute_;
+    
+    public void dump( StringBuffer buffer, int index )
+    {
+      String newline = System.getProperty("line.separator");    
+      String line    = "  " + index + "- frag: " + fragment_.getId() + " parIndex: " + parentIndex_ + " stop: " + fragmentStopped_ + " beforeExecute: " + beforeExecute_ ;
+      buffer.append(line); 
+      buffer.append(newline);
+    }
   }    
 }
