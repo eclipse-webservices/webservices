@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060224   129387 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -22,6 +25,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -94,7 +98,6 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
                 if (object instanceof IObjectSelectionWidget)
                 {
                   Control shell = parent.getShell();
-                  int x = shell.getSize().x;
                   composite = new Composite(parent, SWT.NONE);
                   GridLayout gl = new GridLayout();
                   gl.marginHeight = 0;
@@ -105,9 +108,32 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
                   child = (IObjectSelectionWidget)object;
                   child.addControls(composite, statusListener);
                   child.setInitialSelection(initialSelection);
-                  composite.setSize(x-20, composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-                  parent.setSize(x-10, parent.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-                  shell.setSize(x, shell.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+                  
+                  Point origSize = shell.getSize();
+                  Point compSize = composite.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+                  int   newX     = origSize.x;
+                  int   newY     = origSize.y;
+                  
+                  // Note: we are trying to determine here if the wizard page should
+                  //       be resized based on the size of the control that is
+                  //       given to us by the extension.  The hard coded constants
+                  //       below represent the vertical and horizontal pixels that need
+                  //       to go around object selection control.  Hopefully, a more
+                  //       programatic method of doing this can be found in the future.
+                  if( compSize.x + 20 > origSize.x )
+                  {
+                    newX = compSize.x + 20;
+                  }
+                  
+                  if( compSize.y + 205 > origSize.y )
+                  {
+                    newY = compSize.y + 205;
+                  }
+                  
+                  composite.setSize(newX - 20, newY - 205 );
+                  parent.setSize(newX - 10, newY - 195 );
+                  shell.setSize(newX, newY);
+                  
                   shell.setRedraw(true);
                   shell.redraw();
                   shell.update();
