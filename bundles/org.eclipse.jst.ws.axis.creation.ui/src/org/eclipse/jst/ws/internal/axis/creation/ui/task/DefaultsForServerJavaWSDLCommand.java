@@ -37,6 +37,7 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.Utils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -112,21 +113,11 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 		IPath modulePath = serviceProject_.getFullPath();
 		IPath webinfPath = serviceProject_.getFullPath();
 		try {
-			//if ( ResourceUtils.isWebProject(serviceProject_)) {
-      if (J2EEUtils.isWebComponent(serviceProject_)){
+			if (J2EEUtils.isWebComponent(serviceProject_)){
 				moduleServerRoot = ResourceUtils.getJavaSourceLocation(serviceProject_);
-
-				// should use ModuleCore.getSourceContainers();
-//				IContainer container = ResourceUtils.getWebModuleServerRoot(serviceProject_);
-//				if (container!=null) {
-//					moduleServerRoot = container.getFullPath();
-//				}
-				
 				modulePath = J2EEUtils.getWebContentPath(serviceProject_);
-				webinfPath = J2EEUtils.getWebInfPath( serviceProject_ );
-				
+				webinfPath = J2EEUtils.getWebInfPath( serviceProject_ );				
 			}
-
 		} catch (Exception e) {
 			status =  StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_ERROR_DEFAULT_BEAN, e );
 			environment.getStatusHandler().reportError(status);
@@ -184,7 +175,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
         }
         
 		if (projectURL == null) {
-			status = StatusUtils.errorStatus( AxisCreationUIMessages.MSG_ERROR_PROJECT_URL);
+			status = StatusUtils.errorStatus(NLS.bind(AxisCreationUIMessages.MSG_ERROR_PROJECT_URL, new String[] {serviceProject_.getName()}));
 			environment.getStatusHandler().reportError(status);
 			return status;
 		}
@@ -193,11 +184,8 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 		javaWSDLParam_.setUrlLocation(serviceURL);
 		
 		javaWSDLParam_.setMetaInfOnly(true);
-		//		String javaOutput = PlatformUtils.getPlatformURL(moduleServerRoot);
-		//		String output = PlatformUtils.getPlatformURL(modulePath);
 
 		String javaOutput =	ResourceUtils.findResource(moduleServerRoot).getLocation().toString();
-//		String javaOutput = ResourceUtils.getWorkspaceRoot().getFolder(moduleServerRoot).getLocation().toString();
 	
 		String serviceName = javaWSDLParam_.getServiceName();
 		IPath outputPath =	ResourceUtils.findResource(webinfPath).getLocation();
@@ -227,13 +215,6 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 		this.javaWSDLParam_ = javaWSDLParam;
 	}
 
-	// rm
-	/*
-	public void setModel(Model model) {
-		this.model_ = model;
-	}
-	*/
-	
 	public void setServiceProject(IProject serviceProject) {
 		this.serviceProject_ = serviceProject;
 	}
