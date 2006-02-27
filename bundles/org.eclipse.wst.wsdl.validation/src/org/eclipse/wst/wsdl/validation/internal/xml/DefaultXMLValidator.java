@@ -31,7 +31,6 @@ import org.apache.xerces.xni.parser.XMLEntityResolver;
 import org.apache.xerces.xni.parser.XMLErrorHandler;
 import org.apache.xerces.xni.parser.XMLInputSource;
 import org.apache.xerces.xni.parser.XMLParseException;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
