@@ -14,6 +14,7 @@ package org.eclipse.wst.wsdl.validation.internal.eclipse;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -90,7 +91,7 @@ public class ValidateWSDLPlugin extends Plugin
   {
     try
     {
-      return Platform.resolve(getBundle().getEntry("/")).getFile();
+      return FileLocator.resolve(getBundle().getEntry("/")).getFile();
     }
     catch (IOException e)
     {
