@@ -1,16 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner      
+ * 20060217 126757   rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -56,12 +57,9 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
   
   private org.eclipse.wst.common.project.facet.core.runtime.IRuntime facetRuntime;
   
-  private IProgressMonitor monitor_;
-  
   
   public IStatus execute(IProgressMonitor monitor, IAdaptable info)
   {
-    monitor_ = monitor;
     IStatus status = Status.OK_STATUS;
     
     // check if data ready
@@ -76,14 +74,23 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
     {
       try
       {
-        IFacetedProject fproject = ProjectFacetsManager.create(projectName, null, monitor_);
+        status = FacetUtils.createNewFacetedProject(projectName);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }
+        
+        IProject createdProject = ProjectUtilities.getProject(projectName);
+        IFacetedProject fproject = ProjectFacetsManager.create(createdProject);
         
         //Decide which facets to install based on the templateId and the selected server. 
         Set facetsToAdd = getFacetsToAdd();
         
-        //Set up the install actions.
-        Set actions = FacetUtils.getInstallActions(facetsToAdd);
-        fproject.modify(actions, monitor_);
+        status = FacetUtils.addFacetsToProject(fproject, facetsToAdd);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }        
         
         Set newFacetVersions = fproject.getProjectFacets();
         Set fixedFacets = new HashSet();
@@ -91,13 +98,17 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
             IProjectFacetVersion facetVersion = (IProjectFacetVersion) iter.next();
             fixedFacets.add(facetVersion.getProjectFacet());
         }
-        fproject.setFixedProjectFacets(fixedFacets);
+        status = FacetUtils.setFixedFacetsOnProject(fproject, fixedFacets);
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+          return status;
+        }                
         
         
         //Set the runtime        
         if (facetRuntime != null)
         {
-          fproject.setRuntime(facetRuntime, monitor);
+          status = FacetUtils.setFacetRuntimeOnProject(fproject, facetRuntime);
         }
 
  
