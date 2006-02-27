@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.wst.wsdl; singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator
+Bundle-Activator: org.eclipse.wst.wsdl.WSDLPluginImplementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Export-Package: model,
@@ -26,10 +26,9 @@ Export-Package: model,
  org.eclipse.wst.wsdl.internal.impl.wsdl4j,
  org.eclipse.wst.wsdl.internal.util,
  org.eclipse.wst.wsdl.util
-Require-Bundle: org.eclipse.core.runtime.compatibility,
- org.eclipse.emf.ecore,
+Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.xsd,
  org.eclipse.core.resources,
- org.wsdl4j
-Eclipse-AutoStart: true
-Plugin-Class: org.eclipse.wst.wsdl.WSDLPluginImplementation
+ org.wsdl4j,
+ org.eclipse.core.runtime
+Eclipse-LazyStart: true

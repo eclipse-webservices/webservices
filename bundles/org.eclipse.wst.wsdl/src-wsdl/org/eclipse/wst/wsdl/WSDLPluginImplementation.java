@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.emf.common.EMFPlugin.EclipsePlugin;
 
 /**
@@ -27,11 +26,10 @@ import org.eclipse.emf.common.EMFPlugin.EclipsePlugin;
   {
     /**
      * Creates an instance.
-     * @param descriptor the description of the plugin.
      */
-    public WSDLPluginImplementation(IPluginDescriptor descriptor)
+    public WSDLPluginImplementation()
     {
-      super(descriptor);
+      super();
 
       // Remember the static instance.
       //

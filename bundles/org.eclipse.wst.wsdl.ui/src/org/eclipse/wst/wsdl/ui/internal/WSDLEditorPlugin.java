@@ -18,11 +18,11 @@ import java.util.Hashtable;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -34,6 +34,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.ExtensibilityItemTreeProviderRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extension.NSKeyedExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtensionRegistry;
+import org.osgi.framework.BundleContext;
 
 public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
 {
@@ -73,9 +74,9 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
    * Resources helper.
    */
 
-  public WSDLEditorPlugin(IPluginDescriptor descriptor)
+  public WSDLEditorPlugin()
   {
-    super(descriptor);
+    super();
     instance = this;
 
     // TODO... remove this code when we add 'dependenciesChangedPolicy'
@@ -92,6 +93,24 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     catch (Exception e)
     {
     }
+  }
+  
+  
+
+  /* (non-Javadoc)
+   * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+   */
+  public void start(BundleContext context) throws Exception 
+  {
+	super.start(context);
+  }
+
+  /* (non-Javadoc)
+   * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+   */
+  public void stop(BundleContext context) throws Exception 
+  {
+	super.stop(context);
   }
 
   public WSDLEditorExtensionRegistry getWSDLEditorExtensionRegistry()
@@ -169,7 +188,14 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
    */
   public static URL getInstallURL()
   {
-    return getInstance().getDescriptor().getInstallURL();
+	try
+	{
+	  return FileLocator.resolve(instance.getBundle().getEntry("/"));
+	}
+	catch (IOException e)
+	{
+	  return null;
+	}
   }
 
   /**
@@ -204,7 +230,7 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     try
     {
       IPath installPath = new Path(getInstallURL().toExternalForm()).removeTrailingSeparator();
-      String installStr = Platform.asLocalURL(new URL(installPath.toString())).getFile();
+      String installStr = FileLocator.toFileURL(new URL(installPath.toString())).getFile();
       return new Path(installStr);
     }
     catch (IOException e)

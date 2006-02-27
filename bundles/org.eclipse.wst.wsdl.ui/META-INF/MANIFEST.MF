@@ -3,8 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %_UI_PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.wsdl.ui; singleton:=true
 Bundle-Version: 1.0.1.qualifier
-Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator
-Bundle-Vendor: Eclipse.org
+Bundle-Activator: org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin
+Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Export-Package: org.eclipse.wst.wsdl.ui.internal,
  org.eclipse.wst.wsdl.ui.internal.actions,
@@ -46,7 +46,6 @@ Export-Package: org.eclipse.wst.wsdl.ui.internal,
  org.eclipse.wst.wsdl.ui.internal.xsd.actions,
  org.eclipse.wst.wsdl.ui.internal.xsd.graph.editparts
 Require-Bundle: org.eclipse.core.resources,
- org.eclipse.core.runtime.compatibility,
  org.eclipse.emf.common,
  org.eclipse.emf.ecore,
  org.eclipse.gef,
@@ -75,6 +74,6 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.wst.wsdl.validation,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.ltk.ui.refactoring,
- com.ibm.icu
-Eclipse-AutoStart: true
-Plugin-Class: org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin
+ com.ibm.icu,
+ org.eclipse.core.runtime
+Eclipse-LazyStart: true
