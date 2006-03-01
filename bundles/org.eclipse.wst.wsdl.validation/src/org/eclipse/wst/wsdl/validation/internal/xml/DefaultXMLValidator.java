@@ -75,26 +75,32 @@ public class DefaultXMLValidator implements IXMLValidator
     ignoredNamespaceList.add(Constants.NS_URI_XSD_2001);
   }
 
-  /**
-   * @see org.eclipse.validate.wsdl.xmlconformance.IXMLValidatorAction#setFile(IFile)
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.validation.internal.xml.IXMLValidator#setFile(java.lang.String)
    */
   public void setFile(String uri)
   {
     this.uri = uri;
   }
   
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.validation.internal.xml.IXMLValidator#setURIResolver(org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver)
+   */
   public void setURIResolver(URIResolver uriResolver)
   {
   	this.uriResolver = uriResolver;
   }
   
+  /**
+   * @param grammarPool
+   */
   public void setGrammarPool(XMLGrammarPool grammarPool)
   {
 	this.grammarPool = grammarPool;
   }
 
-  /**
-   * @see org.eclipse.validate.wsdl.xmlconformance.IXMLValidatorAction#run()
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.validation.internal.xml.IXMLValidator#run()
    */
   public void run()
   {
@@ -137,6 +143,10 @@ public class DefaultXMLValidator implements IXMLValidator
     }
   }
   
+  /**
+   * @param inputStream
+   * @return
+   */
   final String createStringForInputStream(InputStream inputStream)
   {
     // Here we are reading the file and storing to a stringbuffer.
@@ -161,22 +171,28 @@ public class DefaultXMLValidator implements IXMLValidator
     return fileString.toString();
   }
 
-  /**
-   * @see org.eclipse.validate.wsdl.xmlconformance.IXMLValidatorAction#hasErrors()
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.validation.internal.xml.IXMLValidator#hasErrors()
    */
   public boolean hasErrors()
   {
     return !errors.isEmpty();
   }
 
-  /**
-   * @see org.eclipse.validate.wsdl.xmlconformance.IXMLValidatorAction#getErrorList()
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.validation.internal.xml.IXMLValidator#getErrors()
    */
   public List getErrors()
   {
     return errors;
   }
   
+  /**
+   * @param message
+   * @param line
+   * @param column
+   * @param uri
+   */
   public void addError(String message, int line, int column, String uri)
   {
 	  errors.add(new ValidationMessageImpl(message, line, column, ValidationMessageImpl.SEV_WARNING, uri, currentErrorKey, currentMessageArguments));
