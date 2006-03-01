@@ -5,14 +5,14 @@ Bundle-SymbolicName: org.eclipse.wst.command.env.core
 Bundle-Version: 1.0.101.qualifier
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.wst.command.internal.env.core.data,
- org.eclipse.wst.command.internal.env.core.fragment,
- org.eclipse.wst.command.internal.env.core.registry,
- org.eclipse.wst.command.internal.env.core,
- org.eclipse.wst.command.internal.env.core.common,
- org.eclipse.wst.command.internal.env.core.context,
- org.eclipse.wst.command.internal.env.core.selection,
- org.eclipse.wst.command.internal.env.core.uri
+Export-Package: org.eclipse.wst.command.internal.env.core;x-internal:=true,
+ org.eclipse.wst.command.internal.env.core.common;x-internal:=true,
+ org.eclipse.wst.command.internal.env.core.context;x-internal:=true,
+ org.eclipse.wst.command.internal.env.core.data;x-internal:=true,
+ org.eclipse.wst.command.internal.env.core.fragment;x-internal:=true,
+ org.eclipse.wst.command.internal.env.core.registry;x-internal:=true,
+ org.eclipse.wst.command.internal.env.core.selection;x-internal:=true,
+ org.eclipse.wst.command.internal.env.core.uri;x-internal:=true
 Require-Bundle: org.eclipse.wst.common.frameworks,
  org.eclipse.core.commands,
  org.eclipse.core.runtime,

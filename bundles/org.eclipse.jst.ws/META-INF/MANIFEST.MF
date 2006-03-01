@@ -6,15 +6,15 @@ Bundle-Version: 1.0.101.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.plugin.WebServicePlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.jst.ws.internal,
- org.eclipse.jst.ws.internal.command,
- org.eclipse.jst.ws.internal.common,
- org.eclipse.jst.ws.internal.context,
- org.eclipse.jst.ws.internal.data,
- org.eclipse.jst.ws.internal.dialog,
- org.eclipse.jst.ws.internal.ext,
- org.eclipse.jst.ws.internal.ext.test,
- org.eclipse.jst.ws.internal.plugin
+Export-Package: org.eclipse.jst.ws.internal;x-internal:=true,
+ org.eclipse.jst.ws.internal.command;x-internal:=true,
+ org.eclipse.jst.ws.internal.common;x-internal:=true,
+ org.eclipse.jst.ws.internal.context;x-internal:=true,
+ org.eclipse.jst.ws.internal.data;x-internal:=true,
+ org.eclipse.jst.ws.internal.dialog;x-internal:=true,
+ org.eclipse.jst.ws.internal.ext;x-internal:=true,
+ org.eclipse.jst.ws.internal.ext.test;x-internal:=true,
+ org.eclipse.jst.ws.internal.plugin;x-internal:=true
 Require-Bundle: org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.ui,
  org.eclipse.wst.command.env.core,

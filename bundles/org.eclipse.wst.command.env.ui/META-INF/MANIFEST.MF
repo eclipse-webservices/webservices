@@ -6,14 +6,14 @@ Bundle-Version: 1.0.101.qualifier
 Bundle-Activator: org.eclipse.wst.command.internal.env.ui.plugin.EnvUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.wst.command.internal.env.ui,
- org.eclipse.wst.command.internal.env.ui.dialog,
- org.eclipse.wst.command.internal.env.ui.eclipse,
- org.eclipse.wst.command.internal.env.ui.plugin,
- org.eclipse.wst.command.internal.env.ui.preferences,
- org.eclipse.wst.command.internal.env.ui.registry,
- org.eclipse.wst.command.internal.env.ui.widgets,
- org.eclipse.wst.command.internal.env.ui.widgets.popup
+Export-Package: org.eclipse.wst.command.internal.env.ui;x-internal:=true,
+ org.eclipse.wst.command.internal.env.ui.dialog;x-internal:=true,
+ org.eclipse.wst.command.internal.env.ui.eclipse;x-internal:=true,
+ org.eclipse.wst.command.internal.env.ui.plugin;x-internal:=true,
+ org.eclipse.wst.command.internal.env.ui.preferences;x-internal:=true,
+ org.eclipse.wst.command.internal.env.ui.registry;x-internal:=true,
+ org.eclipse.wst.command.internal.env.ui.widgets;x-internal:=true,
+ org.eclipse.wst.command.internal.env.ui.widgets.popup;x-internal:=true
 Require-Bundle: org.eclipse.wst.command.env.core,
  org.eclipse.wst.command.env,
  org.eclipse.core.runtime,

@@ -18,3 +18,8 @@ Require-Bundle: org.eclipse.ui,
  org.apache.ant,
  org.wsdl4j
 Eclipse-AutoStart: true
+Export-Package: org.eclipse.wst.wsdl.validation.internal.resolver;x-internal:=true,
+ org.eclipse.wst.wsdl.validation.internal.ui.ant;x-internal:=true,
+ org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd;x-internal:=true,
+ org.eclipse.wst.wsdl.validation.internal.xml;x-internal:=true,
+ org.eclipse.wst.wsdl.validation.tests.internal;x-internal:=true

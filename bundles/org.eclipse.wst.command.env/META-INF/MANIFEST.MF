@@ -7,14 +7,14 @@ Bundle-Version: 1.0.101.qualifier
 Bundle-Activator: org.eclipse.wst.command.internal.env.plugin.EnvPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.wst.command.internal.env.ant,
- org.eclipse.wst.command.internal.env,
- org.eclipse.wst.command.internal.env.commandline,
- org.eclipse.wst.command.internal.env.common,
- org.eclipse.wst.command.internal.env.context,
- org.eclipse.wst.command.internal.env.eclipse,
- org.eclipse.wst.command.internal.env.plugin,
- org.eclipse.wst.command.internal.env.preferences
+Export-Package: org.eclipse.wst.command.internal.env;x-internal:=true,
+ org.eclipse.wst.command.internal.env.ant;x-internal:=true,
+ org.eclipse.wst.command.internal.env.commandline;x-internal:=true,
+ org.eclipse.wst.command.internal.env.common;x-internal:=true,
+ org.eclipse.wst.command.internal.env.context;x-internal:=true,
+ org.eclipse.wst.command.internal.env.eclipse;x-internal:=true,
+ org.eclipse.wst.command.internal.env.plugin;x-internal:=true,
+ org.eclipse.wst.command.internal.env.preferences;x-internal:=true
 Require-Bundle: org.eclipse.wst.command.env.core,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,

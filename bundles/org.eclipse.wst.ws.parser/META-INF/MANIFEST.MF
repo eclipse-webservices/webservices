@@ -6,11 +6,11 @@ Bundle-Version: 1.0.100.qualifier
 Bundle-Activator: org.eclipse.wst.ws.internal.parser.plugin.ParserPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.wst.ws.internal.parser.disco,
- org.eclipse.wst.ws.internal.parser.discovery,
- org.eclipse.wst.ws.internal.parser.favorites,
- org.eclipse.wst.ws.internal.parser.plugin,
- org.eclipse.wst.ws.internal.parser.wsil,
+Export-Package: org.eclipse.wst.ws.internal.parser.disco;x-internal:=true,
+ org.eclipse.wst.ws.internal.parser.discovery;x-internal:=true,
+ org.eclipse.wst.ws.internal.parser.favorites;x-internal:=true,
+ org.eclipse.wst.ws.internal.parser.plugin;x-internal:=true,
+ org.eclipse.wst.ws.internal.parser.wsil;x-internal:=true,
  org.eclipse.wst.ws.parser
 Require-Bundle: org.eclipse.wst.wsdl,
  org.wsdl4j,

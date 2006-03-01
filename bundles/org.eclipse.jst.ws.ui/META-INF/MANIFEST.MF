@@ -6,13 +6,13 @@ Bundle-Version: 1.0.100.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.jst.ws.internal.ui.action,
- org.eclipse.jst.ws.internal.ui.common,
- org.eclipse.jst.ws.internal.ui.dialog,
- org.eclipse.jst.ws.internal.ui.plugin,
- org.eclipse.jst.ws.internal.ui.preferences,
- org.eclipse.jst.ws.internal.ui.uddi,
- org.eclipse.jst.ws.internal.ui
+Export-Package: org.eclipse.jst.ws.internal.ui;x-internal:=true,
+ org.eclipse.jst.ws.internal.ui.action;x-internal:=true,
+ org.eclipse.jst.ws.internal.ui.common;x-internal:=true,
+ org.eclipse.jst.ws.internal.ui.dialog;x-internal:=true,
+ org.eclipse.jst.ws.internal.ui.plugin;x-internal:=true,
+ org.eclipse.jst.ws.internal.ui.preferences;x-internal:=true,
+ org.eclipse.jst.ws.internal.ui.uddi;x-internal:=true
 Require-Bundle: org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.ui,
  org.eclipse.wst.command.env.core,

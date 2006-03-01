@@ -6,16 +6,16 @@ Bundle-Version: 1.0.101.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.creation.ui.plugin.WebServiceCreationUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
-Export-Package: org.eclipse.jst.ws.internal.creation.ui,
- org.eclipse.jst.ws.internal.creation.ui.ant,
- org.eclipse.jst.ws.internal.creation.ui.extension,
- org.eclipse.jst.ws.internal.creation.ui.plugin,
- org.eclipse.jst.ws.internal.creation.ui.preferences,
- org.eclipse.jst.ws.internal.creation.ui.server,
- org.eclipse.jst.ws.internal.creation.ui.widgets,
- org.eclipse.jst.ws.internal.creation.ui.widgets.binding,
- org.eclipse.jst.ws.internal.creation.ui.widgets.runtime,
- org.eclipse.jst.ws.internal.creation.ui.widgets.test
+Export-Package: org.eclipse.jst.ws.internal.creation.ui;x-internal:=true,
+ org.eclipse.jst.ws.internal.creation.ui.ant;x-internal:=true,
+ org.eclipse.jst.ws.internal.creation.ui.extension;x-internal:=true,
+ org.eclipse.jst.ws.internal.creation.ui.plugin;x-internal:=true,
+ org.eclipse.jst.ws.internal.creation.ui.preferences;x-internal:=true,
+ org.eclipse.jst.ws.internal.creation.ui.server;x-internal:=true,
+ org.eclipse.jst.ws.internal.creation.ui.widgets;x-internal:=true,
+ org.eclipse.jst.ws.internal.creation.ui.widgets.binding;x-internal:=true,
+ org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;x-internal:=true,
+ org.eclipse.jst.ws.internal.creation.ui.widgets.test;x-internal:=true
 Require-Bundle: org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.ui,
  org.eclipse.wst.command.env.core,

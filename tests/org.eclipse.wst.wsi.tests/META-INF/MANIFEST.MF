@@ -16,4 +16,4 @@ Require-Bundle: org.eclipse.wst.wsi,
  org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.core
 Eclipse-AutoStart: true
-Export-Package: org.eclipse.wst.wsi.tests.internal
+Export-Package: org.eclipse.wst.wsi.tests.internal;x-internal:=true
