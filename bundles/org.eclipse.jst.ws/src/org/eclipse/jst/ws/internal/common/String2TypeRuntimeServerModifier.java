@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060303   128832 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.common;
 
@@ -21,6 +24,11 @@ public class String2TypeRuntimeServerModifier implements BeanModifier {
 	private String RUNTIME_ID = "RuntimeId";  //$NON-NLS-N$
 	private String SERVICE_SRV_ID_KEY = "Service.ServerId";  //$NON-NLS-N$
 	private String SERVER_ID = "ServerId";  //$NON-NLS-N$
+	private String TYPE_ID = "TypeId";  //$NON-NLS-N$
+	private String TD_EJB = "TOP DOWN EJB";  //$NON-NLS-N$
+	private String BU_EJB = "BOTTOM UP EJB";  //$NON-NLS-N$
+	private String TD_EJB_TYPE_ID = "1/org.eclipse.jst.ws.wsImpl.ejb";
+	private String BU_EJB_TYPE_ID = "0/org.eclipse.jst.ws.wsImpl.ejb";
 	private String SERVICE_PREFIX = "Service.";  //$NON-NLS-N$
 	private String CLIENT_PREFIX = "Client.";  //$NON-NLS-N$
 	
@@ -64,10 +72,22 @@ public class String2TypeRuntimeServerModifier implements BeanModifier {
 			
 			String serverID = (String)typesMap.get(prefix+SERVER_ID);
 			if (serverID  != null)				
-				types.setServerId(serverID);			
+				types.setServerId(serverID);	
+			
+			//check if web service type is EJB - if not, default for Java bean types
+			String typeID = (String)typesMap.get(prefix+TYPE_ID);
+			if (typeID != null)
+			{
+				if (typeID.toUpperCase().equals(TD_EJB))  //only setting typeID specifically for EJB case
+				{
+					types.setTypeId(TD_EJB_TYPE_ID);
+				}	
+				else if (typeID.toUpperCase().equals(BU_EJB))
+				{
+					types.setTypeId(BU_EJB_TYPE_ID);
+				}	
+			}			
 		}
-  }
-
-	
+  }	
 }
 
