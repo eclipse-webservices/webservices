@@ -4,11 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
- *     yyyymmdd	bug #	email					comment
- *     20060112	[121199] jesper@selskabet.org 	- Jesper S Moller contributed patch for createFileAtLocation and makeFolderPathAtLocation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060112   121199 jesper@selskabet.org - Jesper Møller
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.common;
 

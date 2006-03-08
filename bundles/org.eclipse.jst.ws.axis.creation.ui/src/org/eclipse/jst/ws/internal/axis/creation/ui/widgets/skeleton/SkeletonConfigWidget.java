@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060106   121199 jesper@selskabet.org - Jesper Møller
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton;
 
