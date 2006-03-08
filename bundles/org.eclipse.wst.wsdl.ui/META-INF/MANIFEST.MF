@@ -77,5 +77,6 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.ltk.ui.refactoring,
  com.ibm.icu,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.apache.xerces
 Eclipse-LazyStart: true
