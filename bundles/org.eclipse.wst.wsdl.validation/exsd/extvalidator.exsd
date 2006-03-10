@@ -55,13 +55,6 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="resourcebundle" type="string">
-            <annotation>
-               <documentation>
-                  An optional resource bundle that contains messages to be used by the extension validator.
-               </documentation>
-            </annotation>
-         </attribute>
       </complexType>
    </element>
 
@@ -87,8 +80,7 @@
          point=&quot;org.eclipse.wst.wsdl.validation.extvalidator&quot;&gt;
       &lt;extvalidator
             namespace=&quot;http://schemas.xmlsoap.org/wsdl/&quot;
-            class=&quot;org.eclipse.wst.wsi.internal.validate.wsdl.WSDLValidator&quot;
-            resourcebundle=&quot;wsivalidate&quot;&gt;
+            class=&quot;org.eclipse.wst.wsi.internal.validate.wsdl.WSDLValidator&quot;&gt;
       &lt;/extvalidator&gt;
    &lt;/extension&gt;
 &lt;/pre&gt;
@@ -121,7 +113,7 @@ Contributes WS-I validation logic for the namespace http://schemas.xmlsoap.org/w
          <meta.section type="copyright"/>
       </appInfo>
       <documentation>
-         Copyright (c) 2000, 2005 IBM Corporation and others.&lt;br&gt;
+         Copyright (c) 2000, 2006 IBM Corporation and others.&lt;br&gt;
 All rights reserved. This program and the accompanying materials are made 
 available under the terms of the Eclipse Public License v1.0 which accompanies 
 this distribution, and is available at &lt;a

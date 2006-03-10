@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.validation.internal.wsdl11;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
@@ -33,6 +34,7 @@ import com.ibm.wsdl.Constants;
  */
 public class WSDL11ValidatorController implements IWSDLValidator
 {
+  private static String VALIDATOR_RESOURCE_BUNDLE_NAME = "validatewsdl";
   protected final String _WARN_NO_VALDIATOR = "_WARN_NO_VALDIATOR";
 //  protected final int ERROR_MESSAGE = 0;
 //  protected final int WARNING_MESSAGE = 1;
@@ -48,6 +50,8 @@ public class WSDL11ValidatorController implements IWSDLValidator
    */
   public WSDL11ValidatorController()
   {
+    ResourceBundle rb = ResourceBundle.getBundle(VALIDATOR_RESOURCE_BUNDLE_NAME, Locale.getDefault());
+	messagegenerator = new MessageGenerator(rb);
   }
 
 
@@ -108,34 +112,6 @@ public class WSDL11ValidatorController implements IWSDLValidator
     }
     
   }
-  
-  /**
-   * Validate an imported WSDL document. Allows the calling class to have access to the internal
-   * components of the validation.
-   * 
-   * @param wsdlvalinfo The WSDL 1.1 validation info object to use.
-   * @return The definitions element for the import.
-   * @throws ValidateWSDLException
-   */
-//  protected Definition validateImport(WSDL11ValidationInfo wsdlvalinfo)
-//  {
-//    WSDLDocument[] wsdlDocs = null;
-//    try
-//    {
-//      wsdlDocs = readWSDLDocument(null, wsdlvalinfo.getFileURI(), getMessageGenerator(), wsdlvalinfo);
-//    }
-//    catch(ValidateWSDLException e)
-//    {
-//      // supress any validation issues with imported documents
-//    }
-//    // Don't validate an null definitions element. Either the file is emtpy and valid or
-//    // had an error when reading.
-//    if(wsdlDocs != null)
-//     {  
-//      validateWSDLElement(Constants.NS_URI_WSDL, wsdlDefinition, new Vector(), wsdlvalinfo);
-//    }
-//    return wsdlDefinition;
-//  }
   
   /**
    * Read in the WSDL document and set the model and imported schemas.
@@ -217,55 +193,6 @@ public class WSDL11ValidatorController implements IWSDLValidator
 	  //TODO: Add this as a preference.
       //wsdlvalinfo.addWarning(messagegenerator.getString(_WARN_NO_VALDIATOR, namespace), element);
     }
-  }
-
-  /**
-   * Add a schema to the list of schemas.
-   * 
-   * @param xsModel The schema to add.
-   */
-//  public void addSchema(XSModel xsModel)
-//  {
-//    if (xsModel != null)
-//    {
-//      schemas.add(xsModel);
-//    }
-//  }
-
-  /**
-   * Return the list containing the schemas.
-   * 
-   * @return The list of schemas.
-   */
-//  public List getSchemas()
-//  {
-//    return schemas;
-//  }
-
-  /**
-  	* Get the ResourceBundle for this ValidatorManager.
-  	* 
-  	* @return The resource bundle registered for this controller.
-  	* @see #setResourceBundle
-  	*/
-//  public ResourceBundle getResourceBundle()
-//  {
-//    return resourcebundle;
-//  }
-
-  /**
-   * Set the ResourceBundle for this ValidatorManager.
-   * 
-   * @param rb The resource bundle to set.
-   * @see #getResourceBundle
-   */
-  public void setResourceBundle(ResourceBundle rb)
-  {
-    if (messagegenerator == null)
-    {
-      messagegenerator = new MessageGenerator(rb);
-    }
-
   }
   
   /**

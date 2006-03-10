@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.validation.internal.wsdl11.http;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.wsdl.Binding;
@@ -23,8 +24,8 @@ import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.http.HTTPOperation;
 
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
-import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11ValidationInfo;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator;
 
 import com.ibm.wsdl.BindingImpl;
 import com.ibm.wsdl.BindingInputImpl;
@@ -42,6 +43,8 @@ import com.ibm.wsdl.extensions.http.HTTPUrlReplacementImpl;
  */
 public class HTTPValidator implements IWSDL11Validator
 {
+  private static String HTTP_RESOURCE_BUNDLE_NAME = "validatewsdlhttp";
+	
   private final String _ERROR_INVALID_PORT_ELEMENT = "_ERROR_INVALID_PORT_ELEMENT";
   private final String _ERROR_INVALID_BINDING_ELEMENT = "_ERROR_INVALID_BINDING_ELEMENT";
   private final String _ERROR_INVALID_BINDING_OPERATION_ELEMENT = "_ERROR_INVALID_BINDING_OPERATION_ELEMENT";
@@ -63,6 +66,15 @@ public class HTTPValidator implements IWSDL11Validator
 
   private MessageGenerator messagegenerator;
 
+  /**
+   * Default constructor.
+   */
+  public HTTPValidator()
+  {
+	ResourceBundle rb = ResourceBundle.getBundle(HTTP_RESOURCE_BUNDLE_NAME, Locale.getDefault());
+	messagegenerator = new MessageGenerator(rb);
+  }
+  
   /**
    * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.IWSDL11ValidationInfo)
    */
@@ -148,17 +160,6 @@ public class HTTPValidator implements IWSDL11Validator
         element);
     }
 
-  }
-
-  /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.validator.IWSDL11Validator#setResourceBundle(java.util.ResourceBundle)
-   */
-  public void setResourceBundle(ResourceBundle rb)
-  {
-    if (messagegenerator == null)
-    {
-      messagegenerator = new MessageGenerator(rb);
-    }
   }
 
   /**

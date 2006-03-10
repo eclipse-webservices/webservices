@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.wst.wsdl.validation.internal.wsdl11;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -48,6 +49,8 @@ import com.ibm.wsdl.Constants;
  */
 public class WSDL11BasicValidator implements IWSDL11Validator
 {
+  private static String VALIDATOR_RESOURCE_BUNDLE_NAME = "validatewsdl";
+	
   protected final String NAMESPACES_FEATURE_ID = "http://xml.org/sax/features/namespaces";
   protected final String VALIDATION_FEATURE_ID = "http://xml.org/sax/features/validation";
   protected final String SCHEMA_VALIDATION_FEATURE_ID = "http://apache.org/xml/features/validation/schema";
@@ -87,6 +90,11 @@ public class WSDL11BasicValidator implements IWSDL11Validator
   //protected WSDL11ValidatorController validatorcontroller;
   protected MessageGenerator messagegenerator;
 
+  public WSDL11BasicValidator()
+  {
+	ResourceBundle rb = ResourceBundle.getBundle(VALIDATOR_RESOURCE_BUNDLE_NAME, Locale.getDefault());
+    messagegenerator = new MessageGenerator(rb);
+  }
   /**
    * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.IWSDL11ValidationInfo)
    */
@@ -133,29 +141,6 @@ public class WSDL11BasicValidator implements IWSDL11Validator
 //        valInfo.addNamespaceWithNoValidator(namespace);
 //      }
     }
-  }
-
-  /**
-   * If the resourcebundle hasn't been set, set it to the one registered with the ValidatorController.
-   * 
-   * @param validatorcontroller The validator controller to get the resource bundle from.
-   */
-  //  protected void setDefaultResourceBundleIfNeeded(WSDL11ValidatorController validatorcontroller)
-  //  {
-  //    if (messagegenerator == null)
-  //    {
-  //      setResourceBundle(validatorcontroller.getResourceBundle());
-  //    }
-  //  }
-
-  /**
-   * Set the resourcebundle to the one specified.
-   * 
-   * @param rb The resource bundle to set.
-   */
-  public void setResourceBundle(ResourceBundle rb)
-  {
-    messagegenerator = new MessageGenerator(rb);
   }
 
   /**

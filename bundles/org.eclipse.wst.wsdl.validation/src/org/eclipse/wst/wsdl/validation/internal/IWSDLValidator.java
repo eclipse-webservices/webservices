@@ -11,8 +11,6 @@
 
 package org.eclipse.wst.wsdl.validation.internal;
 
-import java.util.ResourceBundle;
-
 import org.eclipse.wst.wsdl.validation.internal.exception.ValidateWSDLException;
 import org.w3c.dom.Document;
 
@@ -30,14 +28,4 @@ public interface IWSDLValidator
    * @throws ValidateWSDLException
    */
   public void validate(Document domModel, IValidationInfo valInfo) throws ValidateWSDLException;
-
-  /**
-   * setResourceBundle
-   * Set the ResourceBundle for this validator. Allows the use of difference 
-   * ResourceBundles for different validators.
-   * 
-   * @param rb The resource bundle to set.
-   */
-  public void setResourceBundle(ResourceBundle rb);
-
 }

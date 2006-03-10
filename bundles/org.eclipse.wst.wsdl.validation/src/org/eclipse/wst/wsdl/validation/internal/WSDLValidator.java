@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 
 import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.ClassloaderWSDL11ValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11BasicValidator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorController;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
@@ -32,9 +33,6 @@ import com.ibm.wsdl.Constants;
 public class WSDLValidator
 {
   private static String VALIDATOR_RESOURCE_BUNDLE = "validatewsdl";
-  private static String VALIDATOR_HTTP_RESOURCE_BUNDLE = "validatewsdlhttp";
-  private static String VALIDATOR_SOAP_RESOURCE_BUNDLE = "validatewsdlsoap";
-  private static String VALIDATOR_MIME_RESOURCE_BUNDLE = "validatewsdlmime";
   private ValidationController validationController;
   private URIResolver uriResolver;
   private Hashtable attributes = new Hashtable();
@@ -51,15 +49,15 @@ public class WSDLValidator
     //Register the default validators.
     ValidatorRegistry registry = ValidatorRegistry.getInstance();
     // Register the WSDL 1.1 validator controller and validators.
-    WSDLValidatorDelegate delegate = new WSDLValidatorDelegate(WSDL11ValidatorController.class.getName(), VALIDATOR_RESOURCE_BUNDLE, getClass().getClassLoader());
+    WSDLValidatorDelegate delegate = new ClassloaderWSDLValidatorDelegate(WSDL11ValidatorController.class.getName(), getClass().getClassLoader());
     registry.registerValidator(Constants.NS_URI_WSDL, delegate, ValidatorRegistry.WSDL_VALIDATOR);
-    WSDL11ValidatorDelegate delegate1 = new WSDL11ValidatorDelegate(WSDL11BasicValidator.class.getName(), VALIDATOR_RESOURCE_BUNDLE, getClass().getClassLoader());
+    WSDL11ValidatorDelegate delegate1 = new ClassloaderWSDL11ValidatorDelegate(WSDL11BasicValidator.class.getName(), getClass().getClassLoader());
     registerWSDL11Validator(Constants.NS_URI_WSDL, delegate1);
-    delegate1 = new WSDL11ValidatorDelegate(HTTPValidator.class.getName(), VALIDATOR_HTTP_RESOURCE_BUNDLE, getClass().getClassLoader());
+    delegate1 = new ClassloaderWSDL11ValidatorDelegate(HTTPValidator.class.getName(), getClass().getClassLoader());
     registerWSDL11Validator(org.eclipse.wst.wsdl.validation.internal.Constants.NS_HTTP, delegate1);
-    delegate1 = new WSDL11ValidatorDelegate(SOAPValidator.class.getName(), VALIDATOR_SOAP_RESOURCE_BUNDLE, getClass().getClassLoader());
+    delegate1 = new ClassloaderWSDL11ValidatorDelegate(SOAPValidator.class.getName(), getClass().getClassLoader());
     registerWSDL11Validator(org.eclipse.wst.wsdl.validation.internal.Constants.NS_SOAP11, delegate1);
-    delegate1 = new WSDL11ValidatorDelegate(MIMEValidator.class.getName(), VALIDATOR_MIME_RESOURCE_BUNDLE, getClass().getClassLoader());
+    delegate1 = new ClassloaderWSDL11ValidatorDelegate(MIMEValidator.class.getName(), getClass().getClassLoader());
     registerWSDL11Validator(org.eclipse.wst.wsdl.validation.internal.Constants.NS_MIME, delegate1);
    
     // The WSDL 1.1 schema validator is a special case as it is registered for three namespaces.

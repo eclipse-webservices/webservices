@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.validation.internal.wsdl11.soap;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.wsdl.Binding;
@@ -54,6 +55,8 @@ import com.ibm.wsdl.extensions.soap.SOAPOperationImpl;
  */
 public class SOAPValidator implements IWSDL11Validator
 {
+  private static String SOAP_RESOURCE_BUNDLE_NAME = "validatewsdlsoap";
+	  
   private final String _ERROR_INVALID_PORT_ELEMENT = "_ERROR_INVALID_PORT_ELEMENT";
   private final String _ERROR_INVALID_BINDING_ELEMENT = "_ERROR_INVALID_BINDING_ELEMENT";
   private final String _ERROR_INVALID_BINDING_OPERATION_ELEMENT = "_ERROR_INVALID_BINDING_OPERATION_ELEMENT";
@@ -97,6 +100,15 @@ public class SOAPValidator implements IWSDL11Validator
 
   protected MessageGenerator messagegenerator;
  
+  /**
+   * Default constructor.
+   */
+  public SOAPValidator()
+  {
+	ResourceBundle rb = ResourceBundle.getBundle(SOAP_RESOURCE_BUNDLE_NAME, Locale.getDefault());
+	messagegenerator = new MessageGenerator(rb);
+  }
+  
   /**
    * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator#validate(java.lang.Object, java.util.List, org.eclipse.wsdl.validate.wsdl11.IWSDL11ValidationInfo)
    */
@@ -197,17 +209,6 @@ public class SOAPValidator implements IWSDL11Validator
           QUOTE + e.getElementType().getLocalPart() + QUOTE), element);
     }
 
-  }
-  
-  /**
-   * @see org.eclipse.wst.wsdl.validation.internal.wsdl11.validator.IWSDL11Validator#setResourceBundle(java.util.ResourceBundle)
-   */
-  public void setResourceBundle(ResourceBundle rb)
-  {
-    if (messagegenerator == null)
-    {
-      messagegenerator = new MessageGenerator(rb);
-    }
   }
 
   /**

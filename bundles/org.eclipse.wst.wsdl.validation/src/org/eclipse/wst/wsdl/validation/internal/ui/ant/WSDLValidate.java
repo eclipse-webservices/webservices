@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
 package org.eclipse.wst.wsdl.validation.internal.ui.ant;
 
 import java.io.File;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,12 +26,13 @@ import org.apache.tools.ant.types.DTDLocation;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.XMLCatalog;
+import org.eclipse.wst.wsdl.validation.internal.ClassloaderWSDLValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
-import org.eclipse.wst.wsdl.validation.internal.WSDLValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.ClassloaderWSDL11ValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
 
 /**
@@ -293,7 +293,7 @@ public class WSDLValidate extends Task
     while(wsdl11extIter.hasNext())
     {
       ExtensionValidator extVal = (ExtensionValidator)wsdl11extIter.next();
-      WSDL11ValidatorDelegate delegate = new WSDL11ValidatorDelegate(extVal.getClassName(), extVal.getResourceBundle());
+      WSDL11ValidatorDelegate delegate = new ClassloaderWSDL11ValidatorDelegate(extVal.getClassName());
       wsdlValidator.registerWSDL11Validator(extVal.getNamespace(), delegate);
     }
     
@@ -302,7 +302,7 @@ public class WSDLValidate extends Task
     while(extIter.hasNext())
     {
       ExtensionValidator extVal = (ExtensionValidator)extIter.next();
-      WSDLValidatorDelegate delegate = new WSDLValidatorDelegate(extVal.getClassName(), extVal.getResourceBundle());
+      ClassloaderWSDLValidatorDelegate delegate = new ClassloaderWSDLValidatorDelegate(extVal.getClassName());
       wsdlValidator.registerWSDLExtensionValidator(extVal.getNamespace(), delegate);
     }
 

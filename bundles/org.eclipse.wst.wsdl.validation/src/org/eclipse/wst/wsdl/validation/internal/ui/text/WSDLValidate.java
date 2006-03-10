@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,13 +19,14 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
+import org.eclipse.wst.wsdl.validation.internal.ClassloaderWSDLValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
-import org.eclipse.wst.wsdl.validation.internal.WSDLValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.ClassloaderWSDL11ValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalogEntityHolder;
@@ -210,20 +211,14 @@ public class WSDLValidate
 
           if (!namespace.startsWith(WSDLValidate.STRING_DASH))
           {
-            String propertiesFile = args[++i];
-            if (propertiesFile.startsWith(WSDLValidate.STRING_DASH))
-            {
-              propertiesFile = null;
-              i--;
-            }
             if(param.equalsIgnoreCase(WSDLValidate.PARAM_WSDL11VAL))
             {  
-              WSDL11ValidatorDelegate delegate = new WSDL11ValidatorDelegate(validatorClass, propertiesFile);
+              WSDL11ValidatorDelegate delegate = new ClassloaderWSDL11ValidatorDelegate(validatorClass);
               wsdlValidator.wsdlValidator.registerWSDL11Validator(namespace, delegate);
             }
             else if(param.equalsIgnoreCase(WSDLValidate.PARAM_EXTVAL))
             {
-              WSDLValidatorDelegate delegate = new WSDLValidatorDelegate(validatorClass, propertiesFile);
+              ClassloaderWSDLValidatorDelegate delegate = new ClassloaderWSDLValidatorDelegate(validatorClass);
               wsdlValidator.wsdlValidator.registerWSDLExtensionValidator(namespace, delegate);
             }
           }
@@ -304,73 +299,4 @@ public class WSDLValidate
       }
     }
   }
-
-  /**
-   * Load a validator into the wsdl validation framework registry.
-   * 
-   * @param namespace - the namespace the validator checks
-   * @param validatorClass - the name of the class the implements IWSDLValidator
-   * @param propertiesFile - the name of the properties file for the validator
-   * @param type           - the type of validator - WSDL or WS-I
-   * @param messGen        - a MessageGenerator for producing error messages
-   */
-//  protected static void loadExtensionValidator(
-//    String namespace,
-//    String validatorClass,
-//    String propertiesFile,
-//    Integer type,
-//    MessageGenerator messGen)
-//  {
-//    try
-//    {
-//      ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-//      IWSDLValidator validator = (IWSDLValidator)classLoader.loadClass(validatorClass).newInstance();
-//      // if no properties file is specified we can still load the validator
-//      if (propertiesFile != null && !propertiesFile.equals(""))
-//      {
-//        ResourceBundle rb = ResourceBundle.getBundle(propertiesFile);
-//        validator.setResourceBundle(rb);
-//      }
-//      else
-//      {
-//        propertiesFile = null;
-//      }
-//
-//      ValidatorRegistry.getInstance().registerValidator(namespace, validator, type);
-//    }
-//    catch (Exception e)
-//    {
-//      System.out.println(messGen.getString(_ERROR_UNABLE_TO_LOAD_EXT_VALIDATOR, namespace, e));
-//    }
-//
-//  }
-  //	/**
-  //	 * loadWSDL11ExtensionValidator
-  //	 * Load an extension validator into the WSDL 1.1 validator
-  //   * @param namespace
-  //   * @param validatorClass
-  //   * @param propertiesFile
-  //   * @param type
-  //   * @param classLoader
-  //   */
-  //  protected static void loadWSDL11ExtensionValidator(
-  //			String namespace,
-  //			String validatorClass,
-  //			String resourceBundle,
-  //			ClassLoader classLoader)
-  //		{
-  //			try
-  // {
-  // 	Class valclass = classLoader.loadClass(validatorClass);
-  // 	IWSDL11Validator validator = (IWSDL11Validator)valclass.newInstance();
-  // 	validator.setResourceBundle(ResourceBundle.getBundle(resourceBundle));
-  // 	WSDLConfigurator.registerWSDL11Validator(namespace,validator);
-  // }
-  // catch(Exception e)
-  // {
-  //	 System.out.println("Unable to load the WSDL 1.1 validator for namespace "
-  // + namespace + e);
-  // }
-  //
-  //		}
 }

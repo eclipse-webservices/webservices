@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -273,7 +273,7 @@ public class ValidationController
           }
           catch(Throwable  t)
           {
-            valInfo.addWarning(messagegenerator.getString(_ERROR_PROBLEM_EXT_VALIDATOR,  extvaldel.getValidatorClassName(), wsdlNamespace), 1, 1, valInfo.getFileURI());
+            valInfo.addWarning(messagegenerator.getString(_ERROR_PROBLEM_EXT_VALIDATOR,  extvaldel.getValidatorName(), wsdlNamespace), 1, 1, valInfo.getFileURI());
             // This error should be logged and not displayed to the user.
           }
         }

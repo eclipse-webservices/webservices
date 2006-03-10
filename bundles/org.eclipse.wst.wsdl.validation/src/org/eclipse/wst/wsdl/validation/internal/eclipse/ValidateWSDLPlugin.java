@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,9 +21,9 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.wst.wsdl.validation.internal.Constants;
-import org.eclipse.wst.wsdl.validation.internal.WSDLValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -143,7 +143,6 @@ class WSDLValidatorPluginRegistryReader
   protected static final String PLUGIN_ID = "org.eclipse.wst.wsdl.validation";
   protected static final String ATT_CLASS = "class";
   protected static final String ATT_NAMESPACE = "namespace";
-  protected static final String ATT_RESOURCEBUNDLE = "resourcebundle";
   protected static final int WSDL_VALIDATOR = 0;
   protected static final int EXT_VALIDATOR = 1;
   protected String extensionPointId;
@@ -195,7 +194,6 @@ class WSDLValidatorPluginRegistryReader
     {
       String validatorClass = element.getAttribute(ATT_CLASS);
       String namespace = element.getAttribute(ATT_NAMESPACE);
-      String resourceBundle = element.getAttribute(ATT_RESOURCEBUNDLE);
 
       if (validatorClass != null)
       {
@@ -205,23 +203,13 @@ class WSDLValidatorPluginRegistryReader
           //            element.getDeclaringExtension().getDeclaringPluginDescriptor().getPlugin().getClass().getClassLoader();
           //				modified to resolve certain situations where the plugin has not been initialized
 
-          ClassLoader pluginLoader =
-            element.getDeclaringExtension().getDeclaringPluginDescriptor().getPluginClassLoader();
+          Bundle pluginBundle = Platform.getBundle(element.getDeclaringExtension().getContributor().getName());
           
-//          if (validatorType == WSDL_VALIDATOR)
-//           {
-//            WSDL11ValidatorDelegate delegate = new WSDL11ValidatorDelegate(validatorClass, resourceBundle, pluginLoader);
-//            WSDLValidator.getInstance().registerWSDL11Validator(namespace, delegate);
-//          }
           if (validatorType == EXT_VALIDATOR)
            {
-            WSDLValidatorDelegate delegate = new WSDLValidatorDelegate(validatorClass, resourceBundle, pluginLoader);
+            EclipseWSDLValidatorDelegate delegate = new EclipseWSDLValidatorDelegate(validatorClass, pluginBundle);
             WSDLValidator.getInstance().registerWSDLExtensionValidator(namespace, delegate);
           }
-//          registerWSDLValidatorPluginExtensionWithClassName(
-//            pluginLoader,
-//            WSDLValidatorExtensionClass,
-//            WSDLValidatorExtensionNamespace);
         }
         catch (Exception e)
         {
@@ -229,54 +217,6 @@ class WSDLValidatorPluginRegistryReader
       }
     }
   }
-
-  /**
-   * Register the extension validator with the given class name and namespaces.
-   * 
-   * @param classLoader - the class loader to create the validator
-   * @param className - the name of the extension validator
-   * @param namespace - the namespace of the extension validator
-   * @throws Exception
-   */
-//  protected void registerWSDLValidatorPluginExtensionWithClassName(
-//    ClassLoader classLoader,
-//    String className,
-//    String namespace)
-//    throws Exception
-//  {
-//    try
-//    {
-//      Class validatorExtensionClass = classLoader != null ? classLoader.loadClass(className) : Class.forName(className);
-//
-//      
-//      //IValidatorExtensionPlugin validatorHandler = (IValidatorExtensionPlugin)validatorExtensionClass.newInstance();
-//      //add(namespace, validatorHandler.getValidator());
-//    }
-//    catch (Exception e)
-//    {
-//      //System.out.println(e.getMessage());
-//      //TODO: write the error message to the log file - use custom log writer class
-//      //ValidateWSDLPlugin.getInstance().getMsgLogger().write("WSDL Validator could not register the extension validator." + e.getMessage());	
-//    }
-//  }
-
-  /**
-   * Register the loaded validator.
-   * 
-   * @param namespace - the namespace of the validator
-   * @param validatorExtension - the extension validator
-   */
-//  protected void add(String namespace, IWSDLValidator validatorExtension)
-//  {
-//    if (validatorType == WSDL_VALIDATOR)
-//    {
-//      WSDLConfigurator.registerWSDLValidator(namespace, validatorExtension);
-//    }
-//    else if (validatorType == WSI_VALIDATOR)
-//    {
-//      WSDLConfigurator.registerWSIValidator(namespace, validatorExtension);
-//    }
-//  }
 }
 
 /**
@@ -298,7 +238,6 @@ class WSDL11ValidatorPluginRegistryReader
   protected static final String PLUGIN_ID = "org.eclipse.wst.wsdl.validation";
   protected static final String ATT_CLASS = "class";
   protected static final String ATT_NAMESPACE = "namespace";
-  protected static final String ATT_RESOURCEBUNDLE = "resourcebundle";
   protected String extensionPointId;
   protected String tagName;
 
@@ -343,15 +282,13 @@ class WSDL11ValidatorPluginRegistryReader
     {
       String validatorClass = element.getAttribute(ATT_CLASS);
       String namespace = element.getAttribute(ATT_NAMESPACE);
-      String resourceBundle = element.getAttribute(ATT_RESOURCEBUNDLE);
 
       if (validatorClass != null && namespace != null)
       {
         try
         {
-          ClassLoader pluginLoader =
-            element.getDeclaringExtension().getDeclaringPluginDescriptor().getPluginClassLoader();
-          WSDL11ValidatorDelegate delegate = new WSDL11ValidatorDelegate(validatorClass, resourceBundle, pluginLoader);
+          Bundle pluginBundle = Platform.getBundle(element.getDeclaringExtension().getContributor().getName());
+          WSDL11ValidatorDelegate delegate = new EclipseWSDL11ValidatorDelegate(validatorClass, pluginBundle);
           WSDLValidator.getInstance().registerWSDL11Validator(namespace, delegate);
         }
         catch (Exception e)

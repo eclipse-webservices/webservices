@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ public class ExtensionValidator
 {
   private String classname = null;
   private String namespace = null;
-  private String resourcebundle = null;
   
   public void setClass(String classname)
   {
@@ -38,15 +37,5 @@ public class ExtensionValidator
   public String getNamespace()
   {
     return this.namespace;
-  }
-  
-  public void setResourceBundle(String resourcebundle)
-  {
-    this.resourcebundle = resourcebundle;
-  }
-  
-  public String getResourceBundle()
-  {
-    return this.resourcebundle;
   }
 }
