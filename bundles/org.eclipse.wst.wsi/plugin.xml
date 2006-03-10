@@ -20,8 +20,7 @@
          point="org.eclipse.wst.wsdl.validation.extvalidator">
       <extvalidator
             namespace="http://schemas.xmlsoap.org/wsdl/"
-            class="org.eclipse.wst.wsi.internal.validate.wsdl.WSDLValidator"
-            resourcebundle="wsivalidate">
+            class="org.eclipse.wst.wsi.internal.validate.wsdl.WSDLValidator">
       </extvalidator>
    </extension>
   

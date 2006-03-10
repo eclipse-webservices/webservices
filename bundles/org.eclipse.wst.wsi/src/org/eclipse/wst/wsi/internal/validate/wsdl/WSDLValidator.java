@@ -9,9 +9,11 @@
  *   IBM - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.validate.wsdl;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.wsdl.Binding;
@@ -56,7 +58,7 @@ public class WSDLValidator implements IWSDLValidator
   protected final int ERROR = 2;
   protected final int WARNING = 1;
   
-  protected MessageGenerator messagegenerator = null;
+  protected ResourceBundle resourcebundle = null;
   protected boolean wsiValid = false;
 
   /**
@@ -64,6 +66,7 @@ public class WSDLValidator implements IWSDLValidator
    */
   public WSDLValidator()
   {
+	resourcebundle = ResourceBundle.getBundle("wsivalidate", Locale.getDefault());
   }
 
   /* (non-Javadoc)
@@ -123,7 +126,7 @@ public class WSDLValidator implements IWSDLValidator
   	try
   	{
       //WSDLFactory factory = WSDLFactory.newInstance();
- 	  ValidationInfoImpl vali = new ValidationInfoImpl(valInfo.getFileURI(), messagegenerator);
+ 	  ValidationInfoImpl vali = new ValidationInfoImpl(valInfo.getFileURI(), new MessageGenerator(resourcebundle));
   	  vali.setURIResolver((URIResolver)valInfo.getURIResolver());
       WSDLReaderImpl reader = new WSDLReaderImpl(new WSDL11ValidationInfoImpl(vali));
       WSDLDocument[] docs = reader.readWSDL(uri, domModel);
@@ -140,7 +143,7 @@ public class WSDLValidator implements IWSDLValidator
   	}
   	catch(WSDLException e)
   	{
-  	  throw new ValidateWSDLException(messagegenerator.getString(_EXC_UNABLE_TO_VALIDATE_WSI,uri));
+  	  throw new ValidateWSDLException(MessageFormat.format(resourcebundle.getString(_EXC_UNABLE_TO_VALIDATE_WSI), new Object[] { uri }));
   	}
 	    
     if (definition != null && valInfo != null)
@@ -363,19 +366,18 @@ public class WSDLValidator implements IWSDLValidator
   }
 
   /**
-   * @see org.eclipse.wsdl.validate.controller.IWSDLValidator#setResourceBundle(java.util.ResourceBundle)
-   */
-  public void setResourceBundle(ResourceBundle rb)
-  {
-    messagegenerator = new MessageGenerator(rb);
-  }
-
-  /**
    * @see org.eclipse.wsdl.validate.controller.IWSDLValidator#isValid()
    */
   public boolean isValid()
   {
     return wsiValid;
   }
+
+  public void setResourceBundle(ResourceBundle rb) {
+	// Not used.
+	
+  }
+  
+  
 
 }
