@@ -34,6 +34,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extension.ExtensibilityItemTreeProviderRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extension.NSKeyedExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extension.WSDLEditorExtensionRegistry;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
@@ -427,8 +428,8 @@ class InternalEditorExtensionRegistryReader extends BaseRegistryReader
       {
         try
         {
-          ClassLoader pluginClsLoader = element.getDeclaringExtension().getDeclaringPluginDescriptor().getPlugin().getClass().getClassLoader();
-          registry.add(pluginClsLoader, className);
+          Bundle bundle = Platform.getBundle(element.getDeclaringExtension().getContributor().getName());
+          registry.add(bundle, className);
         }
         catch (Exception e)
         {
@@ -486,13 +487,13 @@ abstract class NSKeyedExtensionRegistryReader extends BaseRegistryReader
       String namespace = element.getAttribute(ATT_NAME_SPACE);
       if (namespace != null)
       {
-        ClassLoader pluginClasssLoader = element.getDeclaringExtension().getDeclaringPluginDescriptor().getPluginClassLoader();
+    	Bundle bundle = Platform.getBundle(element.getDeclaringExtension().getContributor().getName());
         if (attributeNames.length == 1)
         {
           String className = element.getAttribute(attributeNames[0]);
           if (className != null)
           {
-            nsKeyedExtensionRegistry.put(namespace, className, pluginClasssLoader);
+            nsKeyedExtensionRegistry.put(namespace, className, bundle);
           }
         }
         else
@@ -507,7 +508,7 @@ abstract class NSKeyedExtensionRegistryReader extends BaseRegistryReader
               map.put(attributeName, className);
             }
           }
-          nsKeyedExtensionRegistry.put(namespace, map, pluginClasssLoader);
+          nsKeyedExtensionRegistry.put(namespace, map, bundle);
         }
       }
     }

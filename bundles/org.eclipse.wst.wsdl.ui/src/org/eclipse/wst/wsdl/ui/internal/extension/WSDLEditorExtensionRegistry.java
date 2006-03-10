@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditor;
+import org.osgi.framework.Bundle;
 
 public class WSDLEditorExtensionRegistry
 {                   
@@ -96,6 +97,21 @@ public class WSDLEditorExtensionRegistry
     try
     {       
       Class theClass = classLoader != null ? classLoader.loadClass(className) : Class.forName(className);
+      WSDLEditorExtension extension = (WSDLEditorExtension)theClass.newInstance();
+      registeredExtensionList.add(extension);
+    }
+    catch (Exception e)
+    {
+    	e.printStackTrace();
+    }
+  }
+  public void add(Bundle bundle, String className)
+  {                      
+    // TODO... consider defered instantiation of WSDLEditorExtensions         
+    try
+    {      
+      
+      Class theClass = bundle.loadClass(className);
       WSDLEditorExtension extension = (WSDLEditorExtension)theClass.newInstance();
       registeredExtensionList.add(extension);
     }

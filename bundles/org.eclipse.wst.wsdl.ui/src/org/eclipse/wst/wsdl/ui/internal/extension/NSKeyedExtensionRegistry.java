@@ -12,6 +12,8 @@ package org.eclipse.wst.wsdl.ui.internal.extension;
 
 import java.util.HashMap;
 
+import org.osgi.framework.Bundle;
+
 public class NSKeyedExtensionRegistry
 {
   protected HashMap map = new HashMap();
@@ -21,22 +23,22 @@ public class NSKeyedExtensionRegistry
   {
   }
 
-  public void put(String namespaceURI, String className, ClassLoader classLoader)
+  public void put(String namespaceURI, String className, Bundle bundle)
   {
     ExtensionInfo info = (ExtensionInfo) map.get(namespaceURI);
     if (info == null)
     {
-      info = new SinglePropertyExtensionInfo(className, classLoader);
+      info = new SinglePropertyExtensionInfo(className, bundle);
       map.put(namespaceURI, info);
     }
   }
 
-  public void put(String namespaceURI, HashMap propertyToClassNameMap, ClassLoader classLoader)
+  public void put(String namespaceURI, HashMap propertyToClassNameMap, Bundle bundle)
   {
     ExtensionInfo info = (ExtensionInfo) map.get(namespaceURI);
     if (info == null)
     {
-      info = new MultiPropertyExtensionInfo(propertyToClassNameMap, classLoader);
+      info = new MultiPropertyExtensionInfo(propertyToClassNameMap, bundle);
       map.put(namespaceURI, info);
     }
   }
@@ -59,11 +61,11 @@ public class NSKeyedExtensionRegistry
 
   private abstract class ExtensionInfo
   {
-    protected ClassLoader classLoader;
+    protected Bundle bundle;
 
-    public ExtensionInfo(ClassLoader classLoader)
+    public ExtensionInfo(Bundle bundle)
     {
-      this.classLoader = classLoader;
+      this.bundle = bundle;
     }
 
     public abstract Object getObject(String property);
@@ -75,9 +77,9 @@ public class NSKeyedExtensionRegistry
     protected Object object;
     protected boolean error;
 
-    public SinglePropertyExtensionInfo(String className, ClassLoader classLoader)
+    public SinglePropertyExtensionInfo(String className, Bundle bundle)
     {
-      super(classLoader);
+      super(bundle);
       this.className = className;
     }
 
@@ -87,7 +89,7 @@ public class NSKeyedExtensionRegistry
       {
         try
         {
-          Class theClass = classLoader != null ? classLoader.loadClass(className) : Class.forName(className);
+          Class theClass = bundle.loadClass(className);
           object = theClass.newInstance();
         }
         catch (Exception e)
@@ -105,9 +107,9 @@ public class NSKeyedExtensionRegistry
     protected HashMap propertyToClassNameTable;
     protected HashMap propertyToObjectTable = new HashMap();
 
-    public MultiPropertyExtensionInfo(HashMap propertToClassNameTable, ClassLoader classLoader)
+    public MultiPropertyExtensionInfo(HashMap propertToClassNameTable, Bundle bundle)
     {
-      super(classLoader);
+      super(bundle);
       this.propertyToClassNameTable = propertToClassNameTable;
     }
 
@@ -122,7 +124,7 @@ public class NSKeyedExtensionRegistry
         {
           try
           {
-            Class theClass = classLoader != null ? classLoader.loadClass(className) : Class.forName(className);
+            Class theClass = bundle.loadClass(className);
             result = theClass.newInstance();
             propertyToObjectTable.put(property, result);
           }
