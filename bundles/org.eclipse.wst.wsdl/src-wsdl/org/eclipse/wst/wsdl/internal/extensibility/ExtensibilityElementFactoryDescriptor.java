@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,19 +11,20 @@
 package org.eclipse.wst.wsdl.internal.extensibility;
 
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
+import org.osgi.framework.Bundle;
 
 public class ExtensibilityElementFactoryDescriptor
 {
   private final static String CLASS_LOADING_ERROR = "CLASS_LOADING_ERROR";
   
-  protected ClassLoader classLoader;
+  protected Bundle bundle;
   protected String namespace;
   protected String className;  
   protected Object factory;
 
-  public ExtensibilityElementFactoryDescriptor(String className, String namespace, ClassLoader classLoader)
+  public ExtensibilityElementFactoryDescriptor(String className, String namespace, Bundle bundle)
   {
-    this.classLoader = classLoader;
+    this.bundle = bundle;
     this.className = className;
     this.namespace = namespace;
   }
@@ -34,7 +35,7 @@ public class ExtensibilityElementFactoryDescriptor
     {
       try
       {
-        Class theClass = classLoader != null ? classLoader.loadClass(className) : Class.forName(className);
+        Class theClass = bundle.loadClass(className);
         factory = (ExtensibilityElementFactory)theClass.newInstance();
       }
       catch (Exception e)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,19 +11,20 @@
 package org.eclipse.wst.wsdl.internal.generator.extension;
 
 import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
+import org.osgi.framework.Bundle;
 
 /*
  * Class which acts as a container to hold information about the extension.
  */
 public class ContentGeneratorExtensionDescriptor {
-	protected ClassLoader classLoader;
+	protected Bundle bundle;
 	protected ContentGenerator contentGenerator;
 	protected String namespace;
 	protected String name;
 	protected String className;
 	
-	public ContentGeneratorExtensionDescriptor(ClassLoader classLoader, String classString, String namespace, String name) {
-		this.classLoader = classLoader;
+	public ContentGeneratorExtensionDescriptor(Bundle bundle, String classString, String namespace, String name) {
+		this.bundle = bundle;
 		this.namespace = namespace;
 		this.name = name;
 		this.className = classString;
@@ -32,7 +33,7 @@ public class ContentGeneratorExtensionDescriptor {
 	
 	public Object getContentGenerator() {
 		try {
-	        Class theClass = classLoader != null ? classLoader.loadClass(className) : Class.forName(className);
+	        Class theClass = bundle.loadClass(className);
 	        contentGenerator = (ContentGenerator) theClass.newInstance();
 	      }
 	      catch (Exception e) {

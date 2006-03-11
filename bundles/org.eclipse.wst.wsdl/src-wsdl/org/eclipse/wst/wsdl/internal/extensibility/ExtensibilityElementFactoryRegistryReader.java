@@ -11,16 +11,18 @@
 package org.eclipse.wst.wsdl.internal.extensibility;
 import java.net.URL;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.wsdl.WSDLPlugin;
+import org.osgi.framework.Bundle;
 
 
 public class ExtensibilityElementFactoryRegistryReader
 {
-  protected static final String PLUGIN_ID = WSDLPlugin.getPlugin().getDescriptor().getUniqueIdentifier();
+  protected static final String PLUGIN_ID = WSDLPlugin.getPlugin().getSymbolicName();
   protected static final String EXTENSION_POINT_ID = "extensibilityElementFactories";
   protected static final String ELEMENT_NAME = "extensibilityElementFactory";
   protected static final String ATT_NAMESPACE = "namespace";
@@ -37,8 +39,8 @@ public class ExtensibilityElementFactoryRegistryReader
    */
   public void readRegistry()
   {
-    IPluginRegistry pluginRegistry = Platform.getPluginRegistry();
-    IExtensionPoint point = pluginRegistry.getExtensionPoint(PLUGIN_ID, EXTENSION_POINT_ID);
+	IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+	IExtensionPoint point = pluginRegistry.getExtensionPoint(PLUGIN_ID, EXTENSION_POINT_ID);
     if (point != null)
     {
       IConfigurationElement[] elements = point.getConfigurationElements();
@@ -51,7 +53,7 @@ public class ExtensibilityElementFactoryRegistryReader
 
   public String resolve(URL platformURL, String relativePath) throws Exception
   {
-    URL resolvedURL = Platform.resolve(platformURL);
+    URL resolvedURL = FileLocator.resolve(platformURL);
     return resolvedURL.toString() + relativePath;
   }
 
@@ -65,9 +67,9 @@ public class ExtensibilityElementFactoryRegistryReader
         String namespace = childElement.getAttribute(ATT_NAMESPACE);
         if (namespace != null)
         {
-          ClassLoader pluginClasssLoader = element.getDeclaringExtension().getDeclaringPluginDescriptor().getPluginClassLoader();
+          Bundle pluginBundle = Platform.getBundle(element.getDeclaringExtension().getContributor().getName());
           String className = childElement.getAttribute(ATT_CLASS);
-          ExtensibilityElementFactoryDescriptor descriptor = new ExtensibilityElementFactoryDescriptor(className,namespace,pluginClasssLoader);
+          ExtensibilityElementFactoryDescriptor descriptor = new ExtensibilityElementFactoryDescriptor(className,namespace,pluginBundle);
           extensibilityElementFactoryRegistry.put(namespace, descriptor);
         }
       }

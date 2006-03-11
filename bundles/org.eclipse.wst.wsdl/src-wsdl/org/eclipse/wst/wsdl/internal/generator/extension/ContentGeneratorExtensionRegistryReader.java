@@ -12,14 +12,16 @@ package org.eclipse.wst.wsdl.internal.generator.extension;
 
 import java.net.URL;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IPluginRegistry;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.wsdl.WSDLPlugin;
+import org.osgi.framework.Bundle;
 
 public class ContentGeneratorExtensionRegistryReader {
-	  protected static final String PLUGIN_ID = WSDLPlugin.getPlugin().getDescriptor().getUniqueIdentifier();
+	  protected static final String PLUGIN_ID = WSDLPlugin.getPlugin().getSymbolicName();
 	  protected static final String EXTENSION_POINT_ID = "contentGenerators";
 	  protected static final String ELEMENT_NAME = "contentGenerator";
 	  protected static final String ATT_NAMESPACE = "namespace";
@@ -36,8 +38,8 @@ public class ContentGeneratorExtensionRegistryReader {
 	   * read from plugin registry and parse it.
 	   */
 	  public void readRegistry() {
-	    IPluginRegistry pluginRegistry = Platform.getPluginRegistry();
-	    IExtensionPoint point = pluginRegistry.getExtensionPoint(PLUGIN_ID, EXTENSION_POINT_ID);
+		IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+		IExtensionPoint point = pluginRegistry.getExtensionPoint(PLUGIN_ID, EXTENSION_POINT_ID);
 	    if (point != null) {
 	      IConfigurationElement[] elements = point.getConfigurationElements();
 	      for (int i = 0; i < elements.length; i++) {
@@ -47,7 +49,7 @@ public class ContentGeneratorExtensionRegistryReader {
 	  }
 
 	  public String resolve(URL platformURL, String relativePath) throws Exception {
-	    URL resolvedURL = Platform.resolve(platformURL);
+	    URL resolvedURL = FileLocator.resolve(platformURL);
 	    return resolvedURL.toString() + relativePath;
 	  }
 
@@ -59,9 +61,9 @@ public class ContentGeneratorExtensionRegistryReader {
 	        String namespace = childElement.getAttribute(ATT_NAMESPACE);
 			
 	        if (namespace != null) {
-	          ClassLoader pluginClasssLoader = element.getDeclaringExtension().getDeclaringPluginDescriptor().getPluginClassLoader();
+	          Bundle pluginBundle = Platform.getBundle(element.getDeclaringExtension().getContributor().getName());
 	          String className = childElement.getAttribute(ATT_CLASS);
-	          ContentGeneratorExtensionDescriptor descriptor = new ContentGeneratorExtensionDescriptor(pluginClasssLoader, className, namespace, name);
+	          ContentGeneratorExtensionDescriptor descriptor = new ContentGeneratorExtensionDescriptor(pluginBundle, className, namespace, name);
 	          contentGeneratorExtensionFactoryRegistry.put(namespace, name, descriptor);
 	        }
 	      }

@@ -101,10 +101,6 @@ public class BindingGenerator extends BaseGenerator {
 	}
 	
 	private Binding createEmptyBinding(String localName) {
-		String name = localName;
-		if (localName == null) {
-			name = "";
-		}
 	    Binding newBinding = WSDLFactory.eINSTANCE.createBinding();
 		newBinding.setQName(new QName(definition.getTargetNamespace(),localName));
 		newBinding.setEnclosingDefinition(definition);
