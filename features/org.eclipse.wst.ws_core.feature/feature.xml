@@ -18,7 +18,7 @@
       <import feature="org.apache.wsil4j.feature" version="1.0.0" match="greaterOrEqual"/>
       <import feature="org.uddi4j.feature" version="2.0.3" match="greaterOrEqual"/>
       <import feature="org.wsdl4j.feature" version="1.4.0" match="greaterOrEqual"/>
-      <import feature="org.apache.xerces.feature" version="2.7.0" match="greaterOrEqual"/>
+      <import feature="org.apache.xerces.feature" version="2.8.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.platform" version="3.2" match="equivalent"/>
       <import feature="org.eclipse.emf" version="2.2" match="equivalent"/>
       <import feature="org.eclipse.wst.common_core.feature" version="1.0.0" match="greaterOrEqual"/>
