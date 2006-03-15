@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -363,33 +364,28 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   {
     String[] templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(serviceIds_.getTypeId(), serviceIds_.getRuntimeId());    
     
-    //Pick the Web one if it's there, otherwise pick the first one.    
-    for (int i=0; i<templates.length; i++)
+    //Walk the list of service project types in the project topology preference
+    ProjectTopologyContext ptc= WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
+    String[] preferredTemplateIds = ptc.getServiceTypes();
+    for (int j = 0; j < preferredTemplateIds.length; j++)
     {
-      String templateId = templates[i];
-      if (templateId.indexOf("web") != -1)
+      for (int i = 0; i < templates.length; i++)
       {
-        boolean matches = WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportTemplate(serviceRuntimeId_, templateId);
-        if (matches)
+        String templateId = templates[i];
+        if (templateId.equals(preferredTemplateIds[j]))
         {
-          return templates[i];
-        }        
-      }                                    
-    }
-    
-    //Didn't find a "web" type. Return the first one that is a match. Calculate the facet matcher for the template
-    //so that we know what to create and what to add during module creation.
-    for (int j = 0; j < templates.length; j++)
-    {
-      String templateId = templates[j];
-      boolean matches = WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportTemplate(serviceRuntimeId_, templateId);
-      if (matches)
-      {
-        return templates[j];
+          boolean matches = WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportTemplate(serviceRuntimeId_, templateId);
+          if (matches)
+          {
+            return templates[i];
+          }
+        }
       }
     }
     
-    //Still nothing, return the first one if available.
+    //Since the preferredTemplateIds contains the union of all project types for all service runtimes, we are
+    //guaranteed to have returned by now, so the code below will never be executed under normal
+    //circumstances. Just return something to satisfy the compiler.
     if (templates.length > 0)
       return templates[0];
     

@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui;
 
@@ -35,6 +38,7 @@ public final class WSUIPluginMessages extends NLS {
 	public static String TOOLTIP_PPSD_PAGE;
 	public static String TOOLTIP_PPSD_CHECKBOX_LAUNCH_SAMPLE;
 	public static String TOOLTIP_CLIENT_TYPE_TABLE_VIEWER;
+    public static String TOOLTIP_SERVICE_TYPE_TABLE_VIEWER;
 	public static String TOOLTIP_MOVE_UP;
 	public static String TOOLTIP_MOVE_DOWN;
 	public static String TOOLTIP_PPRM_PAGE;
@@ -60,6 +64,7 @@ public final class WSUIPluginMessages extends NLS {
 	public static String LABEL_CLIENT_TYPE_NAME;
 	public static String DIALOG_TITLE_RESOURCE_BROWSER;
 	public static String TOOLTIP_RESOURCE_TREE;
+    public static String LABEL_SERVICE_TYPE_NAME;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, WSUIPluginMessages.class);

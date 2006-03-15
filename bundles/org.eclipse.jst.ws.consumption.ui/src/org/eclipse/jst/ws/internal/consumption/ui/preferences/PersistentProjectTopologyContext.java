@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060202   119780 pmoogk@ca.ibm.com - Peter Moogk
  * 20060216   127138 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
@@ -30,6 +31,18 @@ public class PersistentProjectTopologyContext extends PersistentContext implemen
   
   public void load() 
   {
+    //Load the service project types
+    String[] serviceIds = ProjectTopologyDefaults.getServiceTypes();
+    StringBuffer serviceSb = new StringBuffer();
+    for (int i = 0; i < serviceIds.length; i++)
+    {
+      if (i != 0)
+        serviceSb.append(" ");
+      serviceSb.append(serviceIds[i]);
+    }
+    setDefaultStringIfNoDefault(PREFERENCE_SERVICE_TYPES, serviceSb.toString());
+    
+    //Load the client project types
     String[] ids = ProjectTopologyDefaults.getClientTypes();
     StringBuffer sb = new StringBuffer();
     for (int i = 0; i < ids.length; i++)
@@ -42,6 +55,36 @@ public class PersistentProjectTopologyContext extends PersistentContext implemen
     setDefault(PREFERENCE_USE_TWO_EARS, ProjectTopologyDefaults.isUseTwoEARs());
  }
 
+  public void setServiceTypes(String[] ids)
+  {
+    StringBuffer sb = new StringBuffer();
+    for (int i = 0; i < ids.length; i++)
+    {
+      if (i != 0)
+        sb.append(" ");
+      sb.append(ids[i]);
+    }
+    setValue(PREFERENCE_SERVICE_TYPES, sb.toString());
+  }
+
+  public String[] getServiceTypes()
+  {
+    StringTokenizer st = new StringTokenizer(getValueAsString(PREFERENCE_SERVICE_TYPES));
+    String[] s = new String[st.countTokens()];
+    for (int i = 0; i < s.length; i++)
+      s[i] = st.nextToken();
+    return s;
+  }
+  
+  public String[] getDefaultServiceTypes()
+  {
+    StringTokenizer st = new StringTokenizer(getDefaultString(PREFERENCE_SERVICE_TYPES));
+    String[] s = new String[st.countTokens()];
+    for (int i = 0; i < s.length; i++)
+      s[i] = st.nextToken();
+    return s;        
+  }
+    
  public void setClientTypes(String[] ids)
  {
    StringBuffer sb = new StringBuffer();
@@ -62,6 +105,15 @@ public class PersistentProjectTopologyContext extends PersistentContext implemen
      s[i] = st.nextToken();
    return s;
  }
+ 
+ public String[] getDefaultClientTypes()
+ {
+   StringTokenizer st = new StringTokenizer(getDefaultString(PREFERENCE_CLIENT_TYPES));
+   String[] s = new String[st.countTokens()];
+   for (int i = 0; i < s.length; i++)
+     s[i] = st.nextToken();
+   return s;        
+ } 
 
  public void setUseTwoEARs(boolean use)
  {
@@ -74,8 +126,12 @@ public class PersistentProjectTopologyContext extends PersistentContext implemen
 
  public ProjectTopologyContext copy() {
  	TransientProjectTopologyContext context = new TransientProjectTopologyContext();
+    context.setServiceTypes(getServiceTypes());
+    context.setDefaultServiceTypes(getDefaultServiceTypes());
 	context.setClientTypes(getClientTypes());
+    context.setDefaultClientTypes(getDefaultClientTypes());
 	context.setUseTwoEARs(isUseTwoEARs());
 	return context;
 }
+
 }

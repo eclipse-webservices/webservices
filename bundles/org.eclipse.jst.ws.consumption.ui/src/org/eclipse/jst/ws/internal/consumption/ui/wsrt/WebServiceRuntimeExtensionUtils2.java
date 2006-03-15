@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -56,6 +57,35 @@ public class WebServiceRuntimeExtensionUtils2
       return (RuntimeDescriptor)result;
     }
     return null;        
+  }
+  
+  
+  public static String[] getAllServiceProjectTypes()
+  {
+    ArrayList finalTemplateIdList = new ArrayList();
+    Iterator iter = registry.serviceRuntimes_.values().iterator();
+
+    //Loop through all the serviceRuntimes
+    while (iter.hasNext())   
+    {
+      ServiceRuntimeDescriptor desc = (ServiceRuntimeDescriptor)iter.next();
+      
+      //Get the templates for this service runtime
+      Set templates = FacetMatchCache.getInstance().getTemplatesForServiceRuntime(desc.getId());
+      
+      //Add the template ids to the list if they have not already been added
+      Iterator itr = templates.iterator();
+      while (itr.hasNext())
+      {
+        IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
+        if (!finalTemplateIdList.contains(template.getId()))
+        {
+          finalTemplateIdList.add(template.getId());
+        }
+      }            
+    }
+    
+    return (String[])finalTemplateIdList.toArray(new String[]{});
   }
   
   public static String[] getAllClientProjectTypes()

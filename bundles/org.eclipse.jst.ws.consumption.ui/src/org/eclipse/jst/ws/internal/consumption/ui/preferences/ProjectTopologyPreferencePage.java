@@ -1,17 +1,21 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 
 import java.util.Vector;
+
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -31,9 +35,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
@@ -47,6 +51,11 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
   /*CONTEXT_ID PTPP0001 for the Project Topology Preference Page*/
   private String INFOPOP_PTPP_PAGE = WebServiceUIPlugin.ID + ".PPTP0001";
 
+  private TableViewer serviceTypeViewer_;
+  private Button serviceMoveUp_;
+  private Button serviceMoveDown_;
+  private Vector serviceTypes_;
+  
   private TableViewer clientTypeViewer_;
   private Button moveUp_;
   private Button moveDown_;
@@ -68,17 +77,62 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     parent.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
     PlatformUI.getWorkbench().getHelpSystem().setHelp(parent,INFOPOP_PTPP_PAGE);  
 
-    Text clientTypeLabel = new Text(parent, SWT.READ_ONLY | SWT.WRAP);
-    clientTypeLabel.setText(WSUIPluginMessages.LABEL_CLIENT_TYPE_NAME);
-    clientTypeLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL));
+    Group serviceTypeComposite = new Group( parent, SWT.NONE );
+    GridLayout servicegl = new GridLayout();
+    servicegl.numColumns = 2;
+    servicegl.marginHeight = 0;
+    servicegl.marginWidth = 0;
+    serviceTypeComposite.setLayout(servicegl);
+    serviceTypeComposite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ));
+    serviceTypeComposite.setText(WSUIPluginMessages.LABEL_SERVICE_TYPE_NAME);
+    
+    Table serviceTable= new Table(serviceTypeComposite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
+    GridData servicegd = new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
+    servicegd.widthHint = 256;
+    serviceTable.setLayoutData(servicegd);
+    serviceTable.setToolTipText(WSUIPluginMessages.TOOLTIP_SERVICE_TYPE_TABLE_VIEWER);
 
-    Composite clientTypeComposite = new Composite(parent, SWT.NONE);
+    serviceTypes_ = new Vector();
+    serviceTypeViewer_ = new TableViewer(serviceTable);
+    serviceTypeViewer_.setContentProvider(new ClientTypeContentProvider());
+    serviceTypeViewer_.setLabelProvider(new ClientTypeLabelProvider());
+    serviceTypeViewer_.setInput(serviceTypes_);
+
+    TableLayout serviceTableLayout = new TableLayout();
+    TableColumn serviceTableColumn = new TableColumn(serviceTable, SWT.NONE);
+    serviceTableColumn.setText(WSUIPluginMessages.LABEL_SERVICE_TYPE_NAME);
+    ColumnWeightData serviceColumnData = new ColumnWeightData(256, 256, false);
+    serviceTableLayout.addColumnData(serviceColumnData);
+    serviceTable.setLayout(serviceTableLayout);
+
+    Composite servicec = new Composite(serviceTypeComposite, SWT.NONE);
+    servicegl = new GridLayout();
+    servicegl.numColumns = 1;
+    servicegl.marginHeight = 10;
+    servicegl.marginWidth = 0;
+    servicec.setLayout(servicegl);
+
+    serviceMoveUp_ = new Button(servicec, SWT.PUSH);
+    serviceMoveUp_.setText(WSUIPluginMessages.LABEL_MOVE_UP);
+    serviceMoveUp_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+    serviceMoveUp_.addSelectionListener(this);
+    serviceMoveUp_.setToolTipText(WSUIPluginMessages.TOOLTIP_MOVE_UP);
+
+    serviceMoveDown_ = new Button(servicec, SWT.PUSH);
+    serviceMoveDown_.setText(WSUIPluginMessages.LABEL_MOVE_DOWN);
+    serviceMoveDown_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+    serviceMoveDown_.addSelectionListener(this);
+    serviceMoveDown_.setToolTipText(WSUIPluginMessages.TOOLTIP_MOVE_DOWN);
+    
+
+    Group clientTypeComposite = new Group( parent, SWT.NONE );
     GridLayout gl = new GridLayout();
     gl.numColumns = 2;
     gl.marginHeight = 0;
     gl.marginWidth = 0;
     clientTypeComposite.setLayout(gl);
     clientTypeComposite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ));
+    clientTypeComposite.setText(WSUIPluginMessages.LABEL_CLIENT_TYPE_NAME);
 
     Table table= new Table(clientTypeComposite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
     GridData gd = new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
@@ -157,20 +211,48 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
    */
   public void init(IWorkbench workbench)  { }
 
+  
+  /**
+   * Adds the String elements of array a into Vector v. If String array b contains any elements
+   * that are not already in array a, appends these elements from array b to the end of Vector v. 
+   * @param a a String array
+   * @param b a String array
+   * @param v a non-null Vector
+   */
+  private void setVectorContentsFromTwoArrays(String[] a, String[] b, Vector v)
+  {
+    for (int i = 0; i < a.length; i++)
+    {
+      v.add(a[i]);
+    }
+    
+    for (int i = 0; i < b.length; i++)
+    {
+      if (v.indexOf(b[i]) == -1)
+      {
+        v.add(b[i]);
+      }
+    }   
+  }
+  
   /**
    * Initializes states of the controls to their burned-in defaults.
    */
   private void initializeDefaults()
   {
+    ProjectTopologyContext context = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
+    serviceTypes_.clear();
+    String[] defaultServiceTypes = context.getDefaultServiceTypes();
+    String[] allServiceTypes = ProjectTopologyDefaults.getServiceTypes();
+    setVectorContentsFromTwoArrays(defaultServiceTypes, allServiceTypes, serviceTypes_);    
+    serviceTypeViewer_.refresh();
+    
     clientTypes_.clear();
-    String[] types = ProjectTopologyDefaults.getClientTypes();
-    
-    for (int i = 0; i < types.length; i++)
-    {
-      clientTypes_.add(types[i]);
-    }
-    
+    String[] defaultClientTypes = context.getDefaultClientTypes();
+    String[] allClientTypes = ProjectTopologyDefaults.getClientTypes();
+    setVectorContentsFromTwoArrays(defaultClientTypes, allClientTypes, clientTypes_);         
     clientTypeViewer_.refresh();
+    
     twoEAR_.setSelection(true);
   }
   
@@ -179,29 +261,35 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
    */
   private void initializeValues()
   {
+    //Initial service project types.
     ProjectTopologyContext context = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
-    String[] types = context.getClientTypes();
-    for (int i = 0; i < types.length; i++)
-      clientTypes_.add(types[i]);
-    // check whether we missed any types from the default list
-    boolean missed = false;
-    types = ProjectTopologyDefaults.getClientTypes();
-    for (int i = 0; i < types.length; i++)
+    String[] serviceTypesFromContext = context.getServiceTypes();
+    String[] allServiceTypes = ProjectTopologyDefaults.getServiceTypes();
+    setVectorContentsFromTwoArrays(serviceTypesFromContext, allServiceTypes, serviceTypes_);
+    if (allServiceTypes.length > serviceTypesFromContext.length)
     {
-      if (clientTypes_.indexOf(types[i]) == -1)
-      {
-        clientTypes_.add(types[i]);
-        missed = true;
-      }
-    }
-    if (missed)
-    {
-      types = new String[clientTypes_.size()];
-      clientTypes_.copyInto(types);
-      context.setClientTypes(types);
+      String[] serviceTypesArray = new String[serviceTypes_.size()];
+      serviceTypes_.copyInto(serviceTypesArray);
+      context.setServiceTypes(serviceTypesArray);
     }
     // refresh viewer
+    serviceTypeViewer_.refresh();
+
+    
+    //Initialize client project types.
+    String[] clientTypesFromContext = context.getClientTypes();
+    String[] allClientTypes = ProjectTopologyDefaults.getClientTypes();
+    setVectorContentsFromTwoArrays(clientTypesFromContext, allClientTypes, clientTypes_);
+    if (allClientTypes.length > clientTypesFromContext.length)
+    {
+      String[] clientTypesArray = new String[clientTypes_.size()];
+      clientTypes_.copyInto(clientTypesArray);
+      context.setClientTypes(clientTypesArray);
+    }
+    
+    // refresh viewer
     clientTypeViewer_.refresh();
+    
     twoEAR_.setSelection(context.isUseTwoEARs());
    }
 
@@ -211,6 +299,9 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
   private void storeValues()
   {
     ProjectTopologyContext context = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
+    String[] serviceTypesArray = new String[serviceTypes_.size()];
+    serviceTypes_.copyInto(serviceTypesArray);
+    context.setServiceTypes(serviceTypesArray);    
     String[] types = new String[clientTypes_.size()];
     clientTypes_.copyInto(types);
     context.setClientTypes(types);
@@ -223,20 +314,41 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
 
   public void widgetSelected(SelectionEvent e)
   {
-    int index = clientTypeViewer_.getTable().getSelectionIndex();
-    if (index != -1)
+    if (e.widget == serviceMoveUp_ || e.widget == serviceMoveDown_)
     {
-      if (e.widget == moveUp_ && index > 0)
+      int index = serviceTypeViewer_.getTable().getSelectionIndex();
+      if (index != -1)
       {
-        Object object = clientTypes_.remove(index);
-        clientTypes_.insertElementAt(object, index-1);
-        clientTypeViewer_.refresh();
+        if (e.widget == serviceMoveUp_ && index > 0)
+        {
+          Object object = serviceTypes_.remove(index);
+          serviceTypes_.insertElementAt(object, index-1);
+          serviceTypeViewer_.refresh();
+        }
+        else if (e.widget == serviceMoveDown_ && index < serviceTypes_.size()-1)
+        {
+          Object object = serviceTypes_.remove(index);
+          serviceTypes_.insertElementAt(object, index+1);
+          serviceTypeViewer_.refresh();
+        }
       }
-      else if (e.widget == moveDown_ && index < clientTypes_.size()-1)
+    }
+    else if (e.widget == moveUp_ || e.widget == moveDown_)
+    {
+      int index = clientTypeViewer_.getTable().getSelectionIndex();
+      if (index != -1)
       {
-        Object object = clientTypes_.remove(index);
-        clientTypes_.insertElementAt(object, index+1);
-        clientTypeViewer_.refresh();
+        if (e.widget == moveUp_ && index > 0)
+        {
+          Object object = clientTypes_.remove(index);
+          clientTypes_.insertElementAt(object, index - 1);
+          clientTypeViewer_.refresh();
+        } else if (e.widget == moveDown_ && index < clientTypes_.size() - 1)
+        {
+          Object object = clientTypes_.remove(index);
+          clientTypes_.insertElementAt(object, index + 1);
+          clientTypeViewer_.refresh();
+        }
       }
     }
   }

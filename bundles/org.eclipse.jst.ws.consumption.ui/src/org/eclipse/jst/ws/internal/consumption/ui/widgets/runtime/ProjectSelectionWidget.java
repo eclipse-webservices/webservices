@@ -12,6 +12,7 @@
  * 20060204 124143   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060221   122661 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060223   129020 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -361,12 +362,18 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
       }
       else
       {
-
-        if (isClient_)
-        {
           // Select the preferred client project type.
           ProjectTopologyContext ptc = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
-          String[] preferredTemplateIds = ptc.getClientTypes();
+          String[] preferredTemplateIds = null;
+          if (isClient_)
+          {
+            preferredTemplateIds = ptc.getClientTypes();
+          }
+          else
+          {
+            preferredTemplateIds = ptc.getServiceTypes();
+          }
+          
           boolean selected = false;
           outer: for (int j = 0; j < preferredTemplateIds.length; j++)
           {
@@ -386,19 +393,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
           {
             projectType_.select(0);
           }
-
-        } else
-        {
-          // If a "..web.." template is there, pick that as the default.
-          int webTemplateIndex = getWebTemplateIndex(templates);
-          if (webTemplateIndex > -1)
-          {
-            projectType_.select(webTemplateIndex);
-          } else
-          {
-            projectType_.select(0);
-          }
-        }
       }
     }
   }
@@ -415,19 +409,6 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     }
     
     return -1;    
-  }
-  
-  private int getWebTemplateIndex(String[] templateIds)
-  {
-    for (int i=0; i<templateIds.length; i++)
-    {
-      if (templateIds[i].indexOf("web") > -1)
-      {
-        return i;
-      }
-    }
-    
-    return -1;
   }
   
   private void updateEARState()

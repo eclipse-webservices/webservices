@@ -13,6 +13,7 @@
  * 20060206 126408   rsinha@ca.ibm.com - Rupam Kuehner
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060222   115834 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -655,7 +656,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   {
     String[] templates = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(clientIds_.getTypeId(), clientIds_.getRuntimeId());
     
-    //Pick the Web one if it's there, otherwise pick the first one.
     //Walk the list of client project types in the project topology preference
     ProjectTopologyContext ptc= WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
     String[] preferredTemplateIds = ptc.getClientTypes();
@@ -955,23 +955,36 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     //Haven't returned yet so this means that the intitially selected project cannot be used
     //to influence the selection of the service/client runtime. 
     
-    //If this is client defaulting, use the preferred client project types to
-    //influence the selection of a runtime.
-    if (isClient)
-    {
+      //Use the preferred project types to influence the selection of a runtime.
       ProjectTopologyContext ptc = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
-      String[] preferredTemplateIds = ptc.getClientTypes();
+      String[] preferredTemplateIds = null;
+      if (isClient)
+      {
+        preferredTemplateIds = ptc.getClientTypes();  
+      }
+      else
+      {
+        preferredTemplateIds = ptc.getServiceTypes();
+      }
+      
     
       for (int n=0; n<preferredTemplateIds.length; n++)
       {
         String preferredTemplateId = preferredTemplateIds[n];
-        //Set templateFacetVersions = FacetUtils.getInitialFacetVersionsFromTemplate(preferredTemplateId);
 
         for (int m=0; m<preferredRuntimeIds.length; m++)
         {
-          //If this clientRuntime supports this template, choose it and exit.        
-          //ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(preferredRuntimeIds[m]);
-          boolean matches = WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportTemplate(preferredRuntimeIds[m], preferredTemplateId);
+          //If this client or service runtime supports this template, choose it and exit.        
+          boolean matches = false;
+          if (isClient)
+          {
+            matches = WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportTemplate(preferredRuntimeIds[m], preferredTemplateId);            
+          }
+          else
+          {
+            matches = WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportTemplate(preferredRuntimeIds[m], preferredTemplateId);
+          }
+          
           if (matches)
           {
             DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
@@ -982,7 +995,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
           }        
         }
       }
-    }
+    
     
     //Still haven't returned. Return the first preferred service/client runtime id.
     if (preferredRuntimeIds.length > 0)
