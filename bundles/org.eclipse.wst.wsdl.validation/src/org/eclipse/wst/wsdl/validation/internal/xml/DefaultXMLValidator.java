@@ -34,6 +34,7 @@ import org.apache.xerces.xni.parser.XMLParseException;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.XSDValidator;
 import org.w3c.dom.DOMError;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -547,6 +548,8 @@ public class DefaultXMLValidator implements IXMLValidator
 	    return new XMLInputSource(rid);
 	  }
 	  
+	  boolean nsUsed = false;
+	  
 	  String ns = rid.getNamespace();
 	  if(ns != null && ignoredNamespaceList.contains(ns))
 	  {
@@ -557,6 +560,7 @@ public class DefaultXMLValidator implements IXMLValidator
 	  if(systemId == null)
 	  {
 		systemId = ns;
+		nsUsed = true;
 	  }
 	  String publicId = rid.getPublicId();
       if(publicId == null)
@@ -564,24 +568,44 @@ public class DefaultXMLValidator implements IXMLValidator
         publicId = systemId;
       }
       
-      IURIResolutionResult result = uriResolver.resolve("", publicId, systemId);
-      String uri = result.getPhysicalLocation();
-      if (uri != null && !uri.equals(""))
+      // Xerces tends to try to resolve locations with no information.
+      // No need to do any processing if we have no information.
+      if(publicId != null || systemId != null)
       {
-	    try
-	    {
-		  URL entityURL = new URL(uri);
-          XMLInputSource is = new XMLInputSource(rid.getPublicId(), systemId, result.getLogicalLocation());
-		  is.setByteStream(entityURL.openStream());
-          if (is != null)
+        IURIResolutionResult result = uriResolver.resolve("", publicId, systemId);
+        String uri = result.getPhysicalLocation();
+        if (uri != null && !uri.equals(""))
+        {
+          // If the namespace was used to resolve this reference ensure a schema
+          // has been returned. Namespaces tend to point to Web resources that
+          // may or may not be schemas.
+          boolean createEntityResult = true;
+          if(nsUsed)
           {
-            return is;
+        	XSDValidator xsdVal = new XSDValidator();
+        	xsdVal.validate(uri, uriResolver, null);
+        	if(!xsdVal.isValid())
+        	  createEntityResult = false;
           }
-	    }
-	    catch(Exception e)
-	    {
-		  // No need to report this error. Simply continue below.
-	    }
+          
+          if(createEntityResult)
+          {
+	        try
+	        {
+		      URL entityURL = new URL(uri);
+              XMLInputSource is = new XMLInputSource(rid.getPublicId(), systemId, result.getLogicalLocation());
+		      is.setByteStream(entityURL.openStream());
+              if (is != null)
+              {
+                return is;
+              }
+	        }
+	        catch(Exception e)
+	        {
+		      // No need to report this error. Simply continue below.
+	        }
+          }
+        }
       }
       return null;
     }
