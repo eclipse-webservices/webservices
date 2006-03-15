@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060313   130958 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.core.fragment;
 
@@ -277,6 +280,7 @@ public class CommandFragmentEngine implements CommandManager
     try
     {
 	    cmd.undo( null, null );
+      dataManager_.unprocess(cmd);
     }
     catch( Exception exc )
     {
