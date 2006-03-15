@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060310   131352 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.ui.wsi.preferences;
 
@@ -24,6 +27,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
@@ -59,14 +63,14 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
   
   private Group validationSelectionGroup_;
   
-  private Label wsdlValidationLabel_;
+  private Text wsdlValidationLabel_;
   /*CONTEXT_ID PWSI0009 for the No Wizard WSDL validation button on the Profile Compliance and Validation page*/
   private Button validateNoWsdlButton_;
   /*CONTEXT_ID PWSI00010 for the Wizard WSDL validation for remote files only button on the Profile Compliance and Validation page*/
   private Button validateRemoteWsdlButton_;
   /*CONTEXT_ID PWSI00011 for the Wizard WSDL validation for all files button on the Profile Compliance and Validation page*/
   private Button validateAllWsdlButton_;
-  private Label waitForWsdlValidationLabel_;
+  private Text waitForWsdlValidationLabel_;
   /*CONTEXT_ID PWSI00012 for the Wait for pending WSDL validation to complete checkbox on the Profile Compliance and Validation page*/
   private Button waitForWSDLValidationCheckbox_;
   
@@ -153,7 +157,7 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     GridData gd = new GridData(GridData.FILL_HORIZONTAL);
     validationSelectionGroup_.setLayoutData(gd);
     
-    wsdlValidationLabel_ = new Label(validationSelectionGroup_, SWT.NONE);
+    wsdlValidationLabel_ = new Text(validationSelectionGroup_, SWT.READ_ONLY);
     wsdlValidationLabel_.setText(WstWSUIPluginMessages.LABEL_WSDLVAL);
     wsdlValidationLabel_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_WSDLVAL_LABEL);
     helpSystem.setHelp(wsdlValidationLabel_, INFOPOP_PWSI_WSDLVAL_LABEL);
@@ -178,7 +182,7 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     
     new Label(validationSelectionGroup_, SWT.NONE);;
     
-    waitForWsdlValidationLabel_ = new Label(validationSelectionGroup_, SWT.NONE);
+    waitForWsdlValidationLabel_ = new Text(validationSelectionGroup_, SWT.READ_ONLY);
     waitForWsdlValidationLabel_.setText(WstWSUIPluginMessages.LABEL_WAIT_FOR_WSDLVAL);
     waitForWsdlValidationLabel_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_LABEL_WAIT_FOR_WSDLVAL);
     
