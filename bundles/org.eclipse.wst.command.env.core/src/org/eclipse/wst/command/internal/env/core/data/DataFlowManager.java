@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060313   130958 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.core.data;
 
@@ -24,7 +27,7 @@ public class DataFlowManager
   private DataMappingRegistryImpl registry_;
   private Hashtable               classTable_;
   private int                     order_;
-  private IEnvironment				environment_;
+  private IEnvironment				    environment_;
   
   public DataFlowManager( DataMappingRegistryImpl registry, IEnvironment environment )
   {
@@ -39,6 +42,20 @@ public class DataFlowManager
     return registry_; 
   }
   
+  // Remove this instance object from the mapping table.
+  public void unprocess( Object object )
+  {
+    String     objectType = object.getClass().getName();
+    ClassEntry classEntry = (ClassEntry)classTable_.get( objectType );
+
+    if( classEntry != null )
+    {
+      classEntry.removeObject(object);
+    }
+  }
+  
+  // Add this object to our mapping table and call the setters
+  // that have corresponding getter objects.
   public void process( Object object )
   {
     // Add this object to the classTable_ if required.
@@ -52,9 +69,8 @@ public class DataFlowManager
       classEntry = new ClassEntry();
       classTable_.put( objectType, classEntry );
     }
-    
-    classEntry.lastObject_ = object;
-    classEntry.order_      = order_++;
+        
+    classEntry.addObject(object, order_++ );
     
     // Now process the setters for this object
     Vector ruleEntries  = registry_.getRuleEntries( objectType );
@@ -160,22 +176,27 @@ public class DataFlowManager
     
     if( classEntry != null )
     {
-      if( classEntry.getterList_ == null )
-      {
-        // Build the getter list.
-        classEntry.getterList_ = getGetterList( classEntry.lastObject_ );
-      }
+      Object lastObject = classEntry.getLastObject();
       
-      for( int index = 0; index < classEntry.getterList_.size(); index++ )
-      {
-        Method getter = (Method)classEntry.getterList_.elementAt( index );
-        
-        if( getter.getName().equals( "get" + sourceProperty ))
+      if( lastObject != null )
+      {        
+        if( classEntry.getterList_ == null )
         {
-          getterFound.order  = classEntry.order_;
-          getterFound.method = getter;
-          getterFound.object = classEntry.lastObject_;
-          break;
+          // Build the getter list.
+          classEntry.getterList_ = getGetterList( lastObject );
+        }
+      
+        for( int index = 0; index < classEntry.getterList_.size(); index++ )
+        {
+          Method getter = (Method)classEntry.getterList_.elementAt( index );
+        
+          if( getter.getName().equals( "get" + sourceProperty ))
+          {
+            getterFound.order  = classEntry.getLastOrder();
+            getterFound.method = getter;
+            getterFound.object = lastObject;
+            break;
+          }
         }
       }
     }

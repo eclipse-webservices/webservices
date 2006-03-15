@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060313   130958 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -202,6 +203,10 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	    undoToLastPage();
 	    }
 	  
+      // Since we are moving backwards we need to remove the
+      // current page object from the mapping table.
+      dataManager_.unprocess( currentPage_.getDataEvents() );
+      
   	  currentPage_ = page;
   	}	
   	else if( isPageVisible )

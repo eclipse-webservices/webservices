@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060313   130958 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.core.fragment;
 
@@ -301,6 +302,7 @@ public class CommandFragmentEngine implements CommandManager
     try
     {
 	    cmd.undo( null, null );
+      dataManager_.unprocess(cmd);
     }
     catch( Exception exc )
     {
