@@ -35,6 +35,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
+import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.XSDValidator;
 import org.w3c.dom.DOMError;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -567,10 +568,10 @@ public class DefaultXMLValidator implements IXMLValidator
           boolean createEntityResult = true;
           if(nsUsed)
           {
-//        	XSDValidator xsdVal = new XSDValidator();
-//        	xsdVal.validate(uri, uriResolver, null);
-//        	if(!xsdVal.isValid())
-//        	  createEntityResult = false;
+        	XSDValidator xsdVal = new XSDValidator();
+        	xsdVal.validate(uri, uriResolver, null);
+        	if(!xsdVal.isValid())
+        	  createEntityResult = false;
           }
           
           if(createEntityResult)
