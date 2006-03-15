@@ -1,5 +1,17 @@
+/*******************************************************************************
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060315   128711 joan@ca.ibm.com - Joan Haggarty
+ *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.dialog;
-
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,6 +30,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -35,7 +49,6 @@ import org.eclipse.wst.command.internal.env.ui.EnvironmentUIMessages;
 import org.eclipse.wst.command.internal.env.ui.plugin.EnvUIPlugin;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.environment.NullStatusHandler;
-//import org.eclipse.wst.common.environment.IEnvironment;
 
 public class AntFileImportWizard extends Wizard implements INewWizard {
 
@@ -78,6 +91,7 @@ public class AntFileImportWizard extends Wizard implements INewWizard {
 			//jvh: TODO: add extension so extenders of the command framework can register properties files to import
 			//  here we pick up all registered Ant files and import - also would be nice to allow user to choose a subset
 			String[] sourceFiles = new String[]{"ant/wsgen.xml", "ant/axisclient.properties", "ant/axisservice.properties"}; //$NON-NLS$
+			int filecount = 0;
 			for (int i = 0; i < sourceFiles.length; i++) {
 				String fileSource = sourceFiles[i];
 				String targetFile = fileSource;
@@ -89,7 +103,16 @@ public class AntFileImportWizard extends Wizard implements INewWizard {
 				}
 				Plugin sourcePlugin = EnvPlugin.getInstance();  
 				//jvh: TODO - add real progress monitor in here...
-				copyIFile(sourcePlugin, fileSource, destination, targetFile, (IProgressMonitor)new NullProgressMonitor());					
+								
+				IStatus status = copyIFile(sourcePlugin, fileSource, destination, targetFile, (IProgressMonitor)new NullProgressMonitor());
+				if (status == Status.CANCEL_STATUS)
+				{
+					filecount++;
+				}								
+			}
+			if (filecount == sourceFiles.length)
+			{
+				return false;  //don't close if all files were not written out - give user opportunity to change destination
 			}
 		}
 	    return true;		
@@ -106,22 +129,31 @@ public class AntFileImportWizard extends Wizard implements INewWizard {
 	    try
 	    {
 	       ResourceContext context = new TransientResourceContext();
-	       context.setOverwriteFilesEnabled(true);
-	       context.setCreateFoldersEnabled(true);
-	       context.setCheckoutFilesEnabled(true);
-	       IResource resource = FileResourceUtils.findResource(target);
-	       if(resource != null) return Status.OK_STATUS;
-	       FileResourceUtils.createFile(context, 
-	                      							target,
-	                                    plugin.openStream(new Path(source)),
-	                                    monitor, (IStatusHandler)new NullStatusHandler());
+	       // check to see if file exists before copy
+	       IResource resource = FileResourceUtils.findResource(target);	     
 	       
-	                                    
+	       if (resource != null)
+			{
+				MessageBox overwriteBox = new MessageBox(getShell(), SWT.ICON_QUESTION|SWT.YES|SWT.NO);
+				overwriteBox.setMessage(EnvironmentUIMessages.bind(EnvironmentUIMessages.MSG_WARNING_FILE_EXISTS, target.toString()));				
+				overwriteBox.setText(EnvironmentUIMessages.DIALOG_TITLE_OVERWRITE);
+				int result = overwriteBox.open();
+				if (result != SWT.NO)
+					FileResourceUtils.createFile(context, target, plugin.openStream(new Path(source)),
+                            monitor, (IStatusHandler)new NullStatusHandler());
+				else 
+					return Status.CANCEL_STATUS;
+			}       
+			else 
+			{
+				FileResourceUtils.createFile(context, target, plugin.openStream(new Path(source)),
+                                    monitor, (IStatusHandler)new NullStatusHandler());
+			}
 	    }
 	    catch (Exception e) {	    	
 	      return StatusUtils.errorStatus(EnvironmentUIMessages.MSG_ERR_COPYING_ANT_FILES, e);
 	    }
-	  }
+	  }	  
 	  return Status.OK_STATUS;
 	}
 	

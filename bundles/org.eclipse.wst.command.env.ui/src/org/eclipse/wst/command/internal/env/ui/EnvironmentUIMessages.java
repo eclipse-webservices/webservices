@@ -33,6 +33,8 @@ public final class EnvironmentUIMessages extends NLS {
 	public static String WIZARD_PAGE_DESC_ANT;
 	public static String MSG_STATUS_COPYING_ANT_FILES;
 	public static String MSG_ERR_COPYING_ANT_FILES;
+	public static String MSG_WARNING_FILE_EXISTS;
+	public static String DIALOG_TITLE_OVERWRITE;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, EnvironmentUIMessages.class);
