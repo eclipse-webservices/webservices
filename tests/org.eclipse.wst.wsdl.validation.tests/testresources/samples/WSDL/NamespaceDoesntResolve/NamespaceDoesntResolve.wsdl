@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/NamespaceDoesntResolve/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="NamespaceDoesntResolve" targetNamespace="http://www.example.org/NamespaceDoesntResolve/">
+<wsdl:documentation>
+	This WSDL document tests that an element specified for a different namespace
+	that does not resolve to any resource validates correctly.
+</wsdl:documentation>
+<wsdl:types>
+<xsd:schema targetNamespace="http://www.example.org/NamespaceDoesntResolve/">
+<xsd:element name="NewOperationResponse" type="xsd:string"/>
+<xsd:element name="NewOperationRequest" type="xsd:string"/>
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="NewOperationResponse">
+<wsdl:part element="tns:NewOperationResponse" name="NewOperationResponse"/>
+</wsdl:message>
+<wsdl:message name="NewOperationRequest">
+<wsdl:part element="tns:NewOperationRequest" name="NewOperationRequest"/>
+</wsdl:message>
+<wsdl:portType name="NamespaceDoesntResolve">
+<wsdl:operation name="NewOperation">
+<wsdl:input message="tns:NewOperationRequest"/>
+<wsdl:output message="tns:NewOperationResponse"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="NamespaceDoesntResolveSOAP" type="tns:NamespaceDoesntResolve">
+<ext:element xmlns:ext="http://schemas.nonexistantdomain.ned/element"/>
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="NewOperation">
+<soap:operation soapAction="http://www.example.org/NamespaceDoesntResolve/NewOperation"/>
+<wsdl:input>
+<soap:body parts=" NewOperationRequest" use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body parts=" NewOperationResponse" use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="NamespaceDoesntResolve">
+<wsdl:port binding="tns:NamespaceDoesntResolveSOAP" name="NamespaceDoesntResolveSOAP">
+<soap:address location="http://www.example.org/"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

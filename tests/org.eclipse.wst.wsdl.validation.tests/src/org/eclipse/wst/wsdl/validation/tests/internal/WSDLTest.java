@@ -522,4 +522,30 @@ public class WSDLTest extends BaseTestCase
     
     runTest(testfile, loglocation, idealloglocation);
   }
+  
+  /**
+   * Test /WSDL/NamespaceDoesntResolve/NamespaceDoesntResolve.wsdl
+   */
+  public void testNamespaceDoesntResolve()
+  {
+    String testname = "NamespaceDoesntResolve";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "NamespaceDoesntResolve/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "NamespaceDoesntResolve/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "NamespaceDoesntResolve/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/NamespaceResolvesHTML/NamespaceResolvesHTML.wsdl
+   */
+  public void testNamespaceResolvesHTML()
+  {
+    String testname = "NamespaceResolvesHTML";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "NamespaceResolvesHTML/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "NamespaceResolvesHTML/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "NamespaceResolvesHTML/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
 }
