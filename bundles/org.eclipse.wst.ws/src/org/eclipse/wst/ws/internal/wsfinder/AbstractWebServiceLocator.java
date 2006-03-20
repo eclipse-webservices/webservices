@@ -1,20 +1,23 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsfinder;
 
+import java.util.Collections;
 import java.util.List;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * @author joan
@@ -24,30 +27,39 @@ import org.eclipse.core.resources.ResourcesPlugin;
  * locator implementation with their plugin using the org.eclipse.wst.ws.locator extension point. 
  *
  */
-
-
 public abstract class AbstractWebServiceLocator implements IWebServiceLocator {
 
-	public AbstractWebServiceLocator()
+	/**
+	 * Creates a new instance of this class.
+	 */
+	public AbstractWebServiceLocator ()
 	{
 		super();
 	}
 
 	/**
-	 * Must return a list of WebServiceInfo objects.  Method will be called by WebServiceFinder.getWebServices()
-	 * 
-	 * @return list of WebServiceInfo objects
+	 * Returns a list of WebServiceClientInfo objects.
+	 * Subclasses should override this method's
+	 * default behaviour of returning an empty list.
+	 * @param monitor A progress monitor,
+	 * or null if progress monitoring is not desired.
+	 * @return A non-null but possibly empty list of WebServiceClientInfo objects
 	 */
-	public abstract List getWebServices();
-	
-	/**
-	 * 
-	 * @return array of all projects in the workspace resource tree
-	 */
-	public IProject[] getWorkspaceProjects()
+	public List getWebServiceClients (IProgressMonitor monitor)
 	{
-	  IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-      return root.getProjects();
+		return Collections.EMPTY_LIST;
 	}
-	
+
+	/**
+	 * Returns a list of WebServiceInfo objects. 
+	 * Subclasses should override this method's
+	 * default behaviour of returning an empty list.
+	 * @param monitor A progress monitor,
+	 * or null if progress monitoring is not desired.
+	 * @return A non-null but possibly empty list of WebServiceInfo objects
+	 */
+	public List getWebServices (IProgressMonitor monitor)
+	{
+		return Collections.EMPTY_LIST; 
+	}
 }

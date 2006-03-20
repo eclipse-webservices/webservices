@@ -19,7 +19,6 @@
             id="org.eclipse.wst.ws.internal.wsfinder.WorkspaceWSDLLocator"
             category="org.eclipse.wst.ws.internal.wsfinder.category.workspace"
             label="%X_WEB_SERVICE_LOCATOR_WORKSPACE">
-         org.eclipse.wst.ws.internal.wsfinder
       </webServiceLocator>
 
    </extension>

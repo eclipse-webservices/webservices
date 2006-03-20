@@ -11,7 +11,24 @@
             class="org.eclipse.jst.ws.internal.axis.consumption.core.wsfinder.WSFinderAxis">
       </wsfinder>
    </extension>
-   
+
+   <!-- Extension providing workspace WSDL discovery -->   
+   <extension point="org.eclipse.wst.ws.locator">
+
+      <webServiceLocatorCategory
+            id="org.eclipse.jst.ws.internal.axis.consumption.core.locator.category.axis"
+            label="%X_WEB_SERVICE_LOCATOR_CATEGORY_AXIS"/>
+
+      <webServiceLocator
+            class="org.eclipse.jst.ws.internal.axis.consumption.core.locator.AxisWebServiceLocator"
+            id="org.eclipse.jst.ws.internal.axis.consumption.core.locator.axis"
+            category="org.eclipse.jst.ws.internal.axis.consumption.core.locator.category.axis"
+            label="%X_WEB_SERVICE_LOCATOR_AXIS">
+      </webServiceLocator>
+
+   </extension>
+
+
    <!-- define a wsdd file type for Axis Web Service Deployment Descriptors -->
    <extension point="org.eclipse.team.core.fileTypes">
       <fileTypes

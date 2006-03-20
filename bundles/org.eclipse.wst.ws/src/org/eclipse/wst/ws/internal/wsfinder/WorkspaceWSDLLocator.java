@@ -1,22 +1,27 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsfinder;
 
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
 
 /**
@@ -45,9 +50,10 @@ public class WorkspaceWSDLLocator extends AbstractWebServiceLocator {
 	 * use the WSDLVisitor to walk the entire resource tree.  That should only happen once.  After
 	 * that the resource tree can be monitored for modifications to .wsdl files and changes made to a cache. 
 	 * 
+	 * @param monitor A progress monitor, or null if progress monitoring is not desired.
 	 * @return list of WebServiceInfo objects
 	 */
-	public List getWebServices() {
+	public List getWebServices (IProgressMonitor monitor) {
 		
 		if (wsdlServices == null)
 		{
