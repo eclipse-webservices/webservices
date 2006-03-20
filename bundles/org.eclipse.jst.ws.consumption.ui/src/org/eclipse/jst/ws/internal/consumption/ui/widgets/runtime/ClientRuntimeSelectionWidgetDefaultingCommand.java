@@ -14,6 +14,7 @@
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060222   115834 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060315   131963 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -1077,15 +1078,27 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     IVirtualComponent[] allEarComps = J2EEUtils.getAllEARComponents();
     if (allEarComps.length>0)
     {
-        //TODO Choose an existing EAR that can be added to the server and who's J2EE level in consistent with 
-        //that of the selected project, if applicable. Picking the first one for now.        
-        return allEarComps[0].getName();             
+      if (clientProject != null && clientProject.exists())
+      {
+        for (int i=0; i < allEarComps.length; i++)
+        {
+          IProject earProject = allEarComps[i].getProject();
+          IStatus associationStatus = J2EEUtils.canAssociateProjectToEAR(clientProject, earProject);
+          if (associationStatus.getSeverity()==IStatus.OK)
+          {
+            return allEarComps[i].getName(); 
+          }
+        }
+      }
+      else
+      {
+        return allEarComps[0].getName();
+      }
     }
-    else
-    {
-      //there are no Ears.
-      return ResourceUtils.getDefaultClientEARProjectName();
-    }    
+    
+    //there are no Ears.
+    return ResourceUtils.getDefaultClientEARProjectName();
+        
   }
       
   /*

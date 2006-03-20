@@ -12,6 +12,7 @@
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060315   131963 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -245,11 +246,25 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
 
     IVirtualComponent[] allEarComps = J2EEUtils.getAllEARComponents();
       
-    //TODO Choose an existing EAR that can be added to the server and who's J2EE level in consistent with 
-    //that of the selected project, if applicable. Picking the first one for now.
+
     if (allEarComps.length > 0)
     {
-      return allEarComps[0].getName();
+      if (serviceProject != null && serviceProject.exists())
+      {
+        for (int i=0; i < allEarComps.length; i++)
+        {
+          IProject earProject = allEarComps[i].getProject();
+          IStatus associationStatus = J2EEUtils.canAssociateProjectToEAR(serviceProject, earProject);
+          if (associationStatus.getSeverity()==IStatus.OK)
+          {
+            return allEarComps[i].getName(); 
+          }
+        }
+      }
+      else
+      {
+        return allEarComps[0].getName();
+      }
     }
 
 
@@ -485,16 +500,33 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     }
   }
   
-  private IProject getUniqueClientEAR(String earProject, String serviceProject, String clientProjectName) {
+  private IProject getUniqueClientEAR(String earProjectName, String serviceEARProject, String clientProjectName) {
 
     String projectName = new String();
-    if (!earProject.equalsIgnoreCase(serviceProject)) {
-      projectName = earProject;
+    //If the client project doesn't exist and the service project does, ensure the
+    //the client side EAR's J2EE level is such that the service project could be added to it.
+    //This will ensure we don't default the page with a client project EAR at a lower
+    //J2EE level than the service side.
+    boolean goodJ2EELevel = true;
+    if (!earProjectName.equalsIgnoreCase(serviceEARProject))
+    {
+      IProject clientProject = ProjectUtilities.getProject(clientProjectName);
+      IProject serviceProject = ProjectUtilities.getProject(serviceProjectName_);
+      IProject earProject = ProjectUtilities.getProject(earProjectName);
+      if (!clientProject.exists() && serviceProject.exists())
+      {
+        IStatus associationStatus = J2EEUtils.canAssociateProjectToEAR(serviceProject, earProject);
+        goodJ2EELevel = (associationStatus.getSeverity() == IStatus.OK);
+      }
     }
+    
+    if (!earProjectName.equalsIgnoreCase(serviceEARProject) && goodJ2EELevel) {
+      projectName = earProjectName;
+    }    
     else {
       projectName = clientProjectName+DEFAULT_CLIENT_EAR_PROJECT_EXT;
       int i=1;      
-      while (projectName.equalsIgnoreCase(serviceProject)) {
+      while (projectName.equalsIgnoreCase(serviceEARProject)) {
         projectName = projectName+i;
         i++;
       }
