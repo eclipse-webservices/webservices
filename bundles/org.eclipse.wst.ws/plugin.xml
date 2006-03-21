@@ -27,7 +27,7 @@
    <extension point="org.eclipse.team.core.fileTypes">
       <fileTypes
             type="text"
-            extension="wsdd"/>
+            extension="wsil"/>
    </extension>
 
    <!-- Extension to define a content type for WSIL files -->
