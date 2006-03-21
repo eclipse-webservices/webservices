@@ -22,5 +22,23 @@
       </webServiceLocator>
 
    </extension>
+   
+   <!-- Extension to bind a file type to WSIL files -->
+   <extension point="org.eclipse.team.core.fileTypes">
+      <fileTypes
+            type="text"
+            extension="wsdd"/>
+   </extension>
+
+   <!-- Extension to define a content type for WSIL files -->
+   <extension point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            priority="high"
+            name="%X_WSIL_CONTENT_TYPE"
+            id="wsilsource"
+            base-type="org.eclipse.core.runtime.xml"
+            default-charset="UTF-8"
+            file-extensions="wsil"/>
+   </extension>
     
 </plugin>
