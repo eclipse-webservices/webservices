@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060106   121199 jesper@selskabet.org - Jesper Møller
+ * 20060321   128827 joan - Joan Haggarty, remove redundant wsdl URI, folder and file controls
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton;
 
@@ -27,7 +28,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
@@ -43,16 +43,6 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
   // private Text uriText_;
   /* CONTEXT_ID PBCF0002 for the URI field of the Bean Config Page */
   //private final String INFOPOP_PBCF_TEXT_URI = "PBCF0002"; //$NON-NLS-1$
-
-  
-  private Text wsdlFolderText_;
-  /* CONTEXT_ID PBCF0006 for the WSDL Folder field in the Bean Config Page */
-  private final String INFOPOP_PBCF_TEXT_WSDL_FOLDER = "PBCF0006"; //$NON-NLS-1$
-  
-  private Text wsdlFileText_;
-  /* CONTEXT_ID PBCF0007 for the WSDL File field of the Bean Config Page */
-  private final String INFOPOP_PBCF_TEXT_WSDL_FILE = "PBCF0007"; //$NON-NLS-1$
-
   
   private Combo skeletonFolderText_;
   /* CONTEXT_ID PBSC0004 for the Skeleton Folder field of the Skeleton Config Page */
@@ -88,23 +78,11 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
                                    INFOPOP_PBCF_TEXT_URI,
                                    SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     */
-
-    wsdlFolderText_ = uiUtils.createText( textGroup, AxisCreationUIMessages.LABEL_OUTPUT_FOLDER_NAME,
-    		AxisCreationUIMessages.TOOLTIP_PBCF_TEXT_WSDL_FOLDER,
-                                          INFOPOP_PBCF_TEXT_WSDL_FOLDER,
-                                          SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
-
-    wsdlFileText_ = uiUtils.createText( textGroup, AxisCreationUIMessages.LABEL_OUTPUT_FILE_NAME,
-    		AxisCreationUIMessages.TOOLTIP_PBCF_TEXT_WSDL_FILE,
-                                        INFOPOP_PBCF_TEXT_WSDL_FILE,
-                                        SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
-
+    
     skeletonFolderText_ = baseConUiUtils.createCombo( textGroup, ConsumptionUIMessages.LABEL_SKELETON_ROOT_NAME,
     		ConsumptionUIMessages.TOOLTIP_PBSC_TEXT_SKELETON_FOLDER,
         INFOPOP_PBSC_TEXT_SKELETON_FOLDER,
         SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
-
-    uiUtils.createHorizontalSeparator( parent, 5 );
 
     showMappingsCheckbox_ = conUiUtils.createCheckbox( parent, AxisConsumptionUIMessages.LABEL_EXPLORE_MAPPINGS_XML2BEAN,
     													AxisConsumptionUIMessages.TOOLTIP_N2P_SHOW_MAPPINGS,
@@ -119,19 +97,7 @@ public class SkeletonConfigWidget extends SimpleWidgetDataContributor
     if (endpointURI != null)
       uriText_.setText(endpointURI);
     */
-  }
-  
-  public void setOutputWSDLFolder(String outputWSDLFolder)
-  {
-    if (outputWSDLFolder != null)
-      wsdlFolderText_.setText(outputWSDLFolder);
-  }
-  
-  public void setOutputWSDLFile(String outputWSDLFile)
-  {
-    if (outputWSDLFile != null)
-      wsdlFileText_.setText(outputWSDLFile);
-  }
+  }  
   
   public void setOutputJavaFolder(String outputJavaFolder)
   {

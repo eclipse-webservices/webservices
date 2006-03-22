@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060321   128827 joan - Joan Haggarty, remove redundant wsdl URI, folder and file controls
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean;
 
@@ -51,14 +54,8 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
   /* CONTEXT_ID PBCF0001 for the Bean Config Page */
   private final String INFOPOP_PBCF_PAGE = "PBCF0001"; //$NON-NLS-1$
 	
-  private Text uriText_;
-  /* CONTEXT_ID PBCF0002 for the URI field of the Bean Config Page */
-  private final String INFOPOP_PBCF_TEXT_URI = "PBCF0002"; //$NON-NLS-1$
-	
-  private Text wsdlFolderText_;
-  /* CONTEXT_ID PBCF0006 for the WSDL Folder field in the Bean Config Page */
-  private final String INFOPOP_PBCF_TEXT_WSDL_FOLDER = "PBCF0006"; //$NON-NLS-1$
-	
+  private String wsdlFolder_;
+  
   private Text wsdlFileText_;
   /* CONTEXT_ID PBCF0007 for the WSDL File field of the Bean Config Page */
   private final String INFOPOP_PBCF_TEXT_WSDL_FILE = "PBCF0007"; //$NON-NLS-1$
@@ -90,25 +87,13 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
 	parent.setToolTipText( AxisCreationUIMessages.TOOLTIP_PBCF_PAGE  );
 	PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, pluginId_ + "." + INFOPOP_PBCF_PAGE );
     
-    Composite configGroup = uiUtils.createComposite( parent, 2 );
-    
-    uriText_ = uiUtils.createText( configGroup, AxisCreationUIMessages.LABEL_URI,
-    		AxisCreationUIMessages.TOOLTIP_PBCF_TEXT_URI,
-                                   INFOPOP_PBCF_TEXT_URI,
-                                   SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
-    
-    wsdlFolderText_ = uiUtils.createText( configGroup, AxisCreationUIMessages.LABEL_OUTPUT_FOLDER_NAME,
-    		AxisCreationUIMessages.TOOLTIP_PBCF_TEXT_WSDL_FOLDER,
-                                          INFOPOP_PBCF_TEXT_WSDL_FOLDER,
-                                          SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
+    Composite configGroup = uiUtils.createComposite( parent, 2 );    
     
     wsdlFileText_ = uiUtils.createText( configGroup, AxisCreationUIMessages.LABEL_OUTPUT_FILE_NAME,
     		AxisCreationUIMessages.TOOLTIP_PBCF_TEXT_WSDL_FILE,
                                         INFOPOP_PBCF_TEXT_WSDL_FILE,
                                         SWT.SINGLE | SWT.BORDER  );
     wsdlFileText_.addListener( SWT.Modify, statusListener );
-    
-    uiUtils.createHorizontalSeparator( parent, 6 );
     
     // TODO this group has no TOOLTIP or INFOPOP.
     Group    methodsGroup = baseConUiUtils.createGroup( parent, ConsumptionUIMessages.LABEL_METHODS, null, null );
@@ -192,19 +177,11 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
     javaParameter_ = javaParameter;
     
 	String wsdlLocation = javaParameter.getOutputWsdlLocation();
-
-	// TODO Verify that we need to find the WSDL in the eclipse file system.
-	//IFile file 
-	//  = ResourceUtils.getWorkspaceRoot().getFileForLocation(new Path(wsdlLocation));
-	//IPath wsdlPath = file.getFullPath();
 	IPath wsdlPath = new Path( wsdlLocation );
 	
-	wsdlFolderText_.setText(wsdlPath.removeLastSegments(1).toString());
+	wsdlFolder_ = wsdlPath.removeLastSegments(1).toString();    
 	wsdlFileText_.setText(wsdlPath.lastSegment());
-	
-	String location = javaParameter.getUrlLocation();
-	uriText_.setText(location == null ? "" : location);  
-	
+    
 	methodsTree_.removeAll();
 	Hashtable methods = javaParameter.getMethods();
 	Enumeration e = methods.keys();
@@ -244,9 +221,10 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
   
   public JavaWSDLParameter getJavaParameter()
   {
+    
     IPath wsdlPath 
-      = new Path( wsdlFolderText_.getText().trim() ).append( wsdlFileText_.getText().trim() );
-	    
+    = new Path( wsdlFolder_.trim() ).append( wsdlFileText_.getText().trim() );
+    
 	// TODO Do we need to go to the eclipse file system??
 	//String wsdlLocation = workspace.getFile(wsdlPath).getLocation().toString();
 	String wsdlLocation = wsdlPath.toString();

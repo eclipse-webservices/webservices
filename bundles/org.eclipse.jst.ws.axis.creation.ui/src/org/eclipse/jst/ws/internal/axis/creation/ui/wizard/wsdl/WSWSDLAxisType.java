@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060321   128827 joan - Joan Haggarty, remove redundant wsdl URI, folder and file controls
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.wizard.wsdl;
 
@@ -121,8 +124,6 @@ public class WSWSDLAxisType implements CommandWidgetBinding
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProject", SkeletonConfigWidget.class, "ServerProject", new ProjectName2IProjectTransformer());
     dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "JavaWSDLParam", SkeletonConfigWidget.class);
     dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "EndpointURI", SkeletonConfigWidget.class);
-    dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "OutputWSDLFolder", SkeletonConfigWidget.class);
-    dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "OutputWSDLFile", SkeletonConfigWidget.class);
     dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "OutputJavaFolder", SkeletonConfigWidget.class);
     dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "ShowMapping", SkeletonConfigWidget.class);
 
