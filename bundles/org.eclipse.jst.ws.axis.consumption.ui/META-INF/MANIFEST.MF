@@ -43,5 +43,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.common.frameworks,
  org.eclipse.wst.common.environment,
  com.ibm.icu
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
 Plugin-Class: org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin

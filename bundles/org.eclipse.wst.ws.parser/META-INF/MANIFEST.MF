@@ -18,4 +18,4 @@ Require-Bundle: org.eclipse.wst.wsdl,
  org.apache.wsil4j,
  org.uddi4j,
  org.eclipse.wst.command.env.core
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true

@@ -48,4 +48,4 @@ Require-Bundle: org.eclipse.wst.command.env,
  org.eclipse.wst.common.environment,
  org.eclipse.wst.common.project.facet.core,
  com.ibm.icu
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true

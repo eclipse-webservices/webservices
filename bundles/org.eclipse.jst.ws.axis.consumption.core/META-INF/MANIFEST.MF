@@ -25,4 +25,5 @@ Require-Bundle: org.apache.ant,
  org.eclipse.core.commands,
  org.eclipse.wst.common.environment,
  org.eclipse.wst.command.env
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
+

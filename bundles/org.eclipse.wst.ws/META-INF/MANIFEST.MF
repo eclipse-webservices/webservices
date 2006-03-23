@@ -46,4 +46,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.common.environment,
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true

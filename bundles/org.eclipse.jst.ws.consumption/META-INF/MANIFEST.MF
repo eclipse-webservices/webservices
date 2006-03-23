@@ -59,4 +59,4 @@ Require-Bundle: org.eclipse.jem,
  org.eclipse.jst.server.core,
  com.ibm.icu,
  org.eclipse.ui
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true

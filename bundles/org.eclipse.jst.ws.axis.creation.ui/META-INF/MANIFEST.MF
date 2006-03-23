@@ -44,5 +44,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.common.environment,
  org.eclipse.debug.core,
  org.eclipse.jdt.core
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
 Plugin-Class: org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin

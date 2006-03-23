@@ -33,4 +33,4 @@ Require-Bundle: org.eclipse.jst.ws.consumption.ui,
  org.eclipse.wst.ws,
  org.eclipse.wst.common.environment,
  org.eclipse.wst.common.tests
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
