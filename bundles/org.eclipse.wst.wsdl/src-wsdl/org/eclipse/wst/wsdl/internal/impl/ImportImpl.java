@@ -490,6 +490,14 @@ public class ImportImpl extends WSDLElementImpl implements Import
   {
     if (!resolved)
     {
+      // KB: bugzilla 118293
+      // If a user changes <wsdl:import> from a WSDL file to an XML Schema file
+      // or the other way around, we should set the variable for the first
+      // <wsdl:import> source to null. Here I am simply setting both variables to null,
+      // which will have the same effect.
+      eDefinition = null;
+      eSchema = null;
+        
       Definition definition = getEnclosingDefinition();
       if (definition != null && definition.getDocumentBaseURI() != null)
       {
