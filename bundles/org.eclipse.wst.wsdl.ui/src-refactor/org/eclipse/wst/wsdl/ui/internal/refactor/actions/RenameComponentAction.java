@@ -16,12 +16,14 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.actions.GlobalBuildAction;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.util.NodeAssociationManager;
@@ -150,16 +152,38 @@ public class RenameComponentAction extends WSDLSelectionDispatchAction {
 					.getString("RenameComponentWizard.defaultPageTitle"), //$NON-NLS-1$ TODO: provide correct strings
 					RefactoringMessages
 					.getString("RenameComponentWizard.inputPage.description"), //$NON-NLS-1$
-					null);
+					null)
+                    {
+                      public boolean performFinish()
+                      {
+                        // TODO Auto-generated method stub
+                        boolean rc = super.performFinish();
+                        //((DefinitionImpl)getDefinition()).reconcileReferences(true);
+                        return rc;
+                      }
+              
+                    };        
 			RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(
 					wizard);
 			op.run(WSDLEditorPlugin.getShell(), wizard
 					.getDefaultPageTitle());
 			triggerBuild();
+            
+			Display.getCurrent().asyncExec(new Runnable()
+			{			  
+			  public void run()
+			  {
+			    ((DefinitionImpl)getDefinition()).reconcileReferences(true);
+			  }
+			});  
+            
 		} catch (InterruptedException e) {
 			// do nothing. User action got cancelled
 		}
 		
+		if (getModel() instanceof DefinitionImpl) {
+			((DefinitionImpl) getModel()).reconcileReferences(true);
+		}
 	}
 
 	public static void triggerBuild() {
