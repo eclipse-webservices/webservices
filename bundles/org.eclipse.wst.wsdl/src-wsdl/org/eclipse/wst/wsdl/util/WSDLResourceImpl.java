@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -72,9 +73,22 @@ public class WSDLResourceImpl extends ResourceImpl
   private boolean useExtensionFactories = true;
   private boolean continueOnLoadError = true;
 
-  public static String USE_EXTENSION_FACTORIES = "USE_EXTENSION_FACTORIES";
-  public static String CONTINUE_ON_LOAD_ERROR = "CONTINUE_ON_LOAD_ERROR";
-  public static String WSDL_ENCODING = "WSDL_ENCODING";
+  public static String USE_EXTENSION_FACTORIES = "USE_EXTENSION_FACTORIES"; //$NON-NLS-1$
+  public static String CONTINUE_ON_LOAD_ERROR = "CONTINUE_ON_LOAD_ERROR"; //$NON-NLS-1$
+  public static String WSDL_ENCODING = "WSDL_ENCODING"; //$NON-NLS-1$
+  
+  /**
+   * Add this option with a value of Boolean.TRUE to the options map when
+   * loading a resource to instruct the loader to track source code location for
+   * each node in the source document.
+   * 
+   * @see WSDLParser#getUserData(org.w3c.dom.Node)
+   * @see WSDLParser#getStartColumn(org.w3c.dom.Node)
+   * @see WSDLParser#getEndColumn(org.w3c.dom.Node)
+   * @see WSDLParser#getStartLine(org.w3c.dom.Node)
+   * @see WSDLParser#getEndLine(org.w3c.dom.Node)
+   */
+  public static String TRACK_LOCATION = "TRACK_LOCATION"; //$NON-NLS-1$
 
   /**
    * Creates an instance of the resource. 
@@ -187,8 +201,17 @@ public class WSDLResourceImpl extends ResourceImpl
     Document doc = null;
     try
     {
-      // Create a DOM document
-      doc = getDocument(inputStream, new InternalErrorHandler());
+      boolean trackLocation = options != null && Boolean.TRUE.equals(options.get(TRACK_LOCATION)); 
+
+      if (trackLocation)
+      {
+        doc = getDocumentUsingSAX(inputStream);
+      }
+      else
+      {
+        // Create a DOM document
+        doc = getDocument(inputStream, new InternalErrorHandler());
+      }
 
       if (doc != null && doc.getDocumentElement() != null)
       {
@@ -241,6 +264,48 @@ public class WSDLResourceImpl extends ResourceImpl
     {
       progressMonitor.worked(1);
     }
+  }
+
+  /**
+   * Use a custom SAX parser to allow us to track the source location of 
+   * each node in the source XML document.
+   * @param inputStream the parsing source. Must not be null. 
+   * @return the DOM document created by parsing the input stream. 
+   */
+  private Document getDocumentUsingSAX(InputStream inputStream)
+  {
+    WSDLParser wsdlParser = new WSDLParser();
+    wsdlParser.parse(inputStream);
+    
+    Collection errors = wsdlParser.getDiagnostics();
+    
+    if (errors != null)
+    {
+      Iterator iterator = errors.iterator();
+      
+      while(iterator.hasNext())
+      {
+          WSDLDiagnostic wsdlDiagnostic = (WSDLDiagnostic)iterator.next();
+          switch (wsdlDiagnostic.getSeverity().getValue())
+          {
+            case WSDLDiagnosticSeverity.FATAL:
+            case WSDLDiagnosticSeverity.ERROR:
+            {
+              getErrors().add(wsdlDiagnostic);
+              break;
+            }
+            case WSDLDiagnosticSeverity.WARNING:
+            case WSDLDiagnosticSeverity.INFORMATION:
+            {
+              getWarnings().add(wsdlDiagnostic);
+              break;
+          }
+        }
+      }
+    }        
+    
+    Document doc = wsdlParser.getDocument();
+    return doc;
   }
 
   /**
