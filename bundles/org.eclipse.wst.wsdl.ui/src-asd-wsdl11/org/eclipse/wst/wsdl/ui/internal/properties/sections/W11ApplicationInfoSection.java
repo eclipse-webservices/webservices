@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -44,7 +43,7 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.xsd.ui.common.commands.AddAppInfoCommand;
 import org.eclipse.wst.xsd.ui.common.commands.AddAppInfoElementCommand;
 import org.eclipse.wst.xsd.ui.common.commands.AddExtensibilityElementCommand;
-import org.eclipse.wst.xsd.ui.common.commands.RemoveAppInfoCommand;
+import org.eclipse.wst.xsd.ui.common.commands.RemoveAppInfoElementCommand;
 import org.eclipse.wst.xsd.ui.common.properties.sections.AbstractSection;
 import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.AddApplicationInfoDialog;
 import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.ApplicationInformationPropertiesRegistry;
@@ -372,7 +371,7 @@ public class W11ApplicationInfoSection extends AbstractSection
         if (o instanceof Element)
         {
           Node appInfoElement = ((Element) o).getParentNode();
-          RemoveAppInfoCommand command = new RemoveAppInfoCommand("Remove AppInfo", xsdAnnotation, appInfoElement);
+          RemoveAppInfoElementCommand command = new RemoveAppInfoElementCommand("Remove AppInfo", xsdAnnotation, appInfoElement);
           if (getCommandStack() != null)
           {
             getCommandStack().execute(command);
