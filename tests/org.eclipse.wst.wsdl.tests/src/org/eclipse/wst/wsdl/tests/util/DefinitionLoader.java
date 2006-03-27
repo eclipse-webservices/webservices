@@ -57,7 +57,12 @@ public final class DefinitionLoader
     return load(filename,false);
   }
 
-  static public Definition load(String filename, boolean useExtensionFactories) throws IOException
+  static public Definition load(String filename, boolean useExtensionFactories)  throws IOException
+  {
+    return load(filename, useExtensionFactories, false);
+  }
+      
+  static public Definition load(String filename, boolean useExtensionFactories, boolean trackLocation) throws IOException
   {
     // filename is an absolute path
 
@@ -73,6 +78,7 @@ public final class DefinitionLoader
     java.util.Map map = new Hashtable();
     map.put(WSDLResourceImpl.CONTINUE_ON_LOAD_ERROR,Boolean.valueOf(true));
     map.put(WSDLResourceImpl.USE_EXTENSION_FACTORIES,Boolean.valueOf(useExtensionFactories));
+    map.put(WSDLResourceImpl.TRACK_LOCATION,Boolean.valueOf(trackLocation));
     wsdlMainResource.load(map);
   
     Definition definition = null;

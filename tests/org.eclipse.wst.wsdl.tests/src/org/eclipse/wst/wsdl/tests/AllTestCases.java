@@ -42,6 +42,7 @@ public class AllTestCases extends TestCase
     suite.addTest(WSDLEMFAPITest.suite());
     suite.addTest(UtilTest.suite());
     suite.addTest(BugFixesTest.suite());
+    suite.addTest(LocationTrackingTest.suite());
     
     return suite;
   }
