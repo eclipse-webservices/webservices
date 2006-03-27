@@ -284,8 +284,10 @@ public class W11ApplicationInfoSection extends AbstractSection
 
       extensibilityElementsLabel.setText("Extensibility Elements");
       extensibilityElementsTable.setInput(extensibleElement);
-      addButton.setEnabled(false);
-      removeButton.setEnabled(false);
+      
+      // TODO (cs)need to revist this... not sure why these were hardcoded to be disabled 
+      //addButton.setEnabled(false);
+      //removeButton.setEnabled(false);
 
       if (extensibilityElementsTable.getTable().getSelectionCount() == 0)
       {
