@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="TestService"
+	targetNamespace="http://test.org/Service/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="http://test.org/Service/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:test="http://test.org/">
+	<types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:import namespace="http://test.org/"
+				schemaLocation="Test1.xsd" />
+		</xs:schema>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:import namespace="http://test.org/"
+				schemaLocation="Test2.xsd" />
+		</xs:schema>
+	</types>
+	<message name="testRequest">
+		<part name="requestPart" type="test:MyType" />
+	</message>
+	<message name="testResponse">
+		<part name="responsePart" element="test:MyElement" />
+	</message>
+	<portType name="TestPort">
+		<operation name="testOperation">
+			<input message="tns:testRequest" name="testRequest" />
+			<output message="tns:testResponse" name="testResponse" />
+		</operation>
+
+	</portType>
+</definitions>

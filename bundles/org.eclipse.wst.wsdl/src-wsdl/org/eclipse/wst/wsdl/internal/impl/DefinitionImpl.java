@@ -66,6 +66,7 @@ import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
+import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDImport;
 import org.eclipse.xsd.XSDSchema;
@@ -1960,6 +1961,13 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     return result;
   }
 
+  private boolean isComponentDefined(XSDConcreteComponent component)
+  {
+    // note the getContainer() test to eliminate 'synthetic' types
+    // that are created by the XMLSchema model when resolution fails   
+    return component != null && component.getContainer() != null;
+  } 
+  
   public XSDElementDeclaration resolveElementDeclaration(String namespace, String localName)
   {
     XSDElementDeclaration result = null;
@@ -1967,8 +1975,8 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     {
       XSDSchema schema = (XSDSchema) i.next();
       result = schema.resolveElementDeclaration(namespace, localName);
-      if (result != null)
-        return result;
+      if (isComponentDefined(result))      
+        return result; 
     }
     
     // Could not resolve. Try against all <import>ed and inlined schemas.
@@ -1976,8 +1984,8 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     {
       XSDSchema schema = (XSDSchema)i.next();
       result = schema.resolveElementDeclaration(namespace, localName);
-      if (result != null)
-        return result;
+      if (isComponentDefined(result))      
+        return result;  
     }
     
     return result;
@@ -2001,8 +2009,8 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     {
       XSDSchema schema = (XSDSchema)i.next();
       result = schema.resolveTypeDefinition(namespace, localName);
-      if (result != null)
-        return result;
+      if (isComponentDefined(result))      
+        return result;      
     }
     
     // Could not resolve. Try against all <import>ed and inlined schemas.
@@ -2010,8 +2018,8 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     {
       XSDSchema schema = (XSDSchema)i.next();
       result = schema.resolveTypeDefinition(namespace, localName);
-      if (result != null)
-        return result;
+      if (isComponentDefined(result))      
+        return result; 
     }
     
     return result; // Failed to resolve.

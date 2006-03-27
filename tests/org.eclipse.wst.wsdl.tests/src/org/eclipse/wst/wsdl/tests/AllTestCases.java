@@ -40,7 +40,8 @@ public class AllTestCases extends TestCase
     suite.addTest(WSDLGenerationTest.suite());
     suite.addTest(WSDL4JAPITest.suite());
     suite.addTest(WSDLEMFAPITest.suite());
-	suite.addTest(UtilTest.suite());
+    suite.addTest(UtilTest.suite());
+    suite.addTest(BugFixesTest.suite());
     
     return suite;
   }
