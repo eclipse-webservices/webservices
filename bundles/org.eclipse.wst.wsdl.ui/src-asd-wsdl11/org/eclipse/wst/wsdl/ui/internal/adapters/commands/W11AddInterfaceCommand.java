@@ -14,9 +14,9 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.asd.facade.IInterface;
-import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddPortTypeCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public class W11AddInterfaceCommand extends Command {
 	private Definition definition;
@@ -46,7 +46,7 @@ public class W11AddInterfaceCommand extends Command {
 		newPortType = (PortType) command.getWSDLElement();
 		
 		// Add the Operation
-		IInterface iInterface = (IInterface) WSDLAdapterFactory.getInstance().adapt(newPortType);
+		IInterface iInterface = (IInterface) WSDLAdapterFactoryHelper.getInstance().adapt(newPortType);
 		Command addOperationCommand = iInterface.getAddOperationCommand();
 		addOperationCommand.execute();
 	}

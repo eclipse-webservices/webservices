@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
@@ -34,6 +35,10 @@ public class ASDContentOutlinePage extends ContentOutlinePage {
 	public ASDContentOutlinePage(ASDMultiPageEditor editor, IMenuListener menuListener) {
 		wsdlEditor = editor;
 		this.menuListener = menuListener;
+	}
+	
+	public TreeViewer getTreeViewer() {
+		return super.getTreeViewer();
 	}
 	
 	public void setContentProvider(ITreeContentProvider contentProvider) {

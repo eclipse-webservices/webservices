@@ -24,10 +24,10 @@ import org.eclipse.wst.wsdl.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.asd.facade.IEndPoint;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInterfaceCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
 import org.eclipse.wst.xsd.editor.internal.dialogs.NewComponentDialog;
 
@@ -81,7 +81,7 @@ public class W11NewComponentDialog implements IComponentDialog {
 			    stack.execute(command);
 			    
 			    Object newWSDLObject = command.getNewBinding();
-			    newObject = (IASDObject) WSDLAdapterFactory.getInstance().adapt((Notifier) newWSDLObject);
+			    newObject = (IASDObject) WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) newWSDLObject);
 			}
 			else if (object instanceof IBinding) {
 				IBinding iBinding = (IBinding) object;
@@ -92,7 +92,7 @@ public class W11NewComponentDialog implements IComponentDialog {
 			    stack.execute(command);
 			    
 			    Object newWSDLObject = command.getNewPortType();
-			    newObject = (IASDObject) WSDLAdapterFactory.getInstance().adapt((Notifier) newWSDLObject);
+			    newObject = (IASDObject) WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) newWSDLObject);
 			}
 		}
 		

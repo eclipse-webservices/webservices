@@ -8,13 +8,11 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.wsdl.ui.internal.extensions;
+package org.eclipse.wst.wsdl.ui.internal.actions;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.ui.IEditorPart;
 
-public interface INodeAssociationProvider
-{                    
-  public Object getModelObject(Object parentModelObject, Element[] elementChain, int start, int[] end);
-  public Node getNode(Object modelObject); 
+public interface IWSDLToolbarAction extends IAction{
+	public void setEditorPart(IEditorPart editorPart);
 }

@@ -34,10 +34,10 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.asd.editor.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddMessageAction;
 import org.eclipse.wst.wsdl.asd.editor.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.asd.editor.util.ASDEditPartFactoryHelper;
 import org.eclipse.wst.wsdl.asd.editor.util.IOpenExternalEditorHelper;
 import org.eclipse.wst.wsdl.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.asd.facade.IDescription;
-import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
@@ -47,6 +47,7 @@ import org.eclipse.wst.wsdl.ui.internal.edit.W11XSDTypeReferenceEditManager;
 import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelAdapter;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.W11OpenExternalEditorHelper;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLResourceUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
@@ -88,7 +89,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 			if (obj instanceof Definition)
 			{
 				Definition definition = (Definition) obj;
-				model = (IDescription)WSDLAdapterFactory.getInstance().adapt(definition); 
+				model = (IDescription) WSDLAdapterFactoryHelper.getInstance().adapt(definition); 
 			}
 			wsdlResource.setModified(false);
 //			}
@@ -155,7 +156,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 				Definition def = (Definition) ((W11Description) model).getTarget();
 				Object modelObject = WSDLEditorUtil.getInstance().findModelObjectForElement(def, element);
 				if (modelObject != null) {
-					o = WSDLAdapterFactory.getInstance().adapt((Notifier) modelObject);
+					o = WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) modelObject);
 				}
 			}
 			return o;
@@ -243,6 +244,11 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 				}
 			}
 		}
+	}
+	
+	protected void configureGraphicalViewer() {
+		super.configureGraphicalViewer();
+		setEditPartFactory(ASDEditPartFactoryHelper.getInstance().getEditPartFactory());
 	}
 	
 	protected void createPages() {

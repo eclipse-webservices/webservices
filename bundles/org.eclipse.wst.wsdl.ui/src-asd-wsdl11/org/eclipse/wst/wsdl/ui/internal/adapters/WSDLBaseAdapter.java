@@ -23,6 +23,7 @@ import org.eclipse.wst.wsdl.asd.design.editparts.model.IActionProvider;
 import org.eclipse.wst.wsdl.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.asd.facade.IASDObjectListener;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11RenameCommand;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionProvider {
 	protected List listenerList = new ArrayList();
@@ -45,7 +46,7 @@ public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionP
             if (o instanceof Notifier)
             {  
 			Notifier component = (Notifier)o;      
-			Adapter adapter = WSDLAdapterFactory.getInstance().adapt(component);
+			Adapter adapter = WSDLAdapterFactoryHelper.getInstance().adapt(component);
 			adapterList.add(adapter);
 			
 			if (adapter instanceof WSDLBaseAdapter) {
@@ -60,7 +61,7 @@ public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionP
 	}
 	
 	public Adapter createAdapter(Notifier notifier) {
-		Adapter adapter = WSDLAdapterFactory.getInstance().adapt(notifier);
+		Adapter adapter = WSDLAdapterFactoryHelper.getInstance().adapt(notifier);
 
 		if (adapter instanceof WSDLBaseAdapter && ((WSDLBaseAdapter) adapter).owner == null) {
 			((WSDLBaseAdapter) adapter).setOwner(this);
@@ -78,7 +79,7 @@ public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionP
 	}
 	
 	public boolean isAdapterForType(Object type) {
-		return type == WSDLAdapterFactory.getInstance();
+		return type == WSDLAdapterFactoryHelper.getInstance().getWSDLAdapterFactory();
 	}
 	
 	public String[] getActions(Object object) {

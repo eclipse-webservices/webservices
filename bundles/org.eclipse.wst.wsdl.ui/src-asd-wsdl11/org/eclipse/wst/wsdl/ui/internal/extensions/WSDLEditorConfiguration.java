@@ -16,8 +16,9 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.gef.EditPartFactory;
-import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLAdapterFactory;
+import org.eclipse.wst.wsdl.ui.internal.actions.IWSDLToolbarAction;
 
 public class WSDLEditorConfiguration {
 	  public static final String WSDLEDITORCONFIGURATIONEXTENSIONID = "org.eclipse.wst.wsdl.ui.WSDLEditorExtensionConfiguration";
@@ -34,7 +35,7 @@ public class WSDLEditorConfiguration {
 
 	  }
 
-	  public WSDLAdapterFactory getAdapterFactory()
+	  public AdapterFactory getAdapterFactory()
 	  {
 	    if (definedExtensionsList == null)
 	    {
@@ -124,11 +125,9 @@ public class WSDLEditorConfiguration {
 	        if (adapterFactoryClass != null)
 	        {
 	          Object object = loadClass(element, adapterFactoryClass);
-	          WSDLAdapterFactory adapterFactory = null;
-	          if (object instanceof WSDLAdapterFactory)
+	          if (object instanceof AdapterFactory)
 	          {
-	            adapterFactory = (WSDLAdapterFactory) object;
-	            properties.setAdapterFactory(adapterFactory);
+	            properties.setAdapterFactory((AdapterFactory) object);
 	          }
 	        }
 
@@ -143,29 +142,7 @@ public class WSDLEditorConfiguration {
 //	            properties.setFigureFactoryList(figureFactory);
 //	          }
 //	        }
-
-//	        IConfigurationElement[] toolbarActions = element.getChildren(TOOLBARACTION);
-//	        List actionList = new ArrayList();
-//	        if (toolbarActions != null)
-//	        {
-//	          for (int j = 0; j < toolbarActions.length; j++)
-//	          {
-//	            IConfigurationElement actionElement = toolbarActions[j];
-//	            String actionClass = actionElement.getAttribute(CLASSNAME);
-//	            IXSDToolbarAction action = null;
-//	            if (actionClass != null)
-//	            {
-//	              Object object = loadClass(actionElement, actionClass);
-//	              if (object instanceof IXSDToolbarAction)
-//	              {
-//	                action = (IXSDToolbarAction) object;
-//	                actionList.add(action);
-//	              }
-//	            }
-//	          }
-//	        }
-//	        properties.setActionList(actionList);
-
+	        
 	        String editPartFactoryClass = element.getAttribute(EDITPARTFACTORY);
 	        if (editPartFactoryClass != null)
 	        {
@@ -177,6 +154,30 @@ public class WSDLEditorConfiguration {
 	            properties.setEditPartFactoryList(editPartFactory);
 	          }
 	        }
+
+	        IConfigurationElement[] toolbarActions = element.getChildren(TOOLBARACTION);
+	        List actionList = new ArrayList();
+	        if (toolbarActions != null)
+	        {
+	          for (int j = 0; j < toolbarActions.length; j++)
+	          {
+	            IConfigurationElement actionElement = toolbarActions[j];
+	            String actionClass = actionElement.getAttribute(CLASSNAME);
+	            IWSDLToolbarAction action = null;
+	            if (actionClass != null)
+	            {
+	              Object object = loadClass(actionElement, actionClass);
+	              if (object instanceof IWSDLToolbarAction)
+	              {
+	                action = (IWSDLToolbarAction) object;
+	                actionList.add(action);
+	              }
+	            }
+	          }
+	        }
+	        properties.setActionList(actionList);
+
+
 
 	      }
 	    }

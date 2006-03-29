@@ -12,12 +12,12 @@ package org.eclipse.wst.wsdl.ui.internal.extensions;
 
 import java.util.List;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.gef.EditPartFactory;
-import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLAdapterFactory;
 
 public class WSDLEditorExtensionProperties
 {
-  WSDLAdapterFactory adapterFactory;
+  AdapterFactory adapterFactory;
 //  IExtendedFigureFactory figureFactory;
   EditPartFactory editPartFactory;
   List actionList;
@@ -32,7 +32,7 @@ public class WSDLEditorExtensionProperties
     this.actionList = actionList;
   }
 
-  public void setAdapterFactory(WSDLAdapterFactory adapterFactory)
+  public void setAdapterFactory(AdapterFactory adapterFactory)
   {
     this.adapterFactory = adapterFactory;
   }
@@ -52,7 +52,7 @@ public class WSDLEditorExtensionProperties
     return actionList;
   }
 
-  public WSDLAdapterFactory getAdapterFactory()
+  public AdapterFactory getAdapterFactory()
   {
     return adapterFactory;
   }

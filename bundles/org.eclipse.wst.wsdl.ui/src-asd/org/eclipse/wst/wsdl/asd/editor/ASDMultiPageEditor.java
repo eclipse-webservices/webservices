@@ -24,6 +24,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.MouseWheelHandler;
@@ -583,11 +584,12 @@ public abstract class ASDMultiPageEditor extends MultiPageEditorPart implements 
       manager.setZoom(1.0);
     // Scroll-wheel Zoom
     graphicalViewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.CTRL), MouseWheelZoomHandler.SINGLETON);
-
-    
-    
     graphicalViewer.setRootEditPart(root);
-    graphicalViewer.setEditPartFactory(new ASDEditPartFactory());
+    setEditPartFactory(new ASDEditPartFactory());
+  }
+  
+  protected void setEditPartFactory(EditPartFactory factory) {
+	  graphicalViewer.setEditPartFactory(factory);
   }
 
   protected void hookGraphicalViewer()

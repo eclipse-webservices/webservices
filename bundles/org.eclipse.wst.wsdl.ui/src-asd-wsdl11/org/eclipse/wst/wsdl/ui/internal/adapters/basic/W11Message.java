@@ -24,11 +24,11 @@ import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
 import org.eclipse.wst.wsdl.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.asd.facade.IMessage;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddPartCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 
 public class W11Message extends WSDLBaseAdapter implements IMessage {
@@ -39,7 +39,7 @@ public class W11Message extends WSDLBaseAdapter implements IMessage {
 		Iterator parts = ((Message) target).getEParts().iterator();
 		while (parts.hasNext()) {
 			Notifier component = (Notifier) parts.next();
-			Adapter adapter = WSDLAdapterFactory.getInstance().adapt(component);
+			Adapter adapter = WSDLAdapterFactoryHelper.getInstance().adapt(component);
 			adapterList.add(adapter);			
 		}
 		

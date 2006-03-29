@@ -19,8 +19,8 @@ import org.eclipse.wst.wsdl.asd.editor.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.asd.facade.IMessage;
 import org.eclipse.wst.wsdl.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLAdapterFactory;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public class W11AddPartAction extends BaseSelectionAction {
 	public static String ID = "ASDAddPartAction";
@@ -39,7 +39,7 @@ public class W11AddPartAction extends BaseSelectionAction {
 			
 			if (o instanceof W11MessageReference) {
 				MessageReference messageRef = (MessageReference) ((W11MessageReference) o).getTarget();
-				message = (IMessage) WSDLAdapterFactory.getInstance().adapt(messageRef.getEMessage());
+				message = (IMessage) WSDLAdapterFactoryHelper.getInstance().adapt(messageRef.getEMessage());
 			}
 			else if (o instanceof IParameter) {
 				IParameter param = (IParameter) o;
@@ -48,7 +48,7 @@ public class W11AddPartAction extends BaseSelectionAction {
 				}
 				else if (param.getOwner() instanceof W11MessageReference) {
 					MessageReference messageRef = (MessageReference) ((W11MessageReference) param.getOwner()).getTarget();
-					message = (IMessage) WSDLAdapterFactory.getInstance().adapt(messageRef.getEMessage());
+					message = (IMessage) WSDLAdapterFactoryHelper.getInstance().adapt(messageRef.getEMessage());
 				}
 			}
 			else if (o instanceof IMessage) {
