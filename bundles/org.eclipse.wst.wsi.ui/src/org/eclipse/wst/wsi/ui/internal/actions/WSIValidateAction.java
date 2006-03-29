@@ -28,10 +28,9 @@ import org.eclipse.wst.validation.internal.provisional.core.MessageLimitExceptio
 import org.eclipse.wst.wsi.internal.analyzer.MessageAnalyzer;
 import org.eclipse.wst.wsi.internal.analyzer.WSIAnalyzerException;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
-import org.eclipse.wst.wsi.ui.internal.Messages;
 import org.eclipse.wst.wsi.internal.report.AssertionError;
+import org.eclipse.wst.wsi.ui.internal.Messages;
 import org.eclipse.wst.xml.core.internal.validation.core.ValidationMessage;
-import org.eclipse.wst.xml.ui.internal.validation.ValidateAction;
 import org.xml.sax.SAXParseException;
 
 /**
