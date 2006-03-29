@@ -1,8 +1,0 @@
-<?xml version="1.0" ?>
-<?eclipse version="3.0"?>
-<?NLS TYPE="org.eclipse.help.toc"?> 
-<plugin>
-	<extension point="org.eclipse.help.contexts">
-		<contexts file="webserviceui-f1Contexts.xml" plugin="org.eclipse.wst.ws.ui"/>
-	</extension>
-</plugin>
