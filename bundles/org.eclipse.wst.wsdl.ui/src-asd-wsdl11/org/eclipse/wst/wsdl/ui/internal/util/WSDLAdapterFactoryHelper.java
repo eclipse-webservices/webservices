@@ -30,7 +30,7 @@ public class WSDLAdapterFactoryHelper {
 	
 	public Adapter adapt(Notifier target) {
 		AdapterFactory factory = getWSDLAdapterFactory();
-		return factory.adaptNew(target, factory);
+		return factory.adapt(target, factory);
 	}
 	
 	public AdapterFactory getWSDLAdapterFactory() {
