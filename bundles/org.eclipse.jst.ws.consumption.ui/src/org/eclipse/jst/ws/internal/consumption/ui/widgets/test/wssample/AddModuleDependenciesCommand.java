@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060324   122799 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
@@ -16,7 +19,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.project.facet.IJavaProjectMigrationDataModelProperties;
 import org.eclipse.jst.j2ee.project.facet.JavaProjectMigrationDataModelProvider;
@@ -67,6 +75,17 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
         if (J2EEUtils.isJavaComponent(clientIProject)){
           addJavaProjectAsUtilityJar(clientIProject, sampleEARIProject,monitor);
           addJavaProjectAsUtilityJar(clientIProject, sampleIProject,monitor);
+          try
+          {
+        	  addBuildPath(sampleIProject, clientIProject);
+          } catch (JavaModelException jme)
+          {
+        	  //Do nothing in this catch block. The worst that
+        	  //will happen is that the sample Web project
+        	  //will show some compile errors. The sample will
+        	  //likely still launch successfully on the server
+        	  //and the user will be able to use it.
+          }
 		}
 	  }
     
@@ -97,6 +116,20 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 	  }
   }
 
+  
+  private void addBuildPath(IProject referencingProject, IProject referencedProject) throws JavaModelException
+  {
+    IJavaProject javaProject = JavaCore.create(referencingProject);
+    if (javaProject != null)
+    {
+      IClasspathEntry[] oldCp = javaProject.getRawClasspath();
+	  IClasspathEntry[] newCp = new IClasspathEntry[oldCp.length + 1];
+	  for (int i = 0; i < oldCp.length; i++)
+        newCp[i] = oldCp[i];
+	  newCp[newCp.length - 1] = JavaCore.newProjectEntry(referencedProject.getFullPath());
+	  javaProject.setRawClasspath(newCp, new NullProgressMonitor());
+    }
+  }
  
 
   public static final String DEFAULT_SAMPLE_EAR_PROJECT_EXT = "EAR";
