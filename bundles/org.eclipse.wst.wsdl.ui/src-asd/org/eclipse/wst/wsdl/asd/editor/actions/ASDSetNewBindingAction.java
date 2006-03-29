@@ -15,8 +15,8 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
-import org.eclipse.wst.wsdl.asd.editor.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.asd.facade.IEndPoint;
+import org.eclipse.wst.wsdl.ui.internal.edit.W11BindingReferenceEditManager;
 import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
 
@@ -47,7 +47,9 @@ public class ASDSetNewBindingAction extends BaseSelectionAction {
 		
 		if (endPoint != null) {
 			IEditorPart editor = ASDEditorPlugin.getActiveEditor();
-			ComponentReferenceEditManager refManager = ((ASDMultiPageEditor) editor).getSetBindingHelper(endPoint);
+			// TODO: rmah: We should not know about W11BindingReferenceEditManager here....  We should a better
+			// way to retrieve the appropriate Reference Manager
+			ComponentReferenceEditManager refManager = (ComponentReferenceEditManager) editor.getAdapter(W11BindingReferenceEditManager.class);
 			IComponentDialog dialog = refManager.getNewDialog();
 			if (dialog.createAndOpen() == Window.OK) {
 				ComponentSpecification spec = dialog.getSelectedComponent();

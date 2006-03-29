@@ -22,51 +22,47 @@ import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.common.ui.internal.search.dialogs.IComponentDescriptionProvider;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.asd.facade.IASDObject;
-import org.eclipse.wst.wsdl.asd.facade.IBinding;
-import org.eclipse.wst.wsdl.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Binding;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.W11BrowseComponentDialog;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.W11NewComponentDialog;
+import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLSetComponentHelper;
 import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
 
 public class W11InterfaceReferenceEditManager implements ComponentReferenceEditManager {
-	protected IBinding w11Binding;
+	protected W11Description description;
 	protected IFile iFile;
 	
-	public W11InterfaceReferenceEditManager(IASDObject object, IFile iFile) {
-		w11Binding = (IBinding) object;
+	public W11InterfaceReferenceEditManager(W11Description description, IFile iFile) {
+		this.description = description;
 		this.iFile = iFile;
 	}
 	
 	public IComponentDialog getBrowseDialog() {
-		return new W11BrowseComponentDialog(w11Binding, iFile, getDefinition());
+		return new W11BrowseComponentDialog(IWSDLSearchConstants.PORT_TYPE_META_NAME, iFile, description);
 	}
 
 	public IComponentDialog getNewDialog() {
-		return new W11NewComponentDialog(w11Binding, iFile, getDefinition());
+		return new W11NewComponentDialog(IWSDLSearchConstants.PORT_TYPE_META_NAME, iFile, description);
+	}
+
+	private Definition getDefinition() {
+		return (Definition) description.getTarget();
 	}
 	
-	private Definition getDefinition() {
-		Binding binding = (Binding) ((W11Binding) w11Binding).getTarget();
-		return binding.getEnclosingDefinition();
-	}
-
 	public void modifyComponentReference(Object referencingObject, ComponentSpecification referencedComponent) {
+		W11Binding w11Binding = (W11Binding) referencingObject;
 		Object interfaceObject = referencedComponent.getObject();
 		if (interfaceObject == null) {
-			// Need to figure out the IBinding based on the information contained in the ComponentSpecification
+			// Need to figure out the IInterface based on the information contained in the ComponentSpecification
 
 		}
-		// TODO: rmah: We're pulling a fast one here....  interfaceObject should never be an XMLComponentSpecification
-		// It should either contain the actual object being referenced or null.  If it's null, we must determine what
-		// the object is ourselves based on the information contained in ComponentSpecification.  However, we already
-		// have code which consumes an XMLComponentSpecification, so we'll take advantage of that for now...
+		
 		if (interfaceObject instanceof ComponentSpecification) {
-			Binding binding = (Binding) ((W11Binding) w11Binding).getTarget();
+			Binding binding = (Binding) w11Binding.getTarget();
 			WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, getDefinition());
 			helper.setWSDLComponent(binding, "type", (ComponentSpecification) interfaceObject);
 		}
@@ -86,7 +82,6 @@ public class W11InterfaceReferenceEditManager implements ComponentReferenceEditM
 	public ComponentSpecification[] getQuickPicks() {
 		List specList = new ArrayList();
 		
-		IDescription description = w11Binding.getOwnerDescription();
 		Iterator interfaces = description.getInterfaces().iterator();
 		while (interfaces.hasNext()) {
 			IInterface interfaze = (IInterface) interfaces.next();

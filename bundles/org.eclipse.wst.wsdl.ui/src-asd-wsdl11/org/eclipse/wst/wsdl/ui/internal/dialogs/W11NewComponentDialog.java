@@ -16,16 +16,16 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.wst.common.core.search.pattern.QualifiedName;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.asd.facade.IASDObject;
-import org.eclipse.wst.wsdl.asd.facade.IBinding;
-import org.eclipse.wst.wsdl.asd.facade.IDescription;
-import org.eclipse.wst.wsdl.asd.facade.IEndPoint;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInterfaceCommand;
+import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
@@ -33,34 +33,38 @@ import org.eclipse.wst.xsd.editor.internal.dialogs.NewComponentDialog;
 
 public class W11NewComponentDialog implements IComponentDialog {
 	protected NewComponentDialog dialog;
-	protected IASDObject object;
+	protected QualifiedName qualifiedName;
 	protected IFile iFile;
-	protected Definition definition;
+	protected W11Description description;
 	protected IASDObject newObject;
 	
-	public W11NewComponentDialog(IASDObject object, IFile iFile, Definition definition) {
-		this.object = object;
+	public W11NewComponentDialog(QualifiedName qualifiedName, IFile iFile, W11Description description) {
+		this.qualifiedName = qualifiedName;
 		this.iFile = iFile;
-		this.definition = definition;
+		this.description = description;
 		
 		Shell shell = Display.getCurrent().getActiveShell();
-		if (object instanceof IEndPoint) {
+		if (qualifiedName == IWSDLSearchConstants.BINDING_META_NAME) {
 			String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_BINDING");
-			String baseName = NameUtil.buildUniqueBindingName(definition, "NewBinding");
+			String baseName = NameUtil.buildUniqueBindingName(getDefinition(), "NewBinding");
 			dialog = new NewComponentDialog(shell, dialogTitle, baseName);
 		}
-		else if (object instanceof IBinding) {
+		else if (qualifiedName == IWSDLSearchConstants.PORT_TYPE_META_NAME) {
 			String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_PORTTYPE");
-			String baseName = NameUtil.buildUniquePortTypeName(definition, "NewPortType");
+			String baseName = NameUtil.buildUniquePortTypeName(getDefinition(), "NewPortType");
 			dialog = new NewComponentDialog(shell, dialogTitle, baseName);
 		}
+	}
+	
+	private Definition getDefinition() {
+		return (Definition) description.getTarget();
 	}
 	
 	public void setInitialSelection(ComponentSpecification componentSpecification) {
 	}
 
 	public ComponentSpecification getSelectedComponent() {
-		String qualifier = definition.getPrefix(definition.getTargetNamespace());
+		String qualifier = getDefinition().getPrefix(getDefinition().getTargetNamespace());
 		String name = dialog.getName();
 		ComponentSpecification spec = new ComponentSpecification(qualifier, name, iFile);
 		spec.setObject(newObject);
@@ -72,9 +76,7 @@ public class W11NewComponentDialog implements IComponentDialog {
 		
 		if (rValue == Window.OK) {
 			// Create the new Object
-			if (object instanceof IEndPoint) {
-				IEndPoint endPoint = (IEndPoint) object;
-				IDescription description = endPoint.getOwnerService().getOwnerDescription();
+			if (qualifiedName == IWSDLSearchConstants.BINDING_META_NAME) {
 				W11AddBindingCommand command = (W11AddBindingCommand) description.getAddBindingCommand();
 				command.setNewBindingName(dialog.getName());
 			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
@@ -83,9 +85,7 @@ public class W11NewComponentDialog implements IComponentDialog {
 			    Object newWSDLObject = command.getNewBinding();
 			    newObject = (IASDObject) WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) newWSDLObject);
 			}
-			else if (object instanceof IBinding) {
-				IBinding iBinding = (IBinding) object;
-				IDescription description = iBinding.getOwnerDescription();
+			else if (qualifiedName == IWSDLSearchConstants.PORT_TYPE_META_NAME) {
 				W11AddInterfaceCommand command = (W11AddInterfaceCommand) description.getAddInterfaceCommand();
 				command.setNewPortTypeName(dialog.getName());
 			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);

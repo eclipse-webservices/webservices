@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -36,14 +35,13 @@ import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddMessageAction;
 import org.eclipse.wst.wsdl.asd.editor.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.asd.editor.util.ASDEditPartFactoryHelper;
 import org.eclipse.wst.wsdl.asd.editor.util.IOpenExternalEditorHelper;
-import org.eclipse.wst.wsdl.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11BindingReferenceEditManager;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11InterfaceReferenceEditManager;
-import org.eclipse.wst.wsdl.ui.internal.edit.W11XSDTypeReferenceEditManager;
+import org.eclipse.wst.wsdl.ui.internal.edit.WSDLXSDTypeReferenceEditManager;
 import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelAdapter;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.W11OpenExternalEditorHelper;
@@ -52,7 +50,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLResourceUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
-import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
+import org.eclipse.wst.xsd.editor.XSDTypeReferenceEditManager;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -113,14 +111,30 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
         {
           return ((Adapter)model).getTarget(); 
         }
-        else if (type == ComponentReferenceEditManager.class)
+        else if (type == XSDTypeReferenceEditManager.class)
         {
           IEditorInput editorInput = getEditorInput();
           if (editorInput instanceof IFileEditorInput)
           {
             IFileEditorInput fileEditorInput = (IFileEditorInput) editorInput;
-            return new W11XSDTypeReferenceEditManager(fileEditorInput.getFile(), null);
+            return new WSDLXSDTypeReferenceEditManager(fileEditorInput.getFile(), null);
           }
+        }
+        else if (type == W11BindingReferenceEditManager.class) {
+            IEditorInput editorInput = getEditorInput();
+            if (editorInput instanceof IFileEditorInput)
+            {
+            	IFileEditorInput fileEditorInput = (IFileEditorInput) editorInput;
+            	return new W11BindingReferenceEditManager((W11Description) getModel(), fileEditorInput.getFile());
+            }
+        }
+        else if (type == W11InterfaceReferenceEditManager.class) {
+            IEditorInput editorInput = getEditorInput();
+            if (editorInput instanceof IFileEditorInput)
+            {
+            	IFileEditorInput fileEditorInput = (IFileEditorInput) editorInput;
+            	return new W11InterfaceReferenceEditManager((W11Description) getModel(), fileEditorInput.getFile());
+            }        	
         }
 		
 		return super.getAdapter(type);
@@ -310,24 +324,6 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	    action.setSelectionProvider(getSelectionManager());
 	    registry.registerAction(action);	    
 	  }
-	
-	public ComponentReferenceEditManager getSetBindingHelper(IASDObject object) {
-		IFile file = null;
-		if (getEditorInput() instanceof IFileEditorInput) {
-			file = ((IFileEditorInput) getEditorInput()).getFile();
-		}
-		
-		return new W11BindingReferenceEditManager(object, file);
-	}
-	
-	public ComponentReferenceEditManager getSetInterfaceHelper(IASDObject object) {
-		IFile file = null;
-		if (getEditorInput() instanceof IFileEditorInput) {
-			file = ((IFileEditorInput) getEditorInput()).getFile();
-		}
-		
-		return new W11InterfaceReferenceEditManager(object, file); 
-	}
 	
   public IOpenExternalEditorHelper getOpenExternalEditorHelper() {
     return new W11OpenExternalEditorHelper(((IFileEditorInput) getEditorInput()).getFile());

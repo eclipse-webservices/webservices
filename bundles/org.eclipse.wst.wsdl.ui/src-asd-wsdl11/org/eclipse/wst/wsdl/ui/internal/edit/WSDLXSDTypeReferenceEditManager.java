@@ -22,9 +22,9 @@ import org.eclipse.wst.xsd.editor.XSDTypeReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.search.IXSDSearchConstants;
 import org.eclipse.xsd.XSDSchema;
 
-public class W11XSDTypeReferenceEditManager extends XSDTypeReferenceEditManager {
+public class WSDLXSDTypeReferenceEditManager extends XSDTypeReferenceEditManager {
 	
-	public W11XSDTypeReferenceEditManager(IFile currentFile, XSDSchema[] schemas) {
+	public WSDLXSDTypeReferenceEditManager(IFile currentFile, XSDSchema[] schemas) {
 		super(currentFile, schemas);
 	}
 	

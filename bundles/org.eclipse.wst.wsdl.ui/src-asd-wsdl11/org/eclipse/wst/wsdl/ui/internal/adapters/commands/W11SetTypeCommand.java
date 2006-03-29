@@ -21,12 +21,13 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
-import org.eclipse.wst.wsdl.ui.internal.edit.W11XSDTypeReferenceEditManager;
+import org.eclipse.wst.wsdl.ui.internal.edit.WSDLXSDTypeReferenceEditManager;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
 import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
+import org.eclipse.wst.xsd.editor.XSDTypeReferenceEditManager;
 import org.eclipse.wst.xsd.ui.common.actions.SetTypeAction;
 import org.eclipse.xsd.XSDSchema;
 import org.w3c.dom.Element;
@@ -94,7 +95,7 @@ public class W11SetTypeCommand extends Command {
 		IEditorPart editor = ASDEditorPlugin.getActiveEditor();
 		if (editor != null)
 		{
-			result = (ComponentReferenceEditManager)editor.getAdapter(ComponentReferenceEditManager.class);
+			result = (ComponentReferenceEditManager)editor.getAdapter(XSDTypeReferenceEditManager.class);
 			
 			if (editor instanceof InternalWSDLMultiPageEditor)
 			{
@@ -107,7 +108,7 @@ public class W11SetTypeCommand extends Command {
 					schemas[index] = (XSDSchema) type.getTarget();
 				}
 				
-				((W11XSDTypeReferenceEditManager) result).setSchemas(schemas);
+				((WSDLXSDTypeReferenceEditManager) result).setSchemas(schemas);
 				
 				return result;
 			}

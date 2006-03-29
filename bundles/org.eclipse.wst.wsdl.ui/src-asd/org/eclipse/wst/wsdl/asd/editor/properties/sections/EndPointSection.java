@@ -29,11 +29,11 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
-import org.eclipse.wst.wsdl.asd.editor.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDSetExistingBindingAction;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDSetNewBindingAction;
 import org.eclipse.wst.wsdl.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.asd.facade.IEndPoint;
+import org.eclipse.wst.wsdl.ui.internal.edit.W11BindingReferenceEditManager;
 import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
 
 public class EndPointSection extends ReferenceSection {
@@ -114,7 +114,9 @@ public class EndPointSection extends ReferenceSection {
 	protected List getComboItems() {
 		if (refManager == null) {
 			IEditorPart editor = ASDEditorPlugin.getActiveEditor();
-			refManager = ((ASDMultiPageEditor) editor).getSetBindingHelper((IEndPoint) getModel());
+			// TODO: rmah: We should not know about W11BindingReferenceEditManager here....  We should a better
+			// way to retrieve the appropriate Reference Manager
+			refManager = (ComponentReferenceEditManager) editor.getAdapter(W11BindingReferenceEditManager.class);
 		}
 		
 		List items = new ArrayList();

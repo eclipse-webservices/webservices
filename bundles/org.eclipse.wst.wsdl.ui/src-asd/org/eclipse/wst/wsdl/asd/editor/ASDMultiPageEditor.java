@@ -91,9 +91,7 @@ import org.eclipse.wst.wsdl.asd.editor.outline.ASDContentOutlinePage;
 import org.eclipse.wst.wsdl.asd.editor.outline.ASDContentOutlineProvider;
 import org.eclipse.wst.wsdl.asd.editor.properties.sections.ASDTabbedPropertySheetPage;
 import org.eclipse.wst.wsdl.asd.editor.util.IOpenExternalEditorHelper;
-import org.eclipse.wst.wsdl.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.asd.facade.IDescription;
-import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
 
 public abstract class ASDMultiPageEditor extends MultiPageEditorPart implements IResourceChangeListener, CommandStackListener, ITabbedPropertySheetPageContributor, IPropertyListener
 {
@@ -673,11 +671,5 @@ public abstract class ASDMultiPageEditor extends MultiPageEditorPart implements 
 	  return editor;
   }
   
-  /*
-   * Is there a better way to retrieve the SetTypeHeper class
-   * This method should be subclassed
-   */
-  public abstract ComponentReferenceEditManager getSetBindingHelper(IASDObject object);
-  public abstract ComponentReferenceEditManager getSetInterfaceHelper(IASDObject object);
   public abstract IOpenExternalEditorHelper getOpenExternalEditorHelper();
 }

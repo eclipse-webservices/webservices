@@ -11,31 +11,30 @@
 package org.eclipse.wst.wsdl.ui.internal.dialogs;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.wst.common.core.search.pattern.QualifiedName;
+import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSearchListDialog;
+import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSearchListDialogConfiguration;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
+import org.eclipse.wst.common.ui.internal.search.dialogs.ScopedComponentSearchListDialog;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.asd.facade.IASDObject;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
+import org.eclipse.wst.wsdl.ui.internal.edit.WSDLBindingSearchListProvider;
+import org.eclipse.wst.wsdl.ui.internal.edit.WSDLComponentDescriptionProvider;
+import org.eclipse.wst.wsdl.ui.internal.edit.WSDLInterfaceSearchListProvider;
+import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
 
 public class W11BrowseComponentDialog implements IComponentDialog {
-//	protected WSDLComponentSelectionDialog dialog;
+	private QualifiedName qualifiedName;
+	private ComponentSpecification selection;
+	private W11Description description;
 	
-	public W11BrowseComponentDialog(IASDObject object, IFile iFile, Definition definition) {
-//		Shell shell = Display.getCurrent().getActiveShell();
-//		if (object instanceof IEndPoint) {
-//			String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_BINDING");
-//			
-//			WSDLComponentSelectionProvider provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLConstants.BINDING);
-//			dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, provider);
-//			provider.setDialog(dialog);
-//		}
-//		else if (object instanceof IBinding) {
-//
-//			String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_PORTTYPE");
-//			
-//			WSDLComponentSelectionProvider provider = new WSDLComponentSelectionProvider(iFile, definition, WSDLConstants.PORT_TYPE);
-//			dialog = new WSDLComponentSelectionDialog(shell, dialogTitle, provider);
-//			provider.setDialog(dialog);
-//		}
+	public W11BrowseComponentDialog(QualifiedName qualifiedName, IFile iFile, W11Description description) {
+		this.qualifiedName = qualifiedName;
+		this.description = description;
 	}
 	
 	public void setInitialSelection(ComponentSpecification componentSpecification) {
@@ -44,30 +43,52 @@ public class W11BrowseComponentDialog implements IComponentDialog {
 	}
 
 	public ComponentSpecification getSelectedComponent() {
-//		XMLComponentSpecification xmlSpec = dialog.getSelection();
-//
-//		String qualifier = "";
-//		String name = (String) xmlSpec.getAttributeInfo("name");
-//		
-//		Workspace ws = new Workspace();
-//		IFile iFile = (IFile) ws.newResource(new Path(xmlSpec.getFileLocation()), IResource.FILE);
-//
-//		ComponentSpecification spec = new ComponentSpecification(qualifier, name, iFile);
-//		// TODO: rmah: We're pulling a fast one here....  setObject() should really take in an IASDObject....
-//		// but we send in an XMLComponentSpecification because we already have helper classes which consumes it
-//		spec.setObject(xmlSpec);
-//		
-//		return spec;
-		
-		return null;
+		return selection;
 	}
 
 	public int createAndOpen() {
-//	    dialog.setBlockOnOpen(true);
-//	    dialog.create();
-//		return dialog.open();
+		Definition definition = (Definition) description.getTarget();
 		
-		return -1;
+	    Shell shell = WSDLEditorPlugin.getInstance().getWorkbench().getActiveWorkbenchWindow().getShell();
+	    int returnValue = Window.CANCEL;
+	    ComponentSearchListDialog dialog = null;
+	    if (qualifiedName == IWSDLSearchConstants.BINDING_META_NAME)
+	    {
+	    	WSDLComponentDescriptionProvider descriptionProvider = new WSDLComponentDescriptionProvider();
+	    	final WSDLBindingSearchListProvider searchListProvider = new WSDLBindingSearchListProvider(definition);
+	    	ComponentSearchListDialogConfiguration configuration = new ComponentSearchListDialogConfiguration();
+	    	
+	        configuration.setDescriptionProvider(descriptionProvider);
+	        configuration.setSearchListProvider(searchListProvider);
+	        
+	        String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_BINDING");
+	        dialog = new ScopedComponentSearchListDialog(shell, dialogTitle, configuration);
+	    }
+	    else if (qualifiedName == IWSDLSearchConstants.PORT_TYPE_META_NAME)
+	    {
+	      WSDLComponentDescriptionProvider descriptionProvider = new WSDLComponentDescriptionProvider();
+	      final WSDLInterfaceSearchListProvider searchListProvider = new WSDLInterfaceSearchListProvider(definition);
+	     
+	      ComponentSearchListDialogConfiguration configuration = new ComponentSearchListDialogConfiguration();
+	      configuration.setDescriptionProvider(descriptionProvider);
+	      configuration.setSearchListProvider(searchListProvider);
+	      //configuration.setNewComponentHandler(new NewTypeButtonHandler());
+	      
+	      String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_PORTTYPE");
+	      dialog = new ScopedComponentSearchListDialog(shell, dialogTitle, configuration);
+	    }
+	    
+	    if (dialog != null)
+	    {
+	      dialog.setBlockOnOpen(true);
+	      dialog.create();
+	      returnValue = dialog.open();
+	      if (returnValue == Window.OK)
+	      {
+	        selection = dialog.getSelectedComponent();
+	      }
+	    }
+	    return returnValue;
 	}
 
 }

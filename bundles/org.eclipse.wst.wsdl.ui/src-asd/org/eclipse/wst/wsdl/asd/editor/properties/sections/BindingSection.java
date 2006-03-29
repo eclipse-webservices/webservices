@@ -20,11 +20,11 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
-import org.eclipse.wst.wsdl.asd.editor.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDSetExistingInterfaceAction;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDSetNewInterfaceAction;
 import org.eclipse.wst.wsdl.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.asd.facade.IInterface;
+import org.eclipse.wst.wsdl.ui.internal.edit.W11InterfaceReferenceEditManager;
 import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
 
 public class BindingSection extends ReferenceSection {
@@ -38,7 +38,9 @@ public class BindingSection extends ReferenceSection {
 	protected List getComboItems() {
 		if (refManager == null) {
 			IEditorPart editor = ASDEditorPlugin.getActiveEditor();
-			refManager = ((ASDMultiPageEditor) editor).getSetInterfaceHelper((IBinding) getModel());
+			// TODO: rmah: We should not know about W11InterfaceReferenceEditManager here....  We should a better
+			// way to retrieve the appropriate Reference Manager
+			refManager = (ComponentReferenceEditManager) editor.getAdapter(W11InterfaceReferenceEditManager.class);
 		}
 		
 		List items = new ArrayList();

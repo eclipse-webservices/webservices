@@ -22,50 +22,47 @@ import org.eclipse.wst.common.ui.internal.search.dialogs.IComponentDescriptionPr
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
-import org.eclipse.wst.wsdl.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.asd.facade.IBinding;
-import org.eclipse.wst.wsdl.asd.facade.IDescription;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11EndPoint;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.W11BrowseComponentDialog;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.W11NewComponentDialog;
+import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLSetComponentHelper;
 import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
 
 public class W11BindingReferenceEditManager implements ComponentReferenceEditManager {
-	protected W11EndPoint w11EndPoint;
+	protected W11Description description;
 	protected IFile iFile;
 	
-	public W11BindingReferenceEditManager(IASDObject object, IFile iFile) {
-		w11EndPoint = (W11EndPoint) object;
+	public W11BindingReferenceEditManager(W11Description description, IFile iFile) {
+		this.description = description;
 		this.iFile = iFile;
 	}
 	
 	public IComponentDialog getBrowseDialog() {
-		return new W11BrowseComponentDialog(w11EndPoint, iFile, getDefinition());
+		return new W11BrowseComponentDialog(IWSDLSearchConstants.BINDING_META_NAME, iFile, description);
 	}
 
 	public IComponentDialog getNewDialog() {
-		return new W11NewComponentDialog(w11EndPoint, iFile, getDefinition());
+		return new W11NewComponentDialog(IWSDLSearchConstants.BINDING_META_NAME, iFile, description);
 	}
 	
 	private Definition getDefinition() {
-		Port port = (Port) ((W11EndPoint) w11EndPoint).getTarget();
-		return port.getEnclosingDefinition();
+		return (Definition) description.getTarget();
 	}
 
 	public void modifyComponentReference(Object referencingObject, ComponentSpecification referencedComponent) {
+		W11EndPoint w11EndPoint = (W11EndPoint) referencingObject;
 		Object bindingObject = referencedComponent.getObject();
 		if (bindingObject == null) {
 			// Need to figure out the IBinding based on the information contained in the ComponentSpecification
 
 		}
-		// TODO: rmah: We're pulling a fast one here....  bindingObject should never be an XMLComponentSpecification
-		// It should either contain the actual object being referenced or null.  If it's null, we must determine what
-		// the object is ourselves based on the information contained in ComponentSpecification.  However, we already
-		// have code which consumes an XMLComponentSpecification, so we'll take advantage of that for now...
-		else if (bindingObject instanceof ComponentSpecification) {
-			Port port = (Port) ((W11EndPoint) w11EndPoint).getTarget();
+		
+		if (bindingObject instanceof ComponentSpecification) {
+			Port port = (Port) w11EndPoint.getTarget();
 			WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, getDefinition());
 			helper.setWSDLComponent(port, "binding", (ComponentSpecification) bindingObject);
 		}		
@@ -84,7 +81,6 @@ public class W11BindingReferenceEditManager implements ComponentReferenceEditMan
 	public ComponentSpecification[] getQuickPicks() {
 		List specList = new ArrayList();
 		
-		IDescription description = w11EndPoint.getOwnerService().getOwnerDescription();
 		Iterator bindings = description.getBindings().iterator();
 		while (bindings.hasNext()) {
 			IBinding binding = (IBinding) bindings.next();

@@ -13,18 +13,14 @@ package org.eclipse.wst.wsdl.asd.editor;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
 
 public class ASDLabelProvider extends LabelProvider {
-	IEditorPart editorPart;
-	
 	/**
 	 * 
 	 */
 	public ASDLabelProvider() {
 		super();
-		editorPart = ASDEditorPlugin.getActiveEditor();
 	}
 	
 	/**
