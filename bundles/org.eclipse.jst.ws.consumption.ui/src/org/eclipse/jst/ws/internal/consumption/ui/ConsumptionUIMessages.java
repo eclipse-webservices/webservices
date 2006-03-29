@@ -12,6 +12,7 @@
  * 20060204 124143   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060329   128069 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -174,6 +175,7 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String TABLE_TITLE_EJB_BEAN_NAMES;
 	public static String TABLE_TITLE_EJB_PROJECT_NAME;
 	public static String LABEL_EAR_PROJECTS;
+    public static String LABEL_SHOW_ALL_STATELESS_SESSION_EJBS;
 	public static String TOOLTIP_EAR_PROJECTS;
 	public static String TOOLTIP_TABLE_BEAN_NAMES;
 	public static String TOOLTIP_PWWS_PAGE;

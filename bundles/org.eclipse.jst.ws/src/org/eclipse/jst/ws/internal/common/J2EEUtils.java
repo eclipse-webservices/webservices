@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060204  124143   rsinha@ca.ibm.com - Rupam Kuehner     
+ * 20060329   128069 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -223,6 +224,25 @@ public final class J2EEUtils {
 		}
 		return (IVirtualComponent[])v.toArray(new IVirtualComponent[0]);		
 	}
+    
+    public static IVirtualComponent[] getAllEJBComponents(){
+        List v = new ArrayList();
+        IProject[] projects = ResourceUtils.getWorkspaceRoot().getProjects();
+        for (int i = 0; i < projects.length; i++) {
+            try {
+                IVirtualComponent[] components = getEJBComponents(projects[i]);
+                for (int j=0; j<components.length; j++) {
+                    if (components[j]!=null)
+                        v.add(components[j]);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                //handle exception
+            }
+
+        }
+        return (IVirtualComponent[])v.toArray(new IVirtualComponent[0]);        
+    }    
 	
 	/**
 	 * Returns the EAR components in a given IProject
