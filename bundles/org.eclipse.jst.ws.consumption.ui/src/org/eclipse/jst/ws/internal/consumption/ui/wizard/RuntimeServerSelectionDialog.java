@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060327   131605 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
@@ -24,6 +25,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUI
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
@@ -256,28 +258,45 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
 
 
   private void validateServerRuntimeSelection() {
-    // Check if the extension exists
-    if (selectionMode_ == MODE_SERVICE) {
-      if (selectedServerFactoryID_!=null && selectedRuntime_!=null) {
 
-      boolean wssrtSupported = WebServiceRuntimeExtensionUtils2.isServerRuntimeTypeSupported(selectedServerFactoryID_,selectedRuntime_.getId(),typeId_);
-	  
-      if (wssrtSupported && WebServiceRuntimeExtensionUtils2.isServerSupportedForChosenServiceType(typeId_, selectedServerFactoryID_)) {
-	        setOKStatusMessage();
-	      }	  
-      else {
-        setERRORStatusMessage(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS);
-      }
+    if (selectionMode_ == MODE_SERVICE) {
+      if (selectedServerFactoryID_ != null && selectedRuntime_ != null)
+      {
+
+        if (WebServiceRuntimeExtensionUtils2.isServerRuntimeTypeSupported(selectedServerFactoryID_, selectedRuntime_.getId(),
+            typeId_))
+        {
+          setOKStatusMessage();
+        } else
+        {
+          String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(selectedServerFactoryID_);
+          String runtimeLabel = selectedRuntime_.getLabel();
+          setERRORStatusMessage(NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[] { serverLabel,
+              runtimeLabel }));
+          // Found an error - so return.
+          return;
+        }
       }
     }
     else {
 
-      String clientId = typeId_;
-      if (selectedServerFactoryID_==null || selectedRuntime_ == null || !WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported(selectedServerFactoryID_, selectedRuntime_.getId(), clientId)) {
-	        setERRORStatusMessage(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS);
-	  }	  
-      else {
-        setOKStatusMessage();
+      if (selectedServerFactoryID_ != null && selectedRuntime_ != null)
+      {
+        String clientId = typeId_;
+        if (WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported(selectedServerFactoryID_, selectedRuntime_
+            .getId(), clientId))
+        {
+          setOKStatusMessage();
+        } else
+        {
+          String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(selectedServerFactoryID_);
+          String runtimeLabel = selectedRuntime_.getLabel();
+          setERRORStatusMessage(NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[] { serverLabel,
+              runtimeLabel }));
+          
+          // Found an error - so return.
+          return;
+        }
       }
     }
     // Disable OK button if the runtime selection is invalid
