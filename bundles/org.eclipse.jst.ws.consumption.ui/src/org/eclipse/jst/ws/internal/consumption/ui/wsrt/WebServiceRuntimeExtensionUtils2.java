@@ -12,6 +12,7 @@
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060324   116750 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -29,10 +30,11 @@ import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.TypeSelectionFilter2;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
-import org.eclipse.wst.command.internal.env.core.common.MessageUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
@@ -479,10 +481,7 @@ public class WebServiceRuntimeExtensionUtils2
     
   
   public static LabelsAndIds getServiceTypeLabels()
-  {
-    String       pluginId = "org.eclipse.jst.ws.internal.consumption.ui";
-    MessageUtils msgUtils = new MessageUtils( pluginId + ".ConsumptionUI", registry );
-    
+  {   
     LabelsAndIds labelIds = new LabelsAndIds();
     Iterator     iterator = registry.webServiceTypesList_.iterator();
     int          size     = registry.webServiceTypesList_.size();
@@ -505,14 +504,14 @@ public class WebServiceRuntimeExtensionUtils2
       switch(scenario)
       {
       case WebServiceScenario.BOTTOMUP:
-        scenLabel = msgUtils.getMessage(WebServiceScenario.BOTTOMUP_LABEL);
+        scenLabel = NLS.bind(ConsumptionUIMessages.BOTTOMUP_LABEL, new String[0]);
         break;
       case WebServiceScenario.TOPDOWN:
-        scenLabel = msgUtils.getMessage(WebServiceScenario.TOPDOWN_LABEL);
+        scenLabel = NLS.bind(ConsumptionUIMessages.TOPDOWN_LABEL, new String[0]);
         break; 
       default:
       }
-      labels[index] = msgUtils.getMessage( "COMBINED_TYPE_AND_RUNTIME_LABEL", new String[]{ scenLabel, impllabel } );
+      labels[index] = NLS.bind(ConsumptionUIMessages.COMBINED_TYPE_AND_RUNTIME_LABEL, new String[]{ scenLabel, impllabel });
       index++;
     }    
     

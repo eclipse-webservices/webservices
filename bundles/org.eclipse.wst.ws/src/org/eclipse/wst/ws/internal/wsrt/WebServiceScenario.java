@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060324   116750 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.wsrt;
 
@@ -23,10 +26,6 @@ public final class WebServiceScenario extends AbstractEnumerator
   public static final int BOTTOMUP = 0;
   public static final int TOPDOWN = 1;
   public static final int CLIENT = 2;
-  
-  public static final String BOTTOMUP_LABEL = "BOTTOMUP_LABEL";
-  public static final String TOPDOWN_LABEL = "TOPDOWN_LABEL";
-  public static final String CLIENT_LABEL = "CLIENT_LABEL";
   
   public static final WebServiceScenario BOTTOMUP_LITERAL = new WebServiceScenario(BOTTOMUP, "BOTTOMUP");
   public static final WebServiceScenario TOPDOWN_LITERAL = new WebServiceScenario(TOPDOWN, "TOPDOWN");
