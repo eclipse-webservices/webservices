@@ -13,6 +13,9 @@ package org.eclipse.wst.wsdl.ui.internal.dialogs;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.core.search.pattern.QualifiedName;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSearchListDialog;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSearchListDialogConfiguration;
@@ -63,6 +66,11 @@ public class W11BrowseComponentDialog implements IComponentDialog {
 	        
 	        String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_BINDING");
 	        dialog = new ScopedComponentSearchListDialog(shell, dialogTitle, configuration);
+
+	        IFile file = getFile();
+	        if (file != null) {
+		        ((ScopedComponentSearchListDialog) dialog).setCurrentResource(file);
+	        }
 	    }
 	    else if (qualifiedName == IWSDLSearchConstants.PORT_TYPE_META_NAME)
 	    {
@@ -76,6 +84,11 @@ public class W11BrowseComponentDialog implements IComponentDialog {
 	      
 	      String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_PORTTYPE");
 	      dialog = new ScopedComponentSearchListDialog(shell, dialogTitle, configuration);
+	      
+	      IFile file = getFile();
+	      if (file != null) {
+	    	  ((ScopedComponentSearchListDialog) dialog).setCurrentResource(file);
+	      }
 	    }
 	    
 	    if (dialog != null)
@@ -89,6 +102,16 @@ public class W11BrowseComponentDialog implements IComponentDialog {
 	      }
 	    }
 	    return returnValue;
+	}
+	
+	private IFile getFile() {
+		IFile file = null;
+		IEditorInput input = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().getEditorInput();
+        if (input instanceof IFileEditorInput) {
+        	file = ((IFileEditorInput) input).getFile();
+        }
+        
+        return file;
 	}
 
 }
