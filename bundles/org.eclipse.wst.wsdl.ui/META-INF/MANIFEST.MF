@@ -63,7 +63,6 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.wst.xml.ui,
  org.eclipse.xsd,
  org.eclipse.wst.wsdl,
- org.eclipse.wst.common.ui.properties,
  org.eclipse.wst.common.core,
  org.eclipse.wst.xsd.ui,
  org.eclipse.emf.edit,
@@ -75,5 +74,6 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.ltk.ui.refactoring,
  com.ibm.icu,
  org.eclipse.core.runtime,
- org.apache.xerces
+ org.apache.xerces,
+ org.eclipse.ui.views.properties.tabbed
 Eclipse-LazyStart: true
