@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@ package org.eclipse.wst.wsdl.validation.tests.internal;
 
 import java.io.IOException;
 
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -69,7 +69,7 @@ public class WSDLValidatorTestsPlugin extends AbstractUIPlugin
   {
     try
     {
-      return Platform.resolve(pluginBundle.getEntry("/")).getFile();
+      return FileLocator.resolve(pluginBundle.getEntry("/")).getFile();
     }
     catch (IOException e)
     {

@@ -15,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -52,7 +51,6 @@ public class ValidationController
   protected ResourceBundle resourcebundle;
   protected MessageGenerator messagegenerator;
   protected URIResolver uriResolver;
-  protected Hashtable attributes = new Hashtable();
 
   //protected String wsdlNamespace = null;
 
@@ -72,41 +70,19 @@ public class ValidationController
   }
   
   /**
-   * Add the attributes specified to the validation.
-   * 
-   * @param attributes The attributes to add to the validation.
-   */
-  public void setAttributes(Hashtable attributes)
-  {
-  	this.attributes.putAll(attributes);
-  }
-
-  /**
-   * Validate the WSDL file. Check the file for XML conformance. If it is XML
-   * conformant, read the file and check it for WSDL conformance. If it is WSDL
-   * conformant and WS-I conformance is set to suggest or require, check the
-   * file for WS-I conformance.
-   * 
-   * @param uri
-   *            The uri where the WSDL document is located.
-   * @param wsiLevel
-   *            The level of WS-I conformance to use for validation.
-   * @return A validation report with the validation info for the file.
-   */
-//  public IValidationReport validate(String uri)
-//  { return validate(uri, null);
-//  }
-  
-  /**
    * Validate the WSDL file with the stream. This method will run the check of the 
    * WSDL document. The validation is broken up into three stages: XML conformance,
    * WSDL semantic, and post validation.
    * 
- * @param uri The URI of the WSDL document to be validated.
- * @param inputStream The contents of the WSDL document to be validated.
+ * @param uri 
+ * 			The URI of the WSDL document to be validated.
+ * @param inputStream 
+ * 			The contents of the WSDL document to be validated.
+ * @param configuration
+ * 			The WSDL validation configuration to be used while validating this URI.
  * @return A validation report with the validation info for the file.
  */
-  public IValidationReport validate(String uri, InputStream inputStream)
+  public IValidationReport validate(String uri, InputStream inputStream, WSDLValidationConfiguration configuration)
   {
     
     InputStream xmlValidateStream = null;
@@ -120,7 +96,7 @@ public class ValidationController
     
     ControllerValidationInfo valInfo = new ValidationInfoImpl(uri, messagegenerator);
     ((ValidationInfoImpl)valInfo).setURIResolver(uriResolver);
-    ((ValidationInfoImpl)valInfo).setAttributes(attributes);
+    ((ValidationInfoImpl)valInfo).setConfiguration(configuration);
 
     if (validateXML(valInfo, xmlValidateStream))
     {

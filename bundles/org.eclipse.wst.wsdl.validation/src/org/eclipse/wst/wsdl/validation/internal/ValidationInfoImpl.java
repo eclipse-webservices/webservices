@@ -14,7 +14,6 @@ package org.eclipse.wst.wsdl.validation.internal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
@@ -39,7 +38,7 @@ public class ValidationInfoImpl implements IValidationReport, ControllerValidati
   private boolean haserrors = false;
   private HashMap nestedMessages = new HashMap();
   private URIResolver uriResolver = null;
-  private Hashtable attributes = new Hashtable();
+  private WSDLValidationConfiguration configuration;
 
   /**
    * Constructor.
@@ -289,11 +288,14 @@ public class ValidationInfoImpl implements IValidationReport, ControllerValidati
 	 */
 	public Object getAttribute(String name) 
 	{
-		return attributes.get(name);
+		return configuration.getProperty(name);
 	}
 	
-	public void setAttributes(Hashtable attributes)
+	public void setConfiguration(WSDLValidationConfiguration configuration)
 	{
-		this.attributes.putAll(attributes);
+		this.configuration = configuration;
+	}
+	public boolean isValid() {
+		return !hasErrors();
 	}
 }

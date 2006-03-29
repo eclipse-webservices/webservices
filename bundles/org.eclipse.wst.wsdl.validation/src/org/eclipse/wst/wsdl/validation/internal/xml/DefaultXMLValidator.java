@@ -112,18 +112,14 @@ public class DefaultXMLValidator implements IXMLValidator
       
       InputSource validateInputSource; 
      
-      
+      validateInputSource = new InputSource(uri);
       if (this.inputStream != null)
       {    
-      
-
         String string = createStringForInputStream(inputStream);
         reader1 = new StringReader(string);
           
-        validateInputSource = new InputSource(inputStream);
+        validateInputSource.setByteStream(inputStream);
         validateInputSource.setCharacterStream(reader1);
-      } else
-      { validateInputSource = new InputSource(uri);
       }
       
       XMLReader reader = createXMLReader();

@@ -16,9 +16,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.command.env.core,
  org.eclipse.wst.command.env,
  org.apache.ant,
- org.wsdl4j, 
- org.apache.xerces
-Eclipse-AutoStart: true
+ org.wsdl4j,
+ org.apache.xerces,
+ org.eclipse.wst.validation,
+ org.eclipse.wst.xml.core,
+ org.eclipse.wst.common.uriresolver
+Eclipse-LazyStart: true
 Export-Package: org.eclipse.wst.wsdl.validation.internal.resolver;x-internal:=true,
  org.eclipse.wst.wsdl.validation.internal.ui.ant;x-internal:=true,
  org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd;x-internal:=true,

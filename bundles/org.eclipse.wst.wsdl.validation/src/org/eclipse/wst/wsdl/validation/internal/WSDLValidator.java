@@ -12,7 +12,6 @@
 package org.eclipse.wst.wsdl.validation.internal;
 
 import java.io.InputStream;
-import java.util.Hashtable;
 import java.util.ResourceBundle;
 
 import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
@@ -34,8 +33,7 @@ public class WSDLValidator
 {
   private static String VALIDATOR_RESOURCE_BUNDLE = "validatewsdl";
   private ValidationController validationController;
-  private URIResolver uriResolver;
-  private Hashtable attributes = new Hashtable();
+  protected URIResolver uriResolver;
   
   /**
    * Constructor.
@@ -75,7 +73,7 @@ public class WSDLValidator
    */
   public IValidationReport validate(String uri)
   {
-   return validate(uri, null);
+   return validate(uri, null, null);
   }
   
   /**
@@ -85,12 +83,13 @@ public class WSDLValidator
    * @param inputStream The stream to validate
    * @return A Validation report summarizing the results of the validation
    */
-  public IValidationReport validate(String uri, InputStream inputStream)
+  public IValidationReport validate(String uri, InputStream inputStream, WSDLValidationConfiguration configuration)
   {
     if(uri == null) 
       return null;
-    validationController.setAttributes(attributes);
-    return validationController.validate(uri, inputStream);
+    if(configuration == null)
+      configuration = new WSDLValidationConfiguration();
+    return validationController.validate(uri, inputStream, configuration);
   }
   
   /**
@@ -101,29 +100,6 @@ public class WSDLValidator
   public void addURIResolver(IExtensibleURIResolver uriResolver)
   {
   	this.uriResolver.addURIResolver(uriResolver);
-  }
-  
-  /**
-   * Set an attribute on the validator. An attribute is
-   * defined by a name and a value pair. An attribute may
-   * be defined for any validator, built in or an extension.
-   * Extension validators can probe the attributes set on
-   * the WSDL validator to customize the way in which they
-   * validate. A null value will unset an attribute.
-   * 
-   * @param name The attribute identifier.
-   * @param value The attribute itself.
-   */
-  public void setAttribute(String name, Object value)
-  {
-	if(value == null)
-	{
-	  attributes.remove(name);
-	}
-	else
-	{
-  	  attributes.put(name, value);
-	}
   }
   
   /**

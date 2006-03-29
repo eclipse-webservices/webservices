@@ -28,7 +28,7 @@ public class WSDLValidator extends org.eclipse.wst.wsdl.validation.internal.WSDL
 	 * WSDL URI resolver extension point with the WSDL validator. 
 	 * 
 	 */
-	private WSDLValidator()
+	protected WSDLValidator()
 	{
       super();
       URIResolverWrapper resolver = new URIResolverWrapper();
