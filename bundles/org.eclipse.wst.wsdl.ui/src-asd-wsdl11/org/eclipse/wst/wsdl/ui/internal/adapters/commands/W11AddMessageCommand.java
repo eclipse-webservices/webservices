@@ -12,18 +12,34 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 
 public class W11AddMessageCommand extends Command {
     private Definition definition;
+    private String newName;
+    private Message message;
 	
     public W11AddMessageCommand(Definition definition) {
         this.definition = definition;
     }
     
+	public void setNewMessageName(String newName) {
+		this.newName = newName;
+	}
+
     public void execute() {
-    	AddMessageCommand command = new AddMessageCommand(definition, NameUtil.buildUniqueMessageName(definition, "NewMessage"), true);
+		if (newName == null || newName.equals("")) {
+			newName = NameUtil.buildUniqueMessageName(definition, "NewMessage");
+		}
+
+    	AddMessageCommand command = new AddMessageCommand(definition, newName, true);
         command.run();
-    }  
+        message = (Message) command.getWSDLElement();
+    }
+    
+    public Message getNewMessage() {
+    	return message;
+    }
 }

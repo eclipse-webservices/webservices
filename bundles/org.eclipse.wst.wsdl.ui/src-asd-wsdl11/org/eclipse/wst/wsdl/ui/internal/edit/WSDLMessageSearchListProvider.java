@@ -20,29 +20,28 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 
-public class WSDLInterfaceSearchListProvider extends WSDLBaseSearchListProvider {
+public class WSDLMessageSearchListProvider extends WSDLBaseSearchListProvider {
 	private Definition definition;
 	
-	public WSDLInterfaceSearchListProvider(Definition definition) {
+	public WSDLMessageSearchListProvider(Definition definition) {
 		this.definition = definition;
 	}
-	
 	public void populateComponentList(IComponentList list, SearchScope scope, IProgressMonitor pm) {
 		// Grab explictly defined components
-		createWSDLComponentObjects(list, definition.getEPortTypes(), IWSDLSearchConstants.PORT_TYPE_META_NAME);
+		createWSDLComponentObjects(list, definition.getEMessages(), IWSDLSearchConstants.MESSAGE_META_NAME);
 		
 		// Grab directly imported components
 		Iterator importsIt = getWSDLFileImports(definition.getEImports()).iterator();
 		while (importsIt.hasNext()) {
 			Import importItem = (Import) importsIt.next();
 			Definition importDefinition = importItem.getEDefinition();
-			List importedComponents = importDefinition.getEPortTypes();
+			List importedComponents = importDefinition.getEMessages();
 			
-			createWSDLComponentObjects(list, importedComponents, IWSDLSearchConstants.PORT_TYPE_META_NAME);
+			createWSDLComponentObjects(list, importedComponents, IWSDLSearchConstants.MESSAGE_META_NAME);
 		}
 		
 		if (scope != null) {
-			WSDLComponentFinder finder = new WSDLComponentFinder(IWSDLSearchConstants.PORT_TYPE_META_NAME);
+			WSDLComponentFinder finder = new WSDLComponentFinder(IWSDLSearchConstants.MESSAGE_META_NAME);
 			Iterator it = finder.getWorkbenchResourceComponents(scope).iterator();
 			while (it.hasNext()) {
 				list.add(it.next());

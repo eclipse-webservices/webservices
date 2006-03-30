@@ -38,9 +38,12 @@ import org.eclipse.wst.wsdl.asd.editor.util.IOpenExternalEditorHelper;
 import org.eclipse.wst.wsdl.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingMessageAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11BindingReferenceEditManager;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11InterfaceReferenceEditManager;
+import org.eclipse.wst.wsdl.ui.internal.edit.W11MessageReferenceEditManager;
 import org.eclipse.wst.wsdl.ui.internal.edit.WSDLXSDTypeReferenceEditManager;
 import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelAdapter;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
@@ -137,6 +140,14 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
             {
             	IFileEditorInput fileEditorInput = (IFileEditorInput) editorInput;
             	return new W11InterfaceReferenceEditManager((W11Description) getModel(), fileEditorInput.getFile());
+            }        	
+        }
+        else if (type == W11MessageReferenceEditManager.class) {
+            IEditorInput editorInput = getEditorInput();
+            if (editorInput instanceof IFileEditorInput)
+            {
+            	IFileEditorInput fileEditorInput = (IFileEditorInput) editorInput;
+            	return new W11MessageReferenceEditManager((W11Description) getModel(), fileEditorInput.getFile());
             }        	
         }
 		
@@ -325,7 +336,15 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 
 	    action = new W11AddPartAction(this);
 	    action.setSelectionProvider(getSelectionManager());
-	    registry.registerAction(action);	    
+	    registry.registerAction(action);
+	    
+	    action = new W11SetNewMessageAction(this);
+	    action.setSelectionProvider(getSelectionManager());
+	    registry.registerAction(action);
+
+	    action = new W11SetExistingMessageAction(this);
+	    action.setSelectionProvider(getSelectionManager());
+	    registry.registerAction(action);
 	  }
 	
   public IOpenExternalEditorHelper getOpenExternalEditorHelper() {

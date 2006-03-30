@@ -25,6 +25,7 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInterfaceCommand;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
@@ -54,6 +55,12 @@ public class W11NewComponentDialog implements IComponentDialog {
 			String baseName = NameUtil.buildUniquePortTypeName(getDefinition(), "NewPortType");
 			dialog = new NewComponentDialog(shell, dialogTitle, baseName);
 		}
+		else if (qualifiedName == IWSDLSearchConstants.MESSAGE_META_NAME) {
+			String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_MESSAGE");
+			String baseName = NameUtil.buildUniqueMessageName(getDefinition(), "NewMessage");
+			dialog = new NewComponentDialog(shell, dialogTitle, baseName);
+		}
+
 	}
 	
 	private Definition getDefinition() {
@@ -92,6 +99,15 @@ public class W11NewComponentDialog implements IComponentDialog {
 			    stack.execute(command);
 			    
 			    Object newWSDLObject = command.getNewPortType();
+			    newObject = (IASDObject) WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) newWSDLObject);
+			}
+			else if (qualifiedName == IWSDLSearchConstants.MESSAGE_META_NAME) {
+				W11AddMessageCommand command = (W11AddMessageCommand) description.getAddMessageCommand();
+				command.setNewMessageName(dialog.getName());
+			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
+			    stack.execute(command);
+			    
+			    Object newWSDLObject = command.getNewMessage();
 			    newObject = (IASDObject) WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) newWSDLObject);
 			}
 		}

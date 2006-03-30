@@ -25,6 +25,7 @@ import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddFaultAction;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.asd.editor.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
 import org.eclipse.wst.wsdl.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.asd.facade.IASDObjectListener;
@@ -34,6 +35,8 @@ import org.eclipse.wst.wsdl.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingMessageAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.visitor.WSDLVisitorForParameters;
 
@@ -199,6 +202,10 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	  actions.add(ASDAddFaultAction.ID);
 	  actions.add(W11AddPartAction.ID);
 	  actions.add(ASDDeleteAction.ID);
+	  actions.add(BaseSelectionAction.SUBMENU_START_ID + "Set Message");
+	  actions.add(W11SetNewMessageAction.ID);
+	  actions.add(W11SetExistingMessageAction.ID);
+	  actions.add(BaseSelectionAction.SUBMENU_END_ID);
 	  
 	  String[] actionIDs = new String[actions.size()];
 	  for (int index = 0; index < actions.size(); index++) {

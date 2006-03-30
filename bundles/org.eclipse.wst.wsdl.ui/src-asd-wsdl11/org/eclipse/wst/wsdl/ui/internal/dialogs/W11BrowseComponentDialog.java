@@ -27,6 +27,7 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.edit.WSDLBindingSearchListProvider;
 import org.eclipse.wst.wsdl.ui.internal.edit.WSDLComponentDescriptionProvider;
 import org.eclipse.wst.wsdl.ui.internal.edit.WSDLInterfaceSearchListProvider;
+import org.eclipse.wst.wsdl.ui.internal.edit.WSDLMessageSearchListProvider;
 import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
 
@@ -83,6 +84,24 @@ public class W11BrowseComponentDialog implements IComponentDialog {
 	      //configuration.setNewComponentHandler(new NewTypeButtonHandler());
 	      
 	      String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_PORTTYPE");
+	      dialog = new ScopedComponentSearchListDialog(shell, dialogTitle, configuration);
+	      
+	      IFile file = getFile();
+	      if (file != null) {
+	    	  ((ScopedComponentSearchListDialog) dialog).setCurrentResource(file);
+	      }
+	    }
+	    else if (qualifiedName == IWSDLSearchConstants.MESSAGE_META_NAME)
+	    {
+	      WSDLComponentDescriptionProvider descriptionProvider = new WSDLComponentDescriptionProvider();
+	      final WSDLMessageSearchListProvider searchListProvider = new WSDLMessageSearchListProvider(definition);
+	     
+	      ComponentSearchListDialogConfiguration configuration = new ComponentSearchListDialogConfiguration();
+	      configuration.setDescriptionProvider(descriptionProvider);
+	      configuration.setSearchListProvider(searchListProvider);
+	      //configuration.setNewComponentHandler(new NewTypeButtonHandler());
+	      
+	      String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_MESSAGE");
 	      dialog = new ScopedComponentSearchListDialog(shell, dialogTitle, configuration);
 	      
 	      IFile file = getFile();

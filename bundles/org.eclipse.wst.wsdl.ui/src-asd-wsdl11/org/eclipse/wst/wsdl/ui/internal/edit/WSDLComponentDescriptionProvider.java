@@ -22,6 +22,7 @@ import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.common.ui.internal.search.dialogs.IComponentDescriptionProvider;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -30,6 +31,7 @@ import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 public class WSDLComponentDescriptionProvider extends LabelProvider implements IComponentDescriptionProvider {
 	  private static final Image BINDING_IMAGE =  WSDLEditorPlugin.getInstance().getImage("icons/binding_obj.gif");
 	  private static final Image PORTTYPE_IMAGE = WSDLEditorPlugin.getInstance().getImage("icons/porttype_obj.gif");
+	  private static final Image MESSAGE_IMAGE = WSDLEditorPlugin.getInstance().getImage("icons/message_obj.gif");
 
 	public boolean isApplicable(Object component) {
 		return true;
@@ -131,6 +133,9 @@ public class WSDLComponentDescriptionProvider extends LabelProvider implements I
 	    			result = BINDING_IMAGE;
 	    		else if ( qualifiedName.equals(IWSDLSearchConstants.PORT_TYPE_META_NAME))
 	    			result = PORTTYPE_IMAGE;
+	    		else if ( qualifiedName.equals(IWSDLSearchConstants.MESSAGE_META_NAME))
+	    			result = MESSAGE_IMAGE;
+
 	    	}
 	    }
 	    else if (component instanceof SearchMatch)
@@ -142,12 +147,17 @@ public class WSDLComponentDescriptionProvider extends LabelProvider implements I
 	    		  result = BINDING_IMAGE;
 	    	  else if ( qualifiedName.equals(IWSDLSearchConstants.PORT_TYPE_META_NAME))
 	    		  result = PORTTYPE_IMAGE;
+	    		else if ( qualifiedName.equals(IWSDLSearchConstants.MESSAGE_META_NAME))
+	    			result = MESSAGE_IMAGE;
+
 	      }
 	    }      
 	    else if (component instanceof Binding)
 	      result = BINDING_IMAGE;      
 	    else if (component instanceof PortType)
 	      result = PORTTYPE_IMAGE;
+	    else if (component instanceof Message)
+		      result = MESSAGE_IMAGE;
 
 	    return result;
 	  }

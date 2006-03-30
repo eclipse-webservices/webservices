@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
@@ -99,8 +100,8 @@ public class WSDLSetComponentHelper {
         boolean foundMatch = false;
         
         // Check itself
-        String currentFileLocation = currentIFile.getLocation().toString();
-        if (spec.getFile() == null || currentFileLocation.equals(spec.getFile().getLocation().toOSString())) {
+        Path currentFileLocation = new Path(currentIFile.getLocation().toString());
+        if (spec.getFile() == null || currentFileLocation.equals(spec.getFile().getLocation())) {
         	// if the ComponentSpecification's getFile() returns null, forget about adding necessary imports
             foundMatch = true;
         }

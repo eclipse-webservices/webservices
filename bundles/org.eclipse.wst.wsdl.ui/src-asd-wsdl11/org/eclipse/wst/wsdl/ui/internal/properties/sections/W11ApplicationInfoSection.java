@@ -83,7 +83,7 @@ public class W11ApplicationInfoSection extends AbstractSection
 	  if (input instanceof WSDLBaseAdapter && ((WSDLBaseAdapter) input).getTarget() instanceof ExtensibleElement) {
 		  eElement = (ExtensibleElement) ((WSDLBaseAdapter) input).getTarget();
 	  }
-	  
+
 	  return eElement;
   }
   
