@@ -22,7 +22,7 @@
 <h1 class="topictitle1">Web services preferences</h1>
 <div><div class="section"><div class="p">To set any of the Web services preferences, follow these steps:<ol><li>Click  <span class="uicontrol">Window &gt; Preferences</span> to open the Preferences
 notebook.</li>
-<li>Expand  <span class="uicontrol">Web services</span>, and click the preference
+<li>Expand  <span class="uicontrol">Web services</span> or <span class="uicontrol">Web and XML</span>, and click the preference
 category that you want to set</li>
 <li>Select the check boxes that you want to set as the default when creating
 your Web service.</li>
@@ -39,6 +39,17 @@ you want to see when running popup actions. If you have disabled any of the
 dialogs by selecting "Do not show this dialog again" on the first page of
 a Web services wizard, you can undo your change by clearing the check box
 beside the dialog that you have chosen to hide.</dd>
+<dt class="dlterm">Profile Compliance and Validation</dt>
+<dd>The Profile Compliance preferences allow you to select your level of compliance
+with the WS-I Simple SOAP Binding Profile (SSBP) and WS-I Attachement Profile
+(AP). Note: if you change the level of WS-I compliance while WS-I incompliances
+are listed in the Task view, the Task view will not be automatically updated.
+The workspace must be revalidated before the warnings will be removed from
+the Task view. For more information on WS-I, refer to: <a href="http://www.ws-i.org/" target="_blank">http://www.ws-i.org/</a>
+<p>For validation preferences, you can choose whether
+or not WSDL files consumed by the Web services wizards are validated, and
+whether or not the WSDL validation must complete before the wizard will move
+to the next step.</p></dd>
 <dt class="dlterm">Project Topology</dt>
 <dd>The Project Topology preferences allow you to:<ul><li>Select the default client project type that the Web services wizards will
 create when generating a Web service client. You can also set the order in
@@ -80,13 +91,6 @@ and you can select your preferred type of test facility</dd>
 <dd>When creating a WSDL file in the WSDL editor, you can set the default
 target namespace. If you do not select to change the default, your WSDL file
 will have http://tempuri.org as its target namespace.</dd>
-<dt class="dlterm">WS-I Compliance</dt>
-<dd>The WS-I Compliance preferences allow you to select your level of compliance
-with the WS-I Simple SOAP Binding Profile (SSBP) and WS-I Attachement Profile
-(AP). Note: if you change the level of WS-I compliance while WS-I incompliances
-are listed in the Task view, the Task view will not be automatically updated.
-The workspace must be revalidated before the warnings will be removed from
-the Task view. For more information on WS-I, refer to: </dd>
 </dl>
 </div>
 </div>
