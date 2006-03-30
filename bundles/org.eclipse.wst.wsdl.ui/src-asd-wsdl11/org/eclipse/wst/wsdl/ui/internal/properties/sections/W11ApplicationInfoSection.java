@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -24,6 +25,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.MouseTrackAdapter;
@@ -33,13 +36,16 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.wst.wsdl.ExtensibleElement;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
+import org.eclipse.wst.wsdl.ui.internal.filter.ExtensiblityElementFilter;
 import org.eclipse.wst.xsd.ui.common.commands.AddAppInfoCommand;
 import org.eclipse.wst.xsd.ui.common.commands.AddAppInfoElementCommand;
 import org.eclipse.wst.xsd.ui.common.commands.AddExtensibilityElementCommand;
@@ -63,11 +69,14 @@ public class W11ApplicationInfoSection extends AbstractSection
   protected Label extensibilityElementsLabel, contentLabel;
   protected ISelectionChangedListener elementSelectionChangedListener;
 
+  Element selectedElement;
   private Text simpleText;
   private Composite page, pageBook1, pageBook2;
   private Button textRadioButton, structureRadioButton;
   private Button addButton, removeButton;
   private PageBook pageBook;
+  private FilterForDialogOfAddButton filterForDialogOfAddButton =
+	  new FilterForDialogOfAddButton();
 
   /**
    * 
@@ -323,36 +332,49 @@ public class W11ApplicationInfoSection extends AbstractSection
     {
       ApplicationInformationPropertiesRegistry registry = WSDLEditorPlugin.getInstance().getApplicationInformationPropertiesRegistry();
       AddApplicationInfoDialog dialog = new AddApplicationInfoDialog(composite.getShell(), registry);
-      List properties = registry.getAllApplicationSpecificSchemaProperties();
+      
+      ExtensibleElement inputExtensibleElement = getInputExtensibleElement();
+      Element hostElement;
+      if (inputExtensibleElement == null ){
+    	  MessageBox errBox = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_ERROR);
+    	  errBox.setText("Add extensibilty element");
+    	  errBox.setMessage("This element is not extensible.");
+    	  errBox.open();
+    	  return;
+      }
+	  hostElement = inputExtensibleElement.getElement();
+	  filterForDialogOfAddButton.setHostElement(hostElement);
+      dialog.addElementsTableFilter(filterForDialogOfAddButton);
+      
+      List schemaSpecs = registry.getAllApplicationSpecificSchemaProperties();
 
-      dialog.setInput(properties);
+      dialog.setInput(schemaSpecs);
       dialog.setBlockOnOpen(true);
 
-      int rc = dialog.open();
-      if (rc == dialog.OK)
+      if (dialog.open() == Window.OK)
       {
         Object[] result = dialog.getResult();
         if (result != null)
         {
           XSDElementDeclaration element = (XSDElementDeclaration) result[0];
-          SpecificationForAppinfoSchema property = (SpecificationForAppinfoSchema) result[1];
+          SpecificationForAppinfoSchema spec = (SpecificationForAppinfoSchema) result[1];
 
           // The case below will never happen..... What scenario makes sense?
           if (input instanceof XSDConcreteComponent)
           {
             AddAppInfoCommand addAppInfo = new AddAppInfoElementCommand("Add AppInfo", (XSDConcreteComponent) input, element);
-            addAppInfo.setSchemaProperties(property);
+            addAppInfo.setSchemaProperties(spec);
 
             if (getCommandStack() != null)
             {
               getCommandStack().execute(addAppInfo);
             }
           }
-          else if (getInputExtensibleElement() instanceof WSDLElement)
+          else if (inputExtensibleElement instanceof WSDLElement)
           {
             // TODO getCommandStack
-            AddExtensibilityElementCommand addEECommand = new AddExtensibilityElementCommand("Add Extensibility Element", ((WSDLElement) getInputExtensibleElement()).getElement(), element.getElement());
-            addEECommand.setSchemaProperties(property);
+            AddExtensibilityElementCommand addEECommand = new AddExtensibilityElementCommand("Add Extensibility Element", ((WSDLElement) inputExtensibleElement).getElement(), element.getElement());
+            addEECommand.setSchemaProperties(spec);
             addEECommand.execute();
           }
 
@@ -417,8 +439,36 @@ public class W11ApplicationInfoSection extends AbstractSection
   {
 
   }
+  
+  /**This filter is to be used by the dialog invoked when addButton is pressed 
+   */
+  private class FilterForDialogOfAddButton extends ViewerFilter{
+	private Element hostElement;
 
-  class ElementTableContentProvider implements IStructuredContentProvider
+	public void setHostElement(Element hostElement) {
+		this.hostElement = hostElement;
+	}
+
+	public boolean select(Viewer viewer, Object parentElement, Object element) {
+		if (element instanceof XSDElementDeclaration) {
+			
+			String namespace = ((XSDElementDeclaration) element).getTargetNamespace();
+			String name = ((XSDElementDeclaration) element).getName();
+			
+			ExtensiblityElementFilter filter = (ExtensiblityElementFilter) WSDLEditorPlugin
+				.getInstance().getExtensiblityElementFilterRegistry()
+				.getProperty(namespace, "");
+
+			if (filter != null) {
+				return filter.isValidContext(hostElement, name);
+			}
+				return true;
+		}
+		return true;
+	}
+  }
+
+  static class ElementTableContentProvider implements IStructuredContentProvider
   {
     protected String facet;
 
@@ -477,7 +527,7 @@ public class W11ApplicationInfoSection extends AbstractSection
     }
   }
 
-  class ElementTableLabelProvider extends LabelProvider implements ITableLabelProvider
+  static class ElementTableLabelProvider extends LabelProvider implements ITableLabelProvider
   {
     public Image getColumnImage(Object element, int columnIndex)
     {
@@ -517,8 +567,6 @@ public class W11ApplicationInfoSection extends AbstractSection
       return "";
     }
   }
-
-  Element selectedElement;
 
   class ElementSelectionChangedListener implements ISelectionChangedListener
   {
