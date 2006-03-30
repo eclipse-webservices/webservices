@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.common;
 
@@ -179,6 +182,45 @@ public final class ResourceUtils {
 		return ResourceUtils.getWorkspaceRoot().findMember(absolutePath);
 	}
 
+	/**
+	 * Returns an {@link org.eclipse.core.resources.IResource IResource}of the
+	 * given file system relative pathname and project or null if no such resource exists.
+	 *
+	 * @param filePath File system relative pathname
+	 * @param project Project
+	 * @return The <code>IResource</code>.
+	 */
+	public static IResource findResourceAtLocation(String filePath, IProject project) {
+		
+		return findResource(findPathAtLocation( new Path(filePath), project));
+	}
+	
+	/**
+	 * This method attempts to convert a path that is relative to a file system
+	 * to a path that is relative to the workspace. Instead of comparing the
+	 * filePath with the install location of the workspace (i.e.
+	 * Platform.getLocation()), the filePath is compared with the location of the project
+	 * since the project could be in a location other than the the default location relative to the
+	 * workspace.
+	 * 
+	 * @param filePath	File path relative to a file system
+	 * @param project	The project the file is in
+	 * @return 			Path relative to the workspace
+	 */
+	public static IPath findPathAtLocation(IPath filePath, IProject project) {
+		IPath result = null;
+
+		IPath projectLocation = project.getLocation();
+
+		if (projectLocation.matchingFirstSegments(filePath) == projectLocation
+				.segmentCount()) {
+			filePath = filePath.removeFirstSegments(projectLocation
+					.segmentCount() - 1);
+			result = filePath.setDevice(null);
+		}
+
+		return result;
+	}
 	/**
 	 * Validates the given string as a name for a resource of the given type(s).
 	 * This method obeys the contract of

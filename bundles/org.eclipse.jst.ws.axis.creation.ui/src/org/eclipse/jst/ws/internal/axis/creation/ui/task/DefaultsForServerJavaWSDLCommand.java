@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -32,12 +33,10 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.util.ClasspathUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
-import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsil.Utils;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -59,6 +58,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 	private final String WSDL_EXT = "wsdl"; //$NON-NLS-1$
 	public final byte MODE_BEAN = (byte) 0;
 	public final String SERVICE_NAME_EXT = "Service"; //$NON-NLS-1$
+	private final String TEMP_URI = "http://tempuri.org/"; //$NON-NLS-1$
 
 	public DefaultsForServerJavaWSDLCommand( ) 
 	{
@@ -169,17 +169,12 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
         {
 		  projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_, serviceServerTypeID_);          
         }
-        else
-        {
-          projectURL = "http://tempuri.org/";          
+        if (projectURL == null) // either no server type defined or server not able to get project URL
+        { 
+          projectURL = TEMP_URI + serviceProject_.getName(); 
+          javaWSDLParam_.setGuessProjectURL(true);
         }
-        
-		if (projectURL == null) {
-			status = StatusUtils.errorStatus(NLS.bind(AxisCreationUIMessages.MSG_ERROR_PROJECT_URL, new String[] {serviceProject_.getName()}));
-			environment.getStatusHandler().reportError(status);
-			return status;
-		}
-		
+        javaWSDLParam_.setProjectURL(projectURL);
 		String serviceURL = projectURL + SERVICE_EXT + simpleBeanName;
 		javaWSDLParam_.setUrlLocation(serviceURL);
 		
@@ -253,4 +248,5 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
   {
     serviceServerTypeID_ = id;
   }
+  
 }

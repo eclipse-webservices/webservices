@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -42,7 +43,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.FileUtil;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.PlatformUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
-import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -63,6 +63,7 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
   private JavaWSDLParameter javaWSDLParam;
   private IProject serverProject;
   private String serviceServerTypeID_;  
+  private final String TEMP_URI = "http://tempuri.org/"; //$NON-NLS-1$
 
   public Skeleton2WSDLCommand( ) {
   }
@@ -211,13 +212,13 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
       {
 	    projectURL = ServerUtils.getEncodedWebComponentURL(serverProject, serviceServerTypeID_);
       }
-      else
-      {
-        projectURL = "http://tempuri.org/";
-      }
       
-      if (projectURL == null)
-        return StatusUtils.errorStatus( NLS.bind(AxisCreationUIMessages.MSG_ERROR_PROJECT_URL, new String[] {serverProject.toString()}));
+      if (projectURL == null) // either no server type defined or server not able to get project URL
+      {
+        projectURL = TEMP_URI + serverProject.getName(); 
+        javaWSDLParam.setGuessProjectURL(true);
+      }
+      javaWSDLParam.setProjectURL(projectURL);
       StringBuffer serviceURL = new StringBuffer(projectURL);
       serviceURL.append(SERVICE_EXT).append(port.getName());
       javaWSDLParam.setUrlLocation(serviceURL.toString());

@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -41,7 +42,6 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -55,8 +55,7 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 	private final String CLASSNAME_PARAM = "newClassName";		//$NON-NLS-1$
 	private JavaWSDLParameter javaWSDLParam_;
 	private IProject serviceProject_;
-    private String serviceServerTypeID_;
-
+    
 	public UpdateAxisWSDDFileTask() 
 	{
 	}
@@ -76,23 +75,6 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 
 		IProject project = serviceProject_;
         
-        String projectURL = null;
-        if (serviceServerTypeID_ != null && serviceServerTypeID_.length()>0)
-        {
-		  projectURL = ServerUtils.getEncodedWebComponentURL(project, serviceServerTypeID_);
-        }
-        else
-        {
-          projectURL = "http://tempuri.org/";          
-        }
-        
-		if (projectURL == null) {
-		    status = StatusUtils.errorStatus(NLS.bind(AxisCreationUIMessages.MSG_ERROR_PROJECT_URL,new String[] {project.toString()}));
-		    environment.getStatusHandler().reportError(status);
-		    return status;		  
-		} else {
-			javaWSDLParam_.setProjectURL(projectURL);
-		}
 		String outputLocation = javaWSDLParam_.getJavaOutput();
 		if (outputLocation == null) {
 			return status;
@@ -221,16 +203,5 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 	{
 	  serviceProject_ = serviceProject;
 	}
-	
-	// rm 
-	/*
-	public void setModel(Model model)
-	{
-	  model_ = model;
-	}
-	*/
-    public void setServiceServerTypeID(String id)
-    {
-      serviceServerTypeID_ = id;
-    }    
+	  
 }

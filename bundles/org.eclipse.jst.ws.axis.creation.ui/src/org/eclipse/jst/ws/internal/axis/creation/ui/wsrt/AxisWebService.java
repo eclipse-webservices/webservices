@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
@@ -27,6 +30,7 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.ComputeAxisSkeletonBeanCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.CopyDeploymentFileCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.ModifyWSDLEndpointAddressCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.UpdateWEBXMLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.BUCheckAxisDeploymentDescriptors;
@@ -153,6 +157,7 @@ public class AxisWebService extends AbstractWebService
 			return null;
 		} else {// For BOTTOM_UP and TOP_DOWN
 			commands.add(new AxisRunInputCommand(this, project));
+			commands.add(new ModifyWSDLEndpointAddressCommand());
 			if (getWebServiceInfo().getServerFactoryId().equals("org.eclipse.jst.server.geronimo.10")) {
 				commands.add(new GeronimoAxisDeployCommand(project));
 			}
@@ -220,7 +225,6 @@ public class AxisWebService extends AbstractWebService
 	    //UpdateAxisWSDDFileTask
 	    registry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", UpdateAxisWSDDFileTask.class);
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", UpdateAxisWSDDFileTask.class, "ServiceProject", new StringToIProjectTransformer());
-        registry.addMapping(BUAxisInputCommand.class, "ServiceServerTypeID", UpdateAxisWSDDFileTask.class);
 	    
 	    //UpdateWEBXMLCommand
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", UpdateWEBXMLCommand.class, "ServerProject", new StringToIProjectTransformer());
@@ -245,19 +249,25 @@ public class AxisWebService extends AbstractWebService
 		
 		// Run extension
 		
+//		ModifyWSDLEndpointAddressCommand
+	    registry.addMapping(AxisRunInputCommand.class, "JavaWSDLParam", ModifyWSDLEndpointAddressCommand.class);
+	    registry.addMapping(AxisRunInputCommand.class, "ServerInstanceId", ModifyWSDLEndpointAddressCommand.class);
+	    registry.addMapping(AxisRunInputCommand.class, "ServerFactoryId", ModifyWSDLEndpointAddressCommand.class);
+	    registry.addMapping(AxisRunInputCommand.class, "ServerProject", ModifyWSDLEndpointAddressCommand.class, "ServiceProject", new StringToIProjectTransformer());
+	    registry.addMapping(AxisRunInputCommand.class, "WsdlURI", ModifyWSDLEndpointAddressCommand.class);
+	    registry.addMapping(BUAxisDefaultingCommand.class, "Parser", ModifyWSDLEndpointAddressCommand.class, "WebServicesParser", null);
+
 		// GeronimoAxisDeployCommand
-		registry.addMapping(AxisRunInputCommand.class, "JavaWSDLParam", GeronimoAxisDeployCommand.class);		
+		registry.addMapping(ModifyWSDLEndpointAddressCommand.class, "JavaWSDLParam", GeronimoAxisDeployCommand.class);		
 	    
 		//AxisDeployCommand
-	    registry.addMapping(AxisRunInputCommand.class, "JavaWSDLParam", AxisDeployCommand.class);
+	    registry.addMapping(ModifyWSDLEndpointAddressCommand.class, "JavaWSDLParam", AxisDeployCommand.class);
 		
 	    // CopyDeploymentFileCommand
 	    registry.addMapping(AxisRunInputCommand.class, "ServerInstanceId", CopyDeploymentFileCommand.class);
 	    
 	    //RefreshProjectCommand
 	    registry.addMapping(AxisRunInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", new StringToIProjectTransformer());
-
-	    
 	    
 	  }
 
@@ -315,11 +325,19 @@ public class AxisWebService extends AbstractWebService
 	    // BuildProjectCommand
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", BuildProjectCommand.class, "Project", projectTransformer);
 
+	    //	ModifyWSDLEndpointAddressCommand
+	    dataRegistry.addMapping(AxisRunInputCommand.class, "JavaWSDLParam", ModifyWSDLEndpointAddressCommand.class);
+	    dataRegistry.addMapping(AxisRunInputCommand.class, "ServerInstanceId", ModifyWSDLEndpointAddressCommand.class);
+	    dataRegistry.addMapping(AxisRunInputCommand.class, "ServerFactoryId", ModifyWSDLEndpointAddressCommand.class);
+	    dataRegistry.addMapping(AxisRunInputCommand.class, "ServerProject", ModifyWSDLEndpointAddressCommand.class, "ServiceProject", new StringToIProjectTransformer());
+	    dataRegistry.addMapping(AxisRunInputCommand.class, "WsdlURI", ModifyWSDLEndpointAddressCommand.class);
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", ModifyWSDLEndpointAddressCommand.class);
+
 	    // GeronimoAxisDeployCommand
-	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", GeronimoAxisDeployCommand.class);
+	    dataRegistry.addMapping(ModifyWSDLEndpointAddressCommand.class, "JavaWSDLParam", GeronimoAxisDeployCommand.class);
 	    
 	    // AxisDeployCommand
-	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", AxisDeployCommand.class);
+	    dataRegistry.addMapping(ModifyWSDLEndpointAddressCommand.class, "JavaWSDLParam", AxisDeployCommand.class);
 	    
 	    // CopyDeploymentFileCommand
 	    dataRegistry.addMapping(AxisRunInputCommand.class, "ServerInstanceId", CopyDeploymentFileCommand.class);
@@ -337,6 +355,7 @@ public class AxisWebService extends AbstractWebService
 	    // OpenJavaEditorCommand
 	    dataRegistry.addMapping(ComputeAxisSkeletonBeanCommand.class, "ClassNames", OpenJavaEditorCommand.class);
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", OpenJavaEditorCommand.class, "Project", projectTransformer);
+	    
 	  }
 	public AxisWebServiceInfo getAxisWebServiceInfo() {
 		return axisWebServiceInfo_;

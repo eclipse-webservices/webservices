@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
@@ -24,6 +27,8 @@ public class AxisRunInputCommand extends AbstractDataModelOperation{
 	private JavaWSDLParameter javaWSDLParam_;
 	private String serverProject_; 
 	private String serverInstanceId_; 
+	private String serverFactoryId_;
+	private String wsdlURI_;
 	
 	public AxisRunInputCommand() {
 	}
@@ -37,6 +42,8 @@ public class AxisRunInputCommand extends AbstractDataModelOperation{
 	{
 	 	javaWSDLParam_ = ws_.getAxisWebServiceInfo().getJavaWSDLParameter();
 	 	serverInstanceId_ = ws_.getWebServiceInfo().getServerInstanceId();
+	 	serverFactoryId_ = ws_.getWebServiceInfo().getServerFactoryId();
+	 	wsdlURI_ = ws_.getWebServiceInfo().getWsdlURL();
 		
 		return Status.OK_STATUS;
 	  }
@@ -57,4 +64,11 @@ public class AxisRunInputCommand extends AbstractDataModelOperation{
 		return serverInstanceId_;
 	}	
 	
+	public String getServerFactoryId() {
+		return serverFactoryId_;
+	}
+
+	public String getWsdlURI() {
+		return wsdlURI_;
+	}	
 }

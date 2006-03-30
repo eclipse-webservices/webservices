@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060204  124408   rsinha@ca.ibm.com - Rupam Kuehner          
+ * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -502,9 +503,18 @@ public final class ServerUtils {
 		}
 		return webProjectURL;
 	}
-
+	
 	public static String getEncodedWebComponentURL(IProject project, String serverFactoryId) {
 		String url = getWebComponentURL(project, serverFactoryId);
+		return encodeURL(url);
+	}
+	
+	public static String getEncodedWebComponentURL(IProject project, String serverFactoryId, IServer server) {
+		String url = getWebComponentURL(project, serverFactoryId, server);
+		return encodeURL(url);
+	}
+
+	public static String encodeURL(String url) {
 		if (url != null) {
 			int index = url.lastIndexOf('/');
 			if (index != -1) {

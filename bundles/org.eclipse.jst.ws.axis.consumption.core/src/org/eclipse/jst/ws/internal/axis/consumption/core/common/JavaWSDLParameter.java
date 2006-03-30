@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core.common;
 
@@ -59,6 +62,7 @@ public class JavaWSDLParameter {
 	private String[] deploymentFiles = null;
 	private String[] javaFiles = null;
 	private String projectURL = null;
+	private boolean guessProjectURL = false;
 	private HashMap mappingPairs;
 	private String httpUsername_ = null;
 	private String httpPassword_ = null;
@@ -455,6 +459,14 @@ public class JavaWSDLParameter {
 	 */
 	public void setHTTPPassword(String httpPassword) {
 		httpPassword_ = httpPassword;
+	}
+
+	public boolean isGuessProjectURL() {
+		return guessProjectURL;
+	}
+
+	public void setGuessProjectURL(boolean guessProjectURL) {
+		this.guessProjectURL = guessProjectURL;
 	}
 
 }
