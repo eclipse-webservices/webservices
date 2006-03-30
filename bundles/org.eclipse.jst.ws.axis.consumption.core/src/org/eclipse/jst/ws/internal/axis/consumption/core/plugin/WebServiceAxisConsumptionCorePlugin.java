@@ -18,8 +18,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jst.ws.internal.axis.consumption.core.context.AxisEmitterContext;
 import org.eclipse.jst.ws.internal.axis.consumption.core.context.PersistentAxisEmitterContext;
-import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
-import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.ILog;
 import org.osgi.framework.BundleContext;
