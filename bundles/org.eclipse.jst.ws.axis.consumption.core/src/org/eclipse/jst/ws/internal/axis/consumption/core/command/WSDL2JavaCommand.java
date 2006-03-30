@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd   bug     Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060329   127016 andyzhai@ca.ibm.com - Andy Zhai
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
@@ -18,6 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.axis.constants.Scope;
 import org.apache.axis.wsdl.toJava.Emitter;
 import org.apache.axis.wsdl.toJava.GeneratedFileInfo;
 import org.eclipse.core.runtime.IAdaptable;
@@ -28,6 +32,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.consumption.core.context.AxisEmitterContext;
+import org.eclipse.jst.ws.internal.axis.consumption.core.context.AxisEmitterDefaults;
 import org.eclipse.jst.ws.internal.axis.consumption.core.plugin.WebServiceAxisConsumptionCorePlugin;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
@@ -133,18 +139,59 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			//
 			// 		eclipse -vmargs "-DAxisWsdl2JavaTimeout=60000"
 			//
-			
+			// When AxisWsdl2JavaTimeout is set, the Axis emitter preference page timeout setting is ignored
+		    AxisEmitterContext context = WebServiceAxisConsumptionCorePlugin.getInstance().getAxisEmitterContext();
 			String wsdl2JavaTimeoutProperty = System.getProperty("AxisWsdl2JavaTimeout");
+			long timeout;
 			if (wsdl2JavaTimeoutProperty != null) {
-				long timeout;
 				timeout = new Integer(wsdl2JavaTimeoutProperty).longValue();
 				wsdl2Java.setTimeout(timeout);
-				environment.getLog().log(ILog.INFO, 5091, this, "execute", "Timeout = " + timeout);
+				environment.getLog().log(ILog.INFO, 5091, this, "execute", "AxisWsdl2JavaTimeout = " + timeout);				
 			}
+			else if(context.getTimeOut() != AxisEmitterDefaults.getTimeOutDefault())
+			{
+				timeout = context.getTimeOut() * 1000;
+				wsdl2Java.setTimeout(timeout);
+				environment.getLog().log(ILog.INFO, 5100, this, "execute", "Timeout = " + timeout);
+			}
+		    if (context.getDeployScopeType() != AxisEmitterDefaults.getDeployScopeDefault())
+		    {
+		    	switch (context.getDeployScopeType())
+		    	{
+		    		case AxisEmitterContext.DEPLOY_SCOPE_TYPE_APPLICATION:
+		    			wsdl2Java.setScope(Scope.APPLICATION);
+						environment.getLog().log(ILog.INFO, 5101, this, "execute", " Deploy Scope: Application" );
+		    			break;
+		    		case AxisEmitterContext.DEPLOY_SCOPE_TYPE_REQUEST:
+		    			wsdl2Java.setScope(Scope.REQUEST);
+						environment.getLog().log(ILog.INFO, 5102, this, "execute", " Deploy Scope: Request" );
+		    			break;
+		    		case AxisEmitterContext.DEPLOY_SCOPE_TYPE_SESSTION:
+		    			wsdl2Java.setScope(Scope.SESSION);
+						environment.getLog().log(ILog.INFO, 5103, this, "execute", " Deploy Scope: Session" );
+		    			break;
+		    		default:
+		    	}
+		    }
+		    
+		    if (context.isAllWantedEnabled() != AxisEmitterDefaults.getAllWantedDefault())
+		    {
+		    	wsdl2Java.setAllWanted(context.isAllWantedEnabled());
+				environment.getLog().log(ILog.INFO, 5104, this, "execute", " set AllWanted : " + context.isAllWantedEnabled() );
+		    }
+
+		    if (context.isHelperWantedEnabled() != AxisEmitterDefaults.getHelperWantedDefault())
+		    {
+		    	wsdl2Java.setHelperWanted(context.isHelperWantedEnabled());
+				environment.getLog().log(ILog.INFO, 5105, this, "execute", " set HelperWanted : " + context.isHelperWantedEnabled() );
+			}
+		    if (context.isWrapArraysEnabled() != AxisEmitterDefaults.getWrapArraysDefault())
+		    {
+		    	wsdl2Java.setWrapArrays(context.isWrapArraysEnabled());
+				environment.getLog().log(ILog.INFO, 5106, this, "execute", " set WrapArrays : " + context.isWrapArraysEnabled() );
+		    }
 			
 			ProgressUtils.report(monitor, NLS.bind(AxisConsumptionCoreMessages.MSG_PARSING_WSDL, javaWSDLParam.getInputWsdlLocation() ) );
-			
-
 			
 			wsdl2Java.run(javaWSDLParam.getInputWsdlLocation());
 			

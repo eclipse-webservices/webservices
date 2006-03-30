@@ -7,12 +7,19 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd   bug     Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060329   127016 andyzhai@ca.ibm.com - Andy Zhai
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.core.plugin;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jst.ws.internal.axis.consumption.core.context.AxisEmitterContext;
+import org.eclipse.jst.ws.internal.axis.consumption.core.context.PersistentAxisEmitterContext;
+import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.ILog;
 import org.osgi.framework.BundleContext;
@@ -39,6 +46,7 @@ public class WebServiceAxisConsumptionCorePlugin extends Plugin
 	private static WebServiceAxisConsumptionCorePlugin instance_;
 	private ILog log_;
 
+	private PersistentAxisEmitterContext axisEmitterContext_;
 	/**
 	* Constructs a runtime plugin object for this plugin.
 	* The "plugin" element in plugin.xml should include the attribute
@@ -67,6 +75,13 @@ public class WebServiceAxisConsumptionCorePlugin extends Plugin
 	*/
 	static public WebServiceAxisConsumptionCorePlugin getInstance() {
 		return instance_;
+	}
+	
+	public AxisEmitterContext getAxisEmitterContext()
+	{
+		if (axisEmitterContext_ == null) 
+	  		axisEmitterContext_ = PersistentAxisEmitterContext.getInstance();
+		return axisEmitterContext_;
 	}
 
 	/**

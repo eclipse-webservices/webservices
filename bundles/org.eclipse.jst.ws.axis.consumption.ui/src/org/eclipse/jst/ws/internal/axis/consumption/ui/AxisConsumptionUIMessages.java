@@ -7,6 +7,9 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd   bug     Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060329   127016 andyzhai@ca.ibm.com - Andy Zhai
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui;
 
@@ -47,7 +50,28 @@ public final class AxisConsumptionUIMessages extends NLS {
 	public static String LABEL_EXPLORE_MAPPINGS_XML2BEAN;
 	public static String TOOLTIP_N2P_SHOW_MAPPINGS;
 	public static String MSG_ERROR_XML_FILE_OVERWRITE_DISABLED;
-
+	public static String TOOLTIP_PPAE_PAGE;
+	public static String TOOLTIP_PPAE_CHECKBOX_ALL_WANTED;
+	public static String TOOLTIP_PPAE_CHECKBOX_HELPER_WANTED;
+	public static String TOOLTIP_PPAE_CHECKBOX_WRAP_ARRAYS;
+	public static String TOOLTIP_PPAE_CHECKBOX_USE_INHERITED_METHODS;
+	public static String TOOLTIP_PPAE_COMBO_DEPLOY_SCOPE;
+	public static String TOOLTIP_PPAE_FIELD_TIME_OUT;
+	public static String TOOLTIP_PPAE_GROUP_WSDL2JAVA;
+	public static String TOOLTIP_PPAE_GROUP_JAVA2WSDL;	
+	public static String BUTTON_ALL_WANTED;
+	public static String BUTTON_HELPER_WANTED;
+	public static String BUTTON_WRAP_ARRAYS;
+	public static String BUTTON_USE_INHERITED_METHODS;
+	public static String LABEL_DEPLOY_SCOPE;
+	public static String LABEL_TIME_OUT;
+	public static String GROUP_WSDL2JAVA_NAME;
+	public static String GROUP_JAVA2WSDL_NAME;
+	public static String DEPLOY_SCOPE_APPLICATION;
+	public static String DEPLOY_SCOPE_REQUEST;
+	public static String DEPLOY_SCOPE_SESSION;
+	public static String MSG_ERROR_INVALID_TIME_OUT;
+	public static String MSG_USE_JVM_ARGUMENT_FOR_TIME_OUT;
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, AxisConsumptionUIMessages.class);
 	}

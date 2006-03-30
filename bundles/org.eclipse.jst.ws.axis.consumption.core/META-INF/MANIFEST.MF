@@ -9,6 +9,7 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.jst.ws.internal.axis.consumption.core;x-internal:=true,
  org.eclipse.jst.ws.internal.axis.consumption.core.command;x-internal:=true,
  org.eclipse.jst.ws.internal.axis.consumption.core.common;x-internal:=true,
+ org.eclipse.jst.ws.internal.axis.consumption.core.context;x-internal:=true,
  org.eclipse.jst.ws.internal.axis.consumption.core.plugin;x-internal:=true
 Require-Bundle: org.apache.ant,
  org.eclipse.core.resources,
