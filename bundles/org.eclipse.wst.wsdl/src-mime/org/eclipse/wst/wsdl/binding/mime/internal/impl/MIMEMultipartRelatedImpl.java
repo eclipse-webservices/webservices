@@ -233,4 +233,12 @@ public class MIMEMultipartRelatedImpl extends ExtensibilityElementImpl implement
         addMIMEPart(mimePart);
       }
     }
+
+    public QName getElementType()
+    {
+      if (elementType == null)
+        elementType = new QName(MIMEConstants.MIME_NAMESPACE_URI, MIMEConstants.MULTIPART_RELATED_ELEMENT_TAG);
+      return elementType;
+    } 
+    
 } //MIMEMultipartRelatedImpl

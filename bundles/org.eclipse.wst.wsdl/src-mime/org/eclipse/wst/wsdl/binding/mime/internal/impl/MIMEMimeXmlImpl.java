@@ -256,4 +256,10 @@ public class MIMEMimeXmlImpl extends ExtensibilityElementImpl implements MIMEMim
     }
   }
 
+  public QName getElementType()
+  {
+    if (elementType == null)
+      elementType = new QName(MIMEConstants.MIME_NAMESPACE_URI, MIMEConstants.MIME_XML_ELEMENT_TAG);
+    return elementType;
+  } 
 } //MIMEMimeXmlImpl

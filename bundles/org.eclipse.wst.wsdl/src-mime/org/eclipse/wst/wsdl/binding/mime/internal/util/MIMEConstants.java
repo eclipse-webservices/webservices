@@ -15,7 +15,7 @@ import org.w3c.dom.Element;
 public final class MIMEConstants 
 {
   public static final String CONTENT_ELEMENT_TAG = "content";
-  public static final String MIME_XML_ELEMENT_TAG = "mimeXML";
+  public static final String MIME_XML_ELEMENT_TAG = "mimeXml";
   public static final String MULTIPART_RELATED_ELEMENT_TAG = "multipartRelated";
   public static final String PART_ELEMENT_TAG = "part";
 	  

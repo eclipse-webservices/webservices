@@ -327,4 +327,11 @@ public class MIMEContentImpl extends ExtensibilityElementImpl implements MIMECon
     }
   }
 
+  public QName getElementType()
+  {
+    if (elementType == null)
+      elementType = new QName(MIMEConstants.MIME_NAMESPACE_URI, MIMEConstants.CONTENT_ELEMENT_TAG);
+    return elementType;
+  } 
+  
 } //MIMEContentImpl

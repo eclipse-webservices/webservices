@@ -13,6 +13,8 @@ package org.eclipse.wst.wsdl.tests;
 
 import java.util.Iterator;
 
+import javax.xml.namespace.QName;
+
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -23,6 +25,13 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.WSDLPackage;
+import org.eclipse.wst.wsdl.binding.mime.MIMEContent;
+import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
+import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
+import org.eclipse.wst.wsdl.binding.mime.MIMEMultipartRelated;
+import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
+import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
+import org.eclipse.wst.wsdl.binding.mime.internal.util.MIMEConstants;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -58,6 +67,14 @@ public class BugFixesTest extends TestCase
       protected void runTest()
       {
         testTypeAndElementResolution();
+      }
+    });
+
+    suite.addTest(new BugFixesTest("MIMEGetTypeName")
+    {
+      protected void runTest()
+      {
+        testReturnsProperQNameForMIMEExtensibilityElements();
       }
     });
 
@@ -144,4 +161,31 @@ public class BugFixesTest extends TestCase
     }
   }
 
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=133953
+   */
+  public void testReturnsProperQNameForMIMEExtensibilityElements()
+  {
+    MIMEFactory factory = MIMEPackage.eINSTANCE.getMIMEFactory();
+
+    MIMEContent content = factory.createMIMEContent();
+    QName contentElementType = content.getElementType();
+    assertEquals(MIMEConstants.MIME_NAMESPACE_URI, contentElementType.getNamespaceURI());
+    assertEquals(MIMEConstants.CONTENT_ELEMENT_TAG, contentElementType.getLocalPart());
+
+    MIMEMimeXml mimeXml = factory.createMIMEMimeXml();
+    QName mimeXmlElementType = mimeXml.getElementType();
+    assertEquals(MIMEConstants.MIME_NAMESPACE_URI, mimeXmlElementType.getNamespaceURI());
+    assertEquals(MIMEConstants.MIME_XML_ELEMENT_TAG, mimeXmlElementType.getLocalPart());
+
+    MIMEMultipartRelated multipartRelated = factory.createMIMEMultipartRelated();
+    QName multipartRelatedElementType = multipartRelated.getElementType();
+    assertEquals(MIMEConstants.MIME_NAMESPACE_URI, multipartRelatedElementType.getNamespaceURI());
+    assertEquals(MIMEConstants.MULTIPART_RELATED_ELEMENT_TAG, multipartRelatedElementType.getLocalPart());
+
+    MIMEPart part = factory.createMIMEPart();
+    QName partElementType = part.getElementType();
+    assertEquals(MIMEConstants.MIME_NAMESPACE_URI, partElementType.getNamespaceURI());
+    assertEquals(MIMEConstants.PART_ELEMENT_TAG, partElementType.getLocalPart());
+  }
 }

@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
+import org.eclipse.wst.wsdl.binding.mime.internal.util.MIMEConstants;
 import org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
@@ -192,4 +193,11 @@ public class MIMEPartImpl extends ExtensibilityElementImpl implements MIMEPart {
       true : ((DefinitionImpl)getEnclosingDefinition()).getUseExtensionFactories();
   }
 
+  public QName getElementType()
+  {
+    if (elementType == null)
+      elementType = new QName(MIMEConstants.MIME_NAMESPACE_URI, MIMEConstants.PART_ELEMENT_TAG);
+    return elementType;
+  } 
+  
 } //MIMEPartImpl
