@@ -1,12 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+# 20060329	 128827 kathy@ca.ibm.com  - Kathy Chan
+# 20060329	 124667 kathy@ca.ibm.com  - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui;
 
@@ -52,6 +56,8 @@ public final class AxisCreationUIMessages extends NLS {
 	public static String STYLE_DOC_LITERAL;
 	public static String STYLE_RPC_ENCODED;
 	public static String MSG_ERROR_COMPILER_LEVEL_NOT_COMPATIBLE;
+	public static String MSG_ERROR_MODIFY_ENDPOINT;
+	public static String MSG_ERROR_SKELETON_MERGE;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, AxisCreationUIMessages.class);
