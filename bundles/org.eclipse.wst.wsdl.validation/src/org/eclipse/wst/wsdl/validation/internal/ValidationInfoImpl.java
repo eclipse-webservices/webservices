@@ -288,6 +288,10 @@ public class ValidationInfoImpl implements IValidationReport, ControllerValidati
 	 */
 	public Object getAttribute(String name) 
 	{
+		if(configuration == null)
+		{
+			return null;
+		}
 		return configuration.getProperty(name);
 	}
 	

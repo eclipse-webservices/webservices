@@ -73,7 +73,7 @@ public class WSDLValidator
    */
   public IValidationReport validate(String uri)
   {
-   return validate(uri, null, null);
+   return validate(uri, null, new WSDLValidationConfiguration());
   }
   
   /**
