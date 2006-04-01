@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060331   128827 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.preferences;
 
@@ -44,6 +47,10 @@ public class ResourceManagmentPreferencePage extends PreferencePage implements I
   private Button checkoutFiles;
   /*CONTEXT_ID PPRM0004 for the checkout files check box on the Resource Management Preference Page*/
   private String INFOPOP_PPRM_CHECKBOX_CHECK_OUT = WebServiceUIPlugin.ID + ".PPRM0004";
+  
+  private Button skeletonMerge;
+  /*CONTEXT_ID PPRM0004 for the skeleton merge check box on the Resource Management Preference Page*/
+  private String INFOPOP_PPRM_CHECKBOX_SKELETON_MERGE = WebServiceUIPlugin.ID + ".PPRM0005";
 
  /**
    * Creates preference page controls on demand.
@@ -71,6 +78,10 @@ public class ResourceManagmentPreferencePage extends PreferencePage implements I
     checkoutFiles = createCheckBox(parent, WSUIPluginMessages.BUTTON_CHECKOUT_FILES);    
     checkoutFiles.setToolTipText(WSUIPluginMessages.TOOLTIP_PPRM_CHECKBOX_CHECK_OUT);
     helpSystem.setHelp(checkoutFiles, INFOPOP_PPRM_CHECKBOX_CHECK_OUT);
+    
+    skeletonMerge = createCheckBox(parent, WSUIPluginMessages.BUTTON_SKELETON_MERGE);    
+    skeletonMerge.setToolTipText(WSUIPluginMessages.TOOLTIP_PPRM_CHECKBOX_SKELETON_MERGE);
+    helpSystem.setHelp(skeletonMerge, INFOPOP_PPRM_CHECKBOX_SKELETON_MERGE);
 
     initializeValues();
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);    
@@ -123,6 +134,7 @@ public class ResourceManagmentPreferencePage extends PreferencePage implements I
     overWriteFiles.setSelection( ResourceDefaults.getOverwriteFilesDefault());
     createFolders.setSelection( ResourceDefaults.getCreateFoldersDefault());
     checkoutFiles.setSelection( ResourceDefaults.getCheckoutFilesDefault());
+    skeletonMerge.setSelection( ResourceDefaults.getSkeletonMergeDefault());
   }
 
   /**
@@ -134,7 +146,8 @@ public class ResourceManagmentPreferencePage extends PreferencePage implements I
     ResourceContext context = WebServicePlugin.getInstance().getResourceContext();
     overWriteFiles.setSelection( context.isOverwriteFilesEnabled());
     createFolders.setSelection( context.isCreateFoldersEnabled());
-    checkoutFiles.setSelection( context.isCheckoutFilesEnabled());    
+    checkoutFiles.setSelection( context.isCheckoutFilesEnabled());
+    skeletonMerge.setSelection( context.isSkeletonMergeEnabled()); 
    }
 
   /**
@@ -146,7 +159,8 @@ public class ResourceManagmentPreferencePage extends PreferencePage implements I
     ResourceContext context = WebServicePlugin.getInstance().getResourceContext();
     context.setOverwriteFilesEnabled( overWriteFiles.getSelection() );
     context.setCreateFoldersEnabled( createFolders.getSelection() );
-    context.setCheckoutFilesEnabled( checkoutFiles.getSelection() );    
+    context.setCheckoutFilesEnabled( checkoutFiles.getSelection() );  
+    context.setSkeletonMergeEnabled( skeletonMerge.getSelection() );
   }
 }
 

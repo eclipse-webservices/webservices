@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
+ * 20060330   128827 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
@@ -309,6 +310,7 @@ public class AxisWebService extends AbstractWebService
 	    // BackupSkelImplCommand
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", BackupSkelImplCommand.class);      
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "JavaWSDLParam", BackupSkelImplCommand.class);
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "WebServiceInfo", BackupSkelImplCommand.class);
 	    
 	    // Skeleton2WSDLCommand
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", Skeleton2WSDLCommand.class);

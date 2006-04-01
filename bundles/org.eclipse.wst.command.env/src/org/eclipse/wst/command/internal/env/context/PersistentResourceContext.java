@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060331   128827 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.context;
 
@@ -43,6 +46,7 @@ public class PersistentResourceContext extends PersistentContext implements Reso
     setDefault(PREFERENCE_CREATE_FOLDERS, ResourceDefaults
         .getCreateFoldersDefault());
     setDefault(PREFERENCE_CHECKOUT, ResourceDefaults.getCheckoutFilesDefault());
+    setDefault(PREFERENCE_SKELETON_MERGE, ResourceDefaults.getSkeletonMergeDefault());
   }
 
   public void setOverwriteFilesEnabled(boolean enable)
@@ -74,6 +78,16 @@ public class PersistentResourceContext extends PersistentContext implements Reso
   {
     return getValueAsBoolean(PREFERENCE_CHECKOUT);
   }
+  
+  public void setSkeletonMergeEnabled(boolean enable)
+  {
+    setValue(PREFERENCE_SKELETON_MERGE, enable);
+  }
+
+  public boolean isSkeletonMergeEnabled()
+  {
+    return getValueAsBoolean(PREFERENCE_SKELETON_MERGE);
+  }
 
   public ResourceContext copy()
   {
@@ -81,6 +95,7 @@ public class PersistentResourceContext extends PersistentContext implements Reso
     cc.setOverwriteFilesEnabled(isOverwriteFilesEnabled());
     cc.setCreateFoldersEnabled(isCreateFoldersEnabled());
     cc.setCheckoutFilesEnabled(isCheckoutFilesEnabled());
+    cc.setSkeletonMergeEnabled(isSkeletonMergeEnabled());
     return cc;
   }
 }

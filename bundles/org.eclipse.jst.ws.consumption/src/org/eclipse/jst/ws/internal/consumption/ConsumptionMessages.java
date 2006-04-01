@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060217   126757 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060401   128827 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption;
 
@@ -108,6 +109,7 @@ public final class ConsumptionMessages extends NLS {
     public static String MSG_ERROR_FIXED_FACETS;
     public static String MSG_FACETS;
     public static String MSG_ERROR_SETTING_RUNTIME;
+	public static String MSG_ERROR_FILE_MERGE;
     
 
 	static {

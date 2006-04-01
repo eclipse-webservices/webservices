@@ -12,6 +12,7 @@
  * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060329   128827 kathy@ca.ibm.com - Kathy Chan
  * 20060329   124667 kathy@ca.ibm.com - Kathy Chan
+ * 20060331   128827 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui;
 
@@ -47,7 +48,7 @@ public final class WSUIPluginMessages extends NLS {
 	public static String TOOLTIP_PPRM_CHECKBOX_OVERWRITE_FILES;
 	public static String TOOLTIP_PPRM_CHECKBOX_CREATE_FOLDERS;
 	public static String TOOLTIP_PPRM_CHECKBOX_CHECK_OUT;
-	public static String TOOLTIP_PPRM_SKELETON_MERGE;
+	public static String TOOLTIP_PPRM_CHECKBOX_SKELETON_MERGE;
 	public static String BUTTON_CREATE_FOLDERS;
 	public static String BUTTON_OVERWRITE_FILES;
 	public static String BUTTON_CHECKOUT_FILES;

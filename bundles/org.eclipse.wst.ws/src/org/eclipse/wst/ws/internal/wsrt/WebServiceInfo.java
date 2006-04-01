@@ -10,9 +10,12 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060221   128905 kathy@ca.ibm.com - Kathy Chan
+ * 20060330   128827 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsrt;
+
+import org.eclipse.wst.ws.internal.common.MergeUtils;
 
 public class WebServiceInfo {
 
@@ -88,6 +91,7 @@ public class WebServiceInfo {
 	public void setImplURLs(java.lang.String[] implURLs)
 	{
 		this.implURLs = implURLs;
+		MergeUtils.storeMergeModels(implURLs);
 	}
 	
 }

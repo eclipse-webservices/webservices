@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060330 128827   kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -15,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.wsdl.Binding;
 import javax.wsdl.Definition;
@@ -41,6 +45,7 @@ import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
 
 public class BackupSkelImplCommand extends AbstractDataModelOperation
 {
@@ -49,7 +54,9 @@ public class BackupSkelImplCommand extends AbstractDataModelOperation
   private final String BAK_EXT = "bak";	//$NON-NLS-1$
   private final String JAVA = "java";	//$NON-NLS-1$
   private WebServicesParser webServicesParser;
-  private JavaWSDLParameter javaWSDLParam;  
+  private JavaWSDLParameter javaWSDLParam; 
+  
+  private WebServiceInfo webServiceInfo;
 
   public BackupSkelImplCommand( ) {
   }
@@ -83,6 +90,7 @@ public class BackupSkelImplCommand extends AbstractDataModelOperation
 	  // Compute the qualified name of the Java bean skeleton
 	  Service service = null;
 	  Port port = null;
+	  ArrayList implURLList = new ArrayList();
 	  if (definition != null) {
 		  StringBuffer beanName = new StringBuffer();
 		  String beanPackageName = WSDLUtils.getPackageName(definition);
@@ -108,7 +116,18 @@ public class BackupSkelImplCommand extends AbstractDataModelOperation
 		  
 		  String beanNamePathString = beanNameString.replace('.',IPath.SEPARATOR);
 		  IPath skelImplPath = new Path (javaWSDLParam.getJavaOutput()).append(new Path (beanNamePathString)).addFileExtension(JAVA);
-		  if (skelImplPath.toFile().exists()) {
+		  
+		  // store the name of the implURL
+		  String implURLString;
+		  try {
+			  implURLString = skelImplPath.toFile().toURL().toString();
+		  } catch (MalformedURLException e1) {
+			  implURLString = PlatformUtils.getFileURLFromPath(skelImplPath);
+		  }
+		  implURLList.add( implURLString );
+		  
+		  if (skelImplPath.toFile().exists())  {
+			  
 			  IPath targetPath = skelImplPath.addFileExtension(BAK_EXT);
 			  try {
 				  finStream = new FileInputStream(skelImplPath.toString());
@@ -128,6 +147,11 @@ public class BackupSkelImplCommand extends AbstractDataModelOperation
 				  } catch (IOException e) {
 				  }
 			  }
+		  }
+		  
+		  if (context.isSkeletonMergeEnabled()) {
+			  String[] implURLArray = new String[implURLList.size()];
+			  webServiceInfo.setImplURLs( (String[]) (implURLList.toArray(implURLArray)));
 		  }
 	  } 
 	  else {
@@ -153,6 +177,11 @@ public class BackupSkelImplCommand extends AbstractDataModelOperation
   public void setWebServicesParser(WebServicesParser webServicesParser) {
     this.webServicesParser = webServicesParser;
   }
+
+
+public void setWebServiceInfo(WebServiceInfo webServiceInfo) {
+	this.webServiceInfo = webServiceInfo;
+}
   
 
 }
