@@ -79,6 +79,10 @@ public class WSDLComponentDescriptionProvider extends LabelProvider implements I
 	    return result;
 	}
 
+	public Image getFileIcon(Object component) {
+		return WSDLEditorPlugin.getInstance().getImage("icons/wsdl_file_obj.gif");
+	}
+
 	public IFile getFile(Object component) {
 	    IFile result = null;
 	    if (component instanceof ComponentSpecification)
