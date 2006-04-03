@@ -23,7 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Hashtable;
 
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.codegen.merge.java.JControlModel;
 import org.eclipse.emf.codegen.merge.java.JMerger;
 import org.eclipse.emf.codegen.merge.java.facade.FacadeHelper;
@@ -32,7 +32,7 @@ import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
 public class MergeUtils {
 	private static Hashtable MergeModel;
-	private static final String MERGE_XML = "merge.xml";
+	private static final String MERGE_XML = "/merge.xml";
 	private static JControlModel jMergeControlModel = null;
 
 	
@@ -70,7 +70,7 @@ public class MergeUtils {
 				if (aFile.exists()) {
 					inStream = new FileInputStream(aFile);
 					jMerger = new JMerger(jMergeControlModel);
-					jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForInputStream(inStream));
+					jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForInputStream(inStream));
 					MergeModel.put(filename, jMerger);
 				}
 			}
@@ -99,10 +99,9 @@ public class MergeUtils {
 			jMergeControlModel = new JControlModel();
 			File mergeXML = null;
 			try {
-				String dir = new File(Platform.asLocalURL(WSPlugin.getInstance().getBundle().getEntry("/")).getFile()).toString();
-				mergeXML = new File(dir + File.pathSeparator + MERGE_XML).getAbsoluteFile();
+				mergeXML = new File(FileLocator.toFileURL(WSPlugin.getInstance().getBundle().getEntry(MERGE_XML)).getFile()).getAbsoluteFile();
 			} catch (IOException e) {
-				// Error reading merge.xml in org.eclipse.jst.ws.consumption plugin directory
+				// This should never happen since merge.xml is in the org.eclipse.jst.ws.consumption plugin directory
 			}
 
 			if (mergeXML != null) {
@@ -128,7 +127,7 @@ public class MergeUtils {
 			InputStream inStream = null;
 			try {
 				inStream = new FileInputStream(new File (filename));
-				jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForInputStream(inStream));
+				jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForInputStream(inStream));
 				jMerger.merge();
 				mergedContent = jMerger.getTargetCompilationUnitContents();			
 			} catch (FileNotFoundException e) {

@@ -78,7 +78,7 @@ public class SkeletonMergeCommand extends AbstractDataModelOperation
 								  FileResourceUtils.createFileAtLocation(context, targetPath.makeAbsolute(), inStream,
 										  monitor, environment.getStatusHandler());
 							  } catch (CoreException e) {
-								  e.printStackTrace();status = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_FILE_MERGE, urls_), e);
+								  status = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_FILE_MERGE, urls_), e);
 								  environment.getStatusHandler().reportError( status );
 							  }
 						  }
