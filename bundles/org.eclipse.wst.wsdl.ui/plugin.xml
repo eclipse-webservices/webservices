@@ -204,6 +204,13 @@
      </ApplicationSpecificSchemaProperties>
    </extension>
    
+   <extension point="org.eclipse.wst.wsdl.ui.ApplicationInformationDescription">
+     <ApplicationSpecificSchemaProperties
+     	  displayName="http://schemas.xmlsoap.org/wsdl/mime/"
+      	namespaceURI="http://schemas.xmlsoap.org/wsdl/mime/">
+     </ApplicationSpecificSchemaProperties>
+   </extension>
+   
    <extension point="org.eclipse.ui.popupMenus"> 
       <objectContribution 
          id="org.eclipse.wst.wsdl.ui.refactoring.menu.objectContrib" 
