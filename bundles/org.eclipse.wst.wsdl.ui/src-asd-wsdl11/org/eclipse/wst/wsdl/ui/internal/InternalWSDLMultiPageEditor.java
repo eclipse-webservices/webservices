@@ -41,9 +41,11 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11BindingReferenceEditManager;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11InterfaceReferenceEditManager;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11MessageReferenceEditManager;
+import org.eclipse.wst.wsdl.ui.internal.edit.WSDLXSDElementReferenceEditManager;
 import org.eclipse.wst.wsdl.ui.internal.edit.WSDLXSDTypeReferenceEditManager;
 import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelAdapter;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
@@ -53,7 +55,9 @@ import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLResourceUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
+import org.eclipse.wst.xsd.editor.XSDElementReferenceEditManager;
 import org.eclipse.wst.xsd.editor.XSDTypeReferenceEditManager;
+import org.eclipse.xsd.XSDSchema;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -108,6 +112,17 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 		return model;
 	}
 	
+	private XSDSchema[] getInlineSchemas() {
+		List types = getModel().getTypes();
+		XSDSchema[] schemas = new XSDSchema[types.size()];
+		for (int index = 0; index < types.size(); index++) {
+			W11Type type = (W11Type) types.get(index);
+			schemas[index] = (XSDSchema) type.getTarget();
+		}
+		
+		return schemas;
+	}
+	
 	public Object getAdapter(Class type) {
 		if (type == ISelectionMapper.class)
 		{
@@ -123,7 +138,20 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
           if (editorInput instanceof IFileEditorInput)
           {
             IFileEditorInput fileEditorInput = (IFileEditorInput) editorInput;
-            return new WSDLXSDTypeReferenceEditManager(fileEditorInput.getFile(), null);
+            WSDLXSDTypeReferenceEditManager refManager = new WSDLXSDTypeReferenceEditManager(fileEditorInput.getFile(), null);
+            refManager.setSchemas(getInlineSchemas());
+            return refManager;
+          }
+        }
+        else if (type == XSDElementReferenceEditManager.class)
+        {
+          IEditorInput editorInput = getEditorInput();
+          if (editorInput instanceof IFileEditorInput)
+          {
+            IFileEditorInput fileEditorInput = (IFileEditorInput) editorInput;
+            WSDLXSDElementReferenceEditManager refManager = new WSDLXSDElementReferenceEditManager(fileEditorInput.getFile(), null);
+            refManager.setSchemas(getInlineSchemas());
+            return refManager;
           }
         }
         else if (type == W11BindingReferenceEditManager.class) {

@@ -25,31 +25,36 @@ import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.asd.editor.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.asd.facade.IParameter;
 import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
+import org.eclipse.wst.xsd.editor.XSDTypeReferenceEditManager;
 
 public class ParameterSection extends NameSection {
 	protected static String NEW_STRING = "New...";
 	protected static String BROWSE_STRING = "Browse...";
-	protected CCombo typeCombo;
+	protected CLabel comboLabel; 
+	protected CCombo combo;
+	protected boolean handleTypeScenario = true;
 	
-	/**
-	 * @see org.eclipse.wst.common.ui.properties.internal.provisional.ITabbedPropertySection#createControls(org.eclipse.swt.widgets.Composite, org.eclipse.wst.common.ui.properties.internal.provisional.TabbedPropertySheetWidgetFactory)
-	 */
 	public void createControls(Composite parent, TabbedPropertySheetWidgetFactory factory)
 	{
 		super.createControls(parent, factory);
+		createControlArea();
+	}
+	
+	public void createControlArea()
+	{
 		FormData data;
 		
-		typeCombo = getWidgetFactory().createCCombo(composite);
-		typeCombo.setBackground(composite.getBackground());
-		typeCombo.addListener(SWT.Modify, this);
-		typeCombo.addSelectionListener(this);
+		combo = getWidgetFactory().createCCombo(composite);
+		combo.setBackground(composite.getBackground());
+		combo.addListener(SWT.Modify, this);
+		combo.addSelectionListener(this);
 		
-		CLabel componentNameLabel = getWidgetFactory().createCLabel(composite, "Type" + ":"); //$NON-NLS-1$
+		comboLabel = getWidgetFactory().createCLabel(composite, "Type" + ":"); //$NON-NLS-1$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(typeCombo, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(typeCombo, 0, SWT.CENTER);
-		componentNameLabel.setLayoutData(data);
+		data.right = new FormAttachment(combo, -ITabbedPropertyConstants.HSPACE);
+		data.top = new FormAttachment(combo, 0, SWT.CENTER);
+		comboLabel.setLayoutData(data);
 		
 //		Button button = getWidgetFactory().createButton(composite, "", SWT.PUSH); //$NON-NLS-1$
 //		button.setImage(InterfaceUIPlugin.getDefault().getImage("icons/obj16/browsebutton.gif")); //$NON-NLS-1$
@@ -66,7 +71,7 @@ public class ParameterSection extends NameSection {
 //		data.right = new FormAttachment(button, 0);
 		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
 		data.top = new FormAttachment(nameText, +ITabbedPropertyConstants.VSPACE);
-		typeCombo.setLayoutData(data);
+		combo.setLayoutData(data);
 	}
 	
 	/*
@@ -77,7 +82,13 @@ public class ParameterSection extends NameSection {
 		if (nameText.isFocusControl()) {
 			return;
 		}
-		
+
+		if (handleTypeScenario) {
+			refreshCombo();
+		}
+	}
+	
+	protected void refreshCombo() {
 		IParameter param = null;
 		Object model = getModel();
 		setListenerEnabled(false);
@@ -96,21 +107,20 @@ public class ParameterSection extends NameSection {
 		nameText.setText(name);
 		
 		// Populate the type Combo
-		typeCombo.removeAll();
-		typeCombo.add(BROWSE_STRING);
-		typeCombo.add(NEW_STRING);
+		combo.removeAll();
+		combo.add(BROWSE_STRING);
+		combo.add(NEW_STRING);
 		
 		ComponentReferenceEditManager editManager = getComponentReferenceEditManager();
 		if (editManager != null) {
 			ComponentSpecification[] specs = editManager.getQuickPicks();
 			for (int index = 0; index < specs.length; index++) {
-				typeCombo.add((String) specs[index].getName());
+				combo.add((String) specs[index].getName());
 			}
-		}
-		
+		}		
 		
 		// Display the type in the Combo
-		String[] items = typeCombo.getItems();
+		String[] items = combo.getItems();
 		int index;
 		for (index = 0; index < items.length; index++) {
 			if (items[index].equals(typeName)) {
@@ -120,10 +130,10 @@ public class ParameterSection extends NameSection {
 		
 		if (index < items.length) {
 			// Found a match
-			typeCombo.select(index);
+			combo.select(index);
 		}
 		else {
-			typeCombo.setText(typeName);
+			combo.setText(typeName);
 		}
 		
 		setListenerEnabled(true);
@@ -137,32 +147,36 @@ public class ParameterSection extends NameSection {
 	public void doHandleEvent(Event event)
 	{
 		super.doHandleEvent(event);
-		if (event.widget == typeCombo) {
-			String value = typeCombo.getItem(typeCombo.getSelectionIndex());
-			
-			IParameter parameter = (IParameter) this.getModel();
-			
-			if (value.equals(NEW_STRING)) {
-				Command command = parameter.getSetTypeCommand(IParameter.SET_NEW_TYPE_ID);
-				command.execute();
-			}
-			else if (value.equals(BROWSE_STRING)) {
-				Command command = parameter.getSetTypeCommand(IParameter.SELECT_EXISTING_TYPE_ID);
-				command.execute();
-			}
-			else {
-				ComponentReferenceEditManager editManager = getComponentReferenceEditManager();
-				ComponentSpecification spec = getComponentSpecificationForValue((String)value);
-				if (spec != null) {
-					editManager.modifyComponentReference(parameter, spec);
-				}
+		if (event.widget == combo && handleTypeScenario) {
+			handleComboSelection();
+		}
+	}
+	
+	protected void handleComboSelection() {
+		String value = combo.getItem(combo.getSelectionIndex());
+		
+		IParameter parameter = (IParameter) this.getModel();
+		
+		if (value.equals(NEW_STRING)) {
+			Command command = parameter.getSetTypeCommand(IParameter.SET_NEW_ACTION_ID);
+			command.execute();
+		}
+		else if (value.equals(BROWSE_STRING)) {
+			Command command = parameter.getSetTypeCommand(IParameter.SELECT_EXISTING_ACTION_ID);
+			command.execute();
+		}
+		else {
+			ComponentReferenceEditManager editManager = getComponentReferenceEditManager();
+			ComponentSpecification spec = getComponentSpecificationForValue((String)value);
+			if (spec != null) {
+				editManager.modifyComponentReference(parameter, spec);
 			}
 		}
 	}
 	
-	public ComponentReferenceEditManager getComponentReferenceEditManager() {
+	protected ComponentReferenceEditManager getComponentReferenceEditManager() {
 		ASDMultiPageEditor editor = (ASDMultiPageEditor) ASDEditorPlugin.getActiveEditor();
-		return (ComponentReferenceEditManager) editor.getAdapter(ComponentReferenceEditManager.class);
+		return (ComponentReferenceEditManager) editor.getAdapter(XSDTypeReferenceEditManager.class);
 	}
 	
 	// TODO: rmah: This code should live in a common place..... This code is also used in other UI scenarios when

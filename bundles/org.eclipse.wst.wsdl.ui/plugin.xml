@@ -111,8 +111,8 @@
 	 </propertySection>
 	 
    	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
-        class="org.eclipse.wst.wsdl.asd.editor.properties.sections.ParameterSection"
-	 	id="prop.section.ParameterSection">
+        class="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11ParameterSection"
+	 	id="prop.section.W11ParameterSection">
 	    <input type="org.eclipse.wst.wsdl.asd.facade.IParameter">
 	    </input>
 	 </propertySection>

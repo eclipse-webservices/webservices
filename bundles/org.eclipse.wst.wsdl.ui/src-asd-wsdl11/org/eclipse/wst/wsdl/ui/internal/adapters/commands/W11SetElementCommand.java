@@ -22,22 +22,22 @@ import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
-import org.eclipse.wst.wsdl.ui.internal.edit.WSDLXSDTypeReferenceEditManager;
+import org.eclipse.wst.wsdl.ui.internal.edit.WSDLXSDElementReferenceEditManager;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
 import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
-import org.eclipse.wst.xsd.editor.XSDTypeReferenceEditManager;
+import org.eclipse.wst.xsd.editor.XSDElementReferenceEditManager;
 import org.eclipse.xsd.XSDSchema;
 import org.w3c.dom.Element;
 
-public class W11SetTypeCommand extends Command {
+public class W11SetElementCommand extends Command {
 	private Object parent;
 	private String action;
 	private boolean continueApply;
 	
-	public W11SetTypeCommand(Object parent, String action) {
+	public W11SetElementCommand(Object parent, String action) {
 		this.parent = parent;
 		this.action = action;
 	}
@@ -95,7 +95,7 @@ public class W11SetTypeCommand extends Command {
 		IEditorPart editor = ASDEditorPlugin.getActiveEditor();
 		if (editor != null)
 		{
-			result = (ComponentReferenceEditManager)editor.getAdapter(XSDTypeReferenceEditManager.class);
+			result = (ComponentReferenceEditManager)editor.getAdapter(XSDElementReferenceEditManager.class);
 			
 			if (editor instanceof InternalWSDLMultiPageEditor)
 			{
@@ -108,7 +108,7 @@ public class W11SetTypeCommand extends Command {
 					schemas[index] = (XSDSchema) type.getTarget();
 				}
 				
-				((WSDLXSDTypeReferenceEditManager) result).setSchemas(schemas);
+				((WSDLXSDElementReferenceEditManager) result).setSchemas(schemas);
 				
 				return result;
 			}

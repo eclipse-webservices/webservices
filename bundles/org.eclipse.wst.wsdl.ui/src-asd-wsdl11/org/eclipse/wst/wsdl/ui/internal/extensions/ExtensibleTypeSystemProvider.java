@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ui.internal.util.XSDTypeSystemProvider;
 import org.eclipse.xsd.XSDSchema;
 
 public class ExtensibleTypeSystemProvider implements ITypeSystemProvider
@@ -25,14 +26,8 @@ public class ExtensibleTypeSystemProvider implements ITypeSystemProvider
 
   public ExtensibleTypeSystemProvider()
   {
-//    WSDLEditorExtensionRegistry registry = WSDLEditorPlugin.getInstance().getWSDLEditorExtensionRegistry(); 
-//
-//    extensions = registry.getRegisteredExtensions(WSDLEditorExtension.TYPE_SYSTEM_PROVIDER); 
-//    typeSystemProviders = new ITypeSystemProvider[extensions.length]; 
-//    for (int i = 0; i < extensions.length; i++)
-//    {
-//      typeSystemProviders[i] = (ITypeSystemProvider)extensions[i].createExtensionObject(WSDLEditorExtension.TYPE_SYSTEM_PROVIDER, null);
-//    }
+    typeSystemProviders = new ITypeSystemProvider[1]; 
+    typeSystemProviders[0] = new XSDTypeSystemProvider();
   }          
         
   public List getAvailableTypeNames(Definition definition, int typeNameCategory)

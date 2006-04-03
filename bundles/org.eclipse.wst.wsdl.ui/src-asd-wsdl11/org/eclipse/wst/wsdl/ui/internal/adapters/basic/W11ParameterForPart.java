@@ -31,6 +31,7 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetElementCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetTypeCommand;
 import org.eclipse.wst.wsdl.ui.internal.visitor.WSDLVisitorForParameters;
 import org.eclipse.xsd.XSDAttributeUse;
@@ -183,5 +184,9 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 	
 	public Command getSetTypeCommand(String actionId) {
 		return new W11SetTypeCommand((Part) this.getTarget(), actionId);
+	}
+	
+	public Command getSetElementCommand(String actionId) {
+		return new W11SetElementCommand((Part) this.getTarget(), actionId);
 	}
 }

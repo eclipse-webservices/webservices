@@ -31,8 +31,8 @@ public interface IParameter extends INamedObject
   //? int getMaxOccurs();
 	
 	// TODO: rmah: Do these strings belong here???
-    public static final String SET_NEW_TYPE_ID = "SetTypeAction_AddType";
-	public static final String SELECT_EXISTING_TYPE_ID = "SetTypeAction_ExistingType";
+    public static final String SET_NEW_ACTION_ID = "SetTypeAction_AddType";
+	public static final String SELECT_EXISTING_ACTION_ID = "SetTypeAction_ExistingType";
   
 	public Command getSetTypeCommand(String actionId);
 	public Command getDeleteCommand();
