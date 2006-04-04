@@ -10,6 +10,7 @@
  * yyyymmdd   bug     Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060329   127016 andyzhai@ca.ibm.com - Andy Zhai
+ * 20060404   134791 andyzhai@ca.ibm.com - Andy Zhai
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
@@ -150,7 +151,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			}
 			else if(context.getTimeOut() != AxisEmitterDefaults.getTimeOutDefault())
 			{
-				timeout = context.getTimeOut() * 1000;
+				timeout = context.getTimeOut() == -1 ? -1 : context.getTimeOut()* 1000; 
 				wsdl2Java.setTimeout(timeout);
 				environment.getLog().log(ILog.INFO, 5100, this, "execute", "Timeout = " + timeout);
 			}
