@@ -25,16 +25,22 @@ import java.net.URL;
 import java.util.Hashtable;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.codegen.merge.java.JControlModel;
 import org.eclipse.emf.codegen.merge.java.JMerger;
 import org.eclipse.emf.codegen.merge.java.facade.FacadeHelper;
 import org.eclipse.emf.codegen.util.CodeGenUtil;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentMergeContext;
+import org.osgi.framework.Bundle;
 
 public class MergeUtils {
 	private static Hashtable MergeModel;
-	private static final String MERGE_XML = "/merge.xml";
+	private static final String WST_WS = "org.eclipse.wst.ws";
+	private static final String MERGE_XML = "merge.xml";
+	private static final String JMERGER = "jmerger";
 	private static JControlModel jMergeControlModel = null;
 
 	
@@ -100,18 +106,12 @@ public class MergeUtils {
 	static private void initialize() {
 		if (jMergeControlModel == null) {
 			FacadeHelper facadeHelper = CodeGenUtil.instantiateFacadeHelper(JMerger.DEFAULT_FACADE_HELPER_CLASS);
-
 			jMergeControlModel = new JControlModel();
-			File mergeXML = null;
-			try {
-				mergeXML = new File(FileLocator.toFileURL(WSPlugin.getInstance().getBundle().getEntry(MERGE_XML)).getFile()).getAbsoluteFile();
-			} catch (IOException e) {
-				// This should never happen since merge.xml is in the org.eclipse.jst.ws.consumption plugin directory
-			}
 
-			if (mergeXML != null) {
-				jMergeControlModel.initialize(facadeHelper, mergeXML.getAbsolutePath());
-			}
+			Bundle        wsBundle = Platform.getBundle(WST_WS);
+			IPath         mergePath      = new Path( JMERGER ).append( MERGE_XML );
+			URL           fileURL        = FileLocator.find( wsBundle, mergePath, null);
+			jMergeControlModel.initialize(facadeHelper, fileURL.toString());
 		}
 		return;
 	}

@@ -53,7 +53,7 @@ public class ResourceManagmentPreferencePage extends PreferencePage implements I
   private String INFOPOP_PPRM_CHECKBOX_CHECK_OUT = WebServiceUIPlugin.ID + ".PPRM0004";
   
   private Button skeletonMerge;
-  /*CONTEXT_ID PPRM0004 for the skeleton merge check box on the Resource Management Preference Page*/
+  /*CONTEXT_ID PPRM0005 for the skeleton merge check box on the Resource Management Preference Page*/
   private String INFOPOP_PPRM_CHECKBOX_SKELETON_MERGE = WebServiceUIPlugin.ID + ".PPRM0005";
 
  /**
