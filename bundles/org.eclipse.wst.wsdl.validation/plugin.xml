@@ -6,6 +6,14 @@
    
    <extension-point id="wsdl11validator" name="WSDL 1.1 Extension Validator" schema="exsd/wsdl11validator.exsd"/>
    
+	<extension
+    	point="org.eclipse.wst.validation.validatorDelegates">
+        <delegate
+              class="org.eclipse.wst.wsdl.validation.internal.eclipse.Validator"
+              name="%_UI_WSDL4J_VALIDATOR_DELEGATE"
+              target="org.eclipse.wst.wsdl.internal.validation.eclipse.WSDLDelegatingValidator"/>
+     </extension>	
+
    <!-- ====================================================== -->
    <!-- An extension for adding the WSDL validator to the      -->
    <!-- validation framework. 						           -->										   -->
@@ -25,12 +33,11 @@
          </helper>
          <run
                async="true"
-               class="org.eclipse.wst.wsdl.validation.internal.eclipse.Validator"
+               class="org.eclipse.wst.wsdl.internal.validation.eclipse.WSDLDelegatingValidator"
                enabled="true"
                fullBuild="true"
                incremental="true">
          </run>
       </validator>
    </extension>
-
 </plugin>

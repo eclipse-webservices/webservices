@@ -141,4 +141,15 @@ public class Validator extends AbstractNestedValidator
 	}
   }
 
+  /*
+   * (non-Javadoc)
+   * @see org.eclipse.wst.xml.core.internal.validation.core.AbstractNestedValidator#getValidatorID()
+   */
+  protected String getValidatorID()
+  {
+    // Because this class is used as a delegate, return the id of the validator
+    // which delegates to this class.
+ 
+    return "org.eclipse.wst.wsdl.internal.validation.eclipse.WSDLDelegatingValidator"; //$NON-NLS-1$
+  }
 }
