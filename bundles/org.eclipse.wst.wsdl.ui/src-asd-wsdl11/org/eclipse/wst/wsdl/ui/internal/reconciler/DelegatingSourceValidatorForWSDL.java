@@ -15,22 +15,25 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 import org.eclipse.wst.xml.ui.internal.validation.DelegatingSourceValidator;
 
 /**
- * 
+ * This performs the as-you-type validation
+ * @author Mark Hutchinson
+ *
  */
 public class DelegatingSourceValidatorForWSDL extends DelegatingSourceValidator
 {
 
-  final private static String VALIDATOR_CLASS = "org.eclipse.wst.wsdl.validation.internal.ui.eclipse.Validator"; 
+  final private static String VALIDATOR_CLASS = "org.eclipse.wst.wsdl.internal.validation.eclipse.WSDLDelegatingValidator"; //$NON-NLS-1$ 
 
   public DelegatingSourceValidatorForWSDL()
-  { super();
+  { 
+    super();
   }
   
   protected IValidator getDelegateValidator()
   {
     try
     {
-    ValidationRegistryReader registry = ValidationRegistryReader.getReader();
+      ValidationRegistryReader registry = ValidationRegistryReader.getReader();
       return registry.getValidator(VALIDATOR_CLASS);
     }
     catch (Exception e)
