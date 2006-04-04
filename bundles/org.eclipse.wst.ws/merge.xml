@@ -7,5 +7,5 @@
 		targetPut="Method/setReturnType"/>
 	<merge:pull 
 		sourceGet="Method/getExceptions" 
-		targetPut="Method/setExceptions"/>
+		targetPut="Method/addException"/>
 </merge:options>
