@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060330 128827   kathy@ca.ibm.com - Kathy Chan
+ * 20060403 128827   kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.common;
@@ -29,6 +30,7 @@ import org.eclipse.emf.codegen.merge.java.JMerger;
 import org.eclipse.emf.codegen.merge.java.facade.FacadeHelper;
 import org.eclipse.emf.codegen.util.CodeGenUtil;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentMergeContext;
 
 public class MergeUtils {
 	private static Hashtable MergeModel;
@@ -42,14 +44,17 @@ public class MergeUtils {
 	 */
 	static public void storeMergeModels (String [] urlStrings) {
 		if (urlStrings != null) {
-			initialize();
-			if (jMergeControlModel != null) {
-				MergeModel = new Hashtable();
-				String filename;
-				for (int i = 0; i < urlStrings.length; i++) {
-					filename = getFileFromURL(urlStrings[i]);
-					if (filename != null) {
-						storeModel(filename);
+			PersistentMergeContext mergeContext = WSPlugin.getInstance().getMergeContext();
+			if (mergeContext.isSkeletonMergeEnabled()) {
+				initialize();
+				if (jMergeControlModel != null) {
+					MergeModel = new Hashtable();
+					String filename;
+					for (int i = 0; i < urlStrings.length; i++) {
+						filename = getFileFromURL(urlStrings[i]);
+						if (filename != null) {
+							storeModel(filename);
+						}
 					}
 				}
 			}

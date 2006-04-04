@@ -28,5 +28,6 @@ Require-Bundle: org.eclipse.wst.command.env,
  org.eclipse.wst.server.core,
  org.eclipse.jst.j2ee,
  org.eclipse.wst.ws.explorer,
- org.eclipse.jst.j2ee.core
+ org.eclipse.jst.j2ee.core,
+ org.eclipse.wst.ws
 Eclipse-LazyStart: true

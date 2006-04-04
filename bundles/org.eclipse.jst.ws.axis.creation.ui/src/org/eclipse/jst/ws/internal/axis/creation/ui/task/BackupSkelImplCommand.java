@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060330 128827   kathy@ca.ibm.com - Kathy Chan
+ * 20060403 128827   kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -149,10 +150,9 @@ public class BackupSkelImplCommand extends AbstractDataModelOperation
 			  }
 		  }
 		  
-		  if (context.isSkeletonMergeEnabled()) {
-			  String[] implURLArray = new String[implURLList.size()];
-			  webServiceInfo.setImplURLs( (String[]) (implURLList.toArray(implURLArray)));
-		  }
+		  String[] implURLArray = new String[implURLList.size()];
+		  webServiceInfo.setImplURLs( (String[]) (implURLList.toArray(implURLArray)));
+
 	  } 
 	  else {
 		  status = StatusUtils.errorStatus( NLS.bind(AxisConsumptionUIMessages.MSG_ERROR_WSDL_NO_DEFINITION, new String[] {wsdlURL}));

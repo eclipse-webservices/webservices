@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060403 128827   kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.plugin;
@@ -15,6 +18,7 @@ import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentMergeContext;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSDLValidationContext;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIAPContext;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
@@ -37,6 +41,7 @@ public class WSPlugin extends Plugin {
 	private PersistentWSIAPContext wsiAPContext_;
 	private PersistentWSDLValidationContext wsdlValidationContext_;
 	private PersistentWaitForWSDLValidationContext waitForWsdlValidationContext_;
+	private PersistentMergeContext mergeContext_;
 
 	public static final String ID = "org.eclipse.wst.ws";
 	
@@ -176,5 +181,19 @@ public class WSPlugin extends Plugin {
 			waitForWsdlValidationContext_.load();
 		}
 		return waitForWsdlValidationContext_;
+	}
+	
+	/**
+	 * Get Skeleton Merge Context
+	 * 
+	 */ 
+ public PersistentMergeContext getMergeContext() 
+	{
+	  if (mergeContext_ == null)
+	  	{
+		  mergeContext_ = new PersistentMergeContext();
+		  mergeContext_.load();
+	  	}
+	  return mergeContext_;
 	}
 }

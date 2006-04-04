@@ -1,15 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2004 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * 
  * Contributors:
- * IBM Corporation - initial API and implementation
- * yyyymmdd bug      Email and other contact information
- * -------- -------- -----------------------------------------------------------
- * 20060331   128827 kathy@ca.ibm.com - Kathy Chan
+ *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.core.context;
 
@@ -23,13 +20,11 @@ public class TransientResourceContext implements ResourceContext
   private boolean overWriteFiles;
   private boolean createFolders;
   private boolean checkOutFiles;
-  private boolean skeletonMerge;
 
   public TransientResourceContext() {
     setOverwriteFilesEnabled(ResourceDefaults.getOverwriteFilesDefault());
     setCreateFoldersEnabled(ResourceDefaults.getCreateFoldersDefault());
     setCheckoutFilesEnabled(ResourceDefaults.getCheckoutFilesDefault());
-    setSkeletonMergeEnabled(ResourceDefaults.getSkeletonMergeDefault());
   }
 
   /**  
@@ -75,20 +70,6 @@ public class TransientResourceContext implements ResourceContext
   }
   
   /**  
-   * @see org.eclipse.wst.command.internal.env.core.context.ResourceContext#setSkeletonMergeEnabled(boolean)
-   */
-  public void setSkeletonMergeEnabled(boolean enable) {
-    skeletonMerge = enable;
-  }
-  
-  /**  
-   * @see org.eclipse.wst.command.internal.env.core.context.ResourceContext#isSkeletonMergeEnabled()
-   */
-  public boolean isSkeletonMergeEnabled() {
-    return skeletonMerge;
-  }
-  
-  /**  
    * @see org.eclipse.wst.command.internal.env.core.context.ResourceContext#copy()
    */
   public ResourceContext copy() {
@@ -96,7 +77,6 @@ public class TransientResourceContext implements ResourceContext
     cc.setOverwriteFilesEnabled(isOverwriteFilesEnabled());
     cc.setCreateFoldersEnabled(isCreateFoldersEnabled());
     cc.setCheckoutFilesEnabled(isCheckoutFilesEnabled());
-    cc.setSkeletonMergeEnabled(isSkeletonMergeEnabled());
     return cc;
   }
 }

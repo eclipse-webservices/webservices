@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060331   128827 kathy@ca.ibm.com - Kathy Chan
+ * 20060403   128827 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.preferences;
 
@@ -28,6 +29,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.core.context.ResourceDefaults;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.MergeDefaults;
+import org.eclipse.wst.ws.internal.preferences.PersistentMergeContext;
 
 
 
@@ -134,7 +138,7 @@ public class ResourceManagmentPreferencePage extends PreferencePage implements I
     overWriteFiles.setSelection( ResourceDefaults.getOverwriteFilesDefault());
     createFolders.setSelection( ResourceDefaults.getCreateFoldersDefault());
     checkoutFiles.setSelection( ResourceDefaults.getCheckoutFilesDefault());
-    skeletonMerge.setSelection( ResourceDefaults.getSkeletonMergeDefault());
+    skeletonMerge.setSelection( MergeDefaults.getSkeletonMergeDefault());
   }
 
   /**
@@ -144,10 +148,11 @@ public class ResourceManagmentPreferencePage extends PreferencePage implements I
   {
     // get the persistent context from the plugin
     ResourceContext context = WebServicePlugin.getInstance().getResourceContext();
+    PersistentMergeContext mergeContext = WSPlugin.getInstance().getMergeContext();
     overWriteFiles.setSelection( context.isOverwriteFilesEnabled());
     createFolders.setSelection( context.isCreateFoldersEnabled());
     checkoutFiles.setSelection( context.isCheckoutFilesEnabled());
-    skeletonMerge.setSelection( context.isSkeletonMergeEnabled()); 
+    skeletonMerge.setSelection( mergeContext.isSkeletonMergeEnabled()); 
    }
 
   /**
@@ -157,10 +162,11 @@ public class ResourceManagmentPreferencePage extends PreferencePage implements I
   {
     // get the persistent context from the plugin
     ResourceContext context = WebServicePlugin.getInstance().getResourceContext();
+    PersistentMergeContext mergeContext = WSPlugin.getInstance().getMergeContext();
     context.setOverwriteFilesEnabled( overWriteFiles.getSelection() );
     context.setCreateFoldersEnabled( createFolders.getSelection() );
     context.setCheckoutFilesEnabled( checkoutFiles.getSelection() );  
-    context.setSkeletonMergeEnabled( skeletonMerge.getSelection() );
+    mergeContext.setSkeletonMergeEnabled( skeletonMerge.getSelection() );
   }
 }
 

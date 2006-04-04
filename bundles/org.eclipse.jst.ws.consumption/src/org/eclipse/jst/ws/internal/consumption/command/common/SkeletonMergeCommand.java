@@ -4,12 +4,13 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060330 128827   kathy@ca.ibm.com - Kathy Chan
+ * 20060403 128827   kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
@@ -32,6 +33,8 @@ import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.common.MergeUtils;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentMergeContext;
 
 public class SkeletonMergeCommand extends AbstractDataModelOperation
 {
@@ -57,7 +60,8 @@ public class SkeletonMergeCommand extends AbstractDataModelOperation
 	  IStatus status = Status.OK_STATUS;
 	  IEnvironment environment = getEnvironment();
 	  ResourceContext context = WebServicePlugin.getInstance().getResourceContext();
-	  if (context.isSkeletonMergeEnabled()) {
+	  PersistentMergeContext mergeContext = WSPlugin.getInstance().getMergeContext();
+	  if (mergeContext.isSkeletonMergeEnabled()) {
 		  // merge the skeleton implementation file with the model stored earlier
 
 		  String mergedContent;
