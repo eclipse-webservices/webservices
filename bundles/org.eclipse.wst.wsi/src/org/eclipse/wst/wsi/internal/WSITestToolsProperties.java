@@ -19,8 +19,8 @@ public class WSITestToolsProperties
   protected static String tadfile = "";
 
   public final static String schemaDir = "common/schemas/";
-  public final static String SSBP_ASSERTION_FILE = "http://www.ws-i.org/Testing/Tools/2005/01/SSBP10_BP11_TAD_1-0.xml";
-  public final static String AP_ASSERTION_FILE = "http://www.ws-i.org/Testing/Tools/2004/12/AP10_BP11_SSBP10_TAD.xml";
+  public static String SSBP_ASSERTION_FILE = "http://www.ws-i.org/Testing/Tools/2005/01/SSBP10_BP11_TAD_1-0.xml";
+  public static String AP_ASSERTION_FILE = "http://www.ws-i.org/Testing/Tools/2004/12/AP10_BP11_SSBP10_TAD.xml";
   public final static String DEFAULT_ASSERTION_FILE = AP_ASSERTION_FILE;
   
   public static final String STOP_NON_WSI = "0";
