@@ -166,24 +166,17 @@ public abstract class ASDMultiPageEditor extends MultiPageEditorPart implements 
   }
   
   protected void addSourcePage() {
-	  try {
-		  int index = addPage(editor, getEditorInput());
-		  setPageText(index, "Source");
-		  editor.update();
-		  editor.setEditorPart(this);
-		  editor.addPropertyListener(this);
-		  
-		  firePropertyChange(PROP_TITLE);
-	  }
-	  catch (PartInitException e) {
-	      ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null, e.getStatus());
-	  }
+	  editor.update();
+	  editor.setEditorPart(this);
+	  editor.addPropertyListener(this);
+	  
+	  firePropertyChange(PROP_TITLE);
   }
   
   /**
    * Creates page 0 of the multi-page editor, which contains a text editor.
    */
-  void createPage0()
+  void createSourcePage()
   {
 	  editor = new StructuredTextEditor();
   }
@@ -192,18 +185,18 @@ public abstract class ASDMultiPageEditor extends MultiPageEditorPart implements 
    * Creates page 1 of the multi-page editor, which allows you to change the
    * font used in page 2.
    */
-  void createPage1()
+  Composite createDesignPage()
   {
     Composite parent = new Composite(getContainer(), SWT.NONE);
+    parent = new Composite(getContainer(), SWT.NONE);
     parent.setLayout(new FillLayout());
     graphicalViewer = new DesignViewGraphicalViewer(this, getSelectionProvider());
     graphicalViewer.createControl(parent);
     getEditDomain().addViewer(graphicalViewer);
     configureGraphicalViewer();
     hookGraphicalViewer();
-    initializeGraphicalViewer();
-    int index = addPage(parent);
-    setPageText(index, "Design");
+
+    return parent;
   }
 
   /**
@@ -214,11 +207,26 @@ public abstract class ASDMultiPageEditor extends MultiPageEditorPart implements 
     selectionProvider = getSelectionManager();
     getEditorSite().setSelectionProvider(selectionProvider);
 
-    createPage0();
+    createSourcePage();
+
+    Composite designPage = createDesignPage();
+    try {
+    	int index;
+    	index = addPage(designPage);
+    	setPageText(index, "Design");
+    	
+    	index = addPage(editor, getEditorInput());
+    	setPageText(index, "Source");
+    }
+    catch (PartInitException e) {
+    	ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null, e.getStatus());
+    }    
     addSourcePage();
-    buildAndSetModel();    
-    createPage1();
-    setActivePage(1);
+    
+    
+    buildAndSetModel();
+    initializeGraphicalViewer();
+    setActivePage(0);
   }
   
   public void buildAndSetModel() {
