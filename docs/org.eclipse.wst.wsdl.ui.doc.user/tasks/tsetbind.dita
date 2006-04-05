@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="tsetbind" xml:lang="en-us">
+<title>Setting a binding</title>
+<shortdesc>A binding is a top level WSDL object that provides a concrete specification
+regarding the transmission of messages to and from a web service. A binding
+references exactly one port type. The structure of a binding corresponds very
+closely to that of the port type. The binding contains extensibility elements
+(for example, soap, http, and mime) that specify protocol specific details.
+Each port within a service references exactly one binding.</shortdesc>
+<taskbody>
+<context><p>You can create a new binding, reuse an existing one, or import
+one.</p></context>
+</taskbody>
+<task id="createnewbind">
+<title>Creating a new binding</title>
+<taskbody>
+<context><p>To create a new binding for your port, follow these steps:</p></context>
+<steps>
+<step><cmd>In the Graph view, right-click your port and click  <b>Set Binding</b>.</cmd>
+</step>
+<step><cmd>Select the  <b>Create a new binding</b> radio button.</cmd></step>
+<step><cmd>Type the name of the binding in  <uicontrol>Name</uicontrol> field.</cmd>
+<info>The name should be unique among all bindings defined within the enclosing
+WSDL document. Click <b>Finish.</b></info></step>
+<step><cmd>In order to see the binding you need to ensure the hide/show binding
+button <image alt="hide/show binding button" href="../images/show-hide-binding.gif">
+</image> is toggled so that bindings are showing.</cmd></step>
+<step><cmd>A  <b>Port Type</b> is a named set of abstract operations and the
+abstract messages involved.</cmd><info>You can either create a new port type
+for your binding, reuse an existing one, or import one. Refer to the related
+tasks for more details.</info></step>
+<step><cmd>Type any information about the binding you want the user to read
+in the  <b>Documentation</b> field.</cmd></step>
+</steps>
+<result><p> <b>Tip</b>: You can also create a new binding for your port using
+the Outline view.</p></result>
+</taskbody>
+</task>
+<task id="reusebinding">
+<title>Reusing a binding for a port</title>
+<taskbody>
+<context><p>To reuse a binding for your port, follow these steps:</p></context>
+<steps>
+<step><cmd>In the Graph view, select your port.</cmd></step>
+<step><cmd>From the  <b>Binding</b> drop down list, select the binding you
+want to use.</cmd></step>
+</steps>
+</taskbody>
+</task>
+<task id="regeneratingabinding">
+<title>Regenerating a binding</title>
+<taskbody>
+<context>To regenerate a binding:</context>
+<steps>
+<step><cmd>Right-click the binding you want to regenerate.</cmd></step>
+<step><cmd>Select <uicontrol>Generate Binding Content</uicontrol>.</cmd></step>
+<step><cmd>Specify an required binding information. If you are modifying an
+existing binding, ensure that you select <uicontrol>Overwrite existing binding
+information</uicontrol>.</cmd></step>
+</steps>
+</taskbody>
+</task>
+<task id="impbinding">
+<title>Import an existing binding</title>
+<taskbody>
+<context>To import an existing binding for your port, follow these steps:</context>
+<steps>
+<step><cmd>In the Graph view, right-click your port and click  <b>Set Binding.</b></cmd>
+</step>
+<step><cmd>Click the  <b>Import binding from a file</b> check box. Click  <b>Browse</b>.</cmd>
+</step>
+<step><cmd>Select the file that contains the binding you want to use. Click
+ <b>OK</b>.</cmd></step>
+</steps>
+</taskbody>
+<related-links>
+<linklist><title>Related concepts</title><?Pub Caret?>
+<link href="../concepts/cwsdled.dita" scope="local"></link>
+</linklist>
+<linklist><title>Related tasks</title>
+<link href="tcrtwsdl.dita" scope="local"></link>
+<link href="tedtwsdl.dita" scope="local"></link>
+</linklist>
+</related-links>
+</task>
+</task>
+<?Pub *0000003826?>

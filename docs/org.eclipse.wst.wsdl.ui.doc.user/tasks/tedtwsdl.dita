@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="tedtwsdl" xml:lang="en-us">
+<title>Editing WSDL files</title>
+<shortdesc>Once you have created a WSDL file, you can edit it in the WSDL
+editor. You can also import WSDL files you have created into the workbench
+and edit them in the WSDL editor.</shortdesc>
+<taskbody>
+<context><p>To open a WSDL file in the WSDL editor, double-click it in the
+Navigator view or right-click it and click  <b>Open With > WSDL Editor.</b></p></context>
+</taskbody>
+<task id="editisourceview">
+<title>Editing in the Source view</title>
+<taskbody>
+<context>To edit a WSDL file in the Source view, follow these steps:</context>
+<steps>
+<step><cmd>Open your WSDL file in the WSDL editor.</cmd></step>
+<step><cmd>Click the  <b>Source</b> tab.</cmd></step>
+<step><cmd>Select the source code you want to edit.</cmd></step>
+</steps>
+<result><p>At any time, you can switch to the Source view to review the source
+for the WSDL file. You can also edit your WSDL file directly in the Source
+view.</p></result>
+</taskbody>
+</task>
+<task id="editeditview">
+<title>Editing in the Graph view</title>
+<taskbody>
+<context><p>The Graph view provides a graphical way to browse and edit your
+WSDL file. Each type of top level wsdl object is shown within a group (for
+example service, port type, message). Within each group is a tree view that
+can be used to browse the structure of the object. The service, binding, port
+type and message groups are 'linked'. If for example we select an input in
+the port types, we'll notice that the message that is referenced by this message
+is scrolled into view in the messages group. A line displays to denote a reference
+(or association) between these objects.</p><p> <image alt="Image of a WSDL file open in the WSDL editor"
+href="../images/wsdleditor.gif" placement="break"></image> </p></context>
+</taskbody>
+</task>
+<task id="showbndgraph">
+<title>Showing Bindings in the Graph view</title>
+<taskbody>
+<context>By default bindings are shown in the Graph View. Select the show/hide
+binding button at the top left of the Graph View to hide the bindings. With
+the bindings hidden a service can be browsed from a purely abstract level
+without showing binding information. When the need arises to understand the
+concrete details represented by the binding, select the show/hide binding
+button again to make them visible.</context>
+</taskbody>
+</task>
+<task id="editoutlineview">
+<title>Editing in the Outline view</title>
+<taskbody>
+<context><p>The Outline view will show you all the items in your WSDL file
+as you add them. In this view, you can both create and delete WSDL components.</p><p>The
+Outline view contains the following folders you can use (by right-clicking
+and selecting the appropriate option) to edit your WSDL file:</p><ul>
+<li> <b>Imports</b>&nbsp;statements, which are used to associate a namespace
+with a document location.</li>
+<li> <b>Types</b>, which provide data type definitions used to describe the
+messages exchanged.&nbsp; You cannot edit any types directly using this folder.</li>
+<li> <b>Messages</b>, which represent an abstract definition of the data being
+transmitted. A message consists of logical parts, each of which is associated
+with a definition within some type system.</li>
+<li> <b>Port Types</b>, which are a set of abstract operations. Each operation
+refers to an input message and output messages.</li>
+<li> <b>Bindings</b>, which specify concrete protocol and data format specifications
+for the operations and messages defined by a particular port type.</li>
+<li> <b>Services</b>, which are used to aggregate a set of related ports <image
+alt="" href="../images/show-hide-binding.gif"></image> </li>
+</ul></context>
+</taskbody>
+<related-links>
+<linklist><title>Related concepts</title>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cwsdl.dita" scope="peer">
+<linktext>WSDL</linktext></link>
+<link href="../concepts/cwsdled.dita" scope="local"></link>
+</linklist>
+<linklist><title>Related tasks</title>
+<link href="tcrtwsdl.dita" scope="local"></link>
+<link href="timpwsdl.dita" scope="local"></link>
+</linklist>
+</related-links>
+</task>
+</task>

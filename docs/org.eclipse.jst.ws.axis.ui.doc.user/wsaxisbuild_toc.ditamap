@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map anchorref="../org.eclipse.jst.ws.doc.user/wscreationt1_toc.ditamap#wsaxis"
+id="wsaxis" title="wsaxis">
+<topicref href="concepts/caxistover.dita" navtitle="Axis runtime" toc="no">
+<topicref href="tasks/twsbeana.dita" navtitle="Creating a Web service from a Java bean">
+</topicref>
+<topicref href="tasks/tsklwsdla.dita" navtitle="Creating a Java Skeleton from WSDL">
+</topicref>
+<topicref href="tasks/tsampappa.dita" navtitle="Generating a Java client proxy from a WSDL document">
+</topicref>
+</topicref>
+<topicref href="tasks/ttomcatserv.dita" navtitle="Installing and configuring Apache Tomcat">
+</topicref>
+</map>

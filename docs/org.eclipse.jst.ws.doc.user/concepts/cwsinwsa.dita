@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"  "concept.dtd">
+<concept id="cwsinwsa" xml:lang="en-us">
+<title>Tools for Web services development</title>
+<conbody>
+<p>Tools are provided to assist with the following aspects of Web services
+development:</p>
+<ul>
+<li> <uicontrol>Discover</uicontrol>. Browse the UDDI Business Registries
+or WSIL documents to locate existing Web services for integration.</li>
+<li> <uicontrol>Create or Transform</uicontrol>. Create bottom-up Web services
+from existing artifacts, such as <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> beans and enterprise beans. Create
+top-down Web services from WSDL discovered from others or created using the
+WSDL Editor.</li>
+<li> <uicontrol>Build</uicontrol>. Wrap existing artifacts as SOAP accessible
+services and describe them in WSDL. The Web services wizards assist you in
+generating a <tm tmclass="special" tmowner="Sun Microsystems, Inc." tmtype="tm"
+trademark="Java">Java</tm> client proxy to Web services described in WSDL
+and in generating <tm tmclass="special" tmowner="Sun Microsystems, Inc." tmtype="tm"
+trademark="Java">Java</tm> bean skeletons from WSDL.</li>
+<li> <uicontrol>Deploy</uicontrol>. Deploy Web services into a variety of
+test environments.</li>
+<li> <uicontrol>Test</uicontrol>. Test Web services running locally or remotely
+in order to get instant feedback.</li>
+<li> <uicontrol>Develop</uicontrol>. Generate sample applications to assist
+you in creating your own Web service client application.</li>
+<li> <uicontrol>Publish</uicontrol>. Publish Web services to a UDDI v2 or
+v3 Business Registry, advertising your Web services so that other businesses
+and clie<?Pub Caret?>nts can access them.</li>
+</ul>
+</conbody>
+<related-links>
+<linklist><title>Related Concepts</title>
+<link href="cws.dita"></link>
+</linklist>
+<linklist><title>Related Tasks</title>
+<link href="../tasks/toverws.dita" scope="local"><linktext> Developing Web
+services</linktext></link>
+</linklist>
+</related-links>
+</concept>
+<?Pub *0000002161?>

@@ -1,59 +1,84 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-us" xml:lang="en-us">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!-- /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/ -->
-<link rel="stylesheet" type="text/css" href="../../org.eclipse.wst.doc.user/common.css" />
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="public" name="security" />
+<meta content="index,follow" name="Robots" />
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Relationship between UDDI and WSDL" />
+<meta name="abstract" content="The Universal Description, Discovery, and Integration (UDDI) specification defines a way to publish and discover information about Web services. UDDI has two functions: (1) it is a SOAP-based protocol that defines how UDDI clients communicate with registries, and (2) it is a particular set of globally replicated registries." />
+<meta name="description" content="The Universal Description, Discovery, and Integration (UDDI) specification defines a way to publish and discover information about Web services. UDDI has two functions: (1) it is a SOAP-based protocol that defines how UDDI clients communicate with registries, and (2) it is a particular set of globally replicated registries." />
+<meta scheme="URI" name="DC.Relation" content="cuddi.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cwsdl.html" />
+<meta scheme="URI" name="DC.Relation" content="../ref/ruddi.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/ref/rwsdl.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="cwsdlud" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../org.eclipse.wst.doc.user/commonltr.css" type="text/css" rel="stylesheet" />
 <title>Relationship between UDDI and WSDL</title>
 </head>
 <body id="cwsdlud"><a name="cwsdlud"><!-- --></a>
 
+
 <h1 class="topictitle1">Relationship between UDDI and WSDL</h1>
+
+
 <div><p>The Universal Description, Discovery, and Integration (UDDI) specification
 defines a way to publish and discover information about Web services. UDDI
 has two functions: (1) it is a SOAP-based protocol that defines how UDDI clients
 communicate with registries, and (2) it is a particular set of globally replicated
 registries.</p>
+
 <p>Registering a service involves four core data structure types:</p>
-<ul><li>The  <tt class="sysout">businessEntity</tt> data type contains information
+
+<ul>
+<li>The  <tt class="sysout">businessEntity</tt> data type contains information
 about the business that has a published service.</li>
+
 <li>The  <tt class="sysout">businessService</tt> data type is a description
 of a Web service.</li>
+
 <li>The  <tt class="sysout">bindingTemplate</tt> data type contains technical
 information for determining the entry point and construction specifications
 for invoking a Web service.</li>
+
 <li>The  <tt class="sysout">tModel</tt> data type provides a reference
 system to assist in the discovery of Web services and acts as a technical
 specification for a Web service.</li>
+
 </ul>
+
 <p>For more information on the UDDI data types, refer to the related reference
 topics at the end of this topic.</p>
+
 <p>Web Services Description Language (WSDL) is an XML-based standard specification
 for describing Web services. WSDL defines an XML format for describing network
 services as a set of endpoints that operate on messages that contain either
 document-oriented or procedure-oriented information.</p>
+
 <p>The WSDL service description can be structured in many ways. However, to
 assist with publishing and finding WSDL service descriptions in a UDDI registry,
 WSDL documents consist of two main parts: </p>
-<ul><li>The service interface definition describes the abstract type interface
+
+<ul>
+<li>The service interface definition describes the abstract type interface
 and its protocol binding, known as the WSDL binding document</li>
+
 <li>The service implementation definition describes the service access location
 information, known as the WSDL service document</li>
+
 </ul>
-<p>When creating Web services with the the Apache Axis run-time environment, the Web services tools create a single
-WSDL document when generating Web services from Java beans or EJBs. This WSDL document contains
-both the service interface and implementation documents.</p>
+
+<p>When creating Web services with the Apache Axis run-time environment, the
+Web services tools create a single WSDL document when generating Web services
+from Java™ beans
+or EJBs. This WSDL document contains both the service interface and implementation
+documents.</p>
+
 <p>A service interface is described by a WSDL document that contains the types,
 import, message, portType, and binding elements. A service interface contains
 the WSDL service definition that will be used to implement one or more services.
@@ -63,21 +88,26 @@ using an import element. The Web services tools in this product generate a
 service interface document that contains only the message and portType elements
 that are referenced by the binding document that contains only bindings for
 the portType.</p>
+
 <p>The service implementation document contains the service elements. A service
 implementation document contains a description of a service that implements
 a service interface. At least one of the import elements will contain a reference
 to the WSDL service interface document; however monolithic WSDL such as that
-created using the Axis and WebSphere run-time environments do not have imports.
-A service implementation document can contain references to more than one
-service interface document.</p>
+created using the Axis run-time environment does not have imports. A service
+implementation document can contain references to more than one service interface
+document.</p>
+
 <p>A service provider hosts a Web service and makes it accessible using protocols
 such as SOAP/HTTP and SOAP/JMS. The Web service is described by the WSDL documents
 that are stored on the provider's server or in a special repository. The WSDL
 documents are referenced by UDDI business services (service documents) and
 tModels (binding documents). These pointers enable discovery of a Web service
 by a service requestor.</p>
+
 <p>Figure 1. Relationship between UDDI and WSDL.</p>
+
 <p> <img src="../images/wsdluddi.gif" alt="Illustration of the relationship between UDDI and WSDL." /> </p>
+
 <p>Figure 1 illustrates the relationship between UDDI and WSDL. The WSDL service
 element references the WSDL binding element. The URL of the document containing
 the WSDL binding element is published to the UDDI business registry as a tModel.
@@ -86,22 +116,27 @@ the UDDI business registry as a businessService and contains information about
 the bindingTemplate. For more information on UDDI registry data structure
 types, refer to the related reference section at the end of this document.
 Note that the import portion of the diagram is optional depending on the run-time
-environment; monolithic WSDL such as that created using the Axis and WebSphere run-time
-environments do not have imports.</p>
+environment; monolithic WSDL such as that created using the Axis run-time
+environment does not have imports.</p>
+
 <p>The service implementation describes an instance of a service. The instance
 is defined using a WSDL service element. The service element in a service
 implementation document is used to publish a UDDI businessService. When publishing
 a WSDL service description, a service interface must be published as a tModel
 before a service implementation is published as a businessService.</p>
+
 <p>A service implementation is published in a UDDI registry as part of a businessService
 with one or more bindingTemplate elements. The businessService is published
 by the service provider. A new businessService is created for a service element
 that is defined in the service implementation document. A new bindingTemplate
 element is created within a businessService for each port element that is
 defined within a service element.</p>
+
 <p>For more information on the relationship between WSDL and UDDI refer to
  <a href="http://uddi.org/bestpractices.html" target="_blank">uddi.org/bestpractices.html</a>.</p>
+
 </div>
+
 <div>
 <div class="linklist"><strong>Related Concepts</strong><br />
 
@@ -113,5 +148,6 @@ defined within a service element.</p>
 <div><a href="../ref/ruddi.html" title="Once you have registered and logged in to the UDDI registry that you want to use, you can register your Web service.  Registration of a service involves four core data structure types: business information, service information, binding information, and information describing the specifications for services. The relationship between these data types is described in Figure 1.">Data structure types (UDDI registry)</a></div>
 <div><a href="../../org.eclipse.jst.ws.doc.user/ref/rwsdl.html">Web Services Description Language (WSDL)</a></div></div>
 </div>
+
 </body>
 </html>

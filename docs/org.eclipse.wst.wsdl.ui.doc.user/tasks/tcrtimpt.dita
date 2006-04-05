@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="tcrtimpt" xml:lang="en-us">
+<title>Creating an import statement</title>
+<shortdesc>The import statement is used to import other WSDL documents or
+XML schemas into your WSDL document. This enables you to have more modular
+WSDL documents. The use of the  <b>import</b> statement allows the separation
+of the different elements of a service definition into independent documents,
+which can then be imported as needed. This technique helps in writing clearer
+service definitions, by separating the definitions according to their level
+of abstraction.</shortdesc>
+<taskbody>
+<context><p>To create an import statement, follow these steps:</p></context>
+<steps>
+<step><cmd>In the Graph view, right-click the  <b>Imports</b> group and click
+ <b>Add Child > Import.</b></cmd></step>
+<step><cmd>Select your new import statement.</cmd></step>
+<step><cmd>Specify the  <b>namespace</b> of the document you wish to import,
+then specify the  <b>location</b> of the document you wish to import.</cmd>
+</step>
+</steps>
+<result>Once you specify the location of the document you wish to import,
+the import object's label changes to reflect the specified location. Imported
+WSDL components may now be visible within the editor.</result>
+</taskbody>
+<related-links>
+<linklist><title>Related concepts</title><?Pub Caret?>
+<link href="../concepts/cwsdled.dita" scope="local"></link>
+</linklist>
+<linklist><title>Related tasks</title>
+<link href="tcrtwsdl.dita" scope="local"></link>
+<link href="tedtwsdl.dita" scope="local"></link>
+</linklist>
+</related-links>
+</task>
+<?Pub *0000001728?>

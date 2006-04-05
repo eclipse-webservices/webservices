@@ -1,37 +1,54 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-us" xml:lang="en-us">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!-- /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/ -->
-<link rel="stylesheet" type="text/css" href="../../org.eclipse.wst.doc.user/common.css" />
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="public" name="security" />
+<meta content="index,follow" name="Robots" />
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Universal Description, Discovery, and Integration (UDDI)" />
+<meta name="abstract" content="Universal Description, Discovery, and Integration (UDDI) specification defines a way to publish and discover information about Web services." />
+<meta name="description" content="Universal Description, Discovery, and Integration (UDDI) specification defines a way to publish and discover information about Web services." />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cws.html" />
+<meta scheme="URI" name="DC.Relation" content="cwsdlud.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cwsilud.html" />
+<meta scheme="URI" name="DC.Relation" content="../tasks/tuddiexp.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.uddi.registry.doc.user/tasks/tuddiwiz.html" />
+<meta scheme="URI" name="DC.Relation" content="../ref/ruddi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="cuddi" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../org.eclipse.wst.doc.user/commonltr.css" type="text/css" rel="stylesheet" />
 <title>Universal Description, Discovery, and Integration (UDDI)</title>
 </head>
 <body id="cuddi"><a name="cuddi"><!-- --></a>
 
+
 <h1 class="topictitle1">Universal Description, Discovery, and Integration (UDDI)</h1>
+
+
+
 <div><p>Universal Description, Discovery, and Integration (UDDI) specification
 defines a way to publish and discover information about Web services.</p>
-<div class="p">UDDI has two functions: <ul><li>It is a SOAP-based protocol that defines how clients communicate with
+
+<div class="p">UDDI has two functions: <ul>
+<li>It is a SOAP-based protocol that defines how clients communicate with
 UDDI registries.</li>
+
 <li>It is a particular set of global replicated registries.</li>
+
 </ul>
 </div>
+
 <p>UDDI includes an XML schema for SOAP messages that defines a set of documents
 to describe business and services information, a common set of APIs for querying
 and publishing information to the directories, and an API for replicating
 directory entries between peer UDDI nodes.</p>
+
 <p>For more information on UDDI refer to  <a href="http://www.uddi.org" target="_blank">www.uddi.org</a></p>
+
 <div class="section"><h4 class="sectiontitle">UDDI registries</h4><p>UDDI manages the discovery of Web
 services by relying on a distributed registry of businesses and their service
 descriptions implemented in a common XML format. Before you can publish your
@@ -41,8 +58,8 @@ your business entity with a UDDI registry.</p>
 forms: public and private.  Both types comply to the same specifications. 
 A private registry enables you to publish and test your internal e-business
 applications in a secure, private environment.</p>
-<p>A public registry is
-a collection of peer directories that contain information about businesses
+<p>A public registry
+is a collection of peer directories that contain information about businesses
 and services. It locates services that are registered at one of its peer nodes
 and facilitates the discovery of published Web services. Data is replicated
 at each of the registries on a regular basis. This ensures consistency in
@@ -55,20 +72,22 @@ Use the IBM UDDI
 Test Registry to experiment with UDDI, and to test and validate your Web service. 
 For more information on the IBM's public registries, refer to  <a href="http://uddi.ibm.com" target="_blank">http://uddi.ibm.com</a> For
 a list of public registries, refer to  <a href="http://www.uddi.org/register.html" target="_blank">http://www.uddi.org/register.html</a></p>
-
-<p>The
-UDDI Business Registry acts as a B2B directory linking marketplaces, buyers,
-and sellers. The information provided in the registry consists of three components:
-white pages, yellow pages, and green pages. White pages include the business
-name, contact information, and a text description of the business's services.
-Yellow pages include industrial categorizations based on standard taxonomies
-such as NAICS, ISO 3166, and UNSPSC. Green pages include references to specifications
-for Web services and pointers to various file and URL-based discovery mechanisms.
-This makes it easy for businesses to integrate across marketplaces. Because
-it is registered, information is made available across all applications. For
-more information on NAICS refer to  <a href="http://www.naics.com" target="_blank">www.naics.com</a> For more information on UNSPSC refer
-to  <a href="http://www.unspsc.org" target="_blank">www.unspsc.org</a> For
-more information on ISO 3166 refer to  <a href="http://www.iso.org/iso/en/prods-services/iso3166ma/index.html" target="_blank">http://www.iso.org/iso/en/prods-services/iso3166ma/index.html</a></p>
+<p>A private
+registry allows you to publish and test your internal applications in a secure,
+private environment.</p>
+<p>The UDDI Business Registry acts as a B2B directory
+linking marketplaces, buyers, and sellers. The information provided in the
+registry consists of three components: white pages, yellow pages, and green
+pages. White pages include the business name, contact information, and a text
+description of the business's services. Yellow pages include industrial categorizations
+based on standard taxonomies such as NAICS, ISO 3166, and UNSPSC. Green pages
+include references to specifications for Web services and pointers to various
+file and URL-based discovery mechanisms. This makes it easy for businesses
+to integrate across marketplaces. Because it is registered, information is
+made available across all applications. For more information on NAICS refer
+to  <a href="http://www.naics.com" target="_blank">www.naics.com</a> For
+more information on UNSPSC refer to  <a href="http://www.unspsc.org" target="_blank">www.unspsc.org</a> For more information on ISO 3166 refer
+to  <a href="http://www.iso.org/iso/en/prods-services/iso3166ma/index.html" target="_blank">http://www.iso.org/iso/en/prods-services/iso3166ma/index.html</a></p>
 <p>Businesses
 populate the registry with descriptions of the services that they support.
 UDDI assigns a unique identifier to each service description and business
@@ -76,23 +95,25 @@ registration. These become the service and business keys respectively. Search
 engines, and applications query the registry to discover services. UDDI servers
 are a directory of available services and service providers.</p>
 </div>
+
 </div>
+
 <div>
 <div class="linklist"><strong>Related Concepts</strong><br />
 
 <div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cws.html">Web services development</a></div>
 <div><a href="cwsdlud.html" title="The Universal Description, Discovery, and Integration (UDDI) specification defines a way to publish and discover information about Web services. UDDI has two functions: (1) it is a SOAP-based protocol that defines how UDDI clients communicate with registries, and (2) it is a particular set of globally replicated registries.">Relationship between UDDI and WSDL</a></div>
-<div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cwsilud.html">Relationship between UDDI and WSIL</a></div>
-</div>
+<div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cwsilud.html">Relationship between UDDI and WSIL</a></div></div>
 
 <div class="linklist"><strong>Related Tasks</strong><br />
 
 <div><a href="../tasks/tuddiexp.html" title="Through UDDI and WSIL, other applications can discover WSDL documents and bind with them to execute transactions or perform other business processes.">Publishing Web services and business entities</a></div>
-</div>
+<div><a href="../../org.eclipse.jst.ws.uddi.registry.doc.user/tasks/tuddiwiz.html"> Configuring a Unit Test UDDI Registry</a></div></div>
 
 <div class="linklist"><strong>Related Reference</strong><br />
 
 <div><a href="../ref/ruddi.html" title="Once you have registered and logged in to the UDDI registry that you want to use, you can register your Web service.  Registration of a service involves four core data structure types: business information, service information, binding information, and information describing the specifications for services. The relationship between these data types is described in Figure 1.">Data structure types (UDDI registry)</a></div></div>
 </div>
+
 </body>
 </html>

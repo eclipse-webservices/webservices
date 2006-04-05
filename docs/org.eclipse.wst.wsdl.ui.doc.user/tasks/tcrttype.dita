@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="tcrttype" xml:lang="en-us">
+<title>Creating a new type for your WSDL file</title>
+<shortdesc>Types describe all the data types used between the client and server.
+WSDL is not tied exclusively to a specific typing system, but it uses the
+W3C XML Schema specification as its default choice.</shortdesc>
+<taskbody>
+<context><p>WSDL allows type systems to be added via extensibility elements.
+An extensibility element may appear under the  <b>types</b> element to identify
+the type definition system being used and to provide an XML container element
+for the type definitions.</p><p>To add an extensibility element to your WSDL
+file, follow these steps:</p></context>
+<steps>
+<step><cmd>In the Graph view right-click the  <b>Types</b> group.</cmd></step>
+<step><cmd>Click  <b>Add Child</b> >  <b>Add Schema</b>.&nbsp; You will be
+creating an inline schema - a schema that is defined directly within the WSDL
+file.</cmd><info></info></step>
+<step><cmd>A schema object will appear in the group.</cmd><info>Select it.</info>
+</step>
+<step><cmd>The following information about your schema is listed:  </cmd>
+<info><ul>
+<li> <b>Prefix</b> - The prefix associated with the current namespace</li>
+<li> <b>URI</b> - the target namespace for the schema</li>
+<li>Other attributes, such as  <b>version</b>,  <b>language</b>, and  <b>attribute
+form</b>.</li>
+</ul> You can manually modify the value of any of these attributes.</info>
+</step>
+<step><cmd>You can also add new components to your XML schema. In the Graph
+view, press the arrow icon to the left of the schema object to drill down
+into the schema.</cmd><info> Now you can edit the schema within the graph
+view. When finished, press the <uicontrol>Back</uicontrol> button at the top
+left of the WSDL editor to return to the definition view of the WSDL document.</info>
+</step>
+</steps>
+<result><p>For more information about XML schemas, refer to the XML schema
+editor online documentation.</p></result>
+</taskbody>
+<related-links>
+<linklist><title>Related concepts</title><?Pub Caret?>
+<link href="../concepts/cwsdled.dita" scope="local"></link>
+</linklist>
+<linklist><title>Related tasks</title>
+<link href="tcrtwsdl.dita" scope="local"></link>
+<link href="tedtwsdl.dita" scope="local"></link>
+</linklist>
+</related-links>
+</task>
+<?Pub *0000002458?>

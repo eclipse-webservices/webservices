@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="taddoper" xml:lang="en-us">
+<title>Adding an operation</title>
+<shortdesc>An operation names the operation and lists the expected inputs
+and outputs. The operation element may also contain a fault sub-element that
+describes any error data the operation may return.</shortdesc>
+<taskbody>
+<context>Using these, you can declare four transmission primitives that an
+endpoint can support:<ul>
+<li> <b>One-way</b>. The endpoint receives a message.</li>
+<li> <b>Request-response</b>. The endpoint receives a message, and sends a
+correlated message.</li>
+<li> <b>Solicit-response</b>. The endpoint sends a message, and receives a
+correlated message.</li>
+<li> <b>Notification</b>. The endpoint sends a message.</li>
+</ul><p>You can add an operation to a port type or a port binding.</p><p>To
+add an operation to a port type, follow these steps:</p></context>
+<steps>
+<step><cmd>In the Graph view, right-click your port type.</cmd><info>Click <b>Add&nbsp;Child
+> Operation</b>.</info></step>
+<step><cmd>In the dialog, enter a name for the operation.</cmd></step>
+<step><cmd>Right click on the operation to add an input, output or fault objects.</cmd>
+<info>Depending on an operation's inputs and outputs it can be classified
+as follows:<ul>
+<li><b>One way operation</b>: input </li>
+<li><b>Request response operation</b>: input, output </li>
+<li><b> Solicit response operation</b>: output, input </li>
+<li><b>Notification operation</b> : output</li>
+</ul></info></step>
+<step><cmd>Type any information about the operation you wish the user to read
+in the  <b>Documentation</b> pane.&nbsp;</cmd></step>
+</steps>
+<result><p> <b>Tip</b>: You can also create a new operation for your port
+type using the Outline view.</p></result>
+</taskbody>
+<related-links>
+<linklist><title>Related concepts</title><?Pub Caret?>
+<link href="../concepts/cwsdled.dita" scope="local"></link>
+</linklist>
+<linklist><title>Related tasks</title>
+<link href="tcrtwsdl.dita" scope="local"></link>
+<link href="tedtwsdl.dita" scope="local"></link>
+</linklist>
+</related-links>
+</task>
+<?Pub *0000002230?>

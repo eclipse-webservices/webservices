@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="tgenwsil" xml:lang="en-us"><?Pub Caret1?>
+<title>Generating a WSIL file</title>
+<titlealts>
+<searchtitle>Generating a WSIL file</searchtitle>
+</titlealts>
+<shortdesc>Web Services Inspection Language (WSIL) is a service discovery
+mechanism that is an alternative to UDDI as well as complementary to UDDI.
+WSIL can be generated at any point in the Web service development cycle once
+the WSDL file for the Web service has been created.</shortdesc>
+<taskbody>
+<prereq><b>Prerequisites:</b> In order to generate a WSIL file, you need to
+know the URL to a WSDL file.</prereq>
+<context><p>WSIL helps synchronize this process by maintaining references
+to WSDL URLs. Web services tools that process WSDL documents - such as the
+Web Service Client and Creation wizards - will accept a WSIL document as a
+substitute for WSDL. This allows you to create a standardized WSDL reference
+(WSIL) document in your project during Web service client generation, then
+at a later time easily regenerate the client from that reference document.
+No copies of the WSDL or WSDL URLs are required.</p><p>You can generate a
+WSIL file from a pre-existing WSDL file or during Web service creation or
+consumption.</p></context>
+</taskbody>
+<task id="d0e27" xml:lang="en-us">
+<title>Generating a WSIL file though the import utility</title>
+<taskbody>
+<context><p>To generate a WSIL file through the import utility:</p></context>
+<steps>
+<step><cmd>Optional: Select the WSDL document for which you want to create
+a WSIL file.</cmd></step>
+<step><cmd>From the  <b>File</b> menu, select  <b>Import</b> >  <b>WSIL >
+Next</b>. The WSIL Import window opens.</cmd></step>
+<step><cmd>If you have selected to perform step 1, the WSIL URI field should
+be prefilled with the name of your WSDL file, where the extension has been
+changed from  <systemoutput>.wsdl</systemoutput> to  <systemoutput>.wsil</systemoutput>.
+The WSDL section should contain the URLs to the selected WSDL files. You can
+also enter additional WSDL URLs. Alternately, you can browse to the location
+of a WSIL file, or manually enter the location of the WSIL and WSDL files
+in the appropriate locations.</cmd></step>
+<step><cmd>Click Finish. A WSIL file will be generated in the specified location.</cmd>
+</step>
+</steps>
+</taskbody>
+</task>
+<task id="d0e62" xml:lang="en-us">
+<title>Generating a WSIL file through the Web Services Explorer</title>
+<taskbody>
+<context><p>To generate a WSIL file through the Web Services Explorer:</p></context>
+<steps>
+<step><cmd>Open the Web Services Explorer.</cmd></step>
+<step><cmd>Open the WSDL Explorer by clicking this icon:  <image alt="icon used to launch the web services explorer"
+href="../images/wsdlicon.gif"></image></cmd></step>
+<step><cmd>Open a WSDL file.</cmd></step>
+<step><cmd>Select the WSDL file that you have opened in the Navigator pane,
+and from the available actions, choose to import a WSDL file to the workbench
+by clicking this icon:  <image alt="icon used to import a file" href="../images/mptwsdlicon.gif">
+</image></cmd></step>
+<step><cmd>Select  <b>Import as a service reference to a WSIL document</b>.</cmd>
+</step>
+<step><cmd>Enter a name for the WSIL file that you want to generate, and click
+ <b>Go</b>.</cmd></step>
+</steps>
+</taskbody>
+</task>
+</task>
+<?Pub *0000003434?>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="treg" xml:lang="en-us"><?Pub Caret?>
+<title>Registering with a UDDI registry</title>
+<titlealts>
+<searchtitle>Registering with a UDDI Registry</searchtitle>
+</titlealts>
+<shortdesc>In order to publish your business entity and Web service to a UDDI
+registry, you must first register with the registry that you want to use.</shortdesc>
+<taskbody>
+<context><p>There are many different public and private registries with which
+you can register.&nbsp; For a list of public registries refer to  <xref href="http://www.uddi.org/register.html"
+scope="external">www.uddi.org/register.html</xref> Since each registry is
+different, the registry provider will give you instructions for registering.</p><p>The
+following registries are automatically added to Favorites:</p><ul>
+<li><tm tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="IBM">IBM</tm> UDDI
+Registry</li>
+<li><tm tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="IBM">IBM</tm> UDDI
+Test Registry</li>
+<li><tm tmclass="special" tmowner="Microsoft Corporation" tmtype="reg" trademark="Microsoft">Microsoft</tm> UDDI
+Registry</li>
+<li><tm tmclass="special" tmowner="Microsoft Corporation" tmtype="reg" trademark="Microsoft">Microsoft</tm> UDDI
+Test Registry</li>
+<li>SAP UDDI Registry</li>
+<li>SAP UDDI Test Registry</li>
+<li>XMethods Registry</li>
+<li>NTT Communications Registry</li>
+</ul><p>You can use any of these registries by selecting the Favorites icon
+in the Web Services Explorer toolbar. All of these registries are based on
+the UDDI Business Registry Version 2. Go to the following URL to obtain a
+user ID and password for the <tm tmclass="ibm" tmowner="IBM Corporation" tmtype="reg"
+trademark="IBM">IBM</tm> UDDI registry:  <xref format="html" href="http://www-3.ibm.com/services/uddi/"
+scope="external">www.ibm.com/services/uddi/</xref>. The details page of each
+registry will have registration instructions.</p><p>The <tm tmclass="ibm"
+tmowner="IBM Corporation" tmtype="reg" trademark="IBM">IBM</tm> UDDI Test
+Registry allows you to develop your Web service and experience the UDDI registration
+process without placing your Web service in an official registry. Use the <tm
+tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="IBM">IBM</tm> UDDI
+Test Registry or a private registry to experiment with UDDI, and to test and
+validate your Web service.&nbsp;The public production registries are listed
+under Favorites. The Web Services Explorer does not preload any registries
+by default.&nbsp; You can preload registries from the favorites section of
+the Web Services Explorer or by using the Unit Test UDDI wizard. You can also
+preload and configure private registries using the Unit Test UDDI wizard.
+On the Open Registry page of the Web Services Explorer, you can select from
+public registries and registries listed in your favorites to automatically
+fill in the information required to open a particular registry.</p></context>
+</taskbody>
+<related-links>
+<linklist><title>Related Concepts</title>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.dita" scope="peer">
+<linktext> Tools for Web services development</linktext></link>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cws.dita" scope="peer">
+<linktext>Web services development</linktext></link>
+<link href="../concepts/cuddi.dita"></link>
+</linklist>
+<linklist><title>Related Tasks</title>
+<link href="tuddiexp.dita"></link>
+<link href="tstrtexp.dita"></link>
+</linklist>
+<linklist><title>Related Reference</title>
+<link href="../ref/ruddi.dita"></link>
+</linklist>
+</related-links>
+</task>
+<?Pub *0000003759?>

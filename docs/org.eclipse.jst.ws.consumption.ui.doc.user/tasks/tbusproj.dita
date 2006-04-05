@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="tbusproj" xml:lang="en-us">
+<title>Managing referenced services</title>
+<shortdesc>A service projection enables a business entity to reference a service
+that was published by another business entity. By using the businessService
+structure as a projection to an already published businessService, businesses
+can share or reuse services.&nbsp; Service projections are managed centrally
+as part of the referencing businessEntity.</shortdesc>
+<taskbody>
+<prereq>Prerequisites:<ol>
+<li><xref href="treg.dita">Register with a registry</xref></li>
+<li><xref href="tstrtexp.dita">Launch the <?Pub Caret?>Web Services Explorer</xref></li>
+<li><xref href="taddreg.dita">Add the registry to the Web Services Explorer</xref></li>
+</ol></prereq>
+<context><p>For more information on referenced services, refer to the  <xref
+href="http://www.uddi.org/specification.html" scope="external">UDDI Version
+2.0 Programmer's API Specification</xref> and the  <xref href="http://www.uddi.org/specification.html"
+scope="external">UDDI Version 2.0 Data Structure Specification</xref>.</p><p>To
+manage referenced services, do the following:</p></context>
+<steps>
+<step><cmd>In the Navigator pane, select the business entity for which you
+want to manage referenced services.</cmd></step>
+<step><cmd>In the Actions pane toolbar, click the  <uicontrol>Manage Referenced
+Services</uicontrol> icon  <image alt="Picture of the Manage Referenced Services icon."
+href="../images/refserv.gif"></image>.</cmd></step>
+<step><cmd>On the Manage Referenced Services page you can add, remove, and
+maintain services that are referenced by the business entity.</cmd></step>
+</steps>
+</taskbody>
+<related-links>
+<linklist><title>Related Concepts</title>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.dita" scope="peer">
+<linktext> Tools for Web services development</linktext></link>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cws.dita" scope="peer">
+<linktext>Web services development</linktext></link>
+<link href="../concepts/cuddi.dita"></link>
+</linklist>
+<linklist><title>Related Tasks</title>
+<link href="tuddiexp.dita"></link>
+<link href="tstrtexp.dita"></link>
+<link href="treg.dita"></link>
+</linklist>
+<linklist><title>Related Reference</title>
+<link href="../ref/ruddi.dita"></link>
+</linklist>
+</related-links>
+</task>
+<?Pub *0000002499?>

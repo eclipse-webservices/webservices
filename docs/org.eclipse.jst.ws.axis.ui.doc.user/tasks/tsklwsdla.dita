@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "../../dtd/task.dtd">
+<task id="tsklwsdla" xml:lang="en-us">
+<title>Creating a <tm tmclass="special" tmowner="Sun Microsystems, Inc." tmtype="tm"
+trademark="Java">Java</tm> bean skeleton from a WSDL document using the Apache
+Axis run-time environment</title>
+<titlealts>
+<searchtitle>Creating a Java bean skeleton from a WSDL document using the
+Apache Axis run-time environment</searchtitle>
+</titlealts>
+<shortdesc>The Web service wizard assists you in creating a skeleton bean
+from an existing WSDL document. The skeleton bean contains a set of methods
+that correspond to the operations described in the WSDL document. When the
+bean is created, each method has a trivial implementation that you replace
+by editing the bean.</shortdesc>
+<taskbody>
+<prereq><p>Prerequisites:</p><ol>
+<li id="createtomcatlink">If you are using the Apache Jakarta Tomcat servlet
+container as your server, you must install it, configure an instance of it,
+and create a Web project targeted to it as described in <xref href="ttomcatserv.dita"
+scope="local">Creating an Apache Tomcat server and Web project</xref></li>
+<li>Create or import a WSDL file into the Web Content folder of the Web project.
+You can only use a WSDL file that contains a service element.</li>
+</ol></prereq>
+<context>To create a Web service from a WSDL file using the Apache Axis 1.0
+run-time environment:</context>
+<steps>
+<step><cmd>Switch to the J2EE perspective (<uicontrol>Window > Open Perspective
+> J2EE</uicontrol>).</cmd></step>
+<step><cmd>In the Project Explorer view, select the WSDL file that you created
+or imported into the Web Content folder of your Web project.</cmd></step>
+<step><cmd>Click  <uicontrol>File > New > Other</uicontrol>. Select  <uicontrol>Web
+Services</uicontrol> in order to display the various Web service wizards.
+Select the  <uicontrol>Web Service</uicontrol> wizard. Click  <uicontrol>Next</uicontrol>.</cmd>
+</step>
+<step><cmd>Web Services page: select  <uicontrol>Top down Java bean Web service</uicontrol> as
+your Web service type. You can optionally choose to do the following: </cmd>
+<info conref="twsbeana.dita#twsbeana/createstep4ul"></info></step>
+<step><cmd>Web Service Selection page: Enter the URI to the WSDL, WSIL, or
+HTML file that will be used to generate the <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> bean. If you have selected the WSDL
+file before starting the wizard, this information should be prefilled. You
+can optionally generate a WSIL file from this file as well.</cmd><info> Ensure
+that there are no spaces at the beginning of the URI or you may generate a
+null pointer exception.</info></step>
+<step><cmd>Service Deployment Configuration page: specify the server and client
+deployment settings.</cmd>
+<substeps>
+<substep><cmd>Click  <uicontrol>Edit</uicontrol> and select the Apache Axis
+run-time environment and select the server on which you want to run your Web
+service and Web service client.</cmd></substep>
+<substep><cmd>Select the Web project in which you want your Web service created. </cmd>
+<info>The wizard will create this for you if they do not already exist.</info>
+</substep>
+<substep><cmd>Select the type and name of project in which you want the Web
+service client created. If you enter the name of an existing project, the
+project type field must match that of the existing project. If you enter a
+name of a project that does not already exist, the wizard will create the
+project for you. Note that the only project type supported for Axis clients
+is a Web project. If you want the client to be created in a <tm tmclass="special"
+tmowner="Sun Microsystems, Inc." tmtype="tm" trademark="Java">Java</tm>, EJB,
+or Application Client project, you must select the <tm tmclass="ibm" tmowner="IBM Corporation"
+tmtype="reg" trademark="WebSphere">WebSphere</tm> run-time environment for
+your client.</cmd></substep>
+</substeps>
+</step>
+<step><cmd>Web Services Skeleton <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> Bean Configuration page: Select the
+folder where the generated <tm tmclass="special" tmowner="Sun Microsystems, Inc."
+tmtype="tm" trademark="Java">Java</tm> will be stored. If you want to review
+or edit the mappings between packages and namespaces, select the  <uicontrol>Define
+custom mapping for namespace to package</uicontrol> check box. Click  <uicontrol>Next</uicontrol>.</cmd>
+</step>
+<step><cmd>Web Service Namespace to Package Mappings page: if you selected
+ <uicontrol>Define custom mapping for package to namespace</uicontrol> on
+the previous panel, you can enter your custom mapping pairs on this panel
+by clicking  <uicontrol>Add.</uicontrol> Click  <uicontrol>Next</uicontrol>.</cmd>
+</step>
+<step><cmd>Web Service Test page: If you selected to test the Web service,
+select the test facility for the generated Web service. This will open the
+Web service in the Web Services Explorer. Select the operation you want to
+test, enter the required information, and click  <uicontrol>Go</uicontrol>.
+The result will display in the Status pane. Click  <uicontrol>Next</uicontrol>.</cmd>
+</step>
+<step><cmd>Web Service Proxy page: If you have selected to generate a proxy,
+this page shows the options for the proxy. It lists the folder where the proxy
+will be generated, and you can optionally create custom mappings between namespaces
+and packages. Click  <uicontrol>Next</uicontrol>.</cmd></step>
+<step><cmd>Web Service Client Test page: Use this page to select the following
+options: </cmd>
+<substeps>
+<substep><cmd>Select your test facility. You can test the generated proxy
+in the Universal Test Client or the Web Service Explorer, or you can generate
+a sample Web service JSP.</cmd></substep>
+<substep><cmd>If you selected to test the proxy through a JSP, you can select
+the folder where the JSP will be located, and you can select the methods that
+will be included in the JSP.</cmd></substep>
+<substep><cmd>Select  <uicontrol>Run test on server</uicontrol> to start the
+server for you automatically.</cmd></substep>
+</substeps>
+</step>
+<step><cmd>Web Service Publication page: If you have selected to publish your
+Web service to a UDDI registry, use this page to launch the Web Services Explorer
+and select the UDDI registry to which the Web service will be published. Click
+ <uicontrol>Finish</uicontrol>.</cmd></step>
+</steps>
+<result>After the Web service has been created, the following may occur depending
+on the options you selected: <ul>
+<li>If you have selected to test the generated proxy using Web service JSPs,
+the proxy is launched in a Web browser at the following URL: <codeph>http://localhost: <varname>port</varname>/ <varname>WebProject</varname>Client/sample<i
+>BeanName</i>/<varname>WebServiceName</varname>/TestClient.jsp</codeph> You
+can use this sample application to test the Web service by selecting a method,
+entering a value for the method, and clicking  <uicontrol>Invoke</uicontrol>.
+The result of the method will display in the results pane.</li>
+<li>If you have selected to test the generated proxy using the Universal Test
+Client, it will be launched in a browser window at the following URL:  <systemoutput>http://localhost:9080/UTC/preload?object= <varname>BeanPackage</varname
+>. <varname>BeanServiceProxy</varname></systemoutput>. In the Reference pane,
+under Object References, expand the proxy stub to display the methods of the
+Web service. Click the method you want to test, enter a value in the Parameters
+pane, and click  <uicontrol>Invoke</uicontrol>. The result will be generated
+below.</li>
+<li>If you have selected to test the Web service using the Web Services Explorer,
+the Explorer will open. Select the operation you want to test, enter the required
+information, and click  <b>Go</b>. The result will display in the Status pane.</li>
+<li>If you have selected to publish the Web service, the Web Services Explorer
+is launched displaying the page required to publish your Web service. Follow
+the instructions in <varname>Publishing the Web service</varname> to complete
+this task.</li>
+</ul></result>
+</taskbody>
+<related-links>
+<linklist><title>Related Concepts</title>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.dita" scope="peer">
+<linktext> Tools for Web services development</linktext></link>
+<link href="../../org.eclipse.jst.ws.doc.user/concepts/cws.dita" scope="peer">
+<linktext>Web services development</linktext></link>
+</linklist>
+<linklist><title>Related Tasks</title>
+<link href="../../org.eclipse.jst.ws.doc.user/tasks/toverws.dita" scope="peer">
+<linktext> Developing Web services</linktext></link>
+<link href="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tuddiexp.dita"
+scope="peer"><linktext> Using the Web Services Explorer</linktext></link>
+</linklist>
+<linklist><title>Related Reference</title>
+<link href="../../org.eclipse.jst.ws.doc.user/ref/rwsdl.dita" scope="peer">
+<linktext>WSDL documents</linktext></link>
+</linklist>
+</related-links>
+</task>
