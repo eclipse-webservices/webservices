@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004,2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.command;
 
@@ -34,6 +37,7 @@ public class OpenJavaEditorCommand extends AbstractDataModelOperation
 {
   private List classNames;
   private IProject project;
+  private boolean isEnabled_ = true;  // is true by default
 
   public OpenJavaEditorCommand()
   {
@@ -41,9 +45,11 @@ public class OpenJavaEditorCommand extends AbstractDataModelOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    OpenJavaEditorJob job = new OpenJavaEditorJob(classNames, project);
-    job.setPriority(Job.LONG);
-    job.schedule();
+    if (isEnabled_) {
+      OpenJavaEditorJob job = new OpenJavaEditorJob(classNames, project);
+      job.setPriority(Job.LONG);
+      job.schedule();
+    }
     return Status.OK_STATUS;
   }
 
@@ -55,6 +61,10 @@ public class OpenJavaEditorCommand extends AbstractDataModelOperation
   public void setProject(IProject project)
   {
     this.project = project;
+  }
+  
+  public void setIsEnabled(boolean isEnabled){
+    this.isEnabled_ = isEnabled;
   }
   
   private class OpenJavaEditorJob extends UIJob
@@ -87,7 +97,11 @@ public class OpenJavaEditorCommand extends AbstractDataModelOperation
             return new org.eclipse.core.runtime.Status(org.eclipse.core.runtime.Status.ERROR, WebServiceConsumptionUIPlugin.ID, 0, NLS.bind(ConsumptionUIMessages.MSG_ERROR_UNABLE_TO_OPEN_JAVA_EDITOR, new String[]{className, project.getName()}), t);
           }
         }
-        return new org.eclipse.core.runtime.Status(org.eclipse.core.runtime.Status.OK, WebServiceConsumptionUIPlugin.ID, 0, "", null);
+        return Status.OK_STATUS;
+      }
+      else if (project!=null || classNames.isEmpty()){
+        // do nothing ; nothing to open
+        return Status.OK_STATUS;
       }
       else
         return new org.eclipse.core.runtime.Status(org.eclipse.core.runtime.Status.ERROR, WebServiceConsumptionUIPlugin.ID, 0, NLS.bind(ConsumptionUIMessages.MSG_ERROR_UNABLE_TO_OPEN_JAVA_EDITOR, new String[]{classNames != null ? classNames.toString() : "", project != null ? project.getName() : ""}), null);

@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -62,25 +65,25 @@ public class ConfigServiceHandlersWidgetBinding implements CommandWidgetBinding 
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry) {
     
-    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"WsRefsToHandlers", ConfigServiceHandlersTableWidget.class);
+	// widget
+    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"HandlerDescriptionHolders", ConfigServiceHandlersTableWidget.class);
+    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class, "IsMultipleSelection", ConfigServiceHandlersTableWidget.class);
     dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"GenSkeletonEnabled", ConfigServiceHandlersTableWidget.class);
-    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"SourceOutputLocation", ConfigServiceHandlersTableWidget.class);
-    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"ServiceDescNameToDescObj", ConfigServiceHandlersTableWidget.class);
-    
     dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"DescriptionName", ConfigServiceHandlersTableWidget.class);
     
-    
-    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class,"HandlersList", ServiceHandlersWidgetOutputCommand.class);
-    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class,"WsDescToHandlers", ServiceHandlersWidgetOutputCommand.class);
-    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"ServiceDescNameToDescObj", ServiceHandlersWidgetOutputCommand.class);
-    
-    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class,"SourceOutputLocation", GenerateHandlerSkeletonCommand.class,"OutputLocation",null);
-    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class,"HandlerClassNames", GenerateHandlerSkeletonCommand.class,"HandlerNames",null);
+    // output command (adds/removes from model)
+    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class,"HandlerDescriptionHolders", ServiceHandlersWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class, "IsMultipleSelection", ServiceHandlersWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"WsddResource", ServiceHandlersWidgetOutputCommand.class);    
+
+    // gen skeleton command
+    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class,"HandlerDescriptionHolders", GenerateHandlerSkeletonCommand.class);    
     dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class,"GenSkeletonEnabled", GenerateHandlerSkeletonCommand.class);
  
+    // open Java editor  
     dataRegistry.addMapping(GenerateHandlerSkeletonCommand.class,"Project", OpenJavaEditorCommand.class);
     dataRegistry.addMapping(GenerateHandlerSkeletonCommand.class,"ClassNames", OpenJavaEditorCommand.class);
-   
+    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class,"GenSkeletonEnabled", OpenJavaEditorCommand.class,"IsEnabled", null);
   }
 
   /*

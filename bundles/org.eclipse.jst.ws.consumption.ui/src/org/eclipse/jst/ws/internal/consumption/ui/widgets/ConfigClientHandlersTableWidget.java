@@ -7,13 +7,17 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
-import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -28,9 +32,13 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.HandlerServiceRefHelper;
+import org.eclipse.jst.ws.internal.consumption.ui.common.HandlerServiceRefHolder;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -51,6 +59,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
@@ -63,21 +72,23 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
   private String pluginId_ = "org.eclipse.jst.ws.consumption.ui";
 
   private Composite parent_;
-  private boolean isGenSkeletonEnabled_;
   private String outputLocation_;
+  private Composite webServiceRefComp_;
   private Combo webServiceRefCombo_;
+  private Text webServiceDescText_ = null;
   private Table handlersTable_;
   private TableViewer tableViewer_;
   private Button addButton_;
   private Button removeButton_;
   private Button genSkeletonRadioButton_;
+  private Composite sourceLocationComp_;
   private Combo sourceLocationCombo_;
 
+  private HandlerServiceRefHolder[] handlerServiceRefHolder_;
+  private HandlerServiceRefHolder currentHSRH_;
   private Hashtable pathsTable_ = new Hashtable();
-  private Hashtable wsRefsToHandlers_;
-  private Hashtable refNameToServiceRef_;
-  private Vector orderedHandlers_;
-  //private ServiceRef serviceRef_;
+  private boolean isMultipleSelection_ = false;
+  private boolean isGenSkeletonEnabled_;
   private String serviceRefName_;
   private int DEFAULT_COLUMN_WIDTH = 150;
 
@@ -107,16 +118,7 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     parent_ = parent;
 
     // Web service reference combo
-    Composite webServiceRefComp = uiUtils.createComposite(parent_, 2);
-    webServiceRefCombo_ = uiUtils.createCombo(webServiceRefComp, ConsumptionUIMessages.LABEL_COMBO_WS_CLIENT_REF, 
-    								ConsumptionUIMessages.TOOLTIP_WS_CLIENT_REF, INFOPOP_WS_CLIENT_REF,
-    								SWT.READ_ONLY);
-    webServiceRefCombo_.addSelectionListener(new SelectionAdapter() {
-
-      public void widgetSelected(SelectionEvent evt) {
-        handleWebServiceRefCombo(evt);
-      }
-    });
+    webServiceRefComp_ = uiUtils.createComposite(parent_, 2);
 
     Composite displayComp = new Composite(parent_, SWT.NONE);
     GridLayout gridlayout = new GridLayout(2, false);
@@ -281,8 +283,8 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     });
 
     // source location combo
-    Composite sourceLocationComp = uiUtils.createComposite(parent_, 2);
-    sourceLocationCombo_ = uiUtils.createCombo(sourceLocationComp, ConsumptionUIMessages.LABEL_COMBO_SOURCE_LOC, ConsumptionUIMessages.TOOLTIP_COMBO_SOURCE_LOC, INFOPOP_COMBO_SOURCE_LOC,
+    sourceLocationComp_ = uiUtils.createComposite(parent_, 2);
+    sourceLocationCombo_ = uiUtils.createCombo(sourceLocationComp_, ConsumptionUIMessages.LABEL_COMBO_SOURCE_LOC, ConsumptionUIMessages.TOOLTIP_COMBO_SOURCE_LOC, INFOPOP_COMBO_SOURCE_LOC,
         SWT.READ_ONLY);
     sourceLocationCombo_.addSelectionListener(new SelectionAdapter() {
 
@@ -297,39 +299,72 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
   // Called at start
   private void populateHandlersTable() {
     try {
+      UIUtils uiUtils = new UIUtils(pluginId_);
 
-      int sizeOfHandlers = wsRefsToHandlers_.size();
+      // process for multiple service selection
+      if (isMultipleSelection_) {
+        webServiceDescText_ = uiUtils.createText(webServiceRefComp_, ConsumptionUIMessages.LABEL_COMBO_WS_CLIENT_REF, 
+            ConsumptionUIMessages.TOOLTIP_WS_CLIENT_REF, INFOPOP_WS_CLIENT_REF, SWT.READ_ONLY);
+        if (handlerServiceRefHolder_!=null){
+          currentHSRH_ = handlerServiceRefHolder_[0];
+          String text = NLS.bind(ConsumptionUIMessages.MSG_TEXT_NUM_OF_CLIENTS, Integer.toString(handlerServiceRefHolder_.length));          
+          webServiceDescText_.setText(text);
+        }
+        
+        genSkeletonRadioButton_.setSelection(false);
+        genSkeletonRadioButton_.setEnabled(false);
+        genSkeletonRadioButton_.setVisible(false);
+        
+        sourceLocationComp_.setVisible(false);
+        sourceLocationCombo_.setEnabled(false);
+        sourceLocationCombo_.setVisible(false);
+        
+        refresh();
 
-      String[] wsRefNames = (String[]) wsRefsToHandlers_.keySet().toArray(new String[0]);
-      webServiceRefCombo_.setItems(wsRefNames);
-      webServiceRefCombo_.select(0);
-
-      if (sizeOfHandlers < 1) {
-        webServiceRefCombo_.select(0);
-        webServiceRefCombo_.setEnabled(false);
       }
       else {
-        if (serviceRefName_ != null) {
-          int index = webServiceRefCombo_.indexOf(serviceRefName_);
-          if (index != -1) webServiceRefCombo_.select(index);
-        }
-        else
+        
+        webServiceRefCombo_ = uiUtils.createCombo(webServiceRefComp_, ConsumptionUIMessages.LABEL_COMBO_WS_CLIENT_REF, 
+            ConsumptionUIMessages.TOOLTIP_WS_CLIENT_REF, INFOPOP_WS_CLIENT_REF, SWT.READ_ONLY);
+        webServiceRefCombo_.addSelectionListener(new SelectionAdapter() {
+          public void widgetSelected(SelectionEvent evt) {
+            handleWebServiceRefCombo(evt);
+          }
+        });
+
+        String[] wsRefNames = HandlerServiceRefHelper.getAllServiceRefNames(handlerServiceRefHolder_); 
+        webServiceRefCombo_.setItems(wsRefNames);
+  
+        if (handlerServiceRefHolder_.length < 1) {
           webServiceRefCombo_.select(0);
-      }
-
-      // get webServiceRef hint
-      String wsRef = webServiceRefCombo_.getText();
-
-      if (wsRefsToHandlers_.get(wsRef) != null) {
-        orderedHandlers_ = (Vector) wsRefsToHandlers_.get(wsRef);
-        tableViewer_.setInput(orderedHandlers_);
-        tableViewer_.refresh();
+          webServiceRefCombo_.setEnabled(false);
+        }
+        else {
+          if (serviceRefName_ != null) {
+            int index = webServiceRefCombo_.indexOf(serviceRefName_);
+            if (index != -1) webServiceRefCombo_.select(index);
+          }
+          else
+            webServiceRefCombo_.select(0);
+        }
+    
+        // set handler table
+        HandlerServiceRefHolder hsrh = HandlerServiceRefHelper.getForServiceRefName(handlerServiceRefHolder_, webServiceRefCombo_.getText());
+        if (hsrh != null) {
+          currentHSRH_ = hsrh;
+          List handlers = hsrh.getHandlerList();
+          tableViewer_.setInput(handlers);
+          tableViewer_.refresh();
+        }
+        
+        // set output folder
+        setSourceOutputLocation();
       }
     }
     catch (Exception e) {
       e.printStackTrace();
     }
-
+    
   }
 
   /*
@@ -339,11 +374,12 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
    */
   public IStatus getStatus() {
     IStatus finalStatus = Status.OK_STATUS;
-
+    if (isMultipleSelection_)
+      return StatusUtils.infoStatus(ConsumptionUIMessages.PAGE_DESC_MULTIPLE_CLIENTS_CONFIG);
     return finalStatus;
   }
 
-  private void handleAddButtonSelected(SelectionEvent event) {
+  protected void handleAddButtonSelected(SelectionEvent event) {
 
     AddHandlerDialog dialog = dialog = new AddHandlerDialog(parent_.getShell(), true);
     dialog.create();
@@ -358,75 +394,82 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
       HandlerTableItem hi = new HandlerTableItem();
       hi.setHandlerName(name);
       hi.setHandlerClassName(className);
-      String wsRefName = webServiceRefCombo_.getText();
-      ServiceRef serviceRef = (ServiceRef) refNameToServiceRef_.get(wsRefName);
+      
+      ServiceRef serviceRef = currentHSRH_.getServiceRef();
       hi.setWsDescRef(serviceRef);
-
-      orderedHandlers_ = (Vector) wsRefsToHandlers_.get(wsRefName);
-      orderedHandlers_.add(hi);
-
+      currentHSRH_.getHandlerList().add(hi);
     }
 
     refresh();
   }
 
-  private void handleRemoveButtonSelected(SelectionEvent event) {
+  protected void handleRemoveButtonSelected(SelectionEvent event) {
     handleDeleteKeyPressed();
   }
 
-  private void handleMoveUpButtonSelected(SelectionEvent event) {
+  protected void handleMoveUpButtonSelected(SelectionEvent event) {
 
     int index = tableViewer_.getTable().getSelectionIndex();
     if (index != -1) {
       if (index > 0) {
-        orderedHandlers_ = (Vector) wsRefsToHandlers_.get(webServiceRefCombo_.getText());
-        Object object = orderedHandlers_.remove(index);
-        orderedHandlers_.insertElementAt(object, index - 1);
-        tableViewer_.refresh();
+        if (currentHSRH_!=null) {
+          List handlers = currentHSRH_.getHandlerList();
+          Object object = handlers.remove(index);
+          handlers.add( index - 1, object);
+          tableViewer_.refresh();
+        }
       }
     }
 
   }
 
-  private void handleMoveDownButtonSelected(SelectionEvent event) {
+  protected void handleMoveDownButtonSelected(SelectionEvent event) {
 
     int index = tableViewer_.getTable().getSelectionIndex();
     if (index != -1) {
-      if (index < orderedHandlers_.size() - 1) {
-        orderedHandlers_ = (Vector) wsRefsToHandlers_.get(webServiceRefCombo_.getText());        
-        Object object = orderedHandlers_.remove(index);
-        orderedHandlers_.insertElementAt(object, index + 1);
-        tableViewer_.refresh();
+      if (currentHSRH_!=null){
+        List handlers = currentHSRH_.getHandlerList();
+        if (index < handlers.size() - 1) {
+          Object object = handlers.remove(index);
+          handlers.add(index + 1, object);
+          tableViewer_.refresh();
+        }
       }
     }
 
   }
 
-  public void handleSourceLocationCombo(SelectionEvent event) {
+  protected void handleSourceLocationCombo(SelectionEvent event) {
     outputLocation_ = sourceLocationCombo_.getText();
+    IPath outputPath = (IPath) pathsTable_.get(outputLocation_);
+    currentHSRH_.setSourceOutputPath(outputPath);
   }
 
-  public void handleGenSkeletonRadioButton() {
+  protected void handleGenSkeletonRadioButton() {
     if (genSkeletonRadioButton_.isEnabled()) {
-      if (genSkeletonRadioButton_.getSelection())
+      if (genSkeletonRadioButton_.getSelection()) {
         this.isGenSkeletonEnabled_ = true;
-      else
+        sourceLocationCombo_.setEnabled(true);
+      }
+      else {
         this.isGenSkeletonEnabled_ = false;
-    }
-  }
-
-  public void handleWebServiceRefCombo(SelectionEvent event) {
-
-    if (webServiceRefCombo_.isEnabled()) {
-      String webServiceRefName = webServiceRefCombo_.getText();
-      Vector hndlers = (Vector) wsRefsToHandlers_.get(webServiceRefName);
-      //HandlerTableItem item = (HandlerTableItem)hndlers.get(0);
-      //serviceRef_ = (ServiceRef)item.getWsDescRef();
-      if (hndlers != null) {
-        tableViewer_.setInput(hndlers);
-        tableViewer_.refresh();
+        sourceLocationCombo_.setEnabled(false);
       }
     }
+  }
+
+  protected void handleWebServiceRefCombo(SelectionEvent event) {
+
+    if (webServiceRefCombo_!=null && webServiceRefCombo_.isEnabled()) {
+      HandlerServiceRefHolder hsrh = HandlerServiceRefHelper.getForServiceRefName(handlerServiceRefHolder_, webServiceRefCombo_.getText());
+      currentHSRH_ = hsrh;      
+      refresh();
+    }
+    
+    if (isGenSkeletonEnabled_){
+      setSourceOutputLocation();
+    }
+    
   }
 
   /**
@@ -479,26 +522,31 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     }
   }
 
-  private void handleDeleteKeyPressed() {
+  protected void handleDeleteKeyPressed() {
     ISelection selection = tableViewer_.getSelection();
     if (selection != null && !selection.isEmpty() && (selection instanceof IStructuredSelection)) {
       int selectionIndex = handlersTable_.getSelectionIndex();
-
-      orderedHandlers_ = (Vector) wsRefsToHandlers_.get(webServiceRefCombo_.getText());
-      orderedHandlers_.remove(selectionIndex);
+      if (currentHSRH_!=null){
+        currentHSRH_.getHandlerList().remove(selectionIndex);
+      }
       refresh();
     }
   }
 
   public void refresh() {
+    
     try {
       tableViewer_.setInput(null);
-      if (orderedHandlers_ != null) tableViewer_.setInput(orderedHandlers_);
-      tableViewer_.refresh();
+      if (currentHSRH_!=null){
+        List handlers = currentHSRH_.getHandlerList();
+        tableViewer_.setInput(handlers);
+        tableViewer_.refresh();        
+      }
     }
     catch (Exception e) {
       e.printStackTrace();
     }
+    
   }
 
   public void setGenSkeletonEnabled(boolean isGenSkeletonEnabled) {
@@ -511,95 +559,60 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     return this.isGenSkeletonEnabled_;
   }
 
-  public void setSourceOutputLocation(IPath[] locations) {
-    if (locations[0]!=null)
-      this.outputLocation_ = locations[0].toString();
-    else
-      return;
-    
-    String[] paths = new String[locations.length];
-    for (int i = 0; i < locations.length; i++) {
-      paths[i] = locations[i].toString();
-      pathsTable_.put(paths[i], locations[i]);
-    }
-    sourceLocationCombo_.setItems(paths);
-    sourceLocationCombo_.select(0);
-
-  }
-
-  public IPath getSourceOutputLocation() {
-    IPath outputPath = (IPath) pathsTable_.get(outputLocation_);
-    return outputPath;
-  }
-
-  /**
-   * @return Returns the handlerClassNames.
-   */
-  public String[] getHandlerClassNames() {
-    Vector handlerClasses = new Vector();
-
-    Enumeration e = wsRefsToHandlers_.keys();
-    while (e.hasMoreElements()) {
-
-      String wsRefName = (String) e.nextElement();
-      orderedHandlers_ = (Vector) wsRefsToHandlers_.get(wsRefName);
-
-      if (orderedHandlers_ != null) {
-        for (int i = 0; i < orderedHandlers_.size(); i++) {
-          HandlerTableItem hti = (HandlerTableItem) orderedHandlers_.get(i);
-          handlerClasses.add(hti.getHandlerClassName());
+  private void setSourceOutputLocation(){
+    if (currentHSRH_!=null){    
+      IProject project = currentHSRH_.getProject();
+      if (project!=null){
+        IPath[]locations = ResourceUtils.getAllJavaSourceLocations(project);
+        String[] paths = new String[locations.length];
+        for (int i = 0; i < locations.length; i++) {
+          paths[i] = locations[i].toString();
+          pathsTable_.put(paths[i], locations[i]);
         }
+        sourceLocationCombo_.setItems(paths);
+        sourceLocationCombo_.select(0);        
       }
+      
+      // set in model
+      outputLocation_ = sourceLocationCombo_.getText();
+      IPath outputPath = (IPath) pathsTable_.get(outputLocation_);
+      currentHSRH_.setSourceOutputPath(outputPath);      
     }
-    return (String[])handlerClasses.toArray(new String[0]);
   }
-
+  
   /**
-   * @return Returns the wsRefsToHandlers_.
+   * Called at the beginning 
    */
-  public Hashtable getWsRefsToHandlers() {
-    return wsRefsToHandlers_;
-  }
-
+  public void internalize(){
+    populateHandlersTable();
+  } 
+  
   /**
-   * @param wsRefsToHandlers_
-   *          The wsRefsToHandlers_ to set.
+   * Initial selection
+   * @param wsRefName
    */
-  public void setWsRefsToHandlers(Hashtable wsRefsToHandlersArray) {
-
-    wsRefsToHandlers_ = new Hashtable();
-    try {
-
-      if (wsRefsToHandlersArray != null) {
-        // store the wsRefs
-        Enumeration wsRef = wsRefsToHandlersArray.keys();
-        while (wsRef.hasMoreElements()) {
-          String wsRefName = (String) wsRef.nextElement();
-
-          HandlerTableItem[] handlers = (HandlerTableItem[]) wsRefsToHandlersArray.get(wsRefName);
-          // process the handlersTable
-          orderedHandlers_ = new Vector();
-          for (int i = 0; i < handlers.length; i++) {
-            orderedHandlers_.add(handlers[i]);
-          }
-          wsRefsToHandlers_.put(wsRefName, orderedHandlers_);
-
-        }
-      }
-      populateHandlersTable();
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
-
-  }
-
   public void setServiceRefName(String wsRefName) {
     serviceRefName_ = wsRefName;
   }
 
-  public void setRefNameToServiceRef(Hashtable refName2SF) {
-    this.refNameToServiceRef_ = refName2SF;
+  /**
+   * true if multiple clients are selected
+   * @param isMulitpleSelection
+   */
+  public void setIsMultipleSelection(boolean isMulitpleSelection) {
+    this.isMultipleSelection_ = isMulitpleSelection;
   }
-
+  
+  /**
+   * An array of HandlerDescriptionHolders
+   * @return
+   */
+  public void setHandlerServiceRefHolder(HandlerServiceRefHolder[] handlerHolders){
+    this.handlerServiceRefHolder_ = handlerHolders;
+  }
+  
+  public HandlerServiceRefHolder[] getHandlerServiceRefHolder(){
+    return this.handlerServiceRefHolder_;
+  }
+  
 }

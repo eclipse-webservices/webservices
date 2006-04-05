@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -63,21 +66,24 @@ public class ConfigClientHandlersWidgetBinding implements CommandWidgetBinding
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry) {
     
-    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"Handlers", ConfigClientHandlersTableWidget.class,"WsRefsToHandlers", null);
-    
+    // widget
+    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"HandlerServiceRefHolder", ConfigClientHandlersTableWidget.class);
+    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"IsMultipleSelection", ConfigClientHandlersTableWidget.class);
     dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"GenSkeletonEnabled", ConfigClientHandlersTableWidget.class);
-    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"SourceOutputLocation", ConfigClientHandlersTableWidget.class);
     dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"ServiceRefName", ConfigClientHandlersTableWidget.class);
-    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"RefNameToServiceRef", ConfigClientHandlersTableWidget.class);
     
-    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"WsRefsToHandlers", ClientHandlersWidgetOutputCommand.class,"HandlersTable",null);
+    // output
+    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"IsMultipleSelection", ClientHandlersWidgetOutputCommand.class);
+    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"HandlerServiceRefHolder", ClientHandlersWidgetOutputCommand.class);
     
-    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"SourceOutputLocation", GenerateHandlerSkeletonCommand.class,"OutputLocation",null);
-    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"HandlerClassNames", GenerateHandlerSkeletonCommand.class,"HandlerNames",null);
+    // gen skeleton
+    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"HandlerServiceRefHolder", GenerateHandlerSkeletonCommand.class);
     dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"GenSkeletonEnabled", GenerateHandlerSkeletonCommand.class);
 
+    // open in editor
     dataRegistry.addMapping(GenerateHandlerSkeletonCommand.class,"Project", OpenJavaEditorCommand.class);
     dataRegistry.addMapping(GenerateHandlerSkeletonCommand.class,"ClassNames", OpenJavaEditorCommand.class);
+    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"GenSkeletonEnabled", OpenJavaEditorCommand.class,"IsEnabled", null);
     
   }
 

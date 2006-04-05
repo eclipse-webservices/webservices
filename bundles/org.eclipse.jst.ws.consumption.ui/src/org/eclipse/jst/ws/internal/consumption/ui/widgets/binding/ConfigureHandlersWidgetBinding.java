@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004,2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,11 +7,15 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.GenerateHandlerSkeletonCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.command.OpenJavaEditorCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientHandlersWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientHandlersWidgetOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ConfigClientHandlersTableWidget;
@@ -71,34 +75,41 @@ public class ConfigureHandlersWidgetBinding implements CommandWidgetBinding {
   public void registerDataMappings(DataMappingRegistry dataRegistry) {
 
     // Map client-side widgets to commands
-    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class, "Handlers", ConfigClientHandlersTableWidget.class, "WsRefsToHandlers", null);
+    // widget
+    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"HandlerServiceRefHolder", ConfigClientHandlersTableWidget.class);
+    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"IsMultipleSelection", ConfigClientHandlersTableWidget.class);
+    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"GenSkeletonEnabled", ConfigClientHandlersTableWidget.class);
+    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"ServiceRefName", ConfigClientHandlersTableWidget.class);
+    
+    // output
 
-    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class, "GenSkeletonEnabled", ConfigClientHandlersTableWidget.class);
-    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class, "SourceOutputLocation", ConfigClientHandlersTableWidget.class);
-    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class, "ServiceRefName", ConfigClientHandlersTableWidget.class);
-    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class, "RefNameToServiceRef", ConfigClientHandlersTableWidget.class);
+    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"HandlerServiceRefHolder", ClientHandlersWidgetOutputCommand.class);
+    
+    // gen skeleton
+    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"HandlerServiceRefHolder", GenerateHandlerSkeletonCommand.class);
+    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"GenSkeletonEnabled", GenerateHandlerSkeletonCommand.class);
 
-    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class, "WsRefsToHandlers", ClientHandlersWidgetOutputCommand.class, "HandlersTable", null);
-
-    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class, "SourceOutputLocation", GenerateHandlerSkeletonCommand.class, "OutputLocation", null);
-    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class, "HandlerClassNames", GenerateHandlerSkeletonCommand.class, "HandlerNames", null);
-    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class, "GenSkeletonEnabled", GenerateHandlerSkeletonCommand.class);
-
+    // open in editor
+    dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"GenSkeletonEnabled", OpenJavaEditorCommand.class,"IsEnabled", null);
+  
+ 
     // Map service-side widgets to commands
-    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class, "WsRefsToHandlers", ConfigServiceHandlersTableWidget.class);
-    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class, "GenSkeletonEnabled", ConfigServiceHandlersTableWidget.class);
-    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class, "SourceOutputLocation", ConfigServiceHandlersTableWidget.class);
-    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class, "ServiceDescNameToDescObj", ConfigServiceHandlersTableWidget.class);
+    // widget
+    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"HandlerDescriptionHolders", ConfigServiceHandlersTableWidget.class);
+    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class, "IsMultipleSelection", ConfigServiceHandlersTableWidget.class);
+    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"GenSkeletonEnabled", ConfigServiceHandlersTableWidget.class);
+    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"DescriptionName", ConfigServiceHandlersTableWidget.class);
+    
+    // output command (adds/removes from model)
+    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class,"HandlerDescriptionHolders", ServiceHandlersWidgetOutputCommand.class);
+    
 
-    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class, "DescriptionName", ConfigServiceHandlersTableWidget.class);
-
-    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class, "HandlersList", ServiceHandlersWidgetOutputCommand.class);
-    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class, "WsDescToHandlers", ServiceHandlersWidgetOutputCommand.class);
-    dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class, "ServiceDescNameToDescObj", ServiceHandlersWidgetOutputCommand.class);
-
-    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class, "SourceOutputLocation", GenerateHandlerSkeletonCommand.class, "OutputLocation", null);
-    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class, "HandlerClassNames", GenerateHandlerSkeletonCommand.class, "HandlerNames", null);
-    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class, "GenSkeletonEnabled", GenerateHandlerSkeletonCommand.class);
+    // gen skeleton command
+    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class,"HandlerDescriptionHolders", GenerateHandlerSkeletonCommand.class);    
+    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class,"GenSkeletonEnabled", GenerateHandlerSkeletonCommand.class);
+ 
+    // open Java editor  
+    dataRegistry.addMapping(ConfigServiceHandlersTableWidget.class,"GenSkeletonEnabled", OpenJavaEditorCommand.class,"IsEnabled", null);
 
   }
 
@@ -144,10 +155,14 @@ public class ConfigureHandlersWidgetBinding implements CommandWidgetBinding {
       dataRegistry.addMapping(HandlersDefaultingCommand.class, "IsClientHandler", ClientHandlersFragment.class, "ClientHandlersEnabled", null);
       dataRegistry.addMapping(HandlersDefaultingCommand.class, "IsServiceHandler", ServiceHandlersFragment.class, "ServiceHandlersEnabled", null);
 
-      dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"WsServiceRefs", ClientHandlersWidgetOutputCommand.class);      
-      dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"ClientProject", ClientHandlersWidgetOutputCommand.class);
-     
-      dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class, "WsddResource", ServiceHandlersWidgetOutputCommand.class);
+      dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"IsMultipleSelection", ClientHandlersWidgetOutputCommand.class);
+      dataRegistry.addMapping(GenerateHandlerSkeletonCommand.class,"Project", OpenJavaEditorCommand.class);
+      dataRegistry.addMapping(GenerateHandlerSkeletonCommand.class,"ClassNames", OpenJavaEditorCommand.class);
+   
+      dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class, "IsMultipleSelection", ServiceHandlersWidgetOutputCommand.class);
+      dataRegistry.addMapping(ServiceHandlersWidgetDefaultingCommand.class,"WsddResource", ServiceHandlersWidgetOutputCommand.class);
+      dataRegistry.addMapping(GenerateHandlerSkeletonCommand.class,"Project", OpenJavaEditorCommand.class);
+      dataRegistry.addMapping(GenerateHandlerSkeletonCommand.class,"ClassNames", OpenJavaEditorCommand.class);      
 
     }
 

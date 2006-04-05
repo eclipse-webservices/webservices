@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004,2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,13 +7,10 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
  *******************************************************************************/
-/*
- * Created on May 12, 2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
- */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -44,6 +41,7 @@ public class AddHandlerDialog extends Dialog implements Listener {
 
   private boolean validateOn_;
   private boolean isClient_;
+  private boolean isMultipleServices_;
   private String className;
   private String name;
   private String selectedPortName;
@@ -112,7 +110,7 @@ public class AddHandlerDialog extends Dialog implements Listener {
     // dummy label for column 3.
     new Label( sourceLocationComp, SWT.NONE );
     
-    if (!isClient_){
+    if (!isClient_ && !isMultipleServices_){
       portNameCombo = uiUtils.createCombo(sourceLocationComp, ConsumptionUIMessages.LABEL_TEXT_HANDLER_PORT, ConsumptionUIMessages.TOOLTIP_TEXT_HANDLER_PORT, INFOPOP_TEXT_HANDLER_PORT, SWT.SINGLE | SWT.BORDER );
       portNameCombo.addListener(SWT.Modify, this);
       
@@ -200,7 +198,7 @@ public class AddHandlerDialog extends Dialog implements Listener {
   		disableOKButton();
   		return;
   	}
-  	if (!isClient_){
+  	if (!isClient_ && !isMultipleServices_){
   		if (portNameCombo.getText()!=null && portNameCombo.getText().equals("")){
   			disableOKButton();
   			return;
@@ -257,5 +255,9 @@ public class AddHandlerDialog extends Dialog implements Listener {
   public void setPortNames(String[] portNames) {
     portNameCombo.setItems(portNames);
     portNameCombo.select(0);
+  }
+  
+  public void setIsMultipleServices(boolean isMultipleServices){
+    this.isMultipleServices_ = isMultipleServices;
   }
 }

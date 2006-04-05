@@ -7,11 +7,13 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -19,7 +21,6 @@ import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -42,8 +43,8 @@ import org.eclipse.jst.j2ee.webservice.wsclient.Handler;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.j2ee.webservice.wsclient.WebServicesResource;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.HandlerServiceRefHolder;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
@@ -57,19 +58,17 @@ import org.eclipse.wst.common.environment.IEnvironment;
  */
 public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidgetDefaultingCmd {
 
-  private HandlerTableItem[] handlers_;
-
-  private Hashtable wsRefsToHandlersTable_;
-
-  private Hashtable refNameToServiceRefObj_;
-
   private WebServicesManager webServicesManager_;
 
   private IProject project_;
   
   private String serviceRefName_ = null;
   
-  private Collection wsServiceRefs_;
+  private List wsServiceRefs_;
+  
+  private HandlerServiceRefHolder[] handlerServiceRefHolder_;
+  private String errorStatusMsg_ = null;
+  private boolean isMultipleSelection_;
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
@@ -84,52 +83,61 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
       env.getStatusHandler().reportError(status);
       return status;
     }
+    else if (selection.size()>1){
+      status = processMultipleHandlers();
+      return status;
+    }
 
     status = processHandlers();
     return status;
 
   }
 
+  /**
+   * For processing handlers
+   * @return
+   */
   public IStatus processHandlers() {
     try {
-      Vector handlers = new Vector();
-      wsRefsToHandlersTable_ = new Hashtable();
-      refNameToServiceRefObj_ = new Hashtable();
 
-      wsServiceRefs_ = getWSServiceRefsFromSelection();
+      Collection selectedServiceRefs = getWSServiceRefsFromSelection(); // get initial selection values
+      if (selectedServiceRefs==null || selectedServiceRefs.isEmpty()){
+        //report no Web service client is available
+      return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_ERROR_WEB_SERVICE_CLIENTS_NOT_FOUND);
+      }
+      wsServiceRefs_ = webServicesManager_.getAllWorkspaceServiceRefs(); 
 
-      if (wsServiceRefs_ != null && wsServiceRefs_.size()>0) {
-        Iterator wsRefsIter = wsServiceRefs_.iterator();
-        for (int i = 0; i < wsServiceRefs_.size(); i++) {
+      if (wsServiceRefs_ != null) {
+        int numberOfServiceRefs = wsServiceRefs_.size();
+        handlerServiceRefHolder_ = new HandlerServiceRefHolder[numberOfServiceRefs];
+        
+        for (int i = 0; i < numberOfServiceRefs; i++) {
+          ServiceRef wsServiceRef = (ServiceRef) wsServiceRefs_.get(i);
+          Vector handlers = new Vector();
+          List wsHandlers = wsServiceRef.getHandlers();
+      
+          for (int k = 0; k < wsHandlers.size(); k++) {
 
-          ServiceRef wsServiceRef = (ServiceRef) wsRefsIter.next();
-          if (serviceRefName_== null || wsServiceRef.getServiceRefName().equalsIgnoreCase(serviceRefName_)) {
-              List wsHandlers = wsServiceRef.getHandlers();
-              HandlerTableItem[] handlerItems = new HandlerTableItem[wsHandlers.size()];
-              for (int k = 0; k < wsHandlers.size(); k++) {
-    
-                Handler wsHandler = (Handler) wsHandlers.get(k);
-    
-                HandlerTableItem handlerItem = new HandlerTableItem();
-                handlerItem.setHandler(wsHandler);
-                handlerItem.setHandlerName(wsHandler.getHandlerName());
-                handlerItem.setHandlerClassName(wsHandler.getHandlerClass().getQualifiedName());
-                handlerItem.setWsDescRef(wsServiceRef);
-                handlerItems[k] = handlerItem;
-                handlers.add(handlerItem);
-              }
-              String wsServiceRefName = wsServiceRef.getServiceRefName();
-              wsRefsToHandlersTable_.put(wsServiceRefName, handlerItems);
-              refNameToServiceRefObj_.put(wsServiceRefName, wsServiceRef);
+            Handler wsHandler = (Handler) wsHandlers.get(k);
+
+            HandlerTableItem handlerItem = new HandlerTableItem();
+            handlerItem.setHandler(wsHandler);
+            handlerItem.setHandlerName(wsHandler.getHandlerName());
+            handlerItem.setHandlerClassName(wsHandler.getHandlerClass().getQualifiedName());
+            handlerItem.setWsDescRef(wsServiceRef);
+
+            handlers.add(handlerItem);
           }
+          String wsServiceRefName = wsServiceRef.getServiceRefName();
+          handlerServiceRefHolder_[i] = new HandlerServiceRefHolder();
+          handlerServiceRefHolder_[i].setHandlerList(handlers);
+          handlerServiceRefHolder_[i].setServiceRef(wsServiceRef);
+          handlerServiceRefHolder_[i].setServiceRefName(wsServiceRefName);
+          
         }
 
-        handlers_ = (HandlerTableItem[]) handlers.toArray(new HandlerTableItem[0]);
       }
-      else if (wsServiceRefs_==null || wsServiceRefs_.isEmpty()){
-            //report no Web service client is available
-          return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_ERROR_WEB_SERVICE_CLIENTS_NOT_FOUND);
-        }      
+      
     }
     catch (Exception e) {
       return StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED, e);
@@ -137,34 +145,35 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
     return Status.OK_STATUS;
   }
 
-  public HandlerTableItem[] getAllHandlers() {
-    return this.handlers_;
+  public IStatus processMultipleHandlers(){
+      ServiceRef[] serviceRefs = getServiceRefs();
+      if (errorStatusMsg_ != null){
+          return StatusUtils.errorStatus(errorStatusMsg_);
+      }
+      isMultipleSelection_ = true;
+      
+      handlerServiceRefHolder_ = new HandlerServiceRefHolder[serviceRefs.length];
+      Vector handlers = new Vector();
+      for (int i=0;i<serviceRefs.length;i++){
+        
+        String refName = serviceRefs[i].getServiceRefName();
+        handlerServiceRefHolder_[i] = new HandlerServiceRefHolder();
+        handlerServiceRefHolder_[i].setHandlerList(handlers);
+        handlerServiceRefHolder_[i].setServiceRefName(refName);
+        handlerServiceRefHolder_[i].setServiceRef(serviceRefs[i]);
+      }
+      return Status.OK_STATUS;      
   }
-
-  public Hashtable getHandlers() {
-    return wsRefsToHandlersTable_;
-  }
-
+  
   /**
    * @return Returns the isGenSkeletonEnabled_.
    */
   public boolean getGenSkeletonEnabled() {
+    if (isMultipleSelection_)
+      return false;    
     return true;
   }
 
-  /**
-   * @return Returns the sourceOutputLocation_.
-   */
-  public IPath[] getSourceOutputLocation() {
-    IPath[] locations = null;
-    if (project_==null)
-     project_ = getProject();
-    if (project_ != null) {
-      locations = ResourceUtils.getAllJavaSourceLocations(project_);
-    }
-
-    return locations;
-  }
 
   public String getServiceRefName() {
     return this.serviceRefName_;
@@ -173,6 +182,23 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
   public IProject getClientProject() {
     return project_;
   }
+  
+  private ServiceRef[] getServiceRefs(){
+      IStructuredSelection initSel = getInitialSelection();
+      ServiceRef[] serviceRefs = new ServiceRef[initSel.size()];
+      Iterator iter = initSel.iterator();
+      for (int i=0;i<initSel.size();i++) {
+          Object obj = iter.next();
+          if (obj instanceof ServiceRef){
+              serviceRefs[i] = (ServiceRef)obj;
+          }
+          else{
+              errorStatusMsg_ = ConsumptionUIMessages.MSG_ERROR_INVALID_MULTIPLE_SERVICE_SELECT;
+              return null;
+          }
+      }
+      return serviceRefs;
+}
 
   private Collection getWSServiceRefsFromSelection() {
 
@@ -199,22 +225,23 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
               // webservicesclient.xml for J2EE 1.3
               WebServicesResource wsRes = (WebServicesResource)res;
               serviceRefs = wsRes.getWebServicesClient().getServiceRefs();
-              ServiceRef ref = (ServiceRef)((List)serviceRefs).get(0);
-              serviceRefName_ = ref.getServiceRefName();
-              project_ = ProjectUtilities.getProject(ref);
-              return serviceRefs;
+              if (!serviceRefs.isEmpty()) {
+                ServiceRef ref = (ServiceRef)((List)serviceRefs).get(0);
+                serviceRefName_ = ref.getServiceRefName();
+                project_ = ProjectUtilities.getProject(ref);
+                return serviceRefs;
+              }
+              return null;
           }
           else {
               if(res instanceof WebAppResource){
                   // web.xml for J2EE 1.4
                   WebAppResource webAppRes = (WebAppResource)res;
                   serviceRefs = webAppRes.getWebApp().getServiceRefs();
-
               }
               else if (res instanceof EJBResource){
                   EJBResource ejbRes = (EJBResource)res;
                   serviceRefs = webServicesManager_.getServiceRefs(ejbRes.getEJBJar());
-                  
               }
               else if (res instanceof ApplicationClientResource){
                   ApplicationClientResource appClientRes = (ApplicationClientResource)res;
@@ -288,12 +315,15 @@ public class ClientHandlersWidgetDefaultingCommand extends AbstractHandlersWidge
     return null;
   }
 
-  public Hashtable getRefNameToServiceRef() {
-    return this.refNameToServiceRefObj_;
-  }
-  
   public Collection getWsServiceRefs(){
     return this.wsServiceRefs_;
   }
 
+  public boolean getIsMultipleSelection(){
+      return this.isMultipleSelection_;
+  }
+  
+  public HandlerServiceRefHolder[] getHandlerServiceRefHolder(){
+    return this.handlerServiceRefHolder_;
+  }
 }

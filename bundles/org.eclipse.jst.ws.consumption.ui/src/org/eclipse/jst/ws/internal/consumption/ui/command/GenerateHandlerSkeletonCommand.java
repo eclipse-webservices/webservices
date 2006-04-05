@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu      
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.command;
 
@@ -15,6 +18,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -27,6 +32,9 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.HandlerDescriptionHolder;
+import org.eclipse.jst.ws.internal.consumption.ui.common.HandlerServiceRefHolder;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -39,9 +47,11 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
 {
   private IPath outputLocation_;
-  private String[] handlerNames_;
   private boolean genSkeleton_;
   private String handlerNameForEdit_ = null;
+  
+  private HandlerServiceRefHolder[] handlerServiceRefHolder_;
+  private HandlerDescriptionHolder[]handlerDescriptionHolder_;
   
   public GenerateHandlerSkeletonCommand()
   {
@@ -50,31 +60,65 @@ public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    IEnvironment env          = getEnvironment();
-    MultiStatus status       = null;
+  
     IStatus     returnStatus = Status.OK_STATUS;
   	
   	if (!genSkeleton_)	return returnStatus; 
   	
-  	int i;
-  	boolean error = false;
-  	
-  	IStatus writeStatus;	
-  	
-  	
-    for (i=0; i<handlerNames_.length; i++) 
-    {
-    	writeStatus = writeFile(env, handlerNames_[i], outputLocation_, monitor );
-    	// handle status return
-    	if (writeStatus.getSeverity() == Status.ERROR) 
-      {  // write status is OK or ERROR
-    		error = true;
-    		if (status == null) 
-        {
-    			status = StatusUtils.multiStatus( ConsumptionUIMessages.MSG_ERROR_GENERATE_HANDLER_SKELETON, new IStatus[0] );
-    		}
-    		status.add(writeStatus);
-    	} 
+      // form the map of classname to locations
+      if (handlerDescriptionHolder_!=null){
+        for (int i=0;i<handlerDescriptionHolder_.length;i++){
+          Hashtable handlerTable = new Hashtable();
+          IPath outPath = handlerDescriptionHolder_[i].getSourceOutputPath();
+          List handlers = handlerDescriptionHolder_[i].getHandlerList();
+          for (int j=0;j<handlers.size();j++){
+            HandlerTableItem hti = (HandlerTableItem)handlers.get(j);
+            String className = hti.getHandlerClassName();
+            handlerTable.put(className, outPath);
+          }
+          returnStatus = genHandlersClasses(handlerTable, monitor);
+        }
+        
+      }
+      else {
+        for (int i=0;i<handlerServiceRefHolder_.length;i++){
+          Hashtable handlerTable = new Hashtable();
+          IPath outPath = handlerServiceRefHolder_[i].getSourceOutputPath();
+          List handlers = handlerServiceRefHolder_[i].getHandlerList();
+          for (int j=0;j<handlers.size();j++){
+            HandlerTableItem hti = (HandlerTableItem)handlers.get(j);
+            String className = hti.getHandlerClassName();
+            if (className!=null && outPath!=null)
+              handlerTable.put(className, outPath);
+          }
+          returnStatus = genHandlersClasses(handlerTable, monitor);
+        }
+      }
+    
+ 
+    return returnStatus;
+
+  }
+  
+  private IStatus genHandlersClasses(Hashtable handlersForGen, IProgressMonitor monitor){
+    IEnvironment env          = getEnvironment();
+    MultiStatus status       = null;
+    IStatus     returnStatus = Status.OK_STATUS;
+    boolean error = false;
+    
+    IStatus writeStatus;    
+    Enumeration keys = handlersForGen.keys();
+    while (keys.hasMoreElements()) {
+        String className = (String)keys.nextElement();
+        writeStatus = writeFile(env, className, (IPath)handlersForGen.get(className), monitor );
+        // handle status return
+        if (writeStatus.getSeverity() == Status.ERROR) {  // write status is OK or ERROR
+            error = true;
+            if (status == null) {
+                status = StatusUtils.multiStatus( ConsumptionUIMessages.MSG_ERROR_GENERATE_HANDLER_SKELETON, new IStatus[0] );
+            }
+            status.add(writeStatus);
+        } 
     }
     
     if (error) 
@@ -83,8 +127,10 @@ public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
        returnStatus = status;
     }
     
-  	return returnStatus;
+    return returnStatus;
+    
   }
+  
   
   private IStatus writeFile (IEnvironment env, String className, IPath outputLocation, IProgressMonitor monitor ) 
   {
@@ -127,6 +173,7 @@ public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
   	
   	if (handlerNameForEdit_ == null){
   		handlerNameForEdit_ = className;
+        outputLocation_ = outputLocation;
   	}
   	
   	OutputStream outputStream = FileResourceUtils.newFileOutputStream( EnvironmentUtils.getResourceContext(env), filePath, monitor, env.getStatusHandler());
@@ -214,16 +261,6 @@ public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
   	return status;
   }
   
-  public void setOutputLocation(IPath outputLocation) 
-  {
-	this.outputLocation_ = outputLocation;
-  }
-  
-  public void setHandlerNames (String[] handlerNames)
-  {
-  	this.handlerNames_ = handlerNames;
-  }
-  
   public void setGenSkeletonEnabled(boolean genSkeleton)
   {
   	this.genSkeleton_ = genSkeleton;
@@ -245,4 +282,21 @@ public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
   	return classes;
   }
   
+  /**
+   * An array of HandlerDescriptionHolders
+   * @return
+   */
+  public void setHandlerServiceRefHolder(HandlerServiceRefHolder[] handlerHolders){
+    this.handlerServiceRefHolder_ = handlerHolders;
+  }
+  
+  /**
+   * An array of HandlerDescriptionHolders
+   * @return
+   */
+  public void setHandlerDescriptionHolders(HandlerDescriptionHolder[] handlerHolders){
+    this.handlerDescriptionHolder_ = handlerHolders;
+  }
+  
+ 
 }

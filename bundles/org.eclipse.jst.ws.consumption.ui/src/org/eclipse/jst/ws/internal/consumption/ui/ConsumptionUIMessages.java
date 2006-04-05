@@ -11,8 +11,9 @@
  * -------- -------- -----------------------------------------------------------
  * 20060204 124143   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner     
- * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
- * 20060329   128069 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060221 119111   rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060329 128069   rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu 
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -288,6 +289,8 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String LABEL_COMBO_SOURCE_LOC;
 	public static String LABEL_COMBO_WS_CLIENT_REF;
 	public static String LABEL_COMBO_WS_SERVICE_DESC;
+    public static String MSG_TEXT_NUM_OF_SERVICES;
+    public static String MSG_TEXT_NUM_OF_CLIENTS;
 	public static String LABEL_HANDLER_NAME;
 	public static String LABLE_HANDLER_CLASS;
 	public static String LABEL_HANDLER_PORT;
@@ -299,6 +302,8 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String PAGE_DESC_SERVICE_HDLR_CONFIG;
 	public static String PAGE_TITLE_CLIENT_HDLR_CONFIG;
 	public static String PAGE_DESC_CLIENT_HDLR_CONFIG;
+    public static String PAGE_DESC_MULTIPLE_SERVICES_CONFIG;
+    public static String PAGE_DESC_MULTIPLE_CLIENTS_CONFIG;
 	public static String TOOLTIP_EDIT_WS_HANDLERS;
 	public static String TOOLTIP_BUTTON_GEN_SKELETON;
 	public static String TOOLTIP_COMBO_SOURCE_LOC;
@@ -355,6 +360,7 @@ public final class ConsumptionUIMessages extends NLS {
     public static String MSG_CLIENT_CANNOT_ASSOCIATE;
     public static String MSG_SERVICE_CANNOT_ASSOCIATE;
     public static String MSG_PROJECT_MUST_EXIST;
+    public static String MSG_ERROR_INVALID_MULTIPLE_SERVICE_SELECT;
 
 
 	static {

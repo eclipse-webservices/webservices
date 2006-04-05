@@ -7,14 +7,15 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu  
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -33,6 +34,7 @@ import org.eclipse.jst.j2ee.webservice.wsclient.internal.impl.Webservice_clientF
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.HandlerServiceRefHolder;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.HandlerTableItem;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ArtifactEdit;
@@ -46,82 +48,90 @@ import org.eclipse.wst.common.internal.emf.utilities.EtoolsCopyUtility;
 public class ClientHandlersWidgetOutputCommand extends AbstractDataModelOperation 
 {
 
+  private HandlerServiceRefHolder[] handlerServiceRefHolder_;
   private Hashtable oldWSServiceRefsToHandlersTable_;
-
   private Hashtable newWSServiceRefsToHandlersTable_;
-
-  private Hashtable handlersTable_;
-
   private IProject project_;
-
-  private Collection wsServiceRefs_;
+  private boolean isMultipleSelection_;
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
     IStatus status = Status.OK_STATUS;
 
     try {
-
-      oldWSServiceRefsToHandlersTable_ = new Hashtable();
-      newWSServiceRefsToHandlersTable_ = new Hashtable();
-
-      if (wsServiceRefs_ != null) {
-        Iterator wsRefsIter = wsServiceRefs_.iterator();
-        for (int i = 0; i < wsServiceRefs_.size(); i++) {
-
-          ServiceRef wsServiceRef = (ServiceRef) wsRefsIter.next();
-
-          List wsHandlers = wsServiceRef.getHandlers();
-          oldWSServiceRefsToHandlersTable_.put(wsServiceRef, wsHandlers);
-          newWSServiceRefsToHandlersTable_.put(wsServiceRef, new ArrayList());
+      
+      if (isMultipleSelection_) {
+        if (handlerServiceRefHolder_ != null) {
+          // add new handler to internal model if it doesn't already exist
+          for (int i = 0; i < handlerServiceRefHolder_.length; i++) {
+            handlerServiceRefHolder_[i].addHandlerToServiceRef();
+          }
+          
         }
+        
+      }
+      else {
+        oldWSServiceRefsToHandlersTable_ = new Hashtable();
+        newWSServiceRefsToHandlersTable_ = new Hashtable();
+        
+        if (handlerServiceRefHolder_ != null) {
+  
+          for (int i = 0; i < handlerServiceRefHolder_.length; i++) {
+  
+            ServiceRef wsServiceRef =handlerServiceRefHolder_[i].getServiceRef(); 
+        
+            List wsHandlers = wsServiceRef.getHandlers();
+            oldWSServiceRefsToHandlersTable_.put(wsServiceRef, wsHandlers);
+            newWSServiceRefsToHandlersTable_.put(wsServiceRef, new ArrayList());
+          }
+  
+          //Enumeration e = handlersTable_.keys();
+          for (int j=0;j<handlerServiceRefHolder_.length;j++) {
 
-        Enumeration e = handlersTable_.keys();
-        while (e.hasMoreElements()) {
-
-          String serviceRefName = (String) e.nextElement();
-          List handlerTableItems_ = (List) handlersTable_.get(serviceRefName);
-          if (handlerTableItems_ != null) {
-            // form Handler tables
-            for (int i = 0; i < handlerTableItems_.size(); i++) {
-
-              HandlerTableItem hti = (HandlerTableItem) handlerTableItems_.get(i);
-              Object wsModelRef = hti.getWsDescRef();
-              if (wsModelRef != null && wsModelRef instanceof ServiceRef) {
-                ServiceRef wsRef = (ServiceRef) wsModelRef;
-
-                Object handler = hti.getHandler();
-                if (handler != null && handler instanceof Handler) {
-                  // clone it
-                  Handler clonedHandler = (Handler) EtoolsCopyUtility.createCopy((Handler) handler);
-                  ((List) newWSServiceRefsToHandlersTable_.get(wsRef)).add(clonedHandler);
-                }
-                else {
-                  // create it
-                  Webservice_clientFactory wsClientFactory = new Webservice_clientFactoryImpl();
-                  Handler newHandler = wsClientFactory.createHandler();
-                  newHandler.setHandlerName(hti.getHandlerName());
-
-                  JavaClass javaClass = JavaMOFUtils.getJavaClass(hti.getHandlerClassName(), project_);
-                  if (javaClass != null) {
-                    newHandler.setHandlerClass(javaClass);
+            List handlerTableItems_ =  handlerServiceRefHolder_[j].getHandlerList();
+            if (handlerTableItems_ != null) {
+              // form Handler tables
+              for (int i = 0; i < handlerTableItems_.size(); i++) {
+  
+                HandlerTableItem hti = (HandlerTableItem) handlerTableItems_.get(i);
+                Object wsModelRef = hti.getWsDescRef();
+                if (wsModelRef != null && wsModelRef instanceof ServiceRef) {
+                  ServiceRef wsRef = (ServiceRef) wsModelRef;
+  
+                  Object handler = hti.getHandler();
+                  if (handler != null && handler instanceof Handler) {
+                    // clone it
+                    Handler clonedHandler = (Handler) EtoolsCopyUtility.createCopy((Handler) handler);
+                    ((List) newWSServiceRefsToHandlersTable_.get(wsRef)).add(clonedHandler);
                   }
-
-                  ((List) newWSServiceRefsToHandlersTable_.get(wsRef)).add(newHandler);
+                  else {
+                    // create it
+                    Webservice_clientFactory wsClientFactory = new Webservice_clientFactoryImpl();
+                    Handler newHandler = wsClientFactory.createHandler();
+                    newHandler.setHandlerName(hti.getHandlerName());
+  
+                    JavaClass javaClass = JavaMOFUtils.getJavaClass(hti.getHandlerClassName(), project_);
+                    if (javaClass != null) {
+                      newHandler.setHandlerClass(javaClass);
+                    }
+  
+                    ((List) newWSServiceRefsToHandlersTable_.get(wsRef)).add(newHandler);
+                  }
+  
                 }
-
+  
               }
-
             }
           }
+ 
+          // add handlers to ports
+          addHandlersToServiceRefs();
         }
-
-        // add handlers to ports
-        addHandlersToServiceRefs();
-        // save the artifact edit model
-        saveEditModel();
-
       }
+      
+      // save the artifact edit model
+      saveEditModel();
+      
     }
     catch (Exception e) 
     {
@@ -161,7 +171,6 @@ public class ClientHandlersWidgetOutputCommand extends AbstractDataModelOperatio
           List handlers = (List) newWSServiceRefsToHandlersTable_.get(serviceRef);
           List modelHandlers = (List) oldWSServiceRefsToHandlersTable_.get(serviceRef);
           modelHandlers.clear();
-          //wsServiceRefs_.addAll(handlers);
           modelHandlers.addAll(handlers);
         }
       }
@@ -171,20 +180,21 @@ public class ClientHandlersWidgetOutputCommand extends AbstractDataModelOperatio
     }
   }
 
-  /**
-   * The new handlerTableItems to set.
-   * @param handlerTableItems
-   */
-  public void setHandlersTable(Hashtable handlersTable) {
-    this.handlersTable_ = handlersTable;
-  }
 
   public void setClientProject(IProject project) {
     this.project_ = project;
   }
-
-  public void setWsServiceRefs(Collection wsRefs) {
-    this.wsServiceRefs_ = wsRefs;
+  
+  /**
+   * An array of HandlerDescriptionHolders
+   * @return
+   */
+  public void setHandlerServiceRefHolder(HandlerServiceRefHolder[] handlerHolders){
+    this.handlerServiceRefHolder_ = handlerHolders;
+  }
+  
+  public void setIsMultipleSelection(boolean isMulitpleSelection) {
+    this.isMultipleSelection_ = isMulitpleSelection;
   }
 
 }
