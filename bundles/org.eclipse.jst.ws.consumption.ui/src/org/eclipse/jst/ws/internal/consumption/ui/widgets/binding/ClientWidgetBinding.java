@@ -271,15 +271,10 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ResourceContext", ClientWizardWidgetOutputCommand.class);
       
       // Map ClientWizardWidgetOutputCommand command.
-      //jvh - rerouted from ClientWizardWidgetOutputCommand
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientRuntimeSelectionWidgetDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "InstallClient", ClientExtensionDefaultingCommand.class); 
-      //jvh - do something with this one....save testService in WizardWidget - and the mapping below this one will take care of the setter
-      //dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "TestService", WSDLSelectionOutputCommand.class);      
-     
-      //jvh - rerouted these from ClientWizardWidget
-      dataRegistry.addMapping(ClientWizardWidget.class, "TestService", ClientExtensionDefaultingCommand.class);      
-      dataRegistry.addMapping(ClientWizardWidget.class, "TestService", ClientRuntimeSelectionWidgetDefaultingCommand.class);       
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "TestService", ClientExtensionDefaultingCommand.class);      
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "TestService", ClientRuntimeSelectionWidgetDefaultingCommand.class);       
       
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ResourceContext", ClientRuntimeSelectionWidgetDefaultingCommand.class);      
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ResourceContext", ClientExtensionDefaultingCommand.class);

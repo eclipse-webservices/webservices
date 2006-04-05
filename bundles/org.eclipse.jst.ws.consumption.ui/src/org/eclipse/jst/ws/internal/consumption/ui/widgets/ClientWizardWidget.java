@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
-import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -260,14 +259,12 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   
   public Boolean getTestService()
   {
-	  if (clientWidget_.getClientGeneration()<=ScenarioContext.WS_TEST)
-		  return new Boolean(true);	  
-	  return new Boolean(false); 
+	  return clientWidget_.getTestClient(); 
   }
   
   public void setTestService( Boolean value )
   {
-   // testService_.setSelection( value.booleanValue() );  
+      clientWidget_.setTestClient(value);  
   }
   
   public int getClientGeneration()

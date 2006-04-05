@@ -453,20 +453,15 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		return ids_;
 	}
 
-	public Boolean getStartService() {		
-		if (serviceScale_.getSelection()<=ScenarioContext.WS_START)
-		{			
-			return new Boolean(true);
-		}
-		return new Boolean(false);
-	}
-
 	public void setServiceGeneration(int value)
 	{
 		serviceScale_.setSelection(value);
 		setGraphics(value);
+		setTestService(new Boolean(value <= ScenarioContext.WS_TEST));
+		setInstallService(new Boolean(value <= ScenarioContext.WS_INSTALL));
+		setStartService(new Boolean(value <= ScenarioContext.WS_START));
 		//enable client widget based on service scale setting
-		clientWidget_.enableClientSlider(value<=ScenarioContext.WS_START);		
+		clientWidget_.enableClientSlider(value<=ScenarioContext.WS_START);	
 	}	
 
 	public int getServiceGeneration()
@@ -474,36 +469,34 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		return serviceScale_.getSelection();
 	}
 	
+	public Boolean getStartService(){
+		return startService_;
+	}
+	
 	public void setStartService(Boolean value) {
-      //jvh - no longer needed
-	  //startService_=value.booleanValue();
+        startService_=value;
 	}
 
-	public Boolean getInstallService() {		
-		if (serviceScale_.getSelection()<=ScenarioContext.WS_INSTALL)
-		{	
-			return new Boolean(true);
-		}
-		return new Boolean(false);
+	public Boolean getInstallService() {
+		return installService_;
 	}
 
 	public void setInstallService(Boolean value) {
-	    //jvh - no longer needed
-        // installService_=value.booleanValue();
+        installService_=value;
 	}
 
 	public Boolean getTestService() {
-		if (serviceScale_.getSelection()==ScenarioContext.WS_TEST)
-		{			
-			return new Boolean(true);
-		}
-		return new Boolean(false);
+        return 
+          new Boolean(testService_.booleanValue() || clientWidget_.getTestClient().booleanValue());
 	}
 
 	public void setTestService(Boolean value) {
-	    //jvh - no longer needed
-       // testService_=value.booleanValue();
+        testService_= value;
 	}
+	
+	private Boolean testService_;
+	private Boolean startService_;
+	private Boolean installService_;
 
 	public Boolean getMonitorService() {
 		return new Boolean(monitorButton_.getSelection());
@@ -908,39 +901,33 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			    Scale scale = (Scale)e.widget;
 				int selection = scale.getSelection();
 				
+				setTestService(new Boolean(selection <= ScenarioContext.WS_TEST));
+				setInstallService(new Boolean(selection <= ScenarioContext.WS_INSTALL));
+				setStartService(new Boolean(selection <= ScenarioContext.WS_START));
+				setAdvancedOptions(selection <= ScenarioContext.WS_INSTALL);
+				clientWidget_.enableClientSlider(selection <= ScenarioContext.WS_START);
+				
 				setGraphics(selection);
 				
 				switch (selection) {
 				case 0:
-					setAdvancedOptions(true);
-					clientWidget_.enableClientSlider(true);					
 					serviceScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_TEST);
 					break;
 				case 1:
-					setAdvancedOptions(true);
-					clientWidget_.enableClientSlider(true);
 					serviceScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_RUN);
 					break;
 				case 2:
-					setAdvancedOptions(true);
-					clientWidget_.enableClientSlider(false);
 					serviceScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_INSTALL);
 					break;
 				case 3:
-					setAdvancedOptions(false);
-					clientWidget_.enableClientSlider(false);
 					serviceScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_DEPLOY);
 					break;
 				case 4:
-					setAdvancedOptions(false);
-					clientWidget_.enableClientSlider(false);
 					serviceScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_ASSEMBLE);
 					break;
 				case 5:					
 				case 6:
 					scale.setSelection(5); //"no selection" is not allowed...must develop service @ minimum
-					setAdvancedOptions(false);
-					clientWidget_.enableClientSlider(false);
 					serviceScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_DEVELOP);
 					break;
 				default:

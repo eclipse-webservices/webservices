@@ -94,6 +94,10 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   private Hyperlink hLinkClientEAR_;
   private ProjectSelectionDialog projectDialog_;
   
+  private Boolean testClient_;
+  private Boolean installClient_;
+  private Boolean startClient_;
+    
   private String clientProjectName_; 
   private String clientEarProjectName_;
   private String clientRuntimeId_;
@@ -361,20 +365,38 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	  return getClientGeneration() <= ScenarioContext.WS_DEVELOP;
   }
   
+  
+  public void setTestClient(Boolean value)
+  {
+	  testClient_ = value;
+  }
+  
+  public Boolean getTestClient()
+  {
+	  return testClient_;
+  }
+  
   public Boolean getInstallClient()
   {
-	  if (getClientGeneration() <= ScenarioContext.WS_INSTALL)
-		{	
-			return new Boolean(true);
-		}
-		return new Boolean(false);
+	  return installClient_;
+  }
+  
+  public Boolean getStartClient()
+  {
+	  return startClient_;
   }
   
   public void setInstallClient( Boolean value )
   {
-    //jvh installClient_.setSelection( value.booleanValue() );    
+      installClient_ = value;    
   }
     
+  public void setStartClient( Boolean value )
+  {
+      startClient_ = value;    
+  }
+
+  
 	private void launchProjectDialog()
 	{
 		projectDialog_.setProjectName(getClientProjectName());
@@ -524,6 +546,11 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		  value = ScenarioContext.WS_DEVELOP;
 	  
 	  clientScale_.setSelection(value);
+	  
+	  setTestClient(new Boolean(value <= ScenarioContext.WS_TEST));
+	  setInstallClient(new Boolean(value <= ScenarioContext.WS_INSTALL));
+	  setStartClient(new Boolean(value <= ScenarioContext.WS_START));
+	  
 	  setGraphics(value);
 	  showSummary(value < ScenarioContext.WS_NONE);
   }
@@ -634,6 +661,11 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	{
 		public void widgetSelected(SelectionEvent e) {
 			    int selection = getClientGeneration();
+			    
+			    setTestClient(new Boolean(selection <= ScenarioContext.WS_TEST));
+				setInstallClient(new Boolean(selection <= ScenarioContext.WS_INSTALL));
+				setStartClient(new Boolean(selection <= ScenarioContext.WS_START));
+				
 				setGraphics(selection);
 				//disable the client settings if the client scenario setting isn't at least "DEVELOP"
 				boolean generate = selection<=ScenarioContext.WS_DEVELOP;

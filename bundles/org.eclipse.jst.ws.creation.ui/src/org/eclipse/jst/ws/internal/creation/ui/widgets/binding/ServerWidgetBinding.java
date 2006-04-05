@@ -403,7 +403,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerRuntimeSelectionWidgetDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InstallService", ServerExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "StartService", ServerExtensionDefaultingCommand.class);
-      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "TestService", ServerExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "TestService", ServerExtensionDefaultingCommand.class);      
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestService", ServerExtensionDefaultingCommand.class);      
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "PublishService", ServerExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "PublishService", PublishWSWidget.class, "PublishToPublicUDDI", null);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "GenerateProxy", ServerRuntimeSelectionWidgetDefaultingCommand.class);
