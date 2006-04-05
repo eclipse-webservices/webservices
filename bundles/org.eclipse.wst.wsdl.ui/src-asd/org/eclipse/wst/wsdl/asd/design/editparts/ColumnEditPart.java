@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.asd.design.editparts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.Figure;
@@ -43,7 +44,13 @@ public class ColumnEditPart extends BaseEditPart
   protected List getModelChildren()
   { 
     AbstractModelCollection collection = (AbstractModelCollection)getModel();
-    return collection.getChildren();
+    Object children[] = collection.getChildren();
+    List list = new ArrayList();
+    for (int index = 0; index < children.length; index++) {
+    	list.add(children[index]);
+    }
+    
+    return list;
   }
   
   public void addFeedback() {

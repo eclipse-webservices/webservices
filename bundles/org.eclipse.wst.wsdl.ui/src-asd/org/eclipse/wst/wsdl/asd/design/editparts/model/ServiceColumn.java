@@ -10,17 +10,34 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.asd.design.editparts.model;
 
-import java.util.List;
-
+import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
 import org.eclipse.wst.wsdl.asd.facade.IDescription;
 
 public class ServiceColumn extends AbstractModelCollection {
-	  public ServiceColumn(IDescription description) {
-	    super(description, "ServiceColumn");
-	  }
-	  
-	  public List getChildren()
-	  {
-	    return ((IDescription)model).getServices();
-	  }
+	public ServiceColumn(IDescription description) {
+		super(description, "ServiceColumn");
+	}
+	
+	public ITreeElement[] getChildren() {
+		Object array[] = ((IDescription)model).getServices().toArray();
+		ITreeElement treeElement[] = new ITreeElement[array.length];
+		for (int index = 0; index < array.length; index++) {
+			treeElement[index] = (ITreeElement) array[index];
+		}
+		
+		return treeElement;
+	}
+	
+	public boolean hasChildren() {
+		ITreeElement treeElement[] = getChildren();
+		if (treeElement.length > 0) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public String getText() {
+		return "description";
+	}
 }

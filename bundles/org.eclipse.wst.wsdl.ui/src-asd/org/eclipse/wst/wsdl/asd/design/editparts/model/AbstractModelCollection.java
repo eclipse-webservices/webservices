@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.asd.design.editparts.model;
 
-import java.util.List;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
 import org.eclipse.wst.wsdl.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.asd.facade.IASDObjectListener;
 
-public abstract class AbstractModelCollection implements IASDObject
+public abstract class AbstractModelCollection implements IASDObject, ITreeElement
 {
   IASDObject model;
   String kind;
@@ -44,8 +45,14 @@ public abstract class AbstractModelCollection implements IASDObject
   {
     this.kind = kind;
   }
+
+  public Image getImage() {
+	  return null;
+  }
   
-  public abstract List getChildren();
+  public ITreeElement getParent() {
+	  return null;
+  }
   
   public void registerListener(IASDObjectListener listener)
   {

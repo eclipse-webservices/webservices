@@ -24,6 +24,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
+import org.eclipse.wst.wsdl.asd.design.editparts.model.AbstractModelCollection;
+import org.eclipse.wst.wsdl.asd.editor.outline.ICategoryAdapter;
 import org.eclipse.wst.wsdl.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.xml.ui.internal.nsedit.CommonEditNamespacesTargetFieldDialog;
@@ -174,6 +176,20 @@ public class NamespaceSection extends ASDAbstractSection {
 		handlingEvent = false;		
 	}
 	
+	protected Object getDescription() {
+		Object model = getModel();
+		if (model instanceof AbstractModelCollection) {
+			model = ((AbstractModelCollection) model).getModel();
+			if (model instanceof IDescription) {
+				return (IDescription) model;
+			}
+		}
+		else if (model instanceof ICategoryAdapter) {
+			return ((ICategoryAdapter) model).getOwnerDescription();
+		}
+		
+		return model;
+	}
 	/*
 	 * @see org.eclipse.wst.common.ui.properties.internal.provisional.view.ITabbedPropertySection#refresh()
 	 */
@@ -186,7 +202,7 @@ public class NamespaceSection extends ASDAbstractSection {
 			return;
 		}
 		setListenerEnabled(false);  
-		Object obj = getModel();
+		Object obj = getDescription();
 		if (obj instanceof IDescription)
 		{
 			IDescription description = (IDescription) obj;

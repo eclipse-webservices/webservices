@@ -37,9 +37,7 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddSchemaCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddServiceCommand;
 
 public class W11Description extends WSDLBaseAdapter implements IDescription {
-	private List categoryAdapters = new ArrayList();
-	
-	private W11CategoryAdapter getCategory(int categoryId) {
+	protected W11CategoryAdapter getCategory(int categoryId) {
 		Iterator it = getCategoryAdapters().iterator();
 		while (it.hasNext()) {
 			W11CategoryAdapter adapter = (W11CategoryAdapter) it.next();
@@ -52,14 +50,10 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 	}
 	
 	private List getCategoryAdapters() {
-		if (categoryAdapters.size() == 0) {
-			categoryAdapters = createCategoryAdapters();
-		}
-		
-		return categoryAdapters;
+		return createCategoryAdapters();
 	}
 	
-	private List createCategoryAdapters() {
+	protected List createCategoryAdapters() {
 		List categories = new ArrayList();
 		
 		List importList = getImports();
@@ -68,8 +62,6 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 		List bindingList = getBindings();
 		List interfaceList = getInterfaces();
 		List messageList = getMessages();
-		
-//	    boolean showGroups = !XSDEditorPlugin.getPlugin().getUseSimpleEditMode();
 
 		String categoryTitle = W11CategoryAdapter.IMPORTS_HEADER_TEXT;
 		Image categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/importheader_obj.gif");
