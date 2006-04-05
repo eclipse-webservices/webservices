@@ -58,7 +58,7 @@
 		
     <extension-point id="WSDLEditorExtensionConfiguration" name="WSDLEditorExtensionConfiguration"/>
 		
-	<extension-point id="ApplicationInformationDescription" name="ApplicationInformationDescription"/>
+	<extension-point id="ExtensionsSchemasDescription" name="ExtensionsSchemasDescription"/>
 	
 		<!--  Start of New WSDL Editor -->
 	<extension
@@ -178,7 +178,7 @@
 	 
 	 <!-- move to wsdl specific plugin -->
 	 <propertySection tab="org.eclipse.wst.xmlwebservices.extensibility" 
-        class="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11ApplicationInfoSection"
+        class="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11ExtensionsSection"
 	 	id="prop.section.W11ApplicationInfoSection">
 	    <input type="org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter">
 	    </input>
@@ -188,7 +188,7 @@
   </propertySections>
 </extension>
 
-   <extension point="org.eclipse.wst.wsdl.ui.ApplicationInformationDescription">
+   <extension point="org.eclipse.wst.wsdl.ui.ExtensionsSchemasDescription">
      <ApplicationSpecificSchemaProperties
      	displayName="http://schemas.xmlsoap.org/wsdl/http/"
       	namespaceURI="http://schemas.xmlsoap.org/wsdl/http/"
@@ -196,7 +196,7 @@
      </ApplicationSpecificSchemaProperties>
    </extension>
 
-   <extension point="org.eclipse.wst.wsdl.ui.ApplicationInformationDescription">
+   <extension point="org.eclipse.wst.wsdl.ui.ExtensionsSchemasDescription">
      <ApplicationSpecificSchemaProperties
      	displayName="http://schemas.xmlsoap.org/wsdl/soap/"
       	namespaceURI="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -204,7 +204,7 @@
      </ApplicationSpecificSchemaProperties>
    </extension>
    
-   <extension point="org.eclipse.wst.wsdl.ui.ApplicationInformationDescription">
+   <extension point="org.eclipse.wst.wsdl.ui.ExtensionsSchemasDescription">
      <ApplicationSpecificSchemaProperties
      	  displayName="http://schemas.xmlsoap.org/wsdl/mime/"
       	namespaceURI="http://schemas.xmlsoap.org/wsdl/mime/">

@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extensions.NSKeyedExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extensions.WSDLEditorConfiguration;
-import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.ApplicationInformationPropertiesRegistry;
+import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.ExtensionsSchemasRegistry;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
@@ -53,7 +53,7 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
   public static int DEPENDECIES_CHANGED_POLICY_RELOAD = 2;
 
   protected static WSDLEditorPlugin instance;
-  private ApplicationInformationPropertiesRegistry registry;
+  private ExtensionsSchemasRegistry registry;
   private WSDLEditorConfiguration wsdlEditorConfiguration = null;
 
   private NSKeyedExtensionRegistry extensiblityElementFilterRegistry;
@@ -68,9 +68,9 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     return wsdlEditorConfiguration;
   }
   
-	public ApplicationInformationPropertiesRegistry getApplicationInformationPropertiesRegistry() {
+	public ExtensionsSchemasRegistry getExtensionsSchemasRegistry() {
 		if (registry == null) {
-			registry = new ApplicationInformationPropertiesRegistry("org.eclipse.wst.wsdl.ui.ApplicationInformationDescription");
+			registry = new ExtensionsSchemasRegistry("org.eclipse.wst.wsdl.ui.ExtensionsSchemasDescription");
 		}
 		
 		return registry;

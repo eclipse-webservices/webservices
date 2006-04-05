@@ -51,10 +51,10 @@ import org.eclipse.wst.xsd.ui.common.commands.AddAppInfoElementCommand;
 import org.eclipse.wst.xsd.ui.common.commands.AddExtensibilityElementCommand;
 import org.eclipse.wst.xsd.ui.common.commands.RemoveAppInfoElementCommand;
 import org.eclipse.wst.xsd.ui.common.properties.sections.AbstractSection;
-import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.AddApplicationInfoDialog;
-import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.ApplicationInformationPropertiesRegistry;
-import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.ApplicationInformationTableTreeViewer;
-import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.SpecificationForAppinfoSchema;
+import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.AddExtensionsComponentDialog;
+import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.ExtensionsSchemasRegistry;
+import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.ExtensionsComponentTableTreeViewer;
+import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.SpecificationForExtensionsSchema;
 import org.eclipse.xsd.XSDAnnotation;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -62,9 +62,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class W11ApplicationInfoSection extends AbstractSection
+public class W11ExtensionsSection extends AbstractSection
 {
-  protected ApplicationInformationTableTreeViewer tableTree;
+  protected ExtensionsComponentTableTreeViewer tableTree;
   protected TableViewer extensibilityElementsTable;
   protected Label extensibilityElementsLabel, contentLabel;
   protected ISelectionChangedListener elementSelectionChangedListener;
@@ -81,7 +81,7 @@ public class W11ApplicationInfoSection extends AbstractSection
   /**
    * 
    */
-  public W11ApplicationInfoSection()
+  public W11ExtensionsSection()
   {
     super();
   }
@@ -184,12 +184,12 @@ public class W11ApplicationInfoSection extends AbstractSection
           if (obj instanceof Element)
           {
             Element element = (Element) obj;
-            ApplicationInformationPropertiesRegistry registry = WSDLEditorPlugin.getInstance().getApplicationInformationPropertiesRegistry();
-            List properties = registry.getAllApplicationSpecificSchemaProperties();
+            ExtensionsSchemasRegistry registry = WSDLEditorPlugin.getInstance().getExtensionsSchemasRegistry();
+            List properties = registry.getAllExtensionsSchemasContribution();
             int length = properties.size();
             for (int i = 0; i < length; i++)
             {
-              SpecificationForAppinfoSchema spec = (SpecificationForAppinfoSchema)properties.get(i);
+              SpecificationForExtensionsSchema spec = (SpecificationForExtensionsSchema)properties.get(i);
               if (spec.getNamespaceURI().equals(element.getNamespaceURI()))
               {
                 extensibilityElementsTable.getTable().setToolTipText(spec.getDescription());
@@ -268,7 +268,7 @@ public class W11ApplicationInfoSection extends AbstractSection
 
   protected void createElementContentWidget(Composite parent)
   {
-    tableTree = new ApplicationInformationTableTreeViewer(parent);
+    tableTree = new ExtensionsComponentTableTreeViewer(parent);
     GridData gridData = new GridData();
     gridData.grabExcessHorizontalSpace = true;
     gridData.grabExcessVerticalSpace = true;
@@ -330,8 +330,8 @@ public class W11ApplicationInfoSection extends AbstractSection
   {
     if (event.widget == addButton)
     {
-      ApplicationInformationPropertiesRegistry registry = WSDLEditorPlugin.getInstance().getApplicationInformationPropertiesRegistry();
-      AddApplicationInfoDialog dialog = new AddApplicationInfoDialog(composite.getShell(), registry);
+      ExtensionsSchemasRegistry registry = WSDLEditorPlugin.getInstance().getExtensionsSchemasRegistry();
+      AddExtensionsComponentDialog dialog = new AddExtensionsComponentDialog(composite.getShell(), registry);
       
       ExtensibleElement inputExtensibleElement = getInputExtensibleElement();
       Element hostElement;
@@ -346,7 +346,7 @@ public class W11ApplicationInfoSection extends AbstractSection
 	  filterForDialogOfAddButton.setHostElement(hostElement);
       dialog.addElementsTableFilter(filterForDialogOfAddButton);
       
-      List schemaSpecs = registry.getAllApplicationSpecificSchemaProperties();
+      List schemaSpecs = registry.getAllExtensionsSchemasContribution();
 
       dialog.setInput(schemaSpecs);
       dialog.setBlockOnOpen(true);
@@ -357,7 +357,7 @@ public class W11ApplicationInfoSection extends AbstractSection
         if (result != null)
         {
           XSDElementDeclaration element = (XSDElementDeclaration) result[0];
-          SpecificationForAppinfoSchema spec = (SpecificationForAppinfoSchema) result[1];
+          SpecificationForExtensionsSchema spec = (SpecificationForExtensionsSchema) result[1];
 
           // The case below will never happen..... What scenario makes sense?
           if (input instanceof XSDConcreteComponent)
@@ -531,7 +531,7 @@ public class W11ApplicationInfoSection extends AbstractSection
   {
     public Image getColumnImage(Object element, int columnIndex)
     {
-      ApplicationInformationPropertiesRegistry registry = WSDLEditorPlugin.getInstance().getApplicationInformationPropertiesRegistry();
+      ExtensionsSchemasRegistry registry = WSDLEditorPlugin.getInstance().getExtensionsSchemasRegistry();
 
       if (element instanceof WSDLElement)
       {
@@ -547,7 +547,7 @@ public class W11ApplicationInfoSection extends AbstractSection
 
     public String getColumnText(Object element, int columnIndex)
     {
-      ApplicationInformationPropertiesRegistry registry = WSDLEditorPlugin.getInstance().getApplicationInformationPropertiesRegistry();
+      ExtensionsSchemasRegistry registry = WSDLEditorPlugin.getInstance().getExtensionsSchemasRegistry();
 
       if (element instanceof Element)
       {
