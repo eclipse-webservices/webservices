@@ -13,13 +13,20 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.actions;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.asd.editor.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.asd.facade.IMessage;
 import org.eclipse.wst.wsdl.asd.facade.IParameter;
+import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
+import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
+import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public class W11AddPartAction extends BaseSelectionAction {
@@ -35,28 +42,44 @@ public class W11AddPartAction extends BaseSelectionAction {
 	public void run() {
 		if (getSelectedObjects().size() > 0) {
 			Object o = getSelectedObjects().get(0);
-			IMessage message = null;
+			MessageReference messageRef = null;
+			IMessage iMessage = null;
+			Message message = null;
 			
 			if (o instanceof W11MessageReference) {
-				MessageReference messageRef = (MessageReference) ((W11MessageReference) o).getTarget();
-				message = (IMessage) WSDLAdapterFactoryHelper.getInstance().adapt(messageRef.getEMessage());
+				messageRef = (MessageReference) ((W11MessageReference) o).getTarget();
+				message = messageRef.getEMessage();
 			}
 			else if (o instanceof IParameter) {
 				IParameter param = (IParameter) o;
 				if (param.getOwner() instanceof IMessage) {
-					message = (IMessage) param.getOwner();
+					iMessage = (IMessage) param.getOwner();
 				}
 				else if (param.getOwner() instanceof W11MessageReference) {
-					MessageReference messageRef = (MessageReference) ((W11MessageReference) param.getOwner()).getTarget();
-					message = (IMessage) WSDLAdapterFactoryHelper.getInstance().adapt(messageRef.getEMessage());
+					messageRef = (MessageReference) ((W11MessageReference) param.getOwner()).getTarget();
+					message = messageRef.getEMessage();
 				}
 			}
 			else if (o instanceof IMessage) {
-				message = (IMessage) o;
+				iMessage = (IMessage) o;
+			}
+			
+			if (message == null && iMessage == null && messageRef != null) {
+				InternalWSDLMultiPageEditor editor = (InternalWSDLMultiPageEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+				Definition definition = (Definition) ((W11Description) editor.getModel()).getTarget();
+				String messageName = NameUtil.buildUniqueMessageName(definition, "NewMessage");
+				AddMessageCommand command = new AddMessageCommand(definition, messageName, false);
+				command.run();
+				message = (Message) command.getWSDLElement();
+				messageRef.setEMessage(message);
 			}
 			
 			if (message != null) {
-				Command command = message.getAddPartCommand();
+				iMessage = (IMessage) WSDLAdapterFactoryHelper.getInstance().adapt(message);
+			}
+			
+			if (iMessage != null) {
+				Command command = iMessage.getAddPartCommand();
 			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
 			    stack.execute(command);
 			}
