@@ -1,6 +1,10 @@
 package org.eclipse.wst.wsdl.asd.editor.util;
 
 import org.eclipse.gef.EditPartFactory;
+import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.wsdl.asd.design.DesignViewGraphicalViewer;
 import org.eclipse.wst.wsdl.asd.design.editparts.ASDEditPartFactory;
 
 public class ASDEditPartFactoryHelper {
@@ -25,5 +29,10 @@ public class ASDEditPartFactoryHelper {
 	
 	public void setEditPartFactory(EditPartFactory factory) {
 		editPartFactory = factory;
+		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		Object adapter = editor.getAdapter(GraphicalViewer.class);
+		if (adapter instanceof DesignViewGraphicalViewer) {
+			((DesignViewGraphicalViewer) adapter).setEditPartFactory(factory);
+		}
 	}
 }
