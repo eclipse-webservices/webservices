@@ -112,6 +112,7 @@
 	 
    	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
         class="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11ParameterSection"
+        filter="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11ParameterSectionFilter"
 	 	id="prop.section.W11ParameterSection">
 	    <input type="org.eclipse.wst.wsdl.asd.facade.IParameter">
 	    </input>
@@ -174,7 +175,28 @@
 	    </input>
 	 </propertySection>
 	 
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.asd.editor.properties.sections.NamespaceSection"
+	 	id="prop.section.NamespaceSection">
+	    <input type="org.eclipse.wst.wsdl.asd.design.editparts.model.AbstractModelCollection">
+	    </input>
+	 </propertySection>
+	 
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.asd.editor.properties.sections.NamespaceSection"
+	 	id="prop.section.NamespaceSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11CategoryAdapter">
+	    </input>
+	 </propertySection>
+	 
 
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11MessageReferenceSection"
+		filter="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11MessageReferenceSectionFilter"
+	 	id="prop.section.MessageReferenceSection">
+	    <input type="org.eclipse.wst.wsdl.asd.facade.IMessageReference">
+	    </input>
+	 </propertySection>
 	 
 	 <!-- move to wsdl specific plugin -->
 	 <propertySection tab="org.eclipse.wst.xmlwebservices.extensibility" 
