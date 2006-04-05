@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
@@ -109,7 +109,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
        serviceProjectName_ = getDefaultServiceProjectName();
      }
 
-     IProject serviceProject = ProjectUtilities.getProject(serviceProjectName_);
+     IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
      if (!serviceProject.exists())
      {
        // Set the project template
@@ -173,7 +173,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     {
       // 1. Run client side defaulting from scratch with clientInitialProject_
       // set to the new clientProjectName_.
-      IProject clientProject = ProjectUtilities.getProject(getClientProjectName());
+      IProject clientProject = ResourcesPlugin.getWorkspace().getRoot().getProject(getClientProjectName());
       setClientInitialProject(clientProject);
       IStatus clientExecuteStatus = super.execute(monitor, null);
       if (clientExecuteStatus.getSeverity() == Status.ERROR)
@@ -195,7 +195,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   private void setDefaultServiceEarProject()
   {
     //Don't need an ear if this is a Java project, or if the selected template is jst.utility
-    IProject serviceProject = ProjectUtilities.getProject(serviceProjectName_);
+    IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
     if (serviceProject.exists())
     {
       serviceNeedEAR_ = !(FacetUtils.isJavaProject(serviceProject));
@@ -243,7 +243,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   {
     //Choose an appropriate default.
     
-    IProject serviceProject = ProjectUtilities.getProject(serviceProjectName_);
+    IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
     if (serviceProject != null && serviceProject.exists())
     {
       IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(serviceProject);
@@ -289,7 +289,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   private IStatus setServiceDefaultServer()
   {
     //Choose an existing server the module is already associated with if possible
-    IProject serviceProject = ProjectUtilities.getProject(serviceProjectName_);
+    IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
     IServer[] configuredServers = ServerUtil.getServersByModule(ServerUtils.getModule(serviceProject), null);
     if (configuredServers!=null && configuredServers.length>0)
     {

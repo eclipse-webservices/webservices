@@ -16,11 +16,11 @@
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
@@ -118,7 +118,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
         IStatus status = Status.OK_STATUS;
 
         // Create the service module if needed.
-        IProject project = ProjectUtilities.getProject(project_);
+        IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(project_);
         if (!project.exists())
         {
           boolean matches = WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportTemplate(serviceRuntimeId_, moduleType_);

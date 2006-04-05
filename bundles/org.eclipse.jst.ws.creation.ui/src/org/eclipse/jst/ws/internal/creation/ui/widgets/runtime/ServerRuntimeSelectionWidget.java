@@ -16,9 +16,9 @@
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
@@ -307,7 +307,7 @@ public class ServerRuntimeSelectionWidget extends SimpleWidgetDataContributor
       //If the project exists, ensure that it is suitable for the selected runtime
       //and server.
       ValidationUtils valUtils = new ValidationUtils();
-      IProject project = ProjectUtilities.getProject(projectName);
+      IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
       String typeId = getServiceTypeRuntimeServer().getTypeId();
       String runtimeId = getServiceTypeRuntimeServer().getRuntimeId();
       String serverFactoryId = getServiceTypeRuntimeServer().getServerId();
