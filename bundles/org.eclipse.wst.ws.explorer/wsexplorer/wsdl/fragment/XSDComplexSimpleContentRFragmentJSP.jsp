@@ -1,14 +1,17 @@
 <%
-/*******************************************************************************
- * Copyright (c) 2002, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+/**
+* <copyright>
+*
+* Licensed Material - Property of IBM
+* (C) Copyright IBM Corp. 2002 - All Rights Reserved.
+* US Government Users Restricted Rights - Use, duplication or disclosure
+* restricted by GSA ADP Schedule Contract with IBM Corp.
+*
+* </copyright>
+*
+* File plugins/com.ibm.etools.webservice.explorer/wsexplorer/wsdl/fragment/XSDComplexRFragmentJSP.jsp, wsa.etools.ws.explorer, lunar-5.1.2 1
+* Version 1.1 03/02/28 15:33:57
+*/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.*,
@@ -56,16 +59,20 @@ for (int i = 0; i < childFrags.length; i++) {
       </td>
     </tr>
   <%
-}
+
   IXSDAttributeFragment[] attributeFragments = frag.getAllAttributeFragments();
   IXSDAttributeFragment attributeFragment;
   for(int j = 0; j < attributeFragments.length; j++){
     attributeFragment = attributeFragments[j];
-    IXSDFragment delegationFragment = attributeFragment.getXSDDelegationFragment();
-    fragID.delete(0, fragID.length());
-    fragID.append(delegationFragment.getID());
-    attribute.delete(0, attribute.length());
-    attribute.append("true");
+    
+    if(attributeFragment.getID().startsWith(childFrags[i].getID())){
+      IXSDFragment delegationFragment = attributeFragment.getXSDDelegationFragment();
+      fragID.delete(0, fragID.length());
+      fragID.append(delegationFragment.getID());
+      attribute.delete(0, attribute.length());
+      attribute.append("true");
+    
+      
       %>
       <tr>
         <td width=16>
@@ -77,9 +84,11 @@ for (int i = 0; i < childFrags.length; i++) {
       </td>
      </tr>
     <%
-  
-  
+    
+    
+    }  
   }
+}
   %>
   
   </table>

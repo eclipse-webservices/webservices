@@ -20,12 +20,15 @@
 <jsp:useBean id="controller" class="org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller" scope="session"/>
 <jsp:useBean id="fragID" class="java.lang.StringBuffer" scope="request"/>
 <jsp:useBean id="nodeID" class="java.lang.StringBuffer" scope="request"/>
+<jsp:useBean id="elementID" class="java.lang.StringBuffer" scope="request"/>
+<jsp:useBean id="attribute" class="java.lang.StringBuffer" scope="request"/>
 
 <%
 WSDLPerspective wsdlPerspective = controller.getWSDLPerspective();
 Node selectedNode = wsdlPerspective.getNodeManager().getNode(Integer.parseInt(nodeID.toString()));
 WSDLOperationElement operElement = (WSDLOperationElement)selectedNode.getTreeElement();
 IXSDComplexFragment frag = (IXSDComplexFragment)operElement.getFragmentByID(fragID.toString());
+IXSDElementFragment elementFragment = (IXSDElementFragment)operElement.getFragmentByID(elementID.toString());
 XSDToFragmentConfiguration xsdConfig = frag.getXSDToFragmentConfiguration();
 String tableContainerID = (new StringBuffer(FragmentConstants.TABLE_ID)).append(frag.getID()).toString();
 String twistImageName = (new StringBuffer("x")).append(tableContainerID).toString();
@@ -40,11 +43,25 @@ String nameAnchorID = (new StringBuffer(FragmentConstants.NAME_ANCHOR_ID)).appen
     <td class="labels" height=25 valign="bottom" align="left" nowrap>
       <a href="javascript:openXSDInfoDialog('<%=response.encodeURL(controller.getPathWithContext(OpenXSDInfoDialogAction.getActionLink(session.getId(),selectedNode.getNodeId(),fragID.toString())))%>')"><%=frag.getName()%></a>
     </td>
+    <% 
+      if(elementFragment != null && elementFragment.isNillable()){
+        if(elementFragment.isNil()){
+          %>  
+          <td width=10><input type="checkbox" name="<%=((IXSDElementFragment)elementFragment).getNilID()%>" value="<%=IXSDElementFragment.NIL_VALUE%>" checked><%=wsdlPerspective.getMessage("ALT_NIL")%></td> 
+          <%
+        } 
+        else{
+          %>  
+          <td width=10><input type="checkbox" name="<%=((IXSDElementFragment)elementFragment).getNilID()%>" value="<%=IXSDElementFragment.NIL_VALUE%>" ><%=wsdlPerspective.getMessage("ALT_NIL")%></td> 
+          <%
+        }
+      }
+    %>
     <td class="labels" height=25 valign="bottom" align="left" nowrap>
       <a href="javascript:createInstance('<%=tableContainerID%>', <%=xsdConfig.getMaxOccurs()%>, '<%=fragID%>', '<%=nameAnchorID%>')"><%=wsdlPerspective.getMessage("FORM_LINK_ADD")%></a>
     </td>
     <td class="labels" height=25 valign="bottom" align="left" nowrap>
-      <a href="javascript:checkMinOccursAndRemoveSelectedRows('<%=tableContainerID%>', <%=xsdConfig.getMinOccurs()%>)"><%=wsdlPerspective.getMessage("FORM_LINK_REMOVE")%></a>
+      <a href="javascript:checkMinOccursAndRemoveSelectedRowsAttribute('<%=tableContainerID%>', <%=xsdConfig.getMinOccurs()%>)"><%=wsdlPerspective.getMessage("FORM_LINK_REMOVE")%></a>
     </td>
     <td nowrap width="90%">&nbsp;</td>
   </tr>
@@ -81,7 +98,35 @@ String nameAnchorID = (new StringBuffer(FragmentConstants.NAME_ANCHOR_ID)).appen
     </td>
   </tr>
   <%
+  
+  IXSDAttributeFragment[] attributeFragments = frag.getAllAttributeFragments();
+  IXSDAttributeFragment attributeFragment;
+  for(int j = 0; j < attributeFragments.length; j++){
+    attributeFragment = attributeFragments[j];
+    
+    if(attributeFragment.getID().startsWith(childFragID)){
+      IXSDFragment delegationFragment = attributeFragment.getXSDDelegationFragment();
+      fragID.delete(0, fragID.length());
+      fragID.append(delegationFragment.getID());
+      attribute.delete(0, attribute.length());
+      attribute.append("true");
+       %>
+      
+      <tr>
+        <td class="tablecells" width=10>
+          
+        </td>
+        <td class="tablecells">
+          <input type="hidden" name="<%=frag.getID()%>" value="<%=attributeFragment.getID()%>">
+          <jsp:include page="<%=delegationFragment.getWriteFragment()%>" flush="true"/>
+        </td>
+     </tr>
+     <%
+    
+    
+    }  
   }
-  %>
+}
+%>
 </table>
 </span>

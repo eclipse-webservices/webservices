@@ -25,12 +25,14 @@
 <jsp:useBean id="controller" class="org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller" scope="session"/>
 <jsp:useBean id="fragID" class="java.lang.StringBuffer" scope="request"/>
 <jsp:useBean id="nodeID" class="java.lang.StringBuffer" scope="request"/>
+<jsp:useBean id="elementID" class="java.lang.StringBuffer" scope="request"/>
 
 <%
    WSDLPerspective wsdlPerspective = controller.getWSDLPerspective();
    Node selectedNode = wsdlPerspective.getNodeManager().getNode(Integer.parseInt(nodeID.toString()));
    WSDLOperationElement operElement = (WSDLOperationElement)selectedNode.getTreeElement();
    XSDSimpleAtomicEnumFragment frag = (XSDSimpleAtomicEnumFragment)operElement.getFragmentByID(fragID.toString());
+   IXSDElementFragment elementFragment = (IXSDElementFragment)operElement.getFragmentByID(elementID.toString());
    OptionVector optionVector = frag.getOptionVector();
    XSDToFragmentConfiguration xsdConfig = frag.getXSDToFragmentConfiguration();
    XSDSimpleTypeDefinition simpleType = (XSDSimpleTypeDefinition)frag.getXSDTypeDefinition();
@@ -101,6 +103,20 @@
     <td class="labels" height=25 valign="bottom" align="left" nowrap>
       <%=(xsdBuiltInType != null ? xsdBuiltInType.getName() : simpleType.getName())%>
     </td>
+      <% 
+      if(elementFragment != null && elementFragment.isNillable()){
+        if(elementFragment.isNil()){
+          %>  
+          <td width=10><input type="checkbox" name="<%=((IXSDElementFragment)elementFragment).getNilID()%>" value="<%=IXSDElementFragment.NIL_VALUE%>" checked><%=wsdlPerspective.getMessage("ALT_NIL")%></td> 
+          <%
+        } 
+        else{
+          %>  
+          <td width=10><input type="checkbox" name="<%=((IXSDElementFragment)elementFragment).getNilID()%>" value="<%=IXSDElementFragment.NIL_VALUE%>" ><%=wsdlPerspective.getMessage("ALT_NIL")%></td> 
+          <%
+        }
+      }
+      %>
     <td class="labels" height=25 valign="bottom" align="left" nowrap>
       <a href="javascript:addSimpleAtomicEnumRows('<%=tableContainerID%>', '<%=optionsContainerID%>', '<%=frag.getID()%>', '<%=frag.getID()%>', null, <%=xsdConfig.getMaxOccurs()%>)"><%=wsdlPerspective.getMessage("FORM_LINK_ADD")%></a>
     </td>

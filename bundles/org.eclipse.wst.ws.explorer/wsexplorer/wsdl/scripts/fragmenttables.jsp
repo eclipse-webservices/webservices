@@ -60,6 +60,25 @@
       removeSelectedRows(tableContainerID);
   }
   
+  function checkMinOccursAndRemoveSelectedRowsAttribute(tableContainerID, minOccurs) {
+    var table = getTable(tableContainerID);
+    var rowsLength = table.rows.length - numberOfHeaderRows;
+    var checkedRows = 0;
+    for (var i = numberOfHeaderRows; i < table.rows.length; i++) {
+      var tableRow = table.rows[i];
+      var rowCheckbox = tableRow.getElementsByTagName("input").item(0);
+      if (rowCheckbox.checked)
+        checkedRows++;
+    }
+    if (checkedRows == 0)
+      alert("<%=HTMLUtils.JSMangle(wsdlPerspective.getMessage("MSG_ERROR_NOTHING_SELECTED"))%>");
+    else if ((rowsLength - checkedRows) < minOccurs)
+      alert("<%=HTMLUtils.JSMangle(wsdlPerspective.getMessage("MSG_ERROR_MIN_OCCURS_VIOLATION"))%>");
+    else
+      removeSelectedRowsAttribute(tableContainerID);
+  }
+  
+  
   function checkMinOccursAndRemoveSelectedDateTimeRows(calendarType,tableContainerID,minOccurs)
   {
     var table = getTable(tableContainerID);

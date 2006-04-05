@@ -1,14 +1,17 @@
 <%
-/*******************************************************************************
- * Copyright (c) 2002, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+/**
+* <copyright>
+*
+* Licensed Material - Property of IBM
+* (C) Copyright IBM Corp. 2002 - All Rights Reserved.
+* US Government Users Restricted Rights - Use, duplication or disclosure
+* restricted by GSA ADP Schedule Contract with IBM Corp.
+*
+* </copyright>
+*
+* File plugins/com.ibm.etools.webservice.explorer/wsexplorer/wsdl/fragment/XSDComplexRangeWFragmentJSP.jsp, wsa.etools.ws.explorer, lunar-5.1.2 2
+* Version 1.2 05/05/26 16:18:24
+*/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.*,
@@ -21,12 +24,13 @@
 <jsp:useBean id="fragID" class="java.lang.StringBuffer" scope="request"/>
 <jsp:useBean id="nodeID" class="java.lang.StringBuffer" scope="request"/>
 <jsp:useBean id="elementID" class="java.lang.StringBuffer" scope="request"/>
+<jsp:useBean id="attribute" class="java.lang.StringBuffer" scope="request"/>
 
 <%
 WSDLPerspective wsdlPerspective = controller.getWSDLPerspective();
 Node selectedNode = wsdlPerspective.getNodeManager().getNode(Integer.parseInt(nodeID.toString()));
 WSDLOperationElement operElement = (WSDLOperationElement)selectedNode.getTreeElement();
-IXSDSimpleListFragment frag = (IXSDSimpleListFragment)operElement.getFragmentByID(fragID.toString());
+IXSDComplexFragment frag = (IXSDComplexFragment)operElement.getFragmentByID(fragID.toString());
 IXSDElementFragment elementFragment = (IXSDElementFragment)operElement.getFragmentByID(elementID.toString());
 XSDToFragmentConfiguration xsdConfig = frag.getXSDToFragmentConfiguration();
 String tableContainerID = (new StringBuffer(FragmentConstants.TABLE_ID)).append(frag.getID()).toString();
@@ -60,7 +64,7 @@ String nameAnchorID = (new StringBuffer(FragmentConstants.NAME_ANCHOR_ID)).appen
       <a href="javascript:createInstance('<%=tableContainerID%>', <%=xsdConfig.getMaxOccurs()%>, '<%=fragID%>', '<%=nameAnchorID%>')"><%=wsdlPerspective.getMessage("FORM_LINK_ADD")%></a>
     </td>
     <td class="labels" height=25 valign="bottom" align="left" nowrap>
-      <a href="javascript:checkMinOccursAndRemoveSelectedRows('<%=tableContainerID%>', <%=xsdConfig.getMinOccurs()%>)"><%=wsdlPerspective.getMessage("FORM_LINK_REMOVE")%></a>
+      <a href="javascript:checkMinOccursAndRemoveSelectedRowsAttribute('<%=tableContainerID%>', <%=xsdConfig.getMinOccurs()%>)"><%=wsdlPerspective.getMessage("FORM_LINK_REMOVE")%></a>
     </td>
     <td nowrap width="90%">&nbsp;</td>
   </tr>
@@ -69,9 +73,10 @@ String nameAnchorID = (new StringBuffer(FragmentConstants.NAME_ANCHOR_ID)).appen
 <table cellpadding=3 cellspacing=0 class="<%=(xsdConfig.getIsWSDLPart() ? "rangefragtable" : "innerrangefragtable")%>">
   <tr>
     <th class="checkboxcells" width=10><input type="checkbox" onClick="handleCheckAllClick('<%=tableContainerID%>',this)" title="<%=controller.getMessage("FORM_CONTROL_TITLE_SELECT_ALL_CHECK_BOX")%>"></th>
-    <th class="headercolor"><%=wsdlPerspective.getMessage("FORM_LABEL_LIST_ITEMS")%></th>
+    <th class="headercolor"><%=wsdlPerspective.getMessage("FORM_LABEL_CONTENT")%></th>
   </tr>
   <%
+ 
   IXSDFragment[] childFrags = frag.getAllFragments();
   for (int i = 0; i < childFrags.length || i < xsdConfig.getMinOccurs(); i++) {
     IXSDFragment childFrag;
@@ -81,12 +86,13 @@ String nameAnchorID = (new StringBuffer(FragmentConstants.NAME_ANCHOR_ID)).appen
       childFragID = childFrag.getID();
     }
     else {
-      childFragID = frag.createListInstance();
+      childFragID = frag.createComplexInstance();
       childFrag = frag.getFragment(childFragID);
     }
     fragID.delete(0, fragID.length());
     fragID.append(childFragID);
   %>
+  
   <tr>
     <td class="checkboxcells" width=10>
       <input type="checkbox" onClick="handleRowCheckboxClick()" title="<%=controller.getMessage("FORM_CONTROL_TITLE_SELECT_ROW_CHECK_BOX")%>">
@@ -96,8 +102,36 @@ String nameAnchorID = (new StringBuffer(FragmentConstants.NAME_ANCHOR_ID)).appen
       <jsp:include page="<%=childFrag.getWriteFragment()%>" flush="true"/>
     </td>
   </tr>
+  
   <%
+  IXSDAttributeFragment[] attributeFragments = frag.getAllAttributeFragments();
+  IXSDAttributeFragment attributeFragment;
+  for(int j = 0; j < attributeFragments.length; j++){
+    attributeFragment = attributeFragments[j];
+    
+    if(attributeFragment.getID().startsWith(childFragID)){
+      IXSDFragment delegationFragment = attributeFragment.getXSDDelegationFragment();
+      fragID.delete(0, fragID.length());
+      fragID.append(delegationFragment.getID());
+      attribute.delete(0, attribute.length());
+      attribute.append("true");
+       %>
+      
+      <tr>
+        <td class="tablecells" width=10>
+          
+        </td>
+        <td class="tablecells">
+          <input type="hidden" name="<%=frag.getID()%>" value="<%=attributeFragment.getID()%>">
+          <jsp:include page="<%=delegationFragment.getWriteFragment()%>" flush="true"/>
+        </td>
+     </tr>
+     <%
+    
+    
+    }  
   }
-  %>
+}
+%>
 </table>
 </span>

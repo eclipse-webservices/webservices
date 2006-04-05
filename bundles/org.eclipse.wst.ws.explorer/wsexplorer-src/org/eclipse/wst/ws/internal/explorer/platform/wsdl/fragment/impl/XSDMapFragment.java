@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.Vector;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDAttributeFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDMapFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
@@ -25,18 +26,21 @@ public abstract class XSDMapFragment extends XSDFragment implements IXSDMapFragm
   private XSDToFragmentController controller_;
   private Vector fragmentsOrder_;
   private Hashtable fragments_;
+  private Hashtable attributeFragments_;
 
   public XSDMapFragment(String id, String name, XSDToFragmentConfiguration config, XSDToFragmentController controller) {
     super(id, name, config);
     controller_ = controller;
     fragmentsOrder_ = new Vector();
     fragments_ = new Hashtable();
+    attributeFragments_ = new Hashtable();
   }
 
   public boolean processParameterValues(MultipartFormDataParser parser) throws MultipartFormDataException {
     boolean valuesValid = true;
     String[] params = parser.getParameterValues(getID());
     Vector frags = new Vector();
+    Vector attfrags = new Vector();
     if (params != null) {
       for (int i = 0; i < params.length; i++) {
         if (params[i] != null) {
@@ -46,10 +50,22 @@ public abstract class XSDMapFragment extends XSDFragment implements IXSDMapFragm
             if (!frag.processParameterValues(parser))
               valuesValid = false;
           }
+          else {
+          	IXSDAttributeFragment afrag = getAttributeFragment(params[i]);
+          	if (afrag != null) {
+          	  attfrags.add(afrag);
+              if (!afrag.processParameterValues(parser))
+                 valuesValid = false;
+            }  
+          
+          }
+          	
         }
       }
     }
     removeAllFragments();
+    removeAllAttributeFragments();
+    addAttributeFragments(attfrags);
     addFragments(frags);
     return valuesValid;
   }
@@ -117,7 +133,23 @@ public abstract class XSDMapFragment extends XSDFragment implements IXSDMapFragm
     fragments_.put(id, frag);
     controller_.addToCache(id, frag);
   }
-
+  
+  protected void addAttributeFragment(String id, IXSDFragment frag) {
+    attributeFragments_.put(id, frag);
+    controller_.addToCache(id, frag);
+  }
+  
+  public IXSDAttributeFragment[] getAllAttributeFragments() {
+    IXSDAttributeFragment[] fragments = new XSDAttributeFragment[attributeFragments_.size()];
+    Iterator it = attributeFragments_.values().iterator();
+    int i = 0;
+    while(it.hasNext()){
+      fragments[i] = (IXSDAttributeFragment)it.next();
+      i++; 
+    }
+    return fragments;
+  }
+  
   protected void addFragments(String[] id, IXSDFragment[] frags, boolean addToController) {
     for (int i = 0; i < id.length && i < frags.length; i++) {
       addFragment(id[i], frags[i], addToController);
@@ -145,6 +177,17 @@ public abstract class XSDMapFragment extends XSDFragment implements IXSDMapFragm
     }
   }
 
+  protected void addAttributeFragments(Vector frags) {
+    Iterator it = frags.iterator();
+    while (it.hasNext()) {
+      Object obj = it.next();
+      if (obj instanceof IXSDAttributeFragment) {
+        IXSDAttributeFragment frag = (IXSDAttributeFragment)obj;
+        addAttributeFragment(frag.getID(), frag);
+      }
+    }
+  }
+  
   public String[] getFragmentsOrder() {
     String[] fragmentsOrder = new String[fragmentsOrder_.size()];
     for (int i = 0; i < fragmentsOrder.length; i++) {
@@ -168,6 +211,10 @@ public abstract class XSDMapFragment extends XSDFragment implements IXSDMapFragm
     return true;
   }
 
+  public IXSDAttributeFragment getAttributeFragment(String id) {
+    return (IXSDAttributeFragment)attributeFragments_.get(id);
+  }
+  
   public IXSDFragment getFragment(String id) {
     return (IXSDFragment)fragments_.get(id);
   }
@@ -226,4 +273,17 @@ public abstract class XSDMapFragment extends XSDFragment implements IXSDMapFragm
     fragmentsOrder_.clear();
     fragments_.clear();
   }
+  
+  protected void removeAllAttributeFragments() {
+      Enumeration ids = attributeFragments_.keys();
+      while (ids.hasMoreElements())
+      {
+        String id = (String)ids.nextElement();
+        controller_.removeFromCache(id);
+      }
+    
+      attributeFragments_.clear();
+  }
+  
+  
 }

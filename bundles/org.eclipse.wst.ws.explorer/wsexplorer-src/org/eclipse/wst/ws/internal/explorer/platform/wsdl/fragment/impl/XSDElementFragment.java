@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2006 IBM Corporation and others.
+ * Copyright (c) 2002, 2004 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * 
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
@@ -32,7 +32,9 @@ public class XSDElementFragment extends XSDDelegationFragment implements IXSDEle
 {
   private int minOccurs_;
   private int maxOccurs_;
-
+  private boolean isNil_;
+ 
+  
   public XSDElementFragment(String id, String name, XSDToFragmentConfiguration config)
   {
     super(id, name, config);
@@ -51,6 +53,9 @@ public class XSDElementFragment extends XSDDelegationFragment implements IXSDEle
   public boolean processParameterValues(MultipartFormDataParser parser) throws MultipartFormDataException
   {
     IXSDFragment elementTypeFragment = getXSDDelegationFragment();
+    setIsNil(parser);
+    if(isNil_)return true;
+    	
     if (!elementTypeFragment.processParameterValues(parser))
       return false;
     String[] params = getParameterValues(elementTypeFragment.getID());
@@ -59,6 +64,14 @@ public class XSDElementFragment extends XSDDelegationFragment implements IXSDEle
     return true;
   }
 
+  public boolean setIsNil(MultipartFormDataParser parser) throws MultipartFormDataException
+  {
+    String nil = parser.getParameter(getNilID());
+    if(nil != null) isNil_ = true;
+    else isNil_ = false;
+    return isNil_;
+  }
+  
   public boolean validateAllParameterValues()
   {
     IXSDFragment elementTypeFragment = getXSDDelegationFragment();
@@ -105,9 +118,16 @@ public class XSDElementFragment extends XSDDelegationFragment implements IXSDEle
     Element[] instanceDocumentsCopy = instanceDocuments;
     XSDToFragmentConfiguration config = getXSDToFragmentConfiguration();
     String wsdlPartName = config.getWSDLPartName();
+    NodeList nl = instanceDocumentsCopy[0].getChildNodes();
+    
+    if(instanceDocumentsCopy[0].hasAttribute(XSI_NIL_ATTRIBUTE)){
+      String nil = instanceDocumentsCopy[0].getAttribute(XSI_NIL_ATTRIBUTE);
+      if(nil.equals(TRUE)) isNil_ = true; 
+    }  
+    
+    
     if (config.getIsWSDLPart() && config.getStyle() == FragmentConstants.STYLE_RPC && wsdlPartName != null && wsdlPartName.length() > 0 && instanceDocumentsCopy.length == 1 && wsdlPartName.equals(instanceDocumentsCopy[0].getTagName()))
     {
-      NodeList nl = instanceDocumentsCopy[0].getChildNodes();
       Vector childElements = new Vector();
       for (int i = 0; i < nl.getLength(); i++)
       {
@@ -122,9 +142,22 @@ public class XSDElementFragment extends XSDDelegationFragment implements IXSDEle
     return elementTypeFragment.setParameterValuesFromInstanceDocuments(setElementsTagName(instanceDocumentsCopy, elementTypeFragment.getName()));
   }
 
+  public static String XSI_NIL_ATTRIBUTE = "xsi:nil";
+  public static String TRUE = "true";
   public Element[] genInstanceDocumentsFromParameterValues(boolean genXSIType, Hashtable namespaceTable, Document doc)
   {
-    Element[] instanceDocuments = getXSDDelegationFragment().genInstanceDocumentsFromParameterValues(genXSIType, namespaceTable, doc);
+  	
+  	Element[] instanceDocuments = getXSDDelegationFragment().genInstanceDocumentsFromParameterValues(genXSIType, namespaceTable, doc);
+    if(isNil_){ 
+      for(int j=0;j < instanceDocuments.length;j++){  
+      	instanceDocuments[j].setAttribute(XSI_NIL_ATTRIBUTE,TRUE);
+      	NodeList nodeList = instanceDocuments[j].getChildNodes(); 
+        int length = nodeList.getLength();
+        for(int i =0;i < length;i++){
+          instanceDocuments[j].removeChild(nodeList.item(0));
+        }
+      }  
+    }
     instanceDocuments = setElementsTagName(instanceDocuments, getInstanceDocumentTagName(namespaceTable));
     XSDToFragmentConfiguration config = getXSDToFragmentConfiguration();
     String wsdlPartName = config.getWSDLPartName();
@@ -227,4 +260,38 @@ public class XSDElementFragment extends XSDDelegationFragment implements IXSDEle
   {
     return maxOccurs_;
   }
+  
+  public boolean isNillable()
+  {
+  	if(getXSDToFragmentConfiguration().getXSDComponent().getElement().getAttribute("nillable").equals("true"))
+  	  return true;
+  	return false;
+  }
+  
+  public boolean isNil()
+  {
+  	return isNil_;
+  }
+  
+  
+  public String getNilID()
+  {
+  	return getID() + IXSDElementFragment.NIL;
+  }
+
+  public String getInformationFragment()
+  {
+    return "/wsdl/fragment/XSDDefaultInfoFragmentJSP.jsp";
+  }
+
+  public String getReadFragment()
+  {
+    return "/wsdl/fragment/XSDElementRFragmentJSP.jsp";
+  }
+
+  public String getWriteFragment()
+  {
+    return "/wsdl/fragment/XSDElementWFragmentJSP.jsp";
+  }
+
 }

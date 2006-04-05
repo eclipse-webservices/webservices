@@ -12,4 +12,5 @@ package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
 public interface IXSDComplexFragment extends IXSDMapFragment {
   public String createComplexInstance();
+  public IXSDAttributeFragment[] getAllAttributeFragments();
 }

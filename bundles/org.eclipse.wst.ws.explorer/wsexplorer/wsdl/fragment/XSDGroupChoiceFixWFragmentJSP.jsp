@@ -74,15 +74,21 @@ XSDToFragmentConfiguration xsdConfig = frag.getXSDToFragmentConfiguration();
         <select id="<%=groupID%>" name="<%=groupID%>" onChange="javascript:choose(this)" title="<%=wsdlPerspective.getMessage("FORM_CONTROL_TITLE_SELECT_CHOICES")%>">
 <%
           for (int j = 0; j < choiceFrags.length; j++) {
-            XSDElementDeclaration xsdElement = (XSDElementDeclaration)choiceFrags[j].getXSDToFragmentConfiguration().getXSDComponent();
+            XSDComponent xsdComponent = choiceFrags[j].getXSDToFragmentConfiguration().getXSDComponent();
+            String name = "";
+            if(xsdComponent instanceof XSDElementDeclaration)
+              name = ((XSDElementDeclaration)xsdComponent).getQName();
+            else
+              name = xsdComponent.getElement().getTagName();  
+              
             if (j == choiceIndex) {
 %>
-              <option value="<%=choiceFrags[j].getID()%>" selected><%=xsdElement.getQName()%>
+              <option value="<%=choiceFrags[j].getID()%>" selected><%=name%>
 <%
             }
             else {
 %>
-              <option value="<%=choiceFrags[j].getID()%>"><%=xsdElement.getQName()%>
+              <option value="<%=choiceFrags[j].getID()%>"><%=name%>
 <%
             }
           }

@@ -127,8 +127,18 @@ public abstract class XSDFragment extends Fragment implements IXSDFragment
     return sCopy;
   }
 
-  public Element[] genInstanceDocumentsFromParameterValues(boolean genXSIType, Hashtable namespaceTable, Document doc)
-  {
+  public Element[] genInstanceDocumentsForNil(boolean genXSIType, Hashtable namespaceTable,Document doc){
+  	Element[] instanceDocuments = new Element[1];
+    String tagName = getInstanceDocumentTagName(namespaceTable);
+      for (int i = 0; i < instanceDocuments.length; i++) {
+        Element instanceDocument = doc.createElement(tagName);
+        instanceDocuments[i] = instanceDocument;
+      }
+    return (genXSIType ? addXSIType(instanceDocuments, namespaceTable) : instanceDocuments);
+  	
+  }
+  
+  public Element[] genInstanceDocumentsFromParameterValues(boolean genXSIType, Hashtable namespaceTable,Document doc) {
     String[] params = getParameterValues(getID());
     if (params == null)
       return new Element[0];
@@ -144,6 +154,26 @@ public abstract class XSDFragment extends Fragment implements IXSDFragment
     return (genXSIType ? addXSIType(instanceDocuments, namespaceTable) : instanceDocuments);
   }
 
+  public Element setAttributesOnInstanceDocuments(Element instanceDocument,String attName){
+  	String[] params = getParameterValues(getID());
+    if (params == null)
+      return instanceDocument;
+    if (isAttributeInstanceNamespaceQualified()){
+      instanceDocument.setAttributeNS(config_.getXSDComponent().getSchema().getTargetNamespace(),attName,params[0]);
+      
+    }
+    else instanceDocument.setAttribute(attName,params[0]);
+    
+    return instanceDocument;
+  }
+  
+  public boolean setAttributeParamsFromInstanceDocuments(Node attribute){
+  	String[] params = new String[1];
+  	params[0] = attribute.getNodeValue(); 
+  	setParameterValues(getID(), params);
+    return validateAllParameterValues();
+  }
+  
   public String genID()
   {
     StringBuffer newID = new StringBuffer();
@@ -159,8 +189,18 @@ public abstract class XSDFragment extends Fragment implements IXSDFragment
     return (!config_.getIsWSDLPart() && config_.getPartEncoding() == FragmentConstants.ENCODING_LITERAL && xsdSchema.getElementFormDefault().getValue() == XSDForm.QUALIFIED);
   }
 
-  protected String getInstanceDocumentTagName(Hashtable namespaceTable)
-  {
+  protected boolean isAttributeInstanceNamespaceQualified() {
+  	XSDSchema xsdSchema = config_.getXSDComponent().getSchema();
+    
+    return (!config_.getIsWSDLPart() &&
+                config_.getPartEncoding() == FragmentConstants.ENCODING_LITERAL &&
+                xsdSchema.getAttributeFormDefault().getValue() == XSDForm.QUALIFIED);
+
+  }
+
+ 
+  
+  protected String getInstanceDocumentTagName(Hashtable namespaceTable) {
     StringBuffer tagName = new StringBuffer();
     if (isInstanceNamespaceQualified())
     {

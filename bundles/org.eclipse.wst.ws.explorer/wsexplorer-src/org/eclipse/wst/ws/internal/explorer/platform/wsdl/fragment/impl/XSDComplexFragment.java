@@ -11,13 +11,20 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDAttributeFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDComplexFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentController;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.XSDTypeDefinitionUtil;
+import org.eclipse.xsd.XSDAttributeGroupContent;
+import org.eclipse.xsd.XSDAttributeGroupDefinition;
+import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDComplexFinal;
 import org.eclipse.xsd.XSDComplexTypeContent;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
@@ -29,6 +36,7 @@ import org.eclipse.xsd.XSDParticleContent;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -46,17 +54,34 @@ public abstract class XSDComplexFragment extends XSDMapFragment implements IXSDC
     XSDComplexTypeDefinition complexType = (XSDComplexTypeDefinition)getXSDTypeDefinition();
     XSDComplexTypeContent complexTypeContent = XSDTypeDefinitionUtil.getXSDComplexTypeContent(complexType);
     if (complexTypeContent instanceof XSDTypeDefinition)
-      return setParamsForXSDTypeDef(instanceDocumentsCopy) && paramsValid;
+      setParamsForXSDTypeDef(instanceDocumentsCopy);
     else
-      return setParamsForXSDParticle(instanceDocumentsCopy) && paramsValid;
+      setParamsForXSDParticle(instanceDocumentsCopy); 
+    return setParamsForAttributes(instanceDocumentsCopy) && paramsValid;
   }
 
+  private boolean setParamsForAttributes(Element[] instanceDocuments){
+  	boolean paramsValid = true;
+  	
+  	IXSDAttributeFragment[] attributeFragments = getAllAttributeFragments();
+  	for (int i = 0; i < instanceDocuments.length; i++){
+  	  
+  	  NamedNodeMap nodeMap = instanceDocuments[i].getAttributes();	
+  	  for (int k = 0; k < attributeFragments.length; k++){
+    	
+  	  	String name = ((XSDAttributeUse)attributeFragments[k].getXSDToFragmentConfiguration().getXSDComponent()).getAttributeDeclaration().getName();
+  	    paramsValid = attributeFragments[k].getXSDDelegationFragment().setAttributeParamsFromInstanceDocuments(nodeMap.getNamedItem(name));	
+      }
+  	}
+    return paramsValid;
+  }
+  
   private boolean setParamsForXSDTypeDef(Element[] instanceDocuments)
   {
     boolean paramsValid = true;
     removeAllFragments();
-    for (int i = 0; i < instanceDocuments.length; i++)
-    {
+    removeAllAttributeFragments();
+    for (int i = 0; i < instanceDocuments.length; i++) {
       IXSDFragment childFrag = getFragment(createInstance());
       Element[] childInstanceDocuments = new Element[1];
       childInstanceDocuments[0] = instanceDocuments[i];
@@ -70,8 +95,8 @@ public abstract class XSDComplexFragment extends XSDMapFragment implements IXSDC
   {
     boolean paramsValid = true;
     removeAllFragments();
-    for (int i = 0; i < instanceDocuments.length; i++)
-    {
+    removeAllAttributeFragments();
+    for (int i = 0; i < instanceDocuments.length; i++) {
       IXSDFragment childFrag = getFragment(createInstance());
       Vector instancesVector = new Vector();
       NodeList nl = instanceDocuments[i].getChildNodes();
@@ -101,9 +126,23 @@ public abstract class XSDComplexFragment extends XSDMapFragment implements IXSDC
       instanceDocuments = genInstancesForXSDTypeDef(genXSIType, namespaceTable, tagName, doc);
     else
       instanceDocuments = genInstancesForXSDParticle(genXSIType, namespaceTable, tagName, doc);
-    return (genXSIType ? addXSIType(instanceDocuments, namespaceTable) : instanceDocuments);
+      if(genXSIType) addXSIType(instanceDocuments, namespaceTable);
+      instanceDocuments = addAttributes(instanceDocuments);
+	return instanceDocuments;
   }
 
+  private Element[] addAttributes(Element[] instanceDocuments){
+  	
+  	for (int i = 0;i< instanceDocuments.length;i++){
+  	  IXSDAttributeFragment[] attributeFragments = getAllAttributeFragments();
+      for (int k = 0; k < attributeFragments.length; k++){
+    	String name = ((XSDAttributeUse)attributeFragments[k].getXSDToFragmentConfiguration().getXSDComponent()).getAttributeDeclaration().getName();
+    	attributeFragments[k].getXSDDelegationFragment().setAttributesOnInstanceDocuments(instanceDocuments[i],name);	
+      }
+   	}
+   	return instanceDocuments;
+  }
+  
   private Element[] genInstancesForXSDTypeDef(boolean genXSIType, Hashtable namespaceTable, String tagName, Document doc)
   {
     IXSDFragment[] fragments = getAllFragments();
@@ -215,6 +254,51 @@ public abstract class XSDComplexFragment extends XSDMapFragment implements IXSDC
     }
   }
 
+  
+  
+  public IXSDAttributeFragment[] getAllAttributeFragments()
+  {
+  	return super.getAllAttributeFragments();		
+  
+  }
+  
+  public void createAttributeFragments(String complexChildID)
+  {
+  	XSDComplexTypeDefinition complexType = (XSDComplexTypeDefinition)getXSDTypeDefinition();
+  	EList atContentList = complexType.getAttributeContents();
+  	Iterator iterator = atContentList.iterator();
+  	while(iterator.hasNext()){
+  	  Object object = (Object)iterator.next();
+  	  if(object instanceof XSDAttributeGroupDefinition){
+  		XSDAttributeGroupDefinition xsdAGD = (XSDAttributeGroupDefinition)object;
+  		XSDAttributeGroupDefinition resolved = xsdAGD.getResolvedAttributeGroupDefinition();
+  		EList aList = resolved.getContents();
+  		Iterator iterator2 = aList.iterator();
+  		while(iterator2.hasNext()){
+  			createAttributeHelper((XSDAttributeUse)iterator2.next(),complexChildID);
+  		}
+  	  }
+  	  else{
+  	    XSDAttributeUse attUse =  (XSDAttributeUse)object;
+  	    createAttributeHelper(attUse,complexChildID);
+  	  }
+  	  
+  	}
+  }
+  
+  private void createAttributeHelper(XSDAttributeUse attUse,String complexChildID){
+	  XSDToFragmentConfiguration thisConfig = getXSDToFragmentConfiguration();
+      XSDToFragmentConfiguration xsdConfig = new XSDToFragmentConfiguration();
+      xsdConfig.setXSDComponent(attUse);
+      xsdConfig.setStyle(thisConfig.getStyle());
+      xsdConfig.setPartEncoding(thisConfig.getPartEncoding());
+      xsdConfig.setWSDLPartName(thisConfig.getWSDLPartName());
+      String newID = genID();
+      addAttributeFragment(complexChildID + newID, getXSDToFragmentController().getFragment(xsdConfig,complexChildID + newID, complexChildID + newID));
+  	  
+  }
+  
+  
   public String createComplexInstance()
   {
     XSDComplexTypeDefinition complexType = (XSDComplexTypeDefinition)getXSDTypeDefinition();
@@ -228,6 +312,7 @@ public abstract class XSDComplexFragment extends XSDMapFragment implements IXSDC
     xsdConfig.setWSDLPartName(thisConfig.getWSDLPartName());
     String newID = genID();
     addFragment(newID, getXSDToFragmentController().getFragment(xsdConfig, newID, newID));
+    createAttributeFragments(newID);
     return newID;
   }
 

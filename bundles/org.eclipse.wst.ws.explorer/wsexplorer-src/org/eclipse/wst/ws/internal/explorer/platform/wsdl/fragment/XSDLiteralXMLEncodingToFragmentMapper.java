@@ -11,6 +11,7 @@
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
+import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDComponent;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -22,6 +23,7 @@ public class XSDLiteralXMLEncodingToFragmentMapper extends XSDToFragmentMapper {
   private XSDSimpleTypeToFragmentMapper xsdSimpleMapper_;
   private XSDComplexTypeToFragmentMapper xsdComplexMapper_;
   private XSDElementDeclarationToFragmentMapper xsdElementMapper_;
+  private XSDAttributeUseToFragmentMapper xsdAttributeMapper_;
   private XSDParticleToFragmentMapper xsdParticleMapper_;
 
   public XSDLiteralXMLEncodingToFragmentMapper(XSDToFragmentController controller, WSDLPartsToXSDTypeMapper wsdlToXSDMapper) {
@@ -29,6 +31,7 @@ public class XSDLiteralXMLEncodingToFragmentMapper extends XSDToFragmentMapper {
     xsdSimpleMapper_ = null;
     xsdComplexMapper_ = null;
     xsdElementMapper_ = null;
+    xsdAttributeMapper_ = null;
     xsdParticleMapper_= null;
   }
 
@@ -50,6 +53,12 @@ public class XSDLiteralXMLEncodingToFragmentMapper extends XSDToFragmentMapper {
     return xsdElementMapper_;
   }
 
+  private XSDAttributeUseToFragmentMapper getXSDAttributeMapper() {
+    if (xsdAttributeMapper_ == null)
+      xsdAttributeMapper_ = new XSDAttributeUseToFragmentMapper(getController(), getWSDLPartsToXSDTypeMapper());
+    return xsdAttributeMapper_;
+  }
+  
   private XSDParticleToFragmentMapper getXSDParticleMapper() {
     if (xsdParticleMapper_ == null)
       xsdParticleMapper_ = new XSDParticleToFragmentMapper(getController(), getWSDLPartsToXSDTypeMapper());
@@ -71,6 +80,8 @@ public class XSDLiteralXMLEncodingToFragmentMapper extends XSDToFragmentMapper {
       return getXSDParticleMapper().getFragment(config, id, name);
     else if (component instanceof XSDParticleContent)
       return getXSDParticleMapper().getFragment(config, id, name);
+    else if (component instanceof XSDAttributeUse)
+      return getXSDAttributeMapper().getFragment(config, id, name);	
     else
       return getXSDDefaultFragment(config, id, name);
   }

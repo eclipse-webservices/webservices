@@ -23,12 +23,14 @@
 <jsp:useBean id="controller" class="org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller" scope="session"/>
 <jsp:useBean id="fragID" class="java.lang.StringBuffer" scope="request"/>
 <jsp:useBean id="nodeID" class="java.lang.StringBuffer" scope="request"/>
+<jsp:useBean id="elementID" class="java.lang.StringBuffer" scope="request"/>
 
 <%
 WSDLPerspective wsdlPerspective = controller.getWSDLPerspective();
 Node selectedNode = wsdlPerspective.getNodeManager().getNode(Integer.parseInt(nodeID.toString()));
 WSDLOperationElement operElement = (WSDLOperationElement)selectedNode.getTreeElement();
 IXSDFragment frag = operElement.getFragmentByID(fragID.toString());
+IXSDElementFragment elementFragment = (IXSDElementFragment)operElement.getFragmentByID(elementID.toString());
 XSDToFragmentConfiguration xsdConfig = frag.getXSDToFragmentConfiguration();
 String param = frag.getParameterValue(frag.getID(), 0);
 %>
@@ -37,6 +39,20 @@ String param = frag.getParameterValue(frag.getID(), 0);
     <td class="labels" height=25 valign="bottom" align="left" nowrap>
       <label for="<%=frag.getID()%>"><a href="javascript:openXSDInfoDialog('<%=response.encodeURL(controller.getPathWithContext(OpenXSDInfoDialogAction.getActionLink(session.getId(),selectedNode.getNodeId(),fragID.toString())))%>')"><%=frag.getName()%></a></label>
     </td>
+    <% 
+      if(elementFragment != null && elementFragment.isNillable()){
+        if(elementFragment.isNil()){
+          %>  
+          <td width=10><input type="checkbox" name="<%=((IXSDElementFragment)elementFragment).getNilID()%>" value="<%=IXSDElementFragment.NIL_VALUE%>" checked><%=wsdlPerspective.getMessage("ALT_NIL")%></td> 
+          <%
+        } 
+        else{
+          %>  
+          <td width=10><input type="checkbox" name="<%=((IXSDElementFragment)elementFragment).getNilID()%>" value="<%=IXSDElementFragment.NIL_VALUE%>" ><%=wsdlPerspective.getMessage("ALT_NIL")%></td> 
+          <%
+        }
+      }
+    %>
     <td>
       <%
       if (!frag.validateAllParameterValues()) {

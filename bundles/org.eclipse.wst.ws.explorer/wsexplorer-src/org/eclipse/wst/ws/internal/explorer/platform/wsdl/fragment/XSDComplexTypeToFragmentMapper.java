@@ -12,10 +12,13 @@ package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDComplexFixFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDComplexRangeFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDComplexSimpleContentFixFragment;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.XSDComplexSimpleContentRangeFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.util.XSDTypeDefinitionUtil;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
 import org.eclipse.xsd.XSDComplexTypeContent;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.xsd.XSDContentTypeCategory;
 
 public class XSDComplexTypeToFragmentMapper extends XSDToFragmentMapper {
   public XSDComplexTypeToFragmentMapper(XSDToFragmentController controller, WSDLPartsToXSDTypeMapper wsdlToXSDMapper) {
@@ -24,22 +27,30 @@ public class XSDComplexTypeToFragmentMapper extends XSDToFragmentMapper {
 
   public IXSDFragment getFragment(XSDToFragmentConfiguration config, String id, String name) {
     XSDComplexTypeDefinition complexType = (XSDComplexTypeDefinition)config.getXSDComponent();
+    int category = complexType.getContentTypeCategory().getValue();
     if (complexType != null && complexType.isMixed())
       return getXSDDefaultFragment(config, id, name);
     XSDComplexTypeContent complexTypeContent = XSDTypeDefinitionUtil.getXSDComplexTypeContent(complexType);
     if (complexTypeContent != null)
-      return getXSDComplexFragment(config, id, name);
+      return getXSDComplexFragment(category,config, id, name);
     else
       return getXSDEmptyFragment(config, id, name);
   }
 
-  private IXSDFragment getXSDComplexFragment(XSDToFragmentConfiguration config, String id, String name) {
+  private IXSDFragment getXSDComplexFragment(int category,XSDToFragmentConfiguration config, String id, String name) {
     int minOccurs = config.getMinOccurs();
     int maxOccurs = config.getMaxOccurs();
-    
     if (minOccurs == maxOccurs)
-      return new XSDComplexFixFragment(id, name, config, getController());
-    else
-      return new XSDComplexRangeFragment(id, name, config, getController());
+      if(category == XSDContentTypeCategory.SIMPLE){
+      	return new XSDComplexSimpleContentFixFragment(id, name, config, getController());
+        
+      }
+      else	
+      	return new XSDComplexFixFragment(id, name, config, getController());
+    else 
+    	if(category == XSDContentTypeCategory.SIMPLE)
+    	  return new XSDComplexSimpleContentRangeFragment(id, name, config, getController());
+    	else
+          return new XSDComplexRangeFragment(id, name, config, getController());
   }
 }

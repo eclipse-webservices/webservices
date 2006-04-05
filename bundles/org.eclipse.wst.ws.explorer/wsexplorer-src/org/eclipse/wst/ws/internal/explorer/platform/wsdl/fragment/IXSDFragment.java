@@ -12,8 +12,10 @@ package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
 import java.util.Hashtable;
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.Document;
+
 
 public interface IXSDFragment extends IFragment {
   public void setXSDToFragmentConfiguration(XSDToFragmentConfiguration config);
@@ -21,7 +23,8 @@ public interface IXSDFragment extends IFragment {
 
   public void setXSDTypeDefinition(XSDTypeDefinition typeDef);
   public XSDTypeDefinition getXSDTypeDefinition();
-
+  public Element setAttributesOnInstanceDocuments(Element instanceDocument,String name);
+  public boolean setAttributeParamsFromInstanceDocuments (Node attribute);
   public boolean setParameterValuesFromInstanceDocuments(Element[] instanceDocuments);
   public Element[] genInstanceDocumentsFromParameterValues(boolean genXSIType, Hashtable namespaceTable, Document doc);
 
