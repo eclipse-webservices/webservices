@@ -192,9 +192,10 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		webserviceType_.addListener(SWT.Modify, statusListener);
 		
 		// Create text field and browse for object selection
+		//TODO: add text listener for the field so users can type - for now READ_ONLY
 		serviceImpl_ = utils.createText(typeComposite, ConsumptionUIMessages.LABEL_WEBSERVICEIMPL, 
 				ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL,
-				INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL, SWT.LEFT | SWT.BORDER);
+				INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL, SWT.LEFT | SWT.BORDER | SWT.READ_ONLY);
 		browseButton_ = utils.createPushButton(typeComposite,
 				ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
 		
@@ -305,13 +306,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		hLinkServiceEAR_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SERVICEPROJECT_LINK);
 		hLinkServiceEAR_.addHyperlinkListener(new IHyperlinkListener(){
 			public void linkActivated(HyperlinkEvent e){
-				/*int status = */projectDialog_.open();
-				serviceProjectName_ = projectDialog_.getProjectName();
-				serviceEarProjectName_ = projectDialog_.getEarProjectName();
-				serviceComponentType_ = projectDialog_.getServiceComponentType();
-				hLinkServiceProject_.setText(SERVICE_PROJECT_PREFIX + " " + serviceProjectName_);
-				hLinkServiceEAR_.setText(SERVICE_EAR_PREFIX + " " + serviceEarProjectName_);
-                groupComposite_.pack(true);
+				launchProjectDialog();
 			}
 			public void linkEntered(HyperlinkEvent e){}
 			public void linkExited(HyperlinkEvent e){}			
@@ -335,6 +330,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		// Add client widgets...
 		clientWidget_ = new WebServiceClientTypeWidget();
 	    clientWidget_.addControls(parent, statusListener );
+	    clientWidget_.setClientOnly(false);
 	    clientWidget_.enableClientSlider(serviceScale_.getSelection()<=ScenarioContext.WS_START);
 		
 		// Advanced buttons section
@@ -358,12 +354,12 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 
 		return this;
 	}
-
+	
 	private void launchProjectDialog()
 	{
 		projectDialog_.setProjectName(getServiceProjectName());
 		projectDialog_.setEarProjectName(getServiceEarProjectName());
-		projectDialog_.setServiceComponentType(getServiceComponentType());
+		projectDialog_.setProjectComponentType(getServiceComponentType());
 		projectDialog_.setNeedEAR(getServiceNeedEAR());
 		
 		int status = projectDialog_.open();  //jvh validation on settings??
@@ -371,7 +367,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		{
 			setServiceProjectName(projectDialog_.getProjectName());
 			setServiceEarProjectName(projectDialog_.getEarProjectName());
-			setServiceComponentType(projectDialog_.getServiceComponentType());
+			setServiceComponentType(projectDialog_.getProjectComponentType());
 			setServiceNeedEAR(projectDialog_.getNeedEAR());
 					
 			hLinkServiceProject_.setText(SERVICE_PROJECT_PREFIX + " " + serviceProjectName_);
@@ -712,6 +708,16 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	  public String getServiceComponentType()
 	  {
 		  return serviceComponentType_;
+	  }
+	  
+	  public void setClientComponentType(String type)
+	  {
+		  clientWidget_.setClientComponentType(type);
+	  }
+	  
+	  public String getClientComponentType()
+	  {
+		  return clientWidget_.getClientComponentType();
 	  }
 	 
 	  public String getServiceProjectName()

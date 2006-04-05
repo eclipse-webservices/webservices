@@ -48,7 +48,6 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   private String clientRuntimeId_ ;
   private String clientProjectName_;
   private String clientEarProjectName_;
-  private String clientComponentType_;
   private boolean clientNeedEAR_;
   private String componentName_;
   private IProject project_;
@@ -74,10 +73,11 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
     utils.createInfoPop(parent, INFOPOP_WSWSCEN_PAGE);
     
   	// Create text field and browse for service selection
+    //TODO: add text listener for the field so users can type - for now READ_ONLY
   	Composite typeComposite = utils.createComposite(parent, 3);
 	serviceImpl_ = utils.createText(typeComposite, ConsumptionUIMessages.LABEL_WEBSERVICEIMPL, 
 			ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL,
-			INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL, SWT.LEFT | SWT.BORDER);
+			INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL, SWT.LEFT | SWT.BORDER | SWT.READ_ONLY);
 	browseButton_ = utils.createPushButton(typeComposite,
 			ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
 	
@@ -98,7 +98,8 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 	Composite clientComposite = utils.createComposite( parent, 1 );
 	
     clientWidget_ = new WebServiceClientTypeWidget();
-    clientWidget_.addControls(clientComposite , statusListener );    
+    clientWidget_.addControls(clientComposite , statusListener );
+    clientWidget_.setClientOnly(true);
    
     //  Create test service check box.
     Composite buttonGroup = utils.createComposite(clientComposite,1);
@@ -162,7 +163,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   
   public void setClientComponentType(String name)
   {
-	  clientComponentType_ = name;	  
+	  clientWidget_.setClientComponentType(name);	  
   }
   
   public void setClientNeedEAR(boolean b)
@@ -188,7 +189,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   
   public String getClientComponentType()
   {
-	  return clientComponentType_;
+	  return clientWidget_.getClientComponentType();
   }
   
   public boolean getClientNeedEAR()

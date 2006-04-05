@@ -102,12 +102,14 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   private IStructuredSelection objectSelection_;
   private LabelsAndIds      labelIds_;
   private boolean enableProxy_;  //service scale is set to a level that the client scale can be enabled
+  private boolean clientOnly_=false;
   private ImageRegistry imageReg_;
   private IProject project_;
   private WebServicesParser parser_;
   private String earProjectName_;
   private String projectName_;
   private boolean needEar_;
+  private String clientComponentType_;
   
   private ScaleSelectionListener scaleSelectionListener = new ScaleSelectionListener();
   
@@ -277,8 +279,16 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	showSummary(enable && (selection <= ScenarioContext.WS_DEVELOP));
   }
   
+  public void setClientOnly(boolean b)
+	{
+		clientOnly_ = b;
+	}
+  
   private void showSummary(boolean show)
   {
+	  if (clientOnly_)
+		  show = true;  //short circuit to eliminate flicker...
+	  
 	  hLinkClientEAR_.setVisible(show);
 	  hLinkClientProject_.setVisible(show);
 	  hLinkClientRuntime_.setVisible(show);
@@ -370,6 +380,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		projectDialog_.setProjectName(getClientProjectName());
 		projectDialog_.setEarProjectName(getClientEarProjectName());
 		projectDialog_.setNeedEAR(getClientNeedEAR());	
+		projectDialog_.setProjectComponentType(getClientComponentType());
 		
 		int status = projectDialog_.open();  //jvh validation on settings??
 		
@@ -378,6 +389,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 			setClientProjectName(projectDialog_.getProjectName());
 			setClientEarProjectName(projectDialog_.getEarProjectName());
 			setClientNeedEAR(projectDialog_.getNeedEAR());
+			setClientComponentType(projectDialog_.getProjectComponentType());
 			
 			hLinkClientProject_.setText(CLIENT_PROJECT_PREFIX + " " + clientProjectName_);
 			hLinkClientEAR_.setText(CLIENT_EAR_PREFIX + " " + clientEarProjectName_ );				
@@ -467,12 +479,22 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 			clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_DEVELOP);
 			break;
 		case 6:			
-			if (enableProxy_)
-				iconImage=ICON_SCALE_BG_6;  
+			if (!clientOnly_)
+			{
+				if (enableProxy_)  //if service is install run or test...
+					iconImage=ICON_SCALE_BG_6;  
+				else
+					iconImage=null;
+				topologyImage=GRAPHIC_CLIENT_6;
+				clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
+			}
 			else
-				iconImage=null;
-			topologyImage=GRAPHIC_CLIENT_6;
-			clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
+			{
+				clientScale_.setSelection(5); //"no selection" is not allowed...must develop service @ minimum
+				iconImage=ICON_SCALE_BG_5;
+				topologyImage=GRAPHIC_CLIENT_5;				
+				clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_DEVELOP);			
+			}
 			break;
 		default:
 			break;
@@ -498,6 +520,9 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   
   public void setClientGeneration(int value)
   {
+	  if (clientOnly_ && value == ScenarioContext.WS_NONE)
+		  value = ScenarioContext.WS_DEVELOP;
+	  
 	  clientScale_.setSelection(value);
 	  setGraphics(value);
 	  showSummary(value < ScenarioContext.WS_NONE);
@@ -517,6 +542,17 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   {
 	  return clientRuntimeId_;
   }
+  
+  public void setClientComponentType(String type)
+  {
+	  clientComponentType_= type;
+  }
+
+  public String getClientComponentType()
+  {
+	  return clientComponentType_;
+  }
+
   
   public void setClientRuntimeId(String id)
   {

@@ -70,12 +70,12 @@ public class ProjectSelectionDialog extends SimpleDialog {
 			 return earProjectName_;
 		 }
 		 
-		 public void setServiceComponentType( String type )
+		 public void setProjectComponentType( String type )
 		  {
 			    componentType_ = type;
 		  }
 
-		 public String getServiceComponentType()
+		 public String getProjectComponentType()
 		  {
 			 return componentType_;
 		  }
