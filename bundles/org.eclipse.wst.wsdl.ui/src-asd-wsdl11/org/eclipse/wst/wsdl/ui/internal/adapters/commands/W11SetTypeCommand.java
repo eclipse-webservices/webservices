@@ -17,7 +17,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
-import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
@@ -29,6 +29,7 @@ import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
 import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
 import org.eclipse.wst.xsd.editor.XSDTypeReferenceEditManager;
+import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDSchema;
 import org.w3c.dom.Element;
 
@@ -46,26 +47,28 @@ public class W11SetTypeCommand extends Command {
 	{
 		ComponentReferenceEditManager componentReferenceEditManager = getComponentReferenceEditManager();
 		continueApply = true; 
-		if (parent instanceof Part)
+		if (action.equals(IParameter.SET_NEW_ACTION_ID))
 		{
-			Part part = (Part) parent;
-			if (action.equals(IParameter.SET_NEW_ACTION_ID))
-			{
-				ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getNewDialog());
-				
-				// Set the reference to the new type
-				if (continueApply)
-					componentReferenceEditManager.modifyComponentReference(part, newValue);
-			}
-			else
-			{
-				ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getBrowseDialog());
-				if (continueApply)
-					componentReferenceEditManager.modifyComponentReference(part, newValue);
-			}
-			formatChild(part.getElement());
+			ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getNewDialog());
+			
+			// Set the reference to the new type
+			if (continueApply)
+				componentReferenceEditManager.modifyComponentReference(parent, newValue);
+		}
+		else
+		{
+			ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getBrowseDialog());
+			if (continueApply)
+				componentReferenceEditManager.modifyComponentReference(parent, newValue);
 		}
 		
+		// Format
+		if (parent instanceof WSDLElement) {
+			formatChild(((WSDLElement) parent).getElement());
+		}
+		else if (parent instanceof XSDConcreteComponent) {
+			formatChild(((XSDConcreteComponent) parent).getElement());
+		}
 	}
 	
 	private Object invokeDialog(IComponentDialog dialog)

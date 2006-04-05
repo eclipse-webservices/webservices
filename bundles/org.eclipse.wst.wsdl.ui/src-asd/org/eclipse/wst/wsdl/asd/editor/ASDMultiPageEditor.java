@@ -216,9 +216,13 @@ public abstract class ASDMultiPageEditor extends MultiPageEditorPart implements 
 
     createPage0();
     addSourcePage();
-    model = buildModel((IFileEditorInput)getEditorInput());    
+    buildAndSetModel();    
     createPage1();
     setActivePage(1);
+  }
+  
+  public void buildAndSetModel() {
+	  model = buildModel((IFileEditorInput)getEditorInput());
   }
   
 	/**

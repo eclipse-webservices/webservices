@@ -22,6 +22,7 @@ import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.asd.editor.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.asd.facade.IParameter;
 import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
+import org.eclipse.wst.xsd.editor.XSDTypeReferenceEditManager;
 
 public class TypeReferenceDirectEditManager extends ComboBoxCellEditorManager
 {
@@ -108,7 +109,7 @@ public class TypeReferenceDirectEditManager extends ComboBoxCellEditorManager
 
 	public ComponentReferenceEditManager getComponentReferenceEditManager() {
 		ASDMultiPageEditor editor = (ASDMultiPageEditor) ASDEditorPlugin.getActiveEditor();
-		return (ComponentReferenceEditManager) editor.getAdapter(ComponentReferenceEditManager.class);
+		return (ComponentReferenceEditManager) editor.getAdapter(XSDTypeReferenceEditManager.class);
 	}
 	
 	// TODO: rmah: This code should live in a common place..... This code is also used in other UI scenarios when

@@ -38,8 +38,12 @@ import org.eclipse.wst.wsdl.asd.editor.util.IOpenExternalEditorHelper;
 import org.eclipse.wst.wsdl.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingElementAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingMessageAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingTypeAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewElementAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewMessageAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewTypeAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11BindingReferenceEditManager;
@@ -371,6 +375,22 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	    registry.registerAction(action);
 
 	    action = new W11SetExistingMessageAction(this);
+	    action.setSelectionProvider(getSelectionManager());
+	    registry.registerAction(action);
+	    
+	    action = new W11SetNewTypeAction(this);
+	    action.setSelectionProvider(getSelectionManager());
+	    registry.registerAction(action);
+	    
+	    action = new W11SetExistingTypeAction(this);
+	    action.setSelectionProvider(getSelectionManager());
+	    registry.registerAction(action);
+	    
+	    action = new W11SetNewElementAction(this);
+	    action.setSelectionProvider(getSelectionManager());
+	    registry.registerAction(action);
+	    
+	    action = new W11SetExistingElementAction(this);
 	    action.setSelectionProvider(getSelectionManager());
 	    registry.registerAction(action);
 	  }

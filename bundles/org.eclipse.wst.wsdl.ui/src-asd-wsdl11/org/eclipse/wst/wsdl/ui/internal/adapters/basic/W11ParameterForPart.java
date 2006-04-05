@@ -23,6 +23,7 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddFaultAction;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.asd.editor.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
 import org.eclipse.wst.wsdl.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.asd.facade.IOperation;
@@ -30,6 +31,10 @@ import org.eclipse.wst.wsdl.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingElementAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingTypeAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewElementAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewTypeAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetElementCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetTypeCommand;
@@ -132,6 +137,17 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 		  actions.add(ASDAddOperationAction.ID);
 		  actions.addAll(((W11Operation) operation).getValidInputOutpuActions());
 		  actions.add(ASDAddFaultAction.ID);
+		  
+		  actions.add(BaseSelectionAction.SUBMENU_START_ID + "Set Type");
+		  actions.add(W11SetNewTypeAction.ID);
+		  actions.add(W11SetExistingTypeAction.ID);
+		  actions.add(BaseSelectionAction.SUBMENU_END_ID);
+
+		  actions.add(BaseSelectionAction.SUBMENU_START_ID + "Set Element");
+		  actions.add(W11SetNewElementAction.ID);
+		  actions.add(W11SetExistingElementAction.ID);
+		  actions.add(BaseSelectionAction.SUBMENU_END_ID);		  
+		  
 		  actions.add(ASDDeleteAction.ID);
 		  
 		  String[] actionIDs = new String[actions.size()];

@@ -20,6 +20,8 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDTypeDefinitionCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLSetComponentHelper;
 import org.eclipse.wst.xsd.editor.XSDTypeReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.search.IXSDSearchConstants;
+import org.eclipse.xsd.XSDAttributeUse;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
 
 public class WSDLXSDTypeReferenceEditManager extends XSDTypeReferenceEditManager {
@@ -42,24 +44,26 @@ public class WSDLXSDTypeReferenceEditManager extends XSDTypeReferenceEditManager
 			}
 			
 			if (component.isNew()) {  
+				AddXSDTypeDefinitionCommand command = new AddXSDTypeDefinitionCommand(part.getEnclosingDefinition(), component.getName());
 				if (component.getMetaName() == IXSDSearchConstants.COMPLEX_TYPE_META_NAME) {
-					AddXSDTypeDefinitionCommand command = new AddXSDTypeDefinitionCommand(part.getEnclosingDefinition(), component.getName());
 					command.isComplexType(true);
-					command.run();
-					String tns = command.getXSDElement().getTargetNamespace();
-					component.setQualifier(tns);
 				}
 				else {
-					AddXSDTypeDefinitionCommand command = new AddXSDTypeDefinitionCommand(part.getEnclosingDefinition(), component.getName());
 					command.isComplexType(false);
-					command.run();
-					String tns = command.getXSDElement().getTargetNamespace();
-					component.setQualifier(tns);
 				}
+				command.run();
+				String tns = command.getXSDElement().getTargetNamespace();
+				component.setQualifier(tns);
 			}
 			
 			WSDLSetComponentHelper helper = new WSDLSetComponentHelper(file, part.getEnclosingDefinition());
 			helper.setXSDTypeComponent(part, component);
+		}
+		else if (referencingObject instanceof XSDElementDeclaration) {
+			super.modifyComponentReference(referencingObject, component);
+		}
+		else if (referencingObject instanceof XSDAttributeUse) {
+			
 		}
 	}
 
