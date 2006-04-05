@@ -66,5 +66,11 @@ public interface IObjectSelectionWidget extends WidgetDataContributor
    * object that the user has chosen with this widget.  The value can be 
    * null if there is no IVirtualComponent for this object
    */
-  public String getComponentName();  
+  public String getComponentName();
+  
+  /**
+   * 
+   * @return returns the string to displayed in the UI for the selected object
+   */
+  public  String getObjectSelectionDisplayableString();
 }

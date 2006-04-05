@@ -165,7 +165,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   
   private void listenersOn()
   {
-    projectType_.addModifyListener(projectTypeListener_);
+	projectType_.addModifyListener(projectTypeListener_);
 	moduleProject_.addModifyListener( moduleProjectListener_ );
 	earProject_.addModifyListener( earProjectListener_ );
   }
@@ -174,7 +174,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   {
     projectType_.removeModifyListener(projectTypeListener_);
     moduleProject_.removeModifyListener( moduleProjectListener_ );
-    earProject_.removeModifyListener( earProjectListener_ );
+    earProject_.removeModifyListener( earProjectListener_ );  
   }
     
   public String getProjectName()
@@ -259,9 +259,12 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   public void setTypeRuntimeServer(TypeRuntimeServer trs)
   {
     trsIds_ = trs;
-	listenersOff();
-    updateEARState();
-    listenersOn();
+    if (earProject_ != null)
+    {
+    	listenersOff();
+        updateEARState();
+        listenersOn();	
+    }	
   }
   
   public void refreshProjectItems()

@@ -560,7 +560,7 @@
    <extension
          point="org.eclipse.jst.ws.consumption.ui.objectSelectionWidget">
       <objectSelectionWidget
-            class="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.JavaBeanSelectionWidget"
+            class="org.eclipse.jst.ws.internal.consumption.ui.widgets.JavaBeanSelectionLaunchable"
             transformer="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.JavaBeanSelectionTransformer"
             id="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.JavaBeanSelectionWidget">
       </objectSelectionWidget>

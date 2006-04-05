@@ -42,4 +42,10 @@ public abstract class AbstractObjectSelectionWidget extends SimpleWidgetDataCont
     //  subclass should override this method
     return null;
   }
-}
+  
+   public  String getObjectSelectionDisplayableString()
+   {
+	    //  subclass should override this method
+	  return "";
+   }
+  }

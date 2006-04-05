@@ -29,6 +29,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -119,6 +120,11 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     serverLabels_ = new Hashtable();
     existingServersTable_ = new Hashtable();
   }
+  
+  protected Point getInitialSize()
+  {
+	  return new Point( 550, 390 );
+  }
 
   public TypeRuntimeServer getTypeRuntimeServer() {
     TypeRuntimeServer ids = new TypeRuntimeServer();
@@ -154,9 +160,14 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   }
 
   protected Control createContents(Composite parent) {
-    Composite comp = (Composite) super.createContents(parent);
-    parent.getShell().pack();
+    Composite comp = (Composite) super.createContents(parent);  
+    comp.pack(); 
     return comp;
+  } 
+
+  protected void setShellStyle(int newShellStyle)
+  {
+    super.setShellStyle( newShellStyle | SWT.RESIZE );  
   }
 
   protected Control createDialogArea(Composite parent) {
@@ -260,7 +271,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   private void validateServerRuntimeSelection() {
 
     if (selectionMode_ == MODE_SERVICE) {
-      if (selectedServerFactoryID_ != null && selectedRuntime_ != null)
+      if (selectedServerFactoryID_ != null && selectedRuntime_ != null) 
       {
 
         if (WebServiceRuntimeExtensionUtils2.isServerRuntimeTypeSupported(selectedServerFactoryID_, selectedRuntime_.getId(),

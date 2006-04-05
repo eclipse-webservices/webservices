@@ -16,6 +16,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -206,4 +207,10 @@ public class UIUtils
 			                      GridData.GRAB_VERTICAL );
     return data;
   }
+  
+  public void createInfoPop(Control ctrl, String infopop)
+  {
+	  if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( ctrl, infoPopid_ + "." + infopop );
+  }
+  
 }

@@ -79,7 +79,7 @@ import org.eclipse.wst.ws.internal.wsrt.WebServiceState;
 
 public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataModelOperation
 {   
-  
+  private String DEFAULT_CLIENT_EAR_PROJECT_EXT = "EAR";
   private TypeRuntimeServer    clientIds_;
   private boolean clientIdsFixed_ = false;
   private String clientRuntimeId_;
@@ -990,7 +990,17 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
           {
             DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
             drt.setFacetMatcher(null);
-            drt.setProjectName(null);            
+            //If the project doesn't exist, use the name of the project that was passed in.
+            //If the project exists, it means that previous code in this method
+            //determined it to not be a suitable project. Clear the project name.
+            if (project==null || project.exists())
+            {
+              drt.setProjectName(null);
+            }
+            else
+            {
+              drt.setProjectName(project.getName());
+            }
             drt.setRuntimeId(preferredRuntimeIds[m]);
             return drt;            
           }        
@@ -1003,7 +1013,17 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     {
       DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
       drt.setFacetMatcher(null);
-      drt.setProjectName(null);
+      //If the project doesn't exist, use the name of the project that was passed in.
+      //If the project exists, it means that previous code in this method
+      //determined it to not be a suitable project. Clear the project name.      
+      if (project==null || project.exists())
+      {
+        drt.setProjectName(null);
+      }
+      else
+      {
+        drt.setProjectName(project.getName());
+      }
       drt.setRuntimeId(preferredRuntimeIds[0]);
       return drt;      
     }
@@ -1012,7 +1032,17 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     {
       DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
       drt.setFacetMatcher(null);
-      drt.setProjectName(null);
+      //If the project doesn't exist, use the name of the project that was passed in.
+      //If the project exists, it means that previous code in this method
+      //determined it to not be a suitable project. Clear the project name.
+      if (project==null || project.exists())
+      {
+        drt.setProjectName(null);
+      }
+      else
+      {
+        drt.setProjectName(project.getName());
+      }
       drt.setRuntimeId(runtimes[0]);
       return drt;
     }
@@ -1020,7 +1050,17 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     {
       DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
       drt.setFacetMatcher(null);
-      drt.setProjectName(null);
+      //If the project doesn't exist, use the name of the project that was passed in.
+      //If the project exists, it means that previous code in this method
+      //determined it to not be a suitable project. Clear the project name.
+      if (project==null || project.exists())
+      {
+        drt.setProjectName(null);
+      }
+      else
+      {
+        drt.setProjectName(project.getName());
+      }
       drt.setRuntimeId(null);
       return drt;
     }    
@@ -1102,54 +1142,159 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   }
       
   /*
-   * Update the client project, client project type and clientRuntime as needed.
-   * Used by ServerRuntimeSelectionWidgetDefaultingCommand to update client side
-   * stuff based on service side defaults.
+   * Set defaults for the client-side from the service-side if possible.
+   * Sets clientProjectName_ to a value based on the service project name.
+   * 
+   * Returns an IStatus.OK if the service side values for server and Web 
+   * service runtime can be used to set the values for clientRuntimeId_,
+   * clientComponentType_, all the values in clientIds_, and clientEarProjectName_.
+   * 
+   * Returns an IStatus.ERROR otherwise, leaving only the clientProjectName_ set. 
    */
-  protected void updateClientProject(String projectName, String serviceTypeId)
+  protected IStatus defaultClientSideFromServiceSide(String serviceProjectName, TypeRuntimeServer serviceIds, boolean serviceNeedEAR, String serviceEarProjectName)
   {
+    //1. Start with setting the default client project name based on the service project name.
     boolean isEJB = false;
-    String implId = WebServiceRuntimeExtensionUtils2.getWebServiceImplIdFromTypeId(serviceTypeId);
+    String implId = WebServiceRuntimeExtensionUtils2.getWebServiceImplIdFromTypeId(serviceIds.getTypeId());
     isEJB = (implId.equals("org.eclipse.jst.ws.wsImpl.ejb"));
-    String[] updatedNames = ResourceUtils.getClientProjectComponentName(projectName, projectName, isEJB);
+    String[] updatedNames = ResourceUtils.getClientProjectComponentName(serviceProjectName, serviceProjectName, isEJB);
     clientProjectName_ = updatedNames[0];
     
+    //2. Ideally, the server and runtime on the client-side will be defaulted
+    //   to the same values as the service side. If a client runtime id that 
+    //   supports clientProjectName_ and the service-side server and runtime defaults
+    //   can be found, choose it.
     IProject clientProject = ProjectUtilities.getProject(clientProjectName_);
+    TypeRuntimeServer testIds = new TypeRuntimeServer();
+    testIds.setTypeId(clientIds_.getTypeId());
+    testIds.setRuntimeId(serviceIds.getRuntimeId());
+    testIds.setServerId(serviceIds.getServerId());
+    testIds.setServerInstanceId(serviceIds.getServerInstanceId());
+    
     if (clientProject.exists())
     {
       clientComponentType_ = "";
-      clientRuntimeId_ = WebServiceRuntimeExtensionUtils2.getClientRuntimeId(clientIds_, projectName, clientComponentType_);
-      
+      clientRuntimeId_ = WebServiceRuntimeExtensionUtils2.getClientRuntimeId(testIds, serviceProjectName, clientComponentType_);
+      if (clientRuntimeId_ != null && clientRuntimeId_.length()>0)
+      {
+        clientIds_.setRuntimeId(serviceIds.getRuntimeId());
+        clientIds_.setServerId(serviceIds.getServerId());
+        clientIds_.setServerInstanceId(serviceIds.getServerInstanceId());
+      }      
     }
     else
     {
-      //Pick a client project type based on project topology preferences. Modify the clientRuntimeId_
-      //as needed.
-      String[] templateIds = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(clientIds_.getTypeId(), clientIds_.getRuntimeId());
-      ProjectTopologyContext ptc = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
-      String[] preferredTemplateIds = ptc.getClientTypes();
-      outer: 
-      for (int j = 0; j < preferredTemplateIds.length; j++)
+      //See if there is a client project type that supports the service-side
+      //server and runtime defaults. Pick a client project type based on project topology preferences.
+      //Choose the clientRuntimeId_ accordingly.
+      String[] templateIds = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(clientIds_.getTypeId(), testIds.getRuntimeId());
+      if (templateIds != null && templateIds.length > 0)
       {
-        for (int i = 0; i < templateIds.length; i++)
+        ProjectTopologyContext ptc = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
+        String[] preferredTemplateIds = ptc.getClientTypes();
+        outer: for (int j = 0; j < preferredTemplateIds.length; j++)
         {
-          String templateId = templateIds[i];
-          if (templateId.equals(preferredTemplateIds[j]))
+          for (int i = 0; i < templateIds.length; i++)
           {
-            //Get a clientRuntimeId for this template
-            String newClientRuntimeId = WebServiceRuntimeExtensionUtils2.getClientRuntimeId(clientIds_, clientProjectName_, templateId);
-            if (newClientRuntimeId.length() > 0)
+            String templateId = templateIds[i];
+            if (templateId.equals(preferredTemplateIds[j]))
             {
-              clientRuntimeId_ = newClientRuntimeId;
-              clientComponentType_ = templateId;
-              break outer;
+              // Get a clientRuntimeId for this template
+              String newClientRuntimeId = WebServiceRuntimeExtensionUtils2.getClientRuntimeId(testIds, clientProjectName_,
+                  templateId);
+              if (newClientRuntimeId.length() > 0)
+              {
+                clientRuntimeId_ = newClientRuntimeId;
+                clientComponentType_ = templateId;
+                clientIds_.setRuntimeId(serviceIds.getRuntimeId());
+                clientIds_.setServerId(serviceIds.getServerId());
+                clientIds_.setServerInstanceId(serviceIds.getServerInstanceId());                
+                break outer;
+              }
             }
           }
         }
-      }            
-    }    
+      }
+    } 
+    
+    //3. If step 2 was successful, clientRuntimeId_ should now be set, along with clientProjectName_,
+    //   clientComponentType_, and all the values in clientIds_. All that remains is setting the EAR.
+    if (clientRuntimeId_ != null && clientRuntimeId_.length()>0)
+    {
+      setDefaultClientEarProject();
+      //Update the client side EAR from the service side EAR if necessary.
+      if (serviceNeedEAR)
+      {
+        defaultClientEarFromServiceEar(serviceProjectName, serviceEarProjectName); 
+      }
+      return Status.OK_STATUS;
+    }
+    else
+    {
+      //Step 2 was not successful. Client side defaulting cannot be done using the service side server
+      //and web service runtime defaults. Return an error status.
+      return StatusUtils.errorStatus("");
+    }
   }
   
+  protected void defaultClientEarFromServiceEar(String serviceProjectName, String serviceEarProjectName)
+  {
+    //Client side
+    if (clientNeedEAR_)
+    {
+      IProject clientProject = ProjectUtilities.getProject(clientProjectName_);
+      if(clientProject==null || !clientProject.exists() 
+        || !(clientEarProjectName_.equalsIgnoreCase(serviceEarProjectName)))
+      {
+        ProjectTopologyContext ptc= WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();         
+        if (!ptc.isUseTwoEARs()) 
+        {
+          clientEarProjectName_ = serviceEarProjectName;
+        }
+        else 
+        {
+          IProject proxyEARProject = getUniqueClientEAR(clientEarProjectName_, serviceEarProjectName, clientProjectName_, serviceProjectName);
+          clientEarProjectName_ = proxyEARProject.getName();
+        }     
+      }
+    }
+    
+  }
+  
+  private IProject getUniqueClientEAR(String earProjectName, String serviceEARProject, String clientProjectName, String serviceProjectName) {
+
+    String projectName = new String();
+    //If the client project doesn't exist and the service project does, ensure the
+    //the client side EAR's J2EE level is such that the service project could be added to it.
+    //This will ensure we don't default the page with a client project EAR at a lower
+    //J2EE level than the service side.
+    boolean goodJ2EELevel = true;
+    if (!earProjectName.equalsIgnoreCase(serviceEARProject))
+    {
+      IProject clientProject = ProjectUtilities.getProject(clientProjectName);
+      IProject serviceProject = ProjectUtilities.getProject(serviceProjectName);
+      IProject earProject = ProjectUtilities.getProject(earProjectName);
+      if (!clientProject.exists() && serviceProject.exists())
+      {
+        IStatus associationStatus = J2EEUtils.canAssociateProjectToEAR(serviceProject, earProject);
+        goodJ2EELevel = (associationStatus.getSeverity() == IStatus.OK);
+      }
+    }
+    
+    if (!earProjectName.equalsIgnoreCase(serviceEARProject) && goodJ2EELevel) {
+      projectName = earProjectName;
+    }    
+    else {
+      projectName = clientProjectName+DEFAULT_CLIENT_EAR_PROJECT_EXT;
+      int i=1;      
+      while (projectName.equalsIgnoreCase(serviceEARProject)) {
+        projectName = projectName+i;
+        i++;
+      }
+    }
+    return projectName.equals("") ? null : ResourceUtils.getWorkspaceRoot().getProject(projectName);
+    
+  }
   
   private void setDefaultsForExtension(IEnvironment env)
   {

@@ -122,5 +122,15 @@ public class WSDLSelectionWidgetWrapper extends SimpleWidgetDataContributor
     this.componentName = componentName;
   }
   
-    
+  public String getObjectSelectionDisplayableString() {
+	  if (wsdlSelectionWidget != null)
+	  {
+		  return wsdlSelectionWidget.getObjectSelectionDisplayableString();  
+	  }
+	  else return ""; 
+  }
+  
+  public IStructuredSelection getObjectSelection() {
+	  return wsdlSelectionWidget.getObjectSelection();
+  }
 }

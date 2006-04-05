@@ -52,9 +52,8 @@ import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 
 public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntimeSelectionWidgetDefaultingCommand
-{
-  private String DEFAULT_CLIENT_EAR_PROJECT_EXT = "EAR";	
-  private boolean           generateProxy_;
+{	
+  private boolean           generateProxy_=true; //jvh
   
   private TypeRuntimeServer serviceIds_;
   private boolean serviceIdsFixed_ = false;
@@ -77,12 +76,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     IEnvironment env = getEnvironment();
     
     try
-    {
-     IStatus clientSideStatus = super.execute(monitor, null);
-     if (clientSideStatus.getSeverity()==Status.ERROR)
-     {
-       return clientSideStatus;
-     }
+    {    	
      
      if (serviceIdsFixed_)
      {
@@ -127,8 +121,6 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
        serviceComponentType_ = "";
      }
 
-     updateClientProject(serviceProjectName_, serviceIds_.getTypeId());
-
      if (!serviceIdsFixed_)
      {
        // Set the server
@@ -141,6 +133,16 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      }
      
      setDefaultServiceEarProject();
+     
+     if (generateProxy_)
+     {
+    	 //Default the client-side.
+    	 IStatus clientSideStatus = defaultClientSide(monitor);
+         if (clientSideStatus.getSeverity() == Status.ERROR)
+         {
+           return clientSideStatus;
+         }                  
+     }
           
      return Status.OK_STATUS;
      
@@ -154,6 +156,42 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     }
   }
 
+  private IStatus defaultClientSide(IProgressMonitor monitor)
+  {
+    IStatus clientDefaultFromServiceStatus = defaultClientSideFromServiceSide(serviceProjectName_, serviceIds_, serviceNeedEAR_, serviceEarProjectName_);
+
+    // If an error status is returned, the only property that was set on 
+    // ClientRuntimeSelectionWidgetDefaultingCommand is clientProjectName_. 
+    // The rest of the properties including clientRuntimeId_, clientComponentType_, 
+    // all the values in clientIds_, clientNeedEAR_, and clientEarProjectName_ 
+    // have not been set because the service side server and
+    // web service runtime could not be used on the client side. Run the entire
+    // client-side defaulting algorithm using clientProjectName_ as the 
+    // clientInitialProject_. Then update the clientEarProjectName_ based on the
+    // service side EAR.
+    if (clientDefaultFromServiceStatus.getSeverity() == IStatus.ERROR)
+    {
+      // 1. Run client side defaulting from scratch with clientInitialProject_
+      // set to the new clientProjectName_.
+      IProject clientProject = ProjectUtilities.getProject(getClientProjectName());
+      setClientInitialProject(clientProject);
+      IStatus clientExecuteStatus = super.execute(monitor, null);
+      if (clientExecuteStatus.getSeverity() == Status.ERROR)
+      {
+        return clientExecuteStatus;
+      }
+
+      // 2. Update the client-side EAR if serviceNeedEAR_ is true;
+      if (serviceNeedEAR_)
+      {
+        defaultClientEarFromServiceEar(serviceProjectName_, serviceEarProjectName_);
+      }
+    }
+    
+    return Status.OK_STATUS;
+	  
+  }
+  
   private void setDefaultServiceEarProject()
   {
     //Don't need an ear if this is a Java project, or if the selected template is jst.utility
@@ -194,32 +232,6 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     if (serviceNeedEAR_)
     {
       serviceEarProjectName_ = getDefaultServiceEarProjectName();
-
-      
-      //Client side
-      if (getClientNeedEAR())
-      {
-        String defaultClientEarProjectName = getDefaultClientEarProjectName();
-        IProject clientProject = ProjectUtilities.getProject(getClientProjectName());
-        if(clientProject!=null && clientProject.exists() 
-          && defaultClientEarProjectName.equalsIgnoreCase(serviceEarProjectName_))
-        {
-          setClientEarProjectName(defaultClientEarProjectName);
-        }
-        else
-        { 
-          ProjectTopologyContext ptc= WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();         
-          if (!ptc.isUseTwoEARs()) 
-          {
-            setClientEarProjectName(serviceEarProjectName_);
-          }
-          else 
-          {
-            IProject proxyEARProject = getUniqueClientEAR(defaultClientEarProjectName, serviceEarProjectName_, getClientProjectName());
-            setClientEarProjectName(proxyEARProject.getName());
-          }     
-        }
-      }
     }
     else
     {
@@ -500,40 +512,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     }
   }
   
-  private IProject getUniqueClientEAR(String earProjectName, String serviceEARProject, String clientProjectName) {
 
-    String projectName = new String();
-    //If the client project doesn't exist and the service project does, ensure the
-    //the client side EAR's J2EE level is such that the service project could be added to it.
-    //This will ensure we don't default the page with a client project EAR at a lower
-    //J2EE level than the service side.
-    boolean goodJ2EELevel = true;
-    if (!earProjectName.equalsIgnoreCase(serviceEARProject))
-    {
-      IProject clientProject = ProjectUtilities.getProject(clientProjectName);
-      IProject serviceProject = ProjectUtilities.getProject(serviceProjectName_);
-      IProject earProject = ProjectUtilities.getProject(earProjectName);
-      if (!clientProject.exists() && serviceProject.exists())
-      {
-        IStatus associationStatus = J2EEUtils.canAssociateProjectToEAR(serviceProject, earProject);
-        goodJ2EELevel = (associationStatus.getSeverity() == IStatus.OK);
-      }
-    }
-    
-    if (!earProjectName.equalsIgnoreCase(serviceEARProject) && goodJ2EELevel) {
-      projectName = earProjectName;
-    }    
-    else {
-      projectName = clientProjectName+DEFAULT_CLIENT_EAR_PROJECT_EXT;
-      int i=1;      
-      while (projectName.equalsIgnoreCase(serviceEARProject)) {
-        projectName = projectName+i;
-        i++;
-      }
-    }
-    return projectName.equals("") ? null : ResourceUtils.getWorkspaceRoot().getProject(projectName);
-    
-  }
   
   public void setInitialSelection(IStructuredSelection selection)
   {

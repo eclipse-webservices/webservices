@@ -60,6 +60,16 @@ public class ScenarioDefaults
     return "0/org.eclipse.jst.ws.wsImpl.java";
   }
   
+  public int serviceGenerationDefault()
+  {
+	  return ScenarioContext.WS_START;  
+  }
+  
+  public int clientGenerationDefault()
+  {
+	  return ScenarioContext.WS_NONE;  
+  }
+  
   public boolean startWebserviceDefault()
   {
     return true;

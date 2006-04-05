@@ -73,5 +73,6 @@ Require-Bundle: org.eclipse.wst.ws.parser,
  org.eclipse.jst.server.core,
  org.eclipse.debug.core,
  com.ibm.icu,
- org.apache.xerces
+ org.apache.xerces,
+ org.eclipse.ui.forms
 Eclipse-LazyStart: true

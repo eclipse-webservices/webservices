@@ -28,9 +28,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.CheckWSDLValidationCom
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionWidgetDefaultingCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionWidgetWrapper;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionOutputCommand;
@@ -88,12 +86,15 @@ public class ClientWidgetBinding implements CommandWidgetBinding
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry)
    */
   public void registerDataMappings(DataMappingRegistry dataRegistry)
-  {    
+  { 
+	  //jvh mapping for initialselection????
+	  
     // Before ClientWizardWidget
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientWizardWidget.class);
-    dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "InstallClient", ClientWizardWidget.class );
+    dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "InstallClient", ClientWizardWidget.class );    
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "TestService", ClientWizardWidget.class );
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "MonitorService", ClientWizardWidget.class);
+    dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ClientGeneration", ClientWizardWidget.class );
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ResourceContext", ClientWizardWidget.class );
     
     // After ClientWizardWidget
@@ -102,45 +103,46 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientWizardWidget.class, "TestService", ClientWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "MonitorService", ClientWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "ResourceContext", ClientWizardWidgetOutputCommand.class);
+
+    //jvh added..
+    dataRegistry.addMapping(ClientWizardWidget.class, "Project", ClientWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "WebServicesParser", ClientWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "WsdlURI", ClientWizardWidgetOutputCommand.class);
             
+    //jvh - rerouted the defaulting command to the ClientWizardWidget 
     // Before ClientRuntimeSelectionWidget
-    dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "InstallClient", ClientRuntimeSelectionWidget.class);
-    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientRuntimeSelectionWidget.class);
-    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientRuntimeId", ClientRuntimeSelectionWidget.class);
-    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientProjectName", ClientRuntimeSelectionWidget.class);    
-    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarProjectName", ClientRuntimeSelectionWidget.class);
-    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentType", ClientRuntimeSelectionWidget.class);
-    //dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientJ2EEVersion", ClientRuntimeSelectionWidget.class, "J2EEVersion", null);
-    //dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "Runtime2ClientTypes", ClientRuntimeSelectionWidget.class);
-    //dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentName", ClientRuntimeSelectionWidget.class);
-    //dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarComponentName", ClientRuntimeSelectionWidget.class);
-    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientNeedEAR", ClientRuntimeSelectionWidget.class);
+    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientWizardWidget.class);
+    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientRuntimeId", ClientWizardWidget.class);
+    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientProjectName", ClientWizardWidget.class);    
+    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarProjectName", ClientWizardWidget.class);
+    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentType", ClientWizardWidget.class);
+    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientNeedEAR", ClientWizardWidget.class);    
     
+    //jvh - rerouted from ClientWizardWidget instead of runtimeserverwidget- add getters to ClientWizardWidget for them
     // After ClientRuntimeSelectionWidget
-    dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientTypeRuntimeServer", ClientExtensionDefaultingCommand.class);
-    dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientRuntimeId", ClientExtensionDefaultingCommand.class);
-    //dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "J2EEVersion", ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", null);
-    //dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "Runtime2ClientTypes", ClientExtensionDefaultingCommand.class);
-    dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientProjectName", ClientExtensionDefaultingCommand.class);
-    dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientEarProjectName", ClientExtensionDefaultingCommand.class); 
-    //dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientComponentName", ClientExtensionDefaultingCommand.class);
-    //dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientEarComponentName", ClientExtensionDefaultingCommand.class);
-    dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientComponentType", ClientExtensionDefaultingCommand.class);
-    dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientNeedEAR", ClientExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "ClientTypeRuntimeServer", ClientExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "ClientRuntimeId", ClientExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "ClientProjectName", ClientExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "ClientEarProjectName", ClientExtensionDefaultingCommand.class); 
+    dataRegistry.addMapping(ClientWizardWidget.class, "ClientComponentType", ClientExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "ClientNeedEAR", ClientExtensionDefaultingCommand.class);
     
     // The ClientRuntimeSelectionWidget can control what client extension comes up.
     dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientTypeRuntimeServer", ClientExtensionFragment.class);
     
     // Before WSDLSelectionWidgetWrapper
-    dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "WebServiceURI", WSDLSelectionWidgetWrapper.class );
-    dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "Project", WSDLSelectionWidgetWrapper.class );
-    dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "ComponentName", WSDLSelectionWidgetWrapper.class );
+    // jvh - rerouted these to ClientWizardWidget  
+    dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "WebServiceURI", ClientWizardWidget.class );
+    dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "Project", ClientWizardWidget.class );
+    dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "ComponentName", ClientWizardWidget.class );
     
-    // After WSDLSelectionWidgetWrapper
+/*    // After WSDLSelectionWidgetWrapper
+    //jvh - reroute these from the dialog to ClientWizardWidget - call setters on the other dialogs...
     dataRegistry.addMapping(WSDLSelectionWidgetWrapper.class, "WsdlURI", WSDLSelectionOutputCommand.class);
     dataRegistry.addMapping(WSDLSelectionWidgetWrapper.class, "WebServicesParser", WSDLSelectionOutputCommand.class);
     dataRegistry.addMapping(WSDLSelectionWidgetWrapper.class, "Project", WSDLSelectionOutputCommand.class);
     dataRegistry.addMapping(WSDLSelectionWidgetWrapper.class, "ComponentName", WSDLSelectionOutputCommand.class);
+*/    
 	dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy",TestDefaultingFragment.class);
 	
     // Before Client Test widget.
@@ -186,7 +188,8 @@ public class ClientWidgetBinding implements CommandWidgetBinding
 				          }
 				        } );
     
-    widgetRegistry.add( "ClientRuntimeSelectionWidget", 
+    //jvh
+    /*widgetRegistry.add( "ClientRuntimeSelectionWidget", 
                         ConsumptionUIMessages.PAGE_TITLE_WS_CLIENT_RUNTIME_SELECTION,
                         ConsumptionUIMessages.PAGE_DESC_WS_CLIENT_RUNTIME_SELECTION,
 						new WidgetContributorFactory()
@@ -195,9 +198,10 @@ public class ClientWidgetBinding implements CommandWidgetBinding
 						  {
 						    return new ClientRuntimeSelectionWidget();
 						  }
-						} );
+						} );*/
     
-    widgetRegistry.add( "WSDLSelectionWidgetWrapper", 
+    //jvh
+    /*widgetRegistry.add( "WSDLSelectionWidgetWrapper", 
                         ConsumptionUIMessages.PAGE_TITLE_WS_SELECTION,
                         ConsumptionUIMessages.PAGE_DESC_WS_SELECTION,
 		                new WidgetContributorFactory()
@@ -206,7 +210,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
 		                  {
 		                    return new WSDLSelectionWidgetWrapper();
 		                  }
-		                } );
+		                } );*/
     
     widgetRegistry.add( "ClientTestWidget", 
                         ConsumptionUIMessages.PAGE_TITLE_WS_SAMPLE,
@@ -228,16 +232,15 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       
       //add( new SimpleFragment( new CheckForMissingFiles(), "" ) );
       add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(), "" ) );
+      add( new SimpleFragment( new ClientRuntimeSelectionWidgetDefaultingCommand(), ""));  //jvh moved this up
+      add( new SimpleFragment( new WSDLSelectionWidgetDefaultingCommand(), "")); //jvh moved this up
       add( new SimpleFragment( "ClientWizardWidget" ) );
 	  //add( new TestCommandFactoryFragment() );
       add( new SimpleFragment( new ClientWizardWidgetOutputCommand(), "" ));
-      add( new SimpleFragment( new WSDLSelectionWidgetDefaultingCommand(), ""));
-      add( new SimpleFragment( "WSDLSelectionWidgetWrapper" ) );
-      add( new SimpleFragment( new WSDLSelectionOutputCommand(), ""));
+
       add( new SimpleFragment( new CheckWSDLValidationCommand(), ""));
-      add( new SimpleFragment( new ClientRuntimeSelectionWidgetDefaultingCommand(), ""));
-	  //add( new TestCommandFactoryFragment2() );
-      add( new SimpleFragment( "ClientRuntimeSelectionWidget" ) );
+      
+      //add( new TestCommandFactoryFragment2() );
       //add( new SimpleFragment( new CheckForServiceProjectCommand(), ""));
       add( new SimpleFragment( new ClientExtensionDefaultingCommand( true ), ""));
       //add(new SimpleFragment(new ClientServerDeployableConfigCommand(false), "")); //Note: added here for client      
@@ -268,18 +271,21 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ResourceContext", ClientWizardWidgetOutputCommand.class);
       
       // Map ClientWizardWidgetOutputCommand command.
-      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ClientTypeRuntimeServer", ClientRuntimeSelectionWidgetDefaultingCommand.class);
-      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "TestService", WSDLSelectionOutputCommand.class);
-      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "InstallClient", ClientExtensionDefaultingCommand.class);      
-            
-      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "TestService", ClientExtensionDefaultingCommand.class);      
-      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "TestService", ClientRuntimeSelectionWidgetDefaultingCommand.class);       
+      //jvh - rerouted from ClientWizardWidgetOutputCommand
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientRuntimeSelectionWidgetDefaultingCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "InstallClient", ClientExtensionDefaultingCommand.class); 
+      //jvh - do something with this one....save testService in WizardWidget - and the mapping below this one will take care of the setter
+      //dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "TestService", WSDLSelectionOutputCommand.class);      
+     
+      //jvh - rerouted these from ClientWizardWidget
+      dataRegistry.addMapping(ClientWizardWidget.class, "TestService", ClientExtensionDefaultingCommand.class);      
+      dataRegistry.addMapping(ClientWizardWidget.class, "TestService", ClientRuntimeSelectionWidgetDefaultingCommand.class);       
       
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ResourceContext", ClientRuntimeSelectionWidgetDefaultingCommand.class);      
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ResourceContext", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "MonitorService", GetMonitorCommand.class);
       
-      // Map ClientRuntimeSelectionWidgetDefaultingCommand command
+      // Map ClientRuntimeSelectionWidgetDefaultingCommand command      
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientExtensionDefaultingCommand.class); 
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientRuntimeId", ClientExtensionDefaultingCommand.class);
       //dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "Runtime2ClientTypes", ClientExtensionDefaultingCommand.class);
@@ -296,22 +302,25 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", WSDLSelectionWidgetDefaultingCommand.class );
       dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "GenWSIL", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "WsilURI", ClientExtensionDefaultingCommand.class);
-      dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "WebServiceURI", WSDLSelectionOutputCommand.class, "WsdlURI", new EclipseIPath2URLStringTransformer());
-      dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "Project", WSDLSelectionOutputCommand.class);
-      dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "ComponentName", WSDLSelectionOutputCommand.class);
+      //jvh - rerouted these to the ClientWizardWidgetOutputCommand 
+      dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "WebServiceURI", ClientWizardWidgetOutputCommand.class, "WsdlURI", new EclipseIPath2URLStringTransformer());
+      dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "Project", ClientWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "ComponentName", ClientWizardWidgetOutputCommand.class);
       
       // WSDLSelectionOutputCommand
-      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WsdlURI", ClientExtensionDefaultingCommand.class);
-      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WebServicesParser", ClientExtensionDefaultingCommand.class);
-      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WsdlURI", GetMonitorCommand.class);
-      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WebServicesParser", GetMonitorCommand.class);
-      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "Project", ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientInitialProject", null);
+      //jvh - rerouted these from ClientWizardWidgetOutputCommand 
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WsdlURI", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WebServicesParser", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WsdlURI", GetMonitorCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WebServicesParser", GetMonitorCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WsdlURI", CheckForServiceProjectCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WebServicesParser", CheckForServiceProjectCommand.class);
+      
+      //jvh - add code to widget so that the appropriate sets happen and defaulting occurs again after object selection
+      /*dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "Project", ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientInitialProject", null);
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WsdlURI", ClientRuntimeSelectionWidgetDefaultingCommand.class);
-      //dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "ComponentName", ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientInitialComponentName", null);
-      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WebServicesParser", ClientRuntimeSelectionWidgetDefaultingCommand.class);
-      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WsdlURI", CheckForServiceProjectCommand.class);
-      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WebServicesParser", CheckForServiceProjectCommand.class);      
-	  
+      dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "WebServicesParser", ClientRuntimeSelectionWidgetDefaultingCommand.class);*/
+      
 	  // Setup the PreClientDevelopCommand.
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "DeployClient", PreClientDevelopCommand.class);
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "InstallClient", PreClientDevelopCommand.class);

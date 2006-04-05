@@ -24,6 +24,7 @@ Require-Bundle: org.eclipse.wst.command.env,
  org.eclipse.wst.ws.explorer,
  org.eclipse.jst.ws,
  org.eclipse.jst.ws.consumption,
+ org.eclipse.wst.ws.parser,
  org.eclipse.jst.ws.ui,
  org.eclipse.jst.ws.consumption.ui,
  org.eclipse.jdt.core,
@@ -41,5 +42,6 @@ Require-Bundle: org.eclipse.wst.command.env,
  org.wsdl4j,
  org.eclipse.wst.common.frameworks,
  org.eclipse.wst.common.environment,
- org.eclipse.wst.common.project.facet.core
+ org.eclipse.wst.common.project.facet.core,
+ org.eclipse.ui.forms
 Eclipse-LazyStart: true

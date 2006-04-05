@@ -53,6 +53,11 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
     initialSelection_ = selection;
   }
   
+  public IStructuredSelection getInitialSelection()
+  {
+    return initialSelection_ ;
+  }
+  
   public TypeRuntimeServer getServiceTypeRuntimeServer()
   { 
     return typeRuntimeServer_;
@@ -81,5 +86,15 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
   public Boolean getMonitorService()
   {
     return new Boolean(getScenarioContext().getMonitorWebService());
+  }
+  
+  public int getServiceGeneration()
+  {
+	  return getScenarioContext().getGenerateWebService();
+  }
+  
+  public int getClientGeneration()
+  {
+	  return getScenarioContext().getGenerateClient();
   }
 }

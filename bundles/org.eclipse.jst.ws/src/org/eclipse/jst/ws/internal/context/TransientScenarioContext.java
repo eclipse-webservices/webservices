@@ -25,6 +25,8 @@ public class TransientScenarioContext implements ScenarioContext
   private boolean  testWebService_;
   private boolean  monitorWebService;
   private boolean  launchSample_;
+  private int generateWebService_; //jvh
+  private int generateClient_; //jvh
   
   private ScenarioDefaults defaults = new ScenarioDefaults();
  
@@ -65,6 +67,7 @@ public class TransientScenarioContext implements ScenarioContext
 	context.setTestWebService( getTestWebService() );
 	context.setMonitorWebService(getMonitorWebService());
 	context.setLaunchSampleEnabled( isLaunchSampleEnabled() );
+	context.setGenerateWebService(getGenerateWebService());  //jvh
 	return context;
   }
  
@@ -256,5 +259,35 @@ public class TransientScenarioContext implements ScenarioContext
   public void setLaunchSampleEnabled(boolean value)
   {
     launchSample_ = value;
+  }
+  
+  public void setGenerateWebService(int value)
+  {
+	  generateWebService_ = value;  
+  }
+  
+  public int getGenerateWebServiceDefault()
+  {
+	  return defaults.serviceGenerationDefault();  
+  }  
+  
+  public int getGenerateWebService()
+  {
+	  return generateWebService_; 
+  }
+  
+  public int getGenerateClientDefault()
+  {
+	  return defaults.clientGenerationDefault();
+  }
+  
+  public int getGenerateClient()
+  {
+	  return generateClient_;
+  }
+  
+  public void setGenerateClient(int value)
+  {
+	  generateClient_ = value;
   }
 }

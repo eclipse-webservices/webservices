@@ -76,7 +76,7 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
 	
     // Validation
     IStatus status = (objectSelectionWidget_ != null) ? objectSelectionWidget_.validateSelection(getObjectSelection()) : Status.OK_STATUS;
-    if (status.getSeverity() != Status.OK)
+    if (status.getSeverity() != Status.OK && env != null)
     {
       try
       {

@@ -68,7 +68,8 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   private String              pluginId_;
   private FileExtensionFilter wsFilter_;
   private WebServicesParser webServicesParser;
-
+  private String wsdlURI_;
+  
   private Composite parent_;
   private Listener  statusListener_;
   private WSDLSelectionTreeWidget tree;
@@ -214,6 +215,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   private void handleWebServiceURI()
   {
     String wsURI = webServiceURI.getText();
+    
     if (wsURI.indexOf(':') < 0)
     {
       IFile file = uri2IFile(wsURI);
@@ -233,7 +235,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     else
       tree.setEnabled(true);
     tree.setWebServiceURI(wsURI);
-    tree.refreshTreeViewer();
+    tree.refreshTreeViewer();    
   }
   
   public void run()
@@ -247,7 +249,12 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     DialogResourceBrowser dialog = new DialogResourceBrowser( parent_.getShell(), null, wsFilter_);
     dialog.open();
     IResource res = dialog.getFirstSelection();
-    if( res != null ) webServiceURI.setText( res.getFullPath().toString() );
+    if( res != null )
+    {
+    	wsdlURI_ = res.getFullPath().toString();
+    	webServiceURI.setText( wsdlURI_ );    	
+    }
+    	
     statusListener_.handleEvent(null);
   }
   
@@ -399,6 +406,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   private IFile uri2IFile(String uri)
   {
     IResource res = ResourcesPlugin.getWorkspace().getRoot().findMember(uri);
+    
     if (res instanceof IFile)
       return (IFile)res;
     else
@@ -423,13 +431,15 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     if (initialSelection != null && !initialSelection.isEmpty())
     {
       Object object = initialSelection.getFirstElement();
-      String wsdlURI = toWsdlURI(object);
+      String wsdlURI = toWsdlURI(object);  
+      wsdlURI_ = wsdlURI;
+      
       if (wsdlURI != null)
       {
-        webServiceURI.setText(wsdlURI);
+        webServiceURI.setText(wsdlURI);       
         handleWebServiceURI();
       }
-    }
+    }  
   }
   
   private String toWsdlURI(Object object)
@@ -548,4 +558,8 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     }
     return null;    
   }
+  
+  public String getObjectSelectionDisplayableString() {	
+	    return wsdlURI_;
+	  }
 }

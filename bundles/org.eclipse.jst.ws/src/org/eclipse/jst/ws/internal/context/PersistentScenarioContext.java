@@ -55,6 +55,9 @@ public class PersistentScenarioContext extends PersistentContext implements Scen
     setDefaultBooleanIfNoDefault(PREFERENCE_TEST_WEBSERVICE, defaults.testWebserviceDefault() );
     setDefaultBooleanIfNoDefault(PREFERENCE_MONITOR_WEBSERVICE, defaults.getMonitorWebServiceDefault());
     setDefaultBooleanIfNoDefault(PREFERENCE_LAUNCH_SAMPLE, defaults.launchSample() );
+    
+    setDefaultIntIfNoDefault(PREFERENCE_GENERATE_WEBSERVICE, defaults.serviceGenerationDefault()); //jvh
+    setDefaultIntIfNoDefault(PREFERENCE_GENERATE_CLIENT, defaults.clientGenerationDefault());
   }
 
   public String[] getNonJavaTestService()
@@ -329,5 +332,36 @@ public class PersistentScenarioContext extends PersistentContext implements Scen
   public void setLaunchSampleEnabled(boolean value)
   {
     setValue( PREFERENCE_LAUNCH_SAMPLE, value);
+  }
+  
+  //jvh
+  public int getGenerateWebService()
+  {
+	  return getValueAsInt(PREFERENCE_GENERATE_WEBSERVICE);
+  }
+  
+  public int getGenerateWebServiceDefault()
+  {
+	  return getDefaultInt(PREFERENCE_GENERATE_WEBSERVICE);
+  }
+  
+  public void setGenerateWebService(int value)
+  {
+	  setValue(PREFERENCE_GENERATE_WEBSERVICE, value);
+  }
+  
+  public int getGenerateClientDefault()
+  {
+	  return getDefaultInt(PREFERENCE_GENERATE_CLIENT);
+  }
+  
+  public int getGenerateClient()
+  {
+	  return getValueAsInt(PREFERENCE_GENERATE_CLIENT);
+  }
+  
+  public void setGenerateClient(int value)
+  {
+	  setValue(PREFERENCE_GENERATE_CLIENT, value);
   }
 }

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
@@ -24,6 +25,7 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
   private boolean           publishService_;
   private boolean           generateProxy_;
 	private ResourceContext   resourceContext_;
+	private IStructuredSelection selection_; 
     
   
   public TypeRuntimeServer getServiceTypeRuntimeServer()
@@ -107,5 +109,15 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
 	public void setResourceContext(ResourceContext rc)
 	{
 		resourceContext_ = rc;
+	}
+	
+	public void setObjectSelection(IStructuredSelection selection)
+	{
+	   selection_ = selection;	
+	}	
+	
+	public IStructuredSelection getObjectSelection()
+	{
+	   return selection_;
 	}
 }

@@ -47,8 +47,9 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
       serverWidget_.addControls( page, new Listener()
                                        {
                                          public void handleEvent( Event evt ){}
-                                       } );
+                                       } );      
 	  initializeValues();
+	  serverWidget_.disableNonPreferenceWidgets();
 	  return page;
 	}
 
@@ -65,13 +66,15 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
 		
       serverWidget_.setServiceTypeRuntimeServer( serverIds );
       serverWidget_.setClientTypeRuntimeServer( clientIds );
-      serverWidget_.setGenerateProxy( new Boolean(context.getGenerateProxy()) );
+      //jvh serverWidget_.setGenerateProxy( new Boolean(context.getGenerateProxy()) );
       serverWidget_.setPublishService( new Boolean(context.getLaunchWebServiceExplorer()) );
       serverWidget_.setInstallService( new Boolean(context.getInstallWebService()) );
       serverWidget_.setInstallClient( new Boolean(context.getInstallClient()) );
       serverWidget_.setStartService( new Boolean(context.getStartWebService()) );
       serverWidget_.setTestService( new Boolean(context.getTestWebService()) );
       serverWidget_.setMonitorService(new Boolean(context.getMonitorWebService()));
+      serverWidget_.setServiceGeneration(context.getGenerateWebService());  //jvh      
+      serverWidget_.setClientGeneration(context.getGenerateClient());  //jvh
       serverWidget_.internalize();
 	}
 	
@@ -97,13 +100,14 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
 		
       serverWidget_.setServiceTypeRuntimeServer( serverIds );
       serverWidget_.setClientTypeRuntimeServer( clientIds );
-      serverWidget_.setGenerateProxy( new Boolean(context.getGenerateProxyDefault()) );
       serverWidget_.setPublishService( new Boolean(context.getLaunchWebServiceExplorerDefault()) );
       serverWidget_.setInstallService( new Boolean(context.getInstallWebServiceDefault()) );
       serverWidget_.setInstallClient( new Boolean(context.getInstallClientDefault()) );
       serverWidget_.setStartService( new Boolean(context.getStartWebServiceDefault()) );
       serverWidget_.setTestService( new Boolean(context.getTestWebServiceDefault()) );
       serverWidget_.setMonitorService(new Boolean(context.getMonitorWebServiceDefault()));
+      serverWidget_.setServiceGeneration(context.getGenerateWebServiceDefault()); //jvh
+      serverWidget_.setClientGeneration(context.getGenerateClientDefault()); //jvh
       serverWidget_.internalize();
 	}
 
@@ -133,6 +137,8 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
       context.setStartWebService( serverWidget_.getStartService().booleanValue() );
       context.setTestWebService( serverWidget_.getTestService().booleanValue() );
       context.setMonitorWebService(serverWidget_.getMonitorService().booleanValue());
+      context.setGenerateWebService(serverWidget_.getServiceGeneration());      
+      context.setGenerateClient(serverWidget_.getClientGeneration());
 	}
 	
 	protected void performApply()

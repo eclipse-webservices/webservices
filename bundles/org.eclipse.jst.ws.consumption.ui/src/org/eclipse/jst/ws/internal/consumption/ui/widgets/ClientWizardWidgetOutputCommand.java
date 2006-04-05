@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -27,6 +28,10 @@ public class ClientWizardWidgetOutputCommand extends AbstractDataModelOperation
   private ResourceContext   resourceContext_;
   private TypeRuntimeServer clientIds_;
   private boolean installClient_;
+  
+  private String webServiceURI_;
+  private IProject project_;
+  private String componentName_;
   
   public boolean getTestService()
   {
@@ -82,5 +87,35 @@ public class ClientWizardWidgetOutputCommand extends AbstractDataModelOperation
   public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
   {
     return Status.OK_STATUS;
+  }
+  
+  public String getWsdlURI()
+  {
+      return webServiceURI_ ;
+  }
+  
+  public void setWsdlURI(String uri)
+  {
+      webServiceURI_ = uri;
+  }
+  
+  public void setProject(IProject project)
+  {
+      project_ = project;
+  }
+  
+  public IProject getProject()
+  {
+      return project_;
+  }
+  
+  public void setComponentName(String name)
+  {
+      componentName_ = name;
+  } 
+  
+  public String getComponentName()
+  {
+      return componentName_ ;
   }
 }

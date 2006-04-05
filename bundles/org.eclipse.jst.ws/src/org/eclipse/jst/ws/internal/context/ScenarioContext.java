@@ -36,6 +36,17 @@ public interface ScenarioContext
   
   public final String PREFERENCE_LAUNCH_SAMPLE = "launchSample";
   
+  public final String PREFERENCE_GENERATE_WEBSERVICE = "generateWebService"; //jvh
+  public final String PREFERENCE_GENERATE_CLIENT = "generateClient"; //jvh  
+  
+  public final static int WS_TEST=0;
+  public final static int WS_START=1;
+  public final static int WS_INSTALL=2;
+  public final static int WS_DEPLOY=3;  
+  public final static int WS_ASSEMBLE=4;
+  public final static int WS_DEVELOP=5;  
+  public final static int WS_NONE=6;
+  
   public String[] getWebServiceTestTypes();
   public void setWebServiceTestTypes(String[] testTypes);
   
@@ -80,6 +91,14 @@ public interface ScenarioContext
   public boolean isLaunchSampleEnabled();
   public boolean getLaunchSampleEnabledDefault();
   public void    setLaunchSampleEnabled( boolean value );
+  
+  public int getGenerateWebServiceDefault();
+  public int getGenerateWebService();
+  public void setGenerateWebService(int value);
+  
+  public int getGenerateClientDefault();
+  public int getGenerateClient();
+  public void setGenerateClient(int value);
   
   public ScenarioContext copy();
 }

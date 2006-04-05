@@ -273,4 +273,9 @@ public class JavaBeanSelectionWidget extends AbstractObjectSelectionWidget imple
   {
     return Status.OK_STATUS;
   }
+  
+  public String getObjectSelectionDisplayableString() {
+	// TODO Auto-generated method stub
+    return "Java bean string ";
+  }
 }

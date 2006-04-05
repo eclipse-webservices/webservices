@@ -134,7 +134,8 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
                   parent.setSize(newX - 10, newY - 195 );
                   shell.setSize(newX, newY);
                   
-                  shell.setRedraw(true);
+                  //jvh - the following call hangs the web service wizard 
+                  //shell.setRedraw(true); 
                   shell.redraw();
                   shell.update();
                   return;
@@ -255,5 +256,9 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
       }
     }
     return null;    
+  }
+  
+  public String getObjectSelectionDisplayableString() {
+	return child.getObjectSelectionDisplayableString();    
   }
 }
