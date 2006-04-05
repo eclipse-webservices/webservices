@@ -14,6 +14,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 
@@ -27,8 +29,10 @@ public class WSITestToolsEclipseProperties extends WSITestToolsProperties
   */
   public static WSIPreferences checkWSIPreferences(String fileuri)
   {
+	// Cache the WS-I tads.
+	cacheTADFiles();
+	
     WSIPreferences preferences = new WSIPreferences();
-    
     // Remove file: and any slashes from the fileuri. 
     // Eclipse's resolution mechanism needs to start with the drive.
     String uriStr = trimURI(fileuri);
@@ -100,6 +104,39 @@ public class WSITestToolsEclipseProperties extends WSITestToolsProperties
       }
     }
     return preferences;
+  }
+  
+  protected static void cacheTADFiles()
+  {
+	  String resultAP = cacheFile(AP_ASSERTION_FILE);
+	  if(resultAP != null)
+	  {
+		  AP_ASSERTION_FILE = resultAP;
+	  }
+	  
+	  String resultSSBP = cacheFile(SSBP_ASSERTION_FILE);
+	  if(resultSSBP != null)
+	  {
+		  SSBP_ASSERTION_FILE = resultSSBP;
+	  }
+  }
+  
+  protected static String cacheFile(String uri)
+  {
+	  URIResolver resolver = getURIResolver();
+	  String resolvedUri = resolver.resolve("", null, uri);
+	  return resolver.resolvePhysicalLocation("", null, resolvedUri);
+  }
+  
+  /**
+   * Get the URI resolver to use for WS-I validaiton.
+   * 
+   * @return
+   * 		The URI resolver to use for WS-I validation.
+   */
+  public static URIResolver getURIResolver()
+  {
+	  return URIResolverPlugin.createResolver();
   }
 
 }
