@@ -74,6 +74,7 @@ public class ActionInputs
 
   // WSDL Browser
   public static final String PROJECT = "project";
+  public static final String CATEGORY = "category";
   public static final String WSDL_TYPE = "wsdlType";
   public static final int WSDL_TYPE_SERVICE_INTERFACE = 0;
   public static final int WSDL_TYPE_SERVICE = 1;

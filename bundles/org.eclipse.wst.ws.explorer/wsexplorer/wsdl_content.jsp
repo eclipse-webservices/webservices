@@ -25,6 +25,7 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.util.*,
                                                         org.eclipse.wst.ws.internal.wsrt.WebServiceInfo,
                                                         org.eclipse.wst.ws.internal.wsfinder.WebServiceFinder,
+                                                        org.eclipse.wst.ws.internal.wsfinder.WebServiceCategory,
                                                         javax.wsdl.extensions.soap.*,
                                                         javax.wsdl.extensions.http.*,
                                                         javax.wsdl.extensions.*,
@@ -54,6 +55,29 @@
 </script>  
 <script language="javascript">
   var sectionIds = ["workbench","favorites"];
+  
+  function fillCategories()
+  {
+    var x = 0;
+<%
+   {
+     WebServiceCategory[] categories = WebServiceFinder.instance().getWebServiceCategories();
+     for (int i=0;i<categories.length;i++)
+     {
+       String label = HTMLUtils.JSMangle(categories[i].getLabel());
+%>
+    document.forms[0].<%=ActionInputs.CATEGORY%>.options[x++] = new Option("<%=label%>","<%=label%>");
+<%       
+     }
+   }
+%>
+    if (document.forms[0].<%=ActionInputs.CATEGORY%>.options.length > 0)
+    {
+      document.forms[0].<%=ActionInputs.CATEGORY%>.options[0].selected = true;
+      fillWSDLFilesByCategory(document.forms[0].<%=ActionInputs.CATEGORY%>.options[0].value);
+    }
+  }    
+  
   function fillWebProjects()
   {
     var x = 0;
@@ -65,11 +89,10 @@
      {
        if (!projects[i].isOpen())
          continue;
-       
+       String name = HTMLUtils.JSMangle(projects[i].getName());
 %>
-    document.forms[0].<%=ActionInputs.PROJECT%>.options[x++] = new Option("<%=HTMLUtils.JSMangle(projects[i].getName())%>","<%=HTMLUtils.JSMangle(projects[i].getName())%>");
+    document.forms[0].<%=ActionInputs.PROJECT%>.options[x++] = new Option("<%=name%>","<%=name%>");
 <%
-       
      }
    }
 %>
@@ -82,6 +105,40 @@
 
 <%! private Vector wsdlURLs_ = new Vector(); %>
 
+   function fillWSDLFilesByCategory(webServiceFinderLabel)
+   {
+    var currentNumberOfOptions = document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options.length;
+    for (var i=0;i<currentNumberOfOptions;i++)
+      document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[0] = null;
+<%
+   {
+     WebServiceFinder finder = WebServiceFinder.instance();
+     WebServiceCategory[] categories = finder.getWebServiceCategories();
+     for (int i=0;i<categories.length;i++)
+     {
+       WebServiceCategory category = categories[i];
+%>
+    if (webServiceFinderLabel == "<%=HTMLUtils.JSMangle(category.getLabel())%>")
+    {
+    var x = 0;
+<%
+       Iterator it = finder.getWebServicesByCategory(category,null);
+       while(it.hasNext())
+       {
+         WebServiceInfo wsi = (WebServiceInfo)it.next();
+         String wsdl = HTMLUtils.JSMangle(wsi.getWsdlURL());
+%>
+      document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[x++] = new Option("<%=wsdl%>", "<%=wsdl%>"); 
+<%
+       }
+%>
+    }
+<%
+     }
+   }
+%>
+  }
+  
   function fillWSDLFiles(selectedWebProjectName)
   {
     var currentNumberOfOptions = document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options.length;
@@ -188,6 +245,7 @@
   
   function setDefaults()
   {
+    fillCategories();
     fillWebProjects();
     fillFavoriteWSDLFiles();
     document.getElementById(sectionIds[0]).style.display = "";
@@ -230,6 +288,16 @@
 %>              
         <div id="workbench" style="display:none;">
           <table width="95%" border=0 cellpadding=3 cellspacing=0>
+            <tr>
+              <td height=30 valign="bottom" class="labels"><%=controller.getMessage("FORM_LABEL_WSDL_CATEGORY")%></td>
+            </tr>
+            <tr>
+              <td nowrap>
+                <select name="<%=ActionInputs.CATEGORY%>" onChange="fillWSDLFilesByCategory(this.value)" class="selectlist">
+                </select>
+                <input type="button" value="<%=controller.getMessage("FORM_BUTTON_REFRESH")%>" onClick="document.location.reload()" class="button">
+              </td>
+            </tr>
             <tr>
               <td height=30 valign="bottom" class="labels"><%=controller.getMessage("FORM_LABEL_WEB_PROJECT")%></td>
             </tr>
