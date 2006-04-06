@@ -1,22 +1,24 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * <copyright>
+ *
+ * Licensed Material - Property of IBM
+ *(C) Copyright IBM Corp. 2006 - All Rights Reserved.
+ * US Government Users Restricted Rights - Use, duplication or disclosure
+ * restricted by GSA ADP Schedule Contract with IBM Corp. 
+ *
  *
  * Contributors:
  * IBM Corporation - initial API and implementation
- * yyyymmdd bug      Email and other contact information
+ * yyyymmdd bug           Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060204 124408    rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060204 121605    rsinha@ca.ibm.com - Rupam Kuehner
- * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
- * 20060223   129020 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060221 119111    rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060223 129020    rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060406 135350    kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
-import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
