@@ -329,7 +329,7 @@ public abstract class ASDMultiPageEditor extends MultiPageEditorPart implements 
    */
   public void doSave(IProgressMonitor monitor)
   {
-    getEditor(0).doSave(monitor); 
+    getEditor(1).doSave(monitor); 
   }
 
   /**
@@ -339,9 +339,9 @@ public abstract class ASDMultiPageEditor extends MultiPageEditorPart implements 
    */
   public void doSaveAs()
   {
-    IEditorPart editor = getEditor(0);
+    IEditorPart editor = getEditor(1);
     editor.doSaveAs();
-    setPageText(0, editor.getTitle());
+    setPageText(1, editor.getTitle());
     setInput(editor.getEditorInput());
   }
 
