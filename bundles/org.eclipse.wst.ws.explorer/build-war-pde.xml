@@ -2,32 +2,51 @@
 <project name="org.eclipse.wst.ws.explorer" default="build.wars" basedir=".">
 
 	<!--
-	This script builds wsexplorer.war within the PDE.
-	Instructions for use:
-	1. If you have a prior build of wsexplorer.war in your workspace,
-	   you should first:
-	   a. Replace wsexplorer/WEB-INF/web.xml from HEAD
-	   b. Delete wsexplorer/WEB-INF/lib/wsexplorer.jar
-	   c. Delete wsexplorer.war
-       d. Delete wsexplorer/**/*.java
-	   e. Delete wsexplorer/**/*.class
-	   f. Refresh the project.
-	   TODO: Update this script's "clean" rules to do this stuff automagically.
-	2. Generate and run build.xml to create
-	   wsexplorer/WEB-INF/lib/wsexplorer.jar:
-	   a. plugin.xml -> PDE Tools -> Create Ant Build File
-	   b. build.xml -> Run As -> Ant Build
-	   c. Refresh the project.
-	3. Run build-war-pde.xml to create the WAR:
-	   a. build-war-pde.xml -> Run As -> Ant Build...
-	      to open the "Modify attributes and launch" dialog.
-	   b. Click on the "Properties" tab.
-	   c. Deselect "Use global properties...".
-	   d. Add the following two properties:
-	      baseLocation = the absolute path to your target platform's "eclipse" directory.
-	      buildDirectory = the absolute path to your workspace directory.
-	   e. Click on "Run" to run the script.
-	   f. Refresh the project when the build is done.
+	This script cleans and builds wsexplorer.war within the PDE.
+	Use "build.xml" to build explorer.jar and wsexplorer.jar.
+
+	Initial configuration:
+
+	1. Choose build-war-pde.xml -> Run As -> Ant Build...
+	   to open the "Modify attributes and launch" dialog.
+	2. Click on the "Refresh" tab.
+		a. Enable "Refresh resources upon completion".
+		b. Select "The project containing the selected resource".
+	3. Click on the "Properties" tab.
+		a. Deselect "Use global properties...".
+		b. Add the following two properties:
+			baseLocation = the absolute path to your target platform's "eclipse" directory.
+			buildDirectory = the absolute path to your workspace directory.
+	4.	Click on "Apply".
+	
+	To clean a previous build of the WAR:
+
+	1. Choose build-war-pde.xml -> Run As -> Ant Build...
+	2. Select and run the "clean.wars" target.
+	3. Optionally, replace wsexplorer/WEB-INF/web.xml from HEAD.
+
+	To build the WAR:
+
+	1. If necessary, generate and run build.xml
+	   to create explorer.jar and wsexplorer.jar:
+		a. Choose plugin.xml -> PDE Tools -> Create Ant Build File
+		b. Choose build.xml -> Run As -> Ant Build
+		c. Refresh the project.
+	1. Choose build-war-pde.xml -> Run As -> Ant Build...
+	2. Select and run the "build.wars" target.
+
+	Short cut:
+
+	1. Choose build-war-pde.xml -> Run As -> Ant Build...
+	2. Click on the "Targets" tab.
+	3. Enable the "clean.wars" and "build.wars" targets.
+	4. Verify that the Target execution order reads
+		"clean.wars, build.wars"
+		If it doesn't, use the "Order..." button to change it.
+	5. Click "Apply" or "Run".
+	6. Henceforth you can choose
+		build-war-pde.xml -> Run As -> Ant Build
+		to skip the dialog and always clean and rebuild the WAR.
 	-->
 	
 	<property name="wsexplorerDir" value="${buildDirectory}/org.eclipse.wst.ws.explorer/wsexplorer"/>
@@ -77,5 +96,12 @@
 
 	<target name="clean.wars" description="Clean all the wars for the plug-in: org.eclipse.wst.ws.explorer.">
 		<delete file="wsexplorer.war"/>
+		<delete>
+			<fileset dir="wsexplorer" includes="**/*.java"/>
+		</delete>
+		<delete>
+			<fileset dir="wsexplorer" includes="**/*.class"/>
+		</delete>
 	</target>
+
 </project>
