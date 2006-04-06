@@ -16,6 +16,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
+import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
@@ -103,6 +104,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientWizardWidget.class, "TestService", ClientWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "MonitorService", ClientWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "ResourceContext", ClientWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "ClientProjectName", ClientExtensionDefaultingCommand.class);
 
     //jvh added..
     dataRegistry.addMapping(ClientWizardWidget.class, "Project", ClientWizardWidgetOutputCommand.class);
@@ -310,6 +312,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WebServicesParser", GetMonitorCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WsdlURI", CheckForServiceProjectCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WebServicesParser", CheckForServiceProjectCommand.class);
+
       
       //jvh - add code to widget so that the appropriate sets happen and defaulting occurs again after object selection
       /*dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "Project", ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientInitialProject", null);

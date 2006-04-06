@@ -134,15 +134,19 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      
      setDefaultServiceEarProject();
      
-     if (generateProxy_)
-     {
+     // jvh - for now comment out generate proxy
+     //   need to look at defaulting based on an event
+     //    on page 1 - when client generation goes from none
+     //    to develop...
+     /*if (generateProxy_)
+     {*/
     	 //Default the client-side.
     	 IStatus clientSideStatus = defaultClientSide(monitor);
          if (clientSideStatus.getSeverity() == Status.ERROR)
          {
            return clientSideStatus;
          }                  
-     }
+    // }
           
      return Status.OK_STATUS;
      

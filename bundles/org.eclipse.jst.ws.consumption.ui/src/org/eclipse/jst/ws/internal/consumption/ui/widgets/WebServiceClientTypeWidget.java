@@ -16,7 +16,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ProjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.RuntimeServerSelectionDialog;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
@@ -424,8 +423,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	    int status = rssd.open();
 		if (status == Window.OK)
 		{
-			setTypeRuntimeServer(rssd.getTypeRuntimeServer());
-			refreshServerRuntimeSelection();	
+			setTypeRuntimeServer(rssd.getTypeRuntimeServer());			
 		}		
 	}
   
@@ -589,10 +587,12 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   public void setClientProjectName(String name)
   {
     projectName_ = name;  
-  }  
+  }
   
   public String getClientProjectName()
-  {
+  {  
+	  if (projectName_ == null)
+		  return "";
 	  return projectName_;
   }
   
@@ -603,6 +603,8 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   
   public String getClientEarProjectName()
   {
+	  if (earProjectName_ == null)
+		  return "";
      return earProjectName_;  
   }
   
@@ -635,28 +637,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		}
 	}
 	
-	private void refreshServerRuntimeSelection()
-	{		
-		//new up ServerRuntimeSelectionWidgetDefaultingCommand
-		ClientRuntimeSelectionWidgetDefaultingCommand clientRTDefaultCmd = new ClientRuntimeSelectionWidgetDefaultingCommand();
-		
-		  //call setters on new defaulting command
-	      clientRTDefaultCmd.setClientInitialSelection(getObjectSelection());
-	      clientRTDefaultCmd.setClientInitialProject(getProject());
-	      clientRTDefaultCmd.setWebServicesParser(getWebServicesParser());     
-		  clientRTDefaultCmd.setClientEarProjectName(getClientEarProjectName());
-		  clientRTDefaultCmd.setClientTypeRuntimeServer(getTypeRuntimeServer());
-		  
-		  clientRTDefaultCmd.execute(null, null);
-		  
-		  //perform data mappings from the defaulting command to the project settings...		  
-		  setClientProjectName(clientRTDefaultCmd.getClientProjectName());
-		  setClientEarProjectName(clientRTDefaultCmd.getClientEarProjectName());
-		  setTypeRuntimeServer(clientRTDefaultCmd.getClientTypeRuntimeServer());
-          setClientNeedEAR(clientRTDefaultCmd.getClientNeedEAR());
-          setClientRuntimeId(clientRTDefaultCmd.getClientRuntimeId());          
-	}
-
+	
   private class ScaleSelectionListener implements SelectionListener
 	{
 		public void widgetSelected(SelectionEvent e) {
@@ -669,11 +650,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 				setGraphics(selection);
 				//disable the client settings if the client scenario setting isn't at least "DEVELOP"
 				boolean generate = selection<=ScenarioContext.WS_DEVELOP;
-				showSummary(generate);
-				if (generate)
-				{					
-					refreshServerRuntimeSelection();	
-				}				
+				showSummary(generate);							
 			}
 		
 

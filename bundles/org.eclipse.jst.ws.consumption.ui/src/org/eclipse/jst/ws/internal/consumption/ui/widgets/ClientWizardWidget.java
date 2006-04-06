@@ -183,7 +183,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   
   public String getClientProjectName()
   {
-	  return clientProjectName_;
+	  return clientWidget_.getClientProjectName();
   }
   
   public String getClientComponentType()

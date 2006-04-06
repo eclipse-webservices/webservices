@@ -155,6 +155,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientRuntimeId", ServerWizardWidget.class);    
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceNeedEAR", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientNeedEAR", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentType", ServerWizardWidget.class); //jvh
                 
     // After ServerWizardWidget  
     dataRegistry.addMapping(ServerWizardWidget.class, "ServiceTypeRuntimeServer", ServerExtensionDefaultingCommand.class);
@@ -399,8 +400,9 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ResourceContext", ServerWizardWidgetOutputCommand.class);
 
       // Map ServerWizardWidgetOutputCommand.     
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InitialProject", ServerRuntimeSelectionWidgetDefaultingCommand.class); 
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ServerRuntimeSelectionWidgetDefaultingCommand.class);
-      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerRuntimeSelectionWidgetDefaultingCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerRuntimeSelectionWidgetDefaultingCommand.class);      
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InstallService", ServerExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "StartService", ServerExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "TestService", ServerExtensionDefaultingCommand.class);      

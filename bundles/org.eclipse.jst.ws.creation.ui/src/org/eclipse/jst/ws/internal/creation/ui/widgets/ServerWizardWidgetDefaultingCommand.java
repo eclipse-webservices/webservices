@@ -10,11 +10,15 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -56,6 +60,41 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
   public IStructuredSelection getInitialSelection()
   {
     return initialSelection_ ;
+  }
+  
+  IProject project_;  
+  
+  public IProject getInitialProject()
+  {
+	  if (project_==null)
+	  {
+	    project_ = getProjectFromObjectSelection(initialSelection_);
+	  }  
+	  
+	  return project_;
+  }
+  
+  private IProject getProjectFromObjectSelection(IStructuredSelection selection)
+  {
+    if (selection != null && selection.size() == 1)
+    {
+      Object obj = selection.getFirstElement();
+      if (obj != null) 
+      {
+        try
+        { 
+          IResource resource = ResourceUtils.getResourceFromSelection(obj);
+          if (resource==null) 
+            return null;
+          IProject p = ResourceUtils.getProjectOf(resource.getFullPath());
+          return p;
+        } catch(CoreException e)
+        {
+          return null;
+        }        
+      }
+    }
+    return null;
   }
   
   public TypeRuntimeServer getServiceTypeRuntimeServer()

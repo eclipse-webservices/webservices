@@ -31,6 +31,8 @@ public class ProjectSelectionDialog extends SimpleDialog {
 		projWidget.setComponentType(componentType_);
 		projWidget.setNeedEAR(needEAR_);
 		projWidget.setTypeRuntimeServer(trs_);
+		
+		projWidget.refreshProjectItems();
 	}
 	
 	  protected Point getInitialSize()

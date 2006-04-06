@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -22,7 +23,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.IObjectSelectionLaunchable;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ProjectSelectionDialog;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WebServiceClientTypeWidget;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.IObjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionRegistry;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionWidget;
@@ -387,8 +387,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		int result = rssd.open();		
 		if (result == Window.OK)
 		{
-			setServiceTypeRuntimeServer(rssd.getTypeRuntimeServer());
-			refreshServerRuntimeSelection();	
+			setServiceTypeRuntimeServer(rssd.getTypeRuntimeServer());	
 		}		
 	}	
 	
@@ -566,23 +565,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	private void setObjectSelection(IStructuredSelection selection)
 	{
         objectSelection_ = selection;
-        clientWidget_.setObjectSelection(selection);
-        
-        if (objectSelectionWidget_ != null)
-        {		
-			if (objectSelectionWidget_ instanceof IObjectSelectionLaunchable)
-			{
-				IObjectSelectionLaunchable objLaunchable = (IObjectSelectionLaunchable)objectSelectionWidget_;
-				objLaunchable.setInitialSelection(selection);
-				serviceImpl_.setText(objLaunchable.getObjectSelectionDisplayableString());
-			}			
-			else if (objectSelectionWidget_ instanceof IObjectSelectionWidget)
-			{
-				IObjectSelectionWidget objWidget = (IObjectSelectionWidget)objectSelectionWidget_;
-				objWidget.setInitialSelection(selection);
-				serviceImpl_.setText(objWidget.getObjectSelectionDisplayableString());
-			}
-        }
+        clientWidget_.setObjectSelection(selection);        
 	}
 	
 	public void setInitialSelection(IStructuredSelection selection)
@@ -661,7 +644,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	public void setServiceProjectName(String name)
 	  {
 		hLinkServiceProject_.setText(SERVICE_PROJECT_PREFIX + " " + name);
-		serviceProjectName_= name;
+		serviceProjectName_= name;		
 	  }
 	
 	 public void setServiceEarProjectName(String name)
@@ -723,12 +706,21 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		  return serviceEarProjectName_;
 	  }
 	  
-	  public void setProject(IProject project)
+	  public void setClientProject(IProject project)
 	  {
-		  project_ = project;
 		  clientWidget_.setProject(project);
 	  }
 	  
+	  private IProject getClientProject()
+	  {
+		  return clientWidget_.getProject(); 
+	  }
+	  
+	  public void setProject(IProject project)
+	  {
+		  project_ = project;
+	  }	  
+	  	  
 	  public IProject getProject()
 	  {
 		  return project_;
@@ -875,10 +867,10 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	      serverRTDefaultCmd.setServiceTypeRuntimeServer(getServiceTypeRuntimeServer());
 		  serverRTDefaultCmd.setWebServicesParser(getWebServicesParser());     
 		  serverRTDefaultCmd.setClientInitialSelection(getObjectSelection());
-	      serverRTDefaultCmd.setClientInitialProject(getProject());
+	      serverRTDefaultCmd.setClientInitialProject(getClientProject());
 	      serverRTDefaultCmd.setClientEarProjectName(clientWidget_.getClientEarProjectName());
 		  serverRTDefaultCmd.setClientTypeRuntimeServer(getClientTypeRuntimeServer());
-		  
+		  		  
 		  serverRTDefaultCmd.execute(null, null);
 		  
 		  //perform mappings from the defaulting command to the project settings...	
@@ -892,6 +884,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
           setClientTypeRuntimeServer(serverRTDefaultCmd.getClientTypeRuntimeServer());
           setServiceNeedEAR(serverRTDefaultCmd.getServiceNeedEAR());
           setClientNeedEAR(serverRTDefaultCmd.getClientNeedEAR());
+          setClientRuntimeId(serverRTDefaultCmd.getClientRuntimeId());
+          setClientComponentType(serverRTDefaultCmd.getClientComponentType());
 	}
 	
 	private class ScaleSelectionListener implements SelectionListener
@@ -955,47 +949,51 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			   IStructuredSelection objectSelection = null;
 			   IProject project = null;
 			   String componentName="";
+			   int result=Dialog.CANCEL;
 			   
 			   if (objectSelectionWidget_ instanceof IObjectSelectionLaunchable)
 		       {      	
 				 IObjectSelectionLaunchable launchable = ((IObjectSelectionLaunchable)objectSelectionWidget_);
 				 launchable.setInitialSelection(getObjectSelection());
-		         launchable.launch(Workbench.getInstance().getActiveWorkbenchWindow().getShell());
-		         serviceImpl_.setText(launchable.getObjectSelectionDisplayableString());
-		         objectSelection = launchable.getObjectSelection();
-		         project = launchable.getProject();
-		         componentName= launchable.getComponentName(); 
+		         result = launchable.launch(Workbench.getInstance().getActiveWorkbenchWindow().getShell());
+		         if (result == Dialog.OK)
+		         {
+			         serviceImpl_.setText(launchable.getObjectSelectionDisplayableString());
+			         objectSelection = launchable.getObjectSelection();
+			         project = launchable.getProject();
+			         componentName= launchable.getComponentName();
+		         }
 		       }
 			   else
 			   {
 				   browseDialog_.setTypeRuntimeServer(getServiceTypeRuntimeServer());
 				   browseDialog_.setInitialSelection(getObjectSelection());
-			       browseDialog_.open();
-			       serviceImpl_.setText(browseDialog_.getDisplayableSelectionString());
-			       objectSelection = browseDialog_.getObjectSelection();
-			       project = browseDialog_.getProject();
-			       componentName= browseDialog_.getComponentName();
+			       result = browseDialog_.open();
+			       if (result == Dialog.OK)
+			       {
+				       serviceImpl_.setText(browseDialog_.getDisplayableSelectionString());
+				       objectSelection = browseDialog_.getObjectSelection();
+				       project = browseDialog_.getProject();
+				       componentName= browseDialog_.getComponentName();			       
+			       }
 			   }
 			   
-			   // call setters for new data
-			   //jvh - not sure we need these two calls??
-			   // for BU - the following line gives an NPE...
-			   /*setServiceProjectName(project.getName());			   
-               setProject(project);*/
-               
 			   // call ObjectSelectionOutputCommand to carry out any transformation on the objectSelection
-			   objOutputCommand.setTypeRuntimeServer(getServiceTypeRuntimeServer());
-			   objOutputCommand.setObjectSelection(objectSelection);
-		       objOutputCommand.setProject(project);
-		       objOutputCommand.setComponentName(componentName);			   
-		       
-		       objOutputCommand.execute(null, null);
-               
-		       setWebServicesParser(objOutputCommand.getWebServicesParser());
-		       setObjectSelection(objOutputCommand.getObjectSelection());
-		       setComponentName(objOutputCommand.getComponentName());
-		       setProject(objOutputCommand.getProject());	       		       
-		       refreshServerRuntimeSelection();
+			   if (result == Dialog.OK)
+			   {
+				   objOutputCommand.setTypeRuntimeServer(getServiceTypeRuntimeServer());
+				   objOutputCommand.setObjectSelection(objectSelection);
+			       objOutputCommand.setProject(project);
+			       objOutputCommand.setComponentName(componentName);			   
+			       
+			       objOutputCommand.execute(null, null);
+	               
+			       setWebServicesParser(objOutputCommand.getWebServicesParser());
+			       setObjectSelection(objOutputCommand.getObjectSelection());
+			       setComponentName(objOutputCommand.getComponentName());
+			       setProject(objOutputCommand.getProject());	       		       
+			       refreshServerRuntimeSelection();   
+			   }			   
 	    }
 	}	
 }

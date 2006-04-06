@@ -434,7 +434,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       String wsdlURI = toWsdlURI(object);  
       wsdlURI_ = wsdlURI;
       
-      if (wsdlURI != null)
+      if (wsdlURI != null && webServiceURI != null)
       {
         webServiceURI.setText(wsdlURI);       
         handleWebServiceURI();
