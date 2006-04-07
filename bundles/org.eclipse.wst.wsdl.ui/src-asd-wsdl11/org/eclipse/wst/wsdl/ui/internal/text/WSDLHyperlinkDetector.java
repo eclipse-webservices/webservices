@@ -21,6 +21,7 @@ import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
+import org.eclipse.wst.xsd.editor.BaseHyperlinkDetector;
 /**
  * Detects hyperlinks for WSDL files. Used by the WSDL text editor to provide a
  * "Go to declaration" functionality similar with the one provided by the Java
