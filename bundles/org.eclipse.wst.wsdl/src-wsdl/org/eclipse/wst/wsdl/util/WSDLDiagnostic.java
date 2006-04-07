@@ -11,6 +11,7 @@
 
 package org.eclipse.wst.wsdl.util;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 
 /**
@@ -42,4 +43,23 @@ public interface WSDLDiagnostic extends Resource.Diagnostic
    *          the new diagnostic severity.
    */
   void setSeverity(WSDLDiagnosticSeverity severity);
+  
+  /**
+   * Gets the original message key.
+   * 
+   * @return a String with the original message key.
+   */
+  String getKey();
+
+  /**
+   * Sets the original message key.
+   * @param value the new message key value.
+   */
+  void setKey(String value);
+
+  /**
+   * Returns a list with the original message parameters as Strings.
+   * @return  a list with the original message parameters as Strings.
+   */
+  EList getSubstitutions();
 }

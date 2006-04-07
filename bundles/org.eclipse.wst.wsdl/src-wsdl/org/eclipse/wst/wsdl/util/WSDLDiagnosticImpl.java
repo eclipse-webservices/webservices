@@ -11,6 +11,8 @@
 
 package org.eclipse.wst.wsdl.util;
 
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.xsd.XSDDiagnostic;
 import org.eclipse.xsd.XSDDiagnosticSeverity;
@@ -109,6 +111,16 @@ public class WSDLDiagnosticImpl extends EObjectImpl implements WSDLDiagnostic
    * @see #getSeverity()
    */
   protected WSDLDiagnosticSeverity severity = SEVERITY_EDEFAULT;
+
+  /**
+   * The original message key.
+   */
+  protected String key;
+
+  /**
+   * The original message parameters.
+   */
+  protected EList substitutions;
 
   /**
    * Default constructor.
@@ -256,5 +268,37 @@ public class WSDLDiagnosticImpl extends EObjectImpl implements WSDLDiagnostic
   public void setSeverity(WSDLDiagnosticSeverity newSeverity)
   {
     severity = newSeverity == null ? SEVERITY_EDEFAULT : newSeverity;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#getKey()
+   */
+  public String getKey()
+  {
+    return key;
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#setKey(java.lang.String)
+   */
+  public void setKey(String value)
+  {
+    key = value;
+  }
+  
+  /*
+   * (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#getSubstitutions()
+   */
+  public EList getSubstitutions()
+  {
+    if (substitutions == null)
+    {
+      substitutions = new BasicEList();
+    }
+    return substitutions;
   }
 }
