@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060407   135415 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060407   135443 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -297,7 +298,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		hLinkServiceProject_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SERVICEPROJECT_LINK);
 		hLinkServiceProject_.addHyperlinkListener(new IHyperlinkListener(){
 			public void linkActivated(HyperlinkEvent e){
-				launchProjectDialog();
+				launchProjectDialog();				
 			}
 			public void linkEntered(HyperlinkEvent e){}
 			public void linkExited(HyperlinkEvent e){}			
@@ -308,7 +309,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		hLinkServiceEAR_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SERVICEPROJECT_LINK);
 		hLinkServiceEAR_.addHyperlinkListener(new IHyperlinkListener(){
 			public void linkActivated(HyperlinkEvent e){
-				launchProjectDialog();
+				launchProjectDialog();			
 			}
 			public void linkEntered(HyperlinkEvent e){}
 			public void linkExited(HyperlinkEvent e){}			
@@ -370,11 +371,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			setServiceProjectName(projectDialog_.getProjectName());
 			setServiceEarProjectName(projectDialog_.getEarProjectName());
 			setServiceComponentType(projectDialog_.getProjectComponentType());
-			setServiceNeedEAR(projectDialog_.getNeedEAR());
-					
-			hLinkServiceProject_.setText(SERVICE_PROJECT_PREFIX + " " + serviceProjectName_);
-			hLinkServiceEAR_.setText(SERVICE_EAR_PREFIX + " " + serviceEarProjectName_ );
-			groupComposite_.redraw();  //jvh - can't get the project names to show up!!!
+			setServiceNeedEAR(projectDialog_.getNeedEAR());			
 		}
 	}
 	
@@ -553,7 +550,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	public void setResourceContext(ResourceContext context) {
 		resourceContext_ = context;
 	}
-	
+
 	public IStructuredSelection getObjectSelection()
 	{
 		return objectSelection_;		
@@ -562,7 +559,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	
 	public void setObjectSelection(IStructuredSelection selection )
 	{
-		objectSelection_ = selection;
+        objectSelection_ = selection;
         if (selection != null && selection.size()==1)
         {
         	//Update the serviceImpl_ field.
@@ -571,11 +568,10 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
         	if (selectedObject instanceof String)
         	{
         		serviceImpl_.setText((String)selectedObject);
-        	}        	       	        	        
-        }
-        
 	}
+        }
 	
+	}
 	
 	public WebServicesParser getWebServicesParser()
 	{
@@ -646,14 +642,22 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	
 	public void setServiceProjectName(String name)
 	  {
-		hLinkServiceProject_.setText(SERVICE_PROJECT_PREFIX + " " + name);
-		serviceProjectName_= name;		
+		serviceProjectName_= name;
+		hLinkServiceProject_.setText(SERVICE_PROJECT_PREFIX + " " + serviceProjectName_);
+		hLinkServiceProject_.pack(true);		
 	  }
 	
 	 public void setServiceEarProjectName(String name)
 	  {	  
-		 hLinkServiceEAR_.setText(SERVICE_EAR_PREFIX + " " + name);
 		 serviceEarProjectName_ = name;
+		 
+		 hLinkServiceEAR_.setVisible(needEar_);
+		 
+		 if (needEar_)
+		 {			 
+			 hLinkServiceEAR_.setText(SERVICE_EAR_PREFIX + " " + serviceEarProjectName_);
+ 			 hLinkServiceEAR_.pack(true);
+		 }
 	  }
 	 
 	 public void setServiceComponentType( String type )

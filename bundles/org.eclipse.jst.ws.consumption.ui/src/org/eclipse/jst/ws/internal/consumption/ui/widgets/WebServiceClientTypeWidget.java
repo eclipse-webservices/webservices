@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060407   135443 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -95,10 +98,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   
   private Boolean testClient_;
   private Boolean installClient_;
-  private Boolean startClient_;
-    
-  private String clientProjectName_; 
-  private String clientEarProjectName_;
+  private Boolean startClient_;    
   private String clientRuntimeId_;
   
   private TypeRuntimeServer ids_;
@@ -147,6 +147,8 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
     		ConsumptionUIMessages.TOOLTIP_PWPR_COMBO_CLIENTTYPE, 
     		INFOPOP_WSWSCEN_COMBO_CLIENTTYPE, 
                                           comboStyle );
+    GridData comboGridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+    clientTypeCombo_.setLayoutData(comboGridData);
     
     groupComposite_ = new Composite(parent, SWT.NONE);
 	GridLayout gclayout = new GridLayout();
@@ -290,9 +292,9 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   private void showSummary(boolean show)
   {
 	  if (clientOnly_)
-		  show = true;  //short circuit to eliminate flicker...
+		  show = true;  //short circuit to eliminate flicker...	  
 	  
-	  hLinkClientEAR_.setVisible(show);
+	  hLinkClientEAR_.setVisible(show && needEar_);
 	  hLinkClientProject_.setVisible(show);
 	  hLinkClientRuntime_.setVisible(show);
 	  hLinkClientServer_.setVisible(show);
@@ -304,9 +306,10 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	  else
 	  {
 		  hCompClient_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
-		  clientDetailsLabel_.setText(ConsumptionUIMessages.LABEL_SUMMARY_NO_CLIENT);
-		  groupComposite_.pack(true);
+		  clientDetailsLabel_.setText(ConsumptionUIMessages.LABEL_SUMMARY_NO_CLIENT);		  
 	  }	  
+	  hLinkClientProject_.pack(true);
+	  hLinkClientEAR_.pack(true);
   }
 
   public void setTypeRuntimeServer( TypeRuntimeServer ids )
@@ -411,9 +414,6 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 			setClientEarProjectName(projectDialog_.getEarProjectName());
 			setClientNeedEAR(projectDialog_.getNeedEAR());
 			setClientComponentType(projectDialog_.getProjectComponentType());
-			
-			hLinkClientProject_.setText(CLIENT_PROJECT_PREFIX + " " + clientProjectName_);
-			hLinkClientEAR_.setText(CLIENT_EAR_PREFIX + " " + clientEarProjectName_ );				
 		}		
 	}
   
@@ -586,7 +586,9 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   
   public void setClientProjectName(String name)
   {
-    projectName_ = name;  
+    projectName_ = name;      
+	hLinkClientProject_.setText(CLIENT_PROJECT_PREFIX + " " + projectName_);	
+	hLinkClientEAR_.pack(true);     
   }
   
   public String getClientProjectName()
@@ -599,6 +601,14 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   public void setClientEarProjectName(String name)
   {
     earProjectName_ = name;  
+    
+    hLinkClientEAR_.setVisible(needEar_);
+    
+    if (needEar_)
+    {    	
+		hLinkClientEAR_.setText(CLIENT_EAR_PREFIX + " " + earProjectName_);
+		hLinkClientEAR_.pack(true);  
+    }    		   
   }
   
   public String getClientEarProjectName()
