@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060407   135415 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -107,7 +110,6 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	private String serviceRuntimeId_;
 	private boolean needEar_;
 		 
-	private IStructuredSelection initialSelection_;
 	private IStructuredSelection objectSelection_;
 
 	private boolean displayPreferences_;
@@ -551,28 +553,29 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	public void setResourceContext(ResourceContext context) {
 		resourceContext_ = context;
 	}
-
-	public IStructuredSelection getInitialSelection()
-	{
-		return initialSelection_;
-	}
 	
 	public IStructuredSelection getObjectSelection()
 	{
 		return objectSelection_;		
 	}
 	
-	private void setObjectSelection(IStructuredSelection selection)
+	
+	public void setObjectSelection(IStructuredSelection selection )
 	{
-        objectSelection_ = selection;
-        clientWidget_.setObjectSelection(selection);        
+		objectSelection_ = selection;
+        if (selection != null && selection.size()==1)
+        {
+        	//Update the serviceImpl_ field.
+        	Object[] selectionArray = selection.toArray();
+        	Object selectedObject = selectionArray[0];
+        	if (selectedObject instanceof String)
+        	{
+        		serviceImpl_.setText((String)selectedObject);
+        	}        	       	        	        
+        }
+        
 	}
 	
-	public void setInitialSelection(IStructuredSelection selection)
-	{
-		initialSelection_ = selection;			
-		setObjectSelection(selection);
-	}
 	
 	public WebServicesParser getWebServicesParser()
 	{

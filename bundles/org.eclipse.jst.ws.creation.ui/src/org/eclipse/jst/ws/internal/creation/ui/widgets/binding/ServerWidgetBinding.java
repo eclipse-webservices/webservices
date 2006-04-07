@@ -12,6 +12,7 @@
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner
  * 20060204 121605   rsinha@ca.ibm.com - Rupam Kuehner           
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060407   135415 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -35,6 +36,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExten
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionOutputCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestDelegateCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestWidget;
@@ -111,7 +113,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataMappingRegistry_ = dataRegistry;
 
     // Before ServerWizardWidget
-    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InitialSelection", ServerWizardWidget.class );
+    dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "ObjectSelection", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ServiceGeneration", ServerWizardWidget.class); 
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "MonitorService", ServerWizardWidget.class);
@@ -358,6 +360,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
       
       add( new SimpleFragment( new ServerWizardWidgetDefaultingCommand(), ""));
+      add (new SimpleFragment( new ObjectSelectionOutputCommand(), ""));
       add( new SimpleFragment( new ServerRuntimeSelectionWidgetDefaultingCommand(), ""));  
       add( new SimpleFragment( "ServerWizardWidget" ) );
       add( new SimpleFragment( new ServerWizardWidgetOutputCommand(), "" ));
@@ -387,8 +390,12 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       publishToPrivateUDDICmdFrag.registerDataMappings(dataMappingRegistry_);   
 
       dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", ServerWizardWidgetDefaultingCommand.class );            
+
+      // Map ServerWizardWidgetDefaultingCommand to ObjectSelectionOutputCommand
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InitialSelection", ObjectSelectionOutputCommand.class, "ObjectSelection", null);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ObjectSelectionOutputCommand.class, "TypeRuntimeServer", null);
       
-      // Map ServerWizardWidgetDefaultingCommand
+      // Map ServerWizardWidgetDefaultingCommand to ServerWizardWidgetOutputCommand
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "GenerateProxy", ServerWizardWidgetOutputCommand.class);
@@ -397,8 +404,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "TestService", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "PublishService", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "GenerateProxy", ServerWizardWidgetOutputCommand.class);
-      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ResourceContext", ServerWizardWidgetOutputCommand.class);
-
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ResourceContext", ServerWizardWidgetOutputCommand.class);      
+      
       // Map ServerWizardWidgetOutputCommand.     
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InitialProject", ServerRuntimeSelectionWidgetDefaultingCommand.class); 
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ServerRuntimeSelectionWidgetDefaultingCommand.class);
@@ -414,6 +421,15 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestService", ClientExtensionDefaultingCommand.class); // KSC
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "GenerateProxy", ClientExtensionDefaultingCommand.class); // KSC
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ResourceContext", ClientExtensionDefaultingCommand.class);
+      
+      //Map ObjectSelectionOutputCommand to ServerRuntimeSelectionWidgetDefaultingCommand
+      dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "ObjectSelection", ServerRuntimeSelectionWidgetDefaultingCommand.class, "InitialSelection", null);
+      dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "ObjectSelection", ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientInitialSelection", null);
+      dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "Project", ServerRuntimeSelectionWidgetDefaultingCommand.class, "InitialProject", null);
+      dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "Project", ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientInitialProject", null);      
+
+      //Map ObjectSelectionOutputCommand to ServerWizardWidgetOutputCommand
+      dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "ObjectSelection", ServerWizardWidgetOutputCommand.class);      
       
       //to the test wizard
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "GenerateProxy", ServiceTestFragment.class);
