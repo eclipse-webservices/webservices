@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060224   129387 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -46,6 +47,7 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
   private IProject project;
   private String componentName;
   private IObjectSelectionWidget child;
+  private Point widgetSize_;
   
   public WidgetDataEvents addControls(Composite parentComposite, Listener statListener)
   {
@@ -54,6 +56,10 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
     this.statusListener = statListener;
     composite = null;
     return this;
+  }
+  
+  public Control getControl(){
+	  return composite;
   }
   
   /**
@@ -107,8 +113,8 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
                   composite.setLayoutData(gd);
                   child = (IObjectSelectionWidget)object;
                   child.addControls(composite, statusListener);
-                  child.setInitialSelection(initialSelection);
-                  
+                  child.setInitialSelection(initialSelection);                  
+
                   Point origSize = shell.getSize();
                   Point compSize = composite.computeSize(SWT.DEFAULT, SWT.DEFAULT);
                   int   newX     = origSize.x;
@@ -129,15 +135,9 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
                   {
                     newY = compSize.y + 205;
                   }
+   
+                  widgetSize_ = new Point(newX, newY);                  
                   
-                  composite.setSize(newX - 20, newY - 205 );
-                  parent.setSize(newX - 10, newY - 195 );
-                  shell.setSize(newX, newY);
-                  
-                  //jvh - the following call hangs the web service wizard 
-                  //shell.setRedraw(true); 
-                  shell.redraw();
-                  shell.update();
                   return;
                 }
               }
@@ -260,5 +260,13 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
   
   public String getObjectSelectionDisplayableString() {
 	return child.getObjectSelectionDisplayableString();    
+  }
+  
+  public Point getWidgetSize()
+  {
+	  Point childWidgetSize = child.getWidgetSize();
+	  if (childWidgetSize == null)
+		  	  return widgetSize_;
+	  return childWidgetSize;
   }
 }

@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -44,6 +47,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -235,7 +239,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     else
       tree.setEnabled(true);
     tree.setWebServiceURI(wsURI);
-    tree.refreshTreeViewer();    
+    tree.refreshTreeViewer();  
   }
   
   public void run()
@@ -562,4 +566,8 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   public String getObjectSelectionDisplayableString() {	
 	    return wsdlURI_;
 	  }
+  
+  public Point getWidgetSize() {	
+	  return new Point( 550, 500 );  
+  }
 }

@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
+ *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
 import org.eclipse.core.resources.IProject;
@@ -66,7 +79,7 @@ public class ServiceImplSelectionDialog extends AbstractSelectionDialog {
 	  }
 	  
 	  protected Point getInitialSize()
-	  {
-	    return new Point( 550, 500 );  
+	  {	
+		  return ((ObjectSelectionWidget)getWidget()).getWidgetSize();	    
 	  }
 }

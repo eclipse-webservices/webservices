@@ -1,18 +1,22 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataContributor;
 
 /**
@@ -73,4 +77,11 @@ public interface IObjectSelectionWidget extends WidgetDataContributor
    * @return returns the string to displayed in the UI for the selected object
    */
   public  String getObjectSelectionDisplayableString();
+  
+  /**
+   * 
+   * @return returns the default initial size for the widget to be called from getInitialSize from any parent dialog
+   */
+  public Point getWidgetSize();
+  
 }
