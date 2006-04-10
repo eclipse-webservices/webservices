@@ -37,7 +37,6 @@ public class DirectEditSelectionTool extends SelectionTool {
 	protected boolean handleButtonDown(int button) {
 		super.handleButtonDown(button);
 		INamedEditPart selectedPart = getSelectedPart();
-		System.out.println("\nSelected Part is: " + selectedPart);
 		
 		if(selectedPart != null) {
 			Input i = getCurrentInput();
