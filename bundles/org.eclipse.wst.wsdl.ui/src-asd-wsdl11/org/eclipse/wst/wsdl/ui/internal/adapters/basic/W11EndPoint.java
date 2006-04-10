@@ -20,17 +20,6 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Port;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddEndPointAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDDeleteAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDSetExistingBindingAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDSetNewBindingAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.BaseSelectionAction;
-import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
-import org.eclipse.wst.wsdl.asd.facade.IASDObject;
-import org.eclipse.wst.wsdl.asd.facade.IASDObjectListener;
-import org.eclipse.wst.wsdl.asd.facade.IBinding;
-import org.eclipse.wst.wsdl.asd.facade.IEndPoint;
-import org.eclipse.wst.wsdl.asd.facade.IService;
 import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
 import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -39,6 +28,17 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetAddressCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.specialized.W11AddressExtensibilityElementAdapter;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddEndPointAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingBindingAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewBindingAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IService;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjectListener {
  

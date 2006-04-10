@@ -17,11 +17,11 @@ import java.util.List;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Operation;
-import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
-import org.eclipse.wst.wsdl.asd.facade.IBindingOperation;
-import org.eclipse.wst.wsdl.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingOperation;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 
 public class W11BindingOperation extends WSDLBaseAdapter implements IBindingOperation, ITreeElement

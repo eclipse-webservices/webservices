@@ -15,16 +15,16 @@ import java.util.Collection;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddBindingAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddImportAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddInterfaceAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddMessageAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddSchemaAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddServiceAction;
-import org.eclipse.wst.wsdl.asd.editor.outline.ICategoryAdapter;
-import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
-import org.eclipse.wst.wsdl.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddBindingAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddImportAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInterfaceAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddMessageAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddSchemaAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddServiceAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ICategoryAdapter;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class W11CategoryAdapter extends WSDLBaseAdapter implements ICategoryAdapter, ITreeElement {
 	  public final static int IMPORTS = 1;

@@ -11,7 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.properties.sections;
 
 import org.eclipse.jface.viewers.IFilter;
-import org.eclipse.wst.wsdl.asd.facade.IParameter;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 
 public class W11ParameterSectionFilter implements IFilter {
 	// rmah: we should consider other ways of 'extending' this capability

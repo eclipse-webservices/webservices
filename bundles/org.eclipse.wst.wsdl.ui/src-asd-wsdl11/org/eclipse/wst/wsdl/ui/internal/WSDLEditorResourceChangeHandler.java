@@ -31,8 +31,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 
 
 public class WSDLEditorResourceChangeHandler

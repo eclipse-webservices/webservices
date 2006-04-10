@@ -19,10 +19,10 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.wst.wsdl.asd.design.editparts.model.IActionProvider;
-import org.eclipse.wst.wsdl.asd.facade.IASDObject;
-import org.eclipse.wst.wsdl.asd.facade.IASDObjectListener;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11RenameCommand;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.IActionProvider;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionProvider {

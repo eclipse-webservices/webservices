@@ -18,11 +18,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOutput;
-import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
-import org.eclipse.wst.wsdl.asd.facade.IBindingMessageReference;
-import org.eclipse.wst.wsdl.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingMessageReference;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 
 

@@ -11,12 +11,12 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDDeleteAction;
-import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
-import org.eclipse.wst.wsdl.asd.facade.IDescription;
-import org.eclipse.wst.wsdl.asd.facade.IType;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IType;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.xsd.XSDSchema;
 
 public class W11Type extends WSDLBaseAdapter implements IType {

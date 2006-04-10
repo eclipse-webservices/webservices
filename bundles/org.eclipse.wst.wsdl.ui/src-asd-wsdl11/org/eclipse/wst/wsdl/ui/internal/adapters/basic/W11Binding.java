@@ -19,15 +19,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.PortType;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDDeleteAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDGenerateBindingAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDSetExistingInterfaceAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDSetNewInterfaceAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.BaseSelectionAction;
-import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
-import org.eclipse.wst.wsdl.asd.facade.IBinding;
-import org.eclipse.wst.wsdl.asd.facade.IDescription;
-import org.eclipse.wst.wsdl.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -35,6 +26,15 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11GenerateBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetInterfaceCommand;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDGenerateBindingAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingInterfaceAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewInterfaceAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class W11Binding extends WSDLBaseAdapter implements IBinding {
 

@@ -14,8 +14,8 @@ import javax.wsdl.OperationType;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Operation;
-import org.eclipse.wst.wsdl.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Operation;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 
 public class W11ReorderMessageReferencesCommand extends Command {
 	protected IMessageReference leftSibling;

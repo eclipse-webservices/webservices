@@ -20,7 +20,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.common.ui.internal.search.dialogs.IComponentList;
 import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDElementDeclarationCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLSetComponentHelper;
 import org.eclipse.wst.xsd.adt.edit.IComponentDialog;

@@ -23,17 +23,17 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
-import org.eclipse.wst.wsdl.asd.facade.IImport;
-import org.eclipse.wst.wsdl.asd.facade.IMessage;
-import org.eclipse.wst.wsdl.asd.facade.IMessageReference;
-import org.eclipse.wst.wsdl.asd.facade.IParameter;
-import org.eclipse.wst.wsdl.asd.facade.IType;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Binding;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11EndPoint;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Interface;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Operation;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Service;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IImport;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessage;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IType;
 
 public class W11DeleteCommand extends Command {
 	protected WSDLBaseAdapter object;

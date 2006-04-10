@@ -13,7 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.PortType;
-import org.eclipse.wst.wsdl.asd.facade.IInterface;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddPortTypeCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;

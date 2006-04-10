@@ -15,8 +15,8 @@ import java.util.List;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 
 public class W11ReorderParametersCommand extends Command {
     protected IParameter leftSibling;

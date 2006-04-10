@@ -13,13 +13,13 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Import;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDDeleteAction;
-import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
-import org.eclipse.wst.wsdl.asd.facade.IDescription;
-import org.eclipse.wst.wsdl.asd.facade.IImport;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IImport;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class W11Import extends WSDLBaseAdapter implements IImport {
 

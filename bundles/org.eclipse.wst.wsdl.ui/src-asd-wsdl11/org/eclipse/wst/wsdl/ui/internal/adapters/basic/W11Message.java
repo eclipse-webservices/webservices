@@ -19,15 +19,15 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Message;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDDeleteAction;
-import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
-import org.eclipse.wst.wsdl.asd.facade.IDescription;
-import org.eclipse.wst.wsdl.asd.facade.IMessage;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddPartCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessage;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 

@@ -22,16 +22,6 @@ import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Output;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddFaultAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddOperationAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDDeleteAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.BaseSelectionAction;
-import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
-import org.eclipse.wst.wsdl.asd.facade.IASDObject;
-import org.eclipse.wst.wsdl.asd.facade.IASDObjectListener;
-import org.eclipse.wst.wsdl.asd.facade.IMessageReference;
-import org.eclipse.wst.wsdl.asd.facade.IOperation;
-import org.eclipse.wst.wsdl.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
@@ -39,6 +29,16 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingMessageAc
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11ReorderParametersCommand;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.visitor.WSDLVisitorForParameters;
 
 

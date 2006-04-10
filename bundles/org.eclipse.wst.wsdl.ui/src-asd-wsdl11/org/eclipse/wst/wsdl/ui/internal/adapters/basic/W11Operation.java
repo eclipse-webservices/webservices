@@ -23,15 +23,6 @@ import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Output;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddFaultAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddInputAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddOperationAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddOutputAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDDeleteAction;
-import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
-import org.eclipse.wst.wsdl.asd.facade.IInterface;
-import org.eclipse.wst.wsdl.asd.facade.IMessageReference;
-import org.eclipse.wst.wsdl.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddFaultParameterCommand;
@@ -39,6 +30,15 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInputParameterCo
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddOutputParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11ReorderMessageReferencesCommand;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInputAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOutputAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class W11Operation extends WSDLBaseAdapter implements IOperation {
 	public List getMessages()

@@ -31,7 +31,6 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
-import org.eclipse.wst.wsdl.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
 import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Binding;
@@ -49,6 +48,7 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Service;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.adapters.specialized.W11AddressExtensibilityElementAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.specialized.W11ExtensibilityElementAdapter;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDSchema;
 

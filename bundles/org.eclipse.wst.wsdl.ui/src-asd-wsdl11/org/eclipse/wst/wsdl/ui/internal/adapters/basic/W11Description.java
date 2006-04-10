@@ -22,11 +22,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddBindingAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddInterfaceAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddServiceAction;
-import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
-import org.eclipse.wst.wsdl.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddBindingCommand;
@@ -35,6 +30,11 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInterfaceCommand
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddSchemaCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddServiceCommand;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddBindingAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInterfaceAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddServiceAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class W11Description extends WSDLBaseAdapter implements IDescription {
 	protected W11CategoryAdapter getCategory(int categoryId) {

@@ -16,14 +16,14 @@ import java.util.List;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.PortType;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddOperationAction;
-import org.eclipse.wst.wsdl.asd.editor.actions.ASDDeleteAction;
-import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
-import org.eclipse.wst.wsdl.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddOperationCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class W11Interface extends WSDLBaseAdapter implements IInterface {
 
