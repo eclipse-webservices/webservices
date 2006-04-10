@@ -10,8 +10,10 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060407   135443 joan@ca.ibm.com - Joan Haggarty
+ * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
+
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -30,6 +32,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -169,8 +172,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
     GridData scGridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
     clientScaleComposite_.setLayoutData(scGridData);    
     
-	clientScale_ = new Scale(clientScaleComposite_ , SWT.VERTICAL | SWT.CENTER
-			| SWT.BORDER);
+    clientScale_ = new Scale(clientScaleComposite_ , SWT.VERTICAL | SWT.BORDER | SWT.CENTER);		
 	utils.createInfoPop(clientScale_, INFOPOP_WSWSCEN_SCALE_CLIENT);	
 	clientScale_.setMinimum(0);
 	clientScale_.setMaximum(6);
@@ -179,16 +181,27 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	clientScale_.setSelection(getClientGeneration());
 	clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
 	
-	topologySpot_ = new Label(clientScaleComposite_ , SWT.CENTER | SWT.BORDER);
+	GridData layoutData1 = new GridData();
+	layoutData1.horizontalAlignment=SWT.BEGINNING;
+	layoutData1.verticalAlignment = SWT.BEGINNING;
+	Rectangle scaleR = (imageReg_.get(ICON_SCALE_BG_0)).getBounds();	
+	layoutData1.heightHint=scaleR.height;
+	layoutData1.widthHint=scaleR.width;
+	clientScale_.setLayoutData(layoutData1);
+		
+	topologySpot_ = new Label(clientScaleComposite_ , SWT.CENTER | SWT.BORDER );
 	topologySpot_.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
-	GridData layoutData = new GridData();
-	//layoutData.grabExcessHorizontalSpace = true;
-	layoutData.grabExcessVerticalSpace = true;
-	layoutData.verticalAlignment = SWT.FILL;
-	layoutData.horizontalAlignment=SWT.BEGINNING;
-	topologySpot_.setLayoutData(layoutData);
-	topologySpot_.setImage(imageReg_.get(GRAPHIC_CLIENT_6));
 	topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
+	
+	GridData layoutData = new GridData();
+	layoutData.verticalAlignment=SWT.BEGINNING;
+	layoutData.horizontalAlignment=SWT.BEGINNING;
+	Rectangle topR = (imageReg_.get(GRAPHIC_CLIENT_6)).getBounds();
+	layoutData.widthHint=topR.width;
+	layoutData.heightHint=topR.height;
+	topologySpot_.setLayoutData(layoutData);		
+	
+	setGraphics(getClientGeneration());
 		
 	hCompClient_ = utils.createComposite(groupComposite_, 1);
 	

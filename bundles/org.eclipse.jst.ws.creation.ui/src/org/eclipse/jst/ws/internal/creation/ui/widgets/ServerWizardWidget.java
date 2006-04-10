@@ -12,6 +12,7 @@
  * 20060407   135415 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060407   135443 joan@ca.ibm.com - Joan Haggarty
  * 20060410   135442 kathy@ca.ibm.com - Kathy Chan
+ * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -48,6 +49,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -239,24 +241,37 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	    serviceComposite.setLayoutData(scGridData);    
 	    
 		serviceComposite.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_SERVICE);
+	
 		
-		serviceScale_ = new Scale(serviceComposite, SWT.VERTICAL | SWT.CENTER
-				| SWT.BORDER);
+		serviceScale_ = new Scale(serviceComposite, SWT.VERTICAL | SWT.BORDER | SWT.CENTER);
 	    utils.createInfoPop(serviceScale_, INFOPOP_WSWSCEN_SCALE_SERVICE);
 		serviceScale_.setMinimum(0);
 		serviceScale_.setMaximum(6);
 		serviceScale_.setIncrement(1);
 		serviceScale_.addSelectionListener(scaleSelectionListener);
-		serviceScale_.setSelection(getServiceGeneration());				
+		serviceScale_.setSelection(getServiceGeneration());
+		serviceScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_SERVICE);
 		
-		topologySpot_ = new Label(serviceComposite, SWT.CENTER | SWT.BORDER);
+		GridData layoutData1 = new GridData();
+		layoutData1.horizontalAlignment=SWT.BEGINNING;
+		layoutData1.verticalAlignment = SWT.BEGINNING;
+		Rectangle scaleR = (imageReg_.get(ICON_SCALE_BG_0)).getBounds();
+		layoutData1.heightHint=scaleR.height;
+		layoutData1.widthHint=scaleR.width;
+		serviceScale_.setLayoutData(layoutData1);		
+		
+		topologySpot_ = new Label(serviceComposite, SWT.BORDER | SWT.TOP );
 		topologySpot_.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
-		GridData layoutData2 = new GridData();
-		layoutData2.grabExcessVerticalSpace = true;
-		layoutData2.horizontalAlignment=SWT.BEGINNING;
-		layoutData2.verticalAlignment = SWT.FILL;		
-		topologySpot_.setLayoutData(layoutData2);
-		topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_SERVICE);		
+		topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_SERVICE);
+		
+		GridData layoutData2 = new GridData();		
+		layoutData2.horizontalAlignment=SWT.BEGINNING;				
+		layoutData2.verticalAlignment = SWT.BEGINNING;
+		Rectangle topR = (imageReg_.get(GRAPHIC_SERVICE_0)).getBounds();
+		layoutData2.heightHint=topR.height;
+		layoutData2.widthHint=topR.width;
+		topologySpot_.setLayoutData(layoutData2);		
+				
 		setGraphics(getServiceGeneration());
 		
 		hCompService_ = utils.createComposite(groupComposite_, 1);
