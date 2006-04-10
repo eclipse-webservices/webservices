@@ -1,18 +1,22 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060407   135415 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
@@ -200,7 +204,25 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
  {
      webServiceURI_ = uri;    
      wsdlDialog_.setWebServiceURI(uri);
-     serviceImpl_.setText(wsdlDialog_.getDisplayableSelectionString());
+     String wsdlDialogDisplayableString = wsdlDialog_.getDisplayableSelectionString();
+     if (uri != null && uri.length() > 0)
+     {
+       if (wsdlDialogDisplayableString != null && wsdlDialogDisplayableString.length() > 0)
+       {
+    	   serviceImpl_.setText(wsdlDialogDisplayableString);     	 
+       }
+       else 
+       {
+    	   //This else clause is to handle the call to the enclosing method
+    	   //when the page first comes up since wsdlDialog_ will not have been
+    	   //properly initialized with a WSDLSelectionWidgetWrapper containing
+    	   //a non-null WSDLSelectionWidget.
+    	   EclipseIPath2URLStringTransformer transformer = new EclipseIPath2URLStringTransformer();
+    	   webServiceURI_ = (String)transformer.transform(uri);
+    	   serviceImpl_.setText(uri);    	 
+       }
+     }
+     
  }
  public void setProject(IProject project)
  {
