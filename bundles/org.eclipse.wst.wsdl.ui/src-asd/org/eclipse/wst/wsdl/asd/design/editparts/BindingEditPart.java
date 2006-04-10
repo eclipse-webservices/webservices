@@ -26,7 +26,7 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.wst.wsdl.asd.design.connections.CenteredConnectionAnchor;
 import org.eclipse.wst.wsdl.asd.design.connections.TopLeftConnectionAnchor;
-import org.eclipse.wst.wsdl.asd.design.editpolicies.WSDLSelectionEditPolicy;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.asd.design.figures.BoxComponentFigure;
 import org.eclipse.wst.wsdl.asd.design.figures.ComponentReferenceConnection;
 import org.eclipse.wst.wsdl.asd.design.layouts.BindingColumnLayout;
@@ -248,7 +248,7 @@ public class BindingEditPart extends BaseEditPart
 
   protected void createEditPolicies()
   {
-     installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new WSDLSelectionEditPolicy());
+     installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ASDSelectionEditPolicy());
   }
 
   public boolean isExpanded()

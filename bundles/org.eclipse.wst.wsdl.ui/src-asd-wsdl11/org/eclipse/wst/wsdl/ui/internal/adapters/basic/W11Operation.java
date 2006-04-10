@@ -14,11 +14,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.wsdl.OperationType;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Fault;
+import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Operation;
+import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddFaultAction;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddInputAction;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddOperationAction;
@@ -26,6 +30,7 @@ import org.eclipse.wst.wsdl.asd.editor.actions.ASDAddOutputAction;
 import org.eclipse.wst.wsdl.asd.editor.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.asd.editor.outline.ITreeElement;
 import org.eclipse.wst.wsdl.asd.facade.IInterface;
+import org.eclipse.wst.wsdl.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
@@ -33,24 +38,43 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddFaultParameterCo
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInputParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddOutputParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11ReorderMessageReferencesCommand;
 
 public class W11Operation extends WSDLBaseAdapter implements IOperation {
 	public List getMessages()
 	{
 		List modelAdapterList = new ArrayList(getOperation().getEFaults().size() + 2);
-		if (getOperation().getEInput() != null)
-		{
-			modelAdapterList.add(createAdapter(getOperation().getEInput()));
+		
+		Input input = getOperation().getEInput();
+		Output output = getOperation().getEOutput();
+		
+		OperationType operationType = getOperation().getStyle();
+		if (operationType != null) {
+			if (operationType.equals(OperationType.REQUEST_RESPONSE) && input != null && output != null) {
+				// Input, Output
+				modelAdapterList.add(createAdapter(input));
+				modelAdapterList.add(createAdapter(output));
+			}
+			else if (operationType.equals(OperationType.SOLICIT_RESPONSE) && input != null && output != null) {
+				// Output, Input
+				modelAdapterList.add(createAdapter(output));
+				modelAdapterList.add(createAdapter(input));
+			}
+			else if (operationType.equals(OperationType.ONE_WAY) && input != null) {
+				// Input
+				modelAdapterList.add(createAdapter(input));
+			}
+			else if (operationType.equals(OperationType.NOTIFICATION) && output != null) {
+				//Output
+				modelAdapterList.add(createAdapter(output));
+			}
 		}
-		if (getOperation().getEOutput() != null)
-		{
-			modelAdapterList.add(createAdapter(getOperation().getEOutput()));
-		}
-		for (Iterator i = getOperation().getEFaults().iterator(); i.hasNext();)
-		{
+		
+		for (Iterator i = getOperation().getEFaults().iterator(); i.hasNext();)	{
 			EObject o = (EObject) i.next();
 			modelAdapterList.add(createAdapter(o));
 		}
+
 		return modelAdapterList;
 	}
 	
@@ -99,6 +123,10 @@ public class W11Operation extends WSDLBaseAdapter implements IOperation {
 			aFault = (Fault) fault;
 		}
 		return new W11AddFaultParameterCommand(getOperation(), aFault);
+	}
+	
+	public Command getReorderMessageReferencesCommand(IMessageReference leftSibling, IMessageReference rightSibling, IMessageReference movingMessageRef) {
+		return new W11ReorderMessageReferencesCommand(leftSibling, rightSibling, movingMessageRef);
 	}
 	
 	public Command getDeleteCommand() {

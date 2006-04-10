@@ -10,19 +10,21 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.asd.design.editpolicies;
 
-import org.eclipse.gef.editpolicies.SelectionEditPolicy;
-import org.eclipse.wst.wsdl.asd.design.editparts.IFeedbackHandler;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.tools.DragEditPartsTracker;
 
-public class WSDLSelectionEditPolicy extends SelectionEditPolicy {
-	protected void hideSelection() {
-		if (getHost() instanceof IFeedbackHandler) {
-				((IFeedbackHandler) getHost()).removeFeedback();
-		}
-	}
-
-	protected void showSelection() {
-		if (getHost() instanceof IFeedbackHandler) {
-			((IFeedbackHandler) getHost()).addFeedback();
-		}
+public class ASDGraphNodeDragTracker extends DragEditPartsTracker  {
+	protected EditPart editPart; 
+	
+	public ASDGraphNodeDragTracker(EditPart editPart) {
+		super(editPart);
+		this.editPart = editPart;
+	} 
+	
+	protected Command getCommand() { 
+		Request request = getTargetRequest();
+		return editPart.getCommand(request); 
 	}
 }

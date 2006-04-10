@@ -17,7 +17,7 @@ import org.eclipse.gef.requests.DirectEditRequest;
 import org.eclipse.wst.wsdl.asd.design.editparts.EndPointEditPart;
 import org.eclipse.wst.wsdl.asd.facade.INamedObject;
 
-public class LabelDirectEditPolicy extends DirectEditPolicy {
+public class ASDLabelDirectEditPolicy extends DirectEditPolicy {
 	protected Command getDirectEditCommand(DirectEditRequest request) {
 		Command command = null;
 		String labelText = (String) request.getCellEditor().getValue();

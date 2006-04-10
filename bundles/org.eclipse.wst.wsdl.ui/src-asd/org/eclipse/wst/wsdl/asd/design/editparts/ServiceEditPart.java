@@ -26,8 +26,8 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.wst.wsdl.asd.design.directedit.LabelCellEditorLocator;
 import org.eclipse.wst.wsdl.asd.design.directedit.LabelEditManager;
-import org.eclipse.wst.wsdl.asd.design.editpolicies.LabelDirectEditPolicy;
-import org.eclipse.wst.wsdl.asd.design.editpolicies.WSDLSelectionEditPolicy;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDLabelDirectEditPolicy;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.asd.design.figures.HeadingFigure;
 import org.eclipse.wst.wsdl.asd.facade.IService;
 
@@ -101,8 +101,8 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
 
   protected void createEditPolicies()
   {
-	  installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new LabelDirectEditPolicy());
-	  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new WSDLSelectionEditPolicy());
+	  installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new ASDLabelDirectEditPolicy());
+	  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ASDSelectionEditPolicy());
   }
   
   private DirectEditManager manager;

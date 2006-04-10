@@ -38,6 +38,7 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11ReorderParametersCommand;
 import org.eclipse.wst.wsdl.ui.internal.visitor.WSDLVisitorForParameters;
 
 
@@ -215,6 +216,10 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	  return actionIDs;
   }
   
+  public Command getReorderParametersCommand(IParameter leftSibling, IParameter rightSibling, IParameter movingParameter) {
+	  return new W11ReorderParametersCommand(leftSibling, rightSibling, movingParameter);
+  }
+
   public Command getDeleteCommand() {
 	  return new W11DeleteCommand(this);
   }

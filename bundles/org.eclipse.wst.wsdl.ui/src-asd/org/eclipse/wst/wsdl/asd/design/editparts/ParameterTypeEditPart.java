@@ -27,7 +27,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.wst.wsdl.asd.design.DesignViewGraphicsConstants;
-import org.eclipse.wst.wsdl.asd.design.editpolicies.WSDLSelectionEditPolicy;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.asd.editor.ASDMultiPageEditor;
@@ -78,7 +78,7 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 	  protected void createEditPolicies()
 	  {
-		  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new WSDLSelectionEditPolicy());
+		  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ASDSelectionEditPolicy());
 	  }
 	  
 	  public void performDirectEdit(Point cursorLocation) {

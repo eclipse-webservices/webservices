@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.asd.design.directedit;
 
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.Tool;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.tools.SelectionTool;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.wst.wsdl.asd.design.editparts.INamedEditPart;
 
 /**
@@ -22,22 +24,38 @@ import org.eclipse.wst.wsdl.asd.design.editparts.INamedEditPart;
  * mouse events
  */
 public class DirectEditSelectionTool extends SelectionTool {
-	protected INamedEditPart partUnderCursor = null;
 	
-	public void mouseDown(MouseEvent me, EditPartViewer viewer) {
-		EditPart focusEditPartOld = viewer.getFocusEditPart();
-		setViewer(viewer);
-		super.mouseDown(me,viewer);
-		EditPart focusEditPart = viewer.getFocusEditPart();
-		if(focusEditPart instanceof INamedEditPart) {
-			Tool tool = focusEditPart.getViewer().getEditDomain().getActiveTool();
-			if(!(tool instanceof DirectEditTool)) {
-				tool = new DirectEditTool();
-				viewer.getEditDomain().setActiveTool(tool);
-			}
-			if(focusEditPartOld != focusEditPart) {
-				tool.mouseDown(me,viewer);
+	protected INamedEditPart getSelectedPart() {
+		if(getCurrentViewer() == null)
+			return null;
+		EditPart ep = getCurrentViewer().getFocusEditPart();
+		if(ep instanceof INamedEditPart && ep.isActive())
+			return (INamedEditPart)ep;
+		return null;
+	}
+	
+	protected boolean handleButtonDown(int button) {
+		super.handleButtonDown(button);
+		INamedEditPart selectedPart = getSelectedPart();
+		System.out.println("\nSelected Part is: " + selectedPart);
+		
+		if(selectedPart != null) {
+			Input i = getCurrentInput();
+			Point l = translateLocation(i.getMouseLocation());
+			
+			IFigure f = ((AbstractGraphicalEditPart) selectedPart).getFigure();
+			Rectangle bounds = f.getBounds();
+			if(bounds.contains(l.x,l.y)) {
+				selectedPart.performDirectEdit(translateLocation(new Point(l.x, l.y)));
+				return true;
 			}
 		}
+		return true;
+	}
+	
+	protected Point translateLocation(Point mouseLocation) {
+		FigureCanvas canvas = (FigureCanvas)getCurrentViewer().getControl();
+		Point viewLocation = canvas.getViewport().getViewLocation();
+		return new Point(mouseLocation.x + viewLocation.x,mouseLocation.y + viewLocation.y);
 	}
 }

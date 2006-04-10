@@ -35,8 +35,8 @@ import org.eclipse.wst.wsdl.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.asd.design.connections.CenteredConnectionAnchor;
 import org.eclipse.wst.wsdl.asd.design.directedit.LabelCellEditorLocator;
 import org.eclipse.wst.wsdl.asd.design.directedit.LabelEditManager;
-import org.eclipse.wst.wsdl.asd.design.editpolicies.LabelDirectEditPolicy;
-import org.eclipse.wst.wsdl.asd.design.editpolicies.WSDLSelectionEditPolicy;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDLabelDirectEditPolicy;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.asd.design.figures.ComponentReferenceConnection;
 import org.eclipse.wst.wsdl.asd.editor.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.asd.editor.ASDMultiPageEditor;
@@ -93,8 +93,8 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 
   protected void createEditPolicies()
   {
-    installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new LabelDirectEditPolicy());
-    installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new WSDLSelectionEditPolicy());
+    installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new ASDLabelDirectEditPolicy());
+    installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ASDSelectionEditPolicy());
   }
   private DirectEditManager manager;
   private Point cursorLocation;

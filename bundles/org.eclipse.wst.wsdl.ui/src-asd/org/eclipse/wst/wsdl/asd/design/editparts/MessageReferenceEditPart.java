@@ -18,6 +18,13 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDDragAndDropEditPolicy;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDGraphNodeDragTracker;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.asd.design.figures.ListFigure;
 import org.eclipse.wst.wsdl.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.asd.facade.IMessageReference;
@@ -27,6 +34,8 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
   protected Figure contentPane;  
   protected Label label;
   protected RowLayout rowLayout;
+  
+  protected ASDSelectionEditPolicy selectionHandlesEditPolicy = new ASDSelectionEditPolicy();
   
   protected IFigure createFigure()
   {
@@ -83,7 +92,13 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
   
   protected void createEditPolicies()
   {
-
+	  installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new ASDDragAndDropEditPolicy(getViewer(), selectionHandlesEditPolicy));
+	  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, selectionHandlesEditPolicy);
+  }
+  
+  public DragTracker getDragTracker(Request request)
+  {
+    return new ASDGraphNodeDragTracker((EditPart)this);
   }
   
   public IFigure getContentPane()

@@ -23,14 +23,19 @@ import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.asd.design.directedit.LabelCellEditorLocator;
 import org.eclipse.wst.wsdl.asd.design.directedit.LabelEditManager;
-import org.eclipse.wst.wsdl.asd.design.editpolicies.LabelDirectEditPolicy;
-import org.eclipse.wst.wsdl.asd.design.editpolicies.WSDLSelectionEditPolicy;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDDragAndDropEditPolicy;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDGraphNodeDragTracker;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDLabelDirectEditPolicy;
+import org.eclipse.wst.wsdl.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.asd.facade.IParameter;
 
@@ -41,6 +46,8 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
   protected RowLayout rowLayout = new RowLayout();
   protected Image labelImage;
   
+  protected ASDSelectionEditPolicy selectionHandlesEditPolicy = new ASDSelectionEditPolicy();
+
   protected IFigure createFigure()
   {
     IFigure figure = new Figure()
@@ -117,8 +124,14 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
   
   protected void createEditPolicies()
   {
-	  installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new LabelDirectEditPolicy());
-	  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new WSDLSelectionEditPolicy());
+	  installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new ASDLabelDirectEditPolicy());
+	  installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new ASDDragAndDropEditPolicy(getViewer(), selectionHandlesEditPolicy));
+	  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, selectionHandlesEditPolicy);
+  }
+  
+  public DragTracker getDragTracker(Request request)
+  {
+    return new ASDGraphNodeDragTracker((EditPart)this);
   }
   
   public Label getLabelFigure() {
