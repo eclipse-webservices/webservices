@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060407   135415 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060407   135443 joan@ca.ibm.com - Joan Haggarty
+ * 20060410   135442 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -23,6 +24,8 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.IObjectSelectionLaunchable;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ProjectSelectionDialog;
@@ -371,7 +374,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			setServiceProjectName(projectDialog_.getProjectName());
 			setServiceEarProjectName(projectDialog_.getEarProjectName());
 			setServiceComponentType(projectDialog_.getProjectComponentType());
-			setServiceNeedEAR(projectDialog_.getNeedEAR());			
+			setServiceNeedEAR(projectDialog_.getNeedEAR());	
+			refreshClientServerRuntimeSelection();
 		}
 	}
 	
@@ -387,6 +391,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		if (result == Window.OK)
 		{
 			setServiceTypeRuntimeServer(rssd.getTypeRuntimeServer());	
+			refreshClientServerRuntimeSelection();
 		}		
 	}	
 	
@@ -895,6 +900,58 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
           setClientComponentType(serverRTDefaultCmd.getClientComponentType());
 	}
 	
+	/**
+	 *  Update client server and runtime based on service side
+	 */
+	private void refreshClientServerRuntimeSelection()
+	{	
+		TypeRuntimeServer clientTypeRuntimeserver = getClientTypeRuntimeServer();
+		clientTypeRuntimeserver.setRuntimeId(getServiceTypeRuntimeServer().getRuntimeId());
+		clientTypeRuntimeserver.setServerId(getServiceTypeRuntimeServer().getServerId());
+		clientTypeRuntimeserver.setServerInstanceId(getServiceTypeRuntimeServer().getServerInstanceId());
+		setClientTypeRuntimeServer(clientTypeRuntimeserver);
+		setClientNeedEAR(clientProjectNeedEAR());
+	}	
+		
+	/**
+	 *  Check if client project need EAR based on service side, project and client type
+	 */
+	private boolean clientProjectNeedEAR()
+	{	
+		// if client did not need EAR originally, check if it's because it's because 
+		// either the project is Java utility project or type is Java utility
+		if (!getClientNeedEAR()) {
+			// If the project is a simple Java project or the project type is 
+			// Java utility return false.
+			String projectName = getClientProjectName();
+			if (projectName != null && projectName.length()>0)
+			{
+				IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectName);
+				if (project.exists())
+				{
+					if (FacetUtils.isJavaProject(project))
+					{
+						return false;
+					}
+				}
+			}
+
+			//Project didn't rule out the need for an EAR
+			//so check the project type
+			String templateId = getClientComponentType();
+			if (templateId != null && templateId.length()>0)
+			{
+				if (FacetUtils.isUtilityTemplate(templateId))
+				{
+					return false;
+				}
+			}
+		} // end of !clientNeedEAR
+		
+		// have clientNeedEAR follows server side
+		return getServiceNeedEAR();
+		
+	}
 	private class ScaleSelectionListener implements SelectionListener
 	{
 		public void widgetSelected(SelectionEvent e) {			
