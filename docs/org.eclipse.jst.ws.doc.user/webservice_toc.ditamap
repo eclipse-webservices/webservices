@@ -45,7 +45,7 @@ navtitle="Creating an Apache Tomcat server and  Web project" scope="peer">
 <topicref navtitle="Importing and creating resources used by Web services">
 <navref mapref="../org.eclipse.wst.wsdl.ui.doc.user/wswsdleditort_toc.ditamap"/>
 </topicref>
-<topicref href="/tasks/toverws.dita" navtitle="Creating Web services" scope="peer">
+<topicref href="tasks/toverws.dita" navtitle="Creating Web services">
 <topicref href="concepts/cwstopdown.dita" navtitle="Top-down Web services development"
 scope="local">
 <topicgroup>

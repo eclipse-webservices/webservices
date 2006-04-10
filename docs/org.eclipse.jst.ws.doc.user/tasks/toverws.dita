@@ -39,10 +39,10 @@ Web services</linktext></link>
 top-down Web services</linktext></link>
 </linklist>
 <linklist><title>Related Tasks</title>
-<link href="../../org.eclipse.wst.wsdl.ui.doc.user/tasks/tcrtwsdl.dita" scope="peer">
+<link href="../../org.eclipse.wst.wsdl.ui.doc.user/tasks/tcrtwsdl.dita" scope="peer"><linktext>Creating a new WSDL file</linktext>
 </link>
 <link href="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tuddiexp.dita"
-scope="peer"></link>
+scope="peer"><linktext>Publishing Web services and business entities</linktext></link>
 </linklist>
 </related-links>
 </task>
