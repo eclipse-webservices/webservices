@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
+ * 20060410   136011 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
