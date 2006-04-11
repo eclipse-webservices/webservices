@@ -14,6 +14,7 @@
  * 20060221 119111   rsinha@ca.ibm.com - Rupam Kuehner
  * 20060329 128069   rsinha@ca.ibm.com - Rupam Kuehner
  * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu 
+ * 20060411   136134 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -260,6 +261,10 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String TOOLTIP_PCON_BUTTON_BROWSE_WS;
 	public static String TOOLTIP_VALIDATE_TEXT_MESSAGE;
 	public static String TOOLTIP_TABLE_VALIDATE_MESSAGE;
+	public static String TABLE_COLUMN_VALIDATION_SEVERITY;
+	public static String TABLE_COLUMN_VALIDATION_LINE;
+	public static String TABLE_COLUMN_VALIDATION_COLUMN;
+	public static String TABLE_COLUMN_VALIDATION_MESSAGE;
 	public static String TOOLTIP_PWSM_PAGE;
 	public static String TOOLTIP_PWSM_CHECKBOX_TEST;
 	public static String TOOLTIP_PWSM_COMBOBOX_TEST;

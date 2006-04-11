@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060310   131352 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060411   136134 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -48,7 +49,10 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
   private TableViewer tableViewer_;
   private Table table_;
   private String message = null;
-  static final String columns_[] = {"severity", "line", "column", "message"};
+  static final String columns_[] = {ConsumptionUIMessages.TABLE_COLUMN_VALIDATION_SEVERITY,
+	  								ConsumptionUIMessages.TABLE_COLUMN_VALIDATION_LINE,
+	  								ConsumptionUIMessages.TABLE_COLUMN_VALIDATION_COLUMN,
+	  								ConsumptionUIMessages.TABLE_COLUMN_VALIDATION_MESSAGE};
   static final int columnsWidth_[] = {10, 10, 10, 60};
 
   
