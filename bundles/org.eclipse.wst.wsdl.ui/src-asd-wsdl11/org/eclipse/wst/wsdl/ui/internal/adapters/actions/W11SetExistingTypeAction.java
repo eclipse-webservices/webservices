@@ -18,9 +18,9 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
-import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
-import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
-import org.eclipse.wst.xsd.editor.XSDTypeReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
+import org.eclipse.wst.xsd.ui.internal.editor.XSDTypeReferenceEditManager;
 
 public class W11SetExistingTypeAction extends BaseSelectionAction {
 	public static String ID = "ASDSetExistingTypeAction";

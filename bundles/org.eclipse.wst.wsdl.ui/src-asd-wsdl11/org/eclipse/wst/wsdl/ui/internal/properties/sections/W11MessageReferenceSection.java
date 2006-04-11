@@ -28,8 +28,8 @@ import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NameSection;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11MessageReferenceEditManager;
-import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
-import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 
 public class W11MessageReferenceSection extends NameSection {
 	protected static String NEW_STRING = "New...";

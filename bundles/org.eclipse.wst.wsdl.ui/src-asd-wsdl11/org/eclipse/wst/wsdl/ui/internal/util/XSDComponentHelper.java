@@ -18,7 +18,7 @@ import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDElementDeclarationCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDSchemaCommand;
-import org.eclipse.wst.xsd.ui.common.commands.AddXSDElementCommand;
+import org.eclipse.wst.xsd.ui.internal.common.commands.AddXSDElementCommand;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDComponent;
 import org.eclipse.xsd.XSDCompositor;

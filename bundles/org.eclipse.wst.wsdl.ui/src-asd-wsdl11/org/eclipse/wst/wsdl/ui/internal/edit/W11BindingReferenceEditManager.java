@@ -29,8 +29,8 @@ import org.eclipse.wst.wsdl.ui.internal.dialogs.W11BrowseComponentDialog;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.W11NewComponentDialog;
 import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLSetComponentHelper;
-import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
-import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 
 public class W11BindingReferenceEditManager implements ComponentReferenceEditManager {
 	protected W11Description description;

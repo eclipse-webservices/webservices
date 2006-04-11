@@ -26,8 +26,8 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
-import org.eclipse.wst.xsd.editor.InternalXSDMultiPageEditor;
-import org.eclipse.wst.xsd.editor.XSDFileEditorInput;
+import org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor;
+import org.eclipse.wst.xsd.ui.internal.editor.XSDFileEditorInput;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
@@ -108,11 +108,11 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 							
 							if (editorPart == null)
 							{
-								editorPart = page.openEditor(editorInput, "org.eclipse.wst.xsd.editor.InternalXSDMultiPageEditor", true, 0);
+								editorPart = page.openEditor(editorInput, "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor", true, 0);
 							}
 						}
 						else {
-							editorPart = page.openEditor(editorInput, "org.eclipse.wst.xsd.editor.InternalXSDMultiPageEditor", true);
+							editorPart = page.openEditor(editorInput, "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor", true);
 						}
 						
 						if (editorPart instanceof InternalXSDMultiPageEditor)

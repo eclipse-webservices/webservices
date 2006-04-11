@@ -29,8 +29,8 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
-import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
-import org.eclipse.wst.xsd.editor.internal.dialogs.NewComponentDialog;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
+import org.eclipse.wst.xsd.ui.internal.dialogs.NewComponentDialog;
 
 public class W11NewComponentDialog implements IComponentDialog {
 	protected NewComponentDialog dialog;

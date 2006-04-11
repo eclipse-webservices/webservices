@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extensions.NSKeyedExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extensions.WSDLEditorConfiguration;
-import org.eclipse.wst.xsd.ui.common.properties.sections.appinfo.ExtensionsSchemasRegistry;
+import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.ExtensionsSchemasRegistry;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 

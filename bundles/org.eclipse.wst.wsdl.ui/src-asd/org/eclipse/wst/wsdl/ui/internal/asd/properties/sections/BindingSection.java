@@ -25,7 +25,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11InterfaceReferenceEditManager;
-import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 
 public class BindingSection extends ReferenceSection {
 	protected ComponentReferenceEditManager refManager;

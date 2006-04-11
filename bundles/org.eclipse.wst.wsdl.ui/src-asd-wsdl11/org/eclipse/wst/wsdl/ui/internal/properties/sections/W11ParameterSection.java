@@ -28,8 +28,8 @@ import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.ParameterSection;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
-import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
-import org.eclipse.wst.xsd.editor.XSDElementReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.editor.XSDElementReferenceEditManager;
 
 public class W11ParameterSection extends ParameterSection {
 	protected CCombo typeOrElementCombo;

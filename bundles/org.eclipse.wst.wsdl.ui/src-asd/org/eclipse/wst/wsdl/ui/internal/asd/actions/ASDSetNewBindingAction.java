@@ -17,8 +17,8 @@ import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11BindingReferenceEditManager;
-import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
-import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 
 public class ASDSetNewBindingAction extends BaseSelectionAction {
 	public static String ID = "ASDSetNewBindingAction";

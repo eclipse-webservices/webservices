@@ -23,9 +23,9 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDElementDeclarationCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLSetComponentHelper;
-import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
-import org.eclipse.wst.xsd.editor.XSDElementReferenceEditManager;
-import org.eclipse.wst.xsd.editor.internal.dialogs.NewTypeDialog;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
+import org.eclipse.wst.xsd.ui.internal.dialogs.NewTypeDialog;
+import org.eclipse.wst.xsd.ui.internal.editor.XSDElementReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.search.IXSDSearchConstants;
 import org.eclipse.xsd.XSDSchema;
 

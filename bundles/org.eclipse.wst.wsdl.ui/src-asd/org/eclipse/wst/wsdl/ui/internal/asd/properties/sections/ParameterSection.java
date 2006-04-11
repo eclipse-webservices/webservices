@@ -24,8 +24,8 @@ import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
-import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
-import org.eclipse.wst.xsd.editor.XSDTypeReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.editor.XSDTypeReferenceEditManager;
 
 public class ParameterSection extends NameSection {
 	protected static String NEW_STRING = "New...";

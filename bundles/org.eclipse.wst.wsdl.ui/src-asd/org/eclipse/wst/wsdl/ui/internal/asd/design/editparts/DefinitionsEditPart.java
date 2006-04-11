@@ -24,7 +24,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.BindingColumn
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.InterfaceColumn;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.ServiceColumn;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
-import org.eclipse.wst.xsd.editor.internal.design.figures.SpacingFigure;
+import org.eclipse.wst.xsd.ui.internal.design.figures.SpacingFigure;
 
 public class DefinitionsEditPart extends BaseEditPart {
 	  List collections = null;

@@ -29,7 +29,7 @@ import org.eclipse.wst.wsdl.ui.internal.edit.WSDLComponentDescriptionProvider;
 import org.eclipse.wst.wsdl.ui.internal.edit.WSDLInterfaceSearchListProvider;
 import org.eclipse.wst.wsdl.ui.internal.edit.WSDLMessageSearchListProvider;
 import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
-import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 
 public class W11BrowseComponentDialog implements IComponentDialog {
 	private QualifiedName qualifiedName;

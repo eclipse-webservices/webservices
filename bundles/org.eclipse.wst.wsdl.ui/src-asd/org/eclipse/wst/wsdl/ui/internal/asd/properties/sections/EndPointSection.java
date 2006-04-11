@@ -34,7 +34,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11BindingReferenceEditManager;
-import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 
 public class EndPointSection extends ReferenceSection {
 	protected Text addressText;

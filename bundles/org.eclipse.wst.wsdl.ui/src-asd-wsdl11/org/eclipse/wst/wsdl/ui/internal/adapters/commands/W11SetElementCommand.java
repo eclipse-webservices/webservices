@@ -26,9 +26,9 @@ import org.eclipse.wst.wsdl.ui.internal.edit.WSDLXSDElementReferenceEditManager;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
-import org.eclipse.wst.xsd.adt.edit.ComponentReferenceEditManager;
-import org.eclipse.wst.xsd.adt.edit.IComponentDialog;
-import org.eclipse.wst.xsd.editor.XSDElementReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
+import org.eclipse.wst.xsd.ui.internal.editor.XSDElementReferenceEditManager;
 import org.eclipse.xsd.XSDSchema;
 import org.w3c.dom.Element;
 
