@@ -13,6 +13,7 @@
  * 20060407   135443 joan@ca.ibm.com - Joan Haggarty
  * 20060410   135442 kathy@ca.ibm.com - Kathy Chan
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
+ * 20060410   135562 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -99,8 +100,6 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	 private String INFOPOP_WSWSCEN_HYPERLINK_PROJECTS  = "WSWSCEN0024";
 	 /* CONTEXT_ID WSWSCEN0030 for the Overwrite Files checkbox of the Scenario Page */
 	 private String INFOPOP_WSWSCEN_CHECKBOX_OVERWRITE = "WSWSCEN0030";
-
-	 
 	 
 	private ScaleSelectionListener scaleSelectionListener = new ScaleSelectionListener();
 	private Listener statusListener_;
@@ -117,6 +116,9 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	private boolean needEar_;
 		 
 	private IStructuredSelection objectSelection_;
+	private Boolean testService_;
+	private Boolean startService_;
+	private Boolean installService_;
 
 	private boolean displayPreferences_;
 
@@ -505,17 +507,12 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 
 	public Boolean getTestService() {
         return 
-          new Boolean(testService_.booleanValue() || clientWidget_.getTestClient().booleanValue());
+	          new Boolean(testService_.booleanValue() || clientWidget_.getTestClient().booleanValue());
 	}
 
 	public void setTestService(Boolean value) {
         testService_= value;
 	}
-	
-	private Boolean testService_;
-	private Boolean startService_;
-	private Boolean installService_;
-
 	public Boolean getMonitorService() {
 		return new Boolean(monitorButton_.getSelection());
 	}
@@ -1077,10 +1074,3 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	}	
 }
 
-//jvh
-// used for validation purposes...  have getters for both here in ServerWizardWidget...use 
-// when set up validation for server runtime selection widget
-//  
-/*dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "InstallService", ServerRuntimeSelectionWidget.class);
-dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "InstallClient", ServerRuntimeSelectionWidget.class);
-*/
