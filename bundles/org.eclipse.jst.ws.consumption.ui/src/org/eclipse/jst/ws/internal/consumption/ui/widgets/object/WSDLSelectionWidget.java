@@ -240,6 +240,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       tree.setEnabled(true);
     tree.setWebServiceURI(wsURI);
     tree.refreshTreeViewer();  
+    wsdlURI_ = wsURI;
   }
   
   public void run()
@@ -488,7 +489,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       if (p!=null && p.exists())
         return p;
       
-      String wsRelPath = webServiceURI.getText();
+      String wsRelPath = wsdlURI_;
       IResource wsRes = ResourceUtils.findResource(wsRelPath);
       if (wsRes!=null && wsRes instanceof IFile)
       {
@@ -509,7 +510,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       if (cname!=null && cname.length()>0)
         return cname;
       
-      String wsRelPath = webServiceURI.getText();
+      String wsRelPath = wsdlURI_;
       IResource wsRes = ResourceUtils.findResource(wsRelPath);
       if (wsRes!=null && wsRes instanceof IFile)
       {
