@@ -39,12 +39,8 @@
    Controller controller = (Controller)currentSession.getAttribute("controller");
    int wsdlType = controller.getWSDLType();
    
-   Iterator wsIterator = WebServiceFinder.instance().getWebServices(null);    
-   Vector allWebServices = new Vector();
-   while (wsIterator.hasNext())
-   {
-     allWebServices.add(wsIterator.next());
-   }
+   WebServiceCategory mainCategory = null;
+   
 %>
 <html>
 <head>
@@ -54,28 +50,37 @@
 <script language="javascript" src="<%=response.encodeURL(controller.getPathWithContext("scripts/resumeproxyloadpage.js"))%>">
 </script>  
 <script language="javascript">
-  var sectionIds = ["workbench","favorites"];
+  
   
   function fillCategories()
   {
+    var y = 0;
     var x = 0;
+     document.forms[0].<%=ActionInputs.CATEGORY%>.options[x++] = new Option("<%=controller.getMessage("FORM_LABEL_WSDL_All")%>","<%=controller.getMessage("FORM_LABEL_WSDL_All")%>");
+     document.forms[0].<%=ActionInputs.CATEGORY%>.options[x++] = new Option("<%=controller.getMessage("FORM_LABEL_WSDL_SOURCE_FAVORITES")%>","<%=controller.getMessage("FORM_LABEL_WSDL_SOURCE_FAVORITES")%>");
 <%
    {
      WebServiceCategory[] categories = WebServiceFinder.instance().getWebServiceCategories();
      for (int i=0;i<categories.length;i++)
      {
        String label = HTMLUtils.JSMangle(categories[i].getLabel());
+       if(categories[i].getId().equals("org.eclipse.wst.ws.internal.wsfinder.category.workspace")){
 %>
+    var y = x;
+<%    
+       }    
+%>    
     document.forms[0].<%=ActionInputs.CATEGORY%>.options[x++] = new Option("<%=label%>","<%=label%>");
 <%       
      }
-   }
+   } 
 %>
     if (document.forms[0].<%=ActionInputs.CATEGORY%>.options.length > 0)
     {
-      document.forms[0].<%=ActionInputs.CATEGORY%>.options[0].selected = true;
-      fillWSDLFilesByCategory(document.forms[0].<%=ActionInputs.CATEGORY%>.options[0].value);
+      document.forms[0].<%=ActionInputs.CATEGORY%>.options[y].selected = true;
+      fillWSDLFilesByCategory(document.forms[0].<%=ActionInputs.CATEGORY%>.options[y].value);
     }
+  
   }    
   
   function fillWebProjects()
@@ -110,8 +115,18 @@
     var currentNumberOfOptions = document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options.length;
     for (var i=0;i<currentNumberOfOptions;i++)
       document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[0] = null;
+    if (webServiceFinderLabel == "<%=HTMLUtils.JSMangle(controller.getMessage("FORM_LABEL_WSDL_All"))%>"){
+      document.getElementById("projects").style.display = "none"; 
+      fillAllWSDLFiles();
+    }
+    if (webServiceFinderLabel == "<%=HTMLUtils.JSMangle(controller.getMessage("FORM_LABEL_WSDL_SOURCE_FAVORITES"))%>"){
+      document.getElementById("projects").style.display = "none"; 
+      fillFavoriteWSDLFiles();
+    }
+    
 <%
    {
+         
      WebServiceFinder finder = WebServiceFinder.instance();
      WebServiceCategory[] categories = finder.getWebServiceCategories();
      for (int i=0;i<categories.length;i++)
@@ -121,15 +136,29 @@
     if (webServiceFinderLabel == "<%=HTMLUtils.JSMangle(category.getLabel())%>")
     {
     var x = 0;
+        
 <%
        Iterator it = finder.getWebServicesByCategory(category,null);
-       while(it.hasNext())
-       {
-         WebServiceInfo wsi = (WebServiceInfo)it.next();
-         String wsdl = HTMLUtils.JSMangle(wsi.getWsdlURL());
+       if(category.getId().equals("org.eclipse.wst.ws.internal.wsfinder.category.workspace")){
+       mainCategory = category;
+%>
+      document.getElementById("projects").style.display = ""; 
+      fillWebProjects();
+<%
+       }
+       else{
+%>
+      document.getElementById("projects").style.display = "none";
+      
+<%  
+         while(it.hasNext())
+         {
+           WebServiceInfo wsi = (WebServiceInfo)it.next();
+           String wsdl = HTMLUtils.JSMangle(wsi.getWsdlURL());
 %>
       document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[x++] = new Option("<%=wsdl%>", "<%=wsdl%>"); 
 <%
+         }
        }
 %>
     }
@@ -137,6 +166,45 @@
      }
    }
 %>
+  }
+  
+  function fillAllWSDLFiles()
+  {
+    var x = 0;
+    var currentNumberOfOptions = document.forms[0].webProjectWSDLURL.options.length;
+    for (var i=0;i<currentNumberOfOptions;i++)
+      document.forms[0].webProjectWSDLURL.options[0] = null;
+<%
+     TreeSet urls = new TreeSet();
+     Iterator wsIterator = WebServiceFinder.instance().getWebServices(null);    
+     while (wsIterator.hasNext())
+     {
+       WebServiceInfo wsInfo = (WebServiceInfo)wsIterator.next();
+       String wsdl = HTMLUtils.JSMangle(wsInfo.getWsdlURL());
+       urls.add(wsdl);
+     }
+     
+     FavoritesPerspective favoritesPerspective = controller.getFavoritesPerspective();
+     NodeManager favoritesNodeManager = favoritesPerspective.getNodeManager();
+     TreeElement favoritesMainElement = favoritesNodeManager.getRootNode().getTreeElement();
+     TreeElement favoriteWSDLServicesElement = (TreeElement)(favoritesMainElement.getElements(FavoritesModelConstants.REL_WSDL_SERVICE_FOLDER_NODE).nextElement());
+     Enumeration favoriteWSDLServiceElements = favoriteWSDLServicesElement.getElements(FavoritesModelConstants.REL_WSDL_SERVICE_NODE);
+     while (favoriteWSDLServiceElements.hasMoreElements())
+     {
+       FavoritesWSDLServiceElement favoriteWSDLServiceElement = (FavoritesWSDLServiceElement)favoriteWSDLServiceElements.nextElement();
+       String wsdl = HTMLUtils.JSMangle((favoriteWSDLServiceElement.getService().getDescriptions())[0].getLocation());
+       urls.add(wsdl);
+     }
+     Iterator iterator = urls.iterator();
+     while(iterator.hasNext()){
+       String wsdl = HTMLUtils.JSMangle(iterator.next().toString());
+%>
+     document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[x++] = new Option("<%=wsdl%>", "<%=wsdl%>"); 
+<%
+
+     }
+   
+%>      
   }
   
   function fillWSDLFiles(selectedWebProjectName)
@@ -165,7 +233,7 @@
          String httpsProtocol = "https://";
          wsdlURLs_.removeAllElements();
 
-		 Iterator ws = allWebServices.iterator();        
+		 Iterator ws = WebServiceFinder.instance().getWebServicesByCategory(mainCategory,null);        
 
          while (ws.hasNext())
          {
@@ -214,41 +282,29 @@
   
   function fillFavoriteWSDLFiles()
   {
+    var currentNumberOfOptions = document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options.length;
+    for (var i=0;i<currentNumberOfOptions;i++)
+      document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[0] = null;
     var x = 0;
 <%
-   FavoritesPerspective favoritesPerspective = controller.getFavoritesPerspective();
-   NodeManager favoritesNodeManager = favoritesPerspective.getNodeManager();
-   TreeElement favoritesMainElement = favoritesNodeManager.getRootNode().getTreeElement();
-   TreeElement favoriteWSDLServicesElement = (TreeElement)(favoritesMainElement.getElements(FavoritesModelConstants.REL_WSDL_SERVICE_FOLDER_NODE).nextElement());
-   Enumeration favoriteWSDLServiceElements = favoriteWSDLServicesElement.getElements(FavoritesModelConstants.REL_WSDL_SERVICE_NODE);
-   while (favoriteWSDLServiceElements.hasMoreElements())
+   Enumeration favoriteWSDLServiceElements2 = favoriteWSDLServicesElement.getElements(FavoritesModelConstants.REL_WSDL_SERVICE_NODE);
+   while (favoriteWSDLServiceElements2.hasMoreElements())
    {
-     FavoritesWSDLServiceElement favoriteWSDLServiceElement = (FavoritesWSDLServiceElement)favoriteWSDLServiceElements.nextElement();
+     FavoritesWSDLServiceElement favoriteWSDLServiceElement = (FavoritesWSDLServiceElement)favoriteWSDLServiceElements2.nextElement();
      String url = HTMLUtils.JSMangle((favoriteWSDLServiceElement.getService().getDescriptions())[0].getLocation());
 %>
-    document.forms[0].<%=ActionInputs.QUERY_INPUT_FAVORITE_WSDL_URL%>.options[x++] = new Option("<%=url%>","<%=url%>");
+    document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[x++] = new Option("<%=url%>","<%=url%>");
 <%     
    }
 %>  
+  
   }
   
-  function toggleForm(formIndex)
-  {
-    for (var i=0;i<sectionIds.length;i++)
-    {
-      if (i == formIndex)
-        document.getElementById(sectionIds[i]).style.display = "";
-      else
-        document.getElementById(sectionIds[i]).style.display = "none";
-    }  
-  }
+  
   
   function setDefaults()
   {
     fillCategories();
-    fillWebProjects();
-    fillFavoriteWSDLFiles();
-    document.getElementById(sectionIds[0]).style.display = "";
     var loadScreenTable = document.getElementById("loadScreen");
     if (loadScreenTable.rows.length > 0)
       loadScreenTable.deleteRow(0);
@@ -268,25 +324,13 @@
     </table>
     <div id="mainScreen" style="display:none;">
       <form style="margin-top:0">
-<%
-   if (wsdlType == ActionInputs.WSDL_TYPE_SERVICE)
-   {
-%>
+
         <table>
           <tr>
             <td> <%=controller.getMessage("FORM_LABEL_WSDL_SOURCE")%> </td>
           </tr>
-          <tr>
-            <td>               
-              <input type="radio" name="selectFrom" onClick="toggleForm(0)" checked><%=controller.getMessage("FORM_LABEL_WSDL_SOURCE_WEBPROJECTS")%>
-              <input type="radio" name="selectFrom" onClick="toggleForm(1)"><%=controller.getMessage("FORM_LABEL_WSDL_SOURCE_FAVORITES")%>
-            </td>
-          </tr>
         </table>
-<%              
-   }
-%>              
-        <div id="workbench" style="display:none;">
+        <div id="workbench" >
           <table width="95%" border=0 cellpadding=3 cellspacing=0>
             <tr>
               <td height=30 valign="bottom" class="labels"><%=controller.getMessage("FORM_LABEL_WSDL_CATEGORY")%></td>
@@ -298,16 +342,22 @@
                 <input type="button" value="<%=controller.getMessage("FORM_BUTTON_REFRESH")%>" onClick="document.location.reload()" class="button">
               </td>
             </tr>
-            <tr>
-              <td height=30 valign="bottom" class="labels"><%=controller.getMessage("FORM_LABEL_WEB_PROJECT")%></td>
-            </tr>
-            <tr>
-              <td nowrap>
-                <select name="<%=ActionInputs.PROJECT%>" onChange="fillWSDLFiles(this.value)" class="selectlist">
-                </select>
-                <input type="button" value="<%=controller.getMessage("FORM_BUTTON_REFRESH")%>" onClick="document.location.reload()" class="button">
-              </td>
-            </tr>
+          </table>    
+          <div id="projects" style="display:none;">          
+            <table width="95%" border=0 cellpadding=3 cellspacing=0>              
+              <tr>
+                <td height=30 valign="bottom" class="labels">Workspace Project</td>
+              </tr>
+              <tr>
+                <td nowrap>
+                  <select name="project" onChange="fillWSDLFiles(this.value)" class="selectlist">
+                  </select>
+                  <input type="button" value="Refresh" onClick="document.location.reload()" class="button">
+                </td>
+              </tr>
+            </table>
+          </div>
+          <table>
             <tr>
               <td height=10 valign="bottom" class="labels"><%=controller.getMessage("FORM_LABEL_WSDL_URL")%></td>
             </tr>
@@ -330,28 +380,7 @@
             </tr>
           </table>
         </div>
-        <div id="favorites" style="display:none;">
-          <table width="95%" border=0 cellpadding=3 cellspacing=0>
-            <tr>
-              <td height=30 valign="bottom" class="labels"><%=controller.getMessage("FORM_LABEL_WSDL_URL")%></td>
-            </tr>
-            <tr>
-              <td>
-                <select name="<%=ActionInputs.QUERY_INPUT_FAVORITE_WSDL_URL%>" class="selectlist">
-              </td>
-          </table>
-          <table border=0 cellpadding=2 cellspacing=0>
-            <tr>
-              <td height=30 valign="bottom" nowrap align="left">
-                <input type="button" value="<%=controller.getMessage("FORM_BUTTON_GO")%>" onClick="top.opener.targetWSDLURLElement.value=this.form.<%=ActionInputs.QUERY_INPUT_FAVORITE_WSDL_URL%>.value;top.close()" class="button">
-              </td>
-              <td height=30 valign="bottom" nowrap align="left">
-                <input type="button" value="<%=controller.getMessage("FORM_BUTTON_CANCEL")%>" onClick="top.close()" class="button">
-              </td>
-              <td nowrap width="90%">&nbsp;</td>
-            </tr>
-          </table>          
-        </div>
+   
       </form>
     </div>
   </div>
