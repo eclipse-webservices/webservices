@@ -14,6 +14,7 @@
  * 20060410   135442 kathy@ca.ibm.com - Kathy Chan
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
  * 20060410   135562 joan@ca.ibm.com - Joan Haggarty
+ * 20060411   136167 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -667,16 +668,18 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	 public void setServiceEarProjectName(String name)
 	  {	  
 		 serviceEarProjectName_ = name;
-		 
-		 hLinkServiceEAR_.setVisible(needEar_);
-		 
-		 if (needEar_)
-		 {			 
-			 hLinkServiceEAR_.setText(SERVICE_EAR_PREFIX + " " + serviceEarProjectName_);
- 			 hLinkServiceEAR_.pack(true);
-		 }
+		 refreshEARLink();
 	  }
 	 
+	  public void refreshEARLink()
+	  {
+		  hLinkServiceEAR_.setVisible(needEar_);
+		  if (needEar_)
+		  {			 
+			  hLinkServiceEAR_.setText(SERVICE_EAR_PREFIX + " " + serviceEarProjectName_);
+			  hLinkServiceEAR_.pack(true);
+		  }
+	  }
 	 public void setServiceComponentType( String type )
 	  {
 		 serviceComponentType_ = type;
@@ -773,6 +776,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	  public void setServiceNeedEAR(boolean b)
 	  {
 		  needEar_ = b;
+		  refreshEARLink();
 	  }
 	  
 	  public boolean getServiceNeedEAR()

@@ -12,6 +12,7 @@
  * 20060407   135443 joan@ca.ibm.com - Joan Haggarty
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
  * 20060410   136030 kathy@ca.ibm.com - Kathy Chan
+ * 20060411   136167 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -615,16 +616,20 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   public void setClientEarProjectName(String name)
   {
     earProjectName_ = name;  
-    
-    hLinkClientEAR_.setVisible(needEar_);
-    
-    if (needEar_)
-    {    	
-		hLinkClientEAR_.setText(CLIENT_EAR_PREFIX + " " + earProjectName_);
-		hLinkClientEAR_.pack(true);  
-    }    		   
+    refreshEARLink();
+   		   
   }
   
+  public void refreshEARLink()
+  {
+	  hLinkClientEAR_.setVisible(needEar_);
+	  if (needEar_)
+	  {    	
+		  hLinkClientEAR_.setText(CLIENT_EAR_PREFIX + " " + earProjectName_);
+		  hLinkClientEAR_.pack(true);  
+	  }  
+  }
+	    
   public String getClientEarProjectName()
   {
 	  if (earProjectName_ == null)
@@ -635,6 +640,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   public void setClientNeedEAR(boolean b)
   {
      needEar_ = b;
+     refreshEARLink();
   } 
   
   public boolean getClientNeedEAR()
