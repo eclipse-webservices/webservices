@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060407   135443 joan@ca.ibm.com - Joan Haggarty
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
+ * 20060410   136030 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -601,7 +602,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   {
     projectName_ = name;      
 	hLinkClientProject_.setText(CLIENT_PROJECT_PREFIX + " " + projectName_);	
-	hLinkClientEAR_.pack(true);     
+	hLinkClientProject_.pack(true);     
   }
   
   public String getClientProjectName()
