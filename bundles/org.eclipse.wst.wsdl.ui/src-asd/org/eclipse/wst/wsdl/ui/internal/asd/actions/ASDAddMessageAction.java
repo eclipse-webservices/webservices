@@ -42,8 +42,4 @@ public class ASDAddMessageAction extends BaseSelectionAction {
 			}
 		}  
 	}
-	
-	protected boolean calculateEnabled() {
-		return true;
-	}
 }

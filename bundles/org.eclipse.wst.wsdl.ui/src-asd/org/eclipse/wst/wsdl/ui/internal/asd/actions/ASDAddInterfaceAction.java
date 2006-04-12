@@ -42,8 +42,4 @@ public class ASDAddInterfaceAction extends BaseSelectionAction {
 			}
 		}  
 	}
-	
-	protected boolean calculateEnabled() {
-		return true;
-	}
 }

@@ -19,11 +19,22 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11RenameCommand;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.IActionProvider;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
+import org.eclipse.wst.xml.core.internal.document.ElementImpl;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
+import org.eclipse.xsd.XSDConcreteComponent;
+import org.w3c.dom.Element;
 
 public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionProvider {
 	protected List listenerList = new ArrayList();
@@ -107,5 +118,38 @@ public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionP
 	
 	public Command getSetNameCommand(String newName) {
 		return new W11RenameCommand(this, newName);
+	}
+	
+	public boolean isReadOnly() {
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		
+		if (window != null && window.getActivePage() != null) {
+			IEditorPart editor = window.getActivePage().getActiveEditor();
+			
+			if (target instanceof WSDLElement && editor instanceof ASDMultiPageEditor) {
+				Definition definition = ((WSDLElement) target).getEnclosingDefinition();
+				W11Description description = (W11Description) ((ASDMultiPageEditor) editor).getModel();
+				if (!definition.equals(description.getTarget())) {
+					return true;
+				}
+			}
+		}
+		
+		return fallBackCheckIsReadOnly();
+	}
+	
+	private boolean fallBackCheckIsReadOnly() {
+		Element element = null;
+		if (target instanceof WSDLElement) {
+			element = ((WSDLElement) target).getElement();
+		}
+		else if (target instanceof XSDConcreteComponent) {
+			element = ((XSDConcreteComponent) target).getElement();
+		}
+		
+		if (element instanceof IDOMNode || element instanceof ElementImpl) {
+			return false;
+		}
+		return true;
 	}
 }

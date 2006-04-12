@@ -86,6 +86,8 @@ public class ParameterSection extends NameSection {
 		if (handleTypeScenario) {
 			refreshCombo();
 		}
+		
+		setControlForegroundColor(combo);
 	}
 	
 	protected void refreshCombo() {

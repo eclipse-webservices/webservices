@@ -73,12 +73,15 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
     previewLabel.setTextAlignment(Label.LEFT);  
     labelHolder.add(previewLabel);
     
-    
     contentPane = new ListFigure();  
     ToolbarLayout toolbarLayout2 = new ToolbarLayout(false);
     toolbarLayout2.setStretchMinorAxis(true);
     contentPane.setLayoutManager(toolbarLayout2);
     figure.add(contentPane);
+    
+    if (isReadOnly()) {
+    	label.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    }
         
     return figure;
   }
@@ -92,7 +95,7 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
   private DirectEditManager manager;
     
   public void performDirectEdit(Point cursorLocation){
-	  if (hitTest(label, cursorLocation)) {
+	  if (hitTest(label, cursorLocation) && !isReadOnly()) {
 		  manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		  manager.show();
 	  }

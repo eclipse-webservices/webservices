@@ -54,8 +54,4 @@ public class ASDAddOperationAction extends BaseSelectionAction {
 			}
 		}  
 	}
-	
-	protected boolean calculateEnabled() {
-		return true;
-	}
 }

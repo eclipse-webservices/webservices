@@ -96,6 +96,7 @@ public abstract class ReferenceSection extends NameSection {
 			}
 		}
 		
+		setControlForegroundColor(combo);
 		combo.addListener(SWT.Modify, this);
 	}
 	

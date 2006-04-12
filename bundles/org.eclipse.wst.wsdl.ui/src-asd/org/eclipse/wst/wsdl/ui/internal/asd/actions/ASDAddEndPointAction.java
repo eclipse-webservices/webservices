@@ -46,8 +46,4 @@ public class ASDAddEndPointAction extends BaseSelectionAction {
             }
 		}  
 	}
-	
-	protected boolean calculateEnabled() {
-		return true;
-	}
 }

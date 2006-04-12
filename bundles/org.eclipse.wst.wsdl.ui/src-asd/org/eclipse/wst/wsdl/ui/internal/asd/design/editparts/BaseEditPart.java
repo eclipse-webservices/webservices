@@ -24,6 +24,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
 public abstract class BaseEditPart extends AbstractGraphicalEditPart implements IActionProvider, IASDObjectListener, IFeedbackHandler
 {
   protected static final String[] EMPTY_ACTION_ARRAY = {};
+  
   public String[] getActions(Object object)
   {
     Object model = getModel();
@@ -88,5 +89,14 @@ public abstract class BaseEditPart extends AbstractGraphicalEditPart implements 
 	  Rectangle finalB = new Rectangle(newX, newY, origB.width, origB.height);
 
 	  return finalB.contains(location);
+  }
+  
+  public boolean isReadOnly() {
+	  Object model = getModel();
+	  if (model instanceof IASDObject) {
+		  return ((IASDObject) model).isReadOnly();
+	  }
+	  
+	  return false;
   }
 }

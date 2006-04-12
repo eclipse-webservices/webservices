@@ -75,6 +75,7 @@ public class NameSection extends ASDAbstractSection {
 		}
 		
 		nameText.setText(name);
+		setControlForegroundColor(nameText);
 		setListenerEnabled(true);
 	}
 	

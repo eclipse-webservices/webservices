@@ -90,9 +90,9 @@ public class DesignViewContextMenuProvider extends ContextMenuProvider
         	}
         	else {
 	            IAction action = registry.getAction(id);
-	            if (action != null)
-	            {  
-	              currentMenu.add(action);
+	            if (action != null) {
+	            	action.isEnabled();
+	            	currentMenu.add(action);
 	            }
         	}
         }

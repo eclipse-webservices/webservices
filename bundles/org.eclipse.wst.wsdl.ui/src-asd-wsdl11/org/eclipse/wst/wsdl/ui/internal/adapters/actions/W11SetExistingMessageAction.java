@@ -55,8 +55,4 @@ public class W11SetExistingMessageAction extends BaseSelectionAction {
 		
 		messageReference = null;
 	}
-	
-	protected boolean calculateEnabled() {
-		return true;
-	}
 }

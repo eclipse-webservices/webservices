@@ -53,6 +53,10 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 	    parameterType.setBorder(new MarginBorder(4,12,4,12));
         figure.add(parameterType);
         
+        if (isReadOnly()) {
+        	parameterType.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+        }
+        
 	    return figure;
 	  }
 

@@ -37,6 +37,8 @@ public interface DesignViewGraphicsConstants
   public final static Color tableCellSelectionColor = new Color(null, 238, 232, 170); //new Color(null, 240, 230, 140); //1, 15, 42);
 
   public final static Color readOnlyBackgroundColor = ColorConstants.white;
+  public final static Color readOnlyLabelColor = ColorConstants.gray;
+  public final static Color labelColor = ColorConstants.black;
 
   public final static Font  smallBoldFont           = new Font(Display.getCurrent(), "Tahoma", 8, SWT.BOLD);
   public final static Font  mediumFont              = new Font(Display.getCurrent(), "Tahoma", 10, SWT.NONE);

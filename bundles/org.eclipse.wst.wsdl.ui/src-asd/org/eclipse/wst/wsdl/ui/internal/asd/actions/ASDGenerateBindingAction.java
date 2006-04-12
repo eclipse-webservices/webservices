@@ -37,8 +37,4 @@ public class ASDGenerateBindingAction extends BaseSelectionAction {
 			}
 		}  
 	}
-	
-	protected boolean calculateEnabled() {
-		return true;
-	}
 }

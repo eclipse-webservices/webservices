@@ -50,8 +50,4 @@ public class ASDAddInputAction extends BaseSelectionAction {
 			}
 		}  
 	}
-	
-	protected boolean calculateEnabled() {
-		return true;
-	}
 }

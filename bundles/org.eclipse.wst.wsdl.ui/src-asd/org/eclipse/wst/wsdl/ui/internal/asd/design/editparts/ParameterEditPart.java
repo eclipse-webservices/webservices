@@ -104,6 +104,9 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
     
     labelImage = ((IParameter) getModel()).getImage();
     
+    if (isReadOnly()) {
+    	parameterName.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    }
     return figure;
   }
   
@@ -116,7 +119,7 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
   private DirectEditManager manager;
   
   public void performDirectEdit(Point cursorLocation){
-	  if (hitTest(parameterName, cursorLocation)) {
+	  if (hitTest(parameterName, cursorLocation) && !isReadOnly()) {
 		manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		manager.show();
 	  }

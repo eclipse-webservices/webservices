@@ -24,6 +24,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.tools.DirectEditManager;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.LabelCellEditorLocator;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.LabelEditManager;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDLabelDirectEditPolicy;
@@ -63,7 +64,6 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
     figure.setLayoutManager(toolbarLayout);    
     headingFigure = new HeadingFigure();
    	headingFigure.getLabel().setIcon(((IService) getModel()).getImage());	
-
     figure.add(headingFigure);
         
     contentPane = new Figure()
@@ -91,6 +91,11 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
     toolbarLayout2.setStretchMinorAxis(true);   
     contentPane.setLayoutManager(toolbarLayout2);
     figure.add(contentPane);
+    
+    if (isReadOnly()) {
+    	headingFigure.getLabel().setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    }
+    
     return figure;
   }
   
@@ -108,7 +113,7 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
   private DirectEditManager manager;
   
   public void performDirectEdit(Point cursorLocation){
-	  if (hitTest(headingFigure.getLabel(), cursorLocation)) {
+	  if (hitTest(headingFigure.getLabel(), cursorLocation) && !isReadOnly()) {
 		  manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		  manager.show();
 	  }

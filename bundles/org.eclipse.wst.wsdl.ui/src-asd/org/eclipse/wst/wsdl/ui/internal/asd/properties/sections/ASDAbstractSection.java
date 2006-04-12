@@ -24,6 +24,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -33,6 +34,7 @@ import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.ui.views.properties.tabbed.ISection;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
 
@@ -74,12 +76,9 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
 		elementModel = input;
 		attachListener(elementModel);
 		
-		// TODO: Need some other way to determine if it's read-only
-//		ModelAdapter adapter = WSDLGraphModelAdapterFactory.getWSDLGraphModelAdapterFactory().getAdapter(input);
-//		if (adapter != null)
-//		{
-//		isReadOnly = Boolean.TRUE.equals(adapter.getProperty(input, "isReadOnly")); //$NON-NLS-1$
-//		}
+		if (input instanceof IASDObject) {
+			isReadOnly = ((IASDObject) input).isReadOnly();
+		}
 		
 		refresh();
 	}
@@ -325,6 +324,17 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
 		while (it.hasNext()) {
 			Object item = it.next();
 			((IASDObject) item).unregisterListener(this);
+		}
+	}
+	
+	protected void setControlForegroundColor(Control control) {
+		if (control != null) {
+			if (isReadOnly) {
+				control.setForeground(DesignViewGraphicsConstants.readOnlyLabelColor);
+			}
+			else {
+				control.setForeground(DesignViewGraphicsConstants.labelColor);
+			}
 		}
 	}
 }

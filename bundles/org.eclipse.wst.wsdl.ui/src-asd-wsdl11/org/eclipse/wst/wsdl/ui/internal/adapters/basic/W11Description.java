@@ -35,6 +35,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddServiceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
+import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 
 public class W11Description extends WSDLBaseAdapter implements IDescription {
 	protected W11CategoryAdapter getCategory(int categoryId) {
@@ -107,21 +108,27 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 	
 	public List getServices() {
 		List adapterList = new ArrayList();
-		populateAdapterList(((Definition) target).getEServices(), adapterList);
-
+		ComponentReferenceUtil util = new ComponentReferenceUtil((Definition) getTarget());
+		List services = util.getServices();
+		populateAdapterList(services, adapterList);
+		
 		return adapterList;
 	}
 
 	public List getBindings() {
 		List adapterList = new ArrayList();
-		populateAdapterList(((Definition) target).getEBindings(), adapterList);
+		ComponentReferenceUtil util = new ComponentReferenceUtil((Definition) getTarget());
+		List bindings = util.getBindings();
+		populateAdapterList(bindings, adapterList);
 
 		return adapterList;
 	}
 
 	public List getInterfaces() {
 		List adapterList = new ArrayList();
-		populateAdapterList(((Definition) target).getEPortTypes(), adapterList);
+		ComponentReferenceUtil util = new ComponentReferenceUtil((Definition) getTarget());
+		List portTypes = util.getPortTypes();
+		populateAdapterList(portTypes, adapterList);
 
 		return adapterList;
 	}
@@ -143,7 +150,9 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 	
 	public List getMessages() {
 		List adapterList = new ArrayList();
-		populateAdapterList(((Definition) target).getEMessages(), adapterList);
+		ComponentReferenceUtil util = new ComponentReferenceUtil((Definition) getTarget());
+		List messages = util.getMessages();
+		populateAdapterList(messages, adapterList);
 
 		return adapterList;
 	}

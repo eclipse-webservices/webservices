@@ -54,6 +54,10 @@ public abstract class AbstractModelCollection implements IASDObject, ITreeElemen
 	  return null;
   }
   
+  public boolean isReadOnly() {
+	  return false;
+  }
+  
   public void registerListener(IASDObjectListener listener)
   {
     model.registerListener(listener);

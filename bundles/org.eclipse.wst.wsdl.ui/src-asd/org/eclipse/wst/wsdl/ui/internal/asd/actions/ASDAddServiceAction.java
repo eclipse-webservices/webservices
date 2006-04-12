@@ -42,8 +42,4 @@ public class ASDAddServiceAction extends BaseSelectionAction {
 			}
 		}  
 	}
-	
-	protected boolean calculateEnabled() {
-		return true;
-	}
 }

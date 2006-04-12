@@ -47,8 +47,4 @@ public abstract class ASDDragAction extends BaseSelectionAction {
 	public IFigure getFeedbackFigure() {
 		return null;
 	}
-	
-	public boolean calculateEnabled() {
-		return true;
-	}
 }

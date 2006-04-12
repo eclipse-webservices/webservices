@@ -17,8 +17,10 @@ import java.util.List;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 
 public abstract class BaseSelectionAction extends SelectionAction
 {
@@ -68,5 +70,15 @@ public abstract class BaseSelectionAction extends SelectionAction
 	  }
 	  
 	  return processedObjects;
+  }
+  
+  protected boolean calculateEnabled() {
+	  Object selection = ((IStructuredSelection) getSelection()).getFirstElement();
+	  
+	  if (selection instanceof IASDObject) {
+		  return  !((IASDObject) selection).isReadOnly();
+	  }
+	  
+	  return true;
   }
 }

@@ -111,7 +111,8 @@ public class W11MessageReferenceSection extends NameSection {
 		else {
 			combo.setText(refName);
 		}
-		
+
+		setControlForegroundColor(combo);
 		setListenerEnabled(true);
 
 

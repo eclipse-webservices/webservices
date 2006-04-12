@@ -42,8 +42,4 @@ public class ASDAddSchemaAction extends BaseSelectionAction {
 			}
 		}  
 	}
-	
-	protected boolean calculateEnabled() {
-		return true;
-	}
 }

@@ -55,8 +55,4 @@ public class W11SetExistingTypeAction extends BaseSelectionAction {
 		
 		wsdlBaseAdapter = null;
 	}
-	
-	protected boolean calculateEnabled() {
-		return true;
-	}
 }

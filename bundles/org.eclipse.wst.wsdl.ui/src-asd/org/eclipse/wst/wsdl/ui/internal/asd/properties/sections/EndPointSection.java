@@ -108,6 +108,8 @@ public class EndPointSection extends ReferenceSection {
 			protocolValueLabel.setText(protocolValue);
 		}
 		
+		setControlForegroundColor(addressText);
+		setControlForegroundColor(protocolValueLabel);
 		addressText.addListener(SWT.Modify, this);
 	}
 	

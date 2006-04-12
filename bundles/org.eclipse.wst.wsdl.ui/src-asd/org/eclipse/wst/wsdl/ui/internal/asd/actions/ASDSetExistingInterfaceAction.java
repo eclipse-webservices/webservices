@@ -59,8 +59,4 @@ public class ASDSetExistingInterfaceAction extends BaseSelectionAction {
 		
 		binding = null;
 	}
-	
-	protected boolean calculateEnabled() {
-		return true;
-	}
 }

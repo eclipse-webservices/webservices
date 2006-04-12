@@ -22,6 +22,7 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDDragAndDropEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDGraphNodeDragTracker;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
@@ -87,6 +88,11 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     rowLayout.setConstraint(label, "MessageLabel");
     //rowLayout.setConstraint(partsList, "PartsList");
     rowLayout.setConstraint(contentPane, "MessageContentPane");
+    
+    if (isReadOnly()) {
+    	label.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    }
+    
     return figure;
   }
   

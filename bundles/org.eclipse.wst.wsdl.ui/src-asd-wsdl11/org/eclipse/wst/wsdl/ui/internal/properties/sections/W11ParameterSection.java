@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.properties.sections;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
@@ -32,7 +31,6 @@ import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDElementReferenceEditManager;
 
 public class W11ParameterSection extends ParameterSection {
-	protected CCombo typeOrElementCombo;
 	protected Button typeRadio;
 	protected Button elementRadio;
 	
@@ -189,6 +187,8 @@ public class W11ParameterSection extends ParameterSection {
 			}
 		}
 	
+		setControlForegroundColor(elementRadio);
+		setControlForegroundColor(typeRadio);
 		
 		super.refresh();
 	}

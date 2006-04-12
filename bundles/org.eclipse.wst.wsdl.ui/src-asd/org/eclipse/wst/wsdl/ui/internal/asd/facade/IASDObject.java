@@ -14,5 +14,7 @@ package org.eclipse.wst.wsdl.ui.internal.asd.facade;
 public interface IASDObject
 {
     public void registerListener(IASDObjectListener listener);
-    public void unregisterListener(IASDObjectListener listener);  
+    public void unregisterListener(IASDObjectListener listener);
+    
+    public boolean isReadOnly();
 }

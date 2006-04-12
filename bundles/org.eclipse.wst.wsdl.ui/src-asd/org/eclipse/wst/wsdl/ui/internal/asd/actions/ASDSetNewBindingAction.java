@@ -59,8 +59,4 @@ public class ASDSetNewBindingAction extends BaseSelectionAction {
 		
 		endPoint = null;
 	}
-	
-	protected boolean calculateEnabled() {
-		return true;
-	}
 }
