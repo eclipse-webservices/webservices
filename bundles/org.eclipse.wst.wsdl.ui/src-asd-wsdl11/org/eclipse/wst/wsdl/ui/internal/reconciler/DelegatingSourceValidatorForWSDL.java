@@ -10,8 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.reconciler;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.wst.validation.internal.ConfigurationManager;
+import org.eclipse.wst.validation.internal.ProjectConfiguration;
 import org.eclipse.wst.validation.internal.ValidationRegistryReader;
+import org.eclipse.wst.validation.internal.ValidatorMetaData;
 import org.eclipse.wst.validation.internal.provisional.core.IValidator;
+import org.eclipse.wst.xml.ui.internal.Logger;
 import org.eclipse.wst.xml.ui.internal.validation.DelegatingSourceValidator;
 
 /**
@@ -41,4 +48,20 @@ public class DelegatingSourceValidatorForWSDL extends DelegatingSourceValidator
     } 
     return null;
   }
+  
+	protected boolean isDelegateValidatorEnabled(IFile file) {
+		boolean enabled = true;
+		try {
+			ProjectConfiguration configuration = ConfigurationManager.getManager().getProjectConfiguration(file.getProject());
+			ValidatorMetaData vmd = ValidationRegistryReader.getReader().getValidatorMetaData(VALIDATOR_CLASS);
+			if (configuration.isBuildEnabled(vmd) || configuration.isManualEnabled(vmd))
+				enabled = true;
+			else
+				enabled = false;
+		}
+		catch (InvocationTargetException e) {
+			Logger.log(Logger.WARNING_DEBUG, e.getMessage(), e);
+		}
+		return enabled;
+	}
 }
