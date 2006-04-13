@@ -38,6 +38,14 @@
                fullBuild="true"
                incremental="true">
          </run>
+         <markerId markerIdValue="org.eclipse.wst.wsdl.validationMarker"/>
       </validator>
+   </extension>
+   <extension
+         id="org.eclipse.wst.wsdl.validationMarker"
+         name="%_UI_WSDL_VALIDATOR_MARKER"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.wst.validation.problemmarker"/>
+      <persistent value="true"/>
    </extension>
 </plugin>
