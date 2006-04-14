@@ -29,7 +29,7 @@ import org.eclipse.wst.xml.ui.internal.validation.DelegatingSourceValidator;
 public class DelegatingSourceValidatorForWSDL extends DelegatingSourceValidator
 {
 
-  final private static String VALIDATOR_CLASS = "org.eclipse.wst.wsdl.internal.validation.eclipse.WSDLDelegatingValidator"; //$NON-NLS-1$ 
+  final private static String VALIDATOR_CLASS = "org.eclipse.wst.wsdl.validation.internal.eclipse.WSDLDelegatingValidator"; //$NON-NLS-1$ 
 
   public DelegatingSourceValidatorForWSDL()
   { 
