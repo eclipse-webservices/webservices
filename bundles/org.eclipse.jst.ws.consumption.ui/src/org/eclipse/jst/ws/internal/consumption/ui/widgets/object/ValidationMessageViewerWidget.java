@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060411   136134 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -45,7 +48,11 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
   private TableViewer tableViewer_;
   private Table table_;
   private String message = null;
-  static final String columns_[] = {"severity", "line", "column", "message"};
+  static final String columns_[] = {ConsumptionUIMessages.TABLE_COLUMN_VALIDATION_SEVERITY,
+		ConsumptionUIMessages.TABLE_COLUMN_VALIDATION_LINE,
+		ConsumptionUIMessages.TABLE_COLUMN_VALIDATION_COLUMN,
+		ConsumptionUIMessages.TABLE_COLUMN_VALIDATION_MESSAGE};
+
   static final int columnsWidth_[] = {10, 10, 10, 60};
 
   

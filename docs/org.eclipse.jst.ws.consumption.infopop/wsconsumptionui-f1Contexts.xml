@@ -307,7 +307,7 @@
 
 <context id="PWSM0014">
 <!-- Folder field of the Sample Page -->
-<description>Folder into which the fully qualified proxy is generated. Defaults to the source folder inside of your Web project.Folder into which the fully qualified proxy is generated. Defaults to the source folder inside of your Web project.</description>
+<description>Folder into which the fully qualified proxy is generated. Defaults to the source folder inside of your Web project.</description>
 </context>
 
 <context id="PWSM0015">

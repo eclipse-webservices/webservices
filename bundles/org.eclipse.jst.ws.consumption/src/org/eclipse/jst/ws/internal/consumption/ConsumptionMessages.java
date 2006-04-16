@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060217   126757 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption;
 
@@ -102,7 +105,10 @@ public final class ConsumptionMessages extends NLS {
     public static String MSG_ERROR_PROJECT_DOES_NOT_EXIST;
     public static String MSG_ERROR_PROJECT_IS_NOT_OPEN;
     public static String MSG_ERROR_ADDING_FACETS_TO_PROJECT;
+    public static String MSG_ERROR_FIXED_FACETS;
     public static String MSG_FACETS;
+    public static String MSG_ERROR_SETTING_RUNTIME;
+    
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, ConsumptionMessages.class);
