@@ -203,7 +203,11 @@ public class WSDLDocument
         else
         {
           ImportHolder ih = new ImportHolder(namespaceURI, locationURI, def.getDocumentBaseURI(), this, depth+1, tempEl, messagegenerator, valinfo);
-          importedDefs.add(ih);
+          // Only add the import to the list if it is not an import for this document.
+          if(!documentBaseURI.equals(ih.getLocation()))
+          {
+            importedDefs.add(ih);
+          }
         }
         setLocation(tempEl, tempEl);
 //        if (importedDefs == null)
