@@ -14,7 +14,6 @@ Export-Package: org.eclipse.wst.ws.internal.explorer;x-internal:=true,
  org.eclipse.wst.ws.internal.explorer.popup;x-internal:=true
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
- org.eclipse.tomcat,
  org.eclipse.help.appserver,
  org.eclipse.ui,
  org.eclipse.emf.common,
