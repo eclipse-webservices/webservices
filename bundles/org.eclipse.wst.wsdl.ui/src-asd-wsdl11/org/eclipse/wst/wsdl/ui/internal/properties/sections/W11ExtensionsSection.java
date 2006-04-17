@@ -21,11 +21,14 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.ExtensibleElement;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.commands.AddExtensionElementCommand;
 import org.eclipse.wst.xsd.ui.internal.common.commands.AddExtensionCommand;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.AbstractExtensionsSection;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.DOMExtensionTreeContentProvider;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.DOMExtensionTreeLabelProvider;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.ExtensionsSchemasRegistry;
+import org.eclipse.xsd.XSDAttributeDeclaration;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.w3c.dom.Element;
 
 public class W11ExtensionsSection extends AbstractExtensionsSection
@@ -39,14 +42,31 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
 
   protected AddExtensionCommand getAddExtensionCommand(Object o)
   {
-    // TODO Auto-generated method stub
-    return null;
+    AddExtensionCommand addExtensionCommand = null;
+    if (input instanceof ExtensibleElement)
+    {  
+      if (o instanceof XSDElementDeclaration)
+      {
+        XSDElementDeclaration element = (XSDElementDeclaration) o;
+        addExtensionCommand = new AddExtensionElementCommand("Add Extension Element", (ExtensibleElement)input, element);
+      }
+      else if (o instanceof XSDAttributeDeclaration)
+      {
+        // TODO (cs) need to implement this
+      }
+    }
+    return addExtensionCommand;
   }
 
   protected Command getRemoveExtensionCommand(Object o)
   {
     // TODO Auto-generated method stub
     return null;
+  }
+  
+  protected ExtensionsSchemasRegistry getExtensionsSchemasRegistry()
+  {
+    return WSDLEditorPlugin.getInstance().getExtensionsSchemasRegistry();
   }
  
   static class WSDLExtensionTreeContentProvider extends DOMExtensionTreeContentProvider
