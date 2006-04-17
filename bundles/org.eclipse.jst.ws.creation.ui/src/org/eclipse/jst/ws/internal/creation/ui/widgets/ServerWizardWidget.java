@@ -15,6 +15,7 @@
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
  * 20060410   135562 joan@ca.ibm.com - Joan Haggarty
  * 20060411   136167 kathy@ca.ibm.com - Kathy Chan
+ * 20060417   136390/136391/136159 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -122,10 +123,12 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	private Boolean installService_;
 
 	private boolean displayPreferences_;
+	private boolean preferencesPage_;
 
 	private Composite groupComposite_;
 	private Composite hCompService_;
 	private WebServiceClientTypeWidget clientWidget_;
+    private Label serviceLabel_;
 	private Combo webserviceType_;
 	private Text serviceImpl_;
 	private Scale serviceScale_;
@@ -165,8 +168,13 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
     private String SERVICE_PROJECT_PREFIX = ConsumptionUIMessages.LABEL_SERVICE_PROJECT;
     private String SERVICE_EAR_PREFIX = ConsumptionUIMessages.LABEL_SERVICE_EAR_PROJECT;
 	
-	public ServerWizardWidget(boolean displayPreferences) {
+    /**
+     * @param displayPreferences Set to true if preferences such as overwrite should be displayed on the wizard page
+     * @param prefPage  Set to true if the widget is being used on the preferences page.  Alters widget layout.
+     */
+	public ServerWizardWidget(boolean displayPreferences, boolean prefPage) {
 		displayPreferences_ = displayPreferences;
+		preferencesPage_ = prefPage;
 		initImageRegistry();
 	}
 	
@@ -179,48 +187,58 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		utils.createInfoPop(parent, INFOPOP_WSWSCEN_PAGE);
 		
 		Composite typeComposite = utils.createComposite(parent, 3);
-
-		// Create webservice combo box.
-		webserviceType_ = utils.createCombo(typeComposite,
-				ConsumptionUIMessages.LABEL_WEBSERVICETYPE,
-				ConsumptionUIMessages.TOOLTIP_PWPR_COMBO_TYPE,
-				INFOPOP_WSWSCEN_COMBO_SERVICETYPE, SWT.SINGLE | SWT.BORDER
-						| SWT.READ_ONLY);
+			
+		webserviceType_  = utils.createCombo(typeComposite, 
+		        ConsumptionUIMessages.LABEL_WEBSERVICETYPE, 
+				ConsumptionUIMessages.TOOLTIP_PWPR_COMBO_TYPE, 
+				INFOPOP_WSWSCEN_COMBO_SERVICETYPE, SWT.SINGLE | SWT.BORDER 
+				| SWT.READ_ONLY); 			
 		GridData gdata1 = (GridData) webserviceType_.getLayoutData();
 		gdata1.horizontalSpan = 2;
 		webserviceType_.setLayoutData(gdata1);
-		
+
 		webserviceType_.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			
 			public void widgetSelected(SelectionEvent e) {
 			   objectSelectionWidget_ = getSelectionWidget();
-		       // jvh - not sure if we should clear obj selection field once type is changed?   
-			   // serviceImpl_.setText("");
-			}
-			
+			   
+			   //change the label for the service implementation/definition based on the web service type
+			   handleTypeChange();
+			}			
 		});
+		
 		webserviceType_.addListener(SWT.Modify, statusListener);
 		
-		// Create text field and browse for object selection
-		//TODO: add text listener for the field so users can type - for now READ_ONLY
-		serviceImpl_ = utils.createText(typeComposite, ConsumptionUIMessages.LABEL_WEBSERVICEIMPL, 
-				ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL,
-				INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL, SWT.LEFT | SWT.BORDER | SWT.READ_ONLY);
-		browseButton_ = utils.createPushButton(typeComposite,
-				ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
-		
-	    browseDialog_ = new ServiceImplSelectionDialog(Workbench.getInstance().getActiveWorkbenchWindow().getShell(), 
-			  						new PageInfo(ConsumptionUIMessages.DIALOG_TITILE_SERVICE_IMPL_SELECTION, "", 
-			                        new WidgetContributorFactory()
-			  						{	
-			  							public WidgetContributor create()
-			  							{	  						 
-			  							   return new ObjectSelectionWidget();
-			  							}
-			  						}));		
-		browseButton_.addSelectionListener(new ServiceImplBrowseListener());
-		browseButton_.addListener(SWT.Modify, statusListener);  //jvh - added for validation on object selection?
+		// Create text field and browse for object selection if not on preferences page
+		if (!preferencesPage_)
+		{
+			//text of this label is based on the web service type selected in webserviceType_ combo
+			serviceLabel_ = new Label( typeComposite, SWT.WRAP);
+			serviceLabel_.setText(ConsumptionUIMessages.LABEL_WEBSERVICEIMPL);
+			serviceLabel_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL);
+			
+			serviceImpl_ = new Text(typeComposite, SWT.LEFT | SWT.BORDER | SWT.READ_ONLY);
+			GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);		    
+			serviceImpl_.setLayoutData( griddata );
+			serviceImpl_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL);
+			utils.createInfoPop(serviceImpl_, INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL);
+			
+			browseButton_ = utils.createPushButton(typeComposite,
+					ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
+			
+		    browseDialog_ = new ServiceImplSelectionDialog(Workbench.getInstance().getActiveWorkbenchWindow().getShell(), 
+				  						new PageInfo(ConsumptionUIMessages.DIALOG_TITILE_SERVICE_IMPL_SELECTION, "", 
+				                        new WidgetContributorFactory()
+				  						{	
+				  							public WidgetContributor create()
+				  							{	  						 
+				  							   return new ObjectSelectionWidget();
+				  							}
+				  						}));		
+			browseButton_.addSelectionListener(new ServiceImplBrowseListener());
+			browseButton_.addListener(SWT.Modify, statusListener);  
+		}
 		
 		// Service Lifecycle section - scales for service & client, graphic
 		
@@ -352,9 +370,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		utils.createHorizontalSeparator(parent, 1);		
 		
 		// Add client widgets...
-		clientWidget_ = new WebServiceClientTypeWidget();
+		clientWidget_ = new WebServiceClientTypeWidget(false);
 	    clientWidget_.addControls(parent, statusListener );
-	    clientWidget_.setClientOnly(false);
 	    clientWidget_.enableClientSlider(serviceScale_.getSelection()<=ScenarioContext.WS_START);
 		
 		// Advanced buttons section
@@ -386,7 +403,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		projectDialog_.setProjectComponentType(getServiceComponentType());
 		projectDialog_.setNeedEAR(getServiceNeedEAR());
 		
-		int status = projectDialog_.open();  //jvh validation on settings??
+		int status = projectDialog_.open();  
 		if (status == Window.OK)
 		{
 			setServiceProjectName(projectDialog_.getProjectName());
@@ -428,6 +445,22 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	public Boolean getInstallClient() {		
 		return clientWidget_.getInstallClient();
 	}
+	
+	private void handleTypeChange()
+	{
+		   int index = webserviceType_.getSelectionIndex();	
+		   String typeId = labelIds_.getIds_()[index];
+		   int scenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeId);
+		   
+		   if (scenario == WebServiceScenario.BOTTOMUP)
+		   {
+			  serviceLabel_.setText(ConsumptionUIMessages.LABEL_WEBSERVICEIMPL);
+		   }
+		   else if (scenario == WebServiceScenario.TOPDOWN)
+		   {
+			   serviceLabel_.setText(ConsumptionUIMessages.LABEL_WEBSERVICEDEF);
+		   }
+     }
 
 	public void setServiceTypeRuntimeServer(TypeRuntimeServer ids) {
 		LabelsAndIds labelIds = WebServiceRuntimeExtensionUtils2
@@ -447,6 +480,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 				break;
 			}
 		}
+		
 		webserviceType_.select(selection);
 		webserviceType_.addListener(SWT.Modify, statusListener_);
 		
@@ -460,7 +494,9 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			hLinkServiceRuntime_.setText(SERVICE_RUNTIME_PREFIX + " " + serviceRuntimeText);
 			groupComposite_.pack(true);
 		}				
+		
 		labelIds_ = labelIds;
+		handleTypeChange();
 		
 		if (projectDialog_ != null)
 			projectDialog_.setTypeRuntimeServer(ids_);

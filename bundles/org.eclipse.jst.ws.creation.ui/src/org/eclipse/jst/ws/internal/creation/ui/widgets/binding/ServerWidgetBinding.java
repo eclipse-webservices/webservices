@@ -14,6 +14,7 @@
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060407   135415 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060410   135562 joan@ca.ibm.com - Joan Haggarty
+ * 20060417   136391 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -256,7 +257,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
 				        {
 				          public WidgetContributor create()
 				          {
-				            return new ServerWizardWidget( true );
+				            return new ServerWizardWidget( true, false );
 				          }
 				        } );
 

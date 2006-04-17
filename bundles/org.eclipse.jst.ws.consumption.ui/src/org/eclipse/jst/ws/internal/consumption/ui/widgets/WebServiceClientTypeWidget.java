@@ -13,6 +13,7 @@
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
  * 20060410   136030 kathy@ca.ibm.com - Kathy Chan
  * 20060411   136167 kathy@ca.ibm.com - Kathy Chan
+ * 20060417   136390 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -126,7 +127,8 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	private String CLIENT_PROJECT_PREFIX = ConsumptionUIMessages.LABEL_CLIENT_PROJECT;
 	private String CLIENT_EAR_PREFIX = ConsumptionUIMessages.LABEL_CLIENT_EAR_PROJECT;
     
-  public WebServiceClientTypeWidget() {
+  public WebServiceClientTypeWidget(boolean clientOnly) {
+	    clientOnly_ = clientOnly;
 		initImageRegistry();
 	}
   
@@ -193,7 +195,10 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		
 	topologySpot_ = new Label(clientScaleComposite_ , SWT.CENTER | SWT.BORDER );
 	topologySpot_.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
-	topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
+	if (clientOnly_)
+		topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT_ONLY);
+	else
+		topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
 	
 	GridData layoutData = new GridData();
 	layoutData.verticalAlignment=SWT.BEGINNING;
@@ -299,11 +304,6 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	showSummary(enable && (selection <= ScenarioContext.WS_DEVELOP));
   }
   
-  public void setClientOnly(boolean b)
-	{
-		clientOnly_ = b;
-	}
-  
   private void showSummary(boolean show)
   {
 	  if (clientOnly_)
@@ -320,7 +320,11 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	  }
 	  else
 	  {
-		  hCompClient_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
+		  if (clientOnly_)
+			  hCompClient_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT_ONLY);
+			else
+				hCompClient_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT); 
+		  
 		  clientDetailsLabel_.setText(ConsumptionUIMessages.LABEL_SUMMARY_NO_CLIENT);		  
 	  }	  
 	  hLinkClientProject_.pack(true);
@@ -521,7 +525,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 				else
 					iconImage=null;
 				topologyImage=GRAPHIC_CLIENT_6;
-				clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
+					clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
 			}
 			else
 			{

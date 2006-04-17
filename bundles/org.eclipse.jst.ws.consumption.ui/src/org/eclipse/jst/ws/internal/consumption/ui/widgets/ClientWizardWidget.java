@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060407   135415 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060417   136390/136159 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -49,7 +50,6 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   private Button browseButton_;
   private WSDLSelectionDialog wsdlDialog_;
   private String clientRuntimeId_ ;
-  private String clientProjectName_;
   private String clientEarProjectName_;
   private boolean clientNeedEAR_;
   private String componentName_;
@@ -76,9 +76,8 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
     utils.createInfoPop(parent, INFOPOP_WSWSCEN_PAGE);
     
   	// Create text field and browse for service selection
-    //TODO: add text listener for the field so users can type - for now READ_ONLY
   	Composite typeComposite = utils.createComposite(parent, 3);
-	serviceImpl_ = utils.createText(typeComposite, ConsumptionUIMessages.LABEL_WEBSERVICEIMPL, 
+	serviceImpl_ = utils.createText(typeComposite, ConsumptionUIMessages.LABEL_WEBSERVICEDEF, 
 			ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL,
 			INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL, SWT.LEFT | SWT.BORDER | SWT.READ_ONLY);
 	browseButton_ = utils.createPushButton(typeComposite,
@@ -94,15 +93,14 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 		  							}
 		  						}));		
 	browseButton_.addSelectionListener(new WSDLBrowseListener());
-	browseButton_.addListener(SWT.Modify, statusListener);  //jvh - added for validation on object selection?
+	browseButton_.addListener(SWT.Modify, statusListener); 
 	
 	utils.createHorizontalSeparator(parent, 1);
 	
 	Composite clientComposite = utils.createComposite( parent, 1 );
 	
-    clientWidget_ = new WebServiceClientTypeWidget();
+    clientWidget_ = new WebServiceClientTypeWidget(true);
     clientWidget_.addControls(clientComposite , statusListener );
-    clientWidget_.setClientOnly(true);
    
     //  Create test service check box.
     Composite buttonGroup = utils.createComposite(clientComposite,1);
@@ -153,8 +151,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   }
   
   public void setClientProjectName(String name)
-  {
-	  clientProjectName_ = name;
+  {	  
 	  clientWidget_.setClientProjectName(name);
   }
   
