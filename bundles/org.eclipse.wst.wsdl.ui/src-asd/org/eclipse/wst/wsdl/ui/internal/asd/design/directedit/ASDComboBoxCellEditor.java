@@ -28,6 +28,7 @@ import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 
@@ -127,10 +128,10 @@ public class ASDComboBoxCellEditor extends CellEditor {
             	selection = comboBox.getSelectionIndex();
             	String stringSelection = items[selection];
             	
-            	if (stringSelection.equals("Browse...")) {
+            	if (stringSelection.equals(Messages.getString("_UI_BUTTON_BROWSE"))) { //$NON-NLS-1$
             		newValue = invokeDialog(componentReferenceEditManager.getBrowseDialog());
             	}
-            	else if (stringSelection.equals("New...")) {
+            	else if (stringSelection.equals(Messages.getString("_UI_BUTTON_NEW"))) { //$NON-NLS-1$
             		newValue = invokeDialog(componentReferenceEditManager.getNewDialog());
             	}
 

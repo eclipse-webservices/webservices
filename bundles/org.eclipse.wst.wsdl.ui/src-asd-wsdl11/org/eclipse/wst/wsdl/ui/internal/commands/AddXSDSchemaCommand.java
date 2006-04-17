@@ -44,7 +44,7 @@ public final class AddXSDSchemaCommand extends WSDLElementCommand
     extensibilityElement.setEnclosingDefinition(definition);
  
     XSDSchema xsdSchema = XSDFactory.eINSTANCE.createXSDSchema();
-    xsdSchema.setSchemaForSchemaQNamePrefix("xsd");
+    xsdSchema.setSchemaForSchemaQNamePrefix("xsd"); //$NON-NLS-1$
     xsdSchema.setTargetNamespace(targetNamespace);
     // Choose the prefix Choose the prefix used for this schema's namespace and the schema for schema's namespace.
     //    

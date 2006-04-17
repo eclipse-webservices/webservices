@@ -55,7 +55,7 @@ public class W11Interface extends WSDLBaseAdapter implements IInterface {
 	}
 	
 	public Image getImage() {
-		return WSDLEditorPlugin.getInstance().getImage("icons/porttype_obj.gif");
+		return WSDLEditorPlugin.getInstance().getImage("icons/porttype_obj.gif"); //$NON-NLS-1$
 	}
 	
 	public String getText() {

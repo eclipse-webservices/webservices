@@ -36,7 +36,7 @@ public class PortTypeRenamer extends BaseRenamer
     if (globalComponent.equals(portType))
     {
       Element element = WSDLEditorUtil.getInstance().getElementForObject(binding);
-      element.setAttribute("type", getNewQName());
+      element.setAttribute("type", getNewQName()); //$NON-NLS-1$
     }
   }
 }

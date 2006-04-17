@@ -41,12 +41,12 @@ public class NameUtil
    */
   public static String buildUniqueFaultName(Operation operation)
   {
-  	return buildUniqueFaultName(operation, "NewFault");
+  	return buildUniqueFaultName(operation, "NewFault"); //$NON-NLS-1$
   }
   
   public static String buildUniqueFaultName(Operation operation, String baseName) {
   	if (baseName == null)
-  		baseName = "NewFault";
+  		baseName = "NewFault"; //$NON-NLS-1$
   	
   	List names = getUsedFaultNames(operation);
 
@@ -100,7 +100,7 @@ public class NameUtil
   {
     if (baseName == null)
     {
-      baseName = "NewMessage";
+      baseName = "NewMessage"; //$NON-NLS-1$
     }
 
     List names = getUsedMessageNames(definition);
@@ -115,13 +115,13 @@ public class NameUtil
    */
   public static String buildUniqueOperationName(PortType portType)
   {
-  	return buildUniqueOperationName(portType, "NewOperation");
+  	return buildUniqueOperationName(portType, "NewOperation"); //$NON-NLS-1$
   }
   
   public static String buildUniqueOperationName(PortType portType, String baseName)
   {
   	if (baseName == null) {
-  		baseName = "NewOperation";
+  		baseName = "NewOperation"; //$NON-NLS-1$
   	}
 
   	List names = getUsedOperationNames(portType);
@@ -177,14 +177,14 @@ public class NameUtil
   	List names = getUsedPartNames(message);
 
     // Now search the list until we find an unused name
-    return getUniqueNameHelper("NewPart", names);
+    return getUniqueNameHelper("NewPart", names); //$NON-NLS-1$
   }
   
   public static String buildUniquePartName(Message message, String baseName)
   {
   	if (baseName == null)
   	{
-  		baseName = "NewPart";
+  		baseName = "NewPart"; //$NON-NLS-1$
   	}
   	
   	List names = getUsedPartNames(message);
@@ -201,7 +201,7 @@ public class NameUtil
   {
     if (baseName == null)
     {
-      baseName = "NewPortType";
+      baseName = "NewPortType"; //$NON-NLS-1$
     }
 
     List names = getUsedPortTypeNames(definition);
@@ -237,7 +237,7 @@ public class NameUtil
   	List names = getUsedServiceNames(definition);
 
     // Now search the list until we find an unused name
-    return getUniqueNameHelper("NewService", names);
+    return getUniqueNameHelper("NewService", names); //$NON-NLS-1$
   }
 
   /**
@@ -248,7 +248,7 @@ public class NameUtil
   {
     if (baseName == null)
     {
-      baseName = "NewBinding";
+      baseName = "NewBinding"; //$NON-NLS-1$
     }
 
     List names = getUsedBindingNames(definition);
@@ -270,7 +270,7 @@ public class NameUtil
   {
     if (baseName == null)
     {
-      baseName = "NewPort";
+      baseName = "NewPort"; //$NON-NLS-1$
     }
   
     List names = getUsedPortNames(service);
@@ -283,18 +283,18 @@ public class NameUtil
     String name = null;
     if (messRef instanceof Input)
     {
-      name = createOperationName(messRef, "Request");    
+      name = createOperationName(messRef, "Request");     //$NON-NLS-1$
     }
     else if (messRef instanceof Output)
     {
-      name = createOperationName(messRef, "Response"); 
+      name = createOperationName(messRef, "Response");  //$NON-NLS-1$
     }
     else if (messRef instanceof Fault)
     {                                
       String faultName = ((Fault) messRef).getName();
       if (faultName == null || faultName.length() == 0)
       {                     
-        faultName = "Fault";
+        faultName = "Fault"; //$NON-NLS-1$
       }
       name = createOperationName(messRef, faultName); 
     }                                                                     
@@ -431,7 +431,7 @@ public class NameUtil
   }
 
 public static String getMessageName(MessageReference messageRef) {	    
-	String messageName = "NewMessage";
+	String messageName = "NewMessage"; //$NON-NLS-1$
 	List messageNames = new ArrayList();
 	Operation operation = (Operation) messageRef.getContainer();
 	Iterator messageIt = operation.getEnclosingDefinition().getEMessages().iterator();
@@ -439,27 +439,27 @@ public static String getMessageName(MessageReference messageRef) {
 		messageNames.add(((Message) messageIt.next()).getQName().getLocalPart());
 	}
 	
-	String requestResponseString = getRequestOrResponse(messageRef) + "Msg";
+	String requestResponseString = getRequestOrResponse(messageRef) + "Msg"; //$NON-NLS-1$
 	messageName = getUniqueNameHelper(operation.getName() + requestResponseString, messageNames);
 	
 	return messageName;
 }
 
 public static String getPartName(MessageReference messageRef) {
-	String partName = "NewPart";
+	String partName = "NewPart"; //$NON-NLS-1$
 	Message message = messageRef.getEMessage();
 	
 	Operation operation = (Operation) messageRef.getContainer();
 	String operationName = operation.getName();
-	String appendString = "";    	  
+	String appendString = "";    	   //$NON-NLS-1$
 	if (messageRef instanceof Input) {
-		appendString = "Parameters";
+		appendString = "Parameters"; //$NON-NLS-1$
 	}
 	else if (messageRef instanceof Output) {
-		appendString = "Result";
+		appendString = "Result"; //$NON-NLS-1$
 	}
 	else if (messageRef instanceof Fault) {
-		appendString = "Fault";
+		appendString = "Fault"; //$NON-NLS-1$
 	}
 	partName = operationName + appendString;
 	
@@ -477,14 +477,14 @@ public static String getPartName(MessageReference messageRef) {
 }
 
 public static String getOperationName(PortType portType) {
-	String operationName = "NewOperation";
+	String operationName = "NewOperation"; //$NON-NLS-1$
 	Iterator operationIt = portType.getEOperations().iterator();
 	List usedNames = new ArrayList();
 	while (operationIt.hasNext()) {
 		usedNames.add(((Operation) operationIt.next()).getName());
 	}
 	
-	operationName = getUniqueNameHelper("NewOperation", usedNames);
+	operationName = getUniqueNameHelper("NewOperation", usedNames); //$NON-NLS-1$
 	
 	return operationName;
 }
@@ -492,22 +492,22 @@ public static String getOperationName(PortType portType) {
 public static String getRequestOrResponse(MessageReference messageRef) {
 	if (messageRef instanceof Input)
 	{
-		return "Request";
+		return "Request"; //$NON-NLS-1$
 	}
 	else if (messageRef instanceof Output)
 	{
-		return "Response";
+		return "Response"; //$NON-NLS-1$
 	}
 	else if (messageRef instanceof Fault)
 	{
-		return "_Fault";
+		return "_Fault"; //$NON-NLS-1$
 	}
 	
-	return "";
+	return ""; //$NON-NLS-1$
 }
 
 public static String getFaultName(Operation operation) {
-	String faultName = "fault";
+	String faultName = "fault"; //$NON-NLS-1$
 	List nameList = new ArrayList();
 	Iterator faultIt = operation.getEFaults().iterator();
 	while (faultIt.hasNext()) {
@@ -520,7 +520,7 @@ public static String getFaultName(Operation operation) {
 }
 
 public static String getXSDElementName(String baseName, Object parent) {
-	String elementName = "";
+	String elementName = ""; //$NON-NLS-1$
 	
 	if (parent instanceof XSDSchema) {
 		elementName = getUniqueNameHelper(baseName, getUsedElementNames((XSDSchema) parent));
@@ -546,7 +546,7 @@ public static String getXSDElementName(String baseName, Object parent) {
 }
 
 public static String getXSDComplexTypeName(String baseName, XSDSchema schema) {
-	String typeName = "";
+	String typeName = ""; //$NON-NLS-1$
 	List existingNames = new ArrayList();
 	
 	Iterator it = schema.getTypeDefinitions().iterator();

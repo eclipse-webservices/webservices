@@ -15,6 +15,7 @@ import java.util.Collection;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddImportAction;
@@ -34,12 +35,12 @@ public class W11CategoryAdapter extends WSDLBaseAdapter implements ICategoryAdap
 	  public final static int INTERFACES = 6;
 	  public final static int MESSAGES = 7;
 	  
-	  public static String IMPORTS_HEADER_TEXT = "Imports";
-	  public static String TYPES_HEADER_TEXT = "Types";
-	  public static String SERVICE_HEADER_TEXT = "Services";
-	  public static String BINDING_HEADER_TEXT = "Bindings";
-	  public static String INTERFACE_HEADER_TEXT = "Interfaces";
-	  public static String MESSAGE_HEADER_TEXT = "Messages";
+	  public static String IMPORTS_HEADER_TEXT = Messages.getString("_UI_FOLDER_IMPORTS"); //$NON-NLS-1$
+	  public static String TYPES_HEADER_TEXT = Messages.getString("_UI_FOLDER_TYPES"); //$NON-NLS-1$
+	  public static String SERVICE_HEADER_TEXT = Messages.getString("_UI_FOLDER_SERVICES"); //$NON-NLS-1$
+	  public static String BINDING_HEADER_TEXT = Messages.getString("_UI_FOLDER_BINDINGS"); //$NON-NLS-1$
+	  public static String INTERFACE_HEADER_TEXT = Messages.getString("_UI_FOLDER_PORTTYPES"); //$NON-NLS-1$
+	  public static String MESSAGE_HEADER_TEXT = Messages.getString("_UI_FOLDER_MESSAGES"); //$NON-NLS-1$
 
 	  protected String text;
 	  protected Image image;

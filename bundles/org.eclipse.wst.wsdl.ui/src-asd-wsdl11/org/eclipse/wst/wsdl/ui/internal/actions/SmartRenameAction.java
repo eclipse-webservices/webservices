@@ -28,7 +28,7 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLElement;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.w3c.dom.Node;
@@ -50,7 +50,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 	protected Node node;   
 	
 	public SmartRenameAction(Object element, String newName) {
-		setText("Smart Rename Action"); // Do not translate
+		setText("Smart Rename Action"); // Do not translate //$NON-NLS-1$
 		this.element = element;
 		this.newName = newName;
 	    this.node = WSDLEditorUtil.getInstance().getNodeForObject(element);
@@ -61,7 +61,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 	}
 
 	public String getUndoDescription() {
-	  return WSDLEditorPlugin.getWSDLString("_UI_ACTION_RENAME");  //$NON-NLS-1$
+	  return Messages.getString("_UI_ACTION_RENAME");  //$NON-NLS-1$
 	}
 
 	public void run() {
@@ -105,12 +105,12 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 			// Input
 			if (input != null && input.getEMessage() != null) {
 				msg = input.getEMessage();
-				String oldMessageName = "";
+				String oldMessageName = ""; //$NON-NLS-1$
 
 				if (msg != null) {
 					oldMessageName = msg.getQName().getLocalPart();
 					
-					if (isMessageNameGenerated(oldMessageName, oldName, "Request")) {
+					if (isMessageNameGenerated(oldMessageName, oldName, "Request")) { //$NON-NLS-1$
 						renameMessageHelper(msg, computeNewMessageName(msg, oldName, newName));
 						
 						if (msg.getEParts() != null)
@@ -122,12 +122,12 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 			// Output
 			if (output != null && output.getMessage() != null) {
 				msg = output.getEMessage();
-				String oldMessageName = "";
+				String oldMessageName = ""; //$NON-NLS-1$
 				
 				if (msg != null) {
 					oldMessageName = msg.getQName().getLocalPart();
 					
-					if (isMessageNameGenerated(oldMessageName, oldName, "Response")) {
+					if (isMessageNameGenerated(oldMessageName, oldName, "Response")) { //$NON-NLS-1$
 						renameMessageHelper(msg, computeNewMessageName(msg, oldName, newName));
 						
 						if (msg.getEParts() != null)
@@ -144,7 +144,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 				while (it.hasNext()) {
 					Fault fault = (Fault) it.next();
 					msg = fault.getEMessage();
-					String oldMessageName = "";
+					String oldMessageName = ""; //$NON-NLS-1$
 
 					if (msg != null) {
 						oldMessageName = msg.getQName().getLocalPart();
@@ -163,7 +163,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 			Input input = (Input) element;
 			oldName = input.getName();
 			if (oldName == null) {
-				oldName = "";
+				oldName = ""; //$NON-NLS-1$
 			}
 			
 			if (oldName.equals(newName)) {
@@ -178,12 +178,12 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 			// Input
 			if (input != null && input.getEMessage() != null) {
 				msg = input.getEMessage();
-				String oldMessageName = "";
+				String oldMessageName = ""; //$NON-NLS-1$
 				
 				if (msg != null) {
 					oldMessageName = msg.getQName().getLocalPart();
 					
-					if (isMessageNameGenerated(oldMessageName, oldName, "Request")) {
+					if (isMessageNameGenerated(oldMessageName, oldName, "Request")) { //$NON-NLS-1$
 						renameMessageHelper(msg, computeNewMessageName(msg, oldName, newName));
 						
 						if (msg.getEParts() != null)
@@ -196,7 +196,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 			Output output = (Output) element;
 			oldName = output.getName();
 			if (oldName == null) {
-				oldName = "";
+				oldName = ""; //$NON-NLS-1$
 			}
 			
 			if (oldName.equals(newName)) {
@@ -211,10 +211,10 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 			// Output
 			if (output != null && output.getMessage() != null) {
 				msg = output.getEMessage();
-				String oldMessageName = "";
+				String oldMessageName = ""; //$NON-NLS-1$
 				if (msg != null) {
 					oldMessageName = msg.getQName().getLocalPart();
-					if (isMessageNameGenerated(oldMessageName, oldName, "Response")) {
+					if (isMessageNameGenerated(oldMessageName, oldName, "Response")) { //$NON-NLS-1$
 						renameMessageHelper(msg, computeNewMessageName(msg, oldName, newName));
 						
 						if (msg.getEParts() != null)
@@ -226,7 +226,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 		else if (element instanceof Fault) {
 			Fault fault = (Fault) element;
 			Message msg = fault.getEMessage();
-			String oldMessageName = "";
+			String oldMessageName = ""; //$NON-NLS-1$
 			oldName = fault.getName();
 			
 			if (oldName.equals(newName)) {
@@ -386,7 +386,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 			return fullSB.replace(index, index + oldSubString.length(), newSubString).toString();
 		}
 		
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -435,7 +435,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 	}
 	
 	public static boolean isPartNameGenerated(String partName, String baseName) {
-		return commonNameGeneratorCheck(partName, baseName, "");
+		return commonNameGeneratorCheck(partName, baseName, ""); //$NON-NLS-1$
 	}
 	
 	private boolean isPartNameGenerated(String partName, String baseName, String appendName) {

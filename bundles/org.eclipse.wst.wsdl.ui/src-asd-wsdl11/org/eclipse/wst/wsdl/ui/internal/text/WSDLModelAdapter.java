@@ -57,7 +57,7 @@ public class WSDLModelAdapter implements INodeAdapter
     try
     {    	
       IDOMNode domNode = (IDOMNode)element;
-      String baseLocation = "blankWSDL.wsdl";
+      String baseLocation = "blankWSDL.wsdl"; //$NON-NLS-1$
       if (domNode != null) {
     	  baseLocation = domNode.getModel().getBaseLocation();
       }
@@ -73,7 +73,7 @@ public class WSDLModelAdapter implements INodeAdapter
       // TODO.. .revist the best approach to obtain a URI from the SSE model
       //
       URI uri = null;
-      if (baseLocation.startsWith("/"))
+      if (baseLocation.startsWith("/")) //$NON-NLS-1$
       {
         uri = URI.createPlatformResourceURI(baseLocation);
       }

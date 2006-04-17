@@ -131,8 +131,8 @@ public class WSDLResourceUtil
       //        
       if (resolvedLocation != null)
       {
-		String fileProtocol = "file:";      	
-        if (resolvedLocation.startsWith(fileProtocol) && !resolvedLocation.startsWith(fileProtocol + "/"))
+		String fileProtocol = "file:";      	 //$NON-NLS-1$
+        if (resolvedLocation.startsWith(fileProtocol) && !resolvedLocation.startsWith(fileProtocol + "/")) //$NON-NLS-1$
         {
           resolvedLocation = resolvedLocation.substring(fileProtocol.length());
         }

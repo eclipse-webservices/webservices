@@ -96,7 +96,7 @@ public class ASDContentOutlineProvider implements ITreeContentProvider, ILabelPr
 		}
 		
 		if (text == null) {
-			text = "";
+			text = ""; //$NON-NLS-1$
 		}
 		
 		return text;

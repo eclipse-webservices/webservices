@@ -25,7 +25,7 @@ public final class AddServiceCommand extends WSDLElementCommand
   private Service service;
   
   private boolean createPort = false;
-  private final String DEFAULT_PORT_NAME = "NewPort";
+  private final String DEFAULT_PORT_NAME = "NewPort"; //$NON-NLS-1$
 
   public AddServiceCommand
 		(Definition definition,  

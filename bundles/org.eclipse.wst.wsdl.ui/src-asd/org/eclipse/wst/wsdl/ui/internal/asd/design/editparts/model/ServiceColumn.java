@@ -15,7 +15,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class ServiceColumn extends AbstractModelCollection {
 	public ServiceColumn(IDescription description) {
-		super(description, "ServiceColumn");
+		super(description, "ServiceColumn"); //$NON-NLS-1$
 	}
 	
 	public ITreeElement[] getChildren() {
@@ -38,6 +38,6 @@ public class ServiceColumn extends AbstractModelCollection {
 	}
 	
 	public String getText() {
-		return "description";
+		return "description"; //$NON-NLS-1$
 	}
 }

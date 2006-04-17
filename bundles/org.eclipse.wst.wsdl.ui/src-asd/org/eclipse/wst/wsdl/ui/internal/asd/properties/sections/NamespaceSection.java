@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ICategoryAdapter;
@@ -51,9 +51,9 @@ public class NamespaceSection extends ASDAbstractSection {
 		super.createControls(parent, factory);
 		composite =	getWidgetFactory().createFlatFormComposite(parent);
 		
-		String nameString = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAME") + ":";
-		String prefixString = WSDLEditorPlugin.getWSDLString("_UI_LABEL_PREFIX") + ":";
-		String namespaceString = WSDLEditorPlugin.getWSDLString("_UI_LABEL_TARGET_NAMESPACE");
+		String nameString = Messages.getString("_UI_LABEL_NAME") + ":"; //$NON-NLS-1$ //$NON-NLS-2$
+		String prefixString = Messages.getString("_UI_LABEL_PREFIX") + ":"; //$NON-NLS-1$ //$NON-NLS-2$
+		String namespaceString = Messages.getString("_UI_LABEL_TARGET_NAMESPACE"); //$NON-NLS-1$
 		GC gc = new GC(parent);
 		int xoffset = Math.max(115, gc.textExtent(nameString).x + 20); // adds 20 due to borders
 		xoffset = Math.max(xoffset, gc.textExtent(prefixString).x + 20); // adds 20 due to borders
@@ -73,7 +73,7 @@ public class NamespaceSection extends ASDAbstractSection {
 		targetNamespaceText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
 		
 		// Advanced button
-		button = getWidgetFactory().createButton(composite, WSDLEditorPlugin.getWSDLString("_UI_SECTION_ADVANCED_ATTRIBUTES") + "...", SWT.PUSH); //$NON-NLS-1$
+		button = getWidgetFactory().createButton(composite, Messages.getString("_UI_SECTION_ADVANCED_ATTRIBUTES") + "...", SWT.PUSH); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		
 		///////////////////// Labels

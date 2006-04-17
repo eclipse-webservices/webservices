@@ -27,7 +27,7 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.binding.http.internal.generator.HTTPContentGenerator;
 import org.eclipse.wst.wsdl.internal.generator.BaseGenerator;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.w3c.dom.Element;
 
@@ -67,14 +67,14 @@ public class HttpBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
     separator.setLayoutData(gd);
 
     Label optionsHeading = new Label(control, SWT.NONE);
-    optionsHeading.setText(WSDLEditorPlugin.getWSDLString("_UI_LABEL_HTTP_BINDING_OPTIONS"));
+    optionsHeading.setText(Messages.getString("_UI_LABEL_HTTP_BINDING_OPTIONS")); //$NON-NLS-1$
 
     getButton = new Button(control, SWT.RADIO);
-    getButton.setText("HTTP GET");
+    getButton.setText("HTTP GET"); //$NON-NLS-1$
     getButton.setSelection(true);
 
     postButton = new Button(control, SWT.RADIO);
-    postButton.setText("HTTP POST");
+    postButton.setText("HTTP POST"); //$NON-NLS-1$
 
     if (generator.getName() != null)
     {
@@ -88,8 +88,8 @@ public class HttpBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
         {
           ExtensibilityElement ee = (ExtensibilityElement) eeList.get(0);
           Element element = WSDLEditorUtil.getInstance().getElementForObject(ee);
-          String verb = element.getAttribute("verb");
-          if ("POST".equals(verb))
+          String verb = element.getAttribute("verb"); //$NON-NLS-1$
+          if ("POST".equals(verb)) //$NON-NLS-1$
           {
             getButton.setSelection(false);
             postButton.setSelection(true);

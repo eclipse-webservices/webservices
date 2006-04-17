@@ -32,7 +32,7 @@ public final class AddMessageCommand extends WSDLElementCommand
   private Message originalMessage;
   
   private boolean createPart = false;
-  private final String DEFAULT_PART_NAME = "NewPart";
+  private final String DEFAULT_PART_NAME = "NewPart"; //$NON-NLS-1$
   
   public AddMessageCommand
   	(Definition definition,  
@@ -74,7 +74,7 @@ public final class AddMessageCommand extends WSDLElementCommand
     	if (createPart)
     	{
     		AddPartCommand command = 
-    			new AddPartCommand(message,DEFAULT_PART_NAME,WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001,"string",true);
+    			new AddPartCommand(message,DEFAULT_PART_NAME,WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001,"string",true); //$NON-NLS-1$
     		command.run();
     	}
     }

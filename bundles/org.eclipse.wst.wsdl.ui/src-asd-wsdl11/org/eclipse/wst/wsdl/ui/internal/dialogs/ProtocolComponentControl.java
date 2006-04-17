@@ -33,7 +33,7 @@ import org.eclipse.ui.part.PageBook;
 import org.eclipse.wst.wsdl.internal.generator.BaseGenerator;
 import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
 import org.eclipse.wst.wsdl.internal.generator.extension.ContentGeneratorExtensionFactoryRegistry;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.wizards.ContentGeneratorOptionsPage;
 
 public abstract class ProtocolComponentControl extends Composite implements SelectionListener, ModifyListener
@@ -57,7 +57,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
   protected String name;
   protected String refName;
 
-  protected String UNSPECIFIED = WSDLEditorPlugin.getWSDLString("_UI_UNSPECIFIED");
+  protected String UNSPECIFIED = Messages.getString("_UI_UNSPECIFIED"); //$NON-NLS-1$
   //protected BindingGenerator bindingGenerator;
 
   public ProtocolComponentControl(Composite parent, BaseGenerator generator, boolean showOverwriteButton)
@@ -112,7 +112,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     // row 3
     //
     Label protocolLabel = new Label(labelValueComposite, SWT.NONE);
-    protocolLabel.setText(WSDLEditorPlugin.getWSDLString("_UI_LABEL_BINDING_PROTOCOL")); //$NON-NLS-1$
+    protocolLabel.setText(Messages.getString("_UI_LABEL_BINDING_PROTOCOL")); //$NON-NLS-1$
     protocolCombo = new Combo(labelValueComposite, SWT.READ_ONLY);
     GridData gdProtocol= new GridData();
     gdProtocol.horizontalAlignment= GridData.FILL;
@@ -126,7 +126,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     if (showOverwriteButton)
     {
       overwriteButton = new Button(this, SWT.CHECK);
-      overwriteButton.setText(WSDLEditorPlugin.getWSDLString("_UI_CHECKBOX_OVERWRITE")); //$NON-NLS-1$
+      overwriteButton.setText(Messages.getString("_UI_CHECKBOX_OVERWRITE")); //$NON-NLS-1$
       overwriteButton.addSelectionListener(this);
     }
 
@@ -164,7 +164,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
 
   public String getComponentNameLabelText()
   {
-    return WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAME");
+    return Messages.getString("_UI_LABEL_NAME"); //$NON-NLS-1$
   }
 
   private GridData createGridData(boolean both, int span)
@@ -201,7 +201,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
       int index = refNameCombo.getSelectionIndex();
       String refName = refNameCombo.getItem(index);
 	  if (refName.equals(UNSPECIFIED)) {
-	      getGenerator().setRefName("");
+	      getGenerator().setRefName(""); //$NON-NLS-1$
 	  }
 	  else {
 	      getGenerator().setRefName(refName);
@@ -216,7 +216,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     }
   }
 
-  private static final String IS_OVERWRITE_APPLICABLE = "IS_OVERWRITE_APPLICABLE";
+  private static final String IS_OVERWRITE_APPLICABLE = "IS_OVERWRITE_APPLICABLE"; //$NON-NLS-1$
   protected void updatePageBook(String protocol)
   {
     if (protocol != null)

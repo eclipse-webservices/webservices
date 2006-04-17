@@ -49,7 +49,7 @@ import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl;
 import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.CreateWSDLElementHelper;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
@@ -88,11 +88,11 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 
 		Preferences preference = XMLCorePlugin.getDefault().getPluginPreferences();
 		String charSet = preference.getString(CommonEncodingPreferenceNames.OUTPUT_CODESET);
-		if (charSet == null || charSet.trim().equals("")) {
-			charSet = "UTF-8";
+		if (charSet == null || charSet.trim().equals("")) { //$NON-NLS-1$
+			charSet = "UTF-8"; //$NON-NLS-1$
 		}
 
-		String wsdlPrefix = "wsdl";
+		String wsdlPrefix = "wsdl"; //$NON-NLS-1$
 		Vector namespaces = optionsPage.getNamespaceInfo();
 
 		String prefix = optionsPage.getPrefix();
@@ -100,7 +100,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 
 		URI uri2 = URI.createPlatformResourceURI(file.getFullPath().toOSString());
 		ResourceSet resourceSet = new ResourceSetImpl();
-		WSDLResourceImpl resource = (WSDLResourceImpl) resourceSet.createResource(URI.createURI("*.wsdl"));
+		WSDLResourceImpl resource = (WSDLResourceImpl) resourceSet.createResource(URI.createURI("*.wsdl")); //$NON-NLS-1$
 		resource.setURI(uri2);
 		
 		WSDLFactoryImpl factory = new WSDLFactoryImpl();
@@ -151,7 +151,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 				bindingGenerator.setRefName(ComponentReferenceUtil.getPortTypeReference(port.getEBinding()));
 				bindingGenerator.setOverwrite(true);
 				
-				if (optionsPage.getProtocol().equals("SOAP")) {
+				if (optionsPage.getProtocol().equals("SOAP")) { //$NON-NLS-1$
 					String namespace = SOAPConstants.SOAP_NAMESPACE_URI;
 					bindingGenerator.setContentGenerator(BindingGenerator.getContentGenerator(namespace));
 
@@ -174,7 +174,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 						soapGen.setUse(SOAPContentGenerator.USE_ENCODED);
 					}
 				}
-				else if (optionsPage.getProtocol().equals("HTTP")) {
+				else if (optionsPage.getProtocol().equals("HTTP")) { //$NON-NLS-1$
 					String namespace = HTTPConstants.HTTP_NAMESPACE_URI;
 					bindingGenerator.setContentGenerator(BindingGenerator.getContentGenerator(namespace));
 
@@ -195,7 +195,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 			resource.save(null);
 		}
 		catch (Exception e) {
-			System.out.println("\nCould not write new WSDL file in WSDL Wizard: " + e);
+			System.out.println("\nCould not write new WSDL file in WSDL Wizard: " + e); //$NON-NLS-1$
 		}
 
 		/*
@@ -222,13 +222,13 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 		this.selection = selection;
 
 		// Need new icon
-		this.setDefaultPageImageDescriptor(ImageDescriptor.createFromFile(InternalWSDLMultiPageEditor.class, "icons/new_wsdl_wiz.gif"));
-		this.setWindowTitle(WSDLEditorPlugin.getWSDLString("_UI_TITLE_NEW_WSDL_FILE")); //$NON-NLS-1$
+		this.setDefaultPageImageDescriptor(ImageDescriptor.createFromFile(InternalWSDLMultiPageEditor.class, "icons/new_wsdl_wiz.gif")); //$NON-NLS-1$
+		this.setWindowTitle(Messages.getString("_UI_TITLE_NEW_WSDL_FILE")); //$NON-NLS-1$
 	}
 
 	public void addPages() {
 		newFilePage = new WSDLNewFilePage(selection);
-		optionsPage = new WSDLNewFileOptionsPage(WSDLEditorPlugin.getWSDLString("_UI_TITLE_OPTIONS"), WSDLEditorPlugin.getWSDLString("_UI_TITLE_OPTIONS"), null); //$NON-NLS-1$ //$NON-NLS-2$
+		optionsPage = new WSDLNewFileOptionsPage(Messages.getString("_UI_TITLE_OPTIONS"), Messages.getString("_UI_TITLE_OPTIONS"), null); //$NON-NLS-1$ //$NON-NLS-2$
 		addPage(newFilePage);
 		addPage(optionsPage);
 	}
@@ -293,11 +293,11 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 
 		protected String getKey(CMNode cmNode) {
 			String key = cmNode.getNodeName();
-			CMDocument cmDocument = (CMDocument) cmNode.getProperty("CMDocument");
+			CMDocument cmDocument = (CMDocument) cmNode.getProperty("CMDocument"); //$NON-NLS-1$
 			if (cmDocument != null) {
-				String namespaceURI = (String) cmDocument.getProperty("http://org.eclipse.wst/cm/properties/targetNamespaceURI");
+				String namespaceURI = (String) cmDocument.getProperty("http://org.eclipse.wst/cm/properties/targetNamespaceURI"); //$NON-NLS-1$
 				if (namespaceURI != null) {
-					key = "[" + namespaceURI + "]" + key;
+					key = "[" + namespaceURI + "]" + key; //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 			return key;
@@ -312,7 +312,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 
 			if ((includeOptions & INCLUDE_ATTRIBUTES) != 0) {
 				v.addAll(attributeTable.values());
-				CMAttributeDeclaration nillableAttribute = (CMAttributeDeclaration) rootElementDeclaration.getProperty("http://org.eclipse.wst/cm/properties/nillable");
+				CMAttributeDeclaration nillableAttribute = (CMAttributeDeclaration) rootElementDeclaration.getProperty("http://org.eclipse.wst/cm/properties/nillable"); //$NON-NLS-1$
 				if (nillableAttribute != null) {
 					v.add(nillableAttribute);
 				}
@@ -323,7 +323,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 					v.addAll(childNodeTable.values());
 				}
 				else if (contentType == CMElementDeclaration.ANY) {
-					CMDocument cmDocument = (CMDocument) rootElementDeclaration.getProperty("CMDocument");
+					CMDocument cmDocument = (CMDocument) rootElementDeclaration.getProperty("CMDocument"); //$NON-NLS-1$
 					if (cmDocument != null) {
 						CMNamedNodeMap elements = cmDocument.getElements();
 						for (Iterator i = elements.iterator(); i.hasNext();) {
@@ -365,11 +365,11 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 				super.visitCMElementDeclaration(ed);
 			}
 			else {
-				if (!Boolean.TRUE.equals(ed.getProperty("Abstract"))) {
+				if (!Boolean.TRUE.equals(ed.getProperty("Abstract"))) { //$NON-NLS-1$
 					childNodeTable.put(getKey(ed), ed);
 				}
 
-				CMNodeList substitutionGroup = (CMNodeList) ed.getProperty("SubstitutionGroup");
+				CMNodeList substitutionGroup = (CMNodeList) ed.getProperty("SubstitutionGroup"); //$NON-NLS-1$
 				if (substitutionGroup != null) {
 					handleSubstitutionGroup(substitutionGroup);
 				}
@@ -381,7 +381,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 			if (substitutionGroupLength > 1) {
 				for (int i = 0; i < substitutionGroupLength; i++) {
 					CMNode ed = substitutionGroup.item(i);
-					if (!Boolean.TRUE.equals(ed.getProperty("Abstract"))) {
+					if (!Boolean.TRUE.equals(ed.getProperty("Abstract"))) { //$NON-NLS-1$
 						childNodeTable.put(getKey(ed), ed);
 					}
 				}

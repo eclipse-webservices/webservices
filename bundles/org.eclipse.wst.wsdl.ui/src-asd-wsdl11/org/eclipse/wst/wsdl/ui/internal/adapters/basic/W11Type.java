@@ -37,7 +37,7 @@ public class W11Type extends WSDLBaseAdapter implements IType {
 	}
 	
 	public Image getImage() {
-		return WSDLEditorPlugin.getInstance().getImage("icons/xsd_obj.gif");
+		return WSDLEditorPlugin.getInstance().getImage("icons/xsd_obj.gif"); //$NON-NLS-1$
 	}
 	
 	public String getText() {

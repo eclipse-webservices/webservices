@@ -458,7 +458,7 @@ public class ComponentReferenceUtil
       String prefix = rootDefinition.getPrefix(qname.getNamespaceURI());
       if (prefix != null)
       {
-        name = prefix + ":" + qname.getLocalPart();
+        name = prefix + ":" + qname.getLocalPart(); //$NON-NLS-1$
       }
     }
     return name;
@@ -476,7 +476,7 @@ public class ComponentReferenceUtil
         String namespace = (String) map.get(prefix);
         if (namespace != null && namespace.equals(qname.getNamespaceURI()))
         {
-          String name = prefix.length() > 0 ? prefix + ":" + qname.getLocalPart() : 
+          String name = prefix.length() > 0 ? prefix + ":" + qname.getLocalPart() :  //$NON-NLS-1$
                         qname.getLocalPart();
           list.add(name);
         }
@@ -493,7 +493,7 @@ public class ComponentReferenceUtil
       for (Iterator i = definition.getEImports().iterator(); i.hasNext();)
       {
         ImportImpl theImport = (ImportImpl) i.next();
-        if (theImport.getLocationURI() != null && !theImport.getLocationURI().endsWith("xsd"))
+        if (theImport.getLocationURI() != null && !theImport.getLocationURI().endsWith("xsd")) //$NON-NLS-1$
         {
           theImport.importDefinitionOrSchema();	 
           Definition importedDefinition = (Definition) theImport.getEDefinition();
@@ -512,7 +512,7 @@ public class ComponentReferenceUtil
     Element element = WSDLEditorUtil.getInstance().getElementForObject(binding);
     if (element != null)
     {
-      result = element.getAttribute("type");
+      result = element.getAttribute("type"); //$NON-NLS-1$
     }
     return result;
   }
@@ -522,7 +522,7 @@ public class ComponentReferenceUtil
     Element element = WSDLEditorUtil.getInstance().getElementForObject(binding);
     if (element != null)
     {
-      element.setAttribute("type", portType);
+      element.setAttribute("type", portType); //$NON-NLS-1$
     }
   }
 
@@ -532,7 +532,7 @@ public class ComponentReferenceUtil
     Element element = WSDLEditorUtil.getInstance().getElementForObject(port);
     if (element != null)
     {
-      result = element.getAttribute("binding");
+      result = element.getAttribute("binding"); //$NON-NLS-1$
     }
     return result;
   }
@@ -543,7 +543,7 @@ public class ComponentReferenceUtil
     Element element = WSDLEditorUtil.getInstance().getElementForObject(binding);
     if (element != null)
     {
-      result = element.getAttribute("name");
+      result = element.getAttribute("name"); //$NON-NLS-1$
     }
     return result;
   }
@@ -608,7 +608,7 @@ public class ComponentReferenceUtil
     Element element = WSDLEditorUtil.getInstance().getElementForObject(o);
     if (element != null)
     {
-      result = element.getAttribute("message");
+      result = element.getAttribute("message"); //$NON-NLS-1$
     }
     return result;
   }
@@ -786,7 +786,7 @@ public class ComponentReferenceUtil
   {
     //Element element = WSDLEditorUtil.getInstance().getElementForObject(part);
     Element element = part.getElement();
-    return !element.hasAttribute("element");
+    return !element.hasAttribute("element"); //$NON-NLS-1$
   }
 
   public static String getPartComponentReference(Part part)
@@ -794,13 +794,13 @@ public class ComponentReferenceUtil
     //Element element = WSDLEditorUtil.getInstance().getElementForObject(part);
     Element element = part.getElement();
     String result = null;
-    if (element.hasAttribute("type"))
+    if (element.hasAttribute("type")) //$NON-NLS-1$
     {
-      result = element.getAttribute("type");
+      result = element.getAttribute("type"); //$NON-NLS-1$
     }
-    else if (element.hasAttribute("element"))
+    else if (element.hasAttribute("element")) //$NON-NLS-1$
     {
-      result = element.getAttribute("element");
+      result = element.getAttribute("element"); //$NON-NLS-1$
     }
     return result;
   }
@@ -808,8 +808,8 @@ public class ComponentReferenceUtil
   public static void setComponentReference(Part part, boolean isType, String componentName)
   {
     Element element = WSDLEditorUtil.getInstance().getElementForObject(part);
-    String newAttribute = isType ? "type" : "element";
-    String oldAttribute = isType ? "element" : "type";
+    String newAttribute = isType ? "type" : "element"; //$NON-NLS-1$ //$NON-NLS-2$
+    String oldAttribute = isType ? "element" : "type"; //$NON-NLS-1$ //$NON-NLS-2$
     element.removeAttribute(oldAttribute);
 
     String value = componentName != null ? componentName : element.getAttribute(newAttribute);
@@ -819,16 +819,16 @@ public class ComponentReferenceUtil
       if (isType)
       {
         String xsdPrefix = part.getEnclosingDefinition().getPrefix(WSDLConstants.XSD_NAMESPACE_URI);
-        value = "string";
+        value = "string"; //$NON-NLS-1$
         if (xsdPrefix != null && xsdPrefix.length() > 0)
         {
-          value = xsdPrefix + ":" + value;
+          value = xsdPrefix + ":" + value; //$NON-NLS-1$
         }
       }
       else
       {
         List list = getComponentNameList(part, isType);
-        value = list.size() > 0 ? (String) list.get(0) : "some-element-name";
+        value = list.size() > 0 ? (String) list.get(0) : "some-element-name"; //$NON-NLS-1$
       }
     }
     element.setAttribute(newAttribute, value);
@@ -884,16 +884,16 @@ public class ComponentReferenceUtil
     String value = null;
     if (element != null)
     {
-      if (element.hasAttribute("type"))
+      if (element.hasAttribute("type")) //$NON-NLS-1$
       {      		
-        value = element.getAttribute("type");
+        value = element.getAttribute("type"); //$NON-NLS-1$
       }
-      else if (element.hasAttribute("element"))
+      else if (element.hasAttribute("element")) //$NON-NLS-1$
       {  
-        value = element.getAttribute("element");
+        value = element.getAttribute("element"); //$NON-NLS-1$
       }         
     }  
-    return value != null ? value : "";
+    return value != null ? value : ""; //$NON-NLS-1$
   }
 
   public Operation getBindingOperation(Element bindingOperationContent)

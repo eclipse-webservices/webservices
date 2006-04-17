@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.ExtensibleElement;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddExtensionElementCommand;
 import org.eclipse.wst.xsd.ui.internal.common.commands.AddExtensionCommand;
@@ -48,7 +49,7 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
       if (o instanceof XSDElementDeclaration)
       {
         XSDElementDeclaration element = (XSDElementDeclaration) o;
-        addExtensionCommand = new AddExtensionElementCommand("Add Extension Element", (ExtensibleElement)input, element);
+        addExtensionCommand = new AddExtensionElementCommand(Messages.getString("_UI_LABEL_ADD_EXTENSION_ELEMENT"), (ExtensibleElement)input, element); //$NON-NLS-1$
       }
       else if (o instanceof XSDAttributeDeclaration)
       {

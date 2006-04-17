@@ -147,7 +147,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
       }  
 	  if (adapter == null)
 	  {
-	    System.out.println("NO ADAPTER CREATED FOR " + target);   
+	    System.out.println("NO ADAPTER CREATED FOR " + target);    //$NON-NLS-1$
 	    Thread.dumpStack();
 	  }
 

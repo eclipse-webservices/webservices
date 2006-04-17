@@ -15,7 +15,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class BindingColumn extends AbstractModelCollection {
 	  public BindingColumn(IDescription description) {
-	    super(description, "BindingColumn");
+	    super(description, "BindingColumn"); //$NON-NLS-1$
 	  }
 	  
 	  public ITreeElement[] getChildren() {
@@ -39,6 +39,6 @@ public class BindingColumn extends AbstractModelCollection {
 	  }
 	  
 	  public String getText() {
-		  return "description";
+		  return "description"; //$NON-NLS-1$
 	  }
 }

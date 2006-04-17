@@ -17,7 +17,7 @@ import org.osgi.framework.Bundle;
 public class NSKeyedExtensionRegistry
 {
   protected HashMap map = new HashMap();
-  private static final String PLUGIN_LOADING_ERROR = "PLUGIN_LOADING_ERROR";
+  private static final String PLUGIN_LOADING_ERROR = "PLUGIN_LOADING_ERROR"; //$NON-NLS-1$
 
   public NSKeyedExtensionRegistry()
   {
@@ -50,7 +50,7 @@ public class NSKeyedExtensionRegistry
   public Object get(String namespaceURI)
   {
     ExtensionInfo info = (ExtensionInfo) map.get(namespaceURI);
-    return info != null ? info.getObject("") : null;
+    return info != null ? info.getObject("") : null; //$NON-NLS-1$
   }
 
   public Object getProperty(String namespaceURI, String property)

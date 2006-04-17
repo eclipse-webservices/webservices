@@ -23,6 +23,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
@@ -85,7 +86,7 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 						IEditorPart editorPart = null;
 						
 						if (isInlineSchema(file)) {
-							editorInput.setEditorName("Inline Schema of " + file.getName());
+							editorInput.setEditorName(Messages.getString("_UI_LABEL_INLINE_SCHEMA_OF") + file.getName()); //$NON-NLS-1$
 							IEditorReference [] refs = page.getEditorReferences();
 							int length = refs.length;
 							for (int i = 0; i < length; i++)
@@ -108,11 +109,11 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 							
 							if (editorPart == null)
 							{
-								editorPart = page.openEditor(editorInput, "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor", true, 0);
+								editorPart = page.openEditor(editorInput, "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor", true, 0); //$NON-NLS-1$
 							}
 						}
 						else {
-							editorPart = page.openEditor(editorInput, "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor", true);
+							editorPart = page.openEditor(editorInput, "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor", true); //$NON-NLS-1$
 						}
 						
 						if (editorPart instanceof InternalXSDMultiPageEditor)

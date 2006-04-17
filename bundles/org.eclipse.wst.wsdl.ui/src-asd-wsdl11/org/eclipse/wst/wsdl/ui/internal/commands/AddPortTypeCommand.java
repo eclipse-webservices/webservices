@@ -25,7 +25,7 @@ public final class AddPortTypeCommand extends WSDLElementCommand
   private PortType portType;
   
   private boolean createOperation = false;
-  private final String DEFAULT_OPERATION_NAME = "NewOperation";
+  private final String DEFAULT_OPERATION_NAME = "NewOperation"; //$NON-NLS-1$
 
   public AddPortTypeCommand
 		(Definition definition,  

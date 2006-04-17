@@ -42,7 +42,7 @@ public class AddFaultParameterCommand extends AddBaseParameterCommand {
 
 	protected String getAnonymousXSDElementBaseName() {
 		if (newAnonymousXSDElementName == null) {
-			newAnonymousXSDElementName = operation.getName() + "_" + getFaultName(); 
+			newAnonymousXSDElementName = operation.getName() + "_" + getFaultName();  //$NON-NLS-1$
 		}
 		
 		return newAnonymousXSDElementName;
@@ -50,7 +50,7 @@ public class AddFaultParameterCommand extends AddBaseParameterCommand {
 	
 	protected String getNewXSDElementBaseName() {
 		if (newXSDElementName == null) {
-			newXSDElementName = operation.getName() + "_" + getFaultName();
+			newXSDElementName = operation.getName() + "_" + getFaultName(); //$NON-NLS-1$
 		}
 		
 		return newXSDElementName;
@@ -58,7 +58,7 @@ public class AddFaultParameterCommand extends AddBaseParameterCommand {
 	
 	protected String getWSDLMessageName() {
 		if (newWSDLMessageName == null) {
-			newWSDLMessageName = operation.getName() + "_" + getFaultName() + "Msg";
+			newWSDLMessageName = operation.getName() + "_" + getFaultName() + "Msg"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		return newWSDLMessageName;

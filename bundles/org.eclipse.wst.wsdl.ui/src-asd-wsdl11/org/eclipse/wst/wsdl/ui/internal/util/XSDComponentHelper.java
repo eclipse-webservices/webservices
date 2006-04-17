@@ -62,7 +62,7 @@ public class XSDComponentHelper {
 		XSDElementDeclaration xsdElement = null;
 		
 		if (context instanceof Part) {
-			AddXSDElementDeclarationCommand command = new AddXSDElementDeclarationCommand(definition, "");
+			AddXSDElementDeclarationCommand command = new AddXSDElementDeclarationCommand(definition, ""); //$NON-NLS-1$
 			
 			// Find a unique name
 			XSDSchema xsdSchema = command.getSchema();
@@ -156,7 +156,7 @@ public class XSDComponentHelper {
 		else {
 			// Create Anonymous Type
 			anonType = XSDFactory.eINSTANCE.createXSDComplexTypeDefinition();
-			anonType.setName("NewComplexTypeName");
+			anonType.setName("NewComplexTypeName"); //$NON-NLS-1$
 			getXSDSchema(definition).getContents().add(anonType);
 			xsdElement.setAnonymousTypeDefinition(anonType);
 		}
@@ -275,6 +275,6 @@ public class XSDComponentHelper {
 	
 	private static XSDSimpleTypeDefinition getXSDStringType(XSDComponent component) {
 		XSDSchema schema = component.getSchema();
-		return schema.getSchemaForSchema().resolveSimpleTypeDefinition("string");
+		return schema.getSchemaForSchema().resolveSimpleTypeDefinition("string"); //$NON-NLS-1$
 	}
 }

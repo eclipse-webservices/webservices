@@ -29,7 +29,7 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator;
 import org.eclipse.wst.wsdl.internal.generator.BaseGenerator;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.w3c.dom.Element;
 
@@ -65,17 +65,17 @@ public class SoapBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
     separator.setLayoutData(gd);
 
     Label optionsHeading = new Label(control, SWT.NONE);
-    optionsHeading.setText(WSDLEditorPlugin.getWSDLString("_UI_LABEL_SOAP_BINDING_OPTIONS"));
+    optionsHeading.setText(Messages.getString("_UI_LABEL_SOAP_BINDING_OPTIONS")); //$NON-NLS-1$
 
     docLiteral = new Button(control, SWT.RADIO);
-    docLiteral.setText(WSDLEditorPlugin.getWSDLString("_UI_RADIO_DOCUMENT_LITERAL"));
+    docLiteral.setText(Messages.getString("_UI_RADIO_DOCUMENT_LITERAL")); //$NON-NLS-1$
     docLiteral.setSelection(true);
 
     rpcLiteral = new Button(control, SWT.RADIO);
-    rpcLiteral.setText(WSDLEditorPlugin.getWSDLString("_UI_RADIO_RPC_LITERAL"));
+    rpcLiteral.setText(Messages.getString("_UI_RADIO_RPC_LITERAL")); //$NON-NLS-1$
     
     rpcEncoded = new Button(control, SWT.RADIO);
-    rpcEncoded.setText(WSDLEditorPlugin.getWSDLString("_UI_RADIO_RPC_ENCODED"));
+    rpcEncoded.setText(Messages.getString("_UI_RADIO_RPC_ENCODED")); //$NON-NLS-1$
 
     if (generator.getName() != null)
     {
@@ -91,12 +91,12 @@ public class SoapBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
           ExtensibilityElement ee = (ExtensibilityElement) eeList.get(0);
 
           Element element = WSDLEditorUtil.getInstance().getElementForObject(ee);
-          String style = element.getAttribute("style");
+          String style = element.getAttribute("style"); //$NON-NLS-1$
           
-          if ("rpc".equals(style))
+          if ("rpc".equals(style)) //$NON-NLS-1$
           {
             // Try to determine if it's RPC Literal or RPC Encoded
-          	String use = "encoded";
+          	String use = "encoded"; //$NON-NLS-1$
           	List operations = binding.getEBindingOperations();
           	if (operations.size() > 0) {
           		element = null;
@@ -119,11 +119,11 @@ public class SoapBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
           		}
           		
           		if (element != null) {
-          			use = element.getAttribute("use");
+          			use = element.getAttribute("use"); //$NON-NLS-1$
           		}
           	}
           	
-          	if (use != null && "literal".equals(use)) {
+          	if (use != null && "literal".equals(use)) { //$NON-NLS-1$
           		docLiteral.setSelection(false);
           		rpcLiteral.setSelection(true);
           		rpcEncoded.setSelection(false);

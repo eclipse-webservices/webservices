@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 
 public class NewComponentDialog extends Dialog implements ModifyListener
 {
@@ -106,7 +106,7 @@ public class NewComponentDialog extends Dialog implements ModifyListener
     composite.setLayoutData(gdFill);
 
     Label nameLabel = new Label(composite, SWT.NONE);
-    nameLabel.setText(WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAME")); //$NON-NLS-1$
+    nameLabel.setText(Messages.getString("_UI_LABEL_NAME")); //$NON-NLS-1$
 
     nameField = new Text(composite, SWT.SINGLE | SWT.BORDER);
     GridData gd= new GridData();
@@ -146,7 +146,7 @@ public class NewComponentDialog extends Dialog implements ModifyListener
   	Iterator iterator = usedNames.iterator();
   	while (iterator.hasNext()) {
   		if (name.equalsIgnoreCase((String) iterator.next())) {
-  			return WSDLEditorPlugin.getWSDLString("_UI_LABEL_WARNING_DUPLICATE_NAME_EXISTS");
+  			return Messages.getString("_UI_LABEL_WARNING_DUPLICATE_NAME_EXISTS"); //$NON-NLS-1$
   		}
   	}
   	
@@ -163,9 +163,9 @@ public class NewComponentDialog extends Dialog implements ModifyListener
     }   
     else
     {
-      errorMessage = "";
+      errorMessage = ""; //$NON-NLS-1$
     }  
-    errorMessageLabel.setText(errorMessage != null ? errorMessage : "");
+    errorMessageLabel.setText(errorMessage != null ? errorMessage : ""); //$NON-NLS-1$
 //    okButton.setEnabled(errorMessage == null);
   }
  

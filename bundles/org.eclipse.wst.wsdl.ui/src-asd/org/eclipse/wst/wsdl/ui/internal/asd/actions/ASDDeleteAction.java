@@ -14,6 +14,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IImport;
@@ -25,13 +26,13 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IService;
 
 public class ASDDeleteAction extends BaseSelectionAction {
-	public static String ID = "ASDDeleteAction"; 
+	public static String ID = "ASDDeleteAction";  //$NON-NLS-1$
 	
 	public ASDDeleteAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText("Delete");
-		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/delete_obj.gif"));
+		setText(Messages.getString("_UI_ACTION_DELETE")); //$NON-NLS-1$
+		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/delete_obj.gif")); //$NON-NLS-1$
 	}
 	
 	public void run() {

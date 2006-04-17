@@ -38,12 +38,12 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
 
   protected boolean isParentElementMessageReference(String parentElementName)
   {
-    return parentElementName.equals("input") || parentElementName.equals("output") || parentElementName.equals("fault");
+    return parentElementName.equals("input") || parentElementName.equals("output") || parentElementName.equals("fault"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
   }
 
   protected boolean isMessageReference(String elementName)
   {
-    return elementName.equals("body") || elementName.equals("header") || elementName.equals("fault") || elementName.equals("urlReplacement") || elementName.equals("urlEncoded");
+    return elementName.equals("body") || elementName.equals("header") || elementName.equals("fault") || elementName.equals("urlReplacement") || elementName.equals("urlEncoded"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
   }
 
   
@@ -66,7 +66,7 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
             // the following namespace are one that always should be filtered out            
             // for now this is hardcoded
             //
-            if (namespace.equals("http://schemas.xmlsoap.org/soap/encoding/"))
+            if (namespace.equals("http://schemas.xmlsoap.org/soap/encoding/")) //$NON-NLS-1$
             {
               // exclude soap-enc elements
               //
@@ -75,14 +75,14 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
             else if (namespace.equals(WSDLConstants.XSD_NAMESPACE_URI))
             {
               // eclipse all schema elements, except for 'schema' withing wsdl types elements 
-              result = parentElementName.equals("types") && name.equals("schema");
+              result = parentElementName.equals("types") && name.equals("schema"); //$NON-NLS-1$ //$NON-NLS-2$
             }   
             else
             {
               // TODO.. we should investigate removing the  ExtensiblityElementFilter extension point
               // shouldn't this be a ModelQueryExtension defined on the extension languages?
               //
-              ExtensiblityElementFilter filter = (ExtensiblityElementFilter) WSDLEditorPlugin.getInstance().getExtensiblityElementFilterRegistry().getProperty(namespace, "");
+              ExtensiblityElementFilter filter = (ExtensiblityElementFilter) WSDLEditorPlugin.getInstance().getExtensiblityElementFilterRegistry().getProperty(namespace, ""); //$NON-NLS-1$
               if (filter != null)
               {
                 result = filter.isValidContext(element, name);
@@ -102,28 +102,28 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
       List list = new ArrayList();
       ComponentReferenceUtil util = new ComponentReferenceUtil(lookupOrCreateDefinition(element));
       String currentElementName = element.getLocalName();
-      if (checkName(name, "message"))
+      if (checkName(name, "message")) //$NON-NLS-1$
       {
         list.addAll(util.getMessageNames());
       }
-      else if (checkName(name, "binding"))
+      else if (checkName(name, "binding")) //$NON-NLS-1$
       {
         list.addAll(util.getBindingNames());
       }
-      else if (checkName(name, "type"))
+      else if (checkName(name, "type")) //$NON-NLS-1$
       {
-        if (checkName(currentElementName, "binding"))
+        if (checkName(currentElementName, "binding")) //$NON-NLS-1$
         {
           list.addAll(util.getPortTypeNames());
         }
-        else if (checkName(currentElementName, "part"))
+        else if (checkName(currentElementName, "part")) //$NON-NLS-1$
         {
           list.addAll(util.getComponentNameList(true));
         }
       }
-      else if (checkName(name, "element"))
+      else if (checkName(name, "element")) //$NON-NLS-1$
       {
-        if (checkName(currentElementName, "part"))
+        if (checkName(currentElementName, "part")) //$NON-NLS-1$
         {
           list.addAll(util.getComponentNameList(false));
         }

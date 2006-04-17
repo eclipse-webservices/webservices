@@ -60,13 +60,13 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
     labelHolder.setLayoutManager(new ToolbarLayout(true));
     figure.add(labelHolder);
     
-    label = new Label("Operation");
+    label = new Label("Operation"); //$NON-NLS-1$
 //    label.setFont(DesignViewGraphicsConstants.smallBoldFont);
     label.setBorder(new MarginBorder(2, 2,2,2));
     label.setTextAlignment(Label.LEFT);  
     labelHolder.add(label);
     
-    previewLabel = new Label("preivew");
+    previewLabel = new Label("preivew"); //$NON-NLS-1$
 //    previewLabel.setFont(DesignViewGraphicsConstants.smallBoldFont);
     previewLabel.setForegroundColor(ColorConstants.gray);
     previewLabel.setBorder(new MarginBorder(2, 2,2,2));
@@ -116,8 +116,8 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
   }
   
   protected String getOperationPreview() {
-	  String inputPreview = "()";
-	  String outputPreview = "()";
+	  String inputPreview = "()"; //$NON-NLS-1$
+	  String outputPreview = "()"; //$NON-NLS-1$
 	  
 	  Iterator kids = getModelChildren().iterator();
 	  while (kids.hasNext()) {
@@ -133,7 +133,7 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
 		  }
 	  }
 	  
-	  return inputPreview + " --> " + outputPreview;
+	  return inputPreview + " --> " + outputPreview; //$NON-NLS-1$
   }
   
   public IFigure getContentPane()

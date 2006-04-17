@@ -30,8 +30,8 @@ public class W11AddMessageCommand extends Command {
 	}
 
     public void execute() {
-		if (newName == null || newName.equals("")) {
-			newName = NameUtil.buildUniqueMessageName(definition, "NewMessage");
+		if (newName == null || newName.equals("")) { //$NON-NLS-1$
+			newName = NameUtil.buildUniqueMessageName(definition, "NewMessage"); //$NON-NLS-1$
 		}
 
     	AddMessageCommand command = new AddMessageCommand(definition, newName, true);

@@ -22,8 +22,8 @@ public class W11AddImportCommand extends Command {
 	}
 	
 	public void execute() {
-		String namespace = "";
-		String location = "";
+		String namespace = ""; //$NON-NLS-1$
+		String location = ""; //$NON-NLS-1$
 		AddImportCommand command = new AddImportCommand(definition, namespace, location);
 		command.run();
 	}

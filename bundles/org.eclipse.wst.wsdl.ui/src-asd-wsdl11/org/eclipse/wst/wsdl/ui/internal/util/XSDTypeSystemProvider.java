@@ -51,7 +51,7 @@ public class XSDTypeSystemProvider implements ITypeSystemProvider
         for (Iterator i = getPrefixes(definition, namespace).iterator(); i.hasNext();)
         {
             String prefix = (String) i.next();
-            String name = (prefix != null && prefix.length() > 0) ? prefix + ":" + localName : localName;
+            String name = (prefix != null && prefix.length() > 0) ? prefix + ":" + localName : localName; //$NON-NLS-1$
             list.add(name);
         }
         return list;

@@ -15,19 +15,19 @@ import org.eclipse.wst.common.core.search.pattern.QualifiedName;
 
 public interface IWSDLSearchConstants {
 
-	public static final String WSDL_NAMESPACE = "http://schemas.xmlsoap.org/wsdl/";
-	public static final String XMLSCHEMA_NAMESPACE = "http://www.w3.org/2001/XMLSchema";
+	public static final String WSDL_NAMESPACE = "http://schemas.xmlsoap.org/wsdl/"; //$NON-NLS-1$
+	public static final String XMLSCHEMA_NAMESPACE = "http://www.w3.org/2001/XMLSchema"; //$NON-NLS-1$
 	
-	public static String WSDL_CONTENT_TYPE_ID = "org.eclipse.wst.wsdl.wsdlsource";
+	public static String WSDL_CONTENT_TYPE_ID = "org.eclipse.wst.wsdl.wsdlsource"; //$NON-NLS-1$
 
 	public static final QualifiedName MESSAGE_META_NAME = new QualifiedName(
-			WSDL_NAMESPACE, "message");
+			WSDL_NAMESPACE, "message"); //$NON-NLS-1$
 
 	public static final QualifiedName PORT_TYPE_META_NAME = new QualifiedName(
-			WSDL_NAMESPACE, "portType");
+			WSDL_NAMESPACE, "portType"); //$NON-NLS-1$
 
 	public static final QualifiedName BINDING_META_NAME = new QualifiedName(
-			WSDL_NAMESPACE, "binding");
+			WSDL_NAMESPACE, "binding"); //$NON-NLS-1$
 
 	
 

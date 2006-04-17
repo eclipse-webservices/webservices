@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
@@ -38,9 +39,9 @@ public class W11ParameterSection extends ParameterSection {
 		super.createControlArea();
 		FormData data;
 		
-		typeRadio = getWidgetFactory().createButton(composite, "type", SWT.RADIO);
-		elementRadio = getWidgetFactory().createButton(composite, "element", SWT.RADIO);	
-		CLabel referenceKindLabel = getWidgetFactory().createCLabel(composite, "Reference Kind" + ":");
+		typeRadio = getWidgetFactory().createButton(composite, Messages.getString("_UI_LABEL_TYPE"), SWT.RADIO); //$NON-NLS-1$
+		elementRadio = getWidgetFactory().createButton(composite, Messages.getString("_UI_LABEL_ELEMENT"), SWT.RADIO);	 //$NON-NLS-1$
+		CLabel referenceKindLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_REFERENCE_KIND") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		typeRadio.addSelectionListener(this);
 		elementRadio.addSelectionListener(this);
@@ -69,12 +70,12 @@ public class W11ParameterSection extends ParameterSection {
 		Part part = (Part) parameter.getTarget();
 		
 		if (e.widget == typeRadio && typeRadio.getSelection()) {
-			comboLabel.setText("Type" + ":");
+			comboLabel.setText(Messages.getString("_UI_LABEL_TYPE") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 			ComponentReferenceUtil.setComponentReference(part, true, null);
 			super.refreshCombo();
 		}
 		else if (e.widget == elementRadio && elementRadio.getSelection()) {
-			comboLabel.setText("Element" + ":");
+			comboLabel.setText(Messages.getString("_UI_LABEL_ELEMENT") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 			ComponentReferenceUtil.setComponentReference(part, false, null);
 			refreshElementCombo();
 		}
@@ -120,8 +121,8 @@ public class W11ParameterSection extends ParameterSection {
 				param = (IParameter) model;
 			}
 			
-			String name = "";
-			String elementName = "ParameterSection.java";
+			String name = ""; //$NON-NLS-1$
+			String elementName = "ParameterSection.java"; //$NON-NLS-1$
 			if (param != null) {
 				name = param.getName();
 				elementName = param.getComponentName();

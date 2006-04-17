@@ -85,9 +85,9 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     contentPane.setLayoutManager(toolbarLayout);
     figure.add(contentPane);
     
-    rowLayout.setConstraint(label, "MessageLabel");
+    rowLayout.setConstraint(label, "MessageLabel"); //$NON-NLS-1$
     //rowLayout.setConstraint(partsList, "PartsList");
-    rowLayout.setConstraint(contentPane, "MessageContentPane");
+    rowLayout.setConstraint(contentPane, "MessageContentPane"); //$NON-NLS-1$
     
     if (isReadOnly()) {
     	label.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);

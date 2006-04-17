@@ -21,6 +21,7 @@ import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
@@ -83,14 +84,14 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
 		while (it.hasNext()) {
 			Object item = it.next();
 			if (item instanceof SOAPBinding) {
-				return "SOAP";
+				return "SOAP"; //$NON-NLS-1$
 			}
 			else if (item instanceof HTTPBinding) {
-				return "HTTP";
+				return "HTTP"; //$NON-NLS-1$
 			}
 		}
 		
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 	
 	public IDescription getOwnerDescription() {
@@ -100,7 +101,7 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
 	public String[] getActions(Object object) {
 		String[] actionIDs = new String[6];
 		actionIDs[0] = ASDGenerateBindingAction.ID;
-		actionIDs[1] = BaseSelectionAction.SUBMENU_START_ID + "Set PortType";
+		actionIDs[1] = BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_PORTTYPE"); //$NON-NLS-1$
 		actionIDs[2] = ASDSetNewInterfaceAction.ID;
 		actionIDs[3] = ASDSetExistingInterfaceAction.ID;
 		actionIDs[4] = BaseSelectionAction.SUBMENU_END_ID;
@@ -128,16 +129,16 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
     // way to compute this stuff so don't hardcode HTTP or SOAP stuff
     //
     String protocol = getProtocol();
-    String imageName = "icons/binding_obj.gif";
+    String imageName = "icons/binding_obj.gif"; //$NON-NLS-1$
     if (protocol != null)
     {  
-      if (protocol.equals("HTTP"))
+      if (protocol.equals("HTTP")) //$NON-NLS-1$
       {
-        imageName = "icons/httpbinding_obj.gif";
+        imageName = "icons/httpbinding_obj.gif"; //$NON-NLS-1$
       }  
-      else if (protocol.equals("SOAP"))
+      else if (protocol.equals("SOAP")) //$NON-NLS-1$
       {
-        imageName = "icons/soapbinding_obj.gif";
+        imageName = "icons/soapbinding_obj.gif"; //$NON-NLS-1$
       }  
     }
     return WSDLEditorPlugin.getInstance().getImage(imageName);    

@@ -71,7 +71,7 @@ public class OpenOnSelectionHelper extends WSDLSwitch
 
   protected void openEditor(String resource, String spec)
   {
-    String pattern = "platform:/resource";
+    String pattern = "platform:/resource"; //$NON-NLS-1$
     if (resource != null && resource.startsWith(pattern))
     {
       try
@@ -91,7 +91,7 @@ public class OpenOnSelectionHelper extends WSDLSwitch
         {
           try
           {
-            if (resource.endsWith("xsd"))
+            if (resource.endsWith("xsd")) //$NON-NLS-1$
             {
               editorPart = workbenchPage.openEditor(new FileEditorInput(file), WSDLEditorPlugin.XSD_EDITOR_ID); 
             }
@@ -108,7 +108,7 @@ public class OpenOnSelectionHelper extends WSDLSwitch
 
         Class theClass = editorPart.getClass();
         Class[] methodArgs = { String.class };
-        Method method = theClass.getMethod("openOnSelection", methodArgs);
+        Method method = theClass.getMethod("openOnSelection", methodArgs); //$NON-NLS-1$
         Object args[] = { spec };
         method.invoke(editorPart, args);
         workbenchPage.getNavigationHistory().markLocation(editorPart);
@@ -262,14 +262,14 @@ public class OpenOnSelectionHelper extends WSDLSwitch
 		// the Import's eDefinition and eSchema instead.
 		Path importPath = new Path(theImport.getLocationURI());
 		String extension = importPath.getFileExtension();
-		if (extension.equalsIgnoreCase("xsd")) {
+		if (extension.equalsIgnoreCase("xsd")) { //$NON-NLS-1$
 			if (theImport.getESchema() == null) {
 				((ImportImpl)theImport).importDefinitionOrSchema();
 			}
 			
 			result = theImport.getESchema();
 		}
-		else if (extension.equalsIgnoreCase("wsdl")) {
+		else if (extension.equalsIgnoreCase("wsdl")) { //$NON-NLS-1$
 			if (theImport.getEDefinition() == null) {
 				((ImportImpl)theImport).importDefinitionOrSchema();
 			}

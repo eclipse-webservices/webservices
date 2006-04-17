@@ -64,7 +64,7 @@ public class W11InterfaceReferenceEditManager implements ComponentReferenceEditM
 		if (interfaceObject instanceof ComponentSpecification) {
 			Binding binding = (Binding) w11Binding.getTarget();
 			WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, getDefinition());
-			helper.setWSDLComponent(binding, "type", (ComponentSpecification) interfaceObject);
+			helper.setWSDLComponent(binding, "type", (ComponentSpecification) interfaceObject); //$NON-NLS-1$
 		}
 		else if (interfaceObject instanceof IInterface){
 			IInterface interfaze = (IInterface) interfaceObject;
@@ -85,7 +85,7 @@ public class W11InterfaceReferenceEditManager implements ComponentReferenceEditM
 		Iterator interfaces = description.getInterfaces().iterator();
 		while (interfaces.hasNext()) {
 			IInterface interfaze = (IInterface) interfaces.next();
-			String qualifier = "";
+			String qualifier = ""; //$NON-NLS-1$
 			String name = interfaze.getName();
 			IFile file = null;
 			

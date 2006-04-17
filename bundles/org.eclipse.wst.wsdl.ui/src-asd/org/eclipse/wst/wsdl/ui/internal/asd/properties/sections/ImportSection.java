@@ -23,6 +23,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IImport;
 
 public class ImportSection extends ASDAbstractSection
@@ -50,7 +51,7 @@ public class ImportSection extends ASDAbstractSection
 		data.top = new FormAttachment(0, 0);
 		namespaceText.setLayoutData(data);
 		
-		CLabel namespaceLabel = getWidgetFactory().createCLabel(composite, WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAMESPACE")); //$NON-NLS-1$
+		CLabel namespaceLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_NAMESPACE")); //$NON-NLS-1$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(namespaceText, -ITabbedPropertyConstants.HSPACE);
@@ -66,7 +67,7 @@ public class ImportSection extends ASDAbstractSection
 		data.top = new FormAttachment(namespaceText, +ITabbedPropertyConstants.VSPACE);
 		prefixText.setLayoutData(data);
 		
-		CLabel prefixLabel = getWidgetFactory().createCLabel(composite, WSDLEditorPlugin.getWSDLString("_UI_LABEL_PREFIX")); //$NON-NLS-1$
+		CLabel prefixLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_PREFIX")); //$NON-NLS-1$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(prefixText, -ITabbedPropertyConstants.HSPACE);
@@ -77,7 +78,7 @@ public class ImportSection extends ASDAbstractSection
 		locationText.setEditable(false);
 //		locationText.addListener(SWT.Modify, this);
 		
-		CLabel locationLabel = getWidgetFactory().createCLabel(composite, WSDLEditorPlugin.getWSDLString("_UI_LABEL_LOCATION")); //$NON-NLS-1$
+		CLabel locationLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_LOCATION")); //$NON-NLS-1$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(locationText, -ITabbedPropertyConstants.HSPACE);

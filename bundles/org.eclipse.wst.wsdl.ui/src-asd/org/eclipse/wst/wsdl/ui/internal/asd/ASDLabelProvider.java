@@ -13,7 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.asd;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
@@ -61,7 +60,7 @@ public class ASDLabelProvider extends LabelProvider {
 			}
 			
 			if (selected instanceof IASDObject && ((IASDObject) selected).isReadOnly()) {
-				result  = result + " (" + WSDLEditorPlugin.getWSDLString("_UI_LABEL_READ_ONLY") + ")";
+				result  = result + " (" + Messages.getString("_UI_LABEL_READ_ONLY") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 		}
 		

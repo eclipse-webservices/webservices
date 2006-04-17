@@ -33,7 +33,7 @@ public class DesignViewGraphicalViewer extends ScrollingGraphicalViewer implemen
 	  {
 	    super();
 	    setContextMenu(new DesignViewContextMenuProvider(this, this));
-	    editor.getEditorSite().registerContextMenu("org.eclipse.wst.wsdl.editor.popup.graph", getContextMenu(), internalSelectionProvider, false);
+	    editor.getEditorSite().registerContextMenu("org.eclipse.wst.wsdl.editor.popup.graph", getContextMenu(), internalSelectionProvider, false); //$NON-NLS-1$
 
 	    // make the internalSelectionProvider listen to graph view selection changes
 	    addSelectionChangedListener(internalSelectionProvider);    

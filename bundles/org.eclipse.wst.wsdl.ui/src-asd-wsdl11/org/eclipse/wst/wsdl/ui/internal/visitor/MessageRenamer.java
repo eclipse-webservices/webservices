@@ -37,7 +37,7 @@ public class MessageRenamer extends BaseRenamer
     if (globalComponent.equals(message))
     {
       Element element = WSDLEditorUtil.getInstance().getElementForObject(input);
-      element.setAttribute("message", getNewQName());
+      element.setAttribute("message", getNewQName()); //$NON-NLS-1$
     }
   }
 
@@ -47,7 +47,7 @@ public class MessageRenamer extends BaseRenamer
     if (globalComponent.equals(output))
     {
       Element element = WSDLEditorUtil.getInstance().getElementForObject(output);
-      element.setAttribute("message", getNewQName());
+      element.setAttribute("message", getNewQName()); //$NON-NLS-1$
     }
   }
 
@@ -57,7 +57,7 @@ public class MessageRenamer extends BaseRenamer
     if (globalComponent.equals(fault))
     {
       Element element = WSDLEditorUtil.getInstance().getElementForObject(fault);
-      element.setAttribute("message", getNewQName());
+      element.setAttribute("message", getNewQName()); //$NON-NLS-1$
     }
   }
 }

@@ -64,7 +64,7 @@ public class WSDLHyperlink implements IHyperlink
      * string and cleaner ways to find which editor to open for the file. See
      * other IHyperlink and IHyperlinkDetector implementors for examples.
      */
-    String pattern = "platform:/resource";
+    String pattern = "platform:/resource"; //$NON-NLS-1$
     if (fResource != null && fResource.startsWith(pattern))
     {
       Path path = new Path(fResource.substring(pattern.length()));

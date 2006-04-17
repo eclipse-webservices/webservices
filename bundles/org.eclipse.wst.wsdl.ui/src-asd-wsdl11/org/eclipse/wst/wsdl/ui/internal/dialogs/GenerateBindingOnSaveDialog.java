@@ -21,12 +21,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 
 public class GenerateBindingOnSaveDialog extends MessageDialog implements SelectionListener {
-	private static String dialogTitle = "Regenerate Bindings On Save";		// TODO: Translations needed....
-	private static String dialogMessage = "Regenerate Bindings On Save?";
-	private static String[] buttons = new String[]{"Yes", "No", "Cancel"};
+	private static String dialogTitle = Messages.getString("_UI_REGEN_BINDINDS_ON_SAVE");		// TODO: Translations needed.... //$NON-NLS-1$
+	private static String dialogMessage = Messages.getString("_UI_REGEN_BINDINGS_ON_SAVE_QUESTIONMARK"); //$NON-NLS-1$
+	private static String[] buttons = new String[]{Messages.getString("_UI_YES_LABEL"), Messages.getString("_UI_NO_LABEL"), Messages.getString("_UI_CANCEL_LABEL")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	
 	private Button rememberDecisionBox;
 	private boolean rememberDecision = false;
@@ -48,7 +49,7 @@ public class GenerateBindingOnSaveDialog extends MessageDialog implements Select
 		new Label(comp, SWT.NONE);
 		
 		rememberDecisionBox = new Button(comp, SWT.CHECK);
-		rememberDecisionBox.setText("Remember my decision");	// TODO: Externalize...
+		rememberDecisionBox.setText(Messages.getString("_UI_REMEMBER_MY_DECISION_LABEL"));	// TODO: Externalize... //$NON-NLS-1$
 		rememberDecisionBox.addSelectionListener(this);
 
 		return parent;
@@ -57,9 +58,9 @@ public class GenerateBindingOnSaveDialog extends MessageDialog implements Select
 	private void storePromptPreference(int swtValue) {
 		// Store the new preference for displaying this dialog.
 		if (rememberDecision) {
-			WSDLEditorPlugin.getInstance().getPluginPreferences().setValue("Prompt Regenerate Binding on save", false);
+			WSDLEditorPlugin.getInstance().getPluginPreferences().setValue(Messages.getString("_UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE"), false); //$NON-NLS-1$
 		
-			String generateID = WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING");
+			String generateID = Messages.getString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING"); //$NON-NLS-1$
 			if (swtValue == SWT.YES) {
 				WSDLEditorPlugin.getInstance().getPluginPreferences().setValue(generateID, true);
 			}

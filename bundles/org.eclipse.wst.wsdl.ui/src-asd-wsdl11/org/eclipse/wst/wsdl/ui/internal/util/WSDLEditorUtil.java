@@ -128,7 +128,7 @@ public class WSDLEditorUtil extends WSDLConstants
     QName qname = null;
     if (prefixedName != null)
     {
-      int index = prefixedName.indexOf(":");
+      int index = prefixedName.indexOf(":"); //$NON-NLS-1$
       String prefix = (index == -1) ? null : prefixedName.substring(0, index);
       if (prefix != null)
       {

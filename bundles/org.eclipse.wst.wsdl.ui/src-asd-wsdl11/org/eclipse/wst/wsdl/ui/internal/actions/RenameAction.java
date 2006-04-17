@@ -82,7 +82,7 @@ public class RenameAction //extends BaseNodeAction implements Runnable
     Element element = WSDLEditorUtil.getInstance().getElementForObject(modelObject);
     if (element != null)
     { 
-      element.setAttribute("name", theNewName);
+      element.setAttribute("name", theNewName); //$NON-NLS-1$
     }    
 
     if (modelObject instanceof Message)

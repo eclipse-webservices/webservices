@@ -14,17 +14,18 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IService;
 
 public class ASDAddEndPointAction extends BaseSelectionAction {	
-	public static String ID = "ASDAddEndPointAction"; 
+	public static String ID = "ASDAddEndPointAction";  //$NON-NLS-1$
 	
 	public ASDAddEndPointAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText("Add Port");
-		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/port_obj.gif"));
+		setText(Messages.getString("_UI_ACTION_ADD_PORT")); //$NON-NLS-1$
+		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/port_obj.gif")); //$NON-NLS-1$
 	}
 	
 	public void run() {

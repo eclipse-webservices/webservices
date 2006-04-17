@@ -22,6 +22,7 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.MessageReference;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
@@ -32,8 +33,8 @@ import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 
 public class W11MessageReferenceSection extends NameSection {
-	protected static String NEW_STRING = "New...";
-	protected static String BROWSE_STRING = "Browse...";
+	protected static String NEW_STRING = Messages.getString("_UI_BUTTON_NEW"); //$NON-NLS-1$
+	protected static String BROWSE_STRING = Messages.getString("_UI_BUTTON_BROWSE"); //$NON-NLS-1$
 	
 	protected CLabel comboLabel; 
 	protected CCombo combo;
@@ -53,7 +54,7 @@ public class W11MessageReferenceSection extends NameSection {
 		combo.addListener(SWT.Modify, this);
 		combo.addSelectionListener(this);
 		
-		comboLabel = getWidgetFactory().createCLabel(composite, "Message" + ":"); //$NON-NLS-1$
+		comboLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_MESSAGE") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(combo, -ITabbedPropertyConstants.HSPACE);
@@ -77,7 +78,7 @@ public class W11MessageReferenceSection extends NameSection {
 			return;
 		}
 		setListenerEnabled(true);
-		String refName = "";
+		String refName = ""; //$NON-NLS-1$
 		
 		combo.removeAll();
 		combo.add(BROWSE_STRING);
@@ -139,7 +140,7 @@ public class W11MessageReferenceSection extends NameSection {
 	{
 		super.doHandleEvent(event);
 		if (event.widget == combo) {
-			String value = "";
+			String value = ""; //$NON-NLS-1$
 			if (combo.getSelectionIndex() != -1) {
 				value = combo.getItem(combo.getSelectionIndex());
 			}

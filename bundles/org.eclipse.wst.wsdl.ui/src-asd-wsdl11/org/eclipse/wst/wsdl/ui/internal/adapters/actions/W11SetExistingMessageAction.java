@@ -14,6 +14,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
@@ -22,14 +23,14 @@ import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 
 public class W11SetExistingMessageAction extends BaseSelectionAction {
-	public static String ID = "ASDSetMessageInterfaceAction";
+	public static String ID = "ASDSetMessageInterfaceAction"; //$NON-NLS-1$
 	protected IMessageReference messageReference;
 
 	
 	public W11SetExistingMessageAction(IWorkbenchPart part) {
 		super(part);
 		setId(ID);
-		setText("Set Existing Message...");
+		setText(Messages.getString("_UI_ACTION_EXISTING_MESSAGE")); //$NON-NLS-1$
 //		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/message_obj.gif"));
 	}
 	

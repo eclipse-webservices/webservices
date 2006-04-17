@@ -15,19 +15,20 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11BindingReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 
 public class ASDSetExistingBindingAction extends BaseSelectionAction {
-	public static String ID = "ASDSetExistingBindingAction";
+	public static String ID = "ASDSetExistingBindingAction"; //$NON-NLS-1$
 	protected IEndPoint endPoint;
 	
 	public ASDSetExistingBindingAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText("Set Existing Binding...");
+		setText(Messages.getString("_UI_ACTION_EXISTING_BINDING")); //$NON-NLS-1$
 //		setImageDescriptor(WSDLEditorPlugin.getImageDescriptor("icons/service_obj.gif"));
 	}
 	

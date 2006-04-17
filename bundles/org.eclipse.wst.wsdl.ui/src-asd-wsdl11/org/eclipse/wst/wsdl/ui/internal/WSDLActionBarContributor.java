@@ -74,7 +74,7 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
   
   public void contributeToToolBar(IToolBarManager manager)
   {
-    manager.add(new GroupMarker("WSDLEditor"));
+    manager.add(new GroupMarker("WSDLEditor")); //$NON-NLS-1$
     List list = WSDLEditorPlugin.getInstance().getWSDLEditorConfiguration().getToolbarActions();
     for (Iterator i = list.iterator(); i.hasNext(); )
     {

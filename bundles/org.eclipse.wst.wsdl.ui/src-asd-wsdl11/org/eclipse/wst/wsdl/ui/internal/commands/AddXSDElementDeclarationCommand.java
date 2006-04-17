@@ -98,7 +98,7 @@ public final class AddXSDElementDeclarationCommand extends WSDLElementCommand
   
   private XSDSimpleTypeDefinition getXSDStringType(XSDSchema schema)
   {
-    return schema.getSchemaForSchema().resolveSimpleTypeDefinition("string");
+    return schema.getSchemaForSchema().resolveSimpleTypeDefinition("string"); //$NON-NLS-1$
   }
   
   private XSDSchema getXSDSchema(String targetNamespace)

@@ -63,9 +63,9 @@ public final class AddOutputCommand extends AddMessageReferenceCommand
 		
 		boolean gened = false;
 		if (originalOutput.eContainer() instanceof Operation)
-			gened = SmartRenameAction.isMessageNameGenerated(originalMsgName, ((Operation) originalOutput.eContainer()).getName(), "Response");
+			gened = SmartRenameAction.isMessageNameGenerated(originalMsgName, ((Operation) originalOutput.eContainer()).getName(), "Response"); //$NON-NLS-1$
 		
-		String newMsgName = "";
+		String newMsgName = ""; //$NON-NLS-1$
 		if (gened) {
 			newMsgName = NameUtil.buildUniqueMessageName(operation.getEnclosingDefinition(), messageReference);
 		}

@@ -76,7 +76,7 @@ public class WSDLSetComponentHelper {
         String name = (String) spec.getName();
         List prefixes = getPrefixes(definition, spec.getQualifier());
         if (prefixes.size() > 0) {
-            name = prefixes.get(0) + ":" + name;
+            name = prefixes.get(0) + ":" + name; //$NON-NLS-1$
         }
         
         return name;
@@ -111,7 +111,7 @@ public class WSDLSetComponentHelper {
             Iterator importsIt = definition.getEImports().iterator();
             
             while (importsIt.hasNext()) {
-                String importLocation = "";
+                String importLocation = ""; //$NON-NLS-1$
                 ImportImpl importItem = (ImportImpl) importsIt.next();
                 importItem.importDefinitionOrSchema();
                 
@@ -140,7 +140,7 @@ public class WSDLSetComponentHelper {
 	            while (it.hasNext()) {
 	                XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) it.next();
 	                XSDSchema schema = eeElement.getSchema();
-	                if (schema.getTargetNamespace() == null || schema.getTargetNamespace().equals("")) {                    
+	                if (schema.getTargetNamespace() == null || schema.getTargetNamespace().equals("")) {                     //$NON-NLS-1$
 	                    Iterator contents = schema.getContents().iterator();
 	                    while (contents.hasNext()) {
 	                        XSDSchemaContent content = (XSDSchemaContent) contents.next();
@@ -169,7 +169,7 @@ public class WSDLSetComponentHelper {
         if (!foundMatch) {
             boolean wsiStyleImport = isXSDSchemaFile(spec);
             if (wsiStyleImport) {
-                AddElementDeclarationAction action = new AddElementDeclarationAction(definition, spec.getQualifier(), "xsd");
+                AddElementDeclarationAction action = new AddElementDeclarationAction(definition, spec.getQualifier(), "xsd"); //$NON-NLS-1$
                 action.run();
              
                 String location = URIHelper.getRelativeURI(spec.getFile().getLocation(), currentIFile.getLocation());
@@ -189,7 +189,7 @@ public class WSDLSetComponentHelper {
                 addImportAction.run();            
                 
                 String uniquePrefix = getUniquePrefix(definition, prefix);            
-                definitionElement.setAttribute("xmlns:" + uniquePrefix, namespace);
+                definitionElement.setAttribute("xmlns:" + uniquePrefix, namespace); //$NON-NLS-1$
             }
         }
     }
@@ -199,11 +199,11 @@ public class WSDLSetComponentHelper {
      */
     private boolean isXSDSchemaFile(ComponentSpecification spec) {
         String fileLocation = spec.getFile().getLocation().toOSString();
-        int periodIndex = fileLocation.lastIndexOf(".");
+        int periodIndex = fileLocation.lastIndexOf("."); //$NON-NLS-1$
         
         if (periodIndex > 0) {
             String extension = fileLocation.substring(periodIndex + 1);
-            if (extension.equalsIgnoreCase("xsd")) {
+            if (extension.equalsIgnoreCase("xsd")) { //$NON-NLS-1$
                 return true;
             }
         }

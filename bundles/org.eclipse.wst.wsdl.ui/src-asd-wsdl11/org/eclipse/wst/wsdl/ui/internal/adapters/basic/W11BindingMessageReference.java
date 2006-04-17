@@ -46,22 +46,22 @@ public class W11BindingMessageReference extends WSDLBaseAdapter implements IBind
     String imageName = null;
     if (target instanceof BindingInput)
     {
-      imageName = "icons/input_obj.gif";
+      imageName = "icons/input_obj.gif"; //$NON-NLS-1$
     }
     else if (target instanceof BindingOutput)
     {
-      imageName = "icons/output_obj.gif";      
+      imageName = "icons/output_obj.gif";       //$NON-NLS-1$
     } 
     else //if (target instanceof BindingFault)
     {
-      imageName = "icons/fault_obj.gif";
+      imageName = "icons/fault_obj.gif"; //$NON-NLS-1$
     }  
     return WSDLEditorPlugin.getInstance().getImage(imageName);
   }
   
   public String getName()
   {
-	  String name = "";
+	  String name = ""; //$NON-NLS-1$
 	  if (target instanceof BindingInput)
 	  {
 		  name = "input";

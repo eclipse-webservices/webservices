@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.INamedObject;
 
 public class NameSection extends ASDAbstractSection {
@@ -45,7 +46,7 @@ public class NameSection extends ASDAbstractSection {
 		data.top = new FormAttachment(0, 0);
 		nameText.setLayoutData(data);
 		
-		nameLabel = getWidgetFactory().createCLabel(composite, "Name:"); // TODO: Externalize String
+		nameLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_NAME") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(nameText, -ITabbedPropertyConstants.HSPACE);
@@ -65,7 +66,7 @@ public class NameSection extends ASDAbstractSection {
 		
 		setListenerEnabled(false);
 		nameText.setText(""); //$NON-NLS-1$
-		String name = "";
+		String name = ""; //$NON-NLS-1$
 		if (getModel() instanceof INamedObject) {
 			name = ((INamedObject) getModel()).getName();
 		}

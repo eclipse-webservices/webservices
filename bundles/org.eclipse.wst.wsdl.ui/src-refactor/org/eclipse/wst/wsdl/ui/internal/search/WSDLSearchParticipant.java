@@ -27,8 +27,8 @@ import org.eclipse.wst.xsd.ui.internal.search.IXSDSearchConstants;
 
 public class WSDLSearchParticipant extends XMLSearchParticipant {
 	
-	private static String ID = "org.eclipse.wst.wsdl.search.WSDLSearchParticipant";
-	private static String XSD_PARTICIPANNT_ID = "org.eclipse.wst.xsd.search.XSDSearchParticipant";
+	private static String ID = "org.eclipse.wst.wsdl.search.WSDLSearchParticipant"; //$NON-NLS-1$
+	private static String XSD_PARTICIPANNT_ID = "org.eclipse.wst.xsd.search.XSDSearchParticipant"; //$NON-NLS-1$
 
 	
 	public WSDLSearchParticipant()
@@ -39,7 +39,7 @@ public class WSDLSearchParticipant extends XMLSearchParticipant {
 	
 	public String[] getSupportedContentTypes()
 	{
-	  String[] result = { "org.eclipse.wst.wsdl.wsdlsource" };
+	  String[] result = { "org.eclipse.wst.wsdl.wsdlsource" }; //$NON-NLS-1$
 	  return result;
 	}
 	

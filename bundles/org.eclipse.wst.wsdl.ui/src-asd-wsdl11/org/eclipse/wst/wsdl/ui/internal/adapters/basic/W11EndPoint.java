@@ -22,6 +22,7 @@ import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
 import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
@@ -52,7 +53,7 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
           W11AddressExtensibilityElementAdapter addressEE = (W11AddressExtensibilityElementAdapter)list.get(0);
           return addressEE.getLocationURI();
         }	
-		return "";
+		return ""; //$NON-NLS-1$
 	}
     
     protected List getAddressExtensiblityElements()
@@ -111,7 +112,7 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 	}
 
 	public String getTypeName() {
-		String value = "";
+		String value = ""; //$NON-NLS-1$
 		List eeElements = getPort().getEExtensibilityElements();
 		if (eeElements.size() > 0) {
 			Object object = eeElements.get(0);
@@ -123,7 +124,7 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 			}
 		}
 		
-		if (value == null || value.equals("")) {
+		if (value == null || value.equals("")) { //$NON-NLS-1$
 			value = "No Address";
 		}
 		
@@ -145,7 +146,7 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 	public String[] getActions(Object object) {
 		String[] actionIDs = new String[6];
 		actionIDs[0] = ASDAddEndPointAction.ID;
-		actionIDs[1] = BaseSelectionAction.SUBMENU_START_ID + "Set Binding";
+		actionIDs[1] = BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_BINDING"); //$NON-NLS-1$
 		actionIDs[2] = ASDSetNewBindingAction.ID;
 		actionIDs[3] = ASDSetExistingBindingAction.ID;
 		actionIDs[4] = BaseSelectionAction.SUBMENU_END_ID;
@@ -175,7 +176,7 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
     }
 	
 	public Image getImage() {
-		return WSDLEditorPlugin.getInstance().getImage("icons/port_obj.gif");
+		return WSDLEditorPlugin.getInstance().getImage("icons/port_obj.gif"); //$NON-NLS-1$
 	}
 	
 	public String getText() {

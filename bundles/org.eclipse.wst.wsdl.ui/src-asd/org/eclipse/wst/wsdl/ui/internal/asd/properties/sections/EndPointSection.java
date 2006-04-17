@@ -29,6 +29,7 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
@@ -53,7 +54,7 @@ public class EndPointSection extends ReferenceSection {
 		FormData data;
 		
 		// Address row
-		CLabel addressLabel = getWidgetFactory().createCLabel(composite, "Address:"); // TODO: Externalize String
+		CLabel addressLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_ADDRESS") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		addressText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
 		
 		data = new FormData();
@@ -69,7 +70,7 @@ public class EndPointSection extends ReferenceSection {
 		addressText.setLayoutData(data);
 
 		// Protocol Row
-		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, "Protocol:"); // TODO: Externalize String
+		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_BINDING_PROTOCOL") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		protocolValueLabel = getWidgetFactory().createCLabel(composite, "----"); //$NON-NLS-1$
 		
 		data = new FormData();
@@ -85,7 +86,7 @@ public class EndPointSection extends ReferenceSection {
 		protocolValueLabel.setLayoutData(data);
 		protocolValueLabel.addListener(SWT.Modify, this);
 
-		comboLabel.setText("Binding:");
+		comboLabel.setText(Messages.getString("_UI_LABEL_BINDING") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/*
@@ -102,8 +103,8 @@ public class EndPointSection extends ReferenceSection {
 		}
 		if (endPoint.getBinding() != null) {
 			String protocolValue = endPoint.getBinding().getProtocol();
-			if (protocolValue.equals("")) {
-				protocolValue = "----";
+			if (protocolValue.equals("")) { //$NON-NLS-1$
+				protocolValue = "----"; //$NON-NLS-1$
 			}
 			protocolValueLabel.setText(protocolValue);
 		}
@@ -139,7 +140,7 @@ public class EndPointSection extends ReferenceSection {
 	}
 	
 	protected String getComboItemName(Object item) {
-		String name = "";
+		String name = ""; //$NON-NLS-1$
 		if (item instanceof ComponentSpecification) {
 			name = ((ComponentSpecification) item).getName();
 		}
@@ -190,7 +191,7 @@ public class EndPointSection extends ReferenceSection {
 	  if (event.widget == addressText && !addressText.isDisposed()) {
 		  String newAddress = addressText.getText();
 		  if (newAddress == null) {
-			  newAddress = "";
+			  newAddress = ""; //$NON-NLS-1$
 		  }
 		  
 		  IEndPoint endPoint = (IEndPoint) getModel();

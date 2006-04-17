@@ -25,10 +25,10 @@ public class InterfaceEditPart extends AbstractBoxtEditPart implements IFeedback
 {     
   public InterfaceEditPart()
   {
-    columnData.setColumnWeight("MessageLabel", 0);
-    columnData.setColumnWeight("MessageContentPane", 100);
-    columnData.setColumnWeight("parameterName", 50);
-    columnData.setColumnWeight("parameterType", 50);        
+    columnData.setColumnWeight("MessageLabel", 0); //$NON-NLS-1$
+    columnData.setColumnWeight("MessageContentPane", 100); //$NON-NLS-1$
+    columnData.setColumnWeight("parameterName", 50); //$NON-NLS-1$
+    columnData.setColumnWeight("parameterType", 50);         //$NON-NLS-1$
   }
   
   protected IFigure createFigure()

@@ -20,9 +20,9 @@ public final class AddBindingOperationCommand extends WSDLElementCommand
   private Binding binding;
   
   private String name;
-  private String bindingInputName = "";
-  private String bindingOutputName = "";
-  private String bindingFaultName ="";
+  private String bindingInputName = ""; //$NON-NLS-1$
+  private String bindingOutputName = ""; //$NON-NLS-1$
+  private String bindingFaultName =""; //$NON-NLS-1$
   
   private BindingOperation bindingOperation;
   

@@ -41,7 +41,7 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 	
 	protected String getAnonymousXSDElementBaseName() {
 		if (newAnonymousXSDElementName == null) {
-			newAnonymousXSDElementName = operation.getName() + "Request"; 
+			newAnonymousXSDElementName = operation.getName() + "Request";  //$NON-NLS-1$
 		}
 		
 		return newAnonymousXSDElementName;
@@ -49,7 +49,7 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 	
 	protected String getNewXSDElementBaseName() {
 		if (newXSDElementName == null) {
-			newXSDElementName = "input";
+			newXSDElementName = "input"; //$NON-NLS-1$
 		}
 		
 		return newXSDElementName;

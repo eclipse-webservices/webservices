@@ -37,7 +37,7 @@ public class WSDLComponentFinder {
       try {
           CollectingSearchRequestor requestor = new CollectingSearchRequestor();
           
-          XMLComponentDeclarationPattern pattern = new XMLComponentDeclarationPattern(new QualifiedName("*", "*"), metaName, SearchPattern.R_PATTERN_MATCH);
+          XMLComponentDeclarationPattern pattern = new XMLComponentDeclarationPattern(new QualifiedName("*", "*"), metaName, SearchPattern.R_PATTERN_MATCH); //$NON-NLS-1$ //$NON-NLS-2$
           
           // TODO (cs) rethink the commented out code below.  Is there some reason for narrowing to list of search particpants?
           // It seems the only benefit may be to filter our xsd component declarations that aren't defined
@@ -61,7 +61,7 @@ public class WSDLComponentFinder {
             spec.setMetaName(metaName);
             spec.setFile(match.getFile());
             
-            Object o = match.map.get("name");
+            Object o = match.map.get("name"); //$NON-NLS-1$
             if (o != null && o instanceof QualifiedName)
             {  
               QualifiedName qualifiedName = (QualifiedName)o;

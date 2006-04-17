@@ -242,7 +242,7 @@ public abstract class AddBaseParameterCommand {
     	String tns = component.getTargetNamespace();
         List prefixes = getPrefixes(definition, tns);
         if (prefixes.size() > 0) {
-            name = prefixes.get(0) + ":" + name;
+            name = prefixes.get(0) + ":" + name; //$NON-NLS-1$
         }
         
         return name;

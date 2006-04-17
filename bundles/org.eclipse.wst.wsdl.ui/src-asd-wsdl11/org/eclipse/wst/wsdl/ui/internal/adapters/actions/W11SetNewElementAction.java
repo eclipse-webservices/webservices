@@ -14,6 +14,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
@@ -23,13 +24,13 @@ import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDElementReferenceEditManager;
 
 public class W11SetNewElementAction extends BaseSelectionAction {
-	public static String ID = "ASDSetNewElementAction";
+	public static String ID = "ASDSetNewElementAction"; //$NON-NLS-1$
 	protected WSDLBaseAdapter wsdlBaseAdapter;
 	
 	public W11SetNewElementAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText("Set New Element...");
+		setText(Messages.getString("_UI_ACTION_NEW_ELEMENT")); //$NON-NLS-1$
 //		setImageDescriptor(WSDLEditorPlugin.getImageDescriptor("icons/service_obj.gif"));
 	}
 	

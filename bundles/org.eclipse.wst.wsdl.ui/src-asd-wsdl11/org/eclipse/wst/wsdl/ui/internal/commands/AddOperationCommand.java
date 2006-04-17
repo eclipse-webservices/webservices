@@ -34,9 +34,9 @@ public final class AddOperationCommand extends WSDLElementCommand
   private boolean createOutput = false;
   private boolean createFault = false;
   
-  private final String DEFAULT_INPUT_NAME = "";
-  private final String DEFAULT_OUTPUT_NAME = "";
-  private final String DEFAULT_FAULT_NAME = "";
+  private final String DEFAULT_INPUT_NAME = ""; //$NON-NLS-1$
+  private final String DEFAULT_OUTPUT_NAME = ""; //$NON-NLS-1$
+  private final String DEFAULT_FAULT_NAME = ""; //$NON-NLS-1$
   
   public AddOperationCommand
 		(PortType portType,  
@@ -108,14 +108,14 @@ public final class AddOperationCommand extends WSDLElementCommand
         	if (originalOperation.getEOutput() != null)
         	{
         		Output output = originalOperation.getEOutput();
-        		command = new AddOutputCommand(operation, output, NameUtil.buildUniqueOutputName(portType, operation.getName(), ""));
+        		command = new AddOutputCommand(operation, output, NameUtil.buildUniqueOutputName(portType, operation.getName(), "")); //$NON-NLS-1$
         		command.run();
         	}
         	
         	if (originalOperation.getEInput() != null)
         	{
         		Input input = originalOperation.getEInput();
-        		command = new AddInputCommand(operation, input, NameUtil.buildUniqueInputName(portType, operation.getName(), ""));
+        		command = new AddInputCommand(operation, input, NameUtil.buildUniqueInputName(portType, operation.getName(), "")); //$NON-NLS-1$
         		command.run();
         	}
         

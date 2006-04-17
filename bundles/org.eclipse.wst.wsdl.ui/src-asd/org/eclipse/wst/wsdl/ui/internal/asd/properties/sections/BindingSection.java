@@ -20,6 +20,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
@@ -32,7 +33,7 @@ public class BindingSection extends ReferenceSection {
 	
 	public void createControls(Composite parent, TabbedPropertySheetWidgetFactory factory) {
 		super.createControls(parent, factory);
-		comboLabel.setText("Port Type:");
+		comboLabel.setText(Messages.getString("_UI_LABEL_PORTTYPE") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	protected List getComboItems() {
@@ -61,7 +62,7 @@ public class BindingSection extends ReferenceSection {
 	}
 
 	protected String getComboItemName(Object item) {
-		String name = "";
+		String name = ""; //$NON-NLS-1$
 		if (item instanceof ComponentSpecification) {
 			name = ((ComponentSpecification) item).getName();
 		}

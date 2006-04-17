@@ -24,27 +24,27 @@ public class HttpExtensiblityElementFilter implements ExtensiblityElementFilter
   	boolean result = false;
     
     String parentElementName = parentElement.getLocalName();
-	if (parentElementName.equals("binding"))
+	if (parentElementName.equals("binding")) //$NON-NLS-1$
 	{
-	  result = localName.equals("binding"); 	  
+	  result = localName.equals("binding"); 	   //$NON-NLS-1$
 	}	  
-	else if (parentElementName.equals("operation"))
+	else if (parentElementName.equals("operation")) //$NON-NLS-1$
 	{
-	  result = localName.equals("operation"); 
+	  result = localName.equals("operation");  //$NON-NLS-1$
 	}
-	else if (parentElementName.equals("input") || 
-	         parentElementName.equals("output"))
+	else if (parentElementName.equals("input") ||  //$NON-NLS-1$
+	         parentElementName.equals("output")) //$NON-NLS-1$
 	{
-	  result = localName.equals("body") || 
-	           localName.equals("header"); 	  
+	  result = localName.equals("body") ||  //$NON-NLS-1$
+	           localName.equals("header"); 	   //$NON-NLS-1$
 	}	
-	else if (parentElementName.equals("fault"))
+	else if (parentElementName.equals("fault")) //$NON-NLS-1$
 	{
-	  result = localName.equals("fault"); 	  
+	  result = localName.equals("fault"); 	   //$NON-NLS-1$
 	}
-	else if (parentElementName.equals("port"))
+	else if (parentElementName.equals("port")) //$NON-NLS-1$
 	{
-	  result = localName.equals("address"); 	  
+	  result = localName.equals("address"); 	   //$NON-NLS-1$
 	}	
     
     return result;

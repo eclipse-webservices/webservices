@@ -22,7 +22,7 @@ abstract public class AddMessageReferenceCommand extends WSDLElementCommand
   protected MessageReference messageReference;
   protected Operation operation;
   protected boolean createMessage = false;
-  private final String DEFAULT_MESSAGE_NAME = "NewMessage";
+  private final String DEFAULT_MESSAGE_NAME = "NewMessage"; //$NON-NLS-1$
 
   public AddMessageReferenceCommand(Operation operation, String name)
   {

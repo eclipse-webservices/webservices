@@ -29,9 +29,9 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 
 public class WSDLComponentDescriptionProvider extends LabelProvider implements IComponentDescriptionProvider {
-	  private static final Image BINDING_IMAGE =  WSDLEditorPlugin.getInstance().getImage("icons/binding_obj.gif");
-	  private static final Image PORTTYPE_IMAGE = WSDLEditorPlugin.getInstance().getImage("icons/porttype_obj.gif");
-	  private static final Image MESSAGE_IMAGE = WSDLEditorPlugin.getInstance().getImage("icons/message_obj.gif");
+	  private static final Image BINDING_IMAGE =  WSDLEditorPlugin.getInstance().getImage("icons/binding_obj.gif"); //$NON-NLS-1$
+	  private static final Image PORTTYPE_IMAGE = WSDLEditorPlugin.getInstance().getImage("icons/porttype_obj.gif"); //$NON-NLS-1$
+	  private static final Image MESSAGE_IMAGE = WSDLEditorPlugin.getInstance().getImage("icons/message_obj.gif"); //$NON-NLS-1$
 
 	public boolean isApplicable(Object component) {
 		return true;
@@ -66,7 +66,7 @@ public class WSDLComponentDescriptionProvider extends LabelProvider implements I
 	    }  
 	    else if (component instanceof WSDLElement)
 	    {
-	      result = ((WSDLElement)component).getElement().getAttribute("name"); 
+	      result = ((WSDLElement)component).getElement().getAttribute("name");  //$NON-NLS-1$
 	    }  
 	    else if (component instanceof SearchMatch)
 	    {
@@ -80,7 +80,7 @@ public class WSDLComponentDescriptionProvider extends LabelProvider implements I
 	}
 
 	public Image getFileIcon(Object component) {
-		return WSDLEditorPlugin.getInstance().getImage("icons/wsdl_file_obj.gif");
+		return WSDLEditorPlugin.getInstance().getImage("icons/wsdl_file_obj.gif"); //$NON-NLS-1$
 	}
 
 	public IFile getFile(Object component) {
@@ -102,7 +102,7 @@ public class WSDLComponentDescriptionProvider extends LabelProvider implements I
 	        // TODO (cs) revisit and test more
 	        //
 	        String location = definition.getLocation();
-	        String platformResource = "platform:/resource";
+	        String platformResource = "platform:/resource"; //$NON-NLS-1$
 	        if (location != null && location.startsWith(platformResource))
 	        {
 	          Path path = new Path(location.substring(platformResource.length()));
@@ -118,7 +118,7 @@ public class WSDLComponentDescriptionProvider extends LabelProvider implements I
 	}
 	
 	  public String getText(Object element) {
-	    String result = "";
+	    String result = ""; //$NON-NLS-1$
 	    String name = getName(element);
 	    if (name != null) {
 	      result += name;
@@ -145,7 +145,7 @@ public class WSDLComponentDescriptionProvider extends LabelProvider implements I
 	    else if (component instanceof SearchMatch)
 	    {
 	      SearchMatch searchMatch = (SearchMatch)component;
-	      QualifiedName qualifiedName = (QualifiedName)searchMatch.map.get("metaName");
+	      QualifiedName qualifiedName = (QualifiedName)searchMatch.map.get("metaName"); //$NON-NLS-1$
 	      if ( qualifiedName != null ){
 	    	  if ( qualifiedName.equals(IWSDLSearchConstants.BINDING_META_NAME))
 	    		  result = BINDING_IMAGE;
@@ -168,7 +168,7 @@ public class WSDLComponentDescriptionProvider extends LabelProvider implements I
 	
 	private QualifiedName getQualifiedNameForSearchMatch(SearchMatch match) {
 		QualifiedName qualifiedName = null;
-		Object o = match.map.get("name");
+		Object o = match.map.get("name"); //$NON-NLS-1$
 		if (o != null && o instanceof QualifiedName)
 		{  
 			qualifiedName = (QualifiedName)o;

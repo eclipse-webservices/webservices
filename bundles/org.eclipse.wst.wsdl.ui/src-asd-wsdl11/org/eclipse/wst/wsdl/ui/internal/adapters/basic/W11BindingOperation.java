@@ -85,7 +85,7 @@ public class W11BindingOperation extends WSDLBaseAdapter implements IBindingOper
 
   public Image getImage()
   {
-    String imageName = "icons/operationbinding_obj.gif";
+    String imageName = "icons/operationbinding_obj.gif"; //$NON-NLS-1$
     return WSDLEditorPlugin.getInstance().getImage(imageName);
   }
 

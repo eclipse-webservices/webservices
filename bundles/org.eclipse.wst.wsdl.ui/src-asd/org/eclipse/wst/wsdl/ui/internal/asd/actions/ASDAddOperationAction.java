@@ -14,19 +14,20 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 
 public class ASDAddOperationAction extends BaseSelectionAction {	
-	public static String ID = "ASDAddOperationAction"; 
+	public static String ID = "ASDAddOperationAction";  //$NON-NLS-1$
 	
 	public ASDAddOperationAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText("Add Operation");
-		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/operation_obj.gif"));
+		setText(Messages.getString("_UI_ACTION_ADD_OPERATION")); //$NON-NLS-1$
+		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/operation_obj.gif")); //$NON-NLS-1$
 	}
 	
 	public void run() {

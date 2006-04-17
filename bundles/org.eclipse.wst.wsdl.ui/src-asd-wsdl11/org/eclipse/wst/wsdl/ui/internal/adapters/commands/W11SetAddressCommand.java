@@ -107,10 +107,10 @@ public class W11SetAddressCommand extends Command {
 	      if (cmnode != null)
 	      {                                       
 	        boolean isOtherNamespace = false;
-	        CMDocument cmDocument = (CMDocument)cmnode.getProperty("CMDocument");
+	        CMDocument cmDocument = (CMDocument)cmnode.getProperty("CMDocument"); //$NON-NLS-1$
 	        if (cmDocument != null)          
 	        {             
-	          String namespaceURI = (String)cmDocument.getProperty("http://org.eclipse.wst/cm/properties/targetNamespaceURI"); 
+	          String namespaceURI = (String)cmDocument.getProperty("http://org.eclipse.wst/cm/properties/targetNamespaceURI");  //$NON-NLS-1$
 	          isOtherNamespace = namespaceURI != null && !namespaceURI.equals(WSDLConstants.WSDL_NAMESPACE_URI);
 	        }
 

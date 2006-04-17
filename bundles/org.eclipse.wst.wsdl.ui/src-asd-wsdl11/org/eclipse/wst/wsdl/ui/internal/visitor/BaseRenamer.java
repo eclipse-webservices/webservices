@@ -32,7 +32,7 @@ public abstract class BaseRenamer extends WSDLVisitor
     {
       Definition definition = globalComponent.getEnclosingDefinition();
       qName = definition.getPrefix(definition.getTargetNamespace());
-      qName += ":" + newName;
+      qName += ":" + newName; //$NON-NLS-1$
     }
     else
     {

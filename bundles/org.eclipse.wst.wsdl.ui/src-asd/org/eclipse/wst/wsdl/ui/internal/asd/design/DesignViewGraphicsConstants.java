@@ -40,7 +40,7 @@ public interface DesignViewGraphicsConstants
   public final static Color readOnlyLabelColor = ColorConstants.gray;
   public final static Color labelColor = ColorConstants.black;
 
-  public final static Font  smallBoldFont           = new Font(Display.getCurrent(), "Tahoma", 8, SWT.BOLD);
-  public final static Font  mediumFont              = new Font(Display.getCurrent(), "Tahoma", 10, SWT.NONE);
-  public final static Font  mediumBoldFont          = new Font(Display.getCurrent(), "Tahoma", 10, SWT.BOLD); 
+  public final static Font  smallBoldFont           = new Font(Display.getCurrent(), "Tahoma", 8, SWT.BOLD); //$NON-NLS-1$
+  public final static Font  mediumFont              = new Font(Display.getCurrent(), "Tahoma", 10, SWT.NONE); //$NON-NLS-1$
+  public final static Font  mediumBoldFont          = new Font(Display.getCurrent(), "Tahoma", 10, SWT.BOLD);  //$NON-NLS-1$
 }

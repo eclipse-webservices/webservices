@@ -22,9 +22,9 @@ public class XSDExtensiblityElementFilter implements ExtensiblityElementFilter
   {
   	boolean result = false;
     String parentElementName = parentElement.getLocalName();
-	if (parentElementName.equals("types"))
+	if (parentElementName.equals("types")) //$NON-NLS-1$
 	{
-	  result = localName.equals("schema"); 	  
+	  result = localName.equals("schema"); 	   //$NON-NLS-1$
 	}	  	
     return result;
   }     

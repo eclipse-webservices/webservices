@@ -42,7 +42,7 @@ public class AddElementDeclarationAction extends Action
 			Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
 			if (definitionElement != null)
 			{
-				definitionElement.setAttribute("xmlns:" + prefix, namespace);
+				definitionElement.setAttribute("xmlns:" + prefix, namespace); //$NON-NLS-1$
 			}			
 		}		
 	}

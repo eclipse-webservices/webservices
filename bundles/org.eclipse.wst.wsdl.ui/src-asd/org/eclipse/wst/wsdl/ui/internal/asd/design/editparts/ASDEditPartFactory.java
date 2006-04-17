@@ -85,7 +85,7 @@ public class ASDEditPartFactory implements EditPartFactory
     }
     if (child == null)
     {
-      System.out.println("\nCould not create editpart for model: " + model);
+      System.out.println("\nCould not create editpart for model: " + model); //$NON-NLS-1$
       Thread.dumpStack();
     }
     Assert.isNotNull(child);

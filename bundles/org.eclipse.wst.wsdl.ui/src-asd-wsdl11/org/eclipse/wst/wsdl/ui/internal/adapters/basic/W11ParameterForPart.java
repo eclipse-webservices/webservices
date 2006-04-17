@@ -20,6 +20,7 @@ import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.views.contentoutline.ContentOutline;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
@@ -88,7 +89,7 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
   }
   
   public String getPreview() {
-	  String preview = "";
+	  String preview = ""; //$NON-NLS-1$
 	  
 //      parameters = new ArrayList();
 //      otherThingsToListenTo = new ArrayList();
@@ -117,7 +118,7 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
     	  }
     	  
     	  if (stringItem != null) {
-    		  preview = preview + stringItem + ", ";
+    		  preview = preview + stringItem + ", "; //$NON-NLS-1$
     	  }
       }
       
@@ -125,7 +126,7 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
     	  preview = preview.substring(0, preview.length() - 2);
       }
       
-      return "(" + preview + ")";
+      return "(" + preview + ")"; //$NON-NLS-1$ //$NON-NLS-2$
   }
   
   public String[] getActions(Object object) {
@@ -138,12 +139,12 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 		  actions.addAll(((W11Operation) operation).getValidInputOutpuActions());
 		  actions.add(ASDAddFaultAction.ID);
 		  
-		  actions.add(BaseSelectionAction.SUBMENU_START_ID + "Set Type");
+		  actions.add(BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_TYPE")); //$NON-NLS-1$
 		  actions.add(W11SetNewTypeAction.ID);
 		  actions.add(W11SetExistingTypeAction.ID);
 		  actions.add(BaseSelectionAction.SUBMENU_END_ID);
 
-		  actions.add(BaseSelectionAction.SUBMENU_START_ID + "Set Element");
+		  actions.add(BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_ELEMENT")); //$NON-NLS-1$
 		  actions.add(W11SetNewElementAction.ID);
 		  actions.add(W11SetExistingElementAction.ID);
 		  actions.add(BaseSelectionAction.SUBMENU_END_ID);		  
@@ -179,7 +180,7 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
   }
   
 	public Image getImage() {
-		return WSDLEditorPlugin.getInstance().getImage("icons/part_obj.gif");
+		return WSDLEditorPlugin.getInstance().getImage("icons/part_obj.gif"); //$NON-NLS-1$
 	}
 	
 	public String getText() {

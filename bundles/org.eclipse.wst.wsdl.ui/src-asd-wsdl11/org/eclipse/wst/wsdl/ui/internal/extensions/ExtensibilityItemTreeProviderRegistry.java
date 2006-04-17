@@ -17,9 +17,9 @@ import org.eclipse.jface.viewers.ILabelProvider;
  */
 public class ExtensibilityItemTreeProviderRegistry extends NSKeyedExtensionRegistry
 {
-  protected static final String LABEL_PROVIDER_PROPERTY = "labelProviderClass";
-  protected static final String CONTENT_PROVIDER_PROPERTY = "contentProviderClass";
-  protected static final String[] ATT_NAMES = { "labelProviderClass", "contentProviderClass" };
+  protected static final String LABEL_PROVIDER_PROPERTY = "labelProviderClass"; //$NON-NLS-1$
+  protected static final String CONTENT_PROVIDER_PROPERTY = "contentProviderClass"; //$NON-NLS-1$
+  protected static final String[] ATT_NAMES = { "labelProviderClass", "contentProviderClass" }; //$NON-NLS-1$ //$NON-NLS-2$
 
   public ILabelProvider getLabelProvider(String namespace)
   {

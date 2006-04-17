@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wst.common.core.search.pattern.QualifiedName;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInterfaceCommand;
@@ -46,18 +46,18 @@ public class W11NewComponentDialog implements IComponentDialog {
 		
 		Shell shell = Display.getCurrent().getActiveShell();
 		if (qualifiedName == IWSDLSearchConstants.BINDING_META_NAME) {
-			String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_BINDING");
-			String baseName = NameUtil.buildUniqueBindingName(getDefinition(), "NewBinding");
+			String dialogTitle = Messages.getString("_UI_LABEL_NEW_BINDING"); //$NON-NLS-1$
+			String baseName = NameUtil.buildUniqueBindingName(getDefinition(), "NewBinding"); //$NON-NLS-1$
 			dialog = new NewComponentDialog(shell, dialogTitle, baseName);
 		}
 		else if (qualifiedName == IWSDLSearchConstants.PORT_TYPE_META_NAME) {
-			String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_PORTTYPE");
-			String baseName = NameUtil.buildUniquePortTypeName(getDefinition(), "NewPortType");
+			String dialogTitle = Messages.getString("_UI_LABEL_NEW_PORTTYPE"); //$NON-NLS-1$
+			String baseName = NameUtil.buildUniquePortTypeName(getDefinition(), "NewPortType"); //$NON-NLS-1$
 			dialog = new NewComponentDialog(shell, dialogTitle, baseName);
 		}
 		else if (qualifiedName == IWSDLSearchConstants.MESSAGE_META_NAME) {
-			String dialogTitle = WSDLEditorPlugin.getWSDLString("_UI_LABEL_NEW_MESSAGE");
-			String baseName = NameUtil.buildUniqueMessageName(getDefinition(), "NewMessage");
+			String dialogTitle = Messages.getString("_UI_LABEL_NEW_MESSAGE"); //$NON-NLS-1$
+			String baseName = NameUtil.buildUniqueMessageName(getDefinition(), "NewMessage"); //$NON-NLS-1$
 			dialog = new NewComponentDialog(shell, dialogTitle, baseName);
 		}
 

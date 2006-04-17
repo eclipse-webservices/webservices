@@ -47,6 +47,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wst.common.ui.internal.viewers.NavigableTableViewer;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceInfo;
 import org.eclipse.wst.xml.ui.internal.dialogs.EditNamespaceInfoDialog;
@@ -55,9 +56,9 @@ import org.eclipse.wst.xml.ui.internal.util.XMLCommonResources;
  
 public class NamespaceTable extends Composite
 {
-  protected static final String NAMESPACE_URI = XMLCommonResources.getInstance().getString("_UI_LABEL_NAMESPACE_NAME"); //$NON-NLS-1$
-  protected static final String PREFIX = XMLCommonResources.getInstance().getString("_UI_LABEL_PREFIX"); //$NON-NLS-1$
-  protected static final String INCLUDE = WSDLEditorPlugin.getWSDLString("_UI_TITLE_SELECT"); //$NON-NLS-1$
+  protected static final String NAMESPACE_URI = XMLCommonResources.getInstance().getString("_UI_LABEL_NAMESPACE_NAME"); 
+  protected static final String PREFIX = XMLCommonResources.getInstance().getString("_UI_LABEL_PREFIX"); 
+  protected static final String INCLUDE = Messages.getString("_UI_TITLE_SELECT"); //$NON-NLS-1$
     
   protected List namespaceInfoList = new Vector();
   protected List checkedList = new Vector();
@@ -99,7 +100,7 @@ public class NamespaceTable extends Composite
     setLayoutData(fillGD);             
     
     Group namespaceInfoGroup = new Group(this, SWT.NONE);
-    namespaceInfoGroup.setText(WSDLEditorPlugin.getWSDLString("_UI_LABEL_NAMESPACE_URIS_TO_BE_INCLUDED")); //$NON-NLS-1$
+    namespaceInfoGroup.setText(Messages.getString("_UI_LABEL_NAMESPACE_URIS_TO_BE_INCLUDED")); //$NON-NLS-1$
     namespaceInfoGroup.setLayout(new GridLayout());   
     GridData gd = fillGD;
     if (widthHint != -1)
@@ -327,7 +328,7 @@ public class NamespaceTable extends Composite
     gd.grabExcessHorizontalSpace = true;
 
     addButton = new Button(buttonComposite, SWT.NONE);
-    addButton.setText(WSDLEditorPlugin.getWSDLString("_UI_ACTION_ADD")); //$NON-NLS-1$
+    addButton.setText(Messages.getString("_UI_ACTION_ADD")); //$NON-NLS-1$
     addButton.setLayoutData(gd);//ViewUtility.createHorizontalFill());
     addButton.addSelectionListener(selectionListener);
   }
@@ -335,7 +336,7 @@ public class NamespaceTable extends Composite
   public void performNew()
   {
     NamespaceInfo info = new NamespaceInfo();
-    EditNamespaceInfoDialog dialog = invokeDialog(XMLCommonResources.getInstance().getString("_UI_LABEL_NEW_NAMESPACE_INFORMATION"), info); //$NON-NLS-1$
+    EditNamespaceInfoDialog dialog = invokeDialog(XMLCommonResources.getInstance().getString("_UI_LABEL_NEW_NAMESPACE_INFORMATION"), info); 
     if (dialog.getReturnCode() == Dialog.OK)
     {
       namespaceInfoList.add(info);
@@ -501,13 +502,13 @@ public class NamespaceTable extends Composite
             {
               if (((Boolean)value).booleanValue())
               {
-                holder.setChecked("true");
-                checkedList.set(holder.getIndex(), "true");
+                holder.setChecked("true"); //$NON-NLS-1$
+                checkedList.set(holder.getIndex(), "true"); //$NON-NLS-1$
               }
               else
               {
-                holder.setChecked("false");
-                checkedList.set(holder.getIndex(), "false");
+                holder.setChecked("false"); //$NON-NLS-1$
+                checkedList.set(holder.getIndex(), "false"); //$NON-NLS-1$
               }
             }
           }
@@ -539,7 +540,7 @@ public class NamespaceTable extends Composite
   {
     NamespaceInfo info;
     int index;
-    String checked = "true";
+    String checked = "true"; //$NON-NLS-1$
     
     TableElement(NamespaceInfo info, int index)
     {
@@ -610,14 +611,14 @@ public class NamespaceTable extends Composite
         case 1: { result = info.prefix; break; }
         case 2: { result = info.uri; break; }
       }
-      result = result != null ? result.trim() : "";
-      if (result.equals(""))
+      result = result != null ? result.trim() : ""; //$NON-NLS-1$
+      if (result.equals("")) //$NON-NLS-1$
       {
         switch (column)
         {
           case 2: 
           { 
-            result = XMLCommonResources.getInstance().getString("_UI_NO_NAMESPACE_NAME");  //$NON-NLS-1$
+            result = XMLCommonResources.getInstance().getString("_UI_NO_NAMESPACE_NAME");  
             break; 
           }
         }

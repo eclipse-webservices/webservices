@@ -64,7 +64,7 @@ public class W11MessageReferenceEditManager implements ComponentReferenceEditMan
 		if (messageObject instanceof ComponentSpecification) {
 			MessageReference messageRef= (MessageReference) w11MessageRef.getTarget();
 			WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, getDefinition());
-			helper.setWSDLComponent(messageRef, "message", (ComponentSpecification) messageObject);
+			helper.setWSDLComponent(messageRef, "message", (ComponentSpecification) messageObject); //$NON-NLS-1$
 		}		
 		else if (messageObject instanceof W11Message){
 			// Below is a little complex.... The alternative was to have IMessage contain a
@@ -77,7 +77,7 @@ public class W11MessageReferenceEditManager implements ComponentReferenceEditMan
 			specObject.setQualifier(description.getTargetNamespace());
 			
 			String location = ((Definition) description.getTarget()).getLocation();
-			String platformResource = "platform:/resource";
+			String platformResource = "platform:/resource"; //$NON-NLS-1$
 	        if (location != null && location.startsWith(platformResource))
 	        {
 	          Path path = new Path(location.substring(platformResource.length()));
@@ -86,7 +86,7 @@ public class W11MessageReferenceEditManager implements ComponentReferenceEditMan
 			
 			MessageReference messageRef= (MessageReference) w11MessageRef.getTarget();
 			WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, getDefinition());
-			helper.setWSDLComponent(messageRef, "message", (ComponentSpecification) specObject);
+			helper.setWSDLComponent(messageRef, "message", (ComponentSpecification) specObject); //$NON-NLS-1$
 		}
 	}
 
@@ -101,7 +101,7 @@ public class W11MessageReferenceEditManager implements ComponentReferenceEditMan
 		Iterator messages = description.getMessages().iterator();
 		while (messages.hasNext()) {
 			IMessage message = (IMessage) messages.next();
-			String qualifier = "";
+			String qualifier = ""; //$NON-NLS-1$
 			String name = message.getName();
 			IFile file = null;
 			

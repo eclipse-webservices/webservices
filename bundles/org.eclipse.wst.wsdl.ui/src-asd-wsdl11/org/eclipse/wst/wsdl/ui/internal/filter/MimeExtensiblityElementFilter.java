@@ -16,7 +16,7 @@ import org.w3c.dom.Element;
 
 public class MimeExtensiblityElementFilter implements ExtensiblityElementFilter
 {   
-  private static final String MIME_NAMESPACE_URI="http://schemas.xmlsoap.org/wsdl/mime/";
+  private static final String MIME_NAMESPACE_URI="http://schemas.xmlsoap.org/wsdl/mime/"; //$NON-NLS-1$
   public MimeExtensiblityElementFilter()
   {
   }  	
@@ -30,11 +30,11 @@ public class MimeExtensiblityElementFilter implements ExtensiblityElementFilter
 
   	if (WSDLConstants.WSDL_NAMESPACE_URI.equals(parentElementNamespace))
   	{
-    	if (parentElementName.equals("input") || parentElementName.equals("output"))
+    	if (parentElementName.equals("input") || parentElementName.equals("output")) //$NON-NLS-1$ //$NON-NLS-2$
     	{
-    	  	result = localName.equals("content") ||
-				     localName.equals("multipartRelated") ||
-				     localName.equals("mimeXml");    	  	
+    	  	result = localName.equals("content") || //$NON-NLS-1$
+				     localName.equals("multipartRelated") || //$NON-NLS-1$
+				     localName.equals("mimeXml");    	  	 //$NON-NLS-1$
     	}
   	}
   	else if (MIME_NAMESPACE_URI.equals(parentElementNamespace))

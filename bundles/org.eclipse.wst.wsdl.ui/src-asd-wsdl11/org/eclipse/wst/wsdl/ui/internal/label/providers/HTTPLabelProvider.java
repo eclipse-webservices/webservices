@@ -20,21 +20,21 @@ import org.w3c.dom.Node;
 
 public class HTTPLabelProvider extends LabelProvider
 {                                                   
-  protected final static String ADDRESS         = "address";
-  protected final static String BINDING         = "binding";
-  protected final static String OPERATION       = "operation";
-  protected final static String URL_ENCODED     = "urlEncoded";
-  protected final static String URL_REPLACEMENT = "urlReplacement";
+  protected final static String ADDRESS         = "address"; //$NON-NLS-1$
+  protected final static String BINDING         = "binding"; //$NON-NLS-1$
+  protected final static String OPERATION       = "operation"; //$NON-NLS-1$
+  protected final static String URL_ENCODED     = "urlEncoded"; //$NON-NLS-1$
+  protected final static String URL_REPLACEMENT = "urlReplacement"; //$NON-NLS-1$
 
   protected HashMap map = new HashMap();
                          
   public HTTPLabelProvider()
   {                    
-    map.put(ADDRESS, "icons/httpaddress_obj.gif");
-    map.put(BINDING, "icons/httpbinding_obj.gif");
-    map.put(OPERATION, "icons/httpoperation_obj.gif");    
-    map.put(URL_ENCODED, "icons/httpurlencoded_obj.gif");
-    map.put(URL_REPLACEMENT, "icons/httpurlreplacement_obj.gif");
+    map.put(ADDRESS, "icons/httpaddress_obj.gif"); //$NON-NLS-1$
+    map.put(BINDING, "icons/httpbinding_obj.gif"); //$NON-NLS-1$
+    map.put(OPERATION, "icons/httpoperation_obj.gif");     //$NON-NLS-1$
+    map.put(URL_ENCODED, "icons/httpurlencoded_obj.gif"); //$NON-NLS-1$
+    map.put(URL_REPLACEMENT, "icons/httpurlreplacement_obj.gif"); //$NON-NLS-1$
   }
 
   public Image getImage(Object object) 

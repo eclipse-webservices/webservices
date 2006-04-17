@@ -50,7 +50,7 @@ public class DocumentationSection extends ASDAbstractSection {
       return;
     }
     setListenerEnabled(false);
-	  docText.setText("");
+	  docText.setText(""); //$NON-NLS-1$
 	  if (getModel() != null)
 	  {
 //	    Element docNode = getElement().getDocumentationElement();

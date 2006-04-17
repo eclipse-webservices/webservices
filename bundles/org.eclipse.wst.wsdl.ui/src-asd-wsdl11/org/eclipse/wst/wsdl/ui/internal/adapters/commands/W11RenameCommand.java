@@ -32,7 +32,7 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Service;
 
 public class W11RenameCommand extends Command {
 	protected WSDLBaseAdapter object;
-	protected String newName = "";
+	protected String newName = ""; //$NON-NLS-1$
 	
 	public W11RenameCommand(WSDLBaseAdapter object, String newName) {
 		this.object = object;

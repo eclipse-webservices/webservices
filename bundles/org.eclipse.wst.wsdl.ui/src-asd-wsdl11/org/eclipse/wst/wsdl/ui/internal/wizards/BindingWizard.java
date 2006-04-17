@@ -25,6 +25,7 @@ import org.eclipse.wst.sse.core.internal.encoding.CommonEncodingPreferenceNames;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.ProtocolComponentControl;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
@@ -75,7 +76,7 @@ public class BindingWizard extends Wizard
     this.kind = kind;	
 	bindingGenerator = new BindingGenerator(definition, binding);
 
-    setWindowTitle(WSDLEditorPlugin.getWSDLString("_UI_BINDING_WIZARD")); //$NON-NLS-1$
+    setWindowTitle(Messages.getString("_UI_BINDING_WIZARD")); //$NON-NLS-1$
     //setDefaultPageImageDescriptor(ImageDescriptor.createFromFile(WSDLEditorPlugin.class, "icons/NewXML.gif"));
   }
 
@@ -141,21 +142,21 @@ public class BindingWizard extends Wizard
   		// Create the Definitions element with proper namespace
   	    Preferences preference = XMLCorePlugin.getDefault().getPluginPreferences();
   		String charSet = preference.getString(CommonEncodingPreferenceNames.OUTPUT_CODESET);
-  	    if (charSet == null || charSet.trim().equals(""))
+  	    if (charSet == null || charSet.trim().equals("")) //$NON-NLS-1$
   	    {
-  	    	charSet = "UTF-8";
+  	    	charSet = "UTF-8"; //$NON-NLS-1$
   	    }
-  	    document.appendChild(document.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"" + charSet + "\""));
-  		Element root = document.createElement("wsdl:definitions");  		
+  	    document.appendChild(document.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"" + charSet + "\"")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+  		Element root = document.createElement("wsdl:definitions");  		 //$NON-NLS-1$
   		document.appendChild(root);
 
   		// Add various namespace attributes here. 
-  		root.setAttribute("xmlns:soap", "http://schemas.xmlsoap.org/wsdl/soap/");
-  		root.setAttribute("xmlns:tns", getDefaultNamespace(definition));
-  		root.setAttribute("xmlns:wsdl", "http://schemas.xmlsoap.org/wsdl/");
-  		root.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
-  		root.setAttribute("name", getFileName(definition));
-  		root.setAttribute("targetNamespace", getDefaultNamespace(definition));
+  		root.setAttribute("xmlns:soap", "http://schemas.xmlsoap.org/wsdl/soap/"); //$NON-NLS-1$ //$NON-NLS-2$
+  		root.setAttribute("xmlns:tns", getDefaultNamespace(definition)); //$NON-NLS-1$
+  		root.setAttribute("xmlns:wsdl", "http://schemas.xmlsoap.org/wsdl/"); //$NON-NLS-1$ //$NON-NLS-2$
+  		root.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema"); //$NON-NLS-1$ //$NON-NLS-2$
+  		root.setAttribute("name", getFileName(definition)); //$NON-NLS-1$
+  		root.setAttribute("targetNamespace", getDefaultNamespace(definition)); //$NON-NLS-1$
 
   		definition.setElement(root);	
   	}
@@ -188,12 +189,12 @@ public class BindingWizard extends Wizard
   
   private String getDefaultNamespace(Definition definition)
   {
-    String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"));
-    if (!namespace.endsWith("/")) {
-    	namespace = namespace.concat("/");
+    String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages.getString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE")); //$NON-NLS-1$
+    if (!namespace.endsWith("/")) { //$NON-NLS-1$
+    	namespace = namespace.concat("/"); //$NON-NLS-1$
     }
     
-    namespace += getFileName(definition) + "/";
+    namespace += getFileName(definition) + "/"; //$NON-NLS-1$
 
     return namespace;
   }
@@ -208,7 +209,7 @@ public class BindingWizard extends Wizard
     Node node = document;
     if (node instanceof IDOMNode)
     {
-      ((IDOMNode)node).getModel().beginRecording(this, WSDLEditorPlugin.getWSDLString("_UI_ACTION_ADD_BINDING"));  
+      ((IDOMNode)node).getModel().beginRecording(this, Messages.getString("_UI_ACTION_ADD_BINDING"));   //$NON-NLS-1$
     }
   }
   
@@ -226,9 +227,9 @@ public class BindingWizard extends Wizard
 
     public BindingWizardOptionsPage()
     {
-      super("SpecifyBindingPage");
-      setTitle(WSDLEditorPlugin.getWSDLString("_UI_TITLE_SPECIFY_BINDING_DETAILS"));
-      setDescription(WSDLEditorPlugin.getWSDLString("_UI_SPECIFY_BINDING_DETAILS_LABEL"));
+      super("SpecifyBindingPage"); //$NON-NLS-1$
+      setTitle(Messages.getString("_UI_TITLE_SPECIFY_BINDING_DETAILS")); //$NON-NLS-1$
+      setDescription(Messages.getString("_UI_SPECIFY_BINDING_DETAILS_LABEL")); //$NON-NLS-1$
     }
 
     protected BindingGenerator getBindingGenerator()
@@ -263,7 +264,7 @@ public class BindingWizard extends Wizard
 
     public String getRefNameLabelText()
     {
-      return WSDLEditorPlugin.getWSDLString("_UI_PORT_TYPE");
+      return Messages.getString("_UI_PORT_TYPE"); //$NON-NLS-1$
     }
 
     public List getRefNames()
@@ -281,10 +282,10 @@ public class BindingWizard extends Wizard
     {
       ContentGeneratorOptionsPage optionsPage = null;
 	  String protocolSelection = protocolCombo.getItem(protocolCombo.getSelectionIndex());
-	  if (protocolSelection.equals("SOAP")) {
+	  if (protocolSelection.equals("SOAP")) { //$NON-NLS-1$
 		  optionsPage = new SoapBindingOptionsPage();
 	  }
-	  else if (protocolSelection.equals("HTTP")) {
+	  else if (protocolSelection.equals("HTTP")) { //$NON-NLS-1$
 		  optionsPage = new HttpBindingOptionsPage();
 	  }
 //      ContentGeneratorExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorExtensionRegistry().getContentGeneratorExtension(protocol);

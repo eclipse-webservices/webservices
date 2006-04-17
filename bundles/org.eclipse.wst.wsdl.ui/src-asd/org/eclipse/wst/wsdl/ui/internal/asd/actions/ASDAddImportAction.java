@@ -14,17 +14,18 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ICategoryAdapter;
 
 public class ASDAddImportAction extends BaseSelectionAction {
-	public static String ID = "ASDAddImportAction"; 
+	public static String ID = "ASDAddImportAction";  //$NON-NLS-1$
 	
 	public ASDAddImportAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText("Add Import");
-		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/import_obj.gif"));
+		setText(Messages.getString("_UI_ACTION_ADD_IMPORT")); //$NON-NLS-1$
+		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/import_obj.gif")); //$NON-NLS-1$
 	}
 	
 	public void run() {

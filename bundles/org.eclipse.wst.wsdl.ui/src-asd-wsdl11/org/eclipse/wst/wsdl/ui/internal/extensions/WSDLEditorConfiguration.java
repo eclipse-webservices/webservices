@@ -21,12 +21,12 @@ import org.eclipse.gef.EditPartFactory;
 import org.eclipse.wst.wsdl.ui.internal.actions.IWSDLToolbarAction;
 
 public class WSDLEditorConfiguration {
-	  public static final String WSDLEDITORCONFIGURATIONEXTENSIONID = "org.eclipse.wst.wsdl.ui.WSDLEditorExtensionConfiguration";
-	  public static final String CLASSNAME = "class";
-	  public static final String ADAPTERFACTORY = "adapterFactory";
-	  public static final String TOOLBARACTION = "toolbarAction";
-	  public static final String FIGUREFACTORY = "figureFactory";
-	  public static final String EDITPARTFACTORY = "editPartFactory";
+	  public static final String WSDLEDITORCONFIGURATIONEXTENSIONID = "org.eclipse.wst.wsdl.ui.WSDLEditorExtensionConfiguration"; //$NON-NLS-1$
+	  public static final String CLASSNAME = "class"; //$NON-NLS-1$
+	  public static final String ADAPTERFACTORY = "adapterFactory"; //$NON-NLS-1$
+	  public static final String TOOLBARACTION = "toolbarAction"; //$NON-NLS-1$
+	  public static final String FIGUREFACTORY = "figureFactory"; //$NON-NLS-1$
+	  public static final String EDITPARTFACTORY = "editPartFactory"; //$NON-NLS-1$
 
 	  List definedExtensionsList = null;
 

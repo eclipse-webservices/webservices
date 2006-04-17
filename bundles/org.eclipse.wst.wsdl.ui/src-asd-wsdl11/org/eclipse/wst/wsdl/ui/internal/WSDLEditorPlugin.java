@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Hashtable;
 
@@ -39,14 +38,14 @@ import org.osgi.framework.BundleContext;
 
 public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
 {
-  public static final String DEFAULT_PAGE = "org.eclipse.wst.wsdl.ui.internal.defaultpage";
-  public static final String GRAPH_PAGE = "org.eclipse.wst.wsdl.ui.internal.graphpage";
-  public static final String SOURCE_PAGE = "org.eclipse.wst.wsdl.ui.internal.sourcepage";
+  public static final String DEFAULT_PAGE = "org.eclipse.wst.wsdl.ui.internal.defaultpage"; //$NON-NLS-1$
+  public static final String GRAPH_PAGE = "org.eclipse.wst.wsdl.ui.internal.graphpage"; //$NON-NLS-1$
+  public static final String SOURCE_PAGE = "org.eclipse.wst.wsdl.ui.internal.sourcepage"; //$NON-NLS-1$
 
-  public final static String PLUGIN_ID = "org.eclipse.wst.wsdl.ui";
-  public final static String XSD_EDITOR_ID = "org.eclipse.wst.xsd.ui.XSDEditor"; 
+  public final static String PLUGIN_ID = "org.eclipse.wst.wsdl.ui"; //$NON-NLS-1$
+  public final static String XSD_EDITOR_ID = "org.eclipse.wst.xsd.ui.XSDEditor";  //$NON-NLS-1$
   
-  public final static String DEFAULT_TARGET_NAMESPACE = "http://www.example.org";
+  public final static String DEFAULT_TARGET_NAMESPACE = "http://www.example.org"; //$NON-NLS-1$
   
   public static int DEPENDECIES_CHANGED_POLICY_PROMPT = 0;
   public static int DEPENDECIES_CHANGED_POLICY_IGNORE = 1;
@@ -70,7 +69,7 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
   
 	public ExtensionsSchemasRegistry getExtensionsSchemasRegistry() {
 		if (registry == null) {
-			registry = new ExtensionsSchemasRegistry("org.eclipse.wst.wsdl.ui.ExtensionsSchemasDescription");
+			registry = new ExtensionsSchemasRegistry("org.eclipse.wst.wsdl.ui.ExtensionsSchemasDescription"); //$NON-NLS-1$
 		}
 		
 		return registry;
@@ -93,7 +92,8 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     // to an editor preferences page
     try
     {
-      String string = getWSDLString("_DEBUG_UPDATE_POLICY");
+    	// _DEBUG_UPDATE_POLICY = 0Dummy.label=
+      String string = "0Dummy.label"; //$NON-NLS-1$
       int policy = Integer.parseInt(string);
       if (policy >= 0 && policy <= DEPENDECIES_CHANGED_POLICY_RELOAD)
       {
@@ -138,36 +138,12 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
   {
 	try
 	{
-	  return FileLocator.resolve(instance.getBundle().getEntry("/"));
+	  return FileLocator.resolve(instance.getBundle().getEntry("/")); //$NON-NLS-1$
 	}
 	catch (IOException e)
 	{
 	  return null;
 	}
-  }
-
-  /**
-   * Get resource string
-   */
-  public static String getWSDLString(String key)
-  {	  
-    return Platform.getResourceBundle(Platform.getBundle(PLUGIN_ID)).getString(key);
-  }
-
-  /**
-   * Get resource string
-   */
-  public static String getWSDLString(String key, String arg0)
-  {
-    return MessageFormat.format(getWSDLString(key), new Object [] { arg0 });
-  }
-  
-  /**
-   * Get resource string
-   */
-  public static String getWSDLString(String key, String arg0, String arg1)
-  {
-    return MessageFormat.format(getWSDLString(key), new Object [] { arg0, arg1 });
   }
 
   /**
@@ -288,9 +264,9 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     store.setDefault(DEFAULT_PAGE, GRAPH_PAGE);
     
     // WSDLPreferencePage prefs
-    store.setDefault(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"), DEFAULT_TARGET_NAMESPACE);
-    store.setDefault(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING"), false);
-    store.setDefault("Prompt Regenerate Binding on save", false);	// TODO: Externalize
+    store.setDefault(Messages.getString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"), DEFAULT_TARGET_NAMESPACE); //$NON-NLS-1$
+    store.setDefault(Messages.getString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING"), false); //$NON-NLS-1$
+    store.setDefault(Messages.getString("_UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE"), false);	// TODO: Externalize //$NON-NLS-1$
     // Do we need this preference below?  Look at WSDLPreferencePage.java
 //    store.setDefault("Defualt Location:", "http://www.example.com");
   }
@@ -320,7 +296,7 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
 
 class BaseRegistryReader
 {
-  protected static final String PLUGIN_ID = "org.eclipse.wst.wsdl.ui";
+  protected static final String PLUGIN_ID = "org.eclipse.wst.wsdl.ui"; //$NON-NLS-1$
 
   /**
    * read from plugin registry and parse it.
@@ -350,7 +326,7 @@ class BaseRegistryReader
  */
 abstract class NSKeyedExtensionRegistryReader extends BaseRegistryReader
 {
-  protected static final String ATT_NAME_SPACE = "namespace";
+  protected static final String ATT_NAME_SPACE = "namespace"; //$NON-NLS-1$
   protected String extensionPointId;
   protected String tagName;
   protected String[] attributeNames;
@@ -426,11 +402,11 @@ abstract class NSKeyedExtensionRegistryReader extends BaseRegistryReader
  */
 class ElementContentFilterExtensionRegistryReader extends NSKeyedExtensionRegistryReader
 {
-  protected static final String EXTENSION_POINT_ID = "extensibilityElementFilter";
-  protected static final String TAG_NAME = "extensibilityElementFilter";
+  protected static final String EXTENSION_POINT_ID = "extensibilityElementFilter"; //$NON-NLS-1$
+  protected static final String TAG_NAME = "extensibilityElementFilter"; //$NON-NLS-1$
 
   public ElementContentFilterExtensionRegistryReader(NSKeyedExtensionRegistry nsKeyedExtensionRegistry)
   {
-    super(EXTENSION_POINT_ID, TAG_NAME, "class", nsKeyedExtensionRegistry);
+    super(EXTENSION_POINT_ID, TAG_NAME, "class", nsKeyedExtensionRegistry); //$NON-NLS-1$
   }
 }

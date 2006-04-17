@@ -132,7 +132,7 @@ public abstract class ASDMultiPageEditor extends MultiPageEditorPart implements 
 
   public String getContributorId()
   {
-    return "org.eclipse.wst.wsdl.ui.internal.WSDLEditor";
+    return "org.eclipse.wst.wsdl.ui.internal.WSDLEditor"; //$NON-NLS-1$
   }
 
   private ASDSelectionManager selectionProvider;
@@ -213,13 +213,13 @@ public abstract class ASDMultiPageEditor extends MultiPageEditorPart implements 
     try {
     	int index;
     	index = addPage(designPage);
-    	setPageText(index, "Design");
+    	setPageText(index, Messages.getString("_UI_TAB_GRAPH")); //$NON-NLS-1$
     	
     	index = addPage(editor, getEditorInput());
-    	setPageText(index, "Source");
+    	setPageText(index, Messages.getString("_UI_TAB_SOURCE")); //$NON-NLS-1$
     }
     catch (PartInitException e) {
-    	ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null, e.getStatus());
+    	ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null, e.getStatus()); //$NON-NLS-1$
     }    
     addSourcePage();
     
@@ -361,7 +361,7 @@ public abstract class ASDMultiPageEditor extends MultiPageEditorPart implements 
   public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException
   {
     if (!(editorInput instanceof IFileEditorInput))
-      throw new PartInitException("Invalid Input: Must be IFileEditorInput");
+      throw new PartInitException("Invalid Input: Must be IFileEditorInput"); //$NON-NLS-1$
     super.init(site, editorInput);
     
     getCommandStack().addCommandStackListener(this);

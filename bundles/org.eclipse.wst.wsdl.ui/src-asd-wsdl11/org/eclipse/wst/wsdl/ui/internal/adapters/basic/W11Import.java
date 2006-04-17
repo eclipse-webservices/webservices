@@ -60,7 +60,7 @@ public class W11Import extends WSDLBaseAdapter implements IImport {
 	}
 	
 	public Image getImage() {
-		return WSDLEditorPlugin.getInstance().getImage("icons/import_obj.gif");
+		return WSDLEditorPlugin.getInstance().getImage("icons/import_obj.gif"); //$NON-NLS-1$
 	}
 	
 	public String getText() {

@@ -65,32 +65,32 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 		List messageList = getMessages();
 
 		String categoryTitle = W11CategoryAdapter.IMPORTS_HEADER_TEXT;
-		Image categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/importheader_obj.gif");
+		Image categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/importheader_obj.gif"); //$NON-NLS-1$
 		W11CategoryAdapter category = new W11CategoryAdapter(this, categoryTitle, categoryImage, importList, W11CategoryAdapter.IMPORTS);
 		categories.add(category);
 		
 		categoryTitle = W11CategoryAdapter.TYPES_HEADER_TEXT;
-		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/types_obj.gif");
+		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/types_obj.gif"); //$NON-NLS-1$
 		category = new W11CategoryAdapter(this, categoryTitle, categoryImage, schemaList, W11CategoryAdapter.TYPES);
 		categories.add(category);
 		
 		categoryTitle = W11CategoryAdapter.SERVICE_HEADER_TEXT;
-		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/serviceheader_obj.gif");
+		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/serviceheader_obj.gif"); //$NON-NLS-1$
 		category = new W11CategoryAdapter(this, categoryTitle, categoryImage, serviceList, W11CategoryAdapter.SERVICES);
 		categories.add(category);
 		
 		categoryTitle = W11CategoryAdapter.BINDING_HEADER_TEXT;
-		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/bindingheader_obj.gif");
+		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/bindingheader_obj.gif"); //$NON-NLS-1$
 		category = new W11CategoryAdapter(this, categoryTitle, categoryImage, bindingList, W11CategoryAdapter.BINDINGS);
 		categories.add(category);
 		
 		categoryTitle = W11CategoryAdapter.INTERFACE_HEADER_TEXT;
-		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/porttypeheader_obj.gif");
+		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/porttypeheader_obj.gif"); //$NON-NLS-1$
 		category = new W11CategoryAdapter(this, categoryTitle, categoryImage, interfaceList, W11CategoryAdapter.INTERFACES);
 		categories.add(category);
 		
 		categoryTitle = W11CategoryAdapter.MESSAGE_HEADER_TEXT;
-		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/messageheader_obj.gif");
+		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/messageheader_obj.gif"); //$NON-NLS-1$
 		category = new W11CategoryAdapter(this, categoryTitle, categoryImage, messageList, W11CategoryAdapter.MESSAGES);
 		categories.add(category);
 		
@@ -158,7 +158,7 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 	}
 	
 	public String getName() {
-		String name = "";
+		String name = ""; //$NON-NLS-1$
 		
 		Definition definition = ((Definition) target);
 		if (definition.getQName() != null) {

@@ -66,7 +66,7 @@ public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionP
             }
             else
             {
-              System.out.println("populateAdapterListError" + o);
+              System.out.println("populateAdapterListError" + o); //$NON-NLS-1$
             }  
 		}
 	}

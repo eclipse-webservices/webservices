@@ -64,7 +64,7 @@ public class W11Service extends WSDLBaseAdapter implements IService {
     }
     
 	public Image getImage() {
-		return WSDLEditorPlugin.getInstance().getImage("icons/service_obj.gif");
+		return WSDLEditorPlugin.getInstance().getImage("icons/service_obj.gif"); //$NON-NLS-1$
 	}
 	
 	public String getText() {

@@ -49,8 +49,8 @@ import org.w3c.dom.Element;
 
 public class CreateWSDLElementHelper {
 	// Constants used for getting Part information
-	public static final String PART_INFO_ELEMENT_DECLARATION = "ELEMENT_DECLARATION";
-	public static final String PART_INFO_TYPE_DEFINITION     = "TYPE_DEFINITION";
+	public static final String PART_INFO_ELEMENT_DECLARATION = "ELEMENT_DECLARATION"; //$NON-NLS-1$
+	public static final String PART_INFO_TYPE_DEFINITION     = "TYPE_DEFINITION"; //$NON-NLS-1$
 
 	// The following variables should be set if a name other than the computed name is to be used.
 	public static String serviceName = null;
@@ -72,7 +72,7 @@ public class CreateWSDLElementHelper {
  * and it's 'children' all the way to the PortType level.
  */
 	public static Service createService(Definition definition) {
-		if (serviceName == null || serviceName.trim().equals(""))
+		if (serviceName == null || serviceName.trim().equals("")) //$NON-NLS-1$
 			serviceName = NameUtil.buildUniqueServiceName(definition);		
 		
 		CreateWSDLElementHelper.portTypeName = serviceName;
@@ -86,7 +86,7 @@ public class CreateWSDLElementHelper {
 	}
 	
 	public static Port createPort(Service service) {
-		if (portName == null || portName.trim().equals(""))
+		if (portName == null || portName.trim().equals("")) //$NON-NLS-1$
 			portName = NameUtil.buildUniquePortName(service, null);
 		
 	    AddPortCommand addPort = new AddPortCommand(service, portName);
@@ -101,7 +101,7 @@ public class CreateWSDLElementHelper {
 	
 	public static Binding createBinding(Definition definition, Port port) {
 		bindingName = port.getName();
-		if (bindingName == null || bindingName.trim().equals(""))
+		if (bindingName == null || bindingName.trim().equals("")) //$NON-NLS-1$
 			bindingName = NameUtil.buildUniqueBindingName(definition, null);
 		
 		AddBindingCommand addBinding = new AddBindingCommand(definition, bindingName);
@@ -115,8 +115,8 @@ public class CreateWSDLElementHelper {
 	}
 	
 	public static PortType createPortType(Definition definition) {
-		if (portTypeName == null || portTypeName.trim().equals(""))
-			portTypeName = NameUtil.buildUniquePortTypeName(definition, "PortType");
+		if (portTypeName == null || portTypeName.trim().equals("")) //$NON-NLS-1$
+			portTypeName = NameUtil.buildUniquePortTypeName(definition, "PortType"); //$NON-NLS-1$
 		
 		AddPortTypeCommand addPortTypeCommand = new AddPortTypeCommand(definition, portTypeName);
 		addPortTypeCommand.run();
@@ -135,7 +135,7 @@ public class CreateWSDLElementHelper {
  * and it's 'children' all the way to the Part level.
  */	
   	public static Operation createOperation(PortType portType) {
-  		if (operationName == null || operationName.trim().equals(""))
+  		if (operationName == null || operationName.trim().equals("")) //$NON-NLS-1$
   			operationName = NameUtil.buildUniqueOperationName(portType);
   		
 		AddOperationCommand action = new AddOperationCommand(portType, operationName);
@@ -149,8 +149,8 @@ public class CreateWSDLElementHelper {
   	}
 
   	public static Input createInput(PortType portType, Operation operation, String inputName) {
-  		if (inputName == null || inputName.trim().equals(""))
-  	  		inputName = NameUtil.buildUniqueInputName(portType, operation.getName(), "");
+  		if (inputName == null || inputName.trim().equals("")) //$NON-NLS-1$
+  	  		inputName = NameUtil.buildUniqueInputName(portType, operation.getName(), ""); //$NON-NLS-1$
   		
   		AddInputCommand action = new AddInputCommand(operation, inputName);
   		action.run();
@@ -162,8 +162,8 @@ public class CreateWSDLElementHelper {
   	}
   			  	
   	public static Output createOutput(PortType portType, Operation operation) {
-  		if (outputName == null || outputName.trim().equals(""))
-  	  		outputName = NameUtil.buildUniqueOutputName(portType, operation.getName(), "");
+  		if (outputName == null || outputName.trim().equals("")) //$NON-NLS-1$
+  	  		outputName = NameUtil.buildUniqueOutputName(portType, operation.getName(), ""); //$NON-NLS-1$
   		
   		AddOutputCommand action = new AddOutputCommand(operation, outputName);
   		action.run();
@@ -175,7 +175,7 @@ public class CreateWSDLElementHelper {
   	}
   			  	
   	public static Fault createFault(Operation operation) {
-  		if (faultName == null || faultName.trim().equals("")) 
+  		if (faultName == null || faultName.trim().equals(""))  //$NON-NLS-1$
 	  		faultName = NameUtil.buildUniqueFaultName(operation);
   		
   		AddFaultCommand action = new AddFaultCommand(operation, faultName);
@@ -188,7 +188,7 @@ public class CreateWSDLElementHelper {
   	}
   			  	
   	public static Message createMessage(MessageReference iof) {
-  		if (messageName == null || messageName.trim().equals(""))
+  		if (messageName == null || messageName.trim().equals("")) //$NON-NLS-1$
   	  		messageName = NameUtil.buildUniqueMessageName(iof.getEnclosingDefinition(), iof);
 //	  		messageName = NameUtil.buildMessageName(iof.getName());
   		
@@ -215,7 +215,7 @@ public class CreateWSDLElementHelper {
   		AddPartCommand action = null;
   		
   		if (PART_TYPE_OR_DEFINITION == PART_INFO_TYPE_DEFINITION) {
-  			action = new AddPartCommand(message, name, WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001, "string", true);
+  			action = new AddPartCommand(message, name, WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001, "string", true); //$NON-NLS-1$
   		}
   		else if (PART_TYPE_OR_DEFINITION == PART_INFO_ELEMENT_DECLARATION) {  			
   			//action = new AddPartCommand(message, name, WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001, "string", true);

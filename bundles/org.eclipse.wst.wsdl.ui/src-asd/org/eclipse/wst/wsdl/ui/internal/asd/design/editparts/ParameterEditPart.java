@@ -99,8 +99,8 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
     parameterNamePane.add(parameterName);
     figure.add(parameterNamePane);
     figure.add(contentPane);
-    rowLayout.setConstraint(parameterNamePane, "parameterName");
-    rowLayout.setConstraint(contentPane, "parameterType");
+    rowLayout.setConstraint(parameterNamePane, "parameterName"); //$NON-NLS-1$
+    rowLayout.setConstraint(contentPane, "parameterType"); //$NON-NLS-1$
     
     labelImage = ((IParameter) getModel()).getImage();
     

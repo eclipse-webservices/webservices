@@ -23,7 +23,7 @@ public class W11AddPartCommand extends Command {
     }
     
     public void execute() {
-    	AddPartCommand command = new AddPartCommand(message, NameUtil.buildUniquePartName(message, "NewPart"));
+    	AddPartCommand command = new AddPartCommand(message, NameUtil.buildUniquePartName(message, "NewPart")); //$NON-NLS-1$
         command.run();
     }  
 }

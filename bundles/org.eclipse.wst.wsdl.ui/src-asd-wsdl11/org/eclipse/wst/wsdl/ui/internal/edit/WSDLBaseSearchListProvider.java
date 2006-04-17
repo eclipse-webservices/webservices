@@ -29,7 +29,7 @@ public abstract class WSDLBaseSearchListProvider implements IComponentSearchList
 		Iterator it = inputComponents.iterator();
 		while (it.hasNext()) {
 			WSDLElement wsdlElement = (WSDLElement) it.next();
-			String name = wsdlElement.getElement().getAttribute("name");
+			String name = wsdlElement.getElement().getAttribute("name"); //$NON-NLS-1$
 			String qualifier = wsdlElement.getEnclosingDefinition().getTargetNamespace();
 			
 			ComponentSpecification componentSpec = new ComponentSpecification();
@@ -38,7 +38,7 @@ public abstract class WSDLBaseSearchListProvider implements IComponentSearchList
 			componentSpec.setQualifier(qualifier);
 			
 			String location = wsdlElement.getEnclosingDefinition().getLocation();
-			String platformResource = "platform:/resource";
+			String platformResource = "platform:/resource"; //$NON-NLS-1$
 			if (location != null && location.startsWith(platformResource)) {
 				Path path = new Path(location.substring(platformResource.length()));
 				IFile result = ResourcesPlugin.getWorkspace().getRoot().getFile(path);

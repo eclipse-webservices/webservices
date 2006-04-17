@@ -12,7 +12,7 @@ package org.eclipse.wst.wsdl.ui.internal.actions;
 
 
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
@@ -45,7 +45,7 @@ public class AddWSISchemaImportAction extends BaseNodeAction
     
     public String getUndoDescription()
     {
-    	return WSDLEditorPlugin.getWSDLString("_UI_ACTION_ADD_IMPORT");
+    	return Messages.getString("_UI_ACTION_ADD_IMPORT"); //$NON-NLS-1$
     }
 
     protected Element getOrCreateTypesElement()
@@ -55,7 +55,7 @@ public class AddWSISchemaImportAction extends BaseNodeAction
         {
             if (definitionElement != null)
             {
-                AddElementAction addTypesAction = new AddElementAction("", "icons/xsd_obj.gif", definitionElement, definitionElement.getPrefix(), "types");
+                AddElementAction addTypesAction = new AddElementAction("", "icons/xsd_obj.gif", definitionElement, definitionElement.getPrefix(), "types"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 addTypesAction.setComputeTopLevelRefChild(true);
                 addTypesAction.run();
                 typesElement = addTypesAction.getNewElement();
@@ -78,7 +78,7 @@ public class AddWSISchemaImportAction extends BaseNodeAction
             if (node.getNodeType() == Node.ELEMENT_NODE)
             {
                 Element element = (Element) node;
-                if ("schema".equals(element.getLocalName()) && element.getAttribute("targetNamespace") == null)
+                if ("schema".equals(element.getLocalName()) && element.getAttribute("targetNamespace") == null) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     importHolderElement = element;
                     break;
@@ -94,11 +94,11 @@ public class AddWSISchemaImportAction extends BaseNodeAction
         Element importHolderElement = getImportHolderElement(typesElement);
         if (importHolderElement == null)
         {
-            AddElementAction addImportHolderAction = new AddElementAction("", "icons/xsd_obj.gif", typesElement, "xsd", "schema")
+            AddElementAction addImportHolderAction = new AddElementAction("", "icons/xsd_obj.gif", typesElement, "xsd", "schema") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             {
                 protected void addAttributes(Element newElement)
                 {
-                    newElement.setAttribute("xmlns:xsd", WSDLConstants.XSD_NAMESPACE_URI);
+                    newElement.setAttribute("xmlns:xsd", WSDLConstants.XSD_NAMESPACE_URI); //$NON-NLS-1$
                 }
             };
             addImportHolderAction.run();
@@ -136,8 +136,8 @@ public class AddWSISchemaImportAction extends BaseNodeAction
 
     				for (int index = 0; index < schemaChildren.size(); index++) {
     					Element schemaChild = (Element) schemaChildren.elementAt(index);
-    					String schemaLocation = schemaChild.getAttribute("schemaLocation");
-    					String schemaNamespace = schemaChild.getAttribute("namespace");
+    					String schemaLocation = schemaChild.getAttribute("schemaLocation"); //$NON-NLS-1$
+    					String schemaNamespace = schemaChild.getAttribute("namespace"); //$NON-NLS-1$
 				
     					if (schemaLocation != null && namespace != null &&
     							schemaLocation.equals(location) && schemaNamespace.equals(namespace)) {
@@ -168,12 +168,12 @@ public class AddWSISchemaImportAction extends BaseNodeAction
             Element typesElement = getOrCreateTypesElement();
             Element importHolderElement = getOrCreateImportHolderElement(typesElement);
 
-            AddElementAction addImportAction = new AddElementAction("", "icons/xsd_obj.gif", importHolderElement, importHolderElement.getPrefix(), "import")
+            AddElementAction addImportAction = new AddElementAction("", "icons/xsd_obj.gif", importHolderElement, importHolderElement.getPrefix(), "import") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             {
                 protected void addAttributes(Element newElement)
                 {
-                    newElement.setAttribute("namespace", namespace);
-                    newElement.setAttribute("schemaLocation", location);
+                    newElement.setAttribute("namespace", namespace); //$NON-NLS-1$
+                    newElement.setAttribute("schemaLocation", location); //$NON-NLS-1$
                 }
             };
             addImportAction.run();

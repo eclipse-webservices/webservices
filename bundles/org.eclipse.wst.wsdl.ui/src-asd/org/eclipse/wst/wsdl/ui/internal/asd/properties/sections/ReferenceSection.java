@@ -22,10 +22,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 
 public abstract class ReferenceSection extends NameSection {
-	public static String BROWSE_STRING = "Browse...";
-	public static String NEW_STRING = "New...";
+	public static String BROWSE_STRING = Messages.getString("_UI_BUTTON_BROWSE"); //$NON-NLS-1$
+	public static String NEW_STRING = Messages.getString("_UI_BUTTON_NEW"); //$NON-NLS-1$
 	protected CCombo combo;
 	protected CLabel comboLabel;
 	
@@ -40,7 +41,7 @@ public abstract class ReferenceSection extends NameSection {
 		FormData data;
 		
 		// Create Combo row of widgets
-		comboLabel = getWidgetFactory().createCLabel(composite, "Reference");
+		comboLabel = getWidgetFactory().createCLabel(composite, "Reference"); //$NON-NLS-1$
 		combo = getWidgetFactory().createCCombo(composite);
 		combo.setBackground(composite.getBackground());
 

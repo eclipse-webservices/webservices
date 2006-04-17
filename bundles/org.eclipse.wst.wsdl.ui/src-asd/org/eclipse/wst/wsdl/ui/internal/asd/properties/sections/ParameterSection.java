@@ -23,13 +23,14 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDTypeReferenceEditManager;
 
 public class ParameterSection extends NameSection {
-	protected static String NEW_STRING = "New...";
-	protected static String BROWSE_STRING = "Browse...";
+	protected static String NEW_STRING = Messages.getString("_UI_BUTTON_NEW"); //$NON-NLS-1$
+	protected static String BROWSE_STRING = Messages.getString("_UI_BUTTON_BROWSE"); //$NON-NLS-1$
 	protected CLabel comboLabel; 
 	protected CCombo combo;
 	protected boolean handleTypeScenario = true;
@@ -49,7 +50,7 @@ public class ParameterSection extends NameSection {
 		combo.addListener(SWT.Modify, this);
 		combo.addSelectionListener(this);
 		
-		comboLabel = getWidgetFactory().createCLabel(composite, "Type" + ":"); //$NON-NLS-1$
+		comboLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_TYPE") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(combo, -ITabbedPropertyConstants.HSPACE);
@@ -99,8 +100,8 @@ public class ParameterSection extends NameSection {
 			param = (IParameter) model;
 		}
 		
-		String name = "";
-		String typeName = "ParameterSection.java";
+		String name = ""; //$NON-NLS-1$
+		String typeName = "ParameterSection.java"; //$NON-NLS-1$
 		if (param != null) {
 			name = param.getName();
 			typeName = param.getComponentName();

@@ -14,15 +14,16 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 
 public class ASDGenerateBindingAction extends BaseSelectionAction {
-	public static String ID = "ASDGenerateBindingActionn"; 
+	public static String ID = "ASDGenerateBindingActionn";  //$NON-NLS-1$
 	
 	public ASDGenerateBindingAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText("Generate Binding...");  
+		setText(Messages.getString("_UI_GENERATE_BINDING_CONTENT"));   //$NON-NLS-1$
 //		setImageDescriptor(WSDLEditorPlugin.getImageDescriptor("icons/input_obj.gif"));
 	}
 	

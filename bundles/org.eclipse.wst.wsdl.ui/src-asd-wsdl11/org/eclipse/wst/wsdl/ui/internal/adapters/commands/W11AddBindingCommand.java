@@ -34,8 +34,8 @@ public class W11AddBindingCommand extends Command {
 	}
 	
 	public void execute() {
-		if (newName == null || newName.equals("")) {
-			newName = NameUtil.buildUniqueBindingName(definition, "NewBinding");
+		if (newName == null || newName.equals("")) { //$NON-NLS-1$
+			newName = NameUtil.buildUniqueBindingName(definition, "NewBinding"); //$NON-NLS-1$
 		}
 		
 		AddBindingCommand command = new AddBindingCommand(definition, newName);

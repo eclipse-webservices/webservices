@@ -23,6 +23,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.sse.core.internal.encoding.CommonEncodingPreferenceNames;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.NewComponentDialog;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
@@ -152,14 +153,14 @@ public class AddElementAction extends BaseNodeAction {
 
 
 	public String getUndoDescription() {
-		return WSDLEditorPlugin.getWSDLString("_UI_ACTION_ADD");
+		return Messages.getString("_UI_ACTION_ADD"); //$NON-NLS-1$
 	}
 
 
 	protected Element createElement(String nodeName) {
 		Document document = parentNode.getOwnerDocument();
 
-		Element element = (prefix != null && prefix.length() > 0) ? document.createElement(prefix + ":" + nodeName) : document.createElement(nodeName);
+		Element element = (prefix != null && prefix.length() > 0) ? document.createElement(prefix + ":" + nodeName) : document.createElement(nodeName); //$NON-NLS-1$
 
 		return element;
 	}
@@ -263,20 +264,20 @@ public class AddElementAction extends BaseNodeAction {
 			// Create the Definitions element with proper namespace
 			Preferences preference = XMLCorePlugin.getDefault().getPluginPreferences();
 			String charSet = preference.getString(CommonEncodingPreferenceNames.OUTPUT_CODESET);
-			if (charSet == null || charSet.trim().equals("")) {
-				charSet = "UTF-8";
+			if (charSet == null || charSet.trim().equals("")) { //$NON-NLS-1$
+				charSet = "UTF-8"; //$NON-NLS-1$
 			}
-			document.appendChild(document.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"" + charSet + "\""));
-			Element root = document.createElement("wsdl:definitions");
+			document.appendChild(document.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"" + charSet + "\"")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Element root = document.createElement("wsdl:definitions"); //$NON-NLS-1$
 			document.appendChild(root);
 
 			// Add various namespace attributes here.
-			root.setAttribute("xmlns:soap", "http://schemas.xmlsoap.org/wsdl/soap/");
-			root.setAttribute("xmlns:tns", getDefaultNamespace());
-			root.setAttribute("xmlns:wsdl", "http://schemas.xmlsoap.org/wsdl/");
-			root.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
-			root.setAttribute("name", getFileName());
-			root.setAttribute("targetNamespace", getDefaultNamespace());
+			root.setAttribute("xmlns:soap", "http://schemas.xmlsoap.org/wsdl/soap/"); //$NON-NLS-1$ //$NON-NLS-2$
+			root.setAttribute("xmlns:tns", getDefaultNamespace()); //$NON-NLS-1$
+			root.setAttribute("xmlns:wsdl", "http://schemas.xmlsoap.org/wsdl/"); //$NON-NLS-1$ //$NON-NLS-2$
+			root.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema"); //$NON-NLS-1$ //$NON-NLS-2$
+			root.setAttribute("name", getFileName()); //$NON-NLS-1$
+			root.setAttribute("targetNamespace", getDefaultNamespace()); //$NON-NLS-1$
 
 			definition.setElement(root);
 			parentNode = root;
@@ -285,12 +286,12 @@ public class AddElementAction extends BaseNodeAction {
 	}
 
 	private String getDefaultNamespace() {
-		String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"));
-		if (!namespace.endsWith("/")) {
-			namespace = namespace.concat("/");
+		String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages.getString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE")); //$NON-NLS-1$
+		if (!namespace.endsWith("/")) { //$NON-NLS-1$
+			namespace = namespace.concat("/"); //$NON-NLS-1$
 		}
 
-		namespace += getFileName() + "/";
+		namespace += getFileName() + "/"; //$NON-NLS-1$
 
 		return namespace;
 	}

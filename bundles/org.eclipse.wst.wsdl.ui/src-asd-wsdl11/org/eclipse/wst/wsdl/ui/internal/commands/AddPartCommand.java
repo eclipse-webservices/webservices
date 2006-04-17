@@ -158,14 +158,14 @@ public final class AddPartCommand extends WSDLElementCommand
     Definition definition = message.getEnclosingDefinition();
     if (!definition.getNamespaces().containsValue(typeOrElementName.getNamespaceURI()))
     {
-      definition.addNamespace("p",typeOrElementName.getNamespaceURI());
+      definition.addNamespace("p",typeOrElementName.getNamespaceURI()); //$NON-NLS-1$
       ((WSDLElementImpl)definition).updateElement(false);
     }
   }
   
   private QName createDefaultTypeName()
   {
-    QName qname = new QName(WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001,"string");
+    QName qname = new QName(WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001,"string"); //$NON-NLS-1$
     return qname;
   }
   

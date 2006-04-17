@@ -15,7 +15,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class InterfaceColumn extends AbstractModelCollection {
 	public InterfaceColumn(IDescription description) {
-		super(description, "InterfaceColumn");
+		super(description, "InterfaceColumn"); //$NON-NLS-1$
 	}
 	
 	public ITreeElement[] getChildren() {
@@ -39,6 +39,6 @@ public class InterfaceColumn extends AbstractModelCollection {
 	}
 	
 	public String getText() {
-		return "description";
+		return "description"; //$NON-NLS-1$
 	}
 }

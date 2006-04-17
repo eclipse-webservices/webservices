@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.internal.generator.PortGenerator;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.ProtocolComponentControl;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
@@ -47,7 +48,7 @@ public class PortWizard extends Wizard
   {
     super();
     portGenerator = new PortGenerator(service);
-    setWindowTitle(WSDLEditorPlugin.getWSDLString("_UI_PORT_WIZARD")); //$NON-NLS-1$
+    setWindowTitle(Messages.getString("_UI_PORT_WIZARD")); //$NON-NLS-1$
     //setDefaultPageImageDescriptor(ImageDescriptor.createFromFile(WSDLEditorPlugin.class, "icons/NewXML.gif"));
   }
 
@@ -94,9 +95,9 @@ public class PortWizard extends Wizard
 
     public PortWizardOptionsPage(int style)
     {
-      super("SpecifyPortPage");
-      setTitle(WSDLEditorPlugin.getWSDLString("_UI_SPECIFY_PORT_DETAILS"));
-      setDescription(WSDLEditorPlugin.getWSDLString("_UI_SPECIFY_PORT_DETAILS_TO_BE_CREATED"));
+      super("SpecifyPortPage"); //$NON-NLS-1$
+      setTitle(Messages.getString("_UI_SPECIFY_PORT_DETAILS")); //$NON-NLS-1$
+      setDescription(Messages.getString("_UI_SPECIFY_PORT_DETAILS_TO_BE_CREATED")); //$NON-NLS-1$
     }
 
     public PortGenerator getGenerator()
@@ -122,7 +123,7 @@ public class PortWizard extends Wizard
 
     public String getRefNameLabelText()
     {
-      return WSDLEditorPlugin.getWSDLString("_UI_BINDING");
+      return Messages.getString("_UI_BINDING"); //$NON-NLS-1$
     }
 
     public List getRefNames()
@@ -140,10 +141,10 @@ public class PortWizard extends Wizard
     {
       ContentGeneratorOptionsPage optionsPage = null;	  
 	  String protocolSelection = protocolCombo.getItem(protocolCombo.getSelectionIndex());
-	  if (protocolSelection.equals("SOAP")) {
+	  if (protocolSelection.equals("SOAP")) { //$NON-NLS-1$
 		  optionsPage = new SoapBindingOptionsPage();
 	  }
-	  else if (protocolSelection.equals("HTTP")) {
+	  else if (protocolSelection.equals("HTTP")) { //$NON-NLS-1$
 		  optionsPage = new SoapBindingOptionsPage();
 	  }	  
 //      ContentGeneratorExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorExtensionRegistry().getContentGeneratorExtension(protocol);

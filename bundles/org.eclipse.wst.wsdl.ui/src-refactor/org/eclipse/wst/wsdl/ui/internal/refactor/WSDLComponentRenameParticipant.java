@@ -38,6 +38,6 @@ public class WSDLComponentRenameParticipant extends XMLComponentRenameParticipan
 
 	public String getName() {
 		
-		return "WSDL component rename participant";
+		return "WSDL component rename participant"; //$NON-NLS-1$
 	}
 }

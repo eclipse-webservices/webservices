@@ -63,9 +63,9 @@ public final class AddInputCommand extends AddMessageReferenceCommand
     		
     		boolean gened = false;
     		if (originalInput.eContainer() instanceof Operation)
-    			gened = SmartRenameAction.isMessageNameGenerated(originalMsgName, ((Operation) originalInput.eContainer()).getName(), "Request");
+    			gened = SmartRenameAction.isMessageNameGenerated(originalMsgName, ((Operation) originalInput.eContainer()).getName(), "Request"); //$NON-NLS-1$
     		
-    		String newMsgName = "";
+    		String newMsgName = ""; //$NON-NLS-1$
     		if (gened) {
     			newMsgName = NameUtil.buildUniqueMessageName(operation.getEnclosingDefinition(), messageReference);
     		}

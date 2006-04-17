@@ -14,18 +14,19 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 
 public class ASDAddInputAction extends BaseSelectionAction {	
-	public static String ID = "ASDAddInputActionn"; 
+	public static String ID = "ASDAddInputActionn";  //$NON-NLS-1$
 	
 	public ASDAddInputAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText("Add Input");  
-		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/input_obj.gif"));
+		setText(Messages.getString("_UI_ACTION_ADD_INPUT"));   //$NON-NLS-1$
+		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/input_obj.gif")); //$NON-NLS-1$
 	}
 	
 	public void run() {

@@ -64,7 +64,7 @@ public class W11BindingReferenceEditManager implements ComponentReferenceEditMan
 		if (bindingObject instanceof ComponentSpecification) {
 			Port port = (Port) w11EndPoint.getTarget();
 			WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, getDefinition());
-			helper.setWSDLComponent(port, "binding", (ComponentSpecification) bindingObject);
+			helper.setWSDLComponent(port, "binding", (ComponentSpecification) bindingObject); //$NON-NLS-1$
 		}		
 		else if (bindingObject instanceof IBinding){
 			IBinding binding = (IBinding) bindingObject;
@@ -84,7 +84,7 @@ public class W11BindingReferenceEditManager implements ComponentReferenceEditMan
 		Iterator bindings = description.getBindings().iterator();
 		while (bindings.hasNext()) {
 			IBinding binding = (IBinding) bindings.next();
-			String qualifier = "";
+			String qualifier = ""; //$NON-NLS-1$
 			String name = binding.getName();
 			IFile file = null;
 			

@@ -22,6 +22,7 @@ import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Output;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
@@ -203,7 +204,7 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	  actions.add(ASDAddFaultAction.ID);
 	  actions.add(W11AddPartAction.ID);
 	  actions.add(ASDDeleteAction.ID);
-	  actions.add(BaseSelectionAction.SUBMENU_START_ID + "Set Message");
+	  actions.add(BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_MESSAGE")); //$NON-NLS-1$
 	  actions.add(W11SetNewMessageAction.ID);
 	  actions.add(W11SetExistingMessageAction.ID);
 	  actions.add(BaseSelectionAction.SUBMENU_END_ID);
@@ -227,15 +228,15 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	public Image getImage() {
 	    if (getKind() == KIND_INPUT)
 	    {
-	    	return WSDLEditorPlugin.getInstance().getImage("icons/input_obj.gif");
+	    	return WSDLEditorPlugin.getInstance().getImage("icons/input_obj.gif"); //$NON-NLS-1$
 	    }
 	    else if (getKind() == KIND_OUTPUT)
 	    {
-	    	return WSDLEditorPlugin.getInstance().getImage("icons/output_obj.gif");
+	    	return WSDLEditorPlugin.getInstance().getImage("icons/output_obj.gif"); //$NON-NLS-1$
 	    }
 	    else if (getKind() == KIND_FAULT)
 	    {
-	    	return WSDLEditorPlugin.getInstance().getImage("icons/fault_obj.gif");
+	    	return WSDLEditorPlugin.getInstance().getImage("icons/fault_obj.gif"); //$NON-NLS-1$
 	    }
 	    return null;
 	}

@@ -15,18 +15,19 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 
 public class ASDAddFaultAction extends BaseSelectionAction {
-	public static String ID = "ASDAddFaultActionn"; 
+	public static String ID = "ASDAddFaultActionn";  //$NON-NLS-1$
 	
 	public ASDAddFaultAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText("Add Fault");  
-		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/fault_obj.gif"));
+		setText(Messages.getString("_UI_ACTION_ADD_FAULT"));   //$NON-NLS-1$
+		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/fault_obj.gif")); //$NON-NLS-1$
 	}
 	
 	public void run() {

@@ -47,8 +47,8 @@ class WSDLModelReconcileAdapter extends DocumentAdapter
         // We need to sync up the Model and the DOM
         Element newDocumentElement = (Element)newValue;
         String wsdlPrefix = newDocumentElement.getPrefix();
-        if (wsdlPrefix == null) wsdlPrefix = "";
-        String ns = definition != null ? definition.getNamespace(wsdlPrefix) : "";
+        if (wsdlPrefix == null) wsdlPrefix = ""; //$NON-NLS-1$
+        String ns = definition != null ? definition.getNamespace(wsdlPrefix) : ""; //$NON-NLS-1$
         if (ns != null && ns.equals(WSDLConstants.WSDL_NAMESPACE_URI)
            && newDocumentElement.getLocalName().equals(WSDLConstants.DEFINITION_ELEMENT_TAG)) // &&
            // !isValidDefinition)

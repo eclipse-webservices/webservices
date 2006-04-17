@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.help.WorkbenchHelp;
 import org.eclipse.ui.part.PageBook;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.util.ValidateHelper;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceInfo;
@@ -72,7 +73,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   public WSDLNewFileOptionsPage(String pageName, String title, ImageDescriptor titleImage)
   {
     super(pageName, title, titleImage);
-    setDescription(WSDLEditorPlugin.getWSDLString("_UI_DESCRIPTION_NEW_WSDL_FILE")); //$NON-NLS-1$
+    setDescription(Messages.getString("_UI_DESCRIPTION_NEW_WSDL_FILE")); //$NON-NLS-1$
   }
   /**
    * @see org.eclipse.jface.dialogs.IDialogPage#createControl(Composite)
@@ -80,7 +81,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   public void createControl(Composite parent)
   {
     Composite base = new Composite(parent, SWT.NONE);
-    WorkbenchHelp.setHelp(base, WSDLEditorPlugin.getWSDLString("_UI_HELP")); //$NON-NLS-1$
+    WorkbenchHelp.setHelp(base, Messages.getString("_UI_HELP")); //$NON-NLS-1$
     base.setLayout(new GridLayout());
 
     //  Group wsdlGroup = ViewUtility.createGroup(base, 2, "WSDL", false);
@@ -98,7 +99,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     gd.grabExcessHorizontalSpace = true;
 
     Label targetNamespace = new Label(wsdlGroup, SWT.LEFT);
-    targetNamespace.setText(WSDLEditorPlugin.getWSDLString("_UI_LABEL_TARGET_NAMESPACE")); //$NON-NLS-1$
+    targetNamespace.setText(Messages.getString("_UI_LABEL_TARGET_NAMESPACE")); //$NON-NLS-1$
     GridData nsData = new GridData();
     nsData.horizontalAlignment = GridData.FILL;
     targetNamespace.setLayoutData(nsData);
@@ -113,7 +114,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     targetNamespaceText.addModifyListener(this);
 
     Label prefix = new Label(wsdlGroup, SWT.LEFT);
-    prefix.setText(WSDLEditorPlugin.getWSDLString("_UI_LABEL_PREFIX_WITH_COLON")); //$NON-NLS-1$\
+    prefix.setText(Messages.getString("_UI_LABEL_PREFIX_WITH_COLON")); //$NON-NLS-1$\
 
     GridData prefixData = new GridData();
     prefixData.horizontalAlignment = GridData.FILL;
@@ -133,7 +134,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
 //  Determine if the user wishes to create a skeleton WSDL.  If yes, present the user with input fields.
     createSkeletonCheckBox = new Button(base, SWT.CHECK);
-    createSkeletonCheckBox.setText(WSDLEditorPlugin.getWSDLString("_UI_LABEL_CREATE_WSDL_SKELETON"));
+    createSkeletonCheckBox.setText(Messages.getString("_UI_LABEL_CREATE_WSDL_SKELETON")); //$NON-NLS-1$
     createSkeletonCheckBox.setSelection(true);
     
     wsdlSkeletonGroup = new Composite(base, SWT.NONE);
@@ -146,7 +147,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     data2.horizontalAlignment = GridData.FILL;
     wsdlSkeletonGroup.setLayoutData(data2);
 
-   createLabel(wsdlSkeletonGroup, WSDLEditorPlugin.getWSDLString("_UI_LABEL_BINDING_PROTOCOL"));
+   createLabel(wsdlSkeletonGroup, Messages.getString("_UI_LABEL_BINDING_PROTOCOL")); //$NON-NLS-1$
    protocolCombo = new Combo(wsdlSkeletonGroup, SWT.READ_ONLY);
    GridData dataC = new GridData();
    dataC.horizontalAlignment = GridData.FILL;
@@ -177,7 +178,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    pbData.horizontalAlignment = GridData.FILL;
    soapPage.setLayoutData(pbData);
 
-   createLabel(soapPage, WSDLEditorPlugin.getWSDLString("_UI_LABEL_SOAP_BINDING_OPTIONS"));
+   createLabel(soapPage, Messages.getString("_UI_LABEL_SOAP_BINDING_OPTIONS")); //$NON-NLS-1$
    docLitRadio = new Button(soapPage, SWT.RADIO);
    rpcLitRadio = new Button(soapPage, SWT.RADIO);
    rpcEncRadio = new Button(soapPage, SWT.RADIO);
@@ -196,7 +197,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    pbData.horizontalAlignment = GridData.FILL;
    httpPage.setLayoutData(pbData);
    
-   createLabel(httpPage, WSDLEditorPlugin.getWSDLString("_UI_LABEL_HTTP_BINDING_OPTIONS")); // Already Externalized
+   createLabel(httpPage, Messages.getString("_UI_LABEL_HTTP_BINDING_OPTIONS")); // Already Externalized //$NON-NLS-1$
    httpGetRadio = new Button(httpPage, SWT.RADIO);
    httpPostRadio = new Button(httpPage, SWT.RADIO);
    httpGetRadio.setText(HTTP_GET);
@@ -224,7 +225,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
   private String computeDefaultDefinitionName()
   {
-    String name = "DefaultName";
+    String name = "DefaultName"; //$NON-NLS-1$
     IPath path = getNewWSDLWizard().getNewFilePath();
     if (path != null)
     {
@@ -235,15 +236,15 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
   private String computeDefaultNamespaceName()
   {
-    String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"));
-    if (!namespace.endsWith("/")) {
-    	namespace = namespace.concat("/");
+    String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages.getString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE")); //$NON-NLS-1$
+    if (!namespace.endsWith("/")) { //$NON-NLS-1$
+    	namespace = namespace.concat("/"); //$NON-NLS-1$
     }
     
     IPath path = getNewWSDLWizard().getNewFilePath();
     if (path != null)
     {
-      namespace += path.removeFileExtension().toString() + "/";
+      namespace += path.removeFileExtension().toString() + "/"; //$NON-NLS-1$
     }
     return namespace;
   }
@@ -256,7 +257,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     {
       // prime the fields    
       targetNamespaceText.setText(computeDefaultNamespaceName());
-      prefixText.setText("tns");
+      prefixText.setText("tns"); //$NON-NLS-1$
     }
   }
 
@@ -287,10 +288,10 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     }
 	else if (e.widget == protocolCombo) {
 		// Update what page/control we show in the PageBook
-		if (protocolCombo.getText().equals("SOAP")) {
+		if (protocolCombo.getText().equals("SOAP")) { //$NON-NLS-1$
 			protocolPageBook.showPage(soapPage);
 		}
-		else if (protocolCombo.getText().equals("HTTP")) {
+		else if (protocolCombo.getText().equals("HTTP")) { //$NON-NLS-1$
 			protocolPageBook.showPage(httpPage);
 		}
 	}
@@ -308,7 +309,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     setErrorMessage(null);
 
     // so that the page doesn't immediately show up with an error
-    if (targetNamespaceText.getText().trim().equals(""))
+    if (targetNamespaceText.getText().trim().equals("")) //$NON-NLS-1$
     {
       if (ready)
       {
@@ -370,7 +371,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
       //			}
       //			else
       //			{
-      setErrorMessage(WSDLEditorPlugin.getWSDLString("_UI_ERROR_NAMESPACE_INVALID")); //$NON-NLS-1$
+      setErrorMessage(Messages.getString("_UI_ERROR_NAMESPACE_INVALID")); //$NON-NLS-1$
       test = false;
       //			}
     }
@@ -522,13 +523,13 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   	 }
   }
   
-  private static final String SOAP_PROTOCOL = "SOAP";
-  private static final String HTTP_PROTOCOL = "HTTP";
-  private static final String SOAP_RPC_ENCODED = WSDLEditorPlugin.getWSDLString("_UI_RADIO_RPC_ENCODED");
-  private static final String SOAP_RPC_LITERAL = WSDLEditorPlugin.getWSDLString("_UI_RADIO_RPC_LITERAL");
-  private static final String SOAP_DOCUMENT_LITERAL = WSDLEditorPlugin.getWSDLString("_UI_RADIO_DOCUMENT_LITERAL");
-  private static final String HTTP_POST = "HTTP POST";
-  private static final String HTTP_GET = "HTTP GET";
+  private static final String SOAP_PROTOCOL = "SOAP"; //$NON-NLS-1$
+  private static final String HTTP_PROTOCOL = "HTTP"; //$NON-NLS-1$
+  private static final String SOAP_RPC_ENCODED = Messages.getString("_UI_RADIO_RPC_ENCODED"); //$NON-NLS-1$
+  private static final String SOAP_RPC_LITERAL = Messages.getString("_UI_RADIO_RPC_LITERAL"); //$NON-NLS-1$
+  private static final String SOAP_DOCUMENT_LITERAL = Messages.getString("_UI_RADIO_DOCUMENT_LITERAL"); //$NON-NLS-1$
+  private static final String HTTP_POST = "HTTP POST"; //$NON-NLS-1$
+  private static final String HTTP_GET = "HTTP GET"; //$NON-NLS-1$
 
   Composite wsdlSkeletonGroup;
   Button createSkeletonCheckBox;
@@ -550,13 +551,13 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   		
   		// Add Default Namespaces
 		NamespaceInfo info1 = new NamespaceInfo();
-		info1.prefix = "wsdl";
-		info1.uri = "http://schemas.xmlsoap.org/wsdl/";
+		info1.prefix = "wsdl"; //$NON-NLS-1$
+		info1.uri = "http://schemas.xmlsoap.org/wsdl/"; //$NON-NLS-1$
 		namespaces.addElement(info1);
 		
 		NamespaceInfo info8 = new NamespaceInfo();
-		info8.prefix = "xsd";
-		info8.uri = "http://www.w3.org/2001/XMLSchema";
+		info8.prefix = "xsd"; //$NON-NLS-1$
+		info8.uri = "http://www.w3.org/2001/XMLSchema"; //$NON-NLS-1$
 		namespaces.addElement(info8);
 		
 		return namespaces;

@@ -25,12 +25,12 @@ public class W11AddEndPointCommand extends Command
     }
     
     public void execute() {
-        AddPortCommand command = new AddPortCommand(service, NameUtil.buildUniquePortName(service, "NewPort"));
+        AddPortCommand command = new AddPortCommand(service, NameUtil.buildUniquePortName(service, "NewPort")); //$NON-NLS-1$
         command.run();
         Port port = (Port) command.getWSDLElement();
         
 		// Set a default address
-		String address = "http://www.example.org/";
+		String address = "http://www.example.org/"; //$NON-NLS-1$
 		W11SetAddressCommand addressCommand = new W11SetAddressCommand(port, address);
 		addressCommand.execute();
     }  

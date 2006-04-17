@@ -14,17 +14,18 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ICategoryAdapter;
 
 public class ASDAddMessageAction extends BaseSelectionAction {
-	public static String ID = "ASDAddMessageAction"; 
+	public static String ID = "ASDAddMessageAction";  //$NON-NLS-1$
 	
 	public ASDAddMessageAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText("Add Message");
-		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/message_obj.gif"));
+		setText(Messages.getString("_UI_ACTION_ADD_MESSAGE")); //$NON-NLS-1$
+		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/message_obj.gif")); //$NON-NLS-1$
 	}
 	
 	public void run() {

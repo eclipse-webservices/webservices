@@ -35,7 +35,7 @@ public class BindingRenamer extends BaseRenamer
     if (globalComponent.equals(binding))
     {
       Element element = WSDLEditorUtil.getInstance().getElementForObject(port);
-      element.setAttribute("binding", getNewQName());
+      element.setAttribute("binding", getNewQName()); //$NON-NLS-1$
     }
   }
   

@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.EditNamespacesDialog;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
@@ -34,7 +35,7 @@ public class EditNamespacesAction extends Action
 
   public EditNamespacesAction(Definition definition)
   {
-    setText(WSDLEditorPlugin.getWSDLString("_UI_EDIT_NAMESPACES"));
+    setText(Messages.getString("_UI_EDIT_NAMESPACES")); //$NON-NLS-1$
     this.definition = definition;
   }
 
@@ -54,15 +55,15 @@ public class EditNamespacesAction extends Action
       {
         NamespaceInfo info = (NamespaceInfo) i.next();
         NamespaceInfo oldCopy = new NamespaceInfo(info);
-        info.setProperty("oldCopy", oldCopy);
+        info.setProperty("oldCopy", oldCopy); //$NON-NLS-1$
       }
 
 	  IPath path = new Path(definition.getDocumentBaseURI());
-      EditNamespacesDialog dialog = new EditNamespacesDialog(WSDLEditorPlugin.getShell(),  path, WSDLEditorPlugin.getWSDLString("_UI_EDIT_NAMESPACES_DIALOG_TITLE"), definition.getTargetNamespace(), namespaceInfoList);
+      EditNamespacesDialog dialog = new EditNamespacesDialog(WSDLEditorPlugin.getShell(),  path, Messages.getString("_UI_EDIT_NAMESPACES_DIALOG_TITLE"), definition.getTargetNamespace(), namespaceInfoList); //$NON-NLS-1$
       int rc = dialog.createAndOpen();
       if (rc == IDialogConstants.OK_ID)
       {      	
-		element.setAttribute("targetNamespace", dialog.getTargetNamespace());
+		element.setAttribute("targetNamespace", dialog.getTargetNamespace()); //$NON-NLS-1$
 		
         List newInfoList = dialog.getNamespaceInfoList();
         namespaceInfoManager.removeNamespaceInfo(element);
@@ -97,7 +98,7 @@ public class EditNamespacesAction extends Action
     for (Iterator i = newList.iterator(); i.hasNext();)
     {
       NamespaceInfo newInfo = (NamespaceInfo) i.next();
-      NamespaceInfo oldInfo = (NamespaceInfo) oldURIToPrefixTable.get(newInfo.uri != null ? newInfo.uri : "");
+      NamespaceInfo oldInfo = (NamespaceInfo) oldURIToPrefixTable.get(newInfo.uri != null ? newInfo.uri : ""); //$NON-NLS-1$
 
       // if oldInfo is non null ... there's a matching URI in the old set
       // we can use its prefix to detemine out mapping
@@ -106,13 +107,13 @@ public class EditNamespacesAction extends Action
       // assuming that the user changed the URI and the prefix
       if (oldInfo == null)
       {
-        oldInfo = (NamespaceInfo) newInfo.getProperty("oldCopy");
+        oldInfo = (NamespaceInfo) newInfo.getProperty("oldCopy"); //$NON-NLS-1$
       }
 
       if (oldInfo != null)
       {
-        String newPrefix = newInfo.prefix != null ? newInfo.prefix : "";
-        String oldPrefix = oldInfo.prefix != null ? oldInfo.prefix : "";
+        String newPrefix = newInfo.prefix != null ? newInfo.prefix : ""; //$NON-NLS-1$
+        String oldPrefix = oldInfo.prefix != null ? oldInfo.prefix : ""; //$NON-NLS-1$
         if (!oldPrefix.equals(newPrefix))
         {
           map.put(oldPrefix, newPrefix);

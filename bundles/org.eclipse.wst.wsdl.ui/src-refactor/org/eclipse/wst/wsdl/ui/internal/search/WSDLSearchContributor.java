@@ -27,13 +27,13 @@ public class WSDLSearchContributor extends ComponentSearchContributor {
 		declarations = new HashMap();
 		String ns = IWSDLSearchConstants.WSDL_NAMESPACE;
 
-		SearchPattern pattern = new XMLSearchPattern(ns, "message", "name");
+		SearchPattern pattern = new XMLSearchPattern(ns, "message", "name"); //$NON-NLS-1$ //$NON-NLS-2$
 		declarations.put(IWSDLSearchConstants.MESSAGE_META_NAME, pattern);
 
-		pattern = new XMLSearchPattern( ns, "portType", "name");
+		pattern = new XMLSearchPattern( ns, "portType", "name"); //$NON-NLS-1$ //$NON-NLS-2$
 		declarations.put(IWSDLSearchConstants.PORT_TYPE_META_NAME, pattern);
 
-		pattern = new XMLSearchPattern(ns, "binding", "name");
+		pattern = new XMLSearchPattern(ns, "binding", "name"); //$NON-NLS-1$ //$NON-NLS-2$
 		declarations.put(IWSDLSearchConstants.BINDING_META_NAME, pattern);
 
 	}
@@ -44,29 +44,29 @@ public class WSDLSearchContributor extends ComponentSearchContributor {
 		String ns = IWSDLSearchConstants.WSDL_NAMESPACE;
 
 		List patterns = new ArrayList();
-		patterns.add(new XMLSearchPattern( ns, "part", "element"));
+		patterns.add(new XMLSearchPattern( ns, "part", "element")); //$NON-NLS-1$ //$NON-NLS-2$
 		references.put(IXSDSearchConstants.ELEMENT_META_NAME, patterns);
 
 		patterns = new ArrayList();
-		patterns.add(new XMLSearchPattern(ns, "part", "type"));
+		patterns.add(new XMLSearchPattern(ns, "part", "type")); //$NON-NLS-1$ //$NON-NLS-2$
 		references.put(IXSDSearchConstants.COMPLEX_TYPE_META_NAME, patterns);
 
 		patterns = new ArrayList();
-		patterns.add(new XMLSearchPattern(ns, "part", "type"));
+		patterns.add(new XMLSearchPattern(ns, "part", "type")); //$NON-NLS-1$ //$NON-NLS-2$
 		references.put(IXSDSearchConstants.SIMPLE_TYPE_META_NAME, patterns);
 
 		patterns = new ArrayList();
-		patterns.add(new XMLSearchPattern(ns, "input", "message"));
-		patterns.add(new XMLSearchPattern(ns, "output", "message"));
-		patterns.add(new XMLSearchPattern(ns, "fault", "message"));
+		patterns.add(new XMLSearchPattern(ns, "input", "message")); //$NON-NLS-1$ //$NON-NLS-2$
+		patterns.add(new XMLSearchPattern(ns, "output", "message")); //$NON-NLS-1$ //$NON-NLS-2$
+		patterns.add(new XMLSearchPattern(ns, "fault", "message")); //$NON-NLS-1$ //$NON-NLS-2$
 		references.put(IWSDLSearchConstants.MESSAGE_META_NAME, patterns);
 
 		patterns = new ArrayList();
-		patterns.add(new XMLSearchPattern(ns, "binding", "type"));
+		patterns.add(new XMLSearchPattern(ns, "binding", "type")); //$NON-NLS-1$ //$NON-NLS-2$
 		references.put(IWSDLSearchConstants.PORT_TYPE_META_NAME, patterns);
 
 		patterns = new ArrayList();
-		patterns.add(new XMLSearchPattern( ns, "port", "binding"));
+		patterns.add(new XMLSearchPattern( ns, "port", "binding")); //$NON-NLS-1$ //$NON-NLS-2$
 		references.put(IWSDLSearchConstants.BINDING_META_NAME, patterns);
 	}
 	

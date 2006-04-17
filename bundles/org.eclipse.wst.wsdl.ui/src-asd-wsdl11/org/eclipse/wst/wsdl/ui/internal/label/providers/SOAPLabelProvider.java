@@ -20,25 +20,25 @@ import org.w3c.dom.Node;
 
 public class SOAPLabelProvider extends LabelProvider
 {                                                     
-  protected final static String ADDRESS      = "address";
-  protected final static String BODY         = "body";
-  protected final static String BINDING      = "binding";
-  protected final static String FAULT        = "fault";                                 
-  protected final static String HEADER       = "header"; 
-  protected final static String HEADER_FAULT = "headerfault"; 
-  protected final static String OPERATION    = "operation";
+  protected final static String ADDRESS      = "address"; //$NON-NLS-1$
+  protected final static String BODY         = "body"; //$NON-NLS-1$
+  protected final static String BINDING      = "binding"; //$NON-NLS-1$
+  protected final static String FAULT        = "fault";                                  //$NON-NLS-1$
+  protected final static String HEADER       = "header";  //$NON-NLS-1$
+  protected final static String HEADER_FAULT = "headerfault";  //$NON-NLS-1$
+  protected final static String OPERATION    = "operation"; //$NON-NLS-1$
 
   protected HashMap map = new HashMap();
                          
   public SOAPLabelProvider()
   {
-    map.put(ADDRESS, "icons/soapaddress_obj.gif");
-    map.put(BINDING, "icons/soapbinding_obj.gif");
-    map.put(BODY, "icons/soapbody_obj.gif");
-    map.put(FAULT, "icons/soapfault_obj.gif");
-    map.put(HEADER, "icons/soapheader_obj.gif");
-    map.put(HEADER_FAULT, "icons/soapheaderfault_obj.gif");
-    map.put(OPERATION, "icons/soapoperation_obj.gif");
+    map.put(ADDRESS, "icons/soapaddress_obj.gif"); //$NON-NLS-1$
+    map.put(BINDING, "icons/soapbinding_obj.gif"); //$NON-NLS-1$
+    map.put(BODY, "icons/soapbody_obj.gif"); //$NON-NLS-1$
+    map.put(FAULT, "icons/soapfault_obj.gif"); //$NON-NLS-1$
+    map.put(HEADER, "icons/soapheader_obj.gif"); //$NON-NLS-1$
+    map.put(HEADER_FAULT, "icons/soapheaderfault_obj.gif"); //$NON-NLS-1$
+    map.put(OPERATION, "icons/soapoperation_obj.gif"); //$NON-NLS-1$
   }
 
   public Image getImage(Object object) 

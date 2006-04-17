@@ -18,6 +18,7 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
@@ -30,13 +31,13 @@ import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public class W11AddPartAction extends BaseSelectionAction {
-	public static String ID = "ASDAddPartAction";
+	public static String ID = "ASDAddPartAction"; //$NON-NLS-1$
 	
 	public W11AddPartAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText("Add Part");
-		setImageDescriptor(WSDLEditorPlugin.getImageDescriptor("icons/part_obj.gif"));
+		setText(Messages.getString("_UI_ACTION_ADD_PART")); //$NON-NLS-1$
+		setImageDescriptor(WSDLEditorPlugin.getImageDescriptor("icons/part_obj.gif")); //$NON-NLS-1$
 	}
 	
 	public void run() {
@@ -67,7 +68,7 @@ public class W11AddPartAction extends BaseSelectionAction {
 			if (message == null && iMessage == null && messageRef != null) {
 				InternalWSDLMultiPageEditor editor = (InternalWSDLMultiPageEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 				Definition definition = (Definition) ((W11Description) editor.getModel()).getTarget();
-				String messageName = NameUtil.buildUniqueMessageName(definition, "NewMessage");
+				String messageName = NameUtil.buildUniqueMessageName(definition, "NewMessage"); //$NON-NLS-1$
 				AddMessageCommand command = new AddMessageCommand(definition, messageName, false);
 				command.run();
 				message = (Message) command.getWSDLElement();

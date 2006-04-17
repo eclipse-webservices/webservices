@@ -147,7 +147,7 @@ public class W11Operation extends WSDLBaseAdapter implements IOperation {
 	}
 	
 	public Image getImage() {
-		return WSDLEditorPlugin.getInstance().getImage("icons/operation_obj.gif");
+		return WSDLEditorPlugin.getInstance().getImage("icons/operation_obj.gif"); //$NON-NLS-1$
 	}
 	
 	public String getText() {

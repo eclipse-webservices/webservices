@@ -36,8 +36,8 @@ public class W11AddInterfaceCommand extends Command {
 	}
 	
 	public void execute() {
-		if (newName == null || newName.equals("")) {
-			newName = NameUtil.buildUniquePortTypeName(definition, "NewPortType");
+		if (newName == null || newName.equals("")) { //$NON-NLS-1$
+			newName = NameUtil.buildUniquePortTypeName(definition, "NewPortType"); //$NON-NLS-1$
 		}
 		// Add the Port Type
 		AddPortTypeCommand command = new AddPortTypeCommand(definition, newName, false);

@@ -76,7 +76,7 @@ public class W11Message extends WSDLBaseAdapter implements IMessage {
 	}
 	
 	public Image getImage() {
-		return WSDLEditorPlugin.getInstance().getImage("icons/message_obj.gif");
+		return WSDLEditorPlugin.getInstance().getImage("icons/message_obj.gif"); //$NON-NLS-1$
 	}
 	
 	public String getText() {

@@ -36,7 +36,7 @@ public class W11AddServiceCommand extends Command {
 			
 			
 			// Set a default address
-			String address = "http://www.example.org/";
+			String address = "http://www.example.org/"; //$NON-NLS-1$
 			W11SetAddressCommand addressCommand = new W11SetAddressCommand(port, address);
 			addressCommand.execute();			
 		}

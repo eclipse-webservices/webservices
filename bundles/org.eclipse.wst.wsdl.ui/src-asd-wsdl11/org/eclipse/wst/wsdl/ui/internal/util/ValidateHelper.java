@@ -11,7 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.util;
 
 import org.eclipse.wst.common.ui.internal.UIPlugin;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 
 public class ValidateHelper
 {
@@ -103,7 +103,7 @@ public class ValidateHelper
   {
     int min;
 
-    if (minValue == null || minValue.equals(""))
+    if (minValue == null || minValue.equals("")) //$NON-NLS-1$
     {
       // Nothing to check
       return null;
@@ -148,13 +148,13 @@ public class ValidateHelper
   {
     int max;
 
-    if (maxValue == null || maxValue.equals("")) 
+    if (maxValue == null || maxValue.equals(""))  //$NON-NLS-1$
     {
       // Nothing to check
       return null;
     }
 
-    if (maxValue.equals("unbounded"))
+    if (maxValue.equals("unbounded")) //$NON-NLS-1$
     {
       return null;
     }
@@ -198,12 +198,12 @@ public class ValidateHelper
 
     if (length == 0) 
     {
-      return WSDLEditorPlugin.getWSDLString("_WARN_NAME_MUST_CONTAIN_AT_LEAST_ONE_CHAR");
+      return Messages.getString("_WARN_NAME_MUST_CONTAIN_AT_LEAST_ONE_CHAR"); //$NON-NLS-1$
     }
     
-    if (name.indexOf(" ") >= 0)
+    if (name.indexOf(" ") >= 0) //$NON-NLS-1$
     {
-      return(WSDLEditorPlugin.getWSDLString("_WARN_NAME_HAS_SPACE"));
+      return(Messages.getString("_WARN_NAME_HAS_SPACE")); //$NON-NLS-1$
     }
 
     int index = 0;
@@ -217,7 +217,7 @@ public class ValidateHelper
       } // end of if ()
       else
       {
-        return WSDLEditorPlugin.getWSDLString("_WARN_NAME_INVALID_FIRST");
+        return Messages.getString("_WARN_NAME_INVALID_FIRST"); //$NON-NLS-1$
       } // end of else
     }
     
@@ -229,7 +229,7 @@ public class ValidateHelper
       {
         if( !isXMLNameStart(character) )
         {
-          return WSDLEditorPlugin.getWSDLString("_WARN_NAME_INVALID_FIRST");
+          return Messages.getString("_WARN_NAME_INVALID_FIRST"); //$NON-NLS-1$
         }
       }
       else
@@ -245,8 +245,8 @@ public class ValidateHelper
           } // end of if ()
           else 
           {
-            return WSDLEditorPlugin.getWSDLString("_WARN_NAME_INVALID_CHAR") + character + 
-            WSDLEditorPlugin.getWSDLString("_UI_NAME_INVALID_CHAR_END");
+            return Messages.getString("_WARN_NAME_INVALID_CHAR") + character +  //$NON-NLS-1$
+            Messages.getString("_UI_NAME_INVALID_CHAR_END"); //$NON-NLS-1$
           } // end of else
         }
       }
@@ -324,7 +324,7 @@ public class ValidateHelper
    */
   public static String parseCDATASection(String section)
   {
-    if (section.indexOf("]]>") != -1)
+    if (section.indexOf("]]>") != -1) //$NON-NLS-1$
     {
       return UIPlugin.getResourceString("_WARN_CDATA_INVALID_STRING");
 
@@ -337,7 +337,7 @@ public class ValidateHelper
    */
   public static String parseProcessingInstructionData(String data)
   {
-    if (data.indexOf("?>") != -1)
+    if (data.indexOf("?>") != -1) //$NON-NLS-1$
     {
       return UIPlugin.getResourceString("_WARN_PROCESSING_INVALID_STRING");
 
@@ -350,9 +350,9 @@ public class ValidateHelper
    */
   public static String parseProcessingInstructionTarget(String target)
   {
-    if (target.length() == 3 && (target.indexOf("XML") != -1 || target.indexOf("XMl") != -1 || target.indexOf("XmL") != -1 ||
-        target.indexOf("xML") != -1 || target.indexOf("Xml") != -1 || target.indexOf("xMl") != -1 ||
-        target.indexOf("xmL") != -1 || target.indexOf("xml") != -1))
+    if (target.length() == 3 && (target.indexOf("XML") != -1 || target.indexOf("XMl") != -1 || target.indexOf("XmL") != -1 || //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        target.indexOf("xML") != -1 || target.indexOf("Xml") != -1 || target.indexOf("xMl") != -1 || //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        target.indexOf("xmL") != -1 || target.indexOf("xml") != -1)) //$NON-NLS-1$ //$NON-NLS-2$
     {
       return UIPlugin.getResourceString("_WARN_PROCESSING_TARGET_INVALID_STRING");
 
@@ -365,7 +365,7 @@ public class ValidateHelper
    */
   public static String parseComment(String comment)
   {
-    if (comment.indexOf("--") != -1)
+    if (comment.indexOf("--") != -1) //$NON-NLS-1$
     {
       return UIPlugin.getResourceString("_WARN_COMMENT_INVALID_STRING");
     }
@@ -384,7 +384,7 @@ public class ValidateHelper
     }
     char character;
     
-    if (prefix.indexOf(" ") >= 0)
+    if (prefix.indexOf(" ") >= 0) //$NON-NLS-1$
     {
       return(UIPlugin.getResourceString("_WARN_PREFIX_HAS_SPACE"));
     }

@@ -14,6 +14,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
@@ -23,13 +24,13 @@ import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDTypeReferenceEditManager;
 
 public class W11SetExistingTypeAction extends BaseSelectionAction {
-	public static String ID = "ASDSetExistingTypeAction";
+	public static String ID = "ASDSetExistingTypeAction"; //$NON-NLS-1$
 	protected WSDLBaseAdapter wsdlBaseAdapter;
 	
 	public W11SetExistingTypeAction(IWorkbenchPart part) {
 		super(part);
 		setId(ID);
-		setText("Set Existing Type...");
+		setText(Messages.getString("_UI_ACTION_EXISTING_TYPE")); //$NON-NLS-1$
 //		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/message_obj.gif"));
 	}
 	

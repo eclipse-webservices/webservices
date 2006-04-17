@@ -13,7 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.actions;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.w3c.dom.Element;
@@ -32,7 +32,7 @@ public class AddImportAction extends AddElementAction
   
   public AddImportAction(IEditorPart part, Definition definition, Node parentNode, String prefix, String namespace, String location)
   {
-    super(WSDLEditorPlugin.getWSDLString("_UI_ACTION_ADD_IMPORT"), "icons/import_obj.gif", parentNode, prefix, "import");
+    super(Messages.getString("_UI_ACTION_ADD_IMPORT"), "icons/import_obj.gif", parentNode, prefix, "import"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	  setDefinition(definition);
 	  setComputeTopLevelRefChild(true);
 	  this.namespace = namespace;
@@ -51,7 +51,7 @@ public class AddImportAction extends AddElementAction
     	Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
     	if (definitionElement != null)
     	{    
-	  	  definitionElement.setAttribute("xmlns:" + elementDeclarationNamespacePrefix, namespace);
+	  	  definitionElement.setAttribute("xmlns:" + elementDeclarationNamespacePrefix, namespace); //$NON-NLS-1$
     	}      	
   	}
   	return super.createElement(nodeName);  
@@ -64,8 +64,8 @@ public class AddImportAction extends AddElementAction
                    
   protected void addAttributes(Element newElement)
   {                                              
-    newElement.setAttribute("namespace", namespace != null ? namespace : "");
-    newElement.setAttribute("location", location != null ? location : "");
+    newElement.setAttribute("namespace", namespace != null ? namespace : ""); //$NON-NLS-1$ //$NON-NLS-2$
+    newElement.setAttribute("location", location != null ? location : ""); //$NON-NLS-1$ //$NON-NLS-2$
   }                                     
   
   public void performAddElement() {
