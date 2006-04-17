@@ -548,4 +548,43 @@ public class WSDLTest extends BaseTestCase
     
     runTest(testfile, loglocation, idealloglocation);
   }
+  
+  /**
+   * Test /WSDL/SelfImport/SimpleFile/SelfImport.wsdl
+   */
+  public void testSimplefileSelfImport()
+  {
+    String testname = "SelfImport";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfImport/SimpleFile/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "SelfImport/SimpleFile/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "SelfImport/SimpleFile/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/SelfImport/ImportFileWithSelfImport/ImportFileWithSelfImport.wsdl
+   */
+  public void testImportFileWithSelfImport()
+  {
+    String testname = "ImportFileWithSelfImport";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfImport/ImportFileWithSelfImport/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "SelfImport/ImportFileWithSelfImport/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "SelfImport/ImportFileWithSelfImport/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /WSDL/SelfImport/SimpleFileInvalid/SelfImport.wsdl
+   */
+  public void testSimpleFileInvalidSelfImport()
+  {
+    String testname = "SelfImport";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfImport/SimpleFileInvalid/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "SelfImport/SimpleFileInvalid/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "SelfImport/SimpleFileInvalid/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
 }

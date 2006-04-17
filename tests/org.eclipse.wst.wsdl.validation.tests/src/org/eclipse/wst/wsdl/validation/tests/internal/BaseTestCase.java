@@ -53,6 +53,10 @@ public class BaseTestCase extends TestCase
   protected void setUp()
   {
     PLUGIN_ABSOLUTE_PATH = WSDLValidatorTestsPlugin.getInstallURL();//getPluginLocation();
+    if(PLUGIN_ABSOLUTE_PATH.startsWith("/"))
+    {
+      PLUGIN_ABSOLUTE_PATH = PLUGIN_ABSOLUTE_PATH.substring(1);
+    }
     
     // Set the WS-I preference to ignore so only WSDL errors will be tested.
     WSPlugin wsui = WSPlugin.getInstance();

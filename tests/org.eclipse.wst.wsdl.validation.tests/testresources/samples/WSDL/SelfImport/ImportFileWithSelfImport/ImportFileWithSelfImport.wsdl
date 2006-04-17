@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Imports a file that contains a self import.
+-->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/ImportFileWithSelfImport/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ImportFileWithSelfImport" targetNamespace="http://www.example.org/ImportFileWithSelfImport/">
+<wsdl:import namespace="http://www.example.org/SelfImport/" location="SelfImport.wsdl"></wsdl:import>
+<wsdl:types>
+<xsd:schema targetNamespace="http://www.example.org/ImportFileWithSelfImport/">
+<xsd:element name="NewOperationResponse" type="xsd:string"/>
+<xsd:element name="NewOperationRequest" type="xsd:string"/>
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="NewOperationResponse">
+<wsdl:part element="tns:NewOperationResponse" name="NewOperationResponse"/>
+</wsdl:message>
+<wsdl:message name="NewOperationRequest">
+<wsdl:part element="tns:NewOperationRequest" name="NewOperationRequest"/>
+</wsdl:message>
+<wsdl:portType name="ImportFileWithSelfImport">
+<wsdl:operation name="NewOperation">
+<wsdl:input message="tns:NewOperationRequest"/>
+<wsdl:output message="tns:NewOperationResponse"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="ImportFileWithSelfImportSOAP" type="tns:ImportFileWithSelfImport">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="NewOperation">
+<soap:operation soapAction="http://www.example.org/ImportFileWithSelfImport/NewOperation"/>
+<wsdl:input>
+<soap:body parts=" NewOperationRequest" use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body parts=" NewOperationResponse" use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="ImportFileWithSelfImport">
+<wsdl:port binding="tns:ImportFileWithSelfImportSOAP" name="ImportFileWithSelfImportSOAP">
+<soap:address location="http://www.example.org/"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>
