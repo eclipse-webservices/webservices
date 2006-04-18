@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060329   128069 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060418   136180 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -289,43 +290,35 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
 
   public IStructuredSelection getObjectSelection()
   {
-    IStructuredSelection sel = (IStructuredSelection) beanList.getSelection();
-    if (sel != null && !sel.isEmpty())
-    {
-      Object object = sel.getFirstElement();
-      if (object instanceof Integer)
-      {
-        String selEJBName = (String) ejbBeanNames.get(((Integer) object).intValue());
-        if (selEJBName != null)
-        {
-          //Get the project containing the bean to get the corresponding Session object.
-          //Then return the Session object in an IStructuredSelection.
-          String ejbComponentName = (String) ejbComponentNames.get(((Integer)object).intValue());
-          IVirtualComponent ejbComponent = ComponentUtilities.getComponent(ejbComponentName);
-          EJBArtifactEdit  ejbEdit = null;
-          try 
-          {
-            ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(ejbComponent);
-            EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
-            EJBJar jar = ejbRes.getEJBJar();
-            java.util.List sessions = jar.getSessionBeans();
-            for (Iterator it2 = sessions.iterator(); it2.hasNext();)
-            {
-              Session session = (Session) it2.next();
-              if (selEJBName.equals(session.getName()))
-              {
-                return new StructuredSelection(new Session[]{session});
-              }
-            }
-          }
-          finally {
-            if (ejbEdit!=null)
-              ejbEdit.dispose();
-          }
-        }
-      }
-    }
-    return new StructuredSelection(new Object[0]);
+	  String selEJBName = (String) ejbBeanNames.get(selectedBeanIndex.intValue());
+	  if (selEJBName != null)
+	  {
+		  //Get the project containing the bean to get the corresponding Session object.
+		  //Then return the Session object in an IStructuredSelection.
+		  String ejbComponentName = (String) ejbComponentNames.get(selectedBeanIndex.intValue());
+		  IVirtualComponent ejbComponent = ComponentUtilities.getComponent(ejbComponentName);
+		  EJBArtifactEdit  ejbEdit = null;
+		  try 
+		  {
+			  ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(ejbComponent);
+			  EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
+			  EJBJar jar = ejbRes.getEJBJar();
+			  java.util.List sessions = jar.getSessionBeans();
+			  for (Iterator it2 = sessions.iterator(); it2.hasNext();)
+			  {
+				  Session session = (Session) it2.next();
+				  if (selEJBName.equals(session.getName()))
+				  {
+					  return new StructuredSelection(new Session[]{session});
+				  }
+			  }
+		  }
+		  finally {
+			  if (ejbEdit!=null)
+				  ejbEdit.dispose();
+		  }
+	  }
+	  return new StructuredSelection(new Object[0]);
   }
   
   public IProject getProject()
