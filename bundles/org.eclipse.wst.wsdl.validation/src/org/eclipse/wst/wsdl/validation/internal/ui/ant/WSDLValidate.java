@@ -41,7 +41,6 @@ import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
  * Options
  * - file - the file to run validation on (optional if fileset is used)
  * - failonerror - fail the build process on the first file with an error
- * - wsicompliance - how to report WS-I errors - REQUIRE, SUGGEST, IGNORE (defaults to REQUIRE)
  * 
  * Supported Nested Elements
  * - xmlcatalog - an xml catalog

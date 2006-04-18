@@ -46,5 +46,6 @@ public class AllWSDLTests extends junit.framework.TestSuite
     addTest(WSDLValidateTest.suite());
     addTest(XMLCatalogTest.suite());
     addTest(InlineSchemaGeneratorTest.suite());
+    addTestSuite(LineNumberAdjustmentsTest.class);
   }
 }

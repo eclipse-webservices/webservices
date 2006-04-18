@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,9 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+import java.util.TreeSet;
 
 import org.apache.xerces.impl.XMLErrorReporter;
 import org.apache.xerces.parsers.SAXParser;
@@ -28,16 +31,14 @@ import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.grammars.XMLGrammarPool;
 import org.apache.xerces.xni.parser.XMLEntityResolver;
-import org.apache.xerces.xni.parser.XMLErrorHandler;
 import org.apache.xerces.xni.parser.XMLInputSource;
-import org.apache.xerces.xni.parser.XMLParseException;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.XSDValidator;
-import org.w3c.dom.DOMError;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
@@ -53,7 +54,7 @@ public class DefaultXMLValidator implements IXMLValidator
   protected String uri;
   protected URIResolver uriResolver = null;
   protected List errors = new ArrayList();
-  protected StringBuffer schemaLocationString = new StringBuffer();
+  //protected StringBuffer schemaLocationString = new StringBuffer();
   protected List ignoredNamespaceList = new ArrayList();
   
   protected InputStream inputStream = null;
@@ -63,6 +64,13 @@ public class DefaultXMLValidator implements IXMLValidator
   
   protected boolean isChildOfDoc = false;
   protected XMLGrammarPool grammarPool = null; 
+  
+  /**
+   * A stack of start tag locations, used to move errors
+   * reported at the close tag to be reported at the start tag.
+   */
+  protected Stack startElementLocations = new Stack();
+  protected Set adjustLocationErrorKeySet = new TreeSet();
 
 /**
    * Constructor.
@@ -74,6 +82,9 @@ public class DefaultXMLValidator implements IXMLValidator
     ignoredNamespaceList.add(Constants.NS_URI_XSD_1999);
     ignoredNamespaceList.add(Constants.NS_URI_XSD_2000);
     ignoredNamespaceList.add(Constants.NS_URI_XSD_2001);
+    
+    adjustLocationErrorKeySet.add("cvc-complex-type.2.4.b");
+    adjustLocationErrorKeySet.add("cvc-complex-type.2.3");
   }
 
   /* (non-Javadoc)
@@ -192,7 +203,16 @@ public class DefaultXMLValidator implements IXMLValidator
    */
   public void addError(String message, int line, int column, String uri)
   {
-	  errors.add(new ValidationMessageImpl(message, line, column, ValidationMessageImpl.SEV_WARNING, uri, currentErrorKey, currentMessageArguments));
+	// For the following errors the line number will be modified to use that of the start
+  	// tag instead of the end tag.
+  	if (currentErrorKey != null && adjustLocationErrorKeySet.contains(currentErrorKey))  
+  	{
+  	  LocationCoordinate adjustedCoordinates = (LocationCoordinate)startElementLocations.peek();
+  	  line = adjustedCoordinates.getLineNumber();
+  	  column = adjustedCoordinates.getColumnNumner();
+  	}
+  	
+	errors.add(new ValidationMessageImpl(message, line, column, ValidationMessageImpl.SEV_WARNING, uri, currentErrorKey, currentMessageArguments));
   }
 
   /**
@@ -201,7 +221,15 @@ public class DefaultXMLValidator implements IXMLValidator
    */
   protected class XMLConformanceDefaultHandler extends DefaultHandler
   {
-    /**
+	private Locator locator = null;
+	
+    public void setDocumentLocator(Locator locator) 
+    {
+		this.locator = locator;
+		super.setDocumentLocator(locator);
+	}
+
+	/**
      * @see org.xml.sax.ErrorHandler#error(SAXParseException)
      */
     public void error(SAXParseException arg0) throws SAXException
@@ -241,92 +269,21 @@ public class DefaultXMLValidator implements IXMLValidator
 		  isChildOfDoc = false;
 		}
 		super.endElement(uri, localName, qName);
+		startElementLocations.pop();
 	}
 	/**
 	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
 	public void startElement(String uri, String localName, String qName,
 			Attributes atts) throws SAXException {
+		startElementLocations.push(new LocationCoordinate(locator.getLineNumber(), locator.getColumnNumber()));
 		if(localName.equals("documentation") && (uri.equals(Constants.NS_URI_WSDL) || uri.equals(Constants.NS_URI_XSD_2001)|| uri.equals(Constants.NS_URI_XSD_1999) || uri.equals(Constants.NS_URI_XSD_2000)))
 		{
 		  isChildOfDoc = true;
 		}
 		super.startElement(uri, localName, qName, atts);
 	}
-
-    /**
-     * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String,
-     *      java.lang.String)
-     */
-    public InputSource resolveEntity(String publicId, String systemId) throws SAXException
-    {
-      // If we're currently examining a subelement of the 
-	  // WSDL or schema documentation element we don't want to resolve it
-	  // as anything is allowed as a child of documentation.
-	  if(isChildOfDoc)
-	  {
-	    return new InputSource();
-	  }
-    if(publicId == null)
-    {
-      publicId = systemId;
-    }
-      
-    IURIResolutionResult result = uriResolver.resolve("", publicId, systemId);
-    String uri = result.getPhysicalLocation();
-    if (uri != null && !uri.equals(""))
-    {
-	  try
-	  {
-//	    String entity = systemId;
-//		if(publicId != null)
-//		{
-//		  entity = publicId;
-//		 }
-		URL entityURL = new URL(uri);
-        InputSource is = new InputSource(result.getLogicalLocation());
-		is.setByteStream(entityURL.openStream());
-        if (is != null)
-        {
-          return is;
-        }
-	  }
-	  catch(Exception e)
-	  {
-		 // Do nothing.
-	  }
-    }
-      // This try/catch block with the IOException is here to handle a difference
-      // between different versions of the EntityResolver interface.
-      try
-      {
-        InputSource is = super.resolveEntity(publicId, systemId);
-        if(is == null)
-        {
-          throw new IOException();
-        }
-        return is;
-      }
-      catch(IOException e)
-      {
-      }
-      return null;
-    }
-
   }
-
-  /**
-   * @see org.eclipse.validate.wsdl.xmlconformance.IXMLValidator#setSchemaLocation(String,
-   *      String)
-   */
-  public void setSchemaLocation(String namespace, String location)
-  {
-    if (namespace != null && location != null && !namespace.equalsIgnoreCase("") && !location.equalsIgnoreCase(""))
-    {
-      schemaLocationString.append(" ").append(namespace).append(" ").append(formatURI(location));
-    }
-  }
-  
   
   /**
    * @param inputStream - set the inputStream to validate
@@ -335,127 +292,9 @@ public class DefaultXMLValidator implements IXMLValidator
   {
       this.inputStream = inputStream;
   }
-
-  /**
-   * Remove space characters from a String and replace them with %20.
-   * 
-   * @param uri -
-   *            the uri to format
-   * @return the formatted string
-   */
-  protected String formatURI(String uri)
-  {
-    String space = "%20";
-    StringBuffer newUri = new StringBuffer(uri);
-    int newUriLength = newUri.length();
-
-    // work backwards through the stringbuffer in case it grows to the
-    // point
-    // where the last space would be missed.
-    for (int i = newUriLength - 1; i >= 0; i--)
-    {
-      if (newUri.charAt(i) == ' ')
-      {
-        newUri.replace(i, i + 1, space);
-      }
-    }
-
-    return newUri.toString();
-  }
   
   protected class XMLValidatorParserConfiguration extends StandardParserConfiguration
   {
-    public XMLErrorHandler getErrorHandler() 
-    {
-	  return new XMLValidatorErrorHandler();
-	}
-
-	public XMLEntityResolver getEntityResolver() {
-    	return new XMLEntityResolver()
-    	  {
-
-    	   
-    	    
-    	    /* (non-Javadoc)
-    	     * @see org.apache.xerces.xni.parser.XMLEntityResolver#resolveEntity(org.apache.xerces.xni.XMLResourceIdentifier)
-    	     */
-    	    public XMLInputSource resolveEntity(XMLResourceIdentifier rid) throws XNIException, IOException
-    	    {
-//    	      XMLInputSource result = null;     
-//    	      
-//    	      // TODO cs : Lawrence's XMLConformanceDefaultHandler seems to need to ingore some entities
-//    	      // that are part of documentation etc.  I think this resolver needs to do that
-//    	      // since the XMLConformanceDefaultHandler resolver is no longer active.
-//    	      if (uriResolver != null)
-//    	      {         
-//    	        String pid = rid.getPublicId() != null ? rid.getPublicId() : rid.getNamespace();
-//    	        String systemId = uriResolver.resolve(rid.getBaseSystemId(), pid, rid.getLiteralSystemId());
-//    	        result = new XMLInputSource(rid.getPublicId(), systemId, rid.getBaseSystemId());               
-//    	      }
-//    	      return result;
-    	      
-//    	    If we're currently examining a subelement of the 
-    		  // WSDL or schema documentation element we don't want to resolve it
-    		  // as anything is allowed as a child of documentation.
-    		  if(isChildOfDoc)
-    		  {
-    		    return new XMLInputSource(rid);
-    		  }
-    		  String systemId = rid.getLiteralSystemId();
-    		  if(systemId == null)
-    		  {
-    			systemId = rid.getNamespace();
-    		  }
-    		  String publicId = rid.getPublicId();
-    	    if(publicId == null)
-    	    {
-    	      publicId = systemId;
-    	    }
-    	      
-    	    IURIResolutionResult result = uriResolver.resolve("", publicId, systemId);
-    	    String uri = result.getPhysicalLocation();
-    	    if (uri != null && !uri.equals(""))
-    	    {
-    		  try
-    		  {
-//    		    String entity = systemId;
-//    			if(publicId != null)
-//    			{
-//    			  entity = publicId;
-//    			 }
-    			URL entityURL = new URL(uri);
-    	        XMLInputSource is = new XMLInputSource(rid.getPublicId(), systemId, result.getLogicalLocation());
-    			is.setByteStream(entityURL.openStream());
-    	        if (is != null)
-    	        {
-    	          return is;
-    	        }
-    		  }
-    		  catch(Exception e)
-    		  {
-    			 // Do nothing.
-    		  }
-    	    }
-    	      // This try/catch block with the IOException is here to handle a difference
-    	      // between different versions of the EntityResolver interface.
-//    	      try
-//    	      {
-//    	        InputSource is = super.resolveEntity(publicId, systemId);
-//    	        if(is == null)
-//    	        {
-//    	          throw new IOException();
-//    	        }
-//    	        return is;
-//    	      }
-//    	      catch(IOException e)
-//    	      {
-//    	      }
-    	      return null;
-    	    }
-    	    
-    	  }; 
-	}
-
 	/* (non-Javadoc)
      * @see org.apache.xerces.parsers.DTDConfiguration#createErrorReporter()
      */
@@ -607,70 +446,28 @@ public class DefaultXMLValidator implements IXMLValidator
     }
   }  
   
-  protected class XMLValidatorErrorHandler implements XMLErrorHandler
-  {
-	  
-	/**
-	   * Add an error message.
-	   * 
-	   * @param error The error message to add.
-	   * @param line The line location of the error.
-	   * @param column The column location of the error.
-	   * @param uri The URI of the file containing the error.
-	   */
-	private void addValidationMessage(String key, XMLParseException exception, int severity)
-	{
-		if (severity == DOMError.SEVERITY_WARNING)
-        {
-			errors.add(new ValidationMessageImpl(exception.getLocalizedMessage(), exception.getLineNumber(), exception.getColumnNumber(), ValidationMessageImpl.SEV_WARNING, uri, key, currentMessageArguments));
-        }
-        else
-        {
-        	errors.add(new ValidationMessageImpl(exception.getLocalizedMessage(), exception.getLineNumber(), exception.getColumnNumber(), ValidationMessageImpl.SEV_ERROR, uri, key, currentMessageArguments));
-        }
-	  
-	}
-
-	public void error(String domain, String key, XMLParseException exception) throws XNIException 
-	{
-		addValidationMessage(key, exception, DOMError.SEVERITY_ERROR);
-		
-	}
-
-	public void fatalError(String domain, String key, XMLParseException exception) throws XNIException 
-	{
-		addValidationMessage(key, exception, DOMError.SEVERITY_FATAL_ERROR);
-		
-	}
-
-	public void warning(String domain, String key, XMLParseException exception) throws XNIException 
-	{
-		addValidationMessage(key, exception, DOMError.SEVERITY_WARNING);
-		
-	}
-	  
-  }
-  
-  protected class MyXMLErrorReporter extends XMLErrorReporter
-  {
-
-	public XMLErrorHandler getErrorHandler() {
-		// TODO Auto-generated method stub
-		return new XMLValidatorErrorHandler();
-	}
-
-	/* (non-Javadoc)
-       * @see org.apache.xerces.impl.XMLErrorReporter#reportError(java.lang.String, java.lang.String, java.lang.Object[], short)
-       */
-      public void reportError(String domain, String key, Object[] arguments,
-          short severity) throws XNIException
-      {
-        currentErrorKey = key;
-        currentMessageArguments = arguments;
-        super.reportError(domain, key, arguments, severity);
-      }
-    }
+  /** 
+   * A line and column number coordinate.
+   */
+  protected class LocationCoordinate
+  {	
+	private int lineNo = -1;
+    private int columnNo = -1;
     
-  
-  
+    public LocationCoordinate(int lineNumber, int columnNumber)
+    {
+      this.lineNo = lineNumber;
+      this.columnNo = columnNumber;
+    }
+    	
+    public int getLineNumber()
+    { 
+      return this.lineNo;
+    }
+    	
+    public int getColumnNumner()
+    { 
+      return this.columnNo;
+    } 
+  }
 }

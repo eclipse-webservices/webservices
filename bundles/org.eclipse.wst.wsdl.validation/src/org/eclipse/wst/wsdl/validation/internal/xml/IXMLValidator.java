@@ -47,14 +47,6 @@ public interface IXMLValidator
   public List getErrors();
   
   /**
-   * Add a schema location to be schema locatino string used by the XML parser.
-   * 
-   * @param namespace - the namespaces of the schema
-   * @param location - the location of the schema
-   */
-  public void setSchemaLocation(String namespace, String location);
-  
-  /**
    * Set the URI resolver to use.
    * 
    * @param uriResolver The URI resolver to use.

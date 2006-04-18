@@ -1,0 +1,8 @@
+number of errors      : 1
+number of warnings    : 0
+
+------------error list-------------------------------------------
+cvc-complex-type.2.4.b: The content of element 'wsdl:operation' is not complete. One of '{"http://schemas.xmlsoap.org/wsdl/":documentation, WC[##other:"http://schemas.xmlsoap.org/wsdl/"], "http://schemas.xmlsoap.org/wsdl/":input, "http://schemas.xmlsoap.org/wsdl/":output}' is expected. [16, 37]
+------------warning list-----------------------------------------
+(none)
+-----------------------------------------------------------------
