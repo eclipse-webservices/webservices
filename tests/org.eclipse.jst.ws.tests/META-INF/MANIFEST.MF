@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.jst.ws.tests
 Bundle-Version: 1.0.0
 Bundle-ClassPath: tests.jar
 Bundle-Activator: org.eclipse.jst.ws.tests.plugin.TestsPlugin
-Bundle-Vendor: IBM
+Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Export-Package: org.eclipse.jst.ws.tests,
  org.eclipse.jst.ws.tests.axis.tomcat.v50,
@@ -32,5 +32,6 @@ Require-Bundle: org.eclipse.jst.ws.consumption.ui,
  org.eclipse.jem.util,
  org.eclipse.wst.ws,
  org.eclipse.wst.common.environment,
- org.eclipse.wst.common.tests
+ org.eclipse.wst.common.tests,
+ org.eclipse.emf.ecore
 Eclipse-LazyStart: true
