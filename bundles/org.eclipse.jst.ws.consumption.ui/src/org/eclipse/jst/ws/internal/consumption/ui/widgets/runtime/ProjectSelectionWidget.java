@@ -13,6 +13,7 @@
  * 20060221   122661 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060223   129020 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -341,30 +342,32 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     String oldTemplateId = getComponentType();
     
     String[] templates = null;
-    if (isClient_)
+    if (trsIds_ != null)
     {
-      templates = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(trsIds_.getTypeId(), trsIds_.getRuntimeId());
-    }
-    else
-    {
-      templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(trsIds_.getTypeId(), trsIds_.getRuntimeId());      
-    }
-    
-    String[] templateLabels = FacetUtils.getTemplateLabels(templates);
-    projectType_.setItems(templateLabels);
-    templates_ = templates;
-      
-    if (templates.length > 0)
-    {
-      
-      //Select the previous template selection if that one is in the list.
-      int idx = getIndexOfTemplateId(templates, oldTemplateId);
-      if (idx > -1)        
+      if (isClient_)
       {
-        projectType_.select(idx);
+        templates = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(trsIds_.getTypeId(), trsIds_.getRuntimeId());
       }
       else
       {
+        templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(trsIds_.getTypeId(), trsIds_.getRuntimeId());      
+      }
+    
+      String[] templateLabels = FacetUtils.getTemplateLabels(templates);
+      projectType_.setItems(templateLabels);
+      templates_ = templates;
+      
+      if (templates.length > 0)
+      {
+      
+        //Select the previous template selection if that one is in the list.
+        int idx = getIndexOfTemplateId(templates, oldTemplateId);
+        if (idx > -1)        
+        {
+          projectType_.select(idx);
+        }
+        else
+        {
           // Select the preferred client project type.
           ProjectTopologyContext ptc = WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
           String[] preferredTemplateIds = null;
@@ -396,6 +399,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
           {
             projectType_.select(0);
           }
+        }
       }
     }
   }

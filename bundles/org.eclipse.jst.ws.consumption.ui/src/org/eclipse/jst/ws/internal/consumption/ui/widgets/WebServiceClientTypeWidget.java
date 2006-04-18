@@ -14,15 +14,18 @@
  * 20060410   136030 kathy@ca.ibm.com - Kathy Chan
  * 20060411   136167 kathy@ca.ibm.com - Kathy Chan
  * 20060417   136390 joan@ca.ibm.com - Joan Haggarty
+ * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ProjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.RuntimeServerSelectionDialog;
@@ -112,6 +115,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   private LabelsAndIds      labelIds_;
   private boolean enableProxy_;  //service scale is set to a level that the client scale can be enabled
   private boolean clientOnly_=false;
+  private int clientScaleSetting_;
   private ImageRegistry imageReg_;
   private IProject project_;
   private WebServicesParser parser_;
@@ -119,6 +123,9 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   private String projectName_;
   private boolean needEar_;
   private String clientComponentType_;
+  
+  private Listener statusListener_;
+  private int validationState_;
   
   private ScaleSelectionListener scaleSelectionListener = new ScaleSelectionListener();
   
@@ -130,6 +137,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   public WebServiceClientTypeWidget(boolean clientOnly) {
 	    clientOnly_ = clientOnly;
 		initImageRegistry();
+		validationState_ = ValidationUtils.VALIDATE_ALL;
 	}
   
   /* (non-Javadoc)
@@ -140,6 +148,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
     String       pluginId = "org.eclipse.jst.ws.consumption.ui";
     UIUtils      utils    = new UIUtils( pluginId );   
 	
+    statusListener_ = statusListener;
     Composite clientComposite = new Composite(parent, SWT.NONE);
 	GridLayout cclayout = new GridLayout();
 	cclayout.numColumns = 2;
@@ -156,6 +165,19 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
                                           comboStyle );
     GridData comboGridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
     clientTypeCombo_.setLayoutData(comboGridData);
+	clientTypeCombo_.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				// TODO - a change in the client type should result in a recalcualtion
+				// of page defaults. Not an issue at this point since 
+				// there is only one possible client type.
+				validationState_ = ValidationUtils.VALIDATE_ALL;
+				statusListener_.handleEvent(null);
+			}
+
+		});    
     
     groupComposite_ = new Composite(parent, SWT.NONE);
 	GridLayout gclayout = new GridLayout();
@@ -182,7 +204,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	clientScale_.setMaximum(6);
 	clientScale_.setIncrement(1);
 	clientScale_.addSelectionListener(scaleSelectionListener);		
-	clientScale_.setSelection(getClientGeneration());
+	setClientScale(getClientGeneration());
 	clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
 	
 	GridData layoutData1 = new GridData();
@@ -198,7 +220,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	if (clientOnly_)
 		topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT_ONLY);
 	else
-		topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
+	topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
 	
 	GridData layoutData = new GridData();
 	layoutData.verticalAlignment=SWT.BEGINNING;
@@ -297,7 +319,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	}
 	else
 	{
-		clientScale_.setSelection(ScenarioContext.WS_NONE);
+		setClientScale(ScenarioContext.WS_NONE);
 		setGraphics(ScenarioContext.WS_NONE);
 		clientScale_.setBackgroundImage(null);  //override background for disable to grey		
 	}	
@@ -323,8 +345,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		  if (clientOnly_)
 			  hCompClient_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT_ONLY);
 			else
-				hCompClient_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT); 
-		  
+		  hCompClient_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
 		  clientDetailsLabel_.setText(ConsumptionUIMessages.LABEL_SUMMARY_NO_CLIENT);		  
 	  }	  
 	  hLinkClientProject_.pack(true);
@@ -420,31 +441,64 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   
 	private void launchProjectDialog()
 	{
-		projectDialog_.setProjectName(getClientProjectName());
-		projectDialog_.setEarProjectName(getClientEarProjectName());
-		projectDialog_.setNeedEAR(getClientNeedEAR());	
-		projectDialog_.setProjectComponentType(getClientComponentType());
+		String currentProjectName = getClientProjectName();
+		String currentEarProjectName = getClientEarProjectName();
+		String currentProjectType = getClientComponentType();
+		boolean currentNeedEar = getClientNeedEAR();
 		
-		int status = projectDialog_.open();  //jvh validation on settings??
+		projectDialog_.setProjectName(currentProjectName);
+		projectDialog_.setEarProjectName(currentEarProjectName);
+		projectDialog_.setNeedEAR(currentNeedEar);	
+		projectDialog_.setProjectComponentType(currentProjectType);
+		
+		int status = projectDialog_.open();
 		
 		if (status == Window.OK)
 		{
-			setClientProjectName(projectDialog_.getProjectName());
-			setClientEarProjectName(projectDialog_.getEarProjectName());
-			setClientNeedEAR(projectDialog_.getNeedEAR());
-			setClientComponentType(projectDialog_.getProjectComponentType());
+			String newProjectName = projectDialog_.getProjectName();
+			String newEarProjectName = projectDialog_.getEarProjectName();
+			String newProjectType = projectDialog_.getProjectComponentType();
+			boolean newNeedEar = projectDialog_.getNeedEAR();	
+			
+			//Update project settings and validate page if selections changed.
+			if (!newProjectName.equals(currentProjectName)
+					|| !newEarProjectName.equals(currentEarProjectName)
+					|| !newProjectType.equals(currentProjectType)
+					|| newNeedEar != currentNeedEar) {
+				setClientProjectName(newProjectName);
+				setClientEarProjectName(newEarProjectName);
+				setClientNeedEAR(newNeedEar);
+				setClientComponentType(newProjectType);
+				validationState_ = ValidationUtils.VALIDATE_PROJECT_CHANGES;
+				statusListener_.handleEvent(null);
+			}
 		}		
 	}
   
   private void launchRuntimeSelectionDialog(boolean clientContext)
 	{
+	    TypeRuntimeServer currentClientTRS = getTypeRuntimeServer();
 	    RuntimeServerSelectionDialog rssd = new RuntimeServerSelectionDialog(shell_, (byte)1, getTypeRuntimeServer(), "14");
 	    int status = rssd.open();
 		if (status == Window.OK)
 		{
-			setTypeRuntimeServer(rssd.getTypeRuntimeServer());			
+			TypeRuntimeServer newClientTRS = rssd.getTypeRuntimeServer();			
+			if (!currentClientTRS.equals(newClientTRS))
+			{
+				setTypeRuntimeServer(rssd.getTypeRuntimeServer());
+				validationState_ = ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES;
+				statusListener_.handleEvent(null); //validate the page
+			}
 		}		
 	}
+  
+  //Private method should be used whenever clientScale_ setting is changed
+  //instead of calling clientScale_.setSelection directly.
+  private void setClientScale(int setting)
+  {
+	  clientScale_.setSelection(setting);
+	  clientScaleSetting_ = setting;
+  }
   
   protected void initImageRegistry()
 	{
@@ -525,11 +579,11 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 				else
 					iconImage=null;
 				topologyImage=GRAPHIC_CLIENT_6;
-					clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
+				clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
 			}
 			else
 			{
-				clientScale_.setSelection(5); //"no selection" is not allowed...must develop service @ minimum
+				setClientScale(5); //"no selection" is not allowed...must develop service @ minimum
 				iconImage=ICON_SCALE_BG_5;
 				topologyImage=GRAPHIC_CLIENT_5;				
 				clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_DEVELOP);			
@@ -562,7 +616,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	  if (clientOnly_ && value == ScenarioContext.WS_NONE)
 		  value = ScenarioContext.WS_DEVELOP;
 	  
-	  clientScale_.setSelection(value);
+	  setClientScale(value);
 	  
 	  setTestClient(new Boolean(value <= ScenarioContext.WS_TEST));
 	  setInstallClient(new Boolean(value <= ScenarioContext.WS_INSTALL));
@@ -671,12 +725,61 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		}
 	}
 	
+	public int getValidationState()
+	{
+		return validationState_;
+	}
+	
+	public void setValidationState(int state)
+	{
+		validationState_ = state;
+	}
+		
+	public IStatus checkMissingFieldStatus() {
+
+		ValidationUtils valUtils = new ValidationUtils();
+		String runtimeId = getTypeRuntimeServer().getRuntimeId();
+		String serverId = getTypeRuntimeServer().getServerId();
+		String projectName = getClientProjectName();
+		boolean needEar = getClientNeedEAR();
+		String earProjectName = getClientEarProjectName();
+		String projectTypeId = getClientComponentType();
+		IStatus missingFieldStatus = valUtils.checkMissingFieldStatus(validationState_, null, runtimeId, serverId,
+				projectName, needEar, earProjectName, projectTypeId, true);
+		return missingFieldStatus;
+	}
+
+	public IStatus checkErrorStatus() {
+
+		ValidationUtils valUtils = new ValidationUtils();
+		String runtimeId = getTypeRuntimeServer().getRuntimeId();
+		String serverId = getTypeRuntimeServer().getServerId();
+		String typeId = getTypeRuntimeServer().getTypeId();
+		String projectName = getClientProjectName();
+		boolean needEar = getClientNeedEAR();
+		String earProjectName = getClientEarProjectName();
+		String projectTypeId = getClientComponentType();
+		IStatus possibleErrorStatus = valUtils.checkErrorStatus(validationState_, typeId, runtimeId, serverId,
+				projectName, needEar, earProjectName, projectTypeId, true);
+		return possibleErrorStatus;
+	}
+
+	public IStatus checkWarningStatus() {
+		ValidationUtils valUtils = new ValidationUtils();
+
+		int scaleSetting = getClientGeneration();
+		String serverId = getTypeRuntimeServer().getServerId();
+		IStatus warningStatus = valUtils.checkWarningStatus(validationState_, scaleSetting, serverId, true);
+		return warningStatus;
+	}	
+	
 	
   private class ScaleSelectionListener implements SelectionListener
 	{
 		public void widgetSelected(SelectionEvent e) {
+			    int oldClientScaleSetting = clientScaleSetting_;
 			    int selection = getClientGeneration();
-			    
+			    clientScaleSetting_ = selection;
 			    setTestClient(new Boolean(selection <= ScenarioContext.WS_TEST));
 				setInstallClient(new Boolean(selection <= ScenarioContext.WS_INSTALL));
 				setStartClient(new Boolean(selection <= ScenarioContext.WS_START));
@@ -684,7 +787,20 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 				setGraphics(selection);
 				//disable the client settings if the client scenario setting isn't at least "DEVELOP"
 				boolean generate = selection<=ScenarioContext.WS_DEVELOP;
-				showSummary(generate);							
+				showSummary(generate);
+				
+				
+				//When client slider moves out of the "WS_NONE" state, VALIDATE_ALL should be done. 
+				//Otherwise, VALIDATE_SCALE_CHANGES is sufficient.
+				if (oldClientScaleSetting==ScenarioContext.WS_NONE && clientScaleSetting_!=ScenarioContext.WS_NONE)
+				{
+					validationState_ = ValidationUtils.VALIDATE_ALL;
+				}
+				else
+				{
+					validationState_ = ValidationUtils.VALIDATE_SCALE_CHANGES;	
+				}				
+				statusListener_.handleEvent(null); //validate the page
 			}
 		
 

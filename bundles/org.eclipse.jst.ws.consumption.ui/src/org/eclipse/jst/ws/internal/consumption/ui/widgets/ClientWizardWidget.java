@@ -11,17 +11,22 @@
  * -------- -------- -----------------------------------------------------------
  * 20060407   135415 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060417   136390/136159 joan@ca.ibm.com - Joan Haggarty
+ * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -31,6 +36,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.internal.Workbench;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.ui.widgets.PageInfo;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
@@ -57,6 +63,9 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   private String webServiceURI_;
   private WebServicesParser parser_;
   private ResourceContext resourceContext_;
+  
+  private Listener statusListener_;
+  private int validationState_;
 
   /* CONTEXT_ID WSWSCEN0020 for the Service Implemenation text field of the Scenario Page */
 	 private String INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL = "WSWSCEN0020";
@@ -74,7 +83,9 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
     String       pluginId = "org.eclipse.jst.ws.consumption.ui";
     UIUtils      utils    = new UIUtils( pluginId );
     utils.createInfoPop(parent, INFOPOP_WSWSCEN_PAGE);
-    
+
+    statusListener_ = statusListener;
+	validationState_ = ValidationUtils.VALIDATE_ALL;
   	// Create text field and browse for service selection
   	Composite typeComposite = utils.createComposite(parent, 3);
 	serviceImpl_ = utils.createText(typeComposite, ConsumptionUIMessages.LABEL_WEBSERVICEDEF, 
@@ -93,7 +104,6 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 		  							}
 		  						}));		
 	browseButton_.addSelectionListener(new WSDLBrowseListener());
-	browseButton_.addListener(SWT.Modify, statusListener); 
 	
 	utils.createHorizontalSeparator(parent, 1);
 	
@@ -151,7 +161,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   }
   
   public void setClientProjectName(String name)
-  {	  
+  {
 	  clientWidget_.setClientProjectName(name);
   }
   
@@ -336,6 +346,65 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 		  
 	}
   
+	public IStatus getStatus() {
+		IStatus status = Status.OK_STATUS;
+
+		try {
+			IStatus missingFieldStatus = checkMissingFieldStatus();
+			if (missingFieldStatus.getSeverity() == IStatus.ERROR) {
+				return missingFieldStatus;
+			}
+
+			IStatus possibleErrorStatus = checkErrorStatus();
+			if (possibleErrorStatus.getSeverity() == IStatus.ERROR) {
+				return possibleErrorStatus;
+			}
+
+			IStatus possibleWarningStatus = checkWarningStatus();
+			if (possibleWarningStatus.getSeverity() == IStatus.WARNING) {
+				return possibleWarningStatus;
+			}
+		} finally {
+			// clear the validation state.
+			validationState_ = ValidationUtils.VALIDATE_NONE;
+			clientWidget_.setValidationState(ValidationUtils.VALIDATE_NONE);
+		}
+		return status;
+	}
+	
+	private IStatus checkMissingFieldStatus() {
+
+		if (validationState_ == ValidationUtils.VALIDATE_ALL) {
+			if (serviceImpl_.getText().trim().length() == 0) {
+				return StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_NO_OBJECT_SELECTION, new String[]{ConsumptionUIMessages.LABEL_WEBSERVICEIMPL}));
+			}
+		}
+		
+		IStatus clientMissingFieldsStatus = clientWidget_.checkMissingFieldStatus();
+		if (clientMissingFieldsStatus.getSeverity() == IStatus.ERROR) {
+			return clientMissingFieldsStatus;
+		}
+		
+		return Status.OK_STATUS;
+
+	}
+
+	private IStatus checkErrorStatus() {
+		IStatus clientSideErrorStatus = clientWidget_.checkErrorStatus();
+		if (clientSideErrorStatus.getSeverity() == IStatus.ERROR) {
+			return clientSideErrorStatus;
+		}
+		return Status.OK_STATUS;
+	}
+
+	private IStatus checkWarningStatus() {
+		IStatus clientWarningStatus = clientWidget_.checkWarningStatus();
+		if (clientWarningStatus.getSeverity() == IStatus.WARNING) {
+			return clientWarningStatus;
+		}
+		return Status.OK_STATUS;
+	}	
+	
   private class WSDLBrowseListener implements SelectionListener
   {
 	  public void widgetDefaultSelected(SelectionEvent e) {
@@ -370,6 +439,9 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 	           setWebServiceURI(wsdlOutputCommand.getWsdlURI());
 	       
 		       refreshClientRuntimeSelection();   
+		       validationState_ = ValidationUtils.VALIDATE_ALL;
+		       clientWidget_.setValidationState(ValidationUtils.VALIDATE_ALL);
+		       statusListener_.handleEvent(null); //validate the page
 		   }
 	  }
 	}

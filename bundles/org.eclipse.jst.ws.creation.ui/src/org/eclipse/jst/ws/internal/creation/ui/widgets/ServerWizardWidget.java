@@ -16,6 +16,7 @@
  * 20060410   135562 joan@ca.ibm.com - Joan Haggarty
  * 20060411   136167 kathy@ca.ibm.com - Kathy Chan
  * 20060417   136390/136391/136159 joan@ca.ibm.com - Joan Haggarty
+ * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -31,6 +32,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.IObjectSelectionLaunchable;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ProjectSelectionDialog;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WebServiceClientTypeWidget;
@@ -48,6 +50,7 @@ import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -105,6 +108,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	 
 	private ScaleSelectionListener scaleSelectionListener = new ScaleSelectionListener();
 	private Listener statusListener_;
+	private int validationState_;
 
 	private ImageRegistry imageReg_;
 	
@@ -167,7 +171,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
     private String SERVICE_SERVER_PREFIX =  ConsumptionUIMessages.LABEL_SERVERS_LIST;
     private String SERVICE_PROJECT_PREFIX = ConsumptionUIMessages.LABEL_SERVICE_PROJECT;
     private String SERVICE_EAR_PREFIX = ConsumptionUIMessages.LABEL_SERVICE_EAR_PROJECT;
-	
+    
     /**
      * @param displayPreferences Set to true if preferences such as overwrite should be displayed on the wizard page
      * @param prefPage  Set to true if the widget is being used on the preferences page.  Alters widget layout.
@@ -176,6 +180,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		displayPreferences_ = displayPreferences;
 		preferencesPage_ = prefPage;
 		initImageRegistry();
+		validationState_ = ValidationUtils.VALIDATE_ALL;
 	}
 	
 	public WidgetDataEvents addControls(Composite parent,
@@ -187,28 +192,28 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		utils.createInfoPop(parent, INFOPOP_WSWSCEN_PAGE);
 		
 		Composite typeComposite = utils.createComposite(parent, 3);
-			
-		webserviceType_  = utils.createCombo(typeComposite, 
-		        ConsumptionUIMessages.LABEL_WEBSERVICETYPE, 
-				ConsumptionUIMessages.TOOLTIP_PWPR_COMBO_TYPE, 
-				INFOPOP_WSWSCEN_COMBO_SERVICETYPE, SWT.SINGLE | SWT.BORDER 
-				| SWT.READ_ONLY); 			
+
+		webserviceType_ = utils.createCombo(typeComposite,
+				ConsumptionUIMessages.LABEL_WEBSERVICETYPE,
+				ConsumptionUIMessages.TOOLTIP_PWPR_COMBO_TYPE,
+				INFOPOP_WSWSCEN_COMBO_SERVICETYPE, SWT.SINGLE | SWT.BORDER
+						| SWT.READ_ONLY);
 		GridData gdata1 = (GridData) webserviceType_.getLayoutData();
 		gdata1.horizontalSpan = 2;
 		webserviceType_.setLayoutData(gdata1);
-
+		
 		webserviceType_.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			
 			public void widgetSelected(SelectionEvent e) {
 			   objectSelectionWidget_ = getSelectionWidget();
-			   
+			   validationState_ = ValidationUtils.VALIDATE_ALL;
+			   statusListener_.handleEvent(null);
 			   //change the label for the service implementation/definition based on the web service type
 			   handleTypeChange();
-			}			
+			}
+			
 		});
-		
-		webserviceType_.addListener(SWT.Modify, statusListener);
 		
 		// Create text field and browse for object selection if not on preferences page
 		if (!preferencesPage_)
@@ -217,29 +222,27 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			serviceLabel_ = new Label( typeComposite, SWT.WRAP);
 			serviceLabel_.setText(ConsumptionUIMessages.LABEL_WEBSERVICEIMPL);
 			serviceLabel_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL);
-			
+
 			serviceImpl_ = new Text(typeComposite, SWT.LEFT | SWT.BORDER | SWT.READ_ONLY);
 			GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);		    
 			serviceImpl_.setLayoutData( griddata );
 			serviceImpl_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL);
 			utils.createInfoPop(serviceImpl_, INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL);
-			
+
 			browseButton_ = utils.createPushButton(typeComposite,
 					ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
-			
-		    browseDialog_ = new ServiceImplSelectionDialog(Workbench.getInstance().getActiveWorkbenchWindow().getShell(), 
-				  						new PageInfo(ConsumptionUIMessages.DIALOG_TITILE_SERVICE_IMPL_SELECTION, "", 
-				                        new WidgetContributorFactory()
-				  						{	
-				  							public WidgetContributor create()
-				  							{	  						 
-				  							   return new ObjectSelectionWidget();
-				  							}
-				  						}));		
+
+			browseDialog_ = new ServiceImplSelectionDialog(Workbench.getInstance().getActiveWorkbenchWindow().getShell(), 
+					new PageInfo(ConsumptionUIMessages.DIALOG_TITILE_SERVICE_IMPL_SELECTION, "", 
+							new WidgetContributorFactory()
+					{	
+						public WidgetContributor create()
+						{	  						 
+							return new ObjectSelectionWidget();
+						}
+					}));		
 			browseButton_.addSelectionListener(new ServiceImplBrowseListener());
-			browseButton_.addListener(SWT.Modify, statusListener);  
 		}
-		
 		// Service Lifecycle section - scales for service & client, graphic
 		
 		groupComposite_ = new Composite(parent, SWT.NONE);
@@ -398,19 +401,36 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	
 	private void launchProjectDialog()
 	{
-		projectDialog_.setProjectName(getServiceProjectName());
-		projectDialog_.setEarProjectName(getServiceEarProjectName());
-		projectDialog_.setProjectComponentType(getServiceComponentType());
-		projectDialog_.setNeedEAR(getServiceNeedEAR());
+		String currentProjectName = getServiceProjectName();
+		String currentEarProjectName = getServiceEarProjectName();
+		String currentProjectType = getServiceComponentType();
+		boolean currentNeedEar = getServiceNeedEAR();
 		
-		int status = projectDialog_.open();  
+		projectDialog_.setProjectName(currentProjectName);
+		projectDialog_.setEarProjectName(currentEarProjectName);
+		projectDialog_.setProjectComponentType(currentProjectType);
+		projectDialog_.setNeedEAR(currentNeedEar);
+		
+		int status = projectDialog_.open();
 		if (status == Window.OK)
 		{
-			setServiceProjectName(projectDialog_.getProjectName());
-			setServiceEarProjectName(projectDialog_.getEarProjectName());
-			setServiceComponentType(projectDialog_.getProjectComponentType());
-			setServiceNeedEAR(projectDialog_.getNeedEAR());	
-			refreshClientServerRuntimeSelection();
+			String newProjectName = projectDialog_.getProjectName();
+			String newEarProjectName = projectDialog_.getEarProjectName();
+			String newProjectType = projectDialog_.getProjectComponentType();
+			boolean newNeedEar = projectDialog_.getNeedEAR();	
+			
+			//Update project settings and validate page if selections changed.
+			if (!newProjectName.equals(currentProjectName)
+					|| !newEarProjectName.equals(currentEarProjectName)
+					|| !newProjectType.equals(currentProjectType)
+					|| newNeedEar != currentNeedEar) {
+				setServiceProjectName(newProjectName);
+				setServiceEarProjectName(newEarProjectName);
+				setServiceComponentType(newProjectType);
+				setServiceNeedEAR(newNeedEar);
+				validationState_ = ValidationUtils.VALIDATE_PROJECT_CHANGES;
+				statusListener_.handleEvent(null);
+			}
 		}
 	}
 	
@@ -420,13 +440,23 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		
 		//TODO: jvh - investigate - don't think j2ee version shouldn't be hard coded (last parm) 
 		//  question - where to pick it up from?
+		//Remember the current values
+		TypeRuntimeServer currentServiceTRS = getServiceTypeRuntimeServer();
 		RuntimeServerSelectionDialog rssd = new RuntimeServerSelectionDialog(
-				Workbench.getInstance().getActiveWorkbenchWindow().getShell(), mode, getServiceTypeRuntimeServer(), "14");	
+				Workbench.getInstance().getActiveWorkbenchWindow().getShell(), mode, currentServiceTRS, "14");	
 		int result = rssd.open();		
 		if (result == Window.OK)
 		{
-			setServiceTypeRuntimeServer(rssd.getTypeRuntimeServer());	
-			refreshClientServerRuntimeSelection();
+			TypeRuntimeServer newServiceTRS = rssd.getTypeRuntimeServer();
+			if (!currentServiceTRS.equals(newServiceTRS))
+			{
+				setServiceTypeRuntimeServer(newServiceTRS);	
+				refreshClientServerRuntimeSelection();		
+				validationState_ = ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES;
+				clientWidget_.setValidationState(ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES);
+				statusListener_.handleEvent(null); //Revalidate the page since server/runtime selections changed.
+			}
+			
 		}		
 	}	
 	
@@ -445,7 +475,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	public Boolean getInstallClient() {		
 		return clientWidget_.getInstallClient();
 	}
-	
+
 	private void handleTypeChange()
 	{
 		   int index = webserviceType_.getSelectionIndex();	
@@ -470,7 +500,6 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		String[] serviceIds = labelIds.getIds_();
 		String selectedId = ids.getTypeId();
 
-		webserviceType_.removeListener(SWT.Modify, statusListener_);
 		webserviceType_.setItems(labelIds.getLabels_());
 
 		// Now find the selected one.
@@ -480,9 +509,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 				break;
 			}
 		}
-		
 		webserviceType_.select(selection);
-		webserviceType_.addListener(SWT.Modify, statusListener_);
 		
 		ids_ = ids;
 		
@@ -494,7 +521,6 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			hLinkServiceRuntime_.setText(SERVICE_RUNTIME_PREFIX + " " + serviceRuntimeText);
 			groupComposite_.pack(true);
 		}				
-		
 		labelIds_ = labelIds;
 		handleTypeChange();
 		
@@ -518,7 +544,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		setInstallService(new Boolean(value <= ScenarioContext.WS_INSTALL));
 		setStartService(new Boolean(value <= ScenarioContext.WS_START));
 		//enable client widget based on service scale setting
-		clientWidget_.enableClientSlider(value<=ScenarioContext.WS_START);	
+		clientWidget_.enableClientSlider(value<=ScenarioContext.WS_START);
 	}	
 
 	public int getServiceGeneration()
@@ -644,17 +670,144 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	public IStatus getStatus() {
 		IStatus status = Status.OK_STATUS;
 
-		// If the webservice has not been selected then user can not move
-		// forward to the next page.
-		
-		//TODO: jvh - need to add base object plus minimum service gen to the requirements for the page...
-		if (webserviceType_.getText().equals("")) {
-			status = StatusUtils.errorStatus("");
-		}
+		try {
+			IStatus missingFieldStatus = checkMissingFieldStatus();
+			if (missingFieldStatus.getSeverity() == IStatus.ERROR) {
+				return missingFieldStatus;
+			}
 
+			IStatus possibleErrorStatus = checkErrorStatus();
+			if (possibleErrorStatus.getSeverity() == IStatus.ERROR) {
+				return possibleErrorStatus;
+			}
+
+			IStatus possibleWarningStatus = checkWarningStatus();
+			if (possibleWarningStatus.getSeverity() == IStatus.WARNING) {
+				return possibleWarningStatus;
+			}
+		} finally {
+			// Clear validation state on service side and client side (if
+			// enabled)
+			validationState_ = ValidationUtils.VALIDATE_NONE;
+			if (clientWidget_.getGenerateProxy()) {
+				clientWidget_.setValidationState(ValidationUtils.VALIDATE_NONE);
+			}
+		}
 		return status;
 	}
-	
+
+	private IStatus checkMissingFieldStatus() {
+
+		// 1. Check for missing fields on service side
+		ValidationUtils valUtils = new ValidationUtils();
+		String serviceImpl = serviceImpl_.getText().trim();
+		String runtimeId = getServiceTypeRuntimeServer().getRuntimeId();
+		String serverId = getServiceTypeRuntimeServer().getServerId();
+		String projectName = getServiceProjectName();
+		boolean needEar = getServiceNeedEAR();
+		String earProjectName = getServiceEarProjectName();
+		String projectTypeId = getServiceComponentType();
+
+		IStatus serviceMissingFieldStatus = valUtils.checkMissingFieldStatus(validationState_, serviceImpl,
+				runtimeId, serverId, projectName, needEar, earProjectName, projectTypeId, false);
+		if (serviceMissingFieldStatus.getSeverity() == IStatus.ERROR) {
+			return serviceMissingFieldStatus;
+		}
+
+		// 2. Check for missing fields on the client side if it's visible.
+		if (clientWidget_.getGenerateProxy()) {
+			IStatus clientMissingFieldsStatus = clientWidget_.checkMissingFieldStatus();
+			if (clientMissingFieldsStatus.getSeverity() == IStatus.ERROR) {
+				return clientMissingFieldsStatus;
+			}
+
+		}
+
+		return Status.OK_STATUS;
+
+	}
+
+	private IStatus checkErrorStatus() {
+
+		ValidationUtils valUtils = new ValidationUtils();
+
+		// 1. Check for errors on service side
+		String runtimeId = getServiceTypeRuntimeServer().getRuntimeId();
+		String serverId = getServiceTypeRuntimeServer().getServerId();
+		String typeId = getServiceTypeRuntimeServer().getTypeId();
+		String projectName = getServiceProjectName();
+		boolean needEar = getServiceNeedEAR();
+		String earProjectName = getServiceEarProjectName();
+		String projectTypeId = getServiceComponentType();
+		IStatus serviceSideErrorStatus = valUtils.checkErrorStatus(validationState_, typeId, runtimeId, serverId,
+				projectName, needEar, earProjectName, projectTypeId, false);
+		if (serviceSideErrorStatus.getSeverity() == IStatus.ERROR) {
+			return serviceSideErrorStatus;
+		}
+
+		// 2. Check for errors on client side if it is visible
+		if (clientWidget_.getGenerateProxy()) {
+			IStatus clientSideErrorStatus = clientWidget_.checkErrorStatus();
+			if (clientSideErrorStatus.getSeverity() == IStatus.ERROR) {
+				return clientSideErrorStatus;
+			}
+
+			// 3. Check for errors that span service and client if client side
+			// is visible.
+			int clientValidationState = clientWidget_.getValidationState();
+			if (validationState_ == ValidationUtils.VALIDATE_ALL
+					|| validationState_ == ValidationUtils.VALIDATE_PROJECT_CHANGES
+					|| clientValidationState == ValidationUtils.VALIDATE_ALL
+					|| clientValidationState == ValidationUtils.VALIDATE_PROJECT_CHANGES) {
+				String clientProjectName = clientWidget_.getClientProjectName();
+				if (clientProjectName.equalsIgnoreCase(projectName)) {
+					return StatusUtils
+							.errorStatus(ConsumptionUIMessages.MSG_SAME_CLIENT_AND_SERVICE_PROJECTS);
+				}
+			}
+		}
+
+		return Status.OK_STATUS;
+	}
+
+	private IStatus checkWarningStatus() {
+		ValidationUtils valUtils = new ValidationUtils();
+		// 1. Check for warnings on the service side
+		int scaleSetting = getServiceGeneration();
+		String serverId = getServiceTypeRuntimeServer().getServerId();
+		IStatus serviceWarningStatus = valUtils.checkWarningStatus(validationState_, scaleSetting, serverId, false);
+		if (serviceWarningStatus.getSeverity() == IStatus.WARNING) {
+			return serviceWarningStatus;
+		}
+
+		// 2. Check for warnings on the client side if it's enabled
+		if (clientWidget_.getGenerateProxy()) {
+			IStatus clientWarningStatus = clientWidget_.checkWarningStatus();
+			if (clientWarningStatus.getSeverity() == IStatus.WARNING) {
+				return clientWarningStatus;
+			}
+
+			// 3. Check for warnings that span service and client if client side
+			// is enabled.
+			int clientValidationState = clientWidget_.getValidationState();
+			if (validationState_ == ValidationUtils.VALIDATE_ALL
+					|| validationState_ == ValidationUtils.VALIDATE_PROJECT_CHANGES
+					|| clientValidationState == ValidationUtils.VALIDATE_ALL
+					|| clientValidationState == ValidationUtils.VALIDATE_PROJECT_CHANGES) {
+				if (getServiceNeedEAR() && clientWidget_.getClientNeedEAR()) {
+					if (getServiceEarProjectName().equals(clientWidget_.getClientEarProjectName())) {
+						return StatusUtils.warningStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_SAME_CLIENT_AND_SERVICE_EARS,
+								new String[] { "EAR" }));
+					}
+				}
+			}
+
+		}
+
+		return Status.OK_STATUS;
+	}
+		
 	protected void initImageRegistry()
 	{
 		imageReg_ = new ImageRegistry(Display.getCurrent());
@@ -1042,7 +1195,12 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 					break;
 				default:
 					break;
-				}				
+				}
+				
+				//Validate the page
+				validationState_ = ValidationUtils.VALIDATE_SCALE_CHANGES;
+				statusListener_.handleEvent(null);
+				
 			}		
 
 		public void widgetDefaultSelected(SelectionEvent e) {
@@ -1108,7 +1266,9 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			       setObjectSelection(objOutputCommand.getObjectSelection());
 			       setComponentName(objOutputCommand.getComponentName());
 			       setProject(objOutputCommand.getProject());	       		       
-			       refreshServerRuntimeSelection();   
+			       refreshServerRuntimeSelection();  
+			       validationState_ = ValidationUtils.VALIDATE_ALL;
+			       statusListener_.handleEvent(null); // validate the page
 			   }			   
 	    }
 	}	

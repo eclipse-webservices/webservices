@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 /**
  */
@@ -82,5 +85,30 @@ public class TypeRuntimeServer
   public String toString()
   {
     return "type(" + typeId_ + ") runtime(" + runtimeId_ + ") factory(" + serverId_ + ") servInstId(" + serverInstanceId_ + ")";
+  }
+  
+  public boolean equals(Object object)
+  {
+	if (object != null && object instanceof TypeRuntimeServer)
+	{
+		TypeRuntimeServer trs = (TypeRuntimeServer)object;
+		String trsTypeId = trs.getTypeId();
+		String trsRuntimeId = trs.getRuntimeId();
+		String trsServerId = trs.getServerId();
+		String trsServerInstanceId = trs.getServerInstanceId();
+		
+		boolean typeIdsMatch = ((typeId_ == null) && (trsTypeId == null)) || ((typeId_ != null) && (typeId_.equals(trsTypeId)));
+		if (!typeIdsMatch) return false;
+		boolean runtimeIdsMatch = ((runtimeId_ == null) && (trsRuntimeId == null)) || ((runtimeId_ != null) && (runtimeId_.equals(trsRuntimeId)));
+		if (!runtimeIdsMatch) return false;
+		boolean serverIdsMatch = ((serverId_ == null) && (trsServerId == null)) || ((serverId_ != null) && (serverId_.equals(trsServerId)));
+		if (!serverIdsMatch) return false;
+		boolean serverInstanceIdsMatch = ((serverInstanceId_ == null) && (trsServerInstanceId == null)) || ((serverInstanceId_ != null) && (serverInstanceId_.equals(trsServerInstanceId)));
+		if (!serverInstanceIdsMatch) return false;
+		
+		return true;		
+	}
+	
+	return false;
   }
 }

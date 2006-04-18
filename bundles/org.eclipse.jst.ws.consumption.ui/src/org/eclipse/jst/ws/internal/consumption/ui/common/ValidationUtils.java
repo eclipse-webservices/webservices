@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060222   115834 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -48,6 +49,9 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
+import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
@@ -70,6 +74,12 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
  */
 public class ValidationUtils
 {
+	//Constants to help decide how much validation to do.
+	public static final int VALIDATE_NONE = 0;
+	public static final int VALIDATE_ALL = 1;
+	public static final int VALIDATE_SERVER_RUNTIME_CHANGES = 2;
+	public static final int VALIDATE_PROJECT_CHANGES = 3;
+	public static final int VALIDATE_SCALE_CHANGES = 4;
 
   /**
    * 
@@ -77,6 +87,292 @@ public class ValidationUtils
   public ValidationUtils()
   {
   }
+  
+  public IStatus checkMissingFieldStatus(int validationState, String serviceImpl, String runtimeId, String serverId,
+			String projectName, boolean needEar, String earProjectName, String projectTypeId,
+			boolean isClient)
+  {
+		// Object selection	  
+	  if (validationState==VALIDATE_ALL && !isClient)
+	  {
+		if (serviceImpl.length() == 0) {
+			return StatusUtils
+					.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_NO_OBJECT_SELECTION, new String[]{ConsumptionUIMessages.LABEL_WEBSERVICEIMPL}));
+		}
+	  }
+
+		// Web service runtime
+	    if (validationState == VALIDATE_ALL || validationState == VALIDATE_SERVER_RUNTIME_CHANGES) {
+			if (runtimeId == null || runtimeId.length() == 0) {
+				if (isClient) {
+					return StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_NO_RUNTIME,
+							new String[] { ConsumptionUIMessages.MSG_CLIENT_SUB }));
+				} else {
+					return StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_NO_RUNTIME,
+							new String[] { ConsumptionUIMessages.MSG_SERVICE_SUB }));
+				}
+			}
+		}
+
+	    if (validationState == VALIDATE_ALL || validationState == VALIDATE_PROJECT_CHANGES) {
+			// Project
+			if (projectName == null || projectName.length() == 0) {
+				if (isClient) {
+					return StatusUtils.errorStatus(NLS.bind(
+							ConsumptionUIMessages.MSG_CLIENT_PROJECT_EMPTY, new String[] { "" }));
+				} else {
+					return StatusUtils.errorStatus(NLS.bind(
+							ConsumptionUIMessages.MSG_SERVICE_PROJECT_EMPTY, new String[] { "" }));
+				}
+			}
+
+			// Project type (if project does not exist)
+			IProject project = ProjectUtilities.getProject(projectName);
+			if (!project.exists()) {
+				if (projectTypeId == null || projectTypeId.length() == 0) {
+
+					if (isClient) {
+						return StatusUtils
+								.errorStatus(ConsumptionUIMessages.MSG_CLIENT_PROJECT_TYPE_EMPTY);
+					} else {
+						return StatusUtils
+								.errorStatus(ConsumptionUIMessages.MSG_SERVICE_PROJECT_TYPE_EMPTY);
+					}
+				}
+			}
+
+			// Ear (if need ear)
+			if (needEar) {
+				if (earProjectName == null || earProjectName.length() == 0) {
+					if (isClient) {
+						return StatusUtils.errorStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_CLIENT_EAR_EMPTY, new String[] { "" }));
+					} else {
+						return StatusUtils.errorStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_SERVICE_EAR_EMPTY, new String[] { "" }));
+					}
+				}
+			}
+		}
+	    
+		// Server (if Web service runtime requires a server or project does not
+		// exist)
+	    if (validationState == VALIDATE_ALL || validationState == VALIDATE_SERVER_RUNTIME_CHANGES
+				|| validationState == VALIDATE_PROJECT_CHANGES) {
+			if (serverId == null || serverId.length() == 0) {
+				RuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getRuntimeById(runtimeId);
+				if (desc.getServerRequired()) {
+					if (isClient) {
+						StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_NO_SERVER,
+								new String[] { ConsumptionUIMessages.MSG_CLIENT_SUB }));
+					} else {
+						StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_NO_SERVER,
+								new String[] { ConsumptionUIMessages.MSG_SERVICE_SUB }));
+					}
+				} else {
+					IProject project = ProjectUtilities.getProject(projectName);
+					if (!project.exists()) {
+						return StatusUtils.errorStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_PROJECT_MUST_EXIST,
+								new String[] { projectName }));
+
+					}
+				}
+			}
+		}
+		
+		return Status.OK_STATUS;
+  }
+  
+  public IStatus checkErrorStatus(int validationState, String typeId, String runtimeId, String serverId,
+			String projectName, boolean needEar, String earProjectName, String projectTypeId,
+			boolean isClient) {
+	
+	  	// Ensure server, Web service runtime, and Web service type are
+		// compatible
+
+		// Labels
+		String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId);
+		String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeId);
+
+	    if (validationState == VALIDATE_ALL || validationState == VALIDATE_SERVER_RUNTIME_CHANGES) {
+			if (isClient) {
+				if (!WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported(serverId,
+						runtimeId, typeId)) {
+					return StatusUtils.errorStatus(NLS.bind(
+							ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[] {
+									serverLabel, runtimeLabel }));
+				}
+			} else {
+				if (!WebServiceRuntimeExtensionUtils2.isServerRuntimeTypeSupported(serverId,
+						runtimeId, typeId)) {
+					return StatusUtils.errorStatus(NLS.bind(
+							ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[] {
+									serverLabel, runtimeLabel }));
+				}
+			}
+		}
+	    
+		// If the project exists, ensure it supports the Web service type, Web
+		// service runtime, and server. If the Ear also exists and the project
+		// and Ear are not already associated, ensure they can be.
+		// If the project does not exist, ensure the project type supports the
+		// Web service type, Web service runtime, and server
+		if (validationState == VALIDATE_ALL || validationState == VALIDATE_SERVER_RUNTIME_CHANGES
+				|| validationState == VALIDATE_PROJECT_CHANGES) {
+			ValidationUtils valUtils = new ValidationUtils();
+			IProject project = ProjectUtilities.getProject(projectName);
+			if (project.exists()) {
+
+				if (isClient) {
+					// Check if the runtime supports it.
+					if (!WebServiceRuntimeExtensionUtils2.doesClientTypeAndRuntimeSupportProject(
+							typeId, runtimeId, projectName)) {
+						return StatusUtils.errorStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_PROJECT,
+								new String[] { runtimeLabel, projectName }));
+					}
+
+					// Check if the server supports it.
+					if (!valUtils.doesServerSupportProject(serverId, projectName)) {
+						return StatusUtils.errorStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT,
+								new String[] { serverLabel, projectName }));
+					}
+				} else {
+					// Check if the runtime supports it.
+					if (!WebServiceRuntimeExtensionUtils2.doesServiceTypeAndRuntimeSupportProject(
+							typeId, runtimeId, projectName)) {
+						return StatusUtils.errorStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_SERVICE_RUNTIME_DOES_NOT_SUPPORT_PROJECT,
+								new String[] { runtimeLabel, projectName }));
+					}
+
+					// Check if the server supports it.
+					if (!valUtils.doesServerSupportProject(serverId, projectName)) {
+						return StatusUtils.errorStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_PROJECT,
+								new String[] { serverLabel, projectName }));
+					}
+				}
+			} else {
+				// Look at the project type to ensure that it is suitable for
+				// the
+				// selected runtime and server.
+				String templateId = projectTypeId;
+				String templateLabel = FacetUtils.getTemplateLabelById(templateId);
+
+				if (isClient) {
+					// Check if the runtime supports it.
+					if (!WebServiceRuntimeExtensionUtils2.doesClientTypeAndRuntimeSupportTemplate(
+							typeId, runtimeId, templateId)) {
+
+						return StatusUtils.errorStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE,
+								new String[] { runtimeLabel, templateLabel }));
+					}
+
+					// Check if the server supports it.
+
+					if (!valUtils.doesServerSupportTemplate(serverId, templateId)) {
+						return StatusUtils.errorStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_TEMPLATE,
+								new String[] { serverLabel, templateLabel }));
+					}
+
+				} else {
+					// Check if the runtime supports it.
+					if (!WebServiceRuntimeExtensionUtils2.doesServiceTypeAndRuntimeSupportTemplate(
+							typeId, runtimeId, templateId)) {
+						return StatusUtils
+								.errorStatus(NLS
+										.bind(
+												ConsumptionUIMessages.MSG_SERVICE_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE,
+												new String[] { runtimeLabel, templateLabel }));
+					}
+
+					// Check if the server supports it.
+					if (!valUtils.doesServerSupportTemplate(serverId, templateId)) {
+						return StatusUtils.errorStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_TEMPLATE,
+								new String[] { serverLabel, templateLabel }));
+					}
+				}
+
+			}						
+			
+		}
+		
+	    if (validationState == VALIDATE_ALL || validationState == VALIDATE_PROJECT_CHANGES) {
+			// Check if project/EAR association is good.
+			if (needEar) {
+				IProject project = ProjectUtilities.getProject(projectName);
+				IProject ep = ProjectUtilities.getProject(earProjectName);
+				if (project.exists() && ep.exists()) {
+					if (!J2EEUtils.isComponentAssociated(ep, project)) {
+						IStatus associateStatus = J2EEUtils.canAssociateProjectToEAR(project, ep);
+						if (associateStatus.getSeverity() == IStatus.ERROR) {
+							if (isClient) {
+								return StatusUtils.errorStatus(NLS.bind(
+										ConsumptionUIMessages.MSG_CLIENT_CANNOT_ASSOCIATE,
+										new String[] { projectName, ep.getName(),
+												associateStatus.getMessage() }));
+							} else {
+								return StatusUtils.errorStatus(NLS.bind(
+										ConsumptionUIMessages.MSG_SERVICE_CANNOT_ASSOCIATE,
+										new String[] { projectName, ep.getName(),
+												associateStatus.getMessage() }));
+							}
+
+						}
+					}
+				}
+			}
+		}		
+
+		return Status.OK_STATUS;
+
+	}
+  
+  public IStatus checkWarningStatus(int validationState, int scaleSetting, String serverId,
+			boolean isClient) {
+		// Return a warning if there is no server selection and scale setting is
+		// anything beyond assemble.
+		if (validationState == VALIDATE_ALL || validationState == VALIDATE_SCALE_CHANGES
+				|| validationState == VALIDATE_SERVER_RUNTIME_CHANGES) {
+			if (serverId == null || serverId.length() == 0) {
+				if (scaleSetting < ScenarioContext.WS_ASSEMBLE) {
+					if (isClient) {
+						return StatusUtils.warningStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_WARN_NO_CLIENT_SERVER, new String[0]));
+					} else {
+						return StatusUtils.warningStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_WARN_NO_SERVICE_SERVER, new String[0]));
+					}
+				}
+			} else {
+				// Return a warning if the selected server has only stub
+				// runtimes
+				// and the scale setting is anything beyond deploy.
+				IServerType serverType = ServerCore.findServerType(serverId);
+				if (serverType != null) {
+					// Find a Runtime which is not a stub
+					IRuntime nonStubRuntime = ServerUtils.getNonStubRuntime(serverId);
+					if ((scaleSetting < ScenarioContext.WS_DEPLOY) && nonStubRuntime == null) {
+						String servertypeLabel = WebServiceRuntimeExtensionUtils2
+								.getServerLabelById(serverId);
+						return StatusUtils.warningStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_WARN_STUB_ONLY,
+								new String[] { servertypeLabel }));
+					}
+				}
+
+			}
+		}
+
+		return Status.OK_STATUS;
+
+	}
   
   public boolean doesServerSupportProject(String serverFactoryId, String projectName)
   {
