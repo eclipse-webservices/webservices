@@ -143,8 +143,10 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 	public List getTypes() {
 		List adapterList = new ArrayList();
 		Types types = ((Definition) target).getETypes();
-		populateAdapterList(types.getSchemas(), adapterList);
-
+        if (types != null)
+        {  
+		  populateAdapterList(types.getSchemas(), adapterList);
+        }  
 		return adapterList;
 	}
 	
