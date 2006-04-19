@@ -73,11 +73,6 @@ public class W11RenameCommand extends Command {
 			Operation operation = w11Operation.getOperation();
 			operation.setName(newName);					
 		}
-//		else if (object instanceof W11ParameterForElement) {
-//			W11ParameterForElement paramForElement = (W11ParameterForElement) object;
-//			XSDElementDeclaration xsdElement = (XSDElementDeclaration) paramForElement.getTarget();
-//			xsdElement.setName(newName);
-//		}
 		else if (object instanceof W11ParameterForPart) {
 			Part part = (Part) ((W11ParameterForPart) object).getTarget();
 			part.setName(newName);
