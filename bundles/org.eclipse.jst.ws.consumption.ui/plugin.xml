@@ -641,7 +641,7 @@
 <extension point="org.eclipse.jst.ws.consumption.ui.wsClientImpl">
   <webServiceClientImpl
             id="org.eclipse.jst.ws.client.type.java"
-            label="Java Proxy">
+            label="%JAVA_PROXY">
   </webServiceClientImpl>
 </extension>   
 
