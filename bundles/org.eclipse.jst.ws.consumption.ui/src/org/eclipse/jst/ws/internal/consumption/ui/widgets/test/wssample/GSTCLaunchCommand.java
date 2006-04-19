@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060418   134322 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
@@ -177,14 +180,9 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 			browser.openURL(url);
 	      return status;
 		 }catch(PartInitException exc){
-			//TODO: change error message
-			env.getLog().log(ILog.WARNING, 5048, this, "launchSample", exc);
-			status = StatusUtils.warningStatus( ConsumptionUIMessages.MSG_ERROR_MALFORMED_URL );
-			try {
-				env.getStatusHandler().report(status);
-			} catch (StatusException e) {
-				status = StatusUtils.errorStatus( ConsumptionUIMessages.MSG_ERROR_MALFORMED_URL, e );
-			}
+			env.getLog().log(ILog.ERROR, 5048, this, "launchSample", exc);
+			status = StatusUtils.errorStatus(exc.getMessage(), exc);
+			env.getStatusHandler().reportError(status);
 	    	return status;
 	    }catch(MalformedURLException exc){
 	    	env.getLog().log(ILog.WARNING, 5048, this, "launchSample", exc);
