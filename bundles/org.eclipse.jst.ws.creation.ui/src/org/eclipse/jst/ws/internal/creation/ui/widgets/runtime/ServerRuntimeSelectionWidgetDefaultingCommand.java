@@ -13,6 +13,7 @@
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060315   131963 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060418   129688 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -355,7 +356,25 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   private IServer getServerFromServiceRuntimeId()
   {
     IServer[] servers = ServerCore.getServers();
-    if (servers != null && servers.length > 0) {
+    if (servers != null && servers.length > 0) 
+    {
+      PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
+      String preferredServerFactoryId = context.getServerFactoryId();
+
+      //If a server of the preferred server type is present, check that one first
+      for (int j = 0; j < servers.length; j++)
+      {
+        String serverFactoryId = servers[j].getServerType().getId();
+        if (serverFactoryId == preferredServerFactoryId)
+        {
+          if (WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportServer(serviceRuntimeId_, serverFactoryId))
+          {
+            return servers[j];
+          }
+        }                
+      }
+      
+      //A server of the preferred server type could not be found or did not match. Check all the existing servers.    
       for (int i = 0; i < servers.length; i++)
       {
         String serverFactoryId = servers[i].getServerType().getId();
