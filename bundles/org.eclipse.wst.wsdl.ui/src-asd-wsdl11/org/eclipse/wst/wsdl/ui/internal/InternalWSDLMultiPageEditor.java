@@ -84,7 +84,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 		try
 		{
 			Object obj = null;
-			Document document = ((IDOMModel) editor.getModel()).getDocument();
+			Document document = ((IDOMModel) getTextEditor().getModel()).getDocument();
 			if (document instanceof INodeNotifier) {
 				INodeNotifier notifier = (INodeNotifier) document;
 				modelAdapter = (WSDLModelAdapter) notifier.getAdapterFor(WSDLModelAdapter.class);
@@ -103,7 +103,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 				Definition definition = (Definition) obj;
 				model = (IDescription) WSDLAdapterFactoryHelper.getInstance().adapt(definition); 
 			}
-			wsdlResource.setModified(false);
+//			wsdlResource.setModified(false);
 //			}
 		}
 		catch (StackOverflowError e)
@@ -244,7 +244,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 					if (!selections.isEmpty())
 					{
 						StructuredSelection wsdlSelection = new StructuredSelection(selections);
-						getSelectionManager().setSelection(wsdlSelection, editor.getSelectionProvider());
+						getSelectionManager().setSelection(wsdlSelection, getTextEditor().getSelectionProvider());
 					}
 				}
 			}
@@ -283,7 +283,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 		public void selectionChanged(SelectionChangedEvent event) {
 			// do not fire selection in source editor if selection event came
 			// from source editor
-			if (event.getSource() != editor.getSelectionProvider()) {
+			if (event.getSource() != getTextEditor().getSelectionProvider()) {
 				ISelection selection = event.getSelection();
 				if (selection instanceof IStructuredSelection) {
 					List otherModelObjectList = new ArrayList();
@@ -299,7 +299,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 					}
 					if (!otherModelObjectList.isEmpty()) {
 						StructuredSelection nodeSelection = new StructuredSelection(otherModelObjectList);
-						editor.getSelectionProvider().setSelection(nodeSelection);
+            getTextEditor().getSelectionProvider().setSelection(nodeSelection);
 					}
 				}
 			}
@@ -320,7 +320,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 		}
 		
 		fSourceEditorSelectionListener = new SourceEditorSelectionListener();
-		ISelectionProvider provider = editor.getSelectionProvider();
+		ISelectionProvider provider = getTextEditor().getSelectionProvider();
 		if (provider instanceof IPostSelectionProvider) {
 			((IPostSelectionProvider) provider).addPostSelectionChangedListener(fSourceEditorSelectionListener);
 		}

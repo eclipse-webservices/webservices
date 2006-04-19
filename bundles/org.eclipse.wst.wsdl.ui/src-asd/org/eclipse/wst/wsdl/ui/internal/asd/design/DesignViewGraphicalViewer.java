@@ -23,13 +23,13 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDSelectionManager;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.CommonSelectionManager;
 
 public class DesignViewGraphicalViewer extends ScrollingGraphicalViewer implements ISelectionChangedListener
 {
   protected ASDSelectionChangedListener internalSelectionProvider = new ASDSelectionChangedListener();
-
-	  public DesignViewGraphicalViewer(IEditorPart editor, ASDSelectionManager manager)
+//TODO Make this generic
+	  public DesignViewGraphicalViewer(IEditorPart editor, CommonSelectionManager manager)
 	  {
 	    super();
 	    setContextMenu(new DesignViewContextMenuProvider(this, this));
