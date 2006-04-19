@@ -481,18 +481,40 @@ public void setEncodingStyles(List list)
     {
       if (eReference == null || eReference == SOAPPackage.eINSTANCE.getSOAPBody_Parts())
       {
-        Part part;
+    	// Bugzilla 108176
+        Part part = null;
+        Message message = null;
         String partNames = "";
         Iterator iter = getParts().iterator();
+        String namespace = null;
+        String prefix = null;
         while (iter.hasNext())
         {
           part = (Part)iter.next();
-          partNames = partNames + " " + part.getName();
+          if ((message = getMessage(part)) != null)
+          {
+            namespace = message.getQName().getNamespaceURI();
+            prefix = part.getEnclosingDefinition().getPrefix(namespace);
+            partNames = partNames + " " + prefix + ":" + part.getName();
+          }
         } 
-        partNames.trim();
-        niceSetAttribute(theElement, SOAPConstants.PARTS_ATTRIBUTE, partNames);
+        partNames = partNames.trim();
+        if (partNames.length() != 0)
+          niceSetAttribute(theElement, SOAPConstants.PARTS_ATTRIBUTE, partNames);
       }     
     }
+  } 
+  
+  // KB: Workaround the problem in Message.addPart(Part)
+  // After adding a part to a message 
+  // Part.getMessage() returns null.
+  private Message getMessage(Part part)
+  {
+	  Message message = null;
+	  Object obj = part.eContainer();
+	  if (obj instanceof Message)
+		  message = (Message)obj;
+	  return message;	  
   } 
   
   /*

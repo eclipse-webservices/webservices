@@ -46,6 +46,7 @@ import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
+import org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPBodyImpl;
 
 public class WSDLGenerationTest extends TestCase
 {
@@ -206,6 +207,12 @@ public class WSDLGenerationTest extends TestCase
     soapBody.setUse("encoded");
     soapBody.getEncodingStyles().add("http://schemas.xmlsoap.org/soap/encoding/");
     soapBody.setNamespaceURI("http://www.temperature.com/");
+    
+    // Add a part (Temperature) to the SOAP body (Bugzilla 108176)
+    java.util.Vector v = new java.util.Vector();
+    v.add(part);
+    soapBody.setParts(v);
+    ((SOAPBodyImpl)soapBody).updateElement();
 
     // Create a Binding Input
     BindingInput bindingInput = WSDLFactory.eINSTANCE.createBindingInput();
