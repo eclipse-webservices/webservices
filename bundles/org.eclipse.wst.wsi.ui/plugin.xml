@@ -65,7 +65,6 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            default="true"
             name="%_UI_LOG_EDITOR"
             extensions="wsimsg"
             icon="icons/wsi_logfile_obj.gif"
