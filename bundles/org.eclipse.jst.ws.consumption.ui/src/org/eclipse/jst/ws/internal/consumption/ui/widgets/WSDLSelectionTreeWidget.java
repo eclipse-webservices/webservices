@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060418   136712 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -60,6 +63,7 @@ public class WSDLSelectionTreeWidget extends SimpleWidgetDataContributor
   private TreeContentProvider treeContentProvider;
   private Tree tree_;
   private int pageWidth_;
+  private WebServiceEntity entity_;
 
   /**
   * Default constructor.
@@ -155,12 +159,11 @@ public class WSDLSelectionTreeWidget extends SimpleWidgetDataContributor
   }
   
   public String getWsdlURI()
-  {
-  	WebServiceEntity entity = getSelectionAsWebServiceEntity();
-  	if (entity != null)
-  	  return entity.getURI();
-  	else
-  	  return webServiceURI;
+  {	  
+	  	if (entity_ != null)
+	  	  return entity_.getURI();
+	  	else
+	  	  return webServiceURI;
   }
   
   private WebServiceEntity getSelectionAsWebServiceEntity()
@@ -176,13 +179,13 @@ public class WSDLSelectionTreeWidget extends SimpleWidgetDataContributor
           return (WebServiceEntity)object;
       }
   	}
-    return null;
+    return null;  	
   }
-
+    
   public IStatus getStatus()
-  {
-    WebServiceEntity wsEntity = getSelectionAsWebServiceEntity();
-    if (wsEntity == null || wsEntity.getType() != WebServiceEntity.TYPE_WSDL)
+  {    
+	entity_ = getSelectionAsWebServiceEntity();
+    if (entity_ == null || entity_.getType() != WebServiceEntity.TYPE_WSDL)
       return StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_SELECTION_MUST_BE_WSDL );
     else
       return Status.OK_STATUS;
