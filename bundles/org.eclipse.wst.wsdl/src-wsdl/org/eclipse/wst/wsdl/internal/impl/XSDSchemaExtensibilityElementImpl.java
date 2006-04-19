@@ -346,8 +346,8 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
       {
       	adopt(schema);
         schema.updateElement(true);
-      }
-      element = schema.getElement();
+        element = schema.getElement();
+      }      
       return element;
     }
   }
