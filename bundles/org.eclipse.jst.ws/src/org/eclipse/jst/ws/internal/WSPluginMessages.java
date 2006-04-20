@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060420   132905 cbrealey@ca.ibm.com - Chris Brealey          
  *******************************************************************************/
 package org.eclipse.jst.ws.internal;
 
@@ -24,6 +27,17 @@ public final class WSPluginMessages extends NLS {
 	public static String ANY_FILTER_NAME;
 	public static String ANY_FILTER_DESC;
 	public static String ERROR_SELECTION_TRANSFORM;
+	public static String MSG_JAXRPC11_NOT_COMPLIANT;
+	public static String MSG_JAXRPC11_RULE_0001;
+	public static String MSG_JAXRPC11_RULE_0002;
+	public static String MSG_JAXRPC11_RULE_0003;
+	public static String MSG_JAXRPC11_RULE_0004;
+	public static String MSG_JAXRPC11_RULE_0005;
+	public static String MSG_JAXRPC11_RULE_0006;
+	public static String MSG_JAXRPC11_RULE_0007;
+	public static String MSG_JAXRPC11_RULE_0008;
+	public static String MSG_JAXRPC11_RULE_0009;
+	public static String MSG_JAXRPC11_RULE_0010;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, WSPluginMessages.class);
