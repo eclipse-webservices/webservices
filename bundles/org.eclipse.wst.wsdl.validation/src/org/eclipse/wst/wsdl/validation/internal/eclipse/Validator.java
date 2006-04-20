@@ -150,6 +150,6 @@ public class Validator extends AbstractNestedValidator
     // Because this class is used as a delegate, return the id of the validator
     // which delegates to this class.
  
-    return "org.eclipse.wst.wsdl.internal.validation.eclipse.WSDLDelegatingValidator"; //$NON-NLS-1$
+    return WSDLDelegatingValidator.class.getName(); //$NON-NLS-1$
   }
 }
