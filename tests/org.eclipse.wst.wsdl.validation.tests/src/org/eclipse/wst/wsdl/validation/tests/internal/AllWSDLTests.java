@@ -13,6 +13,7 @@ import junit.framework.Test;
 
 import org.eclipse.wst.wsdl.validation.internal.eclipse.ValidatorTest;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverTest;
+import org.eclipse.wst.wsdl.validation.internal.ui.ant.AntLoggerTest;
 import org.eclipse.wst.wsdl.validation.internal.ui.ant.WSDLValidateTest;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.InlineSchemaGeneratorTest;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalogTest;
@@ -47,5 +48,6 @@ public class AllWSDLTests extends junit.framework.TestSuite
     addTest(XMLCatalogTest.suite());
     addTest(InlineSchemaGeneratorTest.suite());
     addTestSuite(LineNumberAdjustmentsTest.class);
+    addTestSuite(AntLoggerTest.class);
   }
 }
