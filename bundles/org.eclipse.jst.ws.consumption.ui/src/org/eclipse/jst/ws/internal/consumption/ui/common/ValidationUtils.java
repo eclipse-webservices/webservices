@@ -11,6 +11,8 @@
  * -------- -------- -----------------------------------------------------------
  * 20060222   115834 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060420   136158 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060420   136705 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -68,6 +70,7 @@ import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 /**
  *
@@ -88,7 +91,7 @@ public class ValidationUtils
   {
   }
   
-  public IStatus checkMissingFieldStatus(int validationState, String serviceImpl, String runtimeId, String serverId,
+  public IStatus checkMissingFieldStatus(int validationState, String typeId, String serviceImpl, String runtimeId, String serverId,
 			String projectName, boolean needEar, String earProjectName, String projectTypeId,
 			boolean isClient)
   {
@@ -96,8 +99,17 @@ public class ValidationUtils
 	  if (validationState==VALIDATE_ALL && !isClient)
 	  {
 		if (serviceImpl.length() == 0) {
-			return StatusUtils
-					.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_NO_OBJECT_SELECTION, new String[]{ConsumptionUIMessages.LABEL_WEBSERVICEIMPL}));
+			int scenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeId);
+			if (scenario == WebServiceScenario.BOTTOMUP)
+			{
+			  return StatusUtils
+					.errorStatus(ConsumptionUIMessages.MSG_NO_OBJECT_SELECTION);
+			}
+			else
+			{
+			  return StatusUtils
+					.errorStatus(ConsumptionUIMessages.MSG_NO_SERVICE_SELECTION);				
+			}
 		}
 	  }
 
@@ -192,23 +204,37 @@ public class ValidationUtils
 		// compatible
 
 		// Labels
-		String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId);
+	    String serverLabel = "";
+	    if (serverId != null && serverId.length()>0)
+	    {
+	    	serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId);
+	    }
 		String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeId);
-
+		
 	    if (validationState == VALIDATE_ALL || validationState == VALIDATE_SERVER_RUNTIME_CHANGES) {
-			if (isClient) {
-				if (!WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported(serverId,
-						runtimeId, typeId)) {
-					return StatusUtils.errorStatus(NLS.bind(
-							ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[] {
-									serverLabel, runtimeLabel }));
-				}
-			} else {
-				if (!WebServiceRuntimeExtensionUtils2.isServerRuntimeTypeSupported(serverId,
-						runtimeId, typeId)) {
-					return StatusUtils.errorStatus(NLS.bind(
-							ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[] {
-									serverLabel, runtimeLabel }));
+	    	if (serverId != null && serverId.length() > 0) {
+				if (isClient) {
+					if (!WebServiceRuntimeExtensionUtils2
+							.isServerClientRuntimeTypeSupported(serverId,
+									runtimeId, typeId)) {
+						return StatusUtils
+								.errorStatus(NLS
+										.bind(
+												ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS,
+												new String[] { serverLabel,
+														runtimeLabel }));
+					}
+				} else {
+					if (!WebServiceRuntimeExtensionUtils2
+							.isServerRuntimeTypeSupported(serverId, runtimeId,
+									typeId)) {
+						return StatusUtils
+								.errorStatus(NLS
+										.bind(
+												ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS,
+												new String[] { serverLabel,
+														runtimeLabel }));
+					}
 				}
 			}
 		}
@@ -234,10 +260,12 @@ public class ValidationUtils
 					}
 
 					// Check if the server supports it.
-					if (!valUtils.doesServerSupportProject(serverId, projectName)) {
-						return StatusUtils.errorStatus(NLS.bind(
-								ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT,
-								new String[] { serverLabel, projectName }));
+					if (serverId != null && serverId.length() > 0) {
+						if (!valUtils.doesServerSupportProject(serverId, projectName)) {
+							return StatusUtils.errorStatus(NLS.bind(
+													ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT,
+													new String[] { serverLabel, projectName }));
+						}
 					}
 				} else {
 					// Check if the runtime supports it.
@@ -249,10 +277,13 @@ public class ValidationUtils
 					}
 
 					// Check if the server supports it.
-					if (!valUtils.doesServerSupportProject(serverId, projectName)) {
+					if (serverId != null && serverId.length() > 0)
+					{
+					  if (!valUtils.doesServerSupportProject(serverId, projectName)) {
 						return StatusUtils.errorStatus(NLS.bind(
 								ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_PROJECT,
 								new String[] { serverLabel, projectName }));
+					  }
 					}
 				}
 			} else {
@@ -273,11 +304,13 @@ public class ValidationUtils
 					}
 
 					// Check if the server supports it.
-
-					if (!valUtils.doesServerSupportTemplate(serverId, templateId)) {
+					if (serverId != null && serverId.length()>0)
+					{
+					  if (!valUtils.doesServerSupportTemplate(serverId, templateId)) {
 						return StatusUtils.errorStatus(NLS.bind(
 								ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_TEMPLATE,
 								new String[] { serverLabel, templateLabel }));
+					  }
 					}
 
 				} else {
@@ -292,10 +325,13 @@ public class ValidationUtils
 					}
 
 					// Check if the server supports it.
-					if (!valUtils.doesServerSupportTemplate(serverId, templateId)) {
+					if (serverId != null && serverId.length()>0)
+					{
+					  if (!valUtils.doesServerSupportTemplate(serverId, templateId)) {
 						return StatusUtils.errorStatus(NLS.bind(
 								ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_TEMPLATE,
 								new String[] { serverLabel, templateLabel }));
+					  }
 					}
 				}
 

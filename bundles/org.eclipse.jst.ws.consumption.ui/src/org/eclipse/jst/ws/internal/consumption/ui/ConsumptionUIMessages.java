@@ -18,6 +18,7 @@
  * 20060417   136390/136159 joan@ca.ibm.com - Joan Haggarty
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060418   136335 joan@ca.ibm.com - Joan Haggarty
+ * 20060420   136158 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -92,6 +93,7 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String LABEL_TREE_EXISTING_SERVERS;
 	public static String LABEL_TREE_SERVER_TYPES;
 	public static String MSG_NO_OBJECT_SELECTION;
+	public static String MSG_NO_SERVICE_SELECTION;
 	public static String MSG_INVALID_SRT_SELECTIONS;
 	public static String MSG_NO_RUNTIME;
 	public static String MSG_NO_SERVER;

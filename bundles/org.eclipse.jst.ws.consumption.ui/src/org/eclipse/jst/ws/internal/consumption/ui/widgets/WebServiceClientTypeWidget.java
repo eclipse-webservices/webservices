@@ -15,6 +15,8 @@
  * 20060411   136167 kathy@ca.ibm.com - Kathy Chan
  * 20060417   136390 joan@ca.ibm.com - Joan Haggarty
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060420   136158 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060420   136705 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -380,7 +382,12 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	
 	if (ids_ != null)
 	{
-		String clientServerText = WebServiceRuntimeExtensionUtils2.getServerLabelById(ids_.getServerId());
+		String clientServerText = "";
+		String serverId = ids_.getServerId();
+		if (serverId != null && serverId.length()>0)
+		{
+			clientServerText = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId);
+		} 
 		String clientRuntimeText = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(ids_.getRuntimeId());		
 		hLinkClientServer_.setText(CLIENT_SERVER_PREFIX + " " + clientServerText);
 		hLinkClientRuntime_.setText(CLIENT_RUNTIME_PREFIX + " " + clientRuntimeText);
@@ -744,7 +751,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		boolean needEar = getClientNeedEAR();
 		String earProjectName = getClientEarProjectName();
 		String projectTypeId = getClientComponentType();
-		IStatus missingFieldStatus = valUtils.checkMissingFieldStatus(validationState_, null, runtimeId, serverId,
+		IStatus missingFieldStatus = valUtils.checkMissingFieldStatus(validationState_, null, null, runtimeId, serverId,
 				projectName, needEar, earProjectName, projectTypeId, true);
 		return missingFieldStatus;
 	}

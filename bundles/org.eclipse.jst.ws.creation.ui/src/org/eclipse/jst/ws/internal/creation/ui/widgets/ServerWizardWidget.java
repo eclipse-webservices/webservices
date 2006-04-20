@@ -17,6 +17,9 @@
  * 20060411   136167 kathy@ca.ibm.com - Kathy Chan
  * 20060417   136390/136391/136159 joan@ca.ibm.com - Joan Haggarty
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060420   136158 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060420   136705 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060420   136182 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -206,11 +209,34 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			
 			public void widgetSelected(SelectionEvent e) {
-			   objectSelectionWidget_ = getSelectionWidget();
-			   validationState_ = ValidationUtils.VALIDATE_ALL;
-			   statusListener_.handleEvent(null);
-			   //change the label for the service implementation/definition based on the web service type
-			   handleTypeChange();
+				String oldTypeId = ids_.getTypeId();
+				int currentSelectionIdx = webserviceType_.getSelectionIndex();
+				String currentTypeId = labelIds_.getIds_()[currentSelectionIdx];
+				int oldScenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(oldTypeId);
+				int currentScenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(currentTypeId);
+				if (!oldTypeId.equals(currentTypeId)) {					
+					objectSelectionWidget_ = getSelectionWidget();
+					// change the label for the service
+					// implementation/definition based on the web service type
+					handleTypeChange();					
+
+					//if the web service type change is from one top-down type to another
+					//top-down type leave the object selection field in tact and refresh
+					//the server/runtime project defaulting.
+					//Otherwise clear the object selection field since it's value is not valid anymore
+					if (oldScenario==WebServiceScenario.TOPDOWN && currentScenario==WebServiceScenario.TOPDOWN)						
+					{
+						refreshServerRuntimeSelection();					
+					}
+					else
+					{
+						//clear the object selection field.
+						serviceImpl_.setText("");
+					}					
+					validationState_ = ValidationUtils.VALIDATE_ALL;
+					statusListener_.handleEvent(null);
+					
+				}
 			}
 			
 		});
@@ -490,7 +516,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		   {
 			   serviceLabel_.setText(ConsumptionUIMessages.LABEL_WEBSERVICEDEF);
 		   }
-     }
+	}
 
 	public void setServiceTypeRuntimeServer(TypeRuntimeServer ids) {
 		LabelsAndIds labelIds = WebServiceRuntimeExtensionUtils2
@@ -515,7 +541,12 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		
 		if (ids_ != null)
 		{
-			String serviceServerText = WebServiceRuntimeExtensionUtils2.getServerLabelById(ids_.getServerId());
+			String serviceServerText = "";
+			String serverId = ids_.getServerId();
+			if (serverId != null && serverId.length()>0)
+			{
+			  serviceServerText = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId);
+			}
 			String serviceRuntimeText = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(ids_.getRuntimeId());
 			hLinkServiceServer_.setText(SERVICE_SERVER_PREFIX + " " + serviceServerText);
 			hLinkServiceRuntime_.setText(SERVICE_RUNTIME_PREFIX + " " + serviceRuntimeText);
@@ -701,6 +732,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		// 1. Check for missing fields on service side
 		ValidationUtils valUtils = new ValidationUtils();
 		String serviceImpl = serviceImpl_.getText().trim();
+		String typeId = getServiceTypeRuntimeServer().getTypeId();
 		String runtimeId = getServiceTypeRuntimeServer().getRuntimeId();
 		String serverId = getServiceTypeRuntimeServer().getServerId();
 		String projectName = getServiceProjectName();
@@ -708,7 +740,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		String earProjectName = getServiceEarProjectName();
 		String projectTypeId = getServiceComponentType();
 
-		IStatus serviceMissingFieldStatus = valUtils.checkMissingFieldStatus(validationState_, serviceImpl,
+		IStatus serviceMissingFieldStatus = valUtils.checkMissingFieldStatus(validationState_, typeId, serviceImpl,
 				runtimeId, serverId, projectName, needEar, earProjectName, projectTypeId, false);
 		if (serviceMissingFieldStatus.getSeverity() == IStatus.ERROR) {
 			return serviceMissingFieldStatus;
