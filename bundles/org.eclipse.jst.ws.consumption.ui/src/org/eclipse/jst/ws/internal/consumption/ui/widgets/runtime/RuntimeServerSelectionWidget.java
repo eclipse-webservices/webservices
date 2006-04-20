@@ -155,7 +155,7 @@ public class RuntimeServerSelectionWidget extends SimpleWidgetDataContributor
     byte mode = isClientContext_ ? (byte)1 : (byte)0;
     
     RuntimeServerSelectionDialog dialog     
-      = dialog = new RuntimeServerSelectionDialog( parent_.getShell(), mode, ids_, "14" ); //rm j2ee
+      = new RuntimeServerSelectionDialog( parent_.getShell(), mode, ids_, "14" ); //rm j2ee
     dialog.create();
     dialog.handleServerViewSelectionEvent();
     int result = dialog.open();

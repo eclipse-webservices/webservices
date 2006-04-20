@@ -381,7 +381,7 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
 
   protected void handleAddButtonSelected(SelectionEvent event) {
 
-    AddHandlerDialog dialog = dialog = new AddHandlerDialog(parent_.getShell(), true);
+    AddHandlerDialog dialog = new AddHandlerDialog(parent_.getShell(), true);
     dialog.create();
     dialog.getShell().setSize( 500, 200 );
     

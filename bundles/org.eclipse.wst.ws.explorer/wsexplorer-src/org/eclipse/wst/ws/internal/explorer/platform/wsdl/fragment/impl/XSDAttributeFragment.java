@@ -46,14 +46,12 @@ public class XSDAttributeFragment extends XSDDelegationFragment implements IXSDA
     	
     if (!attributeTypeFragment.processParameterValues(parser))
       return false;
-    String[] params = getParameterValues(attributeTypeFragment.getID());
     return true;
   }
   
   public boolean validateAllParameterValues()
   {
     IXSDFragment attributeTypeFragment = getXSDDelegationFragment();
-    String[] params = getParameterValues(attributeTypeFragment.getID());
     if (!attributeTypeFragment.validateAllParameterValues())
       return false;
     return true;
@@ -71,8 +69,6 @@ public class XSDAttributeFragment extends XSDDelegationFragment implements IXSDA
 
   public boolean validateParameterValue(String paramKey, int paramIndex)
   {
-    XSDAttributeUse xsdAttribute = (XSDAttributeUse)getXSDToFragmentConfiguration().getXSDComponent();
-    String param = getParameterValue(paramKey, paramIndex);
     if (!getXSDDelegationFragment().validateParameterValue(paramKey, paramIndex))
       return false;
     return true;

@@ -394,7 +394,7 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
   }
 
   protected void handleAddButtonSelected(SelectionEvent event) {
-    AddHandlerDialog dialog = dialog = new AddHandlerDialog(parent_.getShell(), false);
+    AddHandlerDialog dialog = new AddHandlerDialog(parent_.getShell(), false);
     dialog.setIsMultipleServices(isMultipleSelection_);
     dialog.create();
     
