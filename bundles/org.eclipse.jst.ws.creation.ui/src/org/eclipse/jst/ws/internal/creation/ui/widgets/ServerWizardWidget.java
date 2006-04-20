@@ -20,6 +20,7 @@
  * 20060420   136158 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   136705 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   136182 kathy@ca.ibm.com - Kathy Chan
+ * 20060420   137820 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -504,6 +505,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 
 	private void handleTypeChange()
 	{
+		if (!preferencesPage_) {
+			
 		   int index = webserviceType_.getSelectionIndex();	
 		   String typeId = labelIds_.getIds_()[index];
 		   int scenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeId);
@@ -516,6 +519,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		   {
 			   serviceLabel_.setText(ConsumptionUIMessages.LABEL_WEBSERVICEDEF);
 		   }
+		}
 	}
 
 	public void setServiceTypeRuntimeServer(TypeRuntimeServer ids) {
