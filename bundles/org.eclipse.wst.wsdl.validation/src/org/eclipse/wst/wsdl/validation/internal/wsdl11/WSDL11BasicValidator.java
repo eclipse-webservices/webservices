@@ -39,6 +39,8 @@ import javax.wsdl.extensions.ExtensibilityElement;
 import javax.xml.namespace.QName;
 
 import org.apache.xerces.xs.XSModel;
+import org.eclipse.wst.wsdl.validation.internal.logging.ILogger;
+import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.SchemaAttributeTable;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.XSDValidator;
@@ -662,8 +664,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
       }
       catch (Exception e)
       {
-        //TODO: log the error message
-        //System.out.println(e);
+    	LoggerFactory.getInstance().getLogger().log("An exception occurred while performing WSDL validation of a part with the SOAP encoding namespace.", ILogger.SEV_ERROR, e);
       }
     }
     return partvalid;

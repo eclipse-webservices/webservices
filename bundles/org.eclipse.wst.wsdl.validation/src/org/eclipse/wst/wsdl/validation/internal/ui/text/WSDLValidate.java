@@ -23,6 +23,8 @@ import org.eclipse.wst.wsdl.validation.internal.ClassloaderWSDLValidatorDelegate
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
+import org.eclipse.wst.wsdl.validation.internal.logging.ILogger;
+import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
@@ -182,7 +184,7 @@ public class WSDLValidate
     }
     catch (MissingResourceException e)
     {
-      System.err.println("Validation failed: Unable to load the properties file.");
+      LoggerFactory.getInstance().getLogger().log("Validation failed: Unable to load the properties file.", ILogger.SEV_ERROR, e);
       return;
     }
     // no arguments specified. Print usage.

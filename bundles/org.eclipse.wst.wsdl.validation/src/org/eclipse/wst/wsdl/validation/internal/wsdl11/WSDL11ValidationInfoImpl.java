@@ -148,7 +148,7 @@ public class WSDL11ValidationInfoImpl implements IWSDL11ValidationInfo
     { ((ValidationInfoImpl)valinfo).addError(message, line, column, uri, errorKey, messageArguments);
     }
     catch (ClassCastException e)
-    { System.err.println(e);
+    {
       valinfo.addError(message, line, column, uri);
     }
   }

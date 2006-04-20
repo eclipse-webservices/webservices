@@ -33,6 +33,8 @@ import org.apache.xerces.xni.grammars.XMLGrammarPool;
 import org.apache.xerces.xni.parser.XMLEntityResolver;
 import org.apache.xerces.xni.parser.XMLInputSource;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
+import org.eclipse.wst.wsdl.validation.internal.logging.ILogger;
+import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
 import org.eclipse.wst.wsdl.validation.internal.resolver.IURIResolutionResult;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.XSDValidator;
@@ -142,12 +144,12 @@ public class DefaultXMLValidator implements IXMLValidator
     }
     catch (IOException e)
     {
-      // TODO: Log exception.
+      // No need to log this error. The WSDL validator will catch this error when creating the dom model.
+      //LoggerFactory.getInstance().getLogger().log("The WSDL validator was unable to read file " + uri + ".", ILogger.SEV_ERROR, e);
     }
     catch (Exception e)
     {
-      // TODO: Log exception.
-      //System.out.println(e);
+      LoggerFactory.getInstance().getLogger().log("An exception occurred while performing WSDL XML conformance validation for file " + uri + ".", ILogger.SEV_ERROR, e);
     }
   }
   
@@ -173,8 +175,7 @@ public class DefaultXMLValidator implements IXMLValidator
     }
     catch (Exception e)
     {
-      //TODO: log error message
-      //e.printStackTrace();
+      LoggerFactory.getInstance().getLogger().log("The WSDL valdiator was unable to create to create a string representation of an input stream. WSDL XML validation may not have run correctly.", ILogger.SEV_ERROR, e);
     }
     return fileString.toString();
   }
@@ -347,8 +348,7 @@ public class DefaultXMLValidator implements IXMLValidator
     } 
     catch(Exception e)
     { 
-      // TODO: Log error.
-      //e.printStackTrace();
+      LoggerFactory.getInstance().getLogger().log("Error creating XML reader for WSDL XML conformance validation.", ILogger.SEV_ERROR, e);
     }
     return reader;
   } 

@@ -25,6 +25,8 @@ import org.apache.xerces.parsers.StandardParserConfiguration;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.grammars.XMLGrammarPool;
 import org.eclipse.wst.wsdl.validation.internal.exception.ValidateWSDLException;
+import org.eclipse.wst.wsdl.validation.internal.logging.ILogger;
+import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.xml.AbstractXMLConformanceFactory;
@@ -46,6 +48,7 @@ public class ValidationController
   protected final String _ERROR_PROBLEM_WSDL_VALIDATOR = "_ERROR_PROBLEM_WSDL_VALIDATOR";
   protected final String _ERROR_NO_WSDL_VALIDATOR = "_ERROR_NO_WSDL_VALIDATOR";
   protected final String _ERROR_PROBLEM_EXT_VALIDATOR = "_ERROR_PROBLEM_EXT_VALIDATOR";
+  protected final String _ERROR_DOCUMENT_LOCATION = "_ERROR_DOCUMENT_LOCATION";
 
   protected ValidatorRegistry ver;
   protected ResourceBundle resourcebundle;
@@ -100,14 +103,17 @@ public class ValidationController
 
     if (validateXML(valInfo, xmlValidateStream))
     {
-      Document wsdldoc = getDocument(uri, wsdlValidateStream);
+      Document wsdldoc = getDocument(uri, wsdlValidateStream, valInfo);
 
-      String wsdlns = getWSDLNamespace(wsdldoc);
-      if(wsdlns != null)
+      if(!valInfo.hasErrors())
       {
-        if (validateWSDL(wsdldoc, valInfo, wsdlns))
+        String wsdlns = getWSDLNamespace(wsdldoc);
+        if(wsdlns != null)
         {
-          validateExtensionValidators(wsdldoc, valInfo, wsdlns);
+          if (validateWSDL(wsdldoc, valInfo, wsdlns))
+          {
+            validateExtensionValidators(wsdldoc, valInfo, wsdlns);
+          }
         }
       }
     }
@@ -250,7 +256,7 @@ public class ValidationController
           catch(Throwable  t)
           {
             valInfo.addWarning(messagegenerator.getString(_ERROR_PROBLEM_EXT_VALIDATOR,  extvaldel.getValidatorName(), wsdlNamespace), 1, 1, valInfo.getFileURI());
-            // This error should be logged and not displayed to the user.
+            LoggerFactory.getInstance().getLogger().log(messagegenerator.getString(_ERROR_PROBLEM_EXT_VALIDATOR,  extvaldel.getValidatorName(), wsdlNamespace), ILogger.SEV_ERROR, t);
           }
         }
       }
@@ -283,10 +289,15 @@ public class ValidationController
   /**
    * Get a DOM document representation of the WSDL document.
    * 
-   * @param uri The uri of the file to read
+   * @param uri 
+   * 		The uri of the file to read
+   * @param inputStream
+   * 		An optional InputStream to read the document from.
+   * @param valinfo
+   * 		A validation info object used for reporting messages.
    * @return The DOM model of the WSDL document or null if the document can't be read.
    */
-  private Document getDocument(String uri, InputStream inputStream)
+  private Document getDocument(String uri, InputStream inputStream, ControllerValidationInfo valinfo)
   {
     try
     {
@@ -331,10 +342,10 @@ public class ValidationController
     }
     catch (Throwable t)
     {
-    	// TODO: Log error if the parser fails to read the WSDL document.
-    	// In this case the validator will fail with an unexplained error message
-    	// about a null WSDL namespace. This error should be addressed as well.
-    	System.out.println(t);
+      // In this case the validator will fail with an unexplained error message
+      // about a null WSDL namespace. This error should be addressed as well.
+     valinfo.addError(messagegenerator.getString(_ERROR_DOCUMENT_LOCATION, uri), 0, 0, uri);
+      
     }
     return null;
   }

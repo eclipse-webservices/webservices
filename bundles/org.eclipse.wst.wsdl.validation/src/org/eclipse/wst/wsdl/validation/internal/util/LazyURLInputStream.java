@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.eclipse.wst.wsdl.validation.internal.logging.ILogger;
+import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
+
 
 /**
  * This class allows InputStreams to be created and returned to xerces without
@@ -95,8 +98,7 @@ public class LazyURLInputStream extends InputStream
 		createInnerStreamIfRequired();
 		inner.mark(readlimit);
 	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	  LoggerFactory.getInstance().getLogger().log("The following IOException occurred in the WSDL validator's LazyURLInputStream.", ILogger.SEV_ERROR, e);
 	}
   }
 
@@ -108,8 +110,7 @@ public class LazyURLInputStream extends InputStream
 		if (inner == null) return false;
 		return inner.markSupported();
 	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	  LoggerFactory.getInstance().getLogger().log("The following IOException occurred in the WSDL validator's LazyURLInputStream.", ILogger.SEV_ERROR, e);
 	}
 	return false;
   }

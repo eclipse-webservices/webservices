@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.DTDLocation;
 import org.apache.tools.ant.types.FileSet;
@@ -29,7 +30,9 @@ import org.apache.tools.ant.types.XMLCatalog;
 import org.eclipse.wst.wsdl.validation.internal.ClassloaderWSDLValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
+import org.eclipse.wst.wsdl.validation.internal.WSDLValidationConfiguration;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
+import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
 import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.ClassloaderWSDL11ValidatorDelegate;
@@ -78,12 +81,14 @@ public class WSDLValidate extends Task
   protected List wsdl11validators = new ArrayList();
   protected List extvalidators = new ArrayList();
   protected List extURIResolvers = new ArrayList();
+  protected List properties = new ArrayList();
 
   /**
    * Constuctor.
    */
   public WSDLValidate()
   {
+	LoggerFactory.getInstance().setLogger(new AntLogger(this));
   }
 
   /**
@@ -146,6 +151,7 @@ public class WSDLValidate extends Task
   {
     extvalidators.add(extVal);
   }
+  
   /**
    * Add an extension WSDL 1.1 validator.
    * 
@@ -190,7 +196,17 @@ public class WSDLValidate extends Task
     URIResolver urires = new URIResolver();
     extURIResolvers.add(urires.getClassName());
     return urires;
-    
+  }
+  
+  /**
+   * Add a property to the WSDL validator.
+   * 
+   * @param property 
+   * 		The property to add.
+   */
+  public void addConfiguredProperty(Property property)
+  {
+    properties.add(property);
   }
 
   /**
@@ -276,6 +292,15 @@ public class WSDLValidate extends Task
     
     WSDLValidator wsdlValidator = new WSDLValidator();
     
+    WSDLValidationConfiguration configuration = new WSDLValidationConfiguration();
+    // Set the properties.
+    Iterator propertyIter = properties.iterator();
+    while(propertyIter.hasNext())
+    {
+      Property property = (Property)propertyIter.next();
+      configuration.setProperty(property.getName(), property.getValue());
+    }
+    	
     // Set the extension URIResolvers.
     Iterator resolversIter = extURIResolvers.iterator();
     while(resolversIter.hasNext())
@@ -308,7 +333,7 @@ public class WSDLValidate extends Task
     // The user didn't specify any files to validate.
     if (files == null || files.isEmpty())
     {
-      System.err.println(messGen.getString(_ERROR_NO_FILE_SPECIFIED));
+      log(messGen.getString(_ERROR_NO_FILE_SPECIFIED), Project.MSG_ERR);
       return;
     }
 
@@ -339,7 +364,7 @@ public class WSDLValidate extends Task
         result.append(infoDelim).append("\n");
         result.append(messGen.getString(_UI_ACTION_VALIDATING_FILE, filename)).append(" - ");
 
-        IValidationReport valReport = wsdlValidator.validate(filename);
+        IValidationReport valReport = wsdlValidator.validate(filename, null, configuration);
 
         IValidationMessage[] messages = valReport.getValidationMessages();
 
@@ -356,11 +381,18 @@ public class WSDLValidate extends Task
 
         result.append(reportMessages(messages, errormarker, warningmarker));
 
-        System.out.println(result.toString());
+        if(notvalid)
+        {
+          log(result.toString(), Project.MSG_ERR);
+        }
+        else
+        {
+          log(result.toString());
+        }
       }
       catch (Exception e)
       {
-        System.err.println(messGen.getString(_EXC_UNABLE_TO_VALIDATE_FILE, filename, e));
+        log(messGen.getString(_EXC_UNABLE_TO_VALIDATE_FILE, filename, e), Project.MSG_ERR);
       }
       finally
       {

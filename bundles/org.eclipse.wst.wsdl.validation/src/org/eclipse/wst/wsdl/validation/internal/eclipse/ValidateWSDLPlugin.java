@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.wst.wsdl.validation.internal.Constants;
+import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog;
 import org.osgi.framework.Bundle;
@@ -53,6 +54,8 @@ public class ValidateWSDLPlugin extends Plugin
     instance = this;
     wsdlValidatorResourceBundle = ResourceBundle.getBundle(Constants.WSDL_VALIDATOR_PROPERTIES_FILE);
     resourcebundle = ResourceBundle.getBundle(PROPERTIES_FILE);
+    
+    LoggerFactory.getInstance().setLogger(new EclipseLogger());
 
     new WSDLValidatorPluginRegistryReader(
       "extvalidator",

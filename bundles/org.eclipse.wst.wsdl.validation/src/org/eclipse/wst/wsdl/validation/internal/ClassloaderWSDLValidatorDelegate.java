@@ -11,6 +11,9 @@
 
 package org.eclipse.wst.wsdl.validation.internal;
 
+import org.eclipse.wst.wsdl.validation.internal.logging.ILogger;
+import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
+
 
 
 /**
@@ -62,14 +65,9 @@ public class ClassloaderWSDLValidatorDelegate extends WSDLValidatorDelegate
 
       validator = (IWSDLValidator)validatorClass.newInstance();
     }
-    catch (Exception e)
-    {
-      // TODO: add logging
-      System.err.println(e);
-    }
     catch(Throwable t)
     {
-      System.err.println(t);
+    	LoggerFactory.getInstance().getLogger().log("Unable to load validator " + validatorClassname, ILogger.SEV_ERROR, t);
     }
     return validator;
   }
