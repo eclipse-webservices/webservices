@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060420   120714 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -51,8 +54,9 @@ public class CheckWSDLValidationCommand extends AbstractDataModelOperation
 					  existingValidateWSDLJob.cancel();
 					  return Status.OK_STATUS;
 				  } else {
-					  // wait for WSDL validation
-					  return StatusUtils.errorStatus( ConsumptionUIMessages.WAIT_FOR_WSDL );
+					  // Setting the error string to an empty string so that the command engine would not
+					  // pop-up another error message when the user decided to wait for WSDL validation.
+					  return StatusUtils.errorStatus( "" );
 				  }
 			  }
 		  }

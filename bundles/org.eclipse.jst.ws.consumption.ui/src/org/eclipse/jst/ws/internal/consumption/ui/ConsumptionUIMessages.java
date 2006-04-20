@@ -19,6 +19,7 @@
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060418   136335 joan@ca.ibm.com - Joan Haggarty
  * 20060420   136158 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060420   120714 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -342,7 +343,6 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String WAIT_VALIDATION_DESCRIPTION;
 	public static String TASK_LABEL_CHECK_WSDL_VALIDATION;
 	public static String TASK_DESC_CHECK_WSDL_VALIDATION;
-	public static String WAIT_FOR_WSDL;
 	public static String MESSAGE_VALIDATE_NO_WSDL;
 	public static String MESSAGE_VALIDATE_REMOTE_WSDL;
 	public static String MESSAGE_VALIDATE_ALL_WSDL;

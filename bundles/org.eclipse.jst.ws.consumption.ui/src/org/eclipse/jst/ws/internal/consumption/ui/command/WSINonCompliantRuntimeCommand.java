@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060420   120714 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.command;
@@ -63,12 +66,18 @@ public class WSINonCompliantRuntimeCommand extends AbstractDataModelOperation
     	} 
       else 
       {
-    		return StatusUtils.errorStatus( WstWSPluginMessages.NOT_OK );
+    	  // Set message to empty string so that an error dialog does
+    	  // not pop-up telling the user that they cannot continue
+    	  // because they choose not to ignore the WS-I non-compliance warning.
+    		return StatusUtils.errorStatus( "" );
     	}
     } 
     else 
     {
-		  return StatusUtils.errorStatus( WstWSPluginMessages.NOT_OK );
+    	// Set message to empty string so that an error dialog does
+  	  	// not pop-up telling the user that they cannot continue
+  	  	// because they choose not to ignore the WS-I non-compliance warning.
+		  return StatusUtils.errorStatus( "" );
 	}
   }
   
