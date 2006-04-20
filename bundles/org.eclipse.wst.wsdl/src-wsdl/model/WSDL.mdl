@@ -1616,6 +1616,41 @@
 				quid       	"3AD5D9B90261"
 				supplier   	"Logical View::wsdl::Port"
 				quidu      	"3AD5D9170286")))
+		    (object Association "$UNNAMED$57"
+			quid       	"3C864DFF02EC"
+			roles      	(list role_list
+			    (object Role "eImports"
+				quid       	"3C864DFF02ED"
+				label      	"eImports"
+				supplier   	"Logical View::wsdl::Import"
+				quidu      	"3AD5E4F903DE"
+				client_cardinality 	(value cardinality "0..n")
+				Constraints 	"ordered"
+				Containment 	"By Value"
+				is_navigable 	TRUE)
+			    (object Role "$UNNAMED$58"
+				quid       	"3C864DFF02EE"
+				supplier   	"Logical View::wsdl::Definition"
+				quidu      	"3AD5E43F008E"
+				client_cardinality 	(value cardinality "1..1")
+				is_aggregate 	TRUE)))
+		    (object Association "$UNNAMED$53"
+			quid       	"3B8BEA27029F"
+			roles      	(list role_list
+			    (object Role "$UNNAMED$54"
+				quid       	"3B8BEA290356"
+				supplier   	"Logical View::wsdl::Definition"
+				quidu      	"3AD5E43F008E"
+				client_cardinality 	(value cardinality "1..1")
+				is_aggregate 	TRUE)
+			    (object Role "eTypes"
+				quid       	"3B8BEA29036A"
+				label      	"eTypes"
+				supplier   	"Logical View::wsdl::Types"
+				quidu      	"3B8BE9A603A8"
+				client_cardinality 	(value cardinality "0..1")
+				Containment 	"By Value"
+				is_navigable 	TRUE)))
 		    (object Association "$UNNAMED$13"
 			quid       	"3AD5E60301E2"
 			roles      	(list role_list
@@ -1941,23 +1976,6 @@
 				quid       	"3B8B1DCE027A"
 				supplier   	"Logical View::wsdl::Import"
 				quidu      	"3AD5E4F903DE")))
-		    (object Association "$UNNAMED$53"
-			quid       	"3B8BEA27029F"
-			roles      	(list role_list
-			    (object Role "$UNNAMED$54"
-				quid       	"3B8BEA290356"
-				supplier   	"Logical View::wsdl::Definition"
-				quidu      	"3AD5E43F008E"
-				client_cardinality 	(value cardinality "1..1")
-				is_aggregate 	TRUE)
-			    (object Role "eTypes"
-				quid       	"3B8BEA29036A"
-				label      	"eTypes"
-				supplier   	"Logical View::wsdl::Types"
-				quidu      	"3B8BE9A603A8"
-				client_cardinality 	(value cardinality "0..1")
-				Containment 	"By Value"
-				is_navigable 	TRUE)))
 		    (object Association "$UNNAMED$55"
 			quid       	"3C46829303E5"
 			roles      	(list role_list
@@ -1972,24 +1990,6 @@
 				quid       	"3C4682960118"
 				supplier   	"Logical View::wsdl::Part"
 				quidu      	"3AD5CE1C032E")))
-		    (object Association "$UNNAMED$57"
-			quid       	"3C864DFF02EC"
-			roles      	(list role_list
-			    (object Role "eImports"
-				quid       	"3C864DFF02ED"
-				label      	"eImports"
-				supplier   	"Logical View::wsdl::Import"
-				quidu      	"3AD5E4F903DE"
-				client_cardinality 	(value cardinality "0..n")
-				Constraints 	"ordered"
-				Containment 	"By Value"
-				is_navigable 	TRUE)
-			    (object Role "$UNNAMED$58"
-				quid       	"3C864DFF02EE"
-				supplier   	"Logical View::wsdl::Definition"
-				quidu      	"3AD5E43F008E"
-				client_cardinality 	(value cardinality "1..1")
-				is_aggregate 	TRUE)))
 		    (object Association "$UNNAMED$59"
 			quid       	"3CC3614500F2"
 			roles      	(list role_list

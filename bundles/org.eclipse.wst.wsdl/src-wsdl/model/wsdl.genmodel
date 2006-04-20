@@ -91,13 +91,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsdl.ecore#//Definition/location"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsdl.ecore#//Definition/qName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsdl.ecore#//Definition/encoding"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsdl.ecore#//Definition/eImports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsdl.ecore#//Definition/eTypes"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsdl.ecore#//Definition/eMessages"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsdl.ecore#//Definition/ePortTypes"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsdl.ecore#//Definition/eBindings"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsdl.ecore#//Definition/eServices"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsdl.ecore#//Definition/eNamespaces"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsdl.ecore#//Definition/eTypes"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsdl.ecore#//Definition/eImports"/>
       <genOperations ecoreOperation="wsdl.ecore#//Definition/getDocument"/>
       <genOperations ecoreOperation="wsdl.ecore#//Definition/setDocument">
         <genParameters ecoreParameter="wsdl.ecore#//Definition/setDocument/document"/>

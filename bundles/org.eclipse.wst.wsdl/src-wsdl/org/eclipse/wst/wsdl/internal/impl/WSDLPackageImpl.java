@@ -1129,7 +1129,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
      */
     public EReference getDefinition_EMessages()
     {
-        return (EReference) definitionEClass.getEStructuralFeatures().get(4);
+        return (EReference) definitionEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -1139,7 +1139,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
      */
     public EReference getDefinition_EPortTypes()
     {
-        return (EReference) definitionEClass.getEStructuralFeatures().get(5);
+        return (EReference) definitionEClass.getEStructuralFeatures().get(7);
     }
 
     /**
@@ -1149,7 +1149,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
      */
     public EReference getDefinition_EBindings()
     {
-        return (EReference) definitionEClass.getEStructuralFeatures().get(6);
+        return (EReference) definitionEClass.getEStructuralFeatures().get(8);
     }
 
     /**
@@ -1159,7 +1159,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
      */
     public EReference getDefinition_EServices()
     {
-        return (EReference) definitionEClass.getEStructuralFeatures().get(7);
+        return (EReference) definitionEClass.getEStructuralFeatures().get(9);
     }
 
     /**
@@ -1169,7 +1169,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
      */
     public EReference getDefinition_ENamespaces()
     {
-        return (EReference) definitionEClass.getEStructuralFeatures().get(8);
+        return (EReference) definitionEClass.getEStructuralFeatures().get(10);
     }
 
     /**
@@ -1179,7 +1179,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
      */
     public EReference getDefinition_ETypes()
     {
-        return (EReference) definitionEClass.getEStructuralFeatures().get(9);
+        return (EReference) definitionEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -1189,7 +1189,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
      */
     public EReference getDefinition_EImports()
     {
-        return (EReference) definitionEClass.getEStructuralFeatures().get(10);
+        return (EReference) definitionEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -1874,13 +1874,13 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
         createEAttribute(definitionEClass, DEFINITION__LOCATION);
         createEAttribute(definitionEClass, DEFINITION__QNAME);
         createEAttribute(definitionEClass, DEFINITION__ENCODING);
+        createEReference(definitionEClass, DEFINITION__EIMPORTS);
+        createEReference(definitionEClass, DEFINITION__ETYPES);
         createEReference(definitionEClass, DEFINITION__EMESSAGES);
         createEReference(definitionEClass, DEFINITION__EPORT_TYPES);
         createEReference(definitionEClass, DEFINITION__EBINDINGS);
         createEReference(definitionEClass, DEFINITION__ESERVICES);
         createEReference(definitionEClass, DEFINITION__ENAMESPACES);
-        createEReference(definitionEClass, DEFINITION__ETYPES);
-        createEReference(definitionEClass, DEFINITION__EIMPORTS);
 
         importEClass = createEClass(IMPORT);
         createEAttribute(importEClass, IMPORT__NAMESPACE_URI);
@@ -2129,13 +2129,13 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
         initEAttribute(getDefinition_Location(), ecorePackage.getEString(), "location", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getDefinition_QName(), this.getQName(), "qName", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getDefinition_Encoding(), ecorePackage.getEString(), "encoding", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getDefinition_EImports(), this.getImport(), null, "eImports", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getDefinition_ETypes(), this.getTypes(), null, "eTypes", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDefinition_EMessages(), this.getMessage(), null, "eMessages", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDefinition_EPortTypes(), this.getPortType(), null, "ePortTypes", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDefinition_EBindings(), this.getBinding(), null, "eBindings", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDefinition_EServices(), this.getService(), null, "eServices", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDefinition_ENamespaces(), this.getNamespace(), null, "eNamespaces", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getDefinition_ETypes(), this.getTypes(), null, "eTypes", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getDefinition_EImports(), this.getImport(), null, "eImports", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         addEOperation(definitionEClass, this.getDOMDocument(), "getDocument");
 

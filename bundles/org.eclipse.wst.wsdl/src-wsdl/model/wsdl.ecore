@@ -134,6 +134,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="qName" eType="#//QName"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="encoding" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eImports" upperBound="-1"
+        eType="#//Import" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eTypes" eType="#//Types"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eMessages" upperBound="-1"
         eType="#//Message" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ePortTypes" upperBound="-1"
@@ -144,10 +148,6 @@
         eType="#//Service" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eNamespaces" upperBound="-1"
         eType="#//Namespace" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="eTypes" eType="#//Types"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="eImports" upperBound="-1"
-        eType="#//Import" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Import" eSuperTypes="#//WSDLElement #//IImport">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

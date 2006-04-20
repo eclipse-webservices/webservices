@@ -22,8 +22,11 @@ import junit.framework.TestSuite;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.binding.mime.MIMEContent;
 import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
@@ -40,6 +43,9 @@ import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Contains unit tests for reported bugs.
@@ -75,6 +81,14 @@ public class BugFixesTest extends TestCase
       protected void runTest()
       {
         testReturnsProperQNameForMIMEExtensibilityElements();
+      }
+    });
+
+    suite.addTest(new BugFixesTest("ImportsElementOrder")
+    {
+      protected void runTest()
+      {
+        testPlacesImportsAfterTheDefinitionElement();
       }
     });
 
@@ -187,5 +201,40 @@ public class BugFixesTest extends TestCase
     QName partElementType = part.getElementType();
     assertEquals(MIMEConstants.MIME_NAMESPACE_URI, partElementType.getNamespaceURI());
     assertEquals(MIMEConstants.PART_ELEMENT_TAG, partElementType.getLocalPart());
+  }
+
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=137040
+   */
+  protected static void testPlacesImportsAfterTheDefinitionElement()
+  {
+    WSDLFactory factory = WSDLPackage.eINSTANCE.getWSDLFactory();
+
+    String namespace = "testNamespace"; //$NON-NLS-1$
+    
+    Definition definition = factory.createDefinition();
+    definition.setQName(new QName(namespace, "testDefinition"));    
+    definition.updateElement();
+
+    Service service = factory.createService();
+    service.setQName(new QName(namespace, "testService"));
+    definition.addService(service);
+
+    Import wsdlImport = factory.createImport();
+    definition.addImport(wsdlImport);
+
+    Element definitionElement = definition.getElement();
+    Element serviceElement = service.getElement();
+    Element importElement = wsdlImport.getElement();
+
+    NodeList definitionElementChildren = definitionElement.getChildNodes();
+
+    Node firstChild = definitionElementChildren.item(0);
+
+    assertSame(importElement, firstChild);
+
+    Node secondChild = definitionElementChildren.item(1);
+
+    assertSame(serviceElement, secondChild);
   }
 }

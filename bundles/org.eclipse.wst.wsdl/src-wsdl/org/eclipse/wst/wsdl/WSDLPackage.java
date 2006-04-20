@@ -1025,7 +1025,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int DEFINITION__EMESSAGES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
+  int DEFINITION__EMESSAGES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 6;
 
   /**
    * The feature id for the '<em><b>EPort Types</b></em>' containment reference list.
@@ -1034,7 +1034,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int DEFINITION__EPORT_TYPES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
+  int DEFINITION__EPORT_TYPES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 7;
 
   /**
    * The feature id for the '<em><b>EBindings</b></em>' containment reference list.
@@ -1043,7 +1043,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int DEFINITION__EBINDINGS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 6;
+  int DEFINITION__EBINDINGS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 8;
 
   /**
    * The feature id for the '<em><b>EServices</b></em>' containment reference list.
@@ -1052,7 +1052,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int DEFINITION__ESERVICES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 7;
+  int DEFINITION__ESERVICES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 9;
 
   /**
    * The feature id for the '<em><b>ENamespaces</b></em>' containment reference list.
@@ -1061,7 +1061,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int DEFINITION__ENAMESPACES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 8;
+  int DEFINITION__ENAMESPACES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 10;
 
   /**
    * The feature id for the '<em><b>ETypes</b></em>' containment reference.
@@ -1070,7 +1070,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int DEFINITION__ETYPES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 9;
+  int DEFINITION__ETYPES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
 
   /**
    * The feature id for the '<em><b>EImports</b></em>' containment reference list.
@@ -1079,7 +1079,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int DEFINITION__EIMPORTS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 10;
+  int DEFINITION__EIMPORTS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
 
   /**
    * The number of structural features of the the '<em>Definition</em>' class.
