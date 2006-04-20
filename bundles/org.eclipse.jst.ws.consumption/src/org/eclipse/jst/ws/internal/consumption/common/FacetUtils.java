@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060217   126757 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060419   137548 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -200,10 +201,16 @@ public class FacetUtils
       if (returnValidOnly)
       {
         Set actions = getInstallActions(combination);
-        if( ProjectFacetsManager.check( new HashSet(), actions ).getSeverity() == IStatus.OK )        
-        {
-          allCombinations.add((combination));
-        }
+		try {
+			if( ProjectFacetsManager.check( new HashSet(), actions ).getSeverity() == IStatus.OK )        
+	        {
+	          allCombinations.add((combination));
+	        }
+		} catch (Throwable e) {
+			// Do nothing if ProjectFacetsManager.check() throws exception.
+			// TODO This try/catch will be unneccesary once WTP bug 137551 is fixed so that an OK Status 
+			// 		would not be returned when an exception is thrown.
+		}     
       }
       else
       {
@@ -390,15 +397,21 @@ public class FacetUtils
       {
         //Check if the set can be added. If so, this is a match. Update the facet matcher and break.
         Set actions = getInstallActions(combinations[i]);
-        if( ProjectFacetsManager.check( projectFacetVersions, actions ).getSeverity() == IStatus.OK )
-        {
-          //Facets can be added so there is a match
-          facetsCanBeAdded=true;
-          fm.setMatch(true);
-          fm.setFacetsThatMatched(facetsThatMatched);
-          fm.setFacetsToAdd(combinations[i]);
-          break;
-        }                
+        try {
+			if( ProjectFacetsManager.check( projectFacetVersions, actions ).getSeverity() == IStatus.OK )
+			{
+			  //Facets can be added so there is a match
+			  facetsCanBeAdded=true;
+			  fm.setMatch(true);
+			  fm.setFacetsThatMatched(facetsThatMatched);
+			  fm.setFacetsToAdd(combinations[i]);
+			  break;
+			}
+		} catch (Throwable e) {
+			// Do nothing if ProjectFacetsManager.check() throws exception.
+			// TODO This try/catch will be unneccesary once WTP bug 137551 is fixed so that an OK Status 
+			// 		would not be returned when an exception is thrown.
+		}                
       }
       
       
