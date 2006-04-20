@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060310   131352 pmoogk@ca.ibm.com - Peter Moogk
  * 20060411   136134 kathy@ca.ibm.com - Kathy Chan
+ * 20060420   136221 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -53,7 +54,8 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 	  								ConsumptionUIMessages.TABLE_COLUMN_VALIDATION_LINE,
 	  								ConsumptionUIMessages.TABLE_COLUMN_VALIDATION_COLUMN,
 	  								ConsumptionUIMessages.TABLE_COLUMN_VALIDATION_MESSAGE};
-  static final int columnsWidth_[] = {10, 10, 10, 60};
+  static final int columnsWidth_[] = {12, 10, 10, 60};
+  static final int columnMins_[] = {60, 50, 50, 300};
 
   
 
@@ -91,7 +93,7 @@ public class ValidationMessageViewerWidget extends SimpleWidgetDataContributor
 	  TableColumn tableColumn = new TableColumn(table_, SWT.NONE);
 	  tableColumn.setText(columns_[i]);
 	  tableColumn.pack();
-	  ColumnWeightData columnData = new ColumnWeightData(columnsWidth_[i], columnsWidth_[i], true);
+	  ColumnWeightData columnData = new ColumnWeightData(columnsWidth_[i], columnMins_[i], true);
 	  tableLayout.addColumnData(columnData);
 	}
 	table_.setLayout(tableLayout);
