@@ -555,7 +555,13 @@ public class WSDLTest extends BaseTestCase
   public void testSimplefileSelfImport()
   {
     String testname = "SelfImport";
-    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfImport/SimpleFile/" + testname + ".wsdl";
+    String fileprefix = FILE_PROTOCOL;
+    // Need to ensure the URL of the test file is as expected.
+    if(PLUGIN_ABSOLUTE_PATH.startsWith("/"))
+    {
+      fileprefix = fileprefix.substring(0, fileprefix.length()-1);
+    }
+    String testfile = fileprefix + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfImport/SimpleFile/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "SelfImport/SimpleFile/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "SelfImport/SimpleFile/" + testname + ".wsdl-log";
     
@@ -581,7 +587,13 @@ public class WSDLTest extends BaseTestCase
   public void testSimpleFileInvalidSelfImport()
   {
     String testname = "SelfImport";
-    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfImport/SimpleFileInvalid/" + testname + ".wsdl";
+    String fileprefix = FILE_PROTOCOL;
+    // Need to ensure the URL of the test file is as expected.
+    if(PLUGIN_ABSOLUTE_PATH.startsWith("/"))
+    {
+      fileprefix = fileprefix.substring(0, fileprefix.length()-1);
+    }
+    String testfile = fileprefix + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "SelfImport/SimpleFileInvalid/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "SelfImport/SimpleFileInvalid/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "SelfImport/SimpleFileInvalid/" + testname + ".wsdl-log";
     
