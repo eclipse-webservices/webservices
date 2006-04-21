@@ -67,6 +67,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="external_modify" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  This attribute specifies whether the object selection can be specified outside the object selection widget.  An example, of this would be on page one of the web service widget by typing in a text field.  If set to true, the extender of ObjectSelectionWidget must provide a validate(String) implementation that does any necessary validation and sets the object selection on the widget.  The default value of this attribute is false.  Any text fields will be set to READ_ONLY style so the object selection can only be modified with object selection widget implementation directly.
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

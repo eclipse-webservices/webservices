@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
+ *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import org.eclipse.core.resources.IProject;
@@ -67,4 +80,14 @@ public interface IObjectSelectionLaunchable {
 	   * @return returns the string to displayed in the UI for the selected object
 	   */
 	  public  String getObjectSelectionDisplayableString();
+	  
+	  /**
+	   * 
+	   * @param s A string representation of the object selection
+	   * @return true if the string represents a valid object selection.
+       *  The implementation of this method should set the widget object selection
+	   *  according to the input string so that a subsequent call to getObjectSelection
+	   *  will retrieve the correct object.
+	   */  
+	  public boolean validate(String s);
 }

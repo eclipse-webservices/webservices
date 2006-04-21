@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
+ * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -58,4 +59,9 @@ public abstract class AbstractObjectSelectionWidget extends SimpleWidgetDataCont
       // subclasses should override with an appropriate default dialog size for this widget	  
  	  return null;  
    }
+   
+   public boolean validate(String s) {
+    // subclass should override this method
+	return true;
+    }  
   }

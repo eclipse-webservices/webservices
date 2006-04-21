@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
+ *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
 import org.eclipse.core.resources.IFile;
@@ -170,6 +183,15 @@ public class JavaBeanSelectionLaunchable extends AbstractObjectSelectionLaunchab
 	  
 	  public String getObjectSelectionDisplayableString() {		  
 			  return beanClassString_;
+	  }
+	  
+	  public boolean validate(String s) {
+		  beanClassString_ = s;
+		  if (s.length() > 0)
+		  {		
+			  return true;
+		  }
+  		  return false;
 	  }
 
 }

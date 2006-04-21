@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
  * 20060410   136011 kathy@ca.ibm.com - Kathy Chan
+ * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -176,7 +177,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 
     tree = new WSDLSelectionTreeWidget();
     tree.addControls(parent, statusListener);
-    tree.setWebServicesParser(webServicesParser);
+    tree.setWebServicesParser(webServicesParser);    
     
     msgViewer_ = new ValidationMessageViewerWidget();
     msgViewer_.addControls(parent, statusListener);
@@ -466,9 +467,13 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   
   public IStructuredSelection getObjectSelection()
   {
-    return new StructuredSelection( 
-               new WSDLSelectionWrapper( webServicesParser,
-                                         new StructuredSelection(tree.getWsdlURI()) ) );
+	  StructuredSelection ss; 
+	  if (tree != null)
+		  ss = new StructuredSelection(tree.getWsdlURI());
+	  else
+		  ss = new StructuredSelection(wsdlURI_);
+	return new StructuredSelection( 
+               new WSDLSelectionWrapper( webServicesParser, ss));
   }
   
   public WebServicesParser getWebServicesParser()
@@ -483,7 +488,13 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   
   public IProject getProject()
   {
-    String wsdlURI = tree.getWsdlURI();
+	String wsdlURI;
+
+	if (tree != null)
+       wsdlURI = tree.getWsdlURI();
+	else
+		wsdlURI = wsdlURI_;
+	
     if (wsdlURI != null)
     {
       IProject p = getProjectFromURI(wsdlURI);
@@ -504,7 +515,13 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   
   public String getComponentName()
   {
-    String wsdlURI = tree.getWsdlURI();
+	 
+    String wsdlURI;
+    if (tree != null)
+    	wsdlURI = tree.getWsdlURI();
+    else 
+    	wsdlURI = wsdlURI_;
+    
     if (wsdlURI != null)
     {
       String cname = getComponentNameFromURI(wsdlURI);
@@ -572,4 +589,35 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   public Point getWidgetSize() {	
 	  return new Point( 550, 500 );  
   }
+  
+  public boolean validate(String s) {
+	  String wsURI = s;
+	    
+	    if (wsURI.indexOf(':') < 0)
+	    {
+	      IFile file = uri2IFile(wsURI);
+	      if (file != null)
+	        wsURI = iFile2URI(file);
+	    }
+	    if (wsURI != null && wsURI.indexOf(':') >= 0 && webServicesParser.getWebServiceEntityByURI(wsURI) == null)
+	    {
+	      WSDLSelectionConditionCommand cmd = new WSDLSelectionConditionCommand();
+	      cmd.setWebServicesParser(webServicesParser);
+	      cmd.setWebServiceURI(wsURI);
+	      cmd.execute(null, null);
+	    }
+		
+	    // prime widget based on the string
+	    wsdlURI_ = wsURI;
+	    if (tree != null)
+	      tree.setWebServiceURI(wsURI);
+	    
+	    WebServiceEntity entity = webServicesParser.getWebServiceEntityByURI(wsURI);
+	    if (entity != null && entity.getType() == WebServiceEntity.TYPE_WSDL)
+             return true;
+	    else
+	    	return false;
+	    
+  }  
+ 
 }

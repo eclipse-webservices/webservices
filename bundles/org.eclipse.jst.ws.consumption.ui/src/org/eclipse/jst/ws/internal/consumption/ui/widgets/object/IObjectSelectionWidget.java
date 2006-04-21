@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
+ * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -84,4 +85,10 @@ public interface IObjectSelectionWidget extends WidgetDataContributor
    */
   public Point getWidgetSize();
   
+  /**
+   * 
+   * @param s A string representation of the object selection
+   * @return true if the string represents a valid object selection
+   */  
+  public boolean validate(String s);
 }

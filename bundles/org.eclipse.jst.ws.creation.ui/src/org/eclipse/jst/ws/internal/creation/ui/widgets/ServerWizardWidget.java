@@ -21,6 +21,7 @@
  * 20060420   136705 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   136182 kathy@ca.ibm.com - Kathy Chan
  * 20060420   137820 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -40,6 +41,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.IObjectSelectionLaunchable;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ProjectSelectionDialog;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WebServiceClientTypeWidget;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.IObjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionRegistry;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionWidget;
@@ -56,6 +58,8 @@ import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -112,7 +116,10 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	 
 	private ScaleSelectionListener scaleSelectionListener = new ScaleSelectionListener();
 	private Listener statusListener_;
+	private ModifyListener objectModifyListener_ ;
 	private int validationState_;
+	boolean validObjectSelection_ = true;
+	boolean typedText_=false;
 
 	private ImageRegistry imageReg_;
 	
@@ -216,7 +223,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 				int oldScenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(oldTypeId);
 				int currentScenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(currentTypeId);
 				if (!oldTypeId.equals(currentTypeId)) {					
-					objectSelectionWidget_ = getSelectionWidget();
+			      objectSelectionWidget_ = getSelectionWidget();
 					// change the label for the service
 					// implementation/definition based on the web service type
 					handleTypeChange();					
@@ -234,11 +241,11 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 						//clear the object selection field.
 						serviceImpl_.setText("");
 					}					
-					validationState_ = ValidationUtils.VALIDATE_ALL;
-					statusListener_.handleEvent(null);
+			   validationState_ = ValidationUtils.VALIDATE_ALL;
+			   statusListener_.handleEvent(null);			   
 					
-				}
 			}
+		  }
 			
 		});
 		
@@ -255,6 +262,34 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			serviceImpl_.setLayoutData( griddata );
 			serviceImpl_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL);
 			utils.createInfoPop(serviceImpl_, INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL);
+			
+			objectModifyListener_ = new ModifyListener(){
+				public void modifyText(ModifyEvent e) {
+					typedText_ = true;
+					
+					validationState_ = ValidationUtils.VALIDATE_ALL;
+						statusListener_.handleEvent(null);
+						
+						if (serviceImpl_.getText().trim().equals(""))
+							validObjectSelection_ = false;
+						
+						if (validObjectSelection_)
+						{
+							if (objectSelectionWidget_ instanceof IObjectSelectionLaunchable)
+						       {
+								IObjectSelectionLaunchable launchable = (IObjectSelectionLaunchable)objectSelectionWidget_;
+								callObjectTransformation(launchable.getObjectSelection(), launchable.getProject(), launchable.getComponentName());								
+						       }
+							else 
+							{
+								IObjectSelectionWidget widget = (IObjectSelectionWidget)objectSelectionWidget_;
+								callObjectTransformation(widget.getObjectSelection(), widget.getProject(), widget.getComponentName());
+						    }	
+						}
+				}
+			};
+			
+			serviceImpl_.addModifyListener(objectModifyListener_);
 
 			browseButton_ = utils.createPushButton(typeComposite,
 					ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
@@ -424,7 +459,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		}
 
 		return this;
-	}
+	}	
 	
 	private void launchProjectDialog()
 	{
@@ -502,14 +537,13 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	public Boolean getInstallClient() {		
 		return clientWidget_.getInstallClient();
 	}
+	
+	
 
-	private void handleTypeChange()
+private void handleTypeChange()
 	{
 		if (!preferencesPage_) {
-			
-		   int index = webserviceType_.getSelectionIndex();	
-		   String typeId = labelIds_.getIds_()[index];
-		   int scenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeId);
+		   int scenario = getWebServiceScenario();
 		   
 		   if (scenario == WebServiceScenario.BOTTOMUP)
 		   {
@@ -628,10 +662,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	}
 
 	public Boolean getGenerateProxy() {
-		int clientSelection = clientWidget_.getClientGeneration();
-		if (clientSelection <= ScenarioContext.WS_DEVELOP)
-		  return new Boolean(true);
-		return new Boolean(false);		
+		return new Boolean(clientWidget_.getGenerateProxy());		
 	}
 
 	public void setClientGeneration(int value)
@@ -671,21 +702,22 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		return objectSelection_;		
 	}
 	
-	
 	public void setObjectSelection(IStructuredSelection selection )
 	{
-        objectSelection_ = selection;
+		objectSelection_ = selection;
         if (selection != null && selection.size()==1)
         {
         	//Update the serviceImpl_ field.
         	Object[] selectionArray = selection.toArray();
         	Object selectedObject = selectionArray[0];
-        	if (selectedObject instanceof String)
+        	if (selectedObject instanceof String && !typedText_)
         	{
-        		serviceImpl_.setText((String)selectedObject);
-	}
+        		serviceImpl_.removeModifyListener(objectModifyListener_);
+        		serviceImpl_.setText((String)selectedObject);  
+        		serviceImpl_.addModifyListener(objectModifyListener_);
+	        }
         }
-	
+        typedText_=false;	
 	}
 	
 	public WebServicesParser getWebServicesParser()
@@ -709,6 +741,11 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			IStatus missingFieldStatus = checkMissingFieldStatus();
 			if (missingFieldStatus.getSeverity() == IStatus.ERROR) {
 				return missingFieldStatus;
+			}			
+
+			IStatus invalidServiceImplStatus = checkServiceImplTextStatus();
+			if (invalidServiceImplStatus.getSeverity() == IStatus.ERROR){
+				return invalidServiceImplStatus;
 			}
 
 			IStatus possibleErrorStatus = checkErrorStatus();
@@ -730,7 +767,49 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		}
 		return status;
 	}
+	
+	/*call validation code in the object selection widget to ensure
+	 any modifications to the serviceImpl_ field are valid*/
+	private IStatus checkServiceImplTextStatus() {
+		
+		String fieldText = serviceImpl_.getText().trim();
 
+		if (objectSelectionWidget_ == null)
+		{
+			objectSelectionWidget_ = getSelectionWidget();
+		}
+		
+		if (objectSelectionWidget_ instanceof IObjectSelectionLaunchable)
+		    {      	
+				IObjectSelectionLaunchable launchable = (IObjectSelectionLaunchable)objectSelectionWidget_;
+				validObjectSelection_ = launchable.validate(fieldText);
+			}
+			else 
+			{
+				IObjectSelectionWidget widget = (IObjectSelectionWidget)objectSelectionWidget_;
+				validObjectSelection_ = widget.validate(fieldText);
+			}
+		
+		if (!validObjectSelection_)
+		{
+			int scenario = getWebServiceScenario();
+			
+			if (scenario == WebServiceScenario.BOTTOMUP)
+				return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_INVALID_SERVICE_IMPL);
+			else
+				return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_INVALID_SERVICE_DEF);			
+		}		
+		
+		return Status.OK_STATUS;
+	}
+
+	private int getWebServiceScenario()
+	{
+		   int index = webserviceType_.getSelectionIndex();	
+		   String typeId = labelIds_.getIds_()[index];
+		   return WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeId);		
+	}
+	
 	private IStatus checkMissingFieldStatus() {
 
 		// 1. Check for missing fields on service side
@@ -743,7 +822,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		boolean needEar = getServiceNeedEAR();
 		String earProjectName = getServiceEarProjectName();
 		String projectTypeId = getServiceComponentType();
-
+		
 		IStatus serviceMissingFieldStatus = valUtils.checkMissingFieldStatus(validationState_, typeId, serviceImpl,
 				runtimeId, serverId, projectName, needEar, earProjectName, projectTypeId, false);
 		if (serviceMissingFieldStatus.getSeverity() == IStatus.ERROR) {
@@ -760,7 +839,6 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		}
 
 		return Status.OK_STATUS;
-
 	}
 
 	private IStatus checkErrorStatus() {
@@ -1046,7 +1124,9 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		            {
                         try
 		            	{
-		            	   Object object = elements[i].createExecutableExtension("class");		                	
+		            	   Object object = elements[i].createExecutableExtension("class");
+		            	   String modifyString = elements[i].getAttribute("external_modify");
+		            	   serviceImpl_.setEditable(new Boolean(modifyString).booleanValue());
 		                   return object;
 		                }
 		            	catch (Throwable t){ }
@@ -1193,6 +1273,25 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		return getServiceNeedEAR();
 		
 	}
+	
+	private void callObjectTransformation(IStructuredSelection objectSelection,
+			IProject project, String componentName)
+	{
+		ObjectSelectionOutputCommand objOutputCommand = new ObjectSelectionOutputCommand();
+		   objOutputCommand.setTypeRuntimeServer(getServiceTypeRuntimeServer());
+		   objOutputCommand.setObjectSelection(objectSelection);
+	       objOutputCommand.setProject(project);
+	       objOutputCommand.setComponentName(componentName);			   
+	       
+	       objOutputCommand.execute(null, null);
+        
+	       setWebServicesParser(objOutputCommand.getWebServicesParser());
+	       setObjectSelection(objOutputCommand.getObjectSelection());
+	       setComponentName(objOutputCommand.getComponentName());
+	       setProject(objOutputCommand.getProject());      		       
+	       refreshServerRuntimeSelection();  
+	}
+	
 	private class ScaleSelectionListener implements SelectionListener
 	{
 		public void widgetSelected(SelectionEvent e) {			
@@ -1253,9 +1352,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		public void widgetSelected(SelectionEvent e) {     
 			   
 			  if (objectSelectionWidget_ == null)
-				   objectSelectionWidget_ = getSelectionWidget();			
-			   
-			   ObjectSelectionOutputCommand objOutputCommand = new ObjectSelectionOutputCommand();
+				   objectSelectionWidget_ = getSelectionWidget();
+			  
 			   IStructuredSelection objectSelection = null;
 			   IProject project = null;
 			   String componentName="";
@@ -1268,7 +1366,9 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		         result = launchable.launch(Workbench.getInstance().getActiveWorkbenchWindow().getShell());
 		         if (result == Dialog.OK)
 		         {
+		        	 serviceImpl_.removeModifyListener(objectModifyListener_);
 			         serviceImpl_.setText(launchable.getObjectSelectionDisplayableString());
+			         serviceImpl_.addModifyListener(objectModifyListener_);
 			         objectSelection = launchable.getObjectSelection();
 			         project = launchable.getProject();
 			         componentName= launchable.getComponentName();
@@ -1281,7 +1381,9 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			       result = browseDialog_.open();
 			       if (result == Dialog.OK)
 			       {
+			    	   serviceImpl_.removeModifyListener(objectModifyListener_);
 				       serviceImpl_.setText(browseDialog_.getDisplayableSelectionString());
+				       serviceImpl_.addModifyListener(objectModifyListener_);
 				       objectSelection = browseDialog_.getObjectSelection();
 				       project = browseDialog_.getProject();
 				       componentName= browseDialog_.getComponentName();			       
@@ -1291,18 +1393,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			   // call ObjectSelectionOutputCommand to carry out any transformation on the objectSelection
 			   if (result == Dialog.OK)
 			   {
-				   objOutputCommand.setTypeRuntimeServer(getServiceTypeRuntimeServer());
-				   objOutputCommand.setObjectSelection(objectSelection);
-			       objOutputCommand.setProject(project);
-			       objOutputCommand.setComponentName(componentName);			   
-			       
-			       objOutputCommand.execute(null, null);
-	               
-			       setWebServicesParser(objOutputCommand.getWebServicesParser());
-			       setObjectSelection(objOutputCommand.getObjectSelection());
-			       setComponentName(objOutputCommand.getComponentName());
-			       setProject(objOutputCommand.getProject());	       		       
-			       refreshServerRuntimeSelection();  
+				   callObjectTransformation(objectSelection, project, componentName);				   
 			       validationState_ = ValidationUtils.VALIDATE_ALL;
 			       statusListener_.handleEvent(null); // validate the page
 			   }			   

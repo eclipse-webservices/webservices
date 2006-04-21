@@ -12,6 +12,7 @@
  * 20060407   135415 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060417   136390/136159 joan@ca.ibm.com - Joan Haggarty
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -28,6 +29,8 @@ import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
@@ -65,7 +68,10 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   private ResourceContext resourceContext_;
   
   private Listener statusListener_;
+  private ModifyListener objectModifyListener_ ;
   private int validationState_;
+  private boolean validObjectSelection_ = true;
+  private WSDLSelectionWidgetWrapper wsdlValidatorWidget_;
 
   /* CONTEXT_ID WSWSCEN0020 for the Service Implemenation text field of the Scenario Page */
 	 private String INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL = "WSWSCEN0020";
@@ -90,7 +96,21 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   	Composite typeComposite = utils.createComposite(parent, 3);
 	serviceImpl_ = utils.createText(typeComposite, ConsumptionUIMessages.LABEL_WEBSERVICEDEF, 
 			ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL,
-			INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL, SWT.LEFT | SWT.BORDER | SWT.READ_ONLY);
+			INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL, SWT.LEFT | SWT.BORDER );
+	
+	objectModifyListener_ = new ModifyListener(){
+		public void modifyText(ModifyEvent e) {
+		   		validationState_ = ValidationUtils.VALIDATE_ALL;
+				statusListener_.handleEvent(null);
+				if (validObjectSelection_)
+					callObjectTransformation(wsdlValidatorWidget_.getProject(), 
+							wsdlValidatorWidget_.getComponentName(), 
+							wsdlValidatorWidget_.getWsdlURI());
+		}
+	};
+	
+	serviceImpl_.addModifyListener(objectModifyListener_);
+	
 	browseButton_ = utils.createPushButton(typeComposite,
 			ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
 	
@@ -216,7 +236,9 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
      {
        if (wsdlDialogDisplayableString != null && wsdlDialogDisplayableString.length() > 0)
        {
-    	   serviceImpl_.setText(wsdlDialogDisplayableString);     	 
+    	   serviceImpl_.removeModifyListener(objectModifyListener_);
+    	   serviceImpl_.setText(wsdlDialogDisplayableString);
+    	   serviceImpl_.addModifyListener(objectModifyListener_);
        }
        else 
        {
@@ -226,7 +248,9 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
     	   //a non-null WSDLSelectionWidget.
     	   EclipseIPath2URLStringTransformer transformer = new EclipseIPath2URLStringTransformer();
     	   webServiceURI_ = (String)transformer.transform(uri);
+    	   serviceImpl_.removeModifyListener(objectModifyListener_);
     	   serviceImpl_.setText(uri);    	 
+    	   serviceImpl_.addModifyListener(objectModifyListener_);
        }
      }
      
@@ -321,9 +345,6 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 		//new up ServerRuntimeSelectionWidgetDefaultingCommand
 		ClientRuntimeSelectionWidgetDefaultingCommand clientRTDefaultCmd = new ClientRuntimeSelectionWidgetDefaultingCommand();
 		
-		// jvh - don't seem to need these??
-	/*	clientRTDefaultCmd.setClientInitialSelection();  //selected in object selection
-		clientRTDefaultCmd.setInitialInitialSelection();  //original selection...*/		
 		clientRTDefaultCmd.setResourceContext(resourceContext_);
 		clientRTDefaultCmd.setClientEarProjectName(getClientEarProjectName());
 		clientRTDefaultCmd.setClientInitialProject(getProject());  
@@ -341,9 +362,6 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 		setClientProjectName(clientRTDefaultCmd.getClientProjectName());
 		setClientRuntimeId(clientRTDefaultCmd.getClientRuntimeId());
 		setClientTypeRuntimeServer(clientRTDefaultCmd.getClientTypeRuntimeServer());
-		
-		//setServiceRuntimeId(clientRTDefaultCmd.getXXX()));
-		  
 	}
   
 	public IStatus getStatus() {
@@ -353,6 +371,11 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 			IStatus missingFieldStatus = checkMissingFieldStatus();
 			if (missingFieldStatus.getSeverity() == IStatus.ERROR) {
 				return missingFieldStatus;
+			}
+			
+			IStatus invalidServiceImplStatus = checkServiceImplTextStatus();
+			if (invalidServiceImplStatus.getSeverity() == IStatus.ERROR){
+				return invalidServiceImplStatus;
 			}
 
 			IStatus possibleErrorStatus = checkErrorStatus();
@@ -376,7 +399,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 
 		if (validationState_ == ValidationUtils.VALIDATE_ALL) {
 			if (serviceImpl_.getText().trim().length() == 0) {
-				return StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_NO_OBJECT_SELECTION, new String[]{ConsumptionUIMessages.LABEL_WEBSERVICEIMPL}));
+				return StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_NO_SERVICE_SELECTION, new String[]{ConsumptionUIMessages.LABEL_WEBSERVICEIMPL}));
 			}
 		}
 		
@@ -405,6 +428,45 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 		return Status.OK_STATUS;
 	}	
 	
+	/*call validation code in the object selection widget to ensure
+	 any modifications to the serviceImpl_ field are valid*/
+	private IStatus checkServiceImplTextStatus() {
+		
+		String fieldText = serviceImpl_.getText().trim();
+
+		if (wsdlValidatorWidget_ == null)
+			wsdlValidatorWidget_ = new WSDLSelectionWidgetWrapper();
+		
+		validObjectSelection_ = wsdlValidatorWidget_.validate(fieldText);
+				
+		if (!validObjectSelection_)
+		{
+			return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_INVALID_SERVICE_DEF);			
+		}		
+		
+		return Status.OK_STATUS;
+	}
+	
+	private void callObjectTransformation(IProject project, String componentName,
+			String wsdlURI)
+	{
+		   WSDLSelectionOutputCommand wsdlOutputCommand = new WSDLSelectionOutputCommand();
+		   wsdlOutputCommand.setComponentName(componentName);
+		   wsdlOutputCommand.setProject(project);
+		   wsdlOutputCommand.setWsdlURI(wsdlURI);
+		   wsdlOutputCommand.setTestService(getTestService().booleanValue());
+		   wsdlOutputCommand.setWebServicesParser(getWebServicesParser());
+		
+           wsdlOutputCommand.execute(null, null);
+      
+           setComponentName(wsdlOutputCommand.getComponentName());
+           setProject(wsdlOutputCommand.getProject());
+           setWebServicesParser(wsdlOutputCommand.getWebServicesParser());
+           setWebServiceURI(wsdlOutputCommand.getWsdlURI());
+           
+	       refreshClientRuntimeSelection();
+     }
+	
   private class WSDLBrowseListener implements SelectionListener
   {
 	  public void widgetDefaultSelected(SelectionEvent e) {
@@ -421,24 +483,14 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 		   
 		   if (result == Dialog.OK)
 		   {
+			   serviceImpl_.removeModifyListener(objectModifyListener_);
 			   serviceImpl_.setText(wsdlDialog_.getDisplayableSelectionString());
+			   serviceImpl_.addModifyListener(objectModifyListener_);
 			   
 			   // call WSDLSelectionOutputCommand to carry out any transformation on the objectSelection
-			   WSDLSelectionOutputCommand wsdlOutputCommand = new WSDLSelectionOutputCommand();
-			   wsdlOutputCommand.setComponentName(wsdlDialog_.getComponentName());
-			   wsdlOutputCommand.setProject(wsdlDialog_.getProject());
-			   wsdlOutputCommand.setWsdlURI(wsdlDialog_.getWebServiceURI());
-			   wsdlOutputCommand.setTestService(getTestService().booleanValue());
-			   wsdlOutputCommand.setWebServicesParser(getWebServicesParser());
-			
-	           wsdlOutputCommand.execute(null, null);
-	      
-	           setComponentName(wsdlOutputCommand.getComponentName());
-	           setProject(wsdlOutputCommand.getProject());
-	           setWebServicesParser(wsdlOutputCommand.getWebServicesParser());
-	           setWebServiceURI(wsdlOutputCommand.getWsdlURI());
-	       
-		       refreshClientRuntimeSelection();   
+	           callObjectTransformation(wsdlDialog_.getProject(),
+	        			wsdlDialog_.getComponentName(), wsdlDialog_.getWebServiceURI());
+	           
 		       validationState_ = ValidationUtils.VALIDATE_ALL;
 		       clientWidget_.setValidationState(ValidationUtils.VALIDATE_ALL);
 		       statusListener_.handleEvent(null); //validate the page
