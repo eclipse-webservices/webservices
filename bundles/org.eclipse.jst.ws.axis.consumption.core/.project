@@ -3,7 +3,6 @@
 	<name>org.eclipse.jst.ws.axis.consumption.core</name>
 	<comment></comment>
 	<projects>
-		<project>org.eclipse.wst.command.env.core</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -3,16 +3,6 @@
 	<name>org.eclipse.jst.ws.axis.consumption.ui</name>
 	<comment></comment>
 	<projects>
-		<project>org.eclipse.wst.command.env</project>
-		<project>org.eclipse.wst.command.env.core</project>
-		<project>org.eclipse.jst.ws</project>
-		<project>org.eclipse.jst.ws.axis.consumption.core</project>
-		<project>org.eclipse.jst.ws.consumption</project>
-		<project>org.eclipse.jst.ws.consumption.ui</project>
-		<project>org.eclipse.jst.ws.discovery.core</project>
-		<project>org.eclipse.jst.ws.ui</project>
-		<project>org.eclipse.wst.wsdl</project>
-		<project>org.eclipse.wst.ws.parser</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -3,9 +3,6 @@
 	<name>org.eclipse.jst.ws</name>
 	<comment></comment>
 	<projects>
-		<project>org.eclipse.wst.command.env</project>
-		<project>org.eclipse.wst.command.env.core</project>
-		<project>org.eclipse.wst.wsdl</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

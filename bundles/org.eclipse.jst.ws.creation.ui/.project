@@ -3,12 +3,6 @@
 	<name>org.eclipse.jst.ws.creation.ui</name>
 	<comment></comment>
 	<projects>
-		<project>org.eclipse.wst.command.env</project>
-		<project>org.eclipse.wst.command.env.core</project>
-		<project>org.eclipse.jst.ws</project>
-		<project>org.eclipse.jst.ws.consumption</project>
-		<project>org.eclipse.jst.ws.consumption.ui</project>
-		<project>org.eclipse.jst.ws.ui</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
