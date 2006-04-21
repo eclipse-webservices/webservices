@@ -34,6 +34,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -137,10 +138,10 @@ public class Util
 		{
 			throw new CoreException(new Status(IStatus.ERROR,"",0,"Unable to locate plugin org.apache.axis",null));
 		}
-		URL axisURL = Platform.find(bundle,new Path("lib/"+jarName));
+		URL axisURL = FileLocator.find(bundle,new Path("lib/"+jarName),null);
 		try
 		{
-			URL localAxisURL = Platform.asLocalURL(axisURL);
+			URL localAxisURL = FileLocator.toFileURL(axisURL);
 			File file = new File(new URI(localAxisURL.toString()));
 			return new Path(file.toString());
 		}
