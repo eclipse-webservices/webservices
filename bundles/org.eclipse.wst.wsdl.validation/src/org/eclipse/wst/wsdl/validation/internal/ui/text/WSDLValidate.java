@@ -66,6 +66,7 @@ public class WSDLValidate
   private static final String PARAM_SCHEMADIR = "-schemaDir";
   private static final String PARAM_SCHEMA = "-schema";
   private static final String PARAM_URIRESOLVER = "-uriresolver";
+  private static final String PARAM_LOGGER = "-logger";
   
   private static final String STRING_EMPTY = "";
   private static final String STRING_SPACE = " ";
@@ -253,6 +254,20 @@ public class WSDLValidate
       {
         String resolverClass = args[++i];
         wsdlValidator.addURIResolver(new URIResolverDelegate(resolverClass, null).getURIResolver());
+      }
+      else if(param.equals(PARAM_LOGGER))
+      {
+    	String loggerClassString = args[++i];
+    	try
+    	{
+    	  Class loggerClass = WSDLValidate.class.getClassLoader().loadClass(loggerClassString);
+    	  ILogger logger = (ILogger)loggerClass.newInstance();
+    	  LoggerFactory.getInstance().setLogger(logger);
+    	}
+    	catch(Exception e)
+    	{
+    	  System.err.println("Unable to load logger class " + loggerClassString + ".");
+    	}
       }
       // a file to validate
       else
