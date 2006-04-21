@@ -13,15 +13,18 @@ package org.eclipse.wst.wsdl.validation.internal.ui.text;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.Vector;
+import java.util.Set;
 
 import org.eclipse.wst.wsdl.validation.internal.ClassloaderWSDLValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
+import org.eclipse.wst.wsdl.validation.internal.WSDLValidationConfiguration;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
 import org.eclipse.wst.wsdl.validation.internal.logging.ILogger;
 import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
@@ -67,6 +70,7 @@ public class WSDLValidate
   private static final String PARAM_SCHEMA = "-schema";
   private static final String PARAM_URIRESOLVER = "-uriresolver";
   private static final String PARAM_LOGGER = "-logger";
+  private static final String PARAM_PROPERTY = "-D";
   
   private static final String STRING_EMPTY = "";
   private static final String STRING_SPACE = " ";
@@ -94,14 +98,20 @@ public class WSDLValidate
   /**
    * Run WSDL validation on a given file.
    * 
-   * @param directory - the current dir for resolving relative file names
-   * @param filename - the name of the file to validate
-   * @param validatorRB - the WSDL validator resource bundle
+   * @param directory 
+   * 		The current dir for resolving relative file names.
+   * @param filename 
+   * 		The name of the file to validate.
+   * @param validatorRB
+   * 		The WSDL validator resource bundle.
+   * @param properties
+   * 		A HashMap with properties for the validation.
    * @throws Exception
    */
-  protected IValidationReport validateFile(String directory, String filename, ResourceBundle validatorRB)
+  protected IValidationReport validateFile(String directory, String filename, ResourceBundle validatorRB, HashMap properties)
     throws Exception
   {
+	WSDLValidationConfiguration configuration = getConfiguration(properties);
     //	resolve the location of the file
     String filelocation = null;
     try
@@ -114,7 +124,7 @@ public class WSDLValidate
       throw new Exception("Unable to resolve WSDL file location");
     }
     // run validation on the file and record the errors and warnings
-    IValidationReport valReport = wsdlValidator.validate(filelocation);
+    IValidationReport valReport = wsdlValidator.validate(filelocation, null, configuration);
     return valReport;
   }
 
@@ -174,7 +184,8 @@ public class WSDLValidate
    */
   public static void main(String[] args)
   {
-    List wsdlFiles = new Vector();
+    List wsdlFiles = new ArrayList();
+    HashMap properties = new HashMap();
     MessageGenerator messGen = null;
     ResourceBundle validatorRB = null;
     try
@@ -269,6 +280,13 @@ public class WSDLValidate
     	  System.err.println("Unable to load logger class " + loggerClassString + ".");
     	}
       }
+      else if(param.startsWith(PARAM_PROPERTY))
+      {
+    	int separator = param.indexOf('=');
+    	String name = param.substring(2, separator);
+    	String value = param.substring(separator+1);
+    	properties.put(name, value);
+      }
       // a file to validate
       else
       {
@@ -294,7 +312,7 @@ public class WSDLValidate
       String wsdlFile = (String)filesIter.next();
       try
       {
-        IValidationReport valReport = wsdlValidator.validateFile(System.getProperty("user.dir"), wsdlFile, validatorRB);
+        IValidationReport valReport = wsdlValidator.validateFile(System.getProperty("user.dir"), wsdlFile, validatorRB, properties);
 
         outputBuffer.append(infoDelim).append("\n");
         outputBuffer.append(messGen.getString(_UI_ACTION_VALIDATING_FILE, wsdlFile)).append(" - ");
@@ -315,5 +333,29 @@ public class WSDLValidate
         System.out.println(e.getMessage());
       }
     }
+  }
+  
+  /**
+   * Get the WSDL validation configuration. The configuration is
+   * set using command line properties.
+   * 
+   * @param properties
+   * 		A HashMap of the properties to add to the configuration.
+   * @return
+   * 		The WSDL validation configuration.
+   */
+  protected WSDLValidationConfiguration getConfiguration(HashMap properties)
+  {
+	WSDLValidationConfiguration configuration = new WSDLValidationConfiguration();
+	Set names = properties.keySet();
+	Iterator namesIter = names.iterator();
+	while(namesIter.hasNext())
+	{
+	  String name = (String)namesIter.next();
+	  String value = (String)properties.get(name);
+	  configuration.setProperty(name, value);
+	}
+	
+	return configuration;
   }
 }
