@@ -17,18 +17,26 @@ import java.io.PrintStream;
  * A logger that will print log info to standard system outputs.
  */
 public class StandardLogger implements ILogger
-{
+{ 
   /* (non-Javadoc)
-   * @see org.eclipse.wst.wsdl.validation.internal.logging.ILogger#log(java.lang.String, int, java.lang.Throwable)
+   * @see org.eclipse.wst.wsdl.validation.internal.logging.ILogger#log(java.lang.String, int)
    */
-  public void log(String error, int severity, Throwable throwable)
-  {
+  public void log(String message, int severity) 
+  {  
 	PrintStream outputStream = System.out;
 	if(severity == ILogger.SEV_ERROR)
 	{
 	  outputStream = System.err;
 	}
-    outputStream.println(error);
-    outputStream.println(throwable);
+    outputStream.println(message);
+  }
+
+/* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.validation.internal.logging.ILogger#log(java.lang.String, int, java.lang.Throwable)
+   */
+  public void log(String error, int severity, Throwable throwable)
+  {
+	log(error, severity);
+	log(throwable.toString(), severity);
   }
 }

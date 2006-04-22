@@ -33,21 +33,33 @@ public class AntLogger implements ILogger
   }
   
   /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.validation.internal.logging.ILogger#log(java.lang.String, int)
+   */
+  public void log(String message, int severity) 
+  {
+    int msgLevel = Project.MSG_ERR;
+    if(severity == ILogger.SEV_WARNING)
+    {
+      msgLevel = Project.MSG_WARN;
+    }
+    else if(severity == ILogger.SEV_INFO)
+    {
+      msgLevel = Project.MSG_INFO;
+    }
+    else if(severity == ILogger.SEV_VERBOSE)
+    {
+      msgLevel = Project.MSG_VERBOSE;
+    }
+    task.log(message, msgLevel);
+  }
+
+  /* (non-Javadoc)
    * @see org.eclipse.wst.wsdl.validation.internal.logging.ILogger#log(java.lang.String, int, java.lang.Throwable)
    */
   public void log(String message, int severity, Throwable throwable) 
   {
-	int msgLevel = Project.MSG_ERR;
-	if(severity == ILogger.SEV_WARNING)
-	{
-	  msgLevel = Project.MSG_WARN;
-	}
-	else if(severity == ILogger.SEV_INFO)
-	{
-	  msgLevel = Project.MSG_INFO;
-	}
-	task.log(message, msgLevel);
-	task.log(throwable.toString(), msgLevel);
+	log(message, severity);
+	log(throwable.toString(), severity);
   }
 
 }

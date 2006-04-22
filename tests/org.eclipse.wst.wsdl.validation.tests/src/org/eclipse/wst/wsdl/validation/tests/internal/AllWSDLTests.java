@@ -49,5 +49,6 @@ public class AllWSDLTests extends junit.framework.TestSuite
     addTest(InlineSchemaGeneratorTest.suite());
     addTestSuite(LineNumberAdjustmentsTest.class);
     addTestSuite(AntLoggerTest.class);
+    addTestSuite(org.eclipse.wst.wsdl.validation.internal.ui.text.WSDLValidateTest.class);
   }
 }

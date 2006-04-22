@@ -24,6 +24,7 @@ public class AntLoggerTestTask extends Task
   protected List errors = new ArrayList();
   protected List warnings = new ArrayList();
   protected List infos = new ArrayList();
+  protected List verboses = new ArrayList();
   
   /* (non-Javadoc)
    * @see org.apache.tools.ant.Task#log(java.lang.String, int)
@@ -41,6 +42,10 @@ public class AntLoggerTestTask extends Task
 	else if(msgLevel == Project.MSG_INFO)
 	{
 	  infos.add(msg);
+	}
+	else if(msgLevel == Project.MSG_VERBOSE)
+	{
+	  verboses.add(msg);
 	}
   }
 
@@ -83,5 +88,16 @@ public class AntLoggerTestTask extends Task
   public List getInfos()
   {
 	return infos;
+  }
+  
+  /**
+   * Get the verboses that were logged.
+   * 
+   * @return
+   * 		The verboses that were logged.
+   */
+  public List getVerboses()
+  {
+	return verboses;
   }
 }

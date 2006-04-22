@@ -50,7 +50,7 @@ public class BaseTestCase extends TestCase
   /* (non-Javadoc)
    * @see junit.framework.TestCase#setUp()
    */
-  protected void setUp()
+  protected void setUp() throws Exception
   {
     PLUGIN_ABSOLUTE_PATH = WSDLValidatorTestsPlugin.getInstallURL();//getPluginLocation();
     

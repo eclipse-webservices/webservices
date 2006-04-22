@@ -32,6 +32,21 @@ public interface ILogger
   public static int SEV_INFO = 2;
   
   /**
+   * Severity verbose for logging.
+   */
+  public static int SEV_VERBOSE = 3;
+  
+  /**
+   * Log a message.
+   * 
+   * @param message 
+   * 		The message to log.
+   * @param severity
+   * 		The severity of the message to log.
+   */
+  public void log(String message, int severity);
+  
+  /**
    * Log a message.
    * 
    * @param message 

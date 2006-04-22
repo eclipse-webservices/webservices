@@ -13,13 +13,12 @@ package org.eclipse.wst.wsdl.validation.internal.ui.text;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import org.eclipse.wst.wsdl.validation.internal.ClassloaderWSDLValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
@@ -28,9 +27,7 @@ import org.eclipse.wst.wsdl.validation.internal.WSDLValidationConfiguration;
 import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
 import org.eclipse.wst.wsdl.validation.internal.logging.ILogger;
 import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
-import org.eclipse.wst.wsdl.validation.internal.resolver.IExtensibleURIResolver;
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolverDelegate;
-import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.ClassloaderWSDL11ValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.WSDL11ValidatorDelegate;
 import org.eclipse.wst.wsdl.validation.internal.xml.XMLCatalog;
@@ -54,76 +51,104 @@ public class WSDLValidate
   private final String FILE_PREFIX = "file:///";
   private static final String VALIDATOR_PROPERTIES =
     org.eclipse.wst.wsdl.validation.internal.Constants.WSDL_VALIDATOR_PROPERTIES_FILE;
-  private static final String UI_PROPERTIES = "validatewsdlui";
-  private static final String _ERROR_WRONG_ARGUMENTS = "_ERROR_WRONG_ARGUMENTS";
-  private static final String _UI_INFORMATION_DELIMITER = "_UI_INFORMATION_DELIMITER";
-  private static final String _UI_ACTION_VALIDATING_FILE = "_UI_ACTION_VALIDATING_FILE";
-  private static final String _UI_VALID = "_UI_VALID";
-  private static final String _UI_INVALID = "_UI_INVALID";
-  private static final String _UI_ERROR_MARKER = "_UI_ERROR_MARKER";
-  private static final String _UI_WARNING_MARKER = "_UI_WARNING_MARKER";
-  //private static final String _ERROR_UNABLE_TO_LOAD_EXT_VALIDATOR = "_ERROR_UNABLE_TO_LOAD_EXT_VALIDATOR";
   
-  private static final String PARAM_WSDL11VAL = "-wsdl11v";
-  private static final String PARAM_EXTVAL = "-extv";
-  private static final String PARAM_SCHEMADIR = "-schemaDir";
-  private static final String PARAM_SCHEMA = "-schema";
-  private static final String PARAM_URIRESOLVER = "-uriresolver";
-  private static final String PARAM_LOGGER = "-logger";
-  private static final String PARAM_PROPERTY = "-D";
+  protected static final String PARAM_WSDL11VAL = "-wsdl11v";
+  protected static final String PARAM_EXTVAL = "-extv";
+  protected static final String PARAM_SCHEMADIR = "-schemaDir";
+  protected static final String PARAM_SCHEMA = "-schema";
+  protected static final String PARAM_URIRESOLVER = "-uriresolver";
+  protected static final String PARAM_LOGGER = "-logger";
+  protected static final String PARAM_PROPERTY = "-D";
+  protected static final String PARAM_VERBOSE = "-verbose";
+  protected static final String PARAM_VERBOSE_SHORT = "-v";
   
   private static final String STRING_EMPTY = "";
   private static final String STRING_SPACE = " ";
   private static final String STRING_DASH = "-";
   
+  String workingdir = System.getProperty("user.dir");
   
-  protected ResourceBundle resourceBundle;
-  protected List errors = null;
-  protected List warnings = null;
-  protected WSDLValidator wsdlValidator;
+  //protected ResourceBundle resourceBundle;
+
+  protected WSDLValidator wsdlValidator = null;
+  protected WSDLValidationConfiguration configuration = null;
+  protected List wsdlFiles = new ArrayList();
+  protected boolean verbose = false;
+  protected ResourceBundle validatorRB = null;
 
   /**
    * Constuctor.
    */
-  public WSDLValidate()
+  protected WSDLValidate()
   {
   	wsdlValidator = new WSDLValidator();
+  	configuration = new WSDLValidationConfiguration();
+  	
+    try
+    {
+      validatorRB = ResourceBundle.getBundle(VALIDATOR_PROPERTIES);
+    }
+    catch (MissingResourceException e)
+    {
+      LoggerFactory.getInstance().getLogger().log("Validation failed: Unable to load the WSDL validator properties file.", ILogger.SEV_ERROR, e);
+    }
   }
   
-  public void addURIResolver(IExtensibleURIResolver uriResolver)
+  /**
+   * Validate the files specified.
+   */
+  protected void validate()
   {
-  	wsdlValidator.addURIResolver(uriResolver);
+	ILogger logger = LoggerFactory.getInstance().getLogger();
+	
+	int numInvalid = 0;
+
+	Iterator filesIter = wsdlFiles.iterator();
+    while (filesIter.hasNext())
+	{
+	  String wsdlFile = (String)filesIter.next();
+	  IValidationReport valReport = validateFile(wsdlFile);
+
+	  if(valReport.hasErrors())
+	  {
+	    numInvalid++;
+	    logger.log(MessageFormat.format(WSDLValidateTextUIMessages._UI_FILE_INVALID, new Object[]{wsdlFile}), ILogger.SEV_INFO);
+	    //logger.log(WSDLValidateTextUIMessages._UI_INFORMATION_DELIMITER, ILogger.SEV_ERROR);
+	    logger.log(getMessages(valReport.getValidationMessages()), ILogger.SEV_INFO);
+	  }
+	  else if(verbose)
+	  {
+	    logger.log(MessageFormat.format(WSDLValidateTextUIMessages._UI_FILE_VALID, new Object[]{wsdlFile}), ILogger.SEV_VERBOSE);
+	  }
+	}
+    
+    // Log the summary.
+    logger.log(MessageFormat.format(WSDLValidateTextUIMessages._UI_VALIDATION_SUMMARY, new Object[]{new Integer(wsdlFiles.size()), new Integer(numInvalid)}), ILogger.SEV_INFO);
   }
 
   /**
    * Run WSDL validation on a given file.
    * 
-   * @param directory 
-   * 		The current dir for resolving relative file names.
    * @param filename 
    * 		The name of the file to validate.
-   * @param validatorRB
-   * 		The WSDL validator resource bundle.
-   * @param properties
-   * 		A HashMap with properties for the validation.
    * @throws Exception
    */
-  protected IValidationReport validateFile(String directory, String filename, ResourceBundle validatorRB, HashMap properties)
-    throws Exception
-  {
-	WSDLValidationConfiguration configuration = getConfiguration(properties);
-    //	resolve the location of the file
+  protected IValidationReport validateFile(String filename)
+  {	
+    // Resolve the location of the file.
     String filelocation = null;
     try
     {
-      URL test = StringUtils.getURL(new URL(FILE_PREFIX + directory + "/"), filename);
-      filelocation = test.toExternalForm();
+      URL fileURL = StringUtils.getURL(new URL(FILE_PREFIX + workingdir + "/"), filename);
+      filelocation = fileURL.toExternalForm();
     }
     catch (MalformedURLException e)
     {
-      throw new Exception("Unable to resolve WSDL file location");
+      // Do nothing. The WSDL validator will handle the error.
+      //LoggerFactory.getInstance().getLogger().log(MessageFormat.format(WSDLValidateTextUIMessages._ERROR_UNABLE_TO_READ_FILE, new Object[]{filename}), ILogger.SEV_ERROR);
     }
-    // run validation on the file and record the errors and warnings
+    
+    // Run validation on the file.
     IValidationReport valReport = wsdlValidator.validate(filelocation, null, configuration);
     return valReport;
   }
@@ -131,12 +156,12 @@ public class WSDLValidate
   /**
    * Returns a String with formatted output for a list of messages.
    * 
-   * @param messages The messages to get.
-   * @param errormarker The marker to use to label error messages.
-   * @param warningmarker The marker to use to label warning messages.
-   * @return A string with a formatted list of the messages.
+   * @param messages 
+   * 		The messages to get.
+   * @return 
+   * 		A string with a formatted list of the messages.
    */
-  protected String getMessages(IValidationMessage[] messages, String errormarker, String warningmarker)
+  protected String getMessages(IValidationMessage[] messages)
   {
     StringBuffer outputBuffer = new StringBuffer();
     if (messages != null)
@@ -151,11 +176,11 @@ public class WSDLValidate
         int severity = message.getSeverity();
         if (severity == IValidationMessage.SEV_ERROR)
         {
-          marker = errormarker;
+          marker = WSDLValidateTextUIMessages._UI_ERROR_MARKER;
         }
         else if (severity == IValidationMessage.SEV_WARNING)
         {
-          marker = warningmarker;
+          marker = WSDLValidateTextUIMessages._UI_WARNING_MARKER;
         }
         else
         {
@@ -168,8 +193,11 @@ public class WSDLValidate
           .append(":")
           .append(message.getColumn())
           .append(STRING_SPACE)
-          .append(message.getMessage())
-          .append("\n");
+          .append(message.getMessage());
+        if(i != numMessages -1)
+        {
+          outputBuffer.append("\n");
+        }
       }
     }
     return outputBuffer.toString();
@@ -184,178 +212,122 @@ public class WSDLValidate
    */
   public static void main(String[] args)
   {
-    List wsdlFiles = new ArrayList();
-    HashMap properties = new HashMap();
-    MessageGenerator messGen = null;
-    ResourceBundle validatorRB = null;
-    try
+    // No arguments specified. Print usage.
+	if (args.length < 1)
     {
-      ResourceBundle uiRB = ResourceBundle.getBundle(UI_PROPERTIES);
-      messGen = new MessageGenerator(uiRB);
-      validatorRB = ResourceBundle.getBundle(VALIDATOR_PROPERTIES);
-    }
-    catch (MissingResourceException e)
-    {
-      LoggerFactory.getInstance().getLogger().log("Validation failed: Unable to load the properties file.", ILogger.SEV_ERROR, e);
-      return;
-    }
-    // no arguments specified. Print usage.
-    if (args.length < 1)
-    {
-      System.out.println(messGen.getString(_ERROR_WRONG_ARGUMENTS));
-      return;
-    }
-
-    int argslength = args.length;
-
-    WSDLValidate wsdlValidator = new WSDLValidate();
-    // go through the parameters
-    for (int i = 0; i < argslength; i++)
-    {
-      String param = args[i];
-
-      // registering a validator
-      if (param.equalsIgnoreCase(WSDLValidate.PARAM_WSDL11VAL) || param.equalsIgnoreCase(WSDLValidate.PARAM_EXTVAL))
-      {
-
-        String validatorClass = args[++i];
-        if (!validatorClass.startsWith(WSDLValidate.STRING_DASH))
-        {
-          String namespace = args[++i];
-
-          if (!namespace.startsWith(WSDLValidate.STRING_DASH))
-          {
-            if(param.equalsIgnoreCase(WSDLValidate.PARAM_WSDL11VAL))
-            {  
-              WSDL11ValidatorDelegate delegate = new ClassloaderWSDL11ValidatorDelegate(validatorClass);
-              wsdlValidator.wsdlValidator.registerWSDL11Validator(namespace, delegate);
-            }
-            else if(param.equalsIgnoreCase(WSDLValidate.PARAM_EXTVAL))
-            {
-              ClassloaderWSDLValidatorDelegate delegate = new ClassloaderWSDLValidatorDelegate(validatorClass);
-              wsdlValidator.wsdlValidator.registerWSDLExtensionValidator(namespace, delegate);
-            }
-          }
-          else
-          {
-            namespace = null;
-            i--;
-          }
-        }
-        else
-        {
-          validatorClass = null;
-          i--;
-        }  
-      }
-      // registering a directory with schemas
-      else if (param.equalsIgnoreCase(WSDLValidate.PARAM_SCHEMADIR))
-      {
-        String xsdDir = args[++i];
-        XMLCatalog.addSchemaDir(xsdDir);
-      }
-      // registering a schema
-      else if (param.equalsIgnoreCase(WSDLValidate.PARAM_SCHEMA))
-      {
-        String publicid = args[++i];
-        String systemid = args[++i];
-        XMLCatalog.addEntity(new XMLCatalogEntityHolder(publicid, systemid));
-      }
-      else if(param.equalsIgnoreCase(PARAM_URIRESOLVER))
-      {
-        String resolverClass = args[++i];
-        wsdlValidator.addURIResolver(new URIResolverDelegate(resolverClass, null).getURIResolver());
-      }
-      else if(param.equals(PARAM_LOGGER))
-      {
-    	String loggerClassString = args[++i];
-    	try
-    	{
-    	  Class loggerClass = WSDLValidate.class.getClassLoader().loadClass(loggerClassString);
-    	  ILogger logger = (ILogger)loggerClass.newInstance();
-    	  LoggerFactory.getInstance().setLogger(logger);
-    	}
-    	catch(Exception e)
-    	{
-    	  System.err.println("Unable to load logger class " + loggerClassString + ".");
-    	}
-      }
-      else if(param.startsWith(PARAM_PROPERTY))
-      {
-    	int separator = param.indexOf('=');
-    	String name = param.substring(2, separator);
-    	String value = param.substring(separator+1);
-    	properties.put(name, value);
-      }
-      // a file to validate
-      else
-      {
-        if(!param.startsWith(WSDLValidate.STRING_DASH))
-        {  
-          wsdlFiles.add(param);
-        }
-      }
-
-    }
-    // validate the file
-    StringBuffer outputBuffer = null;
-    String infoDelim = messGen.getString(_UI_INFORMATION_DELIMITER);
-    String valid = messGen.getString(_UI_VALID);
-    String invalid = messGen.getString(_UI_INVALID);
-    String errormarker = messGen.getString(_UI_ERROR_MARKER);
-    String warningmarker = messGen.getString(_UI_WARNING_MARKER);
-
-    Iterator filesIter = wsdlFiles.iterator();
-    while (filesIter.hasNext())
-    {
-      outputBuffer = new StringBuffer();
-      String wsdlFile = (String)filesIter.next();
-      try
-      {
-        IValidationReport valReport = wsdlValidator.validateFile(System.getProperty("user.dir"), wsdlFile, validatorRB, properties);
-
-        outputBuffer.append(infoDelim).append("\n");
-        outputBuffer.append(messGen.getString(_UI_ACTION_VALIDATING_FILE, wsdlFile)).append(" - ");
-        if (!valReport.hasErrors())
-        {
-          outputBuffer.append(valid);
-        }
-        else
-        {
-          outputBuffer.append(invalid);
-        }
-        outputBuffer.append("\n").append(infoDelim).append("\n");
-        outputBuffer.append(wsdlValidator.getMessages(valReport.getValidationMessages(), errormarker, warningmarker));
-        System.out.println(outputBuffer.toString());
-      }
-      catch (Exception e)
-      {
-        System.out.println(e.getMessage());
-      }
-    }
+	  System.err.println(WSDLValidateTextUIMessages._ERROR_WRONG_ARGUMENTS);
+	  System.exit(0);
+	}
+	
+	WSDLValidate wsdlValidate = new WSDLValidate();
+	wsdlValidate.parseArguments(args);
+	wsdlValidate.validate();
   }
   
   /**
-   * Get the WSDL validation configuration. The configuration is
-   * set using command line properties.
+   * Parse the arguments specified for this WSDLValidate task and
+   * configure validation.
    * 
-   * @param properties
-   * 		A HashMap of the properties to add to the configuration.
-   * @return
-   * 		The WSDL validation configuration.
+   * @param args
+   * 		The arguments specified for this task.
    */
-  protected WSDLValidationConfiguration getConfiguration(HashMap properties)
+  protected void parseArguments(String[] args)
   {
-	WSDLValidationConfiguration configuration = new WSDLValidationConfiguration();
-	Set names = properties.keySet();
-	Iterator namesIter = names.iterator();
-	while(namesIter.hasNext())
+	int numargs = args.length;
+
+	for (int i = 0; i < numargs; i++)
 	{
-	  String name = (String)namesIter.next();
-	  String value = (String)properties.get(name);
-	  configuration.setProperty(name, value);
-	}
-	
-	return configuration;
+	  String param = args[i];
+
+	  // Registering an extension validator or WSDL 1.1 extension validator.
+	  if (param.equals(WSDLValidate.PARAM_WSDL11VAL) 
+			  || param.equals(WSDLValidate.PARAM_EXTVAL))
+	  {
+	    String namespace = args[++i];
+	    if (!namespace.startsWith(WSDLValidate.STRING_DASH))
+	    {
+	      String validatorClass = args[++i];
+
+	      if (!validatorClass.startsWith(WSDLValidate.STRING_DASH))
+	      {
+	        if(param.equalsIgnoreCase(WSDLValidate.PARAM_WSDL11VAL))
+	        {  
+	          WSDL11ValidatorDelegate delegate = new ClassloaderWSDL11ValidatorDelegate(validatorClass);
+	          wsdlValidator.registerWSDL11Validator(namespace, delegate);
+	        }
+	        else if(param.equalsIgnoreCase(WSDLValidate.PARAM_EXTVAL))
+	        {
+	          ClassloaderWSDLValidatorDelegate delegate = new ClassloaderWSDLValidatorDelegate(validatorClass);
+	          wsdlValidator.registerWSDLExtensionValidator(namespace, delegate);
+	        }
+	      }
+	      else
+	      {
+	        i--;
+	      }
+	    }
+	    else
+	    {
+	      i--;
+	    }  
+	  }
+	  // Register a directory with schemas.
+	  else if (param.equalsIgnoreCase(WSDLValidate.PARAM_SCHEMADIR))
+	  {
+	    String xsdDir = args[++i];
+	    XMLCatalog.addSchemaDir(xsdDir);
+	  }
+	  // Register a schema.
+	  // TODO: Replace this with an XML catalog.
+	  else if (param.equalsIgnoreCase(WSDLValidate.PARAM_SCHEMA))
+	  {
+	    String publicid = args[++i];
+	    String systemid = args[++i];
+	    XMLCatalog.addEntity(new XMLCatalogEntityHolder(publicid, systemid));
+	  }
+	  // Register a URI resolver. 
+	  // TODO: Determine if this is appropriate for the text UI.
+	  else if(param.equalsIgnoreCase(PARAM_URIRESOLVER))
+	  {
+	    String resolverClass = args[++i];
+	    wsdlValidator.addURIResolver(new URIResolverDelegate(resolverClass, null).getURIResolver());
+	  }
+	  // Configure the logger.
+	  else if(param.equals(PARAM_LOGGER))
+	  {
+	    String loggerClassString = args[++i];
+	    try
+	    {
+	      Class loggerClass = WSDLValidate.class.getClassLoader().loadClass(loggerClassString);
+	      ILogger logger = (ILogger)loggerClass.newInstance();
+	      LoggerFactory.getInstance().setLogger(logger);
+	    }
+	    catch(Exception e)
+	    {
+	      System.err.println(MessageFormat.format(WSDLValidateTextUIMessages._ERROR_LOADING_LOGGER, new Object[]{loggerClassString}));
+	    }
+	  }
+	  // Set properties.
+	  else if(param.startsWith(PARAM_PROPERTY))
+	  {
+	    int separator = param.indexOf('=');
+	    String name = param.substring(2, separator);
+	    String value = param.substring(separator+1);
+	    configuration.setProperty(name, value);
+	  }
+	  // Set verbose;
+	  else if(param.equals(PARAM_VERBOSE) || param.equals( PARAM_VERBOSE_SHORT))
+	  {
+		verbose = true;
+	  }
+	  // a file to validate
+	  else
+	  {
+	    if(!param.startsWith(WSDLValidate.STRING_DASH))
+	    {  
+	      wsdlFiles.add(param);
+	    }
+	  }
+    }
   }
 }

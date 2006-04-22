@@ -20,20 +20,34 @@ import org.eclipse.wst.wsdl.validation.internal.logging.ILogger;
 public class EclipseLogger implements ILogger
 {
 
+	
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.validation.internal.logging.ILogger#log(java.lang.String, int)
+   */
+  public void log(String message, int severity) 
+  {
+    log(message, severity, null);	
+  }
+
   /* (non-Javadoc)
    * @see org.eclipse.wst.wsdl.validation.internal.logging.ILogger#log(java.lang.String, int, java.lang.Throwable)
    */
-  public void log(String error, int severity, Throwable throwable)
+  public void log(String message, int severity, Throwable throwable)
   {
-	int status = IStatus.ERROR;
+	// Don't log verbose information in the Eclipse log.
+	if(severity == ILogger.SEV_VERBOSE)
+	{
+	  return;
+	}
+	int status = IStatus.INFO;
 	if(severity == ILogger.SEV_WARNING)
 	{
 	  status = IStatus.WARNING;
 	}
-	else if(severity == ILogger.SEV_INFO)
+	else if(severity == ILogger.SEV_ERROR)
 	{
-	  status = IStatus.INFO;
+	  status = IStatus.ERROR;
 	}
-    ValidateWSDLPlugin.getInstance().getLog().log(new Status(status, ValidateWSDLPlugin.getInstance().getBundle().getSymbolicName(), IStatus.OK, error, throwable));
+    ValidateWSDLPlugin.getInstance().getLog().log(new Status(status, ValidateWSDLPlugin.getInstance().getBundle().getSymbolicName(), IStatus.OK, message, throwable));
   }
 }

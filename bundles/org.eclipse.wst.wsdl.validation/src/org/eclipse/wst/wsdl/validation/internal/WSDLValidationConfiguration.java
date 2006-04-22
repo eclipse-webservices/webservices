@@ -39,7 +39,7 @@ public class WSDLValidationConfiguration
    * @return
    * 		The value for the specified property or null if the property has not been specified.
    */
-  protected Object getProperty(String name)
+  public Object getProperty(String name)
   {
 	if(name != null)
 	  return properties.get(name);
