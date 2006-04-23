@@ -144,6 +144,9 @@ public class WSDLDiagnosticImpl extends EObjectImpl implements WSDLDiagnostic
     setSeverity(getSeverity(xsdDiagnostic.getSeverity()));
     setLine(xsdDiagnostic.getLine());
     setColumn(xsdDiagnostic.getColumn());
+    setLocation(xsdDiagnostic.getLocation());
+    setKey(xsdDiagnostic.getKey());
+    getSubstitutions().addAll(xsdDiagnostic.getSubstitutions());
   }
 
   /*
