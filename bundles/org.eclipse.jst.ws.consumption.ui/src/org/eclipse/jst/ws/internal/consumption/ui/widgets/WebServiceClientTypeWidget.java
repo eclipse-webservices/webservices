@@ -17,6 +17,7 @@
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   136158 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   136705 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -356,9 +357,6 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 
   public void setTypeRuntimeServer( TypeRuntimeServer ids )
   {
-		// rskreg
-    //WebServiceClientTypeRegistry registry   = WebServiceClientTypeRegistry.getInstance();
-    //LabelsAndIds                 labelIds   = registry.getClientTypeLabels();
 	LabelsAndIds                 labelIds   = WebServiceRuntimeExtensionUtils2.getClientTypeLabels();
     int                          selection  = 0;
     String[]                     clientIds  = labelIds.getIds_();
@@ -398,6 +396,49 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
     
     if (projectDialog_ != null)
     	projectDialog_.setTypeRuntimeServer(ids_);
+    
+	//When the server changes, the state of needEar could change.
+	//If the the server change results in a change in the state of needEar,
+	//update needEar and clientEarProjectName.    
+    
+	ValidationUtils vu = new ValidationUtils();
+	boolean oldNeedEar = getClientNeedEAR();
+	boolean clientProjectOrProjectTypeNeedsEar;
+
+	if (!oldNeedEar) {
+			// If an EAR was not needed previously it could have been because of
+			// the project/project type or the server.
+			// If it was because of the project/project type, changing the
+			// server should have no impact
+			// on the state of needEar.
+			clientProjectOrProjectTypeNeedsEar = vu.projectOrProjectTypeNeedsEar(getClientProjectName(),
+					getClientComponentType());
+		} else {
+			clientProjectOrProjectTypeNeedsEar = true;
+		}
+
+		// boolean clientProjectOrProjectTypeNeedsEar =
+		// vu.projectOrProjectTypeNeedsEar(getClientProjectName(),
+		// getClientComponentType());
+		if (clientProjectOrProjectTypeNeedsEar) {
+			// Could not rule out need for an Ear from the project/project type
+			// so changing the server
+			// may impact the need for an Ear.
+			boolean currentServerNeedsEar = vu.serverNeedsEAR(getTypeRuntimeServer().getServerId());
+			if (oldNeedEar != currentServerNeedsEar) {
+				// Update needEar and serviceEarProjectName.
+				if (currentServerNeedsEar) {
+					// Calculate a reasonable default for the Ear project name
+					String earProjectName = vu.getDefaultEarProjectName(getClientProjectName());
+					setClientNeedEAR(currentServerNeedsEar);
+					setClientEarProjectName(earProjectName);
+				} else {
+					setClientNeedEAR(currentServerNeedsEar);
+					setClientEarProjectName("");
+				}
+
+			}
+		}		    
   }
   
   public TypeRuntimeServer getTypeRuntimeServer()

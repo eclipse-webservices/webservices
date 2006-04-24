@@ -22,6 +22,7 @@
  * 20060420   136182 kathy@ca.ibm.com - Kathy Chan
  * 20060420   137820 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
+ * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -34,8 +35,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.IObjectSelectionLaunchable;
@@ -595,6 +594,52 @@ private void handleTypeChange()
 		
 		if (projectDialog_ != null)
 			projectDialog_.setTypeRuntimeServer(ids_);
+		
+		
+		//When the server changes, the state of needEar could change.
+		//If the the server change results in a change in the state of needEar,
+		//update needEar and serviceEarProjectName.
+		ValidationUtils vu = new ValidationUtils();
+		boolean oldNeedEar = getServiceNeedEAR();
+		boolean serviceProjectOrProjectTypeNeedsEar;
+
+		if (!oldNeedEar)
+		{
+			//If an EAR was not needed previously it could have been because of the project/project type or the server.
+			//If it was because of the project/project type, changing the server should have no impact
+			//on the state of needEar.
+			serviceProjectOrProjectTypeNeedsEar = vu.projectOrProjectTypeNeedsEar(getServiceProjectName(), getServiceComponentType());
+		}
+		else
+		{
+			serviceProjectOrProjectTypeNeedsEar = true;
+		}
+		
+		//boolean serviceProjectOrProjectTypeNeedsEar = vu.projectOrProjectTypeNeedsEar(getServiceProjectName(), getServiceComponentType());
+		if (serviceProjectOrProjectTypeNeedsEar)
+		{
+			//Could not rule out need for an Ear from the project/project type so changing the server
+			//may impact the need for an Ear.
+
+			boolean currentServiceServerNeedsEar = vu.serverNeedsEAR(getServiceTypeRuntimeServer().getServerId());
+			if (oldNeedEar != currentServiceServerNeedsEar)
+			{
+				//Update needEar and serviceEarProjectName.
+				if (currentServiceServerNeedsEar)
+				{
+					//Calculate a reasonable default for the Ear project name
+					String earProjectName = vu.getDefaultEarProjectName(getServiceProjectName());
+					setServiceNeedEAR(currentServiceServerNeedsEar);
+					setServiceEarProjectName(earProjectName);
+				}
+				else
+				{
+					setServiceNeedEAR(currentServiceServerNeedsEar);
+					setServiceEarProjectName("");					
+				}
+				
+			}
+		}		
 	}
 
 	public TypeRuntimeServer getServiceTypeRuntimeServer() {
@@ -1231,48 +1276,8 @@ private void handleTypeChange()
 		clientTypeRuntimeserver.setServerId(getServiceTypeRuntimeServer().getServerId());
 		clientTypeRuntimeserver.setServerInstanceId(getServiceTypeRuntimeServer().getServerInstanceId());
 		setClientTypeRuntimeServer(clientTypeRuntimeserver);
-		setClientNeedEAR(clientProjectNeedEAR());
 	}	
 		
-	/**
-	 *  Check if client project need EAR based on service side, project and client type
-	 */
-	private boolean clientProjectNeedEAR()
-	{	
-		// if client did not need EAR originally, check if it's because it's because 
-		// either the project is Java utility project or type is Java utility
-		if (!getClientNeedEAR()) {
-			// If the project is a simple Java project or the project type is 
-			// Java utility return false.
-			String projectName = getClientProjectName();
-			if (projectName != null && projectName.length()>0)
-			{
-				IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectName);
-				if (project.exists())
-				{
-					if (FacetUtils.isJavaProject(project))
-					{
-						return false;
-					}
-				}
-			}
-
-			//Project didn't rule out the need for an EAR
-			//so check the project type
-			String templateId = getClientComponentType();
-			if (templateId != null && templateId.length()>0)
-			{
-				if (FacetUtils.isUtilityTemplate(templateId))
-				{
-					return false;
-				}
-			}
-		} // end of !clientNeedEAR
-		
-		// have clientNeedEAR follows server side
-		return getServiceNeedEAR();
-		
-	}
 	
 	private void callObjectTransformation(IStructuredSelection objectSelection,
 			IProject project, String componentName)

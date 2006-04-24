@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
+ * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.common;
 
@@ -126,6 +127,8 @@ public final class ResourceUtils {
     private static final String DEFAULT_SERVICE_EAR_COMPONENT_NAME = "WebServiceProjectEAR";
 	private static final String DEFAULT_CLIENT_EAR_PROJECT_NAME = "WebServiceProjectClientEAR";
     private static final String DEFAULT_CLIENT_EAR_COMPONENT_NAME = "WebServiceProjectClientEAR";
+    
+    private static final String DEFAULT_EAR_EXT = "EAR";
 
 	/**
 	 * Returns the IWorkspaceRoot object.
@@ -1888,5 +1891,9 @@ public final class ResourceUtils {
   public static String getDefaultClientEARComponentName() {
     return DEFAULT_CLIENT_EAR_COMPONENT_NAME;
   }
+  
+  public static String getDefaultEARExtension() {
+	    return DEFAULT_EAR_EXT;
+	  }
 }
 

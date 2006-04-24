@@ -13,6 +13,7 @@
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   136158 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   136705 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -31,6 +32,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -517,6 +519,66 @@ public class ValidationUtils
     return true;
   }
   
+	public boolean projectOrProjectTypeNeedsEar(String projectName, String projectTypeId)
+	{
+		// If the project is a simple Java project or the project type is
+		// Java utility return false.
+		if (projectName != null && projectName.length() > 0) {
+			IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectName);
+			if (project.exists()) {
+				if (FacetUtils.isJavaProject(project)) {
+					return false;
+				}
+			}
+		}
+
+		// Project didn't rule out the need for an EAR
+		// so check the proect type
+		String templateId = projectTypeId;
+		if (templateId != null && templateId.length() > 0) {
+			if (FacetUtils.isUtilityTemplate(templateId)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+	
+	public boolean serverNeedsEAR(String serverTypeId)
+	{
+	    if (serverTypeId != null && serverTypeId.length() > 0) {
+			String targetId = ServerUtils.getRuntimeTargetIdFromFactoryId(serverTypeId);
+			if (targetId != null && targetId.length() > 0) {
+				if (!ServerUtils.isTargetValidForEAR(targetId, "13")) // rm j2ee
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+	
+	public String getDefaultEarProjectName(String projectName)
+	{
+	    if (projectName != null && projectName.length() > 0) {
+			IProject proj = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+
+			if (proj.exists()) {
+
+				IVirtualComponent[] ears = J2EEUtils.getReferencingEARComponents(proj);
+				if (ears != null && ears.length > 0) {
+					return ears[0].getName();
+				}
+
+			}
+
+			return projectName + ResourceUtils.getDefaultEARExtension();
+		}
+
+		return ResourceUtils.getDefaultServiceEARProjectName();
+	}
+	
   public IStatus validateProjectTargetAndJ2EE(String projectName, String compName, String earName, String earCompName, String serverFactoryId, String j2eeLevel)
   {
     IProject p = ProjectUtilities.getProject(projectName);
