@@ -184,7 +184,7 @@ public class XSDValidator
 		  for(int i = 0; i < numGrammars; i++)
 		  {
 		    XMLGrammarDescription desc = grammars[i].getGrammarDescription();
-		    if(desc.getNamespace().equals(targetNamespace))
+		    if(targetNamespace.equals(desc.getNamespace()))
 		    {
 		      oldGrammars.add(pool.removeGrammar(desc));
 		    }
