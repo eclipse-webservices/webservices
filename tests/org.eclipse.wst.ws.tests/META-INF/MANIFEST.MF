@@ -1,9 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Tests Plug-in
+Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.ws.tests
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.wst.ws.tests.plugin.TestsPlugin
+Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.wst.ws,
  org.eclipse.core.runtime,

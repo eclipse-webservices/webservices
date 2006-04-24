@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Axis Consumption Core Tests Plug-in
+Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.axis.consumption.core.tests
 Bundle-Version: 1.0.0
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
 Require-Bundle: org.junit,
  org.eclipse.core.runtime,
