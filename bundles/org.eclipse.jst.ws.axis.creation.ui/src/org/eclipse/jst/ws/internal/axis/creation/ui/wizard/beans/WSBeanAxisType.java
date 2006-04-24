@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060424   120137 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.wizard.beans;
 
@@ -14,7 +17,6 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.wizard.beans;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CheckAxisDeploymentDescriptorsTask;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
@@ -141,7 +143,6 @@ public class WSBeanAxisType implements CommandWidgetBinding
     dataRegistry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", BeanConfigWidget.class, "JavaParameter", null );
     //BeanConfigWidget - as source
 
-    dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", CheckAxisDeploymentDescriptorsTask.class, "JavaWSDLParam", null);
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", Java2WSDLCommand.class, "JavaWSDLParam", null);       
     dataRegistry.addMapping(BeanConfigWidget.class, "JavaParameter", WSDL2JavaCommand.class, "JavaWSDLParam", null);
 
@@ -150,7 +151,6 @@ public class WSBeanAxisType implements CommandWidgetBinding
     
     //AxisMappingsWidget - as source
 
-    dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", CheckAxisDeploymentDescriptorsTask.class, "JavaWSDLParam", null);
     dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", Java2WSDLCommand.class, "JavaWSDLParam", null);       
     dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", WSDL2JavaCommand.class, "JavaWSDLParam", null);    
     

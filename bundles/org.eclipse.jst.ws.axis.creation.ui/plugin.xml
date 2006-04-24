@@ -29,14 +29,14 @@
 	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
        <widgetFactory   
              id="AxisBeanConfig"
-             insertBeforeCommandId="org.eclipse.jst.ws.internal.axis.creation.ui.task.BUCheckAxisDeploymentDescriptors"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.axis.creation.ui.task.BUConfigCommand"
              class="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisBeanConfigWidgetFactory"/>
     </extension> 
     
 	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
        <widgetFactory   
              id="AxisSkeletonConfig"
-             insertBeforeCommandId="org.eclipse.jst.ws.internal.axis.creation.ui.task.TDCheckAxisDeploymentDescriptors"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.axis.creation.ui.task.TDConfigCommand"
              class="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisSkeletonConfigWidgetFactory"/>
     </extension> 
     

@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  * 20060330   128827 kathy@ca.ibm.com - Kathy Chan
+ * 20060424   120137 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
@@ -34,11 +35,11 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodComm
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.ModifyWSDLEndpointAddressCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.UpdateWEBXMLCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.task.BUCheckAxisDeploymentDescriptors;
+import org.eclipse.jst.ws.internal.axis.creation.ui.task.BUConfigCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.BackupSkelImplCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.Skeleton2WSDLCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.task.TDCheckAxisDeploymentDescriptors;
+import org.eclipse.jst.ws.internal.axis.creation.ui.task.TDConfigCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.UpdateAxisWSDDFileTask;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BUAxisDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonDefaultingCommand;
@@ -99,7 +100,7 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new JavaToWSDLMethodCommand());
 			// commands.add(new SimpleFragment( "BeanConfig" ));
 			// commands.add(new SimpleFragment( "AxisServiceBeanMapping" ));
-			commands.add(new BUCheckAxisDeploymentDescriptors());
+			commands.add(new BUConfigCommand());
 			commands.add(new CopyAxisJarCommand());
 			commands.add(new WaitForAutoBuildCommand());
 			commands.add(new Java2WSDLCommand());
@@ -121,7 +122,7 @@ public class AxisWebService extends AbstractWebService
 		    commands.add(new SkeletonConfigWidgetDefaultingCommand());
 //			commands.add(new SimpleFragment( "SkeletonConfig" ));
 //			commands.add(new SimpleFragment( "AxisMappingsWidget" ));
-		    commands.add(new TDCheckAxisDeploymentDescriptors());
+		    commands.add(new TDConfigCommand());
 			commands.add(new CopyAxisJarCommand());
 			commands.add(new BackupSkelImplCommand());
 		    commands.add(new WSDL2JavaCommand());
@@ -205,11 +206,7 @@ public class AxisWebService extends AbstractWebService
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", JavaToWSDLMethodCommand.class, "ServiceProject", new StringToIProjectTransformer());
 
 	    // BUAxisCommands3 - these run after BeanConfigWidget
-    
-	    //CheckAxisDeploymentDescriptorsTask
-	    //registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", CheckAxisDeploymentDescriptorsTask.class);
-	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", BUCheckAxisDeploymentDescriptors.class, "ServerProject", new StringToIProjectTransformer());
-	    
+    	    
 	    //CopyAxisJarCommand
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", new StringToIProjectTransformer());
 	    	    
@@ -293,10 +290,7 @@ public class AxisWebService extends AbstractWebService
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", SkeletonConfigWidgetDefaultingCommand.class);
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WsdlURI", SkeletonConfigWidgetDefaultingCommand.class);
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServiceServerTypeID", SkeletonConfigWidgetDefaultingCommand.class);
-	    
-	    // CheckAxisDeploymentDescriptorsTask
-	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", TDCheckAxisDeploymentDescriptors.class, "ServerProject", projectTransformer);
-    
+	       
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WsdlURI", WSDL2JavaCommand.class);
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "HttpBasicAuthUsername", WSDL2JavaCommand.class);
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "HttpBasicAuthPassword", WSDL2JavaCommand.class);

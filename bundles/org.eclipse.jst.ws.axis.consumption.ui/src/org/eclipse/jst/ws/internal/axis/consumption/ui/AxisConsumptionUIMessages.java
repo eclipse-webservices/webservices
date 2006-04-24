@@ -1,15 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
- * yyyymmdd   bug     Email and other contact information
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
+ * yyyymmdd   bug     Email and other contact information
  * 20060329   127016 andyzhai@ca.ibm.com - Andy Zhai
+ * 20060424   120137 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui;
 
@@ -49,7 +51,6 @@ public final class AxisConsumptionUIMessages extends NLS {
 	public static String TABLE_COLUMN_LABEL_NAMESPACE;
 	public static String LABEL_EXPLORE_MAPPINGS_XML2BEAN;
 	public static String TOOLTIP_N2P_SHOW_MAPPINGS;
-	public static String MSG_ERROR_XML_FILE_OVERWRITE_DISABLED;
 	public static String TOOLTIP_PPAE_PAGE;
 	public static String TOOLTIP_PPAE_CHECKBOX_ALL_WANTED;
 	public static String TOOLTIP_PPAE_CHECKBOX_HELPER_WANTED;
