@@ -256,7 +256,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			serviceLabel_.setText(ConsumptionUIMessages.LABEL_WEBSERVICEIMPL);
 			serviceLabel_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL);
 
-			serviceImpl_ = new Text(typeComposite, SWT.LEFT | SWT.BORDER | SWT.READ_ONLY);
+			serviceImpl_ = new Text(typeComposite, SWT.LEFT | SWT.BORDER );
 			GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);		    
 			serviceImpl_.setLayoutData( griddata );
 			serviceImpl_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL);
