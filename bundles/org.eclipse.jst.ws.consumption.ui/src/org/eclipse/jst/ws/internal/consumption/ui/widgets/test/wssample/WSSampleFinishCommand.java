@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060424   124368 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
@@ -27,7 +30,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.consumption.ui.command.PublishProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.StartProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.InputFileGenerator;
 import org.eclipse.jst.ws.internal.consumption.sampleapp.codegen.MethodFileGenerator;
@@ -174,13 +176,6 @@ public class WSSampleFinishCommand extends AbstractDataModelOperation implements
 
     IPath fDestinationFolderPath = new Path(jspFolder);
     fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
-
-    PublishProjectCommand ppc = new PublishProjectCommand();
-    ppc.setServerTypeID(sampleServerTypeID);
-    ppc.setExistingServer(sampleExistingServer);
-    ppc.setProject(sampleProject);
-    ppc.setEnvironment( env );
-    status = ppc.execute( monitor, null );
 
     StartProjectCommand spc = new StartProjectCommand(false );
     spc.setServiceServerTypeID(sampleServerTypeID);

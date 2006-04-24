@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060418   134322 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060424   124368 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
@@ -32,7 +33,6 @@ import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
-import org.eclipse.jst.ws.internal.consumption.ui.command.PublishProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.StartServerCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.ui.PartInitException;
@@ -102,13 +102,6 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 	   // UISynchronizer.syncExec seems to interrupt the UI tread when the autobuilder is done.  Not sure, why.
 	   // I'm assuming here that the autobuilder has actually completed its stuff. 
 	 }
-
-	PublishProjectCommand ppc = new PublishProjectCommand();
-    ppc.setServerTypeID(testInfo.getClientServerTypeID());
-    ppc.setExistingServer(testInfo.getClientExistingServer());
-    ppc.setProject(testInfo.getGenerationProject());
-    ppc.setEnvironment( env );
-	status = ppc.execute( monitor, null );
 
 	StartServerCommand serverCommand = new StartServerCommand( true );
 	serverCommand.setServerInstanceId( testInfo.getClientExistingServer().getId() );
