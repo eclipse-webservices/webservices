@@ -1,18 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060424   115690 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.plugin;
 
-import java.text.MessageFormat;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jst.ws.internal.context.PersistentScenarioContext;
 import org.eclipse.jst.ws.internal.context.PersistentUDDIPreferenceContext;
@@ -92,28 +93,5 @@ public class WebServicePlugin extends Plugin
       uddiPreferenceContext = new PersistentUDDIPreferenceContext();
     return uddiPreferenceContext;
   }
-    
-  /**
-  * Returns the message string identified by the given key from
-  * plugin.properties.
-  * @return The String message.
-  */
-  public static String getMessage ( String key )
-  {
-    return Platform.getResourceString(instance_.getBundle(),key);
-  }
 
-  /**
-  * Returns the message string identified by the given key from
-  * plugin.properties. Substitution sequences in the message string
-  * are replaced by the given array of substitution objects (which
-  * are most frequently strings). See the JDK's
-  * {@link java.text.MessageFormat java.text.MessageFormat}
-  * class for further details on substitution.
-  * @return The String message.
-  */
-  public static String getMessage ( String key, Object[] args )
-  {
-    return MessageFormat.format(getMessage(key),args);
-  }
 }

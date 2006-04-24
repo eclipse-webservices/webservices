@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060424   115690 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.plugin;
 
@@ -26,9 +29,6 @@ import org.osgi.framework.BundleContext;
 */
 public class WebServiceAxisCreationUIPlugin extends AbstractUIPlugin
 {
-	
-	// Copyright
-	public static final String copyright = "(c) Copyright IBM Corporation 2003."; //$NON-NLS-1$
 
   /**
   * The identifier of the descriptor of this plugin in plugin.xml.

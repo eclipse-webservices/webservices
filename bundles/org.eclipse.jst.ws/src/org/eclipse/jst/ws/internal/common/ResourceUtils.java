@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060424   115690 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.common;
 
@@ -579,25 +580,6 @@ public final class ResourceUtils {
 		return getComponentType(component.getProject());
 	}
 	
-	/**
-	 * 
-	 * @param project
-	 * @return
-	 * 
-	 * @deprecated not used
-	 */
-	public static String getProjectTypeAsString(IProject project) {
-		if (ResourceUtils.isEJBProject(project))
-			return WebServicePlugin.getMessage("%LABEL_EJB");
-		else if (ResourceUtils.isWebProject(project))
-			return WebServicePlugin.getMessage("%LABEL_WEB");
-		else if (ResourceUtils.isJavaProject(project))
-			return WebServicePlugin.getMessage("%LABEL_JAVA");
-		else
-			return "";
-	}
-	
-
 	/**
 	 * Returns WebModule Deployable of the <code>project</code> as an
 	 * <code>IDeployable</code>, or null if the project has no Web nature.
