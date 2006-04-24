@@ -2,9 +2,9 @@
 <?eclipse version="3.0"?>
 <plugin>
 
-   <extension-point id="extvalidator" name="WSDL Extension Validator" schema="exsd/extvalidator.exsd"/>
+   <extension-point id="extvalidator" name="%_WSDL_EXTENSION_VALIDATOR_NAME" schema="exsd/extvalidator.exsd"/>
    
-   <extension-point id="wsdl11validator" name="WSDL 1.1 Extension Validator" schema="exsd/wsdl11validator.exsd"/>
+   <extension-point id="wsdl11validator" name="%WSDL11_VALIDATOR_NAME" schema="exsd/wsdl11validator.exsd"/>
    
 	<extension
     	point="org.eclipse.wst.validation.validatorDelegates">

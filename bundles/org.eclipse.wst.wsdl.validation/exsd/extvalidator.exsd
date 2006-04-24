@@ -41,17 +41,20 @@
 
    <element name="extvalidator">
       <complexType>
-         <attribute name="namespace" type="string" use="required">
-            <annotation>
-               <documentation>
-                  The WSDL namespace for which this validator should run. Currently the only accepted value is http://schemas.xmlsoap.org/wsdl/.
-               </documentation>
-            </annotation>
-         </attribute>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   The class that implements &lt;code&gt;org.eclipse.wst.wsdl.validation.internal.IWSDLValidator&lt;/code&gt;.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.wst.wsdl.validation.internal.IWSDLValidator"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="namespace" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The WSDL namespace for which this validator should run. Currently the only accepted value is http://schemas.xmlsoap.org/wsdl/.
                </documentation>
             </annotation>
          </attribute>

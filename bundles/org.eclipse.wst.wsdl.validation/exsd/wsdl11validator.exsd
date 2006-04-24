@@ -46,6 +46,9 @@
                <documentation>
                   The class that implements &lt;code&gt;org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator&lt;/code&gt;.
                </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.wst.wsdl.validation.internal.wsdl11.IWSDL11Validator"/>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="namespace" type="string" use="required">
