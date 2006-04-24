@@ -182,6 +182,19 @@ public class XSDTest extends BaseTestCase
   }
   
   /**
+   * Test /XSD/ImportNoNSSchemAndSecondSchemaWithNS/ImportNoNSSchemaAndSecondSchemaWithNS.wsdl
+   */
+  public void testImportNoNSSchemaAndSecondSchemaWithNS()
+  {
+    String testname = "ImportNoNSSchemaAndSecondSchemaWithNS";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "ImportNoNSSchemaAndSecondSchemaWithNS/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "ImportNoNSSchemaAndSecondSchemaWithNS/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "ImportNoNSSchemaAndSecondSchemaWithNS/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
    * Test /XSD/NoNSElementReference/NoNSElementReference.wsdl
    */
   public void testNoNSElementReference()
@@ -190,6 +203,19 @@ public class XSDTest extends BaseTestCase
     String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "NoNSElementReference/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "NoNSElementReference/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "NoNSElementReference/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /XSD/InlineSchemaNoNamespace/InlineSchemaNoNamespace.wsdl
+   */
+  public void testInlineSchemaNoNamespace()
+  {
+    String testname = "InlineSchemaNoNamespace";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "InlineSchemaNoNamespace/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "InlineSchemaNoNamespace/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "InlineSchemaNoNamespace/" + testname + ".wsdl-log";
     
     runTest(testfile, loglocation, idealloglocation);
   }

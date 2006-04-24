@@ -23,10 +23,15 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.apache.xerces.util.XMLGrammarPoolImpl;
+import org.apache.xerces.xni.grammars.XMLGrammarPool;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
+import org.eclipse.wst.wsdl.validation.internal.Constants;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
+import org.eclipse.wst.wsdl.validation.internal.WSDLValidationConfiguration;
+import org.eclipse.wst.wsdl.validation.internal.eclipse.InlineSchemaModelGrammarPoolImpl;
 import org.eclipse.wst.wsdl.validation.internal.eclipse.WSDLValidator;
 
 /**
@@ -47,11 +52,15 @@ public class BaseTestCase extends TestCase
   protected static final String PLUGIN_NAME = "org.eclipse.wst.wsdl.validation.tests";
   private WSDLValidator validator = WSDLValidator.getInstance();
   
+  WSDLValidationConfiguration configuration = null;
+  
   /* (non-Javadoc)
    * @see junit.framework.TestCase#setUp()
    */
   protected void setUp() throws Exception
   {
+	super.setUp();
+	
     PLUGIN_ABSOLUTE_PATH = WSDLValidatorTestsPlugin.getInstallURL();//getPluginLocation();
     
     // Set the WS-I preference to ignore so only WSDL errors will be tested.
@@ -60,9 +69,25 @@ public class BaseTestCase extends TestCase
     wsicontext.updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
     wsicontext = wsui.getWSIAPContext();
     wsicontext.updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
+    
+    configuration = new WSDLValidationConfiguration();
+	XMLGrammarPool xsdGrammarPool = new InlineSchemaModelGrammarPoolImpl();
+	XMLGrammarPool xmlGrammarPool = new XMLGrammarPoolImpl();
+	configuration.setProperty(Constants.XMLSCHEMA_CACHE_ATTRIBUTE, xsdGrammarPool);
+    configuration.setProperty(Constants.XML_CACHE_ATTRIBUTE, xmlGrammarPool);
   }
   
-  /**
+  /* (non-Javadoc)
+   * @see junit.framework.TestCase#tearDown()
+   */
+  protected void tearDown() throws Exception 
+  {
+	configuration = null;
+	
+	super.tearDown();
+  }
+
+/**
    * Run a validator test. The test will run the validator, log the results and compare the results
    * with the ideal results. The test will only pass if the two log files are the same.
    * 
@@ -72,7 +97,7 @@ public class BaseTestCase extends TestCase
    */
   public void runTest(String testfile, String loglocation, String idealloglocation)
   {
-    IValidationReport valreport = validator.validate(testfile);
+    IValidationReport valreport = validator.validate(testfile, null, configuration);
     try
     {
       createLog(loglocation, valreport);
