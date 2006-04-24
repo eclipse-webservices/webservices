@@ -18,7 +18,7 @@
 		<available file="${motif.jar}" property="swt.jar" value="${motif.jar}"/>
 		<available file="${osx.jar}" property="swt.jar" value="${osx.jar}"/>
 	</target>
-
+	
 	<target name="properties" if="eclipse.running">
 		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
 	</target>
@@ -44,4 +44,9 @@
 			<delete file="${build.result.folder}/ant-lib/anttasks.jar"/>
 			<delete dir="${temp.folder}"/>
 		</target>
+	
+	<target name="refresh">
+	<eclipse.LocalRefresh resource="org.eclipse.wst.command.env" depth="infinite"/>
+	</target>
+	
 	</project>
