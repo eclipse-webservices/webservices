@@ -23,6 +23,7 @@
  * 20060420   137820 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060424   138052 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -128,7 +129,6 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	private String serviceEarProjectName_;
 	private String serviceComponentType_;
 	private WebServicesParser parser_;
-	private String serviceRuntimeId_;
 	private boolean needEar_;
 		 
 	private IStructuredSelection objectSelection_;
@@ -221,8 +221,10 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 				String currentTypeId = labelIds_.getIds_()[currentSelectionIdx];
 				int oldScenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(oldTypeId);
 				int currentScenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(currentTypeId);
-				if (!oldTypeId.equals(currentTypeId)) {					
-			      objectSelectionWidget_ = getSelectionWidget();
+				if (!oldTypeId.equals(currentTypeId)) {	
+					ids_.setTypeId(currentTypeId);
+
+					objectSelectionWidget_ = getSelectionWidget();
 					// change the label for the service
 					// implementation/definition based on the web service type
 					handleTypeChange();					
@@ -643,10 +645,6 @@ private void handleTypeChange()
 	}
 
 	public TypeRuntimeServer getServiceTypeRuntimeServer() {
-		int selectionIndex = webserviceType_.getSelectionIndex();
-
-		ids_.setTypeId(labelIds_.getIds_()[selectionIndex]);
-
 		return ids_;
 	}
 
@@ -1043,19 +1041,8 @@ private void handleTypeChange()
 	    clientWidget_.setClientEarProjectName(name);  
 	  }
 	  
-	  String componentName_;
-	  IProject project_;
-	  
-	  public void setComponentName(String name)
-	  {
-		  componentName_ = name;
-	  }
-	  
-	  public String getComponentName()
-	  {
-		  return componentName_;
-	  }
-	  
+	    IProject project_;
+	    
 	  public String getServiceComponentType()
 	  {
 		  return serviceComponentType_;
@@ -1101,19 +1088,10 @@ private void handleTypeChange()
 		  return project_;
 	  }
 	  
-	  public void setServiceRuntimeId(String runtimeId)
-	  {
-		  serviceRuntimeId_ = runtimeId;
-	  }
-	  
 	  public String getServiceRuntimeId()
 	  {
-		  return serviceRuntimeId_;
-	  }
-	  
-	  public void setClientRuntimeId(String id)
-	  {
-		  clientWidget_.setClientRuntimeId(id);
+		  // calculate the most appropriate serviceRuntimeId based on current settings.
+		  return WebServiceRuntimeExtensionUtils2.getServiceRuntimeId(getServiceTypeRuntimeServer(), getServiceProjectName(), getServiceComponentType());    
 	  }
 	  
 	  public String getClientRuntimeId()
@@ -1240,7 +1218,6 @@ private void handleTypeChange()
 		  //call setters of new defaulting command:
 	      serverRTDefaultCmd.setInitialSelection(getObjectSelection());
 	      serverRTDefaultCmd.setInitialProject(getProject());
-	      serverRTDefaultCmd.setInitialComponentName(getComponentName());      
 	      serverRTDefaultCmd.setGenerateProxy(clientWidget_.getGenerateProxy());
 	      serverRTDefaultCmd.setServiceTypeRuntimeServer(getServiceTypeRuntimeServer());
 		  serverRTDefaultCmd.setWebServicesParser(getWebServicesParser());     
@@ -1252,7 +1229,6 @@ private void handleTypeChange()
 		  serverRTDefaultCmd.execute(null, null);
 		  
 		  //perform mappings from the defaulting command to the project settings...	
-		  setServiceRuntimeId(serverRTDefaultCmd.getServiceRuntimeId());
 		  setServiceProjectName(serverRTDefaultCmd.getServiceProjectName());
 		  setServiceEarProjectName(serverRTDefaultCmd.getServiceEarProjectName());
 		  setServiceComponentType(serverRTDefaultCmd.getServiceComponentType());
@@ -1262,7 +1238,6 @@ private void handleTypeChange()
           setClientTypeRuntimeServer(serverRTDefaultCmd.getClientTypeRuntimeServer());
           setServiceNeedEAR(serverRTDefaultCmd.getServiceNeedEAR());
           setClientNeedEAR(serverRTDefaultCmd.getClientNeedEAR());
-          setClientRuntimeId(serverRTDefaultCmd.getClientRuntimeId());
           setClientComponentType(serverRTDefaultCmd.getClientComponentType());
 	}
 	
@@ -1292,7 +1267,6 @@ private void handleTypeChange()
         
 	       setWebServicesParser(objOutputCommand.getWebServicesParser());
 	       setObjectSelection(objOutputCommand.getObjectSelection());
-	       setComponentName(objOutputCommand.getComponentName());
 	       setProject(objOutputCommand.getProject());      		       
 	       refreshServerRuntimeSelection();  
 	}

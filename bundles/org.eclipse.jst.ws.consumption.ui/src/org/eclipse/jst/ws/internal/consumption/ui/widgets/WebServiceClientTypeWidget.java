@@ -18,6 +18,7 @@
  * 20060420   136158 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   136705 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060424   138052 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -111,11 +112,9 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   private Boolean testClient_;
   private Boolean installClient_;
   private Boolean startClient_;    
-  private String clientRuntimeId_;
   
   private TypeRuntimeServer ids_;
   private IStructuredSelection objectSelection_;
-  private LabelsAndIds      labelIds_;
   private boolean enableProxy_;  //service scale is set to a level that the client scale can be enabled
   private boolean clientOnly_=false;
   private int clientScaleSetting_;
@@ -391,9 +390,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		hLinkClientRuntime_.setText(CLIENT_RUNTIME_PREFIX + " " + clientRuntimeText);
 		groupComposite_.pack(true);		
 	}
-	
-    labelIds_ = labelIds;
-    
+	    
     if (projectDialog_ != null)
     	projectDialog_.setTypeRuntimeServer(ids_);
     
@@ -442,11 +439,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   }
   
   public TypeRuntimeServer getTypeRuntimeServer()
-  {
-    int selectionIndex = clientTypeCombo_.getSelectionIndex();
-    
-    ids_.setTypeId( labelIds_.getIds_()[selectionIndex] );
-    
+  {    
     return ids_;  
   }
       
@@ -686,7 +679,9 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   
   public String getClientRuntimeId()
   {
-	  return clientRuntimeId_;
+	  // calculate the most appropriate clientRuntimeId based on current settings.
+	  return WebServiceRuntimeExtensionUtils2.getClientRuntimeId(getTypeRuntimeServer(), getClientProjectName(), getClientComponentType());    
+
   }
   
   public void setClientComponentType(String type)
@@ -697,12 +692,6 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   public String getClientComponentType()
   {
 	  return clientComponentType_;
-  }
-
-  
-  public void setClientRuntimeId(String id)
-  {
-	  clientRuntimeId_ = id;
   }
   
   public void setClientProjectName(String name)

@@ -13,6 +13,7 @@
  * 20060417   136390/136159 joan@ca.ibm.com - Joan Haggarty
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
+ * 20060424   138052 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -58,9 +59,6 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   private Text serviceImpl_;
   private Button browseButton_;
   private WSDLSelectionDialog wsdlDialog_;
-  private String clientRuntimeId_ ;
-  private String clientEarProjectName_;
-  private boolean clientNeedEAR_;
   private String componentName_;
   private IProject project_;
   private String webServiceURI_;
@@ -174,12 +172,6 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
     clientWidget_.setTypeRuntimeServer( ids );
   }
   
-  public void setClientRuntimeId(String id)
-  {
-	  clientRuntimeId_ = id;
-	  clientWidget_.setClientRuntimeId(id);
-  }
-  
   public void setClientProjectName(String name)
   {
 	  clientWidget_.setClientProjectName(name);
@@ -187,7 +179,6 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   
   public void setClientEarProjectName(String name)
   {
-	  clientEarProjectName_ = name;
 	  clientWidget_.setClientEarProjectName(name);
   }
   
@@ -198,18 +189,17 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   
   public void setClientNeedEAR(boolean b)
   {
-	  clientNeedEAR_ = b;
 	  clientWidget_.setClientNeedEAR(b);
   }
   
   public String getClientRuntimeId()
   {
-	  return clientRuntimeId_;
+	  return clientWidget_.getClientRuntimeId();
   }
   
   public String getClientEarProjectName()
   {
-	  return clientEarProjectName_;
+	  return clientWidget_.getClientEarProjectName();
   }
   
   public String getClientProjectName()
@@ -224,7 +214,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   
   public boolean getClientNeedEAR()
   {
-	  return clientNeedEAR_;
+	  return clientWidget_.getClientNeedEAR();
   }
   
  public void setWebServiceURI(String uri)
@@ -360,7 +350,6 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 		setClientEarProjectName(clientRTDefaultCmd.getClientEarProjectName());
 		setClientNeedEAR(clientRTDefaultCmd.getClientNeedEAR());
 		setClientProjectName(clientRTDefaultCmd.getClientProjectName());
-		setClientRuntimeId(clientRTDefaultCmd.getClientRuntimeId());
 		setClientTypeRuntimeServer(clientRTDefaultCmd.getClientTypeRuntimeServer());
 	}
   

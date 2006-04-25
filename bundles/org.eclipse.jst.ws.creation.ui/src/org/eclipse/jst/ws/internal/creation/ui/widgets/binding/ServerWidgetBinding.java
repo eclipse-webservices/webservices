@@ -15,6 +15,7 @@
  * 20060407   135415 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060410   135562 joan@ca.ibm.com - Joan Haggarty
  * 20060417   136391 joan@ca.ibm.com - Joan Haggarty
+ * 20060425   138052 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -154,9 +155,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientProjectName", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarProjectName", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerWizardWidget.class);
-    dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceRuntimeId", ServerWizardWidget.class);
-    dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ServerWizardWidget.class);
-    dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientRuntimeId", ServerWizardWidget.class);    
+    dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ServerWizardWidget.class);    
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceNeedEAR", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientNeedEAR", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentType", ServerWizardWidget.class); //jvh

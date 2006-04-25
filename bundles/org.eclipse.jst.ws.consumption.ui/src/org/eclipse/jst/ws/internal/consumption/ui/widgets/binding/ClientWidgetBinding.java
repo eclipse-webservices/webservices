@@ -15,6 +15,7 @@
  * 20060223 129020    rsinha@ca.ibm.com - Rupam Kuehner
  * 20060406 135350    kathy@ca.ibm.com - Kathy Chan
  * 20060407 135415    rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060425   138052 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -115,7 +116,6 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     //jvh - rerouted the defaulting command to the ClientWizardWidget 
     // Before ClientRuntimeSelectionWidget
     dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientWizardWidget.class);
-    dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientRuntimeId", ClientWizardWidget.class);
     dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientProjectName", ClientWizardWidget.class);    
     dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarProjectName", ClientWizardWidget.class);
     dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentType", ClientWizardWidget.class);
