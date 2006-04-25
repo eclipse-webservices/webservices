@@ -19,6 +19,7 @@
  * 20060420   136705 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060424   138052 kathy@ca.ibm.com - Kathy Chan
+ * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -390,7 +391,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		hLinkClientRuntime_.setText(CLIENT_RUNTIME_PREFIX + " " + clientRuntimeText);
 		groupComposite_.pack(true);		
 	}
-	    
+	
     if (projectDialog_ != null)
     	projectDialog_.setTypeRuntimeServer(ids_);
     
@@ -439,7 +440,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   }
   
   public TypeRuntimeServer getTypeRuntimeServer()
-  {    
+  {
     return ids_;  
   }
       
@@ -509,8 +510,8 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 				setClientProjectName(newProjectName);
 				setClientEarProjectName(newEarProjectName);
 				setClientNeedEAR(newNeedEar);
-				setClientComponentType(newProjectType);
-				validationState_ = ValidationUtils.VALIDATE_PROJECT_CHANGES;
+				setClientComponentType(newProjectType);				
+				validationState_ = (new ValidationUtils()).getNewValidationState(validationState_, ValidationUtils.VALIDATE_PROJECT_CHANGES);
 				statusListener_.handleEvent(null);
 			}
 		}		
@@ -527,7 +528,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 			if (!currentClientTRS.equals(newClientTRS))
 			{
 				setTypeRuntimeServer(rssd.getTypeRuntimeServer());
-				validationState_ = ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES;
+				validationState_ = (new ValidationUtils()).getNewValidationState(validationState_, ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES);
 				statusListener_.handleEvent(null); //validate the page
 			}
 		}		
@@ -693,7 +694,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   {
 	  return clientComponentType_;
   }
-  
+
   public void setClientProjectName(String name)
   {
     projectName_ = name;      
@@ -835,7 +836,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 				}
 				else
 				{
-					validationState_ = ValidationUtils.VALIDATE_SCALE_CHANGES;	
+					validationState_ = (new ValidationUtils()).getNewValidationState(validationState_, ValidationUtils.VALIDATE_SCALE_CHANGES);	
 				}				
 				statusListener_.handleEvent(null); //validate the page
 			}

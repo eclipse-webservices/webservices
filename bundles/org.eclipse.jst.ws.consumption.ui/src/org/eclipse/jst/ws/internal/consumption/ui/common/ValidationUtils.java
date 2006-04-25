@@ -14,6 +14,7 @@
  * 20060420   136158 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   136705 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -92,6 +93,32 @@ public class ValidationUtils
   public ValidationUtils()
   {
   }
+  
+  /**
+   * Returns a new validation state based on the current validation state
+   * and the requested validation state. If the requested validation state
+   * does not cover all the validation covered by the current validation
+   * state, VALIDATE_ALL is returned. Otherwise, the requested validation
+   * state is returned.
+   * 
+   * @param currentValidationState the validaton state at the time the caller's requests a change
+   * @param requestedValidationState the validation state being requested by the caller.
+   * @return Returns VALIDATE_ALL if the requested validation state
+   * does not cover all the validation covered by the current validation
+   * state. Returned requestedValidationState otherwise.
+   */
+  public int getNewValidationState(int currentValidationState, int requestedValidationState) {
+		int newValidationState;
+		if (currentValidationState == VALIDATE_NONE
+				|| currentValidationState == requestedValidationState) {
+			newValidationState = requestedValidationState;
+		} else {
+			newValidationState = VALIDATE_ALL;
+		}
+
+		return newValidationState;
+
+	}
   
   public IStatus checkMissingFieldStatus(int validationState, String typeId, String serviceImpl, String runtimeId, String serverId,
 			String projectName, boolean needEar, String earProjectName, String projectTypeId,

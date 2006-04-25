@@ -24,6 +24,7 @@
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060424   138052 kathy@ca.ibm.com - Kathy Chan
+ * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -221,10 +222,10 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 				String currentTypeId = labelIds_.getIds_()[currentSelectionIdx];
 				int oldScenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(oldTypeId);
 				int currentScenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(currentTypeId);
-				if (!oldTypeId.equals(currentTypeId)) {	
+				if (!oldTypeId.equals(currentTypeId)) {					
 					ids_.setTypeId(currentTypeId);
 
-					objectSelectionWidget_ = getSelectionWidget();
+			      objectSelectionWidget_ = getSelectionWidget();
 					// change the label for the service
 					// implementation/definition based on the web service type
 					handleTypeChange();					
@@ -490,8 +491,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 				setServiceProjectName(newProjectName);
 				setServiceEarProjectName(newEarProjectName);
 				setServiceComponentType(newProjectType);
-				setServiceNeedEAR(newNeedEar);
-				validationState_ = ValidationUtils.VALIDATE_PROJECT_CHANGES;
+				setServiceNeedEAR(newNeedEar);				
+				validationState_ = (new ValidationUtils()).getNewValidationState(validationState_, ValidationUtils.VALIDATE_PROJECT_CHANGES);
 				statusListener_.handleEvent(null);
 			}
 		}
@@ -514,8 +515,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			if (!currentServiceTRS.equals(newServiceTRS))
 			{
 				setServiceTypeRuntimeServer(newServiceTRS);	
-				refreshClientServerRuntimeSelection();		
-				validationState_ = ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES;
+				refreshClientServerRuntimeSelection();	
+				validationState_ = (new ValidationUtils()).getNewValidationState(validationState_, ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES);
 				clientWidget_.setValidationState(ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES);
 				statusListener_.handleEvent(null); //Revalidate the page since server/runtime selections changed.
 			}
@@ -780,39 +781,40 @@ private void handleTypeChange()
 	public IStatus getStatus() {
 		IStatus status = Status.OK_STATUS;
 
-		try {
-			IStatus missingFieldStatus = checkMissingFieldStatus();
-			if (missingFieldStatus.getSeverity() == IStatus.ERROR) {
-				return missingFieldStatus;
-			}			
-
-			IStatus invalidServiceImplStatus = checkServiceImplTextStatus();
-			if (invalidServiceImplStatus.getSeverity() == IStatus.ERROR){
-				return invalidServiceImplStatus;
-			}
-
-			IStatus possibleErrorStatus = checkErrorStatus();
-			if (possibleErrorStatus.getSeverity() == IStatus.ERROR) {
-				return possibleErrorStatus;
-			}
-
-			IStatus possibleWarningStatus = checkWarningStatus();
-			if (possibleWarningStatus.getSeverity() == IStatus.WARNING) {
-				return possibleWarningStatus;
-			}
-		} finally {
-			// Clear validation state on service side and client side (if
-			// enabled)
-			validationState_ = ValidationUtils.VALIDATE_NONE;
-			if (clientWidget_.getGenerateProxy()) {
-				clientWidget_.setValidationState(ValidationUtils.VALIDATE_NONE);
-			}
+		IStatus missingFieldStatus = checkMissingFieldStatus();
+		if (missingFieldStatus.getSeverity() == IStatus.ERROR) {
+			return missingFieldStatus;
 		}
+
+		IStatus invalidServiceImplStatus = checkServiceImplTextStatus();
+		if (invalidServiceImplStatus.getSeverity() == IStatus.ERROR) {
+			return invalidServiceImplStatus;
+		}
+
+		IStatus possibleErrorStatus = checkErrorStatus();
+		if (possibleErrorStatus.getSeverity() == IStatus.ERROR) {
+			return possibleErrorStatus;
+		}
+
+		IStatus possibleWarningStatus = checkWarningStatus();
+		if (possibleWarningStatus.getSeverity() == IStatus.WARNING) {
+			return possibleWarningStatus;
+		}
+
+		// If no warnings/errors were reported, clear validation state on
+		// service side and client side (if enabled)
+		validationState_ = ValidationUtils.VALIDATE_NONE;
+		if (clientWidget_.getGenerateProxy()) {
+			clientWidget_.setValidationState(ValidationUtils.VALIDATE_NONE);
+		}
+
 		return status;
 	}
 	
-	/*call validation code in the object selection widget to ensure
-	 any modifications to the serviceImpl_ field are valid*/
+	/*
+	 * call validation code in the object selection widget to ensure any
+	 * modifications to the serviceImpl_ field are valid
+	 */
 	private IStatus checkServiceImplTextStatus() {
 		
 		String fieldText = serviceImpl_.getText().trim();
@@ -1041,8 +1043,8 @@ private void handleTypeChange()
 	    clientWidget_.setClientEarProjectName(name);  
 	  }
 	  
-	    IProject project_;
-	    
+	  IProject project_;
+	  
 	  public String getServiceComponentType()
 	  {
 		  return serviceComponentType_;
@@ -1312,7 +1314,7 @@ private void handleTypeChange()
 				}
 				
 				//Validate the page
-				validationState_ = ValidationUtils.VALIDATE_SCALE_CHANGES;
+				validationState_ = (new ValidationUtils()).getNewValidationState(validationState_, ValidationUtils.VALIDATE_SCALE_CHANGES);
 				statusListener_.handleEvent(null);
 				
 			}		

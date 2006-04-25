@@ -14,6 +14,7 @@
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  * 20060424   138052 kathy@ca.ibm.com - Kathy Chan
+ * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -356,31 +357,30 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 	public IStatus getStatus() {
 		IStatus status = Status.OK_STATUS;
 
-		try {
-			IStatus missingFieldStatus = checkMissingFieldStatus();
-			if (missingFieldStatus.getSeverity() == IStatus.ERROR) {
-				return missingFieldStatus;
-			}
-			
-			IStatus invalidServiceImplStatus = checkServiceImplTextStatus();
-			if (invalidServiceImplStatus.getSeverity() == IStatus.ERROR){
-				return invalidServiceImplStatus;
-			}
-
-			IStatus possibleErrorStatus = checkErrorStatus();
-			if (possibleErrorStatus.getSeverity() == IStatus.ERROR) {
-				return possibleErrorStatus;
-			}
-
-			IStatus possibleWarningStatus = checkWarningStatus();
-			if (possibleWarningStatus.getSeverity() == IStatus.WARNING) {
-				return possibleWarningStatus;
-			}
-		} finally {
-			// clear the validation state.
-			validationState_ = ValidationUtils.VALIDATE_NONE;
-			clientWidget_.setValidationState(ValidationUtils.VALIDATE_NONE);
+		IStatus missingFieldStatus = checkMissingFieldStatus();
+		if (missingFieldStatus.getSeverity() == IStatus.ERROR) {
+			return missingFieldStatus;
 		}
+
+		IStatus invalidServiceImplStatus = checkServiceImplTextStatus();
+		if (invalidServiceImplStatus.getSeverity() == IStatus.ERROR) {
+			return invalidServiceImplStatus;
+		}
+
+		IStatus possibleErrorStatus = checkErrorStatus();
+		if (possibleErrorStatus.getSeverity() == IStatus.ERROR) {
+			return possibleErrorStatus;
+		}
+
+		IStatus possibleWarningStatus = checkWarningStatus();
+		if (possibleWarningStatus.getSeverity() == IStatus.WARNING) {
+			return possibleWarningStatus;
+		}
+
+		// if no errors or warnings were found, clear the validation state.
+		validationState_ = ValidationUtils.VALIDATE_NONE;
+		clientWidget_.setValidationState(ValidationUtils.VALIDATE_NONE);
+
 		return status;
 	}
 	
