@@ -4,12 +4,13 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner (initial creation)
+ * 20060426   138051 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
@@ -32,6 +33,7 @@ import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
+import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 
 public class FacetMatchCache implements IResourceChangeListener
 {
@@ -214,15 +216,37 @@ public class FacetMatchCache implements IResourceChangeListener
     }
     
     Set facetVersions = FacetUtils.getFacetsForProject(projectName);
-    if (facetVersions != null)
-    {
-      fm = FacetUtils.match(rfvs, facetVersions);
-    } else
+    if (facetVersions == null)
     {
       fm = new FacetMatcher();
       fm.setMatch(false);
+      return fm;
     }    
     
+    fm = FacetUtils.match(rfvs, facetVersions);
+    
+    // Check if the facet runtime required by the required facet is supported
+    // by the project without chaning it's current facet runtime
+    
+    IRuntime fProjectRuntime = FacetUtils.getFacetRuntimeForProject(projectName);
+    if (fProjectRuntime != null) {
+    	String fProjectRuntimeName = fProjectRuntime.getName();
+    	boolean projectSupportRequiredFacetRuntime = false;
+    	Set rts = FacetUtils.getRuntimes(rfvs);
+    	for (Iterator iterator = rts.iterator(); iterator.hasNext() && !projectSupportRequiredFacetRuntime;) {
+    		IRuntime fRequiredRuntime = (IRuntime) iterator.next();
+    		if (fRequiredRuntime != null) {
+    			if (fRequiredRuntime.getName().equals(fProjectRuntimeName)) {
+    				projectSupportRequiredFacetRuntime = true;
+    			}
+    		}
+    	}
+
+    	// if project does not support the required facet runtime, set FacetMatch match to false
+    	if (!projectSupportRequiredFacetRuntime) {
+    		fm.setMatch(false);
+    	}
+    }
     return fm;
   }
 
