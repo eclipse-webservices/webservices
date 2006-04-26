@@ -11,7 +11,9 @@
 
 package org.eclipse.wst.wsdl.tests;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
@@ -21,10 +23,16 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.wst.wsdl.Binding;
+import org.eclipse.wst.wsdl.BindingInput;
+import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Import;
+import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Message;
+import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
@@ -35,6 +43,10 @@ import org.eclipse.wst.wsdl.binding.mime.MIMEMultipartRelated;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
 import org.eclipse.wst.wsdl.binding.mime.internal.util.MIMEConstants;
+import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
+import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
+import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
+import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -42,7 +54,9 @@ import org.eclipse.xsd.XSDImport;
 import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -97,6 +111,14 @@ public class BugFixesTest extends TestCase
       protected void runTest()
       {
         testResolvesElementInImports();
+      }
+    });
+
+    suite.addTest(new BugFixesTest("PartsSerialization")
+    {
+      protected void runTest()
+      {
+        testSerializesPartsInSOAPBody();
       }
     });
 
@@ -288,5 +310,108 @@ public class BugFixesTest extends TestCase
     {
       Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage()); //$NON-NLS-1$
     }
+  }
+
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=137990
+   */
+  public void testSerializesPartsInSOAPBody()
+  {
+    // Build an in-memory WSDL definition.
+
+    WSDLFactory factory = WSDLPackage.eINSTANCE.getWSDLFactory();
+
+    String targetNamespace = "testNamespace"; //$NON-NLS-1$
+
+    Definition definition = factory.createDefinition();
+    definition.setTargetNamespace(targetNamespace);
+    definition.setQName(new QName(targetNamespace, "testDefinition")); //$NON-NLS-1$
+    definition.addNamespace("tns", targetNamespace); //$NON-NLS-1$
+    definition.addNamespace("xsd", XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001); //$NON-NLS-1$
+    definition.addNamespace("soap", SOAPConstants.SOAP_NAMESPACE_URI); //$NON-NLS-1$
+
+    Message message = factory.createMessage();
+    QName messageQName = new QName(targetNamespace, "testMessage");
+    message.setQName(messageQName);
+    definition.addMessage(message);
+
+    Part part1 = factory.createPart();
+    String part1Name = "part1"; //$NON-NLS-1$ 
+    part1.setName(part1Name);
+    part1.setTypeName(new QName(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001, "string")); //$NON-NLS-1$
+    message.addPart(part1);
+
+    Part part2 = factory.createPart();
+    String part2Name = "part2"; //$NON-NLS-1$ 
+    part2.setName(part2Name);
+    part2.setTypeName(new QName(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001, "string")); //$NON-NLS-1$
+    message.addPart(part2);
+
+    PortType portType = factory.createPortType();
+    QName portQName = new QName(targetNamespace, "testPort"); //$NON-NLS-1$
+    portType.setQName(portQName);
+    definition.addPortType(portType);
+
+    Operation operation = factory.createOperation();
+    String operationName = "testOperation"; //$NON-NLS-1$ 
+    operation.setName(operationName);
+    portType.addOperation(operation);
+
+    Input input = factory.createInput();
+    input.setMessage(message);
+    operation.setInput(input);
+
+    Binding binding = factory.createBinding();
+    QName bindingQName = new QName(targetNamespace, "testBinding"); //$NON-NLS-1$
+    binding.setQName(bindingQName);
+    binding.setPortType(portType);
+    definition.addBinding(binding);
+
+    BindingOperation bindingOperation = factory.createBindingOperation();
+    bindingOperation.setOperation(operation);
+    binding.addBindingOperation(bindingOperation);
+
+    BindingInput bindingInput = factory.createBindingInput();
+    bindingOperation.setBindingInput(bindingInput);
+
+    SOAPFactory soapFactory = SOAPPackage.eINSTANCE.getSOAPFactory();
+    SOAPBody soapBody = soapFactory.createSOAPBody();
+    bindingInput.addExtensibilityElement(soapBody);
+
+    definition.updateElement();
+
+    // Test the "no parts" scenario. In this case the parts attribute should not
+    // be present.
+
+    Element soapBodyElement = soapBody.getElement();
+    Attr partsAttributeNode = soapBodyElement.getAttributeNode(SOAPConstants.PARTS_ATTRIBUTE);
+    assertNull(partsAttributeNode);
+
+    // Test the scenario when the body specifies one part. In this case the
+    // parts attribute
+    // should be present and look like this parts="part1"
+
+    List parts = new ArrayList();
+    parts.add(part1);
+    soapBody.setParts(parts);
+
+    soapBody.updateElement();
+
+    soapBodyElement = soapBody.getElement();
+    String partsAttributeValue = soapBodyElement.getAttribute(SOAPConstants.PARTS_ATTRIBUTE);
+    assertEquals(part1Name, partsAttributeValue);
+
+    // Test the scenario when the body specifies two parts. In this case the
+    // parts attribute
+    // should be present and look like this parts="part1 part2"
+
+    parts.add(part2);
+    soapBody.setParts(parts);
+
+    soapBody.updateElement();
+
+    soapBodyElement = soapBody.getElement();
+    partsAttributeValue = soapBodyElement.getAttribute(SOAPConstants.PARTS_ATTRIBUTE);
+    assertEquals(part1Name + " " + part2Name, partsAttributeValue); //$NON-NLS-1$
   }
 }
