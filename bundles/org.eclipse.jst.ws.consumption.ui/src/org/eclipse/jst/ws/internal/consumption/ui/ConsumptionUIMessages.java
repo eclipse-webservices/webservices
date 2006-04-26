@@ -21,6 +21,7 @@
  * 20060420   136158 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060420   120714 kathy@ca.ibm.com - Kathy Chan
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
+ * 20060426   138647 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -211,7 +212,6 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String TOOLTIP_WSWSCEN_SCALE_SERVICE;
 	public static String TOOLTIP_WSWSCEN_SCALE_CLIENT;
 	public static String TOOLTIP_WSWSCEN_SCALE_CLIENT_ONLY;
-	public static String TOOLTIP_WSWSCEN_SCALE_NO_CLIENT;
 	public static String TOOLTIP_WSWSCEN_TEXT_IMPL;
 	public static String TOOLTIP_WSWSCEN_BUTTON_OVERWRITE_FILES;
 	public static String TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL;
