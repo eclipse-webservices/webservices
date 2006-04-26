@@ -25,6 +25,7 @@
  * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060424   138052 kathy@ca.ibm.com - Kathy Chan
  * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060426   138519 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -240,8 +241,12 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 					}
 					else
 					{
-						//clear the object selection field.
-						serviceImpl_.setText("");
+						//clear the object selection field
+						// serviceImpl may be null if on the preferences page
+						if (serviceImpl_ != null)
+						{
+							serviceImpl_.setText("");
+						}						   
 					}					
 			   validationState_ = ValidationUtils.VALIDATE_ALL;
 			   statusListener_.handleEvent(null);			   
