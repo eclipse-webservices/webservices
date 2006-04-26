@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
+ * 20060426   135614 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -130,7 +131,7 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
             | GridData.VERTICAL_ALIGN_FILL | GridData.GRAB_VERTICAL | GridData.FILL_VERTICAL);
     handlersComp.setLayoutData(griddata);
     handlersComp.setSize(130, 600);
-
+    
     Composite buttonsComp = uiUtils.createComposite(displayComp, 1);
     griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
     buttonsComp.setLayoutData(griddata);
@@ -152,8 +153,8 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     wsLabel.setLayoutData(gd);
 
     Button moveUpButton = uiUtils.createPushButton(buttonsComp, ConsumptionUIMessages.LABEL_BUTTON_MOVE_UP, null, null);
-    griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
-    moveUpButton.setLayoutData(griddata);
+    GridData muGriddata = new GridData();
+    Point musize = moveUpButton.computeSize(SWT.DEFAULT, SWT.DEFAULT);
     moveUpButton.addSelectionListener(new SelectionListener() {
 
       public void widgetSelected(SelectionEvent event) {
@@ -165,8 +166,8 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     });
 
     Button moveDownButton = uiUtils.createPushButton(buttonsComp, ConsumptionUIMessages.LABEL_BUTTON_MOVE_DOWN, null, null);
-    griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
-    moveDownButton.setLayoutData(griddata);
+    GridData mdGriddata = new GridData();
+    Point mdsize = moveDownButton.computeSize(SWT.DEFAULT, SWT.DEFAULT);
     moveDownButton.addSelectionListener(new SelectionListener() {
 
       public void widgetSelected(SelectionEvent event) {
@@ -184,8 +185,8 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     wsLabel.setLayoutData(gd);
 
     addButton_ = uiUtils.createPushButton(buttonsComp, ConsumptionUIMessages.LABEL_BUTTON_ADD, null, null);
-    griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
-    addButton_.setLayoutData(griddata);
+    GridData addGriddata = new GridData(); 
+    Point addSize = addButton_.computeSize(SWT.DEFAULT, SWT.DEFAULT);
     addButton_.addSelectionListener(new SelectionListener() {
 
       public void widgetSelected(SelectionEvent event) {
@@ -197,8 +198,8 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     });
 
     removeButton_ = uiUtils.createPushButton(buttonsComp, ConsumptionUIMessages.LABEL_BUTTON_REMOVE, null, null);
-    griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
-    removeButton_.setLayoutData(griddata);
+    GridData remGriddata = new GridData();
+    Point remSize = removeButton_.computeSize(SWT.DEFAULT, SWT.DEFAULT);
     removeButton_.addSelectionListener(new SelectionListener() {
 
       public void widgetSelected(SelectionEvent event) {
@@ -210,6 +211,23 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
     });
     enableRemove(false);
 
+    // set the width to the max of the button labels
+    int widthHint = 0;
+    int[] sizes = new int[]{musize.x, mdsize.x, addSize.x, remSize.x, 100};
+    for(int j = 0; j < sizes.length; j++) {
+    	if (sizes[j] > widthHint)
+    	widthHint = sizes[j];
+    }
+    muGriddata.widthHint = widthHint;
+    mdGriddata.widthHint = widthHint;
+    addGriddata.widthHint = widthHint;
+    remGriddata.widthHint = widthHint;
+    
+    moveUpButton.setLayoutData(muGriddata);
+    moveDownButton.setLayoutData(mdGriddata);
+    addButton_.setLayoutData(addGriddata);
+    removeButton_.setLayoutData(remGriddata);
+    
     // table stuff
     String[] columns_ = new String[] { ConsumptionUIMessages.LABEL_HANDLER_NAME, ConsumptionUIMessages.LABLE_HANDLER_CLASS};
 
@@ -272,7 +290,7 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
         enableRemove(true);
       }
     });
-
+   
     // gen skeleton check box
     genSkeletonRadioButton_ = uiUtils.createCheckbox(parent_, ConsumptionUIMessages.LABEL_BUTTON_GEN_SKELETON, ConsumptionUIMessages.TOOLTIP_BUTTON_GEN_SKELETON, INFOPOP_HDLR_GEN_SKELETON);
     genSkeletonRadioButton_.addSelectionListener(new SelectionAdapter() {
@@ -347,7 +365,7 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
           else
             webServiceRefCombo_.select(0);
         }
-    
+        
         // set handler table
         HandlerServiceRefHolder hsrh = HandlerServiceRefHelper.getForServiceRefName(handlerServiceRefHolder_, webServiceRefCombo_.getText());
         if (hsrh != null) {
@@ -360,6 +378,7 @@ public class ConfigClientHandlersTableWidget extends SimpleWidgetDataContributor
         // set output folder
         setSourceOutputLocation();
       }
+      parent_.getShell().setSize(530, 650);
     }
     catch (Exception e) {
       e.printStackTrace();

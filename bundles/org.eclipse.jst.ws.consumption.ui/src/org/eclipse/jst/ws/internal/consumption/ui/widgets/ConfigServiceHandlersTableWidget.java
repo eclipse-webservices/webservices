@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
+ * 20060426   135614 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -118,13 +119,10 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
 
     parent_ = parent;
 
-    int maxWidth = 130;
-    int maxHeight = 600;
-
     // Web service description composite (combo/text to be created later)
     webServiceDescComp_ = uiUtils.createComposite(parent_, 2);
     
-    Composite displayComp = new Composite(parent, SWT.NONE);
+    Composite displayComp = new Composite(parent_, SWT.NONE);
 
     GridLayout gridlayout = new GridLayout(2, false);
     displayComp.setLayout(gridlayout);
@@ -134,8 +132,8 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING
         | GridData.VERTICAL_ALIGN_FILL | GridData.GRAB_VERTICAL | GridData.FILL_VERTICAL);
     handlersComp.setLayoutData(griddata);
-    handlersComp.setSize(maxWidth, maxHeight);
-
+    handlersComp.setSize(130, 600);
+    
     Composite buttonsComp = uiUtils.createComposite(displayComp, 1);
     griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
     buttonsComp.setLayoutData(griddata);
@@ -145,7 +143,7 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
     gd.horizontalSpan = 2;
     handlersText.setLayoutData(gd);
-
+    
     handlersTable_ = uiUtils.createTable(handlersComp, ConsumptionUIMessages.TOOLTIP_EDIT_WS_HANDLERS, INFOPOP_HDLR_WS_HANDLERS, SWT.MULTI
         | SWT.FULL_SELECTION | SWT.BORDER);
     handlersTable_.setHeaderVisible(true);
@@ -158,8 +156,8 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     wsLabel.setLayoutData(gd);
 
     Button moveUpButton = uiUtils.createPushButton(buttonsComp, ConsumptionUIMessages.LABEL_BUTTON_MOVE_UP, null, null);
-    griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
-    moveUpButton.setLayoutData(griddata);
+    GridData muGriddata = new GridData();
+    Point musize = moveUpButton.computeSize(SWT.DEFAULT, SWT.DEFAULT);
     moveUpButton.addSelectionListener(new SelectionListener() {
 
       public void widgetSelected(SelectionEvent event) {
@@ -171,8 +169,8 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     });
 
     Button moveDownButton = uiUtils.createPushButton(buttonsComp, ConsumptionUIMessages.LABEL_BUTTON_MOVE_DOWN, null, null);
-    griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
-    moveDownButton.setLayoutData(griddata);
+    GridData mdGriddata = new GridData();
+    Point mdsize = moveDownButton.computeSize(SWT.DEFAULT, SWT.DEFAULT);
     moveDownButton.addSelectionListener(new SelectionListener() {
 
       public void widgetSelected(SelectionEvent event) {
@@ -190,8 +188,8 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     wsLabel.setLayoutData(gd);
 
     addButton_ = uiUtils.createPushButton(buttonsComp, ConsumptionUIMessages.LABEL_BUTTON_ADD, null, null);
-    griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
-    addButton_.setLayoutData(griddata);
+    GridData addGriddata = new GridData(); 
+    Point addSize = addButton_.computeSize(SWT.DEFAULT, SWT.DEFAULT);
     addButton_.addSelectionListener(new SelectionListener() {
 
       public void widgetSelected(SelectionEvent event) {
@@ -203,8 +201,8 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     });
 
     removeButton_ = uiUtils.createPushButton(buttonsComp, ConsumptionUIMessages.LABEL_BUTTON_REMOVE, null, null);
-    griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
-    removeButton_.setLayoutData(griddata);
+    GridData remGriddata = new GridData();
+    Point remSize = removeButton_.computeSize(SWT.DEFAULT, SWT.DEFAULT);
     removeButton_.addSelectionListener(new SelectionListener() {
 
       public void widgetSelected(SelectionEvent event) {
@@ -216,6 +214,22 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
     });
     enableRemove(false);
 
+    int widthHint = 0;
+    int[] sizes = new int[]{musize.x, mdsize.x, addSize.x, remSize.x, 100};
+    for(int j = 0; j < sizes.length; j++) {
+    	if (sizes[j] > widthHint)
+    	widthHint = sizes[j];
+    }
+    muGriddata.widthHint = widthHint;
+    mdGriddata.widthHint = widthHint;
+    addGriddata.widthHint = widthHint;
+    remGriddata.widthHint = widthHint;
+    
+    moveUpButton.setLayoutData(muGriddata);
+    moveDownButton.setLayoutData(mdGriddata);
+    addButton_.setLayoutData(addGriddata);
+    removeButton_.setLayoutData(remGriddata);
+    
     // table stuff here
     String[] columns_ = new String[] { ConsumptionUIMessages.LABEL_HANDLER_NAME, ConsumptionUIMessages.LABLE_HANDLER_CLASS,
         ConsumptionUIMessages.LABEL_HANDLER_PORT};
@@ -303,6 +317,7 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
         handleSourceLocationCombo(evt);
       }
     });
+    
     return this;
   }
 
@@ -322,7 +337,7 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
           String text = NLS.bind(ConsumptionUIMessages.MSG_TEXT_NUM_OF_SERVICES, Integer.toString(handlerDescriptionHolder_.length));
           webServiceDescText_.setText(text);
         }
-        
+                
         genSkeletonRadioButton_.setSelection(false);
         genSkeletonRadioButton_.setEnabled(false);
         genSkeletonRadioButton_.setVisible(false);
@@ -361,7 +376,7 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
           else
             webServiceDescCombo_.select(0);
         }
-       
+        
         // set Descriptions
         HandlerDescriptionHolder hdh = HandlerDescriptionHelper.getForDescriptionName(handlerDescriptionHolder_, webServiceDescCombo_.getText());
         if (hdh!=null){
@@ -372,8 +387,8 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
         }
         // set output folder
         setSourceOutputLocation();  
-        
       }
+      parent_.getShell().setSize(530, 650);
     }
     catch (Exception e) {
       e.printStackTrace();
