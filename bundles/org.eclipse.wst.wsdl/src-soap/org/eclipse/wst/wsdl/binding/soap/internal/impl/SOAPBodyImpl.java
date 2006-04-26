@@ -481,26 +481,35 @@ public void setEncodingStyles(List list)
     {
       if (eReference == null || eReference == SOAPPackage.eINSTANCE.getSOAPBody_Parts())
       {
-    	// Bugzilla 108176
-        Part part = null;
-        Message message = null;
-        String partNames = "";
-        Iterator iter = getParts().iterator();
-        String namespace = null;
-        String prefix = null;
-        while (iter.hasNext())
+        // Used to be Bugzilla 108176, now it is Bugzilla 137990
+
+        String partsAttributeValue = null;
+        
+        // Do not use getParts() as it will return the list of implicit message
+        // parts.
+
+        if (parts != null && !parts.isEmpty())
         {
-          part = (Part)iter.next();
-          if ((message = getMessage(part)) != null)
+          StringBuffer partNamesBuffer = new StringBuffer();
+          Iterator iterator = parts.iterator();
+
+          while (iterator.hasNext())
           {
-            namespace = message.getQName().getNamespaceURI();
-            prefix = part.getEnclosingDefinition().getPrefix(namespace);
-            partNames = partNames + " " + prefix + ":" + part.getName();
+            Part part = (Part) iterator.next();
+            String partName = part.getName();
+
+            partNamesBuffer.append(partName);
+
+            if (iterator.hasNext())
+            {
+              partNamesBuffer.append(" "); //$NON-NLS-1$
+            }
           }
-        } 
-        partNames = partNames.trim();
-        if (partNames.length() != 0)
-          niceSetAttribute(theElement, SOAPConstants.PARTS_ATTRIBUTE, partNames);
+
+          partsAttributeValue = partNamesBuffer.toString();
+        }
+
+        niceSetAttribute(theElement, SOAPConstants.PARTS_ATTRIBUTE, partsAttributeValue);
       }     
     }
   } 
