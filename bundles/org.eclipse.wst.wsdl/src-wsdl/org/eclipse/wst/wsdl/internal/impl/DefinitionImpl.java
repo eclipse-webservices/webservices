@@ -879,7 +879,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.Binding getBinding(QName name)
   {
-    return (javax.wsdl.Binding) resolveWSDLElement(WSDLConstants.BINDING, name);
+    return (javax.wsdl.Binding) resolveWSDLElement(WSDLConstants.BINDING, name, this);
   }
 
   /**
@@ -964,7 +964,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.Message getMessage(QName name)
   {
-    return (javax.wsdl.Message) resolveWSDLElement(WSDLConstants.MESSAGE, name);
+    return (javax.wsdl.Message) resolveWSDLElement(WSDLConstants.MESSAGE, name, this);
   }
 
   /**
@@ -1018,7 +1018,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.PortType getPortType(QName name)
   {
-    return (javax.wsdl.PortType) resolveWSDLElement(WSDLConstants.PORT_TYPE, name);
+    return (javax.wsdl.PortType) resolveWSDLElement(WSDLConstants.PORT_TYPE, name, this);
   }
 
   /**
@@ -1071,7 +1071,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.Service getService(QName name)
   {
-    return (javax.wsdl.Service) resolveWSDLElement(WSDLConstants.SERVICE, name);
+    return (javax.wsdl.Service) resolveWSDLElement(WSDLConstants.SERVICE, name, this);
   }
 
   /**
@@ -1518,7 +1518,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     return definition;
   }
   
-  private WSDLElement resolveWSDLElement(int type, List list, javax.xml.namespace.QName qname)
+  private WSDLElement resolveWSDLElement(int type, List list, QName qname)
   {
     WSDLElement result = null;
     if (qname != null)
@@ -1572,38 +1572,121 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     }
     return result;
   }
-
-  /*
-   * TBD - Revisit
-   * Look for an object in the imported definitions.
+  
+  /**
+   * Resolves the element described by type and qname in the context of the
+   * given definition. The definition's imported definitions are checked as well.
+   * 
+   * @param type the element type.
+   * @param qname the element's QName. Must not be null.
+   * @param definition the context definition. Must not be null.
+   * @return the resolved WSDLElement or null if one cannot be found.
    */
-  private WSDLElement resolveWSDLElement(int type, javax.xml.namespace.QName qname)
+  private static WSDLElement resolveWSDLElement(int type, QName qname, DefinitionImpl definition)
+  {
+    if (qname == null || qname.getNamespaceURI() == null)
+    {
+      return null;
+    }
+
+    List definitions = new ArrayList();
+    definitions.add(definition);
+    WSDLElement result = resolveWSDLElement(type, qname, definitions, new ArrayList());
+
+    return result;
+  }
+  
+  /**
+   * Resolves the element described by type and qname in the context of the
+   * given definitions. The definitions imported definitions are checked as well.
+   * 
+   * IMPORTANT! This method is recursive. It checks the definitions and all their
+   * imported definitions. It also is coded such that it avoids a cyclic import
+   * should one be encountered.
+   * 
+   * @param type the element type.
+   * @param qname the element's qName.
+   * @param definitions the context definitions
+   * @param visitedDefinitions a list with the definitions already visited.
+   * @return the resolved WSDLElement or null if one cannot be found.
+   */
+  private static WSDLElement resolveWSDLElement(int type, QName qname, List definitions, List visitedDefinitions)
+  {
+    WSDLElement result = null;
+    
+    if (definitions.isEmpty())
+    {
+      return result;
+    }
+
+    // In order to preserve the old behaviour which used to check the definition
+    // and all first level imports, check the entire list of definitions passed
+    // in first.
+    
+    Iterator definitionsIterator = definitions.iterator();
+    
+    while (definitionsIterator.hasNext())
+    {
+      DefinitionImpl definition = (DefinitionImpl) definitionsIterator.next();
+
+      result = definition.resolveWSDLElement(type, qname);
+      
+      if (result != null)
+      {
+        return result;
+      }
+    }
+    
+    // Re-iterate over the definitions and recurse into their imports.
+    
+    definitionsIterator = definitions.iterator();
+    
+    while (definitionsIterator.hasNext())
+    {
+      DefinitionImpl definition = (DefinitionImpl) definitionsIterator.next();
+      
+      if (visitedDefinitions.contains(definition))
+      {
+        // This might happen if we have a case of cyclic imports. Since we
+        // already looked in it, we can and should skip it.
+
+        continue;
+      }      
+      
+      visitedDefinitions.add(definition);
+
+      List importedDefinitions = definition.getImportedDefinitions(qname.getNamespaceURI());
+
+      result = resolveWSDLElement(type, qname, importedDefinitions, visitedDefinitions);
+
+      if (result != null)
+      {
+        break;
+      }
+    }
+    
+    return result;
+  }
+
+  private WSDLElement resolveWSDLElement(int type, QName qname)
   {
     WSDLElement result = null;
     if (qname.getNamespaceURI() != null)
     {
-      for (Iterator i = getDefinitions(qname.getNamespaceURI()).iterator(); i.hasNext();)
+      switch (type)
       {
-        Definition definition = (Definition) i.next();
-        switch (type)
-        {
-          case WSDLConstants.MESSAGE :
-            result = resolveWSDLElement(type, definition.getEMessages(), qname);
-            break;
-          case WSDLConstants.PORT_TYPE :
-            result = resolveWSDLElement(type, definition.getEPortTypes(), qname);
-            break;
-          case WSDLConstants.BINDING :
-            result = resolveWSDLElement(type, definition.getEBindings(), qname);
-            break;
-          case WSDLConstants.SERVICE :
-            result = resolveWSDLElement(type, definition.getEServices(), qname);
-            break;
-        }
-        if (result != null)
-        {
+        case WSDLConstants.MESSAGE:
+          result = resolveWSDLElement(type, getEMessages(), qname);
           break;
-        }
+        case WSDLConstants.PORT_TYPE:
+          result = resolveWSDLElement(type, getEPortTypes(), qname);
+          break;
+        case WSDLConstants.BINDING:
+          result = resolveWSDLElement(type, getEBindings(), qname);
+          break;
+        case WSDLConstants.SERVICE:
+          result = resolveWSDLElement(type, getEServices(), qname);
+          break;
       }
     }
     return result;
@@ -1930,13 +2013,10 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     }
   }
 
-  protected List getDefinitions(String namespace)
+  private List getImportedDefinitions(String namespace)
   {
     List list = new ArrayList();
-    if (WSDLConstants.isMatchingNamespace(namespace, getTargetNamespace()))
-    {
-      list.add(this);
-    }
+
     for (Iterator i = getImports(namespace).iterator(); i.hasNext();)
     {
       Import theImport = (Import) i.next();
@@ -1947,6 +2027,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
         list.add(importedDefinition);
       }
     }
+    
     return list;
   }
 

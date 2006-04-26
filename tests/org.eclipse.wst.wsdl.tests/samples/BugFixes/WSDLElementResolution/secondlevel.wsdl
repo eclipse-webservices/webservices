@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:tns="http://www.example.com" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.example.com">
+
+	<!-- Here to force a cyclic import to make sure the code does not go into an infinite recursion. -->
+	
+    <import location="main.wsdl" namespace="http://www.example.com"/>
+
+	<message name="testOUTPUTmessage">
+		<part name="testOUTpart" type="xsd:string"/>
+	</message>
+
+	<!-- Duplicated here to allow testing the imports tree traversal order.
+	This message will be "masked" by the one declared in the firstlevel.wsdl -->
+
+	<message name="testINPUTmessage">
+		<part name="testINpart" type="xsd:int"/>
+	</message>
+
+</definitions>

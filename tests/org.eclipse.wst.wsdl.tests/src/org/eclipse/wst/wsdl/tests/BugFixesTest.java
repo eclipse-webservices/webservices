@@ -68,27 +68,35 @@ public class BugFixesTest extends TestCase
   {
     TestSuite suite = new TestSuite();
 
-    suite.addTest(new BugFixesTest("TypeAndElementResolution")
-    {
-      protected void runTest()
-      {
-        testTypeAndElementResolution();
-      }
-    });
+    suite.addTest(new BugFixesTest("TypeAndElementResolution") //$NON-NLS-1$
+        {
+          protected void runTest()
+          {
+            testTypeAndElementResolution();
+          }
+        });
 
-    suite.addTest(new BugFixesTest("MIMEGetTypeName")
-    {
-      protected void runTest()
-      {
-        testReturnsProperQNameForMIMEExtensibilityElements();
-      }
-    });
+    suite.addTest(new BugFixesTest("MIMEGetTypeName") //$NON-NLS-1$
+        {
+          protected void runTest()
+          {
+            testReturnsProperQNameForMIMEExtensibilityElements();
+          }
+        });
 
     suite.addTest(new BugFixesTest("ImportsElementOrder")
     {
       protected void runTest()
       {
         testPlacesImportsAfterTheDefinitionElement();
+      }
+    });
+
+    suite.addTest(new BugFixesTest("ResolveWSDLElement")
+    {
+      protected void runTest()
+      {
+        testResolvesElementInImports();
       }
     });
 
@@ -99,11 +107,11 @@ public class BugFixesTest extends TestCase
   {
     super.setUp();
 
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
+    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl()); //$NON-NLS-1$
     WSDLPackage pkg = WSDLPackage.eINSTANCE;
 
     // We need this for XSD <import>.
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
+    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl()); //$NON-NLS-1$
     XSDPackage xsdpkg = XSDPackage.eINSTANCE;
   }
 
@@ -171,7 +179,7 @@ public class BugFixesTest extends TestCase
     }
     catch (Exception e)
     {
-      Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
+      Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage()); //$NON-NLS-1$
     }
   }
 
@@ -206,18 +214,18 @@ public class BugFixesTest extends TestCase
   /**
    * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=137040
    */
-  protected static void testPlacesImportsAfterTheDefinitionElement()
+  public void testPlacesImportsAfterTheDefinitionElement()
   {
     WSDLFactory factory = WSDLPackage.eINSTANCE.getWSDLFactory();
 
     String namespace = "testNamespace"; //$NON-NLS-1$
-    
+
     Definition definition = factory.createDefinition();
-    definition.setQName(new QName(namespace, "testDefinition"));    
+    definition.setQName(new QName(namespace, "testDefinition")); //$NON-NLS-1$  
     definition.updateElement();
 
     Service service = factory.createService();
-    service.setQName(new QName(namespace, "testService"));
+    service.setQName(new QName(namespace, "testService")); //$NON-NLS-1$
     definition.addService(service);
 
     Import wsdlImport = factory.createImport();
@@ -236,5 +244,49 @@ public class BugFixesTest extends TestCase
     Node secondChild = definitionElementChildren.item(1);
 
     assertSame(serviceElement, secondChild);
+  }
+
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=137866
+   */
+  public void testResolvesElementInImports()
+  {
+    try
+    {
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/WSDLElementResolution/main.wsdl"); //$NON-NLS-1$
+
+      String targetNamespace = "http://www.example.com"; //$NON-NLS-1$
+
+      // This test attempts to locate a message located in the first level
+      // import.
+
+      QName firstLevelMessageQName = new QName(targetNamespace, "testINPUTmessage"); //$NON-NLS-1$
+      javax.wsdl.Message firstLevelMessage = definition.getMessage(firstLevelMessageQName);
+
+      assertNotNull(firstLevelMessage);
+
+      // This test attempts to locate a message located in the second level
+      // import.
+
+      QName secondLevelMessageQName = new QName(targetNamespace, "testOUTPUTmessage"); //$NON-NLS-1$
+      javax.wsdl.Message secondLevelMessage = definition.getMessage(secondLevelMessageQName);
+
+      assertNotNull(secondLevelMessage);
+
+      // This test ensures that we do a breadth first traversal to keep things
+      // working approximatively as the old implementation which used to check
+      // only the definition and its first level imports. The first message is
+      // defined in firstlevel.wsdl as well as secondlevel.wsdl but the
+      // algorithm should find the one in firstlevel.wsdl.
+
+      Import firstLevelImport = (Import) definition.getImports(targetNamespace).get(0);
+      Definition firstLevelDefinition = firstLevelImport.getEDefinition();
+
+      assertEquals(firstLevelDefinition, ((Message) firstLevelMessage).getEnclosingDefinition());
+    }
+    catch (Exception e)
+    {
+      Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage()); //$NON-NLS-1$
+    }
   }
 }
