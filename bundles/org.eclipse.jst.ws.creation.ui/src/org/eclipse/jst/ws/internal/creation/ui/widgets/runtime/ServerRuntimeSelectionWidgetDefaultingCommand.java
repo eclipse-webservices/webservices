@@ -14,6 +14,7 @@
  * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060315   131963 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060418   129688 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -72,6 +73,22 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   }
   
   
+  /**
+   * Defaults the following bits of information in the following order:
+   * serviceRuntimeId_ : the serviceRuntimeId. Must be defaulted to non-empty String.
+   * serviceIds_.runtimeId_: the Web service runtime id. Must be defaulted to non-empty String.
+   * serviceProjectName_ : the name of the service project. Must be non-empty. May or may not exist.
+   * serviceComponentType_: the id of the service project template. Must be empty if the service
+   *                        project exists. Must be non-empty of the service project does not exist.
+   * serviceIds_.serverId_: the server type id. May be an empty String if the defaulted Web service runtime
+   *                        does not require a server.
+   * serviceIds_.serverInstanceId_: the server id. May be null or an empty String.
+   * serviceNeedEAR_: true if an EAR is needed. False otherwise.
+   * serviceEarProjectName_: the service EAR project. Must be empty if the serviceNeedEAR_ is false.
+   *                         Must be non-empty if the serviceNeedEAR_ is true.
+   * Defaults the parallel information on the client-side if needed 
+   * (@see ClientRuntimeSelectionWidgetDefaultingCommand#execute).                                                 
+   */
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
     IEnvironment env = getEnvironment();
@@ -79,6 +96,9 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     try
     {    	
      
+     //**Step 1** Default the serviceRuntime and the Web service runtime.
+     //serviceIdsFixed_ is set to true for the Ant scenario. It's always false for the wizard
+     //scenarios.    	
      if (serviceIdsFixed_)
      {
        //Set the serviceRuntime based on the runtime, server, and initial selection. 
@@ -103,13 +123,15 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
          .getId());
      }
      
-     // Set the project
+     //**Step 2** Default the service project if it was not already defaulted 
+     //as part of defaulting the Web service runtime.
      if (serviceProjectName_ == null)
      {
        // Project name did not get set when the runtime was set, so set it now
        serviceProjectName_ = getDefaultServiceProjectName();
      }
 
+     //**Step 3** Default the service project type.
      IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
      if (!serviceProject.exists())
      {
@@ -121,7 +143,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
        //Set it to an empty String
        serviceComponentType_ = "";
      }
-
+     //**Step 4** Default the server if this is not an Ant scenario.
      if (!serviceIdsFixed_)
      {
        // Set the server
@@ -133,6 +155,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
        }
      }
      
+     //**Step 5** Default clientNeedEAR and client EAR if an EAR is needed
      setDefaultServiceEarProject();
      
      // jvh - for now comment out generate proxy

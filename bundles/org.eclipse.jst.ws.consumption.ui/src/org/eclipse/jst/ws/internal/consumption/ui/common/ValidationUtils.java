@@ -15,6 +15,7 @@
  * 20060420   136705 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -120,6 +121,23 @@ public class ValidationUtils
 
 	}
   
+  /**
+   * Returns IStatus resulting from checking for empty fields. Used for validation of page 1 of the
+   * Web service/client wizards.
+   * @param validationState one of VALIDATE_NONE, VALIDATE_ALL, VALIDATE_SERVER_RUNTIME_CHANGES, VALIDATE_PROJECT_CHANGES, VALIDATE_SCALE_CHANGES
+   * @param typeId Web service type id (isClient=false) or Web service client implementation type id (isClient=true) 
+   * @param serviceImpl String representation of the object selection from page 1
+   * @param runtimeId Web service runtime id
+   * @param serverId server type id
+   * @param projectName name of project
+   * @param needEar boolean <code>true</code> if EAR is required, <code>false</code> if not.
+   * @param earProjectName name of EAR project
+   * @param projectTypeId template id
+   * @param isClient boolean <code>true</code> if the method is being called for client side validation, 
+   * <code>false</code> for service side validation.
+   * @return IStatus with severity IStatus.OK if all mandatory fields are non-null and non-empty. 
+   * IStatus with severity IStatus.ERROR otherwise.
+   */
   public IStatus checkMissingFieldStatus(int validationState, String typeId, String serviceImpl, String runtimeId, String serverId,
 			String projectName, boolean needEar, String earProjectName, String projectTypeId,
 			boolean isClient)
@@ -224,7 +242,23 @@ public class ValidationUtils
 		
 		return Status.OK_STATUS;
   }
-  
+ 
+  /**
+   * Returns IStatus resulting from checking for errors. Used for validation of page 1 of the
+   * Web service/client wizards.
+   * @param validationState one of VALIDATE_NONE, VALIDATE_ALL, VALIDATE_SERVER_RUNTIME_CHANGES, VALIDATE_PROJECT_CHANGES, VALIDATE_SCALE_CHANGES
+   * @param typeId Web service type id (isClient=false) or Web service client implementation type id (isClient=true)
+   * @param runtimeId Web service runtime id
+   * @param serverId server type id
+   * @param projectName name of project
+   * @param needEar boolean <code>true</code> if EAR is required, <code>false</code> if not.
+   * @param earProjectName name of EAR project
+   * @param projectTypeId template id
+   * @param isClient boolean <code>true</code> if the method is being called for client side validation, 
+   * <code>false</code> for service side validation.
+   * @return IStatus with severity IStatus.OK if no errors are present,
+   * IStatus with severity IStatus.ERROR otherwise.
+   */
   public IStatus checkErrorStatus(int validationState, String typeId, String runtimeId, String serverId,
 			String projectName, boolean needEar, String earProjectName, String projectTypeId,
 			boolean isClient) {
@@ -399,6 +433,24 @@ public class ValidationUtils
 
 	}
   
+  /**
+   * Returns IStatus resulting from checking for warnings. Used for validation of page 1 of the
+   * Web service/client wizards. 
+   * @param validationState one of VALIDATE_NONE, VALIDATE_ALL, VALIDATE_SERVER_RUNTIME_CHANGES, VALIDATE_PROJECT_CHANGES, VALIDATE_SCALE_CHANGES
+   * @param scaleSetting one of <BR/>
+   * ScenarioContext.WS_TEST<BR/>
+   * ScenarioContext.WS_START<BR/>
+   * ScenarioContext.WS_INSTALL<BR/>
+   * ScenarioContext.WS_DEPLOY<BR/>
+   * ScenarioContext.WS_ASSEMBLE<BR/>
+   * ScenarioContext.WS_DEVELOP<BR/>
+   * ScenarioContext.WS_NONE
+   * @param serverId server type id
+   * @param isClient boolean <code>true</code> if the method is being called for client side validation, 
+   * <code>false</code> for service side validation.
+   * @return IStatus with severity IStatus.OK if no errors are present,
+   * IStatus with severity IStatus.WARNING otherwise.
+   */
   public IStatus checkWarningStatus(int validationState, int scaleSetting, String serverId,
 			boolean isClient) {
 		// Return a warning if there is no server selection and scale setting is
@@ -439,6 +491,18 @@ public class ValidationUtils
 
 	}
   
+  /**
+   * Returns whether or not the provided server type supports the facet versions on the provided project
+   * @param serverFactoryId server type id
+   * @param projectName name of a project that may or may not exist.
+   * @return boolean <code>true</code>
+   * <ul> 
+   * <li>if the server type supports the facet versions on the project or</li>
+   * <li>if the project is not a faceted project or</li>
+   * <li>if the project does not exist.</li>
+   * </ul>
+   * Returns <code>false</code> otherwise.
+   */
   public boolean doesServerSupportProject(String serverFactoryId, String projectName)
   {
     IProject project = ProjectUtilities.getProject(projectName);
@@ -472,6 +536,13 @@ public class ValidationUtils
     
   }
 
+  /**
+   * Returns whether or not the provided server type supports the facet versions in the provided set.
+   * @param serverFactoryId server type id
+   * @param facets set containing elements of type {@link IProjectFacetVersion}
+   * @return boolean <code>true</code> if the server type supports the facet versions in the provided set,
+   * <code>false</code> otherwise.
+   */
   public boolean doesServerSupportFacets(String serverFactoryId, Set facets)
   {
     Set runtimes = FacetUtils.getRuntimes(new Set[]{facets});
@@ -492,6 +563,14 @@ public class ValidationUtils
     return false;    
   }
   
+  /**
+   * Returns whether or not the provided server type supports at least one version of
+   * each of the fixed facets on the provided template
+   * @param serverFactoryId server type id
+   * @param templateId id of a {@link IFacetedProjectTemplate}
+   * @return boolean <code>true</code> if the server type supports at least one version of
+   * each of the fixed facets on the provided template, <code>false</code> otherwise.
+   */
   public boolean doesServerSupportTemplate(String serverFactoryId, String templateId)
   {
     IFacetedProjectTemplate template = ProjectFacetsManager.getTemplate(templateId);
@@ -546,6 +625,14 @@ public class ValidationUtils
     return true;
   }
   
+  /**
+   * Returns whether or not the provided project or project type (if the project is null or does not exist)
+   * rules out the need for an EAR.
+   * @param projectName name of a project
+   * @param projectTypeId id of a {@link IFacetedProjectTemplate}. Must be non-empty if the project is null or
+   * does not exist. 
+   * @return boolean <code>true</code> if the need for an EAR is not ruled out, <code>false</code> otherwise.
+   */
 	public boolean projectOrProjectTypeNeedsEar(String projectName, String projectTypeId)
 	{
 		// If the project is a simple Java project or the project type is
@@ -571,6 +658,13 @@ public class ValidationUtils
 		return true;
 	}
 	
+	/**
+	 * Returns whether or not an J2EE 1.3 EAR project can be installed on a server of
+	 * the provided server type.
+	 * @param serverTypeId server type id
+	 * @return boolean <code>true</code> if a J2EE 1.3 EAR project can be installed on a server of
+	 * the provided server type, <code>false</code> otherwise. 
+	 */
 	public boolean serverNeedsEAR(String serverTypeId)
 	{
 	    if (serverTypeId != null && serverTypeId.length() > 0) {
@@ -586,6 +680,11 @@ public class ValidationUtils
 		return true;
 	}
 	
+	/**
+	 * Returns a default EAR project name based on the provided project. 
+	 * @param projectName
+	 * @return String a default EAR project name
+	 */
 	public String getDefaultEarProjectName(String projectName)
 	{
 	    if (projectName != null && projectName.length() > 0) {
@@ -606,6 +705,7 @@ public class ValidationUtils
 		return ResourceUtils.getDefaultServiceEARProjectName();
 	}
 	
+  //TODO: This method is obselete - should be removed.
   public IStatus validateProjectTargetAndJ2EE(String projectName, String compName, String earName, String earCompName, String serverFactoryId, String j2eeLevel)
   {
     IProject p = ProjectUtilities.getProject(projectName);
@@ -647,6 +747,7 @@ public class ValidationUtils
     return Status.OK_STATUS;
   }
   
+  //TODO: This method is obselete - should be removed.
   private IStatus doesProjectTargetMatchServerType(IProject p, String serverFactoryId)
   {
     if (p!=null && p.exists())
@@ -668,6 +769,7 @@ public class ValidationUtils
     return Status.OK_STATUS;        
   }
 
+  //TODO: This method is obselete - should be removed.
   private IStatus doesProjectMatchJ2EELevel(IProject p, String compName, String j2eeLevel)
   {
 
@@ -694,6 +796,7 @@ public class ValidationUtils
     return Status.OK_STATUS;        
   }
   
+  //TODO: This method is obselete - should be removed.
   public IStatus validateProjectType(String projectName, SelectionListChoices runtime2ClientTypes)
   {
     IStatus status = Status.OK_STATUS;
@@ -726,7 +829,7 @@ public class ValidationUtils
     
   }
   
-  
+  //TODO: This method is obselete - should be removed.
   private String getClientTypeLabel( String type )
   {	  
 	  if (type.equals(IModuleConstants.JST_WEB_MODULE))
@@ -753,11 +856,14 @@ public class ValidationUtils
   }  
   
   /**
-   * 
-   * @param p
-   * @param wsdlURL
-   * @param parser
-   * @return
+   * Returns whether or not this project is likely hosting any of the services
+   * in the provided WSDL as a J2EE Web service.
+   * @param p IProject in the workspace
+   * @param wsdlURL URL of a WSDL document
+   * @param parser 
+   * @return boolean <code>true</code> if the project contains a webservices.xml 
+   * deployment descriptor that points to at least one of the ports in the provided WSDL. 
+   * Returns <code>false</code> otherwise.
    */
   public boolean isProjectServiceProject(IProject p, String wsdlURL, WebServicesParser parser)
   {
@@ -814,8 +920,12 @@ public class ValidationUtils
     return false;
   }
   
+
   /**
-   * 
+   * Returns the IResource corresponding to the webservices.xml in the provided project.
+   * @param p an IProject in the workspace.
+   * @return IResource corresponding to the webservices.xml in the provided project,
+   * null if there is no webservices.xml in the project.
    */
   private IResource getWebServcesXML(IProject p)
   {
@@ -862,6 +972,12 @@ public class ValidationUtils
     return res;
   }
   
+  /**
+   * Returns a list of WSDL ports in the provided WSDL
+   * @param wsdlURL URL of a WSDL document
+   * @param parser 
+   * @return ArrayList containing elements of type {@link QualifiedName}
+   */
   private ArrayList getPortNamesFromWsdl(String wsdlURL, WebServicesParser parser)
   {
   	ArrayList portNameList = new ArrayList();

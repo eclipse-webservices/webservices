@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner (initial creation)
  * 20060426   138051 kathy@ca.ibm.com - Kathy Chan
+ * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
@@ -35,23 +36,86 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 
+/**
+ * FacetMatchCache caches results of calculations made respecting
+ * the suitability of projects and project types for serviceRuntimes
+ * and clientRuntimes.
+ * 
+ * <br/><br/>
+ * Teminology used in the javadoc in this class:
+ * <ul>
+ * <li><b>serviceRuntime</b>: extension to org.eclipse.jst.ws.consumption.ui.serviceRuntimes.
+ * The Java representation of this is org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor</li>
+ * <li><b>clientRuntime</b>: extension to org.eclipse.jst.ws.consumption.ui.clientRuntimes.
+ * The Java representation of this is org.eclipse.jst.ws.internal.consumption.ui.wsrt.ClientRuntimeDescriptor</li>
+ * </ul>
+ *
+ */
 public class FacetMatchCache implements IResourceChangeListener
 {
   //single instance per workbench
   private static FacetMatchCache instance_;
   
+  
   //Tables related to existing projects in the workspace
+  
+  //serviceFacetMatchTable_: 
+  //key: Object of type String.
+  //     Forward slash separated concatenation of a serviceRuntimeId and a projectName 
+  //     (e.g. org.eclipse.jst.ws.axis.creation.java/wp).
+  //value: Object of type org.eclipse.jst.ws.internal.consumption.common.FacetMatcher.
+  //       The FacetMatcher contains the matching characteristics calculated for the 
+  //       serviceRuntime and project in the key.
   private Hashtable serviceFacetMatchTable_;
+  
+  //serviceTableKeysByProjectName_: 
+  //key: Object of type String.
+  //     project name (e.g. wp)
+  //value: Set of elements of type String. The Strings in the Set are keys from the serviceFacetMatchTable_ 
+  //       that contain the project name (e.g. org.eclipse.jst.ws.axis.creation.java/wp). Used to rapidly
+  //       delete entries from serviceFacetMatchTable_ after a project is deleted from the workspace.
   private Hashtable serviceTableKeysByProjectName_;
   
+  //clientFacetMatchTable_;
+  //key: Object of type String.
+  //     forward slash separated concatenation of a clientRuntimeId and a projectName 
+  //     (e.g. org.eclipse.jst.ws.axis.consumption.java/wp)
+  //value: Object of type org.eclipse.jst.ws.internal.consumption.common.FacetMatcher
+  //       The FacetMatcher contains the matching characteristics calculated for the 
+  //       clientRuntime and project in the key.
   private Hashtable clientFacetMatchTable_;
+  
+  //clientTableKeysByProjectName_
+  //key: Object of type String.
+  //     project name (e.g. wp)
+  //value: Set of elements of type String. The Strings in the Set are keys from the clientFacetMatchTable_ 
+  //       that contain the project name (e.g. org.eclipse.jst.ws.axis.consumption.java/wp). Used to rapidly
+  //       delete entries from clientFacetMatchTable_ after a project is deleted from the workspace.
   private Hashtable clientTableKeysByProjectName_;
   
+  //projectEntriesToDelete_: elements of type String containing the names of projects that have
+  //been deleted from the workspace but their corresponding entries from serviceFacetMatchTable_ 
+  //and clientFacetMatchTable_ have yet to be deleted.
   private List projectEntriesToDelete_;
     
+  
+  
   //Tables related to templates  
+  
+  //templatesByServiceRuntimeId_:
+  //key: Object of type String.
+  //     serviceRuntime id
+  //value: Set of elements of type org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate   
+  //       This the set of templates that support the serviceRuntime identified by the key.
   private Hashtable templatesByServiceRuntimeId_;
+  
+  //templatesByClientRuntimeId_
+  //key: Object of type String.
+  //     clientRuntime id
+  //value: Set of elements of type org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate
+  //       This the set of templates that support the clientRuntime identified by the key.
   private Hashtable templatesByClientRuntimeId_;
+  
   
   /**
    * Returns a singleton instance of this class.
@@ -77,25 +141,28 @@ public class FacetMatchCache implements IResourceChangeListener
     projectEntriesToDelete_ = new ArrayList();
     templatesByClientRuntimeId_ = new Hashtable();
     templatesByServiceRuntimeId_ = new Hashtable();
+    
+    //Listen for deletions of projects in order to delete all entries in
+    //Hashtables for the deleted project.
     ResourcesPlugin.getWorkspace().addResourceChangeListener(this, IResourceChangeEvent.PRE_DELETE);
   }
   
 
   /*
-   * Returns the FacetMatcher resulting from matching a service/client runtime with an existing project.
-   * @param isClient 
-   * @param runtimeId the id of a client runtime if isClient is true or the id of a service runtime if
+   * Returns the FacetMatcher resulting from matching a serviceRuntime or clientRuntime with an existing project.
+   * @param isClient true if runtimeId is a clientRuntimeId. false if runtimeId is a serviceRuntimeId.
+   * @param runtimeId the id of a clientRuntime if isClient is true or the id of a serviceRuntime if
    * isClient is false.
    * @param projectName the name of an existing project.
    * 
-   * @returns FacetMatcher resulting from calling FacetUtils.match(..) using the service/client runtime id
-   * and the project name. null if the project doesn't exist. Non-faceted existing projects will always result
-   * in a FacetMatcher with isMatch() equal to false (with the exception of Java projects are a special case 
+   * @returns FacetMatcher resulting from calling FacetUtils.match(..) using the serviceRuntime or clientRuntime id
+   * and the project name. Returns null if the project doesn't exist. Non-faceted existing projects will always result
+   * in a FacetMatcher with isMatch() equal to false (with the exception of Java projects which are a special case 
    * - see FacetUtils.getFacetsForProject()).
    */
   public synchronized FacetMatcher getMatchForProject(boolean isClient, String runtimeId, String projectName)
   {    
-    //Delete entries from table if there are deletions pending.
+    //Delete entries from tables if there are deletions pending.
     if (projectEntriesToDelete_.size() > 0)
     {
       Iterator projectItr = projectEntriesToDelete_.iterator();
@@ -167,6 +234,14 @@ public class FacetMatchCache implements IResourceChangeListener
     return fm;    
   }
   
+  /**
+   * Updates serviceTableKeysByProjectName_ or clientTableKeysByProjectName_ with
+   * the provided project name and key. This is called whenever a new entry is 
+   * added to serviceFacetMatchTable_ or clientFacetMatchTable_.
+   * @param isClient true if runtimeId is a clientRuntimeId. false if runtimeId is a serviceRuntimeId.
+   * @param key 
+   * @param projectName
+   */
   private void updateTableOfKeys(boolean isClient, String key, String projectName)
   {
     Set setOfKeysForProjectName = null;
@@ -200,6 +275,17 @@ public class FacetMatchCache implements IResourceChangeListener
     }
   }
   
+  /**
+   * Returns the {@link FacetMatcher} calculated for the given serviceRuntime or clientRuntime and project
+   * @param isClient true if runtimeId is a clientRuntimeId. false if runtimeId is a serviceRuntimeId.
+   * @param runtimeId the id of a clientRuntime if isClient is true or the id of a serviceRuntime if
+   * isClient is false.
+   * @param projectName the name of an existing project.
+   * @return FacetMatcher resulting from calling FacetUtils.match(..) using the serviceRuntime or clientRuntime id
+   * and the project name. Returns null if the project doesn't exist. Non-faceted existing projects will always result
+   * in a FacetMatcher with isMatch() equal to false (with the exception of Java projects which are a special case 
+   * - see FacetUtils.getFacetsForProject()).
+   */
   private FacetMatcher calculateFacetMatcher(boolean isClient, String runtimeId, String projectName)
   {
     FacetMatcher fm = null;
@@ -259,6 +345,11 @@ public class FacetMatchCache implements IResourceChangeListener
     return keysb.toString();    
   }  
   
+  /**
+   * Removes all table entries in this cache for the given project
+   * @param isClient true to remove entries from client side tables. false to remove entries from service side tables
+   * @param projectName
+   */
   private void removeTableEntriesForProject(boolean isClient, String projectName)
   {
     //First remove the entries from clientFacetMatchTable_ or serviceFacetMatchTable_
@@ -304,9 +395,10 @@ public class FacetMatchCache implements IResourceChangeListener
     
   }
 
-  /*
-   * Returns a set of templates supported by th given client runtime
-   * @returns Set (type: IFacetedProjectTemplate)
+  /**
+   * Returns a set of templates supported by the given clientRuntime
+   * @param clientRuntimeId id of a clientRuntime
+   * @returns Set (elementtype: IFacetedProjectTemplate)
    */
   public synchronized Set getTemplatesForClientRuntime(String clientRuntimeId)
   {
@@ -326,6 +418,11 @@ public class FacetMatchCache implements IResourceChangeListener
     }
   }
   
+  /**
+   * Returns a set of templates supported by the given serviceRuntime
+   * @param serviceRuntimeId id of a serviceRuntime
+   * @returns Set (elementtype: IFacetedProjectTemplate)
+   */  
   public synchronized Set getTemplatesForServiceRuntime(String serviceRuntimeId)
   {
     Set templates = (Set)templatesByServiceRuntimeId_.get(serviceRuntimeId);
@@ -343,11 +440,15 @@ public class FacetMatchCache implements IResourceChangeListener
       return validTemplates;
     }
   }
+ 
   
+  /**
+   * Returns the set of templates that supported the given required facet versions.
+   * @param requiredFacetVersions
+   * @return Set containing elemets of type {@link IFacetedProjectTemplate}.
+   */
   private Set getTemplates(RequiredFacetVersion[] requiredFacetVersions)
   {
-    
-    //Get the templates that support the actions
     Set templates = new HashSet();
     
     for( Iterator itr = ProjectFacetsManager.getTemplates().iterator(); itr.hasNext(); )
@@ -384,7 +485,9 @@ public class FacetMatchCache implements IResourceChangeListener
         String projectName = projectResource.getName();
         
         //Add this project name to the list of project entries
-        //to delete.
+        //to delete. Next time getMatchForProject is called all
+        //entries for this project from all tables in this cache 
+        //will be deleted.
         projectEntriesToDelete_.add(projectName);
       }
     }    

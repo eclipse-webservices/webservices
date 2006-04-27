@@ -16,6 +16,7 @@
  * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060315   131963 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060418   129688 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -169,6 +170,23 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     return selection_;    
   }
   
+  /**
+   * Defaults the following bits of information in the following order:
+   * clientRuntimeId_ : the clientRuntimeId. Must be defaulted to non-empty String.
+   * clientIds_.runtimeId_: the Web service runtime id. Must be defaulted to non-empty String.
+   * clientProjectName_ : the name of the client project. Must be non-empty. May or may not exist.
+   * clientComponentType_: the id of the client project template. Must be empty if the client
+   *                        project exists. Must be non-empty of the client project does not exist.
+   * clientIds_.serverId_: the server type id. May be an empty String if the defaulted Web service runtime
+   *                        does not require a server.
+   * clientIds_.serverInstanceId_: the server id. May be null or an empty String.
+   * clientNeedEAR_: true if an EAR is needed. False otherwise.
+   * clientEarProjectName_: the client EAR project. Must be empty if the clientNeedEAR_ is false.
+   *                         Must be non-empty if the clientNeedEAR_ is true.
+   * webServiceClient_ : the IWebServiceClient based on the calculated defaults. Must be non-null for "Next"
+   *                     button to be enabled on the page following this command.
+   * context_ : an IContext. Must be non-null for "Next" button to be enabled on the page following this command.                         
+   */  
   public IStatus execute(IProgressMonitor monitor, IAdaptable adaptable)
   {
 
@@ -176,7 +194,11 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 
     try
     {
-      
+    	
+      //**Step 1** Default the Web service runtime.
+    	
+      //clientIdsFixed_ is set to true for the Ant scenario. It's always false for the wizard
+      //scenarios.
       if (clientIdsFixed_)
       {
         // Set the clientRuntime based on the runtime, server, and initial
@@ -223,23 +245,21 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
             clientRuntimeId_ = drt.getRuntimeId();                      
           }
         }
-
-        if (clientRuntimeId_ == null)
-        {
-        	// TODO:
-          // return and error.
-        }
+        
+        //Set the Web service runtime id from the clientRuntime
         clientIds_.setRuntimeId(WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRuntime()
             .getId());
       }
       
-      // Set the project
+      //**Step 2** Default the client project if it was not already defaulted 
+      //as part of defaulting the Web service runtime.
       if (clientProjectName_ == null)
       {
         // Project name did not get set when the runtime was set, so set it now
         clientProjectName_ = getDefaultClientProjectName();
       }
 
+      //**Step 3** Default the client project type.      
       IProject clientProject = ProjectUtilities.getProject(clientProjectName_);
       if (!clientProject.exists())
       {
@@ -253,7 +273,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       }
 
 
-      // Set the server
+      //**Step 4** Default the client server if this is not an Ant scenario.
       if (!clientIdsFixed_)
       {
         IStatus serverStatus = setClientDefaultServer();
@@ -264,8 +284,12 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
         }
       }
       
-      setDefaultClientEarProject();      
-      // Calculate default IWebServiceClient
+      //**Step 5** Default clientNeedEAR and client EAR if an EAR is needed
+      setDefaultClientEarProject();
+      
+      
+      //**Step 6** Calculate default IWebServiceClient. This is need to make sure that
+      // Next is enabled on the page following this command.
       setDefaultsForExtension(env);
 
       return Status.OK_STATUS;
@@ -767,7 +791,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   }
   
   private String getDefaultClientProjectTemplate()
-  {
+  {	  
     String[] templates = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(clientIds_.getTypeId(), clientIds_.getRuntimeId());
     
     //Walk the list of client project types in the project topology preference
@@ -790,20 +814,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       }      
     }
 
-    
-    //Didn't find a template id in the preferred list that worked. 
-    //Return the first one that is a match.
-    for (int j = 0; j < templates.length; j++)
-    {
-      String templateId = templates[j];
-      boolean matches = WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportTemplate(clientRuntimeId_, templateId);
-      if (matches)
-      {
-        return templates[j];            
-      }
-    }
-    
-    //Still nothing, return the first one if available.
+    //Since the preferredTemplateIds contains the union of all project types for all client runtimes, we are
+    //guaranteed to have returned by now, so the code below will never be executed under normal
+    //circumstances. Just return something to satisfy the compiler.    
     if (templates.length > 0)
       return templates[0];
     
@@ -1121,62 +1134,12 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       }
     
     
-    //Still haven't returned. Return the first preferred service/client runtime id.
-    if (preferredRuntimeIds.length > 0)
-    {
-      DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
-      drt.setFacetMatcher(null);
-      //If the project doesn't exist, use the name of the project that was passed in.
-      //If the project exists, it means that previous code in this method
-      //determined it to not be a suitable project. Clear the project name.      
-      if (project==null || project.exists())
-      {
-        drt.setProjectName(null);
-      }
-      else
-      {
-        drt.setProjectName(project.getName());
-      }
-      drt.setRuntimeId(preferredRuntimeIds[0]);
-      return drt;      
-    }
       
-    if (runtimes.length > 0)
-    {
-      DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
-      drt.setFacetMatcher(null);
-      //If the project doesn't exist, use the name of the project that was passed in.
-      //If the project exists, it means that previous code in this method
-      //determined it to not be a suitable project. Clear the project name.
-      if (project==null || project.exists())
-      {
-        drt.setProjectName(null);
-      }
-      else
-      {
-        drt.setProjectName(project.getName());
-      }
-      drt.setRuntimeId(runtimes[0]);
-      return drt;
-    }
-    else
-    {
-      DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
-      drt.setFacetMatcher(null);
-      //If the project doesn't exist, use the name of the project that was passed in.
-      //If the project exists, it means that previous code in this method
-      //determined it to not be a suitable project. Clear the project name.
-      if (project==null || project.exists())
-      {
-        drt.setProjectName(null);
-      }
-      else
-      {
-        drt.setProjectName(project.getName());
-      }
-      drt.setRuntimeId(null);
-      return drt;
-    }    
+    //Since the preferredTemplateIds contains the union of all project types for all clientRuntimes, we are
+    //guaranteed to have returned by now, so the code below will never be executed as long as there is at least 
+    //one clientRuntime and one template that supports it which there will be. Returning something to satisfy
+    //the compiler.
+    return new DefaultRuntimeTriplet();
   }
   /**
  * 

@@ -13,6 +13,7 @@
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner      
  * 20060217 126757   rsinha@ca.ibm.com - Rupam Kuehner
  * 20060221 119111   rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -49,13 +50,25 @@ import org.eclipse.wst.server.core.ServerCore;
 public class CreateFacetedProjectCommand extends AbstractDataModelOperation
 {
 
-  private String   projectName;
+  //name of the project to be created
+  private String   projectName; 
+
+  //id of the IFacetedProjectTemplate to be used to create this project.
   private String   templateId;
+  
+  //required facet versions that must be satisfied when creating the project (this comes from
+  //the selected serverRuntime or clientRuntime in the calling scenario)
   private RequiredFacetVersion[]   requiredFacetVersions;
-  //private FacetMatcher facetMatcher;
+
+  //server type id - used to determine the facet runtime the created project will be bound to
+  //if serverInstanceId is null or empty
   private String   serverFactoryId;
+
+  //server id - used to determine the facet runtime the created project will be bound to. May
+  //be null or empty.
   private String   serverInstanceId;
   
+  //facet runtime determined from the serverInstanceId or serverFactoryId
   private org.eclipse.wst.common.project.facet.core.runtime.IRuntime facetRuntime;
   
   
@@ -84,15 +97,17 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
         IProject createdProject = ProjectUtilities.getProject(projectName);
         IFacetedProject fproject = ProjectFacetsManager.create(createdProject);
         
-        //Decide which facets to install based on the templateId and the selected server. 
+        //Get the facet versions to install. 
         Set facetsToAdd = getFacetsToAdd();
         
+        //Install the facet versions
         status = FacetUtils.addFacetsToProject(fproject, facetsToAdd);
         if (status.getSeverity() == IStatus.ERROR)
         {
           return status;
         }        
         
+        //Set the installed facet versions as fixed.
         Set newFacetVersions = fproject.getProjectFacets();
         Set fixedFacets = new HashSet();
         for (Iterator iter = newFacetVersions.iterator(); iter.hasNext();) {
@@ -132,9 +147,11 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
     return Status.OK_STATUS;
   }
   
-  /*
-   * @return Set Returns the Set of facets to add to the new project, 
-   * choosing the highest level of each facet that works on the selected server.
+  /**
+   * Returns the set of facets to install on the new project. The set will consist
+   * of the highest version of each of the template's fixed facets that satifies
+   * both the required facet versions and the facet runtime.
+   * @return Set a Set containing elements of type IProjectFacetVersion.
    */
   private Set getFacetsToAdd()
   {
@@ -142,14 +159,16 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
     
     //Set the facet runtime.
     setFacetRuntime();
+    //Get all facet version combinations for the template in order of ascending version numbers.
     Set[] allCombinations = FacetSetsByTemplateCache.getInstance().getFacetVersionCombinationsFromTemplate(templateId);
     int n = allCombinations.length;
     if (facetRuntime != null)
     {
+      //Walk the facet version combinations in order of descending version numbers.
       for (int i=n-1; i>=0; i--)
       {
         //Check this template combination to see if it is compatible with both the 
-        //service/client runtime and the server runtime. If it is, choose it.
+        //required facet versions and the server runtime. If it is, choose it.
         Set combination = allCombinations[i];
         FacetMatcher fm = FacetUtils.match(requiredFacetVersions, combination);
         if (fm.isMatch())
@@ -181,6 +200,8 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
       }      
     }
    
+    //Unlikely to get to this point in the code, but if we do, choose the highest version
+    //of each fixed facet in the template.
     if (facets == null)
     {
       facets = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
@@ -189,6 +210,10 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
     return facets;
   }
 
+  /**
+   * Sets the facetRuntime attribute based on the serverInstanceId or serverFactoryId
+   * Preference is given to non-stub facet runtimes.
+   */
   private void setFacetRuntime()
   {
     
@@ -226,14 +251,7 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
 			  }
 		  }
 	  }
-  }
-  
-  /*
-  public void setFacetMatcher(FacetMatcher facetMatcher)
-  {
-    this.facetMatcher = facetMatcher;
-  }
-  */
+  }  
   
   public void setProjectName(String projectName)
   {

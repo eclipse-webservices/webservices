@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -24,19 +27,41 @@ public class WebServiceRuntimeExtensionRegistry2
 
   private static WebServiceRuntimeExtensionRegistry2 instance_;
 
-
+  //webServiceImpls_: 
+  //key: id attribute of extension to org.eclipse.jst.ws.consumption.ui.wsImpl
+  //value: org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl 
   Hashtable webServiceImpls_;
 
+  //webServiceClientImpls_: 
+  //key: id attribute of extension to org.eclipse.jst.ws.consumption.ui.wsClientImpl
+  //value: org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceClientImpl  
   Hashtable webServiceClientImpls_;
 
+  //runtimes_: 
+  //key: id attribute of extension to org.eclipse.jst.ws.consumption.ui.runtimes
+  //value: org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor
   Hashtable runtimes_;
   
+  //serviceRuntimes_: 
+  //key: id attribute of extension to org.eclipse.jst.ws.consumption.ui.serviceRuntimes
+  //value: org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor
   Hashtable serviceRuntimes_;
   
+  //clientRuntimes_: 
+  //key: id attribute of extension to org.eclipse.jst.ws.consumption.ui.clientRuntimes
+  //value: org.eclipse.jst.ws.internal.consumption.ui.wsrt.ClientRuntimeDescriptor  
   Hashtable clientRuntimes_;
   
+  //webServiceTypesList_ contains a list of String values in this form: "scenario/webServiceImplId",
+  //where sceanrio the String representation of one of 
+  //org.eclipse.wst.ws.internal.wsrt.WebServiceScenario.BOTTOM_UP or 
+  //org.eclipse.wst.ws.internal.wsrt.WebServiceScenario.TOP_DOWN
+  //and webServiceImplId is the id attribute of an extension to org.eclipse.jst.ws.consumption.ui.wsImpl
+  //This list is used to determine the items displayed in the WebServiceType combo-box of page 1 of the 
+  //Web serivce wizard.
   ArrayList webServiceTypesList_;
   
+  //TODO: Not used. Remove this and all references to it in this class.
   ArrayList webServiceClientTypesList_;  
   
   
@@ -68,7 +93,7 @@ public class WebServiceRuntimeExtensionRegistry2
     
     IExtensionRegistry reg = Platform.getExtensionRegistry();
     
-    //Load WebServiceImpls
+//  Load WebServiceImpls by reading all extensions to org.eclipse.jst.ws.consumption.ui.wsImpl
     IConfigurationElement[] wsImplExts = reg.getConfigurationElementsFor(
         "org.eclipse.jst.ws.consumption.ui", "wsImpl");
     
@@ -82,7 +107,7 @@ public class WebServiceRuntimeExtensionRegistry2
         }        
     }
     
-    //Load WebServiceClientImpls
+    //Load WebServiceClientImpls by reading all extensions to org.eclipse.jst.ws.consumption.ui.wsClientImpl
     IConfigurationElement[] wsClientImplExts = reg.getConfigurationElementsFor(
         "org.eclipse.jst.ws.consumption.ui", "wsClientImpl");
     
@@ -97,7 +122,7 @@ public class WebServiceRuntimeExtensionRegistry2
         }        
     }
     
-    //Load runtimes
+    //Load runtimes by reading all extensions to org.eclipse.jst.ws.consumption.ui.runtimes
     IConfigurationElement[] runtimeExts = reg.getConfigurationElementsFor(
         "org.eclipse.jst.ws.consumption.ui", "runtimes");
     
@@ -112,7 +137,7 @@ public class WebServiceRuntimeExtensionRegistry2
         }        
     }
     
-    //Load serviceRuntimes
+    //Load serviceRuntimes by reading all extensions to org.eclipse.jst.ws.consumption.ui.serviceRuntimes
     IConfigurationElement[] serviceRuntimeExts = reg.getConfigurationElementsFor(
         "org.eclipse.jst.ws.consumption.ui", "serviceRuntimes");
     
@@ -128,7 +153,7 @@ public class WebServiceRuntimeExtensionRegistry2
         }        
     }
     
-    //Load serviceRuntimes
+    //Load clientRuntimes by reading all extensions to org.eclipse.jst.ws.consumption.ui.clientRuntimes
     IConfigurationElement[] clientRuntimeExts = reg.getConfigurationElementsFor(
         "org.eclipse.jst.ws.consumption.ui", "clientRuntimes");
     
@@ -146,6 +171,11 @@ public class WebServiceRuntimeExtensionRegistry2
     }
   }  
     
+  /**
+   * Updates the list of Web service types with the provided service runtime's contribution of
+   * scenario/webServiceImpl combination.
+   * @param descriptor
+   */
   private void updateWebServiceTypeList(ServiceRuntimeDescriptor descriptor)
   {
     String serviceImplId = descriptor.getServiceImplementationType().getId();

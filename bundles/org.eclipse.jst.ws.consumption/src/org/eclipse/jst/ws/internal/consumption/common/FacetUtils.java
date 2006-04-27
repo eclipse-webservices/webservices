@@ -12,6 +12,7 @@
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060217   126757 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060419   137548 kathy@ca.ibm.com - Kathy Chan
+ * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -49,13 +50,29 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action.Type;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 import org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager;
+
 import com.ibm.icu.util.StringTokenizer;
 
+/**
+ * FacetUtils contains utility methods related to facets and templates.
+ * <br/><br/>
+ * Terminology used in the Javadoc in this class
+ * <ul>
+ * <li><b>facet</b>: An {@link IProjectFacet}</li>
+ * <li><b>facet version</b>: An {@link IProjectFacetVersion} </li>
+ * <li><b>facet runtime</b>: An {@link IRuntime}</li>
+ * <li><b>faceted project</b>: An {@link IFacetedProject}. A faceted project may be obtained
+ * from an IProject (@see ProjectFacetsManager#create)</li>
+ * <li><b>template</b>: An {@link IFacetedProjectTemplate}. Conceptually this is similar to a project type.</li>
+ * <li><b>required facet version</b>: A {@link RequiredFacetVersion}. Used by serviceRuntimes and clientRuntimes
+ * to identify what they require in terms of facet versions.</li>
+ * </ul>
+ */
 public class FacetUtils
 {
 
   /**
-   * Returns a list of valid projects. Valid projects include projects with the facets nature or
+   * Returns an array of valid projects. Valid projects include projects with the facets nature or
    * projects with the Java nature.
    * @return IProject[] an array of valid projects
    */
@@ -94,10 +111,17 @@ public class FacetUtils
     return (IProject[])validProjects.toArray(new IProject[]{});
   }
   
-  /*
-   * @returns the set of project facets currently installed on this project. If the project
-   * is not a faceted project but is a Java project, facets are inferred from the Java project. 
-   *   (element type: {@see IProjectFacetVersion}) 
+  /**
+   * Returns the facet versions on the given project.
+   * @param projectName name of an existing project.
+   * @returns Set containing elements of type {@link IProjectFacetVersion}. 
+   * These are the facet versions currently installed on this project. If the project
+   * is a Java project, facets are inferred from the Java project. Returns null 
+   * <ul>
+   * <li>if the project is not a faceted project or a Java project or</li>
+   * <li>if the project does not exist or</li>
+   * <li>if the project is null</li>
+   * </ul>  
    */
   public static Set getFacetsForProject(String projectName)
   {
@@ -124,14 +148,25 @@ public class FacetUtils
         }
       } catch (CoreException ce)
       {
-
+    	  //Leaving the catch block empty. This method will return null if there
+    	  //were any blow-ups in the facet API being called.
       }      
     }
     
     return facetVersions;
     
   }
-  
+
+  /**
+   * Returns the facet runtime the given project is bound to.
+   * @param projectName name of an existing project
+   * @return {@link IRuntime} the project is bound to. Returns null
+   * <ul>
+   * <li>if the project is not bound to a facet runtime</li> 
+   * <li>if the project does not exist</li>
+   * <li>if the project is null</li>
+   * </ul>
+   */
   public static IRuntime getFacetRuntimeForProject(String projectName)
   {
     IProject project = ProjectUtilities.getProject(projectName);
@@ -146,6 +181,8 @@ public class FacetUtils
         }
       } catch (CoreException ce)
       {
+    	  //Leaving the catch block empty. This method will return null if there
+    	  //were any blow-ups in the facet API being called.
       }
     }
     
@@ -153,22 +190,26 @@ public class FacetUtils
   }
   
   
-  /*
-   * Return the set of all possible combinations of IProjectFacetVersions. For example,
-   * If arrayOfProjectFacetVersionArrays represents an array of IProjectFacetVersions that has
-   * a structure like this:
-   * FacetA_version1, FacetA_version2
-   * FacetB_version1
-   * FacetC_version1, FacetC_version2
-   * 
-   * Then the following 4 combinations of IProjectFacetVersions will be returned:
-   * [FacetA_version1, FacetB_version1, FacetC_version1]
-   * [FacetA_version2, FacetB_version1, FacetC_version1]
-   * [FacetA_version1, FacetB_version1, FacetC_version2]
-   * [FacetA_version2, FacetB_version1, FacetC_version2]
-   * 
-   * If returnValidOnly is false, all combinations are returned. Otherwise, only valid combinations
-   * are returned.
+  /**
+   * Returns a set of combinations of facet versions derived from the facet versions
+   * in the provided arrayOfProjectFacetVersionArrays. For example, if 
+   * arrayOfProjectFacetVersionArrays is a two dimenstional array of facet versions that has
+   * a structure like this:<br/>
+   * {{FacetA_version1, FacetA_version2},<br/>
+   *  {FacetB_version1},<br/>
+   *  {FacetC_version1, FacetC_version2}}<br/>
+   * the following array of Sets will be returned:<br/>
+   * {Set1, Set2, Set3, Set4}, where<br/>
+   * Set1 = [FacetA_version1, FacetB_version1, FacetC_version1]<br/>
+   * Set2 = [FacetA_version2, FacetB_version1, FacetC_version1]<br/>
+   * Set3 = [FacetA_version1, FacetB_version1, FacetC_version2]<br/>
+   * Set4 = [FacetA_version2, FacetB_version1, FacetC_version2]<br/>
+   * <br/>
+   * @param arrayOfProjectFacetVersionArrays a two dimensional array containing elements 
+   * of type {@link IProjectFacetVersion}
+   * @param returnValidOnly false if all combinations of facet versions are to be returned. 
+   * true if only valid combinations of facet versions are to be returned.  
+   * @return Set[] an array of Sets, where each Set contains elements of type {@link IProjectFacetVersion}. 
    */
   public static Set[] getFacetCombinations(IProjectFacetVersion[][] arrayOfProjectFacetVersionArrays, boolean returnValidOnly)  
   {
@@ -240,6 +281,14 @@ public class FacetUtils
     return allCombinationsArray;    
   }
   
+  /**
+   * Returns a set of facet versions given a template. The highest facet version of every fixed 
+   * facet in the template is returned, with the exception of the jst.java facet, where the 1.4 
+   * facet version is returned.
+   * 
+   * @param templateId id of a {@link IFacetedProjectTemplate}
+   * @return Set containing elements of type {@link IProjectFacetVersion}
+   */
   public static Set getInitialFacetVersionsFromTemplate(String templateId)
   {
     IFacetedProjectTemplate template = ProjectFacetsManager.getTemplate(templateId);
@@ -265,6 +314,11 @@ public class FacetUtils
     return initial;
   }
   
+  /**
+   * Returns the template lables corresponding to the provided templateIds.
+   * @param templateIds array of valid template ids. Each id must correspond to a {@link IFacetedProjectTemplate}.
+   * @return String[] array of template labels.
+   */
   public static String[] getTemplateLabels(String[] templateIds)
   {
     String[] labels = new String[templateIds.length];
@@ -277,6 +331,13 @@ public class FacetUtils
     
   }
   
+  /**
+   * Returns the id of a template given its label. 
+   * 
+   * @param templateLabel label of a template
+   * @return template id or empty String if no {@link IFacetedProjectTemplate} with the
+   * given templateLabel could be found.
+   */
   public static String getTemplateIdByLabel(String templateLabel)
   {
     for( Iterator itr = ProjectFacetsManager.getTemplates().iterator(); itr.hasNext(); )
@@ -292,12 +353,25 @@ public class FacetUtils
     return "";
   }
   
+  /**
+   * Returns the label of a template given its id 
+   * 
+   * @param templateId id of a {@link IFacetedProjectTemplate}
+   * @return template label
+   */  
   public static String getTemplateLabelById(String templateId)
   {
     IFacetedProjectTemplate template = ProjectFacetsManager.getTemplate(templateId);
     return template.getLabel();
   }
   
+  /**
+   * Returns a set of install actions for the provided facet version
+   * 
+   * @param projectFacetVersions Set containing elements of type {@link IProjectFacetVersion}
+   * @return Set containing elements of type {@link Action} with the type attribute set to Type.INSTALL
+   * The set contains one Action for each {@link IProjectFacetVersion} in projectFacetVersions.
+   */
   public static Set getInstallActions(Set projectFacetVersions)
   {
     HashSet actions = new HashSet();
@@ -314,6 +388,27 @@ public class FacetUtils
     return actions;
   }
   
+  /**
+   * Returns the {@link FacetMatcher} calculated when checking the required facet versions 
+   * against the facet versions.
+   * 
+   * @param requiredFacetVersions array of required facet versions
+   * @param projectFacetVersions facet versions to check against. Set containing elements of type 
+   * {@link IProjectFacetVersion}
+   * @return FacetMatcher with the following characteristics:
+   * <ul>
+   * <li><b>isMatch</b>: returns true if the required facet versions already exist in the facet versions
+   * or can be added to the facet versions. isMatch will return false otherwise.</li>
+   * <li><b>getFacetsTested</b>: returns the same set of facet versions as the input parameter, projectFacetVersions</li>
+   * <li><b>getFacetsThatMatched</b>: if isMatch returns false, getFacetsThatMatched returns null. If isMatch returns true, 
+   * getFacetsThatMatched returns the subset of facet versions in the input parameter, projectFacetVersions, 
+   * that matched one of the required facet versions. This may be an empty set.</li>
+   * <li><b>getFacetsToAdd</b>: if isMatch returns false, getFacetsToAdd returns null. If isMatch returns true, 
+   * getFacetsToAdd returns the subset of facet versions that would need to be added to the facet versions in
+   * projectFacetVersions in order to satisfy the requirements of the required facet versions. This may be
+   * an empty set.</li>
+   * </ul>
+   */
   public static FacetMatcher match(RequiredFacetVersion[] requiredFacetVersions, Set projectFacetVersions)
   {
     FacetMatcher fm = new FacetMatcher();
@@ -431,6 +526,21 @@ public class FacetUtils
     return fm;
   }
     
+  /**
+   * Adds facet versions to the provided project if required based on checking provided 
+   * required facet versions against the facet versions already installed on project.
+   * 
+   * @param project IProject which exists in the workspace
+   * @param rfvs array of required facet versions.
+   * @param monitor progress monitor
+   * @return IStatus with severity IStatus.ERROR
+   * <ul>
+   * <li>if the project does not exist or</li>
+   * <li>if the project is not open or</li>
+   * <li>an attempt to add facet versions to the project resulted in an error.</li>
+   * </ul> 
+   * Otherwise, returns an IStatus with severity IStatus.OK    
+   */
   public static IStatus addRequiredFacetsToProject(IProject project, RequiredFacetVersion[] rfvs, IProgressMonitor monitor)
   {
     IStatus status = Status.OK_STATUS;
@@ -563,11 +673,11 @@ public class FacetUtils
   
 
   /**
-   * Adds the set of project facet versions to the faceted project
+   * Adds the provided set of facet versions to the provided faceted project
    * 
    * @param fproject A faceted project which exists in the workspace
    * @param projectFacetVersions A set containing elements of type {@link IProjectFacetVersion}
-   * @return An IStatus with a severity of IStatus.OK if the project facet 
+   * @return An IStatus with a severity of IStatus.OK if the facet 
    * versions were added successfully. Otherwise, an IStatus with a severity of
    * IStatus.ERROR. 
    */
@@ -608,7 +718,7 @@ public class FacetUtils
   }
   
   /**
-   * Returns an error status indicating that the project facet versions could not be
+   * Returns an error status indicating that the facet versions could not be
    * added to the faceted project
    * 
    * @param projectName a project name to insert in the error message in the IStatus
@@ -641,6 +751,7 @@ public class FacetUtils
   
   /**
    * Creates a new faceted project with the provided name
+   * 
    * @param projectName A String containing the name of the project to be created
    * @return An IStatus with a severity of IStatus.OK if the faceted project
    * was created successfully or if a project of the provided name already
@@ -690,11 +801,11 @@ public class FacetUtils
   }
   
   /**
-   * Sets the provided set of project facets as fixed on the faceted project
+   * Sets the provided set of facets as fixed on the faceted project
    * 
    * @param fProject A faceted project which exists in the workspace
    * @param fixedFacets A set containing elements of type {@link IProjectFacet}
-   * @return An IStatus with a severity of IStatus.OK if the project facets 
+   * @return An IStatus with a severity of IStatus.OK if the facets 
    * were successfully set as fixed facets on the faceted project. 
    * Otherwise, an IStatus with a severity of IStatus.ERROR.
    * 
@@ -736,7 +847,7 @@ public class FacetUtils
   }
   
   /**
-   * Returns an error status indicating that the project facets could not be
+   * Returns an error status indicating that the facets could not be
    * set as fixed facets on the faceted project
    * 
    * @param projectName a project name to insert in the error message in the IStatus
@@ -833,6 +944,13 @@ public class FacetUtils
     return facetListMessage;
   }
   
+  
+  /**
+   * Returns the set of facet versions which can be inferred from the provided Java project
+   * 
+   * @param javaProject a Java project that exists in the workspace. Must not be null.
+   * @return Set containing elements of type {@link IProjectFacetVersion}
+   */
   public static Set getFacetsForJavaProject(IJavaProject javaProject)
   {
     Set facets = new HashSet();
@@ -890,6 +1008,13 @@ public class FacetUtils
   
   //Methods related to facet runtimes.
   
+  /**
+   * Returns a set of facet runtimes that support the given
+   * required facet versions.
+   * @param requiredFacetVersions an array containing elements of type {@link RequiredFacetVersion}
+   * @return Set set of facet runtimes that support the given required facet versions.
+   * (element type: {@link IRuntime}) 
+   */
   public static Set getRuntimes(RequiredFacetVersion[] requiredFacetVersions)
   {
     //Form the sets of IProjectFacetVersions these RequiredFacetVersions represent.
@@ -961,6 +1086,15 @@ public class FacetUtils
     
   }  
   
+  /**
+   * Returns whether or not the provided facet runtime supports the provided
+   * required facet versions.
+   * 
+   * @param requiredFacetVersions an array containing elements of type {@link RequiredFacetVersion}
+   * @param fRuntimeName name of a {@link IRuntime}
+   * @return boolean <code>true</code> if the facet runtime supports the required facet versions.
+   * Returns <code>false</code> otherwise.
+   */
   public static boolean isFacetRuntimeSupported(RequiredFacetVersion[] requiredFacetVersions, String fRuntimeName)
   {
     Set fRuntimes = getRuntimes(requiredFacetVersions);
@@ -977,6 +1111,12 @@ public class FacetUtils
     return false;
   }
     
+  /**
+   * Returns the union of facet runtimes that support the provided sets of facet versions.
+   * 
+   * @param facetSets array of Sets, where each Set contains elements of type {@link IProjectFacetVersion}.
+   * @return Set containing elements of type {@link IRuntime}
+   */
   public static Set getRuntimes(Set[] facetSets)  
   {
     HashSet unionSet = new HashSet();
@@ -997,6 +1137,14 @@ public class FacetUtils
     return unionSet;
   }
   
+  /**
+   * Returns whether or not the provided facet runtime supports the provided set of facet versions.
+   * 
+   * @param facetRuntime a facet runtime
+   * @param projectFacetVersions set containing elements of type {@link IProjectFacetVersion}
+   * @return boolean <code>true</code> if the facet runtime supports the provided set of facet versions.
+   * Returns <code>false</code> otherwise.
+   */
   public static boolean doesRuntimeSupportFacets(IRuntime facetRuntime, Set projectFacetVersions)
   {
     Set runtimes = RuntimeManager.getRuntimes(projectFacetVersions);
@@ -1013,10 +1161,12 @@ public class FacetUtils
     return false;
   }
   
-  /*
+  /**
+   * Returns whether versionA is greater than versionB
+   * 
    * @param versionA version number of the form 1.2.3
    * @param versionA version number of the form 1.2.3
-   * @return boolean returns whether versionA is greater than versionB
+   * @return boolean <code>true</code> if versionA is greater than versionB, <code>false</code> otherwise.
    */
   public static boolean greaterThan(String versionA, String versionB)
   {
@@ -1047,6 +1197,11 @@ public class FacetUtils
     return sizeA > sizeB;
   }
   
+  /**
+   * Returns whether the provided facet has an id of "jst.java"
+   * @param pf facet
+   * @return <code>true</code> if facet has an id of "jst.java", <code>false</code> otherwise.
+   */
   public static boolean isJavaFacet(IProjectFacet pf)
   {
     if (pf.getId().equals("jst.java"))
@@ -1055,6 +1210,13 @@ public class FacetUtils
       return false;
   }
   
+  /**
+   * Returns whether or not the provided project is a faceted Java utility project or a non-faceted Java project.
+   * 
+   * @param project an IProject
+   * @return boolean <code>true</code> if the provided project is a faceted Java utility project 
+   * or a non-faceted Java project, <code>false</code> otherwise.
+   */
   public static boolean isJavaProject(IProject project)
   {
     //Check if it's a faceted project
@@ -1099,6 +1261,13 @@ public class FacetUtils
     return false;
   }
   
+  /**
+   * Returns whether or not the provided template id is equal to "template.jst.utility"
+   * 
+   * @param templateId template id
+   * @return boolean <code>true</code> if the provided template id is equal to "template.jst.utility", 
+   * <code>false</code> otherwise.
+   */
   public static boolean isUtilityTemplate(String templateId)
   {
     if (ProjectFacetsManager.isTemplateDefined(templateId))
