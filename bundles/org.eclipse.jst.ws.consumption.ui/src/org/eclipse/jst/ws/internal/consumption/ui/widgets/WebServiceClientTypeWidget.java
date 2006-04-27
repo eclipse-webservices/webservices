@@ -20,6 +20,7 @@
  * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060424   138052 kathy@ca.ibm.com - Kathy Chan
  * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060426   137622 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -113,7 +114,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   private Boolean testClient_;
   private Boolean installClient_;
   private Boolean startClient_;    
-  
+    
   private TypeRuntimeServer ids_;
   private IStructuredSelection objectSelection_;
   private boolean enableProxy_;  //service scale is set to a level that the client scale can be enabled
@@ -647,17 +648,18 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	{
         objectSelection_ = selection;
 	}
-  
+	
   public int getClientGeneration()
   {
-	  return clientScale_.getSelection();
+	  return clientScaleSetting_;
   }
   
   public void setClientGeneration(int value)
   {
 	  if (clientOnly_ && value == ScenarioContext.WS_NONE)
 		  value = ScenarioContext.WS_DEVELOP;
-	  
+	
+	  clientScaleSetting_ = value;
 	  setClientScale(value);
 	  
 	  setTestClient(new Boolean(value <= ScenarioContext.WS_TEST));
@@ -718,7 +720,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   
   public void refreshEARLink()
   {
-	  hLinkClientEAR_.setVisible(needEar_);
+	  hLinkClientEAR_.setVisible(needEar_ && getGenerateProxy());
 	  if (needEar_)
 	  {    	
 		  hLinkClientEAR_.setText(CLIENT_EAR_PREFIX + " " + earProjectName_);
@@ -816,8 +818,8 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	{
 		public void widgetSelected(SelectionEvent e) {
 			    int oldClientScaleSetting = clientScaleSetting_;
-			    int selection = getClientGeneration();
-			    clientScaleSetting_ = selection;
+			    int selection = clientScale_.getSelection();
+			    setClientGeneration(selection);
 			    setTestClient(new Boolean(selection <= ScenarioContext.WS_TEST));
 				setInstallClient(new Boolean(selection <= ScenarioContext.WS_INSTALL));
 				setStartClient(new Boolean(selection <= ScenarioContext.WS_START));
