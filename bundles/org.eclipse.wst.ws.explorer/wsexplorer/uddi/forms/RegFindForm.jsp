@@ -1,13 +1,16 @@
 <%
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060427   127443 jesper@selskabet.org - Jesper S Moller
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.*,
@@ -673,7 +676,7 @@
           </td>
         </tr>
         <tr>
-          <td> <input id="queryName" type="text" value="<%=HTMLUtils.JSMangle(uddiPerspective.getMessage("DEFAULT_QUERY_NAME"))%>" class="textenter"> </td>
+          <td> <input id="queryName" type="text" value="<%=HTMLUtils.charactersToHTMLEntitiesStrict(uddiPerspective.getMessage("DEFAULT_QUERY_NAME"))%>" class="textenter"> </td>
         </tr>
       </table>
       <div id="queryInfoItemList" style="display:none;">

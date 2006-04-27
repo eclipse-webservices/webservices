@@ -1,13 +1,16 @@
 <%
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060427   127443 jesper@selskabet.org - Jesper S Moller
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.constants.*,
@@ -67,7 +70,7 @@
           </tr>
           <tr>
             <td colspan=3>
-              <input type="text" id="input_wsdl_url" name="<%=ActionInputs.QUERY_INPUT_WSDL_URL%>" value="<%=wsdlUrl%>" size="50" class="textenter">
+              <input type="text" id="input_wsdl_url" name="<%=ActionInputs.QUERY_INPUT_WSDL_URL%>" value="<%=HTMLUtils.charactersToHTMLEntitiesStrict(wsdlUrl)%>" size="50" class="textenter">
             </td>
           </tr>
         </table>

@@ -1,13 +1,16 @@
 <%
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060427   127443 jesper@selskabet.org - Jesper S Moller
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.*,
@@ -73,13 +76,13 @@ if (password == null)
       </td>
     </tr>
     <tr>
-      <td><input type="text" id="<%=tableContainerId+"_input_user_id"%>" name="<%=UDDIActionInputs.QUERY_INPUT_ADVANCED_USERID%>" value="<%=username%>" class="textenter"></td>
+      <td><input type="text" id="<%=tableContainerId+"_input_user_id"%>" name="<%=UDDIActionInputs.QUERY_INPUT_ADVANCED_USERID%>" value="<%=HTMLUtils.charactersToHTMLEntitiesStrict(username)%>" class="textenter"></td>
     </tr>
     <tr>
       <td class="labels" height=30 valign="bottom"><label for="<%=tableContainerId+"_input_password"%>"><%=uddiPerspective.getMessage("FORM_LABEL_PASSWORD")%></td></label>
     </tr>
     <tr>
-      <td><input type="password" id="<%=tableContainerId+"_input_password"%>" name="<%=UDDIActionInputs.QUERY_INPUT_ADVANCED_PASSWORD%>" value="<%=password%>" class="textenter"></td>
+      <td><input type="password" id="<%=tableContainerId+"_input_password"%>" name="<%=UDDIActionInputs.QUERY_INPUT_ADVANCED_PASSWORD%>" value="<%=HTMLUtils.charactersToHTMLEntitiesStrict(password)%>" class="textenter"></td>
     </tr>
   </table>
 </div>
