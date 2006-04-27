@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.xsd.XSDDiagnostic;
 import org.eclipse.xsd.XSDDiagnosticSeverity;
+import org.w3c.dom.Node;
 
 /**
  * Default implementation of the WSDLDiagnostic interface. This class is based
@@ -123,6 +124,16 @@ public class WSDLDiagnosticImpl extends EObjectImpl implements WSDLDiagnostic
   protected EList substitutions;
 
   /**
+   * The Node where the error occurs
+   */
+  protected Node node;
+  
+  /**
+   * The WSDLElement or XSDConcreteComponent object where the error occurs
+   */
+  protected Object container;
+
+  /**
    * Default constructor.
    */
   public WSDLDiagnosticImpl()
@@ -144,6 +155,8 @@ public class WSDLDiagnosticImpl extends EObjectImpl implements WSDLDiagnostic
     setSeverity(getSeverity(xsdDiagnostic.getSeverity()));
     setLine(xsdDiagnostic.getLine());
     setColumn(xsdDiagnostic.getColumn());
+    setNode(xsdDiagnostic.getNode());
+    setContainer(xsdDiagnostic.getContainer());
     setLocation(xsdDiagnostic.getLocation());
     setKey(xsdDiagnostic.getKey());
     getSubstitutions().addAll(xsdDiagnostic.getSubstitutions());
@@ -303,5 +316,35 @@ public class WSDLDiagnosticImpl extends EObjectImpl implements WSDLDiagnostic
       substitutions = new BasicEList();
     }
     return substitutions;
+  }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#getNode()
+   */
+  public Node getNode() 
+  {
+	return node;
+  }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#setNode(org.w3c.dom.Node)
+   */
+  public void setNode(Node node) 
+  {
+	this.node = node;  
+  }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#getContainer()
+   */
+  public Object getContainer() {
+	return container;
+  }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#setContainer(java.lang.Object)
+   */
+  public void setContainer(Object container) {
+	this.container = container;
   }
 }
