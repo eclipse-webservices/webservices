@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060427   136449 brunssen@us.ibm.com - Vince Brunssen  
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective;
@@ -30,6 +33,7 @@ public class RegistryNode extends UDDINavigatorNode
 {
   private RegistryDetailsTool regDetailsTool_;
   private RegPublishTool regPublishTool_;
+  private LoginTool loginTool_;
   
   public static final String IMAGE_PATH_STANDARD = "uddi/images/registry.gif";
   public static final String IMAGE_PATH_WITH_USER_DEFINED_CATEGORIES = "uddi/images/regstrycat_obj.gif";
@@ -99,6 +103,7 @@ public class RegistryNode extends UDDINavigatorNode
     regDetailsTool_ = new RegistryDetailsTool(toolManager_ ,uddiPerspective.getMessage("ALT_REGISTRY_DETAILS"));
     RegFindTool regFindTool = new RegFindTool(toolManager_,uddiPerspective.getMessage("ALT_FIND"));
     regPublishTool_ = new RegPublishTool(toolManager_,uddiPerspective.getMessage("ALT_PUBLISH"));
+    loginTool_ = new LoginTool(toolManager_, uddiPerspective.getMessage("ALT_LOGIN"));
     new AddToFavoritesTool(toolManager_,uddiPerspective.getMessage("ALT_ADD_TO_FAVORITES"));
     regFindTool.addAuthenticationProperties((RegistryElement)element_);
     regPublishTool_.addAuthenticationProperties((RegistryElement)element_);
@@ -112,6 +117,11 @@ public class RegistryNode extends UDDINavigatorNode
   public final RegPublishTool getRegPublishTool()
   {
     return regPublishTool_;
+  }
+
+  public final LoginTool getLoginTool()
+  {
+    return loginTool_;
   }
 
   private final void addDiscoveredNodes(Vector allNodes,Node queryParentNode,int queryType)
