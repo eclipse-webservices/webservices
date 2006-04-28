@@ -17,6 +17,7 @@
  * 20060315   131963 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060418   129688 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060428   126780 kathy@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -1134,12 +1135,62 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       }
     
     
+    //Still haven't returned. Return the first preferred service/client runtime id.
+    if (preferredRuntimeIds.length > 0)
+    {
+      DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+      drt.setFacetMatcher(null);
+      //If the project doesn't exist, use the name of the project that was passed in.
+      //If the project exists, it means that previous code in this method
+      //determined it to not be a suitable project. Clear the project name.      
+      if (project==null || project.exists())
+      {
+        drt.setProjectName(null);
+      }
+      else
+      {
+        drt.setProjectName(project.getName());
+      }
+      drt.setRuntimeId(preferredRuntimeIds[0]);
+      return drt;      
+    }
       
-    //Since the preferredTemplateIds contains the union of all project types for all clientRuntimes, we are
-    //guaranteed to have returned by now, so the code below will never be executed as long as there is at least 
-    //one clientRuntime and one template that supports it which there will be. Returning something to satisfy
-    //the compiler.
-    return new DefaultRuntimeTriplet();
+    if (runtimes.length > 0)
+    {
+      DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+      drt.setFacetMatcher(null);
+      //If the project doesn't exist, use the name of the project that was passed in.
+      //If the project exists, it means that previous code in this method
+      //determined it to not be a suitable project. Clear the project name.
+      if (project==null || project.exists())
+      {
+        drt.setProjectName(null);
+      }
+      else
+      {
+        drt.setProjectName(project.getName());
+      }
+      drt.setRuntimeId(runtimes[0]);
+      return drt;
+    }
+    else
+    {
+      DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
+      drt.setFacetMatcher(null);
+      //If the project doesn't exist, use the name of the project that was passed in.
+      //If the project exists, it means that previous code in this method
+      //determined it to not be a suitable project. Clear the project name.
+      if (project==null || project.exists())
+      {
+        drt.setProjectName(null);
+      }
+      else
+      {
+        drt.setProjectName(project.getName());
+      }
+      drt.setRuntimeId(null);
+      return drt;
+    }    
   }
   /**
  * 
