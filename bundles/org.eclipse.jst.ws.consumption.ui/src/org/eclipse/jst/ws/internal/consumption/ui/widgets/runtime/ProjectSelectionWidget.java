@@ -14,11 +14,11 @@
  * 20060223   129020 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
@@ -27,6 +27,7 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
@@ -437,29 +438,11 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 
   private void populateEARCombos()
   {
-    earProject_.removeAll();
-    String projectName = moduleProject_.getText();
-    setEarProjectItems();
-    if (projectName != null && projectName.length() > 0)
-    {
-      IProject proj = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-      
-      if (proj.exists())
-      {
-        
-        IVirtualComponent[] ears = J2EEUtils.getReferencingEARComponents(proj);
-        if (ears != null && ears.length > 0)
-        {
-          earProject_.setText(ears[0].getName());
-          return;
-        }
-        
-      }
-      
-     
-      String earName = projectName + "EAR";
-      earProject_.setText(earName);      
-    }
+    earProject_.removeAll();    
+    setEarProjectItems(); 
+    
+    String earName = DefaultingUtils.getDefaultEARProjectName(moduleProject_.getText());
+    earProject_.setText(earName);
   }
 
   private boolean projectNeedsEAR(String projectName)

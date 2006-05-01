@@ -17,7 +17,8 @@
  * 20060315   131963 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060418   129688 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
- * 20060428   126780 kathy@ca.ibm.com - Rupam Kuehner
+ * 20060427   126780 kathy@ca.ibm.com - Kathy Chan
+ * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -45,6 +46,7 @@ import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
@@ -60,7 +62,6 @@ import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
-import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
@@ -195,7 +196,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 
     try
     {
-    	
+      
       //**Step 1** Default the Web service runtime.
     	
       //clientIdsFixed_ is set to true for the Ant scenario. It's always false for the wizard
@@ -246,7 +247,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
             clientRuntimeId_ = drt.getRuntimeId();                      
           }
         }
-        
+
         //Set the Web service runtime id from the clientRuntime
         clientIds_.setRuntimeId(WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRuntime()
             .getId());
@@ -286,7 +287,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       }
       
       //**Step 5** Default clientNeedEAR and client EAR if an EAR is needed
-      setDefaultClientEarProject();
+      setDefaultClientEarProject();      
       
       
       //**Step 6** Calculate default IWebServiceClient. This is need to make sure that
@@ -342,7 +343,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     
     if (clientNeedEAR_)
     {
-      clientEarProjectName_ = getDefaultClientEarProjectName();
+    	clientEarProjectName_ = DefaultingUtils.getDefaultEARProjectName(clientProjectName_);
     }
     else
     {
@@ -792,7 +793,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   }
   
   private String getDefaultClientProjectTemplate()
-  {	  
+  {
     String[] templates = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(clientIds_.getTypeId(), clientIds_.getRuntimeId());
     
     //Walk the list of client project types in the project topology preference
@@ -1231,42 +1232,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
   }
   
   
-  protected String getDefaultClientEarProjectName()
-  {
-    IProject clientProject = ProjectUtilities.getProject(clientProjectName_);
-    IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(clientProject);
-    if (earComps.length>0)
-    {
-      //Pick the first one
-      return earComps[0].getName();
-    }    
-
-    //Either project does not exist or component is not associated with any EARs, so pick the first EAR you see with the correct J2EE version.
-    IVirtualComponent[] allEarComps = J2EEUtils.getAllEARComponents();
-    if (allEarComps.length>0)
-    {
-      if (clientProject != null && clientProject.exists())
-      {
-        for (int i=0; i < allEarComps.length; i++)
-        {
-          IProject earProject = allEarComps[i].getProject();
-          IStatus associationStatus = J2EEUtils.canAssociateProjectToEAR(clientProject, earProject);
-          if (associationStatus.getSeverity()==IStatus.OK)
-          {
-            return allEarComps[i].getName(); 
-          }
-        }
-      }
-      else
-      {
-        return allEarComps[0].getName();
-      }
-    }
-    
-    //there are no Ears.
-    return ResourceUtils.getDefaultClientEARProjectName();
-        
-  }
       
   /*
    * Set defaults for the client-side from the service-side if possible.

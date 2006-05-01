@@ -16,6 +16,7 @@
  * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -34,7 +35,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -242,7 +242,7 @@ public class ValidationUtils
 		
 		return Status.OK_STATUS;
   }
- 
+  
   /**
    * Returns IStatus resulting from checking for errors. Used for validation of page 1 of the
    * Web service/client wizards.
@@ -680,32 +680,6 @@ public class ValidationUtils
 		return true;
 	}
 	
-	/**
-	 * Returns a default EAR project name based on the provided project. 
-	 * @param projectName
-	 * @return String a default EAR project name
-	 */
-	public String getDefaultEarProjectName(String projectName)
-	{
-	    if (projectName != null && projectName.length() > 0) {
-			IProject proj = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-
-			if (proj.exists()) {
-
-				IVirtualComponent[] ears = J2EEUtils.getReferencingEARComponents(proj);
-				if (ears != null && ears.length > 0) {
-					return ears[0].getName();
-				}
-
-			}
-
-			return projectName + ResourceUtils.getDefaultEARExtension();
-		}
-
-		return ResourceUtils.getDefaultServiceEARProjectName();
-	}
-	
-  //TODO: This method is obselete - should be removed.
   public IStatus validateProjectTargetAndJ2EE(String projectName, String compName, String earName, String earCompName, String serverFactoryId, String j2eeLevel)
   {
     IProject p = ProjectUtilities.getProject(projectName);
@@ -860,7 +834,7 @@ public class ValidationUtils
    * in the provided WSDL as a J2EE Web service.
    * @param p IProject in the workspace
    * @param wsdlURL URL of a WSDL document
-   * @param parser 
+   * @param parser
    * @return boolean <code>true</code> if the project contains a webservices.xml 
    * deployment descriptor that points to at least one of the ports in the provided WSDL. 
    * Returns <code>false</code> otherwise.
@@ -920,7 +894,6 @@ public class ValidationUtils
     return false;
   }
   
-
   /**
    * Returns the IResource corresponding to the webservices.xml in the provided project.
    * @param p an IProject in the workspace.

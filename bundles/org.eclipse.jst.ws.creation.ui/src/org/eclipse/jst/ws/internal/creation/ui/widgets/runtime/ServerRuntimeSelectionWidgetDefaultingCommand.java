@@ -15,6 +15,7 @@
  * 20060315   131963 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060418   129688 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -28,13 +29,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.ProjectTopologyContext;
@@ -46,7 +47,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensio
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
-import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
@@ -259,59 +259,12 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     
     if (serviceNeedEAR_)
     {
-      serviceEarProjectName_ = getDefaultServiceEarProjectName();
+      serviceEarProjectName_ = DefaultingUtils.getDefaultEARProjectName(serviceProjectName_);
     }
     else
     {
       serviceEarProjectName_ = "";
     }   
-  }
-
-  private String getDefaultServiceEarProjectName()
-  {
-    //Choose an appropriate default.
-    
-    IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
-    if (serviceProject != null && serviceProject.exists())
-    {
-      IVirtualComponent[] earComps = J2EEUtils.getReferencingEARComponents(serviceProject);
-      if (earComps.length > 0)
-      {
-        //pick the first one.
-        return earComps[0].getName();
-
-      }
-    }
-    
-
-    IVirtualComponent[] allEarComps = J2EEUtils.getAllEARComponents();
-      
-
-    if (allEarComps.length > 0)
-    {
-      if (serviceProject != null && serviceProject.exists())
-      {
-        for (int i=0; i < allEarComps.length; i++)
-        {
-          IProject earProject = allEarComps[i].getProject();
-          IStatus associationStatus = J2EEUtils.canAssociateProjectToEAR(serviceProject, earProject);
-          if (associationStatus.getSeverity()==IStatus.OK)
-          {
-            return allEarComps[i].getName(); 
-          }
-        }
-      }
-      else
-      {
-        return allEarComps[0].getName();
-      }
-    }
-
-
-    
-    // there are no suitable existing EARs
-    return ResourceUtils.getDefaultServiceEARProjectName();
-    
   }
   
   private IStatus setServiceDefaultServer()

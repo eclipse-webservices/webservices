@@ -26,6 +26,7 @@
  * 20060424   138052 kathy@ca.ibm.com - Kathy Chan
  * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060426   138519 joan@ca.ibm.com - Joan Haggarty
+ * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -39,6 +40,7 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.IObjectSelectionLaunchable;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ProjectSelectionDialog;
@@ -636,7 +638,7 @@ private void handleTypeChange()
 				if (currentServiceServerNeedsEar)
 				{
 					//Calculate a reasonable default for the Ear project name
-					String earProjectName = vu.getDefaultEarProjectName(getServiceProjectName());
+					String earProjectName = DefaultingUtils.getDefaultEARProjectName(getServiceProjectName());
 					setServiceNeedEAR(currentServiceServerNeedsEar);
 					setServiceEarProjectName(earProjectName);
 				}
@@ -1026,7 +1028,7 @@ private void handleTypeChange()
 	 
 	  public void refreshEARLink()
 	  {
-		  hLinkServiceEAR_.setVisible(needEar_);
+		  hLinkServiceEAR_.setVisible(needEar_); 
 		  if (needEar_)
 		  {			 
 			  hLinkServiceEAR_.setText(SERVICE_EAR_PREFIX + " " + serviceEarProjectName_);

@@ -21,6 +21,7 @@
  * 20060424   138052 kathy@ca.ibm.com - Kathy Chan
  * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060426   137622 joan@ca.ibm.com - Joan Haggarty
+ * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -31,6 +32,7 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ProjectSelectionWidget;
@@ -428,7 +430,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 				// Update needEar and serviceEarProjectName.
 				if (currentServerNeedsEar) {
 					// Calculate a reasonable default for the Ear project name
-					String earProjectName = vu.getDefaultEarProjectName(getClientProjectName());
+					String earProjectName = DefaultingUtils.getDefaultEARProjectName(getClientProjectName());
 					setClientNeedEAR(currentServerNeedsEar);
 					setClientEarProjectName(earProjectName);
 				} else {
