@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -151,10 +151,12 @@ public class InlineSchemaValidator implements IWSDL11Validator
         }
       }
     }
-    // if the schema is valid, assign the model to the validatormanager
-    else
+    // If the parser was able to create a schema model assign it for use. 
+    // If the schema is invalid we still want to make use of the model
+    // where possible to avoid cascading error messages to message parts.
+    XSModel xsModel = schemav.getXSModel();
+    if(xsModel != null)
     {
-      XSModel xsModel = schemav.getXSModel();
       valInfo.addSchema(xsModel);
     }
   }

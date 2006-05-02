@@ -1,0 +1,8 @@
+number of errors      : 1
+number of warnings    : 0
+
+------------error list-------------------------------------------
+src-resolve.4.2: Error resolving component 'xsd:strin'. It was detected that 'xsd:strin' is in namespace 'http://www.w3.org/2001/XMLSchema', but components from this namespace are not referenceable from schema document 'testresources/samples/WSDL/InvalidSchemaWithPartReferences/InvalidSchemaWithPartReferences.wsdl'. If this is the incorrect namespace, perhaps the prefix of 'xsd:strin' needs to be changed. If this is the correct namespace, then an appropriate 'import' tag should be added to 'testresources/samples/WSDL/InvalidSchemaWithPartReferences/InvalidSchemaWithPartReferences.wsdl'. [16, 47]
+------------warning list-----------------------------------------
+(none)
+-----------------------------------------------------------------
