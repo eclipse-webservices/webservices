@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
-import java.util.Iterator;
 import java.util.List;
-
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
@@ -30,7 +27,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.LabelEditManager;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDLabelDirectEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ListFigure;
-import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 
 
@@ -38,7 +34,6 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
 { 
   protected Figure contentPane;
   protected Label label;
-  protected Label previewLabel;
   private Color unselectedColor;
   private Figure labelHolder;
   
@@ -66,12 +61,6 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
     label.setTextAlignment(Label.LEFT);  
     labelHolder.add(label);
     
-    previewLabel = new Label("preivew"); //$NON-NLS-1$
-//    previewLabel.setFont(DesignViewGraphicsConstants.smallBoldFont);
-    previewLabel.setForegroundColor(ColorConstants.gray);
-    previewLabel.setBorder(new MarginBorder(2, 2,2,2));
-    previewLabel.setTextAlignment(Label.LEFT);  
-    labelHolder.add(previewLabel);
     
     contentPane = new ListFigure();  
     ToolbarLayout toolbarLayout2 = new ToolbarLayout(false);
@@ -111,29 +100,6 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
     IOperation operation = (IOperation)getModel();
     label.setText(operation.getName());// + "---" + getModel());
     label.setIcon(operation.getImage());
-    
-    previewLabel.setText(getOperationPreview());
-  }
-  
-  protected String getOperationPreview() {
-	  String inputPreview = "()"; //$NON-NLS-1$
-	  String outputPreview = "()"; //$NON-NLS-1$
-	  
-	  Iterator kids = getModelChildren().iterator();
-	  while (kids.hasNext()) {
-		  Object kid = kids.next();
-		  if (kid instanceof IMessageReference) {
-			  IMessageReference messageRef = (IMessageReference) kid;
-			  if (messageRef.getKind() == IMessageReference.KIND_INPUT) {
-				  inputPreview = messageRef.getPreview();
-			  }
-			  else if (messageRef.getKind() == IMessageReference.KIND_OUTPUT) {
-				  outputPreview = messageRef.getPreview();
-			  }
-		  }
-	  }
-	  
-	  return inputPreview + " --> " + outputPreview; //$NON-NLS-1$
   }
   
   public IFigure getContentPane()
@@ -157,5 +123,18 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
 	  if (unselectedColor != null) {
 		  labelHolder.setBackgroundColor(unselectedColor);
 	  }
+  }
+  
+  /**
+   * @deprecated to be removed post WTP 1.5
+   */
+  protected Label previewLabel;
+  
+  /**
+   * @deprecated to be removed post WTP 1.5
+   */  
+  protected String getOperationPreview() 
+  {
+    return "deprecated";
   }
 }
