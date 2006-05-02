@@ -1942,6 +1942,8 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     setElement(newElement);
     addChildElements(newElement, getEExtensibilityElements());
 
+    addChildElements(newElement, getEImports());
+
     Types types = getETypes();
     if (types != null)
     {
@@ -1949,7 +1951,6 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       newElement.appendChild(child);
     }
 
-    addChildElements(newElement, getEImports());
     addChildElements(newElement, getEMessages());
     addChildElements(newElement, getEPortTypes());
     addChildElements(newElement, getEBindings());

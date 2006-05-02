@@ -34,6 +34,7 @@ import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.binding.mime.MIMEContent;
@@ -119,6 +120,14 @@ public class BugFixesTest extends TestCase
       protected void runTest()
       {
         testSerializesPartsInSOAPBody();
+      }
+    });
+
+    suite.addTest(new BugFixesTest("ImportsSerialization")
+    {
+      protected void runTest()
+      {
+        testSerializesImportsBeforeTypes();
       }
     });
 
@@ -413,5 +422,58 @@ public class BugFixesTest extends TestCase
     soapBodyElement = soapBody.getElement();
     partsAttributeValue = soapBodyElement.getAttribute(SOAPConstants.PARTS_ATTRIBUTE);
     assertEquals(part1Name + " " + part2Name, partsAttributeValue); //$NON-NLS-1$
+  }
+
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=138033
+   */
+  public void testSerializesImportsBeforeTypes()
+  {
+    WSDLFactory factory = WSDLPackage.eINSTANCE.getWSDLFactory();
+
+    String namespace = "testNamespace"; //$NON-NLS-1$
+
+    Definition definition = factory.createDefinition();
+    definition.setQName(new QName(namespace, "testDefinition")); //$NON-NLS-1$  
+    definition.updateElement();
+
+    Types types = factory.createTypes();
+    definition.setTypes(types);
+
+    Import wsdlImport = factory.createImport();
+    definition.addImport(wsdlImport);
+
+    Element definitionElement = definition.getElement();
+    Element typesElement = types.getElement();
+    Element importElement = wsdlImport.getElement();
+
+    NodeList definitionElementChildren = definitionElement.getChildNodes();
+
+    Node firstChild = definitionElementChildren.item(0);
+
+    assertSame(importElement, firstChild);
+
+    Node secondChild = definitionElementChildren.item(1);
+
+    assertSame(typesElement, secondChild);
+
+    // Blow away the backing DOM.
+
+    definition.setElement(null);
+    definition.updateElement();
+
+    definitionElement = definition.getElement();
+    typesElement = types.getElement();
+    importElement = wsdlImport.getElement();
+
+    definitionElementChildren = definitionElement.getChildNodes();
+
+    firstChild = definitionElementChildren.item(0);
+
+    assertSame(importElement, firstChild);
+
+    secondChild = definitionElementChildren.item(1);
+
+    assertSame(typesElement, secondChild);
   }
 }
