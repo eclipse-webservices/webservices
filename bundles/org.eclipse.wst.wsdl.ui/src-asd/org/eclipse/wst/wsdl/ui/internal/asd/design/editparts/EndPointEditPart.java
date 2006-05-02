@@ -89,15 +89,6 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     addressLabel.setLabelAlignment(Label.LEFT);
     addressBoxFigure.add(addressLabel);
     
-    if (isReadOnly()) {
-    	nameLabel.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
-    	addressLabel.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
-    }
-    else {
-    	nameLabel.setForegroundColor(DesignViewGraphicsConstants.labelColor);
-    	addressLabel.setForegroundColor(DesignViewGraphicsConstants.labelColor);
-    }
-    
     return figure;
   }
 
@@ -153,6 +144,17 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     addressLabel.setText(endPoint.getAddress());
     refreshConnections();
     super.refreshVisuals();
+    
+    if (isReadOnly())
+    {  
+      nameLabel.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+      addressLabel.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    }
+    else 
+    {
+      nameLabel.setForegroundColor(DesignViewGraphicsConstants.labelColor);
+      addressLabel.setForegroundColor(DesignViewGraphicsConstants.labelColor);
+    }    
   }
 
   public void activate()

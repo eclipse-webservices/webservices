@@ -54,7 +54,8 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
     {
       public void paint(Graphics graphics)
       {
-        super.paint(graphics);        
+        super.paint(graphics);
+        graphics.pushState();
         // this bit of code is used to draw the dividing line between
         // the parameter name and the parameter type
         // we might want to consider moving this line drawing into the 
@@ -63,6 +64,7 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
         int x= r.x +  r.width -1;
         graphics.setForegroundColor(ColorConstants.lightGray);
         graphics.drawLine(x, r.y, x, r.y + r.height);
+        graphics.popState();
       }
     };        
     //toolbarLayout.setMinorAlignment(ToolbarLayout.ALIGN_CENTER);
@@ -104,9 +106,6 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
     
     labelImage = ((IParameter) getModel()).getImage();
     
-    if (isReadOnly()) {
-    	parameterName.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
-    }
     return figure;
   }
   
@@ -149,6 +148,14 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
     if (labelImage != null) {
     	parameterName.setIcon(labelImage);
     }
+    if (isReadOnly()) 
+    {
+      parameterName.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    }
+    else
+    {
+      parameterName.setForegroundColor(ColorConstants.black);
+    }      
   }
   
   protected List getModelChildren()

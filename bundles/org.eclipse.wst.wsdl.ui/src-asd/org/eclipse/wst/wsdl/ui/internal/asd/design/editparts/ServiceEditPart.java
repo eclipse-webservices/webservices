@@ -92,10 +92,6 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
     contentPane.setLayoutManager(toolbarLayout2);
     figure.add(contentPane);
     
-    if (isReadOnly()) {
-    	headingFigure.getLabel().setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
-    }
-    
     return figure;
   }
   
@@ -134,5 +130,14 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
     IService service = (IService)getModel();
     headingFigure.getLabel().setText(service.getName());
     super.refreshVisuals();
+    
+    if (isReadOnly()) 
+    {
+      headingFigure.getLabel().setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    }
+    else
+    {
+      headingFigure.getLabel().setForegroundColor(ColorConstants.black);
+    }      
   }
 }

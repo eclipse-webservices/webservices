@@ -60,7 +60,7 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     figure.add(partsList);
     */
     contentPane = new ListFigure();
-    contentPane.setForegroundColor(ColorConstants.lightGray);
+    //contentPane.setForegroundColor(ColorConstants.lightGray);
     ((ListFigure)contentPane).setOpaque(true);
     contentPane.setBackgroundColor(ColorConstants.listBackground);
     ToolbarLayout toolbarLayout = new ToolbarLayout(false);
@@ -88,10 +88,7 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     rowLayout.setConstraint(label, "MessageLabel"); //$NON-NLS-1$
     //rowLayout.setConstraint(partsList, "PartsList");
     rowLayout.setConstraint(contentPane, "MessageContentPane"); //$NON-NLS-1$
-    
-    if (isReadOnly()) {
-    	label.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
-    }
+   
     
     return figure;
   }
@@ -119,6 +116,15 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     IMessageReference message = (IMessageReference)getModel();    
     label.setText(message.getText());
     label.setIcon(message.getImage());
+    
+    if (isReadOnly()) 
+    {
+      label.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    }
+    else
+    {
+      label.setForegroundColor(ColorConstants.black);
+    }  
   }
 
   protected List getModelChildren()
