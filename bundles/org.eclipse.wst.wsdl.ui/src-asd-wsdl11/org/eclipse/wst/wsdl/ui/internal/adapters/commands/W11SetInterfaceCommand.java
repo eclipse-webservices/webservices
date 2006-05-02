@@ -13,12 +13,14 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.PortType;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 
 public class W11SetInterfaceCommand extends Command {
 	private Binding binding;
 	private PortType portType;
 	
 	public W11SetInterfaceCommand(Binding binding, PortType portType) {
+        super(Messages.getString("_UI_ACTION_SET_PORTTYPE"));
 		this.binding = binding;
 		this.portType = portType;
 	}

@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 
@@ -22,6 +23,7 @@ public class W11AddMessageCommand extends Command {
     private Message message;
 	
     public W11AddMessageCommand(Definition definition) {
+        super(Messages.getString("_UI_ACTION_ADD_MESSAGE"));
         this.definition = definition;
     }
     

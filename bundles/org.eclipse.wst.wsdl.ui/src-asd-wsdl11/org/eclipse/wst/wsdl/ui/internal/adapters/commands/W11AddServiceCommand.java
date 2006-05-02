@@ -14,6 +14,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddServiceCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 
@@ -21,6 +22,7 @@ public class W11AddServiceCommand extends Command {
 	private Definition definition;
 	
 	public W11AddServiceCommand(Definition definition) {
+        super(Messages.getString("_UI_ACTION_ADD_SERVICE"));
 		this.definition = definition;
 	}
 	

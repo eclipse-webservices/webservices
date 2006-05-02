@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddPortCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 
@@ -21,6 +22,7 @@ public class W11AddEndPointCommand extends Command
     private Service service;
     
     public W11AddEndPointCommand(Service service) {
+        super(Messages.getString("_UI_ACTION_ADD"));
         this.service = service;
     }
     

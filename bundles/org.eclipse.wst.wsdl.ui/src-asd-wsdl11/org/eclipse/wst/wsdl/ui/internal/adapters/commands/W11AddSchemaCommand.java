@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDSchemaCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 
@@ -24,6 +25,7 @@ public class W11AddSchemaCommand extends Command {
 	private Definition definition;
 	
 	public W11AddSchemaCommand(Definition definition) {
+        super(Messages.getString("_UI_ACTION_ADD_SCHEMA"));
 		this.definition = definition;
 	}
 	

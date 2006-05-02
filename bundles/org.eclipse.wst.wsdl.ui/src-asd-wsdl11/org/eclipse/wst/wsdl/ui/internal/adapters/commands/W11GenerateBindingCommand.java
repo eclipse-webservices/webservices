@@ -14,6 +14,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.wsdl.Binding;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.wizards.BindingWizard;
 
@@ -21,6 +22,7 @@ public class W11GenerateBindingCommand extends Command {
 	protected Binding binding;
 	
 	public W11GenerateBindingCommand(Binding binding) {
+        super(Messages.getString("_UI_GENERATE_BINDING_CONTENT"));
 		this.binding = binding;
 	}
 	

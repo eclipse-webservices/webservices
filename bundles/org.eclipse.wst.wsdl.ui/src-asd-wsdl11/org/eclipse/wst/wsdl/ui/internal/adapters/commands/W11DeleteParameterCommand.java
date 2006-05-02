@@ -17,6 +17,7 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -29,6 +30,7 @@ public class W11DeleteParameterCommand extends Command {
 	private IParameter parameter;
 	
 	public W11DeleteParameterCommand(IParameter paramter) {
+        super(Messages.getString("_UI_ACTION_DELETE"));
 		this.parameter = paramter;
 	}
 	

@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.ISelection;
@@ -29,7 +31,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.ui.views.properties.tabbed.ISection;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -337,4 +341,16 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
 			}
 		}
 	}
+    
+    protected void executeCommand(Command command) {
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        
+        if ((CommandStack) page.getActiveEditor().getAdapter(CommandStack.class) != null) {
+            CommandStack stack = (CommandStack) page.getActiveEditor().getAdapter(CommandStack.class);
+            stack.execute(command);
+        }
+        else {
+            command.execute();
+        }
+    }
 }

@@ -11,13 +11,11 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.actions;
 
 import org.eclipse.jface.window.Window;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
-import org.eclipse.wst.wsdl.ui.internal.edit.W11InterfaceReferenceEditManager;
+import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 
@@ -46,11 +44,8 @@ public class ASDSetExistingInterfaceAction extends BaseSelectionAction {
 			}
 		}
 		
-		if (binding != null) {
-			IEditorPart editor = ASDEditorPlugin.getActiveEditor();
-			// TODO: rmah: We should not know about W11InterfaceReferenceEditManager here....  We should a better
-			// way to retrieve the appropriate Reference Manager
-			ComponentReferenceEditManager refManager = (ComponentReferenceEditManager) editor.getAdapter(W11InterfaceReferenceEditManager.class);
+        ComponentReferenceEditManager refManager = ReferenceEditManagerHelper.getInterfaceReferenceEditManager(binding);
+        if (binding != null && refManager != null) {
 			IComponentDialog dialog = refManager.getBrowseDialog();
 			if (dialog.createAndOpen() == Window.OK) {
 				ComponentSpecification spec = dialog.getSelectedComponent();

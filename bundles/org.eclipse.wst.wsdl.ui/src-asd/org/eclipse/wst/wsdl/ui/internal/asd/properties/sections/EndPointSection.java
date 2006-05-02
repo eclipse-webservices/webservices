@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.layout.FormAttachment;
@@ -22,19 +21,18 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewBindingAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
-import org.eclipse.wst.wsdl.ui.internal.edit.W11BindingReferenceEditManager;
+import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 
 public class EndPointSection extends ReferenceSection {
@@ -114,19 +112,24 @@ public class EndPointSection extends ReferenceSection {
 		addressText.addListener(SWT.Modify, this);
 	}
 	
-	protected List getComboItems() {
-		if (refManager == null) {
-			IEditorPart editor = ASDEditorPlugin.getActiveEditor();
-			// TODO: rmah: We should not know about W11BindingReferenceEditManager here....  We should a better
-			// way to retrieve the appropriate Reference Manager
-			refManager = (ComponentReferenceEditManager) editor.getAdapter(W11BindingReferenceEditManager.class);
+	protected ComponentReferenceEditManager getComponentReferenceEditManager() {
+		if (refManager != null) {
+			return refManager;
 		}
+
+		refManager = ReferenceEditManagerHelper.getBindingReferenceEditManager((IASDObject) getModel()); 
+		
+		return refManager;
+	}
+
+	protected List getComboItems() {
+		ComponentReferenceEditManager manager = getComponentReferenceEditManager();
 		
 		List items = new ArrayList();
 		items.add(BROWSE_STRING);
 		items.add(NEW_STRING);
 
-		ComponentSpecification[] comboItems = refManager.getQuickPicks();
+		ComponentSpecification[] comboItems = manager.getQuickPicks();
 		for (int index = 0; index < comboItems.length; index++) {
 			items.add(comboItems[index]);
 		}
@@ -159,7 +162,8 @@ public class EndPointSection extends ReferenceSection {
 		
 		if (item instanceof ComponentSpecification) {
 			spec = (ComponentSpecification) item;
-			refManager.modifyComponentReference((IEndPoint) getModel(), spec);
+			ComponentReferenceEditManager manager = getComponentReferenceEditManager();
+			manager.modifyComponentReference((IEndPoint) getModel(), spec);
 		}
 		else if (item instanceof String) {
 			if (item.equals(BROWSE_STRING)) {
@@ -196,8 +200,7 @@ public class EndPointSection extends ReferenceSection {
 		  
 		  IEndPoint endPoint = (IEndPoint) getModel();
 		  Command command = endPoint.getSetAddressCommand(newAddress);
-		  CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
-		  stack.execute(command);
+		  executeCommand(command);
 	  }
   }
 }

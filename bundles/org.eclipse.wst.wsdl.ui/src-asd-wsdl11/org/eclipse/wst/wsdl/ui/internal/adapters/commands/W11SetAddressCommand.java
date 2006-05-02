@@ -41,6 +41,7 @@ public class W11SetAddressCommand extends Command {
 	private String newAddress;
 	
 	public W11SetAddressCommand(Port port, String newAddress) {
+        super("");  // TODO: Need to add String here...
 		this.port = port;
 		this.newAddress = newAddress;
 	}

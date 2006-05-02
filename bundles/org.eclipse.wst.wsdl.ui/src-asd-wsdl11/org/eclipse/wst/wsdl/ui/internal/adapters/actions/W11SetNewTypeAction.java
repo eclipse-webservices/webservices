@@ -11,14 +11,21 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters.actions;
 
 import org.eclipse.jface.window.Window;
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
+import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
+import org.eclipse.wst.wsdl.ui.internal.edit.WSDLXSDTypeReferenceEditManager;
+import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDTypeReferenceEditManager;
@@ -44,9 +51,8 @@ public class W11SetNewTypeAction extends BaseSelectionAction {
 			}
 		}
 		
-		if (wsdlBaseAdapter != null) {
-			IEditorPart editor = ASDEditorPlugin.getActiveEditor();
-			ComponentReferenceEditManager refManager = (ComponentReferenceEditManager) editor.getAdapter(XSDTypeReferenceEditManager.class);
+        ComponentReferenceEditManager refManager = ReferenceEditManagerHelper.getXSDTypeReferenceEditManager(wsdlBaseAdapter);
+		if (wsdlBaseAdapter != null && refManager != null) {
 			IComponentDialog dialog = refManager.getNewDialog();
 			if (dialog.createAndOpen() == Window.OK) {
 				ComponentSpecification spec = dialog.getSelectedComponent();
@@ -56,4 +62,21 @@ public class W11SetNewTypeAction extends BaseSelectionAction {
 		
 		wsdlBaseAdapter = null;
 	}
+    
+    protected ComponentReferenceEditManager getComponentReferenceEditManager() {
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        if (page.getActiveEditor().getAdapter(XSDTypeReferenceEditManager.class) != null) {
+            return (ComponentReferenceEditManager) page.getActiveEditor().getAdapter(XSDTypeReferenceEditManager.class);
+        }
+        else {
+            IEditorInput input = page.getActiveEditor().getEditorInput();
+            if (input instanceof IFileEditorInput) {
+                WSDLElement element = (WSDLElement) wsdlBaseAdapter.getTarget();
+                IDescription description = (IDescription) WSDLAdapterFactoryHelper.getInstance().adapt(element.getEnclosingDefinition());
+                return new WSDLXSDTypeReferenceEditManager(((IFileEditorInput) input).getFile(), null, description);
+            }
+        }
+
+        return null;
+    }
 }

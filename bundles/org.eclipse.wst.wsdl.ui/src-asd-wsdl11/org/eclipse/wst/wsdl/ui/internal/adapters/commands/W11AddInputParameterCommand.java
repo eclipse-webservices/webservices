@@ -17,6 +17,7 @@ import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddInputParameterCommand;
 
@@ -24,6 +25,7 @@ public class W11AddInputParameterCommand extends Command {
 	protected Operation operation;
 	
 	public W11AddInputParameterCommand(Operation operation) {
+        super(Messages.getString("_UI_ACTION_ADD_INPUT"));
 		this.operation = operation;
 	}
 	

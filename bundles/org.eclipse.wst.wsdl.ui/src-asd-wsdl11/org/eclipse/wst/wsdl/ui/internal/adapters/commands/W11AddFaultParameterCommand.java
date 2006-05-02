@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Operation;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddFaultParameterCommand;
 
@@ -21,6 +22,7 @@ public class W11AddFaultParameterCommand extends Command {
 	protected Fault fault;
 	
 	public W11AddFaultParameterCommand(Operation operation, Fault fault) {
+        super(Messages.getString("_UI_ACTION_ADD_FAULT"));
 		this.operation = operation;
 		this.fault = fault;
 	}

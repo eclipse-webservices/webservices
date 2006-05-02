@@ -19,6 +19,7 @@ import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
@@ -38,6 +39,7 @@ public class W11SetElementCommand extends Command {
 	private boolean continueApply;
 	
 	public W11SetElementCommand(Object parent, String action) {
+        super(Messages.getString("_UI_ACTION_SET_ELEMENT"));
 		this.parent = parent;
 		this.action = action;
 	}
@@ -95,6 +97,7 @@ public class W11SetElementCommand extends Command {
 		IEditorPart editor = ASDEditorPlugin.getActiveEditor();
 		if (editor != null)
 		{
+            System.out.println("\nW11SetElementCommand.java, line 98");
 			result = (ComponentReferenceEditManager)editor.getAdapter(XSDElementReferenceEditManager.class);
 			
 			if (editor instanceof InternalWSDLMultiPageEditor)

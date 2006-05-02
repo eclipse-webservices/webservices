@@ -24,11 +24,10 @@ import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NameSection;
-import org.eclipse.wst.wsdl.ui.internal.edit.W11MessageReferenceEditManager;
+import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 
@@ -38,6 +37,7 @@ public class W11MessageReferenceSection extends NameSection {
 	
 	protected CLabel comboLabel; 
 	protected CCombo combo;
+	protected ComponentReferenceEditManager refManager;
 
 	public void createControls(Composite parent, TabbedPropertySheetWidgetFactory factory)
 	{
@@ -126,8 +126,13 @@ public class W11MessageReferenceSection extends NameSection {
 	}
 	
 	protected ComponentReferenceEditManager getComponentReferenceEditManager() {
-		ASDMultiPageEditor editor = (ASDMultiPageEditor) ASDEditorPlugin.getActiveEditor();
-		return (ComponentReferenceEditManager) editor.getAdapter(W11MessageReferenceEditManager.class);
+		if (refManager != null) {
+			return refManager;
+		}
+
+		refManager = ReferenceEditManagerHelper.getMessageReferenceEditManager((IASDObject) getModel());
+        
+		return refManager;
 	}
 
 	

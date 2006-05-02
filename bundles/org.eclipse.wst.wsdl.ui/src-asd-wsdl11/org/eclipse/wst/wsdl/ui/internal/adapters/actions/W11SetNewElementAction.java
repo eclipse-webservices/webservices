@@ -11,17 +11,15 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters.actions;
 
 import org.eclipse.jface.window.Window;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
+import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
-import org.eclipse.wst.xsd.ui.internal.editor.XSDElementReferenceEditManager;
 
 public class W11SetNewElementAction extends BaseSelectionAction {
 	public static String ID = "ASDSetNewElementAction"; //$NON-NLS-1$
@@ -44,10 +42,9 @@ public class W11SetNewElementAction extends BaseSelectionAction {
 			}
 		}
 		
-		if (wsdlBaseAdapter != null) {
-			IEditorPart editor = ASDEditorPlugin.getActiveEditor();
-			ComponentReferenceEditManager refManager = (ComponentReferenceEditManager) editor.getAdapter(XSDElementReferenceEditManager.class);
-			IComponentDialog dialog = refManager.getNewDialog();
+        ComponentReferenceEditManager refManager = ReferenceEditManagerHelper.getXSDElementReferenceEditManager(wsdlBaseAdapter);
+        if (wsdlBaseAdapter != null && refManager != null) {
+            IComponentDialog dialog = refManager.getNewDialog();
 			if (dialog.createAndOpen() == Window.OK) {
 				ComponentSpecification spec = dialog.getSelectedComponent();
 				refManager.modifyComponentReference(wsdlBaseAdapter, spec);

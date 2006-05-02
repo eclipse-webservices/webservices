@@ -24,6 +24,7 @@ public class W11ReorderParametersCommand extends Command {
     protected IParameter movingParameter;
     
     public W11ReorderParametersCommand(IParameter leftSibling, IParameter rightSibling, IParameter movingParameter) {
+        super("");  // TODO: Need to add String here...
         this.leftSibling = leftSibling;
         this.rightSibling = rightSibling;
         this.movingParameter = movingParameter;

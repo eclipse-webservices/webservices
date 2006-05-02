@@ -11,14 +11,12 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters.actions;
 
 import org.eclipse.jface.window.Window;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
-import org.eclipse.wst.wsdl.ui.internal.edit.W11MessageReferenceEditManager;
+import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 
@@ -47,9 +45,8 @@ public class W11SetNewMessageAction extends BaseSelectionAction {
 			}
 		}
 		
-		if (messageReference != null) {
-			IEditorPart editor = ASDEditorPlugin.getActiveEditor();
-			ComponentReferenceEditManager refManager = (ComponentReferenceEditManager) editor.getAdapter(W11MessageReferenceEditManager.class);
+        ComponentReferenceEditManager refManager = ReferenceEditManagerHelper.getMessageReferenceEditManager(messageReference);
+        if (messageReference != null && refManager != null) {
 			IComponentDialog dialog = refManager.getNewDialog();
 			if (dialog.createAndOpen() == Window.OK) {
 				ComponentSpecification spec = dialog.getSelectedComponent();

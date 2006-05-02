@@ -16,6 +16,7 @@ import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.PortType;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
@@ -34,6 +35,7 @@ public class W11AddOperationCommand extends Command {
 	private PortType portType;
 	
 	public W11AddOperationCommand(PortType portType) {
+        super(Messages.getString("_UI_ACTION_ADD_OPERATION"));
 		this.portType = portType;
 	}
 	

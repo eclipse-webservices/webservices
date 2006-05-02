@@ -14,18 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewInterfaceAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
-import org.eclipse.wst.wsdl.ui.internal.edit.W11InterfaceReferenceEditManager;
+import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 
 public class BindingSection extends ReferenceSection {
@@ -36,19 +35,24 @@ public class BindingSection extends ReferenceSection {
 		comboLabel.setText(Messages.getString("_UI_LABEL_PORTTYPE") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
-	protected List getComboItems() {
-		if (refManager == null) {
-			IEditorPart editor = ASDEditorPlugin.getActiveEditor();
-			// TODO: rmah: We should not know about W11InterfaceReferenceEditManager here....  We should a better
-			// way to retrieve the appropriate Reference Manager
-			refManager = (ComponentReferenceEditManager) editor.getAdapter(W11InterfaceReferenceEditManager.class);
+	protected ComponentReferenceEditManager getComponentReferenceEditManager() {
+		if (refManager != null) {
+			return refManager;
 		}
+
+		refManager = ReferenceEditManagerHelper.getInterfaceReferenceEditManager((IASDObject) getModel());
+		
+		return refManager;
+	}
+
+	protected List getComboItems() {
+		ComponentReferenceEditManager manager = getComponentReferenceEditManager();
 		
 		List items = new ArrayList();
 		items.add(BROWSE_STRING);
 		items.add(NEW_STRING);
 
-		ComponentSpecification[] comboItems = refManager.getQuickPicks();
+		ComponentSpecification[] comboItems = manager.getQuickPicks();
 		for (int index = 0; index < comboItems.length; index++) {
 			items.add(comboItems[index]);
 		}
@@ -81,7 +85,8 @@ public class BindingSection extends ReferenceSection {
 		
 		if (item instanceof ComponentSpecification) {
 			spec = (ComponentSpecification) item;
-			refManager.modifyComponentReference((IBinding) getModel(), spec);
+			ComponentReferenceEditManager manager = getComponentReferenceEditManager();
+			manager.modifyComponentReference((IBinding) getModel(), spec);
 		}
 		else if (item instanceof String) {
 			if (item.equals(BROWSE_STRING)) {

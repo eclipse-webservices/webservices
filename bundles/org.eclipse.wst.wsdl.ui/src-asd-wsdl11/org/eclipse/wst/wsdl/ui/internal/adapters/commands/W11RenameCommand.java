@@ -20,6 +20,7 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Binding;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
@@ -35,6 +36,7 @@ public class W11RenameCommand extends Command {
 	protected String newName = ""; //$NON-NLS-1$
 	
 	public W11RenameCommand(WSDLBaseAdapter object, String newName) {
+        super(Messages.getString("_UI_ACTION_RENAME"));
 		this.object = object;
 		this.newName = newName;
 	}

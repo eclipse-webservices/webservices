@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.PortType;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddPortTypeCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
@@ -24,6 +25,7 @@ public class W11AddInterfaceCommand extends Command {
 	private PortType newPortType;
 	
 	public W11AddInterfaceCommand(Definition definition) {
+        super(Messages.getString("_UI_ACTION_ADD_PORTTYPE"));
 		this.definition = definition;
 	}
 	

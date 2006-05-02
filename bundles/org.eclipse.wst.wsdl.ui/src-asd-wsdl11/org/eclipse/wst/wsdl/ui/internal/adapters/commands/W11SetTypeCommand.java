@@ -19,6 +19,7 @@ import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
@@ -39,6 +40,7 @@ public class W11SetTypeCommand extends Command {
 	private boolean continueApply;
 	
 	public W11SetTypeCommand(Object parent, String action) {
+        super(Messages.getString("_UI_ACTION_SET_TYPE"));
 		this.parent = parent;
 		this.action = action;
 	}

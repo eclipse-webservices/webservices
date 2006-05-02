@@ -23,17 +23,17 @@ import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.ParameterSection;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
+import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
-import org.eclipse.wst.xsd.ui.internal.editor.XSDElementReferenceEditManager;
 
 public class W11ParameterSection extends ParameterSection {
 	protected Button typeRadio;
 	protected Button elementRadio;
+	protected ComponentReferenceEditManager refManager;
 	
 	public void createControlArea()	{
 		super.createControlArea();
@@ -142,8 +142,7 @@ public class W11ParameterSection extends ParameterSection {
 					combo.add((String) specs[index].getName());
 				}
 			}
-			
-			
+
 			// Display the element in the Combo
 			String[] items = combo.getItems();
 			int index;
@@ -195,7 +194,12 @@ public class W11ParameterSection extends ParameterSection {
 	}
 	
 	protected ComponentReferenceEditManager getElementComponentReferenceEditManager() {
-		ASDMultiPageEditor editor = (ASDMultiPageEditor) ASDEditorPlugin.getActiveEditor();
-		return (ComponentReferenceEditManager) editor.getAdapter(XSDElementReferenceEditManager.class);
+		if (refManager != null) {
+			return refManager;
+		}
+		
+		refManager = ReferenceEditManagerHelper.getXSDElementReferenceEditManager((IASDObject) getModel());
+		
+		return refManager;
 	}
 }

@@ -12,10 +12,13 @@ package org.eclipse.wst.wsdl.ui.internal.dialogs;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.core.search.pattern.QualifiedName;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.Definition;
@@ -24,7 +27,6 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInterfaceCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddMessageCommand;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
@@ -86,8 +88,7 @@ public class W11NewComponentDialog implements IComponentDialog {
 			if (qualifiedName == IWSDLSearchConstants.BINDING_META_NAME) {
 				W11AddBindingCommand command = (W11AddBindingCommand) description.getAddBindingCommand();
 				command.setNewBindingName(dialog.getName());
-			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
-			    stack.execute(command);
+                execute(command);
 			    
 			    Object newWSDLObject = command.getNewBinding();
 			    newObject = (IASDObject) WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) newWSDLObject);
@@ -95,8 +96,7 @@ public class W11NewComponentDialog implements IComponentDialog {
 			else if (qualifiedName == IWSDLSearchConstants.PORT_TYPE_META_NAME) {
 				W11AddInterfaceCommand command = (W11AddInterfaceCommand) description.getAddInterfaceCommand();
 				command.setNewPortTypeName(dialog.getName());
-			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
-			    stack.execute(command);
+                execute(command);
 			    
 			    Object newWSDLObject = command.getNewPortType();
 			    newObject = (IASDObject) WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) newWSDLObject);
@@ -104,8 +104,7 @@ public class W11NewComponentDialog implements IComponentDialog {
 			else if (qualifiedName == IWSDLSearchConstants.MESSAGE_META_NAME) {
 				W11AddMessageCommand command = (W11AddMessageCommand) description.getAddMessageCommand();
 				command.setNewMessageName(dialog.getName());
-			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
-			    stack.execute(command);
+				execute(command);
 			    
 			    Object newWSDLObject = command.getNewMessage();
 			    newObject = (IASDObject) WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) newWSDLObject);
@@ -114,4 +113,15 @@ public class W11NewComponentDialog implements IComponentDialog {
 		
 		return rValue;
 	}
+    
+    private void execute(Command command) {
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        if (page.getActiveEditor().getAdapter(CommandStack.class) != null) {
+            CommandStack stack = (CommandStack) page.getActiveEditor().getAdapter(CommandStack.class);
+            stack.execute(command);
+        }
+        else {
+            command.execute();
+        }
+    }
 }

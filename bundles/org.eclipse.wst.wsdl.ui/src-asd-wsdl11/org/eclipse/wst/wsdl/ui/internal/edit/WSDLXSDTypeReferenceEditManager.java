@@ -10,12 +10,16 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.edit;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDTypeDefinitionCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLSetComponentHelper;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDTypeReferenceEditManager;
@@ -30,6 +34,13 @@ public class WSDLXSDTypeReferenceEditManager extends XSDTypeReferenceEditManager
 		super(currentFile, schemas);
 	}
 	
+	public WSDLXSDTypeReferenceEditManager(IFile currentFile, XSDSchema[] schemas, IDescription description) {
+		super(currentFile, null);
+		if (schemas == null || schemas.length == 0) {
+			setSchemas(getInlineSchemas(description));
+		}
+	}
+
 	public void modifyComponentReference(Object referencingObject, ComponentSpecification component) {
 		if (referencingObject instanceof Adapter) {
 			Adapter adapter = (Adapter) referencingObject;
@@ -69,5 +80,16 @@ public class WSDLXSDTypeReferenceEditManager extends XSDTypeReferenceEditManager
 
 	public void setSchemas(XSDSchema[] schemas) {
 		this.schemas = schemas;
+	}
+	
+	private XSDSchema[] getInlineSchemas(IDescription description) {
+		List types = description.getTypes();
+		XSDSchema[] schemas = new XSDSchema[types.size()];
+		for (int index = 0; index < types.size(); index++) {
+			W11Type type = (W11Type) types.get(index);
+			schemas[index] = (XSDSchema) type.getTarget();
+		}
+		
+		return schemas;
 	}
 }

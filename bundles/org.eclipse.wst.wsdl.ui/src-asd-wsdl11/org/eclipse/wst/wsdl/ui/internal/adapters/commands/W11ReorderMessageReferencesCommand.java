@@ -23,6 +23,7 @@ public class W11ReorderMessageReferencesCommand extends Command {
 	protected IMessageReference movingParameter;
 	
 	public W11ReorderMessageReferencesCommand(IMessageReference leftSibling, IMessageReference rightSibling, IMessageReference movingParameter) {
+        super("");  // TODO: Need to add String here...
 		this.leftSibling = leftSibling;
 		this.rightSibling = rightSibling;
 		this.movingParameter = movingParameter;

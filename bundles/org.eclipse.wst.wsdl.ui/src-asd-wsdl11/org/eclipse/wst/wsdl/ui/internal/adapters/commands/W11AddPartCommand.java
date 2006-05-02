@@ -12,6 +12,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Message;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddPartCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 
@@ -19,6 +20,7 @@ public class W11AddPartCommand extends Command {
     private Message message;
     
     public W11AddPartCommand(Message message) {
+        super(Messages.getString("_UI_ACTION_ADD_PART"));
         this.message = message;
     }
     

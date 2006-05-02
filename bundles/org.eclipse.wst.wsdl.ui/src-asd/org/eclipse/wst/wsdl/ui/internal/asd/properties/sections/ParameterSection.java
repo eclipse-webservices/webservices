@@ -21,12 +21,11 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
+import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
-import org.eclipse.wst.xsd.ui.internal.editor.XSDTypeReferenceEditManager;
 
 public class ParameterSection extends NameSection {
 	protected static String NEW_STRING = Messages.getString("_UI_BUTTON_NEW"); //$NON-NLS-1$
@@ -34,6 +33,7 @@ public class ParameterSection extends NameSection {
 	protected CLabel comboLabel; 
 	protected CCombo combo;
 	protected boolean handleTypeScenario = true;
+	protected ComponentReferenceEditManager parameterRefManager;
 	
 	public void createControls(Composite parent, TabbedPropertySheetWidgetFactory factory)
 	{
@@ -120,6 +120,11 @@ public class ParameterSection extends NameSection {
 			for (int index = 0; index < specs.length; index++) {
 				combo.add((String) specs[index].getName());
 			}
+			
+			specs = editManager.getHistory();
+			for (int index = 0; index < specs.length; index++) {
+				combo.add((String) specs[index].getName());
+			}
 		}		
 		
 		// Display the type in the Combo
@@ -178,8 +183,12 @@ public class ParameterSection extends NameSection {
 	}
 	
 	protected ComponentReferenceEditManager getComponentReferenceEditManager() {
-		ASDMultiPageEditor editor = (ASDMultiPageEditor) ASDEditorPlugin.getActiveEditor();
-		return (ComponentReferenceEditManager) editor.getAdapter(XSDTypeReferenceEditManager.class);
+		if (parameterRefManager != null) {
+			return parameterRefManager;
+		}
+		
+		parameterRefManager = ReferenceEditManagerHelper.getXSDTypeReferenceEditManager((IASDObject) getModel());
+		return parameterRefManager;
 	}
 	
 	// TODO: rmah: This code should live in a common place..... This code is also used in other UI scenarios when

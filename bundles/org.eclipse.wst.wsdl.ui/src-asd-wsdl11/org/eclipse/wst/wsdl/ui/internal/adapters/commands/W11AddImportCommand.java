@@ -12,12 +12,14 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddImportCommand;
 
 public class W11AddImportCommand extends Command {
 	private Definition definition;
 	
 	public W11AddImportCommand(Definition definition) {
+        super(Messages.getString("_UI_ACTION_ADD_IMPORT"));
 		this.definition = definition;
 	}
 	

@@ -13,12 +13,14 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Port;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 
 public class W11SetBindingCommand extends Command {
 	private Port port;
 	private Binding binding;
 	
 	public W11SetBindingCommand(Port port, Binding binding) {
+        super(Messages.getString("_UI_ACTION_SET_BINDING"));
 		this.port = port;
 		this.binding = binding;
 	}

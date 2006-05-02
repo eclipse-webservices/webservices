@@ -20,7 +20,9 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.common.ui.internal.search.dialogs.IComponentList;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDElementDeclarationCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLSetComponentHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
@@ -32,6 +34,13 @@ import org.eclipse.xsd.XSDSchema;
 public class WSDLXSDElementReferenceEditManager extends	XSDElementReferenceEditManager {
 	public WSDLXSDElementReferenceEditManager(IFile currentFile, XSDSchema[] schemas) {
 		super(currentFile, schemas);
+	}
+	
+	public WSDLXSDElementReferenceEditManager(IFile currentFile, XSDSchema[] schemas, IDescription description) {
+		super(currentFile, null);
+		if (schemas == null || schemas.length == 0) {
+			setSchemas(getInlineSchemas(description));
+		}
 	}
 	
 	public IComponentDialog getNewDialog()
@@ -85,6 +94,17 @@ public class WSDLXSDElementReferenceEditManager extends	XSDElementReferenceEditM
 	
 	public void setSchemas(XSDSchema[] schemas) {
 		this.schemas = schemas;
+	}
+	
+	private XSDSchema[] getInlineSchemas(IDescription description) {
+		List types = description.getTypes();
+		XSDSchema[] schemas = new XSDSchema[types.size()];
+		for (int index = 0; index < types.size(); index++) {
+			W11Type type = (W11Type) types.get(index);
+			schemas[index] = (XSDSchema) type.getTarget();
+		}
+		
+		return schemas;
 	}
 	
 	private class ElementComponentList implements IComponentList {

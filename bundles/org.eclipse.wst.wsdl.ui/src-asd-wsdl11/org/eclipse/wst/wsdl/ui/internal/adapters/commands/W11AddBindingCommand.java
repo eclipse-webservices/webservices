@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 
@@ -22,6 +23,7 @@ public class W11AddBindingCommand extends Command {
 	private Binding newBinding;
 	
 	public W11AddBindingCommand(Definition definition) {
+        super(Messages.getString("_UI_ACTION_ADD_BINDING"));
 		this.definition = definition;
 	}
 	
