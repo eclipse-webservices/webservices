@@ -26,6 +26,8 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
@@ -66,6 +68,18 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 	    IParameter param = (IParameter) getModel();
 	    String name = param.getComponentName();
 	    parameterType.setText(name);
+        
+        
+        // TODO (cs) this evil bit of code needs to be fixed post WTP 1.5 when we have more freedom to 
+        // clean up our internal code structure.  We shouldn't have hardcoded adapter references here!
+        if (getModel() instanceof W11ParameterForPart)
+        {
+          Image image = ((W11ParameterForPart)getModel()).getSecondaryImage();
+          if (image != null)
+          {
+            parameterType.setIcon(image);
+          }            
+        }          
 	  }
 	  
 	  public void addFeedback() {	 		          

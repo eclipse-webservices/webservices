@@ -41,6 +41,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.visitor.WSDLVisitorForParameters;
 import org.eclipse.xsd.XSDAttributeUse;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 
 
@@ -60,11 +61,11 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
   {
     if (getPart().getElementDeclaration() != null)
     {  
-      return "[Element] " + getPart().getElementDeclaration().getName();
+      return getPart().getElementDeclaration().getName();
     }
     else if (getPart().getTypeDefinition() != null)
     {
-      return "[Type] " + getPart().getTypeDefinition().getName();
+      return getPart().getTypeDefinition().getName();
     }
     else
     {
@@ -182,6 +183,29 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 	public Image getImage() {
 		return WSDLEditorPlugin.getInstance().getImage("icons/part_obj.gif"); //$NON-NLS-1$
 	}
+    
+    public Image getSecondaryImage() {
+      
+      if (getPart().getElementDeclaration() != null)
+      {  
+        return WSDLEditorPlugin.getInstance().getImage("icons/element_obj.gif");
+      }
+      else if (getPart().getTypeDefinition() != null)
+      {
+        if (getPart().getTypeDefinition() instanceof XSDComplexTypeDefinition)
+        {  
+          return WSDLEditorPlugin.getInstance().getImage("icons/complextype_obj.gif");
+        }
+        else
+        {
+          return WSDLEditorPlugin.getInstance().getImage("icons/simpletype_obj.gif");
+        }  
+      }
+      else
+      {  
+        return WSDLEditorPlugin.getInstance().getImage("icons/part_obj.gif"); //$NON-NLS-1$
+      }  
+    }    
 	
 	public String getText() {
 		return "part";
