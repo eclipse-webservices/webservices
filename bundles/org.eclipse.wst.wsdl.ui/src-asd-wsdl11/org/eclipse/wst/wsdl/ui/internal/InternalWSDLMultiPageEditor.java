@@ -223,9 +223,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 		}
 		
 		public void selectionChanged(SelectionChangedEvent event) {
-			
-			if (getActivePage() == 0)
-//				if (getSelectionManager().getEnableNotify() && getActivePage() == 1)
+			if (getSelectionManager().getEnableNotify() && getActivePage() == 1)
 			{
 				ISelection selection = event.getSelection();
 				if (selection instanceof IStructuredSelection)

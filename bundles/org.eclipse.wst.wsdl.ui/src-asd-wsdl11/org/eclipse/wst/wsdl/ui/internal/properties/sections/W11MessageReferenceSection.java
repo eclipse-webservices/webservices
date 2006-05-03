@@ -77,7 +77,7 @@ public class W11MessageReferenceSection extends NameSection {
 		if (nameText.isFocusControl()) {
 			return;
 		}
-		setListenerEnabled(true);
+		setListenerEnabled(false);
 		String refName = ""; //$NON-NLS-1$
 		
 		combo.removeAll();
