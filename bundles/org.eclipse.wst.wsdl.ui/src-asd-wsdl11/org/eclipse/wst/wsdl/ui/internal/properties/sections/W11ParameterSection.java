@@ -172,11 +172,13 @@ public class W11ParameterSection extends ParameterSection {
 			if (part.getTypeDefinition() != null) {
 				typeRadio.setSelection(true);
 				elementRadio.setSelection(false);
+				comboLabel.setText(Messages.getString("_UI_LABEL_TYPE") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 				handleTypeScenario = true;
 			}
 			else if (part.getElementDeclaration() != null) {
 				typeRadio.setSelection(false);
 				elementRadio.setSelection(true);
+				comboLabel.setText(Messages.getString("_UI_LABEL_ELEMENT") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 				handleTypeScenario = false;
 				refreshElementCombo();			
 			}

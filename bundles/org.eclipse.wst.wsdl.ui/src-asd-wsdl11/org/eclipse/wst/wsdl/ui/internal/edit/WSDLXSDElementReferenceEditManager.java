@@ -25,8 +25,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDElementDeclarationCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLSetComponentHelper;
-import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
-import org.eclipse.wst.xsd.ui.internal.dialogs.NewTypeDialog;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDElementReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.search.IXSDSearchConstants;
 import org.eclipse.xsd.XSDSchema;
@@ -42,12 +40,7 @@ public class WSDLXSDElementReferenceEditManager extends	XSDElementReferenceEditM
 			setSchemas(getInlineSchemas(description));
 		}
 	}
-	
-	public IComponentDialog getNewDialog()
-	{
-		return new NewTypeDialog();
-	}
-	
+
 	public void modifyComponentReference(Object referencingObject, ComponentSpecification component) {
 		if (referencingObject instanceof Adapter) {
 			Adapter adapter = (Adapter) referencingObject;
