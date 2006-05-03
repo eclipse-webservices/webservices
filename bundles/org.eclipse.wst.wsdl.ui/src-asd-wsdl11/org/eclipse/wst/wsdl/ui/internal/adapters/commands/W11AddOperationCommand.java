@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
+import javax.wsdl.OperationType;
+
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.MessageReference;
@@ -47,9 +49,11 @@ public class W11AddOperationCommand extends Command {
 
 		createMessage(operation, IMessageReference.KIND_INPUT);
 		createMessage(operation, IMessageReference.KIND_OUTPUT);
-		
+
 		createParameter(operation, null, IMessageReference.KIND_INPUT);
 		createParameter(operation, null, IMessageReference.KIND_OUTPUT);
+
+		operation.setStyle(OperationType.REQUEST_RESPONSE);
 	}
 	
 	private MessageReference createMessage(Operation operation, int messageKind) {
