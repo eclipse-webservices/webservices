@@ -12,6 +12,7 @@
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060424   115690 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.common;
 
@@ -366,7 +367,15 @@ public final class ResourceUtils {
 	 * @return True if the project is a Java Project.
 	 */
 	public static boolean isJavaProject(IProject project) {
-		return (JavaCore.create(project) != null);
+		try
+		{
+		  return project.hasNature(JavaCore.NATURE_ID);
+		}
+		catch (CoreException ce)
+		{
+			//Return false if CoreException occurs while checking nature.
+			return false;
+		}
 	}
 
 	/**

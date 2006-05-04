@@ -13,6 +13,7 @@
  * 20060217   126757 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060419   137548 kathy@ca.ibm.com - Kathy Chan
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -35,6 +36,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
@@ -84,6 +86,7 @@ public class FacetUtils
     ArrayList validProjects = new ArrayList();
     for (int i = 0; i < projects.length; i++)
     {
+    	System.out.println("Testing project: "+ projects[i].getName());
       try
       {
         IFacetedProject facProject = ProjectFacetsManager.create(projects[i]);
@@ -94,14 +97,10 @@ public class FacetUtils
         }
         else
         {
-          //Check if it's a Java project        
-          IJavaProject javaProject = null;    
-          javaProject = JavaCore.create(projects[i]);    
-          if (javaProject != null)
-          {
-            //Add it to the list
-            validProjects.add(projects[i]);
-          }
+        	if (ResourceUtils.isJavaProject(projects[i]))
+        	{
+              validProjects.add(projects[i]);
+        	}
         }
       }
       catch (CoreException ce)
@@ -139,10 +138,10 @@ public class FacetUtils
         {
           //If this is not a faceted project, it may still be okay if it is a Java project
           //and the client runtime supports a Java project.
-          IJavaProject javaProject = null;
-          javaProject = JavaCore.create(project);    
-          if (javaProject != null)
+          IJavaProject javaProject = null;              
+          if (ResourceUtils.isJavaProject(project))
           {
+        	javaProject = JavaCore.create(project);
             facetVersions = FacetUtils.getFacetsForJavaProject(javaProject);
           }
         }
@@ -1246,9 +1245,7 @@ public class FacetUtils
       }
       else
       {
-        IJavaProject javaProject = null;    
-        javaProject = JavaCore.create(project);    
-        if (javaProject != null)
+        if (ResourceUtils.isJavaProject(project))
         {
           return true;
         }        

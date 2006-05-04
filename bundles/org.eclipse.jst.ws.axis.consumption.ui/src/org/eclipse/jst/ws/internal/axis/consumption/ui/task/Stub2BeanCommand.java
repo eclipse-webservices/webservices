@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
@@ -21,23 +22,24 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.PortType;
 import javax.wsdl.Service;
 import javax.wsdl.extensions.soap.SOAPAddress;
 import javax.xml.namespace.QName;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.NameMappingUtils;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -92,10 +94,8 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
     ModuleCoreNature mn = ModuleCoreNature.getModuleCoreNature(clientProject_);
     if (mn==null)
     {
-        // Check if it's a plain old Java project
-    	IJavaProject javaProject = null;    	  
-		javaProject = JavaCore.create(clientProject_);    
-		if (javaProject == null)
+        // Check if it's a plain old Java project    
+		if (!ResourceUtils.isJavaProject(clientProject_))
 		{
 	 		   IStatus status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_WARN_NO_JAVA_NATURE);	
 	 		   environment.getStatusHandler().reportError(status);

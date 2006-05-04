@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060204  124143   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060329   128069 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -33,8 +34,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationDataModelProvider;
@@ -1322,10 +1321,8 @@ public final class J2EEUtils {
             }
             else
             {
-              //This is not a faceted project. Check if this is a simple Java project.
-              IJavaProject javaProject = null;    
-              javaProject = JavaCore.create(project);    
-              if (javaProject != null)
+              //This is not a faceted project. Check if this is a simple Java project.    
+              if (ResourceUtils.isJavaProject(project))
               {
                 return true;
               }        

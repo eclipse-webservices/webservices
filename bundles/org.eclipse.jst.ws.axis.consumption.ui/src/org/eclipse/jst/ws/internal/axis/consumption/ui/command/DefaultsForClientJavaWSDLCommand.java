@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 
@@ -22,8 +23,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
@@ -93,9 +92,7 @@ public class DefaultsForClientJavaWSDLCommand extends AbstractDataModelOperation
 		else
 		{
 			// Check if it's a plain old Java project
-			IJavaProject javaProject = null;
-			javaProject = JavaCore.create(proxyProject_);
-			if (javaProject != null)
+			if (ResourceUtils.isJavaProject(proxyProject_))
 			{
 				IPath output = ResourceUtils.findResource( new Path( outputFolder_ )).getLocation();
 				javaWSDLParam_.setJavaOutput(output.toString());
