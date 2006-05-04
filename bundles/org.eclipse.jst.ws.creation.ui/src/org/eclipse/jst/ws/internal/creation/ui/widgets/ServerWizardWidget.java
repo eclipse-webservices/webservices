@@ -27,6 +27,7 @@
  * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060426   138519 joan@ca.ibm.com - Joan Haggarty
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
+ * 20060504   138035 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -62,6 +63,8 @@ import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -144,7 +147,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	private boolean preferencesPage_;
 
 	private Composite groupComposite_;
-	private Composite hCompService_;
+	private Composite hCompService_;	
 	private WebServiceClientTypeWidget clientWidget_;
     private Label serviceLabel_;
 	private Combo webserviceType_;
@@ -196,6 +199,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		initImageRegistry();
 		validationState_ = ValidationUtils.VALIDATE_ALL;
 	}
+	
+	private Composite serviceComposite_;
 	
 	public WidgetDataEvents addControls(Composite parent,
 			Listener statusListener) {
@@ -323,22 +328,33 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		gclayout.marginHeight=0;		
 		gclayout.marginBottom=5;
 		groupComposite_.setLayout( gclayout );
-	    GridData gcGridData = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, true); 
-	    groupComposite_.setLayoutData(gcGridData);
-		
-		Composite serviceComposite =  new Composite(groupComposite_, SWT.NONE);
+	    GridData gcGridData = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, true);
+	    groupComposite_.setLayoutData(gcGridData);		
+	    
+	    groupComposite_.addControlListener(new ControlListener()
+		{
+			public void controlMoved(ControlEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			public void controlResized(ControlEvent e) {
+				groupComposite_.pack(true);				
+			}
+		});
+	    
+		serviceComposite_ =  new Composite(groupComposite_, SWT.NONE);
 		GridLayout gridlayout   = new GridLayout();
 	    gridlayout.numColumns   = 2;
 	    gridlayout.horizontalSpacing=0;
 	    gridlayout.marginHeight=0;
-	    serviceComposite.setLayout( gridlayout );
+	    serviceComposite_.setLayout( gridlayout );
 	    GridData scGridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
-	    serviceComposite.setLayoutData(scGridData);    
+	    serviceComposite_.setLayoutData(scGridData);    
 	    
-		serviceComposite.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_SERVICE);
+		serviceComposite_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_SERVICE);
 	
 		
-		serviceScale_ = new Scale(serviceComposite, SWT.VERTICAL | SWT.BORDER | SWT.CENTER);
+		serviceScale_ = new Scale(serviceComposite_, SWT.VERTICAL | SWT.BORDER | SWT.CENTER);
 	    utils.createInfoPop(serviceScale_, INFOPOP_WSWSCEN_SCALE_SERVICE);
 		serviceScale_.setMinimum(0);
 		serviceScale_.setMaximum(6);
@@ -355,7 +371,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		layoutData1.widthHint=scaleR.width;
 		serviceScale_.setLayoutData(layoutData1);		
 		
-		topologySpot_ = new Label(serviceComposite, SWT.BORDER | SWT.TOP );
+		topologySpot_ = new Label(serviceComposite_, SWT.BORDER | SWT.TOP );
 		topologySpot_.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
 		topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_SERVICE);
 		
@@ -502,6 +518,19 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 				validationState_ = (new ValidationUtils()).getNewValidationState(validationState_, ValidationUtils.VALIDATE_PROJECT_CHANGES);
 				statusListener_.handleEvent(null);
 			}
+			
+			/*check to see if text has changed for project and EAR
+			if so, repaint links */
+			if (!newProjectName.equals(currentProjectName))
+			{
+				hLinkServiceProject_.pack(true);
+				groupComposite_.pack(true);	 
+			}
+			if (!newEarProjectName.equals(currentEarProjectName))
+			{
+				hLinkServiceEAR_.pack(true);
+				groupComposite_.pack(true);	  					
+			}
 		}
 	}
 	
@@ -546,8 +575,6 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	public Boolean getInstallClient() {		
 		return clientWidget_.getInstallClient();
 	}
-	
-	
 
 private void handleTypeChange()
 	{
@@ -595,9 +622,27 @@ private void handleTypeChange()
 			  serviceServerText = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId);
 			}
 			String serviceRuntimeText = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(ids_.getRuntimeId());
-			hLinkServiceServer_.setText(SERVICE_SERVER_PREFIX + " " + serviceServerText);
-			hLinkServiceRuntime_.setText(SERVICE_RUNTIME_PREFIX + " " + serviceRuntimeText);
-			groupComposite_.pack(true);
+			
+			String currentServerText = hLinkServiceServer_.getText();
+			String currentRuntimeText = hLinkServiceRuntime_.getText();
+			String newServerText = SERVICE_SERVER_PREFIX + " " + serviceServerText;
+			String newRuntimeText = SERVICE_RUNTIME_PREFIX + " " + serviceRuntimeText;
+			hLinkServiceServer_.setText(newServerText);
+			hLinkServiceRuntime_.setText(newRuntimeText);		
+			
+			/*check to see if text has changed for server or runtime
+			if so, repaint links */
+			if (!newServerText.equals(currentServerText))
+			{
+				hLinkServiceServer_.pack(true);
+				groupComposite_.pack(true);
+			}			
+			
+			if (!newRuntimeText.equals(currentRuntimeText))
+			{
+				hLinkServiceRuntime_.pack(true);
+				groupComposite_.pack(true);
+			} 
 		}				
 		labelIds_ = labelIds;
 		handleTypeChange();
@@ -665,6 +710,10 @@ private void handleTypeChange()
 		setStartService(new Boolean(value <= ScenarioContext.WS_START));
 		//enable client widget based on service scale setting
 		clientWidget_.enableClientSlider(value<=ScenarioContext.WS_START);
+		
+		/*for popup case need to make sure that the UI is refreshed based on 
+		changes to data*/
+		groupComposite_.pack(true);
 	}	
 
 	public int getServiceGeneration()
@@ -719,6 +768,9 @@ private void handleTypeChange()
 	public void setClientGeneration(int value)
 	{
 		clientWidget_.setClientGeneration(value);
+		/*for popup case need to make sure that the UI is refreshed based on 
+			changes to data*/
+		groupComposite_.pack(true);
 	}
 	
 	public String getClientEarProjectName()
@@ -1017,7 +1069,8 @@ private void handleTypeChange()
 	  {
 		serviceProjectName_= name;
 		hLinkServiceProject_.setText(SERVICE_PROJECT_PREFIX + " " + serviceProjectName_);
-		hLinkServiceProject_.pack(true);		
+		hLinkServiceProject_.pack(true);
+		groupComposite_.pack(true);	
 	  }
 	
 	 public void setServiceEarProjectName(String name)
@@ -1033,6 +1086,7 @@ private void handleTypeChange()
 		  {			 
 			  hLinkServiceEAR_.setText(SERVICE_EAR_PREFIX + " " + serviceEarProjectName_);
 			  hLinkServiceEAR_.pack(true);
+			  groupComposite_.pack(true);
 		  }
 	  }
 	 public void setServiceComponentType( String type )

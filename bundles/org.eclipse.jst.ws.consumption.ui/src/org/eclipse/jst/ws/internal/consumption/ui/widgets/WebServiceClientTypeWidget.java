@@ -22,6 +22,7 @@
  * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060426   137622 joan@ca.ibm.com - Joan Haggarty
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
+ * 20060504   138035 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -43,6 +44,8 @@ import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -100,7 +103,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   private String ICON_SCALE_BG_5="icons/scale5_bground.jpg";  //$NON-NLS-N$
   private String ICON_SCALE_BG_6="icons/scale6_bground.jpg";  //$NON-NLS-N$
   
-  private Composite groupComposite_;
+  private Composite clientComposite_;
   private Composite hCompClient_;
   private Shell shell_;
   private Combo  clientTypeCombo_;  
@@ -135,11 +138,13 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   
   private ScaleSelectionListener scaleSelectionListener = new ScaleSelectionListener();
   
-	private String CLIENT_RUNTIME_PREFIX = ConsumptionUIMessages.LABEL_RUNTIMES_LIST ; 
-	private String CLIENT_SERVER_PREFIX =  ConsumptionUIMessages.LABEL_SERVERS_LIST;
-	private String CLIENT_PROJECT_PREFIX = ConsumptionUIMessages.LABEL_CLIENT_PROJECT;
-	private String CLIENT_EAR_PREFIX = ConsumptionUIMessages.LABEL_CLIENT_EAR_PROJECT;
-    
+  private String CLIENT_RUNTIME_PREFIX = ConsumptionUIMessages.LABEL_RUNTIMES_LIST ; 
+  private String CLIENT_SERVER_PREFIX =  ConsumptionUIMessages.LABEL_SERVERS_LIST;
+  private String CLIENT_PROJECT_PREFIX = ConsumptionUIMessages.LABEL_CLIENT_PROJECT;
+  private String CLIENT_EAR_PREFIX = ConsumptionUIMessages.LABEL_CLIENT_EAR_PROJECT;
+  
+  private Composite clientGroupComposite_ ;
+	
   public WebServiceClientTypeWidget(boolean clientOnly) {
 	    clientOnly_ = clientOnly;
 		initImageRegistry();
@@ -151,20 +156,20 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
    */
   public WidgetDataEvents addControls( Composite parent, Listener statusListener)
   {
-    String       pluginId = "org.eclipse.jst.ws.consumption.ui";
+	String       pluginId = "org.eclipse.jst.ws.consumption.ui";
     UIUtils      utils    = new UIUtils( pluginId );   
 	
     statusListener_ = statusListener;
-    Composite clientComposite = new Composite(parent, SWT.NONE);
+    Composite clientTypeComposite = new Composite(parent, SWT.NONE);
 	GridLayout cclayout = new GridLayout();
 	cclayout.numColumns = 2;
 	cclayout.marginTop=3;
-	clientComposite.setLayout( cclayout );
+	clientTypeComposite.setLayout( cclayout );
     GridData ccGridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL); 
-    clientComposite.setLayoutData(ccGridData);
+    clientTypeComposite.setLayoutData(ccGridData);
     
     int comboStyle = SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY;
-    clientTypeCombo_ = utils.createCombo( clientComposite, 
+    clientTypeCombo_ = utils.createCombo( clientTypeComposite, 
     		ConsumptionUIMessages.LABEL_WEBSERVICECLIENTTYPE,
     		ConsumptionUIMessages.TOOLTIP_PWPR_COMBO_CLIENTTYPE, 
     		INFOPOP_WSWSCEN_COMBO_CLIENTTYPE, 
@@ -185,26 +190,38 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 
 		});    
     
-    groupComposite_ = new Composite(parent, SWT.NONE);
+    clientGroupComposite_ = new Composite(parent, SWT.NONE);    
 	GridLayout gclayout = new GridLayout();
 	gclayout.numColumns = 2;
 	gclayout.horizontalSpacing=0;		
 	gclayout.marginHeight=0;		
 	gclayout.marginBottom=5;
-	groupComposite_.setLayout( gclayout );
+	clientGroupComposite_.setLayout( gclayout );
     GridData gcGridData = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, true); 
-    groupComposite_.setLayoutData(gcGridData);
+    clientGroupComposite_.setLayoutData(gcGridData);
+    
+    clientGroupComposite_.addControlListener(new ControlListener()
+	{
+		public void controlMoved(ControlEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		public void controlResized(ControlEvent e) {
+			clientGroupComposite_.pack(true);
+		}
+	});
+    
        
-	Composite clientScaleComposite_ =  new Composite(groupComposite_, SWT.NONE);
+	clientComposite_ =  new Composite(clientGroupComposite_, SWT.NONE);
 	GridLayout gridlayout   = new GridLayout();
     gridlayout.numColumns   = 2;
     gridlayout.horizontalSpacing=0;
     gridlayout.marginHeight=0;
-    clientScaleComposite_.setLayout( gridlayout );
+    clientComposite_.setLayout( gridlayout );
     GridData scGridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
-    clientScaleComposite_.setLayoutData(scGridData);    
+    clientComposite_.setLayoutData(scGridData);
     
-    clientScale_ = new Scale(clientScaleComposite_ , SWT.VERTICAL | SWT.BORDER | SWT.CENTER);		
+    clientScale_ = new Scale(clientComposite_ , SWT.VERTICAL | SWT.BORDER | SWT.CENTER);		
 	utils.createInfoPop(clientScale_, INFOPOP_WSWSCEN_SCALE_CLIENT);	
 	clientScale_.setMinimum(0);
 	clientScale_.setMaximum(6);
@@ -221,7 +238,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	layoutData1.widthHint=scaleR.width;
 	clientScale_.setLayoutData(layoutData1);
 		
-	topologySpot_ = new Label(clientScaleComposite_ , SWT.CENTER | SWT.BORDER );
+	topologySpot_ = new Label(clientComposite_ , SWT.CENTER | SWT.BORDER );
 	topologySpot_.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
 	if (clientOnly_)
 		topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT_ONLY);
@@ -238,7 +255,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	
 	setGraphics(getClientGeneration());
 		
-	hCompClient_ = utils.createComposite(groupComposite_, 1);
+	hCompClient_ = utils.createComposite(clientGroupComposite_, 1);
 	
 	clientDetailsLabel_ = new Label(hCompClient_, SWT.NONE);
 	clientDetailsLabel_.setText(ConsumptionUIMessages.LABEL_SUMMARY);
@@ -356,6 +373,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	  }	  
 	  hLinkClientProject_.pack(true);
 	  hLinkClientEAR_.pack(true);
+	  clientGroupComposite_.pack(true);
   }
 
   public void setTypeRuntimeServer( TypeRuntimeServer ids )
@@ -389,10 +407,28 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		{
 			clientServerText = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId);
 		} 
-		String clientRuntimeText = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(ids_.getRuntimeId());		
-		hLinkClientServer_.setText(CLIENT_SERVER_PREFIX + " " + clientServerText);
-		hLinkClientRuntime_.setText(CLIENT_RUNTIME_PREFIX + " " + clientRuntimeText);
-		groupComposite_.pack(true);		
+		String clientRuntimeText = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(ids_.getRuntimeId());
+		
+		String currentServerText = hLinkClientServer_.getText();
+		String currentRuntimeText = hLinkClientRuntime_.getText();
+		String newServerText = CLIENT_SERVER_PREFIX + " " + clientServerText;
+		String newRuntimeText = CLIENT_RUNTIME_PREFIX + " " + clientRuntimeText;
+		hLinkClientServer_.setText(newServerText);
+		hLinkClientRuntime_.setText(newRuntimeText);
+		
+		/*check to see if text has changed for server or runtime
+		if so, repaint links */
+		if (!newServerText.equals(currentServerText))
+		{
+			hLinkClientServer_.pack(true);
+			clientGroupComposite_.pack(true);
+		}			
+		
+		if (!newRuntimeText.equals(currentRuntimeText))
+		{
+			hLinkClientRuntime_.pack(true);
+			clientGroupComposite_.pack(true);
+		} 	
 	}
 	
     if (projectDialog_ != null)
@@ -516,6 +552,19 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 				setClientComponentType(newProjectType);				
 				validationState_ = (new ValidationUtils()).getNewValidationState(validationState_, ValidationUtils.VALIDATE_PROJECT_CHANGES);
 				statusListener_.handleEvent(null);
+			}
+			
+			/*check to see if text has changed for project or EAR
+			if so, repaint links */
+			if (!newProjectName.equals(currentProjectName))
+			{
+				hLinkClientProject_.pack(true);
+				clientGroupComposite_.pack(true);
+			}
+			if (!newEarProjectName.equals(currentEarProjectName))
+			{
+				hLinkClientEAR_.pack(true);
+				clientGroupComposite_.pack(true);
 			}
 		}		
 	}
@@ -685,7 +734,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   public String getClientRuntimeId()
   {
 	  // calculate the most appropriate clientRuntimeId based on current settings.
-	  return WebServiceRuntimeExtensionUtils2.getClientRuntimeId(getTypeRuntimeServer(), getClientProjectName(), getClientComponentType());    
+	  return WebServiceRuntimeExtensionUtils2.getClientRuntimeId(getTypeRuntimeServer(), getClientProjectName(), getClientComponentType());   
 
   }
   
@@ -703,7 +752,8 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   {
     projectName_ = name;      
 	hLinkClientProject_.setText(CLIENT_PROJECT_PREFIX + " " + projectName_);	
-	hLinkClientProject_.pack(true);     
+	hLinkClientProject_.pack(true);   
+	clientGroupComposite_.pack(true);
   }
   
   public String getClientProjectName()
@@ -726,7 +776,8 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	  if (needEar_)
 	  {    	
 		  hLinkClientEAR_.setText(CLIENT_EAR_PREFIX + " " + earProjectName_);
-		  hLinkClientEAR_.pack(true);  
+		  hLinkClientEAR_.pack(true); 
+		  clientGroupComposite_.pack(true);
 	  }  
   }
 	    
