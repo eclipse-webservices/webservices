@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060504   128984 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.dialog;
 
@@ -208,8 +211,8 @@ public class MessageDialog extends Dialog
     GridLayout gl = new GridLayout();
     gl.numColumns = 2;
     imageAndLabel.setLayout(gl);
-    imageAndLabel.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-    composite.setLayoutData( new GridData( GridData.FILL_BOTH ));
+    imageAndLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+    composite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ));
     
     // create image
     Image image = getDialogImage();
@@ -267,9 +270,9 @@ public class MessageDialog extends Dialog
   }
   protected Text createDropDownDetails(Composite parent)
   {
-    details = new Text(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY);
+    details = new Text(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY | SWT.WRAP );
     //details.setEditable(false);
-    Color color = new Color(parent.getShell().getDisplay(), 255, 255, 255);
+    Color color = parent.getShell().getDisplay().getSystemColor( SWT.COLOR_WHITE );
     details.setBackground(color);
     populateDetails(details, status, 0);
     GridData data =
@@ -278,6 +281,7 @@ public class MessageDialog extends Dialog
           | GridData.GRAB_HORIZONTAL
           | GridData.VERTICAL_ALIGN_FILL
           | GridData.GRAB_VERTICAL);
+    
     details.setLayoutData(data);
     details.setSelection(0);
     detailsCreated = true;
@@ -570,11 +574,12 @@ public class MessageDialog extends Dialog
       details = createDropDownDetails((Composite) getContents());
       detailsButton.setText(IDialogConstants.HIDE_DETAILS_LABEL);
       newHeight = getContents().computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
+      newHeight = newHeight < 250 ? 250 : newHeight;
     }
-
 
     newHeight = newHeight > 400 ? 400 : newHeight;
     
     getShell().setSize( new Point(windowSize.x, newHeight) );
+    parent.layout();
   }
 }
