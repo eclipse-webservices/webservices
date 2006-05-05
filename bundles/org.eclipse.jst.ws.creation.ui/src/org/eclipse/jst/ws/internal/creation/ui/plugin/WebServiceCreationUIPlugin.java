@@ -10,12 +10,14 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060424   115690 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060504   138118 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.plugin;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 
@@ -63,21 +65,20 @@ public class WebServiceCreationUIPlugin extends Plugin
   }
 
   /**
-  * Returns an image descriptor for the named resource
-  * as relative to the plugin install location.
-  * @return An image descriptor, possibly null.
-  */
-  public static ImageDescriptor getImageDescriptor ( String name )
-  {
-    try
-    {
-      URL installURL = instance_.getBundle().getEntry("/");
-      URL imageURL = new URL(installURL,name);
-      return ImageDescriptor.createFromURL(imageURL);
-    }
-    catch (MalformedURLException e)
-    {
-      return null;
-    }
-  }
+   * Returns an image descriptor for the named resource
+   * as relative to the plugin install location.
+   * @return An image descriptor, possibly null.
+   */
+   public static ImageDescriptor getImageDescriptor ( String name )
+   {
+ 	try
+     {	
+     	URL imageURL = FileLocator.find(instance_.getBundle(), new Path("$nl$/"+name), null);
+     	return ImageDescriptor.createFromURL(imageURL);
+     }
+     catch (Exception e)
+     {
+       return null;
+     }
+   }
 }
