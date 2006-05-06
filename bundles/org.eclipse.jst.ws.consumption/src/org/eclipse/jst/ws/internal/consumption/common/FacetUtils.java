@@ -86,7 +86,6 @@ public class FacetUtils
     ArrayList validProjects = new ArrayList();
     for (int i = 0; i < projects.length; i++)
     {
-    	System.out.println("Testing project: "+ projects[i].getName());
       try
       {
         IFacetedProject facProject = ProjectFacetsManager.create(projects[i]);
