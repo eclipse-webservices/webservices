@@ -4,3 +4,4 @@ build.xml
 ws.jar
 @dot
 src.zip
+javaCompiler...args

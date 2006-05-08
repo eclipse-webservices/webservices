@@ -5,3 +5,4 @@ temp.folder
 parser.jar
 @dot
 src.zip
+javaCompiler...args
