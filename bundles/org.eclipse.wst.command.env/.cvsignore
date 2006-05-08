@@ -6,3 +6,5 @@ env.jar
 @dot
 src.zip
 envsrc.zip
+javaCompiler.env.jar.args
+javaCompiler.ant-lib_anttasks.jar.args
