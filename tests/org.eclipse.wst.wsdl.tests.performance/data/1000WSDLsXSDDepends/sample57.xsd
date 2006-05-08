@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.org/57" xmlns:tns="http://www.sample.org/57">
-<import namespace="http://www.sample.org/25" schemaLocation="sample25.xsd"/><import namespace="http://www.sample.org/7" schemaLocation="./sample7.xsd"/><import namespace="http://www.sample.org/22" schemaLocation=".\sample22.xsd"/><complexType name="NewComplexType"><sequence><element name="NewElement" type="string"></element><element name="NewElement1" type="string"></element></sequence></complexType><element name="NewGlobalElement" type="tns:NewComplexType"></element></schema>
