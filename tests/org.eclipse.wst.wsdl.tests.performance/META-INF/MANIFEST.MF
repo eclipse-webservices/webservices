@@ -14,7 +14,7 @@ Require-Bundle: org.junit,
  org.eclipse.emf.ecore,
  org.eclipse.ui,
  org.eclipse.ui.ide,
- org.eclipse.test.performance,
+ org.eclipse.test,
  org.eclipse.wst.validation,
  org.eclipse.wst.common.frameworks,
  org.eclipse.wst.wsdl,
@@ -24,5 +24,7 @@ Require-Bundle: org.junit,
  org.eclipse.wst.ws,
  org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.core,
- org.eclipse.wst.common.tests.performance
-Eclipse-AutoStart: true
+ org.eclipse.wst.common.tests.performance,
+ org.eclipse.test,
+ org.eclipse.test.performance
+Eclipse-LazyStart: true
