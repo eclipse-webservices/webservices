@@ -100,7 +100,7 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
     if (WSDLConstants.WSDL_NAMESPACE_URI.equals(namespace))
     {
       List list = new ArrayList();
-      ComponentReferenceUtil util = new ComponentReferenceUtil(lookupOrCreateDefinition(element));
+      ComponentReferenceUtil util = new ComponentReferenceUtil(lookupOrCreateDefinition(element.getOwnerDocument()));
       String currentElementName = element.getLocalName();
       if (checkName(name, "message")) //$NON-NLS-1$
       {
@@ -138,24 +138,29 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
     }
   }
 
-  
+  /**
+   * @deprecated
+   */
   protected XSDSchema lookupOrCreateSchemaForElement(Element element)
   {       
+    return lookupOrCreateSchema(element);
+  }
+  
+  private XSDSchema lookupOrCreateSchema(Element element)
+  {   
     XSDSchema schema = null;
-    Definition definition = lookupOrCreateDefinition(element);
+    Definition definition = lookupOrCreateDefinition(element.getOwnerDocument());
     Object o = WSDLEditorUtil.getInstance().findModelObjectForElement(definition, element);
     if (o instanceof XSDConcreteComponent)
     {
       schema = ((XSDConcreteComponent) o).getSchema();
     } 
-    return schema;
+    return schema;    
   }
   
-  
-  protected Definition lookupOrCreateDefinition(Element element)
+  protected Definition lookupOrCreateDefinition(Document document)
   {
     Definition definition = null;
-    Document document = element.getOwnerDocument();
     if (document instanceof INodeNotifier)
     {
       INodeNotifier notifier = (INodeNotifier) document;
@@ -164,7 +169,7 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
       {
         adapter = new WSDLModelAdapter();
         notifier.addAdapter(adapter);
-        adapter.createDefinition(document.getDocumentElement(), document);
+        adapter.createDefinition(document);
       }
       definition = adapter.getDefinition();
     }
@@ -174,7 +179,7 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
   
   protected TypesHelper getTypesHelper(final Element element)
   {
-    XSDSchema schema = lookupOrCreateSchemaForElement(element);
+    XSDSchema schema = lookupOrCreateSchema(element);
     return new TypesHelper(schema)
     {
       // TODO... it seems as though the model is not correctly
@@ -184,7 +189,7 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
       protected List getPrefixesForNamespace(String namespace)
       {
         List list = super.getPrefixesForNamespace(namespace);
-        Definition definition = lookupOrCreateDefinition(element);
+        Definition definition = lookupOrCreateDefinition(element.getOwnerDocument());
         if (definition != null)
         {  
           Map map = definition.getNamespaces();
@@ -204,5 +209,13 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
         return list;
       }       
     };    
-  }  
+  } 
+  
+  /**   
+   * @deprecated
+   */
+  protected Definition lookupOrCreateDefinition(Element element)
+  {
+    return lookupOrCreateDefinition(element.getOwnerDocument());
+  } 
 }
