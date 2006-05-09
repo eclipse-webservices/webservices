@@ -75,7 +75,7 @@ soapResponseTwistImageName.append(soapResponseTableContainerId);
   <table width="95%" height="50%" border=0 cellpadding=0 cellpadding=0>
     <tr>
       <td>
-        <iframe src="<%=response.encodeURL(controller.getPathWithContext(wsdlPerspective.getSOAPEnvelopeXMLLink(WSDLActionInputs.SOAP_ENVELOPE_TYPE_REQUEST)))%>" width="95%" height="100%"></iframe>
+        <iframe frameborder=0 src="<%=response.encodeURL(controller.getPathWithContext(wsdlPerspective.getSOAPEnvelopeXMLLink(WSDLActionInputs.SOAP_ENVELOPE_TYPE_REQUEST)))%>" width="95%" height="100%"></iframe>
       </td>
     </tr>
   </table>
@@ -101,7 +101,7 @@ if (operElement.getOperation().getOutput() != null)
   <table width="95%" height="50%" border=0 cellpadding=0 cellpadding=0>
     <tr>
       <td>
-        <iframe src="<%=response.encodeURL(controller.getPathWithContext(wsdlPerspective.getSOAPEnvelopeXMLLink(WSDLActionInputs.SOAP_ENVELOPE_TYPE_RESPONSE)))%>" width="95%" height="100%"></iframe>
+        <iframe frameborder=0 src="<%=response.encodeURL(controller.getPathWithContext(wsdlPerspective.getSOAPEnvelopeXMLLink(WSDLActionInputs.SOAP_ENVELOPE_TYPE_RESPONSE)))%>" width="95%" height="100%"></iframe>
       </td>
     </tr>
   </table>

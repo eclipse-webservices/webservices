@@ -43,3 +43,5 @@ img.twist {border-width:0 0 0 0px; height:10px; width:11px;}
 .innerrangefragtable {width:100%; border-left:0px solid #B8B4A3; border-right:1px solid #B8B4A3; border-top:1px solid #B8B4A3; border-bottom:0px solid #B8B4A3;}
 .textareaenter {font: icon; font-size: 14px; color: Black; border-style:solid; border-width : 1px; border-color: #C7C5B2; width:100%; height:150px; }
 .bigtextareaenter {font: icon; font-size: 14px; color: Black; border-style:solid; border-width : 1px; border-color: #C7C5B2; width:100%; height:300px; }
+
+iframe {border-width: 2px; border-style: inset; }
