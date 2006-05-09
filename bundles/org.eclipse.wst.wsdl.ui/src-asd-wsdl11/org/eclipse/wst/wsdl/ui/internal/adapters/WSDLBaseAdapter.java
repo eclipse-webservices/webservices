@@ -102,7 +102,16 @@ public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionP
 	public void notifyChanged(Notification msg)
 	{
 	  super.notifyChanged(msg);
-	  notifyListeners(this, null);
+      try
+      {
+	    notifyListeners(this, null);
+      }
+      catch (Exception e)
+      {        
+        // TODO... exception should never happen here.. but they do
+        // dumping the stack to the console until we track these down
+        e.printStackTrace();
+      }
 	}
 	
 	protected void notifyListeners(Object changedObject, String property)

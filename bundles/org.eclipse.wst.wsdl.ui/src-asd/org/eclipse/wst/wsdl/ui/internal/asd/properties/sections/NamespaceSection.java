@@ -207,8 +207,8 @@ public class NamespaceSection extends ASDAbstractSection {
 		{
 			IDescription description = (IDescription) obj;
 			String targetNS = description.getTargetNamespace();
-			String newPrefix = description.getTargetNamespacePrefix();
-			prefixText.setText(newPrefix);
+			String newPrefix = description.getTargetNamespacePrefix();            
+			prefixText.setText(newPrefix != null ? newPrefix : "");
 			
 			// set targetnamespace field and prefix field
 			if (targetNS != null)

@@ -10,21 +10,20 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.text;
 
-import org.eclipse.wst.sse.core.internal.provisional.INodeAdapter;
-import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
+import org.eclipse.wst.xsd.ui.internal.util.ModelReconcileAdapter;
 import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 
-class WSDLModelReconcileAdapter extends DocumentAdapter
+class WSDLModelReconcileAdapter extends ModelReconcileAdapter
 {                             
   protected Definition definition;
 
@@ -33,90 +32,71 @@ class WSDLModelReconcileAdapter extends DocumentAdapter
     super(document);
     this.definition = definition;
   } 
-   
-     
-  public void notifyChanged(INodeNotifier notifier, int eventType, Object feature, Object oldValue, Object newValue, int index) 
-  {                      
-    if (eventType == INodeNotifier.ADD)
+
+  // This method is clever enough to deal with 'bad' documents that happen 
+  // to have more than one root element.  It picks of the first 'matching' element.
+  //
+  // TODO (cs) why aren't we calling this from the WSDLModelAdapter when the model is initialized?
+  //
+  private Element getDefinitionElement(Document document)
+  {
+    Element definitionElement = null;    
+    for (Node node = document.getFirstChild(); node != null; node = node.getNextSibling())
     {
-      if (newValue instanceof Element)
+      if (node.getNodeType() == Node.ELEMENT_NODE)
       {
-        adapt((Element)newValue);
-
-        // See Bug 5366
-        // We need to sync up the Model and the DOM
-        Element newDocumentElement = (Element)newValue;
-        String wsdlPrefix = newDocumentElement.getPrefix();
-        if (wsdlPrefix == null) wsdlPrefix = ""; //$NON-NLS-1$
-        String ns = definition != null ? definition.getNamespace(wsdlPrefix) : ""; //$NON-NLS-1$
-        if (ns != null && ns.equals(WSDLConstants.WSDL_NAMESPACE_URI)
-           && newDocumentElement.getLocalName().equals(WSDLConstants.DEFINITION_ELEMENT_TAG)) // &&
-           // !isValidDefinition)
+        Element element = (Element)node;
+        if (WSDLEditorUtil.getInstance().getWSDLType(element) == WSDLConstants.DEFINITION)
         {
-//          System.out.println("****** Setting new definition");
-          definition.setElement(newDocumentElement);
+          definitionElement = element;
+          break;
         }
-      }
-    }   
-
-    switch (eventType)
-    {                  
-      // we make the assumption that reconciling will only be triggered by one of these notifications 
-      // (ADD and REMOVE notifications are omitted)
-      //
-      case INodeNotifier.CHANGE: 
-      case INodeNotifier.STRUCTURE_CHANGED:
-      case INodeNotifier.CONTENT_CHANGED:
-      {                      
-        if (notifier instanceof Element)
-        {
-          reconcileModelObjectForElement((Element)notifier, eventType, feature, oldValue, newValue, index);
-        }
-        else if (notifier instanceof Document)
-        {
-          Document document = (Document)notifier;
-          Element definitionElement = null;          
-
-          for (Node node = document.getFirstChild(); node != null; node = node.getNextSibling())
-          {
-            if (node.getNodeType() == Node.ELEMENT_NODE)
-            {
-              Element element = (Element)node;
-              if (WSDLEditorUtil.getInstance().getWSDLType(element) == WSDLConstants.DEFINITION)
-              {
-                definitionElement = element;
-                break;
-              }
-            }
-          }
-         
-          // TODO... revisit definition.removeAllContent() and who should call this?
-          //
-          if (definitionElement != null)
-          {
-//            isValidDefinition = true;
-//            System.out.println("VALID DEFINITION ELEMENT");
-            WSDLModelAdapter modelAdapter = (WSDLModelAdapter) notifier.getAdapterFor(WSDLModelAdapter.class);
-            if (modelAdapter != null) {
-              definition = modelAdapter.getDefinition();
-              if (definition == null) definition = modelAdapter.createDefinition(definitionElement, document);
-            }
-            ((DefinitionImpl)definition).elementChanged(definitionElement);
-          }
-          else
-          {
-//            System.out.println("INVALID DEFINITION ELEMENT");
-//            isValidDefinition = false;
-            ((DefinitionImpl)definition).removeAll();
-          }
-        }
-        break;
       }
     }
+    return definitionElement;
   }
-
-  protected void reconcileModelObjectForElement(Element element, int eventType, Object feature, Object oldValue, Object newValue, int index)
-  {                                                                  
+  
+  protected void handleNodeChanged(Node node)
+  {
+    if (node instanceof Element)
+    {
+      reconcileModelObjectForElement((Element)node);      
+    }
+    else if (node instanceof Document)
+    {
+      // The document changed so we may need to fix up the 
+      // definition's root element
+      Document document = (Document)node;    
+      Element definitionElement = getDefinitionElement(document);
+      if (definitionElement != null && definitionElement != definition.getElement())
+      {   
+        // here we handle the case where a new 'definition' element was added
+        //(e.g. the file was totally blank and then we type in the root element)        
+        // See Bug 5366
+        //
+        if (definitionElement.getLocalName().equals(WSDLConstants.DEFINITION_ELEMENT_TAG))         
+        {  
+          //System.out.println("****** Setting new definition");
+          definition.setElement(definitionElement);
+        }
+      }      
+      else if (definitionElement != null)
+      {       
+        // handle the case where the definition element's content has changed
+        // 
+        ((DefinitionImpl)definition).elementChanged(definitionElement);
+      }      
+      else if (definitionElement == null)
+      {
+        // if there's no definition element clear out the WSDL
+        //
+        ((DefinitionImpl)definition).removeAll();
+      }
+    }         
+  }
+       
+  private void reconcileModelObjectForElement(Element element)
+  {
     Object modelObject = WSDLEditorUtil.getInstance().findModelObjectForElement(definition, element);  
     if (modelObject != null)
     {
@@ -131,42 +111,13 @@ class WSDLModelReconcileAdapter extends DocumentAdapter
         ((WSDLElementImpl)modelObject).elementChanged(element);
       }
     }     
-  }   
-}
+  }  
 
-
-abstract class DocumentAdapter implements INodeAdapter
-{
-  Document document;
-  
-  public DocumentAdapter(Document document)
-  {
-    this.document = document;
-    ((INodeNotifier)document).addAdapter(this);
-    if (document.getDocumentElement() != null) adapt(document.getDocumentElement());
-  }
-
-  public void adapt(Element element)
-  {
-    if (((INodeNotifier)element).getExistingAdapter(this) == null)
-    {
-      ((INodeNotifier)element).addAdapter(this);
-
-      for (Node child = element.getFirstChild(); child != null; child = child.getNextSibling())
-      {
-        if (child.getNodeType() == Node.ELEMENT_NODE)
-        {
-          adapt((Element)child);
-        }
-      }
-    }
-  }
-
-  public boolean isAdapterForType(Object type)
-  {
-    return type == this;
-  }
-
-  abstract public void notifyChanged
-    (INodeNotifier notifier, int eventType, Object feature, Object oldValue, Object newValue, int index);
+  /**
+   * @deprecated
+   */
+  protected void reconcileModelObjectForElement(Element element, int eventType, Object feature, Object oldValue, Object newValue, int index)
+  {                                          
+    reconcileModelObjectForElement(element);
+  }  
 }

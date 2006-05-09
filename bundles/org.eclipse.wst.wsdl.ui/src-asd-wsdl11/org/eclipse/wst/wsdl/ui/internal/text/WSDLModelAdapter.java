@@ -52,24 +52,32 @@ public class WSDLModelAdapter implements INodeAdapter
   {
   }
 
+  /**
+   * @deprecated
+   */
   public Definition createDefinition(Element element, Document document)
-  {     
+  {
+    return createDefinition(document);
+  }
+
+  public Definition createDefinition(Document document)
+  {
     try
-    {    	
-      IDOMNode domNode = (IDOMNode)element;
+    {
+      IDOMNode domNode = (IDOMNode) document;
       String baseLocation = "blankWSDL.wsdl"; //$NON-NLS-1$
-      if (domNode != null) {
-    	  baseLocation = domNode.getModel().getBaseLocation();
+      if (domNode != null)
+      {
+        baseLocation = domNode.getModel().getBaseLocation();
       }
-      else if (document instanceof IDOMNode){
-    	  IDOMModel domModel = ((IDOMNode) document).getModel();
-    	  baseLocation = domModel.getBaseLocation();
+      else if (document instanceof IDOMNode)
+      {
+        IDOMModel domModel = ((IDOMNode) document).getModel();
+        baseLocation = domModel.getBaseLocation();
       }
-          
       resourceSet = new ResourceSetImpl();
       resourceSet.getAdapterFactories().add(new WSDLModelLocatorAdapterFactory());
       resourceSet.getAdapterFactories().add(new XSDSchemaLocationResolverAdapterFactory());
-                     
       // TODO.. .revist the best approach to obtain a URI from the SSE model
       //
       URI uri = null;
@@ -80,26 +88,27 @@ public class WSDLModelAdapter implements INodeAdapter
       else
       {
         uri = URI.createFileURI(baseLocation);
-      }            
-      
+      }
       definition = WSDLFactory.eINSTANCE.createDefinition();
       definition.setDocumentBaseURI(uri.toString());
       definition.setDocument(document);
-      definition.setElement(element);
+      definition.setElement(document.getDocumentElement());
       
       WSDLResourceFactoryImpl resourceFactory = new WSDLResourceFactoryImpl();
       Resource resource = resourceFactory.createResource(uri);
-      resourceSet.getResources().add(resource);       
+      resourceSet.getResources().add(resource);
       resource.getContents().add(definition);
-      resource.setModified(false);    
-      ((DefinitionImpl)definition).reconcileReferences(true);    
-                 
+      resource.setModified(false);
+      ((DefinitionImpl) definition).reconcileReferences(true);
+      
+      
       // attach an adapter to keep the WSDL model and DOM in sync
       //
       new WSDLModelReconcileAdapter(document, definition);
-
+      
+      
       // TODO... CS : revisit this line
-      // currently this is used to associate a 'type' system with the definition      
+      // currently this is used to associate a 'type' system with the definition
       // I suspect that this could be made a whole lot more simple
       //
       WSDLEditorUtil.getInstance().setTypeSystemProvider(definition, new ExtensibleTypeSystemProvider());
