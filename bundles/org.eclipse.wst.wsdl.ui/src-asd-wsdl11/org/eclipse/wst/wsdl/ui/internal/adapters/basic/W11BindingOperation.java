@@ -54,8 +54,9 @@ public class W11BindingOperation extends WSDLBaseAdapter implements IBindingOper
   
   public String getName()
   {
-	  BindingOperation bindingOperation = (BindingOperation)target;
-	  return bindingOperation.getEOperation().getName();
+    BindingOperation bindingOperation = (BindingOperation)target;
+    Operation operation = bindingOperation.getEOperation();
+    return operation != null ? operation.getName() : null;
   }
 
   public List getExtensiblityObjects()
