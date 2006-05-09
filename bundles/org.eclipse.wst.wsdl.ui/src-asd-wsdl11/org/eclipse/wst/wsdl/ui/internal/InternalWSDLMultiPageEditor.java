@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.gef.ui.actions.ActionRegistry;
@@ -266,6 +267,17 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 			if (object instanceof Node) {
 				node = (Node) object;
 			}
+			else if (object instanceof String) {
+				// The string is expected to be a URI fragment used to identify a WSDL element.
+				// The URI fragment should be relative to the definition being edited in this editor.
+				String uriFragment = (String)object;
+				EObject definition = ((Definition)((W11Description)getModel()).getTarget());
+				EObject modelObject = definition.eResource().getEObject(uriFragment);
+
+				if (modelObject != null) {
+					node = WSDLEditorUtil.getInstance().getNodeForObject(modelObject);
+				}        
+			}
 			else {
 				node = WSDLEditorUtil.getInstance().getNodeForObject(object);
 			}
@@ -286,18 +298,20 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 				if (selection instanceof IStructuredSelection) {
 					List otherModelObjectList = new ArrayList();
 					for (Iterator i = ((IStructuredSelection) selection).iterator(); i.hasNext();) {
-						Object facadeObject = i.next();
-						if (facadeObject instanceof WSDLBaseAdapter) {
-							Object wsdlObject = ((WSDLBaseAdapter) facadeObject).getTarget();
-							Object otherModelObject = getObjectForOtherModel(wsdlObject);
-							if (otherModelObject != null) {
-								otherModelObjectList.add(otherModelObject);
-							}
+						Object wsdlObject = i.next();
+
+						if (wsdlObject instanceof WSDLBaseAdapter) {
+							wsdlObject = ((WSDLBaseAdapter) wsdlObject).getTarget();
+						}
+
+						Object otherModelObject = getObjectForOtherModel(wsdlObject);
+						if (otherModelObject != null) {
+							otherModelObjectList.add(otherModelObject);
 						}
 					}
 					if (!otherModelObjectList.isEmpty()) {
 						StructuredSelection nodeSelection = new StructuredSelection(otherModelObjectList);
-            getTextEditor().getSelectionProvider().setSelection(nodeSelection);
+						getTextEditor().getSelectionProvider().setSelection(nodeSelection);
 					}
 				}
 			}

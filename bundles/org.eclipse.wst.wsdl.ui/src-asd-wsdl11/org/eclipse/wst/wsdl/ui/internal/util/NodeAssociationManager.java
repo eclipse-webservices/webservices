@@ -13,23 +13,36 @@ package org.eclipse.wst.wsdl.ui.internal.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.wst.wsdl.ui.internal.xsd.XSDNodeAssociationProvider;
 import org.eclipse.wst.wsdl.ui.internal.extensions.INodeAssociationProvider;
 import org.eclipse.wst.wsdl.ui.internal.extensions.WSDLNodeAssociationProvider;
+import org.eclipse.wst.xsd.ui.internal.adapters.CategoryAdapter;
+import org.eclipse.xsd.XSDConcreteComponent;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class NodeAssociationManager
 {                   
-  protected INodeAssociationProvider provider;
+  protected INodeAssociationProvider wsdlProvider;
+  protected INodeAssociationProvider xsdProvider;
 
   public NodeAssociationManager()
   {             
-	  provider = new WSDLNodeAssociationProvider();
+	  wsdlProvider = new WSDLNodeAssociationProvider();
+	  xsdProvider = new XSDNodeAssociationProvider();
   }        
 
   protected INodeAssociationProvider getAppicableProvider(Object object)
   {
-    return provider;
+	  if (object instanceof XSDSchemaExtensibilityElement || 
+	            object instanceof XSDConcreteComponent ||
+	            object instanceof CategoryAdapter) {// ||
+//	            object instanceof Category) {
+		  return xsdProvider;
+	  }
+	  
+	  return wsdlProvider;
   }
         
 

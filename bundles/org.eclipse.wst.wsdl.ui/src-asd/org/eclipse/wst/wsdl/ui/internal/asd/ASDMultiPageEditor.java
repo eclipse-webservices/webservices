@@ -18,6 +18,7 @@ import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddBindingAction;
@@ -210,7 +211,12 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
     {
       return getContentOutlinePage();
     }
-
+    
+    if (type == ISelectionProvider.class)
+    {
+       return getSelectionManager();
+    }
+    
     return super.getAdapter(type);
   }
 
