@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.util;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
 import javax.xml.namespace.QName;
+import javax.xml.transform.TransformerFactory;
 
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibleElement;
@@ -28,6 +31,11 @@ import org.eclipse.wst.wsdl.ui.internal.extensions.ITypeSystemProvider;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class WSDLEditorUtil extends WSDLConstants
 {
@@ -219,5 +227,68 @@ public class WSDLEditorUtil extends WSDLConstants
   	}  	
   	
   	return childList;
+  }
+  
+  public static String getTargetNamespaceURIForSchema(String uri)
+  {
+    String result = null;
+    try
+    {             
+      URL url = new URL(uri);
+      InputStream inputStream = url.openStream();
+      result = WSDLEditorUtil.getTargetNamespaceURIForSchema(inputStream); 
+    }
+    catch (Exception e)
+    {      
+    }  
+    return result;
+  }
+
+  public static String getTargetNamespaceURIForSchema(InputStream input)
+  {  
+    TargetNamespaceURIContentHandler handler = new TargetNamespaceURIContentHandler();                                                                  
+    ClassLoader prevClassLoader = Thread.currentThread().getContextClassLoader();
+    Thread.currentThread().setContextClassLoader(WSDLEditorUtil.class.getClassLoader());
+    // Line below is a hack to get XMLReader working
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    try
+    {
+    	XMLReader reader = org.xml.sax.helpers.XMLReaderFactory.createXMLReader();
+    	reader.setContentHandler(handler);
+    	reader.parse(new InputSource(input));
+    }
+    catch (Exception e)
+    {      
+    }
+    finally
+    {
+      Thread.currentThread().setContextClassLoader(prevClassLoader);
+    }
+    return handler.targetNamespaceURI;
+  }  
+
+  protected static class TargetNamespaceURIContentHandler extends DefaultHandler
+  {       
+    public String targetNamespaceURI;
+
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
+    {            
+      if (localName.equals("schema") || localName.equals("definitions"))
+      {               
+        int nAttributes = attributes.getLength();
+        for (int i = 0; i < nAttributes; i++)
+        {
+          if (attributes.getLocalName(i).equals("targetNamespace"))
+          {
+            targetNamespaceURI = attributes.getValue(i);
+            break;
+          }
+        }
+      }                                    
+      // todo there's a ice way to do this I'm sure    
+      // here I intentially cause an exception... 
+      String x = null;
+      x.length();
+    }
   }
 }
