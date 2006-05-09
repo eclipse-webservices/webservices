@@ -9,12 +9,8 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-%>
-<%@ page contentType="text/xml; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
-                                                       org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*" %>
-
-<jsp:useBean id="controller" class="org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller" scope="session"/>
-<%
+%><%@ page contentType="text/xml; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
+                                                       org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*" %><jsp:useBean id="controller" class="org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller" scope="session"/><%
 int soapEnvelopeType = Integer.parseInt(request.getParameter(WSDLActionInputs.SOAP_ENVELOPE_TYPE));
 WSDLPerspective wsdlPerspective = controller.getWSDLPerspective();
 SOAPMessageQueue soapMessageQueue;
@@ -29,5 +25,4 @@ switch (soapEnvelopeType)
     break;
 }
 String messages = soapMessageQueue.getMessagesFromList();
-%>
-<%=messages%>
+%><%=messages%>
