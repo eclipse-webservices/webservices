@@ -16,7 +16,9 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.wst.command.internal.env.core.common.Condition;
 import org.eclipse.wst.command.internal.env.ui.common.TimedOperation;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -25,11 +27,17 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class TimedWSDLSelectionConditionCommand extends AbstractDataModelOperation implements Condition
 {
-  WSDLSelectionConditionCommand selectionCommand;
+  private final String                  TIMEOUT_PREFERENCE = "wsdlTimeOut";
+  private WSDLSelectionConditionCommand selectionCommand;
+  private int                           timeOutValue;
   
   public TimedWSDLSelectionConditionCommand()
   {
     selectionCommand = new WSDLSelectionConditionCommand();
+    
+    IPreferenceStore prefStore = WebServiceConsumptionUIPlugin.getInstance().getPreferenceStore();
+    
+    timeOutValue = prefStore.getDefaultString(TIMEOUT_PREFERENCE).equals("") ? 10000 : prefStore.getInt( TIMEOUT_PREFERENCE );
   }
 
   public void setWebServicesParser(WebServicesParser webServicesParser)
@@ -46,7 +54,7 @@ public class TimedWSDLSelectionConditionCommand extends AbstractDataModelOperati
   {
     String         timeOutMessage = ConsumptionUIMessages.bind( ConsumptionUIMessages.MSG_INFO_WSDL_OPERATION_TIMED_OUT, getWebServiceURI() );
     
-    TimedOperation timedOperation = new TimedOperation( selectionCommand, 10000, timeOutMessage );
+    TimedOperation timedOperation = new TimedOperation( selectionCommand, timeOutValue, timeOutMessage );
     
     return timedOperation.execute(monitor, adaptable);
   }
