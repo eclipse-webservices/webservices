@@ -22,6 +22,7 @@
  * 20060420   120714 kathy@ca.ibm.com - Kathy Chan
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  * 20060426   138647 joan@ca.ibm.com - Joan Haggarty
+ * 20060510   141115 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -380,6 +381,7 @@ public final class ConsumptionUIMessages extends NLS {
     public static String MSG_SERVICE_CANNOT_ASSOCIATE;
     public static String MSG_PROJECT_MUST_EXIST;
     public static String MSG_ERROR_INVALID_MULTIPLE_SERVICE_SELECT;
+    public static String MSG_ERROR_MODULE_DEPENDENCY;
 
 
 	static {

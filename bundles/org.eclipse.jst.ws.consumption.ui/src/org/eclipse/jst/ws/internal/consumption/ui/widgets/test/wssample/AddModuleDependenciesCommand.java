@@ -11,12 +11,15 @@
  * -------- -------- -----------------------------------------------------------
  * 20060324   122799 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060503   138478 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060510   141115 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -27,7 +30,9 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.j2ee.commonarchivecore.internal.helpers.ArchiveManifest;
 import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.project.facet.IJavaProjectMigrationDataModelProperties;
 import org.eclipse.jst.j2ee.project.facet.JavaProjectMigrationDataModelProvider;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
@@ -35,8 +40,11 @@ import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerC
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.StartServerCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
 import org.eclipse.wst.common.componentcore.internal.operation.CreateReferenceComponentsDataModelProvider;
@@ -195,9 +203,26 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 
 		if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject)) {
 			if (J2EEUtils.isJavaComponent(clientIProject)) {				
-				addJavaProjectAsUtilityJar(clientIProject, sampleEARIProject, monitor);				
+				addJavaProjectAsUtilityJar(clientIProject, sampleEARIProject, monitor);
+				addJavaProjectAsUtilityJar(clientIProject, sampleIProject,monitor);
 			}
-			addJavaProjectAsUtilityJar(clientIProject, sampleIProject,monitor);
+
+				try
+				{
+				  String uri = clientIProject.getName() + ".jar";
+				  addJAROrModuleDependency(sampleIProject, uri);
+				} catch (CoreException ce)
+				{
+					String errorMessage = NLS.bind(ConsumptionUIMessages.MSG_ERROR_MODULE_DEPENDENCY, new String[]{sampleIProject.getName(), clientIProject.getName()});
+					IStatus errorStatus = StatusUtils.errorStatus(errorMessage);
+					env.getStatusHandler().reportError(errorStatus);
+				} catch (IOException ioe)
+				{
+					String errorMessage = NLS.bind(ConsumptionUIMessages.MSG_ERROR_MODULE_DEPENDENCY, new String[]{sampleIProject.getName(), clientIProject.getName()});
+					IStatus errorStatus = StatusUtils.errorStatus(errorMessage);
+					env.getStatusHandler().reportError(errorStatus);					
+				}							
+			
 			try {		
 				addBuildPath(sampleIProject, clientIProject);
 			} catch (JavaModelException jme) {
@@ -210,6 +235,16 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 		}      	  
     
     return Status.OK_STATUS;
+  }
+  
+  private void addJAROrModuleDependency(IProject project, String uri) throws IOException, CoreException
+  {
+    if (J2EEUtils.isWebComponent(project))
+    {
+      ArchiveManifest manifest = J2EEProjectUtilities.readManifest(project);
+      manifest.mergeClassPath(new String[]{uri});
+      J2EEProjectUtilities.writeManifest(project, manifest);
+    }
   }
   
   private void addJavaProjectAsUtilityJar(IProject javaProject, IProject earProject,IProgressMonitor monitor)
