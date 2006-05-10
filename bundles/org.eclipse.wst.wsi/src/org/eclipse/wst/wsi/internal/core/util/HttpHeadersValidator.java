@@ -16,7 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Locale;
-import java.util.StringTokenizer;
+import com.ibm.icu.util.StringTokenizer;
 
 import sun.net.www.MessageHeader;
 

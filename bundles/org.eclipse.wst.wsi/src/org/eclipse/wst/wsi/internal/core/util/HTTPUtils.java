@@ -12,7 +12,7 @@ package org.eclipse.wst.wsi.internal.core.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
+import com.ibm.icu.util.StringTokenizer;
 
 import org.eclipse.wst.wsi.internal.core.WSIException;
 

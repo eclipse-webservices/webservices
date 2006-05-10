@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.StringTokenizer;
+import com.ibm.icu.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
 

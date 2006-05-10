@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile.validator.impl.message;
 
-import java.util.StringTokenizer;
+import com.ibm.icu.util.StringTokenizer;
 
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.analyzer.AssertionFailException;

@@ -13,7 +13,7 @@ package org.eclipse.wst.wsdl.binding.soap.internal.impl;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
+import com.ibm.icu.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
 

@@ -11,7 +11,7 @@
 package org.eclipse.wst.wsi.internal.core.profile.validator.impl.envelope;
 
 import java.net.HttpURLConnection;
-import java.util.StringTokenizer;
+import com.ibm.icu.util.StringTokenizer;
 import java.util.Vector;
 
 import org.eclipse.wst.wsi.internal.core.WSIConstants;

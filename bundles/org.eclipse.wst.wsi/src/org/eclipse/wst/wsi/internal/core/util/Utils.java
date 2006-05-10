@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.ResourceBundle;
-import java.util.StringTokenizer;
+import com.ibm.icu.util.StringTokenizer;
 import java.util.Vector;
 
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
