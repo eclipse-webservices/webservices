@@ -75,6 +75,10 @@ public class AxisEmitterPreferencePage extends PreferencePage implements IWorkbe
   private Button useInheritedMethods;
   /*CONTEXT_ID PPAE0007 for the use inherited methods check box on the Axis Emitter Preference page*/
   private String INFOPOP_PPAE_CHECKBOX_USE_INHERITED_METHODS = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0007";
+
+  private Button validateAgainstJAXRPC;
+  /*CONTEXT_ID PPAE0010 for the "validate against JAXRPC..." check box on the Axis Emitter Preference page*/
+  private String INFOPOP_PPAE_CHECKBOX_VALIDATE_AGAINST_JAXRPC = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0010";
   
   /*CONTEXT_ID PPAE0008 for the wsdl2java group on the Axis Emitter Preference page*/
   private String INFOPOP_PPAE_GROUP_WSDL2JAVA = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0008";
@@ -116,6 +120,7 @@ public class AxisEmitterPreferencePage extends PreferencePage implements IWorkbe
     
     Group java2WsdlGroup = utils.createGroup(parent, AxisConsumptionUIMessages.GROUP_JAVA2WSDL_NAME, AxisConsumptionUIMessages.TOOLTIP_PPAE_GROUP_JAVA2WSDL, INFOPOP_PPAE_GROUP_JAVA2WSDL, 2, 10,10);
     useInheritedMethods = createCheckBox(java2WsdlGroup, AxisConsumptionUIMessages.BUTTON_USE_INHERITED_METHODS,AxisConsumptionUIMessages.TOOLTIP_PPAE_CHECKBOX_USE_INHERITED_METHODS,INFOPOP_PPAE_CHECKBOX_USE_INHERITED_METHODS);
+    validateAgainstJAXRPC = createCheckBox(java2WsdlGroup, AxisConsumptionUIMessages.BUTTON_VALIDATE_AGAINST_JAXRPC,AxisConsumptionUIMessages.TOOLTIP_PPAE_CHECKBOX_VALIDATE_AGAINST_JAXRPC,INFOPOP_PPAE_CHECKBOX_VALIDATE_AGAINST_JAXRPC);
 
     initializeValues();
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);    
@@ -208,6 +213,7 @@ public class AxisEmitterPreferencePage extends PreferencePage implements IWorkbe
     if (wsdl2JavaTimeoutProperty != null) timeOutField.setText(""+ getTimeOutValueWithProperty());
     else timeOutField.setText("" + AxisEmitterDefaults.getTimeOutDefault());	
     useInheritedMethods.setSelection(AxisEmitterDefaults.getUseInheritedMethodsDefault());
+    validateAgainstJAXRPC.setSelection(AxisEmitterDefaults.getValidateAgainstJAXRPC());
   }
 
   /**
@@ -222,6 +228,7 @@ public class AxisEmitterPreferencePage extends PreferencePage implements IWorkbe
     wrapArrays.setSelection( context.isWrapArraysEnabled());
     deployScopeTypes.select(context.getDeployScopeType());
     useInheritedMethods.setSelection( context.isUseInheritedMethodsEnabled());
+    validateAgainstJAXRPC.setSelection( context.isValidateAgainstJAXRPCEnabled() );
     if (wsdl2JavaTimeoutProperty != null) 
     {	timeOut=getTimeOutValueWithProperty();
     	timeOutField.setEnabled(false);
@@ -248,6 +255,7 @@ public class AxisEmitterPreferencePage extends PreferencePage implements IWorkbe
     timeOut = Integer.parseInt(timeOutField.getText().trim());
     context.setTimeOut(timeOut);
     context.setUseInheritedMethodsEnabled( useInheritedMethods.getSelection() );
+    context.setValidateAgainstJAXRPCEnabled( validateAgainstJAXRPC.getSelection() );
   }
   
   private void numberFieldChanged(Text textControl) {

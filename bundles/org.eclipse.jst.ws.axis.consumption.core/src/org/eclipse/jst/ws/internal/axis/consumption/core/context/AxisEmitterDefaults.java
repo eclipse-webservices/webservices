@@ -19,6 +19,7 @@ public class AxisEmitterDefaults
  private static final boolean PREFERENCE_HELPER_WANTED_DEFAULT = false;
  private static final boolean PREFERENCE_WRAP_ARRAYS_DEFAULT = false;
  private static final boolean PREFERENCE_USE_INHERITED_METHODS_DEFAULT = false;
+ private static final boolean PREFERENCE_VALIDATE_AGAINST_JAXRPC = true;
  private static final int DEPLOY_SCOPE_DEFAULT = AxisEmitterContext.DEPLOY_SCOPE_TYPE_REQUEST;
  private static final int TIME_OUT_DEFAULT = 45;
  
@@ -56,6 +57,18 @@ public class AxisEmitterDefaults
  public static boolean getUseInheritedMethodsDefault()
  {
 	return PREFERENCE_USE_INHERITED_METHODS_DEFAULT;
+ }
+ 
+ /**
+  * 
+  * @return returns the default setting for JAX-RPC validation of the service class.
+  * Note: This is not a true Axis emitter preference. This preference controls whether
+  * the Axis Web service bottom-up scenario analyzes the service class for compliance
+  * to JAX-RPC some time before calling the emitters. 
+  */
+ public static boolean getValidateAgainstJAXRPC()
+ {
+	return PREFERENCE_VALIDATE_AGAINST_JAXRPC;
  }
  
  /**

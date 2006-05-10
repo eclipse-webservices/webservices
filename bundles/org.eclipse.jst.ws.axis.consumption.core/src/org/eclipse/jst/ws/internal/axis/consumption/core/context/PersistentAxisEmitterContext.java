@@ -41,6 +41,7 @@ public class PersistentAxisEmitterContext extends PersistentContext implements	A
 		setDefault(PREFERENCE_HELPER_WANTED, AxisEmitterDefaults.getHelperWantedDefault());
 		setDefault(PREFERENCE_WRAP_ARRAYS, AxisEmitterDefaults.getWrapArraysDefault());
 		setDefault(PREFERENCE_USE_INHERITED_METHODS, AxisEmitterDefaults.getUseInheritedMethodsDefault());
+		setDefault(PREFERENCE_VALIDATE_AGAINST_JAXRPC, AxisEmitterDefaults.getValidateAgainstJAXRPC());
 		setDefault(PREFERENCE_DEPLOY_SCOPE, AxisEmitterDefaults.getDeployScopeDefault());
 		setDefault(PREFERENCE_TIME_OUT, AxisEmitterDefaults.getTimeOutDefault());
 	}
@@ -83,6 +84,16 @@ public class PersistentAxisEmitterContext extends PersistentContext implements	A
 	public boolean isUseInheritedMethodsEnabled() 
 	{
 		return getValueAsBoolean(PREFERENCE_USE_INHERITED_METHODS);
+	}
+
+	public void setValidateAgainstJAXRPCEnabled(boolean enable)
+	{
+		setValue(PREFERENCE_VALIDATE_AGAINST_JAXRPC, enable);
+	}
+	
+	public boolean isValidateAgainstJAXRPCEnabled()
+	{
+		return getValueAsBoolean(PREFERENCE_VALIDATE_AGAINST_JAXRPC);
 	}
 
 	public void selectDeployScopeType(int selection) {

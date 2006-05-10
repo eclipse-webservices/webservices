@@ -60,6 +60,12 @@ public interface AxisEmitterContext {
 	 * preference from the plugins local preferences store.
 	 */
 	public static final String PREFERENCE_USE_INHERITED_METHODS = "useInheritedMethods";
+	
+	/**
+	 * This constant string is used to lookup the "validate against JAXRPC"
+	 * preference from the plugins local preferences store.
+	 */
+	public static final String PREFERENCE_VALIDATE_AGAINST_JAXRPC = "validateAgainstJAXRPC";
 
 	/**
 	 * 
@@ -120,6 +126,21 @@ public interface AxisEmitterContext {
 	 */
 
 	public boolean isUseInheritedMethodsEnabled();
+
+	/**
+	 * 
+	 * @param enable
+	 *            set whether JAX-RPC analysis of the service class is enabled.
+	 */
+	public void setValidateAgainstJAXRPCEnabled(boolean enable);
+
+	/**
+	 * 
+	 * @param returns
+	 *            whether JAX-RPC analysis of the service class is enabled.
+	 */
+
+	public boolean isValidateAgainstJAXRPCEnabled();
 
 	/**
 	 * 

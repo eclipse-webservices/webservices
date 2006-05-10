@@ -56,6 +56,7 @@ public final class AxisConsumptionUIMessages extends NLS {
 	public static String TOOLTIP_PPAE_CHECKBOX_HELPER_WANTED;
 	public static String TOOLTIP_PPAE_CHECKBOX_WRAP_ARRAYS;
 	public static String TOOLTIP_PPAE_CHECKBOX_USE_INHERITED_METHODS;
+	public static String TOOLTIP_PPAE_CHECKBOX_VALIDATE_AGAINST_JAXRPC;
 	public static String TOOLTIP_PPAE_COMBO_DEPLOY_SCOPE;
 	public static String TOOLTIP_PPAE_FIELD_TIME_OUT;
 	public static String TOOLTIP_PPAE_GROUP_WSDL2JAVA;
@@ -64,6 +65,7 @@ public final class AxisConsumptionUIMessages extends NLS {
 	public static String BUTTON_HELPER_WANTED;
 	public static String BUTTON_WRAP_ARRAYS;
 	public static String BUTTON_USE_INHERITED_METHODS;
+	public static String BUTTON_VALIDATE_AGAINST_JAXRPC;
 	public static String LABEL_DEPLOY_SCOPE;
 	public static String LABEL_TIME_OUT;
 	public static String GROUP_WSDL2JAVA_NAME;
