@@ -26,11 +26,15 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.editpolicies.DirectEditPolicy;
+import org.eclipse.gef.requests.DirectEditRequest;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.TypeReferenceDirectEditManager;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
@@ -40,6 +44,7 @@ import org.eclipse.draw2d.MouseMotionListener.Stub;
 
 public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHandler, INamedEditPart
 {   
+	protected SimpleDirectEditPolicy simpleDirectEditPolicy = new SimpleDirectEditPolicy();
 	  protected Label parameterType;
 	  protected RowLayout rowLayout = new RowLayout();
 
@@ -102,9 +107,15 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 	  protected void createEditPolicies()
 	  {
 		  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ASDSelectionEditPolicy());
+		  installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, simpleDirectEditPolicy);
 	  }
 	  
 	  public void performDirectEdit(Point cursorLocation) {
+		  IParameter param = (IParameter) getModel();
+		  
+		  TypeReferenceDirectEditManager manager = new TypeReferenceDirectEditManager(param, this, parameterType);   
+		  simpleDirectEditPolicy.setDelegate(manager);
+		  manager.show();
 	  }
 	  
 	  public void activate() {
@@ -278,5 +289,48 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 			  
 			  return openExternalEditorHelper;
 		  }
+	  }
+	  
+	  private class SimpleDirectEditPolicy extends DirectEditPolicy 
+	  {
+	    protected TypeReferenceDirectEditManager delegate;
+
+	    public void setDelegate(TypeReferenceDirectEditManager delegate)
+	    {                                           
+	      this.delegate = delegate;
+	    }
+
+	    protected org.eclipse.gef.commands.Command getDirectEditCommand(final DirectEditRequest request) 
+	    { 
+	    	return new Command() //AbstractCommand()
+	      {
+	        public void execute()
+	        {                       
+	          if (delegate != null)
+	          {
+	            delegate.performEdit(request.getCellEditor());
+	          }  
+	        }     
+	    
+	        public void redo()
+	        {
+	        }  
+	    
+	        public void undo()
+	        {
+	        }     
+	    
+	        public boolean canExecute()
+	        {
+	          return true;
+	        }
+	      };
+	    }
+	    
+	    protected void showCurrentEditValue(DirectEditRequest request) 
+	    {      
+	    	//hack to prevent async layout from placing the cell editor twice.
+	    	getHostFigure().getUpdateManager().performUpdate();
+	    }
 	  }
 	}

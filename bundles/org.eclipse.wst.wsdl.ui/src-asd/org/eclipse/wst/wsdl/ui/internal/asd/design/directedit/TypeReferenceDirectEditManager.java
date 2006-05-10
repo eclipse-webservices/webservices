@@ -18,12 +18,11 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
+import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
-import org.eclipse.wst.xsd.ui.internal.editor.XSDTypeReferenceEditManager;
 
 public class TypeReferenceDirectEditManager extends ComboBoxCellEditorManager
 {
@@ -109,8 +108,23 @@ public class TypeReferenceDirectEditManager extends ComboBoxCellEditorManager
   }
 
 	public ComponentReferenceEditManager getComponentReferenceEditManager() {
-		ASDMultiPageEditor editor = (ASDMultiPageEditor) ASDEditorPlugin.getActiveEditor();
-		return (ComponentReferenceEditManager) editor.getAdapter(XSDTypeReferenceEditManager.class);
+		ComponentReferenceEditManager editManager = null;
+		boolean isType = true;
+		
+		// TODO: We're specifically looking for and using WSDL11 Impl classes.... We should
+		// investigate further to see if we can avoid knowing about WSDL11 Impl classes.
+		if (setObject instanceof W11ParameterForPart) {
+			isType = ((W11ParameterForPart) setObject).isType();
+		}
+		
+		if (isType) { 
+			editManager = (ComponentReferenceEditManager) ReferenceEditManagerHelper.getXSDTypeReferenceEditManager(setObject);
+		}
+		else {
+			editManager = (ComponentReferenceEditManager) ReferenceEditManagerHelper.getXSDElementReferenceEditManager(setObject);
+		}
+
+		return editManager; 
 	}
 	
 	// TODO: rmah: This code should live in a common place..... This code is also used in other UI scenarios when

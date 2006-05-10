@@ -230,4 +230,14 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 	public Command getSetElementCommand(String actionId) {
 		return new W11SetElementCommand((Part) this.getTarget(), actionId);
 	}
+	
+	// TODO: We should move the isType() method to the IParameter Interface........
+	public boolean isType() {
+		Part part = (Part) target;
+		if (part.getTypeDefinition() != null) {
+			return true;
+		}
+		
+		return false;
+	}
 }
