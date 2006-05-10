@@ -14,6 +14,10 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Binding;
+import org.eclipse.wst.wsdl.BindingFault;
+import org.eclipse.wst.wsdl.BindingInput;
+import org.eclipse.wst.wsdl.BindingOperation;
+import org.eclipse.wst.wsdl.BindingOutput;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
@@ -23,6 +27,8 @@ import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Binding;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11BindingMessageReference;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11BindingOperation;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11EndPoint;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Interface;
@@ -78,6 +84,26 @@ public class W11RenameCommand extends Command {
 		else if (object instanceof W11ParameterForPart) {
 			Part part = (Part) ((W11ParameterForPart) object).getTarget();
 			part.setName(newName);
+		}
+		else if (object instanceof W11BindingOperation) {
+			BindingOperation bindingOperation = (BindingOperation) ((W11BindingOperation) object).getTarget();
+			bindingOperation.setName(newName);
+			bindingOperation.getEOperation().setName(newName);
+		}
+		else if (object instanceof W11BindingMessageReference) {
+			Object bindingMessageRef = ((W11BindingMessageReference) object).getTarget();
+			if (bindingMessageRef instanceof BindingInput) {
+				((BindingInput) bindingMessageRef).setName(newName);
+				((BindingInput) bindingMessageRef).getEInput().setName(newName);
+			}
+			else if (bindingMessageRef instanceof BindingOutput) {
+				((BindingOutput) bindingMessageRef).setName(newName);
+				((BindingOutput) bindingMessageRef).getEOutput().setName(newName);
+			}
+			else if (bindingMessageRef instanceof BindingFault) {
+				((BindingFault) bindingMessageRef).setName(newName);
+				((BindingFault) bindingMessageRef).getEFault().setName(newName);
+			}
 		}
 	}
 }

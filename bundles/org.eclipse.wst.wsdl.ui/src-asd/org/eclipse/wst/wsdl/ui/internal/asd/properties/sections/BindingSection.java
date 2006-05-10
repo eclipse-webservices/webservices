@@ -13,12 +13,23 @@ package org.eclipse.wst.wsdl.ui.internal.asd.properties.sections;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
-import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
@@ -27,12 +38,76 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 
-public class BindingSection extends ReferenceSection {
+public class BindingSection extends ReferenceSection implements SelectionListener {
 	protected ComponentReferenceEditManager refManager;
+	private CLabel protocolValue;
+	private CLabel optionsValue;
+	private Button regenBindingButton;
 	
 	public void createControls(Composite parent, TabbedPropertySheetWidgetFactory factory) {
 		super.createControls(parent, factory);
-		comboLabel.setText(Messages.getString("_UI_LABEL_PORTTYPE") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		comboLabel.setText(org.eclipse.wst.wsdl.ui.internal.asd.Messages.getString("_UI_LABEL_PORTTYPE") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		
+		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_BINDING_PROTOCOL"));
+		protocolValue= getWidgetFactory().createCLabel(composite, "");
+		
+		// Layout protocolLabel
+		FormData data = new FormData();
+		data.left = new FormAttachment(0, 0);
+		data.right = new FormAttachment(protocolValue, -ITabbedPropertyConstants.HSPACE);
+		data.top = new FormAttachment(protocolValue, 0, SWT.CENTER);
+		protocolLabel.setLayoutData(data);
+		
+		// Layout protocolValue
+		data = new FormData();
+		data.left = new FormAttachment(0, 100);
+		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
+		data.top = new FormAttachment(combo, 0);
+//		data.top = new FormAttachment(combo, +ITabbedPropertyConstants.VSPACE);
+		protocolValue.setLayoutData(data);
+		
+
+		CLabel optionsLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_TITLE_OPTIONS") + ":");
+		optionsValue = getWidgetFactory().createCLabel(composite, "");
+		
+		// Layout optionsLabel
+		data = new FormData();
+		data.left = new FormAttachment(0, 0);
+		data.right = new FormAttachment(optionsValue, -ITabbedPropertyConstants.HSPACE);
+		data.top = new FormAttachment(optionsValue, 0, SWT.CENTER);
+		optionsLabel.setLayoutData(data);
+		
+		// Layout optionsValue
+		data = new FormData();
+		data.left = new FormAttachment(0, 100);
+		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
+		data.top = new FormAttachment(protocolValue, -ITabbedPropertyConstants.VSPACE);
+//		data.top = new FormAttachment(protocolValue, +ITabbedPropertyConstants.VSPACE);
+		optionsValue.setLayoutData(data);
+		
+		String buttonLabel = org.eclipse.wst.wsdl.ui.internal.asd.Messages.getString("_UI_GENERATE_BINDING_CONTENT");
+		regenBindingButton = getWidgetFactory().createButton(composite, buttonLabel, SWT.PUSH);
+
+		// Layout button
+		data = new FormData();
+		data.left = new FormAttachment(0, 0);
+//		data.right = new FormAttachment(optionsValue, -ITabbedPropertyConstants.HSPACE);
+		data.top = new FormAttachment(optionsLabel, 0);
+		regenBindingButton.setLayoutData(data);
+		
+		regenBindingButton.addSelectionListener(this);
+	}
+	
+	public void refresh() {
+		super.refresh();
+		IBinding binding = getIBinding();
+		String protocol = binding.getProtocol();
+		if (protocol == null || protocol.equals("")) {
+			protocol = "----";
+		}
+		protocolValue.setText(protocol);
+
+		optionsValue.setText("");
 	}
 	
 	protected ComponentReferenceEditManager getComponentReferenceEditManager() {
@@ -109,4 +184,15 @@ public class BindingSection extends ReferenceSection {
 	private IBinding getIBinding() {
 		return (IBinding) getModel();
 	}
+	
+	public void widgetSelected(SelectionEvent e) {
+		if (e.widget == regenBindingButton) {
+			Command command = getIBinding().getGenerateBindingCommand();
+		    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
+		    stack.execute(command);
+		}
+	}
+	
+	public void doWidgetSelected(SelectionEvent e) {
+	}	
 }

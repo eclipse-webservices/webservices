@@ -393,7 +393,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
           {
             if (oldValue != null)
             {
-              orphanContent(eReference, (WSDLElement) oldValue);
+              orphanContent(eReference, /*(WSDLElement)*/ oldValue);
             }
             break;
           }
