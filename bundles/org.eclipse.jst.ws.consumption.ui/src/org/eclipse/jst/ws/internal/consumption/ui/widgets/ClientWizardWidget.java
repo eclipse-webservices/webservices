@@ -15,6 +15,7 @@
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  * 20060424   138052 kathy@ca.ibm.com - Kathy Chan
  * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060509   119296 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -22,6 +23,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
@@ -277,13 +279,13 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   
    public WebServicesParser getWebServicesParser()
 	{
-		return parser_;
+		return WSDLParserFactory.getWSDLParser();
 	}
 	
 	public void setWebServicesParser(WebServicesParser parser)
 	{
-		parser_ = parser;	
-		clientWidget_.setWebServicesParser(parser);
+		parser_ = getWebServicesParser();
+		clientWidget_.setWebServicesParser(parser_);
 	}
    
   public TypeRuntimeServer getClientTypeRuntimeServer()
@@ -466,7 +468,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 		  
 		   wsdlDialog_.setComponentName(getComponentName());
 		   wsdlDialog_.setProject(getProject());
-		   wsdlDialog_.setWebServiceURI(getWebServiceURI());		   
+		   wsdlDialog_.setWebServiceURI(getWebServiceURI());		
 		   
 		   int result = wsdlDialog_.open();
 		   

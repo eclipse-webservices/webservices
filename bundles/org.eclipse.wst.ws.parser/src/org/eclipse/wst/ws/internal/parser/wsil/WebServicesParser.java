@@ -1,13 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
- ******************************************************************************/
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060504   119296 pmoogk@ca.ibm.com - Peter Moogk
+ *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.parser.wsil;
 
@@ -181,13 +184,24 @@ public class WebServicesParser
   private void parseURL(int parseOption) throws MalformedURLException, IOException, ParserConfigurationException, SAXException, WWWAuthenticationException
   {
     WebServiceEntity wsEntity = new WebServiceEntity();
-    wsEntity.setURI(uri_);
-    byte[] b = getInputStreamAsByteArray(uri_);
+    
+    // This variable makes this object a little more thread safe than it was
+    // before, although this object is not completely thread safe.  The scenario
+    // that we are trying to avoid is where one call to this method gets blocked
+    // at the getInputStreamAsByteArray call.  Then a second call to the method
+    // is made that changes the uri_ global variable.  When the first call
+    // completes it would use uri_ value from the second invocation instead
+    // of the value from the first.  Storing the uri_ into this variable helps 
+    // avoid this bad scenario.
+    String theUri = uri_;
+    
+    wsEntity.setURI(theUri);
+    byte[] b = getInputStreamAsByteArray(theUri);
     wsEntity.setBytes(b);
     setHTTPSettings(wsEntity);
-    uriToEntityTable_.put(uri_, wsEntity);
+    uriToEntityTable_.put(theUri, wsEntity);
     // parse uri_ as a HTML document
-    HTMLHeadHandler headHandler = new HTMLHeadHandler(uri_);
+    HTMLHeadHandler headHandler = new HTMLHeadHandler(theUri);
     byte[] head = headHandler.harvestHeadTags(b);
     SAXParserFactory factory = SAXParserFactory.newInstance();
     factory.setNamespaceAware(false);
@@ -208,7 +222,7 @@ public class WebServicesParser
       wsEntity.setType(WebServiceEntity.TYPE_HTML);
       for (int i = 0; i < wsilURIs.length; i++)
       {
-        String absoluteURI = convertToAbsoluteURI(uri_, wsilURIs[i]);
+        String absoluteURI = convertToAbsoluteURI(theUri, wsilURIs[i]);
         WebServiceEntity wsilEntity = new WebServiceEntity();
         wsilEntity.setType(WebServiceEntity.TYPE_WSIL);
         wsilEntity.setURI(absoluteURI);
@@ -250,7 +264,7 @@ public class WebServicesParser
     {
       try
       {
-        parseWSIL(uri_, parseOption);
+        parseWSIL(theUri, parseOption);
         // no exception thrown if uri_ is a WSIL document
         wsEntity.setType(WebServiceEntity.TYPE_WSIL);
       }
@@ -260,7 +274,7 @@ public class WebServicesParser
         // then parse uri_ as a DISCO document.
         try
         {
-          parseDISCO(uri_, parseOption);
+          parseDISCO(theUri, parseOption);
           // no exception thrown if uri_ is a DISCO document
           wsEntity.setType(WebServiceEntity.TYPE_DISCO);
         }
@@ -270,7 +284,7 @@ public class WebServicesParser
           // then parse uri_ as a WSDL document
           try
           {
-            parseWSDL(uri_);
+            parseWSDL(theUri);
             // no exception thrown if uri_ is a WSDL document
             wsEntity.setType(WebServiceEntity.TYPE_WSDL);
           }

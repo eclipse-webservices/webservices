@@ -12,12 +12,12 @@
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
  * 20060410   136011 kathy@ca.ibm.com - Kathy Chan
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
+ * 20060504   119296 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import java.io.File;
 import java.net.MalformedURLException;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -38,7 +38,7 @@ import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionConditionCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.TimedWSDLSelectionConditionCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionTreeWidget;
 import org.eclipse.jst.ws.internal.ui.common.DialogResourceBrowser;
 import org.eclipse.jst.ws.internal.ui.common.FileExtensionFilter;
@@ -230,7 +230,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     }
     if (wsURI != null && wsURI.indexOf(':') >= 0 && webServicesParser.getWebServiceEntityByURI(wsURI) == null)
     {
-      WSDLSelectionConditionCommand cmd = new WSDLSelectionConditionCommand();
+      TimedWSDLSelectionConditionCommand cmd = new TimedWSDLSelectionConditionCommand();
       cmd.setWebServicesParser(webServicesParser);
       cmd.setWebServiceURI(wsURI);
       cmd.execute(null, null);
@@ -601,7 +601,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 	    }
 	    if (wsURI != null && wsURI.indexOf(':') >= 0 && webServicesParser.getWebServiceEntityByURI(wsURI) == null)
 	    {
-	      WSDLSelectionConditionCommand cmd = new WSDLSelectionConditionCommand();
+	      TimedWSDLSelectionConditionCommand cmd = new TimedWSDLSelectionConditionCommand();
 	      cmd.setWebServicesParser(webServicesParser);
 	      cmd.setWebServiceURI(wsURI);
 	      cmd.execute(null, null);

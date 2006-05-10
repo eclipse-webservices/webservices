@@ -23,6 +23,7 @@
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  * 20060426   138647 joan@ca.ibm.com - Joan Haggarty
  * 20060510   141115 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060509   119296 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -382,6 +383,7 @@ public final class ConsumptionUIMessages extends NLS {
     public static String MSG_PROJECT_MUST_EXIST;
     public static String MSG_ERROR_INVALID_MULTIPLE_SERVICE_SELECT;
     public static String MSG_ERROR_MODULE_DEPENDENCY;
+    public static String MSG_INFO_WSDL_OPERATION_TIMED_OUT;
 
 
 	static {

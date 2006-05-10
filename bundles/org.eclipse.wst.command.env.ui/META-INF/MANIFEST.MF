@@ -7,6 +7,7 @@ Bundle-Activator: org.eclipse.wst.command.internal.env.ui.plugin.EnvUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
 Export-Package: org.eclipse.wst.command.internal.env.ui;x-internal:=true,
+ org.eclipse.wst.command.internal.env.ui.common;x-internal:=true,
  org.eclipse.wst.command.internal.env.ui.dialog;x-internal:=true,
  org.eclipse.wst.command.internal.env.ui.eclipse;x-internal:=true,
  org.eclipse.wst.command.internal.env.ui.plugin;x-internal:=true,
