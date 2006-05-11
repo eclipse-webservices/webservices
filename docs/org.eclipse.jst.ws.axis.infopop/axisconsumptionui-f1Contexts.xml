@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.contexts"?>
 <!-- /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,57 @@
 <context id="PWJM0001">
 <!--WSDL to Java Mappings Page-->
 <description>Use this panel to add customized package to namespace mappings.</description>
+</context>
+
+<!--WebServiceAxisPreferencePage.java-->
+
+<context id="PPAE0001">
+<!--Axis Emitter Preference Page-->
+<description>Use this panel to add customized package to namespace mappings.</description>
+</context>
+
+<context id="PPAE0002">
+<!--Generate code for all elements-->
+<description>By default, WSDL2Java only generates code for those elements in the WSDL file
+that are referenced.</description>
+</context>
+
+<context id="PPAE0003">
+<!--Emits separate Helper classes for metadata-->
+<description>If you select this option WSDL2Java will create a separate helper class that
+contains the metadata rather than including it in the skeleton.</description>
+</context>
+
+<context id="PPAE0004">
+<!--Prefers building beans to straight arrays for wrapped XML array types-->
+<description>If you would rather a specific JavaBean class (ArrayOfString) be generated
+for these types of schemas, select this option.</description>
+</context>
+
+<context id="PPAE0005">
+<!--Add scope to deploy.wsdd-->
+<description>This indicates how to deploy the server implementation. Application uses one
+instance of the implementation class for all requests. Request creates a new
+instance of the implementation class for each request. Session creates a new
+instance of the implementation class for each session.</description>
+</context>
+
+<context id="PPAE0006">
+<!--Timeout-->
+<description>The default is 45. Use -1 to disable the timeout.</description>
+</context>
+
+<context id="PPAE0007">
+<!--Look for allowed methods in inherited class-->
+<description>If this option is specified, the Java2WSDL parser will look into extended
+classes to determine the list of methods to export into the WSDL file.</description>
+</context>
+
+<context id="PPAE0010">
+<!--validate against JAXRPC-->
+<description>If selected, the tools will examine the Java service class and its
+value types to determine if it satisfies important requirements of the JAX-RPC
+specification.</description>
 </context>
 
 </contexts>
