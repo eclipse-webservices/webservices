@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="tbusproj" xml:lang="en-us">
 <title>Managing referenced services</title>
 <shortdesc>A service projection enables a business entity to reference a service
@@ -8,10 +9,14 @@ that was published by another business entity. By using the businessService
 structure as a projection to an already published businessService, businesses
 can share or reuse services.&nbsp; Service projections are managed centrally
 as part of the referencing businessEntity.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web services<indexterm>managing services</indexterm></indexterm>
+<indexterm>UDDI<indexterm>managing services</indexterm></indexterm></keywords>
+</metadata></prolog>
 <taskbody>
 <prereq>Prerequisites:<ol>
 <li><xref href="treg.dita">Register with a registry</xref></li>
-<li><xref href="tstrtexp.dita">Launch the <?Pub Caret?>Web Services Explorer</xref></li>
+<li><xref href="tstrtexp.dita">Launch the Web Services Explorer</xref></li>
 <li><xref href="taddreg.dita">Add the registry to the Web Services Explorer</xref></li>
 </ol></prereq>
 <context><p>For more information on referenced services, refer to the  <xref
@@ -47,4 +52,3 @@ maintain services that are referenced by the business entity.</cmd></step>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000002499?>

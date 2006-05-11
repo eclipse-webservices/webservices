@@ -11,6 +11,7 @@
 <topic label="Publishing Web services and business entities" href="tasks/tuddiexp.html">
 <topic label="Launching the Web Services Explorer" href="tasks/tstrtexp.html"/>
 <topic label="Registering with a UDDI registry" href="tasks/treg.html"/>
+<topic label="Logging in to a UDDI registry" href="tasks/tlogexp.html"/>
 <topic label="Adding a Registry to the Web Services Explorer" href="tasks/taddreg.html"/>
 <topic label="Publishing a business entity" href="tasks/tpubent.html"/>
 <topic label="Publishing a Web service" href="tasks/tpublish.html">

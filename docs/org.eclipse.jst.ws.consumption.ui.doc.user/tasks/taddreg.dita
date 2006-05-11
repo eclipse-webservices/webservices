@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
-<task id="taddreg" xml:lang="en-us"><?Pub Caret?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
+<task id="taddreg" xml:lang="en-us">
 <title>Adding a Registry to the Web Services Explorer</title>
 <titlealts>
 <searchtitle>Adding a Registry to the Web Services Explorer</searchtitle>
 </titlealts>
 <shortdesc>Although the Web Services Explorer comes populated with several
 registries, you can also add additional registries to your list of favorites.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web services<indexterm>adding a registry to the Web Services
+Explorer</indexterm></indexterm><indexterm>Web Services Explorer<indexterm>adding
+a registry</indexterm></indexterm><indexterm>registries<indexterm>adding to
+the Web Services Explorer</indexterm></indexterm></keywords>
+</metadata></prolog>
 <taskbody>
 <prereq><p>Prerequisites:<ol>
 <li><xref href="treg.dita">Register with a registry</xref></li>
@@ -69,4 +76,3 @@ of the registry you want to add.</cmd></substep>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000003609?>

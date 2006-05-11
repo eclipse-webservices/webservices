@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="twsdlval" xml:lang="en-us">
 <title>Validating WSDL files</title>
 <titlealts>
@@ -10,9 +11,13 @@
 the WSDL that is generated should be valid. However, if you have imported
 a WSDL file, or if you are creating a WSDL file, you should validate the WSDL
 to ensure it is valid.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>WSDL<indexterm>validating</indexterm></indexterm><indexterm>Web
+services<indexterm>validating WSDL</indexterm></indexterm></keywords>
+</metadata></prolog>
 <taskbody>
-<context><?Pub Caret?><p>If you have selected Require or Suggest WS-I Compliance
-on the WS-I Compliance preference page, the validation also checks WS-I compliance.
+<context><p>If you have selected Require or Suggest WS-I Compliance on the
+WS-I Compliance preference page, the validation also checks WS-I compliance.
 If you have selected Ignore WS-I Compliance the validator will only check
 the validity of the WSDL. For more information on setting WS-I compliance
 levels, refer to:  <xref href="../../org.eclipse.jst.ws.doc.user/tasks/twsicomply.dita"
@@ -47,4 +52,3 @@ box beside WSDL Validator is selected.</p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000002471?>

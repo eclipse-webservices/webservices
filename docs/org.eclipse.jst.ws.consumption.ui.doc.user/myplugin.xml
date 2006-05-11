@@ -17,4 +17,7 @@
 		<toc file="wsconsumptionbuild_toc.xml"/>
 		<toc file="wsconsumptiont_toc.xml" />
 	</extension>
+    <extension point="org.eclipse.help.index">
+      <index file="org.eclipse.jst.ws.consumption.ui.doc.userindex.xml"/>
+</extension>
 </plugin>

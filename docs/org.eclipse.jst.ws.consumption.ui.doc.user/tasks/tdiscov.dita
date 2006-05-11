@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="tdiscov" xml:lang="en-us">
 <title>Discovering Web Services</title>
 <titlealts>
 <searchtitle>Discovering and importing Web services</searchtitle>
 </titlealts>
-<shortdesc>Web services can be located through a public business registry
-such as the <tm tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="IBM">IBM</tm> UDDI
-Business Registry, a private business registry, or a WSIL document. UDDI manages
-the discovery of Web services by relying on a distributed registry of businesses
-and their service descriptions implemented in a common XML format.</shortdesc>
+<shortdesc>Web services can be located through a public business registry,
+a private business registry, or a WSIL document. UDDI manages the discovery
+of Web services by relying on a distributed registry of businesses and their
+service descriptions implemented in a common XML format.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web services<indexterm>discovering</indexterm></indexterm>
+<indexterm>UDDI<indexterm>discovering Web services</indexterm></indexterm>
+<indexterm>WSIL<indexterm>discovering Web services</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <prereq><p>Prerequisites:<ol>
 <li><xref href="treg.dita">Register with a registry</xref></li>

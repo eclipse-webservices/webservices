@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="tassert" xml:lang="en-us">
 <title>Managing publisher assertions</title>
 <shortdesc>A publisher assertion is a way in UDDI to associate businessEntity
@@ -10,10 +11,14 @@ A publisher assertion allows for associations to be formed between several
 businessEntity structures. For example, a large company may have several subsidiaries
 that have different descriptions but are still closely coupled and want to
 make their relationships visible in UDDI registries.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>UDDI<indexterm>managing publisher assertions</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <prereq>Prerequisites:<ol>
 <li><xref href="treg.dita">Register with a registry</xref></li>
-<li><xref href="tstrtexp.dita">Launch the<?Pub Caret?> Web Services Explorer</xref></li>
+<li><xref href="tstrtexp.dita">Launch the Web Services Explorer</xref></li>
 <li><xref href="taddreg.dita">Add the registry to the Web Services Explorer</xref></li>
 </ol></prereq>
 <context><p>For more information on publisher assertions, refer to the  <xref
@@ -54,4 +59,3 @@ business entity.</p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000003014?>

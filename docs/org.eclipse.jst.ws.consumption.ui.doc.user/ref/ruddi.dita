@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE reference  PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN"
+ "reference.dtd">
 <reference id="ruddi" xml:lang="en-us">
 <title>Data structure types (UDDI registry)</title>
 <shortdesc>Once you have registered and logged in to the UDDI registry that
-you want to use, you can register your Web service.&nbsp; Registration of
-a service involves four core data structure types: business information, service
-information, binding information, and information describing the specifications
-for services. The relationship between these data types is described in Figure
-1.</shortdesc>
+you want to use, you can register your Web service. Registration of a service
+involves four core data structure types: business information, service information,
+binding information, and information describing the specifications for services.
+The relationship between these data types is described in Figure 1.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>UDDI<indexterm>data structure types</indexterm></indexterm>
+<indexterm>data structure types<indexterm>UDDI registry</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <refbody>
 <section><lq> <p> <uicontrol>Business information.</uicontrol> Information
 that is contained in a  <systemoutput>businessEntity</systemoutput> structure.
@@ -65,9 +70,8 @@ structures.</p></section>
 <link href="../../org.eclipse.jst.ws.doc.user/concepts/cws.dita" scope="peer">
 <linktext>Web services development</linktext></link>
 </linklist>
-<linklist><title>Related Tasks</title><?Pub Caret?>
+<linklist><title>Related Tasks</title>
 <link href="../tasks/tuddiexp.dita"></link>
 </linklist>
 </related-links>
 </reference>
-<?Pub *0000005079?>

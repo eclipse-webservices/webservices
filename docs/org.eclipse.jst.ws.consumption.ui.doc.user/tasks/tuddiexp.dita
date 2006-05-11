@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
-<task id="tuddiexp" xml:lang="en-us"><?Pub Caret?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
+<task id="tuddiexp" xml:lang="en-us">
 <title>Publishing Web services and business entities</title>
 <titlealts>
 <searchtitle>Publishing Web services and business entities with the Web Services
@@ -9,6 +10,12 @@ Explorer</searchtitle>
 </titlealts>
 <shortdesc>Through UDDI and WSIL, other applications can discover WSDL documents
 and bind with them to execute transactions or perform other business processes. </shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web Services<indexterm>publishing<indexterm>overview</indexterm></indexterm></indexterm>
+<indexterm>business entities<indexterm>publishing</indexterm></indexterm>
+<indexterm>Web Services Explorer<indexterm>publishing Web services</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <context><p>UDDI enables the discovery of Web services by providing a distributed
 registry of businesses and their service descriptions, implemented in a common
@@ -33,6 +40,7 @@ tasks:</p><ul>
 <li> <xref href="taddreg.dita">Add a registry to the Web Services Explorer</xref> </li>
 <li> <xref href="tbkmrk.dita">Adding a registry, business entity, business
 service, service interface, WSIL, or WSDL service to Favorites</xref> </li>
+<li><xref href="tlogexp.dita"></xref></li>
 <li> <xref href="tdiscov.dita">Discover a Web service</xref> </li>
 <li> <xref href="tpubent.dita">Publish a business entity to a registry</xref> </li>
 <li> <xref href="tpublish.dita">Publish a business service to a registry</xref> </li>
@@ -76,8 +84,7 @@ Files\Internet Explorer\iexplore.exe).</li>
 are launched by the user or by the tools themselves (such as the Universal
 Test Client).  The Web Services Explorer will now launch in an external browser
 and its URL should be in the Address field. This can then be pasted or opened
-using am accessibility assisting browser such as <tm tmclass="ibm" tmowner="IBM Corporation"
-tmtype="reg" trademark="IBM">IBM</tm> Home Page Reader.</li>
+using am accessibility assisting browser.</li>
 <li>When performing an advanced find or publish in the UDDI page of the Web
 Services Explorer, the items in the drop down list for picking a language
 in conjunction with a name or description is sorted  according to the operating
@@ -113,8 +120,6 @@ sorting method if applicable.</li>
 <link href="tuddiexp.dita"></link>
 <link href="tstrtexp.dita"></link>
 <link href="twsdlexp.dita"></link>
-<link href="../../org.eclipse.jst.ws.uddi.registry.doc.user/tasks/tuddiwiz.dita"
-scope="peer"><linktext>Configure a private registry</linktext></link>
 <link href="../../org.eclipse.jst.ws.doc.user/tasks/toverws.dita" scope="peer">
 <linktext> Developing Web services</linktext></link>
 </linklist>
@@ -123,4 +128,3 @@ scope="peer"><linktext>Configure a private registry</linktext></link>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000007522?>

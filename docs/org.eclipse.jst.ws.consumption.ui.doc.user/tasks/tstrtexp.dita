@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="tstrtexp" xml:lang="en-us">
 <title>Launching the Web Services Explorer</title>
 <titlealts>
@@ -8,6 +9,10 @@
 </titlealts>
 <shortdesc>The Web services tools allows you to launch the Web Services Explorer
 in several ways.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web Services Explorer<indexterm>launching</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <context><ul>
 <li>From the main toolbar in the J2EE perspective.</li>
@@ -88,11 +93,11 @@ pane.</p></context>
 <task id="d0e134" xml:lang="en-us">
 <title>Launching the Web Services Explorer from a WSDL file</title>
 <taskbody>
-<context><p>To launch the<?Pub Caret?> Web Services Explorer from a WSDL file,
-select the WSDL file and right-click and choose  <b>Web Services > Test with
-Web Services Explorer</b> or  <b>Publish WSDL file</b>.&nbsp; The Web Services
-Explorer opens. The  <b>Test with Web Services Explorer</b> action will preload
-the WSDL in the WSDL page.</p></context>
+<context><p>To launch the Web Services Explorer from a WSDL file, select the
+WSDL file and right-click and choose  <b>Web Services > Test with Web Services
+Explorer</b> or  <b>Publish WSDL file</b>.&nbsp; The Web Services Explorer
+opens. The  <b>Test with Web Services Explorer</b> action will preload the
+WSDL in the WSDL page.</p></context>
 </taskbody>
 <related-links>
 <linklist><title>Related Concepts</title>
@@ -112,4 +117,3 @@ the WSDL in the WSDL page.</p></context>
 </related-links>
 </task>
 </task>
-<?Pub *0000005105?>

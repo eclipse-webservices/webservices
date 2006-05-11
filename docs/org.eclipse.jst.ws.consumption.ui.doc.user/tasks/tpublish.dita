@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="tpublish" xml:lang="en-us">
 <title>Publishing a Web service</title>
 <titlealts>
@@ -9,6 +10,11 @@
 <shortdesc>The Web service, also known as the business service, describes
 a Web service's endpoint and where its WSDL file resides. The WSDL file lists
 the operations that service provides.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>UDDI<indexterm>publishing a Web service</indexterm></indexterm>
+<indexterm>Web services<indexterm>publishing to a UDDI registry</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <prereq>Prerequisites:<ol>
 <li> <xref href="treg.dita">Register with a registry</xref>.</li>
@@ -75,10 +81,10 @@ exit the Categories pane.</cmd></step>
 <result><p> <b>Important:</b> Ensure that you select the service document,
 since the service element is the basis for the Business Service that you will
 publish.&nbsp; You cannot publish a Business Service using a WSDL document
-that does not have service elements.</p><p>The<?Pub Caret?> Web Services Explorer
-is automatically updated with your published Web service. The registry contains
-pointers to the URL of the WSDL service document of the Web service. Businesses
-can now discover and integrate with your Web service.</p></result>
+that does not have service elements.</p><p>The Web Services Explorer is automatically
+updated with your published Web service. The registry contains pointers to
+the URL of the WSDL service document of the Web service. Businesses can now
+discover and integrate with your Web service.</p></result>
 </taskbody>
 <related-links>
 <linklist><title>Related Concepts</title>
@@ -99,4 +105,3 @@ can now discover and integrate with your Web service.</p></result>
 </related-links>
 </task>
 </task>
-<?Pub *0000005221?>

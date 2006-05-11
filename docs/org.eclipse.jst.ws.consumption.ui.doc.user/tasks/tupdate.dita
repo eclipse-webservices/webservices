@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="tupdate" xml:lang="en-us">
 <title>Updating a business entity, Web service, or service interface</title>
 <shortdesc>After you have published a business entity, Web service, or service
 interface, you can update it through the Web Services Explorer.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>business entities<indexterm>updating in a UDDI registry</indexterm></indexterm>
+<indexterm>Web services<indexterm>updating UDDI registries</indexterm></indexterm>
+<indexterm>service interfaces<indexterm>updating UDDI registries</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <prereq>Prerequisites:<ol>
 <li> <xref href="tpubent.dita">Publish a business entity</xref>.</li>
@@ -25,8 +32,8 @@ ID, and password, if necessary, then click  <uicontrol>Go</uicontrol>.</cmd>
 </step>
 </steps>
 <result><p>The business entity, Web service, or service interface is updated
-in the registry and the<?Pub Caret?> Web Services Explorer is automatically
-updated with your change.</p></result>
+in the registry and the Web Services Explorer is automatically updated with
+your change.</p></result>
 </taskbody>
 <related-links>
 <linklist><title>Related Concepts</title>
@@ -48,4 +55,3 @@ updated with your change.</p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000002323?>

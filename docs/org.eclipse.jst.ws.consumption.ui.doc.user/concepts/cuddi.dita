@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"  "concept.dtd">
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
 <concept id="cuddi" xml:lang="en-us">
 <title>Universal Description, Discovery, and Integration (UDDI)</title>
 <titlealts>
@@ -8,6 +9,11 @@
 </titlealts>
 <shortdesc>Universal Description, Discovery, and Integration (UDDI) specification
 defines a way to publish and discover information about Web services.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>UDDI</indexterm><indexterm>Universal Description, Discovery,
+and Integration </indexterm><indexterm>Web services<indexterm>UDDI</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <conbody>
 <p>UDDI has two functions: <ul>
 <li>It is a SOAP-based protocol that defines how clients communicate with
@@ -78,8 +84,6 @@ are a directory of available services and service providers.</p></section>
 </linklist>
 <linklist><title>Related Tasks</title>
 <link href="../tasks/tuddiexp.dita"></link>
-<link href="../../org.eclipse.jst.ws.uddi.registry.doc.user/tasks/tuddiwiz.dita"
-scope="peer"><linktext> Configuring a Unit Test UDDI Registry</linktext></link>
 </linklist>
 <linklist><title>Related Reference</title>
 <link href="../ref/ruddi.dita"></link>

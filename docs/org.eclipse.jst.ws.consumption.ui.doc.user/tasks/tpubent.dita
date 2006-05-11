@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
-<task id="tpubent" xml:lang="en-us"><?Pub Caret?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
+<task id="tpubent" xml:lang="en-us">
 <title>Publishing a business entity</title>
 <shortdesc>A business entity contains information about the business that
 has published a service.&nbsp; Before you can publish a business service,
 you must publish a business entity.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>UDDI<indexterm>publishing a business entity</indexterm></indexterm>
+<indexterm>Web services<indexterm>publishing a business entity</indexterm></indexterm>
+<indexterm>business entities<indexterm>publishing to UDDI</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <prereq>Prerequisites:<ol>
 <li><xref href="treg.dita">Register with a registry</xref></li>
@@ -93,4 +100,3 @@ your Web service.</p></result>
 </related-links>
 </task>
 </task>
-<?Pub *0000005120?>

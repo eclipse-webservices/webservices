@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="twsdlexp" xml:lang="en-us">
 <title>Exploring WSDL using the WSDL Explorer</title>
+<prolog><metadata>
+<keywords><indexterm>WSDL<indexterm>exploring</indexterm></indexterm><indexterm>Web
+services<indexterm>exploring WSDL</indexterm></indexterm></keywords>
+</metadata></prolog>
 <taskbody>
 <prereq>Prerequisites: To use the WSDL Explorer, you must have a valid URL
 for a WSDL document.</prereq>
 <context>The WSDL Explorer allows you to explore, and test WSDL documents.
 The following actions are available in the WSDL Explorer:<ul>
+<li>Show WSDL details:  <image alt="WSDL Details icon" href="../images/wsdldtlicon.gif">
+</image></li>
 <li>Import WSDL to the Workbench:  <image alt="Import WSDL to the Workbench icon"
 href="../images/mptwsdlicon.gif"></image></li>
 <li>Import WSDL to your file system:  <image alt="Import WSDL to your file system icon"
@@ -15,8 +22,6 @@ href="../images/fswsdlicon.gif"></image></li>
 <li>Launch the Web Service Wizard:  <image alt="Launch the Web Service Wizard icon"
 href="../images/wswizicon.gif"></image></li>
 <li>Add WSDL to Favorites:  <image alt="Add WSDL to Favorites icon" href="../images/wsdlfavicon.gif">
-</image></li>
-<li>Show WSDL details:  <image alt="WSDL Details icon" href="../images/wsdldtlicon.gif">
 </image></li>
 </ul></context>
 </taskbody>
@@ -68,9 +73,9 @@ launch the wizard.</p></context>
 <task id="d0e105" xml:lang="en-us">
 <title>Adding a WSDL file to your favorites</title>
 <taskbody>
-<context><p>To add the WSDL file to Favorites, click this icon:  </p><p>.
-The Status pane displays that the WSDL was successfully added to your list
-of favorites. </p></context>
+<context><p>To add the WSDL file to Favorites, click this icon:  <image alt="Add WSDL to Favorites icon"
+href="../images/wsdlfavicon.gif"></image></p><p>. The Status pane displays
+that the WSDL was successfully added to your list of favorites. </p></context>
 </taskbody>
 </task>
 <task id="d0e110" xml:lang="en-us">
@@ -123,7 +128,7 @@ isn't resolved.</codeph></note></postreq>
 <related-links>
 <linklist><title>Related Concepts</title>
 <link href="../../org.eclipse.jst.ws.doc.user/concepts/cws.dita" scope="peer">
-<linktext>Web services development</linktext></link><?Pub Caret?>
+<linktext>Web services development</linktext></link>
 <link href="../concepts/cuddi.dita"></link>
 </linklist>
 <linklist><title>Related Tasks</title>
@@ -135,4 +140,3 @@ isn't resolved.</codeph></note></postreq>
 </related-links>
 </task>
 </task>
-<?Pub *0000006946?>

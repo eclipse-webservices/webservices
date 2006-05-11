@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="tbkmrk" xml:lang="en-us">
 <title>Adding a registry, business entity, business service, service interface,
 WSIL, or WSDL service to Favorites</title>
@@ -8,12 +9,20 @@ WSIL, or WSDL service to Favorites</title>
 <searchtitle>Adding a registry, business entity, business service, service
 interface, WSIL, or WSDL service to Favorites</searchtitle>
 </titlealts>
+<shortdesc>You can add a registry, business entity, business service, service
+interface, WSIL, or WSDL service to the Web Service Explorer Favorites if
+you plan to access them in the future.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web Service Explorer<indexterm>adding Favorites</indexterm></indexterm>
+<indexterm>WSIL<indexterm>adding to Favorites</indexterm></indexterm><indexterm>WSDL<indexterm>adding
+to Favorites</indexterm></indexterm></keywords>
+</metadata></prolog>
 <taskbody>
 <prereq>Prerequisite:  <ul>
 <li><xref href="tstrtexp.dita">Launch the Web Services Explorer</xref></li>
 </ul></prereq>
 <context><p>To add a registry, business entity, Web service, service interface,
-WSIL, or WSDL to Favorites using the<?Pub Caret?> Web Services Explorer:</p></context>
+WSIL, or WSDL to Favorites using the Web Services Explorer:</p></context>
 <steps>
 <step><cmd>Navigate through the registry hierarchy to find the registry, business
 entity, Web service, service interface or the WSIL page to find the WSIL or
@@ -48,4 +57,3 @@ will be automatically migrated to this location.</p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000002422?>

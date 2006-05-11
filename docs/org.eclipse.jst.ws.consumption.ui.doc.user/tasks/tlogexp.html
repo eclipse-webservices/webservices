@@ -8,69 +8,65 @@
 <meta content="index,follow" name="Robots" />
 <meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
 <meta content="task" name="DC.Type" />
-<meta name="DC.Title" content="Updating a business entity, Web service, or service interface" />
-<meta name="abstract" content="After you have published a business entity, Web service, or service interface, you can update it through the Web Services Explorer." />
-<meta name="description" content="After you have published a business entity, Web service, or service interface, you can update it through the Web Services Explorer." />
-<meta content="business entities, updating in a UDDI registry, Web services, updating UDDI registries, service interfaces" name="DC.subject" />
-<meta content="business entities, updating in a UDDI registry, Web services, updating UDDI registries, service interfaces" name="keywords" />
+<meta name="DC.Title" content="Logging in to a UDDI registry" />
+<meta name="abstract" content="If you have published your Web service to a UDDI registry you can log into the registry and manage the service through the Web Services Explorer." />
+<meta name="description" content="If you have published your Web service to a UDDI registry you can log into the registry and manage the service through the Web Services Explorer." />
+<meta content="UDDI, logging into a registry, Web Services Explorer, logging into a UDDI registry" name="DC.subject" />
+<meta content="UDDI, logging into a registry, Web Services Explorer, logging into a UDDI registry" name="keywords" />
 <meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.html" />
 <meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cws.html" />
 <meta scheme="URI" name="DC.Relation" content="../concepts/cuddi.html" />
 <meta scheme="URI" name="DC.Relation" content="tuddiexp.html" />
 <meta scheme="URI" name="DC.Relation" content="tstrtexp.html" />
-<meta scheme="URI" name="DC.Relation" content="tpubent.html" />
-<meta scheme="URI" name="DC.Relation" content="tpublish.html" />
-<meta scheme="URI" name="DC.Relation" content="tunpub.html" />
+<meta scheme="URI" name="DC.Relation" content="treg.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/tasks/toverws.html" />
 <meta scheme="URI" name="DC.Relation" content="../ref/ruddi.html" />
 <meta content="XHTML" name="DC.Format" />
-<meta content="tupdate" name="DC.Identifier" />
+<meta content="tlogexp" name="DC.Identifier" />
 <meta content="en-us" name="DC.Language" />
 <link href="../../org.eclipse.wst.doc.user/common.css" type="text/css" rel="stylesheet" />
-<title>Updating a business entity, Web service, or service interface</title>
+<title>Logging in to a UDDI registry</title>
 </head>
-<body id="tupdate"><a name="tupdate"><!-- --></a>
+<body id="tlogexp"><a name="tlogexp"><!-- --></a>
 
 
-<h1 class="topictitle1">Updating a business entity, Web service, or service interface</h1>
+<h1 class="topictitle1">Logging in to a UDDI registry</h1>
 
 
 
-<div><p>After you have published a business entity, Web service, or service
-interface, you can update it through the Web Services Explorer.</p>
+<div><p>If you have published your Web service to a UDDI registry you can
+log into the registry and manage the service through the Web Services Explorer.</p>
 
 <div class="p">Prerequisites:<ol>
-<li> <a href="tpubent.html">Publish a business entity</a>.</li>
+<li><a href="treg.html">Register with a registry</a></li>
 
-<li> <a href="tpublish.html">Publish a Web service</a>.</li>
-
-<li> <a href="tpublish.html">Publish a service interface</a>.</li>
-
-<li> <a href="tstrtexp.html">Launch the Web Services Explorer</a>.</li>
+<li><a href="tstrtexp.html">Launch the Web Services Explorer</a></li>
 
 </ol>
 </div>
 
-<div class="section">To update a business entity, Web service, or service interface using
-the Web Services Explorer:</div>
+<div class="section"><p>To Log in to the registry:</p>
+</div>
 
 <ol>
-<li><span>Navigate through the registry hierarchy to find the business entity,
-Web service, or service interface you want to update. Select the business
-entity, Web service, or service interface.</span></li>
+<li><span>Once you have selected a registry, you can scroll to the <span class="uicontrol">Other
+Actions</span> section of the page and select <span class="uicontrol">Login</span>,
+or use the login button at the top of the Explorer: <img src="../images/loginicon.gif" alt="screen capture of the login icon" />.</span></li>
 
-<li><span>In the Actions icon bar, click the  <span class="uicontrol">Details</span> icon.</span>
+<li><span>Enter the URL (if it has not been prefilled for you), the user
+ID, and the password for the registry and click <span class="uicontrol">Go</span>.</span>
 </li>
 
-<li><span>Make any necessary changes and enter your publish URL, your user
-ID, and password, if necessary, then click  <span class="uicontrol">Go</span>.</span>
-</li>
+<li><span>The Summary of Business page displays. It lists all the businesses
+associated with the registry.</span></li>
 
 </ol>
 
-<div class="section"><p>The business entity, Web service, or service interface is updated
-in the registry and the Web Services Explorer is automatically updated with
-your change.</p>
+<div class="section"><p>When you have successfully logged in, the Status pane displays
+a message indicating you were successful.</p>
 </div>
+
+<div class="section">To log out of the registry click the Logout button: <img src="../images/logouticon.gif" alt="screen capture of the logout icon" />.</div>
 
 </div>
 
@@ -85,9 +81,8 @@ your change.</p>
 
 <div><a href="tuddiexp.html" title="Through UDDI and WSIL, other applications can discover WSDL documents and bind with them to execute transactions or perform other business processes.">Publishing Web services and business entities</a></div>
 <div><a href="tstrtexp.html" title="The Web services tools allows you to launch the Web Services Explorer in several ways.">Launching the Web Services Explorer</a></div>
-<div><a href="tpubent.html" title="A business entity contains information about the business that has published a service.  Before you can publish a business service, you must publish a business entity.">Publishing a business entity</a></div>
-<div><a href="tpublish.html" title="The Web service, also known as the business service, describes a Web service's endpoint and where its WSDL file resides. The WSDL file lists the operations that service provides.">Publishing a Web service</a></div>
-<div><a href="tunpub.html" title="After you have published a business entity, Web service, or service interface, you can remove or unpublish it through the Web Services Explorer.">Removing a business entity, Web service, or service interface from a registry</a></div></div>
+<div><a href="treg.html" title="In order to publish your business entity and Web service to a UDDI registry, you must first register with the registry that you want to use.">Registering with a UDDI registry</a></div>
+<div><a href="../../org.eclipse.jst.ws.doc.user/tasks/toverws.html"> Developing Web services</a></div></div>
 
 <div class="linklist"><strong>Related Reference</strong><br />
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="tunpub" xml:lang="en-us">
 <title>Removing a business entity, Web service, or service interface from
 a registry</title>
@@ -10,12 +11,19 @@ from a registry</searchtitle>
 </titlealts>
 <shortdesc>After you have published a business entity, Web service, or service
 interface, you can remove or unpublish it through the Web Services Explorer.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web services<indexterm>removing from a UDDI registry</indexterm></indexterm>
+<indexterm>service interfaces<indexterm>removing from a UDDI registry</indexterm></indexterm>
+<indexterm>business entities<indexterm>removing from a UDDI registry</indexterm></indexterm>
+<indexterm>UDDI<indexterm>removing services from a registry</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <prereq>Prerequisites:<ol>
 <li> <xref href="tpubent.dita">Publish a business entity</xref>.</li>
 <li> <xref href="tpublish.dita">Publish a Web service</xref>.</li>
 <li> <xref href="tpublish.dita">Publish a service interface</xref>.</li>
-<li> <xref href="tstrtexp.dita">Launch the<?Pub Caret?> Web Services Explorer</xref>.</li>
+<li> <xref href="tstrtexp.dita">Launch the Web Services Explorer</xref>.</li>
 </ol></prereq>
 <context>To unpublish a business entity, Web service, or service interface
 using the Web Services Explorer:</context>
@@ -53,4 +61,3 @@ your change.</p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000002492?>

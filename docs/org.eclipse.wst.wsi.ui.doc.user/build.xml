@@ -25,7 +25,7 @@
 -->
 <project name="eclipsehelp" default="all">
 
-	<property name="dita.ot.dir" location="C:/DITA-OT1.2.1" />
+	<property name="dita.ot.dir" location="C:/DITA-OT1.2.2" />
 
 	<path id="dost.class.path">
 		<pathelement location="${dita.ot.dir}${file.separator}lib${file.separator}dost.jar" />

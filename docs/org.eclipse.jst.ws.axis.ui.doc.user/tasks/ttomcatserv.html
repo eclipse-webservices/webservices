@@ -2,8 +2,8 @@
 <html lang="en-us" xml:lang="en-us">
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<meta name="copyright" content="(C) Copyright 2005" />
-<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta name="copyright" content="Copyright (c) 2000, 2006 IBM Corporation and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: IBM Corporation - initial API and implementation" />
+<meta name="DC.rights.owner" content="(C) Copyright 2000, 2006" />
 <meta content="public" name="security" />
 <meta content="index,follow" name="Robots" />
 <meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
@@ -11,16 +11,19 @@
 <meta name="DC.Title" content="Creating an Apache Tomcat server and Web project" />
 <meta name="abstract" content="If you plan to create a Web service that uses Apache Jakarta Tomcat as its server, Tomcat must be installed and a server created before you begin creating your Web service." />
 <meta name="description" content="If you plan to create a Web service that uses Apache Jakarta Tomcat as its server, Tomcat must be installed and a server created before you begin creating your Web service." />
+<meta content="Web services, creating an Apache Tomcat server, Axis runtime environment, Tomcat server, creating a server for Web services" name="DC.subject" />
+<meta content="Web services, creating an Apache Tomcat server, Axis runtime environment, Tomcat server, creating a server for Web services" name="keywords" />
 <meta content="XHTML" name="DC.Format" />
 <meta content="creatinganapachetomcatserver" name="DC.Identifier" />
 <meta content="en-us" name="DC.Language" />
-<link href="../../org.eclipse.wst.doc.user/commonltr.css" type="text/css" rel="stylesheet" />
+<link href="../../org.eclipse.wst.doc.user/common.css" type="text/css" rel="stylesheet" />
 <title>Creating an Apache Tomcat server and Web project</title>
 </head>
 <body id="creatinganapachetomcatserver"><a name="creatinganapachetomcatserver"><!-- --></a>
 
 
 <h1 class="topictitle1">Creating an Apache Tomcat server and Web project</h1>
+
 
 
 <div><p>If you plan to create a Web service that uses Apache Jakarta Tomcat
@@ -36,8 +39,8 @@ workbench by doing the following: </div>
 <li class="stepexpand"><span>From the File menu, select <span class="uicontrol">New &gt; Other &gt; Server &gt; Server
 &gt; Next</span>.</span></li>
 
-<li class="stepexpand"><span>Select Tomcat v 3.x, 4.x or v5.x as the server type,
-electing the correct version of Tomcat for your install, and click <span class="uicontrol">Next</span>.</span>
+<li class="stepexpand"><span>Select Tomcat v 3.x, 4.x or v5.x as the server type, electing the
+correct version of Tomcat for your install, and click <span class="uicontrol">Next</span>.</span>
 </li>
 
 <li class="stepexpand"><span>On the Tomcat server page:</span>
@@ -70,14 +73,13 @@ that you have created:</p>
 <ol>
 <li>Create the service Web project by selecting <span class="uicontrol">New &gt; Web &gt; Dynamic
 Web project</span>. Enter the following information: <ul>
-<li>Web Project: enter a project name</li>
+<li>Project Name: enter a project name</li>
 
-<li>Servlet version: 2.3</li>
+<li>Target runtime: Tomcat server v3.x, 4.x or 5.x depending on the version
+you installed. If it is not listed, click New and browse to the location where
+it is installed.</li>
 
-<li>Target Server: Tomcat server v3.x, 4.x or 5.x depending on the version
-you installed</li>
-
-<li>Ensure that <span class="uicontrol">Add Module to an EAR module</span> is <em>not</em> selected.</li>
+<li>Ensure that <span class="uicontrol">Add project to an EAR</span> is <em>not</em> selected.</li>
 
 </ul>
 </li>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"  "concept.dtd">
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
 <concept id="cwsdlud" xml:lang="en-us">
 <title>Relationship between UDDI and WSDL</title>
 <shortdesc>The Universal Description, Discovery, and Integration (UDDI) specification
@@ -8,6 +9,10 @@ defines a way to publish and discover information about Web services. UDDI
 has two functions: (1) it is a SOAP-based protocol that defines how UDDI clients
 communicate with registries, and (2) it is a particular set of globally replicated
 registries.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>UDDI<indexterm>relationship with WSDL</indexterm></indexterm>
+<indexterm>WSDL<indexterm>relationship with UDDI</indexterm></indexterm></keywords>
+</metadata></prolog>
 <conbody>
 <p>Registering a service involves four core data structure types:</p>
 <ul>

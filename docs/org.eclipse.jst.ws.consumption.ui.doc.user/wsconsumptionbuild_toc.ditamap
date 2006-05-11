@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN"
+ "map.dtd">
 <map anchorref="../org.eclipse.jst.ws.doc.user/webservice_toc.ditamap#wsconsumptiont"
 title="wsconsumptiont">
 <topicref href="concepts/cuddi.dita" navtitle="Universal Description, Discovery, and Integration (UDDI)">
@@ -17,6 +18,7 @@ title="wsconsumptiont">
 <topicref href="tasks/tstrtexp.dita" navtitle="Launching the Web Services Explorer">
 </topicref>
 <topicref href="tasks/treg.dita" navtitle="Registering with a registry"></topicref>
+<topicref href="tasks/tlogexp.dita" navtitle="Logging into a registry"></topicref>
 <topicref href="tasks/taddreg.dita" navtitle="Adding a Registry to the Web Services Explorer">
 </topicref>
 <topicref href="tasks/tpubent.dita" navtitle="Publishing a business entity">

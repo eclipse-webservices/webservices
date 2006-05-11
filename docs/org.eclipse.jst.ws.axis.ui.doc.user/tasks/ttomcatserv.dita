@@ -7,6 +7,12 @@
 <shortdesc>If you plan to create a Web service that uses Apache Jakarta Tomcat
 as its server, Tomcat must be installed and a server created before you begin
 creating your Web service.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web services<indexterm>creating an Apache Tomcat server</indexterm></indexterm>
+<indexterm>Axis runtime environment<indexterm>creating an Apache Tomcat server</indexterm></indexterm>
+<indexterm>Tomcat server<indexterm>creating a server for Web services</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <prereq>Install Apache Jakarta Tomcat from this URL: <xref href="http://jakarta.apache.org/tomcat"
 scope="external">http://jakarta.apache.org/tomcat</xref></prereq>
@@ -15,8 +21,8 @@ workbench by doing the following: </context>
 <steps>
 <step><cmd>From the File menu, select <uicontrol>New > Other > Server > Server
 > Next</uicontrol>.</cmd></step>
-<step><cmd>Select Tomcat v 3.x, 4.x or v5.x<?Pub Caret?> as the server type,
-electing the correct version of Tomcat for your install, and click <uicontrol>Next</uicontrol>.</cmd>
+<step><cmd>Select Tomcat v 3.x, 4.x or v5.x as the server type, electing the
+correct version of Tomcat for your install, and click <uicontrol>Next</uicontrol>.</cmd>
 </step>
 <step><cmd>On the Tomcat server page:</cmd>
 <substeps>
@@ -40,11 +46,11 @@ view > Other > Server > Servers > Ok.</uicontrol> </stepresult></step>
 that you have created:</p><ol>
 <li>Create the service Web project by selecting <uicontrol>New > Web > Dynamic
 Web project</uicontrol>. Enter the following information: <ul>
-<li>Web Project: enter a project name</li>
-<li>Servlet version: 2.3</li>
-<li>Target Server: Tomcat server v3.x, 4.x or 5.x depending on the version
-you installed</li>
-<li>Ensure that <uicontrol>Add Module to an EAR module</uicontrol> is <i>not</i> selected.</li>
+<li>Project Name: enter a project name</li>
+<li>Target runtime: Tomcat server v3.x, 4.x or 5.x depending on the version
+you installed. If it is not listed, click New and browse to the location where
+it is installed.</li>
+<li>Ensure that <uicontrol>Add project to an EAR</uicontrol> is <i>not</i> selected.</li>
 </ul></li>
 <li>Click <uicontrol>Finish</uicontrol>.</li>
 <li>To associate the project with the server, right-click the Tomcat server
@@ -54,4 +60,3 @@ click <uicontrol>Add</uicontrol>. </li>
 </ol></example>
 </taskbody>
 </task>
-<?Pub *0000003035?>
