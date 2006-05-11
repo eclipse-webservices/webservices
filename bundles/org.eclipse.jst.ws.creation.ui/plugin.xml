@@ -26,7 +26,7 @@
    <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
-            iconbanner="icons/full/wizban/webservices_wiz.gif"
+            iconbanner="icons/full/wizban/webservices_wiz.png"
             title="%WIZARD_TITLE_WSS"
             class="org.eclipse.jst.ws.internal.creation.ui.widgets.binding.ServerWidgetBinding"
             id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard">
