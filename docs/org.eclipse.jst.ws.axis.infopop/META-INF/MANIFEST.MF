@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Web services Axis UI
-Bundle-SymbolicName: org.eclipse.jst.ws.axis.infopop; singleton:=true
-Bundle-Version: 1.0.201.qualifier
-Bundle-Vendor: Eclipse.org
-Bundle-Localization: plugin
-Eclipse-AutoStart: true
