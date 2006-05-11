@@ -59,7 +59,7 @@ if (publishURL == null) {
     </tr>
     <tr>
        <td>
-          <input type="text" name="<%=UDDIActionInputs.QUERY_INPUT_ADVANCED_PUBLISH_URL%>" value="<%=publishURL%>"/>
+          <input type="text" name="<%=UDDIActionInputs.QUERY_INPUT_ADVANCED_PUBLISH_URL%>" value="<%=publishURL%>" class="textenter"/>
        </td>
     </tr>
     <tr>
@@ -68,12 +68,12 @@ if (publishURL == null) {
       </td>
     </tr>
     <tr>
-      <td><input type="text" value="<%=username%>" name="<%=UDDIActionInputs.QUERY_INPUT_ADVANCED_USERID%>"></td>
+      <td><input type="text" value="<%=username%>" name="<%=UDDIActionInputs.QUERY_INPUT_ADVANCED_USERID%>" class="textenter"/></td>
     </tr>
     <tr>
       <td class="labels" height=30 valign="bottom"><label><%=uddiPerspective.getMessage("FORM_LABEL_PASSWORD")%></label></td>
     </tr>
     <tr>
-      <td><input type="password" value ="<%=password%>" name="<%=UDDIActionInputs.QUERY_INPUT_ADVANCED_PASSWORD%>"></td>
+      <td><input type="password" value ="<%=password%>" name="<%=UDDIActionInputs.QUERY_INPUT_ADVANCED_PASSWORD%>" class="textenter"/></td>
     </tr>
   </table>
