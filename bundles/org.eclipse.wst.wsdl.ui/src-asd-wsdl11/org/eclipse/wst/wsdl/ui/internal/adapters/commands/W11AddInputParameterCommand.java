@@ -12,7 +12,12 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import java.util.List;
 
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
@@ -20,6 +25,7 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddInputParameterCommand;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public class W11AddInputParameterCommand extends Command {
 	protected Operation operation;
@@ -34,6 +40,7 @@ public class W11AddInputParameterCommand extends Command {
 		int pattern = getParameterPattern();
 		AddInputParameterCommand command = new AddInputParameterCommand(operation, pattern);
 		command.run();
+		selectNewElement(operation.getEInput());
 	}
 	
 	private int getParameterPattern() {
@@ -59,4 +66,21 @@ public class W11AddInputParameterCommand extends Command {
 		
 		return pattern;
 	}
+	
+    // TODO: We should probably be selecting the new element at the "action level"....  However, our actions
+    // are currently very generic, so we have no way of getting to the newly created element.  The action
+    // only sees these commands as generic Command objects.
+    private void selectNewElement(Notifier element) {
+    	try {
+	    	Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt(element);
+	        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+	        if (editor != null && editor.getAdapter(ISelectionProvider.class) != null) {
+	        	ISelectionProvider provider = (ISelectionProvider) editor.getAdapter(ISelectionProvider.class);
+	        	if (provider != null) {
+	        		provider.setSelection(new StructuredSelection(adapted));
+	        	}
+	        }
+    	}
+    	catch (Exception e) {}
+    }
 }

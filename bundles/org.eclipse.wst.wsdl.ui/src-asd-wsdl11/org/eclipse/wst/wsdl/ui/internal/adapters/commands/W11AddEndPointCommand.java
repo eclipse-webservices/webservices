@@ -10,12 +10,18 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddPortCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public class W11AddEndPointCommand extends Command
 {
@@ -35,5 +41,24 @@ public class W11AddEndPointCommand extends Command
 		String address = "http://www.example.org/"; //$NON-NLS-1$
 		W11SetAddressCommand addressCommand = new W11SetAddressCommand(port, address);
 		addressCommand.execute();
-    }  
+		
+		selectNewElement(port);
+    }
+    
+    // TODO: We should probably be selecting the new element at the "action level"....  However, our actions
+    // are currently very generic, so we have no way of getting to the newly created element.  The action
+    // only sees these commands as generic Command objects.
+    private void selectNewElement(Notifier element) {
+    	try {
+	    	Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt(element);
+	        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+	        if (editor != null && editor.getAdapter(ISelectionProvider.class) != null) {
+	        	ISelectionProvider provider = (ISelectionProvider) editor.getAdapter(ISelectionProvider.class);
+	        	if (provider != null) {
+	        		provider.setSelection(new StructuredSelection(adapted));
+	        	}
+	        }
+    	}
+    	catch (Exception e) {}
+    }
 }
