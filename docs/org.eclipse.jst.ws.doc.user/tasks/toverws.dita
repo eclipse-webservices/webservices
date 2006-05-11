@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
-<task id="toverws" xml:lang="en-us"><?Pub Caret?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
+<task id="toverws" xml:lang="en-us">
 <title>Developing Web services</title>
 <shortdesc>Use Web services tools to discover, create, and publish Web services
 that are created from <tm tmclass="special" tmowner="Sun Microsystems, Inc."
@@ -10,6 +11,10 @@ You can create of Web services using a top-down approach (which starts with
 a WSDL file) or a bottom-up approach (which starts with a <tm tmclass="special"
 tmowner="Sun Microsystems, Inc." tmtype="tm" trademark="Java">Java</tm> bean
 or EJB).</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web services<indexterm>creating<indexterm>overview</indexterm></indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <context><p>In this release, the development path that you would typically
 follow to create and publish a Web service is as follows:</p></context>
@@ -39,11 +44,11 @@ Web services</linktext></link>
 top-down Web services</linktext></link>
 </linklist>
 <linklist><title>Related Tasks</title>
-<link href="../../org.eclipse.wst.wsdl.ui.doc.user/tasks/tcrtwsdl.dita" scope="peer"><linktext>Creating a new WSDL file</linktext>
-</link>
+<link href="../../org.eclipse.wst.wsdl.ui.doc.user/tasks/tcrtwsdl.dita" scope="peer">
+<linktext>Creating a new WSDL file</linktext></link>
 <link href="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tuddiexp.dita"
-scope="peer"><linktext>Publishing Web services and business entities</linktext></link>
+scope="peer"><linktext>Publishing Web services and business entities</linktext>
+</link>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000002379?>

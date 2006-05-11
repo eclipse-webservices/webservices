@@ -17,9 +17,9 @@
        <toc file="webservice_toc.xml" />
    </extension>
    
-   </extension>
+
 <extension point="org.eclipse.help.index">
-      <index file="oorg.eclipse.jst.ws.doc.userindex.xml"/>
+      <index file="org.eclipse.jst.ws.doc.userindex.xml"/>
 </extension>
 
 </plugin>

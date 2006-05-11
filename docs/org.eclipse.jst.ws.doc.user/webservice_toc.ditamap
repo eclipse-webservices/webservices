@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN"
+ "map.dtd">
 <map id="wsmaintoc" title="wsmaintoc">
 <topicref href="concepts/cws.dita" navtitle="Web services development">
 <topicref href="concepts/cwsstandards.dita" navtitle="Web services standards"

@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="twsicomply" xml:lang="en-us">
 <title>Setting the level of WS-I compliance</title>
 <shortdesc>The Web services WS-I validation tools support the level of WS-I
 compliance outlined in the WS-I Basic Profile 1.1, the WS-I Simple SOAP Binding
 Profile 1.0 (WS-I SSBP), and the WS-I Attachments Profile 1.0 (WS-I AP). You
 can choose to make your Web service compliant or non-compliant, depending
-on your needs. For example, encoded style (RPC/encoded), SOAP over JMS protocols,
-and secured Web services, are not WS-I compliant.</shortdesc>
+on your needs. For example, encoded style (RPC/encoded), SOAP over JMS protocols
+are not WS-I compliant.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web services<indexterm>setting WS-I compliance</indexterm></indexterm>
+<indexterm>WS-I<indexterm>setting compliance</indexterm></indexterm><indexterm>Web
+services<indexterm>interoperability<indexterm>setting compliance</indexterm></indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <context><p>You can set the level of compliance for either the Basic Profile
 and the Simple SOAP Binding Profile, or for the Attachments Profile. You can
@@ -31,8 +38,8 @@ at the project level.</p></context>
 </step>
 <step><cmd>Select  <b>Web Services</b> from the component tree on the left-hand
 side of the panel.</cmd></step>
-<step><cmd>Under Profile Compliance and Validation, select the level of compliance
-you want from the drop-down lists.</cmd></step>
+<step><cmd>Under <b>Profile Compliance and Validation</b>, select the level
+of compliance you want from the drop-down lists.</cmd></step>
 <step><cmd>Click  <b>Apply</b>, then click  <b>OK</b>.</cmd></step>
 </steps>
 </taskbody>
@@ -44,11 +51,11 @@ you want from the drop-down lists.</cmd></step>
 <steps>
 <step><cmd>In the Project Navigator, right click and select  <b>Properties</b>.</cmd>
 </step>
-<step><cmd>Select  <b>WS-I Compliance</b> from the component tree on the left-hand
-side of the panel.</cmd></step>
-<step><cmd>Under WS-I compliance, select the level of compliance you want
-from the drop-down lists, or select to have the project share the same level
-of WS-I compliance as the workspace</cmd></step>
+<step><cmd>Select  <b>Profile Compliance and Validation</b> from the component
+tree on the left-hand side of the panel.</cmd></step>
+<step><cmd>Select the level of compliance you want from the drop-down lists,
+or select to have the project share the same level of WS-I compliance as the
+workspace</cmd></step>
 <step><cmd>Click  <b>Apply</b>, then click  <b>OK</b>.</cmd></step>
 </steps>
 </taskbody>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE reference  PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN"
+ "reference.dtd">
 <reference id="rwsdl" xml:lang="en-us">
 <title>Web Services Description Language (WSDL) reference</title>
 <shortdesc>A WSDL document defines services as collections of network endpoints,
@@ -9,6 +10,10 @@ from their concrete network deployment or data format bindings. This allows
 the reuse of abstract definitions: messages, which are abstract descriptions
 of the data being exchanged, and port types which are abstract collections
 of operations. </shortdesc>
+<prolog><metadata>
+<keywords><indexterm>WSDL<indexterm>reference</indexterm></indexterm><indexterm>Web
+services<indexterm>WSDL reference</indexterm></indexterm></keywords>
+</metadata></prolog>
 <refbody>
 <section><p>The concrete protocol and data format specifications for a particular
 port type constitutes a reusable binding. A port is defined by associating
@@ -46,6 +51,5 @@ services</linktext></link>
 <link href="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tuddiexp.dita"
 scope="peer"><linktext> Using the Web Services Explorer</linktext></link>
 </linklist>
-</related-links><?Pub Caret1?>
+</related-links>
 </reference>
-<?Pub *0000002813?>
