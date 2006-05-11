@@ -22,7 +22,6 @@ import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.impl.PartImpl;
-import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -159,7 +158,7 @@ public final class AddPartCommand extends WSDLElementCommand
     if (!definition.getNamespaces().containsValue(typeOrElementName.getNamespaceURI()))
     {
       definition.addNamespace("p",typeOrElementName.getNamespaceURI()); //$NON-NLS-1$
-      ((WSDLElementImpl)definition).updateElement(false);
+//      ((WSDLElementImpl)definition).updateElement(false);
     }
   }
   
