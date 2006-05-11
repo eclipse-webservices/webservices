@@ -2,8 +2,8 @@
 <html lang="en-us" xml:lang="en-us">
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<meta name="copyright" content="(C) Copyright 2005" />
-<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta name="copyright" content="Copyright (c) 2000, 2006 IBM Corporation and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: IBM Corporation - initial API and implementation" />
+<meta name="DC.rights.owner" content="(C) Copyright 2000, 2006" />
 <meta content="public" name="security" />
 <meta content="index,follow" name="Robots" />
 <meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
@@ -11,20 +11,22 @@
 <meta name="DC.Title" content="Adding a part to a message" />
 <meta name="abstract" content="All messages contain one or more parts. Parts are a flexible mechanism for describing the logical abstract content of a message. The message definition associates each part with a type using a message-typing attribute." />
 <meta name="description" content="All messages contain one or more parts. Parts are a flexible mechanism for describing the logical abstract content of a message. The message definition associates each part with a type using a message-typing attribute." />
-<meta scheme="URI" name="DC.Relation" content="../tasks/tedtwsdl.html" />
+<meta content="WSDL, adding message parts, Web services, adding WSDL message parts" name="DC.subject" />
+<meta content="WSDL, adding message parts, Web services, adding WSDL message parts" name="keywords" />
 <meta scheme="URI" name="DC.Relation" content="../concepts/cwsdled.html" />
 <meta scheme="URI" name="DC.Relation" content="tcrtwsdl.html" />
 <meta scheme="URI" name="DC.Relation" content="tedtwsdl.html" />
 <meta content="XHTML" name="DC.Format" />
 <meta content="taddpart" name="DC.Identifier" />
 <meta content="en-us" name="DC.Language" />
-<link href="../../org.eclipse.wst.doc.user/commonltr.css" type="text/css" rel="stylesheet" />
+<link href="../../org.eclipse.wst.doc.user/common.css" type="text/css" rel="stylesheet" />
 <title>Adding a part to a message</title>
 </head>
 <body id="taddpart"><a name="taddpart"><!-- --></a>
 
 
 <h1 class="topictitle1">Adding a part to a message</h1>
+
 
 
 <div><p>All messages contain one or more parts. Parts are a flexible mechanism
@@ -35,14 +37,16 @@ associates each part with a type using a message-typing attribute.</p>
 </div>
 
 <ol>
-<li class="stepexpand"><span>In Graph view, select the message you want to add a part to.</span>
-</li>
+<li class="stepexpand"><span>In Design view, right-click an input, output, or fault object and
+click <strong>Add Part</strong>. </span>  The part is added to the input,
+output, or fault's message reference.</li>
 
-<li class="stepexpand"><span>Right-click the message and click  <strong>Add Child &gt; Part</strong>.</span>
-</li>
+<li class="stepexpand"><span>To select the part, click the part in the port type
+object.</span></li>
 
-<li class="stepexpand"><span>Type the name of the part in the dialog.</span> Click <strong>OK</strong>.
-</li>
+<li class="stepexpand"><span>In the Properties view, click the <strong>General</strong> pane.</span></li>
+
+<li class="stepexpand"><span>In the <strong>Name</strong> field, type the name of the part.</span></li>
 
 <li class="stepexpand"><span>Your part can refer to either a <strong>type</strong> or an <strong>element</strong>.</span>
  Select the appropriate option from the <strong>Reference Kind</strong> list.
@@ -50,30 +54,26 @@ associates each part with a type using a message-typing attribute.</p>
 
 <li class="stepexpand"><span>If you selected  <strong>type</strong> in the <strong>Reference Kind</strong> list,
 you now have the option of selecting an XML schema data type from the <strong>Type</strong> drop
-down list. The list of types comes from any available referenced XML schemas.</span>
- </li>
+down list.</span> The list of types comes from any available referenced
+XML schemas.</li>
 
 <li class="stepexpand"><span>If you selected <strong>element</strong> in the <strong>Reference Kind</strong> list,
-you now have the option of selecting an XML schema element from
-the  <strong>Element</strong> drop down list. The list of elements comes from any
-available referenced XML schemas.</span> </li>
+you now have the option of selecting an XML schema element from the  <strong>Element</strong> drop
+down list.</span> The list of elements comes from any available referenced
+XML schemas.</li>
 
 </ol>
 
 <div class="section"><p> <strong>Tip</strong>: You can also create a new part for your message using
 the Outline view. Under the  <strong>Messages</strong> folder, right-click your element
-and click  <strong>Add Child &gt; Part</strong>. Your part will automatically appear in
-the Outline view (under the  <strong>Messages</strong> folder), but it will only appear
-in the Graph view if the message you added it to currently does.</p>
+and click <strong>Add Part</strong>. Your part will automatically appear in the Outline
+view (under the <strong>Messages</strong> folder), but it will only appear in the Design
+view if the message you added it to currently does.</p>
 </div>
 
 </div>
 
 <div>
-<div class="familylinks">
-<div class="parentlink"><strong>Parent topic:</strong> <a href="../tasks/tedtwsdl.html" title="Once you have created a WSDL file, you can edit it in the WSDL editor. You can also import WSDL files you have created into the workbench and edit them in the WSDL editor.">Editing WSDL files</a></div>
-</div>
-
 <div class="linklist"><strong>Related concepts</strong><br />
 
 <div><a href="../concepts/cwsdled.html" title="The WSDL editor allows you to easily and graphically create, modify, view, and validate WSDL files.">Editing WSDL files with the WSDL Editor</a></div></div>

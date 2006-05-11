@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="taddport" xml:lang="en-us">
 <title>Adding a port to a service</title>
 <shortdesc>A port defines an individual endpoint by specifying a single address
 for a binding. The port contains a 'binding' attribute that references a binding
 and an address element that provides a specification for the endpoint.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>WSDL<indexterm>adding ports</indexterm></indexterm><indexterm>Web
+services<indexterm>adding WSDL ports</indexterm></indexterm></keywords>
+</metadata></prolog><?Pub Caret?>
 <taskbody>
 <context><p>Services are used to group sets of related ports together. Ports
 within a service have the following relationship:</p><ul>
@@ -20,22 +25,30 @@ this information a user can determine if a given machine supports all the
 operations needed to complete a given task.</li>
 </ul><p>To add a port to a service, follow these steps:</p></context>
 <steps>
-<step><cmd>In the Graph view, right-click the service you want to add a port
-to, then click  <b>Add Child > Port.</b></cmd></step>
-<step><cmd>Type the name of the port in the dialog.</cmd><info>Click <b>Finish</b>.
-The name of the port should provide it with a unique name amongst all the
-ports defined within the service.</info></step>
-<step><cmd>A  <b>Binding</b> defines the message format and protocol details
+<step><cmd>In the Design view, right-click the service you want to add a port
+to, then click <b>Add Port.</b> To select the new port, click the port in
+the service object.</cmd></step>
+<step><cmd>In the Properties view, click the <b>General</b> pane. In the <b>Name</b> field,
+type the name of the port.</cmd><info>The name of the port should provide
+it with a unique name amongst all the ports defined within the service.</info>
+</step>
+<step><cmd>A <b>Binding</b> defines the message format and protocol details
 for operations and messages defined by a particular port type.</cmd><info>You
-can either create a new binding for your port, re-use an existing one, or
-import one. Refer to the related tasks for more details.</info></step>
+can create a new binding for your port, re-use an existing one, or import
+one. Refer to the related tasks for more details.</info></step>
+<step><cmd>In the <b>Address</b> field, type the address of the port.</cmd>
+</step>
 <step><cmd>Type any information about the port you want the user to read in
-the  <b>Documentation</b> field.</cmd></step>
+the <b>Documentation</b> pane.</cmd></step>
+<step><cmd>To manage extensions, click the <b>Extensibility</b> pane. You
+can either add, sort, or remove extensions. <draft-comment>Refer to the related
+tasks for more details. Add link to XSD Editor in related tasks section.</draft-comment></cmd>
+</step>
 </steps>
 <result><p> <b>Tip</b>: You can also create a port using the Outline view
-by right-clicking your service under the  <b>Services</b> folder and clicking
- <b>Add Child > Port</b>. Your port (regardless of which view you create it
-in) will appear in both the Graph view and the Outline view.</p></result>
+by right-clicking your service under the <b>Services</b> folder and clicking <b>Add
+Port</b>. Your port (regardless of which view you create it in) will appear
+in both the Design view and the Outline view.</p></result>
 </taskbody>
 <related-links>
 <linklist><title>Related concepts</title>
@@ -47,3 +60,4 @@ in) will appear in both the Graph view and the Outline view.</p></result>
 </linklist>
 </related-links>
 </task>
+<?Pub *0000003322?>

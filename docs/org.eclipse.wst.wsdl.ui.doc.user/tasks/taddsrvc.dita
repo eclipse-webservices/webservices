@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="taddsrvc" xml:lang="en-us">
 <title>Adding a service</title>
 <shortdesc>The  <systemoutput>service</systemoutput> element is a collection
 of related ports and specifies the location of the service.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>WSDL<indexterm>adding services</indexterm></indexterm>
+<indexterm>Web services<indexterm>adding services to WSDL</indexterm></indexterm>
+</keywords>
+</metadata></prolog><?Pub Caret?>
 <taskbody>
 <context><p>To create a new service, follow these steps:</p></context>
 <steps>
-<step><cmd>In the Graph view, right-click in any blank space and click  <b>Add
-Child > Service</b>.</cmd></step>
-<step><cmd>Type the name of the service in the dialog.</cmd><info>The name
-of the service provides it with a unique name amongst all the services defined
-within in the enclosing WSDL document.</info></step>
-<step><cmd>Click  <b>OK</b>.</cmd></step>
+<step><cmd>In the Design view, right-click in any blank space and click <b>Add
+Service</b>. To select the new service, click the service object.</cmd></step>
+<step><cmd>In the Properties view, click the <b>General</b> pane. In the <b>Name</b> field,
+type the name of the service.</cmd><info>The name of the service provides
+it with a unique name amongst all the services defined within in the enclosing
+WSDL document.</info></step>
 <step><cmd>Type any information about the service you want the user to read
-in the  <b>Documentation</b> pane.</cmd></step>
+in the <b>Documentation</b> pane.</cmd></step>
+<step><cmd>To manage extensions, click the <b>Extensibility</b> pane. You
+can either add, sort, or remove extensions.<draft-comment> Refer to the related
+tasks for more details. Add link to the XSD Editor plugin topic for "Adding
+extension components"</draft-comment></cmd></step>
 </steps>
 <result><p> <b>Tip</b>: You can also create a service using the Outline view
-by right-clicking the  <b>Services</b> folder and clicking  <b>Add Child >
-Service</b>.</p><p>You can now add a port to your service. A port defines
-an individual endpoint by specifying a single address for a binding.</p></result>
+by right-clicking the <b>Services</b> folder and clicking <b>Add Service</b>.</p><p>You
+can now add a port to your service. A port defines an individual endpoint
+by specifying a single address for a binding.</p></result>
 </taskbody>
 <related-links>
-<linklist><title>Related concepts</title><?Pub Caret?>
+<linklist><title>Related concepts</title>
 <link href="../concepts/cwsdled.dita" scope="local"></link>
 </linklist>
 <linklist><title>Related tasks</title>
@@ -32,4 +42,4 @@ an individual endpoint by specifying a single address for a binding.</p></result
 </linklist>
 </related-links>
 </task>
-<?Pub *0000001613?>
+<?Pub *0000002157?>

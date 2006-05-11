@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
 <task id="tcrtimpt" xml:lang="en-us">
 <title>Creating an import statement</title>
 <shortdesc>The import statement is used to import other WSDL documents or
@@ -10,22 +11,30 @@ of the different elements of a service definition into independent documents,
 which can then be imported as needed. This technique helps in writing clearer
 service definitions, by separating the definitions according to their level
 of abstraction.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>WSDL<indexterm>adding import statements</indexterm></indexterm>
+<indexterm>Web services<indexterm>adding WSDL import statements</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
-<context><p>To create an import statement, follow these steps:</p></context>
+<context><?Pub Caret?><p>To create an import statement, follow these steps:</p></context>
 <steps>
-<step><cmd>In the Graph view, right-click the  <b>Imports</b> group and click
- <b>Add Child > Import.</b></cmd></step>
-<step><cmd>Select your new import statement.</cmd></step>
-<step><cmd>Specify the  <b>namespace</b> of the document you wish to import,
-then specify the  <b>location</b> of the document you wish to import.</cmd>
-</step>
+<step><cmd>In the Outline view, right-click the <b>Imports</b> folder and
+click <b>Add Import.</b> Select your new import statement.</cmd></step>
+<step><cmd>In the Properties view, click the <b>General</b> pane.</cmd></step>
+<step><cmd>Click the icon to the right of the <b>Location</b> field.</cmd>
+<stepresult>A "Select file" window opens.</stepresult></step>
+<step><cmd>Select the WSDL file or XML Schema file you wish to import. Click <b>OK</b>.<draft-comment>Send
+for final sign-off</draft-comment></cmd></step>
+<step><cmd>Type any information about the import statement you wish the user
+to read in the <b>Documentation</b> pane.</cmd></step>
 </steps>
 <result>Once you specify the location of the document you wish to import,
 the import object's label changes to reflect the specified location. Imported
 WSDL components may now be visible within the editor.</result>
 </taskbody>
 <related-links>
-<linklist><title>Related concepts</title><?Pub Caret?>
+<linklist><title>Related concepts</title>
 <link href="../concepts/cwsdled.dita" scope="local"></link>
 </linklist>
 <linklist><title>Related tasks</title>
@@ -34,4 +43,4 @@ WSDL components may now be visible within the editor.</result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000001728?>
+<?Pub *0000002258?>

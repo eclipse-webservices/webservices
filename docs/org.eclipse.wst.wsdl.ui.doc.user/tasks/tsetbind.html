@@ -2,8 +2,8 @@
 <html lang="en-us" xml:lang="en-us">
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<meta name="copyright" content="(C) Copyright 2005" />
-<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta name="copyright" content="Copyright (c) 2000, 2006 IBM Corporation and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: IBM Corporation - initial API and implementation" />
+<meta name="DC.rights.owner" content="(C) Copyright 2000, 2006" />
 <meta content="public" name="security" />
 <meta content="index,follow" name="Robots" />
 <meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
@@ -11,16 +11,19 @@
 <meta name="DC.Title" content="Setting a binding" />
 <meta name="abstract" content="A binding is a top level WSDL object that provides a concrete specification regarding the transmission of messages to and from a web service. A binding references exactly one port type. The structure of a binding corresponds very closely to that of the port type. The binding contains extensibility elements (for example, soap, http, and mime) that specify protocol specific details. Each port within a service references exactly one binding." />
 <meta name="description" content="A binding is a top level WSDL object that provides a concrete specification regarding the transmission of messages to and from a web service. A binding references exactly one port type. The structure of a binding corresponds very closely to that of the port type. The binding contains extensibility elements (for example, soap, http, and mime) that specify protocol specific details. Each port within a service references exactly one binding." />
+<meta content="WSDL, setting bindings, Web services, setting WSDL bindings, bindings, creating" name="DC.subject" />
+<meta content="WSDL, setting bindings, Web services, setting WSDL bindings, bindings, creating" name="keywords" />
 <meta content="XHTML" name="DC.Format" />
 <meta content="tsetbind" name="DC.Identifier" />
 <meta content="en-us" name="DC.Language" />
-<link href="../../org.eclipse.wst.doc.user/commonltr.css" type="text/css" rel="stylesheet" />
+<link href="../../org.eclipse.wst.doc.user/common.css" type="text/css" rel="stylesheet" />
 <title>Setting a binding</title>
 </head>
 <body id="tsetbind"><a name="tsetbind"><!-- --></a>
 
 
 <h1 class="topictitle1">Setting a binding</h1>
+
 
 
 <div><p>A binding is a top level WSDL object that provides a concrete specification
@@ -30,8 +33,9 @@ closely to that of the port type. The binding contains extensibility elements
 (for example, soap, http, and mime) that specify protocol specific details.
 Each port within a service references exactly one binding.</p>
 
-<div class="section"><p>You can create a new binding, reuse an existing one, or import
-one.</p>
+<div class="section"><p>You can create a binding by right clicking in any blank space
+in the Design view and selecting <span class="uicontrol">Add Binding</span>. You can
+create a new binding, reuse an existing one, or import one. </p>
 </div>
 
 </div>
@@ -44,25 +48,21 @@ one.</p>
 </div>
 
 <ol>
-<li class="stepexpand"><span>In the Graph view, right-click your port and click  <strong>Set Binding</strong>.</span>
+<li class="stepexpand"><span>In the Design view, right-click your port and click <strong>Set Binding
+&gt; New Binding</strong>.</span></li>
+
+<li class="stepexpand"><span>In the <strong>Name</strong> field, type the name of the binding.</span> The
+name should be unique among all bindings defined within the enclosing WSDL
+document. Click <strong>OK.</strong> To select the new binding, click the binding object.
 </li>
 
-<li class="stepexpand"><span>Select the  <strong>Create a new binding</strong> radio button.</span></li>
-
-<li class="stepexpand"><span>Type the name of the binding in  <span class="uicontrol">Name</span> field.</span>
- The name should be unique among all bindings defined within the enclosing
-WSDL document. Click <strong>Finish.</strong></li>
-
-<li class="stepexpand"><span>In order to see the binding you need to ensure the hide/show binding
-button <img src="../images/show-hide-binding.gif" alt="hide/show binding button" /> is toggled so that bindings are showing.</span></li>
-
-<li class="stepexpand"><span>A  <strong>Port Type</strong> is a named set of abstract operations and the
-abstract messages involved.</span> You can either create a new port type
-for your binding, reuse an existing one, or import one. Refer to the related
-tasks for more details.</li>
+<li class="stepexpand"><span>A <strong>Port Type</strong> is a named set of abstract operations and the
+abstract messages involved. You can either create a new port type for your
+binding, reuse an existing one, or import one. Refer to the related tasks
+for more details.</span></li>
 
 <li class="stepexpand"><span>Type any information about the binding you want the user to read
-in the  <strong>Documentation</strong> field.</span></li>
+in the <strong>Documentation</strong> pane.</span></li>
 
 </ol>
 
@@ -72,11 +72,6 @@ the Outline view.</p>
 
 </div>
 
-<div>
-<div class="familylinks">
-<div class="parentlink"><strong>Parent topic:</strong> <a href="../tasks/tedtwsdl.html" title="Once you have created a WSDL file, you can edit it in the WSDL editor. You can also import WSDL files you have created into the workbench and edit them in the WSDL editor.">Editing WSDL files</a></div>
-</div>
-</div>
 </div>
 
 <div class="nested1" id="reusebinding"><a name="reusebinding"><!-- --></a>
@@ -87,9 +82,11 @@ the Outline view.</p>
 </div>
 
 <ol>
-<li><span>In the Graph view, select your port.</span></li>
+<li><span>In the Design view, select your port.</span></li>
 
-<li><span>From the  <strong>Binding</strong> drop down list, select the binding you
+<li><span>In the Properties view, click the <strong>General</strong> pane.</span></li>
+
+<li><span>From the <strong>Binding</strong> drop down list, select the binding you
 want to use.</span></li>
 
 </ol>
@@ -110,8 +107,8 @@ want to use.</span></li>
 <li><span>Select <span class="uicontrol">Generate Binding Content</span>.</span></li>
 
 <li><span>Specify an required binding information. If you are modifying an
-existing binding, ensure that you select <span class="uicontrol">Overwrite existing binding
-information</span>.</span></li>
+existing binding, ensure that you select the <span class="uicontrol">Overwrite existing
+binding information</span> check box.</span></li>
 
 </ol>
 
@@ -126,24 +123,39 @@ information</span>.</span></li>
 <div class="section">To import an existing binding for your port, follow these steps:</div>
 
 <ol>
-<li><span>In the Graph view, right-click your port and click  <strong>Set Binding.</strong></span>
+<li><span>In the Design view, right-click your port and click  <strong>Set Binding
+&gt; Existing Binding.</strong></span></li>
+
+<li><span>In the <strong>Name</strong> field, type a search string to filter the list
+or leave the field blank to view all.</span></li>
+
+<li><span>You can import a binding by selecting one of the following options:</span>
+<ul>
+<li><strong>Workspace</strong>. Lists the bindings available in your workspace.</li>
+
+<li><strong>Enclosing Project</strong>. Lists the bindings available in the project
+that contains your file.</li>
+
+<li><strong>Working Sets</strong>. Lists the bindings available in a specified set
+of files. To specify a working set, click <strong>Choose</strong>. You can select files
+from an existing working set or create a new working set. Once you have selected
+the files, click <strong>OK</strong>.</li>
+
+</ul>
+
 </li>
 
-<li><span>Click the  <strong>Import binding from a file</strong> check box. Click  <strong>Browse</strong>.</span>
-</li>
+<li><span>The bindings will be listed. Select one and click <strong>OK</strong>. In
+the Design view, click the binding object.</span></li>
 
-<li><span>Select the file that contains the binding you want to use. Click
- <strong>OK</strong>.</span></li>
+<li><span>In the Properties view, type any information about the binding
+you wish the user to read in the <strong>Documentation</strong> pane.</span></li>
 
 </ol>
 
 </div>
 
 <div>
-<div class="familylinks">
-<div class="parentlink"><strong>Parent topic:</strong> <a href="../tasks/tedtwsdl.html" title="Once you have created a WSDL file, you can edit it in the WSDL editor. You can also import WSDL files you have created into the workbench and edit them in the WSDL editor.">Editing WSDL files</a></div>
-</div>
-
 <div class="linklist"><strong>Related concepts</strong><br />
 
 <div><a href="../concepts/cwsdled.html" title="The WSDL editor allows you to easily and graphically create, modify, view, and validate WSDL files.">Editing WSDL files with the WSDL Editor</a></div></div>
