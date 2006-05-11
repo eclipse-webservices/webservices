@@ -23,11 +23,12 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddSchemaAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddServiceAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ICategoryAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
-public class W11CategoryAdapter extends WSDLBaseAdapter implements ICategoryAdapter, ITreeElement {
+public class W11CategoryAdapter extends WSDLBaseAdapter implements ICategoryAdapter, ITreeElement, IASDObjectListener {
 	  public final static int IMPORTS = 1;
 	  public final static int TYPES = 2;
 	  public final static int SERVICES = 3;

@@ -121,7 +121,7 @@ public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionP
 	  for (Iterator i = clonedListenerList.iterator(); i.hasNext(); )
 	  {
 	    IASDObjectListener listener = (IASDObjectListener)i.next();
-	    listener.propertyChanged(this, null);
+	    listener.propertyChanged(this, property);
 	  }      
 	}
 	

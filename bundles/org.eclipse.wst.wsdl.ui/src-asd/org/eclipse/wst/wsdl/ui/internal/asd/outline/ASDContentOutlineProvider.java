@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
@@ -37,9 +38,13 @@ public class ASDContentOutlineProvider implements ITreeContentProvider, ILabelPr
 	}
 	
 	public Object[] getChildren(Object parentElement) {
-		attachListener(parentElement);
 		if (parentElement instanceof ITreeElement) {
-			return ((ITreeElement) parentElement).getChildren();
+			ITreeElement[] kids = ((ITreeElement) parentElement).getChildren();
+			for (int index = 0; index < kids.length; index++) {
+				attachListener(kids[index]);
+			}
+			
+			return kids;
 		}
 
 		return new Object[0]; 
@@ -130,8 +135,10 @@ public class ASDContentOutlineProvider implements ITreeContentProvider, ILabelPr
 	}
 
 	public void propertyChanged(Object object, String property) {             
-		if (viewer != null) {
-			viewer.refresh();
+		if (viewer instanceof TreeViewer) {
+			TreeViewer treeViewer = (TreeViewer) viewer;
+			treeViewer.refresh(object);
+			treeViewer.reveal(object);
 		}
 	}
 }

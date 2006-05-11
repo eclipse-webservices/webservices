@@ -38,8 +38,14 @@ import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 
 public class W11Description extends WSDLBaseAdapter implements IDescription {
+	private List categories = new ArrayList();
+	
 	protected W11CategoryAdapter getCategory(int categoryId) {
-		Iterator it = getCategoryAdapters().iterator();
+		return getCategory(categoryId, getCategoryAdapters());
+	}
+	
+	private W11CategoryAdapter getCategory(int categoryId, List list) {
+		Iterator it = list.iterator();
 		while (it.hasNext()) {
 			W11CategoryAdapter adapter = (W11CategoryAdapter) it.next();
 			if (adapter.getGroupType() == categoryId) {
@@ -51,7 +57,31 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 	}
 	
 	private List getCategoryAdapters() {
-		return createCategoryAdapters();
+	    // just set categoryadapters' children if category adapters are
+	    // already created
+	    if (categories.size() == 0) {
+	    	categories = createCategoryAdapters();
+	    }
+	    else {
+	    	W11CategoryAdapter category = getCategory(W11CategoryAdapter.IMPORTS, categories);
+	    	category.setChildren(getImports());
+	    	
+	    	category = getCategory(W11CategoryAdapter.TYPES, categories);
+	    	category.setChildren(getTypes());
+
+	    	category = getCategory(W11CategoryAdapter.SERVICES, categories);
+	    	category.setChildren(getServices());
+
+	    	category = getCategory(W11CategoryAdapter.BINDINGS, categories);
+	    	category.setChildren(getBindings());
+
+	    	category = getCategory(W11CategoryAdapter.INTERFACES, categories);
+	    	category.setChildren(getInterfaces());
+
+	    	category = getCategory(W11CategoryAdapter.MESSAGES, categories);
+	    	category.setChildren(getMessages());
+	    }
+    	return categories;
 	}
 	
 	protected List createCategoryAdapters() {
@@ -67,31 +97,37 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 		String categoryTitle = W11CategoryAdapter.IMPORTS_HEADER_TEXT;
 		Image categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/importheader_obj.gif"); //$NON-NLS-1$
 		W11CategoryAdapter category = new W11CategoryAdapter(this, categoryTitle, categoryImage, importList, W11CategoryAdapter.IMPORTS);
+		registerListener(category);
 		categories.add(category);
 		
 		categoryTitle = W11CategoryAdapter.TYPES_HEADER_TEXT;
 		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/types_obj.gif"); //$NON-NLS-1$
 		category = new W11CategoryAdapter(this, categoryTitle, categoryImage, schemaList, W11CategoryAdapter.TYPES);
+		registerListener(category);
 		categories.add(category);
 		
 		categoryTitle = W11CategoryAdapter.SERVICE_HEADER_TEXT;
 		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/serviceheader_obj.gif"); //$NON-NLS-1$
 		category = new W11CategoryAdapter(this, categoryTitle, categoryImage, serviceList, W11CategoryAdapter.SERVICES);
+		registerListener(category);
 		categories.add(category);
 		
 		categoryTitle = W11CategoryAdapter.BINDING_HEADER_TEXT;
 		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/bindingheader_obj.gif"); //$NON-NLS-1$
 		category = new W11CategoryAdapter(this, categoryTitle, categoryImage, bindingList, W11CategoryAdapter.BINDINGS);
+		registerListener(category);
 		categories.add(category);
 		
 		categoryTitle = W11CategoryAdapter.INTERFACE_HEADER_TEXT;
 		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/porttypeheader_obj.gif"); //$NON-NLS-1$
 		category = new W11CategoryAdapter(this, categoryTitle, categoryImage, interfaceList, W11CategoryAdapter.INTERFACES);
+		registerListener(category);
 		categories.add(category);
 		
 		categoryTitle = W11CategoryAdapter.MESSAGE_HEADER_TEXT;
 		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/messageheader_obj.gif"); //$NON-NLS-1$
 		category = new W11CategoryAdapter(this, categoryTitle, categoryImage, messageList, W11CategoryAdapter.MESSAGES);
+		registerListener(category);
 		categories.add(category);
 		
 		return categories;
