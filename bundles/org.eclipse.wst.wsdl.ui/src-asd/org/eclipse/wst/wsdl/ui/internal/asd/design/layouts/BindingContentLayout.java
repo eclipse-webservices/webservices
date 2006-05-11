@@ -20,6 +20,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.BindingEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.INamedEditPart;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.BindingContentPlaceHolder;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
@@ -54,7 +55,7 @@ public class BindingContentLayout extends AbstractLayout
 
   public void layout(IFigure container)
   {     
-    Rectangle clientArea = container.getClientArea();    
+    Rectangle clientArea = container.getClientArea();
     for (Iterator i = bindingEditPart.getChildren().iterator(); i.hasNext();)
     {
       AbstractGraphicalEditPart childEditPart = (AbstractGraphicalEditPart) i.next();
@@ -69,7 +70,12 @@ public class BindingContentLayout extends AbstractLayout
       {
         IMessageReference messageReference = ((IBindingMessageReference)model).getMessageReference();
         correspondingEditPart = getEditPart(messageReference);       
-      }      
+      }
+      else if (model instanceof BindingContentPlaceHolder) {
+    	  Object correspondingModel = ((BindingContentPlaceHolder) model).getModel();
+    	  correspondingEditPart = getEditPart(correspondingModel);
+      }
+      
       if (correspondingEditPart != null)
       {
         IFigure figure = correspondingEditPart.getFigure();       

@@ -131,13 +131,16 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
 	 */
 	public void refresh()
 	{
-		if (isReadOnly)
+		if (!composite.isDisposed())
 		{
-			composite.setEnabled(false);
-		}
-		else
-		{
-			composite.setEnabled(true);
+			if (isReadOnly)
+			{
+				composite.setEnabled(false);
+			}
+			else
+			{
+				composite.setEnabled(true);
+			}
 		}
 	}
 	

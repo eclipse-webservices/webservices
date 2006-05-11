@@ -14,10 +14,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Binding;
+import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingOperation;
+import org.eclipse.wst.wsdl.Fault;
+import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
@@ -32,10 +36,12 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDGenerateBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.BindingContentPlaceHolder;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public class W11Binding extends WSDLBaseAdapter implements IBinding {
 
@@ -49,25 +55,100 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
 	}
     
     public List getBindingContentList()
-    {     
+    {
+      List adapterList = new ArrayList();
       List list = new ArrayList();
+
+      List bindingOperations = copyList(((Binding)target).getEBindingOperations()); 
+      List operations = copyList(((Binding)target).getEPortType().getEOperations());
+      
+      // Determine if we need placeholders for Operations
+	  List toAdaptList = new ArrayList();
+      
+	  Iterator bindingOpIt = bindingOperations.iterator();
+	  while (bindingOpIt.hasNext()) {
+		  BindingOperation item = (BindingOperation) bindingOpIt.next();
+		  operations.remove(item.getEOperation());
+	  }
+	  
+      Iterator operationsIt = operations.iterator();
+      while (operationsIt.hasNext()) {
+    	  Operation op = (Operation) operationsIt.next();
+    	  toAdaptList.add(op);
+    	  toAdaptList.add(op.getEInput());
+    	  toAdaptList.add(op.getEOutput());
+    	  toAdaptList.addAll(op.getEFaults());
+      }
+
+      Iterator it = toAdaptList.iterator();
+      while (it.hasNext()) {
+    	  Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) it.next());
+    	  BindingContentPlaceHolder placeHolder = new BindingContentPlaceHolder(adapted);
+    	  adapterList.add(placeHolder);
+      }
+      
       for (Iterator i = ((Binding)target).getEBindingOperations().iterator(); i.hasNext(); )
       {
         BindingOperation bindingOperation = (BindingOperation)i.next();
+        Operation operation = bindingOperation.getEOperation();
+        
         list.add(bindingOperation);
+        
+        // Handle Input
         if (bindingOperation.getEBindingInput() != null)
         {
           list.add(bindingOperation.getEBindingInput());
-        }  
+        }
+        else if (bindingOperation.getEBindingInput() == null && operation.getEInput() != null) {
+        	// Need a placeholder
+        	Object adaptedObject = createAdapter(operation.getEInput());
+        	BindingContentPlaceHolder temp = new BindingContentPlaceHolder(adaptedObject);
+        	adapterList.add(temp);
+        }
+        
+        // Handle Output
         if (bindingOperation.getEBindingOutput() != null)
         {
           list.add(bindingOperation.getEBindingOutput());
-        } 
-        list.addAll(bindingOperation.getEBindingFaults());
-      } 
-      List adapterList = new ArrayList();
+        }
+        else if (bindingOperation.getEBindingOutput() == null && operation.getEOutput() != null) {
+        	// Need a placeholder
+        	Object adaptedObject = createAdapter(operation.getEOutput());
+        	BindingContentPlaceHolder temp = new BindingContentPlaceHolder(adaptedObject);
+        	adapterList.add(temp);
+        }
+
+        // Handle Faults
+        List faults = copyList(operation.getEFaults());
+        List bindingFaults = copyList(bindingOperation.getEBindingFaults());
+        for (int index = 0; index < bindingFaults.size(); index++) {
+        	BindingFault bindingFault = (BindingFault) bindingFaults.get(index);
+        	list.add(bindingFault);
+        	
+        	faults.remove(bindingFault.getEFault());        	
+        }
+
+        // Left over faults need placeholders
+        Iterator remaningFaults = faults.iterator();
+        while (remaningFaults.hasNext()) {
+        	Object adaptedObject = createAdapter((Fault) remaningFaults.next());
+        	BindingContentPlaceHolder temp = new BindingContentPlaceHolder(adaptedObject);
+        	adapterList.add(temp);
+        }
+      }
+
       populateAdapterList(list, adapterList);
       return adapterList;
+    }
+    
+    private List copyList(List origList) {
+    	List newList = new ArrayList();
+    	Iterator it = origList.iterator();
+    	while (it.hasNext()) {
+    		newList.add(it.next());
+    	}
+    	
+    	return newList;
     }
 
 	public List getExtensiblityObjects() {

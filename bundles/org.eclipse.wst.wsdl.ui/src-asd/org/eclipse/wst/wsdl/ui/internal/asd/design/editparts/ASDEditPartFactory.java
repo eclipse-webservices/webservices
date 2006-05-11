@@ -15,6 +15,7 @@ import org.eclipse.gef.EditPartFactory;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.BindingColumn;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.BindingContentPlaceHolder;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingOperation;
@@ -60,10 +61,11 @@ public class ASDEditPartFactory implements EditPartFactory
       child = new BindingEditPart();
     }
     else if (model instanceof IBindingOperation ||
-             model instanceof IBindingMessageReference)
+             model instanceof IBindingMessageReference ||
+             model instanceof BindingContentPlaceHolder)
     {
       child = new BindingContentEditPart();
-    }  
+    }
     else if (model instanceof IInterface)
     {
       child = new InterfaceEditPart();

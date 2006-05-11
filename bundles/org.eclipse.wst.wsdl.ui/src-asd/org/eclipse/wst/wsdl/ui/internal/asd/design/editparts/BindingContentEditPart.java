@@ -19,6 +19,9 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.BindingContentPlaceHolder;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingOperation;
 
 // This class is used to represent a BindingOperation, BindingInput, BindingOutput and BindingFault
@@ -35,8 +38,9 @@ public class BindingContentEditPart extends BaseEditPart
     toolbarLayout.setStretchMinorAxis(true);
     figure.setLayoutManager(toolbarLayout);
     label = new Label();
-    label.setBorder(new MarginBorder(5, 5, 2, 2));    
+    label.setBorder(new MarginBorder(5, 5, 2, 2));
     figure.add(label);
+    
     return figure;
   }
   
@@ -48,13 +52,24 @@ public class BindingContentEditPart extends BaseEditPart
   
   protected void refreshVisuals()
   {
-    if (getModel() instanceof IBindingOperation)
-    {  
-      IBindingOperation bindingOperation = (IBindingOperation) getModel();
-      label.setIcon(bindingOperation.getImage());
-      label.setText(bindingOperation.getName());
-    }  
-    super.refreshVisuals();    
+	  if (getModel() instanceof IBindingOperation)
+	  {  
+		  IBindingOperation bindingOperation = (IBindingOperation) getModel();
+		  label.setIcon(bindingOperation.getImage());
+//		  label.setText(bindingOperation.getName());
+	  }
+	  else if (getModel() instanceof IBindingMessageReference)
+	  {
+		  IBindingMessageReference messageRef = (IBindingMessageReference) getModel();
+		  label.setIcon(WSDLEditorPlugin.getInstance().getImage("icons/bind_asct_val_obj.gif"));
+//		  label.setIcon(messageRef.getImage());
+//		  label.setText(messageRef.getName());
+	  }
+	  else if (getModel() instanceof BindingContentPlaceHolder) {
+		  label.setIcon(WSDLEditorPlugin.getInstance().getImage("icons/bind_asct_val_not_obj.gif"));
+	  }
+
+	  super.refreshVisuals();    
   }  
   
   protected void createEditPolicies()

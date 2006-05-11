@@ -104,7 +104,9 @@ public class ComponentReferenceUtil
 
   protected static boolean isMatchingBinding(Operation operation, BindingOperation bindingOperation)
   {
-    return isEqual(operation.getName(), bindingOperation.getName()) && isEqualInputName(operation, bindingOperation) && isEqualOutputName(operation, bindingOperation);
+    return isEqual(operation.getName(), bindingOperation.getName()); /* &&
+    			   isEqualInputName(operation, bindingOperation) &&
+    			   isEqualOutputName(operation, bindingOperation);*/
   }
 
   public List getPortsForPortType(PortType portType)
