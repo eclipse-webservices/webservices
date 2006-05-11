@@ -12,6 +12,7 @@
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  * 20060330   128827 kathy@ca.ibm.com - Kathy Chan
  * 20060424   120137 kathy@ca.ibm.com - Kathy Chan
+ * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
@@ -20,8 +21,6 @@ import java.util.Vector;
 
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.AxisDeployCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.GeronimoAxisDeployCommand;
-import org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand;
-import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
@@ -29,18 +28,16 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisCheckCompilerLev
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisOutputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisRunInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUAxisInputCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUCodeGenOperation;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.ComputeAxisSkeletonBeanCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.CopyDeploymentFileCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.ModifyWSDLEndpointAddressCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDAxisInputCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.command.UpdateWEBXMLCommand;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDCodeGenOperation;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.BUConfigCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.task.BackupSkelImplCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.task.Skeleton2WSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.TDConfigCommand;
-import org.eclipse.jst.ws.internal.axis.creation.ui.task.UpdateAxisWSDDFileTask;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BUAxisDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidgetDefaultingCommand;
@@ -103,11 +100,7 @@ public class AxisWebService extends AbstractWebService
 			commands.add(new BUConfigCommand());
 			commands.add(new CopyAxisJarCommand());
 			commands.add(new WaitForAutoBuildCommand());
-			commands.add(new Java2WSDLCommand());
-			commands.add(new RefreshProjectCommand());
-			commands.add(new WSDL2JavaCommand());
-			commands.add(new UpdateAxisWSDDFileTask());
-			commands.add(new UpdateWEBXMLCommand());
+			commands.add(new BUCodeGenOperation());
 			commands.add(new RefreshProjectCommand());
 			commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
@@ -124,10 +117,7 @@ public class AxisWebService extends AbstractWebService
 //			commands.add(new SimpleFragment( "AxisMappingsWidget" ));
 		    commands.add(new TDConfigCommand());
 			commands.add(new CopyAxisJarCommand());
-			commands.add(new BackupSkelImplCommand());
-		    commands.add(new WSDL2JavaCommand());
-		    commands.add(new Skeleton2WSDLCommand());
-		    commands.add(new UpdateWEBXMLCommand());
+			commands.add(new TDCodeGenOperation());
 		    commands.add(new RefreshProjectCommand());
 		    commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
@@ -211,21 +201,13 @@ public class AxisWebService extends AbstractWebService
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", new StringToIProjectTransformer());
 	    	    
 	    //Java2WSDLCommand
-	    registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", Java2WSDLCommand.class);
+	    registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", BUCodeGenOperation.class);
 	    
 	    //RefreshProjectCommand
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", new StringToIProjectTransformer());
 	    
-	    //WSDL2JavaCommand
-	    registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", WSDL2JavaCommand.class);
-	    
-
-	    //UpdateAxisWSDDFileTask
-	    registry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", UpdateAxisWSDDFileTask.class);
-	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", UpdateAxisWSDDFileTask.class, "ServiceProject", new StringToIProjectTransformer());
-	    
 	    //UpdateWEBXMLCommand
-	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", UpdateWEBXMLCommand.class, "ServerProject", new StringToIProjectTransformer());
+	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", BUCodeGenOperation.class, "ServiceProject", new StringToIProjectTransformer());
 	    
 	    //BuildProjectCommand
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", BuildProjectCommand.class, "Project", new StringToIProjectTransformer());
@@ -242,8 +224,9 @@ public class AxisWebService extends AbstractWebService
 //	    registry.addMapping(BUAxisDefaultingCommand.class, "IsWebProjectStartupRequested",StartProjectCommand.class);
 	        
 		// AxisOutputCommand
-	    registry.addMapping(Java2WSDLCommand.class, "WsdlURI", AxisOutputCommand.class);
-		registry.addMapping(UpdateAxisWSDDFileTask.class, "JavaWSDLParam", AxisOutputCommand.class);    
+	    registry.addMapping(BUCodeGenOperation.class, "WsdlURI", AxisOutputCommand.class);
+	    registry.addMapping(BUCodeGenOperation.class, "JavaWSDLParam", AxisOutputCommand.class);	    
+   
 		
 		// Run extension
 		
@@ -291,29 +274,22 @@ public class AxisWebService extends AbstractWebService
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WsdlURI", SkeletonConfigWidgetDefaultingCommand.class);
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServiceServerTypeID", SkeletonConfigWidgetDefaultingCommand.class);
 	       
-	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WsdlURI", WSDL2JavaCommand.class);
-	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "HttpBasicAuthUsername", WSDL2JavaCommand.class);
-	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "HttpBasicAuthPassword", WSDL2JavaCommand.class);
-
-//		WSDL2JavaCommand
-	  	dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "JavaWSDLParam", WSDL2JavaCommand.class);
-		
+	    // AxisSkeletonDefaultingCommand
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WsdlURI", TDCodeGenOperation.class);
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "HttpBasicAuthUsername", TDCodeGenOperation.class);
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "HttpBasicAuthPassword", TDCodeGenOperation.class);
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "JavaWSDLParam", TDCodeGenOperation.class);
+	    
 	    // CopyAxisJarCommand
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", projectTransformer);
 
 	    // BackupSkelImplCommand
-	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", BackupSkelImplCommand.class);      
-	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "JavaWSDLParam", BackupSkelImplCommand.class);
-	    dataRegistry.addMapping(TDAxisInputCommand.class, "WebServiceInfo", BackupSkelImplCommand.class);
+	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", TDCodeGenOperation.class);      
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "WebServiceInfo", TDCodeGenOperation.class);
 	    
 	    // Skeleton2WSDLCommand
-	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", Skeleton2WSDLCommand.class);
-	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", Skeleton2WSDLCommand.class, "ServerProject", projectTransformer);
-        dataRegistry.addMapping(TDAxisInputCommand.class, "ServiceServerTypeID", Skeleton2WSDLCommand.class);        
-	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", Skeleton2WSDLCommand.class);
-
-	    // UpdateWEBXMLCommand
-	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", UpdateWEBXMLCommand.class, "ServerProject", projectTransformer);
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", TDCodeGenOperation.class, "ServerProject", projectTransformer);
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServiceServerTypeID", TDCodeGenOperation.class);	    
 
 	    // RefreshProjectCommand
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", projectTransformer);
@@ -337,16 +313,13 @@ public class AxisWebService extends AbstractWebService
 	    
 	    // CopyDeploymentFileCommand
 	    dataRegistry.addMapping(AxisRunInputCommand.class, "ServerInstanceId", CopyDeploymentFileCommand.class);
-
 	    
 	    // AxisOutputCommand
-	    dataRegistry.addMapping(Skeleton2WSDLCommand.class, "WsdlURI", AxisOutputCommand.class);
-		dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", AxisOutputCommand.class); 
+	    dataRegistry.addMapping(TDCodeGenOperation.class, "WsdlURI", AxisOutputCommand.class);
+	    dataRegistry.addMapping(TDCodeGenOperation.class, "JavaWSDLParam", AxisOutputCommand.class); 
 	    
 	    // ComputeAxisSkeletonBeanCommand
-	    dataRegistry.addMapping(WSDL2JavaCommand.class, "JavaWSDLParam", ComputeAxisSkeletonBeanCommand.class);
-	    //dataRegistry.addMapping(Skeleton2WSDLCommand.class, "WsdlURI", ComputeAxisSkeletonBeanCommand.class);
-	    //dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", ComputeAxisSkeletonBeanCommand.class);
+	    dataRegistry.addMapping(TDCodeGenOperation.class, "JavaWSDLParam", ComputeAxisSkeletonBeanCommand.class);
 	    
 	    // OpenJavaEditorCommand
 	    dataRegistry.addMapping(ComputeAxisSkeletonBeanCommand.class, "ClassNames", OpenJavaEditorCommand.class);

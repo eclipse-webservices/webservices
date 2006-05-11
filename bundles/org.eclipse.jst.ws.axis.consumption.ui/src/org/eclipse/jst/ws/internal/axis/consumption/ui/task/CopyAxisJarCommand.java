@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -35,6 +38,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisCons
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -72,41 +76,17 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
    */
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{
+		
 		IEnvironment env = getEnvironment();
-    IStatus status = Status.OK_STATUS;
-    ProgressUtils.report(monitor, AxisConsumptionUIMessages.PROGRESS_INFO_COPY_AXIS_CFG);
+		CopyAxisJarOperation cajo = new CopyAxisJarOperation(env);
+		cajo.execute(monitor);
     
-    if (J2EEUtils.isWebComponent(project))
-    {
-    	copyAxisJarsToProject(project, status, env, monitor);	
-    }
-    else
-    {
-    	//Check if it's a plain old Java project
- 		 if (J2EEUtils.isJavaComponent(project))
- 		 {
- 			status = addAxisJarsToBuildPath(project, env, monitor);
- 			if (status.getSeverity()==Status.ERROR)
- 			{
- 				env.getStatusHandler().reportError(status);
- 				return status;
- 			}
- 		 }
- 		 else
- 		 {
- 		   status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_WARN_NO_JAVA_NATURE);	
- 		   env.getStatusHandler().reportError(status);
- 		   return status;
- 		 }
+		return cajo.getStatus();
 
-    }
-    
-    return status;
-
-  }
+	}
 
   private void copyAxisJarsToProject(IProject project, IStatus status, IEnvironment env, IProgressMonitor monitor) {
-//    IPath webModulePath = ResourceUtils.getWebModuleServerRoot(project).getFullPath();
+
 	IPath webModulePath = J2EEUtils.getWebContentPath( project );
     if (webModulePath == null) {
       status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_PROJECT_NOT_FOUND);
@@ -295,4 +275,51 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
   public boolean getProjectRestartRequired() {
     return projectRestartRequired_.booleanValue();
   }
+  
+  
+  private class CopyAxisJarOperation extends WorkspaceModifyOperation {
+	  
+	  private IEnvironment env;
+	  private IStatus status = null;
+	  
+	  public CopyAxisJarOperation(IEnvironment environment){
+		  env = environment;
+	  }
+	  
+	  public void execute(IProgressMonitor monitor){
+		  
+		    status = Status.OK_STATUS;
+		    ProgressUtils.report(monitor, AxisConsumptionUIMessages.PROGRESS_INFO_COPY_AXIS_CFG);
+		    
+		    if (J2EEUtils.isWebComponent(project))
+		    {
+		    	copyAxisJarsToProject(project, status, env, monitor);	
+		    }
+		    else
+		    {
+		    	//Check if it's a plain old Java project
+		 		 if (J2EEUtils.isJavaComponent(project))
+		 		 {
+		 			status = addAxisJarsToBuildPath(project, env, monitor);
+		 			if (status.getSeverity()==Status.ERROR)
+		 			{
+		 				env.getStatusHandler().reportError(status);
+		 				//return status;
+		 			}
+		 		 }
+		 		 else
+		 		 {
+		 		   status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_WARN_NO_JAVA_NATURE);	
+		 		   env.getStatusHandler().reportError(status);
+		 		   //return status;
+		 		 }
+
+		    }		  
+	  }
+	  
+	  public IStatus getStatus(){
+		  return status;
+	  }
+  }
+  
 }

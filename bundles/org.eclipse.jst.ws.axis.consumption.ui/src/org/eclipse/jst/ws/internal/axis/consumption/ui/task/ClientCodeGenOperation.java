@@ -1,0 +1,140 @@
+/*******************************************************************************
+ * Copyright (c) 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu
+ *******************************************************************************/
+package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
+import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+
+public class ClientCodeGenOperation extends AbstractDataModelOperation {
+
+
+	private WSDL2JavaCommand wsdl2JavaCommand = null;
+	private JavaWSDLParameter javaWSDLParam;
+	private String wsdlURI;
+	
+	private RefreshProjectCommand refreshProjectCommand = null;
+	private IProject project;
+	
+	private Stub2BeanCommand stub2BeanCommand = null;
+	private WebServicesParser webServicesParser;
+	private String outputFolder;
+	private String proxyBean;
+
+	public ClientCodeGenOperation(){
+		wsdl2JavaCommand = new WSDL2JavaCommand();
+		refreshProjectCommand = new RefreshProjectCommand();
+		stub2BeanCommand = new Stub2BeanCommand();
+	}
+	
+	public IStatus execute(IProgressMonitor monitor, IAdaptable info) {
+
+		IEnvironment env = getEnvironment();
+		ClientWSModifyOperation buOperation = new ClientWSModifyOperation(info, env);
+		try {
+			buOperation.execute(monitor);
+		}
+		catch(CoreException ce){
+			IStatus status = ce.getStatus();
+			return status;
+		}
+		return Status.OK_STATUS;
+
+	}
+
+	
+	private class ClientWSModifyOperation extends WorkspaceModifyOperation {
+		
+		  private IAdaptable info = null;
+		  private IEnvironment env = null;
+
+		  
+		  protected ClientWSModifyOperation(IAdaptable adaptable, IEnvironment environment){
+			  info = adaptable;
+			  env = environment;
+		  }
+		  
+		  protected void execute(IProgressMonitor monitor) throws CoreException{
+		  
+			    IStatus status = null;
+
+				
+				// WSDL2JavaCommand
+				wsdl2JavaCommand.setEnvironment(env);
+				wsdl2JavaCommand.setJavaWSDLParam(javaWSDLParam);
+				wsdl2JavaCommand.setWsdlURI(wsdlURI);
+				status = wsdl2JavaCommand.execute(monitor, info);
+				if (status.getSeverity() == Status.ERROR) {
+					throw new CoreException(status);
+				}
+				
+				// RefreshProjectCommand
+				refreshProjectCommand.setEnvironment(env);
+				refreshProjectCommand.setProject(project);
+				status = refreshProjectCommand.execute(monitor, info);
+				if (status.getSeverity() == Status.ERROR) {
+					throw new CoreException(status);
+				}
+				
+				// Stub2BeanCommand
+				stub2BeanCommand.setEnvironment(env);
+				stub2BeanCommand.setWebServicesParser(webServicesParser);
+				stub2BeanCommand.setOutputFolder(outputFolder);
+				stub2BeanCommand.setJavaWSDLParam(javaWSDLParam);
+				stub2BeanCommand.setClientProject(project);
+				status = stub2BeanCommand.execute(monitor, info);
+				if (status.getSeverity() == Status.ERROR) {
+					throw new CoreException(status);
+				}
+				proxyBean = stub2BeanCommand.getProxyBean();
+			  
+		  }
+		
+	}
+
+
+	public void setJavaWSDLParam(JavaWSDLParameter javaWSDLParam) {
+		this.javaWSDLParam = javaWSDLParam;
+	}
+
+	public void setOutputFolder(String outputFolder) {
+		this.outputFolder = outputFolder;
+	}
+
+	public void setProject(IProject project) {
+		this.project = project;
+	}
+
+	public void setWebServicesParser(WebServicesParser webServicesParser) {
+		this.webServicesParser = webServicesParser;
+	}
+
+	public void setWsdlURI(String wsdlURI) {
+		this.wsdlURI = wsdlURI;
+	}
+		
+	public String getProxyBean() {
+		return proxyBean;
+	}
+	
+}

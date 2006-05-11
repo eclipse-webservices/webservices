@@ -10,20 +10,20 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.wsrt;
 
 import java.util.Vector;
-import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
+
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientInputCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientOutputCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.DefaultsForClientJavaWSDLCommand;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ClientCodeGenOperation;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
@@ -73,9 +73,7 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		commands.add(new CopyAxisJarCommand());
 		commands.add(new DefaultsForClientJavaWSDLCommand());
 		commands.add(new ValidateWSDLCommand());
-		commands.add(new WSDL2JavaCommand());
-		commands.add(new RefreshProjectCommand());
-		commands.add(new Stub2BeanCommand());
+		commands.add(new ClientCodeGenOperation());
 		commands.add(new AxisClientOutputCommand(this,ctx));
 		commands.add(new BuildProjectCommand());
 		return new SimpleCommandFactory(commands);
@@ -135,24 +133,24 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		registry.addMapping(AxisClientDefaultingCommand.class, "JavaWSDLParam", ValidateWSDLCommand.class);
 		registry.addMapping(AxisClientDefaultingCommand.class, "WsdlServiceURL", ValidateWSDLCommand.class);
 		registry.addMapping(AxisClientDefaultingCommand.class, "WebServicesParser", ValidateWSDLCommand.class);
+
 		// WSDL2JavaCommand() // javaParam_
-		registry.addMapping(AxisClientDefaultingCommand.class, "JavaWSDLParam", WSDL2JavaCommand.class);
-		registry.addMapping(AxisClientDefaultingCommand.class, "WsdlURL", WSDL2JavaCommand.class, "WsdlURI", null); // URL
-																													// to
-																													// URI??
+		registry.addMapping(AxisClientDefaultingCommand.class, "JavaWSDLParam", ClientCodeGenOperation.class);
+		registry.addMapping(AxisClientDefaultingCommand.class, "WsdlURL", ClientCodeGenOperation.class, "WsdlURI", null);
+
 		// RefreshProjectCommand()
-		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", RefreshProjectCommand.class, "Project", null);
+		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", ClientCodeGenOperation.class, "Project", null);		
+		
 		// Stub2BeanCommand()
-		registry.addMapping(AxisClientDefaultingCommand.class, "JavaWSDLParam", Stub2BeanCommand.class);
-		registry.addMapping(AxisClientDefaultingCommand.class, "WebServicesParser", Stub2BeanCommand.class);
-		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", Stub2BeanCommand.class);
-		registry.addMapping(DefaultsForClientJavaWSDLCommand.class, "OutputFolder", Stub2BeanCommand.class );
+		registry.addMapping(AxisClientDefaultingCommand.class, "WebServicesParser", ClientCodeGenOperation.class);
+		registry.addMapping(DefaultsForClientJavaWSDLCommand.class, "OutputFolder", ClientCodeGenOperation.class );
+		
 		// BuildProjectCommand()
 		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", BuildProjectCommand.class, "Project", null);
 		registry.addMapping(AxisClientDefaultingCommand.class, "ForceBuild", BuildProjectCommand.class);
 		registry.addMapping(AxisClientDefaultingCommand.class, "ValidationManager", BuildProjectCommand.class);
 		
-		registry.addMapping(Stub2BeanCommand.class, "ProxyBean", AxisClientOutputCommand.class, "ProxyBean", null);
+		registry.addMapping(ClientCodeGenOperation.class, "ProxyBean", AxisClientOutputCommand.class, "ProxyBean", null);
 //		registry.addMapping(AxisClientDefaultingCommand.class, "GenerateProxy", ClientExtensionOutputCommand.class);
 //		registry.addMapping(AxisClientDefaultingCommand.class, "SetEndpointMethod", ClientExtensionOutputCommand.class);
 	}
