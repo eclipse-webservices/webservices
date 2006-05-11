@@ -14,12 +14,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -29,7 +31,10 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
@@ -79,43 +84,52 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	protected WSDLModelAdapter modelAdapter;
 	protected SourceEditorSelectionListener fSourceEditorSelectionListener;
 	protected WSDLSelectionManagerSelectionListener fWSDLSelectionListener;
-	
-	public IDescription buildModel(IFileEditorInput editorInput)
-	{   
-		try
-		{
-			Object obj = null;
-			Document document = ((IDOMModel) getTextEditor().getModel()).getDocument();
-			if (document instanceof INodeNotifier) {
-				INodeNotifier notifier = (INodeNotifier) document;
-				modelAdapter = (WSDLModelAdapter) notifier.getAdapterFor(WSDLModelAdapter.class);
-				if (modelAdapter == null) {
-					modelAdapter = new WSDLModelAdapter();
-					notifier.addAdapter(modelAdapter);
-					obj = modelAdapter.createDefinition(document.getDocumentElement(), document);
-				}
-				if (obj == null) {
-					obj = modelAdapter.createDefinition(document.getDocumentElement(), document);
-				}
-			}
-			
-			if (obj instanceof Definition)
-			{
-				Definition definition = (Definition) obj;
-				model = (IDescription) WSDLAdapterFactoryHelper.getInstance().adapt(definition); 
-			}
-//			wsdlResource.setModified(false);
-//			}
-		}
-		catch (StackOverflowError e)
-		{
-		}
-		catch (Exception ex)
-		{
-		}
-		
-		return model;
-	}
+
+  private IStructuredModel structuredModel;
+  
+  public IDescription buildModel(IFileEditorInput editorInput) {   
+	  try {
+		  // ISSUE: This code which deals with the structured model is similar to the one in the XSD editor. 
+		  // It could be refactored into the base class.
+
+		  Document document = null;
+		  IDocument doc = structuredTextEditor.getDocumentProvider().getDocument(editorInput);
+		  if (doc instanceof IStructuredDocument) {
+			  IStructuredModel model = StructuredModelManager.getModelManager().getExistingModelForEdit(doc);
+			  if (model == null) {
+				  model = StructuredModelManager.getModelManager().getModelForEdit((IStructuredDocument) doc);
+			  }
+			  structuredModel = model;
+			  document = ((IDOMModel) model).getDocument();
+		  }
+		  Assert.isNotNull(document);
+
+		  Object obj = null;
+
+		  if (document instanceof INodeNotifier) {
+			  INodeNotifier notifier = (INodeNotifier) document;
+			  modelAdapter = (WSDLModelAdapter) notifier.getAdapterFor(WSDLModelAdapter.class);
+			  if (modelAdapter == null) {
+				  modelAdapter = new WSDLModelAdapter();
+				  notifier.addAdapter(modelAdapter);
+				  obj = modelAdapter.createDefinition(document.getDocumentElement(), document);
+			  }
+			  if (obj == null) {
+				  obj = modelAdapter.createDefinition(document.getDocumentElement(), document);
+			  }
+		  }
+
+		  if (obj instanceof Definition) {
+			  Definition definition = (Definition) obj;
+			  model = (IDescription) WSDLAdapterFactoryHelper.getInstance().adapt(definition);
+		  }
+	  }
+	  catch (Exception e) {
+		  e.printStackTrace();
+	  }    
+
+	  return model;
+  }
 	
 	private XSDSchema[] getInlineSchemas() {
 		List types = getModel().getTypes();
@@ -345,9 +359,14 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	}
 	
 	public void dispose() {
+		if (structuredModel != null) {
+			structuredModel.releaseFromEdit();      
+		}
 		if (resourceChangeHandler != null) {
 			resourceChangeHandler.dispose();
 		}
+		getSelectionManager().removeSelectionChangedListener(fWSDLSelectionListener);
+		super.dispose();
 	}
 	
 	public void reloadDependencies() {
