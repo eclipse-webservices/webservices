@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"  "concept.dtd">
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
 <concept id="webservicesstandards" xml:lang="en-us">
 <title>Web services standards</title>
 <shortdesc>One of the key attributes of Internet standards is that they focus
@@ -9,6 +10,10 @@ technologies that successfully interoperate through shared protocols. This
 prevents individual vendors from imposing a standard on the Internet. Open
 Source software development plays a crucial role in preserving the interoperability
 of vendor implementations of standards.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web services<indexterm>standards</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <conbody>
 <p>The following standards play key roles in Web services: Universal Description,
 Discovery and Integration (UDDI), Web Services Description Language (WSDL),
@@ -50,7 +55,8 @@ data types.</li>
 <li>A convention for representing remote procedure calls and responses.</li>
 </ul>SOAP enables the binding and usage of discovered Web services by defining
 a message path for routing messages. SOAP may be used to query UDDI for Web
-services. For more information on SOAP, refer to  <xref format="html" href="http://www.w3.org/TR/SOAP"
+services. For more information on SOAP 1.1 (SOAP 1.2 is not supported by the
+Web services tools), refer to  <xref format="html" href="http://www.w3.org/TR/SOAP"
 scope="external">www.w3.org/TR/SOAP</xref></p>
 <p>Figure 2. Relationships between SOAP, UDDI, WSIL and WSDL.</p>
 <p> <image alt="Figure 2 illustrates the relationships between SOAP, UDDI, WSIL, and WSDL."

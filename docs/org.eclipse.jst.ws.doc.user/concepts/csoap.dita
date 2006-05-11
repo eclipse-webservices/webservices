@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"  "concept.dtd">
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
 <concept id="csoap" xml:lang="en-us">
 <title>SOAP</title>
 <shortdesc>SOAP (formerly known as Simple Object Access Protocol) is a lightweight
 protocol for the exchange of information in a decentralized, distributed environment.
 A SOAP message is a transmission of information from a sender to a receiver.
 SOAP messages can be combined to perform request/response patterns. </shortdesc>
+<prolog><metadata>
+<keywords><indexterm>SOAP<indexterm>overview</indexterm></indexterm><indexterm>Web
+services<indexterm>SOAP</indexterm><indexterm>binding styles</indexterm><indexterm>encoding
+styles</indexterm><indexterm>mappings</indexterm></indexterm></keywords>
+</metadata></prolog>
 <conbody>
 <p>SOAP is transport independent but is most commonly carried over HTTP in
 order to run with the existing Internet infrastructure.&nbsp; SOAP enables

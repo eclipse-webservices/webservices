@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"  "concept.dtd">
-<concept id="creatingbottom-upwebservices" xml:lang="en-us"><?Pub Caret?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<concept id="creatingbottom-upwebservices" xml:lang="en-us">
 <title>Creating bottom-up Web services</title>
 <shortdesc>Web services can be created using two methods: top-down development
 and bottom-up development. Bottom-up Web services development involves creating
 a Web service from a <tm tmclass="special" tmowner="Sun Microsystems, Inc."
 tmtype="tm" trademark="Java">Java</tm> bean or enterprise bean.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web services<indexterm>bottom-up<indexterm>overview</indexterm></indexterm></indexterm>
+<indexterm>bottom-up<indexterm>creating Web services</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <conbody>
 <p>Although bottom-up Web service development may be faster and easier, especially
 if you are new to Web services, the top-down approach is the recommended way
@@ -30,4 +36,3 @@ services</linktext></link>
 </linklist>
 </related-links>
 </concept>
-<?Pub *0000001612?>

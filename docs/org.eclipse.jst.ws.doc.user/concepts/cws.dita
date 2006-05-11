@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"  "concept.dtd">
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
 <concept id="cws" xml:lang="en-us">
 <title>Web services overview</title>
 <shortdesc>A Web service is a set of related application functions that can
@@ -9,6 +10,10 @@ mix and match Web services to perform complex transactions with minimal programm
 Web services allow buyers and sellers all over the world to discover each
 other, connect dynamically, and execute transactions in real time with minimal
 human interaction.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Web services<indexterm>overview</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <conbody>
 <p>Web services are self-contained, self-describing modular applications that
 can be published, located, and invoked across the Web.</p>
@@ -71,7 +76,7 @@ The relationships between these roles are described in Figure 1.</p><p>Figure
 1. Service roles and interactions.</p><p> <image alt="Figure 1 illustrates the interactions between the service broker, service provider, and service requestor."
 href="../images/roles.gif"></image> </p><p>For more information on Web services,
 refer to  <xref format="html" href="http://www.ibm.com/developerworks/webservices"
-scope="external">www..com/developerworks/webservices</xref></p></section>
+scope="external">www.ibm.com/developerworks/webservices</xref></p></section>
 </conbody>
 <related-links>
 <linklist><title>Related Concepts</title>

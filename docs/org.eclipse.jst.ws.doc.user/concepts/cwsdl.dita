@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"  "concept.dtd">
-<?Pub Inc?>
-<concept id="cwsdl" xml:lang="en-us"><?Pub Caret?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<concept id="cwsdl" xml:lang="en-us">
 <title>Web Services Description Language (WSDL)</title>
 <shortdesc>Web Services Description Language (WSDL) is a standard specification
 for describing networked, XML-based services. It provides a simple way for
 service providers to describe the basic format of requests to their systems
 regardless of the underlying run-time implementation.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>WSDL<indexterm>overview</indexterm></indexterm><indexterm>Web
+services<indexterm>WSDL</indexterm></indexterm></keywords>
+</metadata></prolog>
 <conbody>
 <p>WSDL defines an XML format for describing network services as a set of
  <varname>endpoints</varname> that operate on messages that contain either
@@ -67,4 +71,3 @@ services</linktext></link>
 </linklist>
 </related-links>
 </concept>
-<?Pub *0000004138?>

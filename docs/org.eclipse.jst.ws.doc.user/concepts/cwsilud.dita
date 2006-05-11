@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"  "concept.dtd">
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
 <concept id="cwsilud" xml:lang="en-us">
 <title>Relationship between UDDI and WSIL</title>
 <shortdesc>The Web Services Inspection Language (WSIL) and the Universal Description,
@@ -9,6 +10,10 @@ to Web service discovery.&nbsp; However, each specification takes a different
 approach to the discovery of Web services.&nbsp; The two specifications can
 be used separately or jointly; searching with WSIL can result in finding items
 in UDDI.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>UDDI<indexterm>relationship with WSIL</indexterm></indexterm>
+<indexterm>WSIL<indexterm>relationship with UDDI</indexterm></indexterm></keywords>
+</metadata></prolog>
 <conbody>
 <p>The UDDI specification addresses Web service discovery through the use
 of a centralized model.&nbsp; One or more repositories are created to house
@@ -60,9 +65,8 @@ the WSDL documents themselves.</note>
 <link href="cwsil.dita"></link>
 </linklist>
 <linklist><title>Related Tasks</title>
-<link href="../tasks/toverws.dita" scope="peer"><?Pub Caret?><linktext> Developing
-Web services</linktext></link>
+<link href="../tasks/toverws.dita" scope="peer"><linktext> Developing Web
+services</linktext></link>
 </linklist>
 </related-links>
 </concept>
-<?Pub *0000004226?>

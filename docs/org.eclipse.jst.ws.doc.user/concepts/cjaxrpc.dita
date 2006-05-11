@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"  "concept.dtd">
-<concept id="cjaxrpc" xml:lang="en-us"><?Pub Caret?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
+<concept id="cjaxrpc" xml:lang="en-us">
 <title>JAX-RPC</title>
 <shortdesc>JAX-RPC stands for <tm tmclass="special" tmowner="Sun Microsystems, Inc."
 tmtype="tm" trademark="Java">Java</tm> API for XML-based RPC, also known as
@@ -16,6 +17,10 @@ Web services and Web service clients on the <tm tmclass="special" tmowner="Sun M
 tmtype="tm" trademark="Java">Java</tm> platform. Often used in a distributed
 client/server model, an RPC mechanism enables clients to execute procedures
 on other systems.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>JAX-RPC</indexterm><indexterm>Web services<indexterm>JAX-RPC</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <conbody>
 <p>The current release of JAX-RPC requires the support of SOAP over HTTP for
 interoperability purposes. The SOAP specification defines message structure,
@@ -58,4 +63,3 @@ services</linktext></link>
 </linklist>
 </related-links>
 </concept>
-<?Pub *0000003863?>

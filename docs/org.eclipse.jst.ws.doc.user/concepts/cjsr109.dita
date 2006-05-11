@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"  "concept.dtd">
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
 <concept id="cjsr109" xml:lang="en-us">
 <title>JSR 109 and JSR 921- Implementing Enterprise Web services</title>
 <shortdesc>JSR 109 and JSR 921 (Implementing Enterprise Web Services) define
@@ -8,6 +9,11 @@ the programming model and run-time architecture to deploy and look up Web
 services in the J2EE environment; more specifically, in the Web, EJB, and
 Client Application containers. One of its main goals is to ensure vendors'
 implementations interoperate.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>JSR 109</indexterm><indexterm>Web services<indexterm>JSR
+109</indexterm></indexterm><indexterm>JSR 921</indexterm><indexterm>Web services<indexterm>JSR
+921</indexterm></indexterm></keywords>
+</metadata></prolog>
 <conbody>
 <p>JSR 109 and JSR 921 build on top of JAX-RPC to cover the use of JAX-RPC
 in a J2EE environment, as well as the implementation and deployment of Web

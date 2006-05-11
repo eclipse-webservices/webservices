@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Arbortext, Inc., 1988-2005, v.4002-->
-<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"  "concept.dtd">
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "concept.dtd">
 <concept id="cwsil" xml:lang="en-us">
 <title>Web Services Inspection Language (WSIL)</title>
 <shortdesc>Web Services Inspection Language (WSIL) is a service discovery
@@ -8,6 +9,10 @@ mechanism that is an alternative to UDDI as well as complementary to UDDI.
 When you discover Web services with UDDI, you go to a centralized registry.&nbsp;
 WSIL is an alternative approach to Web service discovery.&nbsp; WSIL allows
 you to go directly to the service provider and ask for the services it provides.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>WSIL<indexterm>overview</indexterm></indexterm><indexterm>Web
+services<indexterm>WSIL</indexterm></indexterm></keywords>
+</metadata></prolog>
 <conbody>
 <p><tm tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="IBM">IBM</tm> and
 Microsoft's proposal for the WSIL specification is designed around an XML-based
