@@ -20,13 +20,12 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
-import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11RenameCommand;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.IActionProvider;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
@@ -130,21 +129,36 @@ public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionP
 	}
 	
 	public boolean isReadOnly() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		
-		if (window != null && window.getActivePage() != null) {
-			IEditorPart editor = window.getActivePage().getActiveEditor();
-			
-			if (target instanceof WSDLElement && editor instanceof ASDMultiPageEditor) {
-				Definition definition = ((WSDLElement) target).getEnclosingDefinition();
-				W11Description description = (W11Description) ((ASDMultiPageEditor) editor).getModel();
-				if (!definition.equals(description.getTarget())) {
-					return true;
+		Definition definition = null;
+		try	{
+			IEditorPart editorPart = null;
+			IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+			if (window != null)	{
+				IWorkbenchPage page = window.getActivePage();
+				if (page != null) {
+					editorPart = page.getActiveEditor();
 				}
 			}
+			if (target instanceof WSDLElement) {
+				definition = ((WSDLElement) target).getEnclosingDefinition();
+			}
+			if (editorPart == null) {
+				return fallBackCheckIsReadOnly();
+			}
+
+			Definition editorDefinition = (Definition) editorPart.getAdapter(Definition.class);
+			if (definition != null && definition == editorDefinition) {
+				return false;
+			}
+			else {
+				return fallBackCheckIsReadOnly();
+			}
+		}
+		catch(Exception e) {
+
 		}
 		
-		return fallBackCheckIsReadOnly();
+		return true;
 	}
 	
 	private boolean fallBackCheckIsReadOnly() {

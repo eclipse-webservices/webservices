@@ -143,7 +143,11 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	}
 	
 	public Object getAdapter(Class type) {
-		if (type == ISelectionMapper.class)
+		if (type == Definition.class)
+		{
+			return ((W11Description) getModel()).getTarget();
+		}
+		else if (type == ISelectionMapper.class)
 		{
 			return new WSDLSelectionMapper();
 		}
