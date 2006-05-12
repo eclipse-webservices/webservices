@@ -19,7 +19,6 @@ import javax.wsdl.OperationType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Output;
@@ -118,11 +117,7 @@ public class W11Operation extends WSDLBaseAdapter implements IOperation {
 	}
 	
 	public Command getAddFaultCommand(Object fault) {
-		Fault aFault = null;
-		if (fault instanceof Fault) {
-			aFault = (Fault) fault;
-		}
-		return new W11AddFaultParameterCommand(getOperation(), aFault);
+		return new W11AddFaultParameterCommand(getOperation(), null);
 	}
 	
 	public Command getReorderMessageReferencesCommand(IMessageReference leftSibling, IMessageReference rightSibling, IMessageReference movingMessageRef) {
