@@ -1,3 +1,18 @@
+<%
+/*******************************************************************************
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060512   121210 mahutch@ca.ibm.com - Mark Hutchinson
+ *******************************************************************************/
+%>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*,
@@ -109,7 +124,45 @@
     <table>
       <tr>
         <td class="labels">
-          <%=wsdlPerspective.getMessage("FORM_LABEL_INVOKE_WSDL_OPERATION_DESC")%>
+
+        <%           
+		//here we determine if there are any input parameters for this operation
+		boolean hasInput = true;
+		selectedNode = wsdlPerspective.getNodeManager().getSelectedNode();  
+		Iterator iter = operElement.getOrderedBodyParts().iterator();        
+		String operationName = operElement.getName();
+
+		while (iter.hasNext())
+		{
+			Part part = (Part)iter.next(); 
+			IXSDFragment frag = operElement.getFragment(part);  
+			org.eclipse.xsd.XSDTypeDefinition def = frag.getXSDTypeDefinition();
+			//we check the type of the operation's input message
+			if (def == null)
+			{
+				//this is the pattern <element name="foo"></element>
+				hasInput = false;
+			}
+			else
+			{
+				org.w3c.dom.Element element = def.getElement();				
+				if (element.getLocalName().equals("complexType") && !element.hasChildNodes())
+				{	//this is the pattern  <element name="foo"><complexType/></element>
+					//there could be other patterns with no input but they are uncommon
+					hasInput = false;
+				}
+			} 
+      	}
+		if (hasInput)
+		{
+			out.print(wsdlPerspective.getMessage("FORM_LABEL_INVOKE_WSDL_OPERATION_DESC"));
+		}
+		else
+		{
+			out.print(wsdlPerspective.getMessage("FORM_LABEL_INVOKE_WSDL_OPERATION_DESC_NO_INPUT", operationName ));
+		}
+        %>
+         
         </td>
       </tr>
     </table>
