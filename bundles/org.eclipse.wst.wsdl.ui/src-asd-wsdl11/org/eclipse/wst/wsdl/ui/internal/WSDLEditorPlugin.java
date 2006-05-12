@@ -39,7 +39,7 @@ import org.osgi.framework.BundleContext;
 public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
 {
   public static final String DEFAULT_PAGE = "org.eclipse.wst.wsdl.ui.internal.defaultpage"; //$NON-NLS-1$
-  public static final String GRAPH_PAGE = "org.eclipse.wst.wsdl.ui.internal.graphpage"; //$NON-NLS-1$
+  public static final String DESIGN_PAGE = "org.eclipse.wst.wsdl.ui.internal.designpage"; //$NON-NLS-1$
   public static final String SOURCE_PAGE = "org.eclipse.wst.wsdl.ui.internal.sourcepage"; //$NON-NLS-1$
 
   public final static String PLUGIN_ID = "org.eclipse.wst.wsdl.ui"; //$NON-NLS-1$
@@ -261,7 +261,7 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
    */
   protected void initializeDefaultPreferences(IPreferenceStore store)
   {
-    store.setDefault(DEFAULT_PAGE, GRAPH_PAGE);
+    store.setDefault(DEFAULT_PAGE, DESIGN_PAGE);
     
     // WSDLPreferencePage prefs
     store.setDefault(Messages.getString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"), DEFAULT_TARGET_NAMESPACE); //$NON-NLS-1$

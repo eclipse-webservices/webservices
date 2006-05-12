@@ -21,6 +21,7 @@ import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddEndPointAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
@@ -54,6 +55,7 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
   // TODO: move to design viewer
   protected DesignViewContextMenuProvider menuProvider;
   protected IDescription model;
+  private int currentPage = -1;
   
   /**
    * Creates a multi-page editor example.
@@ -98,12 +100,19 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
     createGraphPage();
     createSourcePage();
 
-    
-    
     buildAndSetModel();
     initializeGraphicalViewer();
-    setActivePage(0);
+    setActivePage(getDefaultPageTypeIndex());
   }
+  
+  protected int getDefaultPageTypeIndex() {
+	  int pageIndex = SOURCE_PAGE_INDEX;
+	  if (WSDLEditorPlugin.getInstance().getDefaultPage().equals(WSDLEditorPlugin.DESIGN_PAGE)) {
+		  pageIndex = DESIGN_PAGE_INDEX;
+	  }
+
+	  return pageIndex;
+	  }
   
   protected ScrollingGraphicalViewer getGraphicalViewer()
   {
@@ -232,6 +241,22 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
   {
     graphicalViewer.setContents(model);
     menuProvider = new DesignViewContextMenuProvider(graphicalViewer, getSelectionManager());
+  }
+  
+  protected void pageChange(int newPageIndex) {
+    currentPage = newPageIndex;
+    super.pageChange(newPageIndex);
+  }
+  
+  public void dispose() {
+	  if (currentPage == SOURCE_PAGE_INDEX) {
+		  WSDLEditorPlugin.getInstance().setDefaultPage(WSDLEditorPlugin.SOURCE_PAGE);
+	  }
+	  else {
+		  WSDLEditorPlugin.getInstance().setDefaultPage(WSDLEditorPlugin.DESIGN_PAGE);
+	  }
+
+	  super.dispose();
   }
   
   public abstract IOpenExternalEditorHelper getOpenExternalEditorHelper();
