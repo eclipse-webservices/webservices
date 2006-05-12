@@ -38,6 +38,7 @@ import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11OpenImportAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingElementAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingTypeAction;
@@ -426,6 +427,10 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	    registry.registerAction(action);
 	    
 	    action = new W11SetExistingElementAction(this);
+	    action.setSelectionProvider(getSelectionManager());
+	    registry.registerAction(action);
+	    
+	    action = new W11OpenImportAction(this);
 	    action.setSelectionProvider(getSelectionManager());
 	    registry.registerAction(action);
 	  }
