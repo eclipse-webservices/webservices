@@ -140,10 +140,10 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
   }
   
   public void addFeedback() {
-	  	
+	  label.getParent().setBackgroundColor(DesignViewGraphicsConstants.tableCellSelectionColor);
   }
 
   public void removeFeedback() {
-	  
+	  label.getParent().setBackgroundColor(ColorConstants.tooltipBackground);
   }
 }
