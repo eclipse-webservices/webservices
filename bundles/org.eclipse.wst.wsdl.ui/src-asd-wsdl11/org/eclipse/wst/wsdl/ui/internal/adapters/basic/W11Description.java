@@ -30,12 +30,16 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInterfaceCommand
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddSchemaCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddServiceCommand;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11EditNamespacesCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddServiceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
+import org.eclipse.wst.xml.core.internal.contentmodel.util.DOMNamespaceInfoManager;
+import org.w3c.dom.Element;
 
 public class W11Description extends WSDLBaseAdapter implements IDescription {
 	private List categories = new ArrayList();
@@ -238,6 +242,16 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 		return new W11AddMessageCommand((Definition) target);	
 	}
 	
+	public Command getEditNamespacesCommand() {
+		return new W11EditNamespacesCommand((Definition) target);
+	}
+	
+	public List getNamespacesInfo() {
+		DOMNamespaceInfoManager namespaceInfoManager = new DOMNamespaceInfoManager();
+		Element element = WSDLEditorUtil.getInstance().getElementForObject((Definition) target);
+		return namespaceInfoManager.getNamespaceInfoList(element);
+	}
+	
 	public Image getImage() {
 		return null;
 	}
@@ -287,35 +301,38 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 			adapter.setChildren(getImports());
 			notifyListeners(new CategoryNotification(adapter), adapter.getText());
 		}
-		if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_ETypes()) {
+		else if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_ETypes()) {
 			W11CategoryAdapter adapter = getCategory(W11CategoryAdapter.IMPORTS);
 			Assert.isTrue(adapter != null);
 			adapter.setChildren(getImports());
 			notifyListeners(new CategoryNotification(adapter), adapter.getText());
 		}
-		if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_EServices()) {
+		else if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_EServices()) {
 			W11CategoryAdapter adapter = getCategory(W11CategoryAdapter.SERVICES);
 			Assert.isTrue(adapter != null);
 			adapter.setChildren(getServices());
 			notifyListeners(new CategoryNotification(adapter), adapter.getText());
 		}
-		if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_EBindings()) {
+		else if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_EBindings()) {
 			W11CategoryAdapter adapter = getCategory(W11CategoryAdapter.BINDINGS);
 			Assert.isTrue(adapter != null);
 			adapter.setChildren(getBindings());
 			notifyListeners(new CategoryNotification(adapter), adapter.getText());
 		}
-		if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_EPortTypes()) {
+		else if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_EPortTypes()) {
 			W11CategoryAdapter adapter = getCategory(W11CategoryAdapter.INTERFACES);
 			Assert.isTrue(adapter != null);
 			adapter.setChildren(getInterfaces());
 			notifyListeners(new CategoryNotification(adapter), adapter.getText());
 		}
-		if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_EMessages()) {
+		else if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_EMessages()) {
 			W11CategoryAdapter adapter = getCategory(W11CategoryAdapter.MESSAGES);
 			Assert.isTrue(adapter != null);
 			adapter.setChildren(getMessages());
 			notifyListeners(new CategoryNotification(adapter), adapter.getText());
+		}
+		else {
+			notifyListeners(null, null);
 		}
 	}
 }

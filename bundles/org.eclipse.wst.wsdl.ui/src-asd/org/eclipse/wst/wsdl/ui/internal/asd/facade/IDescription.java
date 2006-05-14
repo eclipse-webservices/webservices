@@ -19,6 +19,7 @@ public interface IDescription extends INamedObject
 {
 	public String getTargetNamespace();
 	public String getTargetNamespacePrefix();
+//	public List getNamespacesInfo();	// TODO: Add this method in the future
 	
 	public List getImports();
 	public List getTypes();
@@ -33,4 +34,5 @@ public interface IDescription extends INamedObject
 	public Command getAddBindingCommand();
 	public Command getAddInterfaceCommand();
 	public Command getAddMessageCommand();
+//	public Command getEditNamespacesCommand();	// TODO: Add this method in the future
 }

@@ -12,6 +12,7 @@ package org.eclipse.wst.wsdl.ui.internal.asd.properties.sections;
 
 import java.util.List;
 
+import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionEvent;
@@ -22,11 +23,17 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11EditNamespacesCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDEditNamespacesAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.INamedObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ICategoryAdapter;
 import org.eclipse.wst.xml.ui.internal.nsedit.CommonEditNamespacesTargetFieldDialog;
 import org.eclipse.wst.xml.ui.internal.nsedit.CommonNamespaceInfoTable;
@@ -134,45 +141,24 @@ public class NamespaceSection extends ASDAbstractSection {
 	public void doHandleEvent(Event event)
 	{
 		handlingEvent = true;
-		/*
-		  if (event.widget == nameText) {
-		  	Object obj = getElement();
-		  	if (obj instanceof Definition) {
-		  		Definition definition = (Definition) obj;
-		  		String uri = "";
-		  		if (definition.getQName() != null) {
-		  			uri = definition.getQName().getNamespaceURI();
-		  		}
-		  		definition.setQName(new QName(uri, nameText.getText()));
-		  	}
-		  }
-		  else if (event.widget == prefixText) {
-		  	Object obj = getElement();
-		  	if (obj instanceof Definition) {
-		  		Definition definition = (Definition) obj;
-		  		Element element = definition.getElement();
-		  		
-		  		// Remove the old prefix
-		  		String oldPrefix = definition.getPrefix(definition.getTargetNamespace());
-		  		element.removeAttribute("xmlns:"+oldPrefix); 
-		  		
-		  		// Set the new prefix
-		  	  	element.setAttribute("xmlns:" + prefixText.getText(), definition.getTargetNamespace());
-		  	}
-		  }
-		  else if (event.widget == targetNamespaceText)
-		  {
-			  Object obj = getElement();
-			  if (obj instanceof Definition)
-			  {
-			    Definition definition = (Definition)obj;
-			    String newValue = targetNamespaceText.getText();
-			    String prefix = definition.getPrefix(definition.getTargetNamespace());
-			    definition.setTargetNamespace(newValue);
-			    definition.getElement().setAttribute("xmlns:" + prefix, newValue);
-			  }
-		  }
-		 */
+		Object obj = getDescription();
+		if (obj instanceof IDescription) {
+			IDescription description = (IDescription) obj;
+
+			if (event.widget == nameText) {
+				Command command = description.getSetNameCommand(nameText.getText());
+				executeCommand(command);
+			}
+			else if (event.widget == prefixText || event.widget == targetNamespaceText) {
+				// TODO: The code below is not generic.  We need to revisit this to ensure it is
+				// generic.  IDescription needs a getNamespacesInfo() and getEditNamespacesCommand()...
+				W11EditNamespacesCommand command = (W11EditNamespacesCommand) ((W11Description) description).getEditNamespacesCommand();
+				command.setTargetNamespace(targetNamespaceText.getText());
+				command.setTargetNamespacePrefix(prefixText.getText());
+				executeCommand(command);
+			}
+		}
+
 		handlingEvent = false;		
 	}
 	
@@ -187,7 +173,7 @@ public class NamespaceSection extends ASDAbstractSection {
 		else if (model instanceof ICategoryAdapter) {
 			return ((ICategoryAdapter) model).getOwnerDescription();
 		}
-		
+
 		return model;
 	}
 	/*
@@ -197,11 +183,24 @@ public class NamespaceSection extends ASDAbstractSection {
 	{
 		super.refresh();
 		
+		// Set nameText
+		if (nameText == null || nameText.isFocusControl()) {
+			return;
+		}
+		setListenerEnabled(false);
+		nameText.setText(""); //$NON-NLS-1$
+		if (getDescription() instanceof INamedObject) {
+			nameText.setText(((INamedObject) getDescription()).getName());
+		}		
+		setListenerEnabled(true);
+		
+		
+		// Set targetNamespaceText and prefixText
 		if (targetNamespaceText == null || targetNamespaceText.isFocusControl() || handlingEvent)
 		{
 			return;
 		}
-		setListenerEnabled(false);  
+		setListenerEnabled(false);
 		Object obj = getDescription();
 		if (obj instanceof IDescription)
 		{
@@ -214,49 +213,11 @@ public class NamespaceSection extends ASDAbstractSection {
 			if (targetNS != null)
 			{
 				targetNamespaceText.setText(targetNS);
-				
-				/*
-		    	Element element = definition.getElement();
-
-	        String newPrefix = definition.getPrefix(targetNS);
-	        if (newPrefix == null) newPrefix = "";
-	        // TODO: remove this code
-	        if (element != null)
-	        {
-	  	    	for (int index = 0; index < element.getAttributes().getLength(); index++) {
-	  	    		AttrImpl attr = (AttrImpl) element.getAttributes().item(index);
-	  	    		String nodeName = attr.getNodeName();
-	  	    		String nsValue = attr.getNodeValue();
-	  	    		if (nsValue.equals(targetNS)) {
-	  	    			if (nodeName.indexOf(":") != -1) {
-	  	    				String xmlnsString = nodeName.substring(0, nodeName.indexOf(":"));
-	  	    				
-	  	    				if (xmlnsString.equals("xmlns")) {
-	  	    	    			newPrefix = attr.getLocalName();
-	  	    	    			break;
-	  	    				}
-	  	    			}
-	  	    		}
-	  	    	}
-	        }
-		    	prefixText.setText(newPrefix);
-				 */
 			}
-			
-			
-			
-			// set name field
-			nameText.setText(description.getName());
-			
-//			if (getElement() != null)
-//			{
-//			if (getElement().getElement()!= null)
-//			{
-//			String name = getElement().getElement().getAttribute("name"); //$NON-NLS-1$
-//			if (name==null) name="";
-//			nameText.setText(name);
-//			}
-//			}
+			if (newPrefix != null)
+			{
+				prefixText.setText(newPrefix);
+			}
 		}
 		setListenerEnabled(true);
 	}
@@ -264,18 +225,14 @@ public class NamespaceSection extends ASDAbstractSection {
 	
 	public void widgetSelected(SelectionEvent e)
 	{
-		if (e.widget == button)
-		{
-			/*
-	      Object obj = getElement();
-	      if (obj instanceof Definition)
-	      {
-	        Definition definition = (Definition)obj;
-	        EditNamespacesAction action = new EditNamespacesAction(definition);
-	      	action.run();
-	        refresh();
-	      }
-			 */
+		if (e.widget == button)	{
+			Object obj = getDescription();
+			if (obj instanceof IDescription) {
+				IWorkbenchPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart();
+				ASDEditNamespacesAction action = new ASDEditNamespacesAction(part, (IDescription) obj);
+				action.run();
+				refresh();
+	        }
 		}
 	}
 }
