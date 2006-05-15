@@ -13,6 +13,7 @@
  * 20060329   128827 kathy@ca.ibm.com - Kathy Chan
  * 20060329   124667 kathy@ca.ibm.com - Kathy Chan
  * 20060331   128827 kathy@ca.ibm.com - Kathy Chan
+ * 20060515   141398 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui;
 
@@ -38,6 +39,8 @@ public final class WSUIPluginMessages extends NLS {
 	public static String BUTTON_LAUNCH_SAMPLE;
 	public static String LABEL_MOVE_UP;
 	public static String LABEL_MOVE_DOWN;
+	public static String LABEL_MOVE_UP_2;
+	public static String LABEL_MOVE_DOWN_2;
 	public static String TOOLTIP_PPSD_PAGE;
 	public static String TOOLTIP_PPSD_CHECKBOX_LAUNCH_SAMPLE;
 	public static String TOOLTIP_CLIENT_TYPE_TABLE_VIEWER;

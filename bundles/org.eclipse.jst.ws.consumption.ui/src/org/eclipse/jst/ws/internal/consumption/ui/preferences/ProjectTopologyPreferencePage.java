@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060515   141398 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
@@ -161,13 +162,13 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     c.setLayout(gl);
 
     moveUp_ = new Button(c, SWT.PUSH);
-    moveUp_.setText(WSUIPluginMessages.LABEL_MOVE_UP);
+    moveUp_.setText(WSUIPluginMessages.LABEL_MOVE_UP_2);
     moveUp_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
     moveUp_.addSelectionListener(this);
     moveUp_.setToolTipText(WSUIPluginMessages.TOOLTIP_MOVE_UP);
 
     moveDown_ = new Button(c, SWT.PUSH);
-    moveDown_.setText(WSUIPluginMessages.LABEL_MOVE_DOWN);
+    moveDown_.setText(WSUIPluginMessages.LABEL_MOVE_DOWN_2);
     moveDown_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
     moveDown_.addSelectionListener(this);
     moveDown_.setToolTipText(WSUIPluginMessages.TOOLTIP_MOVE_DOWN);
