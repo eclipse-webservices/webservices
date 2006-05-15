@@ -205,6 +205,13 @@
 	    </input>
 	 </propertySection>
 	 
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.extensibility" 
+        class="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11ExtensionsSection"
+	 	id="prop.section.W11ApplicationInfoSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection">
+	    </input>
+	 </propertySection>
+	 
 	 <propertySection tab="org.eclipse.wst.xmlwebservices.general"
         class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NameSection"
 	 	id="prop.section.NameSection">
