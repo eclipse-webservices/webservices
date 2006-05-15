@@ -11,6 +11,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060509   103072 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20060515   140607 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.perspective.Node,
@@ -78,7 +79,7 @@ soapResponseTwistImageName.append(soapResponseTableContainerId);
   <table width="95%" height="50%" border=0 cellpadding=0 cellpadding=0>
     <tr>
       <td>
-        <iframe frameborder=0 src="<%=response.encodeURL(controller.getPathWithContext(wsdlPerspective.getSOAPEnvelopeXMLLink(WSDLActionInputs.SOAP_ENVELOPE_TYPE_REQUEST)))%>" width="95%" height="100%"></iframe>
+        <iframe name="requestEnvelopeFrame" frameborder=0 src="<%=response.encodeURL(controller.getPathWithContext(wsdlPerspective.getSOAPEnvelopeXMLLink(WSDLActionInputs.SOAP_ENVELOPE_TYPE_REQUEST)))%>" width="95%" height="100%"></iframe>
       </td>
     </tr>
   </table>
@@ -104,7 +105,8 @@ if (operElement.getOperation().getOutput() != null)
   <table width="95%" height="50%" border=0 cellpadding=0 cellpadding=0>
     <tr>
       <td>
-        <iframe frameborder=0 src="<%=response.encodeURL(controller.getPathWithContext(wsdlPerspective.getSOAPEnvelopeXMLLink(WSDLActionInputs.SOAP_ENVELOPE_TYPE_RESPONSE)))%>" width="95%" height="100%"></iframe>
+      	<!-- the onload call is to fix bug 140607 in bugzilla -->
+        <iframe onload="javascript:requestEnvelopeFrame.document.location.reload()" frameborder=0 src="<%=response.encodeURL(controller.getPathWithContext(wsdlPerspective.getSOAPEnvelopeXMLLink(WSDLActionInputs.SOAP_ENVELOPE_TYPE_RESPONSE)))%>" width="95%" height="100%"></iframe>
       </td>
     </tr>
   </table>
