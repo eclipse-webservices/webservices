@@ -40,7 +40,7 @@ public class W11CategoryAdapter extends WSDLBaseAdapter implements ICategoryAdap
 	  public static String TYPES_HEADER_TEXT = Messages.getString("_UI_FOLDER_TYPES"); //$NON-NLS-1$
 	  public static String SERVICE_HEADER_TEXT = Messages.getString("_UI_FOLDER_SERVICES"); //$NON-NLS-1$
 	  public static String BINDING_HEADER_TEXT = Messages.getString("_UI_FOLDER_BINDINGS"); //$NON-NLS-1$
-	  public static String INTERFACE_HEADER_TEXT = Messages.getString("_UI_FOLDER_PORTTYPES"); //$NON-NLS-1$
+	  public static String INTERFACE_HEADER_TEXT = Messages.getString("_UI_PORT_TYPE"); //$NON-NLS-1$
 	  public static String MESSAGE_HEADER_TEXT = Messages.getString("_UI_FOLDER_MESSAGES"); //$NON-NLS-1$
 
 	  protected String text;
