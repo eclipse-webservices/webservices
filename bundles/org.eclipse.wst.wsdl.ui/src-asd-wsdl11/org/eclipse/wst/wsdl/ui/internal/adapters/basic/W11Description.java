@@ -302,7 +302,7 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 			notifyListeners(new CategoryNotification(adapter), adapter.getText());
 		}
 		else if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_ETypes()) {
-			W11CategoryAdapter adapter = getCategory(W11CategoryAdapter.IMPORTS);
+			W11CategoryAdapter adapter = getCategory(W11CategoryAdapter.TYPES);
 			Assert.isTrue(adapter != null);
 			adapter.setChildren(getImports());
 			notifyListeners(new CategoryNotification(adapter), adapter.getText());
