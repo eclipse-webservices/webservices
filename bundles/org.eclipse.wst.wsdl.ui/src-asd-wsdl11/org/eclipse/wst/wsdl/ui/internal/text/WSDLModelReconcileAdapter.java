@@ -91,6 +91,13 @@ class WSDLModelReconcileAdapter extends ModelReconcileAdapter
         // if there's no definition element clear out the WSDL
         //
         ((DefinitionImpl)definition).removeAll();
+        
+        // vbaciu: The removeAll() call does not remove namespaces as well and the model
+        // does not reconcile well in this case
+        definition.getNamespaces().clear();
+        
+        //vbaciu: Reset the document because removeAll() sets the document to null as well.
+        definition.setDocument(document);
       }
     }         
   }

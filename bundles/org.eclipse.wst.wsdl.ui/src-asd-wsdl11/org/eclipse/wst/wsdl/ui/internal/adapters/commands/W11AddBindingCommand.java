@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
@@ -23,14 +22,12 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
-public class W11AddBindingCommand extends Command {
-	private Definition definition;
+public class W11AddBindingCommand extends W11TopLevelElementCommand {
 	private String newName;
 	private Binding newBinding;
 	
 	public W11AddBindingCommand(Definition definition) {
-        super(Messages.getString("_UI_ACTION_ADD_BINDING"));
-		this.definition = definition;
+    super(Messages.getString("_UI_ACTION_ADD_BINDING"), definition);
 	}
 	
 	public void setNewBindingName(String newName) {
@@ -42,6 +39,7 @@ public class W11AddBindingCommand extends Command {
 	}
 	
 	public void execute() {
+    super.execute();
 		if (newName == null || newName.equals("")) { //$NON-NLS-1$
 			newName = NameUtil.buildUniqueBindingName(definition, "NewBinding"); //$NON-NLS-1$
 		}

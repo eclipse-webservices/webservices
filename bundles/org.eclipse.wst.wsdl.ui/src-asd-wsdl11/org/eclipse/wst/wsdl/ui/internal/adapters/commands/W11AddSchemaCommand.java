@@ -15,30 +15,40 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.commands.AddTypesCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDSchemaCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
-public class W11AddSchemaCommand extends Command {
-	private Definition definition;
+public class W11AddSchemaCommand extends W11TopLevelElementCommand {
 	
 	public W11AddSchemaCommand(Definition definition) {
-        super(Messages.getString("_UI_ACTION_ADD_SCHEMA"));
-		this.definition = definition;
+    super(Messages.getString("_UI_ACTION_ADD_SCHEMA"), definition);
 	}
 	
 	public void execute() {
+	  super.execute();
+    
 		String tns = definition.getTargetNamespace();
 		List existingNamespaces = new ArrayList();
-		Iterator eeIt = definition.getETypes().getEExtensibilityElements().iterator();
+		Types types = definition.getETypes();
+
+		if (types == null)
+		{
+			AddTypesCommand command = new AddTypesCommand(definition);
+			command.run();
+			types = definition.getETypes();  
+		}
+
+		Iterator eeIt = types.getEExtensibilityElements().iterator();
 		while (eeIt.hasNext()) {
 			Object item = eeIt.next();
 			if (item instanceof XSDSchemaExtensibilityElement) {

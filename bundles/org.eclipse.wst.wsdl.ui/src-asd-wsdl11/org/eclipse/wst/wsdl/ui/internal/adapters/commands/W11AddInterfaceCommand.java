@@ -24,14 +24,12 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddPortTypeCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
-public class W11AddInterfaceCommand extends Command {
-	private Definition definition;
+public class W11AddInterfaceCommand extends W11TopLevelElementCommand {
 	private String newName;
 	private PortType newPortType;
 	
 	public W11AddInterfaceCommand(Definition definition) {
-        super(Messages.getString("_UI_ACTION_ADD_PORTTYPE"));
-		this.definition = definition;
+    super(Messages.getString("_UI_ACTION_ADD_PORTTYPE"), definition);
 	}
 	
 	public void setNewPortTypeName(String newName) {
@@ -43,6 +41,7 @@ public class W11AddInterfaceCommand extends Command {
 	}
 	
 	public void execute() {
+    super.execute();
 		if (newName == null || newName.equals("")) { //$NON-NLS-1$
 			newName = NameUtil.buildUniquePortTypeName(definition, "NewPortType"); //$NON-NLS-1$
 		}

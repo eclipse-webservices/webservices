@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
@@ -21,15 +20,13 @@ import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddImportCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
-public class W11AddImportCommand extends Command {
-	private Definition definition;
-	
+public class W11AddImportCommand extends W11TopLevelElementCommand {
 	public W11AddImportCommand(Definition definition) {
-        super(Messages.getString("_UI_ACTION_ADD_IMPORT"));
-		this.definition = definition;
+    super(Messages.getString("_UI_ACTION_ADD_IMPORT"), definition);
 	}
 	
 	public void execute() {
+    super.execute();
 		String namespace = ""; //$NON-NLS-1$
 		String location = ""; //$NON-NLS-1$
 		AddImportCommand command = new AddImportCommand(definition, namespace, location);

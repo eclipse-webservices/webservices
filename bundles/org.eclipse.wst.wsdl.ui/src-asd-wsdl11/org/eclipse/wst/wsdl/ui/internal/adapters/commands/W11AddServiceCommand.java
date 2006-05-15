@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
@@ -24,15 +23,14 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddServiceCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
-public class W11AddServiceCommand extends Command {
-	private Definition definition;
+public class W11AddServiceCommand extends W11TopLevelElementCommand {
 	
 	public W11AddServiceCommand(Definition definition) {
-        super(Messages.getString("_UI_ACTION_ADD_SERVICE"));
-		this.definition = definition;
+	  super(Messages.getString("_UI_ACTION_ADD_SERVICE"), definition);
 	}
 	
 	public void execute() {
+    super.execute();
 		String newName = NameUtil.buildUniqueServiceName(definition);
 		AddServiceCommand command = new AddServiceCommand(definition, newName, true);
 		command.run();

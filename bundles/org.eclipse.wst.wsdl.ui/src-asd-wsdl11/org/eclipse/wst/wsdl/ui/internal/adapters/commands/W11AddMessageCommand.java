@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
@@ -23,14 +22,12 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
-public class W11AddMessageCommand extends Command {
-    private Definition definition;
+public class W11AddMessageCommand extends W11TopLevelElementCommand {
     private String newName;
     private Message message;
 	
     public W11AddMessageCommand(Definition definition) {
-        super(Messages.getString("_UI_ACTION_ADD_MESSAGE"));
-        this.definition = definition;
+        super(Messages.getString("_UI_ACTION_ADD_MESSAGE"), definition);
     }
     
 	public void setNewMessageName(String newName) {
@@ -38,6 +35,7 @@ public class W11AddMessageCommand extends Command {
 	}
 
     public void execute() {
+      super.execute();
 		if (newName == null || newName.equals("")) { //$NON-NLS-1$
 			newName = NameUtil.buildUniqueMessageName(definition, "NewMessage"); //$NON-NLS-1$
 		}
