@@ -42,10 +42,6 @@
 <!--URI field of the Bean Config Page-->
 <description>This field contains the unique identifier of the Web service. It is read-only.</description>
 </context>
-<context id="PBCF0006">
-<!--WSDL Folder field in the Bean Config Page-->
-<description>This field contains the folder where the WSDL file will be generated. It is read-only.</description>
-</context>
 <context id="PBCF0007">
 <!--WSDL File field of the Bean Config Page-->
 <description>This field contains the name of the WSDL file that will be generated. Accept the default or enter a new name.</description>

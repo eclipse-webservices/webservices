@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.contexts"?>
 <!-- /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 <contexts>
 <!-- new v6 preference page-->
 <context id="SRPF0001">
-<!--server preference on the server runtime preference page-->
 <description>Select the default Web server to be used for Web service creation.</description>
 </context>
 <context id="SRPF0002">
@@ -30,6 +29,86 @@
 <!--Handler config page-->
 <description>Use this wizard to add and remove handlers for a Web service. The order in which they are listed represents the order in which the handlers will be acted upon.</description>
 </context>
+
+<!--WebServiceWizNewFirstPage-->
+<context id="WSWSCEN0001">
+<!-- First Page-->
+<description>On this page select the artifact from which your Web client will be created, and the stages of Web services development that you want
+to complete:
+<ul>
+<li>Develop: this will create the client code</li>
+<li>Assemble: this ensures that the project that will host the 
+client gets associated to an EAR when required by the target application server</li>
+<li>Deploy: this will create the deployment code for the client</li>
+<li>Install: this will install the client on the chosen server</li>
+<li>Start: this will start the server once the client has been installed on it</li>
+<li>Test: this will provide various options for testing the client</li>
+</ul>
+Select the server and runtime for your Web client, and whether or not you want to publish or monitor the service.
+</description>
+</context>
+
+<context id="WSWSCEN0014">
+<!--Monitor checkbox of the First Page-->
+<description>Monitor the Web service: this will send the Web service traffic
+through the TCP/IP Monitor, which allows you to watch the SOAP traffic generated
+by the Web service and to test this traffic for WS-I compliance.</description>
+</context>
+
+<context id="WSWSCEN0020">
+<!--Service implementation field of the First Page-->
+<description>Enter the URI to the WSDL, WSIL, or HTML file that
+will be used to generate the service</description>
+</context>
+
+<context id="WSWSCEN0022">
+<!--Server link of the First Page-->
+<description>Select your server: the default server is displayed. If you
+want to deploy your service to a different server click the link to specify
+a different server.</description>
+</context>
+
+<context id="WSWSCEN0023">
+<!--runtime link of the First Page-->
+<description>Select your runtime: the default runtime is displayed. If you
+want to deploy your service to a different runtime click the link to specify
+a different runtime.</description>
+</context>
+
+<context id="WSWSCEN0024">
+<!--projects link of the First Page-->
+<description>Select the service project: the project containing the project
+selected in your workspace is displayed. To select a different project and
+EAR click on the project link. Ensure that the project selected
+as the Client Web Project is different from the Service Web Project, or the
+service will be overwritten by the client's generated artifacts.</description>
+</context>
+
+<context id="WSWSCEN0025">
+<!--client type combo of the First Page-->
+<description>The Java bean client proxy that is generated provides a remote procedure call interface to the Web service.</description>
+</context>
+
+<context id="WSWSCEN0026">
+<!--Client slider of the First Page-->
+<description>Select the stages of Web services client development that you want
+to complete using the slider:
+<ul>
+<li>Develop: this will create the client code</li>
+<li>Assemble: </li>
+<li>Deploy: this will create the deployment code for the client</li>
+<li>Install: this will install the client on the chosen server</li>
+<li>Start: this will start the server once the client has been installed on it</li>
+<li>Test: this will provide various options for testing the client</li>
+</ul></description>
+</context>
+
+<context id="WSWSCEN0030">
+<!--file overwrite checkbox of the First Page-->
+<description>This allows you to overwrite files without receiving a warning message asking for confirmation when overwriting files.</description>
+</context>
+
+
 
 <context id="WSIL0001">
 <!--  WSIL Import Page-->
@@ -50,25 +129,6 @@
 <!--  WSIL table-->
 <description>This lists all the WSDL URIs that will be included in the WSIL document.</description>
 </context>
-
-<!--WebServiceTPBeanClassPage.java-->
-<context id="PBCL0001">
-<!--PBCL0001 for the Bean Selection Page-->
-<description>Use this page to select the Java bean or class used to create the Web service.</description>
-</context>
-<context id="PBCL0002">
-<!--PBCL0002 for the Bean Selection field of the Bean Selection Page-->
-<description>Enter the name of the Java bean to be used to create the Web service. Defaults the selected Java bean. Click <b>Browse classes </b>to view the bean class of the selected Java bean. The bean class is a model or template (an abstract data type) that can be instantiated to create objects with a common definition and therefore, common properties, operations, and behavior. Click <b>Browse files </b>to select a Java bean from the project.</description>
-</context>
-<context id="PBCL0003">
-<!--PBCL0003 for the Bean Class Browse button of the Bean Selection Page-->
-<description>Click to view the bean class of the selected Java bean.</description>
-</context>
-<context id="PBCL0004">
-<!--PBCL0004 for the Bean Resource Browse button of the Bean Selection Page-->
-<description>Browse to the correct Java bean to be used to create the Web service.</description>
-</context>
-
 
 <context id="PWPR0001">
 <!-- Project Page -->
@@ -136,6 +196,35 @@
 </context>
 
 
+<!--WebServiceTPBeanClassPage.java-->
+<context id="PBCL0001">
+<!--PBCL0001 for the Bean Selection Page-->
+<description>Use this page to select the Java bean or class used to create the Web service.</description>
+</context>
+<context id="PBCL0002">
+<!--PBCL0002 for the Bean Selection field of the Bean Selection Page-->
+<description>Enter the name of the Java bean to be used to create the Web service. Defaults the selected Java bean. Click <b>Browse classes </b>to view the bean class of the selected Java bean. The bean class is a model or template (an abstract data type) that can be instantiated to create objects with a common definition and therefore, common properties, operations, and behavior. Click <b>Browse files </b>to select a Java bean from the project.</description>
+</context>
+<context id="PBCL0003">
+<!--PBCL0003 for the Bean Class Browse button of the Bean Selection Page-->
+<description>Click to view the bean class of the selected Java bean.</description>
+</context>
+<context id="PBCL0004">
+<!--PBCL0004 for the Bean Resource Browse button of the Bean Selection Page-->
+<description>Browse to the correct Java bean to be used to create the Web service.</description>
+</context>
+
+<context id="PWPB0001">
+<!--  UDDI Publish Page -->
+<description>Select to launch the Web Services Explorer to allow you to publish the Web service.</description>
+</context>
+
+<context id="PWPB0002">
+<!--  UDDI Launch check box of the UDDI Publish Page-->
+<description>If selected will launch the Web Services Explorer to allow you to publish the Web service.</description>
+</context>
+
+
 <context id="PEBD0001">
 <!-- EAR Projects drop-down box -->
 <description>Select from the listed EAR projects.</description>
@@ -198,30 +287,24 @@
 <description>Browse to the location of an existing WSIL document</description>
 </context>
 
-
-<context id="PWPB0001">
-<!--  UDDI Publish Page -->
-<description>Select to launch the Web Services Explorer to allow you to publish the Web service.</description>
-</context>
-
-<context id="PWPB0002">
-<!--  UDDI Launch check box of the UDDI Publish Page-->
-<description>If selected will launch the Web Services Explorer to allow you to publish the Web service.</description>
-</context>
-
 <context id="PWRS0001">
+<!--  Run-time/servers in the Web Service type-->
+<description>Select the scenario configuration for run-time environments, servers, and projects.</description>
+</context>
+
+<context id="PWRS0002">
 <!--  Run-time/servers in the Web Service type-->
 <description>Select the scenario configuration for run-time environments, servers, and projects.</description>
 </context>
 
 <context id="PWRS0004">
 <!--  service-side run-time environment selection of the run-time environment selection Page-->
-<description>This is the server-side run-time environment which the Web service will use. To change this click Edit.</description>
+<description>This is the server-side run-time environment which the Web service will use.</description>
 </context>
 
 <context id="PWRS0005">
 <!-- service-side server selection of the run-time environment selection Page-->
-<description>This is the server-side server on which the Web service will run. To change this click Edit.</description>
+<description>This is the server-side server on which the Web service will run.</description>
 </context>
 
 <context id="PWRS0006">
@@ -234,14 +317,14 @@
 <description>Select the EJB project in which the Web service will be created.</description>
 </context>
 
-<context id="PWRS0008">
+<context id="PWRS0003">
 <!--  client-side run-time environment selection of the run-time environment selection Page-->
-<description>This is the client-side run-time environment which the Web service will use. To change this click Edit.</description>
+<description>This is the client-side run-time environment which the Web service will use.</description>
 </context>
 
 <context id="PWRS0009">
 <!-- client-side server selection of the run-time environment selection Page-->
-<description>This is the client-side server on which the Web service will run. To change this click Edit.</description>
+<description>This is the client-side server on which the Web service will run.</description>
 </context>
 
 <context id="PWRS0010">
@@ -347,7 +430,35 @@
 <description>Enter the password used for HTTP basic authentication.</description>
 </context>
 
+<!--TopologyPreferencePage.java-->
 
+<context id="PTPP0001">
+<!--PTPP0001 for the Topology Preference Page-->
+<description><p>These tables respresents the the types of projects available into which you can generate 
+a Web service or client. You cannot add or remove project types, however you can change the order in which 
+they appear in the Web services wizard. This is useful if you are creating several Web services that use 
+the same type of service or client project because you can set that service or client project type as the default. To change 
+the order, select a project type and use the up and down arrows to move it within the list. Changing the 
+order of the list does not restrict your ability to select any of the options.</p>
+<p>If you select the check box, by default the Web services wizard will generate the Web services 
+server and client code into different EARs. It is recommended that you enable this feature.</p>
+</description>
+</context>
+
+<context id="PTPP0002">
+<!--PTPP0002 for the Topology Preference Page-->
+<description>This table respresents the the types of projects available into which you can generate a 
+Web services client. You cannot add or remove project types, however you can change the order 
+in which they appear in the Web services wizard. This is useful if you are creating several Web 
+services that use the same type of client project because you can set that client project type as 
+the default. To change the order, select a project type and use the up and down arrows to move it 
+within the list. Changing the order of the list does not restrict your ability to select any of the options.</description>
+</context>
+
+<context id="PTPP0005">
+<!--PTPP0002 for the Topology Preference Page-->
+<description>If you select this check box, by default the Web services wizard will generate the Web services server and client code into different EARs. It is recommended that you enable this feature.</description>
+</context>
 
 
 </contexts>

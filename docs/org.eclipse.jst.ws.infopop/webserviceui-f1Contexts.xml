@@ -11,6 +11,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/ -->
 <contexts>
+
 <!--DRES: Resource Selection Dialog-->
 <context id="DRES0001">
 <!--Resource Type drop down-->
@@ -21,59 +22,32 @@
 <description>Lists the resources that can be turned into a Web service.</description>
 </context>
 
-
-<context id="PPAD0004">
-<!--  Hide generate client check box-->
-<description>Select this check box to hide the option of generating a Web service client when you right-click a file in the Project Explorer or Navigator.</description>
-</context>
-
-<context id="PPAD0005">
-<!--  Hide generate sample check box-->
-<description>Select this check box to hide the option of generating sample JSP code for the Web service when you right-click a file in the Project Explorer or Navigator.</description>
-</context>
-
-<!--TopologyPreferencePage.java-->
-<context id="PTPP0002">
-<!--PTPP0002 for the Topology Preference Page-->
-<description>This table respresents the the types of projects available into which you can generate a Web services client. You cannot add or remove project types, however you can change the order in which they appear in the Web services wizard. This is useful if you are creating several Web services that use the same type of client project because you can set that client project type as the default. To change the order, select a project type and use the up and down arrows to move it within the list. Changing the order of the list does not restrict your ability to select any of the options.</description>
-</context>
-
-<context id="PTPP0003">
-<!--PTPP0002 for the Topology Preference Page-->
-<description>Click this button to move the selected client project type towards the beginning of the list. This changes the order of the items in the client selection list and does not restrict your selection in any way.</description>
-</context>
-
-<context id="PTPP0004">
-<!--PTPP0004 for the Topology Preference Page-->
-<description>Click this button to move the selected client project type towards the end of the list. This changes the order of the items in the client selection list and does not restrict your selection in any way.</description>
-</context>
-
-<context id="PTPP0005">
-<!--PTPP0002 for the Topology Preference Page-->
-<description>If you select this check box, by default the Web services wizard will generate the Web services server and client code into different EARs. It is recommended that you enable this feature.</description>
-</context>
-
 <!--PPRM: Resource Management Preference page-->
+
+<context id="PPRM0001">
+<!--main page-->
+<description>The Resource Management preferences enable you to determine the defaults that you want to use when creating your Web service.</description>
+</context>
 
 <context id="PPRM0002">
 <!--File overwrite check box-->
-<description>The Resource Management preferences enable you to determine the defaults that you want to use when creating your Web service. Allows you to overwrite files without receiving a warning message asking for confirmation when overwriting files.</description>
+<description>This checkbox allows you to overwrite files without receiving a warning message asking for confirmation when overwriting files.</description>
 </context>
 <context id="PPRM0003">
 <!--Create folders check box-->
-<description>The Resource Management preferences enable you to determine the defaults that you want to use when creating your Web service. Select to create folders and folder structures without receiving a warning message asking for confirmation.</description>
+<description>Select this checkbox to create folders and folder structures without receiving a warning message asking for confirmation.</description>
 </context>
 <context id="PPRM0004">
 <!--Check out files check box-->
-<description>The Resource Management preferences enable you to determine the defaults that you want to use when creating your Web service. Select to check out files without receiving a warning message asking for confirmation.</description>
+<description>Select this checkbox to check out files without receiving a warning message asking for confirmation.</description>
 </context>
 
 <context id="PPRM0005">
 <!--Skeleton merge-->
-<description>This check box is disabled by default.  If this check box is enabled, when a
-skeleton file of the same name already exists in the workspace, the newly
-generated skeleton file will merge with the existing skeleton file.  Enable this to preserve code that you have already modified in the existing skeleton
-files.  
+<description>This check box is disabled by default. If this check box is enabled, when a skeleton 
+file of the same name already exists in the workspace, the newly generated skeleton file will merge 
+with the existing skeleton file.  Enable this to preserve code that you have already modified in the 
+existing skeleton files.  
 </ br>
 Note that when this preference is enabled, if you change the return type
 of an interface, the resulting skeleton file will have a method returning the
@@ -110,6 +84,32 @@ result in an compilation error that the you will have to correct manually.
 <context id="PPSD0006">
 <!--PPSD0006 for the User-defined UDDI Category Data String Delimiter text field on the Scenario Defaults Preference Page-->
 <description>Enter the character you want to use as a string delimiter for user-defined UDDI Category data.</description>
+</context>
+
+
+<context id="PPAD0004">
+<!--  Hide generate client check box-->
+<description>Select this check box to hide the option of generating a Web service client when you right-click a file in the Project Explorer or Navigator.</description>
+</context>
+
+<context id="PPAD0005">
+<!--  Hide generate sample check box-->
+<description>Select this check box to hide the option of generating sample JSP code for the Web service when you right-click a file in the Project Explorer or Navigator.</description>
+</context>
+
+<context id="PPAD0006">
+<!--  create web service check box-->
+<description>Select this check box to hide the option of generating a Web service client when you right-click a file in the Project Explorer or Navigator.</description>
+</context>
+
+<context id="PPAD0008">
+<!--  generate skeleton check box-->
+<description>Select this check box to hide the option of generating skeleton Java classes when you right-click a file in the Project Explorer or Navigator. The skeleton bean contains a set of methods that correspond to the operations described in the WSDL document. When the bean is created, each method has a trivial implementation that you replace by editing the bean.</description>
+</context>
+
+<context id="PPAD0009">
+<!--  publish WSDL check box-->
+<description>Select this check box to hide the option of publishing the Web service's WSDL file to a UDDI registry when you right-click a file in the Project Explorer or Navigator.</description>
 </context>
 
 
