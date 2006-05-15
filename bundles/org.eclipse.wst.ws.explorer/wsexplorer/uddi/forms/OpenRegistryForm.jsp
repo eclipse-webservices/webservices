@@ -1,13 +1,15 @@
 <%
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060515   135307 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.favorites.datamodel.*,
@@ -78,21 +80,7 @@ while (favoriteRegistryElements.hasMoreElements())
       document.getElementById("mainScreen").style.display = "";
     }
 
-    function toggleRegistryType(isPrivateRegistry)
-    {
-      var openRegistryForm = document.getElementById("openRegistryForm");
-      var openPrivateRegistryForm = document.getElementById("openPrivateRegistryForm");
-      if (isPrivateRegistry)
-      {
-        openRegistryForm.style.display = "none";
-        openPrivateRegistryForm.style.display = "";
-      }
-      else
-      {
-        openRegistryForm.style.display = "";
-        openPrivateRegistryForm.style.display = "none";
-      }
-    }
+   
   </script>
 </head>
 <body dir="<%=org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils.getDir()%>" class="contentbodymargin">
@@ -117,13 +105,7 @@ while (favoriteRegistryElements.hasMoreElements())
           </td>
         </tr>
       </table>
-      <table width="95%" border=0 cellpadding=3 cellspacing=0>
-        <tr>
-          <td class="labels" height=40 valign="bottom">
-            <input type="checkbox" id="registryType" onClick="javascript:toggleRegistryType(this.checked)"><label for="registryType"><%=uddiPerspective.getMessage("FORM_LABEL_IS_WEBSPHERE_UDDI_REGISTRY")%></label>
-          </td>
-        </tr>
-      </table>
+      
       <form id="openRegistryForm" action="<%=response.encodeURL(controller.getPathWithContext("uddi/actions/OpenRegistryActionJSP.jsp"))%>" method="post" target="<%=FrameNames.PERSPECTIVE_WORKAREA%>" enctype="multipart/form-data" onSubmit="return handleSubmit(this)">
         <table width="95%" border=0 cellpadding=3 cellspacing=0>
           <tr>
@@ -189,7 +171,7 @@ while (favoriteRegistryElements.hasMoreElements())
       <script language="javascript">
         setDefaults();
       </script>
-      <jsp:include page="/uddi/forms/OpenPrivateRegistryForm.jsp" flush="true"/>
+      
     </div>
   </div>
 </body>
