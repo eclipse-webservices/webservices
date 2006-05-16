@@ -61,19 +61,23 @@ public class W11BindingMessageReference extends WSDLBaseAdapter implements IBind
   
   public String getName()
   {
-	  String name = ""; //$NON-NLS-1$
+	  String name = null;
 	  if (target instanceof BindingInput)
 	  {
-		  name = "input";
+		  name = ((BindingInput) target).getName();
 	  }
 	  else if (target instanceof BindingOutput)
 	  {
-		  name = "output";
+		  name = ((BindingOutput) target).getName();
 	  } 
-	  else //if (target instanceof BindingFault)
+	  else if (target instanceof BindingFault)
 	  {
-		  name = "fault";
-	  }  
+		  name = ((BindingFault) target).getName();
+	  }
+	  
+	  if (name == null) {
+		  name = ""; //$NON-NLS-1$
+	  }
 
 	  return name;
   }

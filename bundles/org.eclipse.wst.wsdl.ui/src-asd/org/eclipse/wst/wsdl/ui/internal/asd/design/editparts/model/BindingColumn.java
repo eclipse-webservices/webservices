@@ -39,6 +39,6 @@ public class BindingColumn extends AbstractModelCollection {
 	  }
 	  
 	  public String getText() {
-		  return "description"; //$NON-NLS-1$
+		  return "definition"; //$NON-NLS-1$
 	  }
 }

@@ -257,7 +257,7 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 	}
 	
 	public String getText() {
-		return "description";
+		return "definition";
 	}
 	
 	public ITreeElement[] getChildren() {

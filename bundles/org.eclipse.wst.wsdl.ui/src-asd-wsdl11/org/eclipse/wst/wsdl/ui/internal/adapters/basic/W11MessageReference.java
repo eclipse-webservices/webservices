@@ -103,19 +103,12 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
   
   public String getName()
   {
-    if (getKind() == KIND_INPUT)
-    {
-      return "input";
-    }
-    else if (getKind() == KIND_OUTPUT)
-    {
-      return "output";
-    }
-    else if (getKind() == KIND_FAULT)
-    {
-      return "fault";
-    }
-    return "NoName";
+	  MessageReference messageRef = getMessageReference();
+	  if (messageRef.getName() != null) {
+		  return messageRef.getName();
+	  }
+	  
+	  return "";
   }
 
   /*
