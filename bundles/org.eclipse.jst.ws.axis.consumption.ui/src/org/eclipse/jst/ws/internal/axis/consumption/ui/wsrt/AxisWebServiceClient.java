@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
+ * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.wsrt;
@@ -22,7 +23,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientInputCo
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientOutputCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.DefaultsForClientJavaWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ClientCodeGenOperation;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
@@ -70,7 +70,7 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 //		commands.add(new SimpleFragment("AxisClientStart"));
 //		commands.add(new SimpleFragment("AxisClientBeanMapping"));
 		commands.add(new DefaultsForHTTPBasicAuthCommand());
-		commands.add(new CopyAxisJarCommand());
+//		commands.add(new CopyAxisJarCommand());
 		commands.add(new DefaultsForClientJavaWSDLCommand());
 		commands.add(new ValidateWSDLCommand());
 		commands.add(new ClientCodeGenOperation());
@@ -116,7 +116,7 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		registry.addMapping(AxisClientDefaultingCommand.class, "WsdlURL", DefaultsForHTTPBasicAuthCommand.class, "WsdlServiceURL", null); //OK
 		registry.addMapping(AxisClientDefaultingCommand.class, "WebServicesParser", DefaultsForHTTPBasicAuthCommand.class); //OK    
 		
-		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", CopyAxisJarCommand.class, "Project", null);
+//		registry.addMapping(AxisClientDefaultingCommand.class, "ClientProject", CopyAxisJarCommand.class, "Project", null);
 
 		// DefaultsForClientJavaWSDLCommand() // javaParam_, model_
 		registry.addMapping(AxisClientDefaultingCommand.class, "JavaWSDLParam", DefaultsForClientJavaWSDLCommand.class);

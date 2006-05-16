@@ -1,16 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060106   121199 jesper@selskabet.org - Jesper Møller
  * 20060329   127016 andyzhai@ca.ibm.com - Andy Zhai
+ * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
@@ -106,27 +107,28 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 		}
 
 		IStatus status = Status.OK_STATUS;
+		ILog envLog = environment.getLog();
 		Emitter emitter = new Emitter();
 		emitter.createClasspath().setPath(javaWSDLParam_.getClasspath());
-		environment.getLog().log(ILog.INFO, 5008, this, "executeAntTask", "Class Path = "+ javaWSDLParam_.getClasspath());
+		envLog.log(ILog.INFO, 5008, this, "executeAntTask", "Class Path = "+ javaWSDLParam_.getClasspath());
 		
 		emitter.setPortTypeName(javaWSDLParam_.getPortTypeName());
-		environment.getLog().log(ILog.INFO, 5009, this, "executeAntTask", "Port Type Name = "+ javaWSDLParam_.getPortTypeName());
+		envLog.log(ILog.INFO, 5009, this, "executeAntTask", "Port Type Name = "+ javaWSDLParam_.getPortTypeName());
 		
 		emitter.setServiceElementName(javaWSDLParam_.getServiceName());
-		environment.getLog().log(ILog.INFO, 5010, this, "executeAntTask", "Service Name = "+ javaWSDLParam_.getServiceName());
+		envLog.log(ILog.INFO, 5010, this, "executeAntTask", "Service Name = "+ javaWSDLParam_.getServiceName());
 		
 		emitter.setLocation(javaWSDLParam_.getUrlLocation());
-		environment.getLog().log(ILog.INFO, 5011, this, "executeAntTask", "URL Location = "+ javaWSDLParam_.getUrlLocation());
+		envLog.log(ILog.INFO, 5011, this, "executeAntTask", "URL Location = "+ javaWSDLParam_.getUrlLocation());
 		
 		emitter.setMethods(javaWSDLParam_.getMethodString());
-		environment.getLog().log(ILog.INFO, 5012, this, "executeAntTask", "Methods = "+ javaWSDLParam_.getMethodString());
+		envLog.log(ILog.INFO, 5012, this, "executeAntTask", "Methods = "+ javaWSDLParam_.getMethodString());
 		
 		emitter.setStyle(javaWSDLParam_.getStyle());
-		environment.getLog().log(ILog.INFO, 5013, this, "executeAntTask", "Style = "+ javaWSDLParam_.getStyle());
+		envLog.log(ILog.INFO, 5013, this, "executeAntTask", "Style = "+ javaWSDLParam_.getStyle());
 		
 		emitter.setUse(javaWSDLParam_.getUse());
-		environment.getLog().log(ILog.INFO, 5014, this, "executeAntTask", "Use = "+ javaWSDLParam_.getUse());
+		envLog.log(ILog.INFO, 5014, this, "executeAntTask", "Use = "+ javaWSDLParam_.getUse());
 				
 		// create temporary directory to use as output directory for java2wsdl
 		IPath pluginStateLoc = WebServiceAxisConsumptionCorePlugin.getInstance().getStateLocation();
@@ -141,13 +143,13 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 
 		emitter.setOutput(tempOutputWsdlFile);
 		
-		environment.getLog().log(ILog.INFO, 5015, this, "executeAntTask", "WSDL Location = "+ javaWSDLParam_.getOutputWsdlLocation());
+		envLog.log(ILog.INFO, 5015, this, "executeAntTask", "WSDL Location = "+ javaWSDLParam_.getOutputWsdlLocation());
 		
 		emitter.setNamespace(javaWSDLParam_.getNamespace());
-		environment.getLog().log(ILog.INFO, 5016, this, "executeAntTask", "Name Space = "+ javaWSDLParam_.getNamespace());
+		envLog.log(ILog.INFO, 5016, this, "executeAntTask", "Name Space = "+ javaWSDLParam_.getNamespace());
 		
 		emitter.setClassName(javaWSDLParam_.getBeanName());
-		environment.getLog().log(ILog.INFO, 5017, this, "executeAntTask", "Bean name = "+ javaWSDLParam_.getBeanName());
+		envLog.log(ILog.INFO, 5017, this, "executeAntTask", "Bean name = "+ javaWSDLParam_.getBeanName());
 		
 		emitter.setImplClass(javaWSDLParam_.getBeanName());
 		
@@ -156,7 +158,7 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 	    if (context.isUseInheritedMethodsEnabled() != AxisEmitterDefaults.getUseInheritedMethodsDefault())
 	    {
 	    	emitter.setUseInheritedMethods(context.isUseInheritedMethodsEnabled());
-			environment.getLog().log(ILog.INFO, 5099, this, "executeAntTask", " set UseInheritedMethods : " + context.isUseInheritedMethodsEnabled() );
+			envLog.log(ILog.INFO, 5099, this, "executeAntTask", " set UseInheritedMethods : " + context.isUseInheritedMethodsEnabled() );
 	    }
 		
 		HashMap mappings = javaWSDLParam_.getMappings();
@@ -177,7 +179,7 @@ public class Java2WSDLCommand extends AbstractDataModelOperation
 			emitter.execute();
 			status = moveGeneratedWSDL(environment, monitor);
 		} catch (BuildException e) {
-			environment.getLog().log(ILog.ERROR, 5018, this, "executeAntTask", e);
+			envLog.log(ILog.ERROR, 5018, this, "executeAntTask", e);
 			status = StatusUtils.errorStatus(
 			AxisConsumptionCoreMessages.MSG_ERROR_JAVA_WSDL_GENERATE + " " //$NON-NLS-1$
 			+e.getCause().toString(), e.getCause());

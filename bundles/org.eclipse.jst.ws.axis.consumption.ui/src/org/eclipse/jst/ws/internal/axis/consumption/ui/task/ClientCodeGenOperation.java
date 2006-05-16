@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -28,23 +29,26 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class ClientCodeGenOperation extends AbstractDataModelOperation {
 
-
+	private CopyAxisJarCommand copyAxisJarCommand = null;
+	
 	private WSDL2JavaCommand wsdl2JavaCommand = null;
 	private JavaWSDLParameter javaWSDLParam;
 	private String wsdlURI;
 	
-	private RefreshProjectCommand refreshProjectCommand = null;
 	private IProject project;
 	
 	private Stub2BeanCommand stub2BeanCommand = null;
 	private WebServicesParser webServicesParser;
 	private String outputFolder;
 	private String proxyBean;
+	
+	private RefreshProjectCommand refreshProjectCommand = null;
 
 	public ClientCodeGenOperation(){
+		copyAxisJarCommand = new CopyAxisJarCommand();
 		wsdl2JavaCommand = new WSDL2JavaCommand();
-		refreshProjectCommand = new RefreshProjectCommand();
 		stub2BeanCommand = new Stub2BeanCommand();
+		refreshProjectCommand = new RefreshProjectCommand();
 	}
 	
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) {
@@ -78,20 +82,19 @@ public class ClientCodeGenOperation extends AbstractDataModelOperation {
 		  
 			    IStatus status = null;
 
+			    // CopyAxisJarCommand
+			    copyAxisJarCommand.setEnvironment(env);
+			    copyAxisJarCommand.setProject(project);
+			    status = copyAxisJarCommand.execute(monitor, info);
+			    if (status.getSeverity() == Status.ERROR){
+			    	throw new CoreException(status);
+			    }
 				
 				// WSDL2JavaCommand
 				wsdl2JavaCommand.setEnvironment(env);
 				wsdl2JavaCommand.setJavaWSDLParam(javaWSDLParam);
 				wsdl2JavaCommand.setWsdlURI(wsdlURI);
 				status = wsdl2JavaCommand.execute(monitor, info);
-				if (status.getSeverity() == Status.ERROR) {
-					throw new CoreException(status);
-				}
-				
-				// RefreshProjectCommand
-				refreshProjectCommand.setEnvironment(env);
-				refreshProjectCommand.setProject(project);
-				status = refreshProjectCommand.execute(monitor, info);
 				if (status.getSeverity() == Status.ERROR) {
 					throw new CoreException(status);
 				}
@@ -108,6 +111,14 @@ public class ClientCodeGenOperation extends AbstractDataModelOperation {
 				}
 				proxyBean = stub2BeanCommand.getProxyBean();
 			  
+				// RefreshProjectCommand
+				refreshProjectCommand.setEnvironment(env);
+				refreshProjectCommand.setProject(project);
+				status = refreshProjectCommand.execute(monitor, info);
+				if (status.getSeverity() == Status.ERROR) {
+					throw new CoreException(status);
+				}
+				
 		  }
 		
 	}

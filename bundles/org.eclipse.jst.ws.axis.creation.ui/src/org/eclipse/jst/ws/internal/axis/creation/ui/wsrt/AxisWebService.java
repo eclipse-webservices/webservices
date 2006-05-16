@@ -13,6 +13,7 @@
  * 20060330   128827 kathy@ca.ibm.com - Kathy Chan
  * 20060424   120137 kathy@ca.ibm.com - Kathy Chan
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
+ * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
@@ -21,7 +22,6 @@ import java.util.Vector;
 
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.AxisDeployCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.GeronimoAxisDeployCommand;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisCheckCompilerLevelCommand;
@@ -98,10 +98,10 @@ public class AxisWebService extends AbstractWebService
 			// commands.add(new SimpleFragment( "BeanConfig" ));
 			// commands.add(new SimpleFragment( "AxisServiceBeanMapping" ));
 			commands.add(new BUConfigCommand());
-			commands.add(new CopyAxisJarCommand());
+//			commands.add(new CopyAxisJarCommand());
 			commands.add(new WaitForAutoBuildCommand());
 			commands.add(new BUCodeGenOperation());
-			commands.add(new RefreshProjectCommand());
+//			commands.add(new RefreshProjectCommand());
 			commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
 			
@@ -116,9 +116,9 @@ public class AxisWebService extends AbstractWebService
 //			commands.add(new SimpleFragment( "SkeletonConfig" ));
 //			commands.add(new SimpleFragment( "AxisMappingsWidget" ));
 		    commands.add(new TDConfigCommand());
-			commands.add(new CopyAxisJarCommand());
+//			commands.add(new CopyAxisJarCommand());
 			commands.add(new TDCodeGenOperation());
-		    commands.add(new RefreshProjectCommand());
+//		    commands.add(new RefreshProjectCommand());
 		    commands.add(new BuildProjectCommand());
 			commands.add(new AxisOutputCommand(this));
 			
@@ -198,7 +198,7 @@ public class AxisWebService extends AbstractWebService
 	    // BUAxisCommands3 - these run after BeanConfigWidget
     	    
 	    //CopyAxisJarCommand
-	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", new StringToIProjectTransformer());
+	    //registry.addMapping(BUAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", new StringToIProjectTransformer());
 	    	    
 	    //Java2WSDLCommand
 	    registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", BUCodeGenOperation.class);
@@ -281,7 +281,7 @@ public class AxisWebService extends AbstractWebService
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "JavaWSDLParam", TDCodeGenOperation.class);
 	    
 	    // CopyAxisJarCommand
-	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", projectTransformer);
+	    //dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", projectTransformer);
 
 	    // BackupSkelImplCommand
 	    dataRegistry.addMapping(AxisSkeletonDefaultingCommand.class, "WebServicesParser", TDCodeGenOperation.class);      

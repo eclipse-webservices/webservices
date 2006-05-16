@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
@@ -52,10 +55,6 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 				environment.getStatusHandler().reportError(status);
 				return status;
 			}
-			if (status.getSeverity() == Status.ERROR) {
-				environment.getStatusHandler().reportError(status);
-				return status;
-			}
 			addServlet(serverProject, getAdmintServletDescriptor());
 			if (status.getSeverity() == Status.ERROR) {
 				environment.getStatusHandler().reportError(status);
@@ -87,34 +86,26 @@ public class UpdateWEBXMLCommand extends AbstractDataModelOperation {
 		return sd;
 	}
 
-	public IStatus addServlet(
-		IProject webProject,
-		ServletDescriptor servletDescriptor) {
+	public IStatus addServlet(IProject webProject, ServletDescriptor servletDescriptor) {
 
 		WebArtifactEdit webEdit = null;		
 		try {
 			// 
 			WebApp webapp = null;
-      IVirtualComponent vc = ComponentCore.createComponent(webProject);
-      webEdit = WebArtifactEdit.getWebArtifactEditForWrite(vc);
+			IVirtualComponent vc = ComponentCore.createComponent(webProject);
+			webEdit = WebArtifactEdit.getWebArtifactEditForWrite(vc);
 			if (webEdit != null)
 			{
-				webapp = (WebApp) webEdit.getDeploymentDescriptorRoot();
-
-			   boolean foundServlet = false;
+			   webapp = (WebApp) webEdit.getDeploymentDescriptorRoot();
 
 			   List theServlets = webapp.getServlets();
 			   for (int i = 0; i < theServlets.size(); i++) {
 				Servlet aServlet = (Servlet) theServlets.get(i);
 				if (aServlet.getServletName().equals(servletDescriptor._name)) {
-					foundServlet = true;
+					return Status.OK_STATUS;
 				 }
 			   }
-
-			   if (foundServlet) {
-				  return Status.OK_STATUS;
-			   }
-
+			   
 			   WebapplicationFactory factory = WebapplicationFactory.eINSTANCE;
 
 			   Servlet servlet = factory.createServlet();

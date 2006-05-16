@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
+ * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -38,7 +39,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisCons
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -78,10 +78,35 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 	{
 		
 		IEnvironment env = getEnvironment();
-		CopyAxisJarOperation cajo = new CopyAxisJarOperation(env);
-		cajo.execute(monitor);
-    
-		return cajo.getStatus();
+		IStatus status = Status.OK_STATUS;
+	    ProgressUtils.report(monitor, AxisConsumptionUIMessages.PROGRESS_INFO_COPY_AXIS_CFG);
+	    
+	    if (J2EEUtils.isWebComponent(project))
+	    {
+	    	copyAxisJarsToProject(project, status, env, monitor);	
+	    }
+	    else
+	    {
+	    	//Check if it's a plain old Java project
+	 		 if (J2EEUtils.isJavaComponent(project))
+	 		 {
+	 			status = addAxisJarsToBuildPath(project, env, monitor);
+	 			if (status.getSeverity()==Status.ERROR)
+	 			{
+	 				env.getStatusHandler().reportError(status);
+	 				return status;
+	 			}
+	 		 }
+	 		 else
+	 		 {
+	 		   status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_WARN_NO_JAVA_NATURE);	
+	 		   env.getStatusHandler().reportError(status);
+	 		   return status;
+	 		 }
+
+	    }
+	    
+	    return status;
 
 	}
 
@@ -274,52 +299,6 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 
   public boolean getProjectRestartRequired() {
     return projectRestartRequired_.booleanValue();
-  }
-  
-  
-  private class CopyAxisJarOperation extends WorkspaceModifyOperation {
-	  
-	  private IEnvironment env;
-	  private IStatus status = null;
-	  
-	  public CopyAxisJarOperation(IEnvironment environment){
-		  env = environment;
-	  }
-	  
-	  public void execute(IProgressMonitor monitor){
-		  
-		    status = Status.OK_STATUS;
-		    ProgressUtils.report(monitor, AxisConsumptionUIMessages.PROGRESS_INFO_COPY_AXIS_CFG);
-		    
-		    if (J2EEUtils.isWebComponent(project))
-		    {
-		    	copyAxisJarsToProject(project, status, env, monitor);	
-		    }
-		    else
-		    {
-		    	//Check if it's a plain old Java project
-		 		 if (J2EEUtils.isJavaComponent(project))
-		 		 {
-		 			status = addAxisJarsToBuildPath(project, env, monitor);
-		 			if (status.getSeverity()==Status.ERROR)
-		 			{
-		 				env.getStatusHandler().reportError(status);
-		 				//return status;
-		 			}
-		 		 }
-		 		 else
-		 		 {
-		 		   status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_WARN_NO_JAVA_NATURE);	
-		 		   env.getStatusHandler().reportError(status);
-		 		   //return status;
-		 		 }
-
-		    }		  
-	  }
-	  
-	  public IStatus getStatus(){
-		  return status;
-	  }
   }
   
 }

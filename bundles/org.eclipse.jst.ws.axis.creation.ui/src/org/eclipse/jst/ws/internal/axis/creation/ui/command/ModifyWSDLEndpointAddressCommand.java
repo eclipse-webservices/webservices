@@ -1,16 +1,16 @@
-/**
- * <copyright>
+/*******************************************************************************
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * Licensed Material - Property of IBM
- * (C) Copyright IBM Corp. 2005 - All Rights Reserved.
- * US Government Users Restricted Rights - Use, duplication or disclosure
- * restricted by GSA ADP Schedule Contract with IBM Corp.
- *
- * </copyright>
- *
- * File AST/ws/code/ast/eclipse/plugins/com.ibm.ast.ws.creation.ui/src/com/ibm/etools/webservice/was/creation/ui/command/ModifyWSDLEndpointAddressCommand.java, WAS.ast.ws, WASX.AST 3 
- * Version 1.3 05/11/22 11:43:13
- */
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
+ *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
 import java.io.OutputStream;

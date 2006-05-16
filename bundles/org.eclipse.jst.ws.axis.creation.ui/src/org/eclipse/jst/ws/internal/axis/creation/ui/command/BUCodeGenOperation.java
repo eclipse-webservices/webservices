@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  *      
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
+ * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
@@ -23,6 +24,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.UpdateAxisWSDDFileTask;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -30,6 +32,9 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public class BUCodeGenOperation extends AbstractDataModelOperation {
 
+	// CopyAxisJarCommand
+	private CopyAxisJarCommand copyAxisJarCommand = null;
+	
 	// Java2WSDLCommand
 	private Java2WSDLCommand java2WSDLCommand = null;
 	private JavaWSDLParameter javaWSDLParam;  
@@ -54,6 +59,7 @@ public class BUCodeGenOperation extends AbstractDataModelOperation {
 	 * @param updateWebXML
 	 */
 	public BUCodeGenOperation(){
+		copyAxisJarCommand = new CopyAxisJarCommand();
 		java2WSDLCommand = new Java2WSDLCommand();
 		wsdl2JavaCommand = new WSDL2JavaCommand();
 		updateAxisWsddCommand = new UpdateAxisWSDDFileTask();
@@ -90,6 +96,14 @@ public class BUCodeGenOperation extends AbstractDataModelOperation {
 		  
 			    IStatus status = null;
 			  
+			    // CopyAxisJarCommand
+			    copyAxisJarCommand.setEnvironment(env);
+			    copyAxisJarCommand.setProject(serviceProject);
+			    status = copyAxisJarCommand.execute(monitor, info);
+			    if (status.getSeverity() == Status.ERROR){
+			    	throw new CoreException(status);
+			    }
+			    
 			  	// Java2WSDLCommand
 				java2WSDLCommand.setEnvironment(env);
 				java2WSDLCommand.setJavaWSDLParam(javaWSDLParam);

@@ -1,16 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
- * yyyymmdd   bug     Email and other contact information
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
+ * yyyymmdd   bug     Email and other contact information
  * 20060329   127016 andyzhai@ca.ibm.com - Andy Zhai
  * 20060404   134791 andyzhai@ca.ibm.com - Andy Zhai
+ * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
@@ -68,6 +70,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 	{
 		IEnvironment environment = getEnvironment();
+		ILog envLog = environment.getLog();
 		IStatus status;
 		if (javaWSDLParam == null) {
 			status = StatusUtils.errorStatus(
@@ -84,7 +87,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 		javaWSDLParam.setHTTPPassword(httpBasicAuthPassword);
 		
 		Emitter wsdl2Java = new Emitter();
-		if (environment.getLog().isEnabled("emitter")) {
+		if (envLog.isEnabled("emitter")) {
 			wsdl2Java.setVerbose(true);
 		} else {
 			wsdl2Java.setVerbose(false);
@@ -119,16 +122,16 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 					wsdl2Java.setNamespaceMap(javaWSDLParam.getMappings());
 				}
 			}
-			environment.getLog().log(ILog.INFO, 5019, this, "execute", "Java output = " + javaWSDLParam.getJavaOutput());
+			envLog.log(ILog.INFO, 5019, this, "execute", "Java output = " + javaWSDLParam.getJavaOutput());
 			if (javaWSDLParam.getHTTPPassword() != null) {
 				wsdl2Java.setPassword(javaWSDLParam.getHTTPPassword());
-				environment.getLog().log(ILog.INFO, 5081, this, "execute", "password: " + javaWSDLParam.getHTTPPassword());
+				envLog.log(ILog.INFO, 5081, this, "execute", "password: " + javaWSDLParam.getHTTPPassword());
 			}
 			if (javaWSDLParam.getHTTPUsername() != null) {
 				wsdl2Java.setUsername(javaWSDLParam.getHTTPUsername());
-				environment.getLog().log(ILog.INFO, 5082, this, "execute", "username: " + javaWSDLParam.getHTTPUsername());
+				envLog.log(ILog.INFO, 5082, this, "execute", "username: " + javaWSDLParam.getHTTPUsername());
 			}
-			environment.getLog().log(ILog.INFO, 5020, this, "execute", "WSDL Location = " + javaWSDLParam.getInputWsdlLocation());
+			envLog.log(ILog.INFO, 5020, this, "execute", "WSDL Location = " + javaWSDLParam.getInputWsdlLocation());
 			
 			// If timeout is not set, the default timeout for wsdl2java is 45 seconds.  
 			// The user can change the timeout value by setting 
@@ -147,13 +150,13 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			if (wsdl2JavaTimeoutProperty != null) {
 				timeout = new Integer(wsdl2JavaTimeoutProperty).longValue();
 				wsdl2Java.setTimeout(timeout);
-				environment.getLog().log(ILog.INFO, 5091, this, "execute", "AxisWsdl2JavaTimeout = " + timeout);				
+				envLog.log(ILog.INFO, 5091, this, "execute", "AxisWsdl2JavaTimeout = " + timeout);				
 			}
 			else if(context.getTimeOut() != AxisEmitterDefaults.getTimeOutDefault())
 			{
 				timeout = context.getTimeOut() == -1 ? -1 : context.getTimeOut()* 1000; 
 				wsdl2Java.setTimeout(timeout);
-				environment.getLog().log(ILog.INFO, 5100, this, "execute", "Timeout = " + timeout);
+				envLog.log(ILog.INFO, 5100, this, "execute", "Timeout = " + timeout);
 			}
 		    if (context.getDeployScopeType() != AxisEmitterDefaults.getDeployScopeDefault())
 		    {
@@ -161,15 +164,15 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 		    	{
 		    		case AxisEmitterContext.DEPLOY_SCOPE_TYPE_APPLICATION:
 		    			wsdl2Java.setScope(Scope.APPLICATION);
-						environment.getLog().log(ILog.INFO, 5101, this, "execute", " Deploy Scope: Application" );
+						envLog.log(ILog.INFO, 5101, this, "execute", " Deploy Scope: Application" );
 		    			break;
 		    		case AxisEmitterContext.DEPLOY_SCOPE_TYPE_REQUEST:
 		    			wsdl2Java.setScope(Scope.REQUEST);
-						environment.getLog().log(ILog.INFO, 5102, this, "execute", " Deploy Scope: Request" );
+						envLog.log(ILog.INFO, 5102, this, "execute", " Deploy Scope: Request" );
 		    			break;
 		    		case AxisEmitterContext.DEPLOY_SCOPE_TYPE_SESSTION:
 		    			wsdl2Java.setScope(Scope.SESSION);
-						environment.getLog().log(ILog.INFO, 5103, this, "execute", " Deploy Scope: Session" );
+						envLog.log(ILog.INFO, 5103, this, "execute", " Deploy Scope: Session" );
 		    			break;
 		    		default:
 		    	}
@@ -178,18 +181,18 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 		    if (context.isAllWantedEnabled() != AxisEmitterDefaults.getAllWantedDefault())
 		    {
 		    	wsdl2Java.setAllWanted(context.isAllWantedEnabled());
-				environment.getLog().log(ILog.INFO, 5104, this, "execute", " set AllWanted : " + context.isAllWantedEnabled() );
+				envLog.log(ILog.INFO, 5104, this, "execute", " set AllWanted : " + context.isAllWantedEnabled() );
 		    }
 
 		    if (context.isHelperWantedEnabled() != AxisEmitterDefaults.getHelperWantedDefault())
 		    {
 		    	wsdl2Java.setHelperWanted(context.isHelperWantedEnabled());
-				environment.getLog().log(ILog.INFO, 5105, this, "execute", " set HelperWanted : " + context.isHelperWantedEnabled() );
+				envLog.log(ILog.INFO, 5105, this, "execute", " set HelperWanted : " + context.isHelperWantedEnabled() );
 			}
 		    if (context.isWrapArraysEnabled() != AxisEmitterDefaults.getWrapArraysDefault())
 		    {
 		    	wsdl2Java.setWrapArrays(context.isWrapArraysEnabled());
-				environment.getLog().log(ILog.INFO, 5106, this, "execute", " set WrapArrays : " + context.isWrapArraysEnabled() );
+				envLog.log(ILog.INFO, 5106, this, "execute", " set WrapArrays : " + context.isWrapArraysEnabled() );
 		    }
 			
 			ProgressUtils.report(monitor, NLS.bind(AxisConsumptionCoreMessages.MSG_PARSING_WSDL, javaWSDLParam.getInputWsdlLocation() ) );
@@ -216,7 +219,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			status = moveGeneratedFiles(environment, monitor);
 			
 		} catch (Exception e) {
-			environment.getLog().log(ILog.ERROR, 5021, this, "execute", e);
+			envLog.log(ILog.ERROR, 5021, this, "execute", e);
 			status = StatusUtils.errorStatus(
 					AxisConsumptionCoreMessages.MSG_ERROR_WSDL_JAVA_GENERATE + " " //$NON-NLS-1$
 					+ e.toString(), e);
@@ -230,7 +233,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 	public IStatus moveGeneratedFiles( IEnvironment environment, IProgressMonitor monitor ) 
 	{
 		IStatus status = Status.OK_STATUS;
-		
+		IStatusHandler statusHandler = environment.getStatusHandler();		
 		FileInputStream finStream = null;
 		
 		try {
@@ -243,7 +246,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			
 			String fileName;
 			IPath targetPath=null;
-			IStatusHandler statusHandler = environment.getStatusHandler();
+
 			String deployFile;
 			Iterator iterator;
 			
@@ -306,7 +309,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			
 		} catch (Exception e) {
 			status = StatusUtils.errorStatus(NLS.bind(AxisConsumptionCoreMessages.MSG_ERROR_MOVE_RESOURCE,new String[]{e.getLocalizedMessage()}), e);
-			environment.getStatusHandler().reportError(status);
+			statusHandler.reportError(status);
 			
 		} finally {
 			if (finStream != null) {
