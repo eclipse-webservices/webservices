@@ -97,7 +97,6 @@ public class W11SetElementCommand extends Command {
 		IEditorPart editor = ASDEditorPlugin.getActiveEditor();
 		if (editor != null)
 		{
-            System.out.println("\nW11SetElementCommand.java, line 98");
 			result = (ComponentReferenceEditManager)editor.getAdapter(XSDElementReferenceEditManager.class);
 			
 			if (editor instanceof InternalWSDLMultiPageEditor)
