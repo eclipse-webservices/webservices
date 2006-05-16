@@ -35,9 +35,17 @@
 
    <extension
          point="org.eclipse.ui.exportWizards">
+      <category
+             id="org.eclipse.jst.ws.creation.ui.wsexport.category"
+             name="%PLUGIN_NEW_CATEGORY_NAME_WS"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.exportWizards">
       <wizard
             name="%PLUGIN_EXPORT_WIZARD_NAME_WS"
             icon="icons/export_ws.gif"
+            category="org.eclipse.jst.ws.creation.ui.wsexport.category"
             class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
             id="org.eclipse.jst.ws.consumption.ui.wsexport">
          <description>

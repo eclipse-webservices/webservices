@@ -156,13 +156,21 @@
             title="%LABEL_HANDLERS_CONFIG"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers">
       </dynamicWizard>
-   </extension>   
-
+   </extension>  
+    
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <category
+             id="org.eclipse.jst.ws.consumption.ui.wsimport.category"
+             name="%WEBSERVICES_CATEGORY"/>
+   </extension>
+      
    <extension
          point="org.eclipse.ui.importWizards">
       <wizard
             name="%PLUGIN_IMPORT_WIZARD_NAME_WS"
             icon="icons/import_ws.gif"
+            category="org.eclipse.jst.ws.consumption.ui.wsimport.category"
             class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
             id="org.eclipse.jst.ws.consumption.ui.wsimport">
          <description>
@@ -186,6 +194,7 @@
       <wizard
             name="%IMPORT_WIZARD_NAME_WSIL"
             icon="icons/wsil/import_wsil.gif"
+            category="org.eclipse.jst.ws.consumption.ui.wsimport.category"
             class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
             id="org.eclipse.jst.ws.consumption.ui.wsilimport">
          <description>
