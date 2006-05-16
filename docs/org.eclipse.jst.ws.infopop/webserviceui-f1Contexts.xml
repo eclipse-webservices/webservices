@@ -48,7 +48,7 @@
 file of the same name already exists in the workspace, the newly generated skeleton file will merge 
 with the existing skeleton file.  Enable this to preserve code that you have already modified in the 
 existing skeleton files.  
-</ br>
+<br />
 Note that when this preference is enabled, if you change the return type
 of an interface, the resulting skeleton file will have a method returning the
 type as defined in the new interface but would have a method body from the
