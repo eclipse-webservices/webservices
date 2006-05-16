@@ -34,6 +34,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddSchemaAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddServiceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDGenerateBindingAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDOpenSchemaAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewBindingAction;
@@ -190,6 +191,10 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
     registry.registerAction(action);
     
     action = new ASDAddSchemaAction(this);
+    action.setSelectionProvider(getSelectionManager());
+    registry.registerAction(action);
+    
+    action = new ASDOpenSchemaAction(this);
     action.setSelectionProvider(getSelectionManager());
     registry.registerAction(action);
   }

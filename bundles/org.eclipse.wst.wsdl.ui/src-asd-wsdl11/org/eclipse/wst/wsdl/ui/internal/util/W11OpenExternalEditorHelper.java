@@ -52,7 +52,7 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 			Object notifier = ((WSDLBaseAdapter) object).getTarget();
 			Object openOnModel = getModelToOpenOn(notifier);
 			
-			if (openOnModel != null) {
+			if (openOnModel instanceof XSDConcreteComponent) {
 				openXSDEditor((XSDConcreteComponent) openOnModel);
 			}
 		}
@@ -157,7 +157,7 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 			return elementOrType;
 		}
 		
-		return null;
+		return object;
 	}
 	
 	/**
