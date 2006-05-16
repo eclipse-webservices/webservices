@@ -124,7 +124,7 @@ public class WSDLSetComponentHelper {
                     importLocation = getNormalizedLocation(importDefinition.getLocation()); 
                 }            
     
-                if (importLocation.equals(spec.getFile().getLocation().toOSString())) {
+                if (spec.getFile().getLocation().equals(new Path(importLocation))) {
                     foundMatch = true;
                     break;
                 }
@@ -159,7 +159,7 @@ public class WSDLSetComponentHelper {
                 String resolvedString = resolvedSchema.getSchemaLocation();
                 String importLocation = getNormalizedLocation(resolvedString);
                 
-                if (importLocation.equals(spec.getFile().getLocation().toOSString())) {
+                if (spec.getFile().getLocation().equals(new Path(importLocation))) {
                     foundMatch = true;
                     break;
                 }
@@ -226,7 +226,7 @@ public class WSDLSetComponentHelper {
         }
         uniquePrefix = tempPrefix + i;
       }
-      return uniquePrefix;    
+      return uniquePrefix;
     } 
     
     private String getNormalizedLocation(String location) {
