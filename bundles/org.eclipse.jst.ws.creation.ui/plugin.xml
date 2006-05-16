@@ -229,6 +229,42 @@
                id="org.eclipse.jst.ws.creation.ui.wizard.publish">
          </action>
       </objectContribution>
+      
+       <objectContribution
+            objectClass="org.eclipse.wst.wsdl.Service"
+            nameFilter="*"
+            id="org.eclipse.jst.ws.creation.ui.wizard.publish">
+         <action
+               label="%ACTION_PUBLISH_WSDL"
+               class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
+                  menubarPath="additions"
+               id="org.eclipse.jst.ws.creation.ui.wizard.publish">
+         </action>
+      </objectContribution>
+      
+       <objectContribution
+            objectClass="org.eclipse.wst.wsdl.util.WSDLResourceImpl"
+            nameFilter="*"
+            id="org.eclipse.jst.ws.creation.ui.wizard.publish">
+         <action
+               label="%ACTION_PUBLISH_WSDL"
+               class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
+                  menubarPath="additions"
+               id="org.eclipse.jst.ws.creation.ui.wizard.publish">
+         </action>
+      </objectContribution>
+      
+       <objectContribution
+            objectClass="org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef"
+            nameFilter="*"
+            id="org.eclipse.jst.ws.creation.ui.wizard.publish">
+         <action
+               label="%ACTION_PUBLISH_WSDL"
+               class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
+                  menubarPath="additions"
+               id="org.eclipse.jst.ws.creation.ui.wizard.publish">
+         </action>
+      </objectContribution>
 
    </extension>
    
