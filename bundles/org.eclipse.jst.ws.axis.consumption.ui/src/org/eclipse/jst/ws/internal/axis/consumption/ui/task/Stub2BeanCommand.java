@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060515   118315 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.wsdl.Definition;
+import javax.wsdl.Operation;
 import javax.wsdl.Port;
 import javax.wsdl.PortType;
 import javax.wsdl.Service;
@@ -154,6 +156,32 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
             stub2BeanInfo.setClientProject(clientProject_);
             stub2BeanInfo.setOutputFolder( outputFolder_ );
             String portTypePkgName = NameMappingUtils.getPackageName(portType.getQName().getNamespaceURI(), pkg2nsMapping);
+            
+            /*
+             * If the package name and method name are the same the Axis
+             * wsdl2Java Emitter adds a "_pkg" suffix to the package name
+             * of generated code.
+             * 
+             * We need to make sure the proxy get's put in this same package
+             * if an operation name is the same as the package name.
+             * (Mark Hutchinson - Bug 118315)
+             */
+            List operations = portType.getOperations();
+            Iterator operIter = operations.iterator();
+            boolean addSuffix = false;
+            while (operIter.hasNext())
+            {
+            	Operation operation = (Operation)operIter.next();
+            	if (operation.getName().equals(portTypePkgName))
+            	{
+            		addSuffix = true;            	
+            	}
+            }            
+            if (addSuffix) {
+            	portTypePkgName = portTypePkgName + "_pkg";
+            	servicePkgName = servicePkgName + "_pkg";
+            }            
+            
             String portTypeClassName = computeClassName(portTypeQName.getLocalPart());
             stub2BeanInfo.setPackage(portTypePkgName);
             stub2BeanInfo.setClass(portTypeClassName + "Proxy");
