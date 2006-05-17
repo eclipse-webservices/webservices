@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060517   131582 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.registry;
@@ -77,7 +80,7 @@ public class RegistryManager implements IRegistryManager
 	{
 		if (registryURL_ == null)
 		{
-			registryURL_ = new File(registryPathname_).toURI().toURL();
+			registryURL_ = new File(registryPathname_).toURL();
 		}
 		return registryURL_;
 	}
