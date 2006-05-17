@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
  * 20060216   127138 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060517   141481 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
@@ -33,6 +34,7 @@ import org.eclipse.jem.java.JavaParameter;
 import org.eclipse.jem.java.JavaVisibilityKind;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.common.environment.IStatusHandler;
@@ -156,12 +158,15 @@ public class Stub2BeanInfo
 
   public void write(IProgressMonitor progressMonitor, IStatusHandler statusMonitor) throws CoreException, IOException
   {
-    StringWriter sw = new StringWriter(2048);
+    IPath        outputPath = new Path( outputFolder_ );
+    IProject     project    = ResourceUtils.getProjectOf( outputPath );
+    StringWriter sw         = new StringWriter(2048);
+    
     writePackage(sw);
     writeImports(sw);
     writeClass(sw);
     sw.close();
-    byte[] bytes = sw.getBuffer().toString().getBytes();
+    byte[] bytes = sw.getBuffer().toString().getBytes( project.getDefaultCharset() );
     StringBuffer sb = new StringBuffer();
     if (package_ != null && package_.length() > 0)
     {
