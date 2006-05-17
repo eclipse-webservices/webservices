@@ -9,7 +9,8 @@
  *     IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
+ * 20060404   134913 sengpl@ca.ibm.com - Seng Phung-Lu   
+ * 20060517   142027 sengpl@ca.ibm.com - Seng Phung-Lu    
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -153,7 +154,8 @@ public class ServiceHandlersWidgetOutputCommand extends AbstractDataModelOperati
       // save
       if (wsddResource_ != null) {
         for (int i=0;i<wsddResource_.length;i++) {
-          wsddResource_[i].save(new HashMap());
+        	if (wsddResource_[i]!=null)
+        		wsddResource_[i].save(new HashMap());
         }
       }
   

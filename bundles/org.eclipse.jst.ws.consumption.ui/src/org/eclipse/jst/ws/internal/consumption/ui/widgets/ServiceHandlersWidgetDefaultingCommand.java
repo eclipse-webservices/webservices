@@ -9,7 +9,8 @@
  *     IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
+ * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu   
+ * 20060517   142027 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -85,7 +86,7 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
       WebServicesManager webServicesManager = new WebServicesManager();
       List allWSDLServices = webServicesManager.getAllWSDLServices();
       int servicesSize = allWSDLServices.size();
-      
+
       wsddResource_= new WsddResource[servicesSize];
       wsddResource_[0] = getWsddResourceFromSelection();
       if (wsddResource_[0] == null) {
@@ -97,7 +98,15 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
       while (x<servicesSize) {
         Service service = (Service )allWSDLServices.get(x);
         WsddResource wsddRes = webServicesManager.getWsddResource(service);
-        if (!wsddRes.equals(wsddResource_[x])){
+        boolean isUniqueWsdd = true;
+        for (int w=0;w<wsddResource_.length;w++){
+        	if (wsddRes.equals(wsddResource_[w])){
+        		isUniqueWsdd = false;
+        		break;
+        	}
+        }
+        
+        if (isUniqueWsdd) {
           wsddResource_[x] = wsddRes;
         }
         x++;
@@ -108,44 +117,45 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
       
       int descCounter = 0;
       for (int y=0;y<wsddResource_.length;y++) {
-        
-        WebServices webServices = wsddResource_[y].getWebServices();
-        if (webServices != null) {
-          List wsDescriptions = webServices.getWebServiceDescriptions();
-          for (int i = 0; i < wsDescriptions.size() ; i++) {
- 
-            WebServiceDescription wsDescription = (WebServiceDescription) wsDescriptions.get(i);
-            Vector handlers = new Vector();  
-            List wsPortComponents = wsDescription.getPortComponents();
-            for (int j = 0; j < wsPortComponents.size(); j++) {
-              PortComponent wsPort = (PortComponent) wsPortComponents.get(j);
-              String portName = wsPort.getPortComponentName();
-              List wsHandlers = wsPort.getHandlers();
-     
-              for (int k = 0; k < wsHandlers.size(); k++) {
-  
-                Handler wsHandler = (Handler) wsHandlers.get(k);
-  
-                HandlerTableItem handlerItem = new HandlerTableItem();
-                handlerItem.setHandler(wsHandler);
-                handlerItem.setHandlerName(wsHandler.getHandlerName());
-                handlerItem.setHandlerClassName(wsHandler.getHandlerClass());
-                handlerItem.setPort(wsPort);
-                handlerItem.setPortName(portName);
-                handlerItem.setWsDescRef(wsDescription);
-                
-                handlers.add(handlerItem);
-              }
-              String wsDescName = wsDescription.getWebServiceDescriptionName();
-              handlerDescriptionHolder_[descCounter] = new HandlerDescriptionHolder();
-              handlerDescriptionHolder_[descCounter].setHandlerList(handlers);
-              handlerDescriptionHolder_[descCounter].setDescriptionObject(wsDescription);
-              handlerDescriptionHolder_[descCounter].setDescriptionName(wsDescName);
-              descCounter++;
-              
-            }
-          }
-        }
+        if (wsddResource_[y] !=null) {
+	        WebServices webServices = wsddResource_[y].getWebServices();
+	        if (webServices != null) {
+	          List wsDescriptions = webServices.getWebServiceDescriptions();
+	          for (int i = 0; i < wsDescriptions.size() ; i++) {
+	 
+	            WebServiceDescription wsDescription = (WebServiceDescription) wsDescriptions.get(i);
+	            Vector handlers = new Vector();  
+	            List wsPortComponents = wsDescription.getPortComponents();
+	            for (int j = 0; j < wsPortComponents.size(); j++) {
+	              PortComponent wsPort = (PortComponent) wsPortComponents.get(j);
+	              String portName = wsPort.getPortComponentName();
+	              List wsHandlers = wsPort.getHandlers();
+	     
+	              for (int k = 0; k < wsHandlers.size(); k++) {
+	  
+	                Handler wsHandler = (Handler) wsHandlers.get(k);
+	  
+	                HandlerTableItem handlerItem = new HandlerTableItem();
+	                handlerItem.setHandler(wsHandler);
+	                handlerItem.setHandlerName(wsHandler.getHandlerName());
+	                handlerItem.setHandlerClassName(wsHandler.getHandlerClass());
+	                handlerItem.setPort(wsPort);
+	                handlerItem.setPortName(portName);
+	                handlerItem.setWsDescRef(wsDescription);
+	                
+	                handlers.add(handlerItem);
+	              }
+	              String wsDescName = wsDescription.getWebServiceDescriptionName();
+	              handlerDescriptionHolder_[descCounter] = new HandlerDescriptionHolder();
+	              handlerDescriptionHolder_[descCounter].setHandlerList(handlers);
+	              handlerDescriptionHolder_[descCounter].setDescriptionObject(wsDescription);
+	              handlerDescriptionHolder_[descCounter].setDescriptionName(wsDescName);
+	              descCounter++;
+	              
+	            }
+	          }
+	        }
+	      }
       }
 
       if (handlerDescriptionHolder_ == null){
@@ -308,10 +318,12 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
   private int getNumberofServices(WsddResource[] wsddRes){
     int num= 0;
     for (int i=0;i<wsddRes.length;i++){
-      WebServices ws = wsddRes[i].getWebServices();
-      if (ws!=null){
-        num += ws.getWebServiceDescriptions().size();
-      }
+    	if (wsddRes[i]!=null) {
+    		WebServices ws = wsddRes[i].getWebServices();
+    		if (ws!=null){
+    			num += ws.getWebServiceDescriptions().size();
+    		}
+    	}
     }
     return num;
     

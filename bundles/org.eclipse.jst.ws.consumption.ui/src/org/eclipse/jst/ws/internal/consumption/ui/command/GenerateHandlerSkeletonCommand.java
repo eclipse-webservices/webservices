@@ -9,7 +9,8 @@
  *     IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu      
+ * 20060404   134913 sengpl@ca.ibm.com - Seng Phung-Lu      
+ * 20060517   142027 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.command;
 
@@ -74,7 +75,8 @@ public class GenerateHandlerSkeletonCommand extends AbstractDataModelOperation
           for (int j=0;j<handlers.size();j++){
             HandlerTableItem hti = (HandlerTableItem)handlers.get(j);
             String className = hti.getHandlerClassName();
-            handlerTable.put(className, outPath);
+            if (className!=null && outPath!=null)
+              handlerTable.put(className, outPath);
           }
           returnStatus = genHandlersClasses(handlerTable, monitor);
         }
