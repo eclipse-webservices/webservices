@@ -28,6 +28,7 @@ import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddExtensionElementCommand;
 import org.eclipse.wst.wsdl.ui.internal.filter.ExtensiblityElementFilter;
+import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelAdapter;
 import org.eclipse.wst.xsd.ui.internal.common.commands.AddExtensionCommand;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.AbstractExtensionsSection;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.AddExtensionsComponentDialog;
@@ -40,6 +41,8 @@ import org.w3c.dom.Element;
 
 public class W11ExtensionsSection extends AbstractExtensionsSection
 {
+  WSDLModelAdapter modelAdapter;
+  
   public W11ExtensionsSection()
   {
     super();
@@ -84,6 +87,12 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
     if (input instanceof ExtensibleElement)
     {
       isReadOnly = false;
+      Element element = ((ExtensibleElement)input).getElement();
+      if (element != null)
+      {  
+        modelAdapter = WSDLModelAdapter.lookupOrCreateModelAdapter(element.getOwnerDocument());
+        modelAdapter.getModelReconcileAdapter().addListener(internalNodeAdapter);
+      }        
       //addButton.setEnabled(true);
       //removeButton.setEnabled(true);      
     }  
@@ -92,6 +101,15 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
       isReadOnly = true;      
       //addButton.setEnabled(false);  
       //removeButton.setEnabled(false); 
+    }  
+  }
+  
+  public void dispose()
+  {
+    super.dispose();
+    if (modelAdapter != null)
+    {
+      modelAdapter.getModelReconcileAdapter().removeListener(internalNodeAdapter);
     }  
   }
 

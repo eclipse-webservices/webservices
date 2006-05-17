@@ -12,7 +12,9 @@ package org.eclipse.wst.wsdl.ui.internal.extensions;
 
 import org.w3c.dom.Element;
 
-
+/**
+ * @depreacted
+ */
 public interface INodeReconciler
 {
   public void notifyChanged(Object modelObject, Element element, int eventType, Object feature, Object oldValue, Object newValue, int index);                                         

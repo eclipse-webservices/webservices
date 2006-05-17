@@ -24,6 +24,7 @@ import org.eclipse.wst.wsdl.ui.internal.extensions.ExtensibleTypeSystemProvider;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
+import org.eclipse.wst.xsd.ui.internal.util.ModelReconcileAdapter;
 import org.eclipse.wst.xsd.ui.internal.util.XSDSchemaLocationResolverAdapterFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,6 +33,7 @@ public class WSDLModelAdapter implements INodeAdapter
 {
   protected ResourceSet resourceSet;
   protected Definition definition;
+  private ModelReconcileAdapter modelReconcileAdapter;
 
   public Definition getDefinition()
   {
@@ -104,7 +106,7 @@ public class WSDLModelAdapter implements INodeAdapter
       
       // attach an adapter to keep the WSDL model and DOM in sync
       //
-      new WSDLModelReconcileAdapter(document, definition);
+      modelReconcileAdapter = new WSDLModelReconcileAdapter(document, definition);
       
       
       // TODO... CS : revisit this line
@@ -119,4 +121,25 @@ public class WSDLModelAdapter implements INodeAdapter
     }
     return definition;
   }
+  
+  public ModelReconcileAdapter getModelReconcileAdapter()
+  {
+    return modelReconcileAdapter;
+  }  
+  
+  public static WSDLModelAdapter lookupOrCreateModelAdapter(Document document)
+  {
+    WSDLModelAdapter adapter = null;
+    if (document instanceof INodeNotifier)
+    {
+      INodeNotifier notifier = (INodeNotifier)document;
+      adapter = (WSDLModelAdapter)notifier.getAdapterFor(WSDLModelAdapter.class);
+      if (adapter == null)
+      {
+        adapter = new WSDLModelAdapter();       
+        notifier.addAdapter(adapter);        
+      } 
+    }   
+    return adapter;
+  }  
 }
