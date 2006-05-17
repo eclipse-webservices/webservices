@@ -45,18 +45,19 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
   {
     return elementName.equals("body") || elementName.equals("header") || elementName.equals("fault") || elementName.equals("urlReplacement") || elementName.equals("urlEncoded"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
   }
-
+  
   
   public boolean isApplicableChildElement(Node parentNode, String namespace, String name)
   {
-    boolean result = true;
+    boolean result = true;    
+    
     if (parentNode.getNodeType() == Node.ELEMENT_NODE)
     {
       Element element = (Element) parentNode;
       String parentElementNamespaceURI = parentNode.getNamespaceURI();
       String parentElementName = parentNode.getLocalName();
       // only filter children for 'non-schema' elements
-      //      
+      //   
       if (!WSDLConstants.XSD_NAMESPACE_URI.equals(parentElementNamespaceURI))
       {
         if (parentElementName != null && name != null)
@@ -76,7 +77,18 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
             {
               // eclipse all schema elements, except for 'schema' withing wsdl types elements 
               result = parentElementName.equals("types") && name.equals("schema"); //$NON-NLS-1$ //$NON-NLS-2$
-            }   
+            }
+            else if (namespace.equals(WSDLConstants.WSDL_NAMESPACE_URI))
+            {
+              // cs : the 'required' attribute is burned into WSDL schema as the 'base' extensibility element
+              // the WTP WSDL validator complains when these are present so this line filters them out
+              // of the content assist and extension details view.  As far as I can tell no one actually uses 'em
+              // in practise ... so filtering them out should be ok.  
+              //
+              // TODO (cs) how come the schema says their ok but the validator doesn't like them?
+              //
+              result = !name.equals("required");
+            }  
             else
             {
               // TODO.. we should investigate removing the  ExtensiblityElementFilter extension point
