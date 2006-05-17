@@ -465,4 +465,12 @@
 			class="org.eclipse.wst.wsdl.ui.internal.filter.XSDExtensiblityElementFilter">
 		</extensibilityElementFilter>
 	</extension>
+	
+	<extension
+  	   point="org.eclipse.wst.xsd.ui.extensibilityNodeCustomizations">
+       <nodeCustomization
+			namespace="http://schemas.xmlsoap.org/wsdl/soap/"
+			nodeEditorProviderClass="org.eclipse.wst.wsdl.ui.internal.soap.customizations.SOAPNodeEditorProvider">
+		</nodeCustomization>		
+	</extension>	
 </plugin>
