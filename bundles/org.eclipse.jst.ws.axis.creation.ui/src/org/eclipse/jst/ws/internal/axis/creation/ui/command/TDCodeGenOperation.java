@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060517   142327 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
@@ -23,6 +24,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.CopyAxisJarCommand;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.task.RefreshProjectCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.BackupSkelImplCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.Skeleton2WSDLCommand;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
@@ -56,6 +58,9 @@ public class TDCodeGenOperation extends AbstractDataModelOperation {
 	// UpdateWebXMLCommand
 	private UpdateWEBXMLCommand updateWebXMLCommand = null;
 
+	// RefreshProjectCommand
+	private RefreshProjectCommand refreshProjectCommand = null;
+	
 	/**
 	 * This command runs the commands passed by the constructor in a WorkspaceModifyOperation.
 	 * The commands are listed above, with only some of their data registry parameters since some appear 
@@ -71,6 +76,7 @@ public class TDCodeGenOperation extends AbstractDataModelOperation {
 		wsdl2JavaCommand = new WSDL2JavaCommand();
 		skeleton2WSDLCommand = new Skeleton2WSDLCommand();
 		updateWebXMLCommand = new UpdateWEBXMLCommand();
+		refreshProjectCommand = new RefreshProjectCommand();
 	}
 	
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) {
@@ -152,6 +158,13 @@ public class TDCodeGenOperation extends AbstractDataModelOperation {
 				throw new CoreException(status);
 			}
 			
+			// RefreshProjectCommand
+			refreshProjectCommand.setEnvironment(env);
+			refreshProjectCommand.setProject(serverProject);
+			status = refreshProjectCommand.execute(monitor, info);
+			if (status.getSeverity() == Status.ERROR) {
+				throw new CoreException(status);
+			}
 			
 		}
 	

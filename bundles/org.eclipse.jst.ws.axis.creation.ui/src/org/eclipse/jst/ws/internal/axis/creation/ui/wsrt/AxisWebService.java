@@ -14,6 +14,7 @@
  * 20060424   120137 kathy@ca.ibm.com - Kathy Chan
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060517   142327 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
@@ -98,7 +99,6 @@ public class AxisWebService extends AbstractWebService
 			// commands.add(new SimpleFragment( "BeanConfig" ));
 			// commands.add(new SimpleFragment( "AxisServiceBeanMapping" ));
 			commands.add(new BUConfigCommand());
-//			commands.add(new CopyAxisJarCommand());
 			commands.add(new WaitForAutoBuildCommand());
 			commands.add(new BUCodeGenOperation());
 //			commands.add(new RefreshProjectCommand());
@@ -116,7 +116,6 @@ public class AxisWebService extends AbstractWebService
 //			commands.add(new SimpleFragment( "SkeletonConfig" ));
 //			commands.add(new SimpleFragment( "AxisMappingsWidget" ));
 		    commands.add(new TDConfigCommand());
-//			commands.add(new CopyAxisJarCommand());
 			commands.add(new TDCodeGenOperation());
 //		    commands.add(new RefreshProjectCommand());
 		    commands.add(new BuildProjectCommand());
