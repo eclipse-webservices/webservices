@@ -40,10 +40,12 @@ Export-Package: org.eclipse.wst.wsdl.ui.internal;x-internal:=true,
  org.eclipse.wst.wsdl.ui.internal.refactor;x-internal:=true,
  org.eclipse.wst.wsdl.ui.internal.refactor.actions;x-internal:=true,
  org.eclipse.wst.wsdl.ui.internal.search;x-internal:=true,
+ org.eclipse.wst.wsdl.ui.internal.soap.customizations;x-internal:=true,
  org.eclipse.wst.wsdl.ui.internal.text;x-internal:=true,
  org.eclipse.wst.wsdl.ui.internal.util;x-internal:=true,
  org.eclipse.wst.wsdl.ui.internal.visitor;x-internal:=true,
- org.eclipse.wst.wsdl.ui.internal.wizards;x-internal:=true
+ org.eclipse.wst.wsdl.ui.internal.wizards;x-internal:=true,
+ org.eclipse.wst.wsdl.ui.internal.xsd;x-internal:=true
 Require-Bundle: org.eclipse.core.resources,
  org.eclipse.emf.common,
  org.eclipse.emf.ecore,
