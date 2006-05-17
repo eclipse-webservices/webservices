@@ -15,7 +15,8 @@
  * 20060223 129020    rsinha@ca.ibm.com - Rupam Kuehner
  * 20060406 135350    kathy@ca.ibm.com - Kathy Chan
  * 20060407 135415    rsinha@ca.ibm.com - Rupam Kuehner
- * 20060425   138052 kathy@ca.ibm.com - Kathy Chan
+ * 20060425 138052    kathy@ca.ibm.com - Kathy Chan
+ * 20060517 141880    pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -35,7 +36,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionWidgetDef
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionOutputCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestDelegateCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestFragment;
@@ -129,10 +129,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientWizardWidget.class, "ClientEarProjectName", ClientExtensionDefaultingCommand.class); 
     dataRegistry.addMapping(ClientWizardWidget.class, "ClientComponentType", ClientExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "ClientNeedEAR", ClientExtensionDefaultingCommand.class);
-    
-    // The ClientRuntimeSelectionWidget can control what client extension comes up.
-    dataRegistry.addMapping(ClientRuntimeSelectionWidget.class, "ClientTypeRuntimeServer", ClientExtensionFragment.class);
-    
+        
     // Before WSDLSelectionWidgetWrapper
     // jvh - rerouted these to ClientWizardWidget  
     dataRegistry.addMapping(WSDLSelectionWidgetDefaultingCommand.class, "WebServiceURI", ClientWizardWidget.class );
