@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
+ * 20060404   134913 sengpl@ca.ibm.com - Seng Phung-Lu       
+ * 20060517   142339 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -74,6 +75,7 @@ public class ConfigClientHandlersWidgetBinding implements CommandWidgetBinding
     
     // output
     dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"IsMultipleSelection", ClientHandlersWidgetOutputCommand.class);
+    dataRegistry.addMapping(ClientHandlersWidgetDefaultingCommand.class,"ClientProject", ClientHandlersWidgetOutputCommand.class);
     dataRegistry.addMapping(ConfigClientHandlersTableWidget.class,"HandlerServiceRefHolder", ClientHandlersWidgetOutputCommand.class);
     
     // gen skeleton

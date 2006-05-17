@@ -8,9 +8,10 @@
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
- * 20060404 134913  sengpl@ca.ibm.com - Seng Phung-Lu
  * -------- -------- -----------------------------------------------------------
- */
+ * 20060404   134913sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060517   142339 sengpl@ca.ibm.com - Seng Phung-Lu
+ *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
 import java.util.List;
@@ -83,7 +84,7 @@ public class HandlerServiceRefHolder {
           boolean alreadyExists = false;
           for (int i=0;i<existingHandlers.size();i++){
             Handler handler = (Handler)existingHandlers.get(i);
-            if (handler.getHandlerClass().equals(hti.getHandlerClassName())){
+            if (handler.getHandlerClass().getJavaName().equals(hti.getHandlerClassName())){
               alreadyExists = true;
             }
           }
@@ -100,6 +101,7 @@ public class HandlerServiceRefHolder {
                 if (javaClass != null) {
                   newHandler.setHandlerClass(javaClass);
                 }    
+                existingHandlers.add(newHandler);
               }
             }
             catch(Exception e){
