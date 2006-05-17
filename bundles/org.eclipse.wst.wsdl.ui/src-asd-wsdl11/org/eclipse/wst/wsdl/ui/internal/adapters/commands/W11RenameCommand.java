@@ -66,6 +66,7 @@ public class W11RenameCommand extends Command {
 	public void execute() {
 		if (object instanceof W11Description) {
 			Definition definition = (Definition) object.getTarget();
+			W11TopLevelElementCommand.ensureDefinition(definition);
 			String ns = definition.getQName().getNamespaceURI();
 			definition.setQName(new QName(ns, newName));
 		}

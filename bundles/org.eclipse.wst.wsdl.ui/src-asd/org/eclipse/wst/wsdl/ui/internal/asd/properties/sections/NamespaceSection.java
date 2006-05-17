@@ -214,6 +214,10 @@ public class NamespaceSection extends ASDAbstractSection {
 			{
 				targetNamespaceText.setText(targetNS);
 			}
+      else
+      {
+        targetNamespaceText.setText("");
+      }
 			if (newPrefix != null)
 			{
 				prefixText.setText(newPrefix);

@@ -12,21 +12,18 @@
 
 import java.util.List;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.DOMNamespaceInfoManager;
 import org.w3c.dom.Element;
 
-public class W11EditNamespacesCommand extends Command {
-	private Definition definition;
+public class W11EditNamespacesCommand extends W11TopLevelElementCommand {
 	private List namespacesInfoList;
 	private String targetNamespace;
 	private String targetNamespacePrefix;
 	
 	public W11EditNamespacesCommand(Definition definition) {
-        super(Messages.getString("_UI_EDIT_NAMESPACES"));
-		this.definition = definition;
+	  super(Messages.getString("_UI_EDIT_NAMESPACES"), definition);
 	}
 	
 	public void setNamespacesInfo(List namespaces) {
@@ -42,7 +39,7 @@ public class W11EditNamespacesCommand extends Command {
 	}
 	
 	public void execute() {
-		
+      super.execute();
 		  if (targetNamespacePrefix != null) {
 			  		Element element = definition.getElement();
 			  		

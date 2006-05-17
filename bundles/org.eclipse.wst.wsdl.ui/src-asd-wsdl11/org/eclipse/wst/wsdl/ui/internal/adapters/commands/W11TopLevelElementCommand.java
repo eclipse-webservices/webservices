@@ -41,10 +41,10 @@ public class W11TopLevelElementCommand extends Command
 
   public void execute()
   {
-    ensureDefinition();
+    ensureDefinition(definition);
   }
 
-  private void ensureDefinition()
+  public static void ensureDefinition(Definition definition)
   {
     Document document = definition.getDocument();
 
@@ -52,8 +52,8 @@ public class W11TopLevelElementCommand extends Command
 
     if (definitionsElement == null)
     {
-      String targetNamespace = getDefaultNamespace();
-      definition.setQName(new QName(null, getFileName()));
+      String targetNamespace = getDefaultNamespace(definition);
+      definition.setQName(new QName(null, getFileName(definition)));
       definition.setTargetNamespace(targetNamespace);
       definition.addNamespace("wsdl", WSDLConstants.WSDL_NAMESPACE_URI); //$NON-NLS-1$
       definition.updateElement();
@@ -66,7 +66,7 @@ public class W11TopLevelElementCommand extends Command
     ensureXMLDirective(document);
   }
 
-  private void ensureXMLDirective(Document document)
+  private static void ensureXMLDirective(Document document)
   {
     if (hasXMLDirective(document))
     {
@@ -78,7 +78,7 @@ public class W11TopLevelElementCommand extends Command
     document.insertBefore(xmlDeclaration, firstChild);
   }
   
-  private boolean hasXMLDirective(Document document)
+  private static boolean hasXMLDirective(Document document)
   {
     Node firstChild = document.getFirstChild();
    
@@ -102,7 +102,7 @@ public class W11TopLevelElementCommand extends Command
     return true;
   }
 
-  private ProcessingInstruction getXMLDeclaration(Document document)
+  private static ProcessingInstruction getXMLDeclaration(Document document)
   {
     Preferences preference = XMLCorePlugin.getDefault().getPluginPreferences();
     String charSet = preference.getString(CommonEncodingPreferenceNames.OUTPUT_CODESET);
@@ -114,7 +114,7 @@ public class W11TopLevelElementCommand extends Command
     return xmlDeclaration;
     
   }
-  private String getDefaultNamespace()
+  private static String getDefaultNamespace(Definition definition)
   {
     String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages.getString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"));
 
@@ -123,13 +123,13 @@ public class W11TopLevelElementCommand extends Command
       namespace = namespace.concat("/");
     }
 
-    namespace += getFileName() + "/";
+    namespace += getFileName(definition) + "/";
 
     return namespace;
 
   }
 
-  private String getFileName()
+  private static String getFileName(Definition definition)
   {
     String fileLocation = definition.getLocation();
     IPath filePath = new Path(fileLocation);

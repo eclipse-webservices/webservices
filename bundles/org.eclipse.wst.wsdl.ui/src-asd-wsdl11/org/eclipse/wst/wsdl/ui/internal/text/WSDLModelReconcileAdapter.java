@@ -92,11 +92,15 @@ class WSDLModelReconcileAdapter extends ModelReconcileAdapter
         //
         ((DefinitionImpl)definition).removeAll();
         
-        // vbaciu: The removeAll() call does not remove namespaces as well and the model
-        // does not reconcile well in this case
-        definition.getNamespaces().clear();
+        // The removeAll() call does not remove namespaces as well and the model
+        // does not reconcile well in this case. Also reset the definition name and target
+        // namespace.
         
-        //vbaciu: Reset the document because removeAll() sets the document to null as well.
+        definition.getNamespaces().clear();
+        definition.setQName(null);
+        definition.setTargetNamespace(null);
+        
+        // Reset the document because removeAll() sets the document to null as well.
         definition.setDocument(document);
       }
     }         
