@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060516   126965 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -22,7 +23,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
-import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -138,16 +138,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
               return status;
             }        
           }            
-        }
-
-        //The project should now exist. Add facets if needed.        
-        RequiredFacetVersion[] rfvs = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_).getRequiredFacetVersions();
-        status = FacetUtils.addRequiredFacetsToProject(project, rfvs, monitor);
-        if (status.getSeverity() == Status.ERROR)
-        {
-          environment.getStatusHandler().reportError( status );
-          return status;
-        }                      
+        }                    
 
 	  return status;				
   }

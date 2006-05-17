@@ -13,7 +13,8 @@
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner      
  * 20060217 126757   rsinha@ca.ibm.com - Rupam Kuehner
  * 20060221 119111   rsinha@ca.ibm.com - Rupam Kuehner
- * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060427 126780   rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060517 126965   kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -127,6 +128,48 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
           status = FacetUtils.setFacetRuntimeOnProject(fproject, facetRuntime);
         }
 
+        // add facets required by Web service runtime
+        if (requiredFacetVersions.length != 0) {
+        	status = FacetUtils.addRequiredFacetsToProject(project, requiredFacetVersions, monitor);
+        	if (status.getSeverity() == Status.ERROR)
+        	{
+        		return status;
+        	}      
+        }
+                
+        // add the default facets that's not in conflict with the existing facets
+        Set projectFacetVersionSet = fproject.getProjectFacets();
+        Set projectFacetSet = new HashSet();
+        // get the project facet from the project facet version we calculated
+        for (Iterator iter = projectFacetVersionSet.iterator(); iter.hasNext();) {
+        	IProjectFacetVersion pfv = (IProjectFacetVersion) iter.next();
+        	projectFacetSet.add(pfv.getProjectFacet());
+        }
+        try {
+      	  Set defaultProjectFacetVersionSet = facetRuntime.getDefaultFacets(projectFacetSet);
+      	  // The returned defaultFacetSet contains the original projectFacetSet passed into getDefaultFacets
+      	  // plus any default facets that are not in conflict with the original projectFacetSet.
+      	  // Add to facetsToAdd if the the default facet is not in the original set.
+      	  Set defaultFacetsToAdd = new HashSet();
+      	  for (Iterator iter = defaultProjectFacetVersionSet.iterator(); iter.hasNext();) {
+      		  IProjectFacetVersion defaultProjFacetVersion = (IProjectFacetVersion) iter.next();
+      		  if( ! projectFacetSet.contains( defaultProjFacetVersion.getProjectFacet() ) )
+      		  {
+      			  defaultFacetsToAdd.add(defaultProjFacetVersion);
+      		  }
+      	  }
+      	  if (!defaultFacetsToAdd.isEmpty()) {
+      		  status = FacetUtils.addFacetsToProject(fproject, defaultFacetsToAdd);
+      		  if (status.getSeverity() == IStatus.ERROR)
+      		  {
+      			  return status;
+      		  }    
+      	  }
+        } catch (CoreException e) {
+      	  // If there's any exception when trying to get the default facet, just ignore the default facet
+      	  // and return the original facetsToAdd.
+        }
+        // end of adding default facets
  
       } catch (CoreException ce)
       {
@@ -182,6 +225,7 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
           }
         }                
       }
+      
     }
     else
     {
