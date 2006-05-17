@@ -29,31 +29,9 @@ public class W11AddFaultParameterCommand extends Command {
 	
 	public void execute() {
 		// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
-//		int pattern = getParameterPattern();		
+		int pattern = AddBaseParameterCommand.getParameterPattern(operation);
 		AddFaultParameterCommand command = new AddFaultParameterCommand(operation, fault);
-		command.setStyle(AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT);
+		command.setStyle(pattern);
 		command.run();
 	}
-	
-//	private int getParameterPattern() {
-//		int pattern = AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT;
-//		
-//		if (operation.getEInput() != null) {
-//			Input input = operation.getEInput();
-//			
-//			if (input.getEMessage() != null) {
-//				Message message = input.getEMessage();
-//				List parts = message.getEParts();
-//				
-//				if (parts.size() > 0) {
-//					Part part = (Part) parts.get(0);
-//					if (part.getTypeDefinition() != null) {
-//						pattern = AddBaseParameterCommand.PART_COMPLEXTYPE_SEQ_ELEMENT;
-//					}
-//				}
-//			}
-//		}
-//		
-//		return pattern;
-//	}
 }

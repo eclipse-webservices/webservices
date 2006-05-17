@@ -16,10 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.Fault;
+import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Operation;
+import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.PortType;
+import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.XSDComponentHelper;
@@ -27,6 +32,7 @@ import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDModelGroup;
 import org.eclipse.xsd.XSDNamedComponent;
+import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
@@ -36,6 +42,7 @@ public abstract class AddBaseParameterCommand {
 	public static int PART_ELEMENT                 = 1;
 	public static int PART_COMPLEXTYPE_SEQ_ELEMENT = 2;
 	public static int PART_COMPLEXTYPE             = 3;
+	public static int PART_SIMPLETYPE			   = 4;
 
 	protected int style = 0;
 	protected Operation operation;
@@ -259,6 +266,146 @@ public abstract class AddBaseParameterCommand {
             }
         }
         return list;
+    }
+    
+    public static int getParameterPattern(WSDLElement element) {
+    	int pattern = -1;
+    	
+    	if (element instanceof Operation) {
+    		pattern = getPattern((Operation) element);
+    		
+			PortType pt = (PortType) ((Operation) element).getContainer();
+    		if (pattern == -1) {
+    			// let's try to search other Operations in the same PortType
+    			Iterator opIt = pt.getEOperations().iterator();
+    			while (pattern == -1 && opIt.hasNext()) {
+    				Operation item = (Operation) opIt.next();
+    				if (!item.equals(element)) {
+    					pattern = getPattern(item);
+    				}
+    			}
+    		}
+
+    		if (pattern == -1) {
+    			// let's try to search other Operations in OTHER PortTypes
+    			Iterator ptIt = pt.getEnclosingDefinition().getEPortTypes().iterator();
+    			while (pattern == -1 && ptIt.hasNext()) {
+    				PortType item = (PortType) ptIt.next();
+    				if (!item.equals(pt)) {
+    					pattern = getPattern(item);
+    				}
+    			}
+    		}
+    	}
+    	else if (element instanceof PortType) {
+    		PortType pt = (PortType) element;
+    		pattern = getPattern(pt);
+    		
+    		if (pattern == -1) {
+    			// let's try to search other Operations in OTHER PortTypes
+    			Iterator ptIt = pt.getEnclosingDefinition().getEPortTypes().iterator();
+    			while (pattern == -1 && ptIt.hasNext()) {
+    				PortType item = (PortType) ptIt.next();
+    				if (!item.equals(pt)) {
+    					pattern = getPattern(item);
+    				}
+    			}
+    		}
+    	}
+    	
+    	if (pattern == -1) {
+    		pattern = AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT;
+    	}
+
+    	return pattern;
+    }
+    
+    private static int getPattern(PortType portType) {
+    	int pattern = -1;
+    	Iterator opIt = portType.getEOperations().iterator();
+    	while (pattern == -1 && opIt.hasNext()) {
+    		Operation op = (Operation) opIt.next();
+    		pattern = getPattern(op);
+    	}
+    	
+    	return pattern;
+    }
+    
+    private static int getPattern(Operation operation) {
+		int pattern = -1;
+		
+    	Input input = operation.getEInput();
+		Output output = operation.getEOutput();
+		List faults = operation.getEFaults();
+		
+		if (input != null) {
+			pattern = getPattern(input.getEMessage());
+		}
+		
+		if (pattern == -1 && output != null) {
+			pattern = getPattern(output.getEMessage());
+		}
+		
+		if (pattern == -1 && faults.size() > 0) {
+			Iterator faultIt = faults.iterator();
+			while (pattern == -1 && faultIt.hasNext()) {
+				Fault fault = (Fault) faultIt.next();
+				pattern = getPattern(fault.getEMessage());
+			}
+		}
+		
+		return pattern;
+    }
+    
+    private static int getPattern(Message message) {
+    	int pattern = -1;
+		if (message != null) {
+			Iterator parts = message.getEParts().iterator();
+			while (parts.hasNext()) {
+				Part part = (Part) parts.next();
+				if (part.getElementDeclaration() != null) {
+					pattern = AddBaseParameterCommand.PART_ELEMENT;
+
+					XSDElementDeclaration xsdElement = part.getElementDeclaration();
+					if (isSequencePattern(xsdElement.getTypeDefinition())) {
+						pattern = AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT;	
+					}					
+					break;
+				}
+				else if (part.getTypeDefinition() != null) {
+					pattern = AddBaseParameterCommand.PART_SIMPLETYPE;
+					
+					if (part.getTypeDefinition() instanceof XSDComplexTypeDefinition) {
+						pattern = AddBaseParameterCommand.PART_COMPLEXTYPE;
+						
+						XSDComplexTypeDefinition xsdType = (XSDComplexTypeDefinition) part.getTypeDefinition();
+						if (isSequencePattern(xsdType)) {
+							pattern = AddBaseParameterCommand.PART_COMPLEXTYPE_SEQ_ELEMENT; 
+						}
+					}
+					break;
+				}
+			}
+		}
+		
+		return pattern;
+    }
+    
+    private static boolean isSequencePattern(XSDTypeDefinition type) {
+    	boolean isSequencePattern = false;
+    	
+    	if (type instanceof XSDComplexTypeDefinition) {
+    		XSDComplexTypeDefinition complexType = (XSDComplexTypeDefinition) type;
+
+	    	if (complexType.getContent() instanceof XSDParticle) {
+				XSDParticle particle = (XSDParticle) complexType.getContent();
+				if (particle.getContent() instanceof XSDModelGroup) {
+					isSequencePattern = true;
+				}
+			}
+    	}
+    	
+    	return isSequencePattern;
     }
 
 	protected abstract String getAnonymousXSDElementBaseName();

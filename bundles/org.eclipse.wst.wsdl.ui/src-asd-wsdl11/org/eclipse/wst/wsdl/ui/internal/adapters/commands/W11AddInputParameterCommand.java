@@ -10,18 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
-import java.util.List;
-
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.wsdl.Input;
-import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
-import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddInputParameterCommand;
@@ -37,34 +32,10 @@ public class W11AddInputParameterCommand extends Command {
 	
 	public void execute() {
 		// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
-		int pattern = getParameterPattern();
+		int pattern = AddBaseParameterCommand.getParameterPattern(operation);
 		AddInputParameterCommand command = new AddInputParameterCommand(operation, pattern);
 		command.run();
 		selectNewElement(operation.getEInput());
-	}
-	
-	private int getParameterPattern() {
-		int pattern = AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT;
-		
-		// TODO: rmah: Should we be checking if there's an existing Output.  If so, we should
-		// try to determine the pattern from there if we fail to get it from the Input???
-		if (operation.getEInput() != null) {
-			Input input = operation.getEInput();
-			
-			if (input.getEMessage() != null) {
-				Message message = input.getEMessage();
-				List parts = message.getEParts();
-				
-				if (parts.size() > 0) {
-					Part part = (Part) parts.get(0);
-					if (part.getTypeDefinition() != null) {
-						pattern = AddBaseParameterCommand.PART_COMPLEXTYPE_SEQ_ELEMENT;
-					}
-				}
-			}
-		}
-		
-		return pattern;
 	}
 	
     // TODO: We should probably be selecting the new element at the "action level"....  However, our actions
