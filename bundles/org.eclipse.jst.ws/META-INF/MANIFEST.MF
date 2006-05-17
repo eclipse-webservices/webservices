@@ -9,6 +9,8 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.jst.ws.internal;x-internal:=true,
  org.eclipse.jst.ws.internal.command;x-internal:=true,
  org.eclipse.jst.ws.internal.common;x-internal:=true,
+ org.eclipse.jst.ws.internal.conformance;x-internal:=true,
+ org.eclipse.jst.ws.internal.conformance.rules;x-internal:=true,
  org.eclipse.jst.ws.internal.context;x-internal:=true,
  org.eclipse.jst.ws.internal.data;x-internal:=true,
  org.eclipse.jst.ws.internal.dialog;x-internal:=true,
