@@ -19,8 +19,11 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.BindingContentPlaceHolder;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingOperation;
 
@@ -29,6 +32,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingOperation;
 public class BindingContentEditPart extends BaseEditPart
 {  
   Label label;
+  protected ASDSelectionEditPolicy selectionHandlesEditPolicy = new ASDSelectionEditPolicy();
   protected IFigure createFigure()
   {
     Figure figure = new Figure();
@@ -72,7 +76,15 @@ public class BindingContentEditPart extends BaseEditPart
 	  super.refreshVisuals();    
   }  
   
-  protected void createEditPolicies()
-  {    
+  protected void createEditPolicies() {
+	  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, selectionHandlesEditPolicy);
+  }
+  
+  public void addFeedback() {
+	  label.getParent().setBackgroundColor(DesignViewGraphicsConstants.tableCellSelectionColor);
+  }
+
+  public void removeFeedback() {
+	  label.getParent().setBackgroundColor(ColorConstants.tooltipBackground);
   }
 }

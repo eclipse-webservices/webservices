@@ -84,7 +84,21 @@ public class W11BindingMessageReference extends WSDLBaseAdapter implements IBind
 
   public String getText()
   {
-    return getName();
+	  String text = "";
+	  if (target instanceof BindingInput)
+	  {
+		  text = "binding input";
+	  }
+	  else if (target instanceof BindingOutput)
+	  {
+		  text = "binding output";
+	  } 
+	  else if (target instanceof BindingFault)
+	  {
+		  text = "binding fault";
+	  }
+	  
+	  return text;
   }
 
   public IMessageReference getMessageReference()

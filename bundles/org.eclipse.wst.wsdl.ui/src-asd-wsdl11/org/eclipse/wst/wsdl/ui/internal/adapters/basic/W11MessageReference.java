@@ -237,15 +237,15 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	public String getText() {
 	    if (getKind() == KIND_INPUT)
 	    {
-	      return "Input(s)";
+	      return "Input";
 	    }
 	    else if (getKind() == KIND_OUTPUT)
 	    {
-	      return "Output(s)";
+	      return "Output";
 	    }
 	    else if (getKind() == KIND_FAULT)
 	    {
-	      return "Fault(s)";
+	      return "Fault";
 	    }
 	    return "NoName";
 	}

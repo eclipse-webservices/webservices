@@ -92,6 +92,6 @@ public class W11BindingOperation extends WSDLBaseAdapter implements IBindingOper
 
   public String getText()
   {
-    return getName();
+    return "binding operation";
   }
 }
