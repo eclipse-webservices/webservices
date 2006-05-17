@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.filter;
 
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 
 public class SoapExtensiblityElementFilter implements ExtensiblityElementFilter
@@ -20,32 +21,41 @@ public class SoapExtensiblityElementFilter implements ExtensiblityElementFilter
 	
   public boolean isValidContext(Element parentElement, String localName)
   {
-  	boolean result = false;
+  	boolean result = true;
 
-    String parentElementName = parentElement.getLocalName();
-	if (parentElementName.equals("binding")) //$NON-NLS-1$
-	{
-	  result = localName.equals("binding"); 	   //$NON-NLS-1$
-	}	  
-	else if (parentElementName.equals("operation")) //$NON-NLS-1$
-	{
-	  result = localName.equals("operation");  //$NON-NLS-1$
-	}
-	else if (parentElementName.equals("input") ||  //$NON-NLS-1$
-	         parentElementName.equals("output")) //$NON-NLS-1$
-	{
-	  result = localName.equals("body") ||  //$NON-NLS-1$
-	           localName.equals("header"); 	   //$NON-NLS-1$
-	}	
-	else if (parentElementName.equals("fault")) //$NON-NLS-1$
-	{
-	  result = localName.equals("fault"); 	   //$NON-NLS-1$
-	}
-	else if (parentElementName.equals("port")) //$NON-NLS-1$
-	{
-	  result = localName.equals("address"); 	   //$NON-NLS-1$
-	}	
-
+    String parentElementName = parentElement.getLocalName();    
+    if (parentElement.getNamespaceURI().equals(WSDLConstants.WSDL_NAMESPACE_URI))
+    { 
+      // here we assume the parent element is the WSDL binding 
+      // skeleton and that the 'localName' is the SOAP extension element
+      //      
+      if (parentElementName.equals("binding")) //$NON-NLS-1$
+      {
+        result = localName.equals("binding"); 	   //$NON-NLS-1$
+      }	  
+      else if (parentElementName.equals("operation")) //$NON-NLS-1$
+      {
+        result = localName.equals("operation");  //$NON-NLS-1$
+      }
+      else if (parentElementName.equals("input") ||  //$NON-NLS-1$
+          parentElementName.equals("output")) //$NON-NLS-1$
+      {
+        result = localName.equals("body") ||  //$NON-NLS-1$
+        localName.equals("header"); 	   //$NON-NLS-1$
+      }	
+      else if (parentElementName.equals("fault")) //$NON-NLS-1$
+      {
+        result = localName.equals("fault"); 	   //$NON-NLS-1$
+      }
+      else if (parentElementName.equals("port")) //$NON-NLS-1$
+      {
+        result = localName.equals("address"); 	   //$NON-NLS-1$
+      }
+      else
+      {
+        result = false;        
+      }  
+    }    
     return result;
   }     
 }
