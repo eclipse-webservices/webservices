@@ -28,14 +28,14 @@ import org.eclipse.osgi.util.NLS;
  * This rule checks if a service class
  * is public default constructable.
  */
-public class JAXRPCRule0001 extends JavaWebServiceRule
+public class JAXRPCRule0002 extends JavaWebServiceRule
 {
 	/**
 	 * Creates a new instance of this rule.
 	 */
-	public JAXRPCRule0001 ()
+	public JAXRPCRule0002 ()
 	{
-		id_ = 1;
+		id_ = 2;
 		namespace_ = "http://www.eclipse.org/webtools/org.eclipse.jst.ws/jaxrpc/1.1";
 		name_ = null;
 		description_ = null;
@@ -46,17 +46,29 @@ public class JAXRPCRule0001 extends JavaWebServiceRule
 	 */
 	public void visitClass ( IType jdtClass, Stack peanutTrail )
 	{
-		// An empty peanut trail implies this is the root
-		// class or JAX-RPC service class.
+		// An empty peanut trail implies this is the root class
+		// root class or JAX-RPC service class, whereas a non-empty
+		// peanut trail implies this is a class from a method, field
+		// or property signature. In the former case, remember the
+		// qualified name of the type just in case we need it for the
+		// latter case.
 		if (peanutTrail.size() == 0)
+		{
+			serviceClassName_ = jdtClass.getFullyQualifiedName();
+		}
+		else
 		{
 			try
 			{
 				JDTResolver resolver = engine_.getJDTResolver();
-				if (!resolver.isConstructable(jdtClass) || resolver.isInterface(jdtClass) || resolver.isAbstract(jdtClass))
-				{
-					String message = NLS.bind(WSPluginMessages.MSG_JAXRPC11_RULE_0001,jdtClass.getFullyQualifiedName());
-					statusList_.add(new Status(IStatus.WARNING,"org.eclipse.jst.ws",0,message,null));
+				String qname = jdtClass.getFullyQualifiedName();
+				if (!resolver.isPrimitiveType(jdtClass) && !qname.startsWith("java.") && !qname.startsWith("javax."))
+				{ 
+					if (!resolver.isConstructable(jdtClass) || resolver.isInterface(jdtClass) || resolver.isAbstract(jdtClass))
+					{
+						String message = NLS.bind(WSPluginMessages.MSG_JAXRPC11_RULE_0002,qname,serviceClassName_);
+						statusList_.add(new Status(IStatus.WARNING,"org.eclipse.jst.ws",0,message,null));
+					}
 				}
 			}
 			catch (JavaModelException e)
@@ -65,4 +77,6 @@ public class JAXRPCRule0001 extends JavaWebServiceRule
 			}
 		}
 	}
+	
+	private String serviceClassName_;
 }

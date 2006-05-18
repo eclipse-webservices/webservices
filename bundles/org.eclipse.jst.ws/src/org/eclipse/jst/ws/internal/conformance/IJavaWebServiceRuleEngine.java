@@ -30,10 +30,9 @@ public interface IJavaWebServiceRuleEngine
 	 * @param project The project context of the analysis.
 	 * @param rootClass The IType of the class to analyze.
 	 * @param rules The rules to use for the analysis.
-	 * @param monitor A progress monitor, or null for none.
 	 * @return An IStatus summarizing the results of the analysis.
 	 */
-	public IStatus analyze ( IProject project, IType rootClass, JavaWebServiceRuleSet rules, IProgressMonitor monitor );
+	public IStatus analyze ( IProject project, IType rootClass, JavaWebServiceRuleSet rules );
 	
 	/**
 	 * Returns the JDTResolver in use by this analyzer.
@@ -44,4 +43,14 @@ public interface IJavaWebServiceRuleEngine
 	 * @return The JDTResolver in use by this analyzer.
 	 */
 	public JDTResolver getJDTResolver ();
+	
+	/**
+	 * Returns the progress monitor in use by this analyzer,
+	 * or null if no progress monitor is in use.
+	 * This method is intended for use by implementations
+	 * of IJavaWebServiceRule.
+	 * @return The progress monitor in use by this analyzer,
+	 * or null for none.
+	 */
+	public IProgressMonitor getProgressMonitor ();
 }

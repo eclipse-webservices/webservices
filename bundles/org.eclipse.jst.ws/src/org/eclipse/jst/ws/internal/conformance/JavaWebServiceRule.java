@@ -93,7 +93,7 @@ public class JavaWebServiceRule implements IJavaWebServiceRule
 	/* (non-Javadoc)
 	 * @see org.eclipse.jst.ws.internal.conformance.IJavaWebServiceRule#visitException(org.eclipse.jdt.core.IField, java.util.Stack)
 	 */
-	public void visitException ( IField jdtClass, Stack peanutTrail )
+	public void visitException ( IType jdtClass, Stack peanutTrail )
 	{
 	}
 	

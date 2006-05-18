@@ -80,7 +80,7 @@ public interface IJavaWebServiceRule
 
 	public void visitClass ( IType jdtClass, Stack peanutTrail );
 
-	public void visitException ( IField jdtClass, Stack peanutTrail );
+	public void visitException ( IType jdtClass, Stack peanutTrail );
 
 	public void visitField ( IField jdtField, Stack peanutTrail );
 

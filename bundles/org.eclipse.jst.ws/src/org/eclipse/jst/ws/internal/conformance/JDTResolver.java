@@ -60,6 +60,8 @@ public class JDTResolver
 	 * Returns true if and only if the given JDT IType is an interface.
 	 * @param jdtType The type to analyze.
 	 * @return True if and only if the given JDT IType is an interface.
+	 * @throws JavaModelException If the JDT model fails to
+	 * analyze the given type.
 	 */
 	public boolean isInterface ( IType jdtType )
 	throws JavaModelException
@@ -71,6 +73,8 @@ public class JDTResolver
 	 * Returns true if and only if the given JDT IType is an abstract class.
 	 * @param jdtType The type to analyze.
 	 * @return True if and only if the given JDT IType is an abstract class.
+	 * @throws JavaModelException If the JDT model fails to
+	 * analyze the given type.
 	 */
 	public boolean isAbstract ( IType jdtType )
 	throws JavaModelException
@@ -87,6 +91,8 @@ public class JDTResolver
 	 * @param jdtType The type to analyze.
 	 * @return True if and only if instances of the type are
 	 * public default constructable.
+	 * @throws JavaModelException If the JDT model fails to
+	 * analyze the given type.
 	 */
 	public boolean isConstructable ( IType jdtType )
 	throws JavaModelException
@@ -108,11 +114,30 @@ public class JDTResolver
 	}
 	
 	/**
+	 * Returns true if and only if the given JDT IType is
+	 * a type from the standard JDK, that is, if the given
+	 * type belongs under the "java" or "javax" packages.
+	 * @param jdtType
+	 * @return True if and only if the type is a non-primitive,
+	 * Java standard type.
+	 * @throws JavaModelException If the JDT model fails to
+	 * analyze the given type.
+	 */
+	public boolean isStandardType ( IType jdtType )
+	throws JavaModelException
+	{
+		String qname = jdtType.getFullyQualifiedName();
+		return qname.startsWith("java.") || qname.startsWith("javax.");
+	}
+	
+	/**
 	 * Returns true if and only if the given JDT IType
 	 * is one of the Java primitive types supported by JAX-RPC.
 	 * @param jdtType The type to analyze.
 	 * @return True if and only if the type is a Java primitive
 	 * type supported by JAX-RPC.
+	 * @throws JavaModelException If the JDT model fails to
+	 * analyze the given type.
 	 */
 	public boolean isPrimitiveType ( IType jdtType )
 	throws JavaModelException
@@ -131,6 +156,8 @@ public class JDTResolver
 	 * @param jdtType The type to analyze.
 	 * @return True if and only if the type is a Java wrapper
 	 * type supported by JAX-RPC.
+	 * @throws JavaModelException If the JDT model fails to
+	 * analyze the given type.
 	 */
 	public boolean isWrapperType ( IType jdtType )
 	throws JavaModelException
@@ -149,6 +176,8 @@ public class JDTResolver
 	 * @param jdtType The type to analyze.
 	 * @return True if and only if the type is a Java standard
 	 * type supported by JAX-RPC.
+	 * @throws JavaModelException If the JDT model fails to
+	 * analyze the given type.
 	 */
 	public boolean isSupportedType ( IType jdtType )
 	throws JavaModelException
@@ -276,6 +305,36 @@ public class JDTResolver
 	}
 	
 	/**
+	 * Returns the JDT IType object for the given bean property.
+	 * @param javaBeanProperty The bean property to analyze.
+	 * @return The property type.
+	 * @throws JavaModelException If the JDT engine fails to
+	 * analyze the given bean property to satisfy this request.
+	 */
+	public IType getPropertyType ( IJavaBeanProperty javaBeanProperty )
+	throws JavaModelException
+	{
+		IMethod method = javaBeanProperty.getGetter();
+		if (method != null)
+		{
+			return getReturnType(method);
+		}
+		else
+		{
+			method = javaBeanProperty.getSetter();
+			if (method != null)
+			{
+				IType[] parameters = getParameterTypes(method);
+				if (parameters.length > 0)
+				{
+					return parameters[0];
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Returns the JDT IType object for the return type
 	 * of the given method, or null if the method is void.
 	 * @param jdtMethod The method to analyze.
@@ -386,11 +445,11 @@ public class JDTResolver
 	{
 		IType type = javaProject_.findType(typeName);
 		return type;
-		/*
+/*
 		SearchEngine engine = new SearchEngine();
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] {javaProject_},true);
+		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] {javaProject_});
 		SearchPattern pattern = SearchPattern.createPattern(
-				"*",
+				"*"+typeName,
 				IJavaSearchConstants.CLASS_AND_INTERFACE,
 				IJavaSearchConstants.DECLARATIONS,
 				SearchPattern.R_PATTERN_MATCH
@@ -402,6 +461,7 @@ public class JDTResolver
 			public void acceptSearchMatch ( SearchMatch match )
 			{
 				Object element = match.getElement();
+				System.out.println("Matched element "+element==null?"null":element.toString());
 				if (element != null && element instanceof IType)
 				{
 					type[0] = (IType)element;
@@ -417,7 +477,7 @@ public class JDTResolver
 			throw new JavaModelException(e);
 		}
 		return type[0];
-		*/
+*/
 	}
 
 	/**
@@ -496,15 +556,10 @@ public class JDTResolver
 	public String getSetterName ( IMethod method )
 	{
 		String methodName = method.getElementName();
-		if (methodName.startsWith("get") && methodName.length() > 3)
+		if (methodName.startsWith("set") && methodName.length() > 3)
 		{
 			//TODO Check signature. Must be "T getP()" or "T[] getP()" or "T getP(int)".
 			return methodName.substring(3,4).toLowerCase() + methodName.substring(4);
-		}
-		else if (methodName.startsWith("is") && methodName.length() > 3)
-		{
-			//TODO Check signature. Must be "boolean isP()".
-			return methodName.substring(2,3).toLowerCase() + methodName.substring(3);
 		}
 		return null;
 	}

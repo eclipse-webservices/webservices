@@ -152,9 +152,9 @@ public class JavaWebServiceRuleSet
 	}
 	
 	/**
-	 * Delegates to IJavaWebServiceRule.init(...)
-	 * for each enabled rule in the set.
-	 * @param engine
+	 * Initializes all rules in the set by calling
+	 * their init() methods with the given engine.
+	 * @param engine The engine initializing 
 	 */
 	public void init ( IJavaWebServiceRuleEngine engine )
 	{
@@ -166,8 +166,14 @@ public class JavaWebServiceRuleSet
 		}
 	}
 
+	/**
+	 * Visits the "visitClass" method of all rules in the set. 
+	 * @param jdtClass The JDT IType being visited.
+	 * @param peanutTrail The stack of objects up to the root.
+	 */
 	public void visitClass ( IType jdtClass, Stack peanutTrail )
 	{
+//		System.out.println("Visiting Class "+jdtClass.getFullyQualifiedName());
 		Iterator i = enabledRules_.iterator();
 		while (i.hasNext())
 		{
@@ -176,8 +182,14 @@ public class JavaWebServiceRuleSet
 		}		
 	}
 
-	public void visitException ( IField jdtClass, Stack peanutTrail )
+	/**
+	 * Visits the "visitException" method of all rules in the set. 
+	 * @param jdtClass The JDT IType being visited.
+	 * @param peanutTrail The stack of objects up to the root.
+	 */
+	public void visitException ( IType jdtClass, Stack peanutTrail )
 	{
+//		System.out.println("Visiting Exception "+jdtClass.getFullyQualifiedName());
 		Iterator i = enabledRules_.iterator();
 		while (i.hasNext())
 		{
@@ -187,8 +199,14 @@ public class JavaWebServiceRuleSet
 	}
 
 
+	/**
+	 * Visits the "visitField" method of all rules in the set. 
+	 * @param jdtClass The JDT IField being visited.
+	 * @param peanutTrail The stack of objects up to the root.
+	 */
 	public void visitField ( IField jdtField, Stack peanutTrail )
 	{
+//		System.out.println("Visiting Field "+jdtField.getElementName());
 		Iterator i = enabledRules_.iterator();
 		while (i.hasNext())
 		{
@@ -197,8 +215,14 @@ public class JavaWebServiceRuleSet
 		}
 	}
 
+	/**
+	 * Visits the "visitProperty" method of all rules in the set. 
+	 * @param jdtClass The IJavaBeanProperty being visited.
+	 * @param peanutTrail The stack of objects up to the root.
+	 */
 	public void visitProperty ( IJavaBeanProperty beanProperty, Stack peanutTrail )
 	{
+//		System.out.println("Visiting Property "+beanProperty.getName());
 		Iterator i = enabledRules_.iterator();
 		while (i.hasNext())
 		{
@@ -207,8 +231,14 @@ public class JavaWebServiceRuleSet
 		}
 	}
 
+	/**
+	 * Visits the "visitMethod" method of all rules in the set. 
+	 * @param jdtClass The JDT IMethod being visited.
+	 * @param peanutTrail The stack of objects up to the root.
+	 */
 	public void visitMethod ( IMethod jdtMethod, Stack peanutTrail )
 	{
+//		System.out.println("Visiting Method "+jdtMethod.getElementName());
 		Iterator i = enabledRules_.iterator();
 		while (i.hasNext())
 		{
@@ -217,6 +247,17 @@ public class JavaWebServiceRuleSet
 		}
 	}
 	
+	/**
+	 * Collects the results of all rules in the set together.
+	 * If one or more warnings or errors are found, returns
+	 * a status object whose top level message is the root
+	 * message passed to this message, otherwise, returns a
+	 * basic "OK" status.
+	 * @param rootMessage The warning/error message to act as
+	 * the root message if necessary (ie. if at least one rule
+	 * in the set reported at least one warning/error).
+	 * @return The collective status.
+	 */
 	public IStatus getResults ( String rootMessage )
 	{
 		List list = new LinkedList();

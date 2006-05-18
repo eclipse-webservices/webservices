@@ -28,6 +28,7 @@ public final class WSPluginMessages extends NLS {
 	public static String ANY_FILTER_DESC;
 	public static String ERROR_SELECTION_TRANSFORM;
 	public static String MSG_JAXRPC11_NOT_COMPLIANT;
+	public static String MSG_JAXRPC11_UNRESOLVED_TYPE;
 	public static String MSG_JAXRPC11_RULE_0001;
 	public static String MSG_JAXRPC11_RULE_0002;
 	public static String MSG_JAXRPC11_RULE_0003;

@@ -41,7 +41,6 @@ import org.eclipse.jst.ws.internal.conformance.rules.JAXRPCRuleSetFactory;
  */
 public class JAXRPCWebServiceAnalyzer
 {
-	private IJavaWebServiceRuleEngine ruleEngine_;
 	private JavaWebServiceRuleSet ruleSet_;
 	
 	/**
@@ -51,7 +50,6 @@ public class JAXRPCWebServiceAnalyzer
 	 */
 	public JAXRPCWebServiceAnalyzer ()
 	{
-		ruleEngine_ = new JAXRPCWebServiceRuleEngine();
 		ruleSet_ = JAXRPCRuleSetFactory.newRuleSet();
 	}
 
@@ -84,7 +82,8 @@ public class JAXRPCWebServiceAnalyzer
 	 */
 	public IStatus analyze ( IProject project, IType rootClass, IProgressMonitor monitor )
 	{
-		return ruleEngine_.analyze(project,rootClass,ruleSet_,monitor);
+		IJavaWebServiceRuleEngine engine = new JAXRPCWebServiceRuleEngine(monitor);
+		return engine.analyze(project,rootClass,ruleSet_);
 	}
 
 	/**
@@ -107,7 +106,7 @@ public class JAXRPCWebServiceAnalyzer
 	{
 		try
 		{
-			return ruleEngine_.analyze(project,asType(rootClass,project),ruleSet_,monitor);
+			return analyze(project,asType(rootClass,project),monitor);
 		}
 		catch (JavaModelException e)
 		{
@@ -137,7 +136,7 @@ public class JAXRPCWebServiceAnalyzer
 	{
 		try
 		{
-			return ruleEngine_.analyze(project,asType(rootClass),ruleSet_,monitor);
+			return analyze(project,asType(rootClass),monitor);
 		}
 		catch (JavaModelException e)
 		{

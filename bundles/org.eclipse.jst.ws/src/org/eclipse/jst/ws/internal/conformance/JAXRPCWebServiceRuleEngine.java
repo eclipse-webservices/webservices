@@ -21,6 +21,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -38,66 +39,190 @@ import org.eclipse.osgi.util.NLS;
  */
 public class JAXRPCWebServiceRuleEngine implements IJavaWebServiceRuleEngine
 {
-	// This set keeps track of the fully qualified names of
-	// classes we have visited so that we don't visit the same
-	// service class, value type class or exception class more
-	// than once.
-	//
-	private Set visited_;
-	
-	// This stack keeps a trail of JDT objects back to the
-	// service class we began with. This can be useful to
-	// visitors that need to inspect the JDT elements that
-	// enclose the currently visited element.
-	private Stack peanutTrail_;
+	/**
+	 * Creates a new JAX-RPC analysis engine with the given
+	 * progress monitor.
+	 * @param progressMonitor The progress monitor for the
+	 * engine to use, or null if monitoring is not desired.
+	 */
+	public JAXRPCWebServiceRuleEngine ( IProgressMonitor progressMonitor )
+	{
+		progressMonitor_ = progressMonitor;
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.jst.ws.internal.conformance.IJavaWebServiceRuleEngine#analyze(org.eclipse.core.resources.IProject, org.eclipse.jdt.core.IType, org.eclipse.jst.ws.internal.conformance.JavaWebServiceRuleSet, org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public IStatus analyze ( IProject project, IType rootClass, JavaWebServiceRuleSet rules, IProgressMonitor monitor )
+	public IStatus analyze ( IProject project, IType rootClass, JavaWebServiceRuleSet rules )
 	{
 		visited_ = new HashSet();
 		peanutTrail_ = new Stack();		
-		resolver_ = new JDTResolver(project,monitor);
+		resolver_ = new JDTResolver(project,progressMonitor_);
 		IStatus status = null;
 		try
 		{
 			rules.init(this);
 			rules.visitClass(rootClass,peanutTrail_);
 			visited_.add(rootClass.getFullyQualifiedName());
-			peanutTrail_.push(rootClass);
+			push(rootClass);
 			IType[] superClasses = resolver_.getSuperClasses(rootClass);
 			IMethod[] methods = resolver_.getPublicMethods(rootClass,superClasses);
 			for (int m=0; m<methods.length; m++)
 			{
-				rules.visitMethod(methods[m],peanutTrail_);
-				
-				IType returnType = resolver_.getReturnType(methods[m]);
-				//TODO: Visit the return type.
-
-				IType[] parameterTypes = resolver_.getParameterTypes(methods[m]);
-				for (int p=0; p<parameterTypes.length; p++)
-				{
-					//TODO: Visit each parameter type.
-				}
-				
-				IType[] exceptionTypes = resolver_.getExceptionTypes(methods[m]);
-				for (int e=0; e<exceptionTypes.length; e++)
-				{
-					//TODO: Visit each exception type.
-				}
+				analyzeMethod(methods[m],rules);
 			}
+			pop();
 			String inCaseOfFailureMessage = NLS.bind(WSPluginMessages.MSG_JAXRPC11_NOT_COMPLIANT,rootClass.getFullyQualifiedName());
 			status = rules.getResults(inCaseOfFailureMessage);
 
 		}
 		catch (JavaModelException e)
 		{
-			status = new Status(IStatus.ERROR,"org.eclipse.jst.ws",0,e.getMessage(),e);
+			status = new Status(IStatus.ERROR,"org.eclipse.jst.ws",0,"Internal Error",e);
 		}
 		return status;
 	}
 	
+	private void analyzeMethod ( IMethod method, JavaWebServiceRuleSet rules )
+	throws JavaModelException
+	{
+		rules.visitMethod(method,peanutTrail_);
+		try
+		{
+			push(method);
+			
+			IType returnType = resolver_.getReturnType(method);
+			if (returnType != null)
+			{
+				analyzeDataType(returnType,rules);
+			}
+
+			IType[] parameterTypes = resolver_.getParameterTypes(method);
+			for (int p=0; p<parameterTypes.length; p++)
+			{
+				analyzeDataType(parameterTypes[p],rules);
+			}
+
+			IType[] exceptionTypes = resolver_.getExceptionTypes(method);
+			for (int e=0; e<exceptionTypes.length; e++)
+			{
+				analyzeExceptionType(exceptionTypes[e],rules);
+			}
+		}
+		finally
+		{
+			pop();
+		}
+	}
+	
+	private void analyzeDataType ( IType type, JavaWebServiceRuleSet rules )
+	throws JavaModelException
+	{
+		if (type != null && !visited_.contains(type.getFullyQualifiedName()))
+		{
+			rules.visitClass(type,peanutTrail_);
+			
+			if (resolver_.isPrimitiveType(type) || resolver_.isStandardType(type))
+			{
+				return;
+			}
+			
+			visited_.add(type.getFullyQualifiedName());
+			try
+			{
+				push(type);
+				
+				IType[] superClasses = resolver_.getSuperClasses(type);
+				
+				IField[] fields = resolver_.getPublicFields(type,superClasses);
+				for (int f=0; f<fields.length; f++)
+				{
+					analyzeField(fields[f],rules);
+				}
+				
+				IJavaBeanProperty[] properties = resolver_.getPublicProperties(type,superClasses);
+				for (int p=0; p<properties.length; p++)
+				{
+					analyzeProperty(properties[p],rules);
+				}
+			}
+			finally
+			{
+				pop();
+			}
+		}
+	}
+	
+	private void analyzeField ( IField field, JavaWebServiceRuleSet rules )
+	throws JavaModelException
+	{
+		if (field != null)
+		{
+			rules.visitField(field,peanutTrail_);
+			try
+			{
+				push(field);
+				IType type = resolver_.getFieldType(field);
+				analyzeDataType(type,rules);
+			}
+			finally
+			{
+				pop();
+			}
+		}
+	}
+	
+	private void analyzeProperty ( IJavaBeanProperty property, JavaWebServiceRuleSet rules )
+	throws JavaModelException
+	{
+		if (property != null)
+		{
+			rules.visitProperty(property,peanutTrail_);
+			try
+			{
+				push(property);
+				IType type = resolver_.getPropertyType(property);
+				analyzeDataType(type,rules);
+			}
+			finally
+			{
+				pop();
+			}
+		}
+	}
+
+	private void analyzeExceptionType ( IType type, JavaWebServiceRuleSet rules )
+	throws JavaModelException
+	{
+		if (type != null && !visited_.contains(type.getFullyQualifiedName()))
+		{
+			if (resolver_.isPrimitiveType(type) || resolver_.isStandardType(type))
+			{
+				return;
+			}
+
+			rules.visitException(type,peanutTrail_);
+			visited_.add(type.getFullyQualifiedName());
+			try
+			{
+				push(type);
+				
+				IType[] superClasses = resolver_.getSuperClasses(type);
+				
+				IJavaBeanProperty[] properties = resolver_.getPublicProperties(type,superClasses);
+				for (int p=0; p<properties.length; p++)
+				{
+					analyzeProperty(properties[p],rules);
+				}
+			}
+			finally
+			{
+				pop();
+			}
+
+		}
+	}
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.jst.ws.internal.conformance.IJavaWebServiceRuleEngine#getJDTResolver()
 	 */
@@ -106,8 +231,52 @@ public class JAXRPCWebServiceRuleEngine implements IJavaWebServiceRuleEngine
 		return resolver_;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.ws.internal.conformance.IJavaWebServiceRuleEngine#getProgressMonitor()
+	 */
+	public IProgressMonitor getProgressMonitor ()
+	{
+		return progressMonitor_;
+	}
+	
 	/*
-	 * The JDTResolver. 
+	 * Pushes a peanut onto the peanut trail.
+	 */
+	private void push ( Object peanut )
+	{
+		peanutTrail_.push(peanut);
+	}
+	
+	/*
+	 * Pops a peanut off the peanut trail. 
+	 */
+	private void pop ()
+	{
+		peanutTrail_.pop();
+	}
+	
+	/*
+	 * The JDTResolver used by this analyzer.
 	 */
 	private JDTResolver resolver_;
+	
+	/*
+	 * The progress monitor used by this analyzer. 
+	 */
+	private IProgressMonitor progressMonitor_;
+	
+	/*
+	 * This set keeps track of the fully qualified names of
+	 * classes we have visited so that we don't visit the same
+	 * service class, value type or exception class more than once.
+	 */
+	private Set visited_;
+
+	/*
+	 * This stack keeps a trail of JDT objects back to the
+	 * service class we began with. This can be useful to
+	 * visitors that need to inspect the JDT elements that
+	 * enclose the currently visited element.
+	 */
+	private Stack peanutTrail_;
 }
