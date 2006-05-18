@@ -320,12 +320,87 @@ public abstract class AddBaseParameterCommand {
     	return pattern;
     }
     
+    public static int getParameterPattern(WSDLElement element, boolean useInput) {
+    	int pattern = -1;
+    	
+    	if (element instanceof Operation) {
+    		Operation op = (Operation) element;
+    		if (useInput && op.getEInput() != null) {
+				pattern = getPattern(op.getEInput().getEMessage());
+			}
+			if (!useInput && op.getEOutput() != null){
+				pattern = getPattern(op.getEOutput().getEMessage());
+			}
+    		
+			PortType pt = (PortType) op.getContainer();
+    		if (pattern == -1) {
+    			// let's try to search other Operations in the same PortType
+    			Iterator opIt = pt.getEOperations().iterator();
+    			while (pattern == -1 && opIt.hasNext()) {
+    				Operation item = (Operation) opIt.next();
+    				if (!item.equals(element)) {
+    					if (useInput && item.getEInput() != null) {
+    						pattern = getPattern(item.getEInput().getEMessage());
+    					}
+    					if (!useInput && item.getEOutput() != null){
+    						pattern = getPattern(item.getEOutput().getEMessage());
+    					}
+    				}
+    			}
+    		}
+
+    		if (pattern == -1) {
+    			// let's try to search other Operations in OTHER PortTypes
+    			Iterator ptIt = pt.getEnclosingDefinition().getEPortTypes().iterator();
+    			while (pattern == -1 && ptIt.hasNext()) {
+    				PortType item = (PortType) ptIt.next();
+    				if (!item.equals(pt)) {
+    					pattern = getPattern(item, useInput);
+    				}
+    			}
+    		}
+    	}
+    	else if (element instanceof PortType) {
+    		PortType pt = (PortType) element;
+    		pattern = getPattern(pt, useInput);
+    		
+    		if (pattern == -1) {
+    			// let's try to search other Operations in OTHER PortTypes
+    			Iterator ptIt = pt.getEnclosingDefinition().getEPortTypes().iterator();
+    			while (pattern == -1 && ptIt.hasNext()) {
+    				PortType item = (PortType) ptIt.next();
+    				if (!item.equals(pt)) {
+    					pattern = getPattern(item, useInput);
+    				}
+    			}
+    		}
+    	}
+    	
+    	return pattern;
+    }
+    
     private static int getPattern(PortType portType) {
     	int pattern = -1;
     	Iterator opIt = portType.getEOperations().iterator();
     	while (pattern == -1 && opIt.hasNext()) {
     		Operation op = (Operation) opIt.next();
     		pattern = getPattern(op);
+    	}
+    	
+    	return pattern;
+    }
+
+    private static int getPattern(PortType portType, boolean useInput) {
+    	int pattern = -1;
+    	Iterator opIt = portType.getEOperations().iterator();
+    	while (pattern == -1 && opIt.hasNext()) {
+    		Operation op = (Operation) opIt.next();
+    		if (useInput && op.getEInput() != null) {
+    			pattern = getPattern(op.getEInput().getEMessage());
+    		}
+    		if (!useInput && op.getEOutput() != null) {
+    			pattern = getPattern(op.getEOutput().getEMessage());
+    		}
     	}
     	
     	return pattern;

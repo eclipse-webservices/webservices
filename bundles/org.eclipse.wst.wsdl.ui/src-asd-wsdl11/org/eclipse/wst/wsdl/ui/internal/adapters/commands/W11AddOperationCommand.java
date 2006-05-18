@@ -40,7 +40,6 @@ import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public class W11AddOperationCommand extends Command {
 	private PortType portType;
-	private int parameterPattern = AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT;
 	
 	public W11AddOperationCommand(PortType portType) {
         super(Messages.getString("_UI_ACTION_ADD_OPERATION"));
@@ -56,7 +55,6 @@ public class W11AddOperationCommand extends Command {
 		createMessage(operation, IMessageReference.KIND_INPUT);
 		createMessage(operation, IMessageReference.KIND_OUTPUT);
 
-		parameterPattern = AddBaseParameterCommand.getParameterPattern(portType);
 		createParameter(operation, null, IMessageReference.KIND_INPUT);
 		createParameter(operation, null, IMessageReference.KIND_OUTPUT);
 
@@ -95,20 +93,19 @@ public class W11AddOperationCommand extends Command {
 		  AddBaseParameterCommand addParameterCommand = null;
 		  
 		  if (kind == IMessageReference.KIND_INPUT) {
+			  int parameterPattern = AddBaseParameterCommand.getParameterPattern(portType, true);
+			  if (parameterPattern == -1) {
+				  parameterPattern = AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT;
+			  }
 			  addParameterCommand = new AddInputParameterCommand(operation, parameterPattern);
 		  }
 		  else if (kind == IMessageReference.KIND_OUTPUT) {
+			  int parameterPattern = AddBaseParameterCommand.getParameterPattern(portType, false);
+			  if (parameterPattern == -1) {
+				  parameterPattern = AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT;
+			  }			  
 			  addParameterCommand = new AddOutputParameterCommand(operation, parameterPattern);
 		  }
-		  
-		  /******************************************************************************************/
-//		  if (part != null) {
-//			  if (part.getTypeDefinition() instanceof XSDTypeDefinition) {
-//				  addParameterCommand.setStyle(AddBaseParameterCommand.PART_COMPLEXTYPE_SEQ_ELEMENT);
-//			  }
-//			  
-//			  addParameterCommand.run();
-//		  }
 		  
 		  if (parameter == null && addParameterCommand != null) {
 			  addParameterCommand.run();

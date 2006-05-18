@@ -32,7 +32,10 @@ public class W11AddOutputParameterCommand extends Command {
 	
 	public void execute() {
 		// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
-		int pattern = AddBaseParameterCommand.getParameterPattern(operation);
+		int pattern = AddBaseParameterCommand.getParameterPattern(operation, false);
+		if (pattern == -1) {
+			pattern = AddBaseParameterCommand.getParameterPattern(operation);
+		}
 		AddOutputParameterCommand command = new AddOutputParameterCommand(operation, pattern);
 		command.run();
 		selectNewElement(operation.getEOutput());
