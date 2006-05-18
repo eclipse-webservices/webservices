@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060517   142342 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -55,11 +56,12 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
   public static String[] JARLIST = new String[] {
 	  "axis.jar",
 	  "commons-discovery-0.2.jar",
-	  "commons-logging-1.0.4.jar",
 	  "jaxrpc.jar",
 	  "saaj.jar",
 	  "wsdl4j-1.5.1.jar"
   };
+  public static String COMMON_LOGGING_PLUGIN_ID = "org.apache.commons_logging"; //$NON-NLS-1$
+  public static String COMMON_LOGGING_JAR = "commons-logging-1.0.4.jar"; //$NON-NLS-1$
   public static String PATH_TO_JARS_IN_PLUGIN = "lib/";
 
   private IProject project;
@@ -120,17 +122,21 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
     }
 	
 	for (int i=0; i<JARLIST.length; ) {
-		copyIFile("lib/"+JARLIST[i], webModulePath, "WEB-INF/lib/"+JARLIST[i++], status, env, monitor); 
+		copyIFile(AXIS_RUNTIME_PLUGIN_ID, "lib/"+JARLIST[i], webModulePath, "WEB-INF/lib/"+JARLIST[i++], status, env, monitor); 
 	    if (status.getSeverity() == Status.ERROR)
 	      return;
 	}
+	
+	copyIFile(COMMON_LOGGING_PLUGIN_ID, "lib/"+COMMON_LOGGING_JAR, webModulePath, "WEB-INF/lib/"+COMMON_LOGGING_JAR, status, env, monitor); 
+    if (status.getSeverity() == Status.ERROR)
+      return;
     return;
   }
 
   /**
    *  
    */
-  private void copyIFile(String source, IPath targetPath, String targetFile, IStatus status, IEnvironment env, IProgressMonitor monitor) {
+  private void copyIFile(String pluginId, String source, IPath targetPath, String targetFile, IStatus status, IEnvironment env, IProgressMonitor monitor) {
     IPath target = targetPath.append(new Path(targetFile));
     ProgressUtils.report(monitor,ConsumptionMessages.PROGRESS_INFO_COPYING_FILE);
 
@@ -139,7 +145,7 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
       context.setOverwriteFilesEnabled(true);
       context.setCreateFoldersEnabled(true);
       context.setCheckoutFilesEnabled(true);
-      URL sourceURL = BundleUtils.getURLFromBundle( AXIS_RUNTIME_PLUGIN_ID, source );
+      URL sourceURL = BundleUtils.getURLFromBundle( pluginId, source );
       IFile resource = ResourceUtils.getWorkspaceRoot().getFile(target);
       if (!resource.exists()) {
         IFile file = FileResourceUtils.createFile(context, target, sourceURL.openStream(), monitor, 
@@ -174,6 +180,19 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 	  {			  
 		  return status;
 	  }
+	  
+	  StringBuffer sb2 = new StringBuffer();
+	  sb2.append(PATH_TO_JARS_IN_PLUGIN);
+	  sb2.append(COMMON_LOGGING_JAR);
+	  String jarName = sb2.toString();
+	  String[] jarNames2 = new String[1];
+	  jarNames2[0] = jarName;
+	  status = addJar(p, COMMON_LOGGING_PLUGIN_ID, jarNames2, env, monitor);
+	  if (status.getSeverity()==Status.ERROR)
+	  {			  
+		  return status;
+	  }
+	  
 	  return Status.OK_STATUS;
   }
 
