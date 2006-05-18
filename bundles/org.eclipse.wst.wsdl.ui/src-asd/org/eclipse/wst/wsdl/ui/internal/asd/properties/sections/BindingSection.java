@@ -41,7 +41,7 @@ import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 public class BindingSection extends ReferenceSection implements SelectionListener {
 	protected ComponentReferenceEditManager refManager;
 	private CLabel protocolValue;
-	private CLabel optionsValue;
+//	private CLabel optionsValue;
 	private Button regenBindingButton;
 	
 	public void createControls(Composite parent, TabbedPropertySheetWidgetFactory factory) {
@@ -66,7 +66,7 @@ public class BindingSection extends ReferenceSection implements SelectionListene
 //		data.top = new FormAttachment(combo, +ITabbedPropertyConstants.VSPACE);
 		protocolValue.setLayoutData(data);
 		
-
+		/*
 		CLabel optionsLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_TITLE_OPTIONS") + ":");
 		optionsValue = getWidgetFactory().createCLabel(composite, "");
 		
@@ -94,7 +94,18 @@ public class BindingSection extends ReferenceSection implements SelectionListene
 //		data.right = new FormAttachment(optionsValue, -ITabbedPropertyConstants.HSPACE);
 		data.top = new FormAttachment(optionsLabel, 0);
 		regenBindingButton.setLayoutData(data);
-		
+		*/
+
+		String buttonLabel = org.eclipse.wst.wsdl.ui.internal.asd.Messages.getString("_UI_GENERATE_BINDING_CONTENT");
+		regenBindingButton = getWidgetFactory().createButton(composite, buttonLabel, SWT.PUSH);
+
+		// Layout button
+		data = new FormData();
+		data.left = new FormAttachment(0, 0);
+//		data.right = new FormAttachment(optionsValue, -ITabbedPropertyConstants.HSPACE);
+		data.top = new FormAttachment(protocolLabel, 0);
+		regenBindingButton.setLayoutData(data);
+
 		regenBindingButton.addSelectionListener(this);
 	}
 	
@@ -107,7 +118,7 @@ public class BindingSection extends ReferenceSection implements SelectionListene
 		}
 		protocolValue.setText(protocol);
 
-		optionsValue.setText("");
+//		optionsValue.setText("");
 	}
 	
 	protected ComponentReferenceEditManager getComponentReferenceEditManager() {
