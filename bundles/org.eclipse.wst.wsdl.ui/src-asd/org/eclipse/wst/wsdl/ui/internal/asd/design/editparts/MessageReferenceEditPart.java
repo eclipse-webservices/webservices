@@ -96,7 +96,9 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
   
   protected void createEditPolicies()
   {
-	  installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new ASDDragAndDropEditPolicy(getViewer(), selectionHandlesEditPolicy));
+	  if (!isReadOnly()) {
+		  installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new ASDDragAndDropEditPolicy(getViewer(), selectionHandlesEditPolicy));
+	  }
 	  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, selectionHandlesEditPolicy);
   }
   
