@@ -10,16 +10,27 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
+ * 20060517   140832 andyzhai@ca.ibm.com - Andy Zhai
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.core.locator;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaModel;
@@ -27,8 +38,14 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerPort;
+import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.ws.internal.wsfinder.AbstractWebServiceLocator;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceClientInfo;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
+import org.xml.sax.SAXException;
 
 /**
  * @author cbrealey
@@ -179,7 +196,7 @@ public class AxisWebServiceLocator extends AbstractWebServiceLocator
 
 	/**
 	 * Searches the workspace for Axis services as
-	 * identified by deploy.wsdd <service> elements
+	 * identified by server-config.wsdd <service> elements
 	 * in projects with an Axis servlet registered
 	 * in the web.xml descriptor.
 	 * @param monitor A progress monitor, possibly null.
@@ -187,6 +204,131 @@ public class AxisWebServiceLocator extends AbstractWebServiceLocator
 	 */
 	public List getWebServices (IProgressMonitor monitor)
 	{
-		return super.getWebServices(monitor);
+		Vector webServices = new Vector();
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IProject[] projects = root.getProjects();
+		
+		for (int i = 0; i < projects.length; i++)
+		{
+			IProject project = projects[i];
+			
+			// we are only intersted in dynamic web project
+			if (J2EEUtils.isWebComponent(project))
+			{
+				try 
+				{
+					webServices.addAll(getWebServicesFromProject(project, monitor));
+				} 
+				catch (Exception e) 
+				{
+					// Fall thru and return an empty list.
+				} 
+			}
+		}
+		return webServices;
+	}
+	
+	/**
+	 * Searches for a particular web project for Axis services as
+	 * identified by server-config.wsdd <service> elements
+	 * with an Axis servlet registered
+	 * in the web.xml descriptor.
+	 * @param monitor A progress monitor, possibly null.
+	 * @return A possibly empty list of WebServiceInfo objects.
+	 */
+	private List getWebServicesFromProject(IProject project, IProgressMonitor monitor) throws CoreException, ParserConfigurationException, SAXException, IOException
+	{	
+		// Search the web.xml in fixed location
+		IPath webDescriptorPath = J2EEUtils.getWebInfPath(project).append("/web.xml");
+		IFile webXmlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(webDescriptorPath);
+		
+		if (webXmlFile != null && isAxisServletExisted(webXmlFile, monitor))
+		{
+			// Search for all server-config.wsdd inside this project
+			ServerConfigWSDDVisitor visitor = new ServerConfigWSDDVisitor();
+			project.accept(visitor);		
+			visitor.visit(project);
+			Vector wsddFiles = visitor.getWsddFiles();
+			Vector servicesNames = new Vector(); 
+			for (int i = 0; i < wsddFiles.size(); i++)
+			{
+				servicesNames.addAll(getWebServicesNamesFromAxisConfig((IFile)wsddFiles.get(i), monitor));
+			}
+			return getWebServices(project, servicesNames, monitor);
+		}
+		else
+		{
+			return new Vector();
+		}
+	}
+	
+	/*
+	 * Determine whether web.xml contains axis servlet
+	 */
+	private boolean isAxisServletExisted(IFile file, IProgressMonitor monitor) throws CoreException, ParserConfigurationException, SAXException, IOException
+	{
+		InputStream inputStream = file.getContents();
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		factory.setNamespaceAware(true);
+		SAXParser parser = factory.newSAXParser();
+		AxisServletSaxHandler handler = new AxisServletSaxHandler();
+		parser.parse(inputStream, handler);
+		inputStream.close();
+		return handler.isThereAxisServlet();
+	}
+	
+	/*
+	 * Given a list of services, find the servers this project is associated,
+	 * Combine them and form various end point
+	 */
+	private List getWebServices(IProject project, List servicesNames, IProgressMonitor monitor)
+	{
+		Vector webServices = new Vector();
+		IServer[] servers = ServerUtil.getServersByModule(ServerUtil.getModule(project),monitor);
+		for (int i = 0; i < servers.length; i++)
+		{
+			String host = servers[i].getHost();
+			ServerPort httpPort = getHttpPort(servers[i].getServerPorts(monitor));
+			if (httpPort != null)
+			{
+				for (int j = 0; j < servicesNames.size(); j++)
+				{
+					WebServiceInfo wsInfo = new WebServiceInfo();
+					String endPointURL = "http://" + host + ":" + httpPort.getPort() + "/" + J2EEUtils.getFirstWebModuleName(project) + "/services/" + (String)servicesNames.get(j);
+					wsInfo.setEndPointURL(endPointURL);
+					wsInfo.setWsdlURL(endPointURL+"?wsdl");
+		            webServices.add(wsInfo);
+				}
+			}
+		}
+		return webServices;
+	}
+	
+	/*
+	 * Parse the server-config.wsdd file, return a list of names of web services 
+	 */
+	private List getWebServicesNamesFromAxisConfig(IFile file, IProgressMonitor monitor) throws CoreException, ParserConfigurationException, SAXException, IOException
+	{
+		InputStream inputStream = file.getContents();
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		factory.setNamespaceAware(true);
+		SAXParser parser = factory.newSAXParser();
+		AxisServicesSaxHandler handler = new AxisServicesSaxHandler();
+		parser.parse(inputStream, handler);
+		inputStream.close();
+		return handler.getWebServicesNames();	
+	}
+	
+	/*
+	 * find the right port (http) from a list or ports
+	 */
+	private ServerPort getHttpPort(ServerPort[] ports)
+	{
+		for (int i = 0; i < ports.length; i++)
+		{
+			String name = ports[i].getName(); 
+			if ( name != null && name.trim().toLowerCase().equals("http")) return ports[i];
+		}
+		return null;
 	}
 }

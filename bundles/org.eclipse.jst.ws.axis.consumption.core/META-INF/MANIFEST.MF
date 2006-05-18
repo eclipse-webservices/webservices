@@ -23,6 +23,7 @@ Require-Bundle: org.apache.ant,
  org.eclipse.wst.common.frameworks,
  org.eclipse.core.commands,
  org.eclipse.wst.common.environment,
- org.eclipse.wst.command.env
+ org.eclipse.wst.command.env,
+ org.eclipse.wst.server.core
 Eclipse-LazyStart: true
 
