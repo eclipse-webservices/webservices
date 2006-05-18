@@ -17,6 +17,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.gef.EditPart;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.BoxComponentFigure;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
@@ -64,6 +65,17 @@ public class InterfaceEditPart extends AbstractBoxtEditPart implements IFeedback
   protected void refreshVisuals()
   {
     super.refreshVisuals();
+    
+    BoxComponentFigure fig = (BoxComponentFigure) getFigure();
+    if (isReadOnly()) 
+    {
+      fig.getLabel().setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    }
+    else
+    {
+    	fig.getLabel().setForegroundColor(ColorConstants.black);
+    }      
+
   }
 
   protected List getModelChildren()
