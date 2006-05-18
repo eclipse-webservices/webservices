@@ -439,7 +439,8 @@ public static String getMessageName(MessageReference messageRef) {
 		messageNames.add(((Message) messageIt.next()).getQName().getLocalPart());
 	}
 	
-	String requestResponseString = getRequestOrResponse(messageRef) + "Msg"; //$NON-NLS-1$
+//	String requestResponseString = getRequestOrResponse(messageRef) + "Msg"; //$NON-NLS-1$
+	String requestResponseString = getRequestOrResponse(messageRef); //$NON-NLS-1$
 	messageName = getUniqueNameHelper(operation.getName() + requestResponseString, messageNames);
 	
 	return messageName;
@@ -453,13 +454,16 @@ public static String getPartName(MessageReference messageRef) {
 	String operationName = operation.getName();
 	String appendString = "";    	   //$NON-NLS-1$
 	if (messageRef instanceof Input) {
-		appendString = "Parameters"; //$NON-NLS-1$
+//		appendString = "Parameters"; //$NON-NLS-1$
+		appendString = "Request"; //$NON-NLS-1$
 	}
 	else if (messageRef instanceof Output) {
-		appendString = "Result"; //$NON-NLS-1$
+//		appendString = "Result"; //$NON-NLS-1$
+		appendString = "Response"; //$NON-NLS-1$
 	}
 	else if (messageRef instanceof Fault) {
-		appendString = "Fault"; //$NON-NLS-1$
+//		appendString = "Fault"; //$NON-NLS-1$
+		appendString = "_Fault"; //$NON-NLS-1$
 	}
 	partName = operationName + appendString;
 	

@@ -49,7 +49,8 @@ public class AddOutputParameterCommand extends AddBaseParameterCommand {
 	
 	protected String getNewXSDElementBaseName() {
 		if (newXSDElementName == null) {
-			newXSDElementName = "output"; //$NON-NLS-1$
+//			newXSDElementName = "output"; //$NON-NLS-1$
+			newXSDElementName = operation.getName() + "Response"; //$NON-NLS-1$
 		}
 		
 		return newXSDElementName;
