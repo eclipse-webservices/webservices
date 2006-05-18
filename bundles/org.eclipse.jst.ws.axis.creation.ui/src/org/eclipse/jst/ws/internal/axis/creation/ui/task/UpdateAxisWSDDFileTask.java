@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
+ * 20060517   134104 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -117,19 +118,15 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
         {
           wsddStream.close();
         }
-        
-        IPath eclipseDeployPath = findPathFromFilePath( deployPath );
-        
-        if( eclipseDeployPath != null )
+
+
+        IResource deployFile = ResourceUtils.findResourceAtLocation(wsdd_deploy, project);
+        if( deployFile != null )
         {
-          IResource deployFile = ResourceUtils.findResource( eclipseDeployPath );
-          
-          if( deployFile != null )
-          {
-            deployFile.refreshLocal( IResource.DEPTH_ZERO, monitor );
-          }
+        	deployFile.refreshLocal( IResource.DEPTH_ZERO, monitor );
         }
-			}
+
+		}
 
 		} catch (Exception e) {
 		    String[] errorMsgStrings = new String[]{project.toString(), outputLocation.toString(), webContentPath.toString()}; 
@@ -140,23 +137,6 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 		
 		return status;
 	}
-
-  // This method attempts to convert a path that is relative to a file system to a path
-  // that is relative to the workspace.
-  private IPath findPathFromFilePath( IPath filePath )
-  {
-    IPath result = null;
-    
-    IPath installLocation = Platform.getLocation();
-    
-    if( installLocation.matchingFirstSegments( filePath ) == installLocation.segmentCount() )
-    {
-      filePath = filePath.removeFirstSegments( installLocation.segmentCount() );
-      result = filePath.setDevice( null );
-    }
-    
-    return result;
-  }
   
 	private IPath getPluginFilePath(String pluginfileName)
 		throws CoreException {
