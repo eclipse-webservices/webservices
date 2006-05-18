@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.List;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
@@ -99,13 +100,15 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
     label.setText(operation.getName());// + "---" + getModel());
     label.setIcon(operation.getImage());
     
-    if (isReadOnly()) 
-    {
-      label.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    if (isReadOnly()) {
+    	label.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+   	    figure.setBackgroundColor(DesignViewGraphicsConstants.readOnlyTableOperationHeadingColor);
+   	    labelHolder.setBackgroundColor(DesignViewGraphicsConstants.readOnlyTableOperationHeadingColor);
     }
-    else
-    {
-      label.setForegroundColor(ColorConstants.black);
+    else {
+    	label.setForegroundColor(ColorConstants.black);
+ 	    figure.setBackgroundColor(DesignViewGraphicsConstants.tableOperationHeadingColor);
+   	    labelHolder.setBackgroundColor(DesignViewGraphicsConstants.tableOperationHeadingColor);
     }   
   }
   

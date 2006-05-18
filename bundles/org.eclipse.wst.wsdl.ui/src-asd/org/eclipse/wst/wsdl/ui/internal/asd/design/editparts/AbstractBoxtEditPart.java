@@ -78,6 +78,7 @@ public abstract class AbstractBoxtEditPart extends BaseEditPart implements IName
   {
     super.refreshVisuals();
     WSDLBaseAdapter box = (WSDLBaseAdapter) getModel();
+    ((BoxComponentFigure) getFigure()).headingFigure.setIsReadOnly(box.isReadOnly());
     ((BoxComponentFigure) getFigure()).getLabel().setText(box.getName());
   }
 
@@ -85,7 +86,7 @@ public abstract class AbstractBoxtEditPart extends BaseEditPart implements IName
   {
 	  LineBorder boxFigureLineBorder = (LineBorder) figure.getBorder();
 	  boxFigureLineBorder.setWidth(2);
-	  boxFigureLineBorder.setColor(ColorConstants.darkBlue);
+//	  boxFigureLineBorder.setColor(ColorConstants.darkBlue);
 	  figure.setSelected(true);
 	  figure.repaint();
   }

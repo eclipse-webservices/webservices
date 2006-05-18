@@ -16,7 +16,7 @@ import org.eclipse.draw2d.ToolbarLayout;
 
 public class BoxComponentFigure extends Figure
 {
-  HeadingFigure headingFigure;
+  public HeadingFigure headingFigure;
   Figure contentPane;
   protected boolean isSelected = false;
   protected boolean isReadOnly = false;

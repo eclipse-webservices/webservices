@@ -36,6 +36,9 @@ public interface DesignViewGraphicsConstants
   public final static Color tableMessageHeadingColor = new Color(null, 230, 240, 245);
   public final static Color tableCellSelectionColor = new Color(null, 238, 232, 170); //new Color(null, 240, 230, 140); //1, 15, 42);
 
+  public final static Color readOnlyTableOperationHeadingColor = new Color(null, 239, 243, 255);
+  public final static Color readOnlyMessageRefHeadingColor = new Color(null, 245, 245, 245);
+  
   public final static Color readOnlyBackgroundColor = ColorConstants.white;
   public final static Color readOnlyLabelColor = ColorConstants.gray;
   public final static Color labelColor = ColorConstants.black;

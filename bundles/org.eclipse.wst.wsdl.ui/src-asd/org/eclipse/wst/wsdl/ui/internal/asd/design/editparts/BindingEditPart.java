@@ -33,7 +33,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.BindingColumnLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.BindingContentLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.BindingLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
-import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class BindingEditPart extends BaseEditPart
 {
@@ -83,7 +82,7 @@ public class BindingEditPart extends BaseEditPart
     super.addFeedback();
     LineBorder boxFigureLineBorder = (LineBorder) figure.getBorder();
     boxFigureLineBorder.setWidth(2);
-    boxFigureLineBorder.setColor(ColorConstants.darkBlue);
+//    boxFigureLineBorder.setColor(ColorConstants.darkBlue);
     figure.setSelected(true);
     figure.repaint();
     if (connectionFigure != null)
@@ -199,11 +198,13 @@ public class BindingEditPart extends BaseEditPart
   protected void refreshVisuals()
   {
     refreshConnections();
-    if (getModel() instanceof ITreeElement)
+    if (getModel() instanceof IBinding)
     {  
-      ITreeElement treeElement = (ITreeElement)getModel();
-      figure.getLabel().setIcon(treeElement.getImage());
+      IBinding binding = (IBinding) getModel();
+      ((BoxComponentFigure) getFigure()).headingFigure.setIsReadOnly(((IBinding) getModel()).isReadOnly());
+      figure.getLabel().setIcon(binding.getImage());
     }  
+
     //getViewer().getEditPartRegistry().put(Lay.class, controller);
     super.refreshVisuals();    
   }

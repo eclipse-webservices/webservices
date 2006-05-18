@@ -41,7 +41,7 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
   {
 	  LineBorder boxFigureLineBorder = (LineBorder) figure.getBorder();
 	  boxFigureLineBorder.setWidth(2);
-	  boxFigureLineBorder.setColor(ColorConstants.darkBlue);
+//	  boxFigureLineBorder.setColor(ColorConstants.darkBlue);
 	  headingFigure.setSelected(true);	  
 	  figure.repaint();
   }
@@ -128,6 +128,7 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
   protected void refreshVisuals()
   { 
     IService service = (IService)getModel();
+    headingFigure.setIsReadOnly(service.isReadOnly());
     headingFigure.getLabel().setText(service.getName());
     super.refreshVisuals();
     

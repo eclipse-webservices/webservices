@@ -56,10 +56,8 @@
 		schema="schema/extensibilityElementFilter.exsd" />
 		
     <extension-point id="WSDLEditorExtensionConfiguration" name="WSDLEditorExtensionConfiguration"/>
-		
 	<extension-point id="ExtensionsSchemasDescription" name="ExtensionsSchemasDescription"/>
 	
-		<!--  Start of New WSDL Editor -->
 	<extension
 		point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
 		<propertyContributor

@@ -44,7 +44,7 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     figure.setOpaque(true);
     figure.setPaintFirstLine(false);
     figure.setBackgroundColor(ColorConstants.tooltipBackground);
-    
+
     rowLayout = new RowLayout();
     figure.setLayoutManager(rowLayout); 
     label = new Label();
@@ -64,6 +64,7 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     ((ListFigure)contentPane).setOpaque(true);
     contentPane.setBackgroundColor(ColorConstants.listBackground);
     ToolbarLayout toolbarLayout = new ToolbarLayout(false);
+    
     /*
     ToolbarLayout toolbarLayout = new ToolbarLayout(false)
     {
@@ -120,10 +121,12 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     if (isReadOnly()) 
     {
       label.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+      label.getParent().setBackgroundColor(DesignViewGraphicsConstants.readOnlyMessageRefHeadingColor);
     }
     else
     {
       label.setForegroundColor(ColorConstants.black);
+      label.getParent().setBackgroundColor(ColorConstants.tooltipBackground);
     }  
   }
 
@@ -144,6 +147,11 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
   }
 
   public void removeFeedback() {
-	  label.getParent().setBackgroundColor(ColorConstants.tooltipBackground);
+	  if (isReadOnly()) {
+	    label.getParent().setBackgroundColor(DesignViewGraphicsConstants.readOnlyMessageRefHeadingColor);
+	  }
+	  else {
+		  label.getParent().setBackgroundColor(ColorConstants.tooltipBackground);
+	  }
   }
 }

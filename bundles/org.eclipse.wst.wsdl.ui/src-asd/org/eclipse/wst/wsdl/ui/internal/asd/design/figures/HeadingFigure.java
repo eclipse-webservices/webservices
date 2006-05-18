@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Color;
 
 public class HeadingFigure extends Figure
 {
+  public static final Color headerColor = new Color(null, 224, 233, 246);
   Label label;
   protected Color[] gradientColor = {ColorConstants.white,  
             ColorConstants.lightGray,
@@ -58,7 +59,9 @@ public class HeadingFigure extends Figure
     Rectangle r = getBounds().getCopy();
     graphics.setBackgroundColor(ColorConstants.lightGray);
     //graphics.fillRectangle(r.x+1, r.y+1, r.width-1, barYcoordinate - r.y - 1);
-    Color gradient1 = isSelected ? (isReadOnly ? gradientColor[3] : gradientColor[2]) : gradientColor[1];
+    Color gradient1 = isReadOnly ? gradientColor[1] : headerColor;
+    if (isSelected && isReadOnly) gradient1 = gradientColor[3];
+    else if (isSelected && !isReadOnly) gradient1 = gradientColor[2];
     Color gradient2 = gradientColor[0];
     graphics.setForegroundColor(gradient1);
     graphics.setBackgroundColor(gradient2);
