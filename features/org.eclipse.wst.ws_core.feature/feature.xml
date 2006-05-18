@@ -22,6 +22,8 @@
    </url>
 
    <requires>
+       <import feature="org.apache.commons_logging.feature" version="1.0.4.qualifier"/>
+      <import feature="org.apache.jakarta_log4j.feature" version="1.2.8.qualifier"/>
       <import feature="org.apache.axis.feature" version="1.2.1" match="greaterOrEqual"/>
       <import feature="org.apache.wsil4j.feature" version="1.0.0" match="greaterOrEqual"/>
       <import feature="org.uddi4j.feature" version="2.0.3" match="greaterOrEqual"/>
