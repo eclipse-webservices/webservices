@@ -57,7 +57,7 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 	    parameterType = new Label();
 	    parameterType.setLabelAlignment(Label.LEFT);
-	    parameterType.setBorder(new MarginBorder(4,12,4,12));
+	    parameterType.setBorder(new MarginBorder(4,12,4,20));
         figure.add(parameterType);
         
 	    return figure;

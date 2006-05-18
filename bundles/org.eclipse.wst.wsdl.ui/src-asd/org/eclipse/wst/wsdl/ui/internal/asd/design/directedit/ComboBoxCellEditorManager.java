@@ -21,7 +21,6 @@ import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ICellEditorListener;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
@@ -39,7 +38,7 @@ public abstract class ComboBoxCellEditorManager extends DirectEditManager
   {                                             
   	String initialLabelText = label.getText();   
 
-    CCombo combo = (CCombo)getCellEditor().getControl();
+    ASDCCombo combo = (ASDCCombo)getCellEditor().getControl();
    	combo.setFont(label.getFont());
     combo.setForeground(label.getForegroundColor());
     combo.setBackground(label.getBackgroundColor());
@@ -131,7 +130,7 @@ public abstract class ComboBoxCellEditorManager extends DirectEditManager
 
     public void relocate(CellEditor celleditor) 
     {
-        CCombo combo = (CCombo)celleditor.getControl();  
+        ASDCCombo combo = (ASDCCombo)celleditor.getControl();  
 	    Rectangle labelParentBounds = label.getParent().getBounds().getCopy();
 	    label.translateToAbsolute(labelParentBounds);
 	    
@@ -146,7 +145,7 @@ public abstract class ComboBoxCellEditorManager extends DirectEditManager
   public void performEdit(CellEditor cellEditor)
   {
 	  ASDComboBoxCellEditor comboCellEditor = (ASDComboBoxCellEditor) cellEditor;
-	  CCombo combo = (CCombo)getCellEditor().getControl();
+	  ASDCCombo combo = (ASDCCombo)getCellEditor().getControl();
 	  int index = combo.getSelectionIndex();              
 	  if (index != -1)
 	  {

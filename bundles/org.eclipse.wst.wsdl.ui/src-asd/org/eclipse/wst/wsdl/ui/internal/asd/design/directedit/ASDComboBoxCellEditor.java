@@ -16,7 +16,6 @@ import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
@@ -52,7 +51,7 @@ public class ASDComboBoxCellEditor extends CellEditor {
     /**
      * The custom combo box control.
      */
-    CCombo comboBox;
+    ASDCCombo comboBox;
     
     /**
      * Used to determine if the value should be applied to the cell.
@@ -107,9 +106,9 @@ public class ASDComboBoxCellEditor extends CellEditor {
      */
     protected Control createControl(Composite parent) {
 
-        comboBox = new CCombo(parent, getStyle());
+        comboBox = new ASDCCombo(parent, getStyle());
         comboBox.setFont(parent.getFont());
-        
+
         comboBox.addKeyListener(new KeyAdapter() {
             // hook key pressed - see PR 14201  
             public void keyPressed(KeyEvent e) {
@@ -202,6 +201,8 @@ public class ASDComboBoxCellEditor extends CellEditor {
      */
     protected void doSetFocus() {
         comboBox.setFocus();
+//        String comboText = comboBox.getText();
+//        comboBox.setText("         " + comboText);
     }
 
     /**
