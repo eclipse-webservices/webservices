@@ -21,10 +21,6 @@
       <update label="%updateSiteName" url="http://download.eclipse.org/webtools/updates/"/>
    </url>
 
-   <includes
-         id="org.eclipse.wst.xml_userdoc.feature"
-         version="0.0.0"/>
-
    <plugin
          id="org.eclipse.wst.wsdl.ui.doc.user"
          download-size="0"
