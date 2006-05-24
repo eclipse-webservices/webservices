@@ -1,16 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu   
+ * 20060404   134913 sengpl@ca.ibm.com - Seng Phung-Lu   
  * 20060517   142027 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060518   142554 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -145,14 +146,13 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
 	                
 	                handlers.add(handlerItem);
 	              }
-	              String wsDescName = wsDescription.getWebServiceDescriptionName();
-	              handlerDescriptionHolder_[descCounter] = new HandlerDescriptionHolder();
-	              handlerDescriptionHolder_[descCounter].setHandlerList(handlers);
-	              handlerDescriptionHolder_[descCounter].setDescriptionObject(wsDescription);
-	              handlerDescriptionHolder_[descCounter].setDescriptionName(wsDescName);
-	              descCounter++;
-	              
 	            }
+	            String wsDescName = wsDescription.getWebServiceDescriptionName();
+	            handlerDescriptionHolder_[descCounter] = new HandlerDescriptionHolder();
+	            handlerDescriptionHolder_[descCounter].setHandlerList(handlers);
+	            handlerDescriptionHolder_[descCounter].setDescriptionObject(wsDescription);
+	            handlerDescriptionHolder_[descCounter].setDescriptionName(wsDescName);
+	            descCounter++;
 	          }
 	        }
 	      }
@@ -334,13 +334,16 @@ public class ServiceHandlersWidgetDefaultingCommand extends AbstractHandlersWidg
    * @return
    */
   private Service[] getSelectedServices(){
+	  WebServicesManager wsManager = new WebServicesManager();
 	  IStructuredSelection initSel = getInitialSelection();
   	  Service[] services = new Service[initSel.size()];
+  	  wsddResource_ = new WsddResource[initSel.size()];
   	  Iterator iter = initSel.iterator();
   	  for (int i=0;i<initSel.size();i++) {
   		  Object obj = iter.next();
   		  if (obj instanceof Service){
   			  services[i] = (Service)obj;
+  			  wsddResource_[i] = wsManager.getWsddResource(services[i]);
   		  }
   		  else{
   			  errorStatusMsg_ = ConsumptionUIMessages.MSG_ERROR_INVALID_MULTIPLE_SERVICE_SELECT;

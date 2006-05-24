@@ -8,9 +8,10 @@
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
- * 20060404 134913  sengpl@ca.ibm.com - Seng Phung-Lu
  * -------- -------- -----------------------------------------------------------
- */
+ * 20060404 134913  sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060518 142554 sengpl@ca.ibm.com  - Seng Phung-Lu
+ *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
 import java.util.List;
@@ -96,7 +97,7 @@ public class HandlerDescriptionHolder {
     this.handlerList = handlerList;
   }
   
-  public boolean addHandlerToAllPorts(){
+  public void addHandlerToAllPorts(){
     
     if (handlerList!=null && !handlerList.isEmpty()){
       
@@ -123,14 +124,12 @@ public class HandlerDescriptionHolder {
                 newHandler.setHandlerName(hti.getHandlerName());
                 newHandler.setHandlerClass(hti.getHandlerClassName());
                 wsHandlers.add(newHandler);
-                return true;
               }
             }
           }
         }
       }
     }
-    return false;
     
   }
   
