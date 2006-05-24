@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060329   128069 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060418   136180 kathy@ca.ibm.com - Kathy Chan
+ * 20060524   141194 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -31,11 +32,12 @@ import org.eclipse.jst.j2ee.ejb.Session;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -92,18 +94,11 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
   public WidgetDataEvents addControls(Composite parent, Listener statusListener)
   {
     statusListener_  = statusListener;
-    Composite composite = new Composite(parent, SWT.NONE);
-    GridLayout layout = new GridLayout();
-    layout.marginHeight = 0;
-    layout.marginWidth = 0;
-    GridData gd = new GridData(GridData.FILL_BOTH);
-    composite.setLayout(layout);
-    composite.setLayoutData(gd);
-    Composite projectComposite = new Composite(composite, SWT.NONE);
-    layout = new GridLayout();
-    layout.numColumns = 2;
-    projectComposite.setLayout(layout);
-    projectComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL));
+    UIUtils utils = new UIUtils(INFOPOP_PEBD_EAR_PROJECTS);
+    
+    Composite composite = utils.createComposite(parent, 1, 0, 0);
+    
+    Composite projectComposite = utils.createComposite(composite, 2);
     new Label(projectComposite, SWT.NULL).setText(ConsumptionUIMessages.LABEL_EAR_PROJECTS);
     earList = new Combo(projectComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
     earList.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -128,14 +123,11 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
     addEARNamesToList();
     earList.setToolTipText(ConsumptionUIMessages.TOOLTIP_EAR_PROJECTS);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(earList, INFOPOP_PEBD_EAR_PROJECTS);
-    Group beanComposite = new Group(composite, SWT.NONE);
-    layout = new GridLayout();
-    beanComposite.setLayout(layout);
-    beanComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL));
-    beanComposite.setText(ConsumptionUIMessages.LABEL_EJB_BEAN_NAME);
-    beanList = new EJBTableViewer(beanComposite);
+    
+    Group beanComposite = utils.createGroup(composite, ConsumptionUIMessages.LABEL_EJB_BEAN_NAME, "", "");
+    beanList = new EJBTableViewer(beanComposite);    
     Table beanTable = beanList.getTable();
-    gd = new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
+    GridData gd = new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
     gd.heightHint = 100;
     beanTable.setLayoutData(gd);
     beanTable.addSelectionListener(new SelectionAdapter()
@@ -149,6 +141,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
     });
     beanTable.setToolTipText(ConsumptionUIMessages.TOOLTIP_TABLE_BEAN_NAMES);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(beanTable, INFOPOP_PEBD_TABLE_BEAN_NAMES);
+    
     if (earComponents != null && earComponents.length > 0)
     {
       setBeanList(earComponents[0]);
@@ -157,14 +150,16 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
     {
       setBeanList(null);
     }
-    beanTable.getColumn(0).pack();
-    beanTable.getColumn(1).pack();
+    
     // This is a dummy label that forces the status label into the second
     // column.
     new Label(composite, SWT.NULL).setText("");
+   
     return this;
   }
 
+  
+  
   private void addEARNamesToList()
   {
     earList.add(ConsumptionUIMessages.LABEL_SHOW_ALL_STATELESS_SESSION_EJBS);
@@ -354,6 +349,10 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
   	return Status.OK_STATUS;
   }
   
+  public Point getWidgetSize() {
+	return new Point(450, 350);
+  } 
+    
   private class EJBTableValues
   {
     Vector cachedEjbBeanNames;

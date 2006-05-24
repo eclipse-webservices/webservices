@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060524   141194 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -34,24 +37,28 @@ public class EJBTableViewer extends TableViewer
   public EJBTableViewer(Composite parent)
   {
     super(parent, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+    
     String columnProperties[] = {ConsumptionUIMessages.TABLE_TITLE_EJB_BEAN_NAMES, ConsumptionUIMessages.TABLE_TITLE_EJB_PROJECT_NAME};
+    int columnsWidth[] = {60, 20};
+    int columnMins[] = {175, 125};
+    
     Table table = getTable();
     table.setHeaderVisible(true);
     table.setLinesVisible(true);
     TableLayout layout = new TableLayout();
     for (int i = 0; i < columnProperties.length; i++)
     {
-      TableColumn column = new TableColumn(table, i);
+      TableColumn column = new TableColumn(table, SWT.NONE, i);
       column.setText(columnProperties[i]);
-      column.setAlignment(SWT.LEFT);
-      layout.addColumnData(new ColumnWeightData(50, 80, true));
+      column.pack();
+      layout.addColumnData(new ColumnWeightData(columnsWidth[i], columnMins[i], true));      
     }
     table.setLayout(layout);
     setColumnProperties(columnProperties);
     setContentProvider(new EJBContentProvider());
     setLabelProvider(new EJBLabelProvider());
   }
-
+  
   public void setData(Vector beanNames, Vector projectNames)
   {
     this.beanNames = beanNames;
