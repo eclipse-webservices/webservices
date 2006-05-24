@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ant;
 
@@ -223,7 +226,10 @@ public class AntEnvironment extends EclipseEnvironment{
 					 Object transform = null;
 					 try
 					 {
-						 transform = ce.createExecutableExtension(MAPPER_TRANSFORM_ATTRIBUTE);	 
+						 //check to make sure there is an transform attribute provided
+						 //  if so, get the class to do the transformation
+						 if (ce.getAttribute(MAPPER_TRANSFORM_ATTRIBUTE)!= null)
+							 transform = ce.createExecutableExtension(MAPPER_TRANSFORM_ATTRIBUTE);	 
 					 }
 					 catch (CoreException cex) {
 					   Status errorStatus = new Status(Status.ERROR, "ws_ant", 5092, cex.getMessage(), cex);

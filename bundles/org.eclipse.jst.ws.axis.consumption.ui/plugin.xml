@@ -15,7 +15,7 @@
               key="ClientProjectName"
               operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
               property="ClientProject"
-              transform="org.eclipse.jst.ws.internal.common.String2IProjectTransformer"/>
+              transform="org.eclipse.jst.ws.internal.common.StringToIProjectTransformer"/>
         <map
               key="CustomizeClientMappings"
               operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"

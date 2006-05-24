@@ -16,6 +16,7 @@
  * 20060418   129688 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
+ * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -101,11 +102,30 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      //scenarios.    	
      if (serviceIdsFixed_)
      {
-       //Set the serviceRuntime based on the runtime, server, and initial selection. 
-        DefaultRuntimeTriplet drt = getDefaultServiceRuntimeForFixedRuntimeAndServer(initialProject_);
-        serviceFacetMatcher_ = drt.getFacetMatcher();
-        serviceProjectName_ = drt.getProjectName();
-        serviceRuntimeId_ = drt.getRuntimeId(); 
+       //Set the serviceRuntime based on the runtime and server.
+       //If user set a service project use that as initial project otherwise default from initial selection.
+    	 if (serviceProjectName_ != null || !serviceProjectName_.equals("")) 
+    	 {
+    		 initialProject_ = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
+    		 
+    		 DefaultRuntimeTriplet drt = getDefaultRuntime(initialProject_, serviceIds_.getTypeId(), false);
+             serviceFacetMatcher_ = drt.getFacetMatcher();
+    	     serviceProjectName_ = drt.getProjectName();
+    	     serviceRuntimeId_ = drt.getRuntimeId();       
+
+    	       if (serviceRuntimeId_ != null)
+    	       {
+    	    	   serviceIds_.setRuntimeId(WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_).getRuntime()
+    	      	         .getId());
+    	       }
+    	 }
+    	 else
+    	 {
+    		 DefaultRuntimeTriplet drt = getDefaultServiceRuntimeForFixedRuntimeAndServer(initialProject_);  
+    	     serviceFacetMatcher_ = drt.getFacetMatcher();
+    	     serviceProjectName_ = drt.getProjectName();
+    	     serviceRuntimeId_ = drt.getRuntimeId();	 
+    	 }   
      }
      else
      {
@@ -115,12 +135,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
        serviceProjectName_ = drt.getProjectName();
        serviceRuntimeId_ = drt.getRuntimeId();       
 
-       if (serviceRuntimeId_ == null)
+       if (serviceRuntimeId_ != null)
        {
-         // return and error.
-       }
-       serviceIds_.setRuntimeId(WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_).getRuntime()
-         .getId());
+    	   serviceIds_.setRuntimeId(WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_).getRuntime()
+    		         .getId()); 
+       } 
      }
      
      //**Step 2** Default the service project if it was not already defaulted 
@@ -132,7 +151,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      }
 
      //**Step 3** Default the service project type.
-     IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
+     IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_); 
      if (!serviceProject.exists())
      {
        // Set the project template
@@ -472,7 +491,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
         if (WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportServer(desc.getId(), serviceIds_.getServerId()))
         {
           validServiceRuntimes.add(desc.getId());
-          if (project != null && project.exists())
+          if (project != null && project.exists())  
           {
             Set facetVersions = FacetUtils.getFacetsForProject(project.getName());
             if (facetVersions != null)
@@ -580,6 +599,13 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   public boolean getServiceNeedEAR()
   {
     return serviceNeedEAR_;
+  }
+  
+  // This is for the Ant scenario where the service project name can be set in the property file.
+  // If the user has set the ServiceProjectName use it for defaulting purposes
+  public void setServiceProjectName(String name)
+  {
+	  serviceProjectName_ = name;
   }
   
 }

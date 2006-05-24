@@ -229,7 +229,7 @@
                id="org.eclipse.jst.ws.creation.ui.wizard.publish">
          </action>
       </objectContribution>
-      
+
        <objectContribution
             objectClass="org.eclipse.wst.wsdl.Service"
             nameFilter="*"
@@ -310,7 +310,7 @@
               key="Project"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand"
               property="Project"
-              transform="org.eclipse.jst.ws.internal.common.String2IProjectTransformer"/>
+              transform="org.eclipse.jst.ws.internal.common.StringToIProjectTransformer"/>
         <map
               key="ComponentName"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand"
@@ -349,6 +349,12 @@
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
               property="ServiceTypeRuntimeServer"
               transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>
+              
+      <map
+              key="ServiceProjectName"
+              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.runtime.ServerRuntimeSelectionWidgetDefaultingCommand"
+              property="ServiceProjectName"/>
+              
       <map
               key="ServiceProjectName"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"

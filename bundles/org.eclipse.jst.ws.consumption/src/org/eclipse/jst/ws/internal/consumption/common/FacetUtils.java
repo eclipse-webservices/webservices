@@ -14,6 +14,7 @@
  * 20060419   137548 kathy@ca.ibm.com - Kathy Chan
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -39,6 +40,7 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -700,17 +702,30 @@ public class FacetUtils
       }
     };    
         
-    // Run the runnable in another thread.
-    try
-    {
-      PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
-    } catch (InvocationTargetException ite)
-    {
-      status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, ite);
-    } catch (InterruptedException ie)
-    {
-      status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, ie);
-    }    
+    // Run the runnable in another thread unless there is no UI thread (Ant scenarios)
+    if (Display.getCurrent() != null)
+    {    	
+	    try
+	    {
+	      PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
+	    } catch (InvocationTargetException ite)
+	    {
+	      status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, ite);
+	    } catch (InterruptedException ie)
+	    {
+	      status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, ie);
+	    }
+	}
+	else
+	{
+		try
+        {
+          fproject.modify(actions, null);
+        } catch (CoreException e)
+        {
+          status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, e);
+        }
+	}
     
     return status[0];
   }
@@ -782,10 +797,27 @@ public class FacetUtils
         }
       };
 
-      // Run the runnable in another thread.
+    // Run the runnable in another thread unless there is no UI thread (Ant scenarios)    	  
       try
       {
-        PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
+    	  if (Display.getCurrent() != null)
+    	  {
+    		  PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);    		  
+    	  }
+    	  else
+    	  {
+    		  try
+              {
+                IFacetedProject fProject = ProjectFacetsManager.create(projectName, null, null);
+                if (fProject == null)
+                {
+                  status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }));
+                }
+              } catch (CoreException e)
+              {
+                status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }), e);
+              }  
+    	  }        
       } catch (InvocationTargetException ite)
       {
         status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }), ite);
@@ -829,17 +861,30 @@ public class FacetUtils
       }
     };
 
-    // Run the runnable in another thread.
-    try
+    // Run the runnable in another thread unless there is no UI thread (Ant scenarios)
+    if (Display.getCurrent() != null)
     {
-      PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
-    } catch (InvocationTargetException ite)
+    	try
+        {
+          PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
+        } catch (InvocationTargetException ite)
+        {
+          status[0] = getErrorStatusForSettingFixedFacets(fProject.getProject().getName(), fixedFacets, ite);
+        } catch (InterruptedException ie)
+        {
+          status[0] = getErrorStatusForSettingFixedFacets(fProject.getProject().getName(), fixedFacets, ie);
+        }	
+    }
+    else
     {
-      status[0] = getErrorStatusForSettingFixedFacets(fProject.getProject().getName(), fixedFacets, ite);
-    } catch (InterruptedException ie)
-    {
-      status[0] = getErrorStatusForSettingFixedFacets(fProject.getProject().getName(), fixedFacets, ie);
-    }    
+    	try
+        {
+          fProject.setFixedProjectFacets(fixedFacets);
+        } catch (CoreException e)
+        {
+          status[0] = getErrorStatusForSettingFixedFacets(fProject.getProject().getName(), fixedFacets, e);
+        }
+    }       
     
     return status[0];
   }
@@ -897,17 +942,31 @@ public class FacetUtils
       }
     };
 
-    // Run the runnable in another thread.
-    try
+    // Run the runnable in another thread unless there is no UI thread (Ant scenarios)
+    if (Display.getCurrent() != null)
     {
-      PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
-    } catch (InvocationTargetException ite)
+    	try
+        {
+          PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
+        } catch (InvocationTargetException ite)
+        {
+          status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), ite);
+        } catch (InterruptedException ie)
+        {
+          status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), ie);
+        }	
+    }
+    else 
     {
-      status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), ite);
-    } catch (InterruptedException ie)
-    {
-      status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), ie);
-    }    
+    	try
+        {
+          fProject.setRuntime(fRuntime, null); //jvh - happens here...
+        } catch (CoreException e)
+        {
+          status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), e);
+        }
+    }
+        
     
     return status[0];
   }

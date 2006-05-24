@@ -19,6 +19,7 @@
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   126780 kathy@ca.ibm.com - Kathy Chan
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
+ * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -201,7 +202,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     	
       //clientIdsFixed_ is set to true for the Ant scenario. It's always false for the wizard
       //scenarios.
-      if (clientIdsFixed_)
+      if (clientIdsFixed_ && (clientProjectName_ == null || clientProjectName_.equals("")))
       {
         // Set the clientRuntime based on the runtime, server, and initial
         // selection.
@@ -210,26 +211,26 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
         clientProjectName_ = drt.getProjectName();
         clientRuntimeId_ = drt.getRuntimeId();        
       } 
-      else
-      {
+      else      
+      {	
         ValidationUtils vu = new ValidationUtils();
         
         // Set the runtime based on the project containing the object selection/initial selection.
         DefaultRuntimeTriplet drt = null;
         
-        if (!vu.isProjectServiceProject(clientInitialProject_, wsdlURI_, parser_))
+        if (!vu.isProjectServiceProject(clientInitialProject_, wsdlURI_, parser_) && !clientIdsFixed_)
         {
           //If clientIntialProject_ does not contain the J2EE Web service, choose a clientRuntime based on it.
           drt = getDefaultRuntime(clientInitialProject_, clientIds_.getTypeId(), true);
           clientFacetMatcher_ = drt.getFacetMatcher();
-          clientProjectName_ = drt.getProjectName();
+          clientProjectName_ = drt.getProjectName(); 
           clientRuntimeId_ = drt.getRuntimeId();          
         }
         else
         {
           //clientInitialProject_ contains the J2EE Web service so don't use it.
           //Try using the initalProject_ instead.
-          if (!vu.isProjectServiceProject(initialProject_, wsdlURI_, parser_))
+          if (!vu.isProjectServiceProject(initialProject_, wsdlURI_, parser_) && !clientIdsFixed_)
           {
             //If intialProject_ does not contain the J2EE Web service, choose a clientRuntime based on it.
             drt = getDefaultRuntime(initialProject_, clientIds_.getTypeId(), true);
@@ -1417,6 +1418,13 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     {
       clientInitialProject_ = getProjectFromInitialSelection(selection);
     }
+  }
+  
+  // This is for the Ant scenario where the client project name can be set in the property file.
+  // If the user has set the ClientProjectName use it for defaulting purposes
+  public void setClientProjectName(String name)
+  {
+	  clientProjectName_ = name;
   }
 
   public void setClientInitialProject(IProject clientInitialProject)
