@@ -28,6 +28,7 @@
  * 20060426   138519 joan@ca.ibm.com - Joan Haggarty
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  * 20060504   138035 joan@ca.ibm.com - Joan Haggarty
+ * 20060524   142276 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -252,7 +253,9 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 						// serviceImpl may be null if on the preferences page
 						if (serviceImpl_ != null)
 						{
+							serviceImpl_.removeModifyListener(objectModifyListener_);
 							serviceImpl_.setText("");
+							serviceImpl_.addModifyListener(objectModifyListener_);
 						}						   
 					}					
 			   validationState_ = ValidationUtils.VALIDATE_ALL;
@@ -1424,7 +1427,7 @@ private void handleTypeChange()
 			       if (result == Dialog.OK)
 			       {
 			    	   serviceImpl_.removeModifyListener(objectModifyListener_);
-				       serviceImpl_.setText(browseDialog_.getDisplayableSelectionString());
+				       serviceImpl_.setText(browseDialog_.getDisplayableSelectionString()); 
 				       serviceImpl_.addModifyListener(objectModifyListener_);
 				       objectSelection = browseDialog_.getObjectSelection();
 				       project = browseDialog_.getProject();
