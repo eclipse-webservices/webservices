@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
@@ -49,6 +52,7 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
   private String sampleServerTypeID;
   private IServer sampleExistingServer;
   private String proxyBean;
+  private boolean runTestClient;
   private String sampleProject;
   private String sampleP;
   private String clientProject;
@@ -86,11 +90,12 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
 	if(status.getSeverity() == Status.ERROR){
 	  return status;	
 	}
-	status = commandFactoryExecution(iwst.launch(testInfo),env, monitor );
-	if(status.getSeverity() == Status.ERROR){
-	  return status;	
+	if(runTestClient){
+	  status = commandFactoryExecution(iwst.launch(testInfo),env, monitor );
+	  if(status.getSeverity() == Status.ERROR){
+	    return status;	
+	  }
 	}
-	
     return status;
   }
   
@@ -207,8 +212,9 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
     this.methods = methods;  
   }
  
-  public void setRunClientTest(boolean runClientTest)
+  public void setRunTestClient(boolean runTestClient)
   {
+    this.runTestClient = runTestClient;
   }
   
   public void setProxyBean(String proxyBean)

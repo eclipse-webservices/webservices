@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -44,6 +45,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
   private Boolean              testService;
   private Boolean              deployClient;
   private Boolean              installClient;
+  private boolean              runTestClient;
   private ResourceContext      resourceContext;
   
   // ClientRuntimeSelectionWidget
@@ -284,6 +286,23 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
     this.testService = testService;
   }
 
+  /**
+   * @return Returns the testProxySelected.
+   */
+  public boolean getRunTestClient()
+  {
+    return runTestClient;
+  }
+
+  /**
+   * @param testProxySelected
+   *            The testProxySelected to set.
+   */
+  public void setRunTestClient(boolean runTestClient)
+  {
+    this.runTestClient = runTestClient;
+  }
+  
   /**
    * @return Returns the deployService.
    */

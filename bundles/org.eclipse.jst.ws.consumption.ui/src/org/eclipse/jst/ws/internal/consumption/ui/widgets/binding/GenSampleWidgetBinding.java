@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -91,13 +94,14 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     // Before Client Test widget.
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService",FinishTestFragment.class);
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", ClientTestWidget.class );
+    dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "RunTestClient", ClientTestWidget.class );
     dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", ClientTestWidget.class );
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProject", ClientTestWidget.class );
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProjectEAR", ClientTestWidget.class );
     dataRegistry.addMapping(TestDefaultingFragment.class, "TestFacility",ClientTestWidget.class);
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "Folder",ClientTestWidget.class);
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "JspFolder",ClientTestWidget.class);
-    dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "RunClientTest",ClientTestWidget.class);
+    dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "RunTestClient",ClientTestWidget.class);
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "Methods",ClientTestWidget.class);
 
     // After the client test widget   
@@ -106,7 +110,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientTestWidget.class, "TestFacility",ClientTestDelegateCommand.class);
     dataRegistry.addMapping(ClientTestWidget.class, "Folder",ClientTestDelegateCommand.class);
     dataRegistry.addMapping(ClientTestWidget.class, "JspFolder",ClientTestDelegateCommand.class);
-    dataRegistry.addMapping(ClientTestWidget.class, "RunClientTest",ClientTestDelegateCommand.class);
+    dataRegistry.addMapping(ClientTestWidget.class, "RunTestClient",ClientTestDelegateCommand.class);
     dataRegistry.addMapping(ClientTestWidget.class, "SampleMethods",ClientTestDelegateCommand.class);
     
     dataRegistry.addMapping(ClientTestWidget.class, "TestService",FinishTestFragment.class);
@@ -302,10 +306,12 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "TestService", ClientWizardWidgetOutputCommand.class, "TestService", new ForceTrue() );
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ResourceContext", ClientWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "RunTestClient", ClientWizardWidgetOutputCommand.class);
       
       // Map ClientWizardWidgetOutputCommand command.
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ClientTypeRuntimeServer", ClientRuntimeSelectionWidgetDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "TestService", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "RunTestClient", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ResourceContext", ClientExtensionDefaultingCommand.class);
       
       // Map ClientRuntimeSelectionWidgetDefaultingCommand command
@@ -365,6 +371,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestFragment.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", FinishTestFragment.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestDelegateCommand.class);
+      dataRegistry.addMapping(ClientExtensionOutputCommand.class, "RunTestClient", ClientTestDelegateCommand.class);
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ServerInstanceId", FinishDefaultCommand.class);
 	  
       // MAP post server config call      

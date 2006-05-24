@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -41,6 +42,11 @@ public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperat
   public Boolean getInstallClient()
   {
     return new Boolean( getScenarioContext().getInstallClient() );  
+  }
+  
+  public boolean getRunTestClient()
+  {
+    return getScenarioContext().isLaunchSampleEnabled() ;  
   }
   
   public int getClientGeneration()

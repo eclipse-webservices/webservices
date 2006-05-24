@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -22,6 +25,7 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
   private boolean           installService_;
   private boolean           startService_;
   private boolean           testService_;
+  private boolean           runTestClient_;
   private boolean           publishService_;
   private boolean           generateProxy_;
 	private ResourceContext   resourceContext_;
@@ -46,6 +50,11 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
   public boolean getTestService()
   {
     return testService_;
+  }
+  
+  public boolean getRunTestClient()
+  {
+    return runTestClient_;
   }
   
   public boolean getPublishService()
@@ -98,6 +107,15 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
   {
     this.testService_ = testService_;
   }
+  
+  /**
+   * @param testService_ The testService_ to set.
+   */
+  public void setRunTestClient(boolean runTestClient_)
+  {
+    this.runTestClient_ = runTestClient_;
+  }
+  
   /**
    * @param typeRuntimeServer_ The typeRuntimeServer_ to set.
    */
