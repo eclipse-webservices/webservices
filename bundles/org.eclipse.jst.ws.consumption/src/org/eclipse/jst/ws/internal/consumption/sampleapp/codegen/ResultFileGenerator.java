@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060523   142296 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
@@ -52,7 +55,8 @@ public class ResultFileGenerator extends Generator
   {
       Element beanElement = (Element)object;
       BeanElement bean = (BeanElement)beanElement;
-      fbuffer.append("<%@page contentType=\"text/html;charset=UTF-8\"%>");
+      fbuffer.append("<%@page contentType=\"text/html;charset=UTF-8\"%>"+ StringUtils.NEWLINE);
+      fbuffer.append("<% request.setCharacterEncoding(\"UTF-8\"); %>"+ StringUtils.NEWLINE);
       fbuffer.append("<HTML>" + StringUtils.NEWLINE);
       fbuffer.append("<HEAD>" + StringUtils.NEWLINE);
       fbuffer.append("<TITLE>Result</TITLE>" + StringUtils.NEWLINE);
