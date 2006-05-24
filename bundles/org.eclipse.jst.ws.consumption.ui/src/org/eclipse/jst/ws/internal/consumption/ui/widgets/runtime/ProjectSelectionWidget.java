@@ -16,6 +16,7 @@
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  * 20060510   140868 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060524   141024 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -71,6 +72,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 
   private byte ADD_EAR_ASSOCIATION = (byte) 4;
   
+  private Composite parent_;
   private Combo moduleProject_;
   private Combo earProject_;
   private Combo projectType_;
@@ -111,9 +113,10 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   public ProjectSelectionWidget(boolean isClient) {
     this.isClient_ = isClient;
   }
-
+    
   public WidgetDataEvents addControls(Composite parent, Listener statusListener) {
-
+	  
+    parent_ = parent;
     UIUtils uiUtils = new UIUtils(pluginId_);
 
     statusListener_ = statusListener;
@@ -520,6 +523,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
       else {
         messageText_.setText(getValidationMessage(result, ConsumptionUIMessages.MSG_SERVICE_SUB));
       }
+      parent_.layout();  //force message area resize/wrap
     }
     catch (Exception e) {
       return StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_VALIDATION_INTERNAL_ERROR, e );
