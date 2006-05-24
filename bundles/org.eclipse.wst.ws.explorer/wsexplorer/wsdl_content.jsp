@@ -11,6 +11,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
+ * 20060524   142499 jeffliu@ca.ibm.com - Jeffrey Liu
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.core.resources.*,
@@ -346,13 +347,13 @@
           <div id="projects" style="display:none;">          
             <table width="95%" border=0 cellpadding=3 cellspacing=0>              
               <tr>
-                <td height=30 valign="bottom" class="labels">Workspace Project</td>
+                <td height=30 valign="bottom" class="labels"><%=controller.getMessage("FORM_LABEL_WSDL_SOURCE_WEBPROJECTS")%></td>
               </tr>
               <tr>
                 <td nowrap>
                   <select name="project" onChange="fillWSDLFiles(this.value)" class="selectlist">
                   </select>
-                  <input type="button" value="Refresh" onClick="document.location.reload()" class="button">
+                  <input type="button" value="<%=controller.getMessage("FORM_BUTTON_REFRESH")%>" onClick="document.location.reload()" class="button">
                 </td>
               </tr>
             </table>
