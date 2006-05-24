@@ -20,11 +20,6 @@ package org.eclipse.wst.wsi.internal.core;
  * @author Graham Turrell (gturrell@uk.ibm.com)
  */
 public interface WSIConstants {
-	/**
-	 * Copyright notice.
-	 */
-	public static final String COPYRIGHT = "Copyright (C) 2002-2003 by The Web Services-Interoperability Organization and Certain "
-			+ "of its Members. All Rights Reserved.\nUse of this Material is governed by WS-I licenses included within the documentation.";
 
 	/**
 	 * XML declaration statement.
