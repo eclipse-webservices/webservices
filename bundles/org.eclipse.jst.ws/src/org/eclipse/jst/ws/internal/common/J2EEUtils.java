@@ -12,6 +12,7 @@
  * 20060204  124143   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060329   128069 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060524   131132 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -1100,9 +1101,20 @@ public final class J2EEUtils {
 	public static IPath getWebInfPath(IProject project){
 		
 		IVirtualComponent component = ComponentCore.createComponent(project);
+		
+		//should WEB-INF location be pulled in from the .component file rather than hardcoded here?
 		IVirtualFolder webInfDir = component.getRootFolder().getFolder(new Path("/WEB-INF"));
 		IPath modulePath = webInfDir.getWorkspaceRelativePath();
-	
+		
+		if (!webInfDir.exists())
+		{	
+			try 
+			{	
+				webInfDir.create(0,null);				
+			}
+			catch (CoreException e)
+			{}
+		}		
 		return modulePath;
 	}
 	
