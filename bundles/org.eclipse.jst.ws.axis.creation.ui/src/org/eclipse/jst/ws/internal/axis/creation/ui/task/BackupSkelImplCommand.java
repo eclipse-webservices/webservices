@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060330 128827   kathy@ca.ibm.com - Kathy Chan
  * 20060403 128827   kathy@ca.ibm.com - Kathy Chan
+ * 20060524 127343   mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.wsdl.Binding;
 import javax.wsdl.Definition;
@@ -94,8 +96,22 @@ public class BackupSkelImplCommand extends AbstractDataModelOperation
 	  ArrayList implURLList = new ArrayList();
 	  if (definition != null) {
 		  StringBuffer beanName = new StringBuffer();
-		  String beanPackageName = WSDLUtils.getPackageName(definition);
-		  javaWSDLParam.setBeanPackage(beanPackageName);
+		  
+		  //first check if there is a mapping for this namespace to a package name
+		  //if not then compute package name from namespace
+		  String beanPackageName = null;
+		  Map mappings = javaWSDLParam.getMappings();
+		  if (mappings != null)
+		  {
+			  String targetNamespace = definition.getTargetNamespace();
+			  beanPackageName = (String)mappings.get(targetNamespace);
+		  }
+		  if (beanPackageName == null)
+		  {
+			  beanPackageName = WSDLUtils.getPackageName(definition);
+		  }		  
+		  
+		  javaWSDLParam.setBeanPackage(beanPackageName);		  
 		  beanName.append(beanPackageName);
 		  beanName.append(DOT);
 		  
