@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060321   128827 joan - Joan Haggarty, remove redundant wsdl URI, folder and file controls
+ * 20060523   143284 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.wizard.wsdl;
 
@@ -17,6 +18,7 @@ package org.eclipse.jst.ws.internal.axis.creation.ui.wizard.wsdl;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsFragment;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDCodeGenOperation;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.BackupSkelImplCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidget;
@@ -141,7 +143,7 @@ public class WSWSDLAxisType implements CommandWidgetBinding
     // WSDL2JavaCommand
     dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "JavaWSDLParam", WSDL2JavaCommand.class);
     dataRegistry.addMapping(SkeletonConfigWidget.class, "JavaWSDLParam", WSDL2JavaCommand.class);
-    dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", WSDL2JavaCommand.class, "JavaWSDLParam", null);
+    dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", TDCodeGenOperation.class, "JavaWSDLParam", null);
   }
   
   /* (non-Javadoc)

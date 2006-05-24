@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060424   120137 kathy@ca.ibm.com - Kathy Chan
+ * 20060523   143284 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.wizard.beans;
 
@@ -19,6 +20,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaComman
 import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUCodeGenOperation;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BeanConfigWidget;
@@ -151,8 +153,8 @@ public class WSBeanAxisType implements CommandWidgetBinding
     
     //AxisMappingsWidget - as source
 
-    dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", Java2WSDLCommand.class, "JavaWSDLParam", null);       
-    dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", WSDL2JavaCommand.class, "JavaWSDLParam", null);    
+    dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", BUCodeGenOperation.class, "JavaWSDLParam", null);       
+  
     
     //dataRegistry.addMapping( DefaultsForConfig.class, "JavaParameter", BeanConfigWidget.class );
     //dataRegistry.addMapping( DefaultsForConfig.class, "CustomizeServiceMappings", BeanConfigWidget.class );

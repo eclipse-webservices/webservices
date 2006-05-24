@@ -10,15 +10,15 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060523   143284 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.wizard.client;
 
-import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.command.DefaultsForClientJavaWSDLCommand;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ClientCodeGenOperation;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.task.ValidateWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisProxyWidget;
@@ -63,8 +63,8 @@ public class WebServiceClientAxisType implements CommandWidgetBinding
 	dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", DefaultsForHTTPBasicAuthCommand.class, "JavaWSDLParam", null); //OK
 	dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", DefaultsForClientJavaWSDLCommand.class, "JavaWSDLParam", null); //OK
 	dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", ValidateWSDLCommand.class, "JavaWSDLParam", null); //OK
-	dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", WSDL2JavaCommand.class, "JavaWSDLParam", null); //OK
-	dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", Stub2BeanCommand.class, "JavaWSDLParam", null); //OK
+	dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", ClientCodeGenOperation.class, "JavaWSDLParam", null); //OK
+
   }
   
   /* (non-Javadoc)
