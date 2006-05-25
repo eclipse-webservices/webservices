@@ -15,6 +15,7 @@
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060517   142327 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060524   130755 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
@@ -155,7 +156,7 @@ public class AxisWebService extends AbstractWebService
 			else {
 			    commands.add(new AxisDeployCommand());
 			}
-			commands.add( new CopyDeploymentFileCommand( project ) );
+			commands.add( new CopyDeploymentFileCommand( project, earProject ) );
 			commands.add(new RefreshProjectCommand());
 			if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
 				commands.add(new ComputeAxisSkeletonBeanCommand());

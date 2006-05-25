@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060524   130755 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
@@ -52,6 +55,7 @@ public class CopyDeploymentFileCommand extends AbstractDataModelOperation
 	private final String WEB_INF = "WEB-INF";
 	private final String SERVER_CONFIG = "server-config.wsdd";
     private String projectName_;
+    private String EARProjectName_;
 	private String serverInstanceId_;
   
   /**
@@ -60,9 +64,10 @@ public class CopyDeploymentFileCommand extends AbstractDataModelOperation
  * @param String name
    * 
    */
-  public CopyDeploymentFileCommand( String projectName )
+  public CopyDeploymentFileCommand( String projectName, String earProjectName )
   { 
     projectName_   = projectName;
+    EARProjectName_   = earProjectName;
   }
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
@@ -83,7 +88,15 @@ public class CopyDeploymentFileCommand extends AbstractDataModelOperation
 			  IModulePublishHelper publishHelper = (IModulePublishHelper) 
 			  	server.loadAdapter(IModulePublishHelper.class, monitor);
 			  if (publishHelper != null) {
-				  IPath publishDirPath = publishHelper.getPublishDirectory(new IModule [] {projectModule});
+				  IModule[] serverModules;
+				  if (EARProjectName_ == null) {
+					  serverModules = new IModule [] {projectModule};
+				  } else {
+					  IProject EARProject = ProjectUtilities.getProject(EARProjectName_);
+					  IModule EARProjectModule = ServerUtil.getModule(EARProject);
+					  serverModules = new IModule [] {EARProjectModule, projectModule};
+				  }
+				  IPath publishDirPath = publishHelper.getPublishDirectory(serverModules);
 				  if (publishDirPath != null) {
 					  IPath path = new Path( WEB_INF ).append( SERVER_CONFIG );
 					  IPath serverConfigPath = publishDirPath.append(path);
