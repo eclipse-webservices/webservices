@@ -11,12 +11,14 @@
  * -------- -------- -----------------------------------------------------------
  * 20060330 128827   kathy@ca.ibm.com - Kathy Chan
  * 20060403 128827   kathy@ca.ibm.com - Kathy Chan
+ * 20060524   141925 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
@@ -24,6 +26,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.osgi.util.NLS;
@@ -39,9 +42,11 @@ import org.eclipse.wst.ws.internal.preferences.PersistentMergeContext;
 public class SkeletonMergeCommand extends AbstractDataModelOperation
 {
   private String[] urls_;
+  private String projectName_;
 
-  public SkeletonMergeCommand()
+  public SkeletonMergeCommand(String projectName)
   {
+	  projectName_ = projectName;
   }
 
   public void setUrls(String[] urls)
@@ -75,7 +80,18 @@ public class SkeletonMergeCommand extends AbstractDataModelOperation
 					  if (mergedContent != null) {
 						  // write the merged content back into the file, respecting file overwrite preference
 						  IPath targetPath = new Path(filename);
-						  inStream = new ByteArrayInputStream(mergedContent.getBytes());
+						  IProject project = ProjectUtilities.getProject(projectName_);
+						  byte[] buf = null;
+						  if (project != null) {
+							  try {
+							  buf = mergedContent.getBytes(project.getDefaultCharset());
+							  } catch (Throwable e) {
+								  buf = mergedContent.getBytes();
+							  }
+						  } else {
+							  buf = mergedContent.getBytes();
+						  }
+						  inStream = new ByteArrayInputStream(buf);
 
 						  if (inStream != null) {
 							  try {

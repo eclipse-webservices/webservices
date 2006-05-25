@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060330 128827   kathy@ca.ibm.com - Kathy Chan
+ * 20060524   141925 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -50,7 +51,7 @@ public class PreServiceAssembleCommand extends AbstractDataModelOperation
 	  // develop() method.
 	  
 	  if (context_.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
-		  SkeletonMergeCommand skeletonMergeCommand = new SkeletonMergeCommand();
+		  SkeletonMergeCommand skeletonMergeCommand = new SkeletonMergeCommand(project_);
 		  skeletonMergeCommand.setUrls(webService_.getWebServiceInfo().getImplURLs());
 		  skeletonMergeCommand.setEnvironment(environment);
 		  status = skeletonMergeCommand.execute( monitor, adaptable );
