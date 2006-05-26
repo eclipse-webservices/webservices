@@ -81,7 +81,7 @@
 				id="org.eclipse.wst.xmlwebservices.general">
 			</propertyTab>
 			<propertyTab
-				label="Extensibility"
+				label="%_UI_LABEL_EXTENSIONS"
 				category="extensibility"
 				id="org.eclipse.wst.xmlwebservices.extensibility">
 			</propertyTab>
