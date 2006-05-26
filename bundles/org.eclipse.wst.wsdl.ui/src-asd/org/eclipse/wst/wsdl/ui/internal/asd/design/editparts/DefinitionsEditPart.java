@@ -50,6 +50,13 @@ public class DefinitionsEditPart extends BaseEditPart {
 	    return panel;
 	  }
 	  
+	  public void refresh() {
+		  super.refresh();
+		  
+		  // Refresh the connecting lines
+		  refreshConnections();
+	  }
+	  
 	  public IFigure getContentPane()
 	  {
 	    return contentPane;
@@ -73,8 +80,9 @@ public class DefinitionsEditPart extends BaseEditPart {
 	        collections.add(new ServiceColumn(description));
 	        collections.add(new BindingColumn(description));
 	        collections.add(new InterfaceColumn(description));
-	      }  
-	    }  
+	      }
+	    }
+
 	    return collections;
 	  }
 	  

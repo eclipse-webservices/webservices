@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.Label;
@@ -69,6 +70,16 @@ public abstract class BaseEditPart extends AbstractGraphicalEditPart implements 
   {
     //System.out.println("propertyChanged " + this.getClass().getName());
     refresh();
+  }
+  
+  public void refreshConnections() {
+	  Iterator kids = getChildren().iterator();
+	  while (kids.hasNext()) {
+		  Object item = kids.next();
+		  if (item instanceof BaseEditPart) {
+			  ((BaseEditPart) item).refreshConnections();
+		  }
+	  }
   }
   
   public void addFeedback() {

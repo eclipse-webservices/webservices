@@ -245,7 +245,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 	    return connectionFigure;
   }
 
-  protected void refreshConnections() {
+  public void refreshConnections() {
 	  if (shouldDrawConnection()) {
 		  Object typeBeingRef = getReferencedModel();
 		  if (connectionFigure != null) {

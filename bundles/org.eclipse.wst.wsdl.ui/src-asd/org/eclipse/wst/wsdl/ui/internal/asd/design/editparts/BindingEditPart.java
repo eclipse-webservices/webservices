@@ -227,7 +227,7 @@ public class BindingEditPart extends BaseEditPart
     return null;
   }
 
-  protected void refreshConnections()
+  public void refreshConnections()
   {
     if (shouldDrawConnection())
     {
