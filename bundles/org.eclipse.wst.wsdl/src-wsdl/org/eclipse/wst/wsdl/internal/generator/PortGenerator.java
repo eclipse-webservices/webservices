@@ -55,7 +55,7 @@ public class PortGenerator extends BaseGenerator {
 	  ContentGenerator contentGenerator = getContentGenerator(); 
 	  
 	  if (contentGenerator != null) {
-		  addRequiredNamespaces(binding.getEnclosingDefinition());
+		  addRequiredNamespaces(service.getEnclosingDefinition());
 	      contentGenerator.generatePortContent(port);
 	  }
 	  

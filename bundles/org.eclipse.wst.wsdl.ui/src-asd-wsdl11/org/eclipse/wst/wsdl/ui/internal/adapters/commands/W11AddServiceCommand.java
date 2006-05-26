@@ -16,8 +16,9 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator;
+import org.eclipse.wst.wsdl.internal.generator.PortGenerator;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddServiceCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
@@ -32,21 +33,14 @@ public class W11AddServiceCommand extends W11TopLevelElementCommand {
 	public void execute() {
     super.execute();
 		String newName = NameUtil.buildUniqueServiceName(definition);
-		AddServiceCommand command = new AddServiceCommand(definition, newName, true);
+		AddServiceCommand command = new AddServiceCommand(definition, newName, false);
 		command.run();
 		Service service = (Service) command.getWSDLElement();
-		if (service.getEPorts().size() > 0) {
-			Port port = (Port) service.getEPorts().get(0);
-			
-			// Set a default protocol
-			
-			
-			// Set a default address
-			String address = "http://www.example.org/"; //$NON-NLS-1$
-			W11SetAddressCommand addressCommand = new W11SetAddressCommand(port, address);
-			addressCommand.execute();			
-		}
 		
+		PortGenerator portGenerator = new PortGenerator(service);
+		portGenerator.setContentGenerator(new SOAPContentGenerator());
+		portGenerator.setName(NameUtil.buildUniquePortName(service, "NewPort"));
+
 		selectNewElement(service);
 	}
 	
