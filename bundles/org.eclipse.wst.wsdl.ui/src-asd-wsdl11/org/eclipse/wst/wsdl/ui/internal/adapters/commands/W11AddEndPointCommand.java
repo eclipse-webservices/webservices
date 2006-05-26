@@ -10,18 +10,21 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
+import java.util.List;
+
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
-import org.eclipse.wst.wsdl.ui.internal.commands.AddPortCommand;
-import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
+import org.eclipse.wst.wsdl.ui.internal.wizards.PortWizard;
 
 public class W11AddEndPointCommand extends Command
 {
@@ -33,16 +36,15 @@ public class W11AddEndPointCommand extends Command
     }
     
     public void execute() {
-        AddPortCommand command = new AddPortCommand(service, NameUtil.buildUniquePortName(service, "NewPort")); //$NON-NLS-1$
-        command.run();
-        Port port = (Port) command.getWSDLElement();
-        
-		// Set a default address
-		String address = "http://www.example.org/"; //$NON-NLS-1$
-		W11SetAddressCommand addressCommand = new W11SetAddressCommand(port, address);
-		addressCommand.execute();
-		
-		selectNewElement(port);
+    	PortWizard wizard = new PortWizard(service);
+		WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
+		wizardDialog.create();
+
+		int result = wizardDialog.open();
+		if (result == Window.OK && service.getEPorts().size() > 0) {
+			List ports = service.getEPorts();
+			selectNewElement((Notifier) ports.get(ports.size() - 1));	
+		}
     }
     
     // TODO: We should probably be selecting the new element at the "action level"....  However, our actions

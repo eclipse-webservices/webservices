@@ -55,10 +55,56 @@ public class PortGenerator extends BaseGenerator {
 	  ContentGenerator contentGenerator = getContentGenerator(); 
 	  
 	  if (contentGenerator != null) {
-	    contentGenerator.generatePortContent(port);
+		  addRequiredNamespaces(binding.getEnclosingDefinition());
+	      contentGenerator.generatePortContent(port);
 	  }
 	  
 	  return port;
+	}
+	
+	/*
+	 * methods addRequiredNamespaces() and computeUniquePrefix() are used to add necessary
+	 * namespaces 
+	 * 
+	 * TODO:
+	 * Does this belong here?  This is copied from wsdl.ui.  Can we sync up in some way?
+	 */
+	protected void addRequiredNamespaces(Definition definition) {
+		if (contentGenerator != null) {
+			String[] namespaceNames = contentGenerator.getRequiredNamespaces();
+			String[] preferredPrefixes = new String[namespaceNames.length];
+			for (int index = 0; index < namespaceNames.length; index++) {
+				preferredPrefixes[index] = contentGenerator.getPreferredNamespacePrefix(namespaceNames[index]);				
+			}
+	
+			Map map = definition.getNamespaces();
+			
+		      for (int i = 0; i < namespaceNames.length; i++) {
+		        String namespace = namespaceNames[i];
+		        if (!map.containsValue(namespace)) {
+		          String prefix = (i < preferredPrefixes.length) ? preferredPrefixes[i] : "p0";
+		          if (map.containsKey(prefix)) {
+		            prefix = computeUniquePrefix("p", map);
+		          }
+				  definition.addNamespace(prefix, namespace);
+		        }
+		      }
+		}
+	}
+	
+	private String computeUniquePrefix(String base, Map table){
+	    int i = 0;
+	    String prefix = base;
+	    while (true) {
+	      if (!table.containsKey(prefix)) {
+	        break;
+	      }
+	      else {
+	        prefix = base + i;
+	        i++;
+	      }
+	    }
+	    return prefix;
 	}
 	
 	/**

@@ -145,8 +145,9 @@ public class PortWizard extends Wizard
 		  optionsPage = new SoapBindingOptionsPage();
 	  }
 	  else if (protocolSelection.equals("HTTP")) { //$NON-NLS-1$
-		  optionsPage = new SoapBindingOptionsPage();
+		  optionsPage = new HttpBindingOptionsPage();
 	  }	  
+	  // TODO: We need to eventually put this back in
 //      ContentGeneratorExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorExtensionRegistry().getContentGeneratorExtension(protocol);
 //      if (extension != null)
 //      {
