@@ -21,6 +21,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
@@ -81,11 +82,11 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 				if (workbenchWindow != null) {
 					IWorkbenchPage page = workbenchWindow.getActivePage();
 					try {
-						XSDFileEditorInput editorInput = new XSDFileEditorInput(file, schema);
-						
-						IEditorPart editorPart = null;
-						
-						if (isInlineSchema(file)) {
+            
+            IEditorPart editorPart = null;
+            if (isInlineSchema(file)) {
+              XSDFileEditorInput editorInput = new XSDFileEditorInput(file, schema);
+					
 							editorInput.setEditorName(Messages.getString("_UI_LABEL_INLINE_SCHEMA_OF") + file.getName()); //$NON-NLS-1$
 							IEditorReference [] refs = page.getEditorReferences();
 							int length = refs.length;
@@ -113,7 +114,9 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 							}
 						}
 						else {
-							editorPart = page.openEditor(editorInput, "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor", true); //$NON-NLS-1$
+              // Should open in default editor
+              editorPart = IDE.openEditor(page, file, true);
+              // editorPart = page.openEditor(new FileEditorInput(file), "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor", true); //$NON-NLS-1$
 						}
 						
 						if (editorPart instanceof InternalXSDMultiPageEditor)
