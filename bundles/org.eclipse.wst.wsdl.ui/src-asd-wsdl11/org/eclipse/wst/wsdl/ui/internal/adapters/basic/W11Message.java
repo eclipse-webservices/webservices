@@ -11,8 +11,11 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Message;
@@ -25,13 +28,21 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessage;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 
 public class W11Message extends WSDLBaseAdapter implements IMessage {
 
 	public List getParts() {
 		List adapterList = new ArrayList();
-		populateAdapterList(((Message) target).getEParts(), adapterList);
+//		populateAdapterList(((Message) target).getEParts(), adapterList);
+		Iterator parts = ((Message) target).getEParts().iterator();
+		while (parts.hasNext()) {
+			Notifier component = (Notifier) parts.next();
+			Adapter adapter = WSDLAdapterFactoryHelper.getInstance().adapt(component);
+			adapterList.add(adapter);			
+		}
+
 		return adapterList;
 	}
 	

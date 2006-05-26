@@ -17,15 +17,16 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.MessageReference;
+import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessage;
-import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
@@ -51,14 +52,19 @@ public class W11AddPartAction extends BaseSelectionAction {
 				messageRef = (MessageReference) ((W11MessageReference) o).getTarget();
 				message = messageRef.getEMessage();
 			}
-			else if (o instanceof IParameter) {
-				IParameter param = (IParameter) o;
+			else if (o instanceof W11ParameterForPart) {
+				W11ParameterForPart param = (W11ParameterForPart) o;
 				if (param.getOwner() instanceof IMessage) {
 					iMessage = (IMessage) param.getOwner();
 				}
 				else if (param.getOwner() instanceof W11MessageReference) {
 					messageRef = (MessageReference) ((W11MessageReference) param.getOwner()).getTarget();
 					message = messageRef.getEMessage();
+				}
+				
+				if (message == null) {
+					Part part = (Part) param.getTarget();
+					message = (Message) part.eContainer();
 				}
 			}
 			else if (o instanceof IMessage) {
@@ -78,7 +84,7 @@ public class W11AddPartAction extends BaseSelectionAction {
 			if (message != null) {
 				iMessage = (IMessage) WSDLAdapterFactoryHelper.getInstance().adapt(message);
 			}
-			
+
 			if (iMessage != null) {
 				Command command = iMessage.getAddPartCommand();
 			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
