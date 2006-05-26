@@ -20,6 +20,7 @@
  * 20060427   126780 kathy@ca.ibm.com - Kathy Chan
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
+ * 20060525   143843 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -202,7 +203,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     	
       //clientIdsFixed_ is set to true for the Ant scenario. It's always false for the wizard
       //scenarios.
-      if (clientIdsFixed_ && (clientProjectName_ == null || clientProjectName_.equals("")))
+      if (clientIdsFixed_ && (clientProjectName_ == null))
       {
         // Set the clientRuntime based on the runtime, server, and initial
         // selection.

@@ -17,6 +17,7 @@
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
+ * 20060525   143843 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -104,7 +105,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      {
        //Set the serviceRuntime based on the runtime and server.
        //If user set a service project use that as initial project otherwise default from initial selection.
-    	 if (serviceProjectName_ != null || !serviceProjectName_.equals("")) 
+    	 if (serviceProjectName_ != null) 
     	 {
     		 initialProject_ = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
     		 
