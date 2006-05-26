@@ -11,15 +11,19 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.AbstractLayout;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.BindingColumn;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.InterfaceColumn;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.ServiceColumn;
@@ -29,6 +33,7 @@ import org.eclipse.wst.xsd.ui.internal.design.figures.SpacingFigure;
 public class DefinitionsEditPart extends BaseEditPart {
 	  List collections = null;
 	  Figure contentPane;
+    Label messageLabel;
 	  
 	  protected IFigure createFigure()
 	  {    
@@ -42,7 +47,10 @@ public class DefinitionsEditPart extends BaseEditPart {
 	    // issue (cs) : why did we need a free form layer?
 	    contentPane = new Figure();
 	    panel.add(contentPane);
-	        
+
+      messageLabel = new Label("");
+      contentPane.add(messageLabel);
+      
 	    ToolbarLayout layout = new ToolbarLayout(true);
 	    layout.setStretchMinorAxis(true);
 	    layout.setSpacing(0);
@@ -82,6 +90,30 @@ public class DefinitionsEditPart extends BaseEditPart {
 	        collections.add(new InterfaceColumn(description));
 	      }
 	    }
+      
+      boolean hasChildren = false;
+      for (Iterator i = collections.iterator(); i.hasNext(); )
+      {
+        AbstractModelCollection column = (AbstractModelCollection)i.next();
+        if (column.hasChildren())
+        {
+          hasChildren = true;
+        }
+      }
+
+      if (hasChildren)
+      {
+        messageLabel.setText("");
+        if (contentPane.getChildren().contains(messageLabel))
+          contentPane.remove(messageLabel);
+      }
+      else
+      {
+        messageLabel.setText(Messages.getString("_UI_LABEL_RIGHT_CLICK_TO_INSERT_CONTENT")); //$NON-NLS-1$
+        if (!contentPane.getChildren().contains(messageLabel))
+          contentPane.add(messageLabel);
+      }
+      
 
 	    return collections;
 	  }
