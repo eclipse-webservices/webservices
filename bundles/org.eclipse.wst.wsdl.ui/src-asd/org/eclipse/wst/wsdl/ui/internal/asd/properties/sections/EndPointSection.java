@@ -97,7 +97,9 @@ public class EndPointSection extends ReferenceSection {
 
 		IEndPoint endPoint = (IEndPoint) getModel();
 		if (endPoint.getAddress() != null) {
-			addressText.setText(endPoint.getAddress());
+			if (!endPoint.getAddress().equals(addressText.getText())) {
+				addressText.setText(endPoint.getAddress());
+			}
 		}
 		if (endPoint.getBinding() != null) {
 			String protocolValue = endPoint.getBinding().getProtocol();
@@ -190,8 +192,6 @@ public class EndPointSection extends ReferenceSection {
 
   public void doHandleEvent(Event event)
   {
-	  super.doHandleEvent(event);
-
 	  if (event.widget == addressText && !addressText.isDisposed()) {
 		  String newAddress = addressText.getText();
 		  if (newAddress == null) {
@@ -201,6 +201,9 @@ public class EndPointSection extends ReferenceSection {
 		  IEndPoint endPoint = (IEndPoint) getModel();
 		  Command command = endPoint.getSetAddressCommand(newAddress);
 		  executeCommand(command);
+	  }
+	  else {
+		  super.doHandleEvent(event);
 	  }
   }
 }
