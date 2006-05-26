@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.MarginBorder;
@@ -39,6 +40,7 @@ public class BindingEditPart extends BaseEditPart
   protected ComponentReferenceConnection connectionFigure;
   protected BoxComponentFigure figure;
   protected boolean isExpanded = false;
+  private Label hoverHelpLabel = new Label("");
 
   protected IFigure createFigure()
   {
@@ -203,7 +205,11 @@ public class BindingEditPart extends BaseEditPart
       IBinding binding = (IBinding) getModel();
       ((BoxComponentFigure) getFigure()).headingFigure.setIsReadOnly(((IBinding) getModel()).isReadOnly());
       figure.getLabel().setIcon(binding.getImage());
-    }  
+      
+      // Show the name of the IBinding with hover help
+      hoverHelpLabel.setText(" " + binding.getName() + " ");
+      figure.setToolTip(hoverHelpLabel);
+    }
 
     //getViewer().getEditPartRegistry().put(Lay.class, controller);
     super.refreshVisuals();    
