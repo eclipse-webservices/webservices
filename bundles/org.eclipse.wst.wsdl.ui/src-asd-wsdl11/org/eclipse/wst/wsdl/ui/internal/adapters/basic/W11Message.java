@@ -40,7 +40,11 @@ public class W11Message extends WSDLBaseAdapter implements IMessage {
 	}
 
 	public String getName() {
-		return ((Message) target).getQName().getLocalPart();
+		if (((Message) target).getQName() != null) {
+			return ((Message) target).getQName().getLocalPart();
+		}
+		
+		return "";
 	}
 	
 	public String[] getActions(Object object) {
