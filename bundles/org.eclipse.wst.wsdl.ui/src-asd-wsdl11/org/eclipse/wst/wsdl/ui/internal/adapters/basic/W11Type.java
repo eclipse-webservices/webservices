@@ -15,6 +15,7 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDOpenSchemaAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IType;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
@@ -31,9 +32,10 @@ public class W11Type extends WSDLBaseAdapter implements IType {
 	}
 	
 	public String[] getActions(Object object) {
-		String[] actionIDs = new String[2];
+		String[] actionIDs = new String[3];
 		actionIDs[0] = ASDOpenSchemaAction.ID;
 		actionIDs[1] = ASDDeleteAction.ID;
+    actionIDs[2] = ShowPropertiesViewAction.ID;
 		
 		return actionIDs;
 	}

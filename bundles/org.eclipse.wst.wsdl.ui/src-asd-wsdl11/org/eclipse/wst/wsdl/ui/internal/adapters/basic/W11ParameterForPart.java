@@ -35,6 +35,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
@@ -151,6 +152,8 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 		  actions.add(BaseSelectionAction.SUBMENU_END_ID);		  
 		  
 		  actions.add(ASDDeleteAction.ID);
+      
+      actions.add(ShowPropertiesViewAction.ID);
 		  
 		  String[] actionIDs = new String[actions.size()];
 		  for (int index = 0; index < actions.size(); index++) {

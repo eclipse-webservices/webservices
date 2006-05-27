@@ -34,6 +34,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
@@ -201,6 +202,7 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	  actions.add(W11SetNewMessageAction.ID);
 	  actions.add(W11SetExistingMessageAction.ID);
 	  actions.add(BaseSelectionAction.SUBMENU_END_ID);
+    actions.add(ShowPropertiesViewAction.ID);
 	  
 	  String[] actionIDs = new String[actions.size()];
 	  for (int index = 0; index < actions.size(); index++) {

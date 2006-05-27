@@ -36,6 +36,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDGenerateBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.BindingContentPlaceHolder;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
@@ -180,13 +181,14 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
 	}
 	
 	public String[] getActions(Object object) {
-		String[] actionIDs = new String[6];
+		String[] actionIDs = new String[7];
 		actionIDs[0] = ASDGenerateBindingAction.ID;
 		actionIDs[1] = BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_PORTTYPE"); //$NON-NLS-1$
 		actionIDs[2] = ASDSetNewInterfaceAction.ID;
 		actionIDs[3] = ASDSetExistingInterfaceAction.ID;
 		actionIDs[4] = BaseSelectionAction.SUBMENU_END_ID;
 		actionIDs[5] = ASDDeleteAction.ID;
+    actionIDs[6] = ShowPropertiesViewAction.ID;
 		
 		return actionIDs;
 	}

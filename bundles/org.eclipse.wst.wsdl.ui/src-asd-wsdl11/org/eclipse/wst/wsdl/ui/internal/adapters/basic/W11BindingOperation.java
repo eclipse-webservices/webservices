@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
@@ -93,5 +95,11 @@ public class W11BindingOperation extends WSDLBaseAdapter implements IBindingOper
   public String getText()
   {
     return "binding operation";
+  }
+  
+  public String[] getActions(Object object) {    
+    Collection actionIDs = new ArrayList();
+    actionIDs.add(ShowPropertiesViewAction.ID);
+    return (String [])actionIDs.toArray(new String[0]);
   }
 }

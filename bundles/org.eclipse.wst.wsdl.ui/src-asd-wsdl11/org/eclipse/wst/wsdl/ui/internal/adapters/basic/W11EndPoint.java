@@ -34,6 +34,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
@@ -144,13 +145,14 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 	}
 	
 	public String[] getActions(Object object) {
-		String[] actionIDs = new String[6];
+		String[] actionIDs = new String[7];
 		actionIDs[0] = ASDAddEndPointAction.ID;
 		actionIDs[1] = BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_BINDING"); //$NON-NLS-1$
 		actionIDs[2] = ASDSetNewBindingAction.ID;
 		actionIDs[3] = ASDSetExistingBindingAction.ID;
 		actionIDs[4] = BaseSelectionAction.SUBMENU_END_ID;
 		actionIDs[5] = ASDDeleteAction.ID;
+    actionIDs[6] = ShowPropertiesViewAction.ID;
 		
 		return actionIDs;
 	}

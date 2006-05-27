@@ -34,6 +34,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInputAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOutputAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
@@ -99,6 +100,7 @@ public class W11Operation extends WSDLBaseAdapter implements IOperation {
 		actions.addAll(getValidInputOutpuActions());
 		actions.add(ASDAddFaultAction.ID);
 		actions.add(ASDDeleteAction.ID);
+    actions.add(ShowPropertiesViewAction.ID);
 		
 		String[] actionIDs = new String[actions.size()];
 		for (int index = 0; index < actions.size(); index++) {

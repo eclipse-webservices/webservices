@@ -22,6 +22,7 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddEndPointCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddEndPointAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IService;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
@@ -48,9 +49,10 @@ public class W11Service extends WSDLBaseAdapter implements IService {
 	}
 	
 	public String[] getActions(Object object) {
-		String[] actionIDs = new String[2];
+		String[] actionIDs = new String[3];
 		actionIDs[0] = ASDAddEndPointAction.ID;
 		actionIDs[1] = ASDDeleteAction.ID;
+    actionIDs[2] = ShowPropertiesViewAction.ID;
 
 		return actionIDs;
 	}

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,6 +22,7 @@ import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOutput;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
@@ -122,5 +125,11 @@ public class W11BindingMessageReference extends WSDLBaseAdapter implements IBind
   public List getExtensiblityObjects()
   {
     return Collections.EMPTY_LIST;
-  }  
+  }
+  
+  public String[] getActions(Object object) {    
+    Collection actionIDs = new ArrayList();
+    actionIDs.add(ShowPropertiesViewAction.ID);
+    return (String [])actionIDs.toArray(new String[0]);
+  }
 }

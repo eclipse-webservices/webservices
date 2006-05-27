@@ -22,6 +22,7 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddOperationCommand
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
@@ -39,9 +40,10 @@ public class W11Interface extends WSDLBaseAdapter implements IInterface {
 	}
 	
 	public String[] getActions(Object object) {
-		String[] actionIDs = new String[2];
+		String[] actionIDs = new String[3];
 		actionIDs[0] = ASDAddOperationAction.ID;
 		actionIDs[1] = ASDDeleteAction.ID;
+    actionIDs[2] = ShowPropertiesViewAction.ID;
 		
 		return actionIDs;
 	}

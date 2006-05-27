@@ -40,6 +40,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingInterfaceActio
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewContextMenuProvider;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicalViewer;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.DirectEditSelectionTool;
@@ -195,6 +196,10 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
     registry.registerAction(action);
     
     action = new ASDOpenSchemaAction(this);
+    action.setSelectionProvider(getSelectionManager());
+    registry.registerAction(action);
+    
+    action = new ShowPropertiesViewAction(this);
     action.setSelectionProvider(getSelectionManager());
     registry.registerAction(action);
   }
