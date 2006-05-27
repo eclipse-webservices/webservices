@@ -107,7 +107,7 @@ public class WSDLModelAdapter implements INodeAdapter
       // attach an adapter to keep the WSDL model and DOM in sync
       //
       modelReconcileAdapter = new WSDLModelReconcileAdapter(document, definition);
-      
+      domNode.getModel().addModelStateListener(modelReconcileAdapter);
       
       // TODO... CS : revisit this line
       // currently this is used to associate a 'type' system with the definition

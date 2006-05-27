@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.text;
 
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
@@ -136,4 +137,18 @@ class WSDLModelReconcileAdapter extends ModelReconcileAdapter
   {                                          
     reconcileModelObjectForElement(element);
   }  
+  
+  public void modelDirtyStateChanged(IStructuredModel model, boolean isDirty)
+  {
+    if (!isDirty)
+    {  
+      // cs : At this time (when a save occurs) it's a good opportunity
+      // to update the model to ensure it's in sync with the source. 
+      // That way if the incremental sync between DOM and model has gotten
+      // the model out of whack we'll be able to put things right at this point.
+      //   
+      // TODO (cs) need to do more to ensure model is sync'd up properly      
+      ((DefinitionImpl)definition).reconcileReferences(true);
+    }
+  }
 }
