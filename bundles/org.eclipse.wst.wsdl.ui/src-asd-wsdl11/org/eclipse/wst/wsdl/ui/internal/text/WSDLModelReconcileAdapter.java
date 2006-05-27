@@ -17,6 +17,7 @@ import org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xsd.ui.internal.util.ModelReconcileAdapter;
+import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -121,6 +122,10 @@ class WSDLModelReconcileAdapter extends ModelReconcileAdapter
       {
         ((WSDLElementImpl)modelObject).elementChanged(element);
       }
+      else if (modelObject instanceof XSDConcreteComponent)
+      {
+        ((XSDConcreteComponent)modelObject).elementChanged(element);        
+      }  
     }     
   }  
 
