@@ -13,13 +13,14 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingOperation;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.PortType;
@@ -43,6 +44,10 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
+import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.custom.NodeCustomizationRegistry;
+import org.eclipse.wst.xsd.ui.internal.editor.XSDEditorPlugin;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class W11Binding extends WSDLBaseAdapter implements IBinding {
 
@@ -206,26 +211,41 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
 		return new W11DeleteCommand(this);
 	}
 
+    
+    private ILabelProvider getLabelProvider(Node node)
+    {
+      String namespace = node.getNamespaceURI();      
+      if (namespace != null)
+      {  
+        NodeCustomizationRegistry registry = XSDEditorPlugin.getDefault().getNodeCustomizationRegistry();      
+        return registry.getLabelProvider(namespace);
+      }        
+      return null;
+    }
+    
   public Image getImage()
   {
-    // TODO (cs) this is evil code, we need an extension driven
-    // way to compute this stuff so don't hardcode HTTP or SOAP stuff
-    //
-    String protocol = getProtocol();
-    String imageName = "icons/binding_obj.gif"; //$NON-NLS-1$
-    if (protocol != null)
+    Image image = null;
+    List list = ((Binding) target).getExtensibilityElements();
+    if (list.size() > 0)
     {  
-      if (protocol.equals("HTTP")) //$NON-NLS-1$
-      {
-        imageName = "icons/httpbinding_obj.gif"; //$NON-NLS-1$
-      }  
-      else if (protocol.equals("SOAP")) //$NON-NLS-1$
-      {
-        imageName = "icons/soapbinding_obj.gif"; //$NON-NLS-1$
-      }  
-    }
-    return WSDLEditorPlugin.getInstance().getImage(imageName);    
-  }
+       ExtensibilityElement ee = (ExtensibilityElement)list.get(0);
+       Element element = ee.getElement();
+       if (element != null)
+       {  
+         ILabelProvider labelProvider = getLabelProvider(element);
+         if (labelProvider != null)
+         {
+           image= labelProvider.getImage(element);
+         }
+       }
+    }        
+    if (image == null)
+    {
+      image = WSDLEditorPlugin.getInstance().getImage("icons/binding_obj.gif");         
+    }  
+    return image;
+   }
 
   public String getText()
   {
