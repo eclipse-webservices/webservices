@@ -231,14 +231,12 @@
    <extension point="org.eclipse.wst.wsdl.ui.extensionCategories">
      <category
      	displayName="HTTP"
-      	namespaceURI="http://schemas.xmlsoap.org/wsdl/http/"
-     	labelProviderClass="org.eclipse.wst.wsdl.ui.internal.label.providers.HTTPLabelProvider">
-     </category>
+      	namespaceURI="http://schemas.xmlsoap.org/wsdl/http/">
+      </category>
 
      <category
      	displayName="SOAP"
-      	namespaceURI="http://schemas.xmlsoap.org/wsdl/soap/"
-		labelProviderClass="org.eclipse.wst.wsdl.ui.internal.label.providers.SOAPLabelProvider">
+      	namespaceURI="http://schemas.xmlsoap.org/wsdl/soap/">
      </category>
 
      <category
@@ -466,7 +464,13 @@
   	   point="org.eclipse.wst.xsd.ui.extensibilityNodeCustomizations">
        <nodeCustomization
 			namespace="http://schemas.xmlsoap.org/wsdl/soap/"
-			nodeEditorProviderClass="org.eclipse.wst.wsdl.ui.internal.soap.customizations.SOAPNodeEditorProvider">
+			nodeEditorProviderClass="org.eclipse.wst.wsdl.ui.internal.soap.customizations.SOAPNodeEditorProvider"
+			labelProviderClass="org.eclipse.wst.wsdl.ui.internal.label.providers.SOAPLabelProvider">
 		</nodeCustomization>		
+       <nodeCustomization
+			namespace="http://schemas.xmlsoap.org/wsdl/http/"
+			nodeEditorProviderClass="org.eclipse.wst.wsdl.ui.internal.soap.customizations.SOAPNodeEditorProvider"
+			labelProviderClass="org.eclipse.wst.wsdl.ui.internal.label.providers.HTTPLabelProvider">
+		</nodeCustomization>					
 	</extension>	
 </plugin>

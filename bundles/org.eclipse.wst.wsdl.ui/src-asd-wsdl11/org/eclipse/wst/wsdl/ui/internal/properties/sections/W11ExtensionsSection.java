@@ -37,6 +37,8 @@ import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.AddExt
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.DOMExtensionTreeContentProvider;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.DOMExtensionTreeLabelProvider;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.ExtensionsSchemasRegistry;
+import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.custom.NodeCustomizationRegistry;
+import org.eclipse.wst.xsd.ui.internal.editor.XSDEditorPlugin;
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.w3c.dom.Element;
@@ -180,28 +182,37 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
   
   static class WSDLExtensionTreeLabelProvider extends DOMExtensionTreeLabelProvider
   {
+    private ILabelProvider getLabelProvider(Node node)
+    {
+      String namespace = node.getNamespaceURI();      
+      if (namespace != null)
+      {  
+        NodeCustomizationRegistry registry = XSDEditorPlugin.getDefault().getNodeCustomizationRegistry();      
+        return registry.getLabelProvider(namespace);
+      }        
+      return null;
+    }
+    
     public Image getImage(Object object)
     {
       if (object instanceof Element)
       {
         Element element = (Element)object;
-        ExtensionsSchemasRegistry registry = WSDLEditorPlugin.getInstance().getExtensionsSchemasRegistry();      
-        ILabelProvider provider = registry.getLabelProvider(element);
+        ILabelProvider provider = getLabelProvider(element);
         if (provider != null)
         {
           return provider.getImage(element);
-        }
+        }          
       }
       return super.getImage(object);
     }
 
-    public String Text(Object object)
+    public String getText(Object object)
     {
       if (object instanceof Element)
       {
         Element element = (Element)object;
-        ExtensionsSchemasRegistry registry = WSDLEditorPlugin.getInstance().getExtensionsSchemasRegistry();      
-        ILabelProvider provider = registry.getLabelProvider(element);
+        ILabelProvider provider = getLabelProvider(element);
         if (provider != null)
         {
           return provider.getText(element);
