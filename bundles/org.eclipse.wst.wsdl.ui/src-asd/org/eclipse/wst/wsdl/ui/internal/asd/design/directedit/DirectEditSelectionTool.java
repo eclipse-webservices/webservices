@@ -38,7 +38,7 @@ public class DirectEditSelectionTool extends SelectionTool {
 		super.handleButtonDown(button);
 		INamedEditPart selectedPart = getSelectedPart();
 		
-		if(selectedPart != null) {
+		if(selectedPart != null && button == 1) {
 			Input i = getCurrentInput();
 			Point l = translateLocation(i.getMouseLocation());
 			
