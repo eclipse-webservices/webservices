@@ -31,6 +31,7 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddExtensionElementCommand;
 import org.eclipse.wst.wsdl.ui.internal.filter.ExtensiblityElementFilter;
 import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelAdapter;
 import org.eclipse.wst.xsd.ui.internal.common.commands.AddExtensionCommand;
+import org.eclipse.wst.xsd.ui.internal.common.commands.RemoveExtensionNodeCommand;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.AbstractExtensionsSection;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.AddExtensionsComponentDialog;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.DOMExtensionTreeContentProvider;
@@ -39,6 +40,7 @@ import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.Extens
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class W11ExtensionsSection extends AbstractExtensionsSection
 {
@@ -72,7 +74,10 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
 
   protected Command getRemoveExtensionCommand(Object o)
   {
-    // TODO Auto-generated method stub
+    if (o instanceof Node)
+    {
+      return new RemoveExtensionNodeCommand("remove", (Node)o);
+    }  
     return null;
   }
   
@@ -81,7 +86,7 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
   // need to clean that up!!
   // TODO (cs) we should avoid referencing WSDL model objects ... go thru facade instead
   public void setInput(IWorkbenchPart part, ISelection selection)
-  {
+  {    
     super.setInput(part, selection);
     isReadOnly = true;    
     ExtensibleElement extensibleElement = getExtensibleElement(input);
@@ -159,7 +164,7 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
     {         
       ExtensibleElement extensibleElement = getExtensibleElement(inputElement);
       if (extensibleElement != null)
-      {  
+      {
         List domElementList = new ArrayList();     
         for (Iterator i = extensibleElement.getExtensibilityElements().iterator(); i.hasNext(); )
         {
@@ -232,5 +237,11 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
       }
       return true;
     }
+  }
+  
+  protected boolean isTreeViewerInputElement(Element element)
+  {
+    ExtensibleElement extensibleElement = getExtensibleElement(input);
+    return extensibleElement != null && extensibleElement.getElement() == element;
   }
 }
