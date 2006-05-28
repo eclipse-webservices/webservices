@@ -3,15 +3,6 @@
 	<name>org.eclipse.wst.wsi.tests</name>
 	<comment></comment>
 	<projects>
-		<project>com.ibm.etools.wsdl</project>
-		<project>com.ibm.wsdl</project>
-		<project>org.apache.xerces</project>
-		<project>org.eclipse.core.resources</project>
-		<project>org.eclipse.core.runtime.compatibility</project>
-		<project>org.eclipse.emf.ecore</project>
-		<project>org.eclipse.ui</project>
-		<project>org.eclipse.xsd</project>
-		<project>org.junit</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
