@@ -26,10 +26,12 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.ExtensibleElement;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddExtensionElementCommand;
 import org.eclipse.wst.wsdl.ui.internal.filter.ExtensiblityElementFilter;
 import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelAdapter;
 import org.eclipse.wst.xsd.ui.internal.common.commands.AddExtensionCommand;
+import org.eclipse.wst.xsd.ui.internal.common.commands.RemoveExtensionNodeCommand;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.AbstractExtensionsSection;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.AddExtensionsComponentDialog;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.DOMExtensionTreeContentProvider;
@@ -38,6 +40,7 @@ import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.Extens
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class W11ExtensionsSection extends AbstractExtensionsSection
 {
@@ -53,12 +56,13 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
   protected AddExtensionCommand getAddExtensionCommand(Object o)
   {
     AddExtensionCommand addExtensionCommand = null;
-    if (input instanceof ExtensibleElement)
+    ExtensibleElement extensibleElement = getExtensibleElement(input);
+    if (extensibleElement != null)
     {  
       if (o instanceof XSDElementDeclaration)
       {
         XSDElementDeclaration element = (XSDElementDeclaration) o;
-        addExtensionCommand = new AddExtensionElementCommand(Messages.getString("_UI_LABEL_ADD_EXTENSION_ELEMENT"), (ExtensibleElement)input, element); //$NON-NLS-1$
+        addExtensionCommand = new AddExtensionElementCommand(Messages.getString("_UI_LABEL_ADD_EXTENSION_ELEMENT"), extensibleElement, element); //$NON-NLS-1$
       }
       else if (o instanceof XSDAttributeDeclaration)
       {
@@ -70,38 +74,34 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
 
   protected Command getRemoveExtensionCommand(Object o)
   {
-    // TODO Auto-generated method stub
+    if (o instanceof Node)
+    {
+      return new RemoveExtensionNodeCommand("remove", (Node)o);
+    }  
     return null;
   }
+  
   
   // TODO (cs) the AbstractExtensionsSection is polluted with XSD specic stuff
   // need to clean that up!!
   // TODO (cs) we should avoid referencing WSDL model objects ... go thru facade instead
   public void setInput(IWorkbenchPart part, ISelection selection)
-  {
+  {    
     super.setInput(part, selection);
-    if (input instanceof Adapter)
-    {
-      input = ((Adapter)input).getTarget();
-    }
-    if (input instanceof ExtensibleElement)
-    {
-      isReadOnly = false;
-      Element element = ((ExtensibleElement)input).getElement();
+    isReadOnly = true;    
+    ExtensibleElement extensibleElement = getExtensibleElement(input);
+    if (extensibleElement != null)
+    {    
+      Element element = extensibleElement.getElement();
       if (element != null)
       {  
+        isReadOnly = false;
         modelAdapter = WSDLModelAdapter.lookupOrCreateModelAdapter(element.getOwnerDocument());
         modelAdapter.getModelReconcileAdapter().addListener(internalNodeAdapter);
-      }        
-      //addButton.setEnabled(true);
-      //removeButton.setEnabled(true);      
-    }  
-    else
-    {
-      isReadOnly = true;      
-      //addButton.setEnabled(false);  
-      //removeButton.setEnabled(false); 
-    }  
+      }         
+    }       
+    addButton.setEnabled(!isReadOnly);
+    removeButton.setEnabled(!isReadOnly);         
   }
   
   public void dispose()
@@ -112,26 +112,44 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
       modelAdapter.getModelReconcileAdapter().removeListener(internalNodeAdapter);
     }  
   }
+  
+  // TODO (cs) in the future we need to 'fix' things so that we can rid of this method
+  // we need a way to do all of this via the facade so that we don't have any direct 
+  // dependency on the WSDL1.1 model./ Similarly this class shouldn't need to 'know'
+  // about AbstractModelCollection this is an underlying detail that needs to be hidden
+  // 
+  private static ExtensibleElement getExtensibleElement(Object o)
+  {
+    if (o instanceof AbstractModelCollection)
+    {         
+      o = ((AbstractModelCollection)o).getModel();
+    }  
+    if (o instanceof Adapter)
+    {
+      // TODO (cs) we need a way to do all of this via the facade
+      // so that we don't have any direct dependency on the WSDL1.1 model
+      // of course at the moment we call this class the W11ExtensionSections
+      // so that's not a problem.  In the future though we'll want to reuse this 
+      // class for WSDL 2.0.
+      //       
+      o = ((Adapter)o).getTarget();
+    }      
+    if (o instanceof ExtensibleElement)
+    {
+      return (ExtensibleElement)o;
+    }
+    return null;
+  }
 
   protected AddExtensionsComponentDialog createAddExtensionsComponentDialog()
-  {
-    // IDEA (cs) we need a way to do all of this via the adapter
-    // so that we don't have any direct dependency on the WSDL1.1 model
-    // of course at the moment we call this class the W11ExtensionSections
-    // so that's not a problem.  In the future though we'll want to reuse this 
-    // class for WSDL 2.0.
-    //
-    if (input instanceof Adapter)
-    {
-      input = ((Adapter)input).getTarget();
-    }
-    if (input instanceof ExtensibleElement)
-    {    
-      ExtensibleElement extensibleElement = (ExtensibleElement)input;
+  {    
+    ExtensibleElement extensibleElement = getExtensibleElement(input);
+    if (extensibleElement != null)
+    {  
       AddExtensionsComponentDialog dialog = new AddExtensionsComponentDialog(composite.getShell(), getExtensionsSchemasRegistry());   
       dialog.addElementsTableFilter(new AddExtensionsComponentDialogFilter(extensibleElement.getElement()));
       return dialog;
-    }
+    }      
     return null;
   }
 
@@ -144,14 +162,10 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
   {
     public java.lang.Object[] getElements(java.lang.Object inputElement)
     {         
-      if (inputElement instanceof Adapter)
+      ExtensibleElement extensibleElement = getExtensibleElement(inputElement);
+      if (extensibleElement != null)
       {
-        inputElement = ((Adapter)inputElement).getTarget();
-      }  
-      if (inputElement instanceof ExtensibleElement)
-      {        
-        List domElementList = new ArrayList();
-        ExtensibleElement extensibleElement = (ExtensibleElement) inputElement;        
+        List domElementList = new ArrayList();     
         for (Iterator i = extensibleElement.getExtensibilityElements().iterator(); i.hasNext(); )
         {
           ExtensibilityElement element = (ExtensibilityElement)i.next();
@@ -223,5 +237,11 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
       }
       return true;
     }
+  }
+  
+  protected boolean isTreeViewerInputElement(Element element)
+  {
+    ExtensibleElement extensibleElement = getExtensibleElement(input);
+    return extensibleElement != null && extensibleElement.getElement() == element;
   }
 }
