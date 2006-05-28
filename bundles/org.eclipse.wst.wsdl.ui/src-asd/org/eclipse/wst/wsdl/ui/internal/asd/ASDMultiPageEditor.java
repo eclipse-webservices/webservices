@@ -19,6 +19,7 @@ import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -105,6 +106,8 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
     buildAndSetModel();
     initializeGraphicalViewer();
     setActivePage(getDefaultPageTypeIndex());
+    
+    getSelectionManager().setSelection(new StructuredSelection(getModel()));
   }
   
   protected int getDefaultPageTypeIndex() {
