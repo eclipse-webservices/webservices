@@ -30,6 +30,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModel
 import org.eclipse.wst.wsdl.ui.internal.commands.AddExtensionElementCommand;
 import org.eclipse.wst.wsdl.ui.internal.filter.ExtensiblityElementFilter;
 import org.eclipse.wst.wsdl.ui.internal.text.WSDLModelAdapter;
+import org.eclipse.wst.xml.core.internal.document.ElementImpl;
 import org.eclipse.wst.xsd.ui.internal.common.commands.AddExtensionCommand;
 import org.eclipse.wst.xsd.ui.internal.common.commands.RemoveExtensionNodeCommand;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.AbstractExtensionsSection;
@@ -95,7 +96,7 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
     if (extensibleElement != null)
     {    
       Element element = extensibleElement.getElement();
-      if (element != null)
+      if (element instanceof ElementImpl)
       {  
         isReadOnly = false;
         modelAdapter = WSDLModelAdapter.lookupOrCreateModelAdapter(element.getOwnerDocument());
