@@ -17,11 +17,21 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.BindingEditPart;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 
 public class BindingColumnLayout extends AbstractLayout
 {
-  IFigure expandedBindingFigure;
-  IFigure snapToFigure;
+  EditPart bindingColumnEditPart;
+  
+  public BindingColumnLayout(EditPart bindingColumnEditPart)
+  {
+    super();
+    this.bindingColumnEditPart = bindingColumnEditPart;
+  }
 
   protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint)
   {
@@ -49,11 +59,13 @@ public class BindingColumnLayout extends AbstractLayout
 
   public void layout(IFigure container)
   {
+    //System.out.println("BindingColumnLayout.layout()" + container.getChildren().size());
     Rectangle clientArea = container.getClientArea();
     Rectangle r = new Rectangle();
     r.x = clientArea.x + 50;
     r.y = clientArea.y;
     int used = 0;
+
     for (Iterator i = container.getChildren().iterator(); i.hasNext();)
     {
       Figure child = (Figure) i.next();
@@ -65,9 +77,10 @@ public class BindingColumnLayout extends AbstractLayout
       used += 30;
       used += r.height;
       
-      if (child == expandedBindingFigure && snapToFigure != null)
+      IFigure intefaceFigure = getInterfaceFigureForExpandedEditPartFigure(child);
+      if (intefaceFigure != null)
       {
-        Rectangle b = snapToFigure.getBounds();
+        Rectangle b = intefaceFigure.getBounds();
         int width = 30;
         child.setBounds(new Rectangle(b.x - width, b.y, width, b.height));
       }
@@ -75,41 +88,58 @@ public class BindingColumnLayout extends AbstractLayout
       r.y += d.height;
       r.y += 80;
     }
-    /*
-    int space = clientArea.height - used;
-    int spacePerThingee = space / container.getChildren().size() - 1;
-    boolean isFirst = true;
-    for (Iterator i = container.getChildren().iterator(); i.hasNext();)
-    {
-      Figure child = (Figure) i.next();
-      if (isFirst)
-      {
-        isFirst = false;
+  }
+  
+  public void setExpanded(BindingEditPart bindingEditPart, boolean isExpanded)
+  {
+    // First run through all of the bindings are are expanded
+    // to ensure at most one binding is expanded for each interface since
+    // we may need to collapse a binding in order to expand this one.
+    //
+    IInterface interfaze = getInterface(bindingEditPart);    
+    if (interfaze != null)
+    {  
+      bindingEditPart.setExpanded(isExpanded);
+      if (isExpanded)
+      {  
+        for (Iterator i = bindingColumnEditPart.getChildren().iterator(); i.hasNext(); )
+        {
+          BindingEditPart otherBindingEditPart = (BindingEditPart)i.next();
+          if (otherBindingEditPart != bindingEditPart &&
+              interfaze == getInterface(otherBindingEditPart))
+          {
+            otherBindingEditPart.setExpanded(false);
+          }  
+        }
       }
-      else if (child != expandedBindingFigure || snapToFigure == null)      
-      {        
-        child.getBounds().y += spacePerThingee;
+    }  
+  }
+  
+  private IFigure getInterfaceFigureForExpandedEditPartFigure(Figure editPartFigure)
+  {
+    for (Iterator i = bindingColumnEditPart.getChildren().iterator(); i.hasNext(); )
+    {
+      BindingEditPart bindingEditPart = (BindingEditPart)i.next();
+      if (bindingEditPart.isExpanded() && bindingEditPart.getFigure() == editPartFigure)
+      {
+        AbstractGraphicalEditPart interfaceEditPart = getMatchingEditPart(getInterface(bindingEditPart));
+        if (interfaceEditPart != null)
+        {
+          return interfaceEditPart.getFigure();
+        }          
       }  
-    }*/
+    }
+    return null;
   }
-
-  public IFigure getExpandedBindingFigure()
+  
+  private IInterface getInterface(BindingEditPart editPart)
   {
-    return expandedBindingFigure;
+    IBinding binding = (IBinding)editPart.getModel();
+    return binding.getInterface();
   }
-
-  public void setExpandedBindingFigure(IFigure expandedBindingFigure)
+  
+  private AbstractGraphicalEditPart getMatchingEditPart(IInterface interfaze)
   {
-    this.expandedBindingFigure = expandedBindingFigure;
-  }
-
-  public IFigure getSnapToFigure()
-  {
-    return snapToFigure;
-  }
-
-  public void setSnapToFigure(IFigure snapToFigure)
-  {
-    this.snapToFigure = snapToFigure;
+    return(AbstractGraphicalEditPart)bindingColumnEditPart.getViewer().getEditPartRegistry().get(interfaze);    
   }
 }

@@ -272,30 +272,15 @@ public class BindingEditPart extends BaseEditPart
   
   public void performRequest(Request request)
   {  
-	  if (request.getType() == RequestConstants.REQ_OPEN)
-    {                                         
-		  isExpanded = !isExpanded;
-	      LayoutManager layoutManager = getFigure().getParent().getLayoutManager();
-	      AbstractGraphicalEditPart snapToEditPart = getConnectionTargetEditPart();
-	      if (layoutManager instanceof BindingColumnLayout && snapToEditPart != null)
-	      {           
-	        BindingColumnLayout animatedBindingLayout = (BindingColumnLayout)layoutManager;
-	        if (!isExpanded)
-	        {
-	          animatedBindingLayout.setExpandedBindingFigure(null);
-	        }
-	        else
-	        {  
-	          animatedBindingLayout.setExpandedBindingFigure(getFigure());
-	        }          
-	        animatedBindingLayout.setSnapToFigure(snapToEditPart.getFigure());
-	      }  
-	      //Animation.markBegin();                
-	      //Animation.run(700);        
-	      refresh();
-	      getFigure().invalidate();
-	      getFigure().getParent().invalidateTree();           
-	      getFigure().getParent().revalidate();
+    if (request.getType() == RequestConstants.REQ_OPEN)
+    {                    
+      LayoutManager layoutManager = getFigure().getParent().getLayoutManager();
+      if (layoutManager instanceof BindingColumnLayout)
+      {             
+        BindingColumnLayout bindingColumnLayout = (BindingColumnLayout)layoutManager;
+        bindingColumnLayout.setExpanded(this, !isExpanded);
+        ((BindingColumnEditPart)getParent()).refreshBindingEditParts();
+      }  
     }
   } 
 }

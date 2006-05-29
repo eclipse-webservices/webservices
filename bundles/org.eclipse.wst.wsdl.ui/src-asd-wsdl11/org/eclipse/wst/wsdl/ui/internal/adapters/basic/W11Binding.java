@@ -90,9 +90,13 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
 
       Iterator it = toAdaptList.iterator();
       while (it.hasNext()) {
-    	  Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) it.next());
-    	  BindingContentPlaceHolder placeHolder = new BindingContentPlaceHolder(adapted);
-    	  adapterList.add(placeHolder);
+          Object o = it.next(); 
+          if (o != null)
+          {  
+    	    Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt((Notifier)o);
+    	    BindingContentPlaceHolder placeHolder = new BindingContentPlaceHolder(adapted);
+    	    adapterList.add(placeHolder);
+          }  
       }
       
       for (Iterator i = ((Binding)target).getEBindingOperations().iterator(); i.hasNext(); )

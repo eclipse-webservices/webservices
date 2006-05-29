@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
+import java.util.Iterator;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayoutAnimator;
+import org.eclipse.gef.EditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.BindingColumnLayout;
 
 public class BindingColumnEditPart extends ColumnEditPart
@@ -24,10 +26,12 @@ public class BindingColumnEditPart extends ColumnEditPart
     //figure.setBackgroundColor(ColorConstants.yellow);
     // custom layout that can do animation
     //
-    BindingColumnLayout layout = new BindingColumnLayout();
+    BindingColumnLayout layout = new BindingColumnLayout(this);
     figure.setLayoutManager(layout);
     return figure;
   }  
+ 
+  
   
   protected void register()
   {
@@ -39,5 +43,22 @@ public class BindingColumnEditPart extends ColumnEditPart
   {
     getFigure().removeLayoutListener(LayoutAnimator.getDefault());   
     super.unregister();
+  }
+  
+  // this method will expand the binding edit part
+  // and collapse any other bindings as appropriate
+  //public void expand(BidingEditPart bindingEditPart)
+  //{    
+  //}
+  
+  public void refreshBindingEditParts()
+  {
+    for (Iterator i = getChildren().iterator(); i.hasNext(); )
+    {
+      EditPart editPart = (EditPart)i.next();
+      editPart.refresh();       
+    }
+    getFigure().invalidateTree();           
+    getFigure().revalidate();     
   }
 }
