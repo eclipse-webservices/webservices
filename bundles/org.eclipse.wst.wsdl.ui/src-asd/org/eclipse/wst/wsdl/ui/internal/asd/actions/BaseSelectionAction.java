@@ -14,13 +14,24 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.ui.actions.SelectionAction;
+import org.eclipse.gef.ui.parts.AbstractEditPartViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.Workbench;
+import org.eclipse.ui.views.contentoutline.ContentOutline;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public abstract class BaseSelectionAction extends SelectionAction
 {
@@ -81,4 +92,39 @@ public abstract class BaseSelectionAction extends SelectionAction
 	  
 	  return true;
   }
+  
+  protected void selectAndDirectEdit(final Object o) {
+	  Runnable runnable = new Runnable() {
+		  public void run() {
+			  // TODO: We shouldn't know about WSDLAdapterFactoryHelper here....
+			  if (o instanceof Notifier) {
+				  Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) o);
+				  IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+				  if (editor != null && editor.getAdapter(ISelectionProvider.class) != null) {
+					  ISelectionProvider provider = (ISelectionProvider) editor.getAdapter(ISelectionProvider.class);
+					  if (provider != null) {
+						  provider.setSelection(new StructuredSelection(adapted));
+						  activateDirectEdit();
+					  }
+				  }
+			  }
+		  }};
+		  Display.getCurrent().asyncExec(runnable);
+  }
+
+	protected void activateDirectEdit() {
+		IWorkbenchPart part = Workbench.getInstance().getActiveWorkbenchWindow().getActivePage().getActivePart();
+		if (!(part instanceof ContentOutline)) {
+			IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+			Object graphicalViewer = editor.getAdapter(GraphicalViewer.class);
+			if (graphicalViewer instanceof AbstractEditPartViewer) {
+				AbstractEditPartViewer viewer = (AbstractEditPartViewer) graphicalViewer;
+				Object obj = viewer.getSelectedEditParts().get(0);
+				doDirectEdit((EditPart) obj);
+			}
+		}
+	}
+	
+	protected void doDirectEdit(EditPart ep) {
+	}
 }

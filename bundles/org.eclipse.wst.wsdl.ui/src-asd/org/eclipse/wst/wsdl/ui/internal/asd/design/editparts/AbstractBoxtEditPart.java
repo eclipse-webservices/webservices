@@ -58,7 +58,7 @@ public abstract class AbstractBoxtEditPart extends BaseEditPart implements IName
   private DirectEditManager manager;
   
   public void performDirectEdit(Point cursorLocation){
-	  if (hitTest(figure.getLabel(), cursorLocation) && !isReadOnly()) {
+	  if (cursorLocation == null ||  hitTest(figure.getLabel(), cursorLocation) && !isReadOnly()) {
 		  manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		  manager.show();
 	  }

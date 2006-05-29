@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.actions;
 
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
@@ -26,6 +27,8 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.ParameterEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessage;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
@@ -89,7 +92,18 @@ public class W11AddPartAction extends BaseSelectionAction {
 				Command command = iMessage.getAddPartCommand();
 			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
 			    stack.execute(command);
+			    
+			    if (command instanceof IASDAddCommand) {
+			    	Object element = ((IASDAddCommand) command).getNewlyAddedComponent();
+			    	selectAndDirectEdit(element);
+			    }
 			}
 		}  
+	}
+	
+	protected void doDirectEdit(EditPart ep) {
+		if (ep instanceof ParameterEditPart) {
+			((ParameterEditPart) ep).performDirectEdit(null);
+		}
 	}
 }

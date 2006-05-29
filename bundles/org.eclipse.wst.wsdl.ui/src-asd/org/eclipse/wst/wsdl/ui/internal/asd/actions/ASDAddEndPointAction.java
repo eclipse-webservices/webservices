@@ -44,6 +44,11 @@ public class ASDAddEndPointAction extends BaseSelectionAction {
                 Command command = service.getAddEndPointCommand();
                 CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
                 stack.execute(command);
+                
+			    if (command instanceof IASDAddCommand) {
+			    	Object element = ((IASDAddCommand) command).getNewlyAddedComponent();
+			    	selectAndDirectEdit(element);
+			    }
             }
 		}  
 	}

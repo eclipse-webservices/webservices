@@ -12,18 +12,14 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import javax.wsdl.OperationType;
 
-import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
@@ -36,10 +32,10 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddOperationCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddOutputCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddOutputParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
-import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
-public class W11AddOperationCommand extends Command {
+public class W11AddOperationCommand extends Command implements IASDAddCommand {
 	private PortType portType;
+	private Operation operation;
 	
 	public W11AddOperationCommand(PortType portType) {
         super(Messages.getString("_UI_ACTION_ADD_OPERATION"));
@@ -50,7 +46,7 @@ public class W11AddOperationCommand extends Command {
 		String name = NameUtil.getOperationName(portType);
 		AddOperationCommand operationCommand = new AddOperationCommand(portType, name);
 		operationCommand.run();
-		Operation operation = (Operation) operationCommand.getWSDLElement();
+		operation = (Operation) operationCommand.getWSDLElement();
 
 		createMessage(operation, IMessageReference.KIND_INPUT);
 		createMessage(operation, IMessageReference.KIND_OUTPUT);
@@ -59,8 +55,10 @@ public class W11AddOperationCommand extends Command {
 		createParameter(operation, null, IMessageReference.KIND_OUTPUT);
 
 		operation.setStyle(OperationType.REQUEST_RESPONSE);
-		
-		selectNewElement(operation);
+	}
+	
+	public Object getNewlyAddedComponent() {
+		return operation;
 	}
 	
 	private MessageReference createMessage(Operation operation, int messageKind) {
@@ -111,21 +109,4 @@ public class W11AddOperationCommand extends Command {
 			  addParameterCommand.run();
 		  }
 	}
-	
-    // TODO: We should probably be selecting the new element at the "action level"....  However, our actions
-    // are currently very generic, so we have no way of getting to the newly created element.  The action
-    // only sees these commands as generic Command objects.
-    private void selectNewElement(Notifier element) {
-    	try {
-	    	Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt(element);
-	        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-	        if (editor != null && editor.getAdapter(ISelectionProvider.class) != null) {
-	        	ISelectionProvider provider = (ISelectionProvider) editor.getAdapter(ISelectionProvider.class);
-	        	if (provider != null) {
-	        		provider.setSelection(new StructuredSelection(adapted));
-	        	}
-	        }
-    	}
-    	catch (Exception e) {}
-    }
 }

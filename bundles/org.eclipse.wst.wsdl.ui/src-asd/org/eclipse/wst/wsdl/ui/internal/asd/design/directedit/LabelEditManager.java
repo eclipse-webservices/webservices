@@ -86,7 +86,8 @@ public class LabelEditManager extends DirectEditManager {
 				text.setBackground(color);
 			}
 			else {
-				text.setBackground(ColorConstants.lightBlue);
+//				text.setBackground(ColorConstants.lightBlue);
+			    text.setBackground(ColorConstants.white);
 			}
 			
 			String initialLabelText = label.getText();

@@ -10,21 +10,17 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator;
 import org.eclipse.wst.wsdl.internal.generator.PortGenerator;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddServiceCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
-import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
-public class W11AddServiceCommand extends W11TopLevelElementCommand {
+public class W11AddServiceCommand extends W11TopLevelElementCommand implements IASDAddCommand {
+	private Service service;
 	
 	public W11AddServiceCommand(Definition definition) {
 	  super(Messages.getString("_UI_ACTION_ADD_SERVICE"), definition);
@@ -35,29 +31,15 @@ public class W11AddServiceCommand extends W11TopLevelElementCommand {
 		String newName = NameUtil.buildUniqueServiceName(definition);
 		AddServiceCommand command = new AddServiceCommand(definition, newName, false);
 		command.run();
-		Service service = (Service) command.getWSDLElement();
+		service = (Service) command.getWSDLElement();
 		
 		PortGenerator portGenerator = new PortGenerator(service);
 		portGenerator.setContentGenerator(new SOAPContentGenerator());
 		portGenerator.setName(NameUtil.buildUniquePortName(service, "NewPort"));
-
-		selectNewElement(service);
+		portGenerator.generatePort();
 	}
 	
-    // TODO: We should probably be selecting the new element at the "action level"....  However, our actions
-    // are currently very generic, so we have no way of getting to the newly created element.  The action
-    // only sees these commands as generic Command objects.
-    private void selectNewElement(Notifier element) {
-    	try {
-	    	Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt(element);
-	        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-	        if (editor != null && editor.getAdapter(ISelectionProvider.class) != null) {
-	        	ISelectionProvider provider = (ISelectionProvider) editor.getAdapter(ISelectionProvider.class);
-	        	if (provider != null) {
-	        		provider.setSelection(new StructuredSelection(adapted));
-	        	}
-	        }
-    	}
-    	catch (Exception e) {}
-    }
+	public Object getNewlyAddedComponent() {
+		return service;
+	}
 }

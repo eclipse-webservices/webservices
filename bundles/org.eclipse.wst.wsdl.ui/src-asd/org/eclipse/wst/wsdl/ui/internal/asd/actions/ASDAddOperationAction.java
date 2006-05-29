@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.actions;
 
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.OperationEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
@@ -52,7 +54,18 @@ public class ASDAddOperationAction extends BaseSelectionAction {
 				Command command = theInterface.getAddOperationCommand();
 			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
 			    stack.execute(command);
+			    
+			    if (command instanceof IASDAddCommand) {
+			    	Object element = ((IASDAddCommand) command).getNewlyAddedComponent();
+			    	selectAndDirectEdit(element);
+			    }
 			}
 		}  
+	}
+	
+	protected void doDirectEdit(EditPart ep) {
+		if (ep instanceof OperationEditPart) {
+			((OperationEditPart) ep).performDirectEdit(null);
+		}
 	}
 }

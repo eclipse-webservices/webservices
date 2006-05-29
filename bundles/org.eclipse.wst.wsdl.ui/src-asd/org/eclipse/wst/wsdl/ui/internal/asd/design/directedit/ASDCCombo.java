@@ -111,7 +111,7 @@ public ASDCCombo (Composite parent, int style) {
 	int textStyle = SWT.SINGLE;
 	if ((style & SWT.READ_ONLY) != 0) textStyle |= SWT.READ_ONLY;
 	if ((style & SWT.FLAT) != 0) textStyle |= SWT.FLAT;
-	text = new Text (this, textStyle | SWT.NO_FOCUS);
+	text = new Text (this, textStyle);
 	int arrowStyle = SWT.ARROW | SWT.DOWN;
 	if ((style & SWT.FLAT) != 0) arrowStyle |= SWT.FLAT;
 	arrow = new Button (this, arrowStyle);
