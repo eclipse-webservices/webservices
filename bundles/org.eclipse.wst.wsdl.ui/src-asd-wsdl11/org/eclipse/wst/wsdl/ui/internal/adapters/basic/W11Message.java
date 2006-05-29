@@ -20,6 +20,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddPartCommand;
@@ -60,12 +61,14 @@ public class W11Message extends WSDLBaseAdapter implements IMessage {
 	}
 	
 	public String[] getActions(Object object) {
-		String[] actionIDs = new String[3];
-		actionIDs[0] = W11AddPartAction.ID;
-		actionIDs[1] = ASDDeleteAction.ID;
-    actionIDs[2] = ShowPropertiesViewAction.ID;
-		
-		return actionIDs;
+    List actionIDs = new ArrayList();
+    actionIDs.add(W11AddPartAction.ID);
+    actionIDs.add(ASDDeleteAction.ID);
+    actionIDs.add(ShowPropertiesViewAction.ID);
+    if (isReadOnly()) {
+      actionIDs.add(OpenInNewEditor.ID);
+    }
+    return (String [])actionIDs.toArray(new String[0]);
 	}
 	
 	public Command getAddPartCommand() {

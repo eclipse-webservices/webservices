@@ -36,6 +36,7 @@ import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11OpenImportAction;
@@ -433,6 +434,10 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	    action = new W11OpenImportAction(this);
 	    action.setSelectionProvider(getSelectionManager());
 	    registry.registerAction(action);
+      
+      action = new OpenInNewEditor(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
 	  }
 	
   public IOpenExternalEditorHelper getOpenExternalEditorHelper() {

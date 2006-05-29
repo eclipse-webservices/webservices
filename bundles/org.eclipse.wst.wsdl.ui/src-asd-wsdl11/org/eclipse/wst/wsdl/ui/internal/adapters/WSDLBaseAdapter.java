@@ -175,4 +175,8 @@ public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionP
 		}
 		return true;
 	}
+  
+  public Object getOwner() {
+    return owner;
+  }
 }

@@ -112,6 +112,10 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
 	  if (cursorLocation == null || hitTest(headingFigure.getLabel(), cursorLocation) && !isReadOnly()) {
 		  manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		  manager.show();
+    }
+    else if ((hitTest(headingFigure.getLabel(), cursorLocation) ||
+              hitTestFigure(headingFigure, cursorLocation)) && isReadOnly()) {
+      doOpenNewEditor();
 	  }
   }
   

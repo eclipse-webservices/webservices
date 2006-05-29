@@ -87,6 +87,9 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
 		  manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		  manager.show();
 	  }
+    else if (hitTest(label, cursorLocation) && isReadOnly()) {
+      doOpenNewEditor();    
+    }
   }
   
   public Label getLabelFigure() {

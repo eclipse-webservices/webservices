@@ -62,6 +62,10 @@ public abstract class AbstractBoxtEditPart extends BaseEditPart implements IName
 		  manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		  manager.show();
 	  }
+    else if ((hitTest(figure.getLabel(), cursorLocation) ||
+        hitTestFigure(figure.getHeadingFigure(), cursorLocation)) && isReadOnly()) {
+      doOpenNewEditor();
+    }
   }
   
   public Label getLabelFigure() {

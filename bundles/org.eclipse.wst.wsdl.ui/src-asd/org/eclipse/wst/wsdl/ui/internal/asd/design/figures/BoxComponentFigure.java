@@ -50,4 +50,9 @@ public class BoxComponentFigure extends Figure
   {
     return headingFigure.getLabel();
   }
+  
+  public Figure getHeadingFigure()
+  {
+    return headingFigure;
+  }
 }

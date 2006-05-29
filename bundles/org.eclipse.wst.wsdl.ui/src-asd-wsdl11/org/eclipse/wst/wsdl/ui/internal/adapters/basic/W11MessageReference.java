@@ -203,7 +203,10 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	  actions.add(W11SetExistingMessageAction.ID);
 	  actions.add(BaseSelectionAction.SUBMENU_END_ID);
     actions.add(ShowPropertiesViewAction.ID);
-	  
+//    if (isReadOnly()) {
+//      actions.add(OpenInNewEditor.ID);
+//    }
+
 	  String[] actionIDs = new String[actions.size()];
 	  for (int index = 0; index < actions.size(); index++) {
 		  actionIDs[index] = (String) actions.get(index);

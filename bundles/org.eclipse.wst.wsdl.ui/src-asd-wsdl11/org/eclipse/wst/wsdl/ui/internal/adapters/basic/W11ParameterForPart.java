@@ -22,6 +22,7 @@ import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingElementAction;
@@ -154,6 +155,9 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 		  actions.add(ASDDeleteAction.ID);
       
       actions.add(ShowPropertiesViewAction.ID);
+      if (isReadOnly()) {
+        actions.add(OpenInNewEditor.ID);
+      }
 		  
 		  String[] actionIDs = new String[actions.size()];
 		  for (int index = 0; index < actions.size(); index++) {

@@ -23,6 +23,7 @@ import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddFaultParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInputParameterCommand;
@@ -101,6 +102,9 @@ public class W11Operation extends WSDLBaseAdapter implements IOperation {
 		actions.add(ASDAddFaultAction.ID);
 		actions.add(ASDDeleteAction.ID);
     actions.add(ShowPropertiesViewAction.ID);
+    if (isReadOnly()) {
+      actions.add(OpenInNewEditor.ID);
+    }
 		
 		String[] actionIDs = new String[actions.size()];
 		for (int index = 0; index < actions.size(); index++) {

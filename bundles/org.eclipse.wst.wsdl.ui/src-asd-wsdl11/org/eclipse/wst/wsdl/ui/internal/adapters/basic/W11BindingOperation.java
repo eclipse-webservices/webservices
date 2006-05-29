@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingOperation;
@@ -100,6 +101,9 @@ public class W11BindingOperation extends WSDLBaseAdapter implements IBindingOper
   public String[] getActions(Object object) {    
     Collection actionIDs = new ArrayList();
     actionIDs.add(ShowPropertiesViewAction.ID);
+    if (isReadOnly()) {
+      actionIDs.add(OpenInNewEditor.ID);
+    }
     return (String [])actionIDs.toArray(new String[0]);
   }
 }

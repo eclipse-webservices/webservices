@@ -122,6 +122,9 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
 		manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		manager.show();
 	  }
+    else if (hitTest(parameterName, cursorLocation) && isReadOnly()) {
+      doOpenNewEditor();
+    }
   }
   
   protected void createEditPolicies()

@@ -107,6 +107,9 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     	manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
     	manager.show();
     }
+    else if (hitTest(getLabelFigure(), cursorLocation) && isReadOnly()) {
+      doOpenNewEditor();
+    }
   }
 
   public Label getLabelFigure()

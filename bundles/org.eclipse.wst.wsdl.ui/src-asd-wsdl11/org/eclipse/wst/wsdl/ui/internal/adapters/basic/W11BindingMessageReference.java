@@ -130,6 +130,9 @@ public class W11BindingMessageReference extends WSDLBaseAdapter implements IBind
   public String[] getActions(Object object) {    
     Collection actionIDs = new ArrayList();
     actionIDs.add(ShowPropertiesViewAction.ID);
+//    if (isReadOnly()) {
+//      actionIDs.add(OpenInNewEditor.ID);
+//    }
     return (String [])actionIDs.toArray(new String[0]);
   }
 }

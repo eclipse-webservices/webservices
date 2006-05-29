@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -28,6 +29,7 @@ import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11GenerateBindingCommand;
@@ -186,16 +188,18 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
 	}
 	
 	public String[] getActions(Object object) {
-		String[] actionIDs = new String[7];
-		actionIDs[0] = ASDGenerateBindingAction.ID;
-		actionIDs[1] = BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_PORTTYPE"); //$NON-NLS-1$
-		actionIDs[2] = ASDSetNewInterfaceAction.ID;
-		actionIDs[3] = ASDSetExistingInterfaceAction.ID;
-		actionIDs[4] = BaseSelectionAction.SUBMENU_END_ID;
-		actionIDs[5] = ASDDeleteAction.ID;
-    actionIDs[6] = ShowPropertiesViewAction.ID;
-		
-		return actionIDs;
+    List actionIDs = new ArrayList();
+    actionIDs.add(ASDGenerateBindingAction.ID);
+    actionIDs.add(BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_PORTTYPE")); //$NON-NLS-1$
+    actionIDs.add(ASDSetNewInterfaceAction.ID);
+    actionIDs.add(ASDSetExistingInterfaceAction.ID);
+    actionIDs.add(BaseSelectionAction.SUBMENU_END_ID);
+    actionIDs.add(ASDDeleteAction.ID);
+    actionIDs.add(ShowPropertiesViewAction.ID);
+    if (isReadOnly()) {
+      actionIDs.add(OpenInNewEditor.ID);
+    }
+    return (String [])actionIDs.toArray(new String[0]);
 	}
 	
 	public Command getSetInterfaceCommand(IInterface newInterface) {

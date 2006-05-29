@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
 import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetAddressCommand;
@@ -145,16 +147,19 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 	}
 	
 	public String[] getActions(Object object) {
-		String[] actionIDs = new String[7];
-		actionIDs[0] = ASDAddEndPointAction.ID;
-		actionIDs[1] = BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_BINDING"); //$NON-NLS-1$
-		actionIDs[2] = ASDSetNewBindingAction.ID;
-		actionIDs[3] = ASDSetExistingBindingAction.ID;
-		actionIDs[4] = BaseSelectionAction.SUBMENU_END_ID;
-		actionIDs[5] = ASDDeleteAction.ID;
-    actionIDs[6] = ShowPropertiesViewAction.ID;
-		
-		return actionIDs;
+    Collection actionIDs = new ArrayList();
+
+    actionIDs.add(ASDAddEndPointAction.ID);
+    actionIDs.add(BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_BINDING")); //$NON-NLS-1$
+    actionIDs.add(ASDSetNewBindingAction.ID);
+    actionIDs.add(ASDSetExistingBindingAction.ID);
+    actionIDs.add(BaseSelectionAction.SUBMENU_END_ID);
+    actionIDs.add(ASDDeleteAction.ID);
+    actionIDs.add(ShowPropertiesViewAction.ID);
+    if (isReadOnly()) {
+      actionIDs.add(OpenInNewEditor.ID);
+    }
+    return (String [])actionIDs.toArray(new String[0]);
 	}
 	
 	public Command getSetBindingCommand(IBinding binding) {

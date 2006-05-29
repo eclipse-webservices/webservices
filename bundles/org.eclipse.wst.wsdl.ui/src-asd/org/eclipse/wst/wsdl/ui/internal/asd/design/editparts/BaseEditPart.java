@@ -13,10 +13,17 @@ package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.IActionProvider;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
@@ -102,6 +109,19 @@ public abstract class BaseEditPart extends AbstractGraphicalEditPart implements 
 	  return finalB.contains(location);
   }
   
+  protected boolean hitTestFigure(Figure target, Point location) {
+    Rectangle origB = target.getBounds().getCopy();
+    Rectangle transB = target.getBounds().getCopy();
+
+    target.translateToAbsolute(transB);
+
+    int newX = origB.x + Math.abs(transB.x - origB.x);
+    int newY = origB.y + Math.abs(transB.y - origB.y);    
+    Rectangle finalB = new Rectangle(newX, newY, origB.width, origB.height);
+
+    return finalB.contains(location);
+  }
+
   public boolean isReadOnly() {
 	  Object model = getModel();
 	  if (model instanceof IASDObject) {
@@ -109,5 +129,17 @@ public abstract class BaseEditPart extends AbstractGraphicalEditPart implements 
 	  }
 	  
 	  return false;
+  }
+  
+  protected void doOpenNewEditor()
+  {
+    IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+    IEditorPart editorPart = workbenchWindow.getActivePage().getActiveEditor();
+    ActionRegistry registry = (ActionRegistry) editorPart.getAdapter(ActionRegistry.class);
+    if (registry != null)
+    {
+      IAction action = registry.getAction(OpenInNewEditor.ID);
+      action.run();
+    }
   }
 }
