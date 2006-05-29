@@ -56,6 +56,12 @@ public class ASDEditorPlugin extends AbstractUIPlugin {
 		return WSDLEditorPlugin.getImageDescriptor(path);
 	}
 	
+  public static ImageDescriptor getImageDescriptorFromPlugin(String path) {
+    // We should not know about WSDLEditorPlugin.java.  Eventually, we should move these
+    // 'generic', 'top-level' icons to the ASD level.....
+    return WSDLEditorPlugin.getImageDescriptorFromPlugin(path);
+  }
+
 	public static IEditorPart getActiveEditor() {
 		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 	}

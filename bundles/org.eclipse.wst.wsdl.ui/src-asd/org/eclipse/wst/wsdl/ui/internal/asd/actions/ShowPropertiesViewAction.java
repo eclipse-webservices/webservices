@@ -13,7 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.asd.actions;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 
 
@@ -33,8 +33,8 @@ public class ShowPropertiesViewAction extends BaseSelectionAction
 		setId(ID);
 		setText(Messages.getString("_UI_ACTION_SHOW_PROPERTIES"));
 		setToolTipText(getText());
-    setImageDescriptor(WSDLEditorPlugin.getImageDescriptorFromPlugin("icons/elcl16/showproperties_obj.gif") ); //$NON-NLS-1$
-	  setDisabledImageDescriptor(WSDLEditorPlugin.getImageDescriptorFromPlugin("icons/dlcl16/showproperties_obj.gif") ); //$NON-NLS-1$
+    setImageDescriptor(ASDEditorPlugin.getImageDescriptorFromPlugin("icons/elcl16/showproperties_obj.gif") ); //$NON-NLS-1$
+	  setDisabledImageDescriptor(ASDEditorPlugin.getImageDescriptorFromPlugin("icons/dlcl16/showproperties_obj.gif") ); //$NON-NLS-1$
 	}
   
   protected boolean calculateEnabled()
