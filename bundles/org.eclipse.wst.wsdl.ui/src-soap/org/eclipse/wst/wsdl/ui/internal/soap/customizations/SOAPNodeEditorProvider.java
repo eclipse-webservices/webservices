@@ -42,7 +42,7 @@ public class SOAPNodeEditorProvider extends NodeEditorProvider
     final Definition definition = (Definition)editor.getAdapter(Definition.class);
     if (definition != null)
     {  
-      if (parentName.equals("body") && nodeName.equals("parts"))
+      if (parentName.equals("body") && nodeName.equals("parts")) //$NON-NLS-1$ //$NON-NLS-2$
       {
         // gee... this case sounds sorta morbid eh?
         //
@@ -63,29 +63,29 @@ public class SOAPNodeEditorProvider extends NodeEditorProvider
               {  
                 SOAPSelectPartsDialog dialog = new SOAPSelectPartsDialog(Display.getCurrent().getActiveShell(), definition, (SOAPBody)o);
                 dialog.create();
-                dialog.getShell().setText("Specify Parts");          
+                dialog.getShell().setText(Messages.UI_SPECIFY_PARTS_DIALOG_TITLE);           //$NON-NLS-1$
                 int rc = dialog.open();
                 if (rc == Dialog.OK)
                 {                  
-                  String value = "";
+                  String value = ""; //$NON-NLS-1$
                   Part[] parts = dialog.getSelectedParts();
                   for (int i = 0; i < parts.length; i++)
                   {  
                     Part part = parts[i];
                     value += part.getName();
-                    value += " ";
+                    value += " "; //$NON-NLS-1$
                   }  
                   
                   // TODO (cs) we need to provide 'command' support so that we can handle undo properly
                   //                   
-                  element.setAttribute("parts", value);                  
+                  element.setAttribute("parts", value);                   //$NON-NLS-1$
                 }  
               }               
             } 
           }        
           public String getButonText()
           {
-            return "...";
+            return Messages.UI_PARTS_BUTTON; //$NON-NLS-1$
           }
         };
       }      
