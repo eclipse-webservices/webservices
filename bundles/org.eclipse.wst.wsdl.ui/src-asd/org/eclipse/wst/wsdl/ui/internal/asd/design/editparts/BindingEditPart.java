@@ -25,6 +25,7 @@ import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.connections.CenteredConnectionAnchor;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.connections.TopLeftConnectionAnchor;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
@@ -207,7 +208,8 @@ public class BindingEditPart extends BaseEditPart
       figure.getLabel().setIcon(binding.getImage());
       
       // Show the name of the IBinding with hover help
-      hoverHelpLabel.setText(" " + binding.getName() + " ");
+      String prependString = Messages.getString("_UI_LABEL_BINDING");
+      hoverHelpLabel.setText(" " + prependString + " : " + binding.getName() + " ");
       figure.setToolTip(hoverHelpLabel);
     }
 
