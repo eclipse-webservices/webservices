@@ -131,6 +131,8 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
         }
 
         // Handle Faults
+        if (operation != null)
+        {  
         List faults = copyList(operation.getEFaults());
         List bindingFaults = copyList(bindingOperation.getEBindingFaults());
         for (int index = 0; index < bindingFaults.size(); index++) {
@@ -139,7 +141,7 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
         	
         	faults.remove(bindingFault.getEFault());        	
         }
-
+        
         // Left over faults need placeholders
         Iterator remaningFaults = faults.iterator();
         while (remaningFaults.hasNext()) {
@@ -147,6 +149,7 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
         	BindingContentPlaceHolder temp = new BindingContentPlaceHolder(adaptedObject);
         	adapterList.add(temp);
         }
+      }
       }
 
       populateAdapterList(list, adapterList);

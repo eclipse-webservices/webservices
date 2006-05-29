@@ -41,15 +41,7 @@ public class DefinitionsEditPart extends BaseEditPart {
         ToolbarLayout toolbarLayout = new ToolbarLayout(true);
         panel.setLayoutManager(toolbarLayout);
         panel.setBorder(new MarginBorder(30));
-	    contentPane = new Figure()        
-        {
-          public void validate() {
-            super.validate();
-            System.out.println("children " + getChildren().size());
-            //((IFigure)children.get(1)).invalidateTree();
-            //((IFigure)children.get(1)).validate();            
-          }          
-        };
+	    contentPane = new Figure();
 	    panel.add(contentPane);
 
         messageLabel = new Label("");
