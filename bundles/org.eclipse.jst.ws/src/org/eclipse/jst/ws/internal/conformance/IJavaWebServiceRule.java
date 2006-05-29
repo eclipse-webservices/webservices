@@ -78,14 +78,44 @@ public interface IJavaWebServiceRule
 	 */
 	public void init ( IJavaWebServiceRuleEngine engine );
 
+	/**
+	 * Called by the rule engine when it decides to visit
+	 * a Java class (ie. primitive types are excluded).
+	 * @param jdtClass The class to visit.
+	 * @param peanutTrail The trail of objects back to the root.
+	 */
 	public void visitClass ( IType jdtClass, Stack peanutTrail );
 
+	/**
+	 * Called by the rule engine when it decides to visit
+	 * a Java class found on the throws clause of a method.
+	 * @param jdtClass The exception class to visit.
+	 * @param peanutTrail The trail of objects back to the root.
+	 */
 	public void visitException ( IType jdtClass, Stack peanutTrail );
 
+	/**
+	 * Called by the rule engine when it decides to visit
+	 * a field belonging to a class.
+	 * @param jdtField The field to visit.
+	 * @param peanutTrail The trail of objects back to the root.
+	 */
 	public void visitField ( IField jdtField, Stack peanutTrail );
 
+	/**
+	 * Called by the rule engine when it decides to visit
+	 * a Java Bean property (ie. represented by a "get" and/or
+	 * "set" method) beloning to a class.
+	 * @param beanProperty The property to visit.
+	 * @param peanutTrail The trail of objects back to the root.
+	 */
 	public void visitProperty ( IJavaBeanProperty beanProperty, Stack peanutTrail );
 
+	/**
+	 * Called by the rule engine when it decides to visit a method.
+	 * @param jdtMethod The method to visit.
+	 * @param peanutTrail The trail of objects back to the root.
+	 */
 	public void visitMethod ( IMethod jdtMethod, Stack peanutTrail );
 
 	/**

@@ -25,7 +25,7 @@ import org.eclipse.jst.ws.internal.conformance.JavaWebServiceRule;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * This rule checks if a service class
+ * This rule checks if a value type class
  * is public default constructable.
  */
 public class JAXRPCRule0002 extends JavaWebServiceRule
@@ -62,7 +62,7 @@ public class JAXRPCRule0002 extends JavaWebServiceRule
 			{
 				JDTResolver resolver = engine_.getJDTResolver();
 				String qname = jdtClass.getFullyQualifiedName();
-				if (!resolver.isPrimitiveType(jdtClass) && !qname.startsWith("java.") && !qname.startsWith("javax."))
+				if (!resolver.isStandardType(qname))
 				{ 
 					if (!resolver.isConstructable(jdtClass) || resolver.isInterface(jdtClass) || resolver.isAbstract(jdtClass))
 					{

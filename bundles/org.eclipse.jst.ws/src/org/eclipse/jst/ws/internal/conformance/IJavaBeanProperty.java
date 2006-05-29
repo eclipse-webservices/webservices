@@ -14,6 +14,7 @@
 package org.eclipse.jst.ws.internal.conformance;
 
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 
 /**
  * @author cbrealey
@@ -84,4 +85,12 @@ public interface IJavaBeanProperty
 	 * if there is no indexed setter.
 	 */
 	public IMethod getIndexedSetter ();
+	
+	/**
+	 * Returns the type within which the getter and/or setter
+	 * of this property is declared, or null if none.
+	 * @return The type within which the getter and/or setter
+	 * of this property is declared.
+	 */
+	public IType getDeclaringType ();
 }

@@ -36,6 +36,9 @@ public class JAXRPCRuleSetFactory
 		JavaWebServiceRuleSet set = new JavaWebServiceRuleSet();
 		set.addRule(new JAXRPCRule0001());
 		set.addRule(new JAXRPCRule0002());
+		set.addRule(new JAXRPCRule0003());
+		set.addRule(new JAXRPCRule0005());
+		set.addRule(new JAXRPCRule0006());
 		return set;
 	}
 }

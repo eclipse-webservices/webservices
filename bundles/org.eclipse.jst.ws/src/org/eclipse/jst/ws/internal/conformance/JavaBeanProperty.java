@@ -14,6 +14,7 @@
 package org.eclipse.jst.ws.internal.conformance;
 
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 
 /**
  * @author cbrealey
@@ -130,5 +131,17 @@ public class JavaBeanProperty implements IJavaBeanProperty
 	public void setIndexedSetter ( IMethod indexedSetter )
 	{
 		indexedSetter_ = indexedSetter;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.ws.internal.conformance.IJavaBeanProperty#getDeclaringType()
+	 */
+	public IType getDeclaringType ()
+	{
+		IMethod method = getGetter();
+		if (method == null) method = getSetter();
+		if (method == null) method = getIndexedGetter();
+		if (method == null) method = getIndexedSetter();
+		return method != null ? method.getDeclaringType() : null;
 	}
 }

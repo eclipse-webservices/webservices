@@ -14,7 +14,6 @@
 package org.eclipse.jst.ws.internal.conformance;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +22,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
@@ -114,82 +114,82 @@ public class JDTResolver
 	}
 	
 	/**
-	 * Returns true if and only if the given JDT IType is
-	 * a type from the standard JDK, that is, if the given
-	 * type belongs under the "java" or "javax" packages.
-	 * @param jdtType
+	 * Returns true if and only if the given fully qualified
+	 * type name is a type from the standard JDK, that is,
+	 * if the given type name belongs under the "java" or
+	 * "javax" packages.
+	 * @param typeName The name of the type to check.
 	 * @return True if and only if the type is a non-primitive,
 	 * Java standard type.
-	 * @throws JavaModelException If the JDT model fails to
-	 * analyze the given type.
 	 */
-	public boolean isStandardType ( IType jdtType )
-	throws JavaModelException
+	public boolean isStandardType ( String typeName )
 	{
-		String qname = jdtType.getFullyQualifiedName();
-		return qname.startsWith("java.") || qname.startsWith("javax.");
+		return typeName.startsWith("java.") || typeName.startsWith("javax.");
 	}
 	
 	/**
-	 * Returns true if and only if the given JDT IType
-	 * is one of the Java primitive types supported by JAX-RPC.
-	 * @param jdtType The type to analyze.
-	 * @return True if and only if the type is a Java primitive
-	 * type supported by JAX-RPC.
-	 * @throws JavaModelException If the JDT model fails to
-	 * analyze the given type.
+	 * Returns true if and only if the given type name is a
+	 * Java primitive type.
+	 * @param typeName The name of the type to check.
+	 * @return True if and only if the type is a Java primitive type.
 	 */
-	public boolean isPrimitiveType ( IType jdtType )
-	throws JavaModelException
+	public boolean isPrimitiveType ( String typeName )
 	{
-		if (primitiveTypeSet_ == null)
+		for (int i=0; i<primitiveTypes_.length; i++)
 		{
-			primitiveTypeSet_ = new HashSet();
-			primitiveTypeSet_.addAll(java.util.Arrays.asList(primitiveTypes_));
+			if (primitiveTypes_[i].equals(typeName))
+			{
+				return true;
+			}
 		}
-		return primitiveTypeSet_.contains(jdtType.getFullyQualifiedName());
+		return false;
 	}
 	
 	/**
-	 * Returns true if and only if the given JDT IType
-	 * is one of the Java wrapper types supported by JAX-RPC. 
-	 * @param jdtType The type to analyze.
-	 * @return True if and only if the type is a Java wrapper
-	 * type supported by JAX-RPC.
-	 * @throws JavaModelException If the JDT model fails to
-	 * analyze the given type.
+	 * Returns true if and only if the given fully qualified
+	 * type name is a Java wrapper type.
+	 * @param typeName The name of the type to check.
+	 * @return True if and only if the type is a Java wrapper type.
 	 */
-	public boolean isWrapperType ( IType jdtType )
-	throws JavaModelException
+	public boolean isWrapperType ( String typeName )
 	{
-		if (wrapperTypeSet_ == null)
+		for (int i=0; i<wrapperTypes_.length; i++)
 		{
-			wrapperTypeSet_ = new HashSet();
-			wrapperTypeSet_.addAll(java.util.Arrays.asList(wrapperTypes_));
+			if (wrapperTypes_[i].equals(typeName))
+			{
+				return true;
+			}
 		}
-		return wrapperTypeSet_.contains(jdtType.getFullyQualifiedName());
+		return false;
 	}
-	
+		
 	/**
-	 * Returns true if and only if the given JDT IType
-	 * is one of the Java standard types supported by JAX-RPC. 
-	 * @param jdtType The type to analyze.
-	 * @return True if and only if the type is a Java standard
-	 * type supported by JAX-RPC.
-	 * @throws JavaModelException If the JDT model fails to
-	 * analyze the given type.
+	 * Returns true if and only if the given fully qualified
+	 * type name is a Java primitive or standard type supported
+	 * by the JAX-RPC specification.
+	 * @param typeName The name of the type to check.
+	 * @return True if and only if the type is a Java wrapper type.
 	 */
-	public boolean isSupportedType ( IType jdtType )
-	throws JavaModelException
+	public boolean isJAXRPCStandardType ( String typeName )
 	{
-		if (jaxrpcTypeSet_ == null)
+		for (int i=0; i<jaxrpcTypes_.length; i++)
 		{
-			jaxrpcTypeSet_ = new HashSet();
-			jaxrpcTypeSet_.addAll(java.util.Arrays.asList(jaxrpcTypes_));
+			if (jaxrpcTypes_[i].equals(typeName))
+			{
+				return true;
+			}
 		}
-		return jaxrpcTypeSet_.contains(jdtType.getFullyQualifiedName());
+		if (isWrapperType(typeName) && !"java.lang.Character".equals(typeName))
+		{
+			return true;
+		}
+		if (isPrimitiveType(typeName) && !"char".equals(typeName))
+		{
+			return true;
+		}
+		return false;
 	}
-	
+		
 	/**
 	 * Returns an array of zero or more JDT IType objects
 	 * for the public fields belonging to the given type
@@ -299,9 +299,28 @@ public class JDTResolver
 	public IType getFieldType ( IField jdtField )
 	throws JavaModelException
 	{
+		IJavaElement elem = jdtField.getAncestor(IJavaElement.TYPE);
+		IType ancestor = elem instanceof IType ? (IType)elem : null;
 		String signature = jdtField.getTypeSignature();
 		String typeName = getTypeNameFromSignature(signature);
-		return findType(typeName);
+		return findType(typeName,ancestor);
+	}
+	
+	/**
+	 * Returns the type name for the given field.
+	 * @param jdtField The field to analyze.
+	 * @return The field type name.
+	 * @throws JavaModelException If the JDT engine fails to
+	 * analyze the given field to satisfy this request.
+	 */
+	public String getFieldTypeName ( IField jdtField )
+	throws JavaModelException
+	{
+		IJavaElement elem = jdtField.getAncestor(IJavaElement.TYPE);
+		IType ancestor = elem instanceof IType ? (IType)elem : null;
+		String signature = jdtField.getTypeSignature();
+		String typeName = getTypeNameFromSignature(signature);
+		return resolveType(typeName,ancestor);
 	}
 	
 	/**
@@ -327,7 +346,41 @@ public class JDTResolver
 				IType[] parameters = getParameterTypes(method);
 				if (parameters.length > 0)
 				{
-					return parameters[0];
+					//
+					// It's the last parameter's type we want,
+					// for indexed or non-indexed setters.
+					//
+					return parameters[parameters.length-1];
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns the type name for the given bean property.
+	 * @param javaBeanProperty The bean property to analyze.
+	 * @return The property type name.
+	 * @throws JavaModelException If the JDT engine fails to
+	 * analyze the given bean property to satisfy this request.
+	 */
+	public String getPropertyTypeName ( IJavaBeanProperty javaBeanProperty )
+	throws JavaModelException
+	{
+		IMethod method = javaBeanProperty.getGetter();
+		if (method != null)
+		{
+			return getReturnTypeName(method);
+		}
+		else
+		{
+			method = javaBeanProperty.getSetter();
+			if (method != null)
+			{
+				String[] parameterTypeNames = getParameterTypeNames(method);
+				if (parameterTypeNames.length > 0)
+				{
+					return parameterTypeNames[0];
 				}
 			}
 		}
@@ -345,9 +398,29 @@ public class JDTResolver
 	public IType getReturnType ( IMethod jdtMethod )
 	throws JavaModelException
 	{
+		IJavaElement elem = jdtMethod.getAncestor(IJavaElement.TYPE);
+		IType ancestor = elem instanceof IType ? (IType)elem : null;
 		String signature = jdtMethod.getReturnType();
 		String typeName = getTypeNameFromSignature(signature);
-		return findType(typeName);
+		return findType(typeName,ancestor);
+	}
+	
+	/**
+	 * Returns the type name for the return type
+	 * of the given method, or null if the method is void.
+	 * @param jdtMethod The method to analyze.
+	 * @return The method return type name, or null if none.
+	 * @throws JavaModelException If the JDT engine fails to
+	 * analyze the given method to satisfy this request.
+	 */
+	public String getReturnTypeName ( IMethod jdtMethod )
+	throws JavaModelException
+	{
+		IJavaElement elem = jdtMethod.getAncestor(IJavaElement.TYPE);
+		IType ancestor = elem instanceof IType ? (IType)elem : null;
+		String signature = jdtMethod.getReturnType();
+		String typeName = getTypeNameFromSignature(signature);
+		return resolveType(typeName,ancestor);
 	}
 	
 	/**
@@ -361,14 +434,39 @@ public class JDTResolver
 	public IType[] getParameterTypes ( IMethod jdtMethod )
 	throws JavaModelException
 	{
+		IJavaElement elem = jdtMethod.getAncestor(IJavaElement.TYPE);
+		IType ancestor = elem instanceof IType ? (IType)elem : null;
 		String[] signatures = jdtMethod.getParameterTypes();
 		IType[] types = new IType[signatures.length];
 		for (int s=0; s<signatures.length; s++)
 		{
 			String typeName = getTypeNameFromSignature(signatures[s]);
-			types[s] = findType(typeName);
+			types[s] = findType(typeName,ancestor);
 		}
 		return types;
+	}
+	
+	/**
+	 * Returns an array of zero or more type names
+	 * for the parameters of the given method.
+	 * @param jdtMethod The method to analyze.
+	 * @return An array of zero or more parameter type names.
+	 * @throws JavaModelException If the JDT engine fails to
+	 * analyze the given method to satisfy this request.
+	 */
+	public String[] getParameterTypeNames ( IMethod jdtMethod )
+	throws JavaModelException
+	{
+		IJavaElement elem = jdtMethod.getAncestor(IJavaElement.TYPE);
+		IType ancestor = elem instanceof IType ? (IType)elem : null;
+		String[] signatures = jdtMethod.getParameterTypes();
+		String[] typeNames = new String[signatures.length];
+		for (int s=0; s<signatures.length; s++)
+		{
+			String typeName = getTypeNameFromSignature(signatures[s]);
+			typeNames[s] = resolveType(typeName,ancestor);
+		}
+		return typeNames;
 	}
 	
 	/**
@@ -382,14 +480,39 @@ public class JDTResolver
 	public IType[] getExceptionTypes ( IMethod jdtMethod )
 	throws JavaModelException
 	{
+		IJavaElement elem = jdtMethod.getAncestor(IJavaElement.TYPE);
+		IType ancestor = elem instanceof IType ? (IType)elem : null;
 		String[] signatures = jdtMethod.getExceptionTypes();
 		IType[] types = new IType[signatures.length];
 		for (int s=0; s<signatures.length; s++)
 		{
 			String typeName = getTypeNameFromSignature(signatures[s]);
-			types[s] = findType(typeName);
+			types[s] = findType(typeName,ancestor);
 		}
 		return types;
+	}
+	
+	/**
+	 * Returns an array of zero or more type names
+	 * for the exceptions thrown by the given method.
+	 * @param jdtMethod The method to analyze.
+	 * @return An array of zero or more exception type names.
+	 * @throws JavaModelException If the JDT engine fails to
+	 * analyze the given method to satisfy this request.
+	 */
+	public String[] getExceptionTypeNames ( IMethod jdtMethod )
+	throws JavaModelException
+	{
+		IJavaElement elem = jdtMethod.getAncestor(IJavaElement.TYPE);
+		IType ancestor = elem instanceof IType ? (IType)elem : null;
+		String[] signatures = jdtMethod.getExceptionTypes();
+		String[] typeNames = new String[signatures.length];
+		for (int s=0; s<signatures.length; s++)
+		{
+			String typeName = getTypeNameFromSignature(signatures[s]);
+			typeNames[s] = resolveType(typeName,ancestor);
+		}
+		return typeNames;
 	}
 	
 	/**
@@ -434,50 +557,87 @@ public class JDTResolver
 	}
 	
 	/**
-	 * Attempts to find a JDT IType object for the given
-	 * fully qualified type name.
+	 * Attempts to resolve an unresolved type name in the
+	 * context of the given ancestor type (ie. the type
+	 * acting as the context within which the type name
+	 * should be resolved).
 	 * @param typeName The qualified name of the type to find.
+	 * @param ancestor The type providing the context within
+	 * which to look up the type.
+	 * @return The qualified name, or the original type name
+	 * if it could not be resolved.
+	 */
+	public String resolveType ( String typeName, IType ancestor )
+	throws JavaModelException
+	{
+		System.out.println("Looking up "+typeName);
+		if (ancestor != null)
+		{
+			String[][] matches = ancestor.resolveType(typeName);
+			if (matches != null && matches.length > 0)
+			{
+				StringBuffer qname = new StringBuffer();
+				int n = matches[0].length;
+				for (int j=0; j<n-1; j++)
+				{
+					qname.append(matches[0][j]).append(".");
+				}
+				if (n >= 0)
+				{
+					qname.append(matches[0][n-1]);
+				}
+				System.out.println("Resolved "+typeName+" to "+qname+" within "+ancestor.toString());
+				return qname.toString();
+			}
+		}
+		return typeName;
+	}
+
+	/**
+	 * Attempts to find a JDT IType object for the given
+	 * resolved or unresolved type name in the context of
+	 * the given ancestor type (ie. the type acting as the
+	 * context within which the type name should be resolved).
+	 * @param typeName The qualified name of the type to find.
+	 * @param ancestor The type providing the context within
+	 * which to look up the type.
 	 * @return The IType object of the given qualified name,
 	 * or null if no type could be found in the workspace.
 	 */
-	public IType findType ( String typeName )
+	public IType findType ( String typeName, IType ancestor )
 	throws JavaModelException
 	{
+		System.out.println("Looking up "+typeName);
 		IType type = javaProject_.findType(typeName);
-		return type;
-/*
-		SearchEngine engine = new SearchEngine();
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] {javaProject_});
-		SearchPattern pattern = SearchPattern.createPattern(
-				"*"+typeName,
-				IJavaSearchConstants.CLASS_AND_INTERFACE,
-				IJavaSearchConstants.DECLARATIONS,
-				SearchPattern.R_PATTERN_MATCH
-				);
-		SearchParticipant[] participants = new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()};
-		final IType[] type = new IType[1];
-		SearchRequestor requestor = new SearchRequestor()
+		if (type == null && ancestor != null)
 		{
-			public void acceptSearchMatch ( SearchMatch match )
+			String[][] matches = ancestor.resolveType(typeName);
+			if (matches != null)
 			{
-				Object element = match.getElement();
-				System.out.println("Matched element "+element==null?"null":element.toString());
-				if (element != null && element instanceof IType)
+				int i=0;
+				while (type == null && i<matches.length)
 				{
-					type[0] = (IType)element;
+					StringBuffer qname = new StringBuffer();
+					int n = matches[i].length;
+					for (int j=0; j<n-1; j++)
+					{
+						qname.append(matches[i][j]).append(".");
+					}
+					if (n >= 0)
+					{
+						qname.append(matches[i][n-1]);
+					}
+					System.out.println("Resolved "+typeName+" to "+qname+" within "+ancestor.toString());
+					type = javaProject_.findType(qname.toString());
+					i++;
 				}
 			}
-		};
-		try
-		{
-			engine.search(pattern,participants,scope,requestor,monitor_);
 		}
-		catch (CoreException e)
+		if (type != null)
 		{
-			throw new JavaModelException(e);
+			System.out.println("Found type "+type.getElementName());
 		}
-		return type[0];
-*/
+		return type;
 	}
 
 	/**
@@ -532,16 +692,61 @@ public class JDTResolver
 	 */
 	public String getGetterName ( IMethod method )
 	{
-		String methodName = method.getElementName();
-		if (methodName.startsWith("get") && methodName.length() > 3)
+		try
 		{
-			//TODO Check signature. Must be "T getP()" or "T[] getP()" or "T getP(int)".
-			return methodName.substring(3,4).toLowerCase() + methodName.substring(4);
+			String methodName = method.getElementName();
+			if (methodName.startsWith("get") && methodName.length() > 3)
+			{
+				String signature = method.getSignature();
+				String returnTypeName = Signature.getReturnType(signature);
+				//
+				// Getters must not be void.
+				//
+				if (returnTypeName != null && returnTypeName != Signature.SIG_VOID)
+				{
+					String[] parameterSignatures = method.getParameterTypes();
+					//
+					// Non-indexed getters must have zero parameters.
+					//
+					if (parameterSignatures.length == 0)
+					{
+						return methodName.substring(3,4).toLowerCase() + methodName.substring(4);
+					}
+					//
+					// Indexed getters must have exactly one parameter of type "int".
+					//
+					else if (parameterSignatures.length == 1)
+					{
+						String indexTypeName = getTypeNameFromSignature(parameterSignatures[0]);
+						if (indexTypeName.equals("int"))
+						{
+							return methodName.substring(3,4).toLowerCase() + methodName.substring(4);
+						}
+					}
+				}
+			}
+			else if (methodName.startsWith("is") && methodName.length() > 2)
+			{
+				String signature = method.getSignature();
+				String returnTypeName = Signature.getReturnType(signature);
+				//
+				// "is" getters must be boolean.
+				//
+				if (Signature.SIG_BOOLEAN.equals(returnTypeName))
+				{
+					//
+					// "is" getters must have no parameters.
+					//
+					if (method.getParameterTypes().length == 0)
+					{
+						return methodName.substring(2,3).toLowerCase() + methodName.substring(3);
+					}
+				}
+			}
 		}
-		else if (methodName.startsWith("is") && methodName.length() > 3)
+		catch (JavaModelException e)
 		{
-			//TODO Check signature. Must be "boolean isP()".
-			return methodName.substring(2,3).toLowerCase() + methodName.substring(3);
+			return null;
 		}
 		return null;
 	}
@@ -555,11 +760,43 @@ public class JDTResolver
 	 */
 	public String getSetterName ( IMethod method )
 	{
-		String methodName = method.getElementName();
-		if (methodName.startsWith("set") && methodName.length() > 3)
+		try
 		{
-			//TODO Check signature. Must be "T getP()" or "T[] getP()" or "T getP(int)".
-			return methodName.substring(3,4).toLowerCase() + methodName.substring(4);
+			String methodName = method.getElementName();
+			if (methodName.startsWith("set") && methodName.length() > 3)
+			{
+				String signature = method.getSignature();
+				String returnTypeName = Signature.getReturnType(signature);
+				//
+				// Setters must be void.
+				//
+				if (Signature.SIG_VOID.equals(returnTypeName))
+				{
+					String[] parameterSignatures = method.getParameterTypes();
+					//
+					// Non-indexed setters must have exactly one parameter.
+					//
+					if (parameterSignatures.length == 1)
+					{
+						return methodName.substring(3,4).toLowerCase() + methodName.substring(4);
+					}
+					//
+					// Indexed setters must have exactly two parameters,
+					// the first of which must be "int".
+					//
+					else if (parameterSignatures.length == 2)
+					{
+						if (Signature.SIG_INT.equals(parameterSignatures[0]))
+						{
+							return methodName.substring(3,4).toLowerCase() + methodName.substring(4);
+						}
+					}
+				}
+			}
+		}
+		catch (JavaModelException e)
+		{
+			return null;
 		}
 		return null;
 	}
@@ -577,7 +814,6 @@ public class JDTResolver
 	/*
 	 * The set of Java wrapper types.
 	 */
-	private static HashSet wrapperTypeSet_ = null;
 	private static String[] wrapperTypes_ = {
 		"java.lang.Character",
 		"java.lang.Boolean",
@@ -592,7 +828,6 @@ public class JDTResolver
 	/*
 	 * The set of Java primitive types.
 	 */
-	private static HashSet primitiveTypeSet_ = null;
 	private static String[] primitiveTypes_ = {
 		"char",
 		"boolean",
@@ -605,9 +840,9 @@ public class JDTResolver
 	};
 
 	/*
-	 * The set of JAX-RPC supported Java standard types.
+	 * The set of JAX-RPC supported Java standard types,
+	 * excluding primitives and wrapper types.
 	 */
-	private static HashSet jaxrpcTypeSet_ = null;
 	private static String[] jaxrpcTypes_ = {
 		"boolean",
 		"byte",
@@ -616,6 +851,7 @@ public class JDTResolver
 		"long",
 		"float",
 		"double",
+		"java.lang.String",
 		"java.lang.Boolean",
 		"java.lang.Byte",
 		"java.lang.Short",
@@ -623,7 +859,6 @@ public class JDTResolver
 		"java.lang.Long",
 		"java.lang.Float",
 		"java.lang.Double",
-		"java.lang.String",
 		"java.util.Date",
 		"java.util.Calendar",
 		"java.math.BigInteger",

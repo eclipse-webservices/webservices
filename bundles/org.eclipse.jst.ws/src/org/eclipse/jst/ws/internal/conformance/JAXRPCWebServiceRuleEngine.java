@@ -59,22 +59,12 @@ public class JAXRPCWebServiceRuleEngine implements IJavaWebServiceRuleEngine
 		peanutTrail_ = new Stack();		
 		resolver_ = new JDTResolver(project,progressMonitor_);
 		IStatus status = null;
+		rules.init(this);
 		try
 		{
-			rules.init(this);
-			rules.visitClass(rootClass,peanutTrail_);
-			visited_.add(rootClass.getFullyQualifiedName());
-			push(rootClass);
-			IType[] superClasses = resolver_.getSuperClasses(rootClass);
-			IMethod[] methods = resolver_.getPublicMethods(rootClass,superClasses);
-			for (int m=0; m<methods.length; m++)
-			{
-				analyzeMethod(methods[m],rules);
-			}
-			pop();
+			analyzeServiceClass(rootClass,rules);
 			String inCaseOfFailureMessage = NLS.bind(WSPluginMessages.MSG_JAXRPC11_NOT_COMPLIANT,rootClass.getFullyQualifiedName());
 			status = rules.getResults(inCaseOfFailureMessage);
-
 		}
 		catch (JavaModelException e)
 		{
@@ -83,26 +73,41 @@ public class JAXRPCWebServiceRuleEngine implements IJavaWebServiceRuleEngine
 		return status;
 	}
 	
+	private void analyzeServiceClass ( IType type, JavaWebServiceRuleSet rules )
+	throws JavaModelException
+	{
+		rules.visitClass(type,peanutTrail_);
+		visited_.add(type.getFullyQualifiedName());
+		push(type);
+		try
+		{
+			IType[] superClasses = resolver_.getSuperClasses(type);
+			IMethod[] methods = resolver_.getPublicMethods(type,superClasses);
+			for (int m=0; m<methods.length; m++)
+			{
+				analyzeMethod(methods[m],rules);
+			}
+		}
+		finally
+		{
+			pop();
+		}
+	}
+	
 	private void analyzeMethod ( IMethod method, JavaWebServiceRuleSet rules )
 	throws JavaModelException
 	{
 		rules.visitMethod(method,peanutTrail_);
+		push(method);
 		try
 		{
-			push(method);
-			
 			IType returnType = resolver_.getReturnType(method);
-			if (returnType != null)
-			{
-				analyzeDataType(returnType,rules);
-			}
-
+			analyzeDataType(returnType,rules);
 			IType[] parameterTypes = resolver_.getParameterTypes(method);
 			for (int p=0; p<parameterTypes.length; p++)
 			{
 				analyzeDataType(parameterTypes[p],rules);
 			}
-
 			IType[] exceptionTypes = resolver_.getExceptionTypes(method);
 			for (int e=0; e<exceptionTypes.length; e++)
 			{
@@ -118,28 +123,19 @@ public class JAXRPCWebServiceRuleEngine implements IJavaWebServiceRuleEngine
 	private void analyzeDataType ( IType type, JavaWebServiceRuleSet rules )
 	throws JavaModelException
 	{
-		if (type != null && !visited_.contains(type.getFullyQualifiedName()))
+		if (type != null && !resolver_.isStandardType(type.getFullyQualifiedName()) && !visited_.contains(type.getFullyQualifiedName()))
 		{
-			rules.visitClass(type,peanutTrail_);
-			
-			if (resolver_.isPrimitiveType(type) || resolver_.isStandardType(type))
-			{
-				return;
-			}
-			
+			rules.visitClass(type,peanutTrail_);			
 			visited_.add(type.getFullyQualifiedName());
+			push(type);
 			try
-			{
-				push(type);
-				
+			{	
 				IType[] superClasses = resolver_.getSuperClasses(type);
-				
 				IField[] fields = resolver_.getPublicFields(type,superClasses);
 				for (int f=0; f<fields.length; f++)
 				{
 					analyzeField(fields[f],rules);
 				}
-				
 				IJavaBeanProperty[] properties = resolver_.getPublicProperties(type,superClasses);
 				for (int p=0; p<properties.length; p++)
 				{
@@ -159,9 +155,12 @@ public class JAXRPCWebServiceRuleEngine implements IJavaWebServiceRuleEngine
 		if (field != null)
 		{
 			rules.visitField(field,peanutTrail_);
+			push(field);
 			try
 			{
-				push(field);
+				//TODO: Get qualified name of the field type
+				//and determine if we need to build an IType
+				//for it and analyze it.
 				IType type = resolver_.getFieldType(field);
 				analyzeDataType(type,rules);
 			}
@@ -178,9 +177,9 @@ public class JAXRPCWebServiceRuleEngine implements IJavaWebServiceRuleEngine
 		if (property != null)
 		{
 			rules.visitProperty(property,peanutTrail_);
+			push(property);
 			try
 			{
-				push(property);
 				IType type = resolver_.getPropertyType(property);
 				analyzeDataType(type,rules);
 			}
@@ -194,21 +193,14 @@ public class JAXRPCWebServiceRuleEngine implements IJavaWebServiceRuleEngine
 	private void analyzeExceptionType ( IType type, JavaWebServiceRuleSet rules )
 	throws JavaModelException
 	{
-		if (type != null && !visited_.contains(type.getFullyQualifiedName()))
+		if (type != null && !resolver_.isStandardType(type.getFullyQualifiedName()) && !visited_.contains(type.getFullyQualifiedName()))
 		{
-			if (resolver_.isPrimitiveType(type) || resolver_.isStandardType(type))
-			{
-				return;
-			}
-
 			rules.visitException(type,peanutTrail_);
 			visited_.add(type.getFullyQualifiedName());
+			push(type);
 			try
-			{
-				push(type);
-				
+			{				
 				IType[] superClasses = resolver_.getSuperClasses(type);
-				
 				IJavaBeanProperty[] properties = resolver_.getPublicProperties(type,superClasses);
 				for (int p=0; p<properties.length; p++)
 				{
@@ -219,7 +211,6 @@ public class JAXRPCWebServiceRuleEngine implements IJavaWebServiceRuleEngine
 			{
 				pop();
 			}
-
 		}
 	}
 
