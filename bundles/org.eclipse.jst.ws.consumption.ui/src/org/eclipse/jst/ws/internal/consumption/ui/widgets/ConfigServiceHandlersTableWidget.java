@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060404 134913   sengpl@ca.ibm.com - Seng Phung-Lu       
  * 20060426   135614 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060529   143518 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -422,8 +423,8 @@ public class ConfigServiceHandlersTableWidget extends SimpleWidgetDataContributo
       }
     }
 
-    dialog.getShell().setSize(500, 200);
-
+    dialog.getShell().setSize(500, 230);
+    
     int result = dialog.open();
 
     if (result == Window.OK) {
