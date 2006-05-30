@@ -111,15 +111,16 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 	  }
 	  
 	  public void performDirectEdit(Point cursorLocation) {
-		  if (isReadOnly()) {
-			  return;
-		  }
+      if (hitTest(parameterType, cursorLocation) && !isReadOnly()) { 
+		    IParameter param = (IParameter) getModel();
 		  
-		  IParameter param = (IParameter) getModel();
-		  
-		  TypeReferenceDirectEditManager manager = new TypeReferenceDirectEditManager(param, this, parameterType);   
-		  simpleDirectEditPolicy.setDelegate(manager);
-		  manager.show();
+		    TypeReferenceDirectEditManager manager = new TypeReferenceDirectEditManager(param, this, parameterType);   
+		    simpleDirectEditPolicy.setDelegate(manager);
+		    manager.show();
+      }
+      else if (hitTest(parameterType, cursorLocation) && isReadOnly()) {
+        doOpenNewEditor();
+      }
 	  }
 	  
 	  public void activate() {
