@@ -12,6 +12,7 @@
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
+ * 20060530   144350 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.ant;
 
@@ -90,6 +91,13 @@ public class AntClientRootCommandFragment extends SequenceFragment{
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "TestService", ClientWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ResourceContext", ClientWizardWidgetOutputCommand.class);
       
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "DevelopClient", ClientWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "AssembleClient", ClientWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "DeployClient", ClientWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "StartClient", ClientWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ResourceContext", ClientRuntimeSelectionWidgetDefaultingCommand.class);
+
+      
       // Map ClientWizardWidgetOutputCommand command.
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ClientTypeRuntimeServer", ClientRuntimeSelectionWidgetDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "TestService", WSDLSelectionOutputCommand.class);
@@ -97,6 +105,13 @@ public class AntClientRootCommandFragment extends SequenceFragment{
       dataRegistry.addMapping(WSDLSelectionOutputCommand.class, "TestService", ClientRuntimeSelectionWidgetDefaultingCommand.class);           
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ResourceContext", ClientRuntimeSelectionWidgetDefaultingCommand.class);      
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ResourceContext", ClientExtensionDefaultingCommand.class);
+      
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "InstallClient", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "StartClient", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "DevelopClient", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "AssembleClient", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "DeployClient", ClientExtensionDefaultingCommand.class);
+      
       
       // Map ClientRuntimeSelectionWidgetDefaultingCommand command
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientExtensionDefaultingCommand.class);
@@ -145,6 +160,11 @@ public class AntClientRootCommandFragment extends SequenceFragment{
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientProjectEAR", PreClientDevelopCommand.class, "Ear", null );
       dataRegistry.addMapping( ClientWizardWidgetOutputCommand.class, "ResourceContext", PreClientDevelopCommand.class);
 	  dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "WsdlURI", PreClientDevelopCommand.class );
+	  
+	  dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "DevelopClient", PreClientDevelopCommand.class);
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "AssembleClient", PreClientDevelopCommand.class);
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "DeployClient", PreClientDevelopCommand.class );
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "StartClient", PreClientDevelopCommand.class, "StartService", null);      
 	  
       dataRegistry.addMapping( PreClientDevelopCommand.class, "WebService", ClientExtensionOutputCommand.class, "WebServiceClient", null );
 			

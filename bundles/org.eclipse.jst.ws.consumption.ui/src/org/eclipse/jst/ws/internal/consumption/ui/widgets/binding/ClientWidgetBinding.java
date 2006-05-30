@@ -20,6 +20,7 @@
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
+ * 20060530   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -346,11 +347,9 @@ public class ClientWidgetBinding implements CommandWidgetBinding
 	  // Setup the PreClientDevelopCommand.
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "DeployClient", PreClientDevelopCommand.class);
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "InstallClient", PreClientDevelopCommand.class);
-      
-      //Always start the client if it is installed.      
+           
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "DevelopClient", PreClientDevelopCommand.class);
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "AssembleClient", PreClientDevelopCommand.class);
-      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "DeployClient", PreClientDevelopCommand.class );
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "StartClient", PreClientDevelopCommand.class, "StartService", null);      
 
       

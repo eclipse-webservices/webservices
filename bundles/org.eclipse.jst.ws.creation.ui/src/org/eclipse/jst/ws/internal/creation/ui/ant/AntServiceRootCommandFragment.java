@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
+ * 20060530   144350 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.ant;
 
@@ -79,7 +80,11 @@ public class AntServiceRootCommandFragment extends SequenceFragment
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "GenerateProxy", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "GenerateProxy", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ResourceContext", ServerWizardWidgetOutputCommand.class);
-    	
+    
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "DevelopService", ServerWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "AssembleService", ServerWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "DeployService", ServerWizardWidgetOutputCommand.class);
+        	
     // Map ServerWizardWidgetOutputCommand.
     dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "ServiceTypeRuntimeServer", ObjectSelectionFragment.class, "TypeRuntimeServer", null);
     dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "ClientTypeRuntimeServer", ServerRuntimeSelectionWidgetDefaultingCommand.class);
@@ -87,6 +92,10 @@ public class AntServiceRootCommandFragment extends SequenceFragment
     dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "StartService", ServerExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "GenerateProxy", ServerRuntimeSelectionWidgetDefaultingCommand.class);
     
+    dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "DevelopService", ServerExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "AssembleService", ServerExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "DeployService", ServerExtensionDefaultingCommand.class);
+        
     //Map AntDefaultingFragment
     dataRegistry.addMapping(AntDefaultingOperation.class, "ServiceIdsFixed", ServerRuntimeSelectionWidgetDefaultingCommand.class);
     dataRegistry.addMapping(AntDefaultingOperation.class, "ClientIdsFixed", ServerRuntimeSelectionWidgetDefaultingCommand.class);
@@ -119,6 +128,11 @@ public class AntServiceRootCommandFragment extends SequenceFragment
     dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceJ2EEVersion", PreServiceDevelopCommand.class);
     dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServerProject", PreServiceDevelopCommand.class, "Module", null );
     dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServerProjectEAR", PreServiceDevelopCommand.class, "Ear", null );
+    
+    dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "DevelopService", PreServiceDevelopCommand.class);
+    dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "AssembleService", PreServiceDevelopCommand.class);
+    
+    
     
 	dataRegistry.addMapping( ObjectSelectionOutputCommand.class, "ObjectSelection", PreServiceDevelopCommand.class, "Selection", new SelectionTransformer() );
 	dataRegistry.addMapping( PreServiceDevelopCommand.class, "WebService", ServerExtensionOutputCommand.class );
