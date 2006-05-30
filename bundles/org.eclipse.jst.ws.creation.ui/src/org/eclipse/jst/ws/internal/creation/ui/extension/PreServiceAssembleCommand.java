@@ -12,6 +12,7 @@
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060330 128827   kathy@ca.ibm.com - Kathy Chan
  * 20060524   141925 kathy@ca.ibm.com - Kathy Chan
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -43,7 +44,7 @@ public class PreServiceAssembleCommand extends AbstractDataModelOperation
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
 	  IEnvironment environment = getEnvironment();
-	  IStatus status;
+	  IStatus status = Status.OK_STATUS;
 	  
 	  // For top down scenarios, merge the content of the skeleton files with the previous version stored.	  
 	  // The Web service extensions triggers the storing of the content of the old skeleton file by 
@@ -60,46 +61,49 @@ public class PreServiceAssembleCommand extends AbstractDataModelOperation
 				return status;
 			}			  
 	  }
-    	
-		// Check if EAR module is req'd, ie. !=null
-		if (earProject_==null)
-			return Status.OK_STATUS;
 	  
-	  
-        
-		//Create the service EAR module
-        
-        CreateFacetedProjectCommand command = new CreateFacetedProjectCommand();
-        command.setProjectName(earProject_);
-        command.setTemplateId(IJ2EEModuleConstants.JST_EAR_TEMPLATE);
-        
-        // RequiredFacetVersions is set to an empty array because we don't need to impose any additional constraints.
-        // We just want to create the highest level of EAR project that the selected server supports.
-        command.setRequiredFacetVersions(new RequiredFacetVersion[0]); 
-        
-        command.setServerFactoryId(webService_.getWebServiceInfo().getServerFactoryId());
-        command.setServerInstanceId(webService_.getWebServiceInfo().getServerInstanceId());
-        status = command.execute( monitor, adaptable );
-        if (status.getSeverity() == Status.ERROR)
-        {
-          environment.getStatusHandler().reportError( status );
-          return status;
-        }                
-		
-		//Associate the service module and service EAR
-		AssociateModuleWithEARCommand associateCommand = new AssociateModuleWithEARCommand();
-		associateCommand.setProject(project_);
-		associateCommand.setModule(module_);
-		associateCommand.setEARProject(earProject_);
-		associateCommand.setEar(ear_);
-    associateCommand.setEnvironment( environment );
-		status = associateCommand.execute( monitor, null );
-		if (status.getSeverity()==Status.ERROR)
-		{
-			environment.getStatusHandler().reportError(status);		  
-		}			
-		
-		return status;	  
+	  if (context_.getAssemble()) {
+
+		  // Check if EAR module is req'd, ie. !=null
+		  if (earProject_==null)
+			  return Status.OK_STATUS;
+
+
+
+		  //Create the service EAR module
+
+		  CreateFacetedProjectCommand command = new CreateFacetedProjectCommand();
+		  command.setProjectName(earProject_);
+		  command.setTemplateId(IJ2EEModuleConstants.JST_EAR_TEMPLATE);
+
+		  // RequiredFacetVersions is set to an empty array because we don't need to impose any additional constraints.
+		  // We just want to create the highest level of EAR project that the selected server supports.
+		  command.setRequiredFacetVersions(new RequiredFacetVersion[0]); 
+
+		  command.setServerFactoryId(webService_.getWebServiceInfo().getServerFactoryId());
+		  command.setServerInstanceId(webService_.getWebServiceInfo().getServerInstanceId());
+		  status = command.execute( monitor, adaptable );
+		  if (status.getSeverity() == Status.ERROR)
+		  {
+			  environment.getStatusHandler().reportError( status );
+			  return status;
+		  }                
+
+		  //Associate the service module and service EAR
+		  AssociateModuleWithEARCommand associateCommand = new AssociateModuleWithEARCommand();
+		  associateCommand.setProject(project_);
+		  associateCommand.setModule(module_);
+		  associateCommand.setEARProject(earProject_);
+		  associateCommand.setEar(ear_);
+		  associateCommand.setEnvironment( environment );
+		  status = associateCommand.execute( monitor, null );
+		  if (status.getSeverity()==Status.ERROR)
+		  {
+			  environment.getStatusHandler().reportError(status);		  
+		  }			
+
+	  }
+	  return status;	  
   }
 	
   public void setProject( String project )

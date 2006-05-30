@@ -16,6 +16,7 @@
  * 20060424   138052 kathy@ca.ibm.com - Kathy Chan
  * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060509   119296 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -322,6 +323,38 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   {
 	  clientWidget_.setClientGeneration(value);
   }
+  
+  public void setDevelopClient(boolean develop) {
+		clientWidget_.setDevelopClient( develop );
+	}
+
+	public boolean getDevelopClient() {		
+		return clientWidget_.getDevelopClient();
+	}
+	
+	public void setAssembleClient(boolean assemble) {
+		clientWidget_.setAssembleClient( assemble );
+	}
+
+	public boolean getAssembleClient() {		
+		return clientWidget_.getAssembleClient();
+	}
+	
+	public void setDeployClient(boolean deploy) {
+		clientWidget_.setDeployClient( deploy );
+	}
+
+	public boolean getDeployClient() {		
+		return clientWidget_.getDeployClient();
+	}
+	
+	public void setStartClient(Boolean start) {
+		clientWidget_.setStartClient( start );
+	}
+
+	public Boolean getStartClient() {	
+		return clientWidget_.getStartClient();
+	}
   
   public Boolean getMonitorService()
   {

@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -28,6 +29,10 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
   private boolean           runTestClient_;
   private boolean           publishService_;
   private boolean           generateProxy_;
+  private boolean           developService_;
+  private boolean           assembleService_;
+  private boolean           deployService_; 
+  
 	private ResourceContext   resourceContext_;
 	private IStructuredSelection selection_; 
     
@@ -138,4 +143,29 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
 	{
 	   return selection_;
 	}
+	
+	public boolean getDevelopService() {
+		return developService_;
+	}
+
+	public void setDevelopService(boolean developService) {
+		this.developService_ = developService;
+	}	
+	
+	public boolean getAssembleService() {
+		return assembleService_;
+	}
+
+	public void setAssembleService(boolean assembleService) {
+		this.assembleService_ = assembleService;
+	}
+
+	public boolean getDeployService() {
+		return deployService_;
+	}
+
+	public void setDeployService(boolean deployService) {
+		this.deployService_ = deployService;
+	}
+
 }

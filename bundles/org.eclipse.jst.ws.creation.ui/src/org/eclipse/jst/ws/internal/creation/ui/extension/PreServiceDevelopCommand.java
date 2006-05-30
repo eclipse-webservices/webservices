@@ -12,6 +12,7 @@
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060516   126965 kathy@ca.ibm.com - Kathy Chan
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -54,6 +55,8 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
   private String            j2eeLevel_;
   private ResourceContext   resourceContext_;
   
+  private boolean develop_;
+  private boolean assemble_;
   private boolean deploy_;
   private boolean install_;
   private boolean run_;
@@ -64,83 +67,84 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    IEnvironment environment = getEnvironment();
-	  
-    // Split up the project and module
-    int index = module_.indexOf("/");
-    if (index!=-1){
-      project_ = module_.substring(0,index);
-      module_ = module_.substring(index+1);
-    }
+	  IStatus status = Status.OK_STATUS;
+	  if (develop_) {
+		  IEnvironment environment = getEnvironment();
 
-    if (ear_!=null && ear_.length()>0)
-    {
-      int earIndex = ear_.indexOf("/");
-      if (earIndex!=-1) {
-        earProject_ = ear_.substring(0,earIndex);
-        ear_ = ear_.substring(earIndex+1);
-      }
-    }
-    
-    
-	  IWebServiceRuntime wsrt   = WebServiceRuntimeExtensionUtils2.getServiceRuntime( serviceRuntimeId_ );
-	  WebServiceInfo     wsInfo = new WebServiceInfo();
+		  // Split up the project and module
+		  int index = module_.indexOf("/");
+		  if (index!=-1){
+			  project_ = module_.substring(0,index);
+			  module_ = module_.substring(index+1);
+		  }
 
-	  wsInfo.setServerFactoryId( typeRuntimeServer_.getServerId() );
-      wsInfo.setServerInstanceId( typeRuntimeServer_.getServerInstanceId());
-	  wsInfo.setState( WebServiceState.UNKNOWN_LITERAL );
-	  wsInfo.setWebServiceRuntimeId( typeRuntimeServer_.getRuntimeId() );
-    
-		webService_  = wsrt.getWebService( wsInfo );
-	
-		//Set up the IContext
-		WebServiceScenario scenario = null;
-    int scenarioInt = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeRuntimeServer_.getTypeId());
-    if (scenarioInt == WebServiceScenario.BOTTOMUP)
-		{
-			scenario = WebServiceScenario.BOTTOMUP_LITERAL;
-      String impl = (String)(selection_.getSelection())[0];
-      wsInfo.setImplURL(impl);
-		}
-    else if (scenarioInt == WebServiceScenario.TOPDOWN)
-		{
-		  scenario = WebServiceScenario.TOPDOWN_LITERAL;
-      String wsdlURL = (String)(selection_.getSelection())[0];
-      wsInfo.setWsdlURL(wsdlURL);      
-		}
-	
-		context_     = new SimpleContext(true, true, deploy_, install_, run_, client_, test_, publish_, 
-																		scenario, 
-																		resourceContext_.isOverwriteFilesEnabled(),
-																		resourceContext_.isCreateFoldersEnabled(),
-																		resourceContext_.isCheckoutFilesEnabled());
+		  if (ear_!=null && ear_.length()>0)
+		  {
+			  int earIndex = ear_.indexOf("/");
+			  if (earIndex!=-1) {
+				  earProject_ = ear_.substring(0,earIndex);
+				  ear_ = ear_.substring(earIndex+1);
+			  }
+		  }
 
-        IStatus status = Status.OK_STATUS;
 
-        // Create the service module if needed.
-        IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(project_);
-        if (!project.exists())
-        {
-          boolean matches = WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportTemplate(serviceRuntimeId_, moduleType_);
-          if (matches)
-          {
-            RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_).getRequiredFacetVersions();
-            CreateFacetedProjectCommand command = new CreateFacetedProjectCommand();
-            command.setProjectName(project_);
-            command.setTemplateId(moduleType_);
-            command.setRequiredFacetVersions(rfv);
-            command.setServerFactoryId(typeRuntimeServer_.getServerId());
-            command.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
-            status = command.execute( monitor, adaptable );
-            if (status.getSeverity() == Status.ERROR)
-            {
-              environment.getStatusHandler().reportError( status );
-              return status;
-            }        
-          }            
-        }                    
+		  IWebServiceRuntime wsrt   = WebServiceRuntimeExtensionUtils2.getServiceRuntime( serviceRuntimeId_ );
+		  WebServiceInfo     wsInfo = new WebServiceInfo();
 
-	  return status;				
+		  wsInfo.setServerFactoryId( typeRuntimeServer_.getServerId() );
+		  wsInfo.setServerInstanceId( typeRuntimeServer_.getServerInstanceId());
+		  wsInfo.setState( WebServiceState.UNKNOWN_LITERAL );
+		  wsInfo.setWebServiceRuntimeId( typeRuntimeServer_.getRuntimeId() );
+
+		  webService_  = wsrt.getWebService( wsInfo );
+
+		  //Set up the IContext
+		  WebServiceScenario scenario = null;
+		  int scenarioInt = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeRuntimeServer_.getTypeId());
+		  if (scenarioInt == WebServiceScenario.BOTTOMUP)
+		  {
+			  scenario = WebServiceScenario.BOTTOMUP_LITERAL;
+			  String impl = (String)(selection_.getSelection())[0];
+			  wsInfo.setImplURL(impl);
+		  }
+		  else if (scenarioInt == WebServiceScenario.TOPDOWN)
+		  {
+			  scenario = WebServiceScenario.TOPDOWN_LITERAL;
+			  String wsdlURL = (String)(selection_.getSelection())[0];
+			  wsInfo.setWsdlURL(wsdlURL);      
+		  }
+
+		  context_     = new SimpleContext(develop_, assemble_, deploy_, install_, run_, client_, test_, publish_, 
+				  scenario, 
+				  resourceContext_.isOverwriteFilesEnabled(),
+				  resourceContext_.isCreateFoldersEnabled(),
+				  resourceContext_.isCheckoutFilesEnabled());
+
+		  // Create the service module if needed.
+		  IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(project_);
+		  if (!project.exists())
+		  {
+			  boolean matches = WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportTemplate(serviceRuntimeId_, moduleType_);
+			  if (matches)
+			  {
+				  RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_).getRequiredFacetVersions();
+				  CreateFacetedProjectCommand command = new CreateFacetedProjectCommand();
+				  command.setProjectName(project_);
+				  command.setTemplateId(moduleType_);
+				  command.setRequiredFacetVersions(rfv);
+				  command.setServerFactoryId(typeRuntimeServer_.getServerId());
+				  command.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
+				  status = command.execute( monitor, adaptable );
+				  if (status.getSeverity() == Status.ERROR)
+				  {
+					  environment.getStatusHandler().reportError( status );
+					  return status;
+				  }        
+			  }            
+		  }                    
+	  }
+	  return status;
+
   }
   
   public void setServiceTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )
@@ -228,10 +232,17 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 		install_ = installService;
 	}
 
-  public void setDeployService(boolean deployService)
-    {
-        deploy_ = deployService;
-    }
+	public void setDevelopService(boolean developService) {
+		develop_ = developService;
+	}	
+	
+	public void setAssembleService(boolean assembleService) {
+		assemble_ = assembleService;
+	}
+
+	public void setDeployService(boolean deployService) {
+		deploy_ = deployService;
+	}
   
 	public void setStartService(boolean startService)
 	{

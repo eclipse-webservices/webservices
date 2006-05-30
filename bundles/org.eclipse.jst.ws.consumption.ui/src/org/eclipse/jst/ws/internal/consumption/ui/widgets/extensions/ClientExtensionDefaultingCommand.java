@@ -12,6 +12,7 @@
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -40,11 +41,16 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
 {
   // ClientWizardWidget
+	
+	private boolean           developClient_;
+	private boolean           assembleClient_;
+	private boolean           deployClient_;
+	
   private TypeRuntimeServer    clientIds_;
   private String               clientRuntimeId_;
   private Boolean              testService;
-  private Boolean              deployClient;
   private Boolean              installClient;
+  private boolean              startClient;
   private boolean              runTestClient;
   private ResourceContext      resourceContext;
   
@@ -303,12 +309,28 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
     this.runTestClient = runTestClient;
   }
   
-  /**
-   * @return Returns the deployService.
-   */
-  public Boolean getDeployClient()
-  {
-    return deployClient;
+  public boolean getDevelopClient() {
+	  return developClient_;
+  }
+
+  public void setDevelopClient(boolean developClient) {
+	  this.developClient_ = developClient;
+  }	
+
+  public boolean getAssembleClient() {
+	  return assembleClient_;
+  }
+
+  public void setAssembleClient(boolean assembleClient) {
+	  this.assembleClient_ = assembleClient;
+  }
+
+  public boolean getDeployClient() {
+	  return deployClient_;
+  }
+
+  public void setDeployClient(boolean deployClient) {
+	  this.deployClient_ = deployClient;
   }
   
   /**
@@ -320,12 +342,29 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
   }
 
   /**
-   * @param testProxySelected
-   *            The testProxySelected to set.
+   * @param installClient
+   *            The installClient to set.
    */
   public void setInstallClient(Boolean installClient)
   {
     this.installClient = installClient;
+  }
+  
+  /**
+   * @return Returns the startClient.
+   */
+  public boolean getStartClient()
+  {
+    return startClient;
+  }
+
+  /**
+   * @param startClient
+   *            The startClient to set.
+   */
+  public void setStartClient(boolean startClient)
+  {
+    this.startClient = startClient;
   }
   
   /**
@@ -501,11 +540,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
     //when the user clicks Finish prior to page 3 of the wizard.
     
     IStatus status = Status.OK_STATUS;
-    
-    //default deployClient to true. It will get set to false later if there is no
-    //server type selected.
-    deployClient = Boolean.TRUE;
-    
+        
     String scenario = ConsumptionUIMessages.MSG_CLIENT_SUB;
 
     //Ensure server and runtime are non-null
@@ -543,7 +578,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
           // No server has been selected and the selected Web service runtime
           // does not
           // require a server. Set deploy, install, run, and test to false.
-          deployClient = Boolean.FALSE;
+          deployClient_ = false;
           installClient = Boolean.FALSE;
           testService = Boolean.FALSE;
         }

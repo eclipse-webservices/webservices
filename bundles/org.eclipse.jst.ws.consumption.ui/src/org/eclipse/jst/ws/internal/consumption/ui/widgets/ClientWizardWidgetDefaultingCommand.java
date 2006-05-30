@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -29,6 +30,25 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperation
 {    
+	private int clientGeneration_;
+	private boolean developClient_;
+	private boolean assembleClient_;
+	private boolean deployClient_;
+	private boolean startClient_;
+	private boolean testClient_;
+	private boolean clientOnly_ = false;
+	  
+	public ClientWizardWidgetDefaultingCommand() {
+	}
+	
+	
+	/**
+	 * @param clientOnly  Set to true for if called from ClientWidgetWizard
+	 */
+	public ClientWizardWidgetDefaultingCommand(boolean clientOnly) {
+		clientOnly_ = clientOnly;
+	}
+	
   public Boolean getTestService()
   {
     return new Boolean( getScenarioContext().getTestWebService() );
@@ -94,6 +114,42 @@ public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperat
 
   public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
   {
-    return Status.OK_STATUS;
+	  defaultClientScale();
+	  return Status.OK_STATUS;
   }
+  
+  protected void defaultClientScale() {
+	  clientGeneration_ = getScenarioContext().getGenerateClient();
+
+	  if (clientOnly_) {
+		  developClient_ = true;
+	  } else {
+		  developClient_ = clientGeneration_ <= ScenarioContext.WS_DEVELOP;
+	  }
+	  assembleClient_ = clientGeneration_ <= ScenarioContext.WS_ASSEMBLE;
+	  deployClient_ = clientGeneration_ <= ScenarioContext.WS_DEPLOY;
+	  startClient_ = clientGeneration_ <= ScenarioContext.WS_START;
+	  testClient_ = clientGeneration_ <= ScenarioContext.WS_TEST;
+  }
+  
+  public boolean getDevelopClient() {
+	  return developClient_;
+  }
+  
+  public boolean getAssembleClient() {
+	  return assembleClient_;
+  }
+  
+  public boolean getDeployClient() {
+	  return deployClient_;
+  }
+  
+  public boolean getStartClient() {
+	  return startClient_;
+  }
+  
+  public boolean getTestClient() {
+	  return testClient_;
+  }
+  
 }

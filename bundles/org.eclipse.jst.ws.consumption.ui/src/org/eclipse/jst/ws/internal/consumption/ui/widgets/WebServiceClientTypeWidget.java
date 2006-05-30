@@ -23,6 +23,7 @@
  * 20060426   137622 joan@ca.ibm.com - Joan Haggarty
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  * 20060504   138035 joan@ca.ibm.com - Joan Haggarty
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -116,6 +117,10 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   private Hyperlink hLinkClientEAR_;
   private ProjectSelectionDialog projectDialog_;
   
+  private boolean developClient_;
+  private boolean assembleClient_;
+  private boolean deployClient_;
+	
   private Boolean testClient_;
   private Boolean installClient_;
   private Boolean startClient_;    
@@ -488,6 +493,29 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	  return getClientGeneration() <= ScenarioContext.WS_DEVELOP;
   }
   
+  public boolean getDevelopClient() {
+	  return developClient_;
+  }
+
+  public void setDevelopClient(boolean developClient) {
+	  this.developClient_ = developClient;
+  }	
+
+  public boolean getAssembleClient() {
+	  return assembleClient_;
+  }
+
+  public void setAssembleClient(boolean assembleClient) {
+	  this.assembleClient_ = assembleClient;
+  }
+
+  public boolean getDeployClient() {
+	  return deployClient_;
+  }
+
+  public void setDeployClient(boolean deployClient) {
+	  this.deployClient_ = deployClient;
+  }
   
   public void setTestClient(Boolean value)
   {
@@ -707,16 +735,14 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   
   public void setClientGeneration(int value)
   {
-	  if (clientOnly_ && value == ScenarioContext.WS_NONE)
+	  if (clientOnly_ && value == ScenarioContext.WS_NONE) {
 		  value = ScenarioContext.WS_DEVELOP;
+		  setDevelopClient(true);
+	  }
 	
 	  clientScaleSetting_ = value;
 	  setClientScale(value);
-	  
-	  setTestClient(new Boolean(value <= ScenarioContext.WS_TEST));
-	  setInstallClient(new Boolean(value <= ScenarioContext.WS_INSTALL));
-	  setStartClient(new Boolean(value <= ScenarioContext.WS_START));
-	  
+	  	  
 	  setGraphics(value);
 	  showSummary(value < ScenarioContext.WS_NONE);
   }
@@ -873,6 +899,10 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 			    int oldClientScaleSetting = clientScaleSetting_;
 			    int selection = clientScale_.getSelection();
 			    setClientGeneration(selection);
+			    
+			    setDevelopClient(selection <= ScenarioContext.WS_DEVELOP);
+				setAssembleClient(selection <= ScenarioContext.WS_ASSEMBLE);
+				setDeployClient(selection <= ScenarioContext.WS_DEPLOY);
 			    setTestClient(new Boolean(selection <= ScenarioContext.WS_TEST));
 				setInstallClient(new Boolean(selection <= ScenarioContext.WS_INSTALL));
 				setStartClient(new Boolean(selection <= ScenarioContext.WS_START));

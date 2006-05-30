@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -27,7 +28,7 @@ public class PreClientDeployCommand extends AbstractDataModelOperation
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    if (context_.getDeploy())
+    if (context_ != null && context_.getDeploy())
     {
       //If and when there are framework specific deploy things to be done,
       //do them here.

@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -24,12 +25,17 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
+import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 
 public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefaultingCommand
 {    
   private TypeRuntimeServer typeRuntimeServer_;
   private IStructuredSelection initialSelection_;
+  private int serviceGeneration_;
+  private boolean developService_;
+  private boolean assembleService_;
+  private boolean deployService_;
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {    
@@ -52,6 +58,14 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
       typeRuntimeServer_.setTypeId(typeIds[0]);
     }
     
+    serviceGeneration_ = getScenarioContext().getGenerateWebService();
+    	
+	developService_ = serviceGeneration_ <= ScenarioContext.WS_DEVELOP;
+	assembleService_ = serviceGeneration_ <= ScenarioContext.WS_ASSEMBLE;
+	deployService_ = serviceGeneration_ <= ScenarioContext.WS_DEPLOY;
+    
+	defaultClientScale();
+	
     return Status.OK_STATUS;
   }
   
@@ -115,6 +129,11 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
     return new Boolean( getScenarioContext().getStartWebService() );  
   }
   
+  public Boolean getTestService()
+  {
+    return new Boolean( getScenarioContext().getTestWebService() );  
+  }
+  
   public Boolean getPublishService()
   {
     return new Boolean( getScenarioContext().getLaunchWebServiceExplorer() );
@@ -137,11 +156,24 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
   
   public int getServiceGeneration()
   {
-	  return getScenarioContext().getGenerateWebService();
+	  return serviceGeneration_;
   }
   
   public int getClientGeneration()
   {
 	  return getScenarioContext().getGenerateClient();
   }
+  
+  public boolean getDevelopService() {
+	  return developService_;
+  }
+  
+  public boolean getAssembleService() {
+	  return assembleService_;
+  }
+  
+  public boolean getDeployService() {
+	  return deployService_;
+  }
+  
 }

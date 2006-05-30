@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060417   136391 joan@ca.ibm.com - Joan Haggarty
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.preferences;
 
@@ -75,6 +76,7 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
       serverWidget_.setInstallClient( new Boolean(context.getInstallClient()) );
       serverWidget_.setStartService( new Boolean(context.getStartWebService()) );
       serverWidget_.setTestService( new Boolean(context.getTestWebService()) );
+      serverWidget_.setTestClient( new Boolean(context.getTestWebService()) );
       serverWidget_.setMonitorService(new Boolean(context.getMonitorWebService()));
       serverWidget_.setServiceGeneration(context.getGenerateWebService());  //jvh      
       serverWidget_.setClientGeneration(context.getGenerateClient());  //jvh
@@ -108,6 +110,7 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
       serverWidget_.setInstallClient( new Boolean(context.getInstallClientDefault()) );
       serverWidget_.setStartService( new Boolean(context.getStartWebServiceDefault()) );
       serverWidget_.setTestService( new Boolean(context.getTestWebServiceDefault()) );
+      serverWidget_.setTestClient( new Boolean(context.getTestWebServiceDefault()) );
       serverWidget_.setMonitorService(new Boolean(context.getMonitorWebServiceDefault()));
       serverWidget_.setServiceGeneration(context.getGenerateWebServiceDefault()); //jvh
       serverWidget_.setClientGeneration(context.getGenerateClientDefault()); //jvh

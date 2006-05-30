@@ -29,6 +29,7 @@
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  * 20060504   138035 joan@ca.ibm.com - Joan Haggarty
  * 20060524   142276 joan@ca.ibm.com - Joan Haggarty
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -139,6 +140,10 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	private WebServicesParser parser_;
 	private boolean needEar_;
 		 
+	private boolean developService_;
+	private boolean assembleService_;
+	private boolean deployService_;
+	
 	private IStructuredSelection objectSelection_;
 	private Boolean testService_;
 	private Boolean startService_;
@@ -578,6 +583,46 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	public Boolean getInstallClient() {		
 		return clientWidget_.getInstallClient();
 	}
+	
+	public void setStartClient(Boolean startClient) {
+		clientWidget_.setStartClient( startClient );
+	}
+
+	public Boolean getStartClient() {		
+		return clientWidget_.getStartClient();
+	}
+	
+	public void setTestClient(Boolean testClient) {
+		clientWidget_.setTestClient( testClient );
+	}
+
+	public Boolean getTestClient() {		
+		return clientWidget_.getTestClient();
+	}
+	
+	public void setDevelopClient(boolean develop) {
+		clientWidget_.setDevelopClient( develop );
+	}
+
+	public boolean getDevelopClient() {		
+		return clientWidget_.getDevelopClient();
+	}
+	
+	public void setAssembleClient(boolean assemble) {
+		clientWidget_.setAssembleClient( assemble );
+	}
+
+	public boolean getAssembleClient() {		
+		return clientWidget_.getAssembleClient();
+	}
+	
+	public void setDeployClient(boolean deploy) {
+		clientWidget_.setDeployClient( deploy );
+	}
+
+	public boolean getDeployClient() {		
+		return clientWidget_.getDeployClient();
+	}
 
 private void handleTypeChange()
 	{
@@ -708,9 +753,7 @@ private void handleTypeChange()
 	{
 		serviceScale_.setSelection(value);
 		setGraphics(value);
-		setTestService(new Boolean(value <= ScenarioContext.WS_TEST));
-		setInstallService(new Boolean(value <= ScenarioContext.WS_INSTALL));
-		setStartService(new Boolean(value <= ScenarioContext.WS_START));
+		
 		//enable client widget based on service scale setting
 		clientWidget_.enableClientSlider(value<=ScenarioContext.WS_START);
 		
@@ -722,6 +765,30 @@ private void handleTypeChange()
 	public int getServiceGeneration()
 	{
 		return serviceScale_.getSelection();
+	}
+	
+	public boolean getDevelopService() {
+		return developService_;
+	}
+
+	public void setDevelopService(boolean developService) {
+		this.developService_ = developService;
+	}	
+	
+	public boolean getAssembleService() {
+		return assembleService_;
+	}
+
+	public void setAssembleService(boolean assembleService) {
+		this.assembleService_ = assembleService;
+	}
+
+	public boolean getDeployService() {
+		return deployService_;
+	}
+
+	public void setDeployService(boolean deployService) {
+		this.deployService_ = deployService;
 	}
 	
 	public Boolean getStartService(){
@@ -1344,6 +1411,10 @@ private void handleTypeChange()
 			    Scale scale = (Scale)e.widget;
 				int selection = scale.getSelection();
 				
+				setDevelopService(selection <= ScenarioContext.WS_DEVELOP);
+				setAssembleService(selection <= ScenarioContext.WS_ASSEMBLE);
+				setDeployService(selection <= ScenarioContext.WS_DEPLOY);
+				
 				setTestService(new Boolean(selection <= ScenarioContext.WS_TEST));
 				setInstallService(new Boolean(selection <= ScenarioContext.WS_INSTALL));
 				setStartService(new Boolean(selection <= ScenarioContext.WS_START));
@@ -1443,6 +1514,8 @@ private void handleTypeChange()
 			       statusListener_.handleEvent(null); // validate the page
 			   }			   
 	    }
-	}	
+	}
+
+	
 }
 

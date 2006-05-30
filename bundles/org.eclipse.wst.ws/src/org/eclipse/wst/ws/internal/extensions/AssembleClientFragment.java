@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.extensions;
@@ -36,7 +39,7 @@ public class AssembleClientFragment extends AbstractClientFragment
   {
 	ICommandFactory factory = null;
 	
-	if( webServiceClient_ == null )
+	if( webServiceClient_ == null || context_ == null || !context_.getAssemble())
 	{
 	  factory = new SimpleCommandFactory( new Vector() );
 	}

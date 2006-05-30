@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -37,7 +38,10 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
 {
-  private Boolean              deployService;
+	private boolean           developService_;
+	private boolean           assembleService_;
+	private boolean           deployService_;
+
   private Boolean              installService;
   private Boolean              startService;
   private Boolean              testService;
@@ -175,12 +179,28 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
     return serviceIds_.getTypeId();
   }
 
-  /**
-   * @return Returns the deployService.
-   */
-  public Boolean getDeployService()
-  {
-    return deployService;
+  public boolean getDevelopService() {
+	  return developService_;
+  }
+
+  public void setDevelopService(boolean developService) {
+	  this.developService_ = developService;
+  }	
+
+  public boolean getAssembleService() {
+	  return assembleService_;
+  }
+
+  public void setAssembleService(boolean assembleService) {
+	  this.assembleService_ = assembleService;
+  }
+
+  public boolean getDeployService() {
+	  return deployService_;
+  }
+
+  public void setDeployService(boolean deployService) {
+	  this.deployService_ = deployService;
   }
   
   /**
@@ -309,11 +329,7 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
     //when the user clicks Finish prior to page 3 of the wizard.
     
     IStatus status = Status.OK_STATUS;
-    
-    //default deployService to true. It will get set to false later if there is no
-    //server type selected.
-    deployService = Boolean.TRUE;
-    
+       
     String scenario = ConsumptionUIMessages.MSG_SERVICE_SUB;
 
     //Ensure server and runtime are non-null
@@ -350,7 +366,7 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
         {
           // No server has been selected and the selected Web service runtime
           // does not require a server. Set deploy, install, run, and test to false.
-          deployService = Boolean.FALSE;
+          deployService_ = false;
           installService = Boolean.FALSE;
           startService = Boolean.FALSE;
           testService = Boolean.FALSE;

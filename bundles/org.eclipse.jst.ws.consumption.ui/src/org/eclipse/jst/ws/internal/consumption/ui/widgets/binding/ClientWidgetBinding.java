@@ -18,6 +18,7 @@
  * 20060425 138052    kathy@ca.ibm.com - Kathy Chan
  * 20060517 141880    pmoogk@ca.ibm.com - Peter Moogk
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -100,6 +101,10 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "MonitorService", ClientWizardWidget.class);
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ClientGeneration", ClientWizardWidget.class );
     dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ResourceContext", ClientWizardWidget.class );
+    dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "DevelopClient", ClientWizardWidget.class);
+    dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "AssembleClient", ClientWizardWidget.class);
+    dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "DeployClient", ClientWizardWidget.class);
+    dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "StartClient", ClientWizardWidget.class);
     
     // After ClientWizardWidget
     dataRegistry.addMapping(ClientWizardWidget.class, "ClientTypeRuntimeServer", ClientWizardWidgetOutputCommand.class);
@@ -108,6 +113,10 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientWizardWidget.class, "MonitorService", ClientWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "ResourceContext", ClientWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ClientWizardWidget.class, "ClientProjectName", ClientExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "DevelopClient", ClientWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "AssembleClient", ClientWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "DeployClient", ClientWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ClientWizardWidget.class, "StartClient", ClientWizardWidgetOutputCommand.class);
 
     //jvh added..
     dataRegistry.addMapping(ClientWizardWidget.class, "Project", ClientWizardWidgetOutputCommand.class);
@@ -234,7 +243,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
       
       //add( new SimpleFragment( new CheckForMissingFiles(), "" ) );
-      add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(), "" ) );
+      add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(true), "" ) );
       add( new SimpleFragment( new WSDLSelectionWidgetDefaultingCommand(), "")); //jvh moved this up
       add( new SimpleFragment( new ClientRuntimeSelectionWidgetDefaultingCommand(), ""));  //jvh moved this up      
       add( new SimpleFragment( "ClientWizardWidget" ) );
@@ -273,13 +282,24 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "RunTestClient", ClientWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "MonitorService", ClientWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ResourceContext", ClientWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "DevelopClient", ClientWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "AssembleClient", ClientWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "DeployClient", ClientWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "StartClient", ClientWizardWidgetOutputCommand.class);
+
       
       // Map ClientWizardWidgetOutputCommand command.
+      dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ResourceContext", ClientRuntimeSelectionWidgetDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientRuntimeSelectionWidgetDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "InstallClient", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "RunTestClient", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "TestService", ClientExtensionDefaultingCommand.class);      
-      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "TestService", ClientRuntimeSelectionWidgetDefaultingCommand.class);       
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "TestService", ClientRuntimeSelectionWidgetDefaultingCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "StartClient", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "DevelopClient", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "AssembleClient", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "DeployClient", ClientExtensionDefaultingCommand.class);
+
       
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ResourceContext", ClientRuntimeSelectionWidgetDefaultingCommand.class);      
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "ResourceContext", ClientExtensionDefaultingCommand.class);
@@ -330,7 +350,11 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "InstallClient", PreClientDevelopCommand.class);
       
       //Always start the client if it is installed.      
-      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "InstallClient", PreClientDevelopCommand.class, "StartService", null);                 
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "DevelopClient", PreClientDevelopCommand.class);
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "AssembleClient", PreClientDevelopCommand.class);
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "DeployClient", PreClientDevelopCommand.class );
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "StartClient", PreClientDevelopCommand.class, "StartService", null);      
+
       
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "TestService", PreClientDevelopCommand.class);      
       dataRegistry.addMapping( ClientWizardWidgetOutputCommand.class, "ResourceContext", PreClientDevelopCommand.class);						

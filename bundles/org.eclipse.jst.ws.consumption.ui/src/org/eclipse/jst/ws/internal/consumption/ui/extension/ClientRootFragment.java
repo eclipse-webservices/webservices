@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -93,6 +94,7 @@ public class ClientRootFragment extends SequenceFragment
   	registry.addMapping( PreClientDevelopCommand.class, "Ear", RunClientFragment.class );
     
     //Mappings from framework to framework commands
+  	registry.addMapping( PreClientDevelopCommand.class, "Context", PreClientAssembleCommand.class );
     registry.addMapping( PreClientDevelopCommand.class, "Context", PreClientDeployCommand.class );
     
     registry.addMapping( PreClientDevelopCommand.class, "WebService", PreClientAssembleCommand.class );

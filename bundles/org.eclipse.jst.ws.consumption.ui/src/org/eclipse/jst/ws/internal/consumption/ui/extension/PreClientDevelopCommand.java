@@ -12,6 +12,7 @@
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060516   126965 kathy@ca.ibm.com - Kathy Chan
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -54,75 +55,78 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
   private IWebServiceClient webServiceClient_;
   private String            j2eeLevel_;
   private ResourceContext   resourceContext_;
-  private boolean                       deploy_;
-  private boolean						test_;
-  private boolean						install_;
-  private boolean						run_;
+  private boolean           develop_;
+  private boolean           assemble_;
+  private boolean           deploy_;
+  private boolean			test_;
+  private boolean			install_;
+  private boolean			run_;
   private String            wsdlURI_;
   private Object            dataObject_;
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    IEnvironment environment = getEnvironment();
-    
-    // Split up the project and module
-    int index = module_.indexOf("/");
-    if (index!=-1){
-      project_ = module_.substring(0,index);
-      module_ = module_.substring(index+1);
-    }
+	  IStatus status = Status.OK_STATUS;
+	  
+	  if (develop_) {
+		  IEnvironment environment = getEnvironment();
 
-    if (ear_!=null && ear_.length()>0)
-    {
-      int earIndex = ear_.indexOf("/");
-      if (earIndex!=-1) {
-        earProject_ = ear_.substring(0,earIndex);
-        ear_ = ear_.substring(earIndex+1);
-      }
-    }    
-    
-    IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils2
-        .getClientRuntime(clientRuntimeId_);
-    WebServiceClientInfo wsInfo = new WebServiceClientInfo();
+		  // Split up the project and module
+		  int index = module_.indexOf("/");
+		  if (index!=-1){
+			  project_ = module_.substring(0,index);
+			  module_ = module_.substring(index+1);
+		  }
 
-    wsInfo.setServerFactoryId(typeRuntimeServer_.getServerId());
-    wsInfo.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
-    wsInfo.setState(WebServiceState.UNKNOWN_LITERAL);
-    wsInfo.setWebServiceRuntimeId(typeRuntimeServer_.getRuntimeId());
-    wsInfo.setWsdlURL(wsdlURI_);
-    
-    webServiceClient_ = wsrt.getWebServiceClient(wsInfo);
-    WebServiceScenario scenario = WebServiceScenario.CLIENT_LITERAL;
-    context_ = new SimpleContext(true, true, deploy_, install_, run_, true, test_,
-        false, scenario, resourceContext_.isOverwriteFilesEnabled(),
-        resourceContext_.isCreateFoldersEnabled(), resourceContext_
-            .isCheckoutFilesEnabled());
+		  if (ear_!=null && ear_.length()>0)
+		  {
+			  int earIndex = ear_.indexOf("/");
+			  if (earIndex!=-1) {
+				  earProject_ = ear_.substring(0,earIndex);
+				  ear_ = ear_.substring(earIndex+1);
+			  }
+		  }    
 
-    IStatus status = Status.OK_STATUS;
+		  IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils2
+		  .getClientRuntime(clientRuntimeId_);
+		  WebServiceClientInfo wsInfo = new WebServiceClientInfo();
 
-    // Create the client module if needed.
-    IProject project = ProjectUtilities.getProject(project_);
-    if (!project.exists())
-    {
-      boolean matches = WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportTemplate(clientRuntimeId_, moduleType_);
-      if (matches)
-      {  
-        RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRequiredFacetVersions();
-        CreateFacetedProjectCommand command = new CreateFacetedProjectCommand();
-        command.setProjectName(project_);
-        command.setTemplateId(moduleType_);
-        command.setRequiredFacetVersions(rfv);
-        command.setServerFactoryId(typeRuntimeServer_.getServerId());
-        command.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
-        status = command.execute( monitor, adaptable );
-        if (status.getSeverity() == Status.ERROR)
-        {
-          environment.getStatusHandler().reportError( status );
-          return status;
-        }        
-      }            
-    }        
+		  wsInfo.setServerFactoryId(typeRuntimeServer_.getServerId());
+		  wsInfo.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
+		  wsInfo.setState(WebServiceState.UNKNOWN_LITERAL);
+		  wsInfo.setWebServiceRuntimeId(typeRuntimeServer_.getRuntimeId());
+		  wsInfo.setWsdlURL(wsdlURI_);
 
+		  webServiceClient_ = wsrt.getWebServiceClient(wsInfo);
+		  WebServiceScenario scenario = WebServiceScenario.CLIENT_LITERAL;
+		  context_ = new SimpleContext(develop_, assemble_, deploy_, install_, run_, true, test_,
+				  false, scenario, resourceContext_.isOverwriteFilesEnabled(),
+				  resourceContext_.isCreateFoldersEnabled(), resourceContext_
+				  .isCheckoutFilesEnabled());
+
+		  // Create the client module if needed.
+		  IProject project = ProjectUtilities.getProject(project_);
+		  if (!project.exists())
+		  {
+			  boolean matches = WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportTemplate(clientRuntimeId_, moduleType_);
+			  if (matches)
+			  {  
+				  RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRequiredFacetVersions();
+				  CreateFacetedProjectCommand command = new CreateFacetedProjectCommand();
+				  command.setProjectName(project_);
+				  command.setTemplateId(moduleType_);
+				  command.setRequiredFacetVersions(rfv);
+				  command.setServerFactoryId(typeRuntimeServer_.getServerId());
+				  command.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
+				  status = command.execute( monitor, adaptable );
+				  if (status.getSeverity() == Status.ERROR)
+				  {
+					  environment.getStatusHandler().reportError( status );
+					  return status;
+				  }        
+			  }            
+		  }        
+	  }
     return status;
   }
   
@@ -206,6 +210,14 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
 	ear_ = ear;  
   }
   
+  public void setDevelopClient(boolean developClient) {
+	  develop_ = developClient;
+  }	
+
+  public void setAssembleClient(boolean assembleClient) {
+	  assemble_ = assembleClient;
+  }
+
   public void setDeployClient(boolean deployClient)
   {
       deploy_ = deployClient;

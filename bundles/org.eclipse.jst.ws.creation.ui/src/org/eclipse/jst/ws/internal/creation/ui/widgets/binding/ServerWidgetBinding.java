@@ -17,6 +17,7 @@
  * 20060417   136391 joan@ca.ibm.com - Joan Haggarty
  * 20060425   138052 kathy@ca.ibm.com - Kathy Chan
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -128,6 +129,18 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InstallClient", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ServerWizardWidget.class);    
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ResourceContext", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "DevelopService", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "AssembleService", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "DeployService", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InstallService", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "StartService", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "TestService", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "DevelopClient", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "AssembleClient", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "DeployClient", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "StartClient", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "TestClient", ServerWizardWidget.class);
+
     
     // After ServerWizardWidget
     dataRegistry.addMapping(ServerWizardWidget.class, "ServiceTypeRuntimeServer", ServerWizardWidgetOutputCommand.class );
@@ -142,6 +155,14 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerWizardWidget.class, "ClientTypeRuntimeServer", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "ResourceContext", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "ObjectSelection", ServerWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServerWizardWidget.class, "DevelopService", ServerWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServerWizardWidget.class, "AssembleService", ServerWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServerWizardWidget.class, "DeployService", ServerWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServerWizardWidget.class, "DevelopClient", ServerWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServerWizardWidget.class, "AssembleClient", ServerWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServerWizardWidget.class, "DeployClient", ServerWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServerWizardWidget.class, "StartClient", ServerWizardWidgetOutputCommand.class);
+    dataRegistry.addMapping(ServerWizardWidget.class, "TestClient", ServerWizardWidgetOutputCommand.class);
         
     // Before ObjectSelectionWidget    
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "TestService", ClientTestWidget.class );
@@ -341,9 +362,11 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "TestService", PreClientDevelopCommand.class);
       
       dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "ResourceContext", PreClientDevelopCommand.class);
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "DevelopClient", PreClientDevelopCommand.class);
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "AssembleClient", PreClientDevelopCommand.class);
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "DeployClient", PreClientDevelopCommand.class );
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "InstallClient", PreClientDevelopCommand.class );
-      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "InstallClient", PreClientDevelopCommand.class, "StartService", null);      
+      dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "StartClient", PreClientDevelopCommand.class, "StartService", null);      
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", PreClientDevelopCommand.class );
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientRuntimeId", PreClientDevelopCommand.class );      
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", PreClientDevelopCommand.class);
@@ -401,6 +424,15 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "GenerateProxy", ServerWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "DevelopService", ServerWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "AssembleService", ServerWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "DeployService", ServerWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "DevelopClient", ServerWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "AssembleClient", ServerWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "DeployClient", ServerWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InstallClient", ServerWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "StartClient", ServerWizardWidgetOutputCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "TestClient", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InstallService", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "StartService", ServerWizardWidgetOutputCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "TestService", ServerWizardWidgetOutputCommand.class);
@@ -425,6 +457,17 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "RunTestClient", ClientExtensionDefaultingCommand.class); 
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "GenerateProxy", ClientExtensionDefaultingCommand.class); // KSC
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ResourceContext", ClientExtensionDefaultingCommand.class);
+      
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "DevelopService", ServerExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "AssembleService", ServerExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "DeployService", ServerExtensionDefaultingCommand.class);
+      
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "InstallClient", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "StartClient", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "DevelopClient", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "AssembleClient", ClientExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "DeployClient", ClientExtensionDefaultingCommand.class);
+
       
       //Map ObjectSelectionOutputCommand to ServerRuntimeSelectionWidgetDefaultingCommand
       dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "ObjectSelection", ServerRuntimeSelectionWidgetDefaultingCommand.class, "InitialSelection", null);
@@ -479,6 +522,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", ClientTestDelegateCommand.class);
 	  
 	    // Setup the PreServiceDevelopCommand.
+      dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "DevelopService", PreServiceDevelopCommand.class);
+      dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "AssembleService", PreServiceDevelopCommand.class);
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "DeployService", PreServiceDevelopCommand.class);
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "InstallService", PreServiceDevelopCommand.class);
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "StartService", PreServiceDevelopCommand.class);      

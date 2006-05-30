@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -26,7 +27,7 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public class ClientWizardWidgetOutputCommand extends AbstractDataModelOperation
 {    
-  private boolean           testService_;
+  private boolean testService_;
   private boolean monitorService;
   private ResourceContext   resourceContext_;
   private TypeRuntimeServer clientIds_;
@@ -36,6 +37,11 @@ public class ClientWizardWidgetOutputCommand extends AbstractDataModelOperation
   private IProject project_;
   private String componentName_;
   private boolean runTestClient_;
+  private boolean developClient_;
+  private boolean assembleClient_;
+  private boolean deployClient_;
+  private boolean startClient_;
+  private boolean testClient_; 
   
   public boolean getTestService()
   {
@@ -67,6 +73,45 @@ public class ClientWizardWidgetOutputCommand extends AbstractDataModelOperation
 	return installClient_;  
   }
   
+  public boolean getDevelopClient() {
+		return developClient_;
+	}
+
+	public void setDevelopClient(boolean developClient) {
+		this.developClient_ = developClient;
+	}	
+	
+	public boolean getAssembleClient() {
+		return assembleClient_;
+	}
+
+	public void setAssembleClient(boolean assembleClient) {
+		this.assembleClient_ = assembleClient;
+	}
+	
+	public boolean getDeployClient() {
+		return deployClient_;
+	}
+
+	public void setDeployClient(boolean deployClient) {
+		this.deployClient_ = deployClient;
+	}
+	
+	public boolean getStartClient() {
+		return startClient_;
+	}
+
+	public void setStartClient(boolean startClient) {
+		this.startClient_ = startClient;
+	}
+	
+	public boolean getTestClient() {
+		return testClient_;
+	}
+
+	public void setTestClient(boolean testClient) {
+		this.testClient_ = testClient;
+	}
   public boolean getMonitorService()
   {
     return monitorService;

@@ -7,6 +7,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -33,7 +36,7 @@ public class PreClientInstallCommand extends AbstractDataModelOperation
   
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {	  
-	  if (context_.getInstall())
+	  if (context_ != null && context_.getInstall())
 	  {  
 	      IEnvironment environment = getEnvironment();
 	      

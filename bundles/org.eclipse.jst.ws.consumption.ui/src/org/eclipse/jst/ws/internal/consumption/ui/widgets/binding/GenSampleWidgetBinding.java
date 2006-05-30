@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -281,7 +282,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
   {
     public GenSampleRootCommandFragment()
     {
-      add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(), "" ) );
+      add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(true), "" ) );
       add( new SimpleFragment( new ClientWizardWidgetOutputCommand(), "" ));
       add( new SimpleFragment( new WSDLSelectionWidgetDefaultingCommand(), ""));
       add( new SimpleFragment( new ClientRuntimeSelectionWidgetDefaultingCommand(), ""));

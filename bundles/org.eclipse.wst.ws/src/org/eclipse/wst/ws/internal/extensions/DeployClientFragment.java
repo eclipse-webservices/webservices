@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.extensions;
@@ -39,7 +40,7 @@ public class DeployClientFragment extends AbstractClientFragment
   {
 	ICommandFactory factory = null;
 	
-	if( webServiceClient_ == null || !context_.getDeploy())
+	if( webServiceClient_ == null || context_ == null || !context_.getDeploy())
 	{
 	  factory = new SimpleCommandFactory( new Vector() );
 	}

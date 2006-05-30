@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.ant;
 
@@ -62,7 +63,7 @@ public class AntClientRootCommandFragment extends SequenceFragment{
   add( new SimpleFragment(new ListOptionsCommand(), ""));
   add (new SimpleFragment(new AntDefaultingOperation(), ""));
   
-  add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(), "" ) );
+  add( new SimpleFragment( new ClientWizardWidgetDefaultingCommand(true), "" ) );
   add( new SimpleFragment( new ClientWizardWidgetOutputCommand(), "" ));
   add( new SimpleFragment( new WSDLSelectionWidgetDefaultingCommand(), ""));
   

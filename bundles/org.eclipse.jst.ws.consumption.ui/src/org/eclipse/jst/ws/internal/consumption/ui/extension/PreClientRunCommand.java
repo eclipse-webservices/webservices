@@ -7,6 +7,10 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -30,7 +34,7 @@ public class PreClientRunCommand extends AbstractDataModelOperation
   {
 	  IStatus status = Status.OK_STATUS;
 	 
-	  if (context_.getRun())
+	  if (context_ != null && context_.getRun())
 	  {
 	    IEnvironment environment = getEnvironment();   
 	    
