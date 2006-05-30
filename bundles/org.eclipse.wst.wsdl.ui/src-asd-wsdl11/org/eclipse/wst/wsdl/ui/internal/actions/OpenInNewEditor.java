@@ -16,11 +16,11 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.ui.internal.util.OpenOnSelectionHelper;
-import org.eclipse.wst.xsd.ui.internal.common.util.Messages;
 
 public class OpenInNewEditor extends BaseSelectionAction
 {
@@ -29,7 +29,7 @@ public class OpenInNewEditor extends BaseSelectionAction
   public OpenInNewEditor(IWorkbenchPart part)
   {
     super(part);
-    setText(Messages._UI_ACTION_OPEN_IN_NEW_EDITOR); //$NON-NLS-1$
+    setText(Messages.getString("_UI_ACTION_OPEN_IN_NEW_EDITOR")); //$NON-NLS-1$
     setId(ID);
     setImageDescriptor(ASDEditorPlugin.getImageDescriptorFromPlugin("wsdl_file_obj.gif")); //$NON-NLS-1$
   }
