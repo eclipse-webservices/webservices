@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.ant;
 
@@ -18,7 +19,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.command.AntDefaultingOperation
 import org.eclipse.jst.ws.internal.consumption.ui.command.ListOptionsCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.selection.SelectionTransformer;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.CheckWSDLValidationCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionOutputCommand;
@@ -56,7 +56,6 @@ public class AntServiceRootCommandFragment extends SequenceFragment
     add( new SimpleFragment( new ServerWizardWidgetDefaultingCommand(), ""));
     add( new SimpleFragment( new ServerWizardWidgetOutputCommand(), "" ));    
     add( new ObjectSelectionFragment() );
-    add( new SimpleFragment( new CheckWSDLValidationCommand(), ""));
     add( new SimpleFragment( new ServerRuntimeSelectionWidgetDefaultingCommand(), ""));
     add( new SimpleFragment( new ServerExtensionDefaultingCommand(), ""));   
     add( new ServiceRootFragment() );

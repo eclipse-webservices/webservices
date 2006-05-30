@@ -18,6 +18,7 @@
  * 20060425   138052 kathy@ca.ibm.com - Kathy Chan
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -32,7 +33,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.selection.SelectionTransformer;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.CheckWSDLValidationCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishToPrivateUDDICommandFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.PublishWSWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ClientExtensionDefaultingCommand;
@@ -389,7 +389,6 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       add( new SimpleFragment( new ServerRuntimeSelectionWidgetDefaultingCommand(), ""));  
       add( new SimpleFragment( "ServerWizardWidget" ) );
       add( new SimpleFragment( new ServerWizardWidgetOutputCommand(), "" ));
-      add( new SimpleFragment( new CheckWSDLValidationCommand(), ""));
       add( new SimpleFragment( new ServerExtensionDefaultingCommand(), ""));
       add( new ServiceRootFragment() );
       add( new SimpleFragment( new ServerExtensionOutputCommand(), "" ));

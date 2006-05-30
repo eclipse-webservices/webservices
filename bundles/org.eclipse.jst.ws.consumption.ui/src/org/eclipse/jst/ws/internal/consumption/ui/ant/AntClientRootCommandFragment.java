@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.ant;
 
@@ -22,7 +23,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLS
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.CheckWSDLValidationCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionOutputCommand;
@@ -68,7 +68,6 @@ public class AntClientRootCommandFragment extends SequenceFragment{
   add( new SimpleFragment( new WSDLSelectionWidgetDefaultingCommand(), ""));
   
   add( new SimpleFragment( new WSDLSelectionOutputCommand(), ""));
-  add( new SimpleFragment( new CheckWSDLValidationCommand(), ""));
   add( new SimpleFragment( new ClientRuntimeSelectionWidgetDefaultingCommand(), ""));
   
   add( new SimpleFragment( new ClientExtensionDefaultingCommand( true ), ""));

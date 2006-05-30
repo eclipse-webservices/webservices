@@ -19,6 +19,7 @@
  * 20060517 141880    pmoogk@ca.ibm.com - Peter Moogk
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -30,7 +31,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLS
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.CheckWSDLValidationCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand;
@@ -249,8 +249,6 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       add( new SimpleFragment( "ClientWizardWidget" ) );
 	  //add( new TestCommandFactoryFragment() );
       add( new SimpleFragment( new ClientWizardWidgetOutputCommand(), "" ));
-
-      add( new SimpleFragment( new CheckWSDLValidationCommand(), ""));
       
       //add( new TestCommandFactoryFragment2() );
       //add( new SimpleFragment( new CheckForServiceProjectCommand(), ""));
