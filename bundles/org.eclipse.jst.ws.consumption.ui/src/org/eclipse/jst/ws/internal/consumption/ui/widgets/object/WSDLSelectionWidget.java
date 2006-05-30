@@ -13,6 +13,7 @@
  * 20060410   136011 kathy@ca.ibm.com - Kathy Chan
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  * 20060504   119296 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060525   142281 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -587,7 +588,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 	  }
   
   public Point getWidgetSize() {	
-	  return new Point( 550, 500 );  
+	  return new Point( 580, 580);  
   }
   
   public boolean validate(String s) {
@@ -618,6 +619,5 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 	    else
 	    	return false;
 	    
-  }  
- 
+  } 
 }
