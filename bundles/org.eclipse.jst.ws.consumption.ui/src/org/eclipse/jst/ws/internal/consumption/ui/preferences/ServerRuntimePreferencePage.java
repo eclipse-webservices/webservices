@@ -88,6 +88,7 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 
 	  initializeValues();
 	  startListening();
+	  applyDialogFont(page);
 	  return page;
 	}
 

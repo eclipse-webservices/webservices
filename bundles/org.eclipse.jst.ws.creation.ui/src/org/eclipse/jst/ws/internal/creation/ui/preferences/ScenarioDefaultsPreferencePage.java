@@ -54,6 +54,7 @@ public class ScenarioDefaultsPreferencePage extends PreferencePage implements IW
                                        } );      
 	  initializeValues();
 	  serverWidget_.disableNonPreferenceWidgets();
+	  applyDialogFont(page);
 	  return page;
 	}
 

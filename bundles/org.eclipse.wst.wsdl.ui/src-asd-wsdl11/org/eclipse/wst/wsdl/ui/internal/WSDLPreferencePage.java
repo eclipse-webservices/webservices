@@ -84,7 +84,9 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
        SoapPortOptionsPage.java
     */
 //    HttpPortOptionsPage.java    StringFieldEditor location = new StringFieldEditor("Defualt Location:", "Default Location:", editorGroup1); // Externalize
-//    addField(location);    
+//    addField(location); 
+	
+	applyDialogFont(parent);
     
   }
 }
