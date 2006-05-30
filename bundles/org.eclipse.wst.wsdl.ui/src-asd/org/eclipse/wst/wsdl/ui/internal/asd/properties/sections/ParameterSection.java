@@ -107,7 +107,9 @@ public class ParameterSection extends NameSection {
 			typeName = param.getComponentName();
 		}
 		
-		nameText.setText(name);
+		if (!nameText.isFocusControl()) {
+			nameText.setText(name);
+		}
 		
 		// Populate the type Combo
 		combo.removeAll();

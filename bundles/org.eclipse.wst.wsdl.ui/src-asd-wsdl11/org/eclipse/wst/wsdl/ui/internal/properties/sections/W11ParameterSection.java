@@ -127,8 +127,10 @@ public class W11ParameterSection extends ParameterSection {
 				name = param.getName();
 				elementName = param.getComponentName();
 			}
-			
-			nameText.setText(name);
+
+			if (!nameText.isFocusControl()) {
+				nameText.setText(name);
+			}
 			
 			// Populate the Combo
 			combo.removeAll();
