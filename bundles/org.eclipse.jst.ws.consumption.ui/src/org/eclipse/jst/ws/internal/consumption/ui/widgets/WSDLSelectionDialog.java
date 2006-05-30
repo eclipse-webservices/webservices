@@ -16,7 +16,6 @@ package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wst.command.internal.env.ui.widgets.AbstractSelectionDialog;
 import org.eclipse.wst.command.internal.env.ui.widgets.PageInfo;
