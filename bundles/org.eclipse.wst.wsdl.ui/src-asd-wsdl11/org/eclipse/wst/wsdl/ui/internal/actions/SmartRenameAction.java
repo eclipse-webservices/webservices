@@ -532,7 +532,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 	
 	private void renameXSDElement(Part part, String oldXSDName, String newXSDName) {
 		XSDElementDeclaration elementDeclaration = part.getElementDeclaration();
-		if (elementDeclaration != null && oldXSDName.equals(elementDeclaration.getName())) {
+		if (elementDeclaration != null && elementDeclaration.getName().startsWith(oldXSDName)) {
 			renameElementDeclarationHelper(elementDeclaration, oldXSDName, newXSDName);
 			
 			// Here we rename the element reference.
@@ -543,7 +543,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 	}
 	
 	private void renameElementDeclarationHelper(XSDElementDeclaration elementDeclaration, String oldXSDName, String newXSDName) {
-		if (elementDeclaration != null && elementDeclaration.getName().equals(oldXSDName)) {
+		if (elementDeclaration != null && elementDeclaration.getName().startsWith(oldXSDName)) {
 			elementDeclaration.setName(newXSDName);
 		}
 	}

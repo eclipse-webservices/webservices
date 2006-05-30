@@ -469,6 +469,7 @@ public static String getPartName(MessageReference messageRef) {
 	
 	List usedPartNames = new ArrayList();
 	if (message != null) {
+		partName = message.getQName().getLocalPart();
 		Iterator partIt = message.getEParts().iterator();
 		while (partIt.hasNext()) {
 			usedPartNames.add(((Part) partIt.next()).getName());

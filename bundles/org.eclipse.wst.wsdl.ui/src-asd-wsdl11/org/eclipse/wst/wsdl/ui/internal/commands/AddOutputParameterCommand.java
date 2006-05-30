@@ -41,7 +41,7 @@ public class AddOutputParameterCommand extends AddBaseParameterCommand {
 	
 	protected String getAnonymousXSDElementBaseName() {
 		if (newAnonymousXSDElementName == null) {
-			newAnonymousXSDElementName = operation.getName() + "Response";  //$NON-NLS-1$
+			newAnonymousXSDElementName = getWSDLPartName();
 		}
 		
 		return newAnonymousXSDElementName;
@@ -50,7 +50,7 @@ public class AddOutputParameterCommand extends AddBaseParameterCommand {
 	protected String getNewXSDElementBaseName() {
 		if (newXSDElementName == null) {
 //			newXSDElementName = "output"; //$NON-NLS-1$
-			newXSDElementName = operation.getName() + "Response"; //$NON-NLS-1$
+			newXSDElementName = getWSDLPartName();
 		}
 		
 		return newXSDElementName;
