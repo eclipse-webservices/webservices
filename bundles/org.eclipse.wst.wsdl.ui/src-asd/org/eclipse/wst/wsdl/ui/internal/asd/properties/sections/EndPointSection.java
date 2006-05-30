@@ -26,6 +26,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11EndPoint;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewBindingAction;
@@ -101,8 +102,12 @@ public class EndPointSection extends ReferenceSection {
 				addressText.setText(endPoint.getAddress());
 			}
 		}
-		if (endPoint.getBinding() != null) {
-			String protocolValue = endPoint.getBinding().getProtocol();
+		// TODO: rmah: We should not know about W11EndPoint.  We need to for
+		// now to get access to the getProtocol() method.  Eventually the
+		// getProtocol() method should be defined in the IEndPoint interface
+		// post 1.5...
+		if (endPoint instanceof W11EndPoint) {
+			String protocolValue = ((W11EndPoint) endPoint).getProtocol();
 			if (protocolValue.equals("")) { //$NON-NLS-1$
 				protocolValue = "----"; //$NON-NLS-1$
 			}

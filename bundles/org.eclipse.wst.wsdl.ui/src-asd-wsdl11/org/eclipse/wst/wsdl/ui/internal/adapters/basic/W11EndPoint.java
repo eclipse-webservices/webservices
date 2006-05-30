@@ -201,4 +201,27 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 	public ITreeElement getParent() {
 		return null;
 	}
+	
+	// TODO: rmah: This method should be defined in the IEndPoint Interface.
+	// Do this post 1.5....
+	public String getProtocol() {
+		String protocol = "";
+		
+		List list = getAddressExtensiblityElements();
+        if (list.size() > 0) {
+        	W11AddressExtensibilityElementAdapter addressEE = (W11AddressExtensibilityElementAdapter)list.get(0);
+        	Object target = addressEE.getTarget();
+        	
+        	// TODO: rmah: We should not using hardcoded strings as the returned Protocol.  We need to get
+        	// the protocol dynamically....
+        	if (target instanceof SOAPAddress) {
+        		protocol = "SOAP";
+        	}
+        	else if (target instanceof HTTPAddress) {
+        		protocol = "HTTP";
+        	}
+        }	
+
+		return protocol;
+	}
 }
