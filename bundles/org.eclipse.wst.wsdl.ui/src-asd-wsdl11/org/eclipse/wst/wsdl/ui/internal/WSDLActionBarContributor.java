@@ -77,6 +77,7 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
     }
 
     if (actionBars != null) {
+      // update menu bar and tool bar
       actionBars.updateActionBars();
     }
   }
@@ -136,6 +137,7 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
     {
       ((IWSDLToolbarAction)i.next()).setEditorPart(part);
     }
+    super.setActiveEditor(part);
   }
   
   protected void activateSourcePage(IEditorPart activeEditor, boolean state)
