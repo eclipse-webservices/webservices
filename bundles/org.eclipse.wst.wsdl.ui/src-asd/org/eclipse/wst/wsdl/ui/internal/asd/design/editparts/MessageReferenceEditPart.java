@@ -48,6 +48,7 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     rowLayout = new RowLayout();
     figure.setLayoutManager(rowLayout); 
     label = new Label();
+    label.setLabelAlignment(Label.LEFT);
     //label.setFont(DesignViewGraphicsConstants.mediumFont); 
     label.setBorder(new MarginBorder(2, 16, 2 ,10));
     figure.add(label);  

@@ -250,7 +250,7 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	    }
 	    else if (getKind() == KIND_FAULT)
 	    {
-	      return "Fault";
+	      return getName();
 	    }
 	    return "NoName";
 	}
