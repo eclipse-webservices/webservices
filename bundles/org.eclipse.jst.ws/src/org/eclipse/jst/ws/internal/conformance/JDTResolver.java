@@ -79,8 +79,7 @@ public class JDTResolver
 	public boolean isAbstract ( IType jdtType )
 	throws JavaModelException
 	{
-		return jdtType.isInterface();
-		//TODO: There's more to it than this.
+		return Flags.isAbstract(jdtType.getFlags());
 	}
 	
 	/**
@@ -570,7 +569,6 @@ public class JDTResolver
 	public String resolveType ( String typeName, IType ancestor )
 	throws JavaModelException
 	{
-		System.out.println("Looking up "+typeName);
 		if (ancestor != null)
 		{
 			String[][] matches = ancestor.resolveType(typeName);
@@ -586,7 +584,6 @@ public class JDTResolver
 				{
 					qname.append(matches[0][n-1]);
 				}
-				System.out.println("Resolved "+typeName+" to "+qname+" within "+ancestor.toString());
 				return qname.toString();
 			}
 		}
@@ -607,7 +604,6 @@ public class JDTResolver
 	public IType findType ( String typeName, IType ancestor )
 	throws JavaModelException
 	{
-		System.out.println("Looking up "+typeName);
 		IType type = javaProject_.findType(typeName);
 		if (type == null && ancestor != null)
 		{
@@ -627,15 +623,10 @@ public class JDTResolver
 					{
 						qname.append(matches[i][n-1]);
 					}
-					System.out.println("Resolved "+typeName+" to "+qname+" within "+ancestor.toString());
 					type = javaProject_.findType(qname.toString());
 					i++;
 				}
 			}
-		}
-		if (type != null)
-		{
-			System.out.println("Found type "+type.getElementName());
 		}
 		return type;
 	}

@@ -173,7 +173,6 @@ public class JavaWebServiceRuleSet
 	 */
 	public void visitClass ( IType jdtClass, Stack peanutTrail )
 	{
-//		System.out.println("Visiting Class "+jdtClass.getFullyQualifiedName());
 		Iterator i = enabledRules_.iterator();
 		while (i.hasNext())
 		{
@@ -189,7 +188,6 @@ public class JavaWebServiceRuleSet
 	 */
 	public void visitException ( IType jdtClass, Stack peanutTrail )
 	{
-//		System.out.println("Visiting Exception "+jdtClass.getFullyQualifiedName());
 		Iterator i = enabledRules_.iterator();
 		while (i.hasNext())
 		{
@@ -206,7 +204,6 @@ public class JavaWebServiceRuleSet
 	 */
 	public void visitField ( IField jdtField, Stack peanutTrail )
 	{
-//		System.out.println("Visiting Field "+jdtField.getElementName());
 		Iterator i = enabledRules_.iterator();
 		while (i.hasNext())
 		{
@@ -222,7 +219,6 @@ public class JavaWebServiceRuleSet
 	 */
 	public void visitProperty ( IJavaBeanProperty beanProperty, Stack peanutTrail )
 	{
-//		System.out.println("Visiting Property "+beanProperty.getName());
 		Iterator i = enabledRules_.iterator();
 		while (i.hasNext())
 		{
@@ -238,7 +234,6 @@ public class JavaWebServiceRuleSet
 	 */
 	public void visitMethod ( IMethod jdtMethod, Stack peanutTrail )
 	{
-//		System.out.println("Visiting Method "+jdtMethod.getElementName());
 		Iterator i = enabledRules_.iterator();
 		while (i.hasNext())
 		{
