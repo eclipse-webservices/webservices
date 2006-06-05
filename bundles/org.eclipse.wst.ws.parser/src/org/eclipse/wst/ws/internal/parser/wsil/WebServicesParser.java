@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060504   119296 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060517   142324 rsinha@ca.ibm.com - Rupam Kuehner
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.parser.wsil;
@@ -203,13 +204,17 @@ public class WebServicesParser
     // parse uri_ as a HTML document
     HTMLHeadHandler headHandler = new HTMLHeadHandler(theUri);
     byte[] head = headHandler.harvestHeadTags(b);
+    String byteEncoding = headHandler.getByteEncoding();
     SAXParserFactory factory = SAXParserFactory.newInstance();
     factory.setNamespaceAware(false);
     factory.setValidating(false);
     SAXParser parser = factory.newSAXParser();
     try
     {
-      parser.parse(new ByteArrayInputStream(head), headHandler);
+      ByteArrayInputStream bais = new ByteArrayInputStream(head);
+      InputStreamReader isr = new InputStreamReader(bais, byteEncoding);
+      InputSource is = new InputSource(isr);
+      parser.parse(is, headHandler);
     }
     catch (Throwable t)
     {

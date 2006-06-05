@@ -1,13 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
- ******************************************************************************/
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060517   142324 rsinha@ca.ibm.com - Rupam Kuehner
+ *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.parser.wsil;
 
@@ -27,7 +30,13 @@ public class HTMLHeadHandler extends DefaultHandler
   private final String HEAD_END_TAG = "</head>";
   private final String ROOT_START_TAG = "<root>";
   private final String ROOT_END_TAG = "</root>";
-  private final String UTF8 = "UTF-8";  
+  private final String UTF8 = "UTF-8";
+  
+  //HTML META tag information used to detect the charset.
+  private final String HTML_CONTENT = "content";
+  private final String HTTP_EQUIV = "http-equiv";
+  private final String HTTP_EQUIV_CONTENT_TYPE = "Content-Type";
+  private final String CHARSET = "charset";
   
   // WSIL tag information.
   private final String META = "meta";
@@ -46,6 +55,7 @@ public class HTMLHeadHandler extends DefaultHandler
   private String baseURI_;
   private Vector wsils_;
   private Vector discos_;
+  private String byteEncoding = UTF8; //Default to UTF-8.
   
   public HTMLHeadHandler(String baseURI)
   {
@@ -123,8 +133,20 @@ public class HTMLHeadHandler extends DefaultHandler
   {
   }
   
-  private void harvestTags(StringBuffer target,String document,String tag)
+  /**
+   * Appends the elements of the provided tag in the provided document to the provided StringBuffer.
+   * @param target
+   * @param document
+   * @param tag
+   * @param encoding
+   * @return boolean false if the value of the encoding parameter matched the detected charset or if no charset was detected.
+   * Returns true if a charset was detected and it did not equal the encoding parameter. If true is returned
+   * the harvesting of the tags would have stopped at the point the charset was detected. The caller
+   * should call this method again with the correct encoding.
+   */
+  private boolean harvestTags(StringBuffer target,String document,String tag, String encoding)
   {
+	boolean changeEncoding = false;
     int index = document.indexOf(START_TAG);
     int documentLength = document.length();
     int tagLength = tag.length();
@@ -136,19 +158,81 @@ public class HTMLHeadHandler extends DefaultHandler
         str = document.substring(index,document.indexOf(END_TAG,index+1)+1);
         target.append(str);
         index += str.length();
+        
+        //If tag is META and declares the charset, find out what it is
+        //and if it matches what was passed in. If it matches, continue 
+        //with the parsing and return false when complete. 
+        //If the detected charset is different from what was passed in, 
+        //- change byteEncoding to equal the detected charset.
+        //- stop parsing.
+        //- return true.
+        if (tag.equals(META))
+        {
+          int idxOfContent = str.indexOf(HTML_CONTENT);
+          int idxOfHTTPEQUIV = str.indexOf(HTTP_EQUIV);
+          if (idxOfHTTPEQUIV!= -1 && idxOfContent != -1)
+          {
+        	//Check if the http-equiv attribute is set to Content-Type.
+          	int idxOfHTTPEQUIVOpenQuote = str.indexOf("\"", idxOfHTTPEQUIV+1);
+        	int idxOfHTTPEQUIVClosingQuote = str.indexOf("\"", idxOfHTTPEQUIVOpenQuote+1);
+        	String hTTPEQUIVValueUntrimmed = str.substring(idxOfHTTPEQUIVOpenQuote+1, idxOfHTTPEQUIVClosingQuote);
+        	if (hTTPEQUIVValueUntrimmed.trim().equals(HTTP_EQUIV_CONTENT_TYPE))
+        	{
+        	  //This META tag contains the charset. Get the value of the content attribute
+        	  int idxOfOpenQuote = str.indexOf("\"", idxOfContent+1);
+        	  int idxOfClosingQuote = str.indexOf("\"", idxOfOpenQuote+1);
+        	  String contentValue = str.substring(idxOfOpenQuote+1, idxOfClosingQuote);
+        	  
+        	  //Get the charset
+        	  int idxOfCharSet = contentValue.indexOf(CHARSET);
+        	  int idxOfEquals = contentValue.indexOf("=", idxOfCharSet+CHARSET.length());
+        	  String detectedEncodingValueUntrimmed = contentValue.substring(idxOfEquals+1);
+        	  String detectedEncodingValue = detectedEncodingValueUntrimmed.trim();
+        	  if (!detectedEncodingValue.equals(encoding))
+        	  {
+        	    byteEncoding = detectedEncodingValue;
+        	    changeEncoding = true;
+        	    break;
+        	  }
+            }
+          }
+        }
       }
       else
         index++;
       index = document.indexOf(START_TAG,index);
     }
+    
+    return changeEncoding;
   }
   
+
+  /**
+   * If the provided byte array reperesents the contents of an HTML
+   * document, this method will return a byte array in which
+   * <ul>
+   * <li>the opening and closing HEAD tags are removed and replaced with 
+   * opening and closing <root> tags</li>
+   * <li>only the META and LINK elements are in the HTML document
+   * are included in the contents between the opening and closing
+   * <root> tags.
+   * </ul>
+   * This method will modify the value of the byteEncoding String
+   * attribute on this class if it is something other than
+   * UTF-8. Callers of this method should call getByteEncoding()
+   * after calling this method if they need to know the charset
+   * value used by this method to decode/endcode the byte array.
+   * @param b
+   * @return byte[]
+   */
   public byte[] harvestHeadTags(byte[] b)
   {
     String s;
+    
     try
     {
-      s = new String(b, UTF8);
+    	//Assume the default byte encoding of UTF-8 for now.
+    	s = new String(b, byteEncoding);
     }
     catch (UnsupportedEncodingException uee)
     {
@@ -162,10 +246,51 @@ public class HTMLHeadHandler extends DefaultHandler
     if (headStartIndex != -1 && headEndIndex != -1)
     {
       head = s.substring(headStartIndex, headEndIndex+HEAD_END_TAG.length());
-      harvestTags(sb,head,META);
-      harvestTags(sb,head,LINK);
+      boolean encodingChanged = harvestTags(sb,head,META, byteEncoding);
+      if (encodingChanged)
+      {
+    	  //The harvestTags method detected a different charset
+    	  //than the one that was passed in. Start from the beginning
+    	  //with the correct charset.
+    	    String s2;
+    	    try
+    	    {
+    	    	s2 = new String(b, byteEncoding);
+    	    }
+    	    catch (UnsupportedEncodingException uee)
+    	    {
+    	      s2 = new String(b);
+    	    }
+    	    String head2 = s2.toLowerCase();
+    	    int head2StartIndex = head2.indexOf(HEAD_START_TAG);
+    	    int head2EndIndex = head2.indexOf(HEAD_END_TAG);
+    	    sb = new StringBuffer();
+    	    sb.append(ROOT_START_TAG);
+    	    if (head2StartIndex != -1 && head2EndIndex != -1)
+    	    {
+    	      head2 = s2.substring(head2StartIndex, head2EndIndex+HEAD_END_TAG.length());
+    	      harvestTags(sb,head2,META, byteEncoding);
+    	      harvestTags(sb,head2,LINK,byteEncoding);
+    	    }    	  
+      }
+      else
+      {
+        harvestTags(sb,head,LINK,byteEncoding);
+      }
     }
     sb.append(ROOT_END_TAG);
-    return sb.toString().getBytes();
+    try
+    {
+    	return sb.toString().getBytes(byteEncoding);      
+    } catch (UnsupportedEncodingException uee)
+    {
+      return sb.toString().getBytes();
+    }    
+    
+  }
+  
+  public String getByteEncoding()
+  {
+	  return byteEncoding;
   }
 }
