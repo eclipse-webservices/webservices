@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060606   105045 mahutch@ca.ibm.com - Mark Hutchinson          
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
