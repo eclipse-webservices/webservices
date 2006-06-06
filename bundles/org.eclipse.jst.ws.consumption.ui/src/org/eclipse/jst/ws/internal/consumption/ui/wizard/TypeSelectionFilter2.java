@@ -129,10 +129,16 @@ public class TypeSelectionFilter2
               {
                 name = resource.getFullPath().toString();
               }
+              else if (initialObject instanceof String)
+              { //the initialObject could be a path name that is a string
+                //bug 105045
+            	name = (String)initialObject;
+              }
               else
               {
                 name = initialObject.getClass().getName();
-              }
+              }    
+              
               String[] extensions = {".wsdl", ".wsil", ".html", ".ServiceImpl", ".ServiceRefImpl", ".WSDLResourceImpl"};
               if (acceptsName(name, extensions))
               {
