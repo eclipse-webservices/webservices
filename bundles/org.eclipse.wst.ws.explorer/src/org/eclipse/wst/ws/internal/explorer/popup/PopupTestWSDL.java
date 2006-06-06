@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060606   105069 mahutch@ca.ibm.com - Mark Hutchinson          
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.popup;
 
