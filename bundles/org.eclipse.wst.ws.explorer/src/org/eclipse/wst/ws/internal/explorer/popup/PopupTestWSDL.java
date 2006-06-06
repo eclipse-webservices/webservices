@@ -29,6 +29,8 @@ import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin;
 import org.eclipse.wst.ws.internal.monitor.GetMonitorCommand;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 
 public class PopupTestWSDL extends Action implements IActionDelegate
 {
@@ -75,12 +77,14 @@ public class PopupTestWSDL extends Action implements IActionDelegate
             wsdlURL = wsdlFile.toString();
           }
         }
-        /* TODO: Move this up to org.eclipse.jst.ws.ui.
+       
         if (object instanceof ServiceImpl)
         {
-          ServiceImpl serviceImpl = (ServiceImpl)object;
-          wsdlURL = J2EEActionAdapterFactory.getWSDLURI(serviceImpl);
-        }
+          ServiceImpl serviceImpl = (ServiceImpl)object;          
+          Definition definition = serviceImpl.getEnclosingDefinition();        
+          wsdlURL = definition.getLocation();
+        }        
+        /* TODO: Move this up to org.eclipse.jst.ws.ui.
         if (object instanceof ServiceRef)
         {
           ServiceRef serviceImpl = (ServiceRef)object;
