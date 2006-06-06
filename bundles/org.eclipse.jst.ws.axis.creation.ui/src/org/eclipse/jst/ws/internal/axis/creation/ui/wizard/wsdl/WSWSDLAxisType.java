@@ -11,15 +11,14 @@
  * -------- -------- -----------------------------------------------------------
  * 20060321   128827 joan - Joan Haggarty, remove redundant wsdl URI, folder and file controls
  * 20060523   143284 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060605   145407 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.wizard.wsdl;
 
 
-import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsFragment;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.widgets.AxisMappingsWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDCodeGenOperation;
-import org.eclipse.jst.ws.internal.axis.creation.ui.task.BackupSkelImplCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidget;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidgetDefaultingCommand;
@@ -130,7 +129,7 @@ public class WSWSDLAxisType implements CommandWidgetBinding
     dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "ShowMapping", SkeletonConfigWidget.class);
 
     //  BackupSkelImplCommand     
-    dataRegistry.addMapping(SkeletonConfigWidget.class, "JavaWSDLParam", BackupSkelImplCommand.class);
+    dataRegistry.addMapping(SkeletonConfigWidget.class, "JavaWSDLParam", TDCodeGenOperation.class, "JavaWSDLParam", null);
     
     // AxisMappingsFragment
     dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "ShowMapping", AxisMappingsFragment.class);
@@ -141,8 +140,9 @@ public class WSWSDLAxisType implements CommandWidgetBinding
     dataRegistry.addMapping(SkeletonConfigWidget.class, "JavaWSDLParam", AxisMappingsWidget.class, "JavaParameter", null);
 
     // WSDL2JavaCommand
-    dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "JavaWSDLParam", WSDL2JavaCommand.class);
-    dataRegistry.addMapping(SkeletonConfigWidget.class, "JavaWSDLParam", WSDL2JavaCommand.class);
+    //dataRegistry.addMapping(SkeletonConfigWidgetDefaultingCommand.class, "JavaWSDLParam", WSDL2JavaCommand.class);
+    //dataRegistry.addMapping(SkeletonConfigWidget.class, "JavaWSDLParam", WSDL2JavaCommand.class);
+    dataRegistry.addMapping(SkeletonConfigWidget.class, "JavaWSDLParam", TDCodeGenOperation.class, "JavaWSDLParam", null);
     dataRegistry.addMapping(AxisMappingsWidget.class, "JavaParameter", TDCodeGenOperation.class, "JavaWSDLParam", null);
   }
   
