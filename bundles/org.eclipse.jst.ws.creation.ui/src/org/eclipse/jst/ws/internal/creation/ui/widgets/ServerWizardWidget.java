@@ -30,6 +30,7 @@
  * 20060504   138035 joan@ca.ibm.com - Joan Haggarty
  * 20060524   142276 joan@ca.ibm.com - Joan Haggarty
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20060605   145081 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -1509,6 +1510,7 @@ private void handleTypeChange()
 			   // call ObjectSelectionOutputCommand to carry out any transformation on the objectSelection
 			   if (result == Dialog.OK)
 			   {
+				   typedText_=false;
 				   callObjectTransformation(objectSelection, project, componentName);				   
 			       validationState_ = ValidationUtils.VALIDATE_ALL;
 			       statusListener_.handleEvent(null); // validate the page
