@@ -14,6 +14,7 @@
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  * 20060504   119296 pmoogk@ca.ibm.com - Peter Moogk
  * 20060525   142281 joan@ca.ibm.com - Joan Haggarty
+ * 20060607   144932 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -339,6 +340,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     	}
   	  
       setMessageSummary();
+	  msgViewer_.clearInput();
   	  validateWSDL(wsdlURI1, isRemote);
     }
     
