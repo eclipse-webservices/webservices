@@ -1,5 +1,0 @@
-a {text-decoration: none;}
-a:hover {text-decoration: underline;}
-td {font: icon; font-size: 12px; color: Black;}
-.unselectedTextAnchor {color:blue; background-color:document.backgroundColor}
-.selectedTextAnchor {color:white; background-color:navy}
