@@ -16,6 +16,7 @@
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060517   142327 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060524   130755 kathy@ca.ibm.com - Kathy Chan
+ * 20060607   144978 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
@@ -37,6 +38,7 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodComm
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.ModifyWSDLEndpointAddressCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.TDCodeGenOperation;
+import org.eclipse.jst.ws.internal.axis.creation.ui.command.ValidateWSIComplianceCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.BUConfigCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.task.TDConfigCommand;
@@ -100,6 +102,7 @@ public class AxisWebService extends AbstractWebService
 			// commands.add(new SimpleFragment( "BeanConfig" ));
 			// commands.add(new SimpleFragment( "AxisServiceBeanMapping" ));
 			commands.add(new BUConfigCommand());
+			commands.add(new ValidateWSIComplianceCommand());
 			commands.add(new WaitForAutoBuildCommand());
 			commands.add(new BUCodeGenOperation());
 //			commands.add(new RefreshProjectCommand());
@@ -200,6 +203,10 @@ public class AxisWebService extends AbstractWebService
 	    //CopyAxisJarCommand
 	    //registry.addMapping(BUAxisInputCommand.class, "ServerProject", CopyAxisJarCommand.class, "Project", new StringToIProjectTransformer());
 	    	    
+	    // ValidateWSIComplianceCommand
+	    registry.addMapping(DefaultsForServerJavaWSDLCommand.class, "JavaWSDLParam", ValidateWSIComplianceCommand.class);
+	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", ValidateWSIComplianceCommand.class, "ServiceProject", new StringToIProjectTransformer());
+	    
 	    //Java2WSDLCommand
 	    registry.addMapping(JavaToWSDLMethodCommand.class, "JavaWSDLParam", BUCodeGenOperation.class);
 	    

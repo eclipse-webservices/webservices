@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060607   144978 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.ui.wsi.properties;
 
@@ -219,7 +222,7 @@ public class WSICompliancePropertyPage extends PropertyPage implements Selection
   			wsi_ssbp_Types_.select(savedSSBPSetting_);
   			savedSSBPSetting_ = -1;
   		}
-  	} else { // set SSBP to follow AP setting if STOP or WARN chosen
+  	} else if (selection == 0 || selection == 1) { // set SSBP to follow AP setting if STOP or WARN chosen
   		if (savedSSBPSetting_ == -1)  {  // SSBP setting not saved
   			savedSSBPSetting_ = wsi_ssbp_Types_.getSelectionIndex();
   		}

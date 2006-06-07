@@ -9,8 +9,9 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
-# 20060329	 128827 kathy@ca.ibm.com  - Kathy Chan
-# 20060329	 124667 kathy@ca.ibm.com  - Kathy Chan
+ * 20060329	 128827 kathy@ca.ibm.com  - Kathy Chan
+ * 20060329	 124667 kathy@ca.ibm.com  - Kathy Chan
+ * 20060607  144978 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui;
 
@@ -58,6 +59,7 @@ public final class AxisCreationUIMessages extends NLS {
 	public static String MSG_ERROR_COMPILER_LEVEL_NOT_COMPATIBLE;
 	public static String MSG_ERROR_MODIFY_ENDPOINT;
 	public static String MSG_ERROR_SKELETON_MERGE;
+	public static String WSI_INCOMPLIANCE_RPC_ENCODED;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, AxisCreationUIMessages.class);
