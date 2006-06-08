@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060608   144500 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -15,6 +18,7 @@ import java.util.ListIterator;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -75,11 +79,20 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
 	IStatus status = Status.OK_STATUS;
   	
 	sampleProjectAndEarSetup(env);
-  	
+	IPath webcontentPath = J2EEUtils.getWebContentPath(clientIProject);
+	
     //Get the sample Folder ready
     StringBuffer sb = new StringBuffer();
-	
-	sb.append("/").append(sampleC).append("/").append(DEFAULT_WEB_MODULE_ROOT).append("/");
+    
+    if (webcontentPath != null)
+    {	
+    	String path = webcontentPath.toString();
+    	sb.append(path).append("/");
+    }
+    else
+    {	//then just use the default
+    	sb.append("/").append(sampleC).append("/").append(DEFAULT_WEB_MODULE_ROOT).append("/");
+    }
     folder = SAMPLE_DIR + getBean(); 
         
     sb.append(folder);
