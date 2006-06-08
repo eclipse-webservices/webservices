@@ -25,6 +25,7 @@
  * 20060504   138035 joan@ca.ibm.com - Joan Haggarty
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060607   144826 joan@ca.ibm.com - Joan Haggarty
+ * 20060607   144049 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -46,6 +47,11 @@ import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.accessibility.Accessible;
+import org.eclipse.swt.accessibility.AccessibleAdapter;
+import org.eclipse.swt.accessibility.AccessibleControlAdapter;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -235,6 +241,50 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	clientScale_.addSelectionListener(scaleSelectionListener);		
 	setClientScale(getClientGeneration());
 	clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
+	
+	Accessible accessibleScale = clientScale_.getAccessible();
+	accessibleScale.addAccessibleListener(new AccessibleAdapter(){
+		// return a string that describes what to do with the slider
+		//  this is read by the screen reader when the slider first gets focus
+		public void getName(AccessibleEvent e) {
+			e.result = ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT;			
+		}			
+	});
+	accessibleScale.addAccessibleControlListener(new AccessibleControlAdapter(){
+		// return a meaningful string when the screen reader
+		// attempts to get the value from the service scale
+		public void getValue(AccessibleControlEvent e) {
+			int selection = clientScale_.getSelection();
+			switch (selection) {
+			case 0:
+				e.result = ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_TEST;
+				break;
+			case 1:
+				e.result = ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_RUN;
+				break;
+			case 2:
+				e.result = ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_INSTALL;
+				break;
+			case 3:
+				e.result = ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_DEPLOY;
+				break;
+			case 4:
+				e.result = ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_ASSEMBLE;
+				break;
+			case 5:
+				e.result = ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_DEVELOP;
+				break;
+			case 6:				
+				if (clientOnly_)
+					e.result = ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT_ONLY;
+				else
+					e.result = ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT;				
+				break;
+			default:
+				break;
+			}								
+		}
+	});
 	
 	GridData layoutData1 = new GridData();
 	layoutData1.horizontalAlignment=SWT.BEGINNING;
