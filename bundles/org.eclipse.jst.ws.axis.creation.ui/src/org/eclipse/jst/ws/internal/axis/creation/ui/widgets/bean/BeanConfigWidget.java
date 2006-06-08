@@ -10,9 +10,11 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060321   128827 joan - Joan Haggarty, remove redundant wsdl URI, folder and file controls
+ * 20060524   128601 andyzhai@ca.ibm.com - Andy Zhai
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean;
 
+import java.io.File;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -230,7 +232,7 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
 	String wsdlLocation = wsdlPath.toString();
 	
 	javaParameter_.setOutputWsdlLocation(wsdlLocation);
-	javaParameter_.setInputWsdlLocation(wsdlLocation);
+	javaParameter_.setInputWsdlLocation(new File(wsdlLocation).toURI().toString());
 	
 	Hashtable methods = new Hashtable();
 

@@ -11,9 +11,12 @@
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
+ * 20060524   128601 andyzhai@ca.ibm.com - Andy Zhai
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
+
+import java.io.File;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -141,7 +144,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 		String wsdlLocation = ResourceUtils.getWorkspaceRoot().getFile(wsdlPath).getLocation().toString();
 
 		javaWSDLParam_.setOutputWsdlLocation(wsdlLocation);
-		javaWSDLParam_.setInputWsdlLocation(wsdlLocation);
+		javaWSDLParam_.setInputWsdlLocation(new File(wsdlLocation).toURI().toString());
 		WSDLServicePathname_ = wsdlPath.toString();
 
 		if (wsdlPath != null) {
