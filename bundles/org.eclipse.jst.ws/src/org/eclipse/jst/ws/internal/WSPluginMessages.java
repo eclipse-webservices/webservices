@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060420   132905 cbrealey@ca.ibm.com - Chris Brealey          
+ * 20060607   145604 cbrealey@ca.ibm.com - Chris Brealey          
  *******************************************************************************/
 package org.eclipse.jst.ws.internal;
 
@@ -28,6 +29,7 @@ public final class WSPluginMessages extends NLS {
 	public static String ANY_FILTER_DESC;
 	public static String ERROR_SELECTION_TRANSFORM;
 	public static String MSG_JAXRPC11_NOT_COMPLIANT;
+	public static String MSG_JAXRPC11_UNRESOLVED_CLASS;
 	public static String MSG_JAXRPC11_UNRESOLVED_TYPE;
 	public static String MSG_JAXRPC11_RULE_0001;
 	public static String MSG_JAXRPC11_RULE_0002;

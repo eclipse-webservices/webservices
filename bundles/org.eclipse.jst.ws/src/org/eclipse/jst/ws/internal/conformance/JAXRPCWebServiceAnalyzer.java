@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060419   132905 cbrealey@ca.ibm.com - Chris Brealey          
+ * 20060607   145604 cbrealey@ca.ibm.com - Chris Brealey          
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.conformance;
 
@@ -25,7 +26,9 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jst.ws.internal.WSPluginMessages;
 import org.eclipse.jst.ws.internal.conformance.rules.JAXRPCRuleSetFactory;
+import org.eclipse.osgi.util.NLS;
 
 /**
  * This class provides convenience methods for analyzing
@@ -106,7 +109,13 @@ public class JAXRPCWebServiceAnalyzer
 	{
 		try
 		{
-			return analyze(project,asType(rootClass,project),monitor);
+			IType rootType = asType(rootClass,project);
+			if (rootType == null)
+			{
+				String message = NLS.bind(WSPluginMessages.MSG_JAXRPC11_UNRESOLVED_CLASS,rootClass,project.getName());
+				return new Status(IStatus.ERROR,"org.eclipse.jst.ws",0,message,null);
+			}
+			return analyze(project,rootType,monitor);
 		}
 		catch (JavaModelException e)
 		{
@@ -136,7 +145,13 @@ public class JAXRPCWebServiceAnalyzer
 	{
 		try
 		{
-			return analyze(project,asType(rootClass),monitor);
+			IType rootType = asType(rootClass);
+			if (rootType == null)
+			{
+				String message = NLS.bind(WSPluginMessages.MSG_JAXRPC11_UNRESOLVED_CLASS,rootClass.getFullPath().toString(),project.getName());
+				return new Status(IStatus.ERROR,"org.eclipse.jst.ws",0,message,null);
+			}
+			return analyze(project,rootType,monitor);
 		}
 		catch (JavaModelException e)
 		{
