@@ -24,6 +24,7 @@
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  * 20060504   138035 joan@ca.ibm.com - Joan Haggarty
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20060607   144826 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -662,6 +663,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
      String iconImage = "";
      String topologyImage = "";
      
+	  //TODO: change the hard coded integers here to the the ScenarioContext.WS_xxx when in less critical phase
 	  switch (selection) {
 		case 0:
 			iconImage=ICON_SCALE_BG_0;
@@ -705,7 +707,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 			}
 			else
 			{
-				setClientScale(5); //"no selection" is not allowed...must develop service @ minimum
+				setClientScale(ScenarioContext.WS_DEVELOP); //"no selection" is not allowed...must develop client @ minimum
 				iconImage=ICON_SCALE_BG_5;
 				topologyImage=GRAPHIC_CLIENT_5;				
 				clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_DEVELOP);			
@@ -897,8 +899,11 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	{
 		public void widgetSelected(SelectionEvent e) {
 			    int oldClientScaleSetting = clientScaleSetting_;
-			    int selection = clientScale_.getSelection();
-			    setClientGeneration(selection);
+			    
+				setGraphics(((Scale)e.widget).getSelection());
+				
+				int selection = clientScale_.getSelection();
+				setClientGeneration(selection);
 			    
 			    setDevelopClient(selection <= ScenarioContext.WS_DEVELOP);
 				setAssembleClient(selection <= ScenarioContext.WS_ASSEMBLE);
@@ -907,7 +912,6 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 				setInstallClient(new Boolean(selection <= ScenarioContext.WS_INSTALL));
 				setStartClient(new Boolean(selection <= ScenarioContext.WS_START));
 				
-				setGraphics(selection);
 				//disable the client settings if the client scenario setting isn't at least "DEVELOP"
 				boolean generate = selection<=ScenarioContext.WS_DEVELOP;
 				showSummary(generate);

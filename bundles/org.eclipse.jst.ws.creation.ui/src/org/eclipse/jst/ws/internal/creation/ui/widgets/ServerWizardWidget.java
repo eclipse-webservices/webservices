@@ -31,6 +31,7 @@
  * 20060524   142276 joan@ca.ibm.com - Joan Haggarty
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060605   145081 joan@ca.ibm.com - Joan Haggarty
+ * 20060607   144826 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -1412,18 +1413,7 @@ private void handleTypeChange()
 			    Scale scale = (Scale)e.widget;
 				int selection = scale.getSelection();
 				
-				setDevelopService(selection <= ScenarioContext.WS_DEVELOP);
-				setAssembleService(selection <= ScenarioContext.WS_ASSEMBLE);
-				setDeployService(selection <= ScenarioContext.WS_DEPLOY);
-				
-				setTestService(new Boolean(selection <= ScenarioContext.WS_TEST));
-				setInstallService(new Boolean(selection <= ScenarioContext.WS_INSTALL));
-				setStartService(new Boolean(selection <= ScenarioContext.WS_START));
-				setAdvancedOptions(selection <= ScenarioContext.WS_INSTALL);
-				clientWidget_.enableClientSlider(selection <= ScenarioContext.WS_START);
-				
-				setGraphics(selection);
-				
+				//TODO: change the hard coded integers here to the the ScenarioContext.WS_xxx when in less critical phase
 				switch (selection) {
 				case 0:
 					serviceScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_TEST);
@@ -1442,12 +1432,26 @@ private void handleTypeChange()
 					break;
 				case 5:					
 				case 6:
-					scale.setSelection(5); //"no selection" is not allowed...must develop service @ minimum
+					serviceScale_.setSelection(ScenarioContext.WS_DEVELOP); //"no selection" is not allowed...must develop service @ minimum
 					serviceScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_DEVELOP);
+					//reset local selection so that setters get correct value below
+					selection = ScenarioContext.WS_DEVELOP;
 					break;
 				default:
 					break;
 				}
+				
+				setDevelopService(selection <= ScenarioContext.WS_DEVELOP);
+				setAssembleService(selection <= ScenarioContext.WS_ASSEMBLE);
+				setDeployService(selection <= ScenarioContext.WS_DEPLOY);
+				
+				setTestService(new Boolean(selection <= ScenarioContext.WS_TEST));
+				setInstallService(new Boolean(selection <= ScenarioContext.WS_INSTALL));
+				setStartService(new Boolean(selection <= ScenarioContext.WS_START));
+				setAdvancedOptions(selection <= ScenarioContext.WS_INSTALL);
+				clientWidget_.enableClientSlider(selection <= ScenarioContext.WS_START);
+				
+				setGraphics(selection);
 				
 				//Validate the page
 				validationState_ = (new ValidationUtils()).getNewValidationState(validationState_, ValidationUtils.VALIDATE_SCALE_CHANGES);
