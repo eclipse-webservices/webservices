@@ -19,6 +19,8 @@
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
+ * 20060608   145529 kathy@ca.ibm.com - Kathy Chan
+ * 20060609    86421 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -242,7 +244,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientTestWidget.class, "TestFacility",ClientTestDelegateCommand.class);
     dataRegistry.addMapping(ClientTestWidget.class, "Folder",ClientTestDelegateCommand.class);
     dataRegistry.addMapping(ClientTestWidget.class, "JspFolder",ClientTestDelegateCommand.class);
-    dataRegistry.addMapping(ClientTestWidget.class, "RunClientTest",ClientTestDelegateCommand.class);
+    dataRegistry.addMapping(ClientTestWidget.class, "RunTestClient",ClientTestDelegateCommand.class);
     dataRegistry.addMapping(ClientTestWidget.class, "Methods",ClientTestDelegateCommand.class);
     dataRegistry.addMapping(ClientTestWidget.class, "TestService",FinishTestFragment.class);
     dataRegistry.addMapping(ClientTestWidget.class, "TestID",FinishTestFragment.class);
@@ -561,6 +563,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", ClientTestFragment.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "RunTestClient",ClientTestDelegateCommand.class); 
       
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "RunTestClient", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProject", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ServerExtensionOutputCommand.class, "WsdlURI", ClientTestDelegateCommand.class);
            
