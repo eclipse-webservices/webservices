@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20060608   145529 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -349,6 +350,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ServiceServerInstanceId", FinishDefaultCommand.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServer", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "WsdlURI", ClientTestDelegateCommand.class);
+      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "RunTestClient", ClientTestDelegateCommand.class);
       
 	  dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", InitializeProxyCommand.class );
       dataRegistry.addMapping( ClientExtensionDefaultingCommand.class, "ClientJ2EEVersion", InitializeProxyCommand.class);

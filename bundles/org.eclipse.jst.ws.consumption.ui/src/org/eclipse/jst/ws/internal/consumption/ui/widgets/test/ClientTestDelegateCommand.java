@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20060608   145529 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
@@ -90,11 +91,12 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
 	if(status.getSeverity() == Status.ERROR){
 	  return status;	
 	}
-	if(runTestClient){
-	  status = commandFactoryExecution(iwst.launch(testInfo),env, monitor );
-	  if(status.getSeverity() == Status.ERROR){
-	    return status;	
-	  }
+	
+	testInfo.setRunTestClient(runTestClient);
+	
+	status = commandFactoryExecution(iwst.launch(testInfo),env, monitor );
+	if(status.getSeverity() == Status.ERROR){
+		return status;	
 	}
     return status;
   }
