@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060612   142290 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.util;
@@ -20,7 +23,7 @@ public class Validator
 
   public static final boolean validateURL(String input)
   {
-    return ((input != null) && (input.indexOf("://") != -1));
+	  return (input != null && input.matches("[a-zA-Z\\+\\-\\.]++:.*"));
   }
   
   public static final boolean validateInteger(String input)
