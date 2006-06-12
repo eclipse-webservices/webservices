@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060612   145433 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
@@ -58,6 +61,7 @@ public class ResultFileAttributeGenerator extends ResultFileHelp2Generator
   public IStatus visit (Object object)
   {
      AttributeElementType attributeElementType = (AttributeElementType)object;
+     if(attributeElementType.getSetterMethod() == null) return Status.OK_STATUS;
      BasicElement element = (BasicElement)object;
      if(attributeElementType.getTypeElement().isSimple() || TypeFactory.recognizedBean(attributeElementType.getTypeElement().getName())){      
         //start the codegen
@@ -78,7 +82,6 @@ public class ResultFileAttributeGenerator extends ResultFileHelp2Generator
      typeVisitor.run(attributeElementType,resultFileTypeGenerator);
      setNumberFactory(resultFileTypeGenerator.getNumberFactory());
      Vector setterInputs = resultFileTypeGenerator.getResidentVector(); 
-     if(attributeElementType.getSetterMethod() == null) return Status.OK_STATUS; 
      putResidentVector(attributeElementType.getSetterSignature((String)setterInputs.firstElement()));
      
      return Status.OK_STATUS;

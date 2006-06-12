@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060612   145433 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
@@ -42,6 +45,7 @@ public class InputFileTypeGenerator extends InputFileHelp2Generator
   private boolean fStateLessBean;
   private Vector fGetters;
   private Vector fTypes;
+  private boolean fWrite = true;
 
   /**
   * Constructor.
@@ -165,6 +169,7 @@ public class InputFileTypeGenerator extends InputFileHelp2Generator
      if (element instanceof BeanElement ){
         BeanElement bean = (BeanElement)element;
         if (bean.isStateLess()) fStateLessBean = true;
+        if (bean.getAttrib() == BeanElement.READONLY) fWrite = false;
      }
 
 
@@ -191,17 +196,21 @@ public class InputFileTypeGenerator extends InputFileHelp2Generator
      if(getReturnParam() &&  element.getOwningElement() instanceof AttributeElementType &&(((AttributeElementType)element.getOwningElement()).getGetterMethod() == null) ) return Status.OK_STATUS;
 
      //Code gen for all elements
-     fbuffer.append("<TR>" + StringUtils.NEWLINE);
-     for (int i = 0; i < fCurrentLevel;i++){
-        fbuffer.append("<TD WIDTH=\"5%\"></TD>" + StringUtils.NEWLINE);
+     if(fWrite){
+       fbuffer.append("<TR>" + StringUtils.NEWLINE);
+       for (int i = 0; i < fCurrentLevel;i++){
+          fbuffer.append("<TD WIDTH=\"5%\"></TD>" + StringUtils.NEWLINE);
+       }
+       fbuffer.append("<TD COLSPAN=\"" + fColspan + "\" ALIGN=\"LEFT\">" + element.getOwningElement().getName() + ":</TD>" + StringUtils.NEWLINE);   
      }
-     fbuffer.append("<TD COLSPAN=\"" + fColspan + "\" ALIGN=\"LEFT\">" + element.getOwningElement().getName() + ":</TD>" + StringUtils.NEWLINE);   
      if(fIsSimple || TypeFactory.recognizedBean(element.getName()) 
                 || (getReturnParam() && fStateLessBean) 
                 || (getReturnParam() && TypeFactory.isRecognizedReturnType(element.getTypeName()))){
         if(getInstanceName().equals("")){
-           DataType dataType = TypeFactory.createType(element.getName(),element.getOwningElement().getMUID());
-           fbuffer.append(dataType.inputForm(element.getOwningElement().getMUID()));
+           if(fWrite){
+             DataType dataType = TypeFactory.createType(element.getName(),element.getOwningElement().getMUID());
+             fbuffer.append(dataType.inputForm(element.getOwningElement().getMUID()));
+           }
         }
         else{
            if(getReturnParam() && (TypeFactory.isRecognizedReturnType(element.getTypeName()) || fStateLessBean)){

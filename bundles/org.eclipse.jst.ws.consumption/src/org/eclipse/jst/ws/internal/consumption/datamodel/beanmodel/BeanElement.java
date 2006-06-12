@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060612   145433 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel;
@@ -27,7 +30,12 @@ public class BeanElement extends TypeElement
   public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
   public static String STATELESS_BEAN = "10101010statelessbean10101010";
   public static String REL_METHODS = "relmethods";
- 
+  public static int READONLY = 0;
+  public static int WRITEONLY = 1;
+  public static int READWRITE = 2;
+  private int attrib = 2;
+  
+  
   /**
   * Constructor 
   * @param projectElement The project this Bean belongs to.
@@ -70,9 +78,15 @@ public class BeanElement extends TypeElement
   {
     super(name,attributeElement,TypeElement.REL_OWNER,TypeElement.REL_TYPE,TypeElement.BEAN);
     fOwnerType = TypeElement.ATTRIBUTE_OWNER;
-  
+    attribFunction(attributeElement);
   }
-
+ 
+  private void attribFunction(AttributeElement attributeElement){
+	if(attributeElement.getGetterMethod() != null && attributeElement.getSetterMethod() != null) attrib = READWRITE;
+	else if(attributeElement.getGetterMethod() == null && attributeElement.getSetterMethod() != null) attrib = WRITEONLY;
+	else if(attributeElement.getGetterMethod() != null && attributeElement.getSetterMethod() == null) attrib = READONLY;
+  }
+  
    /**
   * Constructor for the case when this is not the root object
   * here it represents complex types
@@ -110,6 +124,16 @@ public class BeanElement extends TypeElement
     return getName();
   }
 
+  public int getAttrib()
+  {
+    return attrib;
+  }
+  
+  public void setAttrib(int attrib)
+  {
+    this.attrib = attrib;
+  }
+  
   public boolean isStateLess()
   {
     Enumeration ea = getElements(TypeElement.REL_ATTRIBUTES);

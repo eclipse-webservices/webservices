@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060612   145433 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
@@ -50,7 +53,7 @@ public class InputFileAttributeGenerator extends InputFileTypeGenerator
      AttributeElementType attributeElementType = (AttributeElementType)object;
      //if it is a bean is it stateless
      attributeElementType.getTypeElement(); 
-        
+     if(attributeElementType.getSetterMethod() == null) return Status.OK_STATUS;
      if(attributeElementType.getTypeElement().isBean()){
        BeanElement bean = (BeanElement)attributeElementType.getTypeElement();
        fStateLess = bean.isStateLess();
