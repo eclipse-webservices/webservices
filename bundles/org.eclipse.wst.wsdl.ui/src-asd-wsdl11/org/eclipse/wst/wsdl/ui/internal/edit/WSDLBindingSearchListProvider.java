@@ -36,9 +36,11 @@ public class WSDLBindingSearchListProvider extends WSDLBaseSearchListProvider {
 		while (importsIt.hasNext()) {
 			Import importItem = (Import) importsIt.next();
 			Definition importDefinition = importItem.getEDefinition();
-			List importedComponents = importDefinition.getEBindings();
-			
-			createWSDLComponentObjects(list, importedComponents, IWSDLSearchConstants.BINDING_META_NAME);
+			if (importDefinition != null)
+			{		
+		  	  List importedComponents = importDefinition.getEBindings();			
+			  createWSDLComponentObjects(list, importedComponents, IWSDLSearchConstants.BINDING_META_NAME);
+			}  
 		}
 		
 		if (scope != null) {
