@@ -15,6 +15,7 @@
  * 20060504   119296 pmoogk@ca.ibm.com - Peter Moogk
  * 20060525   142281 joan@ca.ibm.com - Joan Haggarty
  * 20060607   144932 kathy@ca.ibm.com - Kathy Chan
+ * 20060612   145081 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -585,9 +586,17 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     return null;    
   }
   
-  public String getObjectSelectionDisplayableString() {	
+  public String getObjectSelectionDisplayableString() 
+  {	
+    if (tree != null)
+    {
+      return tree.getWsdlURI();
+    }
+    else
+    {
 	    return wsdlURI_;
-	  }
+    }
+	}
   
   public Point getWidgetSize() {	
 	  return new Point( 580, 580);  

@@ -17,6 +17,7 @@
  * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060509   119296 pmoogk@ca.ibm.com - Peter Moogk
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20060612   145081 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -501,7 +502,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 		  
 		   wsdlDialog_.setComponentName(getComponentName());
 		   wsdlDialog_.setProject(getProject());
-		   wsdlDialog_.setWebServiceURI(getWebServiceURI());		
+		   wsdlDialog_.setWebServiceURI( serviceImpl_.getText() );		
 		   
 		   int result = wsdlDialog_.open();
 		   
