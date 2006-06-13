@@ -15,13 +15,13 @@ Export-Package: org.eclipse.wst.command.internal.env.ui;x-internal:=true,
  org.eclipse.wst.command.internal.env.ui.registry;x-internal:=true,
  org.eclipse.wst.command.internal.env.ui.widgets;x-internal:=true,
  org.eclipse.wst.command.internal.env.ui.widgets.popup;x-internal:=true
-Require-Bundle: org.eclipse.wst.command.env.core,
- org.eclipse.wst.command.env,
- org.eclipse.core.runtime,
- org.eclipse.ui,
- org.eclipse.osgi,
- org.eclipse.wst.common.frameworks,
- org.eclipse.wst.common.environment,
- org.eclipse.core.resources,
- org.eclipse.ui.ide
+Require-Bundle: org.eclipse.wst.command.env.core;bundle-version="[1.0.101,1.1.0)",
+ org.eclipse.wst.command.env;bundle-version="[1.0.101,1.1.0)",
+ org.eclipse.core.runtime;bundle-version="[3.2.0,3.3.0)",
+ org.eclipse.ui;bundle-version="[3.2.0,3.3.0)",
+ org.eclipse.osgi;bundle-version="[3.2.0,3.3.0)",
+ org.eclipse.wst.common.frameworks;bundle-version="[1.1.0,1.2.0)",
+ org.eclipse.wst.common.environment;bundle-version="[1.0.100,1.1.0)",
+ org.eclipse.core.resources;bundle-version="[3.2.0,3.3.0)",
+ org.eclipse.ui.ide;bundle-version="[3.2.0,3.3.0)"
 Eclipse-LazyStart: true
