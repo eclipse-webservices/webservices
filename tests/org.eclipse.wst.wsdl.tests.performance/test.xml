@@ -1,17 +1,13 @@
 <?xml version="1.0"?>
 
 <project name="testsuite" default="performance" basedir=".">
-  <!-- The property ${eclipse-home} should be passed into this script -->
-  <!-- Set a meaningful default value for when it is not. -->
-  <property name="eclipse-home" value="${basedir}\..\.."/>
-
   <!-- sets the properties eclipse-home, and library-file -->
   <property name="plugin-name" value="org.eclipse.wst.wsdl.tests.performance"/>
   <property name="library-file" value="${eclipse-home}/plugins/org.eclipse.test_3.1.0/library.xml"/>
   <property name="perf-tests-file" value="${testDir}/performance-tests.xml"/>
   <property name="extraVMargs" value="-Doagis80Dir=${testDir} -DprojectDir=${testDir}/OAGIS8.0 -Xmx512M"/>
-
   <property name="workspace" value="${eclipse-home}/workspace_wsdl_performance"/>
+  <property name="data-dir" value="${eclipse-home}/workspace_wsdl_performance"/>
 
   <!-- This target holds all initialization code that needs to be done for -->
   <!-- all tests that are to be run. Initialization for individual tests -->
@@ -29,26 +25,11 @@
     <antcall target="readOAGISWSDLTestcase"/>
     <antcall target="readOAGISWSDLTestcase"/>
     <antcall target="readOAGISWSDLTestcase"/>
-    <antcall target="readOAGISWSDLTestcase"/>
-    <antcall target="readOAGISWSDLTestcase"/>
-    <antcall target="readOAGISWSDLTestcase"/>
-    <antcall target="readOAGISWSDLTestcase"/>
-    <antcall target="readOAGISWSDLTestcase"/>
 
   	<antcall target="ValidateOAGISWSDLTestcase"/>
   	<antcall target="ValidateOAGISWSDLTestcase"/>
 	<antcall target="ValidateOAGISWSDLTestcase"/>
-  	<antcall target="ValidateOAGISWSDLTestcase"/>
-  	<antcall target="ValidateOAGISWSDLTestcase"/>
-  	<antcall target="ValidateOAGISWSDLTestcase"/>
-  	<antcall target="ValidateOAGISWSDLTestcase"/>
-  	<antcall target="ValidateOAGISWSDLTestcase"/>
 
-  	<antcall target="ValidateOAGISWSITestcase"/>
-  	<antcall target="ValidateOAGISWSITestcase"/>
-  	<antcall target="ValidateOAGISWSITestcase"/>
-  	<antcall target="ValidateOAGISWSITestcase"/>
-  	<antcall target="ValidateOAGISWSITestcase"/>
   	<antcall target="ValidateOAGISWSITestcase"/>
   	<antcall target="ValidateOAGISWSITestcase"/>
   	<antcall target="ValidateOAGISWSITestcase"/>
@@ -56,26 +37,11 @@
   	<antcall target="ValidateWSDLProjectTestCase"/>
   	<antcall target="ValidateWSDLProjectTestCase"/>
 	<antcall target="ValidateWSDLProjectTestCase"/>
-  	<antcall target="ValidateWSDLProjectTestCase"/>
-  	<antcall target="ValidateWSDLProjectTestCase"/>
-  	<antcall target="ValidateWSDLProjectTestCase"/>
-  	<antcall target="ValidateWSDLProjectTestCase"/>
-  	<antcall target="ValidateWSDLProjectTestCase"/>
   	
     <antcall target="openEditorOAGISWSDLTestcase"/>
     <antcall target="openEditorOAGISWSDLTestcase"/>
     <antcall target="openEditorOAGISWSDLTestcase"/>
-    <antcall target="openEditorOAGISWSDLTestcase"/>
-    <antcall target="openEditorOAGISWSDLTestcase"/>
-    <antcall target="openEditorOAGISWSDLTestcase"/>
-    <antcall target="openEditorOAGISWSDLTestcase"/>
-    <antcall target="openEditorOAGISWSDLTestcase"/>
 
-    <antcall target="ReadStockQuoteWSDLTestCase"/>
-    <antcall target="ReadStockQuoteWSDLTestCase"/>
-    <antcall target="ReadStockQuoteWSDLTestCase"/>
-    <antcall target="ReadStockQuoteWSDLTestCase"/>
-    <antcall target="ReadStockQuoteWSDLTestCase"/>
     <antcall target="ReadStockQuoteWSDLTestCase"/>
     <antcall target="ReadStockQuoteWSDLTestCase"/>
     <antcall target="ReadStockQuoteWSDLTestCase"/>
@@ -83,17 +49,7 @@
   	<antcall target="ReadStockQuoteWSDLEMFTestCase"/>
   	<antcall target="ReadStockQuoteWSDLEMFTestCase"/>
   	<antcall target="ReadStockQuoteWSDLEMFTestCase"/>
-  	<antcall target="ReadStockQuoteWSDLEMFTestCase"/>
-  	<antcall target="ReadStockQuoteWSDLEMFTestCase"/>
-  	<antcall target="ReadStockQuoteWSDLEMFTestCase"/>
-  	<antcall target="ReadStockQuoteWSDLEMFTestCase"/>
-    <antcall target="ReadStockQuoteWSDLEMFTestCase"/>
 
-  	<antcall target="ValidateStockQuoteWSDLTestCase"/>
-  	<antcall target="ValidateStockQuoteWSDLTestCase"/>
-  	<antcall target="ValidateStockQuoteWSDLTestCase"/>
-  	<antcall target="ValidateStockQuoteWSDLTestCase"/>
-  	<antcall target="ValidateStockQuoteWSDLTestCase"/>
   	<antcall target="ValidateStockQuoteWSDLTestCase"/>
   	<antcall target="ValidateStockQuoteWSDLTestCase"/>
   	<antcall target="ValidateStockQuoteWSDLTestCase"/>
@@ -101,19 +57,9 @@
   	<antcall target="ValidateStockQuoteWSITestCase"/>
   	<antcall target="ValidateStockQuoteWSITestCase"/>
   	<antcall target="ValidateStockQuoteWSITestCase"/>
-  	<antcall target="ValidateStockQuoteWSITestCase"/>
-  	<antcall target="ValidateStockQuoteWSITestCase"/>
-  	<antcall target="ValidateStockQuoteWSITestCase"/>
-  	<antcall target="ValidateStockQuoteWSITestCase"/>
-  	<antcall target="ValidateStockQuoteWSITestCase"/>
 
   	<antcall target="OpenStockQuoteWSDLSetup"/>
   	<antcall target="OpenStockQuoteWSDLSetup"/>
-  	<antcall target="OpenStockQuoteWSDLSetup"/>
-  	<antcall target="OpenStockQuoteWSDLSetup"/>
-  	<antcall target="OpenStockQuoteWSDLSetup"/>
-  	<antcall target="OpenStockQuoteWSDLSetup"/>
-    <antcall target="OpenStockQuoteWSDLSetup"/>
   	<antcall target="OpenStockQuoteWSDLSetup"/>
 
   	<antcall target="Open1KBFileTestCase"/>
@@ -249,7 +195,6 @@
   	<antcall target="Validate10WSDLsNoDependsTestCase"/>
   	<antcall target="Validate10WSDLsNoDependsTestCase"/>
   	<antcall target="Validate10WSDLsNoDependsTestCase"/>
-  	
   	
   </target>
 
