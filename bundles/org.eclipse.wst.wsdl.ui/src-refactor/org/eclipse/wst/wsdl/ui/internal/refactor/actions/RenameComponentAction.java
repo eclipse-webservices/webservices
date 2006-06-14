@@ -18,6 +18,7 @@ import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.actions.GlobalBuildAction;
+import org.eclipse.wst.common.ui.internal.dialogs.SaveDirtyFilesDialog;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;
@@ -143,6 +144,11 @@ public class RenameComponentAction extends WSDLSelectionDispatchAction {
 
 	public void run(ISelection selection) {
 	
+        boolean rc = SaveDirtyFilesDialog.saveDirtyFiles();
+        if (!rc)
+        {
+          return;
+        }  
 		RenameComponentProcessor processor = new RenameComponentProcessor(selectedComponent, selectedComponent.getName());
 		RenameRefactoring refactoring = new RenameRefactoring(processor);
 		try {
