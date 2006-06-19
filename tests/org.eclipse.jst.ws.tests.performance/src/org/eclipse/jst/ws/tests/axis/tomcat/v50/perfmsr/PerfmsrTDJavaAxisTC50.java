@@ -8,7 +8,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
 import org.eclipse.jst.ws.tests.performance.util.PerformanceJUnitUtils;
 import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
@@ -28,7 +30,28 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
   
   private IFile sourceFile_;
 	
+  protected void createProjects() throws Exception{
+	    IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
+	    if (!webProject.exists()){
+	      createWebModule(PROJECT_NAME, PROJECT_NAME,J2EEVersionConstants.J2EE_1_4_ID);
+	    }
+	  }
+	  
+	  private void createWebModule(String projectNm, String componentName, int j2eeVersion){
 
+	    CreateModuleCommand cmc = new CreateModuleCommand();
+	    cmc.setJ2eeLevel(new Integer(j2eeVersion).toString());
+	    cmc.setModuleName(componentName);
+	    cmc.setModuleType(CreateModuleCommand.WEB);
+	    cmc.setProjectName(projectNm);
+	    cmc.setServerFactoryId(SERVERTYPEID_TC50);
+	    cmc.setServerInstanceId(server_.getId());
+	    cmc.execute(null, null );
+	    
+	    System.out.println("Done creating Web Project, "+projectNm);      
+	   
+	  }  
+	  
   /**
    * Sets up the input data;
    * - create project(s),
@@ -38,6 +61,7 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
 
 		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);		
 		IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
+		JUnitUtils.copyTestData("TDJava",destFolder,env_, null);
 		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));
 		JUnitUtils.syncBuildProject(webProject,env_, null);
 	}
@@ -70,13 +94,14 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
 	    try {
     
 	      performanceMeter.start();
-	      status = PerformanceJUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_TOP_DOWN,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
+	      PerformanceJUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_TOP_DOWN,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
 	      performanceMeter.stop();
 	      performanceMeter.commit();
 	      perf.assertPerformance(performanceMeter);
 	    }
 	    finally {
-			performanceMeter.dispose();
+	    	if (performanceMeter==null)
+	    		performanceMeter.dispose();
 	 	}
 		if (status.getSeverity() == Status.OK)
 		  verifyOutput();

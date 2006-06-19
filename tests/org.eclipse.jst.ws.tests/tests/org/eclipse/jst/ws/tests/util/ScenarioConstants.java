@@ -12,10 +12,10 @@ package org.eclipse.jst.ws.tests.util;
 
 public class ScenarioConstants {
 	// Bottom up Java or EJB to Web Service wizard ID.
-	public static final String WIZARDID_BOTTOM_UP = "org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java";
+	public static final String WIZARDID_BOTTOM_UP = "org.eclipse.jst.ws.creation.ui.wizard.serverwizard";
 	
 	// Top down WSDL to Skeleton Web Service wizard ID.
-	public static final String WIZARDID_TOP_DOWN = "org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton";
+	public static final String WIZARDID_TOP_DOWN = "org.eclipse.jst.ws.creation.ui.wizard.serverwizard";
 	
 	// Web Service client wizard ID.
 	public static final String WIZARDID_CLIENT = "org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard";	
