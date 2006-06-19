@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,22 +12,11 @@
 package org.eclipse.wst.wsdl.tests.performance.scalability;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.wst.common.tests.performance.internal.scalability.RunValidatorTestCase;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 
-public class Validate1000WSDLsCrossDependsTestCase extends RunValidatorTestCase
+public class Validate1000WSDLsCrossDependsTestCase extends RunWSDLValidatorTestCase
 {
-	protected String getValidatorId()
-	{
-	    return "org.eclipse.wst.wsdl.ui.internal.validation.Validator";
-	}
-
-	protected String getBundleId()
-	{
-	    return "org.eclipse.wst.wsdl.tests.performance";
-	}
-	
 	protected void setUp() throws Exception
 	{
 		WSPlugin.getDefault().getWSIAPContext().updateWSICompliances(PersistentWSIContext.IGNORE_NON_WSI);
@@ -43,7 +32,7 @@ public class Validate1000WSDLsCrossDependsTestCase extends RunValidatorTestCase
 
 	protected String getFilePath()
 	{
-	    return "data/1000WSDLsCrossDepends/sample0.xsd";
+	    return "data/1000WSDLsCrossDepends/sample0.wsdl";
 	}
 	
 	public void testValidate1000WSDLsCrossDepends()

@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ *******************************************************************************/
+
 package org.eclipse.wst.wsdl.tests.performance;
 
 import java.io.File;
@@ -7,8 +18,11 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.wsdl.WSDLException;
+
 import junit.framework.Assert;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -30,8 +44,6 @@ import org.eclipse.ui.part.FileEditorInput;
 
 public class OpenEditorOAGISWSDLTestcase extends PerformanceTestCase
 {
-  private final String ID_WSDL_EDITOR = "org.eclipse.wst.wsdl.ui.internal.WSDLEditor";
-
   public void testReadWSDL() throws MalformedURLException, WSDLException, CoreException, FileNotFoundException
   {
     String oagis80Dir = System.getProperty("oagis80Dir");
@@ -123,7 +135,7 @@ public class OpenEditorOAGISWSDLTestcase extends PerformanceTestCase
   private void openWSDL(IFile file) throws PartInitException
   {
     IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-    IEditorPart editor = workbenchWindow.getActivePage().openEditor(new FileEditorInput(file), ID_WSDL_EDITOR, true);
+    IEditorPart editor = workbenchWindow.getActivePage().openEditor(new FileEditorInput(file), PerformancePlugin.WSDL_EDITOR_ID, true);
     workbenchWindow.getActivePage().closeEditor(editor, false);
   }
 }
