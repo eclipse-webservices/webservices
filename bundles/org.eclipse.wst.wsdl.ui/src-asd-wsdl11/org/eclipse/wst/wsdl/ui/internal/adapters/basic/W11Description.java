@@ -43,13 +43,13 @@ import org.eclipse.wst.xml.core.internal.contentmodel.util.DOMNamespaceInfoManag
 import org.w3c.dom.Element;
 
 public class W11Description extends WSDLBaseAdapter implements IDescription {
-	private List categories = new ArrayList();
+	protected List categories = new ArrayList();
 	
 	protected W11CategoryAdapter getCategory(int categoryId) {
 		return getCategory(categoryId, getCategoryAdapters());
 	}
 	
-	private W11CategoryAdapter getCategory(int categoryId, List list) {
+	protected W11CategoryAdapter getCategory(int categoryId, List list) {
 		Iterator it = list.iterator();
 		while (it.hasNext()) {
 			W11CategoryAdapter adapter = (W11CategoryAdapter) it.next();
@@ -61,7 +61,7 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 		return null;
 	}
 	
-	private List getCategoryAdapters() {
+	protected List getCategoryAdapters() {
 	    // just set categoryadapters' children if category adapters are
 	    // already created
 	    if (categories.size() == 0) {
