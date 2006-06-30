@@ -127,14 +127,17 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
 		}
 		
 		setListenerEnabled(false);
-		nameText.setText(""); //$NON-NLS-1$
-		String name = ""; //$NON-NLS-1$
+		String name = null;
 		if (getModel() instanceof INamedObject) {
 			name = ((INamedObject) getModel()).getName();
 		}
 		else if (getModel() instanceof EditPart) {
 			Object model = ((EditPart) getModel()).getModel(); 
 			name = ((INamedObject) model).getName();
+		}
+		
+		if (name == null) {
+			name = ""; //$NON-NLS-1$
 		}
 		
 		nameText.setText(name);
