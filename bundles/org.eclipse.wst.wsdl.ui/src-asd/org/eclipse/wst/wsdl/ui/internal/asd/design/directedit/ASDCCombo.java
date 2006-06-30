@@ -76,6 +76,7 @@ public final class ASDCCombo extends Composite {
 	Listener listener, filter;
 	Color foreground, background;
 	Font font;
+	private int textIndent = 5;
 	
 /**
  * Constructs a new instance of this class given its parent
@@ -868,6 +869,11 @@ public boolean isFocusControl () {
 	} 
 	return super.isFocusControl ();
 }
+
+public void setTextIndent(int indent) {
+	textIndent = indent;
+}
+
 void internalLayout (boolean changed) {
 	if (isDropped ()) dropDown (false);
 	Rectangle rect = getClientArea ();
@@ -877,7 +883,7 @@ void internalLayout (boolean changed) {
 
 	text.pack();
 	int textHeight = text.getBounds().height;
-	int textX = 28;
+	int textX = textIndent;
 	int textY = (height - textHeight) / 2;
 	text.setLocation(textX, textY);
 	

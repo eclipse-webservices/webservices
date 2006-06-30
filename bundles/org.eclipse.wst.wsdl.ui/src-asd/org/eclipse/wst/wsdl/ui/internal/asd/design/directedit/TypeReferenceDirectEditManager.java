@@ -14,12 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.ParameterTypeEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
@@ -100,9 +102,20 @@ public class TypeReferenceDirectEditManager extends ComboBoxCellEditorManager
 	  return list;
   }
   
+  private int getTextIndent() {
+	  if (editPart instanceof ParameterTypeEditPart) {
+		  Rectangle bounds = ((ParameterTypeEditPart) editPart).getFigure().getBounds();
+		  int textX = ((ParameterTypeEditPart) editPart).getLabelFigure().getTextBounds().x; 
+		  return textX - bounds.x;
+	  }
+	  
+	  return 5;
+  }
+  
   protected CellEditor createCellEditor(Composite composite, String[] stringArray)
   {
     ASDComboBoxCellEditor cellEditor = new ASDComboBoxCellEditor(composite, stringArray, getComponentReferenceEditManager());
+    cellEditor.setTextIndent(getTextIndent());
     //((ADTComboBoxCellEditor) cellEditor).setObjectToModify(setObject);
     return cellEditor;
   }

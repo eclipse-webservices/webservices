@@ -59,6 +59,7 @@ public class ASDComboBoxCellEditor extends CellEditor {
     private boolean continueApply;    
     private Object selectedValue;
     private ComponentReferenceEditManager componentReferenceEditManager;
+    private int textIndent = 5;
 
     /**
      * Default ComboBoxCellEditor style
@@ -100,15 +101,20 @@ public class ASDComboBoxCellEditor extends CellEditor {
         this.items = items;
         populateComboBoxItems();
     }
+    
+    public void setTextIndent(int indent) {
+    	textIndent = indent;
+    	comboBox.setTextIndent(indent);
+    }
 
     /* (non-Javadoc)
      * Method declared on CellEditor.
      */
     protected Control createControl(Composite parent) {
-
         comboBox = new ASDCCombo(parent, getStyle());
         comboBox.setFont(parent.getFont());
-
+        comboBox.setTextIndent(textIndent);
+        
         comboBox.addKeyListener(new KeyAdapter() {
             // hook key pressed - see PR 14201  
             public void keyPressed(KeyEvent e) {
