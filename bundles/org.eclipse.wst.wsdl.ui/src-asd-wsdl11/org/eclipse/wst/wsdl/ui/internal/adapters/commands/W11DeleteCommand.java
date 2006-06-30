@@ -23,18 +23,21 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.Types;
+import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Binding;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11EndPoint;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Interface;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Operation;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Service;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IImport;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessage;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
-import org.eclipse.wst.wsdl.ui.internal.asd.facade.IType;
+import org.eclipse.xsd.XSDSchema;
 
 public class W11DeleteCommand extends Command {
 	protected WSDLBaseAdapter object;
@@ -76,8 +79,12 @@ public class W11DeleteCommand extends Command {
 			Import theImport = (Import) object.getTarget();
 			theImport.getEnclosingDefinition().getEImports().remove(theImport);
 		}
-		else if (object instanceof IType) {
-			
+		else if (object instanceof W11Type) {
+			W11Type w11Type = (W11Type) object;
+			XSDSchema schema = (XSDSchema)  w11Type.getTarget();
+			XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) schema.eContainer();
+			Types type = (Types) eeElement.getContainer();
+			type.getEExtensibilityElements().remove(eeElement);
 		}
 		else if (object instanceof IMessageReference) {
 			MessageReference messageRef = (MessageReference) object.getTarget();

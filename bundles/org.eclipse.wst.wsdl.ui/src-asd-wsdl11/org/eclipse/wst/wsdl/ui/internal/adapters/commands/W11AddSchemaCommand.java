@@ -23,7 +23,6 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
-import org.eclipse.wst.wsdl.ui.internal.commands.AddTypesCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDSchemaCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
@@ -41,20 +40,18 @@ public class W11AddSchemaCommand extends W11TopLevelElementCommand {
 		List existingNamespaces = new ArrayList();
 		Types types = definition.getETypes();
 
-		if (types == null)
-		{
-			AddTypesCommand command = new AddTypesCommand(definition);
-			command.run();
-			types = definition.getETypes();  
-		}
-
-		Iterator eeIt = types.getEExtensibilityElements().iterator();
-		while (eeIt.hasNext()) {
-			Object item = eeIt.next();
-			if (item instanceof XSDSchemaExtensibilityElement) {
-				String ns = ((XSDSchemaExtensibilityElement) item).getSchema().getTargetNamespace();
-				existingNamespaces.add(ns);
-			}
+		if (types != null) {
+			Iterator eeIt = types.getEExtensibilityElements().iterator();
+			while (eeIt.hasNext()) {
+				Object item = eeIt.next();
+				if (item instanceof XSDSchemaExtensibilityElement) {
+					XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) item;
+					if (eeElement.getSchema() != null) {
+						String ns = eeElement.getSchema().getTargetNamespace();
+						existingNamespaces.add(ns);
+					}
+				}
+			} 
 		}
 		tns = NameUtil.getUniqueNameHelper(tns, existingNamespaces);
 		

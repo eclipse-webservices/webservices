@@ -72,7 +72,7 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 	    	category.setChildren(getImports());
 	    	
 	    	category = getCategory(W11CategoryAdapter.TYPES, categories);
-	    	category.setChildren(getTypes());
+	    	addListenerToTypes(category);
 
 	    	category = getCategory(W11CategoryAdapter.SERVICES, categories);
 	    	category.setChildren(getServices());
@@ -89,6 +89,9 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
     	return categories;
 	}
 	
+	// TODO: rmah: right now it looks like the definition needs to know too much about the categories
+	// We should make the categories more self-sufficient.... so it knows how to compute it's children
+	// based on it's kind
 	protected List createCategoryAdapters() {
 		List categories = new ArrayList();
 		
@@ -107,7 +110,8 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 		
 		categoryTitle = W11CategoryAdapter.TYPES_HEADER_TEXT;
 		categoryImage = WSDLEditorPlugin.getInstance().getImage("icons/types_obj.gif"); //$NON-NLS-1$
-		category = new W11CategoryAdapter(this, categoryTitle, categoryImage, schemaList, W11CategoryAdapter.TYPES);
+		category = new W11TypesCategoryAdapter(this, categoryTitle, categoryImage, W11CategoryAdapter.TYPES);
+		addListenerToTypes(category);
 		registerListener(category);
 		categories.add(category);
 		
@@ -137,6 +141,18 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 		
 		return categories;
 	  }
+	
+	// Special case:
+	// We need to have the Types object inform our facade (W11TypesCategoryAdapter) of it's
+	// changes.  This is different from the rest of the W11CategoryAdapters which listens
+	// to the Definition object.
+	private void addListenerToTypes(W11CategoryAdapter category) {
+		Definition def = (Definition) this.getTarget();
+		Types types = def.getETypes();
+		if (types != null && !types.eAdapters().contains(category)) {
+			types.eAdapters().add(category);
+		}	
+	}
 	
 	public String getTargetNamespace() {
 		return ((Definition) target).getTargetNamespace();
@@ -280,6 +296,7 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 	}
 	
 	public void notifyChanged(final Notification msg) {
+		// TODO: rmah: This code should be moved into W11CategoryAdapter
 		class CategoryNotification extends NotificationImpl {
 			protected Object category;
 			

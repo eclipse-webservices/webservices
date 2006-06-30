@@ -36,6 +36,7 @@ import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
@@ -213,12 +214,12 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	 */
 	private class SourceEditorSelectionListener implements ISelectionChangedListener {
 		/**
-		 * Determines WSDL node based on object (DOM node)
+		 * Determines WSDL facade object based on DOM node
 		 * 
 		 * @param object
 		 * @return
 		 */
-		private Object getWSDLNode(Object object) {
+		private Object getWSDLFacadeObject(Object object) {
 			// get the element node
 			Element element = null;
 			if (object instanceof Node) {
@@ -236,6 +237,15 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 			if (element != null) {
 				Definition def = (Definition) ((W11Description) model).getTarget();
 				Object modelObject = WSDLEditorUtil.getInstance().findModelObjectForElement(def, element);
+				
+				// rmah: We handle this special scenario where the modelObject is an XSDSchemaExtensibilityElement.
+				// We actually want the XSDSchema object.  However, our node reconciler will always return
+				// XSDSchemaExtensibilityElement because both XSDSchemaExtensibilityElement and XSDSchema
+				// both have the SAME Element object, and the reconciler encounters the XSDSchemaExtensibilityElement
+				// first....  See WSDLNodeNodeAssociationProvider for more details.....
+				if (modelObject instanceof XSDSchemaExtensibilityElement) {
+					modelObject = ((XSDSchemaExtensibilityElement) modelObject).getSchema();
+				}
 				if (modelObject != null) {
 					o = WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) modelObject);
 				}
@@ -253,10 +263,10 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 					for (Iterator i = ((IStructuredSelection) selection).iterator(); i.hasNext();)
 					{
 						Object domNode = i.next();
-						Object node = getWSDLNode(domNode);
-						if (node != null)
+						Object facade = getWSDLFacadeObject(domNode);
+						if (facade != null)
 						{
-							selections.add(node);
+							selections.add(facade);
 						}
 					}
 					

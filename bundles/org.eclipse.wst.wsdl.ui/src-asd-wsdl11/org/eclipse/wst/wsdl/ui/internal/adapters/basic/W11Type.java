@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
+import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDOpenSchemaAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
@@ -57,5 +59,10 @@ public class W11Type extends WSDLBaseAdapter implements IType {
 
 	public ITreeElement getParent() {
 		return null;
+	}
+	
+	// TODO: rmah: Move this method signature to the interface (IType) of this class post WTP 1.5
+	public Command getDeleteCommand() {
+		return new W11DeleteCommand(this);
 	}
 }

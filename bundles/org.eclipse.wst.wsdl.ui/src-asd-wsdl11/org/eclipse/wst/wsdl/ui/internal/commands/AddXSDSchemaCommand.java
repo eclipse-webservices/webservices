@@ -57,6 +57,10 @@ public final class AddXSDSchemaCommand extends WSDLElementCommand
     // TBD - Check if multiple schemas with the same targetNamespace can co-exist.
     Types types = getTypes();
     types.addExtensibilityElement(extensibilityElement);
+    
+    if (definition.getETypes() == null) {
+    	definition.setETypes(types);
+    }
   }
 
   private Types getTypes()
@@ -67,9 +71,9 @@ public final class AddXSDSchemaCommand extends WSDLElementCommand
       return types;
     else
     {
-      AddTypesCommand command = new AddTypesCommand(definition);
-      command.run();
-      return (Types)command.getWSDLElement();
+        types = WSDLFactory.eINSTANCE.createTypes();
+        types.setEnclosingDefinition(definition);
+        return types;
     }
   }
   

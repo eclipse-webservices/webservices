@@ -15,6 +15,7 @@ import java.util.Iterator;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
@@ -69,6 +70,10 @@ public class ASDDeleteAction extends BaseSelectionAction {
 			}
 			else if (object instanceof IMessage) {
 				command = ((IMessage) object).getDeleteCommand();
+			}
+			 // TODO (cs) Provide getDeleteCommand() on ASDObject then no 'else if' tests needed at all...
+			else if (object instanceof W11Type) {
+				command = ((W11Type) object).getDeleteCommand();
 			}
 			
 			if (command != null) {
