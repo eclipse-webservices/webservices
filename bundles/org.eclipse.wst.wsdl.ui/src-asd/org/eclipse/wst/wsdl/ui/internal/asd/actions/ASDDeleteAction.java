@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.actions;
 
+import java.util.Iterator;
+
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
@@ -36,8 +38,9 @@ public class ASDDeleteAction extends BaseSelectionAction {
 	}
 	
 	public void run() {
-		if (getSelectedObjects().size() > 0) {
-			Object object = getSelectedObjects().get(0);
+		Iterator it = getSelectedObjects().iterator();
+		while (it.hasNext()) {
+			Object object = it.next();
 			Command command = null;
 			
 			if (object instanceof IService) {
