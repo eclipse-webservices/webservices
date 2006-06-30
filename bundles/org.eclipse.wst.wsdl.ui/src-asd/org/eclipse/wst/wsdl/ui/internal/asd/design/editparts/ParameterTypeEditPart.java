@@ -271,6 +271,10 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 		  public void mouseReleased(MouseEvent me) { }
 		  public void mouseDoubleClicked(MouseEvent me) { }
 		  public void mousePressed(MouseEvent me) {
+			  if (me.button != 1) {
+				  return;
+			  }
+			  
 			  Point pointer = me.getLocation();
 			  Rectangle linkFigBounds = getLinkFigureBounds();
 			  if (linkFigBounds == null) {
