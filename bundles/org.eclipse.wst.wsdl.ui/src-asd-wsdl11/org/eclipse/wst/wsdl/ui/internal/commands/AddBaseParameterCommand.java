@@ -76,52 +76,58 @@ public abstract class AddBaseParameterCommand {
 		return false;
 	}
 	
+	protected XSDElementDeclaration createPartElementSeqElementPattern(Part part, XSDElementDeclaration partElement) {
+		XSDElementDeclaration returnedXSDElement = null;
+		
+		XSDElementDeclaration originalElement = null;
+		XSDElementDeclaration anonXSDElement = null;
+		
+		// Create the XSDElement (anonymous) referenced by the Part if necessary
+		if (partElement == null || partElement.getAnonymousTypeDefinition() == null) {
+			anonXSDElement = XSDComponentHelper.createAnonymousXSDElementDefinition(getAnonymousXSDElementBaseName(), part);
+//			part.setElementDeclaration(anonXSDElement);
+			String prefixedName = getPrefixedComponentName(part.getEnclosingDefinition(), anonXSDElement);
+			ComponentReferenceUtil.setComponentReference(part, false, prefixedName);
+			part.setTypeDefinition(null);
+			
+			if (partElement != null) {
+				originalElement = partElement;
+				// Remove the 'original' XSDElement as a Global Element
+				partElement.getSchema().getContents().remove(partElement);
+			}
+		}
+		else {
+			anonXSDElement = partElement;
+		}
+		
+		// Create a new XSDElement
+		XSDModelGroup modelGroup = XSDComponentHelper.getXSDModelGroup(anonXSDElement, part.getEnclosingDefinition());
+		returnedXSDElement = XSDComponentHelper.createXSDElementDeclarationCommand(null, getNewXSDElementBaseName(), modelGroup);
+		
+		// Add the newly created XSDElement to the ModelGroup
+		XSDComponentHelper.addXSDElementToModelGroup(anonXSDElement, returnedXSDElement);
+		
+		// Add the 'original' XSDElement if it's type wasn't anonymous
+		if (originalElement != null) {
+			XSDComponentHelper.addXSDElementToModelGroup(anonXSDElement, originalElement);
+		}
+		
+		return returnedXSDElement;
+	}
+	
 	protected XSDElementDeclaration createPartElementReferenceComponents(Part part) {
 		XSDElementDeclaration returnedXSDElement = null;
 		XSDElementDeclaration partElement = part.getElementDeclaration();
 		
-		if (style == PART_ELEMENT_SEQ_ELEMENT) {
-			XSDElementDeclaration originalElement = null;
-			XSDElementDeclaration anonXSDElement = null;
-			
-			// Create the XSDElement (anonymous) referenced by the Part if necessary
-			if (partElement == null || partElement.getAnonymousTypeDefinition() == null) {
-				anonXSDElement = XSDComponentHelper.createAnonymousXSDElementDefinition(getAnonymousXSDElementBaseName(), part);
-//				part.setElementDeclaration(anonXSDElement);
-				String prefixedName = getPrefixedComponentName(part.getEnclosingDefinition(), anonXSDElement);
-				ComponentReferenceUtil.setComponentReference(part, false, prefixedName);
-				part.setTypeDefinition(null);
-				
-				if (partElement != null) {
-					originalElement = partElement;
-					// Remove the 'original' XSDElement as a Global Element
-					partElement.getSchema().getContents().remove(partElement);
-				}
-			}
-			else {
-				anonXSDElement = partElement;
-			}
-			
-			// Create a new XSDElement
-			XSDModelGroup modelGroup = XSDComponentHelper.getXSDModelGroup(anonXSDElement, part.getEnclosingDefinition());
-			returnedXSDElement = XSDComponentHelper.createXSDElementDeclarationCommand(null, getNewXSDElementBaseName(), modelGroup);
-			
-			// Add the newly created XSDElement to the ModelGroup
-			XSDComponentHelper.addXSDElementToModelGroup(anonXSDElement, returnedXSDElement);
-			
-			// Add the 'original' XSDElement if it's type wasn't anonymous
-			if (originalElement != null) {
-				XSDComponentHelper.addXSDElementToModelGroup(anonXSDElement, originalElement);
-			}
+		if (true || style == PART_ELEMENT_SEQ_ELEMENT) {
+			returnedXSDElement = createPartElementSeqElementPattern(part, partElement);
 		}
 		else if (style == PART_ELEMENT) {
 			if (partElement == null) {
 				returnedXSDElement = XSDComponentHelper.createXSDElementDeclarationCommand(part.getEnclosingDefinition(), getNewXSDElementBaseName(), part);
 			}
 			else {
-				// TODO: What should we do here.....  We can default to the PART_ELEMENT_SEQ_ELEMENT style
-				// since it handles 'multiple' XSDElements.... OR ..... we can 'overwrite and set a new
-				// XSDElement
+				returnedXSDElement = createPartElementSeqElementPattern(part, partElement);
 			}
 			
 			if (returnedXSDElement != null && !returnedXSDElement.equals(part.getElementDeclaration())) {
