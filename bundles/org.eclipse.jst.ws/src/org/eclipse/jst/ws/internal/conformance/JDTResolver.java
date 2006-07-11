@@ -9,7 +9,8 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060419   132905 cbrealey@ca.ibm.com - Chris Brealey          
+ * 20060419   132905 cbrealey@ca.ibm.com - Chris Brealey
+ * 20060711   149411 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.conformance;
 
@@ -516,10 +517,9 @@ public class JDTResolver
 	
 	/**
 	 * Returns an array of zero or more types representing
-	 * the superclasses, if any, of the given IType.
+	 * the superclasses, if any, of the given IType in bottom-up
+	 * order excluding java.lang.Object.
 	 * @param jdtType The type to analyze.
-	 * @param jdtSuperTypes Any supertypes to analyze,
-	 * or null to analyze only the <code>jdtType</code>.
 	 * @return An array of zero or more superclass types.
 	 * @throws JavaModelException If the JDT engine fails to
 	 * analyze the given type to satisfy this request.
@@ -527,19 +527,36 @@ public class JDTResolver
 	public IType[] getSuperClasses ( IType jdtType )
 	throws JavaModelException
 	{
+		return getSuperClasses(jdtType,"java.lang.Object");
+	}
+	
+	/**
+	 * Returns an array of zero or more types representing
+	 * the superclasses, if any, of the given IType.
+	 * Under normal circumstances, java.lang.Object is included.
+	 * @param jdtType The type to analyze.
+	 * @param stopClassName The name of a stop class used to limit
+	 * the superclasses returned to the caller. If the stop class
+	 * is null or names a class not found in the hierarchy, all
+	 * superclasses are returned. Otherwise, only superclasses up
+	 * to but excluding the stop class are returned.
+	 * @return An array of zero or more superclass types.
+	 * @throws JavaModelException If the JDT engine fails to
+	 * analyze the given type to satisfy this request.
+	 */
+	public IType[] getSuperClasses ( IType jdtType, String stopClassName )
+	throws JavaModelException
+	{
 		ITypeHierarchy hierarchy = jdtType.newSupertypeHierarchy(monitor_);
-		IType[] superClasses = hierarchy.getAllSuperclasses(jdtType);
-		int n = superClasses.length - 1;
-		if (n >= 0 && superClasses[n].getFullyQualifiedName().equals("java.lang.Object"))
+		IType[] allSuperClasses = hierarchy.getAllSuperclasses(jdtType);
+		List superClasses = new LinkedList();
+		for (int i=0; i<allSuperClasses.length; i++)
 		{
-			IType[] superClassesExcludingObject = new IType[n];
-			for (int i=0; i<n; i++)
-			{
-				superClassesExcludingObject[i] = superClasses[i];
-			}
-			return superClassesExcludingObject;
+			if (allSuperClasses[i].getFullyQualifiedName().equals(stopClassName))
+				break;
+			superClasses.add(allSuperClasses[i]);
 		}
-		return superClasses;
+		return (IType[])superClasses.toArray(new IType[0]);
 	}
 	
 	/**

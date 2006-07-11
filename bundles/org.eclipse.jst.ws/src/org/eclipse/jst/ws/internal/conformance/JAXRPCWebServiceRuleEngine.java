@@ -9,7 +9,8 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060419   132905 cbrealey@ca.ibm.com - Chris Brealey          
+ * 20060419   132905 cbrealey@ca.ibm.com - Chris Brealey
+ * 20060711   149411 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.conformance;
 
@@ -199,8 +200,12 @@ public class JAXRPCWebServiceRuleEngine implements IJavaWebServiceRuleEngine
 			visited_.add(type.getFullyQualifiedName());
 			push(type);
 			try
-			{				
-				IType[] superClasses = resolver_.getSuperClasses(type);
+			{
+				// We trust java.lang.Exception/Throwable as superclasses
+				// for service specific exception classes, therefore we do
+				// not try to analyze their properties (some of which would
+				// otherwise violate JAX-RPC's rules anyways).
+				IType[] superClasses = resolver_.getSuperClasses(type,"java.lang.Exception");
 				IJavaBeanProperty[] properties = resolver_.getPublicProperties(type,superClasses);
 				for (int p=0; p<properties.length; p++)
 				{
