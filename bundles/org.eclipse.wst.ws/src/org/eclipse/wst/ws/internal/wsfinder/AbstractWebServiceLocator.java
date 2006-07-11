@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
+ * 20060620   147862 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsfinder;
@@ -17,6 +18,7 @@ package org.eclipse.wst.ws.internal.wsfinder;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
@@ -45,7 +47,22 @@ public abstract class AbstractWebServiceLocator implements IWebServiceLocator {
 	 * or null if progress monitoring is not desired.
 	 * @return A non-null but possibly empty list of WebServiceClientInfo objects
 	 */
-	public List getWebServiceClients (IProgressMonitor monitor)
+	public List getWebServiceClients ( IProgressMonitor monitor )
+	{
+		return Collections.EMPTY_LIST;
+	}
+
+	/**
+	 * Returns a list of WebServiceClientInfo objects.
+	 * Subclasses should override this method's
+	 * default behaviour of returning an empty list.
+	 * @param projects One or more projects to which
+	 * the search should be limited.
+	 * @param monitor A progress monitor,
+	 * or null if progress monitoring is not desired.
+	 * @return A non-null but possibly empty list of WebServiceClientInfo objects
+	 */
+	public List getWebServiceClients ( IProject[] projects, IProgressMonitor monitor )
 	{
 		return Collections.EMPTY_LIST;
 	}
@@ -58,7 +75,22 @@ public abstract class AbstractWebServiceLocator implements IWebServiceLocator {
 	 * or null if progress monitoring is not desired.
 	 * @return A non-null but possibly empty list of WebServiceInfo objects
 	 */
-	public List getWebServices (IProgressMonitor monitor)
+	public List getWebServices ( IProgressMonitor monitor )
+	{
+		return Collections.EMPTY_LIST; 
+	}
+
+	/**
+	 * Returns a list of WebServiceInfo objects. 
+	 * Subclasses should override this method's
+	 * default behaviour of returning an empty list.
+	 * @param projects One or more projects to which
+	 * the search should be limited.
+	 * @param monitor A progress monitor,
+	 * or null if progress monitoring is not desired.
+	 * @return A non-null but possibly empty list of WebServiceInfo objects
+	 */
+	public List getWebServices ( IProject[] projects, IProgressMonitor monitor )
 	{
 		return Collections.EMPTY_LIST; 
 	}

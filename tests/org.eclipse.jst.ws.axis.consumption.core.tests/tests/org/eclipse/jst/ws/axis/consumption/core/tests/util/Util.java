@@ -10,6 +10,8 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
+ * 20060711   147862 cbrealey@ca.ibm.com - Chris Brealey
+ * 20060711   147864 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 
 package org.eclipse.jst.ws.axis.consumption.core.tests.util;
@@ -104,17 +106,18 @@ public class Util
 		
 		// Add the Axis jars to the list.
 		String[] jars = new String[] {
-				"axis.jar",
-				"commons-discovery-0.2.jar",
-				"commons-logging-1.0.4.jar",
-				"jaxrpc.jar",
-				"log4j-1.2.8.jar",
-				"saaj.jar",
-				"wsdl4j-1.5.1.jar"
+				"org.apache.axis","axis.jar",
+				"org.apache.axis","commons-discovery-0.2.jar",
+				"org.apache.commons_logging","commons-logging-1.0.4.jar",
+				"org.apache.axis","jaxrpc.jar",
+				"org.apache.jakarta_log4j","log4j-1.2.8.jar",
+				"org.apache.axis","saaj.jar",
+				"org.apache.axis","wsdl4j-1.5.1.jar"
 		};
-		for (int i=0; i<jars.length; i++)
+		
+		for (int i=0; i<jars.length; i+=2)
 		{
-			IPath jar = getAxisPluginJarPath(jars[i]);
+			IPath jar = getAxisPluginJarPath(jars[i],jars[i+1]);
 			System.out.println("Adding jar ["+jar.toString()+"]");
 			IClasspathEntry jarEntry = JavaCore.newLibraryEntry(jar,null,null);
 			list.add(jarEntry);
@@ -130,10 +133,10 @@ public class Util
 	 * @return The filesystem path to the named jar in the Axis plugin.
 	 * @throws CoreException If the path could not be computed.
 	 */
-	public static IPath getAxisPluginJarPath ( String jarName )
+	public static IPath getAxisPluginJarPath ( String pluginName, String jarName )
 	throws CoreException
 	{
-		Bundle bundle = Platform.getBundle("org.apache.axis");
+		Bundle bundle = Platform.getBundle(pluginName);
 		if (bundle == null)
 		{
 			throw new CoreException(new Status(IStatus.ERROR,"",0,"Unable to locate plugin org.apache.axis",null));
@@ -159,13 +162,13 @@ public class Util
 	 * Copies examples to the given Java project.
 	 * @param javaProject The project to copy the examples to.
 	 */
-	public static void copyExamplesToJavaProject ( IJavaProject javaProject )
+	public static void copyExamplesToJavaProject ( IJavaProject javaProject, Filter filter )
 	throws CoreException
 	{
 		IProject project = javaProject.getProject();
 		String sourcePath = project.getName();
-		copyExample("org.eclipse.jst.ws.axis.consumption.core.tests","data/axisSource1","*.java",sourcePath);
-		copyExample("org.eclipse.jst.ws.axis.consumption.core.tests","data/axisSource2","*.java",sourcePath);
+		copyExample("org.eclipse.jst.ws.axis.consumption.core.tests","data/axisSource1",sourcePath,filter);
+		copyExample("org.eclipse.jst.ws.axis.consumption.core.tests","data/axisSource2",sourcePath,filter);
 		project.build(IncrementalProjectBuilder.FULL_BUILD,null);
 		try
 		{
@@ -184,7 +187,7 @@ public class Util
 	 * @param sourceRoot The plugin-related path to copy from.
 	 * @param targetWorkspacePath The workspace path to copy to.
 	 */
-	public static void copyExample ( String sourcePlugin, String sourceRoot, String pattern, String targetWorkspacePath )
+	public static void copyExample ( String sourcePlugin, String sourceRoot, String targetWorkspacePath, Filter filter )
 	throws CoreException
 	{
 		Bundle bundle = Platform.getBundle(sourcePlugin);
@@ -196,11 +199,12 @@ public class Util
 		while (e.hasMoreElements())
 		{
 			String path = e.nextElement().toString();
-			copyExampleFile(bundle,path,new Path(sourceRoot).segmentCount(),targetWorkspacePath);
+			System.out.println("Bundle path = ["+path+"]");
+			copyExampleFile(bundle,path,new Path(sourceRoot).segmentCount(),targetWorkspacePath,filter);
 		}
 	}
 	
-	public static void copyExampleFile ( Bundle bundle, String path, int offset, String targetWorkspacePath )
+	public static void copyExampleFile ( Bundle bundle, String path, int offset, String targetWorkspacePath, Filter filter )
 	throws CoreException
 	{
 		IPath reducedPath = new Path(path).removeFirstSegments(offset);
@@ -217,14 +221,18 @@ public class Util
 			while (e.hasMoreElements())
 			{
 				String subpath = e.nextElement().toString();
-				copyExampleFile(bundle,subpath,offset,targetWorkspacePath);
+				copyExampleFile(bundle,subpath,offset,targetWorkspacePath,filter);
 			}
 		}
 		else
 		{
 			System.out.println("File = ["+path+"] Target = ["+targetPath+"]");
-			URL url = bundle.getEntry(path);
-			copyFile(url,targetPath);
+			if (filter.accept(path))
+			{
+				System.out.println("Copied ["+path+"]");
+				URL url = bundle.getEntry(path);
+				copyFile(url,targetPath);
+			}
 		}
 	}
 	

@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
+ * 20060620   147862 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsfinder;
@@ -18,6 +19,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -81,6 +83,22 @@ public class WebServiceFinder {
 	
 	/**
 	 * Returns an iterator of WebServiceInfo objects which represent web services found by locators that
+	 * have registered using the org.eclipse.wst.ws.locator extension point.  Currently returns all web 
+	 * services found in the context of the given projects for all registered locators.
+	 * Locators must extend {@link AbstractWebServiceLocator}.
+	 * Callers can use the getter methods on the WebServiceInfo object to retrieve information on the 
+	 * web services found.  The WebServiceFinder cannot guarantee the level of detail contained in WebServiceInfo
+	 * objects returned.  This is left to the locator implementations.
+	 * @param monitor A progress monitor, or null if progress monitoring is not desired.
+	 * @return An iterator of WebServiceInfo objects, never null.
+	 */
+	public Iterator getWebServices ( IProject[] projects, IProgressMonitor monitor )
+	{
+		return getWebServicesByCategoryId(null,projects,monitor);
+	}
+	
+	/**
+	 * Returns an iterator of WebServiceInfo objects which represent web services found by locators that
 	 * have registered using the org.eclipse.wst.ws.locator extension point under the given category.
 	 * Locators must extend {@link AbstractWebServiceLocator}.
 	 * Callers can use the getter methods on the WebServiceInfo object to retrieve information on the 
@@ -98,6 +116,23 @@ public class WebServiceFinder {
 	/**
 	 * Returns an iterator of WebServiceInfo objects which represent web services found by locators that
 	 * have registered using the org.eclipse.wst.ws.locator extension point under the given category.
+	 * The search is constrained to the given set of one or more projects.
+	 * Locators must extend {@link AbstractWebServiceLocator}.
+	 * Callers can use the getter methods on the WebServiceInfo object to retrieve information on the 
+	 * web services found.  The WebServiceFinder cannot guarantee the level of detail contained in WebServiceInfo
+	 * objects returned.  This is left to the locator implementations.
+	 * @param category The category of locators to use.
+	 * @param monitor A progress monitor, or null if progress monitoring is not desired.
+	 * @return An iterator of WebServiceInfo objects, never null.
+	 */
+	public Iterator getWebServicesByCategory ( WebServiceCategory category, IProject[] projects, IProgressMonitor monitor  )
+	{
+		return getWebServicesByCategoryId(category == null ? null : category.getId(),projects,monitor);
+	}
+
+	/**
+	 * Returns an iterator of WebServiceInfo objects which represent web services found by locators that
+	 * have registered using the org.eclipse.wst.ws.locator extension point under the given category.
 	 * Locators must extend {@link AbstractWebServiceLocator}.
 	 * Callers can use the getter methods on the WebServiceInfo object to retrieve information on the 
 	 * web services found.  The WebServiceFinder cannot guarantee the level of detail contained in WebServiceInfo
@@ -107,6 +142,23 @@ public class WebServiceFinder {
 	 * @return An iterator of WebServiceInfo objects, never null.
 	 */
 	public Iterator getWebServicesByCategoryId ( String categoryId, IProgressMonitor monitor )
+	{
+		return getWebServicesByCategoryId(categoryId,null,monitor);	
+	} 
+
+	/**
+	 * Returns an iterator of WebServiceInfo objects which represent web services found by locators that
+	 * have registered using the org.eclipse.wst.ws.locator extension point under the given category.
+	 * The search is constrained to the given set of one or more projects.
+	 * Locators must extend {@link AbstractWebServiceLocator}.
+	 * Callers can use the getter methods on the WebServiceInfo object to retrieve information on the 
+	 * web services found.  The WebServiceFinder cannot guarantee the level of detail contained in WebServiceInfo
+	 * objects returned.  This is left to the locator implementations.
+	 * @param categoryId The category of locators to use.
+	 * @param monitor A progress monitor, or null if progress monitoring is not desired.
+	 * @return An iterator of WebServiceInfo objects, never null.
+	 */
+	public Iterator getWebServicesByCategoryId ( String categoryId, IProject[] projects, IProgressMonitor monitor )
 	{
 		LinkedList webServices = new LinkedList();
 		WebServiceLocatorRegistry wslr = WebServiceLocatorRegistry.getInstance();
@@ -123,7 +175,7 @@ public class WebServiceFinder {
 						if (obj instanceof IWebServiceLocator)
 						{
 							IWebServiceLocator wsl = (IWebServiceLocator)obj;
-							List wsList = wsl.getWebServices(monitor);
+							List wsList = projects == null ? wsl.getWebServices(monitor) : wsl.getWebServices(projects,monitor);
 							if (wsList != null)
 							{
 								webServices.addAll(wsList);
@@ -157,6 +209,22 @@ public class WebServiceFinder {
 	
 	/**
 	 * Returns an iterator of WebServiceClientInfo objects which represent web service clients found by locators that
+	 * have registered using the org.eclipse.wst.ws.locator extension point.  Currently returns all web 
+	 * service clients found for all registered locators in the context of the given projects.
+	 * Locators must extend {@link AbstractWebServiceLocator}.
+	 * Callers can use the getter methods on the WebServiceClientInfo object to retrieve information on the 
+	 * web service clients found.  The WebServiceFinder cannot guarantee the level of detail contained in WebServiceClientInfo
+	 * objects returned.  This is left to the locator implementations.
+	 * @param monitor A progress monitor, or null if progress monitoring is not desired.
+	 * @return An iterator of WebServiceClientInfo objects, never null.
+	 */
+	public Iterator getWebServiceClients ( IProject[] projects, IProgressMonitor monitor )
+	{
+		return getWebServiceClientsByCategoryId(null,projects,monitor);
+	}
+	
+	/**
+	 * Returns an iterator of WebServiceClientInfo objects which represent web service clients found by locators that
 	 * have registered using the org.eclipse.wst.ws.locator extension point under the given category.
 	 * Locators must extend {@link AbstractWebServiceLocator}. 
 	 * Callers can use the getter methods on the WebServiceClientInfo object to retrieve information on the 
@@ -174,6 +242,23 @@ public class WebServiceFinder {
 	/**
 	 * Returns an iterator of WebServiceClientInfo objects which represent web service clients found by locators that
 	 * have registered using the org.eclipse.wst.ws.locator extension point under the given category.
+	 * The search is constrained to the given set of one or more projects.
+	 * Locators must extend {@link AbstractWebServiceLocator}. 
+	 * Callers can use the getter methods on the WebServiceClientInfo object to retrieve information on the 
+	 * web service clients found.  The WebServiceFinder cannot guarantee the level of detail contained in WebServiceClientInfo
+	 * objects returned.  This is left to the locator implementations.
+	 * @param category The category of locators to use.
+	 * @param monitor A progress monitor, or null if progress monitoring is not desired.
+	 * @return An iterator of WebServiceClientInfo objects, never null.
+	 */
+	public Iterator getWebServiceClientsByCategory ( WebServiceCategory category, IProject[] projects, IProgressMonitor monitor )
+	{
+		return getWebServiceClientsByCategoryId(category == null ? null : category.getId(),projects,monitor);
+	}
+
+	/**
+	 * Returns an iterator of WebServiceClientInfo objects which represent web service clients found by locators that
+	 * have registered using the org.eclipse.wst.ws.locator extension point under the given category.
 	 * Locators must extend {@link AbstractWebServiceLocator}.
 	 * Callers can use the getter methods on the WebServiceClientInfo object to retrieve information on the 
 	 * web service clients found.  The WebServiceFinder cannot guarantee the level of detail contained in WebServiceClientInfo
@@ -183,6 +268,23 @@ public class WebServiceFinder {
 	 * @return An iterator of WebServiceClientInfo objects, never null.
 	 */
 	public Iterator getWebServiceClientsByCategoryId ( String categoryId, IProgressMonitor monitor )
+	{
+		return getWebServiceClientsByCategoryId(categoryId,null,monitor);
+	} 
+
+	/**
+	 * Returns an iterator of WebServiceClientInfo objects which represent web service clients found by locators that
+	 * have registered using the org.eclipse.wst.ws.locator extension point under the given category.
+	 * The search is constrained to the given set of one or more projects.
+	 * Locators must extend {@link AbstractWebServiceLocator}.
+	 * Callers can use the getter methods on the WebServiceClientInfo object to retrieve information on the 
+	 * web service clients found.  The WebServiceFinder cannot guarantee the level of detail contained in WebServiceClientInfo
+	 * objects returned.  This is left to the locator implementations.
+	 * @param categoryId The category of locators to use.
+	 * @param monitor A progress monitor, or null if progress monitoring is not desired.
+	 * @return An iterator of WebServiceClientInfo objects, never null.
+	 */
+	public Iterator getWebServiceClientsByCategoryId ( String categoryId, IProject[] projects, IProgressMonitor monitor )
 	{
 		LinkedList webServiceClients = new LinkedList();
 		WebServiceLocatorRegistry wslr = WebServiceLocatorRegistry.getInstance();
@@ -199,7 +301,7 @@ public class WebServiceFinder {
 						if (obj instanceof IWebServiceLocator)
 						{
 							IWebServiceLocator wsl = (IWebServiceLocator)obj;
-							List wsList = wsl.getWebServiceClients(monitor);
+							List wsList = projects == null ? wsl.getWebServiceClients(monitor) : wsl.getWebServiceClients(projects,monitor);
 							if (wsList != null)
 							{
 								webServiceClients.addAll(wsList);

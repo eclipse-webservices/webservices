@@ -11,6 +11,8 @@
  * -------- -------- -----------------------------------------------------------
  * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
  * 20060517   140832 andyzhai@ca.ibm.com - Andy Zhai
+ * 20060620   147862 cbrealey@ca.ibm.com - Chris Brealey
+ * 20060620   147864 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.core.locator;
@@ -39,6 +41,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceJavaClientInfo;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -83,6 +86,48 @@ public class AxisWebServiceLocator extends AbstractWebServiceLocator
 				{
 					// Find "Proxy" classes in the project and add to the list.
 					addAxisProxies(javaProjects[i],axisStub,list,monitor);
+				}
+			}
+			javaModel.close();
+		}
+		catch (Exception e)
+		{
+			// Fall thru and return an empty list.
+		}
+		return list;
+	}
+	
+	/**
+	 * Searches the workspace for Axis clients as
+	 * identified by non-stub classes that implement
+	 * SEIs that are implemented by stubs that implement
+	 * org.apache.axis.client.Stub.
+	 * @param projects The projects to confine the search to.
+	 * @param monitor A progress monitor, possibly null.
+	 * @return A possibly empty list of WebServiceClientInfo objects.
+	 */
+	public List getWebServiceClients (IProject[] projects, IProgressMonitor monitor)
+	{
+		if (projects == null)
+		{
+			return getWebServiceClients(monitor);
+		}
+		List list = new LinkedList();
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IJavaModel javaModel = JavaCore.create(root);
+		try
+		{
+			javaModel.open(monitor);
+			for (int i=0; i<projects.length; i++)
+			{
+				IJavaProject javaProject = javaModel.getJavaProject(projects[i].getName());
+				// We're only interested in Java projects within which
+				// the Axis runtime's client "Stub" class is loadable:
+				IType axisStub = javaProject.findType(AXIS_STUB);
+				if (axisStub != null)
+				{
+					// Find "Proxy" classes in the project and add to the list.
+					addAxisProxies(javaProject,axisStub,list,monitor);
 				}
 			}
 			javaModel.close();
@@ -169,7 +214,7 @@ public class AxisWebServiceLocator extends AbstractWebServiceLocator
 	 */
 	private WebServiceClientInfo newWebServiceClientInfo (IType axisProxy)
 	{
-		WebServiceClientInfo wscInfo = null;
+		WebServiceJavaClientInfo wscInfo = null;
 		try
 		{
 			IResource resource = axisProxy.getUnderlyingResource();
@@ -179,7 +224,8 @@ public class AxisWebServiceLocator extends AbstractWebServiceLocator
 				if (proxyPath != null)
 				{
 					String proxyURL = proxyPath.toFile().toURL().toString();
-					wscInfo = new WebServiceClientInfo();
+					wscInfo = new WebServiceJavaClientInfo();
+					wscInfo.setType(axisProxy);
 					wscInfo.setImplURL(proxyURL);
 				}
 			}
@@ -204,20 +250,33 @@ public class AxisWebServiceLocator extends AbstractWebServiceLocator
 	 */
 	public List getWebServices (IProgressMonitor monitor)
 	{
+		return getWebServices(null,monitor);
+	}
+	
+	/**
+	 * Searches the workspace for Axis services as
+	 * identified by server-config.wsdd <service> elements
+	 * in projects with an Axis servlet registered
+	 * in the web.xml descriptor.
+	 * @param projects The projects to confine the search to.
+	 * @param monitor A progress monitor, possibly null.
+	 * @return A possibly empty list of WebServiceInfo objects.
+	 */
+	public List getWebServices (IProject[] projects, IProgressMonitor monitor)
+	{
 		Vector webServices = new Vector();
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProject[] projects = root.getProjects();
-		
+		if (projects == null)
+		{
+			projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		}
 		for (int i = 0; i < projects.length; i++)
 		{
-			IProject project = projects[i];
-			
 			// we are only intersted in dynamic web project
-			if (J2EEUtils.isWebComponent(project))
+			if (J2EEUtils.isWebComponent(projects[i]))
 			{
 				try 
 				{
-					webServices.addAll(getWebServicesFromProject(project, monitor));
+					webServices.addAll(getWebServicesFromProject(projects[i], monitor));
 				} 
 				catch (Exception e) 
 				{

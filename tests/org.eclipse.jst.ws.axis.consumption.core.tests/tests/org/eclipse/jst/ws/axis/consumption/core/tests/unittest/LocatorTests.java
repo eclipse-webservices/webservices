@@ -10,6 +10,8 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
+ * 20060711   147862 cbrealey@ca.ibm.com - Chris Brealey
+ * 20060711   147864 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 
 package org.eclipse.jst.ws.axis.consumption.core.tests.unittest;
@@ -20,10 +22,14 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jst.ws.axis.consumption.core.tests.util.JavaFilter;
 import org.eclipse.jst.ws.axis.consumption.core.tests.util.StdoutProgressMonitor;
 import org.eclipse.jst.ws.axis.consumption.core.tests.util.Util;
+import org.eclipse.jst.ws.internal.wsrt.WebServiceJavaClientInfo;
 import org.eclipse.wst.ws.internal.wsfinder.WebServiceFinder;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceClientInfo;
 
@@ -39,15 +45,20 @@ public class LocatorTests extends TestCase
 		System.out.println("BEGIN test_AxisClientLocator");
 		try
 		{
+			String[] projectNames = new String[] {"Java1","Java2","Java3"};
+			IProject[] projects = new IProject[projectNames.length];
+			for (int x=0; x<projectNames.length; x++)
+			{
+				projects[x] = ResourcesPlugin.getWorkspace().getRoot().getProject(projectNames[x]);
+			}
 			Util.init();
 			try
 			{
-				String[] projects = new String[] {"Java1","Java2","Java3"};
 				for (int i=0; i<projects.length; i++)
 				{
-					IJavaProject javaProject = Util.createJavaProject(projects[i]);
+					IJavaProject javaProject = Util.createJavaProject(projectNames[i]);
 					Util.addRequiredJarsToJavaProject(javaProject);
-					Util.copyExamplesToJavaProject(javaProject);
+					Util.copyExamplesToJavaProject(javaProject,new JavaFilter());
 				}
 			}
 			catch (Throwable t)
@@ -58,7 +69,6 @@ public class LocatorTests extends TestCase
 			WebServiceFinder finder = WebServiceFinder.instance();
 			String[] categoryIds = finder.getWebServiceCategoryIds();
 			int n = -1;
-			int p = 0;
 			IProgressMonitor monitor = new StdoutProgressMonitor();
 			for (int i=0; i<categoryIds.length; i++)
 			{
@@ -67,23 +77,44 @@ public class LocatorTests extends TestCase
 				{
 					n = i;
 					Iterator iter = finder.getWebServiceClientsByCategoryId(categoryIds[i],monitor);
-					while (iter.hasNext())
-					{
-						Object obj = iter.next();
-						assertTrue("Finder returned a "+obj.getClass().getName()+" instead of a WebServiceClientInfo.",obj instanceof WebServiceClientInfo);
-						p++;
-						WebServiceClientInfo wscInfo = (WebServiceClientInfo)obj;
-						String proxyClassURL = wscInfo.getImplURL();
-						System.out.println("Axis client proxy class = ["+proxyClassURL+"]");
-					}
+					assertFoundClients(iter,6);
+					iter = finder.getWebServiceClientsByCategoryId(categoryIds[i],projects,monitor);
+					assertFoundClients(iter,6);
+					iter = finder.getWebServiceClientsByCategoryId(categoryIds[i],new IProject[] {projects[0]},monitor);
+					assertFoundClients(iter,2);
+					iter = finder.getWebServiceClientsByCategoryId(categoryIds[i],new IProject[] {projects[1],projects[2]},monitor);
+					assertFoundClients(iter,4);
+					IProject noSuchProject = ResourcesPlugin.getWorkspace().getRoot().getProject("noSuchProject");
+					iter = finder.getWebServiceClientsByCategoryId(categoryIds[i],new IProject[] {noSuchProject},monitor);
+					assertFoundClients(iter,0);
 				}
 			}
 			assertTrue("Axis locator extension missing.",n >= 0);
-			assertTrue("Did not find the expected six proxies.",p == 6);
 		}
 		finally
 		{
 			System.out.println("ENDED test_AxisClientLocator");
 		}
+	}
+	
+	private void assertFoundClients ( Iterator iter, int x )
+	{
+		int p = 0;
+		while (iter.hasNext())
+		{
+			Object obj = iter.next();
+			assertTrue("Finder returned a "+obj.getClass().getName()+" instead of a WebServiceClientInfo.",obj instanceof WebServiceClientInfo);
+			p++;
+			WebServiceClientInfo wscInfo = (WebServiceClientInfo)obj;
+			String proxyClassURL = wscInfo.getImplURL();
+			System.out.println("Axis client proxy class = ["+proxyClassURL+"]");
+			if (wscInfo instanceof WebServiceJavaClientInfo)
+			{
+				WebServiceJavaClientInfo wscJInfo = (WebServiceJavaClientInfo)wscInfo;
+				assertNotNull("Found an unexpected null IType",wscJInfo.getType());
+				System.out.println("Axis client proxy IType = ["+wscJInfo.getType()+"]");
+			}
+		}
+		assertTrue("Found "+p+" proxies instead of the expected "+x+".",p == x);
 	}
 }
