@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060504   119296 pmoogk@ca.ibm.com - Peter Moogk
  * 20060517   142324 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060711   150301 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.parser.wsil;
@@ -99,19 +100,40 @@ public class WebServicesParser
       return null;
   }
 
-  public WSILDocument getWSILDocument(String wsilURI)
+  /**
+   * 
+   * @param wsilURI
+   * @return
+   * @deprecated replaced with getWSILDocumentVerbose(String, String)
+   */
+  public WSILDocument getWSILDocument(String wsilURI )
   {
     try
     {
-      return getWSILDocumentVerbose(wsilURI);
+      return getWSILDocumentVerbose(wsilURI, "UTF-8" );
     }
     catch (Throwable t)
     {
     }
     return null;
   }
-
-  public WSILDocument getWSILDocumentVerbose(String wsilURI) throws MalformedURLException, IOException, WWWAuthenticationException, WSILException
+  
+  /**
+   * 
+   * @param wsilURI
+   * @return
+   * @throws MalformedURLException
+   * @throws IOException
+   * @throws WWWAuthenticationException
+   * @throws WSILException
+   * @deprecated replaced with getWSILDocumentVerbose(String, String)
+   */
+  public WSILDocument getWSILDocumentVerbose(String wsilURI ) throws MalformedURLException, IOException, WWWAuthenticationException, WSILException
+  {
+    return getWSILDocumentVerbose( wsilURI, "UTF-8" );
+  }
+  
+  public WSILDocument getWSILDocumentVerbose(String wsilURI, String byteEncoding ) throws MalformedURLException, IOException, WWWAuthenticationException, WSILException
   {
     WebServiceEntity wsEntity = getWebServiceEntityByURI(wsilURI);
     if (wsEntity == null)
@@ -126,7 +148,7 @@ public class WebServicesParser
       byte[] b = getInputStreamAsByteArray(wsilURI);
       wsEntity.setBytes(b);
       setHTTPSettings(wsEntity);
-      InputStreamReader isr = new InputStreamReader(new ByteArrayInputStream(b));
+      InputStreamReader isr = new InputStreamReader(new ByteArrayInputStream(b), byteEncoding );
       wsilDocument = WSILDocument.newInstance();
       wsilDocument.read(isr);
       wsEntity.setType(WebServiceEntity.TYPE_WSIL);
@@ -237,7 +259,7 @@ public class WebServicesParser
         {
           try
           {
-            parseWSIL(absoluteURI, parseOption);
+            parseWSIL(absoluteURI, parseOption, byteEncoding );
           }
           catch (Throwable t)
           {
@@ -269,7 +291,7 @@ public class WebServicesParser
     {
       try
       {
-        parseWSIL(theUri, parseOption);
+        parseWSIL(theUri, parseOption, byteEncoding );
         // no exception thrown if uri_ is a WSIL document
         wsEntity.setType(WebServiceEntity.TYPE_WSIL);
       }
@@ -303,7 +325,7 @@ public class WebServicesParser
     }
   }
 
-  private void parseWSIL(String wsilURI, int parseOption) throws WSILException, MalformedURLException, IOException, WSDLException, WWWAuthenticationException
+  private void parseWSIL(String wsilURI, int parseOption, String byteEncoding ) throws WSILException, MalformedURLException, IOException, WSDLException, WWWAuthenticationException
   {
     WebServiceEntity wsilEntity = getWebServiceEntityByURI(wsilURI);
     WSILDocument wsilDoc = (WSILDocument)wsilEntity.getModel();
@@ -312,7 +334,7 @@ public class WebServicesParser
       // Prevent infinite loops from occurring when a WSIL cycles occur.
       return;
     }
-    wsilDoc = getWSILDocumentVerbose(wsilURI);
+    wsilDoc = getWSILDocumentVerbose(wsilURI, byteEncoding );
     Inspection inspection = wsilDoc.getInspection();
     Service[] services = inspection.getServices();
     for (int i = 0; i < services.length; i++)
@@ -387,7 +409,7 @@ public class WebServicesParser
           wsilLinkEntity.setDocumentation(documentation);
           uriToEntityTable_.put(absoluteURI, wsilLinkEntity);
           if ((parseOption | PARSE_LINKS) == parseOption)
-            parseWSIL(absoluteURI, parseOption);
+            parseWSIL(absoluteURI, parseOption, byteEncoding );
         }
         associate(wsilEntity,wsilLinkEntity);
       }
