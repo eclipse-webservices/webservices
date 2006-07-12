@@ -11,12 +11,12 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.List;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
@@ -29,8 +29,9 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEdit
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ListFigure;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
+import org.eclipse.wst.xsd.ui.internal.adt.design.editparts.IEditPartNavigationHandler;
 
-public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackHandler
+public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackHandler, IEditPartNavigationHandler
 {   
   protected Figure contentPane;  
   protected Label label;
@@ -156,5 +157,15 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
 	  else {
 		  label.getParent().setBackgroundColor(ColorConstants.tooltipBackground);
 	  }
+  }
+  
+  public EditPart getRelativeEditPart(int direction)
+  {  
+    EditPart editPart = super.getRelativeEditPart(direction);
+    if (direction == PositionConstants.SOUTH && editPart == null)
+    {
+      editPart = EditPartNavigationHandlerUtil.getNextInterface(this);
+    }        
+    return editPart;
   }
 }

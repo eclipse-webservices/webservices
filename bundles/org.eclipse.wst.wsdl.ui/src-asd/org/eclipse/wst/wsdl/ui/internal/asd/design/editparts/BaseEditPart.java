@@ -12,11 +12,11 @@ package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.jface.action.IAction;
@@ -27,9 +27,10 @@ import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.IActionProvider;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
+import org.eclipse.wst.xsd.ui.internal.adt.design.editparts.IEditPartNavigationHandler;
 
 
-public abstract class BaseEditPart extends AbstractGraphicalEditPart implements IActionProvider, IASDObjectListener, IFeedbackHandler
+public abstract class BaseEditPart extends AbstractGraphicalEditPart implements IActionProvider, IASDObjectListener, IFeedbackHandler, IEditPartNavigationHandler
 {
   protected static final String[] EMPTY_ACTION_ARRAY = {};
   
@@ -141,5 +142,10 @@ public abstract class BaseEditPart extends AbstractGraphicalEditPart implements 
       IAction action = registry.getAction(OpenInNewEditor.ID);
       action.run();
     }
+  }
+  
+  public EditPart getRelativeEditPart(int direction)
+  {
+    return EditPartNavigationHandlerUtil.getRelativeEditPart(this, direction);
   }
 }

@@ -20,10 +20,12 @@ import org.eclipse.draw2d.MouseEvent;
 import org.eclipse.draw2d.MouseListener;
 import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.Polygon;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.commands.Command;
@@ -342,4 +344,14 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 	    	getHostFigure().getUpdateManager().performUpdate();
 	    }
 	  }
+      
+      public EditPart getRelativeEditPart(int direction)
+      {         
+        EditPart editPart = super.getRelativeEditPart(direction);
+        if (direction == PositionConstants.SOUTH && editPart == null)
+        {
+          editPart = EditPartNavigationHandlerUtil.getNextInterface(this);
+        }   
+        return editPart;
+      }        
 	}

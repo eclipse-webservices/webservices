@@ -20,6 +20,8 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
@@ -228,7 +230,7 @@ public class BindingEditPart extends BaseEditPart
     }
     return null;
   }
-
+  
   public void refreshConnections()
   {
     if (shouldDrawConnection())
@@ -283,4 +285,37 @@ public class BindingEditPart extends BaseEditPart
       }  
     }
   } 
+  
+  public EditPart getRelativeEditPart(int direction)
+  {
+    if (direction == PositionConstants.EAST)
+    {
+      // navigate forward along the connection (to the right)
+      return getConnectionTargetEditPart();
+    }  
+    else if (direction == PositionConstants.WEST)
+    {
+      // navigate backward along the connection (to the left)
+      EditPart serviceColumnEditPart = EditPartNavigationHandlerUtil.getPrevSibling(getParent());
+      if (serviceColumnEditPart != null)
+      {  
+        for (Iterator i = serviceColumnEditPart.getChildren().iterator(); i.hasNext(); )
+        {
+          EditPart service = (EditPart)i.next();
+          if (service instanceof ServiceEditPart)
+          {
+            for (Iterator j = service.getChildren().iterator(); j.hasNext(); )
+            {          
+              EndPointEditPart endPointEditPart = (EndPointEditPart)j.next();
+              if (endPointEditPart.getConnectionTargetEditPart() == this)
+              {
+                return endPointEditPart;
+              }
+            }  
+          }  
+        }
+      }
+    }      
+    return super.getRelativeEditPart(direction);
+  }
 }

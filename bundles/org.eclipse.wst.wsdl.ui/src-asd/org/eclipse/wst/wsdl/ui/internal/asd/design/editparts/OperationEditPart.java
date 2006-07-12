@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.List;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;

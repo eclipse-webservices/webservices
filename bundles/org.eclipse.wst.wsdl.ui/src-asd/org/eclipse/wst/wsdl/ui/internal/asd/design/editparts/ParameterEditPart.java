@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
@@ -20,6 +19,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Panel;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -191,4 +191,14 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
   public void removeFeedback() {
       parameterName.getParent().setBackgroundColor(figure.getBackgroundColor());
   }
+  
+  public EditPart getRelativeEditPart(int direction)
+  {  
+    EditPart editPart = super.getRelativeEditPart(direction);
+    if (direction == PositionConstants.SOUTH && editPart == null)
+    {
+      editPart = EditPartNavigationHandlerUtil.getNextInterface(this);           
+    }       
+    return editPart;
+  }  
 }

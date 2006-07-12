@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.Iterator;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureCanvas;
@@ -19,11 +18,13 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Panel;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalViewer;
@@ -225,6 +226,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
       
       return false;
   }
+  
 
   public ComponentReferenceConnection createConnectionFigure()
   {
@@ -248,6 +250,16 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 	    return connectionFigure;
   }
 
+  EditPart getConnectionTargetEditPart()
+  {
+    Object typeBeingRef = getReferencedModel();
+    if (connectionFigure != null) {
+      AbstractGraphicalEditPart referenceTypePart = (AbstractGraphicalEditPart) getViewer().getEditPartRegistry().get(typeBeingRef);
+      return referenceTypePart;
+    }
+    return null;
+  }
+  
   public void refreshConnections() {
 	  if (shouldDrawConnection()) {
 		  Object typeBeingRef = getReferencedModel();
@@ -318,4 +330,14 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     }
     return null;
   }
+  
+  public EditPart getRelativeEditPart(int direction)
+  {
+    if (direction == PositionConstants.EAST)
+    {      
+      // navigate forward along the connection (to the right)
+      return getConnectionTargetEditPart();
+    }  
+    return super.getRelativeEditPart(direction);
+  }  
 }
