@@ -34,6 +34,7 @@
  * 20060607   144826 joan@ca.ibm.com - Joan Haggarty
  * 20060607   144049 joan@ca.ibm.com - Joan Haggarty
  * 20060614   146270 joan@ca.ibm.com - Joan Haggarty
+ * 20060616   147317 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -270,6 +271,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 						{
 							serviceImpl_.removeModifyListener(objectModifyListener_);
 							serviceImpl_.setText("");
+							setObjectSelection(null);
 							serviceImpl_.addModifyListener(objectModifyListener_);
 						}						   
 					}					
@@ -318,6 +320,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 								callObjectTransformation(widget.getObjectSelection(), widget.getProject(), widget.getComponentName());
 						    }	
 						}
+						else
+							setObjectSelection(null);
 				}
 			};
 			
