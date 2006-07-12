@@ -33,6 +33,7 @@
  * 20060605   145081 joan@ca.ibm.com - Joan Haggarty
  * 20060607   144826 joan@ca.ibm.com - Joan Haggarty
  * 20060607   144049 joan@ca.ibm.com - Joan Haggarty
+ * 20060614   146270 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -48,6 +49,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.IObjectSelectionLaunchable;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ProjectSelectionDialog;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WebServiceClientTypeWidget;
@@ -370,7 +372,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		serviceComposite_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_SERVICE);
 	
 		
-		serviceScale_ = new Scale(serviceComposite_, SWT.VERTICAL | SWT.BORDER | SWT.CENTER);
+		serviceScale_ = new Scale(serviceComposite_, SWT.VERTICAL | SWT.BORDER);
 	    utils.createInfoPop(serviceScale_, INFOPOP_WSWSCEN_SCALE_SERVICE);
 		serviceScale_.setMinimum(0);
 		serviceScale_.setMaximum(6);
@@ -419,11 +421,11 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		});	
 		
 		GridData layoutData1 = new GridData();
-		layoutData1.horizontalAlignment=SWT.BEGINNING;
+		layoutData1.horizontalAlignment=SWT.CENTER;
 		layoutData1.verticalAlignment = SWT.BEGINNING;
 		Rectangle scaleR = (imageReg_.get(ICON_SCALE_BG_0)).getBounds();
 		layoutData1.heightHint=scaleR.height;
-		layoutData1.widthHint=scaleR.width;
+		layoutData1.widthHint=scaleR.width+1;
 		serviceScale_.setLayoutData(layoutData1);		
 		
 		topologySpot_ = new Label(serviceComposite_, SWT.BORDER | SWT.TOP );
@@ -1147,19 +1149,19 @@ private void handleTypeChange()
 	{
 		imageReg_ = new ImageRegistry(Display.getCurrent());
 		
-		imageReg_.put(ICON_SCALE_BG_0, WebServiceCreationUIPlugin
+		imageReg_.put(ICON_SCALE_BG_0, WebServiceConsumptionUIPlugin
 				.getImageDescriptor(ICON_SCALE_BG_0));
-		imageReg_.put(ICON_SCALE_BG_1, WebServiceCreationUIPlugin
+		imageReg_.put(ICON_SCALE_BG_1, WebServiceConsumptionUIPlugin
 				.getImageDescriptor(ICON_SCALE_BG_1));
-		imageReg_.put(ICON_SCALE_BG_2, WebServiceCreationUIPlugin
+		imageReg_.put(ICON_SCALE_BG_2, WebServiceConsumptionUIPlugin
 				.getImageDescriptor(ICON_SCALE_BG_2));
-		imageReg_.put(ICON_SCALE_BG_3, WebServiceCreationUIPlugin
+		imageReg_.put(ICON_SCALE_BG_3, WebServiceConsumptionUIPlugin
 				.getImageDescriptor(ICON_SCALE_BG_3));
-		imageReg_.put(ICON_SCALE_BG_4, WebServiceCreationUIPlugin
+		imageReg_.put(ICON_SCALE_BG_4, WebServiceConsumptionUIPlugin
 				.getImageDescriptor(ICON_SCALE_BG_4));
-		imageReg_.put(ICON_SCALE_BG_5, WebServiceCreationUIPlugin
+		imageReg_.put(ICON_SCALE_BG_5, WebServiceConsumptionUIPlugin
 				.getImageDescriptor(ICON_SCALE_BG_5));
-		imageReg_.put(ICON_SCALE_BG_6, WebServiceCreationUIPlugin
+		imageReg_.put(ICON_SCALE_BG_6, WebServiceConsumptionUIPlugin
 				.getImageDescriptor(ICON_SCALE_BG_6));
 		
 		imageReg_.put(GRAPHIC_SERVICE_0, WebServiceCreationUIPlugin

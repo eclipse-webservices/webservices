@@ -26,6 +26,7 @@
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060607   144826 joan@ca.ibm.com - Joan Haggarty
  * 20060607   144049 joan@ca.ibm.com - Joan Haggarty
+ * 20060614   146270 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -233,7 +234,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
     GridData scGridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
     clientComposite_.setLayoutData(scGridData);
     
-    clientScale_ = new Scale(clientComposite_ , SWT.VERTICAL | SWT.BORDER | SWT.CENTER);		
+    clientScale_ = new Scale(clientComposite_ , SWT.VERTICAL | SWT.BORDER);		
 	utils.createInfoPop(clientScale_, INFOPOP_WSWSCEN_SCALE_CLIENT);	
 	clientScale_.setMinimum(0);
 	clientScale_.setMaximum(6);
@@ -287,11 +288,11 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	});
 	
 	GridData layoutData1 = new GridData();
-	layoutData1.horizontalAlignment=SWT.BEGINNING;
+	layoutData1.horizontalAlignment=SWT.CENTER;
 	layoutData1.verticalAlignment = SWT.BEGINNING;
 	Rectangle scaleR = (imageReg_.get(ICON_SCALE_BG_0)).getBounds();	
 	layoutData1.heightHint=scaleR.height;
-	layoutData1.widthHint=scaleR.width;
+	layoutData1.widthHint=scaleR.width+1;
 	clientScale_.setLayoutData(layoutData1);
 		
 	topologySpot_ = new Label(clientComposite_ , SWT.CENTER | SWT.BORDER );
