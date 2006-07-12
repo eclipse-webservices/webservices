@@ -13,7 +13,10 @@ package org.eclipse.wst.wsdl.ui.internal.asd.design;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
@@ -132,9 +135,36 @@ public class DesignViewGraphicalViewer extends ScrollingGraphicalViewer implemen
             }                     
           }                   
         }  
+        switch (event.keyCode)
+        {
+        case SWT.PAGE_DOWN:
+            if (scrollPage(event, PositionConstants.SOUTH))
+                return true;
+            break;
+        case SWT.PAGE_UP:
+            if (scrollPage(event, PositionConstants.NORTH))
+                return true;
+        }    
         return super.keyPressed(event);
       }
-    }
+      
+      private boolean scrollPage(KeyEvent event, int direction)
+      {
+        if (!(getViewer().getControl() instanceof FigureCanvas))
+          return false;
+        FigureCanvas figCanvas = (FigureCanvas)getViewer().getControl();
+        Point loc = figCanvas.getViewport().getViewLocation();
+        Rectangle area = figCanvas.getViewport().getClientArea(Rectangle.SINGLETON).scale(.8); 
+        if (direction == PositionConstants.NORTH)
+        {            
+          figCanvas.scrollToY(loc.y - area.height);
+        }
+        else
+        {
+          figCanvas.scrollToY(loc.y + area.height);
+        }
+        return true;
+      }}
 
       /*
 	   * We need to convert from edit part selections to model object selections
@@ -204,4 +234,4 @@ public class DesignViewGraphicalViewer extends ScrollingGraphicalViewer implemen
 	      notifyListeners(newEvent);
 	    }
 	  } 
-	}
+}    
