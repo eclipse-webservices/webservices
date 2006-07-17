@@ -1,8 +1,0 @@
-number of errors      : 1
-number of warnings    : 0
-
-------------error list-------------------------------------------
-The output element is referencing an undefined message 'InvalidOutput'. Check that the message name and namespace are correct and that the message has been defined. [18, 49]
-------------warning list-----------------------------------------
-(none)
------------------------------------------------------------------
