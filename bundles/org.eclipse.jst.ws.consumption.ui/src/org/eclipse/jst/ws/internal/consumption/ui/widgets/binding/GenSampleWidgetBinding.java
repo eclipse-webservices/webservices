@@ -12,6 +12,7 @@
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060608   145529 kathy@ca.ibm.com - Kathy Chan
+ * 20060717   146332 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -113,8 +114,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientTestWidget.class, "Folder",ClientTestDelegateCommand.class);
     dataRegistry.addMapping(ClientTestWidget.class, "JspFolder",ClientTestDelegateCommand.class);
     dataRegistry.addMapping(ClientTestWidget.class, "RunTestClient",ClientTestDelegateCommand.class);
-    dataRegistry.addMapping(ClientTestWidget.class, "SampleMethods",ClientTestDelegateCommand.class);
-    
+    dataRegistry.addMapping(ClientTestWidget.class, "Methods",ClientTestDelegateCommand.class);    
     dataRegistry.addMapping(ClientTestWidget.class, "TestService",FinishTestFragment.class);
     dataRegistry.addMapping(ClientTestWidget.class, "TestID",FinishTestFragment.class);
     dataRegistry.addMapping(ClientTestWidget.class, "IsTestWidget",FinishTestFragment.class);
