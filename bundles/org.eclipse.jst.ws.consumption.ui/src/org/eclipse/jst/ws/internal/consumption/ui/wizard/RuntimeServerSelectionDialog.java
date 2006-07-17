@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060327   131605 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060717   150577 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
@@ -109,6 +110,8 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   private final String EXISTING_SERVERS_ICON = "icons/servers/existing_server_obj.gif";
   private String serverInstanceID_;
 
+  private boolean selectServerFirst_ = false;
+  
   public RuntimeServerSelectionDialog(Shell shell, byte mode, TypeRuntimeServer ids, String j2eeVersion) {
     super(shell);
     selectionMode_ = mode;
@@ -119,6 +122,10 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     setIsExistingServer(ids.getServerInstanceId() != null);
     serverLabels_ = new Hashtable();
     existingServersTable_ = new Hashtable();
+  }
+  
+  public void setSelectServerFirst(boolean selectServerFirst) {
+	  selectServerFirst_ = selectServerFirst;
   }
   
   protected Point getInitialSize()
@@ -162,6 +169,14 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   protected Control createContents(Composite parent) {
     Composite comp = (Composite) super.createContents(parent);  
     comp.pack(); 
+    
+    if (selectServerFirst_) {
+    	viewSelectionByServerButton_.setSelection(true);  
+    	handleServerViewSelectionEvent();
+    }
+    else
+    	viewSelectionByRuntimeButton_.setSelection(true);
+        
     return comp;
   } 
 
@@ -214,7 +229,6 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     viewSelectionByServerButton_.setText(ConsumptionUIMessages.LABEL_SELECTION_VIEW_SERVER);
     viewSelectionByServerButton_.addListener(SWT.Selection, this);
     viewSelectionByServerButton_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_RADIO_SERVER);
-    viewSelectionByServerButton_.setSelection(true);
     helpSystem.setHelp(viewSelectionByServerButton_, INFOPOP_PWRS_RADIO_SERVER);
     viewSelectionByRuntimeButton_ = new Button(viewSelectionGroup_, SWT.RADIO);
     viewSelectionByRuntimeButton_.setText(ConsumptionUIMessages.LABEL_SELECTION_VIEW_RUNTIME);
@@ -404,6 +418,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     GridData gd = new GridData(GridData.FILL_BOTH);
     primaryGroup_.setLayout(gl);
     primaryGroup_.setLayoutData(gd);
+    runtimesGroup_.moveAbove(serversGroup_);
     primaryGroup_.layout();
 
     // TODO: Show all runtimes, and only servers supported by current type id
@@ -419,12 +434,9 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     GridData gd = new GridData(GridData.FILL_BOTH);
     primaryGroup_.setLayout(gl);
     primaryGroup_.setLayoutData(gd);
+    serversGroup_.moveAbove(runtimesGroup_);
     primaryGroup_.layout();
-    serversGroup_.setLocation(5, 5);
-    runtimesGroup_.setLocation(4, 100);
-    serversGroup_.layout();
-    runtimesGroup_.layout();
-
+    
     // TODO: Show all servers, and only runtimes supported by the current type id
   }
 
@@ -439,6 +451,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     GridData gd = new GridData(GridData.FILL_BOTH);
     primaryGroup_.setLayout(gl);
     primaryGroup_.setLayoutData(gd);
+    runtimesGroup_.moveAbove(serversGroup_);
     primaryGroup_.layout();
 
     // TODO: Show all servers and runtimes from the type id

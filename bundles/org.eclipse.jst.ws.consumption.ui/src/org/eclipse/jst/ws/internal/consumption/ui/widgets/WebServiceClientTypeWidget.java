@@ -27,6 +27,7 @@
  * 20060607   144826 joan@ca.ibm.com - Joan Haggarty
  * 20060607   144049 joan@ca.ibm.com - Joan Haggarty
  * 20060614   146270 joan@ca.ibm.com - Joan Haggarty
+ * 20060717   150577 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -322,7 +323,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	hLinkClientServer_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_TEXT_SERVER);
 	hLinkClientServer_.addHyperlinkListener(new IHyperlinkListener(){
 		public void linkActivated(HyperlinkEvent e){			
-			launchRuntimeSelectionDialog(true);				
+			launchRuntimeSelectionDialog(true, true);				
 		}
 		public void linkEntered(HyperlinkEvent e){}
 		public void linkExited(HyperlinkEvent e){}			
@@ -649,10 +650,15 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		}		
 	}
   
-  private void launchRuntimeSelectionDialog(boolean clientContext)
+  private void launchRuntimeSelectionDialog(boolean clientContext) {
+	  launchRuntimeSelectionDialog(clientContext, false);
+  }
+  
+  private void launchRuntimeSelectionDialog(boolean clientContext, boolean selectServerFirst)
 	{
 	    TypeRuntimeServer currentClientTRS = getTypeRuntimeServer();
 	    RuntimeServerSelectionDialog rssd = new RuntimeServerSelectionDialog(shell_, (byte)1, getTypeRuntimeServer(), "14");
+	    rssd.setSelectServerFirst(selectServerFirst);
 	    int status = rssd.open();
 		if (status == Window.OK)
 		{

@@ -35,6 +35,7 @@
  * 20060607   144049 joan@ca.ibm.com - Joan Haggarty
  * 20060614   146270 joan@ca.ibm.com - Joan Haggarty
  * 20060616   147317 joan@ca.ibm.com - Joan Haggarty
+ * 20060717   150577 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -456,7 +457,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		hLinkServiceServer_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_TEXT_SERVER);
 		hLinkServiceServer_.addHyperlinkListener(new IHyperlinkListener(){
 			public void linkActivated(HyperlinkEvent e){				
-				launchRuntimeSelectionDialog(false);				
+				launchRuntimeSelectionDialog(false, true);				
 			}
 			public void linkEntered(HyperlinkEvent e){}
 			public void linkExited(HyperlinkEvent e){}			
@@ -594,9 +595,14 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			}
 		}
 	}
-	
+		
 	private void launchRuntimeSelectionDialog(boolean clientContext)
 	{
+		launchRuntimeSelectionDialog(clientContext, false);
+	}
+		
+	private void launchRuntimeSelectionDialog(boolean clientContext, boolean selectServerFirst) 	
+	{	
 		byte mode = clientContext ? (byte)1 : (byte)0;
 		
 		//TODO: jvh - investigate - don't think j2ee version shouldn't be hard coded (last parm) 
@@ -605,6 +611,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		TypeRuntimeServer currentServiceTRS = getServiceTypeRuntimeServer();
 		RuntimeServerSelectionDialog rssd = new RuntimeServerSelectionDialog(
 				Workbench.getInstance().getActiveWorkbenchWindow().getShell(), mode, currentServiceTRS, "14");	
+		rssd.setSelectServerFirst(selectServerFirst);		
 		int result = rssd.open();		
 		if (result == Window.OK)
 		{
