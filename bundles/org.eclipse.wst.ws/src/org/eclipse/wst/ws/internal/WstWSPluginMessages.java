@@ -24,6 +24,8 @@ public final class WstWSPluginMessages extends NLS {
 	}
 
 	public static String MSG_ERROR_UNABLE_TO_START_MONITOR;
+	public static String MSG_UNABLE_TO_RESOLVE_PLATFORM_URI;
+	public static String MSG_UNABLE_TO_RESOLVE_HTTP;
 	public static String IGNORE_LABEL;
 	public static String IGNORE_DESCRIPTION;
 	public static String IGNORE_ALL_LABEL;
