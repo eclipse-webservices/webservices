@@ -413,6 +413,7 @@ void dropDown (boolean drop) {
 	if (drop == isDropped ()) return;
 	if (!drop) {
 		popup.setVisible (false);
+		text.selectAll();
 		if (!isDisposed ()&& arrow.isFocusControl()) {
 			text.setFocus();
 		}
@@ -919,7 +920,9 @@ void listEvent (Event event) {
 			e.time = event.time;
 			e.stateMask = event.stateMask;
 			e.doit = event.doit;
-			notifyListeners (SWT.Selection, e);
+			if (!isDropped()) {
+				notifyListeners (SWT.Selection, e);
+			}
 			event.doit = e.doit;
 			break;
 		}
@@ -949,7 +952,10 @@ void listEvent (Event event) {
 			e.character = event.character;
 			e.keyCode = event.keyCode;
 			e.stateMask = event.stateMask;
+			
 			notifyListeners (SWT.KeyUp, e);
+			
+			
 			break;
 		}
 		case SWT.KeyDown: {
@@ -960,6 +966,7 @@ void listEvent (Event event) {
 			if ((event.stateMask & SWT.ALT) != 0 && (event.keyCode == SWT.ARROW_UP || event.keyCode == SWT.ARROW_DOWN)) {
 				dropDown (false);
 			}
+			
 			if (event.character == SWT.CR) {
 				// Enter causes default selection
 				dropDown (false);
@@ -1432,13 +1439,14 @@ void textEvent (Event event) {
 			
 			// Further work : Need to add support for incremental search in 
 			// pop up list as characters typed in text widget
-						
+			
+
 			Event e = new Event ();
 			e.time = event.time;
 			e.character = event.character;
 			e.keyCode = event.keyCode;
 			e.stateMask = event.stateMask;
-			notifyListeners (SWT.KeyDown, e);
+			//notifyListeners (SWT.KeyDown, e);
 			break;
 		}
 		case SWT.KeyUp: {

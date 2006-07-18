@@ -117,6 +117,7 @@ public class TypeReferenceDirectEditManager extends ComboBoxCellEditorManager
     ASDComboBoxCellEditor cellEditor = new ASDComboBoxCellEditor(composite, stringArray, getComponentReferenceEditManager());
     cellEditor.setTextIndent(getTextIndent());
     //((ADTComboBoxCellEditor) cellEditor).setObjectToModify(setObject);
+    
     return cellEditor;
   }
 

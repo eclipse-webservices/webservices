@@ -124,35 +124,11 @@ public class ASDComboBoxCellEditor extends CellEditor {
 
         comboBox.addSelectionListener(new SelectionAdapter() {
             public void widgetDefaultSelected(SelectionEvent event) {
-                applyEditorValueAndDeactivate();
+                selectionMade();
             }
 
             public void widgetSelected(SelectionEvent event) {
-            	Object newValue = null;
-            	continueApply = true;
-            	selection = comboBox.getSelectionIndex();
-            	String stringSelection = items[selection];
-            	
-            	if (stringSelection.equals(Messages.getString("_UI_BUTTON_BROWSE"))) { //$NON-NLS-1$
-            		newValue = invokeDialog(componentReferenceEditManager.getBrowseDialog());
-            	}
-            	else if (stringSelection.equals(Messages.getString("_UI_BUTTON_NEW"))) { //$NON-NLS-1$
-            		newValue = invokeDialog(componentReferenceEditManager.getNewDialog());
-            	}
-
-            	if (continueApply) {
-            		if (newValue == null) {
-            			int index = comboBox.getSelectionIndex();              
-            			if (index != -1) {
-            				selectedValue = comboBox.getItem(index);
-            			}
-            		}
-            		else {
-            			selectedValue = newValue;
-            		}
-
-            		applyEditorValueAndDeactivate();
-            	}
+            	selectionMade();
             }
         });
 
@@ -207,6 +183,7 @@ public class ASDComboBoxCellEditor extends CellEditor {
      */
     protected void doSetFocus() {
         comboBox.setFocus();
+        comboBox.dropDown(true);
 //        String comboText = comboBox.getText();
 //        comboBox.setText("         " + comboText);
     }
@@ -299,10 +276,36 @@ public class ASDComboBoxCellEditor extends CellEditor {
             fireCancelEditor();
         } else if (keyEvent.character == '\t') { // tab key
             applyEditorValueAndDeactivate();
-        }
+        } 
     }
     
     public Object getSelectedValue() {
     	return selectedValue;
     }
+    
+    
+    public void selectionMade() {
+    	Object newValue = null;
+    	continueApply = true;
+    	selection = comboBox.getSelectionIndex();
+    	String stringSelection = items[selection];
+    	
+    	if (stringSelection.equals(Messages.getString("_UI_BUTTON_BROWSE"))) { //$NON-NLS-1$
+    		newValue = invokeDialog(componentReferenceEditManager.getBrowseDialog());
+    	}
+    	else if (stringSelection.equals(Messages.getString("_UI_BUTTON_NEW"))) { //$NON-NLS-1$
+    		newValue = invokeDialog(componentReferenceEditManager.getNewDialog());
+    	}
+
+    	if (newValue == null) {
+    		int index = comboBox.getSelectionIndex();              
+    		if (index != -1) {
+    			selectedValue = comboBox.getItem(index);
+    		}
+    	}
+    	else {
+    		selectedValue = newValue;
+    	}
+   		applyEditorValueAndDeactivate();
+   }
 }
