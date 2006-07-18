@@ -77,6 +77,7 @@ public class BindingContentEditPart extends BaseEditPart
   }  
   
   protected void createEditPolicies() {
+      super.createEditPolicies();
 	  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, selectionHandlesEditPolicy);
   }
   

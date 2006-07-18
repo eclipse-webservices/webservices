@@ -27,10 +27,9 @@ import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.IActionProvider;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
-import org.eclipse.wst.xsd.ui.internal.adt.design.editparts.IEditPartNavigationHandler;
+import org.eclipse.wst.xsd.ui.internal.adt.design.editpolicies.KeyBoardNavigationEditPolicy;
 
-
-public abstract class BaseEditPart extends AbstractGraphicalEditPart implements IActionProvider, IASDObjectListener, IFeedbackHandler, IEditPartNavigationHandler
+public abstract class BaseEditPart extends AbstractGraphicalEditPart implements IActionProvider, IASDObjectListener, IFeedbackHandler
 {
   protected static final String[] EMPTY_ACTION_ARRAY = {};
   
@@ -142,6 +141,23 @@ public abstract class BaseEditPart extends AbstractGraphicalEditPart implements 
       IAction action = registry.getAction(OpenInNewEditor.ID);
       action.run();
     }
+  }
+ 
+  protected void createEditPolicies()
+  {      
+    KeyBoardNavigationEditPolicy navigationEditPolicy = new KeyBoardNavigationEditPolicy()
+    {      
+      public boolean isApplicable(EditPart editPart)
+      {
+        return editPart == BaseEditPart.this;
+      }
+
+      public EditPart getRelativeEditPart(EditPart editPart, int direction)
+      {          
+        return BaseEditPart.this.getRelativeEditPart(direction);            
+      }      
+    };
+    installEditPolicy(KeyBoardNavigationEditPolicy.KEY, navigationEditPolicy);    
   }
   
   public EditPart getRelativeEditPart(int direction)

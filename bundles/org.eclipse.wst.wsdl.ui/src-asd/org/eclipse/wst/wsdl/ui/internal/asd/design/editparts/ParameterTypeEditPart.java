@@ -108,6 +108,7 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 	  protected void createEditPolicies()
 	  {
+          super.createEditPolicies();
 		  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ASDSelectionEditPolicy());
 		  installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, simpleDirectEditPolicy);
 	  }

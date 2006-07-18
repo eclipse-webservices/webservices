@@ -29,9 +29,8 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEdit
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ListFigure;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
-import org.eclipse.wst.xsd.ui.internal.adt.design.editparts.IEditPartNavigationHandler;
 
-public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackHandler, IEditPartNavigationHandler
+public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackHandler
 {   
   protected Figure contentPane;  
   protected Label label;
@@ -98,6 +97,7 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
   
   protected void createEditPolicies()
   {
+      super.createEditPolicies();  
 	  if (!isReadOnly()) {
 		  installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new ASDDragAndDropEditPolicy(getViewer(), selectionHandlesEditPolicy));
 	  }

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
@@ -98,21 +97,7 @@ public class InterfaceEditPart extends AbstractBoxtEditPart implements IFeedback
   {
     if (direction == PositionConstants.WEST)
     {
-      // navigate backward along the connection (to the left)
-      EditPart interfaceEditPart = this;
-      EditPart bindingColumnEditPart = EditPartNavigationHandlerUtil.getPrevSibling(interfaceEditPart.getParent());
-      for (Iterator i = bindingColumnEditPart.getChildren().iterator(); i.hasNext(); )
-      {
-        EditPart child = (EditPart)i.next();
-        if (child instanceof BindingEditPart)
-        {
-          BindingEditPart bindingEditPart = (BindingEditPart)child;
-          if (bindingEditPart.getConnectionTargetEditPart() == interfaceEditPart)
-          {
-            return bindingEditPart;
-          }  
-        }  
-      }     
+      return EditPartNavigationHandlerUtil.getSourceConnectionEditPart(this);     
     }  
     return super.getRelativeEditPart(direction);
   }

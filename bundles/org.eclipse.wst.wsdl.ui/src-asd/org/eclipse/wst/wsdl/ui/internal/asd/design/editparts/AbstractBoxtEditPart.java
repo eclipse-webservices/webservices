@@ -51,6 +51,7 @@ public abstract class AbstractBoxtEditPart extends BaseEditPart implements IName
 
   protected void createEditPolicies()
   {
+      super.createEditPolicies();
 	  installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new ASDLabelDirectEditPolicy());
 	  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ASDSelectionEditPolicy());
   }

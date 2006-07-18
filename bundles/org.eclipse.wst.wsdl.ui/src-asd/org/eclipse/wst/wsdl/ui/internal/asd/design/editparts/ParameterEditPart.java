@@ -129,6 +129,7 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
   
   protected void createEditPolicies()
   {
+      super.createEditPolicies();
 	  installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new ASDLabelDirectEditPolicy());
 	  if (!isReadOnly()) {
 		  installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new ASDDragAndDropEditPolicy(getViewer(), selectionHandlesEditPolicy));

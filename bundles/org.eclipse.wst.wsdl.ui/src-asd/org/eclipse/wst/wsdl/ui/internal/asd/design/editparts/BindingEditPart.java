@@ -259,6 +259,7 @@ public class BindingEditPart extends BaseEditPart
 
   protected void createEditPolicies()
   {
+     super.createEditPolicies();    
      installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ASDSelectionEditPolicy());
   }
 
@@ -296,25 +297,7 @@ public class BindingEditPart extends BaseEditPart
     else if (direction == PositionConstants.WEST)
     {
       // navigate backward along the connection (to the left)
-      EditPart serviceColumnEditPart = EditPartNavigationHandlerUtil.getPrevSibling(getParent());
-      if (serviceColumnEditPart != null)
-      {  
-        for (Iterator i = serviceColumnEditPart.getChildren().iterator(); i.hasNext(); )
-        {
-          EditPart service = (EditPart)i.next();
-          if (service instanceof ServiceEditPart)
-          {
-            for (Iterator j = service.getChildren().iterator(); j.hasNext(); )
-            {          
-              EndPointEditPart endPointEditPart = (EndPointEditPart)j.next();
-              if (endPointEditPart.getConnectionTargetEditPart() == this)
-              {
-                return endPointEditPart;
-              }
-            }  
-          }  
-        }
-      }
+      return EditPartNavigationHandlerUtil.getSourceConnectionEditPart(this);
     }      
     return super.getRelativeEditPart(direction);
   }

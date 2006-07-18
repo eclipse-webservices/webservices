@@ -13,14 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.asd.design;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -28,10 +21,8 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.wst.xsd.ui.internal.adt.design.editparts.IEditPartNavigationHandler;
+import org.eclipse.wst.xsd.ui.internal.adt.design.BaseGraphicalViewerKeyHandler;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.CommonSelectionManager;
 
 public class DesignViewGraphicalViewer extends ScrollingGraphicalViewer implements ISelectionChangedListener
@@ -49,7 +40,7 @@ public class DesignViewGraphicalViewer extends ScrollingGraphicalViewer implemen
 	    internalSelectionProvider.addSelectionChangedListener(manager);
 	    manager.addSelectionChangedListener(this);  
         
-	    setKeyHandler(new InternalGraphicalViewerKeyHandler(this));
+	    setKeyHandler(new BaseGraphicalViewerKeyHandler(this));
 	  }
 	  
 	  // this method is called when something changes in the selection manager
@@ -88,83 +79,6 @@ public class DesignViewGraphicalViewer extends ScrollingGraphicalViewer implemen
 	    return result;
 	  }
 	  
-	private class InternalGraphicalViewerKeyHandler extends GraphicalViewerKeyHandler
-    {
-      InternalGraphicalViewerKeyHandler(GraphicalViewer viewer)
-      {
-        super(viewer);
-      }
-
-      public boolean keyPressed(KeyEvent event)
-      {
-        int direction = -1;
-        switch (event.keyCode) 
-        {
-          case SWT.ARROW_LEFT:
-          { 
-            direction = PositionConstants.WEST;
-            break;
-          }                
-          case SWT.ARROW_RIGHT:
-          { 
-            direction = PositionConstants.EAST;
-            break;
-          }  
-          case SWT.ARROW_UP:
-          { 
-            direction = PositionConstants.NORTH;
-            break;
-          }                
-          case SWT.ARROW_DOWN:
-          { 
-            direction = PositionConstants.SOUTH;
-            break;
-          }                
-        }    
-        if (direction != -1)
-        {
-          GraphicalEditPart focusEditPart = getFocusEditPart();
-          if (focusEditPart instanceof IEditPartNavigationHandler)
-          {
-            IEditPartNavigationHandler handler = (IEditPartNavigationHandler)focusEditPart;
-            EditPart target = handler.getRelativeEditPart(direction);
-            if (target != null)
-            {
-              navigateTo(target, event);
-              return true;                   
-            }                     
-          }                   
-        }  
-        switch (event.keyCode)
-        {
-        case SWT.PAGE_DOWN:
-            if (scrollPage(event, PositionConstants.SOUTH))
-                return true;
-            break;
-        case SWT.PAGE_UP:
-            if (scrollPage(event, PositionConstants.NORTH))
-                return true;
-        }    
-        return super.keyPressed(event);
-      }
-      
-      private boolean scrollPage(KeyEvent event, int direction)
-      {
-        if (!(getViewer().getControl() instanceof FigureCanvas))
-          return false;
-        FigureCanvas figCanvas = (FigureCanvas)getViewer().getControl();
-        Point loc = figCanvas.getViewport().getViewLocation();
-        Rectangle area = figCanvas.getViewport().getClientArea(Rectangle.SINGLETON).scale(.8); 
-        if (direction == PositionConstants.NORTH)
-        {            
-          figCanvas.scrollToY(loc.y - area.height);
-        }
-        else
-        {
-          figCanvas.scrollToY(loc.y + area.height);
-        }
-        return true;
-      }}
 
       /*
 	   * We need to convert from edit part selections to model object selections
