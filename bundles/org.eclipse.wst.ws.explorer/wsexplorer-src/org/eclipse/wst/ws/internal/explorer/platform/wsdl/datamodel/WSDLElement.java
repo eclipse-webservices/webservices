@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060717   146707 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
@@ -21,6 +24,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Vector;
+
 import javax.wsdl.Definition;
 import javax.wsdl.Import;
 import javax.wsdl.Service;
@@ -28,7 +32,11 @@ import javax.wsdl.Types;
 import javax.wsdl.WSDLException;
 import javax.wsdl.extensions.UnknownExtensibilityElement;
 import javax.xml.namespace.QName;
+
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
@@ -41,10 +49,12 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl;
 import org.eclipse.xsd.XSDDiagnostic;
 import org.eclipse.xsd.XSDDiagnosticSeverity;
+import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSchemaDirective;
 import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.eclipse.xsd.util.XSDParser;
+import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 
 public class WSDLElement extends WSDLCommonElement
 {
@@ -56,6 +66,9 @@ public class WSDLElement extends WSDLCommonElement
 
   private static Vector w3SchemaQNameList_;
   private static Vector constantSchemaList_;
+  
+  //A ResourceSet for all schemas in this WSDL
+  private ResourceSet resourceSet;
 
   static
   {
@@ -128,6 +141,14 @@ public class WSDLElement extends WSDLCommonElement
 
   public Vector loadWSDL() throws WSDLException
   {
+	  
+	//	Register the appropriate resource factory to handle all file extentions.
+	resourceSet = new ResourceSetImpl();
+	resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,new XSDResourceFactoryImpl());    		
+	//Register the package to ensure it is available during loading.
+	resourceSet.getPackageRegistry().put(XSDPackage.eNS_URI,XSDPackage.eINSTANCE);	
+	  
+	  
     Vector errorMessages = new Vector();
     definition_ = loadWSDL(wsdlUrl_);
     if (definition_ != null)
@@ -175,13 +196,14 @@ public class WSDLElement extends WSDLCommonElement
       {
         for (int i=0;i<extTypes.size();i++)
         {
+          XSDSchema xsdSchema = null;
           Object obj = extTypes.get(i);
           if (obj instanceof UnknownExtensibilityElement)
           {
             UnknownExtensibilityElement schemaElement = (UnknownExtensibilityElement)obj;
             if (isW3SchemaElementType(schemaElement.getElementType()))
             {
-              XSDSchema xsdSchema = XSDSchemaImpl.createSchema(schemaElement.getElement());
+              xsdSchema = XSDSchemaImpl.createSchema(schemaElement.getElement());
 			  if(!checkSchemaURI(definitionURL)){
 				  schemaList_.addElement(xsdSchema);
 				  gatherSchemaDirective(xsdSchema, definitionURL);
@@ -191,12 +213,21 @@ public class WSDLElement extends WSDLCommonElement
           else if (obj instanceof XSDSchemaExtensibilityElementImpl)
           {
             XSDSchemaExtensibilityElementImpl schemaElement = (XSDSchemaExtensibilityElementImpl)obj;
-            XSDSchema xsdSchema = XSDSchemaImpl.createSchema(schemaElement.getElement());
+            xsdSchema = XSDSchemaImpl.createSchema(schemaElement.getElement());
 			if(!checkSchemaURI(definitionURL)){
 				schemaList_.addElement(xsdSchema);
 				gatherSchemaDirective(xsdSchema, definitionURL);
 			}
 		  }
+          
+          if (xsdSchema != null)
+          {
+        	  //We need to add the schema to a Resource in a Resource set for proper validation
+        	  org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(definitionURL);    		
+        	  Resource resource = resourceSet.createResource(uri);
+        	  //Add the Schema to the resource
+        	  resource.getContents().add(xsdSchema);
+          }
         }
       }
     }
