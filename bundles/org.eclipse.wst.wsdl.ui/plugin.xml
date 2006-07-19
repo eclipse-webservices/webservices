@@ -254,7 +254,7 @@
             enablesFor="1"
             style="pulldown"
             menubarPath="refactoring-slot-temp"
-            label="Refactor" 
+            label="%_UI_LABEL_REFACTOR" 
             class="org.eclipse.wst.wsdl.ui.internal.refactor.actions.WSDLRefactorGroupActionDelegate"> 
          </action>          
       </objectContribution>               
