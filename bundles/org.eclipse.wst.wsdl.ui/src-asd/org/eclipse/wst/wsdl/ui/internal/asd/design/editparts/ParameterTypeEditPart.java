@@ -62,6 +62,18 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 	    parameterType.setBorder(new MarginBorder(4,12,4,20));
         figure.add(parameterType);
         
+        // rmah: The block of code below has been moved from refreshVisuals().  We're
+        // assuming the read-only state of the EditPart will never change once the
+        // EditPart has been created.
+        if (isReadOnly()) 
+        {
+          parameterType.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+        }
+        else
+        {
+          parameterType.setForegroundColor(ColorConstants.black);
+        }
+        
 	    return figure;
 	  }
 
@@ -82,16 +94,7 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
           {
             parameterType.setIcon(image);
           }            
-        }        
-        
-        if (isReadOnly()) 
-        {
-          parameterType.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
-        }
-        else
-        {
-          parameterType.setForegroundColor(ColorConstants.black);
-        }          
+        }         
 	  }
 	  
 	  public void addFeedback() {	 		          

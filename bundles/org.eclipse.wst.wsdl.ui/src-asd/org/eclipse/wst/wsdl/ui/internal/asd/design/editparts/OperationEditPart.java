@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.List;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
@@ -69,7 +70,20 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
     contentPane.setLayoutManager(toolbarLayout2);
     figure.add(contentPane);
  
-        
+    // rmah: The block of code below has been moved from refreshVisuals().  We're
+    // assuming the read-only state of the EditPart will never change once the
+    // EditPart has been created.
+    if (isReadOnly()) {
+    	label.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+   	    figure.setBackgroundColor(DesignViewGraphicsConstants.readOnlyTableOperationHeadingColor);
+   	    labelHolder.setBackgroundColor(DesignViewGraphicsConstants.readOnlyTableOperationHeadingColor);
+    }
+    else {
+    	label.setForegroundColor(ColorConstants.black);
+ 	    figure.setBackgroundColor(DesignViewGraphicsConstants.tableOperationHeadingColor);
+   	    labelHolder.setBackgroundColor(DesignViewGraphicsConstants.tableOperationHeadingColor);
+    }
+    
     return figure;
   }
   
@@ -103,16 +117,7 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
     label.setText(operation.getName());// + "---" + getModel());
     label.setIcon(operation.getImage());
     
-    if (isReadOnly()) {
-    	label.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
-   	    figure.setBackgroundColor(DesignViewGraphicsConstants.readOnlyTableOperationHeadingColor);
-   	    labelHolder.setBackgroundColor(DesignViewGraphicsConstants.readOnlyTableOperationHeadingColor);
-    }
-    else {
-    	label.setForegroundColor(ColorConstants.black);
- 	    figure.setBackgroundColor(DesignViewGraphicsConstants.tableOperationHeadingColor);
-   	    labelHolder.setBackgroundColor(DesignViewGraphicsConstants.tableOperationHeadingColor);
-    }   
+
   }
   
   public IFigure getContentPane()

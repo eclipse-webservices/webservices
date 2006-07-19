@@ -106,6 +106,18 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
     
     labelImage = ((IParameter) getModel()).getImage();
     
+    // rmah: The block of code below has been moved from refreshVisuals().  We're
+    // assuming the read-only state of the EditPart will never change once the
+    // EditPart has been created.
+    if (isReadOnly()) 
+    {
+      parameterName.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    }
+    else
+    {
+      parameterName.setForegroundColor(ColorConstants.black);
+    }
+    
     return figure;
   }
   
@@ -154,14 +166,6 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
     if (labelImage != null) {
     	parameterName.setIcon(labelImage);
     }
-    if (isReadOnly()) 
-    {
-      parameterName.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
-    }
-    else
-    {
-      parameterName.setForegroundColor(ColorConstants.black);
-    }      
   }
   
   protected List getModelChildren()

@@ -92,6 +92,18 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
     contentPane.setLayoutManager(toolbarLayout2);
     figure.add(contentPane);
     
+    // rmah: The block of code below has been moved from refreshVisuals().  We're
+    // assuming the read-only state of the EditPart will never change once the
+    // EditPart has been created.
+    if (isReadOnly()) 
+    {
+      headingFigure.getLabel().setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    }
+    else
+    {
+      headingFigure.getLabel().setForegroundColor(ColorConstants.black);
+    }
+    
     return figure;
   }
   
@@ -135,15 +147,6 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
     IService service = (IService)getModel();
     headingFigure.setIsReadOnly(service.isReadOnly());
     headingFigure.getLabel().setText(service.getName());
-    super.refreshVisuals();
-    
-    if (isReadOnly()) 
-    {
-      headingFigure.getLabel().setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
-    }
-    else
-    {
-      headingFigure.getLabel().setForegroundColor(ColorConstants.black);
-    }      
+    super.refreshVisuals();  
   }
 }

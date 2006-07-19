@@ -91,6 +91,19 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     //rowLayout.setConstraint(partsList, "PartsList");
     rowLayout.setConstraint(contentPane, "MessageContentPane"); //$NON-NLS-1$
    
+    // rmah: The block of code below has been moved from refreshVisuals().  We're
+    // assuming the read-only state of the EditPart will never change once the
+    // EditPart has been created.
+    if (isReadOnly()) 
+    {
+      label.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+      label.getParent().setBackgroundColor(DesignViewGraphicsConstants.readOnlyMessageRefHeadingColor);
+    }
+    else
+    {
+      label.setForegroundColor(ColorConstants.black);
+      label.getParent().setBackgroundColor(ColorConstants.tooltipBackground);
+    }
     
     return figure;
   }
@@ -120,18 +133,7 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     
     IMessageReference message = (IMessageReference)getModel();    
     label.setText(message.getText());
-    label.setIcon(message.getImage());
-    
-    if (isReadOnly()) 
-    {
-      label.setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
-      label.getParent().setBackgroundColor(DesignViewGraphicsConstants.readOnlyMessageRefHeadingColor);
-    }
-    else
-    {
-      label.setForegroundColor(ColorConstants.black);
-      label.getParent().setBackgroundColor(ColorConstants.tooltipBackground);
-    }  
+    label.setIcon(message.getImage()); 
   }
 
   protected List getModelChildren()

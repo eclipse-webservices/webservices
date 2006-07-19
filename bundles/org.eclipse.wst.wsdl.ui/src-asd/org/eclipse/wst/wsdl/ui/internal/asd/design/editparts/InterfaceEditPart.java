@@ -41,6 +41,19 @@ public class InterfaceEditPart extends AbstractBoxtEditPart implements IFeedback
     ToolbarLayout toolbarLayout = new ToolbarLayout(false);
     toolbarLayout.setStretchMinorAxis(true);
     figure.setLayoutManager(toolbarLayout);
+    
+    // rmah: The block of code below has been moved from refreshVisuals().  We're
+    // assuming the read-only state of the EditPart will never change once the
+    // EditPart has been created.
+    if (isReadOnly()) 
+    {
+    	figure.getLabel().setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+    }
+    else
+    {
+    	figure.getLabel().setForegroundColor(ColorConstants.black);
+    }
+    
     return figure;
   }
   
@@ -67,15 +80,6 @@ public class InterfaceEditPart extends AbstractBoxtEditPart implements IFeedback
     super.refreshVisuals();
     
     BoxComponentFigure fig = (BoxComponentFigure) getFigure();
-    if (isReadOnly()) 
-    {
-      fig.getLabel().setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
-    }
-    else
-    {
-    	fig.getLabel().setForegroundColor(ColorConstants.black);
-    }      
-
   }
 
   protected List getModelChildren()
