@@ -30,6 +30,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.wst.wsdl.Definition;
@@ -45,6 +46,7 @@ import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -132,11 +134,6 @@ public class WSDLResourceImpl extends ResourceImpl
     return getContents().size() == 1 && getContents().get(0) instanceof Definition ? (Definition) getContents().get(0) : null;
   }
 
-  private static void doSerialize(OutputStream outputStream, Document document) throws IOException
-  {
-    doSerialize(outputStream, document, null);
-  }
-
   private static void doSerialize(OutputStream outputStream, Document document, String encoding)
   {
     try
@@ -168,13 +165,10 @@ public class WSDLResourceImpl extends ResourceImpl
 
   /**
    * Loads a new {@link WSDLResourceImpl} into the resource set.
-   * @param resourceSet the resource set to hold the new resource.
-   * @param uri the URI of the new resource.
-   * @param inputStream the contents of the new resource.
+   * @param inputSource the contents of the new resource.
    * @param options any options to influence loading behavior.
-   * @return a new WSDLResourceImpl.
    */
-  protected void doLoad(InputStream inputStream, Map options) throws IOException
+  protected void doLoad(InputSource inputSource, Map options) throws IOException
   {
     // This pattern avoids loading the IProgressMonitor class when there is no progress monitor.
     // This is important for stand-alone execution to work correctly.
@@ -205,12 +199,12 @@ public class WSDLResourceImpl extends ResourceImpl
 
       if (trackLocation)
       {
-        doc = getDocumentUsingSAX(inputStream);
+        doc = getDocumentUsingSAX(inputSource);
       }
       else
       {
         // Create a DOM document
-        doc = getDocument(inputStream, new InternalErrorHandler());
+        doc = getDocument(inputSource, new InternalErrorHandler());
       }
 
       if (doc != null && doc.getDocumentElement() != null)
@@ -267,15 +261,36 @@ public class WSDLResourceImpl extends ResourceImpl
   }
 
   /**
+   * Loads a new {@link WSDLResourceImpl} into the resource set.
+   * @param inputStream the contents of the new resource.
+   * @param options any options to influence loading behavior.
+   */
+  protected void doLoad(InputStream inputStream, Map options) throws IOException
+  {
+    InputSource inputSource = 
+      inputStream instanceof URIConverter.ReadableInputStream ? 
+      new InputSource(((URIConverter.ReadableInputStream)inputStream).asReader()) :
+      new InputSource(inputStream);
+
+    if (getURI() != null)
+    {
+      String id = getURI().toString();
+      inputSource.setPublicId(id);
+      inputSource.setSystemId(id);
+    }
+    doLoad(inputSource, options);
+  }  
+  
+  /**
    * Use a custom SAX parser to allow us to track the source location of 
    * each node in the source XML document.
-   * @param inputStream the parsing source. Must not be null. 
+   * @param inputSource the parsing source. Must not be null. 
    * @return the DOM document created by parsing the input stream. 
    */
-  private Document getDocumentUsingSAX(InputStream inputStream)
+  private Document getDocumentUsingSAX(InputSource inputSource)
   {
     WSDLParser wsdlParser = new WSDLParser();
-    wsdlParser.parse(inputStream);
+    wsdlParser.parse(inputSource);
     
     Collection errors = wsdlParser.getDiagnostics();
     
@@ -310,11 +325,11 @@ public class WSDLResourceImpl extends ResourceImpl
 
   /**
    * Builds a document using Xerces.
-   * @param inputStream the contents to parse.
+   * @param inputSource the contents to parse.
    * @param errorHandler the handled used by the parser.
    * @return a document.
    */
-  private static Document getDocument(InputStream inputStream, ErrorHandler errorHandler) throws IOException
+  private static Document getDocument(InputSource inputSource, ErrorHandler errorHandler) throws IOException
   {
     ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
     try
@@ -349,7 +364,7 @@ public class WSDLResourceImpl extends ResourceImpl
 
       documentBuilder.setErrorHandler(errorHandler);
 
-      Document document = documentBuilder.parse(inputStream);
+      Document document = documentBuilder.parse(inputSource);
       return document;
     }
     catch (ParserConfigurationException exception)

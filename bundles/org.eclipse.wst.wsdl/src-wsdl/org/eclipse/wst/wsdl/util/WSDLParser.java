@@ -431,6 +431,22 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
     return false;
   }
 
+  public void parse(InputSource inputSource)
+  {
+    try
+    {
+      saxParser.parse(inputSource, this);
+    }
+    catch (IOException exception)
+    {
+      fatalError(exception);
+    }
+    catch (SAXException exception)
+    {
+      fatalError(exception);
+    }
+  }
+
   /**
    * Parses the XML content read from the given input stream.
    * 
