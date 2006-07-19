@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
+ * 20060719   149352 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -87,7 +88,7 @@ public class JavaBeanSelectionLaunchable extends AbstractObjectSelectionLaunchab
 		       beanClassString_ = itype.getFullyQualifiedName();
 		      try
 		      {
-		        IResource res = itype.getCorrespondingResource();
+		        IResource res = itype.getUnderlyingResource();
 		        if (res != null)
 		        {
 		          serverProject_ = res.getProject();
