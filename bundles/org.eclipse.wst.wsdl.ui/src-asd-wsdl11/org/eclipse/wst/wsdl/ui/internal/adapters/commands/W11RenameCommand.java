@@ -16,6 +16,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.eclipse.gef.commands.Command;
+import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
@@ -32,6 +33,7 @@ import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.actions.SmartRenameAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
@@ -51,6 +53,11 @@ import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.visitor.BindingRenamer;
 import org.eclipse.wst.wsdl.ui.internal.visitor.MessageRenamer;
 import org.eclipse.wst.wsdl.ui.internal.visitor.PortTypeRenamer;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
+import org.eclipse.wst.xsd.ui.internal.refactor.PerformUnsavedRefactoringOperation;
+import org.eclipse.wst.xsd.ui.internal.refactor.RefactoringComponent;
+import org.eclipse.wst.xsd.ui.internal.refactor.XMLRefactoringComponent;
+import org.eclipse.wst.xsd.ui.internal.refactor.rename.RenameComponentProcessor;
 import org.w3c.dom.Element;
 
 public class W11RenameCommand extends Command {
@@ -64,6 +71,8 @@ public class W11RenameCommand extends Command {
 	}
 
 	public void execute() {
+		String origName = null;
+		
 		if (object instanceof W11Description) {
 			Definition definition = (Definition) object.getTarget();
 			W11TopLevelElementCommand.ensureDefinition(definition);
@@ -81,13 +90,11 @@ public class W11RenameCommand extends Command {
 		}
 		else if (object instanceof W11Binding) {
 			Binding binding = (Binding) object.getTarget();
-			String ns = binding.getQName().getNamespaceURI();
-			binding.setQName(new QName(ns, newName));
+			origName = binding.getQName().getLocalPart();
 		}
 		else if (object instanceof W11Interface) {
 			PortType portType = (PortType) object.getTarget();
-			String ns = portType.getQName().getNamespaceURI();
-			portType.setQName(new QName(ns, newName));
+			origName = portType.getQName().getLocalPart();
 		}
 		else if (object instanceof W11Operation) {
 			Operation operation = (Operation) object.getTarget();
@@ -101,8 +108,13 @@ public class W11RenameCommand extends Command {
 		}
 		else if (object instanceof W11Message) {
 			Message message = (Message) ((W11Message) object).getTarget();
-			SmartRenameAction action = new SmartRenameAction(message, newName);
-			action.run();			
+			Iterator parts = message.getEParts().iterator();
+			origName = message.getQName().getLocalPart();
+			
+			while (parts.hasNext()) {
+				SmartRenameAction action = new SmartRenameAction(parts.next(), newName);
+				action.run();
+			}
 		}
 		else if (object instanceof W11ParameterForPart) {
 			Part part = (Part) ((W11ParameterForPart) object).getTarget();
@@ -113,21 +125,48 @@ public class W11RenameCommand extends Command {
 			BindingOperation bindingOperation = (BindingOperation) ((W11BindingOperation) object).getTarget();
 			bindingOperation.setName(newName);
 			bindingOperation.getEOperation().setName(newName);
+			// TODO: We should go off and rename the associated PortType Operation
 		}
 		else if (object instanceof W11BindingMessageReference) {
 			Object bindingMessageRef = ((W11BindingMessageReference) object).getTarget();
 			if (bindingMessageRef instanceof BindingInput) {
 				((BindingInput) bindingMessageRef).setName(newName);
 				((BindingInput) bindingMessageRef).getEInput().setName(newName);
+				// TODO: We should go off and rename the associated Porttype MessageReference
 			}
 			else if (bindingMessageRef instanceof BindingOutput) {
 				((BindingOutput) bindingMessageRef).setName(newName);
 				((BindingOutput) bindingMessageRef).getEOutput().setName(newName);
+				// TODO: We should go off and rename the associated Porttype Output				
 			}
 			else if (bindingMessageRef instanceof BindingFault) {
 				((BindingFault) bindingMessageRef).setName(newName);
 				((BindingFault) bindingMessageRef).getEFault().setName(newName);
+				// TODO: We should go off and rename the associated Porttype Fault
 			}
+		}
+
+		Object target = object.getTarget();
+		if (target instanceof WSDLElement && origName != null) {
+			WSDLElement component = (WSDLElement) target;
+			String namespace = component.getEnclosingDefinition().getTargetNamespace();
+
+			RefactoringComponent refactoringComponent = new XMLRefactoringComponent(
+					component,
+					(IDOMElement)component.getElement(), 
+					origName,
+					namespace);
+
+			RenameComponentProcessor processor = new RenameComponentProcessor(refactoringComponent, newName, true);    
+			RenameRefactoring refactoring = new RenameRefactoring(processor);
+			PerformUnsavedRefactoringOperation refactorOperation = new PerformUnsavedRefactoringOperation(refactoring);
+			refactorOperation.run(null); 
+			
+            // rmah : due to the ordering in which refactoring is called
+            // (i.e. the reference changes before the declaration changes) 
+            // our model references may be messed up at this point.
+            // The line of code below gets the model to fix up its references.  
+			((DefinitionImpl) component.getEnclosingDefinition()).reconcileReferences(true);
 		}
 	}
 
