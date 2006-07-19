@@ -11,6 +11,7 @@
 
 package org.eclipse.wst.wsdl.tests;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +38,7 @@ import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
+import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.binding.mime.MIMEContent;
 import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
 import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
@@ -50,6 +52,7 @@ import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
 import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDImport;
 import org.eclipse.xsd.XSDPackage;
@@ -128,6 +131,14 @@ public class BugFixesTest extends TestCase
       protected void runTest()
       {
         testSerializesImportsBeforeTypes();
+      }
+    });
+
+    suite.addTest(new BugFixesTest("LocalNamespacePrefixes")
+    {
+      protected void runTest()
+      {
+        testSupportsLocalNamespacePrefixes();
       }
     });
 
@@ -475,5 +486,59 @@ public class BugFixesTest extends TestCase
     secondChild = definitionElementChildren.item(1);
 
     assertSame(typesElement, secondChild);
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=150553
+   */
+  public void testSupportsLocalNamespacePrefixes()
+  {
+    Definition definition = null;
+
+    try
+    {
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/LocalNamespace/LocalNamespace.wsdl"); //$NON-NLS-1$
+    }
+    catch (IOException e)
+    {
+      fail(e.getMessage());
+    }
+
+    String targetNamespace = "http://tempuri.org/Simple/"; //$NON-NLS-1$
+    
+    // Check that the response message's part element is resolved OK.
+
+    QName responseMessageQName = new QName(targetNamespace, "myOperationResponse"); ////$NON-NLS-1$
+    javax.wsdl.Message responseMessage = definition.getMessage(responseMessageQName);
+
+    Part responsePart = (Part) responseMessage.getPart("myOperationResponse"); ////$NON-NLS-1$
+
+    XSDElementDeclaration responseElementDeclaration = responsePart.getElementDeclaration();
+
+    assertNotNull(responseElementDeclaration);
+    assertNotNull(responseElementDeclaration.getContainer());
+
+    // Check that the request message's part element is resolved OK.
+    // This part defines a local namespace prefix
+
+    QName requestMessageQName = new QName(targetNamespace, "myOperationRequest"); ////$NON-NLS-1$
+    javax.wsdl.Message requestMessage = definition.getMessage(requestMessageQName);
+
+    Part requestPart = (Part) requestMessage.getPart("myOperationRequest"); ////$NON-NLS-1$
+
+    XSDElementDeclaration requestElementDeclaration = requestPart.getElementDeclaration();
+
+    assertNotNull(requestElementDeclaration);
+    
+    // Now to make sure the DOM is reconciled properly and uses the local namespace prefix, 
+    // let's try to change the part's element declaration. We'll use the response part element
+    // just because it is convenient.
+    
+    requestPart.setElementDeclaration(responseElementDeclaration);
+    
+    Element partElement = requestPart.getElement();
+    String elementAttributeValue = partElement.getAttribute(WSDLConstants.ELEMENT_ATTRIBUTE);
+    
+    assertEquals(elementAttributeValue, "parttns:" + responseElementDeclaration.getName());
   }
 }
