@@ -60,9 +60,7 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 	}
     
     protected List getAddressExtensiblityElements()
-    {    
-      if (addressExtensiblityElements == null || addressExtensiblityElements.size() == 0)
-      {
+    {
         addressExtensiblityElements = new ArrayList();
         thingsToListenTo = new ArrayList();
         Port port = (Port) getTarget();          
@@ -84,8 +82,7 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
           IASDObject object = (IASDObject)i.next();
           object.registerListener(this);
         }  
-      }  
-      return addressExtensiblityElements;
+        return addressExtensiblityElements;
     }
     
     protected void clearAddressExtensiblityElements()
